@@ -109,6 +109,11 @@
     }
 }
 
+#pragma mark - UIAction selectors
+- (IBAction)editButtonTouchUpInside:(UIButton *)sender {
+
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -187,4 +192,6 @@
      */
 }
 
+- (IBAction)editButtonTouchUpInside:(UIButton *)sender {
+}
 @end

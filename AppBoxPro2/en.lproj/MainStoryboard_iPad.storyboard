@@ -58,6 +58,9 @@
                                                 <state key="highlighted">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="editButtonTouchUpInside:" destination="2" eventType="touchUpInside" id="Cqe-cn-Yeg"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xuh-kU-aSi" customClass="CoolButton">
                                                 <rect key="frame" x="202" y="7" width="34" height="29"/>
@@ -140,6 +143,7 @@
         <class className="A3MainViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/A3MainViewController.h"/>
             <relationships>
+                <relationship kind="action" name="editButtonTouchUpInside:" candidateClass="UIButton"/>
                 <relationship kind="outlet" name="editButton" candidateClass="CoolButton"/>
                 <relationship kind="outlet" name="hotMenuView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="leftGradientHotMenuView" candidateClass="UIView"/>
