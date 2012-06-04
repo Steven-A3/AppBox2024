@@ -8,12 +8,21 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "A3MainViewController.h"
+#import "MenuItem.h"
+#import "MenuGroup.h"
+#import "common.h"
 
 @interface A3MainViewController ()
 
+@property (strong, nonatomic, readonly) NSFetchedResultsController *menusFetchedResultsController;
+
+- (IBAction)editButtonTouchUpInside:(UIButton *)sender;
+
 @end
 
-@implementation A3MainViewController
+@implementation A3MainViewController {
+	NSFetchedResultsController *_menusFetchedResultsController;
+}
 
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize editButton = _editButton;
@@ -24,6 +33,7 @@
 @synthesize leftGradientOnMenuView = _leftGradientOnMenuView;
 @synthesize rightGradientOnMenuView = _rightGradientOnMenuView;
 @synthesize menuTableView = _menuTableView;
+
 
 - (void)addGradientLayer {
 	CAGradientLayer *leftGradientHotMenuLayer = [CAGradientLayer layer];
@@ -109,35 +119,46 @@
     }
 }
 
-#pragma mark - UIAction selectors
-- (IBAction)editButtonTouchUpInside:(UIButton *)sender {
-
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+	// Return the number of sections.
+	NSInteger numberOfSections = [[self.menusFetchedResultsController sections] count];
+	FNLOG(@"%d", numberOfSections);
+
+    return numberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.menusFetchedResultsController sections] objectAtIndex:section];
+	NSInteger numberOfRow = [sectionInfo numberOfObjects];
+	FNLOG(@"number of rows in section %d = %d", section, numberOfRow);
+	return numberOfRow;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	if (cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+	}
     
+	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:indexPath];
+	
     // Configure the cell...
+	cell.textLabel.text = menuItem.name;
+	cell.textLabel.textColor = [UIColor whiteColor];
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)table titleForHeaderInSection:(NSInteger)section {
+	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+	return menuItem.menuGroup.name;
 }
 
 /*
@@ -192,6 +213,27 @@
      */
 }
 
+#pragma mark - UIAction selectors
+
 - (IBAction)editButtonTouchUpInside:(UIButton *)sender {
+    
 }
+
+- (NSFetchedResultsController *)menusFetchedResultsController {
+	if (_menusFetchedResultsController == nil) {
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		[fetchRequest setEntity:[NSEntityDescription entityForName:@"MenuItem" inManagedObjectContext:self.managedObjectContext]];
+
+		NSString *sectionNameKeyPath = @"menuGroup.order";
+		NSArray *sortDescriptors = [NSArray arrayWithObjects:[[NSSortDescriptor alloc] initWithKey:@"menuGroup.order" ascending:YES], [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES], nil];
+		[fetchRequest setSortDescriptors:sortDescriptors];
+		_menusFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.managedObjectContext sectionNameKeyPath:sectionNameKeyPath cacheName:nil];
+
+		NSError *error;
+		BOOL success = [_menusFetchedResultsController performFetch:&error];
+		NSAssert3(success, @"Unhandled error performing fetch at %s, line %d: %@", __FUNCTION__, __LINE__, [error localizedDescription]);
+	}
+	return _menusFetchedResultsController;
+}
+
 @end

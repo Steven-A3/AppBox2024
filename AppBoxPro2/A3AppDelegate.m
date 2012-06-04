@@ -3,12 +3,17 @@
 //  AppBoxPro2
 //
 //  Created by Byeong Kwon Kwak on 4/25/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "A3AppDelegate.h"
 
 #import "A3MainViewController.h"
+
+@interface A3AppDelegate ()
+- (NSURL *)applicationLibraryDirectory;
+
+@end
 
 @implementation A3AppDelegate
 
@@ -16,6 +21,10 @@
 @synthesize managedObjectContext = __managedObjectContext;
 @synthesize managedObjectModel = __managedObjectModel;
 @synthesize persistentStoreCoordinator = __persistentStoreCoordinator;
+
++ (A3AppDelegate *)instance {
+	return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -76,7 +85,7 @@
     if (__managedObjectContext != nil) {
         return __managedObjectContext;
     }
-    
+
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if (coordinator != nil) {
         __managedObjectContext = [[NSManagedObjectContext alloc] init];
@@ -104,10 +113,16 @@
     if (__persistentStoreCoordinator != nil) {
         return __persistentStoreCoordinator;
     }
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"AppBoxPro2.sqlite"];
-    
-    NSError *error = nil;
+
+    NSURL *storeURL = [[self applicationLibraryDirectory] URLByAppendingPathComponent:@"AppBoxPro2.sqlite"];
+
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if (![fileManager fileExistsAtPath:[storeURL path]]) {
+		NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"AppBoxPro2" ofType:@"sqlite"];
+		[fileManager copyItemAtPath:bundlePath toPath:[storeURL path] error:nil];
+	}
+
+	NSError *error = nil;
     __persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     if (![__persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
         /*
@@ -146,6 +161,12 @@
 - (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+// Returns the URL to the application's Documents directory.
+- (NSURL *)applicationLibraryDirectory
+{
+	return [[[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
 @end

@@ -20,6 +20,4 @@
 @property (weak, nonatomic) IBOutlet UIView *rightGradientOnMenuView;
 @property (weak, nonatomic) IBOutlet UITableView *menuTableView;
 
-- (IBAction)editButtonTouchUpInside:(UIButton *)sender;
-
 @end

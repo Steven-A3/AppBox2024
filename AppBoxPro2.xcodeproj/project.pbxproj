@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6875CD0C1577247300A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
+		6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		68C1235C1547BD3100150EF2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235B1547BD3100150EF2 /* UIKit.framework */; };
 		68C1235E1547BD3100150EF2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235D1547BD3100150EF2 /* Foundation.framework */; };
 		68C123601547BD3100150EF2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235F1547BD3100150EF2 /* CoreGraphics.framework */; };
@@ -26,6 +28,15 @@
 		68C123931547BD3100150EF2 /* AppBoxPro2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */; };
 		68E79A87156A69AC001BED0C /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A86156A69AC001BED0C /* CoolButton.m */; };
 		68E79A8A156A6EC1001BED0C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E79A89156A6EC1001BED0C /* QuartzCore.framework */; };
+		68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */; };
+		68E79A8A156A6EC1001BED11 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68E79A8A156A6EC1001BED14 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68E79A8A156A6EC1001BED17 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68E79A8A156A6EC1001BED1A /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68E79A8A156A6EC1001BED1D /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68E79A8A156A6EC1001BED20 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F91CE0157CB2DF00BB373D /* MenuGroup.m */; };
+		68F91CE6157CB30F00BB373D /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F91CE5157CB30F00BB373D /* MenuItem.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,9 +72,17 @@
 		68C1238F1547BD3100150EF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68C123911547BD3100150EF2 /* AppBoxPro2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppBoxPro2Tests.h; sourceTree = "<group>"; };
 		68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppBoxPro2Tests.m; sourceTree = "<group>"; };
+		68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = AppBoxPro2.sqlite; path = AppBoxPro2/AppBoxPro2.sqlite; sourceTree = SOURCE_ROOT; };
 		68E79A85156A69AC001BED0C /* CoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolButton.h; sourceTree = "<group>"; };
 		68E79A86156A69AC001BED0C /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolButton.m; sourceTree = "<group>"; };
 		68E79A89156A6EC1001BED0C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BundleDataController.m; sourceTree = "<group>"; };
+		68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BundleDataController.h; sourceTree = "<group>"; };
+		68F91CDF157CB2DF00BB373D /* MenuGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuGroup.h; path = Models/MenuGroup.h; sourceTree = "<group>"; };
+		68F91CE0157CB2DF00BB373D /* MenuGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuGroup.m; path = Models/MenuGroup.m; sourceTree = "<group>"; };
+		68F91CE4157CB30F00BB373D /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItem.h; path = Models/MenuItem.h; sourceTree = "<group>"; };
+		68F91CE5157CB30F00BB373D /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuItem.m; path = Models/MenuItem.m; sourceTree = "<group>"; };
+		68F91CEB157CCD0600BB373D /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +115,6 @@
 		68C1234C1547BD3100150EF2 = {
 			isa = PBXGroup;
 			children = (
-				68E79A89156A6EC1001BED0C /* QuartzCore.framework */,
 				68C123631547BD3100150EF2 /* AppBoxPro2 */,
 				68C1238B1547BD3100150EF2 /* AppBoxPro2Tests */,
 				68C1235A1547BD3100150EF2 /* Frameworks */,
@@ -116,6 +134,7 @@
 		68C1235A1547BD3100150EF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68E79A89156A6EC1001BED0C /* QuartzCore.framework */,
 				68C1235B1547BD3100150EF2 /* UIKit.framework */,
 				68C1235D1547BD3100150EF2 /* Foundation.framework */,
 				68C1235F1547BD3100150EF2 /* CoreGraphics.framework */,
@@ -128,6 +147,9 @@
 		68C123631547BD3100150EF2 /* AppBoxPro2 */ = {
 			isa = PBXGroup;
 			children = (
+				68F91CEB157CCD0600BB373D /* common.h */,
+				68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */,
+				68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */,
 				68E79A85156A69AC001BED0C /* CoolButton.h */,
 				68E79A86156A69AC001BED0C /* CoolButton.m */,
 				68C1236C1547BD3100150EF2 /* A3AppDelegate.h */,
@@ -137,6 +159,7 @@
 				68C123781547BD3100150EF2 /* A3MainViewController.h */,
 				68C123791547BD3100150EF2 /* A3MainViewController.m */,
 				68C123751547BD3100150EF2 /* AppBoxPro2.xcdatamodeld */,
+				68F91CE3157CB2E600BB373D /* Models */,
 				68C123641547BD3100150EF2 /* Supporting Files */,
 			);
 			path = AppBoxPro2;
@@ -145,6 +168,7 @@
 		68C123641547BD3100150EF2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */,
 				68C123651547BD3100150EF2 /* AppBoxPro2-Info.plist */,
 				68C123661547BD3100150EF2 /* InfoPlist.strings */,
 				68C123691547BD3100150EF2 /* main.m */,
@@ -170,6 +194,17 @@
 				68C1238E1547BD3100150EF2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		68F91CE3157CB2E600BB373D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				68F91CE4157CB30F00BB373D /* MenuItem.h */,
+				68F91CE5157CB30F00BB373D /* MenuItem.m */,
+				68F91CDF157CB2DF00BB373D /* MenuGroup.h */,
+				68F91CE0157CB2DF00BB373D /* MenuGroup.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,6 +282,7 @@
 				68C123681547BD3100150EF2 /* InfoPlist.strings in Resources */,
 				68C123711547BD3100150EF2 /* MainStoryboard_iPhone.storyboard in Resources */,
 				68C123741547BD3100150EF2 /* MainStoryboard_iPad.storyboard in Resources */,
+				6875CD0C1577247300A706CA /* AppBoxPro2.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68C123901547BD3100150EF2 /* InfoPlist.strings in Resources */,
+				6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +323,15 @@
 				68C123771547BD3100150EF2 /* AppBoxPro2.xcdatamodeld in Sources */,
 				68C1237A1547BD3100150EF2 /* A3MainViewController.m in Sources */,
 				68E79A87156A69AC001BED0C /* CoolButton.m in Sources */,
+				68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */,
+				68E79A8A156A6EC1001BED11 /* (null) in Sources */,
+				68E79A8A156A6EC1001BED14 /* (null) in Sources */,
+				68E79A8A156A6EC1001BED17 /* (null) in Sources */,
+				68E79A8A156A6EC1001BED1A /* (null) in Sources */,
+				68E79A8A156A6EC1001BED1D /* (null) in Sources */,
+				68E79A8A156A6EC1001BED20 /* (null) in Sources */,
+				68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */,
+				68F91CE6157CB30F00BB373D /* MenuItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
