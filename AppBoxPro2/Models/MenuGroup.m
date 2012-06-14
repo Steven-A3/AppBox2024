@@ -1,8 +1,8 @@
 //
 //  MenuGroup.m
-//  AppBoxPro2
+//  AppBoxProPrepareData
 //
-//  Created by Byeong Kwon Kwak on 6/4/12.
+//  Created by Byeong Kwon Kwak on 6/14/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,7 +12,7 @@
 
 @implementation MenuGroup
 
-@dynamic group_id;
+@dynamic groupID;
 @dynamic name;
 @dynamic order;
 @dynamic menus;

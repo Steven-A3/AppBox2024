@@ -1,8 +1,8 @@
 //
 //  MenuGroup.h
-//  AppBoxPro2
+//  AppBoxProPrepareData
 //
-//  Created by Byeong Kwon Kwak on 6/4/12.
+//  Created by Byeong Kwon Kwak on 6/14/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,7 +13,7 @@
 
 @interface MenuGroup : NSManagedObject
 
-@property (nonatomic, retain) NSString * group_id;
+@property (nonatomic, retain) NSString * groupID;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) NSSet *menus;

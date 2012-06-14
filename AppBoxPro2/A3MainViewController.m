@@ -11,6 +11,9 @@
 #import "MenuItem.h"
 #import "MenuGroup.h"
 #import "common.h"
+#import "A3MenuCell.h"
+#import "A3Utilities.h"
+#import "A3RowSeparatorView.h"
 
 @interface A3MainViewController ()
 
@@ -33,14 +36,16 @@
 @synthesize leftGradientOnMenuView = _leftGradientOnMenuView;
 @synthesize rightGradientOnMenuView = _rightGradientOnMenuView;
 @synthesize menuTableView = _menuTableView;
+@synthesize searchBar = _searchBar;
 
 
 - (void)addGradientLayer {
+	// GradientLayer for Hot Menu left and right side
 	CAGradientLayer *leftGradientHotMenuLayer = [CAGradientLayer layer];
 	[leftGradientHotMenuLayer setColors:
 			[NSArray arrayWithObjects:
-					(id)[[UIColor colorWithRed:8.0/255.0 green:8.0/255.0 blue:9.0/255.0 alpha:0.8] CGColor],
-					(id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
+					(__bridge id)[[UIColor colorWithRed:8.0/255.0 green:8.0/255.0 blue:9.0/255.0 alpha:0.8] CGColor],
+					(__bridge id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
 					nil ] ];
 	[leftGradientHotMenuLayer setAnchorPoint:CGPointMake(0.0, 0.0)];
 	[leftGradientHotMenuLayer setBounds:[self.leftGradientHotMenuView bounds]];
@@ -51,38 +56,18 @@
 	CAGradientLayer *rightGradientHotMenuLayer = [CAGradientLayer layer];
 	[rightGradientHotMenuLayer setColors:
 			[NSArray arrayWithObjects:
-					(id)[[UIColor colorWithRed:8.0/255.0 green:8.0/255.0 blue:9.0/255.0 alpha:0.8] CGColor],
-					(id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
+					(__bridge id)[[UIColor colorWithRed:8.0/255.0 green:8.0/255.0 blue:9.0/255.0 alpha:0.8] CGColor],
+					(__bridge id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
 					nil ] ];
 	[rightGradientHotMenuLayer setAnchorPoint:CGPointMake(0.0, 0.0)];
 	[rightGradientHotMenuLayer setBounds:[self.rightGradientHotMenuView bounds]];
 	[rightGradientHotMenuLayer setStartPoint:CGPointMake(1.0, 0.5)];
 	[rightGradientHotMenuLayer setEndPoint:CGPointMake(0.0, 0.5)];
 	[[self.rightGradientHotMenuView layer] insertSublayer:rightGradientHotMenuLayer atIndex:1];
-
-	CAGradientLayer *leftGradientOnMenuLayer = [CAGradientLayer layer];
-	[leftGradientOnMenuLayer setColors:
-			[NSArray arrayWithObjects:
-					(id)[[UIColor colorWithRed:32.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:0.8] CGColor],
-					(id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
-					nil ] ];
-	[leftGradientOnMenuLayer setAnchorPoint:CGPointMake(0.0, 0.0)];
-	[leftGradientOnMenuLayer setBounds:[self.leftGradientOnMenuView bounds]];
-	[leftGradientOnMenuLayer setStartPoint:CGPointMake(0.0, 0.5)];
-	[leftGradientOnMenuLayer setEndPoint:CGPointMake(1.0, 0.5)];
-	[[self.leftGradientOnMenuView layer] insertSublayer:leftGradientOnMenuLayer atIndex:1];
-
-	CAGradientLayer *rightGradientOnMenuLayer = [CAGradientLayer layer];
-	[rightGradientOnMenuLayer setColors:
-			[NSArray arrayWithObjects:
-					(id)[[UIColor colorWithRed:32.0/255.0 green:34.0/255.0 blue:34.0/255.0 alpha:0.8] CGColor],
-					(id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
-					nil ] ];
-	[rightGradientOnMenuLayer setAnchorPoint:CGPointMake(0.0, 0.0)];
-	[rightGradientOnMenuLayer setBounds:[self.rightGradientOnMenuView bounds]];
-	[rightGradientOnMenuLayer setStartPoint:CGPointMake(1.0, 0.5)];
-	[rightGradientOnMenuLayer setEndPoint:CGPointMake(0.0, 0.5)];
-	[[self.rightGradientOnMenuView layer] insertSublayer:rightGradientOnMenuLayer atIndex:1];
+	
+	// Gradient layer for Tableview left and right side
+	addLeftGradientLayer8Point(self.leftGradientOnMenuView);
+	addRightGradientLayer8Point(self.rightGradientOnMenuView);
 }
 
 - (void)viewDidLoad
@@ -92,7 +77,7 @@
 
 	[self.editButton setButtonColor:[UIColor blackColor]];
     [self.plusButton setButtonColor:[UIColor blackColor]];
-
+	
 	[self addGradientLayer];
 }
 
@@ -121,6 +106,8 @@
 
 #pragma mark - Table view data source
 
+#define A3_MENU_TABLE_VIEW_WIDTH		256.0
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	// Return the number of sections.
@@ -141,25 +128,65 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    static NSString *CellIdentifier = @"menuCell";
+    A3MenuCell *cell = (A3MenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+		FNLOG(@"Creating new cell");
+		cell = (A3MenuCell *)[[A3MenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
     
 	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:indexPath];
-	
-    // Configure the cell...
-	cell.textLabel.text = menuItem.name;
-	cell.textLabel.textColor = [UIColor whiteColor];
-    
-    return cell;
+
+	cell.menuName.text = menuItem.name;
+	UIImage *appIconImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:menuItem.iconName ofType:@"png"]];
+	cell.appIcon.image = appIconImage;
+
+	return cell;
 }
 
-- (NSString *)tableView:(UITableView *)table titleForHeaderInSection:(NSInteger)section {
-	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
-	return menuItem.menuGroup.name;
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 24.0;
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, A3_MENU_TABLE_VIEW_WIDTH, 22.0)];
+	headerView.clipsToBounds = YES;
+	headerView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+
+	UIView *coverToMakeViewDark = [[UIView alloc] initWithFrame:headerView.frame];
+	coverToMakeViewDark.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3];
+	[headerView addSubview:coverToMakeViewDark];
+
+	UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, A3_MENU_TABLE_VIEW_WIDTH - 20.0, 22.0)];
+	headerLabel.font = [UIFont boldSystemFontOfSize:18.0];
+
+	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+	headerLabel.text = menuItem.menuGroup.name;
+	headerLabel.backgroundColor = [UIColor clearColor];
+	headerLabel.textColor = [UIColor whiteColor];
+	[headerView addSubview:headerLabel];
+
+	UIView *leftGradient = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 8.0, 24.0)];
+	[headerView addSubview:leftGradient];
+	addLeftGradientLayer8Point(leftGradient);
+
+	UIView *rightGradient = [[UIView alloc] initWithFrame:CGRectMake(A3_MENU_TABLE_VIEW_WIDTH - 8.0, 0.0, 8.0, 24.0)];
+	[headerView addSubview:rightGradient];
+	addRightGradientLayer8Point(rightGradient);
+
+	A3RowSeparatorView *top = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(0.0, -1.0, A3_MENU_TABLE_VIEW_WIDTH, 2.0)];
+	[headerView addSubview:top];
+
+	A3RowSeparatorView *bottom = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(0.0, 21.0, A3_MENU_TABLE_VIEW_WIDTH, 2.0)];
+	[headerView addSubview:bottom];
+
+	return headerView;
+}
+
+//- (NSString *)tableView:(UITableView *)table titleForHeaderInSection:(NSInteger)section {
+//	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
+//	return menuItem.menuGroup.name;
+//}
 
 /*
  // Override to support conditional editing of the table view.
@@ -211,6 +238,7 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - UIAction selectors

@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIView *leftGradientOnMenuView;
 @property (weak, nonatomic) IBOutlet UIView *rightGradientOnMenuView;
 @property (weak, nonatomic) IBOutlet UITableView *menuTableView;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end

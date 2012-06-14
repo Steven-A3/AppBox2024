@@ -1,8 +1,8 @@
 //
 //  MenuItem.h
-//  AppBoxPro2
+//  AppBoxProPrepareData
 //
-//  Created by Byeong Kwon Kwak on 6/4/12.
+//  Created by Byeong Kwon Kwak on 6/14/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,9 +13,10 @@
 
 @interface MenuItem : NSManagedObject
 
-@property (nonatomic, retain) NSString * menu_id;
+@property (nonatomic, retain) NSString * menuID;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
+@property (nonatomic, retain) NSString * iconName;
 @property (nonatomic, retain) MenuGroup *menuGroup;
 
 @end
