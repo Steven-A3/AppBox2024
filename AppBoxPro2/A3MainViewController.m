@@ -11,9 +11,11 @@
 #import "MenuItem.h"
 #import "MenuGroup.h"
 #import "common.h"
-#import "A3MenuCell.h"
+#import "CommonUIDefinitions.h"
 #import "A3Utilities.h"
 #import "A3RowSeparatorView.h"
+#import "A3iPadBatteryLifeViewController.h"
+#import "FRLayeredNavigation.h"
 
 @interface A3MainViewController ()
 
@@ -37,7 +39,6 @@
 @synthesize rightGradientOnMenuView = _rightGradientOnMenuView;
 @synthesize menuTableView = _menuTableView;
 @synthesize searchBar = _searchBar;
-
 
 - (void)addGradientLayer {
 	// GradientLayer for Hot Menu left and right side
@@ -126,20 +127,32 @@
 	return numberOfRow;
 }
 
+#define	TABLEVIEW_CELL_SEPARATOR_TAG	101
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"menuCell";
-    A3MenuCell *cell = (A3MenuCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+	UITableViewCell *cell = (UITableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 	if (cell == nil) {
-		FNLOG(@"Creating new cell");
-		cell = (A3MenuCell *)[[A3MenuCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
-    
+
+	A3RowSeparatorView *separator = (A3RowSeparatorView *)[cell viewWithTag:TABLEVIEW_CELL_SEPARATOR_TAG];
+	if (nil == separator) {
+		CGFloat cellHeight = CGRectGetHeight(cell.bounds);
+		CGFloat cellWidth = MENU_VIEW_WIDTH - 20.0;
+		separator = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(10.0, cellHeight - 1.0, cellWidth, 2.0)];
+		[separator setTag:TABLEVIEW_CELL_SEPARATOR_TAG];
+		[cell addSubview:separator];
+	}
+
 	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:indexPath];
 
-	cell.menuName.text = menuItem.name;
+	cell.textLabel.text = menuItem.name;
+	cell.textLabel.textColor = [UIColor whiteColor];
 	UIImage *appIconImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:menuItem.iconName ofType:@"png"]];
-	cell.appIcon.image = appIconImage;
+	cell.imageView.image = appIconImage;
 
 	return cell;
 }
@@ -239,6 +252,11 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	[self.layeredNavigationController popToRootViewControllerAnimated:YES];
+
+	A3iPadBatteryLifeViewController *viewController = [[A3iPadBatteryLifeViewController alloc] init];
+	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:714.0 animated:YES];
 }
 
 #pragma mark - UIAction selectors

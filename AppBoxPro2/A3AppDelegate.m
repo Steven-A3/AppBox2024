@@ -9,6 +9,7 @@
 #import "A3AppDelegate.h"
 
 #import "A3MainViewController.h"
+#import "FRLayeredNavigation.h"
 
 @interface A3AppDelegate ()
 - (NSURL *)applicationLibraryDirectory;
@@ -28,9 +29,28 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    A3MainViewController *controller = (A3MainViewController *)self.window.rootViewController;
-    controller.managedObjectContext = self.managedObjectContext;
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	// Override point for customization after application launch.
+	self.window.backgroundColor = [UIColor whiteColor];
+
+
+	A3MainViewController *vc = [[A3MainViewController alloc] initWithNibName:@"MenuView" bundle:nil];
+	vc.managedObjectContext = self.managedObjectContext;
+	FRLayeredNavigationController *fvc = [[FRLayeredNavigationController alloc] initWithRootViewController:vc
+																							 configuration:^(FRLayeredNavigationItem *item) {
+																								 item.width = 256.0 + 54.0; //600;
+																								 item.nextItemDistance = 54; //2;
+																							 }];
+
+	self.window.rootViewController = fvc;
+	fvc.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+
+	[self.window makeKeyAndVisible];
+
+
+	// Override point for customization after application launch.
+//    A3MainViewController *controller = (A3MainViewController *)self.window.rootViewController;
+//    controller.managedObjectContext = self.managedObjectContext;
     return YES;
 }
 							

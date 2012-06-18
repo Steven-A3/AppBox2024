@@ -42,7 +42,6 @@
 		687401B01589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687401AE1589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld */; };
 		6875CD0C1577247300A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
-		689FF9C815859425004A3CD4 /* A3MenuCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9C715859425004A3CD4 /* A3MenuCell.m */; };
 		689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CB15859D3C004A3CD4 /* A3Utilities.m */; };
 		689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */; };
 		68C1235C1547BD3100150EF2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235B1547BD3100150EF2 /* UIKit.framework */; };
@@ -70,6 +69,8 @@
 		68E79A8A156A6EC1001BED1A /* (null) in Sources */ = {isa = PBXBuildFile; };
 		68E79A8A156A6EC1001BED1D /* (null) in Sources */ = {isa = PBXBuildFile; };
 		68E79A8A156A6EC1001BED20 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68EEC8DD158EB840000D3661 /* MenuView.xib */; };
+		68EEC8EE158EFD07000D3661 /* libFRLayeredNavigationController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EEC8ED158EFD07000D3661 /* libFRLayeredNavigationController.a */; };
 		68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F91CE0157CB2DF00BB373D /* MenuGroup.m */; };
 		68F91CE6157CB30F00BB373D /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F91CE5157CB30F00BB373D /* MenuItem.m */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = 68C123561547BD3100150EF2;
 			remoteInfo = AppBoxPro2;
+		};
+		68EEC901158F1FF3000D3661 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68EEC8E0158EFC67000D3661 /* FRLayeredNavigationController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA4FACC615591AB300D85A7E;
+			remoteInfo = FRLayeredNavigationController;
+		};
+		68EEC903158F1FF3000D3661 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68EEC8E0158EFC67000D3661 /* FRLayeredNavigationController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DA4FAD0215591BD500D85A7E;
+			remoteInfo = FRLayeredNavigationControllerDemo;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -119,8 +134,7 @@
 		6874018C15898480002B2C92 /* app_unit_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_unit_32.png; path = resources/icons/app_unit_32.png; sourceTree = "<group>"; };
 		6874018D15898480002B2C92 /* app_wallet_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_wallet_32.png; path = resources/icons/app_wallet_32.png; sourceTree = "<group>"; };
 		687401AF1589BCF9002B2C92 /* AppBoxPro2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBoxPro2.xcdatamodel; sourceTree = "<group>"; };
-		689FF9C615859425004A3CD4 /* A3MenuCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MenuCell.h; sourceTree = "<group>"; };
-		689FF9C715859425004A3CD4 /* A3MenuCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MenuCell.m; sourceTree = "<group>"; };
+		687401C4158C281B002B2C92 /* CommonUIDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonUIDefinitions.h; sourceTree = "<group>"; };
 		689FF9CA15859D3C004A3CD4 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		689FF9CB15859D3C004A3CD4 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RowSeparatorView.h; sourceTree = "<group>"; };
@@ -152,6 +166,9 @@
 		68E79A89156A6EC1001BED0C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BundleDataController.m; sourceTree = "<group>"; };
 		68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BundleDataController.h; sourceTree = "<group>"; };
+		68EEC8DD158EB840000D3661 /* MenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView.xib; sourceTree = "<group>"; };
+		68EEC8E0158EFC67000D3661 /* FRLayeredNavigationController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FRLayeredNavigationController.xcodeproj; path = ../FRLayeredNavigationController/FRLayeredNavigationController.xcodeproj; sourceTree = "<group>"; };
+		68EEC8ED158EFD07000D3661 /* libFRLayeredNavigationController.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFRLayeredNavigationController.a; path = "../FRLayeredNavigationController/build/Release-iphoneos/libFRLayeredNavigationController.a"; sourceTree = "<group>"; };
 		68F91CDF157CB2DF00BB373D /* MenuGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuGroup.h; path = Models/MenuGroup.h; sourceTree = "<group>"; };
 		68F91CE0157CB2DF00BB373D /* MenuGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MenuGroup.m; path = Models/MenuGroup.m; sourceTree = "<group>"; };
 		68F91CE4157CB30F00BB373D /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuItem.h; path = Models/MenuItem.h; sourceTree = "<group>"; };
@@ -164,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68EEC8EE158EFD07000D3661 /* libFRLayeredNavigationController.a in Frameworks */,
 				68E79A8A156A6EC1001BED0C /* QuartzCore.framework in Frameworks */,
 				68C1235C1547BD3100150EF2 /* UIKit.framework in Frameworks */,
 				68C1235E1547BD3100150EF2 /* Foundation.framework in Frameworks */,
@@ -254,6 +272,8 @@
 		68C1235A1547BD3100150EF2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68EEC8E0158EFC67000D3661 /* FRLayeredNavigationController.xcodeproj */,
+				68EEC8ED158EFD07000D3661 /* libFRLayeredNavigationController.a */,
 				68E79A89156A6EC1001BED0C /* QuartzCore.framework */,
 				68C1235B1547BD3100150EF2 /* UIKit.framework */,
 				68C1235D1547BD3100150EF2 /* Foundation.framework */,
@@ -277,10 +297,9 @@
 				68C1236D1547BD3100150EF2 /* A3AppDelegate.m */,
 				68C1236F1547BD3100150EF2 /* MainStoryboard_iPhone.storyboard */,
 				68C123721547BD3100150EF2 /* MainStoryboard_iPad.storyboard */,
+				68EEC8DD158EB840000D3661 /* MenuView.xib */,
 				68C123781547BD3100150EF2 /* A3MainViewController.h */,
 				68C123791547BD3100150EF2 /* A3MainViewController.m */,
-				689FF9C615859425004A3CD4 /* A3MenuCell.h */,
-				689FF9C715859425004A3CD4 /* A3MenuCell.m */,
 				689FF9CA15859D3C004A3CD4 /* A3Utilities.h */,
 				689FF9CB15859D3C004A3CD4 /* A3Utilities.m */,
 				68F91CE3157CB2E600BB373D /* Models */,
@@ -290,6 +309,7 @@
 				689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */,
 				681FE39B15873A8800B752C9 /* A3iPadBatteryLifeViewController.h */,
 				681FE39C15873A8800B752C9 /* A3iPadBatteryLifeViewController.m */,
+				687401C4158C281B002B2C92 /* CommonUIDefinitions.h */,
 			);
 			path = AppBoxPro2;
 			sourceTree = "<group>";
@@ -323,6 +343,15 @@
 				68C1238E1547BD3100150EF2 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		68EEC8FD158F1FF3000D3661 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				68EEC902158F1FF3000D3661 /* libFRLayeredNavigationController.a */,
+				68EEC904158F1FF3000D3661 /* FRLayeredNavigationControllerDemo.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		68F91CE3157CB2E600BB373D /* Models */ = {
@@ -395,6 +424,12 @@
 			mainGroup = 68C1234C1547BD3100150EF2;
 			productRefGroup = 68C123581547BD3100150EF2 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 68EEC8FD158F1FF3000D3661 /* Products */;
+					ProjectRef = 68EEC8E0158EFC67000D3661 /* FRLayeredNavigationController.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				68C123561547BD3100150EF2 /* AppBoxPro2 */,
@@ -402,6 +437,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		68EEC902158F1FF3000D3661 /* libFRLayeredNavigationController.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFRLayeredNavigationController.a;
+			remoteRef = 68EEC901158F1FF3000D3661 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		68EEC904158F1FF3000D3661 /* FRLayeredNavigationControllerDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = FRLayeredNavigationControllerDemo.app;
+			remoteRef = 68EEC903158F1FF3000D3661 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		68C123551547BD3100150EF2 /* Resources */ = {
@@ -443,6 +495,7 @@
 				6874019715898480002B2C92 /* app_translator_32.png in Resources */,
 				6874019815898480002B2C92 /* app_unit_32.png in Resources */,
 				6874019915898480002B2C92 /* app_wallet_32.png in Resources */,
+				68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +544,6 @@
 				68E79A8A156A6EC1001BED20 /* (null) in Sources */,
 				68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */,
 				68F91CE6157CB30F00BB373D /* MenuItem.m in Sources */,
-				689FF9C815859425004A3CD4 /* A3MenuCell.m in Sources */,
 				689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */,
 				689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */,
 				681FE39D15873A8800B752C9 /* A3iPadBatteryLifeViewController.m in Sources */,
@@ -573,7 +625,13 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../FRLayeredNavigationController/FRLayeredNavigationController/;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-fobj-arc",
+					"-all-load",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -592,8 +650,14 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = ../FRLayeredNavigationController/FRLayeredNavigationController/;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-fobj-arc",
+					"-all-load",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -606,7 +670,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBoxPro2/AppBoxPro2-Prefix.pch";
 				INFOPLIST_FILE = "AppBoxPro2/AppBoxPro2-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-fobj-arc",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../FRLayeredNavigationController/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -617,7 +687,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBoxPro2/AppBoxPro2-Prefix.pch";
 				INFOPLIST_FILE = "AppBoxPro2/AppBoxPro2-Info.plist";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-fobj-arc",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../FRLayeredNavigationController/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

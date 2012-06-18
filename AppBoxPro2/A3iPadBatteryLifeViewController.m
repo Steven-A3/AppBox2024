@@ -7,6 +7,8 @@
 //
 
 #import "A3iPadBatteryLifeViewController.h"
+#import "common.h"
+#import "CommonUIDefinitions.h"
 
 @interface A3iPadBatteryLifeViewController ()
 
@@ -27,6 +29,19 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+
+	CGFloat viewHeight;
+	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
+		viewHeight = IPAD_SCREEN_HEIGHT_LANDSCAPE;
+	} else {
+		viewHeight = IPAD_SCREEN_HEIGHT_PORTRAIT;
+	}
+	UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, APP_VIEW_WIDTH, viewHeight)];
+	self.view = backgroundView;
+
+	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	FNLOG(@"viewDidLoad");
 }
 
 - (void)viewDidUnload
