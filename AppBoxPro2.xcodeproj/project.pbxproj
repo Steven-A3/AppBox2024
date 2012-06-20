@@ -44,6 +44,8 @@
 		6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CB15859D3C004A3CD4 /* A3Utilities.m */; };
 		689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */; };
+		68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68A15327159041E6007E1D8B /* SearchViewiPad.xib */; };
+		68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A1533615904670007E1D8B /* A3SearchIPADViewController.m */; };
 		68C1235C1547BD3100150EF2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235B1547BD3100150EF2 /* UIKit.framework */; };
 		68C1235E1547BD3100150EF2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235D1547BD3100150EF2 /* Foundation.framework */; };
 		68C123601547BD3100150EF2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235F1547BD3100150EF2 /* CoreGraphics.framework */; };
@@ -76,6 +78,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		680478FB1591BBD4000DFB84 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68EEC8E0158EFC67000D3661 /* FRLayeredNavigationController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DA4FACC515591AB300D85A7E;
+			remoteInfo = FRLayeredNavigationController;
+		};
 		68C123891547BD3100150EF2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 68C1234E1547BD3100150EF2 /* Project object */;
@@ -139,6 +148,9 @@
 		689FF9CB15859D3C004A3CD4 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RowSeparatorView.h; sourceTree = "<group>"; };
 		689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3RowSeparatorView.m; sourceTree = "<group>"; };
+		68A15327159041E6007E1D8B /* SearchViewiPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewiPad.xib; sourceTree = "<group>"; };
+		68A1533515904670007E1D8B /* A3SearchIPADViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SearchIPADViewController.h; sourceTree = "<group>"; };
+		68A1533615904670007E1D8B /* A3SearchIPADViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SearchIPADViewController.m; sourceTree = "<group>"; };
 		68C123571547BD3100150EF2 /* AppBoxPro2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBoxPro2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68C1235B1547BD3100150EF2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68C1235D1547BD3100150EF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -310,6 +322,9 @@
 				681FE39B15873A8800B752C9 /* A3iPadBatteryLifeViewController.h */,
 				681FE39C15873A8800B752C9 /* A3iPadBatteryLifeViewController.m */,
 				687401C4158C281B002B2C92 /* CommonUIDefinitions.h */,
+				68A15327159041E6007E1D8B /* SearchViewiPad.xib */,
+				68A1533515904670007E1D8B /* A3SearchIPADViewController.h */,
+				68A1533615904670007E1D8B /* A3SearchIPADViewController.m */,
 			);
 			path = AppBoxPro2;
 			sourceTree = "<group>";
@@ -379,6 +394,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				680478FC1591BBD4000DFB84 /* PBXTargetDependency */,
 			);
 			name = AppBoxPro2;
 			productName = AppBoxPro2;
@@ -496,6 +512,7 @@
 				6874019815898480002B2C92 /* app_unit_32.png in Resources */,
 				6874019915898480002B2C92 /* app_wallet_32.png in Resources */,
 				68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */,
+				68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,6 +565,7 @@
 				689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */,
 				681FE39D15873A8800B752C9 /* A3iPadBatteryLifeViewController.m in Sources */,
 				687401B01589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld in Sources */,
+				68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -562,6 +580,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		680478FC1591BBD4000DFB84 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FRLayeredNavigationController;
+			targetProxy = 680478FB1591BBD4000DFB84 /* PBXContainerItemProxy */;
+		};
 		68C1238A1547BD3100150EF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 68C123561547BD3100150EF2 /* AppBoxPro2 */;

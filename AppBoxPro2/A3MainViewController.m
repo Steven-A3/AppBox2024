@@ -16,17 +16,26 @@
 #import "A3RowSeparatorView.h"
 #import "A3iPadBatteryLifeViewController.h"
 #import "FRLayeredNavigation.h"
+#import "A3SearchIPADViewController.h"
+#import "A3AppDelegate.h"
 
 @interface A3MainViewController ()
 
-@property (strong, nonatomic, readonly) NSFetchedResultsController *menusFetchedResultsController;
+@property (strong, nonatomic) NSFetchedResultsController *menusFetchedResultsController;
+@property (strong, nonatomic) UIPopoverController *searchPopoverController;
 
 - (IBAction)editButtonTouchUpInside:(UIButton *)sender;
 
 @end
 
+typedef enum tagA3MenuWorkingMode {
+	A3_MENU_WORKING_MODE_DISPLAY = 1,
+	A3_MENU_WORKING_MODE_IS_EDITING,
+	A3_MENU_WORKING_MODE_IS_ADDING
+} A3MenuWorkingMode;
+
 @implementation A3MainViewController {
-	NSFetchedResultsController *_menusFetchedResultsController;
+	A3MenuWorkingMode menuWorkingMode;
 }
 
 @synthesize managedObjectContext = _managedObjectContext;
@@ -39,6 +48,18 @@
 @synthesize rightGradientOnMenuView = _rightGradientOnMenuView;
 @synthesize menuTableView = _menuTableView;
 @synthesize searchBar = _searchBar;
+@synthesize searchPopoverController = _searchPopoverController;
+@synthesize menusFetchedResultsController = _menusFetchedResultsController;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self) {
+		menuWorkingMode = A3_MENU_WORKING_MODE_DISPLAY;
+	}
+
+	return self;
+}
+
 
 - (void)addGradientLayer {
 	// GradientLayer for Hot Menu left and right side
@@ -98,11 +119,24 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+	FNLOG(@"HERE");
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     } else {
-        return YES;
+		return YES;
     }
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	FNLOG(@"Rotation");
+	CGFloat nextItemDistance;
+	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		nextItemDistance = 54.0 + 256.0;
+	} else {
+		nextItemDistance = 54.0;
+	}
+	[self.layeredNavigationItem setNextItemDistance:nextItemDistance];
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
 
 #pragma mark - Table view data source
@@ -112,7 +146,19 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	// Return the number of sections.
-	NSInteger numberOfSections = [[self.menusFetchedResultsController sections] count];
+
+	NSInteger numberOfSections;
+	switch (menuWorkingMode) {
+		case A3_MENU_WORKING_MODE_DISPLAY:
+			numberOfSections = [[self.menusFetchedResultsController sections] count];
+			break;
+		case A3_MENU_WORKING_MODE_IS_ADDING:
+			numberOfSections = [[self.menusFetchedResultsController sections] count] - 1;
+			break;
+		case A3_MENU_WORKING_MODE_IS_EDITING:
+			numberOfSections = 1;
+			break;
+	}
 	FNLOG(@"%d", numberOfSections);
 
     return numberOfSections;
@@ -120,8 +166,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+	NSInteger adjustedSection;
+	adjustedSection = section;
+	switch (menuWorkingMode) {
+		case A3_MENU_WORKING_MODE_DISPLAY:
+			// Do nothing.
+			break;
+		case A3_MENU_WORKING_MODE_IS_ADDING:
+			adjustedSection = section + 1;
+			break;
+		case A3_MENU_WORKING_MODE_IS_EDITING:
+			adjustedSection = 0;
+			break;
+	}
     // Return the number of rows in the section.
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.menusFetchedResultsController sections] objectAtIndex:section];
+	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.menusFetchedResultsController sections] objectAtIndex:adjustedSection];
 	NSInteger numberOfRow = [sectionInfo numberOfObjects];
 	FNLOG(@"number of rows in section %d = %d", section, numberOfRow);
 	return numberOfRow;
@@ -147,6 +206,16 @@
 		[cell addSubview:separator];
 	}
 
+	NSIndexPath *adjustedIndexPath;
+	switch (menuWorkingMode) {
+		case A3_MENU_WORKING_MODE_DISPLAY:
+		case A3_MENU_WORKING_MODE_IS_EDITING:
+			adjustedIndexPath = indexPath;
+			break;
+		case A3_MENU_WORKING_MODE_IS_ADDING:
+			adjustedIndexPath = [NSIndexPath indexPathForRow:[indexPath row] inSection:[indexPath section] + 1];
+			break;
+	}
 	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:indexPath];
 
 	cell.textLabel.text = menuItem.name;
@@ -196,74 +265,83 @@
 	return headerView;
 }
 
-//- (NSString *)tableView:(UITableView *)table titleForHeaderInSection:(NSInteger)section {
-//	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:section]];
-//	return menuItem.menuGroup.name;
-//}
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
- {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }   
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }   
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		// Delete the row from the data source
+		[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	}
+	else if (editingStyle == UITableViewCellEditingStyleInsert) {
+		// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+	}
+}
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+	FNLOG(@"Here");
+
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	
-	[self.layeredNavigationController popToRootViewControllerAnimated:YES];
+	[self.layeredNavigationController popToRootViewControllerAnimated:NO];
 
 	A3iPadBatteryLifeViewController *viewController = [[A3iPadBatteryLifeViewController alloc] init];
-	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:714.0 animated:YES];
+	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:714.0 animated:YES configuration:^(FRLayeredNavigationItem *item) {
+		item.hasChrome = NO;
+	}];
+}
+
+//- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return YES;
+//}
+//
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return YES;
+//}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	MenuItem *sourceMenuItem = [self.menusFetchedResultsController objectAtIndexPath:sourceIndexPath];
+	MenuItem *destinationMenuItem = [self.menusFetchedResultsController objectAtIndexPath:destinationIndexPath];
+	NSString *sourceOrder = [sourceMenuItem order];
+	NSString *destinationOrder = [destinationMenuItem order];
+	[sourceMenuItem setOrder:destinationOrder];
+	[destinationMenuItem setOrder:sourceOrder];
+
+	[[A3AppDelegate instance] saveContext];
 }
 
 #pragma mark - UIAction selectors
 
 - (IBAction)editButtonTouchUpInside:(UIButton *)sender {
-    
+	menuWorkingMode = ![self.menuTableView isEditing] ? A3_MENU_WORKING_MODE_IS_EDITING : A3_MENU_WORKING_MODE_DISPLAY;
+	if (menuWorkingMode == A3_MENU_WORKING_MODE_DISPLAY) {
+		self.menusFetchedResultsController = nil;
+	}
+	[self.menuTableView reloadData];
+	[self.menuTableView setEditing:![self.menuTableView isEditing]];
 }
+
+- (IBAction)searchButtonTouchUpInside:(UIButton *)sender {
+	[self.searchPopoverController presentPopoverFromRect:sender.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	if (popoverController == self.searchPopoverController) {
+		[self setSearchPopoverController:nil];
+	}
+}
+
+- (UIPopoverController *)searchPopoverController {
+	if (_searchPopoverController == nil) {
+		A3SearchIPADViewController *searchViewController = [[A3SearchIPADViewController alloc] initWithNibName:@"SearchViewiPad" bundle:nil];
+		self.searchPopoverController = [[UIPopoverController alloc] initWithContentViewController:searchViewController];
+	}
+	return _searchPopoverController;
+}
+
+#pragma mark - FetchResultsController
 
 - (NSFetchedResultsController *)menusFetchedResultsController {
 	if (_menusFetchedResultsController == nil) {

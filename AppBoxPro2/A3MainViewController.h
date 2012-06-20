@@ -8,7 +8,7 @@
 
 #import "CoolButton.h"
 
-@interface A3MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface A3MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate>
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (weak, nonatomic) IBOutlet CoolButton *editButton;
