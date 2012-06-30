@@ -2,7 +2,7 @@
 //  MenuItem.m
 //  AppBoxProPrepareData
 //
-//  Created by Byeong Kwon Kwak on 6/14/12.
+//  Created by Byeong Kwon Kwak on 6/22/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,10 +12,11 @@
 
 @implementation MenuItem
 
+@dynamic iconName;
 @dynamic menuID;
 @dynamic name;
 @dynamic order;
-@dynamic iconName;
+@dynamic isFavorite;
 @dynamic menuGroup;
 
 @end

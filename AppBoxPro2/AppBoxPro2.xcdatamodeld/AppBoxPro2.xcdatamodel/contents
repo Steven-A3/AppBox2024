@@ -8,6 +8,7 @@
     </entity>
     <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
         <attribute name="iconName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="menuID" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="String" syncable="YES"/>
@@ -15,6 +16,6 @@
     </entity>
     <elements>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
-        <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>
+        <element name="MenuItem" positionX="178" positionY="9" width="128" height="135"/>
     </elements>
 </model>

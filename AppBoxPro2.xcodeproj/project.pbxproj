@@ -18,6 +18,7 @@
 		681FE3B21587424800B752C9 /* icon_sc_flashlight.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AA1587424800B752C9 /* icon_sc_flashlight.png */; };
 		681FE3B31587424800B752C9 /* icon_sc_search_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AB1587424800B752C9 /* icon_sc_search_on.png */; };
 		681FE3B41587424800B752C9 /* icon_sc_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AC1587424800B752C9 /* icon_sc_search.png */; };
+		6836D416159EB1A700F46394 /* A3CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6836D415159EB1A700F46394 /* A3CalculatorViewController.m */; };
 		68740173158980DB002B2C92 /* icon_sc_magnifier_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */; };
 		68740174158980DB002B2C92 /* icon_sc_magnifier.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740170158980DB002B2C92 /* icon_sc_magnifier.png */; };
 		68740175158980DB002B2C92 /* icon_sc_mirror_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740171158980DB002B2C92 /* icon_sc_mirror_on.png */; };
@@ -62,6 +63,7 @@
 		68C123881547BD3100150EF2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C123611547BD3100150EF2 /* CoreData.framework */; };
 		68C123901547BD3100150EF2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C1238E1547BD3100150EF2 /* InfoPlist.strings */; };
 		68C123931547BD3100150EF2 /* AppBoxPro2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */; };
+		68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBDCB415984480006AE286 /* green_check_in_circle.png */; };
 		68E79A87156A69AC001BED0C /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A86156A69AC001BED0C /* CoolButton.m */; };
 		68E79A8A156A6EC1001BED0C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E79A89156A6EC1001BED0C /* QuartzCore.framework */; };
 		68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */; };
@@ -121,6 +123,8 @@
 		681FE3AA1587424800B752C9 /* icon_sc_flashlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_flashlight.png; path = resources/icons/icon_sc_flashlight.png; sourceTree = "<group>"; };
 		681FE3AB1587424800B752C9 /* icon_sc_search_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_search_on.png; path = resources/icons/icon_sc_search_on.png; sourceTree = "<group>"; };
 		681FE3AC1587424800B752C9 /* icon_sc_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_search.png; path = resources/icons/icon_sc_search.png; sourceTree = "<group>"; };
+		6836D414159EB1A700F46394 /* A3CalculatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorViewController.h; sourceTree = "<group>"; };
+		6836D415159EB1A700F46394 /* A3CalculatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorViewController.m; sourceTree = "<group>"; };
 		6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier_on.png; path = resources/icons/icon_sc_magnifier_on.png; sourceTree = "<group>"; };
 		68740170158980DB002B2C92 /* icon_sc_magnifier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier.png; path = resources/icons/icon_sc_magnifier.png; sourceTree = "<group>"; };
 		68740171158980DB002B2C92 /* icon_sc_mirror_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_mirror_on.png; path = resources/icons/icon_sc_mirror_on.png; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 		68C123911547BD3100150EF2 /* AppBoxPro2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppBoxPro2Tests.h; sourceTree = "<group>"; };
 		68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppBoxPro2Tests.m; sourceTree = "<group>"; };
 		68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = AppBoxPro2.sqlite; path = AppBoxPro2/AppBoxPro2.sqlite; sourceTree = SOURCE_ROOT; };
+		68DBDCB415984480006AE286 /* green_check_in_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_check_in_circle.png; path = resources/icons/green_check_in_circle.png; sourceTree = "<group>"; };
 		68E79A85156A69AC001BED0C /* CoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolButton.h; sourceTree = "<group>"; };
 		68E79A86156A69AC001BED0C /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolButton.m; sourceTree = "<group>"; };
 		68E79A89156A6EC1001BED0C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -227,6 +232,7 @@
 		681FE3A415873C4100B752C9 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				68DBDCB415984480006AE286 /* green_check_in_circle.png */,
 				6874017815898241002B2C92 /* icon_sc_home_edit_on.png */,
 				6874017915898241002B2C92 /* icon_sc_info_on.png */,
 				6874018215898480002B2C92 /* app_clock_32.png */,
@@ -325,6 +331,8 @@
 				68A15327159041E6007E1D8B /* SearchViewiPad.xib */,
 				68A1533515904670007E1D8B /* A3SearchIPADViewController.h */,
 				68A1533615904670007E1D8B /* A3SearchIPADViewController.m */,
+				6836D414159EB1A700F46394 /* A3CalculatorViewController.h */,
+				6836D415159EB1A700F46394 /* A3CalculatorViewController.m */,
 			);
 			path = AppBoxPro2;
 			sourceTree = "<group>";
@@ -513,6 +521,7 @@
 				6874019915898480002B2C92 /* app_wallet_32.png in Resources */,
 				68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */,
 				68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */,
+				68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +575,7 @@
 				681FE39D15873A8800B752C9 /* A3iPadBatteryLifeViewController.m in Sources */,
 				687401B01589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld in Sources */,
 				68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */,
+				6836D416159EB1A700F46394 /* A3CalculatorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
