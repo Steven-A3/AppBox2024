@@ -8,24 +8,30 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "A3BlackThickRoundedRectView.h"
+#import "common.h"
 
 @interface A3BlackThickRoundedRectView ()
 - (void)setupLayers;
 
+@property (assign)	BOOL layerSetupDone;
+
 @end
 
 @implementation A3BlackThickRoundedRectView
+@synthesize layerSetupDone;
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
+- (id)initWithFrame:(CGRect)frame {
+	FNLOG(@"");
+	self = [super initWithFrame:frame];
+	if (self) {
 		[self setupLayers];
 	}
-    return self;
+
+	return self;
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
+	FNLOG(@"");
 	self = [super initWithCoder:aDecoder];
 	if (self) {
 		[self setupLayers];
@@ -34,12 +40,24 @@
 	return self;
 }
 
+- (void)awakeFromNib {
+	FNLOG(@"");
+	[self setupLayers];
+}
+
 - (void)setupLayers {
+	if (self.layerSetupDone)
+		return;
+
+	self.layerSetupDone = YES;
+
 	CALayer *thickRoundedRectLayer = [CALayer layer];
-	thickRoundedRectLayer.cornerRadius = 10.0;
+	thickRoundedRectLayer.cornerRadius = 5.0;
+	thickRoundedRectLayer.bounds = self.layer.bounds;
+	thickRoundedRectLayer.anchorPoint = CGPointMake(0.0, 0.0);
 	thickRoundedRectLayer.borderWidth = 2.0;
 	thickRoundedRectLayer.borderColor = [UIColor blackColor].CGColor;
-
+	thickRoundedRectLayer.masksToBounds = YES;
 	[self.layer addSublayer:thickRoundedRectLayer];
 }
 

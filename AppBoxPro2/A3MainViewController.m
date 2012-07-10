@@ -18,6 +18,7 @@
 #import "FRLayeredNavigation.h"
 #import "A3SearchIPADViewController.h"
 #import "A3AppDelegate.h"
+#import "A3CalculatorViewController.h"
 
 @interface A3MainViewController ()
 
@@ -565,6 +566,13 @@ typedef enum tagA3MenuWorkingMode {
 			break;
 	}
 	[self.menuTableView reloadData];
+}
+
+- (IBAction)calculatorButtonTouchUpInside:(UIButton *)sender {
+	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"Calculator_iPad" bundle:nil];
+	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:714.0 animated:YES configuration:^(FRLayeredNavigationItem *item) {
+		item.hasChrome = NO;
+	}];
 }
 
 #pragma mark - Search

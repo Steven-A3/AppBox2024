@@ -9,6 +9,7 @@
 #import "A3iPadBatteryLifeViewController.h"
 #import "common.h"
 #import "CommonUIDefinitions.h"
+#import "A3BlackThickRoundedRectView.h"
 
 @interface A3iPadBatteryLifeViewController ()
 
@@ -36,10 +37,9 @@
 	} else {
 		viewHeight = IPAD_SCREEN_HEIGHT_PORTRAIT;
 	}
-	UIView *backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, APP_VIEW_WIDTH, viewHeight)];
+	A3BlackThickRoundedRectView *backgroundView = [[A3BlackThickRoundedRectView alloc] initWithFrame:CGRectMake(0.0, 0.0, APP_VIEW_WIDTH, viewHeight)];
 	self.view = backgroundView;
 
-	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
 	FNLOG(@"viewDidLoad");
 }
