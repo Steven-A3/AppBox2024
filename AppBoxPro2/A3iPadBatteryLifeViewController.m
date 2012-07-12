@@ -41,7 +41,6 @@
 	self.view = backgroundView;
 
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-	FNLOG(@"viewDidLoad");
 }
 
 - (void)viewDidUnload

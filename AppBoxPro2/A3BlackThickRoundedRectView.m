@@ -57,7 +57,6 @@
 	thickRoundedRectLayer.anchorPoint = CGPointMake(0.0, 0.0);
 	thickRoundedRectLayer.borderWidth = 2.0;
 	thickRoundedRectLayer.borderColor = [UIColor blackColor].CGColor;
-	thickRoundedRectLayer.masksToBounds = YES;
 	[self.layer addSublayer:thickRoundedRectLayer];
 }
 

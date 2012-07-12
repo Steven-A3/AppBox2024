@@ -140,7 +140,6 @@ typedef enum tagA3MenuWorkingMode {
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	FNLOG(@"HERE");
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     } else {
@@ -149,7 +148,6 @@ typedef enum tagA3MenuWorkingMode {
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	FNLOG(@"Rotation");
 	CGFloat nextItemDistance;
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 		nextItemDistance = 54.0 + 256.0;
@@ -242,7 +240,6 @@ typedef enum tagA3MenuWorkingMode {
 			numberOfSections = 1;
 			break;
 	}
-	FNLOG(@"%d", numberOfSections);
 
     return numberOfSections;
 }
@@ -251,7 +248,6 @@ typedef enum tagA3MenuWorkingMode {
 	// Return the number of rows in the section.
 	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.menusFetchedResultsController sections] objectAtIndex:section];
 	NSInteger numberOfRow = [sectionInfo numberOfObjects];
-	FNLOG(@"number of rows in section %d = %d", section, numberOfRow);
 	if (menuWorkingMode == A3_MENU_WORKING_MODE_IS_EDITING) {
 		numberOfRow -= numberOfRowsDeletedWhileEditing;
 	}
@@ -403,15 +399,13 @@ typedef enum tagA3MenuWorkingMode {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	FNLOG(@"Here");
-
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 	if (menuWorkingMode == A3_MENU_WORKING_MODE_DISPLAY) {
 		[self.layeredNavigationController popToRootViewControllerAnimated:NO];
 
 		A3iPadBatteryLifeViewController *viewController = [[A3iPadBatteryLifeViewController alloc] init];
-		[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:714.0 animated:YES configuration:^(FRLayeredNavigationItem *item) {
+		[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:YES animated:YES configuration:^(FRLayeredNavigationItem *item) {
 			item.hasChrome = NO;
 		}];
 	} else {
@@ -437,7 +431,6 @@ typedef enum tagA3MenuWorkingMode {
 			} else {
 				orderForNewFavoriteItem = @"100";
 			}
-			FNLOG(@"order string for new favorite item: %@", orderForNewFavoriteItem);
 
 			// Add new entity
 			MenuItem *newFavoritesMenuItem = [NSEntityDescription insertNewObjectForEntityForName:@"MenuItem" inManagedObjectContext:self.managedObjectContext];
@@ -570,7 +563,7 @@ typedef enum tagA3MenuWorkingMode {
 
 - (IBAction)calculatorButtonTouchUpInside:(UIButton *)sender {
 	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"Calculator_iPad" bundle:nil];
-	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:714.0 animated:YES configuration:^(FRLayeredNavigationItem *item) {
+	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:YES animated:YES configuration:^(FRLayeredNavigationItem *item) {
 		item.hasChrome = NO;
 	}];
 }
@@ -616,7 +609,6 @@ typedef enum tagA3MenuWorkingMode {
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-	FNLOG(@"Data changed.");
 }
 
 @end

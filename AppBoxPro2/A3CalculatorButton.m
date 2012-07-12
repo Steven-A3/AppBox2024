@@ -24,6 +24,9 @@
 @implementation A3CalculatorButton
 @synthesize gradientLayer = _gradientLayer;
 @synthesize buttonColor = _buttonColor;
+@synthesize titleLabel = _titleLabel;
+@synthesize title = _title;
+
 
 - (void)awakeFromNib {
 	[super awakeFromNib];
@@ -168,6 +171,10 @@
 	[thickRoundedRectLayer addSublayer:self.gradientLayer];
 
 	[self.layer addSublayer:thickRoundedRectLayer];
+
+	if ([self.title length]) {
+		self.titleLabel.text = self.title;
+	}
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -186,6 +193,20 @@
 - (void)animateUp
 {
 	self.gradientLayer.position         = CGPointMake(0.0f, 1.5f);
+}
+
+- (UILabel *)titleLabel {
+	if (!_titleLabel) {
+		_titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
+		_titleLabel.textColor = [UIColor whiteColor];
+		_titleLabel.font = [UIFont boldSystemFontOfSize:30.0];
+		_titleLabel.minimumFontSize = 8.0;
+		_titleLabel.adjustsFontSizeToFitWidth = YES;
+		_titleLabel.backgroundColor = [UIColor clearColor];
+		_titleLabel.textAlignment = UITextAlignmentCenter;
+		[self addSubview:_titleLabel];
+	}
+	return _titleLabel;
 }
 
 @end

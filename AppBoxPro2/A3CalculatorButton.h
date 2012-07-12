@@ -18,6 +18,8 @@ typedef enum tagA3CalculatorButtonColors {
 
 @interface A3CalculatorButton : UIButton
 
-@property (nonatomic, strong)	NSString *buttonColor;		// Blue, Pink, Black, Gray, Orange
+@property (nonatomic, strong) NSString *buttonColor;		// Blue, Pink, Black, Gray, Orange
+@property (nonatomic, strong, readonly) UILabel *titleLabel;
+@property (nonatomic, strong) NSString *title;
 
 @end

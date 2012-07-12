@@ -19,6 +19,7 @@
 		681FE3B31587424800B752C9 /* icon_sc_search_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AB1587424800B752C9 /* icon_sc_search_on.png */; };
 		681FE3B41587424800B752C9 /* icon_sc_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AC1587424800B752C9 /* icon_sc_search.png */; };
 		6836D416159EB1A700F46394 /* A3CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6836D415159EB1A700F46394 /* A3CalculatorViewController.m */; };
+		684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */; };
 		68740173158980DB002B2C92 /* icon_sc_magnifier_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */; };
 		68740174158980DB002B2C92 /* icon_sc_magnifier.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740170158980DB002B2C92 /* icon_sc_magnifier.png */; };
 		68740175158980DB002B2C92 /* icon_sc_mirror_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740171158980DB002B2C92 /* icon_sc_mirror_on.png */; };
@@ -43,10 +44,12 @@
 		687401B01589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687401AE1589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld */; };
 		6875CD0C1577247300A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
+		6883032A15ABE053000D4D3C /* A3CalculatorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883032915ABE053000D4D3C /* A3CalculatorButton.m */; };
 		689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CB15859D3C004A3CD4 /* A3Utilities.m */; };
 		689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */; };
 		68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68A15327159041E6007E1D8B /* SearchViewiPad.xib */; };
 		68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A1533615904670007E1D8B /* A3SearchIPADViewController.m */; };
+		68A24B0E15AE75CB0046E5DE /* A3AppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */; };
 		68C1235C1547BD3100150EF2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235B1547BD3100150EF2 /* UIKit.framework */; };
 		68C1235E1547BD3100150EF2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235D1547BD3100150EF2 /* Foundation.framework */; };
 		68C123601547BD3100150EF2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235F1547BD3100150EF2 /* CoreGraphics.framework */; };
@@ -127,6 +130,8 @@
 		681FE3AC1587424800B752C9 /* icon_sc_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_search.png; path = resources/icons/icon_sc_search.png; sourceTree = "<group>"; };
 		6836D414159EB1A700F46394 /* A3CalculatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorViewController.h; sourceTree = "<group>"; };
 		6836D415159EB1A700F46394 /* A3CalculatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorViewController.m; sourceTree = "<group>"; };
+		684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorDisplayView.h; sourceTree = "<group>"; };
+		684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorDisplayView.m; sourceTree = "<group>"; };
 		6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier_on.png; path = resources/icons/icon_sc_magnifier_on.png; sourceTree = "<group>"; };
 		68740170158980DB002B2C92 /* icon_sc_magnifier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier.png; path = resources/icons/icon_sc_magnifier.png; sourceTree = "<group>"; };
 		68740171158980DB002B2C92 /* icon_sc_mirror_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_mirror_on.png; path = resources/icons/icon_sc_mirror_on.png; sourceTree = "<group>"; };
@@ -150,6 +155,8 @@
 		6874018D15898480002B2C92 /* app_wallet_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_wallet_32.png; path = resources/icons/app_wallet_32.png; sourceTree = "<group>"; };
 		687401AF1589BCF9002B2C92 /* AppBoxPro2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBoxPro2.xcdatamodel; sourceTree = "<group>"; };
 		687401C4158C281B002B2C92 /* CommonUIDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonUIDefinitions.h; sourceTree = "<group>"; };
+		6883032815ABE053000D4D3C /* A3CalculatorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButton.h; sourceTree = "<group>"; };
+		6883032915ABE053000D4D3C /* A3CalculatorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButton.m; sourceTree = "<group>"; };
 		689FF9CA15859D3C004A3CD4 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		689FF9CB15859D3C004A3CD4 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RowSeparatorView.h; sourceTree = "<group>"; };
@@ -157,6 +164,8 @@
 		68A15327159041E6007E1D8B /* SearchViewiPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewiPad.xib; sourceTree = "<group>"; };
 		68A1533515904670007E1D8B /* A3SearchIPADViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SearchIPADViewController.h; sourceTree = "<group>"; };
 		68A1533615904670007E1D8B /* A3SearchIPADViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SearchIPADViewController.m; sourceTree = "<group>"; };
+		68A24B0C15AE75CB0046E5DE /* A3AppHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppHeaderView.h; sourceTree = "<group>"; };
+		68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppHeaderView.m; sourceTree = "<group>"; };
 		68C123571547BD3100150EF2 /* AppBoxPro2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBoxPro2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68C1235B1547BD3100150EF2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68C1235D1547BD3100150EF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -341,6 +350,12 @@
 				68D7E74315A15BF80012CDD4 /* A3BlackThickRoundedRectView.h */,
 				68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */,
 				68D7E74615A161380012CDD4 /* Calculator_iPad.xib */,
+				6883032815ABE053000D4D3C /* A3CalculatorButton.h */,
+				6883032915ABE053000D4D3C /* A3CalculatorButton.m */,
+				684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */,
+				684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */,
+				68A24B0C15AE75CB0046E5DE /* A3AppHeaderView.h */,
+				68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */,
 			);
 			path = AppBoxPro2;
 			sourceTree = "<group>";
@@ -586,6 +601,9 @@
 				68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */,
 				6836D416159EB1A700F46394 /* A3CalculatorViewController.m in Sources */,
 				68D7E74515A15BF80012CDD4 /* A3BlackThickRoundedRectView.m in Sources */,
+				6883032A15ABE053000D4D3C /* A3CalculatorButton.m in Sources */,
+				684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */,
+				68A24B0E15AE75CB0046E5DE /* A3AppHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

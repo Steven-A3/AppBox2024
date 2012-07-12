@@ -6,7 +6,9 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreGraphics/CoreGraphics.h>
 #import "A3CalculatorViewController.h"
+#import "common.h"
 
 @interface A3CalculatorViewController ()
 
@@ -38,6 +40,11 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+- (void)viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+	FNLOG(@"Passed");
 }
 
 @end
