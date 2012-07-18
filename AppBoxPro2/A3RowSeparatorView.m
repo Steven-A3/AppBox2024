@@ -28,19 +28,19 @@
 	CGContextSetShouldAntialias(context, false);
 
 	// Drawing code, 31	32	34
-	CGContextSetRGBStrokeColor(context, 31.0/255.0, 32.0/255.0, 34.0/255.0, 1.0);
-	CGContextSetLineWidth(context, 1.0);
+	CGContextSetRGBStrokeColor(context, 31.0f/255.0f, 32.0f/255.0f, 34.0f/255.0f, 1.0f);
+	CGContextSetLineWidth(context, 1.0f);
 
 	// Draw a single line from left to right
-	CGContextMoveToPoint(context, 0.0, 0.0);
-	CGContextAddLineToPoint(context, CGRectGetWidth(self.bounds), 0.0);
+	CGContextMoveToPoint(context, 0.0f, 0.0f);
+	CGContextAddLineToPoint(context, CGRectGetWidth(self.bounds), 0.0f);
 
 	// Drawing code
-	CGContextSetRGBStrokeColor(context, 78.0/255.0, 79.0/255.0, 80.0/255.0, 1.0);
+	CGContextSetRGBStrokeColor(context, 78.0f/255.0f, 79.0f/255.0f, 80.0f/255.0f, 1.0f);
 
 	// Draw a single line from left to right
-	CGContextMoveToPoint(context, 0.0, 1.0);
-	CGContextAddLineToPoint(context, CGRectGetWidth(self.bounds), 1.0);
+	CGContextMoveToPoint(context, 0.0f, 1.0f);
+	CGContextAddLineToPoint(context, CGRectGetWidth(self.bounds), 1.0f);
 	CGContextStrokePath(context);
 
 	CGContextRestoreGState(context);

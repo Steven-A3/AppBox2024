@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface A3CalculatorViewController : UIViewController
+<UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @end

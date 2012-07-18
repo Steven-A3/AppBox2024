@@ -10,6 +10,7 @@
 
 void addLeftGradientLayer8Point(UIView *targetView);
 void addRightGradientLayer8Point(UIView *targetView);
+void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor);
 
 @interface A3Utilities : NSObject
 

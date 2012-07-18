@@ -68,7 +68,7 @@
 {
     if ((self=[super initWithFrame:frame]))
     {
-        [self setButtonColor:[UIColor colorWithRed:73/255.0 green:107/255.0 blue:155/255.0 alpha:1.0]];
+        [self setButtonColor:[UIColor colorWithRed:73.0f/255.0f green:107.0f/255.0f blue:155.0f/255.0f alpha:1.0f]];
         [self _buildView];
     }
     return self;
@@ -94,50 +94,50 @@
     
     // create gradient layer
     _gradientLayer = [CAGradientLayer layer];
-    [_gradientLayer setAnchorPoint:CGPointMake(0, 0)];
+    [_gradientLayer setAnchorPoint:CGPointMake(0.0f, 0.0f)];
     // Add one to account for oddities when using CoolButtons in UIToolbar
-    [_gradientLayer setBounds:CGRectMake(0, 0, self.bounds.size.width, (self.bounds.size.height/2.0) + 1)]; 
+    [_gradientLayer setBounds:CGRectMake(0.0f, 0.0f, self.bounds.size.width, (self.bounds.size.height/2.0f) + 1.0f)];
     [_gradientLayer setColors:[NSArray arrayWithObjects:
-                               (id)[[UIColor colorWithWhite:1.0 alpha:0.3] CGColor], 
-                               (id)[[UIColor colorWithWhite:1.0 alpha:0.10] CGColor], nil]];
+                               (id)[[UIColor colorWithWhite:1.0f alpha:0.3f] CGColor], 
+                               (id)[[UIColor colorWithWhite:1.0f alpha:0.10f] CGColor], nil]];
     [inner_layer insertSublayer:_gradientLayer atIndex:1];
 
     // create inner glow layer
     _innerGlowLayer = [CAGradientLayer layer];
-    [_innerGlowLayer setAnchorPoint:CGPointMake(0, 0)];
+    [_innerGlowLayer setAnchorPoint:CGPointMake(0.0f, 0.0f)];
     [_innerGlowLayer setBounds:[self bounds]];
     [_innerGlowLayer setColors:[NSArray arrayWithObjects:
-                                (id)[[UIColor colorWithWhite:0.0 alpha:0.60] CGColor], 
+                                (id)[[UIColor colorWithWhite:0.0f alpha:0.6f] CGColor],
                                 (id)[[UIColor clearColor] CGColor], nil]];
     [inner_layer insertSublayer:_innerGlowLayer atIndex:2];
 
 
     // create highlight layer
     _highlightLayer = [CALayer layer];
-    [_highlightLayer setAnchorPoint:CGPointMake(0, 0)];
+    [_highlightLayer setAnchorPoint:CGPointMake(0.0f, 0.0f)];
     [_highlightLayer setBounds:[self bounds]];
-    [_highlightLayer setBackgroundColor:[[UIColor colorWithWhite:0.0 alpha:0.3] CGColor]];
+    [_highlightLayer setBackgroundColor:[[UIColor colorWithWhite:0.0f alpha:0.3f] CGColor]];
     [_highlightLayer setHidden:YES];
     [[_innerView layer] insertSublayer:_highlightLayer atIndex:3];
     
     
     // create inner shadow layer - using a border for now as a hack
     // TODO: Figure out how to use an axial gradient to accomplish this effect
-    [inner_layer setBorderWidth:0.7];
-    [inner_layer setBorderColor:[[UIColor colorWithWhite:0.0 alpha:0.3] CGColor]];
-    [inner_layer setCornerRadius:5.0];
+    [inner_layer setBorderWidth:0.7f];
+    [inner_layer setBorderColor:[[UIColor colorWithWhite:0.0f alpha:0.3f] CGColor]];
+    [inner_layer setCornerRadius:5.0f];
     [inner_layer setMasksToBounds:YES];
     
     // add a drop shadow to the layer
-    [self_layer setShadowOffset:CGSizeMake(0, 0.7)];
+    [self_layer setShadowOffset:CGSizeMake(0.0f, 0.7f)];
     [self_layer setShadowColor:[[UIColor whiteColor] CGColor]];
-    [self_layer setShadowOpacity:0.5];
-    [self_layer setShadowRadius:0.5];
-    [self_layer setCornerRadius:5.0];
+    [self_layer setShadowOpacity:0.5f];
+    [self_layer setShadowRadius:0.5f];
+    [self_layer setCornerRadius:5.0f];
     
-    // add subtle shadow to text to make the eltters look punched in like Bar Buttons.
-    self.titleLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.25];
-    self.titleLabel.shadowOffset = CGSizeMake(0, -1);
+    // add subtle shadow to text to make the letters look punched in like Bar Buttons.
+    self.titleLabel.shadowColor = [UIColor colorWithWhite:0.0f alpha:0.25f];
+    self.titleLabel.shadowOffset = CGSizeMake(0.0f, -1.0f);
 }
 
 
@@ -167,12 +167,12 @@
     
     // adjust layer sizes.
     [_innerGlowLayer setBounds:bounds];
-    [_gradientLayer setBounds:CGRectMake(0, 0, bounds.size.width, (bounds.size.height/2.0) + 1)]; 
+    [_gradientLayer setBounds:CGRectMake(0.0f, 0.0f, bounds.size.width, (bounds.size.height / 2.0f ) + 1.0f )];
     [_highlightLayer setBounds:bounds];
     
-    [_innerGlowLayer setStartPoint:CGPointMake(0.5, 0.0)];
-    CGFloat innerGlowHeight = 1 - ((bounds.size.height-2) / bounds.size.height);
-    [_innerGlowLayer setEndPoint:CGPointMake(0.5, innerGlowHeight)];
+    [_innerGlowLayer setStartPoint:CGPointMake(0.5f, 0.0f)];
+    CGFloat innerGlowHeight = 1.0f - ((bounds.size.height - 2.0f ) / bounds.size.height);
+    [_innerGlowLayer setEndPoint:CGPointMake(0.5f, innerGlowHeight)];
 }
 
 @end

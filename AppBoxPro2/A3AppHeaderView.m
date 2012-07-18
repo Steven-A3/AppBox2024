@@ -65,13 +65,13 @@
 	darkGlossyLayer.bounds = bounds;
 	darkGlossyLayer.anchorPoint = CGPointMake(0.0f, 0.0f);
 	darkGlossyLayer.borderWidth = 0.5f;
-	darkGlossyLayer.borderColor = [UIColor colorWithRed:66.0f/256.0f green:66.0f/256.0f blue:67.0f/256.0f alpha:1.0].CGColor;
+	darkGlossyLayer.borderColor = [UIColor colorWithRed:66.0f/255.0f green:66.0f/255.0f blue:67.0f/255.0f alpha:1.0].CGColor;
 	darkGlossyLayer.backgroundColor = [UIColor colorWithWhite:0.07f alpha:0.9].CGColor;
 
 	CAGradientLayer *leftGradientLayer = [CAGradientLayer layer];
 	leftGradientLayer.colors = 			[NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:33.0f/256.0f green:33.0f/256.0f blue:34.0f/256.0f alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:29.0f/256.0f green:29.0f/256.0f blue:29.0f/256.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:33.0f/255.0f green:33.0f/255.0f blue:34.0f/255.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:29.0f/255.0f green:29.0f/255.0f blue:29.0f/255.0f alpha:1.0f].CGColor,
 			nil];
 	leftGradientLayer.anchorPoint = CGPointMake(0.0f, 0.0f);
 	leftGradientLayer.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), 4.0f, CGRectGetHeight(bounds) - 4.0f);
@@ -82,8 +82,8 @@
 
 	CAGradientLayer *topGradientLayer = [CAGradientLayer layer];
 	topGradientLayer.colors = [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:48.0f/256.0f green:48.0f/256.0f blue:48.0f/256.0f alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:24.0f/256.0f green:25.0f/256.0f blue:27.0f/256.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:48.0f/255.0f green:48.0f/255.0f blue:48.0f/255.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:24.0f/255.0f green:25.0f/255.0f blue:27.0f/255.0f alpha:1.0f].CGColor,
 			nil];
 	topGradientLayer.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds), 8.0f);
 	topGradientLayer.anchorPoint = CGPointMake(0.0f, 0.0f);
@@ -108,7 +108,7 @@
 - (UILabel *)titleLabel {
 	if (!_titleLabel) {
 		_titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
-		_titleLabel.textColor = [UIColor colorWithRed:202.0f/256.0f green:202.0f/256.0f blue:202.0f/256.0f alpha:1.0f];
+		_titleLabel.textColor = [UIColor colorWithRed:202.0f/255.0f green:202.0f/255.0f blue:202.0f/255.0f alpha:1.0f];
 		_titleLabel.font = [UIFont boldSystemFontOfSize:22.0];
 		_titleLabel.minimumFontSize = 8.0;
 		_titleLabel.adjustsFontSizeToFitWidth = YES;

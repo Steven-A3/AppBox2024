@@ -84,25 +84,25 @@ typedef enum tagA3MenuWorkingMode {
 	CAGradientLayer *leftGradientHotMenuLayer = [CAGradientLayer layer];
 	[leftGradientHotMenuLayer setColors:
 			[NSArray arrayWithObjects:
-					(__bridge id)[[UIColor colorWithRed:8.0/255.0 green:8.0/255.0 blue:9.0/255.0 alpha:0.8] CGColor],
-					(__bridge id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
+					(__bridge id)[[UIColor colorWithRed:8.0f/255.0f green:8.0f/255.0f blue:9.0f/255.0f alpha:0.8f] CGColor],
+					(__bridge id)[[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f] CGColor],
 					nil ] ];
-	[leftGradientHotMenuLayer setAnchorPoint:CGPointMake(0.0, 0.0)];
+	[leftGradientHotMenuLayer setAnchorPoint:CGPointMake(0.0f, 0.0f)];
 	[leftGradientHotMenuLayer setBounds:[self.leftGradientHotMenuView bounds]];
-	[leftGradientHotMenuLayer setStartPoint:CGPointMake(0.0, 0.5)];
-	[leftGradientHotMenuLayer setEndPoint:CGPointMake(1.0, 0.5)];
+	[leftGradientHotMenuLayer setStartPoint:CGPointMake(0.0f, 0.5f)];
+	[leftGradientHotMenuLayer setEndPoint:CGPointMake(1.0f, 0.5f)];
 	[[self.leftGradientHotMenuView layer] insertSublayer:leftGradientHotMenuLayer atIndex:1];
 
 	CAGradientLayer *rightGradientHotMenuLayer = [CAGradientLayer layer];
 	[rightGradientHotMenuLayer setColors:
 			[NSArray arrayWithObjects:
-					(__bridge id)[[UIColor colorWithRed:8.0/255.0 green:8.0/255.0 blue:9.0/255.0 alpha:0.8] CGColor],
-					(__bridge id)[[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0] CGColor],
+					(__bridge id)[[UIColor colorWithRed:8.0f/255.0f green:8.0f/255.0f blue:9.0f/255.0f alpha:0.8f] CGColor],
+					(__bridge id)[[UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.0f] CGColor],
 					nil ] ];
-	[rightGradientHotMenuLayer setAnchorPoint:CGPointMake(0.0, 0.0)];
+	[rightGradientHotMenuLayer setAnchorPoint:CGPointMake(0.0f, 0.0f)];
 	[rightGradientHotMenuLayer setBounds:[self.rightGradientHotMenuView bounds]];
-	[rightGradientHotMenuLayer setStartPoint:CGPointMake(1.0, 0.5)];
-	[rightGradientHotMenuLayer setEndPoint:CGPointMake(0.0, 0.5)];
+	[rightGradientHotMenuLayer setStartPoint:CGPointMake(1.0f, 0.5f)];
+	[rightGradientHotMenuLayer setEndPoint:CGPointMake(0.0f, 0.5f)];
 	[[self.rightGradientHotMenuView layer] insertSublayer:rightGradientHotMenuLayer atIndex:1];
 	
 	// Gradient layer for Tableview left and right side
@@ -150,9 +150,9 @@ typedef enum tagA3MenuWorkingMode {
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	CGFloat nextItemDistance;
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
-		nextItemDistance = 54.0 + 256.0;
+		nextItemDistance = 54.0f + 256.0f;
 	} else {
-		nextItemDistance = 54.0;
+		nextItemDistance = 54.0f;
 	}
 	[self.layeredNavigationItem setNextItemDistance:nextItemDistance];
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -162,7 +162,7 @@ typedef enum tagA3MenuWorkingMode {
 
 #define MENU_GROUP_FAVORITES_ID		@"FAVORITES"
 
-#define A3_MENU_TABLE_VIEW_WIDTH		256.0
+#define A3_MENU_TABLE_VIEW_WIDTH		256.0f
 
 - (BOOL)favoritesSectionExist {
 	MenuItem *menuItem = [self.menusFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -287,8 +287,8 @@ typedef enum tagA3MenuWorkingMode {
 	A3RowSeparatorView *separator = (A3RowSeparatorView *)[cell viewWithTag:TABLEVIEW_CELL_SEPARATOR_TAG];
 	if (nil == separator) {
 		CGFloat cellHeight = CGRectGetHeight(cell.bounds);
-		CGFloat cellWidth = MENU_VIEW_WIDTH - 20.0;
-		separator = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(10.0, cellHeight - 1.0, cellWidth, 2.0)];
+		CGFloat cellWidth = MENU_VIEW_WIDTH - 20.0f;
+		separator = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(10.0f, cellHeight - 1.0f, cellWidth, 2.0f)];
 		[separator setTag:TABLEVIEW_CELL_SEPARATOR_TAG];
 		[cell addSubview:separator];
 	}
@@ -303,7 +303,7 @@ typedef enum tagA3MenuWorkingMode {
 	cell.imageView.image = appIconImage;
 
 	if ((menuWorkingMode == A3_MENU_WORKING_MODE_IS_ADDING) && ([menuItem.isFavorite boolValue])) {
-		UIImageView *favoriteMarkImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 24.0, 24.0)];
+		UIImageView *favoriteMarkImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 24.0f, 24.0f)];
 		favoriteMarkImage.image = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"green_check_in_circle" ofType:@"png"]];
 		cell.accessoryView = favoriteMarkImage;
 	} else {
@@ -314,20 +314,20 @@ typedef enum tagA3MenuWorkingMode {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 24.0;
+	return 24.0f;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, A3_MENU_TABLE_VIEW_WIDTH, 22.0)];
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, 22.0f)];
 	headerView.clipsToBounds = YES;
 	headerView.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
 	UIView *coverToMakeViewDark = [[UIView alloc] initWithFrame:headerView.frame];
-	coverToMakeViewDark.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3];
+	coverToMakeViewDark.backgroundColor = [UIColor colorWithRed:0.0f green:0.0f blue:0.0f alpha:0.3f];
 	[headerView addSubview:coverToMakeViewDark];
 
-	UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, 0.0, A3_MENU_TABLE_VIEW_WIDTH - 20.0, 22.0)];
-	headerLabel.font = [UIFont boldSystemFontOfSize:18.0];
+	UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH - 20.0f, 22.0f)];
+	headerLabel.font = [UIFont boldSystemFontOfSize:18.0f];
 
 	NSInteger adjustedSection;
 	switch (menuWorkingMode) {
@@ -351,18 +351,18 @@ typedef enum tagA3MenuWorkingMode {
 	headerLabel.textColor = [UIColor whiteColor];
 	[headerView addSubview:headerLabel];
 
-	UIView *leftGradient = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 8.0, 24.0)];
+	UIView *leftGradient = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 8.0f, 24.0f)];
 	[headerView addSubview:leftGradient];
 	addLeftGradientLayer8Point(leftGradient);
 
-	UIView *rightGradient = [[UIView alloc] initWithFrame:CGRectMake(A3_MENU_TABLE_VIEW_WIDTH - 8.0, 0.0, 8.0, 24.0)];
+	UIView *rightGradient = [[UIView alloc] initWithFrame:CGRectMake(A3_MENU_TABLE_VIEW_WIDTH - 8.0f, 0.0f, 8.0f, 24.0f)];
 	[headerView addSubview:rightGradient];
 	addRightGradientLayer8Point(rightGradient);
 
-	A3RowSeparatorView *top = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(0.0, -1.0, A3_MENU_TABLE_VIEW_WIDTH, 2.0)];
+	A3RowSeparatorView *top = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(0.0f, -1.0f, A3_MENU_TABLE_VIEW_WIDTH, 2.0f)];
 	[headerView addSubview:top];
 
-	A3RowSeparatorView *bottom = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(0.0, 21.0, A3_MENU_TABLE_VIEW_WIDTH, 2.0)];
+	A3RowSeparatorView *bottom = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(0.0f, 21.0f, A3_MENU_TABLE_VIEW_WIDTH, 2.0f)];
 	[headerView addSubview:bottom];
 
 	return headerView;
@@ -470,9 +470,9 @@ typedef enum tagA3MenuWorkingMode {
 	[UIView setAnimationsEnabled:NO];
 
 	[self.plusButton setTitle:@"Save" forState:UIControlStateNormal];
-	[self.plusButton setFrame:CGRectMake(204.0, 7.0, 42.0, 26.0)];
-	[self.plusButton setButtonColor:[UIColor colorWithRed:45.0/255.0 green:112.0/255.0 blue:220.0/255.0 alpha:1.0]];
-	[self.plusButton.titleLabel setFont:[UIFont systemFontOfSize:14.0]];
+	[self.plusButton setFrame:CGRectMake(204.0f, 7.0f, 42.0f, 26.0f)];
+	[self.plusButton setButtonColor:[UIColor colorWithRed:45.0f/255.0f green:112.0f/255.0f blue:220.0f/255.0f alpha:1.0f]];
+	[self.plusButton.titleLabel setFont:[UIFont systemFontOfSize:14.0f]];
 
 	[UIView setAnimationsEnabled:oldAnimationEnabled];
 }
@@ -486,7 +486,7 @@ typedef enum tagA3MenuWorkingMode {
 	[self.editButton setFrame:leftButtonFrameOnMenu];
 
 	[self.plusButton setTitle:@"+" forState:UIControlStateNormal];
-	[self.plusButton.titleLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
+	[self.plusButton.titleLabel setFont:[UIFont boldSystemFontOfSize:24.0f]];
 	[self.plusButton setFrame:rightButtonFrameOnMenu];
 	[self.plusButton setButtonColor:[UIColor blackColor]];
 

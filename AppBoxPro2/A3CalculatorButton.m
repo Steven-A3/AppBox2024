@@ -44,65 +44,65 @@
 */
 - (NSArray *)blueColor {
 	return [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:47.0f/256.0f
-										 green:112.0f/256.0f
-										  blue:187.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:47.0f/255.0f
+										 green:112.0f/255.0f
+										  blue:187.0f/255.0f
 										 alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:109.0f/256.0f
-										 green:164.0f/256.0f
-										  blue:218.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:109.0f/255.0f
+										 green:164.0f/255.0f
+										  blue:218.0f/255.0f
 										 alpha:1.0f].CGColor,
 			nil];
 }
 
 - (NSArray *)pinkColor {
 	return [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:199.0f/256.0f
-										 green:68.0f/256.0f
-										  blue:113.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:199.0f/255.0f
+										 green:68.0f/255.0f
+										  blue:113.0f/255.0f
 										 alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:228.0f/256.0f
-										 green:144.0f/256.0f
-										  blue:174.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:228.0f/255.0f
+										 green:144.0f/255.0f
+										  blue:174.0f/255.0f
 										 alpha:1.0f].CGColor,
 			nil];
 }
 
 - (NSArray *)blackColor {
 	return [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:41.0f/256.0f
-										 green:43.0f/256.0f
-										  blue:46.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:41.0f/255.0f
+										 green:43.0f/255.0f
+										  blue:46.0f/255.0f
 										 alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:103.0f/256.0f
-										 green:107.0f/256.0f
-										  blue:108.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:103.0f/255.0f
+										 green:107.0f/255.0f
+										  blue:108.0f/255.0f
 										 alpha:1.0f].CGColor,
 					nil];
 }
 
 - (NSArray *)grayColor {
 	return [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:103.0f/256.0f
-										 green:112.0f/256.0f
-										  blue:120.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:103.0f/255.0f
+										 green:112.0f/255.0f
+										  blue:120.0f/255.0f
 										 alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:155.0f/256.0f
-										 green:164.0f/256.0f
-										  blue:170.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:155.0f/255.0f
+										 green:164.0f/255.0f
+										  blue:170.0f/255.0f
 										 alpha:1.0f].CGColor,
 					nil];
 }
 
 - (NSArray *)orangeColor {
 	return [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:234.0f/256.0f
-										 green:121.0f/256.0f
-										  blue:1.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:234.0f/255.0f
+										 green:121.0f/255.0f
+										  blue:1.0f/255.0f
 										 alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:255.0f/256.0f
-										 green:156.0f/256.0f
-										  blue:50.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:255.0f/255.0f
+										 green:156.0f/255.0f
+										  blue:50.0f/255.0f
 										 alpha:1.0f].CGColor,
 					nil];
 }
@@ -136,15 +136,15 @@
 //		case A3CalculatorButtonColorBlue:
 //			return defaultColor;
 		case A3CalculatorButtonColorPink:
-			return [UIColor colorWithRed:234.0f/256.0f green:186.0f/256.0f blue:202.0f/255.0f alpha:1.0f];
+			return [UIColor colorWithRed:234.0f/255.0f green:186.0f/255.0f blue:202.0f/255.0f alpha:1.0f];
 		case A3CalculatorButtonColorBlack:
-			return [UIColor colorWithRed:176.0f/256.0f green:176.0f/256.0f blue:177.0f/255.0f alpha:1.0f];
+			return [UIColor colorWithRed:176.0f/255.0f green:176.0f/255.0f blue:177.0f/255.0f alpha:1.0f];
 		case A3CalculatorButtonColorGray:
-			return [UIColor colorWithRed:199.0f/256.0f green:202.0f/256.0f blue:205.0f/255.0f alpha:1.0f];
+			return [UIColor colorWithRed:199.0f/255.0f green:202.0f/255.0f blue:205.0f/255.0f alpha:1.0f];
 		case A3CalculatorButtonColorOrange:
-			return [UIColor colorWithRed:247.0f/256.0f green:206.0f/256.0f blue:161.0f/255.0f alpha:1.0f];
+			return [UIColor colorWithRed:247.0f/255.0f green:206.0f/255.0f blue:161.0f/255.0f alpha:1.0f];
 	}
-	return [UIColor colorWithRed:178.0f/256.0f green:202.0f/256.0f blue:230.0f/255.0f alpha:1.0f];
+	return [UIColor colorWithRed:178.0f/255.0f green:202.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
 }
 
 - (void)setupLayers {

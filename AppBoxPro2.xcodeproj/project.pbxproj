@@ -45,11 +45,16 @@
 		6875CD0C1577247300A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		6883032A15ABE053000D4D3C /* A3CalculatorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883032915ABE053000D4D3C /* A3CalculatorButton.m */; };
+		6888A99F15AFD9D30096F172 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888A99E15AFD9D30096F172 /* A3GrayAppHeaderView.m */; };
+		6888A9B115B02C600096F172 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888A9B015B02C600096F172 /* DDPageControl.m */; };
 		689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CB15859D3C004A3CD4 /* A3Utilities.m */; };
 		689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */; };
 		68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68A15327159041E6007E1D8B /* SearchViewiPad.xib */; };
 		68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A1533615904670007E1D8B /* A3SearchIPADViewController.m */; };
 		68A24B0E15AE75CB0046E5DE /* A3AppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */; };
+		68BAE5A515B41212000508BB /* CalculatorButtonsInFirstPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BAE5A415B41212000508BB /* CalculatorButtonsInFirstPage.xib */; };
+		68BAE5AC15B41768000508BB /* A3CalculatorButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAE5AA15B41768000508BB /* A3CalculatorButtonsViewController.m */; };
+		68BAE5AF15B417D2000508BB /* CalculatorButtonsInSecondPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BAE5AE15B417D2000508BB /* CalculatorButtonsInSecondPage.xib */; };
 		68C1235C1547BD3100150EF2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235B1547BD3100150EF2 /* UIKit.framework */; };
 		68C1235E1547BD3100150EF2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235D1547BD3100150EF2 /* Foundation.framework */; };
 		68C123601547BD3100150EF2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C1235F1547BD3100150EF2 /* CoreGraphics.framework */; };
@@ -157,6 +162,10 @@
 		687401C4158C281B002B2C92 /* CommonUIDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonUIDefinitions.h; sourceTree = "<group>"; };
 		6883032815ABE053000D4D3C /* A3CalculatorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButton.h; sourceTree = "<group>"; };
 		6883032915ABE053000D4D3C /* A3CalculatorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButton.m; sourceTree = "<group>"; };
+		6888A99D15AFD9D30096F172 /* A3GrayAppHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GrayAppHeaderView.h; sourceTree = "<group>"; };
+		6888A99E15AFD9D30096F172 /* A3GrayAppHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3GrayAppHeaderView.m; sourceTree = "<group>"; };
+		6888A9AF15B02C600096F172 /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDPageControl.h; sourceTree = "<group>"; };
+		6888A9B015B02C600096F172 /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDPageControl.m; sourceTree = "<group>"; };
 		689FF9CA15859D3C004A3CD4 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		689FF9CB15859D3C004A3CD4 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RowSeparatorView.h; sourceTree = "<group>"; };
@@ -166,6 +175,10 @@
 		68A1533615904670007E1D8B /* A3SearchIPADViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SearchIPADViewController.m; sourceTree = "<group>"; };
 		68A24B0C15AE75CB0046E5DE /* A3AppHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppHeaderView.h; sourceTree = "<group>"; };
 		68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppHeaderView.m; sourceTree = "<group>"; };
+		68BAE5A415B41212000508BB /* CalculatorButtonsInFirstPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalculatorButtonsInFirstPage.xib; sourceTree = "<group>"; };
+		68BAE5A915B41768000508BB /* A3CalculatorButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButtonsViewController.h; sourceTree = "<group>"; };
+		68BAE5AA15B41768000508BB /* A3CalculatorButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButtonsViewController.m; sourceTree = "<group>"; };
+		68BAE5AE15B417D2000508BB /* CalculatorButtonsInSecondPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalculatorButtonsInSecondPage.xib; sourceTree = "<group>"; };
 		68C123571547BD3100150EF2 /* AppBoxPro2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBoxPro2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68C1235B1547BD3100150EF2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		68C1235D1547BD3100150EF2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -238,6 +251,8 @@
 		681FE3A315873C2D00B752C9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				68C1236F1547BD3100150EF2 /* MainStoryboard_iPhone.storyboard */,
+				68C123721547BD3100150EF2 /* MainStoryboard_iPad.storyboard */,
 				681FE3A415873C4100B752C9 /* icons */,
 			);
 			name = Resources;
@@ -282,6 +297,110 @@
 			name = icons;
 			sourceTree = "<group>";
 		};
+		6888A9B215B02C820096F172 /* Controls */ = {
+			isa = PBXGroup;
+			children = (
+				68E79A85156A69AC001BED0C /* CoolButton.h */,
+				68E79A86156A69AC001BED0C /* CoolButton.m */,
+				6888A9AF15B02C600096F172 /* DDPageControl.h */,
+				6888A9B015B02C600096F172 /* DDPageControl.m */,
+			);
+			name = Controls;
+			sourceTree = "<group>";
+		};
+		6888A9B315B02CB10096F172 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				68D7E74315A15BF80012CDD4 /* A3BlackThickRoundedRectView.h */,
+				68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */,
+				68A24B0C15AE75CB0046E5DE /* A3AppHeaderView.h */,
+				68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */,
+				6888A99D15AFD9D30096F172 /* A3GrayAppHeaderView.h */,
+				6888A99E15AFD9D30096F172 /* A3GrayAppHeaderView.m */,
+				689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */,
+				689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		6888A9B415B02CD70096F172 /* Calculator */ = {
+			isa = PBXGroup;
+			children = (
+				68D7E74615A161380012CDD4 /* Calculator_iPad.xib */,
+				68BAE5A415B41212000508BB /* CalculatorButtonsInFirstPage.xib */,
+				68BAE5AE15B417D2000508BB /* CalculatorButtonsInSecondPage.xib */,
+				6836D414159EB1A700F46394 /* A3CalculatorViewController.h */,
+				6836D415159EB1A700F46394 /* A3CalculatorViewController.m */,
+				6883032815ABE053000D4D3C /* A3CalculatorButton.h */,
+				6883032915ABE053000D4D3C /* A3CalculatorButton.m */,
+				684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */,
+				684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */,
+				68BAE5A915B41768000508BB /* A3CalculatorButtonsViewController.h */,
+				68BAE5AA15B41768000508BB /* A3CalculatorButtonsViewController.m */,
+			);
+			name = Calculator;
+			sourceTree = "<group>";
+		};
+		6888A9B515B02D3F0096F172 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				687401AE1589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld */,
+				68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */,
+				68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */,
+				68F91CE3157CB2E600BB373D /* Models */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
+		6888A9B615B02D560096F172 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				689FF9CA15859D3C004A3CD4 /* A3Utilities.h */,
+				689FF9CB15859D3C004A3CD4 /* A3Utilities.m */,
+			);
+			name = UIKit;
+			sourceTree = "<group>";
+		};
+		6888A9B715B02D7B0096F172 /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				68C1236C1547BD3100150EF2 /* A3AppDelegate.h */,
+				68C1236D1547BD3100150EF2 /* A3AppDelegate.m */,
+				68EEC8DD158EB840000D3661 /* MenuView.xib */,
+				68C123781547BD3100150EF2 /* A3MainViewController.h */,
+				68C123791547BD3100150EF2 /* A3MainViewController.m */,
+			);
+			name = MainViewController;
+			sourceTree = "<group>";
+		};
+		6888A9B815B02D8C0096F172 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				68A15327159041E6007E1D8B /* SearchViewiPad.xib */,
+				68A1533515904670007E1D8B /* A3SearchIPADViewController.h */,
+				68A1533615904670007E1D8B /* A3SearchIPADViewController.m */,
+			);
+			name = Search;
+			sourceTree = "<group>";
+		};
+		6888A9B915B02DAD0096F172 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				68F91CEB157CCD0600BB373D /* common.h */,
+				687401C4158C281B002B2C92 /* CommonUIDefinitions.h */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		6888A9BA15B02DBE0096F172 /* BatteryLife */ = {
+			isa = PBXGroup;
+			children = (
+				681FE39B15873A8800B752C9 /* A3iPadBatteryLifeViewController.h */,
+				681FE39C15873A8800B752C9 /* A3iPadBatteryLifeViewController.m */,
+			);
+			name = BatteryLife;
+			sourceTree = "<group>";
+		};
 		68C1234C1547BD3100150EF2 = {
 			isa = PBXGroup;
 			children = (
@@ -319,43 +438,17 @@
 		68C123631547BD3100150EF2 /* AppBoxPro2 */ = {
 			isa = PBXGroup;
 			children = (
-				687401AE1589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld */,
-				68F91CEB157CCD0600BB373D /* common.h */,
-				68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */,
-				68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */,
-				68E79A85156A69AC001BED0C /* CoolButton.h */,
-				68E79A86156A69AC001BED0C /* CoolButton.m */,
-				68C1236C1547BD3100150EF2 /* A3AppDelegate.h */,
-				68C1236D1547BD3100150EF2 /* A3AppDelegate.m */,
-				68C1236F1547BD3100150EF2 /* MainStoryboard_iPhone.storyboard */,
-				68C123721547BD3100150EF2 /* MainStoryboard_iPad.storyboard */,
-				68EEC8DD158EB840000D3661 /* MenuView.xib */,
-				68C123781547BD3100150EF2 /* A3MainViewController.h */,
-				68C123791547BD3100150EF2 /* A3MainViewController.m */,
-				689FF9CA15859D3C004A3CD4 /* A3Utilities.h */,
-				689FF9CB15859D3C004A3CD4 /* A3Utilities.m */,
-				68F91CE3157CB2E600BB373D /* Models */,
+				6888A9BA15B02DBE0096F172 /* BatteryLife */,
+				6888A9B915B02DAD0096F172 /* Common */,
+				6888A9B815B02D8C0096F172 /* Search */,
+				6888A9B715B02D7B0096F172 /* MainViewController */,
+				6888A9B615B02D560096F172 /* UIKit */,
+				6888A9B515B02D3F0096F172 /* CoreData */,
+				6888A9B415B02CD70096F172 /* Calculator */,
+				6888A9B315B02CB10096F172 /* Views */,
+				6888A9B215B02C820096F172 /* Controls */,
 				681FE3A315873C2D00B752C9 /* Resources */,
 				68C123641547BD3100150EF2 /* Supporting Files */,
-				689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */,
-				689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */,
-				681FE39B15873A8800B752C9 /* A3iPadBatteryLifeViewController.h */,
-				681FE39C15873A8800B752C9 /* A3iPadBatteryLifeViewController.m */,
-				687401C4158C281B002B2C92 /* CommonUIDefinitions.h */,
-				68A15327159041E6007E1D8B /* SearchViewiPad.xib */,
-				68A1533515904670007E1D8B /* A3SearchIPADViewController.h */,
-				68A1533615904670007E1D8B /* A3SearchIPADViewController.m */,
-				6836D414159EB1A700F46394 /* A3CalculatorViewController.h */,
-				6836D415159EB1A700F46394 /* A3CalculatorViewController.m */,
-				68D7E74315A15BF80012CDD4 /* A3BlackThickRoundedRectView.h */,
-				68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */,
-				68D7E74615A161380012CDD4 /* Calculator_iPad.xib */,
-				6883032815ABE053000D4D3C /* A3CalculatorButton.h */,
-				6883032915ABE053000D4D3C /* A3CalculatorButton.m */,
-				684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */,
-				684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */,
-				68A24B0C15AE75CB0046E5DE /* A3AppHeaderView.h */,
-				68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */,
 			);
 			path = AppBoxPro2;
 			sourceTree = "<group>";
@@ -546,6 +639,8 @@
 				68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */,
 				68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */,
 				68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */,
+				68BAE5A515B41212000508BB /* CalculatorButtonsInFirstPage.xib in Resources */,
+				68BAE5AF15B417D2000508BB /* CalculatorButtonsInSecondPage.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -604,6 +699,9 @@
 				6883032A15ABE053000D4D3C /* A3CalculatorButton.m in Sources */,
 				684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */,
 				68A24B0E15AE75CB0046E5DE /* A3AppHeaderView.m in Sources */,
+				6888A99F15AFD9D30096F172 /* A3GrayAppHeaderView.m in Sources */,
+				6888A9B115B02C600096F172 /* DDPageControl.m in Sources */,
+				68BAE5AC15B41768000508BB /* A3CalculatorButtonsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,7 +835,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../FRLayeredNavigationController/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../FRLayeredNavigationController/** \"${PROJECT_DIR}/../FRLayeredNavigationController/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -754,7 +852,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../FRLayeredNavigationController/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../FRLayeredNavigationController/** \"${PROJECT_DIR}/../FRLayeredNavigationController/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

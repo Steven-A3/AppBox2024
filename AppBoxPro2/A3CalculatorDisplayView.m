@@ -67,13 +67,13 @@
 	gradientLayer.startPoint = CGPointMake(0.5, 0.0);
 	gradientLayer.endPoint = CGPointMake(0.5, 1.0);
 	gradientLayer.colors = [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:207.0f/256.0f
-										 green:212.0f/256.0f
-										  blue:188.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:207.0f/255.0f
+										 green:212.0f/255.0f
+										  blue:188.0f/255.0f
 										 alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:164.0f/256.0f
-										 green:171.0f/256.0f
-										  blue:135.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:164.0f/255.0f
+										 green:171.0f/255.0f
+										  blue:135.0f/255.0f
 										 alpha:1.0f].CGColor,
 			nil];
 	[thickRoundedRectLayer addSublayer:gradientLayer];
@@ -84,13 +84,13 @@
 	leftInnerShadow.endPoint = CGPointMake(1.0, 0.5);
 	leftInnerShadow.bounds = CGRectMake(CGRectGetMinX(self.layer.bounds), CGRectGetMinY(self.layer.bounds), 8.0, CGRectGetHeight(self.layer.bounds));
 	leftInnerShadow.colors = [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:32.0f/256.0f
-										 green:34.0f/256.0f
-										  blue:34.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:32.0f/255.0f
+										 green:34.0f/255.0f
+										  blue:34.0f/255.0f
 										 alpha:0.8f].CGColor,
-			(__bridge id)[UIColor colorWithRed:0.0f/256.0f
-										 green:0.0f/256.0f
-										  blue:0.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:0.0f/255.0f
+										 green:0.0f/255.0f
+										  blue:0.0f/255.0f
 										 alpha:0.0f].CGColor,
 			nil];
 	[thickRoundedRectLayer addSublayer:leftInnerShadow];
@@ -101,13 +101,13 @@
 	topInnerShadow.endPoint = CGPointMake(0.5, 1.0);
 	topInnerShadow.bounds = CGRectMake(CGRectGetMinX(self.layer.bounds), CGRectGetMinY(self.layer.bounds), CGRectGetWidth(self.layer.bounds), 8.0);
 	topInnerShadow.colors = [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:32.0f/256.0f
-										 green:34.0f/256.0f
-										  blue:34.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:32.0f/255.0f
+										 green:34.0f/255.0f
+										  blue:34.0f/255.0f
 										 alpha:0.8f].CGColor,
-			(__bridge id)[UIColor colorWithRed:0.0f/256.0f
-										 green:0.0f/256.0f
-										  blue:0.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:0.0f/255.0f
+										 green:0.0f/255.0f
+										  blue:0.0f/255.0f
 										 alpha:0.0f].CGColor,
 			nil];
 	[thickRoundedRectLayer addSublayer:topInnerShadow];
@@ -119,13 +119,13 @@
 	rightInnerShadow.bounds = CGRectMake(CGRectGetMinX(self.layer.bounds), CGRectGetMinY(self.layer.bounds), 8.0, CGRectGetHeight(self.layer.bounds));
 	rightInnerShadow.position = CGPointMake(CGRectGetMaxX(self.layer.bounds) - 8.0, 0.0);
 	rightInnerShadow.colors = [NSArray arrayWithObjects:
-			(__bridge id)[UIColor colorWithRed:32.0f/256.0f
-										 green:34.0f/256.0f
-										  blue:34.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:32.0f/255.0f
+										 green:34.0f/255.0f
+										  blue:34.0f/255.0f
 										 alpha:0.8f].CGColor,
-			(__bridge id)[UIColor colorWithRed:0.0f/256.0f
-										 green:0.0f/256.0f
-										  blue:0.0f/256.0f
+			(__bridge id)[UIColor colorWithRed:0.0f/255.0f
+										 green:0.0f/255.0f
+										  blue:0.0f/255.0f
 										 alpha:0.0f].CGColor,
 			nil];
 	[thickRoundedRectLayer addSublayer:rightInnerShadow];
