@@ -14,6 +14,7 @@
 #import "DDPageControl.h"
 #import "A3CalculatorButtonsViewController.h"
 #import "A3GrayAppHeaderView.h"
+#import "CoolButton.h"
 
 @interface A3CalculatorViewController ()
 - (void)buildGradientLayers;
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) UIView *topLineAboveHistoryHeaderView;
 @property (strong, nonatomic) DDPageControl *pageControl;
 @property (strong, nonatomic) A3GrayAppHeaderView *grayAppHeaderView;
+@property (strong, nonatomic) CoolButton *editHistoryButton;
 @property (strong, nonatomic) UITableView *historyTableView;
 
 - (void)layoutSubViews;
@@ -34,6 +36,7 @@
 @synthesize topLineAboveHistoryHeaderView = _topLineAboveHistoryHeaderView;
 @synthesize grayAppHeaderView = _grayAppHeaderView;
 @synthesize historyTableView = _historyTableView;
+@synthesize editHistoryButton = _editHistoryButton;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -81,16 +84,18 @@
 	[viewController.view setFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewController.view.bounds))];
 	[self.buttonsScrollView addSubview: [viewController view] ];
 
-	UIViewController *viewContrller2 = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"CalculatorButtonsInSecondPage" bundle:nil];
-	[viewContrller2.view setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewContrller2.view.bounds))];
-	[self.buttonsScrollView addSubview: [viewContrller2 view] ];
+	UIViewController *viewController2 = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"CalculatorButtonsInSecondPage" bundle:nil];
+	[viewController2.view setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewController2.view.bounds))];
+	[self.buttonsScrollView addSubview: [viewController2 view] ];
 	
 	self.topLineAboveHistoryHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
 	self.topLineAboveHistoryHeaderView.backgroundColor = [UIColor blackColor];
 	[self.view addSubview:self.topLineAboveHistoryHeaderView];
 
 	self.grayAppHeaderView = [[A3GrayAppHeaderView alloc] initWithFrame:CGRectZero];
-	[self.view addSubview:self.grayAppHeaderView];
+    [self.grayAppHeaderView setTitle:@"History"];
+
+    [self.view addSubview:self.grayAppHeaderView];
 
 	self.historyTableView = [[UITableView alloc] initWithFrame:CGRectZero];
 	self.historyTableView.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
@@ -119,11 +124,13 @@
 		CGFloat historyViewWidth = IPAD_SCREEN_WIDTH_LANDSCAPE - HOT_MENU_VIEW_WIDTH - APP_VIEW_WIDTH;
 		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, historyViewWidth, A3_CALCULATOR_VIEW_HEIGHT_OF_TOPLINE_ABOVE_TABLE_HEADER)];
 		[self.grayAppHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
+        [self.editHistoryButton setFrame:CGRectMake(APP_VIEW_WIDTH - 40.0f - 10.0f, A3_CALCULATOR_HISTORY_HEADER_HEIGHT / 2.0f - 15.0f, 40.0f, 30.0f)];
 		[self.historyTableView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	} else {
 		CGFloat historyViewWidth = APP_VIEW_WIDTH;
 		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE, historyViewWidth, 10.0f)];
 		[self.grayAppHeaderView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE + 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
+        [self.editHistoryButton setFrame:CGRectMake(historyViewWidth - 10.0f - 40.0f, A3_CALCULATOR_HISTORY_HEADER_HEIGHT/2.0f - 15.0f, 40.0f, 30.0f)];
 		[self.historyTableView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE + 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_PORTRAIT - IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	}
 }
@@ -203,6 +210,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return nil;
+}
+
+- (CoolButton *)editHistoryButton {
+    if (nil == _editHistoryButton) {
+        _editHistoryButton = [[CoolButton alloc] initWithFrame:CGRectZero];
+        _editHistoryButton.buttonColor = [UIColor colorWithRed:135.0f/255.0f green:135.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
+        _editHistoryButton.titleLabel.textColor = [UIColor whiteColor];
+        [_editHistoryButton setTitle:@"Edit" forState:UIControlStateNormal];
+        [self.grayAppHeaderView addSubview:_editHistoryButton];
+    }
+    return _editHistoryButton;
 }
 
 @end

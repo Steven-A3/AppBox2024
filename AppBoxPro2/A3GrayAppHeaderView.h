@@ -10,4 +10,6 @@
 
 @interface A3GrayAppHeaderView : UIView
 
+@property (strong, nonatomic) NSString *title;
+
 @end
