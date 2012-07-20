@@ -118,19 +118,22 @@
 #define	A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE						6.0f
 #define A3_CALCULATOR_VIEW_HEIGHT_OF_TOPLINE_ABOVE_TABLE_HEADER		10.0f
 #define A3_CALCULATOR_HISTORY_HEADER_HEIGHT							40.0f
+#define A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH                     46.0f
+#define A3_CALCULATOR_HISTORY_EDIT_BUTTON_HEIGHT                    30.0f
+
 
 - (void)layoutSubViews {
 	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
 		CGFloat historyViewWidth = IPAD_SCREEN_WIDTH_LANDSCAPE - HOT_MENU_VIEW_WIDTH - APP_VIEW_WIDTH;
 		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, historyViewWidth, A3_CALCULATOR_VIEW_HEIGHT_OF_TOPLINE_ABOVE_TABLE_HEADER)];
 		[self.grayAppHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
-        [self.editHistoryButton setFrame:CGRectMake(APP_VIEW_WIDTH - 40.0f - 10.0f, A3_CALCULATOR_HISTORY_HEADER_HEIGHT / 2.0f - 15.0f, 40.0f, 30.0f)];
+        [self.editHistoryButton setFrame:CGRectMake(historyViewWidth - A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH - 10.0f, A3_CALCULATOR_HISTORY_HEADER_HEIGHT / 2.0f - 15.0f, A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH, A3_CALCULATOR_HISTORY_EDIT_BUTTON_HEIGHT)];
 		[self.historyTableView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	} else {
 		CGFloat historyViewWidth = APP_VIEW_WIDTH;
 		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE, historyViewWidth, 10.0f)];
 		[self.grayAppHeaderView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE + 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
-        [self.editHistoryButton setFrame:CGRectMake(historyViewWidth - 10.0f - 40.0f, A3_CALCULATOR_HISTORY_HEADER_HEIGHT/2.0f - 15.0f, 40.0f, 30.0f)];
+        [self.editHistoryButton setFrame:CGRectMake(historyViewWidth - 10.0f - A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH, A3_CALCULATOR_HISTORY_HEADER_HEIGHT/2.0f - 15.0f, A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH, A3_CALCULATOR_HISTORY_EDIT_BUTTON_HEIGHT)];
 		[self.historyTableView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE + 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_PORTRAIT - IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	}
 }
@@ -217,6 +220,7 @@
         _editHistoryButton = [[CoolButton alloc] initWithFrame:CGRectZero];
         _editHistoryButton.buttonColor = [UIColor colorWithRed:135.0f/255.0f green:135.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
         _editHistoryButton.titleLabel.textColor = [UIColor whiteColor];
+        _editHistoryButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
         [_editHistoryButton setTitle:@"Edit" forState:UIControlStateNormal];
         [self.grayAppHeaderView addSubview:_editHistoryButton];
     }
