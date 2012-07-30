@@ -43,11 +43,9 @@ void addRightGradientLayer8Point(UIView *targetView) {
 	[[targetView layer] insertSublayer:rightGradientOnMenuLayer atIndex:1];
 }
 
-void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor, CGColorRef  endColor) {
+void drawLinearGradient(CGContextRef context, CGRect rect, NSArray *colors) {
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     CGFloat locations[] = { 0.0f, 1.0f };
-    
-    NSArray *colors = [NSArray arrayWithObjects:(__bridge id)startColor, (__bridge id)endColor, nil];
     
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
     
@@ -61,4 +59,8 @@ void drawLinearGradient(CGContextRef context, CGRect rect, CGColorRef startColor
     CGContextRestoreGState(context);
     
     CGGradientRelease(gradient);
+}
+
+BOOL UserInterfacePortrait() {
+	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
 }

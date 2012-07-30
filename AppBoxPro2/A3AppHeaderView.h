@@ -13,4 +13,5 @@
 @property (nonatomic, strong, readonly) UILabel *titleLabel;
 @property (nonatomic, strong, readwrite) NSString *title;
 
+
 @end

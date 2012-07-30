@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 #import "A3CalculatorViewController.h"
 #import "common.h"
@@ -15,16 +14,19 @@
 #import "A3CalculatorButtonsViewController.h"
 #import "A3GrayAppHeaderView.h"
 #import "CoolButton.h"
+#import "A3CalcExpressionView.h"
+#import "A3CalcHistoryViewCell.h"
 
 @interface A3CalculatorViewController ()
 - (void)buildGradientLayers;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *buttonsScrollView;
-@property (strong, nonatomic) UIView *topLineAboveHistoryHeaderView;
-@property (strong, nonatomic) DDPageControl *pageControl;
-@property (strong, nonatomic) A3GrayAppHeaderView *grayAppHeaderView;
+@property (weak) IBOutlet UIScrollView *buttonsScrollView;
+@property (strong) UIView *topLineAboveHistoryHeaderView;
+@property (strong) DDPageControl *pageControl;
+@property (strong) A3GrayAppHeaderView *grayAppHeaderView;
 @property (strong, nonatomic) CoolButton *editHistoryButton;
-@property (strong, nonatomic) UITableView *historyTableView;
+@property (strong) UITableView *historyTableView;
+@property (weak) IBOutlet A3CalcExpressionView *expressionView;
 
 - (void)layoutSubViews;
 
@@ -37,6 +39,7 @@
 @synthesize grayAppHeaderView = _grayAppHeaderView;
 @synthesize historyTableView = _historyTableView;
 @synthesize editHistoryButton = _editHistoryButton;
+@synthesize expressionView = _expressionView;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -62,6 +65,8 @@
 
 - (void)viewDidLoad
 {
+	FNLOG(@"viewDidLoad");
+
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 	[self buildGradientLayers];
@@ -101,7 +106,13 @@
 	self.historyTableView.backgroundColor = [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
 	self.historyTableView.delegate = self;
 	self.historyTableView.dataSource = self;
+	self.historyTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	[self.view addSubview:self.historyTableView];
+
+	[self.expressionView setExpression:[NSArray arrayWithObjects:@"24.97", @"x", @"8.75", @"x", nil]];
+	[self.expressionView setStyle:CEV_FILL_BACKGROUND];
+//	[self.expressionView setStyle:CEV_TRANSPARENT_BACKGROUND];
+	[self.expressionView setNeedsDisplay];
 }
 
 - (void)viewDidUnload
@@ -207,13 +218,31 @@
 	[UIView commitAnimations];
 }
 
+#define ACALC_UI_HISTORY_CELL_HEIGHT			90.0f
+
+#pragma mark -- UITableView data source
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 0;
+	return 3;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return nil;
+	NSString *cellIdentifier = @"CalcHistoryCell";
+	A3CalcHistoryViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (nil == cell) {
+		cell = [[A3CalcHistoryViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
+	}
+
+	return cell;
 }
+
+#pragma mark -- UITableView delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return ACALC_UI_HISTORY_CELL_HEIGHT;
+}
+
+
+#pragma mark -- Button actions
 
 - (CoolButton *)editHistoryButton {
     if (nil == _editHistoryButton) {
@@ -225,6 +254,10 @@
         [self.grayAppHeaderView addSubview:_editHistoryButton];
     }
     return _editHistoryButton;
+}
+
+- (IBAction)settingsButtonAction:(id)button {
+	
 }
 
 @end

@@ -44,6 +44,7 @@
 		687401B01589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687401AE1589BCF9002B2C92 /* AppBoxPro2.xcdatamodeld */; };
 		6875CD0C1577247300A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
 		6875CD0D1577247600A706CA /* AppBoxPro2.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */; };
+		687CA60B15BCFBE2002B87F1 /* A3CalcExpressionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687CA60A15BCFBE2002B87F1 /* A3CalcExpressionView.m */; };
 		6883032A15ABE053000D4D3C /* A3CalculatorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883032915ABE053000D4D3C /* A3CalculatorButton.m */; };
 		6888A99F15AFD9D30096F172 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888A99E15AFD9D30096F172 /* A3GrayAppHeaderView.m */; };
 		6888A9B115B02C600096F172 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888A9B015B02C600096F172 /* DDPageControl.m */; };
@@ -71,6 +72,9 @@
 		68C123881547BD3100150EF2 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68C123611547BD3100150EF2 /* CoreData.framework */; };
 		68C123901547BD3100150EF2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68C1238E1547BD3100150EF2 /* InfoPlist.strings */; };
 		68C123931547BD3100150EF2 /* AppBoxPro2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */; };
+		68C9D23D15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9D23C15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m */; };
+		68C9D24115C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C9D24015C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib */; };
+		68CD3B9A15BE82A500AD05E5 /* icon_bar_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */; };
 		68D7E74515A15BF80012CDD4 /* A3BlackThickRoundedRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */; };
 		68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D7E74615A161380012CDD4 /* Calculator_iPad.xib */; };
 		68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBDCB415984480006AE286 /* green_check_in_circle.png */; };
@@ -160,6 +164,8 @@
 		6874018D15898480002B2C92 /* app_wallet_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = app_wallet_32.png; path = resources/icons/app_wallet_32.png; sourceTree = "<group>"; };
 		687401AF1589BCF9002B2C92 /* AppBoxPro2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBoxPro2.xcdatamodel; sourceTree = "<group>"; };
 		687401C4158C281B002B2C92 /* CommonUIDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonUIDefinitions.h; sourceTree = "<group>"; };
+		687CA60915BCFBE2002B87F1 /* A3CalcExpressionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalcExpressionView.h; sourceTree = "<group>"; };
+		687CA60A15BCFBE2002B87F1 /* A3CalcExpressionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalcExpressionView.m; sourceTree = "<group>"; };
 		6883032815ABE053000D4D3C /* A3CalculatorButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButton.h; sourceTree = "<group>"; };
 		6883032915ABE053000D4D3C /* A3CalculatorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButton.m; sourceTree = "<group>"; };
 		6888A99D15AFD9D30096F172 /* A3GrayAppHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GrayAppHeaderView.h; sourceTree = "<group>"; };
@@ -200,6 +206,10 @@
 		68C1238F1547BD3100150EF2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		68C123911547BD3100150EF2 /* AppBoxPro2Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppBoxPro2Tests.h; sourceTree = "<group>"; };
 		68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppBoxPro2Tests.m; sourceTree = "<group>"; };
+		68C9D23B15C3C07A0098D7F3 /* A3CalcHistoryViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalcHistoryViewCell.h; sourceTree = "<group>"; };
+		68C9D23C15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalcHistoryViewCell.m; sourceTree = "<group>"; };
+		68C9D24015C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalcHistoryViewCellContentsView.xib; sourceTree = "<group>"; };
+		68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_bar_settings.png; path = resources/icons/icon_bar_settings.png; sourceTree = "<group>"; };
 		68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = AppBoxPro2.sqlite; path = AppBoxPro2/AppBoxPro2.sqlite; sourceTree = SOURCE_ROOT; };
 		68D7E74315A15BF80012CDD4 /* A3BlackThickRoundedRectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BlackThickRoundedRectView.h; sourceTree = "<group>"; };
 		68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BlackThickRoundedRectView.m; sourceTree = "<group>"; };
@@ -261,6 +271,7 @@
 		681FE3A415873C4100B752C9 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */,
 				68DBDCB415984480006AE286 /* green_check_in_circle.png */,
 				6874017815898241002B2C92 /* icon_sc_home_edit_on.png */,
 				6874017915898241002B2C92 /* icon_sc_info_on.png */,
@@ -337,6 +348,11 @@
 				684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */,
 				68BAE5A915B41768000508BB /* A3CalculatorButtonsViewController.h */,
 				68BAE5AA15B41768000508BB /* A3CalculatorButtonsViewController.m */,
+				687CA60915BCFBE2002B87F1 /* A3CalcExpressionView.h */,
+				687CA60A15BCFBE2002B87F1 /* A3CalcExpressionView.m */,
+				68C9D23B15C3C07A0098D7F3 /* A3CalcHistoryViewCell.h */,
+				68C9D23C15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m */,
+				68C9D24015C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib */,
 			);
 			name = Calculator;
 			sourceTree = "<group>";
@@ -641,6 +657,8 @@
 				68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */,
 				68BAE5A515B41212000508BB /* CalculatorButtonsInFirstPage.xib in Resources */,
 				68BAE5AF15B417D2000508BB /* CalculatorButtonsInSecondPage.xib in Resources */,
+				68CD3B9A15BE82A500AD05E5 /* icon_bar_settings.png in Resources */,
+				68C9D24115C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -702,6 +720,8 @@
 				6888A99F15AFD9D30096F172 /* A3GrayAppHeaderView.m in Sources */,
 				6888A9B115B02C600096F172 /* DDPageControl.m in Sources */,
 				68BAE5AC15B41768000508BB /* A3CalculatorButtonsViewController.m in Sources */,
+				687CA60B15BCFBE2002B87F1 /* A3CalcExpressionView.m in Sources */,
+				68C9D23D15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

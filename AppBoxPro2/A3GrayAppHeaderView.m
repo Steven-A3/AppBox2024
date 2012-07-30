@@ -46,9 +46,11 @@
 	// Drawing code
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
-	CGColorRef glossColor1 = [UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0f].CGColor;
-	CGColorRef glossColor2 = [UIColor colorWithRed:172.0f/255.0f green:172.0f/255.0f blue:172.0f/255.0f alpha:1.0f].CGColor;
-	drawLinearGradient(context, rect, glossColor1, glossColor2);
+	NSArray *colors = [NSArray arrayWithObjects:
+					   (__bridge id)[[UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:224.0f/255.0f alpha:1.0f] CGColor],
+					   (__bridge id)[[UIColor colorWithRed:172.0f/255.0f green:172.0f/255.0f blue:172.0f/255.0f alpha:1.0f] CGColor], nil];
+
+	drawLinearGradient(context, rect, colors);
 
 	CGContextSaveGState(context);
 	CGContextSetShouldAntialias(context, false);

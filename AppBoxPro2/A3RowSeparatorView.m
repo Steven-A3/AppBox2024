@@ -9,6 +9,7 @@
 #import "A3RowSeparatorView.h"
 
 @implementation A3RowSeparatorView
+
 - (id)initWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	if (self) {

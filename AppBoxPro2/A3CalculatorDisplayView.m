@@ -51,6 +51,8 @@
 - (void)addGradientLayerForDisplayView {
 	FNLOG(@"");
 
+	UIView *gradientView = [[UIView alloc] initWithFrame:self.bounds];
+
 	self.clipsToBounds = YES;
 
 	CALayer *thickRoundedRectLayer = [CALayer layer];
@@ -130,8 +132,9 @@
 			nil];
 	[thickRoundedRectLayer addSublayer:rightInnerShadow];
 
-	[self.layer addSublayer:thickRoundedRectLayer];
+	[gradientView.layer addSublayer:thickRoundedRectLayer];
 
+	[self insertSubview:gradientView atIndex:0];
 }
 
 @end

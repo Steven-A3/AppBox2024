@@ -13,11 +13,14 @@
 @interface A3AppHeaderView ()
 - (void)buildView;
 
+@property(nonatomic, readonly) UIView *glossyLayeredView;
+
 @end
 
 @implementation A3AppHeaderView
 @synthesize titleLabel = _titleLabel;
 @synthesize title = _title;
+@synthesize glossyLayeredView = _glossyLayeredView;
 
 
 - (id)initWithFrame:(CGRect)frame
@@ -91,15 +94,27 @@
 	topGradientLayer.endPoint = CGPointMake(0.5f, 1.0f);
 	[darkGlossyLayer addSublayer:topGradientLayer];
 
-	[self.layer addSublayer:darkGlossyLayer];
+	[self.glossyLayeredView.layer addSublayer:darkGlossyLayer];
 }
+
+
+- (UIView *)glossyLayeredView {
+	if (nil == _glossyLayeredView) {
+		_glossyLayeredView = [[UIView alloc] init];
+		_glossyLayeredView.frame = self.bounds;
+		_glossyLayeredView.backgroundColor = [UIColor clearColor];
+		[self insertSubview:_glossyLayeredView atIndex:0];
+	}
+	return _glossyLayeredView;
+}
+
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
 	FNLOG(@"Passed");
-	CGRect bounds = self.layer.bounds;
-	NSArray *sublayers = [self.layer sublayers];
+	CGRect bounds = self.glossyLayeredView.layer.bounds;
+	NSArray *sublayers = [self.glossyLayeredView.layer sublayers];
 	for (CALayer *sublayer in sublayers) {
 		sublayer.bounds = bounds;
 	}
