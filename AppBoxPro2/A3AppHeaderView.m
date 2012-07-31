@@ -118,6 +118,7 @@
 	for (CALayer *sublayer in sublayers) {
 		sublayer.bounds = bounds;
 	}
+	[self.titleLabel setFrame:self.bounds];
 }
 
 - (UILabel *)titleLabel {
@@ -129,6 +130,7 @@
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.backgroundColor = [UIColor clearColor];
 		_titleLabel.textAlignment = UITextAlignmentCenter;
+		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 		[self addSubview:_titleLabel];
 	}
 	return _titleLabel;

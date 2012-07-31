@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6818AF1415C7716000233FA6 /* A3CalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6818AF1315C7716000233FA6 /* A3CalendarMonthView.m */; };
 		681FE39D15873A8800B752C9 /* A3iPadBatteryLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 681FE39C15873A8800B752C9 /* A3iPadBatteryLifeViewController.m */; };
 		681FE3A115873C1500B752C9 /* icon_sc_home_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE39F15873C1500B752C9 /* icon_sc_home_on.png */; };
 		681FE3A215873C1500B752C9 /* icon_sc_home.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3A015873C1500B752C9 /* icon_sc_home.png */; };
@@ -74,6 +75,13 @@
 		68C123931547BD3100150EF2 /* AppBoxPro2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C123921547BD3100150EF2 /* AppBoxPro2Tests.m */; };
 		68C9D23D15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9D23C15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m */; };
 		68C9D24115C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C9D24015C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib */; };
+		68CCEE1C15C7EC2600B4A122 /* A3CalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CCEE1A15C7EC2600B4A122 /* A3CalendarViewController.m */; };
+		68CCEE1D15C7EC2600B4A122 /* A3CalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE1B15C7EC2600B4A122 /* A3CalendarViewController.xib */; };
+		68CCEE2315C7FCD500B4A122 /* icon_app_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE1E15C7FCD500B4A122 /* icon_app_settings.png */; };
+		68CCEE2415C7FCD500B4A122 /* icon_cal_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE1F15C7FCD500B4A122 /* icon_cal_add.png */; };
+		68CCEE2515C7FCD500B4A122 /* icon_cal_goto.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE2015C7FCD500B4A122 /* icon_cal_goto.png */; };
+		68CCEE2615C7FCD500B4A122 /* icon_leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE2115C7FCD500B4A122 /* icon_leftarrow.png */; };
+		68CCEE2715C7FCD500B4A122 /* icon_rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE2215C7FCD500B4A122 /* icon_rightarrow.png */; };
 		68CD3B9A15BE82A500AD05E5 /* icon_bar_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */; };
 		68D7E74515A15BF80012CDD4 /* A3BlackThickRoundedRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */; };
 		68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D7E74615A161380012CDD4 /* Calculator_iPad.xib */; };
@@ -125,6 +133,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6818AF1215C7716000233FA6 /* A3CalendarMonthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarMonthView.h; sourceTree = "<group>"; };
+		6818AF1315C7716000233FA6 /* A3CalendarMonthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarMonthView.m; sourceTree = "<group>"; };
 		681FE39B15873A8800B752C9 /* A3iPadBatteryLifeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPadBatteryLifeViewController.h; sourceTree = "<group>"; };
 		681FE39C15873A8800B752C9 /* A3iPadBatteryLifeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPadBatteryLifeViewController.m; sourceTree = "<group>"; };
 		681FE39F15873C1500B752C9 /* icon_sc_home_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_home_on.png; path = resources/icons/icon_sc_home_on.png; sourceTree = "<group>"; };
@@ -209,6 +219,14 @@
 		68C9D23B15C3C07A0098D7F3 /* A3CalcHistoryViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalcHistoryViewCell.h; sourceTree = "<group>"; };
 		68C9D23C15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalcHistoryViewCell.m; sourceTree = "<group>"; };
 		68C9D24015C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalcHistoryViewCellContentsView.xib; sourceTree = "<group>"; };
+		68CCEE1915C7EC2600B4A122 /* A3CalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarViewController.h; sourceTree = "<group>"; };
+		68CCEE1A15C7EC2600B4A122 /* A3CalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarViewController.m; sourceTree = "<group>"; };
+		68CCEE1B15C7EC2600B4A122 /* A3CalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarViewController.xib; sourceTree = "<group>"; };
+		68CCEE1E15C7FCD500B4A122 /* icon_app_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_app_settings.png; path = resources/icons/icon_app_settings.png; sourceTree = "<group>"; };
+		68CCEE1F15C7FCD500B4A122 /* icon_cal_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cal_add.png; path = resources/icons/icon_cal_add.png; sourceTree = "<group>"; };
+		68CCEE2015C7FCD500B4A122 /* icon_cal_goto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cal_goto.png; path = resources/icons/icon_cal_goto.png; sourceTree = "<group>"; };
+		68CCEE2115C7FCD500B4A122 /* icon_leftarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_leftarrow.png; path = resources/icons/icon_leftarrow.png; sourceTree = "<group>"; };
+		68CCEE2215C7FCD500B4A122 /* icon_rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_rightarrow.png; path = resources/icons/icon_rightarrow.png; sourceTree = "<group>"; };
 		68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_bar_settings.png; path = resources/icons/icon_bar_settings.png; sourceTree = "<group>"; };
 		68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = AppBoxPro2.sqlite; path = AppBoxPro2/AppBoxPro2.sqlite; sourceTree = SOURCE_ROOT; };
 		68D7E74315A15BF80012CDD4 /* A3BlackThickRoundedRectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BlackThickRoundedRectView.h; sourceTree = "<group>"; };
@@ -258,6 +276,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6818AF0F15C7710800233FA6 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				6818AF1215C7716000233FA6 /* A3CalendarMonthView.h */,
+				6818AF1315C7716000233FA6 /* A3CalendarMonthView.m */,
+				68CCEE1915C7EC2600B4A122 /* A3CalendarViewController.h */,
+				68CCEE1A15C7EC2600B4A122 /* A3CalendarViewController.m */,
+				68CCEE1B15C7EC2600B4A122 /* A3CalendarViewController.xib */,
+			);
+			name = Calendar;
+			sourceTree = "<group>";
+		};
 		681FE3A315873C2D00B752C9 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -271,6 +301,11 @@
 		681FE3A415873C4100B752C9 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				68CCEE1E15C7FCD500B4A122 /* icon_app_settings.png */,
+				68CCEE1F15C7FCD500B4A122 /* icon_cal_add.png */,
+				68CCEE2015C7FCD500B4A122 /* icon_cal_goto.png */,
+				68CCEE2115C7FCD500B4A122 /* icon_leftarrow.png */,
+				68CCEE2215C7FCD500B4A122 /* icon_rightarrow.png */,
 				68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */,
 				68DBDCB415984480006AE286 /* green_check_in_circle.png */,
 				6874017815898241002B2C92 /* icon_sc_home_edit_on.png */,
@@ -454,6 +489,7 @@
 		68C123631547BD3100150EF2 /* AppBoxPro2 */ = {
 			isa = PBXGroup;
 			children = (
+				6818AF0F15C7710800233FA6 /* Calendar */,
 				6888A9BA15B02DBE0096F172 /* BatteryLife */,
 				6888A9B915B02DAD0096F172 /* Common */,
 				6888A9B815B02D8C0096F172 /* Search */,
@@ -659,6 +695,12 @@
 				68BAE5AF15B417D2000508BB /* CalculatorButtonsInSecondPage.xib in Resources */,
 				68CD3B9A15BE82A500AD05E5 /* icon_bar_settings.png in Resources */,
 				68C9D24115C3D1DD0098D7F3 /* A3CalcHistoryViewCellContentsView.xib in Resources */,
+				68CCEE1D15C7EC2600B4A122 /* A3CalendarViewController.xib in Resources */,
+				68CCEE2315C7FCD500B4A122 /* icon_app_settings.png in Resources */,
+				68CCEE2415C7FCD500B4A122 /* icon_cal_add.png in Resources */,
+				68CCEE2515C7FCD500B4A122 /* icon_cal_goto.png in Resources */,
+				68CCEE2615C7FCD500B4A122 /* icon_leftarrow.png in Resources */,
+				68CCEE2715C7FCD500B4A122 /* icon_rightarrow.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -722,6 +764,8 @@
 				68BAE5AC15B41768000508BB /* A3CalculatorButtonsViewController.m in Sources */,
 				687CA60B15BCFBE2002B87F1 /* A3CalcExpressionView.m in Sources */,
 				68C9D23D15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m in Sources */,
+				6818AF1415C7716000233FA6 /* A3CalendarMonthView.m in Sources */,
+				68CCEE1C15C7EC2600B4A122 /* A3CalendarViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

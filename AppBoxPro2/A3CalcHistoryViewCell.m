@@ -37,7 +37,7 @@
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
-	
+
 	if (UserInterfacePortrait()) {
 		CGFloat viewWidth = CGRectGetWidth(self.bounds)/2.0f;
 

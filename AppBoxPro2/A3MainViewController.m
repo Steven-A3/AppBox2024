@@ -19,6 +19,7 @@
 #import "A3SearchIPADViewController.h"
 #import "A3AppDelegate.h"
 #import "A3CalculatorViewController.h"
+#import "A3CalendarViewController.h"
 
 @interface A3MainViewController ()
 
@@ -566,6 +567,14 @@ typedef enum tagA3MenuWorkingMode {
 	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:YES animated:YES configuration:^(FRLayeredNavigationItem *item) {
 		item.hasChrome = NO;
 	}];
+}
+
+- (IBAction)calendarButtonTouchUpInside:(id)sender {
+	A3CalendarViewController *viewController = [[A3CalendarViewController alloc] initWithNibName:@"A3CalendarViewController" bundle:nil];
+	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:YES animated:YES configuration:
+			^(FRLayeredNavigationItem *item) {
+				item.hasChrome = NO;
+			}];
 }
 
 #pragma mark - Search
