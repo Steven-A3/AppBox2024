@@ -83,18 +83,13 @@
 		68CCEE2615C7FCD500B4A122 /* icon_leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE2115C7FCD500B4A122 /* icon_leftarrow.png */; };
 		68CCEE2715C7FCD500B4A122 /* icon_rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CCEE2215C7FCD500B4A122 /* icon_rightarrow.png */; };
 		68CD3B9A15BE82A500AD05E5 /* icon_bar_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */; };
+		68D535FE15C92436000B232A /* A3CalendarBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D535FD15C92436000B232A /* A3CalendarBackgroundView.m */; };
 		68D7E74515A15BF80012CDD4 /* A3BlackThickRoundedRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */; };
 		68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D7E74615A161380012CDD4 /* Calculator_iPad.xib */; };
 		68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBDCB415984480006AE286 /* green_check_in_circle.png */; };
 		68E79A87156A69AC001BED0C /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A86156A69AC001BED0C /* CoolButton.m */; };
 		68E79A8A156A6EC1001BED0C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E79A89156A6EC1001BED0C /* QuartzCore.framework */; };
 		68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */; };
-		68E79A8A156A6EC1001BED11 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		68E79A8A156A6EC1001BED14 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		68E79A8A156A6EC1001BED17 /* (null) in Sources */ = {isa = PBXBuildFile; };
-		68E79A8A156A6EC1001BED1A /* (null) in Sources */ = {isa = PBXBuildFile; };
-		68E79A8A156A6EC1001BED1D /* (null) in Sources */ = {isa = PBXBuildFile; };
-		68E79A8A156A6EC1001BED20 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68EEC8DD158EB840000D3661 /* MenuView.xib */; };
 		68EEC8EE158EFD07000D3661 /* libFRLayeredNavigationController.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EEC8ED158EFD07000D3661 /* libFRLayeredNavigationController.a */; };
 		68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F91CE0157CB2DF00BB373D /* MenuGroup.m */; };
@@ -229,6 +224,8 @@
 		68CCEE2215C7FCD500B4A122 /* icon_rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_rightarrow.png; path = resources/icons/icon_rightarrow.png; sourceTree = "<group>"; };
 		68CD3B9915BE82A500AD05E5 /* icon_bar_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_bar_settings.png; path = resources/icons/icon_bar_settings.png; sourceTree = "<group>"; };
 		68CEABB415747ABD00E57738 /* AppBoxPro2.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; name = AppBoxPro2.sqlite; path = AppBoxPro2/AppBoxPro2.sqlite; sourceTree = SOURCE_ROOT; };
+		68D535FC15C92436000B232A /* A3CalendarBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarBackgroundView.h; sourceTree = "<group>"; };
+		68D535FD15C92436000B232A /* A3CalendarBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarBackgroundView.m; sourceTree = "<group>"; };
 		68D7E74315A15BF80012CDD4 /* A3BlackThickRoundedRectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BlackThickRoundedRectView.h; sourceTree = "<group>"; };
 		68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BlackThickRoundedRectView.m; sourceTree = "<group>"; };
 		68D7E74615A161380012CDD4 /* Calculator_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Calculator_iPad.xib; sourceTree = "<group>"; };
@@ -284,6 +281,8 @@
 				68CCEE1915C7EC2600B4A122 /* A3CalendarViewController.h */,
 				68CCEE1A15C7EC2600B4A122 /* A3CalendarViewController.m */,
 				68CCEE1B15C7EC2600B4A122 /* A3CalendarViewController.xib */,
+				68D535FC15C92436000B232A /* A3CalendarBackgroundView.h */,
+				68D535FD15C92436000B232A /* A3CalendarBackgroundView.m */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -741,12 +740,6 @@
 				68C1237A1547BD3100150EF2 /* A3MainViewController.m in Sources */,
 				68E79A87156A69AC001BED0C /* CoolButton.m in Sources */,
 				68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */,
-				68E79A8A156A6EC1001BED11 /* (null) in Sources */,
-				68E79A8A156A6EC1001BED14 /* (null) in Sources */,
-				68E79A8A156A6EC1001BED17 /* (null) in Sources */,
-				68E79A8A156A6EC1001BED1A /* (null) in Sources */,
-				68E79A8A156A6EC1001BED1D /* (null) in Sources */,
-				68E79A8A156A6EC1001BED20 /* (null) in Sources */,
 				68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */,
 				68F91CE6157CB30F00BB373D /* MenuItem.m in Sources */,
 				689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */,
@@ -766,6 +759,7 @@
 				68C9D23D15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m in Sources */,
 				6818AF1415C7716000233FA6 /* A3CalendarMonthView.m in Sources */,
 				68CCEE1C15C7EC2600B4A122 /* A3CalendarViewController.m in Sources */,
+				68D535FE15C92436000B232A /* A3CalendarBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

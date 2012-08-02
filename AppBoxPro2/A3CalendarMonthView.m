@@ -95,17 +95,10 @@
 
 	CGContextFillPath(context);
 
-	CGContextSetRGBStrokeColor(context, 207.0f/255.0f, 0.0f, 11.0f/255.0f, 1.0f);
-	CGContextSetLineWidth(context, 1.0f);
-
-	CGContextMoveToPoint(context, CGRectGetMinX(rect), weekdayHeaderHeight);
-	CGContextAddLineToPoint(context, CGRectGetMaxX(rect), weekdayHeaderHeight);
-
-	CGContextStrokePath(context);
-
 	CGContextSetRGBStrokeColor(context, 192.0f/255.0f, 193.0f/255.0f, 194.0f/255.0f, 1.0f);
 	CGContextSetLineWidth(context, 1.0f);
 
+	// Left, bottom, right border
 	CGContextMoveToPoint(context, CGRectGetMinX(rect), weekdayHeaderHeight);
 	CGContextAddLineToPoint(context, CGRectGetMinX(rect), CGRectGetMaxY(rect));
 	CGContextAddLineToPoint(context, CGRectGetMaxX(rect), CGRectGetMaxY(rect));
@@ -122,6 +115,14 @@
 		CGContextMoveToPoint(context, coordinate_X, weekdayHeaderHeight);
 		CGContextAddLineToPoint(context, coordinate_X, CGRectGetMaxY(rect));
 	}
+	CGContextStrokePath(context);
+
+	// Red line
+	CGContextSetRGBStrokeColor(context, 207.0f/255.0f, 0.0f, 11.0f/255.0f, 1.0f);
+	CGContextSetLineWidth(context, 1.0f);
+
+	CGContextMoveToPoint(context, CGRectGetMinX(rect), weekdayHeaderHeight);
+	CGContextAddLineToPoint(context, CGRectGetMaxX(rect), weekdayHeaderHeight);
 
 	CGContextStrokePath(context);
 }

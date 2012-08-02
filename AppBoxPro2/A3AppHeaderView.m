@@ -103,6 +103,7 @@
 		_glossyLayeredView = [[UIView alloc] init];
 		_glossyLayeredView.frame = self.bounds;
 		_glossyLayeredView.backgroundColor = [UIColor clearColor];
+		_glossyLayeredView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 		[self insertSubview:_glossyLayeredView atIndex:0];
 	}
 	return _glossyLayeredView;
@@ -118,7 +119,6 @@
 	for (CALayer *sublayer in sublayers) {
 		sublayer.bounds = bounds;
 	}
-	[self.titleLabel setFrame:self.bounds];
 }
 
 - (UILabel *)titleLabel {
@@ -130,7 +130,7 @@
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.backgroundColor = [UIColor clearColor];
 		_titleLabel.textAlignment = UITextAlignmentCenter;
-		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+		_titleLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 		[self addSubview:_titleLabel];
 	}
 	return _titleLabel;
