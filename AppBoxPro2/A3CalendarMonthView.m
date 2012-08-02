@@ -24,8 +24,10 @@
 @synthesize weekStartSunday = _weekStartSunday;
 
 - (void)initialize {
-	_year = 2012;
-	_month = 7;		// July
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *dateComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:[NSDate date]];
+	_year = dateComponents.year;
+	_month = dateComponents.month;		// July
 	_weekStartSunday = YES;
 
 	self.backgroundColor = [UIColor whiteColor];

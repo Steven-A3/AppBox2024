@@ -10,8 +10,8 @@
 
 @interface A3CalendarMonthView : UIView
 
-@property (assign, nonatomic) NSUInteger year;			// Default 2012
-@property (assign, nonatomic) NSUInteger month;			// Default July
+@property (assign, nonatomic) NSInteger year;			// Default 2012
+@property (assign, nonatomic) NSInteger month;			// Default July
 @property (assign, nonatomic) BOOL weekStartSunday;		// Default YES
 
 @end
