@@ -22,7 +22,6 @@
 		6836D416159EB1A700F46394 /* A3CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6836D415159EB1A700F46394 /* A3CalculatorViewController.m */; };
 		683DCDDD15CA705D00D7B7EC /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDD815CA705D00D7B7EC /* CoolButton.m */; };
 		683DCDDE15CA705D00D7B7EC /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDDA15CA705D00D7B7EC /* DDPageControl.m */; };
-		683DCDDF15CA705D00D7B7EC /* MCSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDDC15CA705D00D7B7EC /* MCSegmentedControl.m */; };
 		684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */; };
 		68740173158980DB002B2C92 /* icon_sc_magnifier_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */; };
 		68740174158980DB002B2C92 /* icon_sc_magnifier.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740170158980DB002B2C92 /* icon_sc_magnifier.png */; };
@@ -149,8 +148,6 @@
 		683DCDD815CA705D00D7B7EC /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoolButton.m; path = Controls/CoolButton.m; sourceTree = "<group>"; };
 		683DCDD915CA705D00D7B7EC /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDPageControl.h; path = Controls/DDPageControl.h; sourceTree = "<group>"; };
 		683DCDDA15CA705D00D7B7EC /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDPageControl.m; path = Controls/DDPageControl.m; sourceTree = "<group>"; };
-		683DCDDB15CA705D00D7B7EC /* MCSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MCSegmentedControl.h; path = Controls/MCSegmentedControl.h; sourceTree = "<group>"; };
-		683DCDDC15CA705D00D7B7EC /* MCSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MCSegmentedControl.m; path = Controls/MCSegmentedControl.m; sourceTree = "<group>"; };
 		684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorDisplayView.h; sourceTree = "<group>"; };
 		684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorDisplayView.m; sourceTree = "<group>"; };
 		6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier_on.png; path = resources/icons/icon_sc_magnifier_on.png; sourceTree = "<group>"; };
@@ -352,8 +349,6 @@
 				683DCDD815CA705D00D7B7EC /* CoolButton.m */,
 				683DCDD915CA705D00D7B7EC /* DDPageControl.h */,
 				683DCDDA15CA705D00D7B7EC /* DDPageControl.m */,
-				683DCDDB15CA705D00D7B7EC /* MCSegmentedControl.h */,
-				683DCDDC15CA705D00D7B7EC /* MCSegmentedControl.m */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -765,7 +760,6 @@
 				68D535FE15C92436000B232A /* A3CalendarBackgroundView.m in Sources */,
 				683DCDDD15CA705D00D7B7EC /* CoolButton.m in Sources */,
 				683DCDDE15CA705D00D7B7EC /* DDPageControl.m in Sources */,
-				683DCDDF15CA705D00D7B7EC /* MCSegmentedControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
