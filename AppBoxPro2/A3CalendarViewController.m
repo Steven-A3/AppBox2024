@@ -9,6 +9,7 @@
 #import "A3CalendarViewController.h"
 #import "A3CalendarMonthView.h"
 #import "CoolButton.h"
+#import "A3CalendarBackgroundView.h"
 
 @interface A3CalendarViewController ()
 
@@ -17,12 +18,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *bigMonthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *smallMonthLabel;
 @property (weak, nonatomic) IBOutlet UILabel *yearLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentedControl;
+@property (weak, nonatomic) IBOutlet A3CalendarBackgroundView *backgroundView;
 
 @end
 
 @implementation A3CalendarViewController
 @synthesize monthView = _monthView;
 @synthesize todayButton = _todayButton;
+@synthesize segmentedControl = _segmentedControl;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -37,8 +41,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view from its nib.
 	[self.todayButton setButtonColor:[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:222.0f/255.0f alpha:1.0f]];
+
 	[self updateLabels];
 }
 
@@ -58,6 +64,7 @@
 	[super viewDidLayoutSubviews];
 
 	[self.monthView setNeedsDisplay];
+	[self.backgroundView setNeedsDisplay];
 }
 
 - (void)jumpToYear:(NSInteger)year month:(NSInteger)month {

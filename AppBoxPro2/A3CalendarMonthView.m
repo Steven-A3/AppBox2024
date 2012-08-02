@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import "A3CalendarMonthView.h"
+#import "common.h"
+#import "A3Utilities.h"
 
 #define A3_CALENDAR_MONTH_VIEW_TEXT_RIGHT_MARGIN	4.0f
 
@@ -162,18 +164,50 @@
 	CGContextSetStrokeColorWithColor(context, textColor.CGColor);
 	CGContextSetFillColorWithColor(context, textColor.CGColor);
 
+	UIColor *todayTextColor = [UIColor whiteColor];
+
+	NSDateComponents *dateComponentsForToday = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+
 	for (NSUInteger row = 0; row < numberOfRow; row++) {
 		for (NSUInteger col = 0; col < 7; col++) {
-			NSDateComponents *currentDateComponent = [gregorian components:NSDayCalendarUnit fromDate:currentDate];
+			NSDateComponents *currentDateComponent = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
 
+			CGContextSaveGState(context);
+
+			if ([currentDateComponent isEqual:dateComponentsForToday]) {
+				[self drawTodayMarkAtCol:col atRow:row context:context];
+
+				CGContextSetStrokeColorWithColor(context, todayTextColor.CGColor);
+				CGContextSetFillColorWithColor(context, todayTextColor.CGColor);
+			}
 			NSString *dayString = [NSString stringWithFormat:@"%d", currentDateComponent.day];
 			CGSize size = [dayString sizeWithFont:font];
-			CGPoint point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight);
+			CGPoint point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight + 3.0f);
 			[dayString drawAtPoint:point withFont:font];
+
+			CGContextRestoreGState(context);
 
 			currentDate = [gregorian dateByAddingComponents:addComponent toDate:currentDate options:0];
 		}
 	}
+}
+
+- (void)drawTodayMarkAtCol:(NSInteger)col atRow:(NSInteger)row context:(CGContextRef)context {
+	CGContextSaveGState(context);
+
+	NSArray *colors = [NSArray arrayWithObjects:
+			(__bridge id)[[UIColor colorWithRed:119.0f/255.0f green:122.0f/255.0f blue:243.0f/255.0f alpha:1.0f] CGColor],
+			(__bridge id)[[UIColor colorWithRed:93.0f/255.0f green:89.0f/255.0f blue:208.0f/255.0f alpha:1.0f] CGColor], nil];
+	CGRect drawRect = CGRectMake(col * columnWidth, row * rowHeight + weekdayHeaderHeight, columnWidth, 22.0f);
+	drawLinearGradient(context, drawRect, colors);
+
+	CGContextSetAllowsAntialiasing(context, true);
+	CGContextSetRGBStrokeColor(context, 82.0f/255.0f, 71.0f/255.0f, 210.0f/255.0f, 1.0f);
+	CGContextSetLineWidth(context, 1.0f);
+	CGContextAddRect(context, drawRect);
+	CGContextStrokePath(context);
+
+	CGContextRestoreGState(context);
 }
 
 @end

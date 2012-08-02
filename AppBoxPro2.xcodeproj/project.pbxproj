@@ -20,6 +20,9 @@
 		681FE3B31587424800B752C9 /* icon_sc_search_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AB1587424800B752C9 /* icon_sc_search_on.png */; };
 		681FE3B41587424800B752C9 /* icon_sc_search.png in Resources */ = {isa = PBXBuildFile; fileRef = 681FE3AC1587424800B752C9 /* icon_sc_search.png */; };
 		6836D416159EB1A700F46394 /* A3CalculatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6836D415159EB1A700F46394 /* A3CalculatorViewController.m */; };
+		683DCDDD15CA705D00D7B7EC /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDD815CA705D00D7B7EC /* CoolButton.m */; };
+		683DCDDE15CA705D00D7B7EC /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDDA15CA705D00D7B7EC /* DDPageControl.m */; };
+		683DCDDF15CA705D00D7B7EC /* MCSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDDC15CA705D00D7B7EC /* MCSegmentedControl.m */; };
 		684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */; };
 		68740173158980DB002B2C92 /* icon_sc_magnifier_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */; };
 		68740174158980DB002B2C92 /* icon_sc_magnifier.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740170158980DB002B2C92 /* icon_sc_magnifier.png */; };
@@ -48,7 +51,6 @@
 		687CA60B15BCFBE2002B87F1 /* A3CalcExpressionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 687CA60A15BCFBE2002B87F1 /* A3CalcExpressionView.m */; };
 		6883032A15ABE053000D4D3C /* A3CalculatorButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883032915ABE053000D4D3C /* A3CalculatorButton.m */; };
 		6888A99F15AFD9D30096F172 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888A99E15AFD9D30096F172 /* A3GrayAppHeaderView.m */; };
-		6888A9B115B02C600096F172 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888A9B015B02C600096F172 /* DDPageControl.m */; };
 		689FF9CC15859D3C004A3CD4 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CB15859D3C004A3CD4 /* A3Utilities.m */; };
 		689FF9CF1586048D004A3CD4 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FF9CE1586048D004A3CD4 /* A3RowSeparatorView.m */; };
 		68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68A15327159041E6007E1D8B /* SearchViewiPad.xib */; };
@@ -87,7 +89,6 @@
 		68D7E74515A15BF80012CDD4 /* A3BlackThickRoundedRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */; };
 		68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D7E74615A161380012CDD4 /* Calculator_iPad.xib */; };
 		68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBDCB415984480006AE286 /* green_check_in_circle.png */; };
-		68E79A87156A69AC001BED0C /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A86156A69AC001BED0C /* CoolButton.m */; };
 		68E79A8A156A6EC1001BED0C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E79A89156A6EC1001BED0C /* QuartzCore.framework */; };
 		68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */; };
 		68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68EEC8DD158EB840000D3661 /* MenuView.xib */; };
@@ -144,6 +145,12 @@
 		681FE3AC1587424800B752C9 /* icon_sc_search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_search.png; path = resources/icons/icon_sc_search.png; sourceTree = "<group>"; };
 		6836D414159EB1A700F46394 /* A3CalculatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorViewController.h; sourceTree = "<group>"; };
 		6836D415159EB1A700F46394 /* A3CalculatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorViewController.m; sourceTree = "<group>"; };
+		683DCDD715CA705D00D7B7EC /* CoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoolButton.h; path = Controls/CoolButton.h; sourceTree = "<group>"; };
+		683DCDD815CA705D00D7B7EC /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoolButton.m; path = Controls/CoolButton.m; sourceTree = "<group>"; };
+		683DCDD915CA705D00D7B7EC /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DDPageControl.h; path = Controls/DDPageControl.h; sourceTree = "<group>"; };
+		683DCDDA15CA705D00D7B7EC /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDPageControl.m; path = Controls/DDPageControl.m; sourceTree = "<group>"; };
+		683DCDDB15CA705D00D7B7EC /* MCSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MCSegmentedControl.h; path = Controls/MCSegmentedControl.h; sourceTree = "<group>"; };
+		683DCDDC15CA705D00D7B7EC /* MCSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MCSegmentedControl.m; path = Controls/MCSegmentedControl.m; sourceTree = "<group>"; };
 		684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorDisplayView.h; sourceTree = "<group>"; };
 		684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorDisplayView.m; sourceTree = "<group>"; };
 		6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier_on.png; path = resources/icons/icon_sc_magnifier_on.png; sourceTree = "<group>"; };
@@ -175,8 +182,6 @@
 		6883032915ABE053000D4D3C /* A3CalculatorButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButton.m; sourceTree = "<group>"; };
 		6888A99D15AFD9D30096F172 /* A3GrayAppHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GrayAppHeaderView.h; sourceTree = "<group>"; };
 		6888A99E15AFD9D30096F172 /* A3GrayAppHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3GrayAppHeaderView.m; sourceTree = "<group>"; };
-		6888A9AF15B02C600096F172 /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDPageControl.h; sourceTree = "<group>"; };
-		6888A9B015B02C600096F172 /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDPageControl.m; sourceTree = "<group>"; };
 		689FF9CA15859D3C004A3CD4 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		689FF9CB15859D3C004A3CD4 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		689FF9CD1586048D004A3CD4 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RowSeparatorView.h; sourceTree = "<group>"; };
@@ -230,8 +235,6 @@
 		68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BlackThickRoundedRectView.m; sourceTree = "<group>"; };
 		68D7E74615A161380012CDD4 /* Calculator_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Calculator_iPad.xib; sourceTree = "<group>"; };
 		68DBDCB415984480006AE286 /* green_check_in_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_check_in_circle.png; path = resources/icons/green_check_in_circle.png; sourceTree = "<group>"; };
-		68E79A85156A69AC001BED0C /* CoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolButton.h; sourceTree = "<group>"; };
-		68E79A86156A69AC001BED0C /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolButton.m; sourceTree = "<group>"; };
 		68E79A89156A6EC1001BED0C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BundleDataController.m; sourceTree = "<group>"; };
 		68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BundleDataController.h; sourceTree = "<group>"; };
@@ -345,10 +348,12 @@
 		6888A9B215B02C820096F172 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
-				68E79A85156A69AC001BED0C /* CoolButton.h */,
-				68E79A86156A69AC001BED0C /* CoolButton.m */,
-				6888A9AF15B02C600096F172 /* DDPageControl.h */,
-				6888A9B015B02C600096F172 /* DDPageControl.m */,
+				683DCDD715CA705D00D7B7EC /* CoolButton.h */,
+				683DCDD815CA705D00D7B7EC /* CoolButton.m */,
+				683DCDD915CA705D00D7B7EC /* DDPageControl.h */,
+				683DCDDA15CA705D00D7B7EC /* DDPageControl.m */,
+				683DCDDB15CA705D00D7B7EC /* MCSegmentedControl.h */,
+				683DCDDC15CA705D00D7B7EC /* MCSegmentedControl.m */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -738,7 +743,6 @@
 				68C1236A1547BD3100150EF2 /* main.m in Sources */,
 				68C1236E1547BD3100150EF2 /* A3AppDelegate.m in Sources */,
 				68C1237A1547BD3100150EF2 /* A3MainViewController.m in Sources */,
-				68E79A87156A69AC001BED0C /* CoolButton.m in Sources */,
 				68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */,
 				68F91CE1157CB2DF00BB373D /* MenuGroup.m in Sources */,
 				68F91CE6157CB30F00BB373D /* MenuItem.m in Sources */,
@@ -753,13 +757,15 @@
 				684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */,
 				68A24B0E15AE75CB0046E5DE /* A3AppHeaderView.m in Sources */,
 				6888A99F15AFD9D30096F172 /* A3GrayAppHeaderView.m in Sources */,
-				6888A9B115B02C600096F172 /* DDPageControl.m in Sources */,
 				68BAE5AC15B41768000508BB /* A3CalculatorButtonsViewController.m in Sources */,
 				687CA60B15BCFBE2002B87F1 /* A3CalcExpressionView.m in Sources */,
 				68C9D23D15C3C07A0098D7F3 /* A3CalcHistoryViewCell.m in Sources */,
 				6818AF1415C7716000233FA6 /* A3CalendarMonthView.m in Sources */,
 				68CCEE1C15C7EC2600B4A122 /* A3CalendarViewController.m in Sources */,
 				68D535FE15C92436000B232A /* A3CalendarBackgroundView.m in Sources */,
+				683DCDDD15CA705D00D7B7EC /* CoolButton.m in Sources */,
+				683DCDDE15CA705D00D7B7EC /* DDPageControl.m in Sources */,
+				683DCDDF15CA705D00D7B7EC /* MCSegmentedControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
