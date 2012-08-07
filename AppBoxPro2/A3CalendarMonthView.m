@@ -14,16 +14,27 @@
 
 #define A3_CALENDAR_MONTH_VIEW_TEXT_RIGHT_MARGIN	4.0f
 
+@interface A3CalendarMonthView ()
+@property(nonatomic, strong) NSCalendar *gregorian;
+@property(nonatomic, strong) NSDate *startDate;
+
+@end
+
 @implementation A3CalendarMonthView {
 	CGFloat columnWidth, rowHeight;
 	CGFloat weekdayHeaderHeight;
 	NSUInteger numberOfRow;
 	CGFloat rightMargin;
+	NSDate *_startDate;
+	NSCalendar *_gregorian;
 }
 
 @synthesize year = _year;
 @synthesize month = _month;
 @synthesize weekStartSunday = _weekStartSunday;
+@synthesize gregorian = _gregorian;
+@synthesize startDate = _startDate;
+
 
 - (void)initialize {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -131,6 +142,43 @@
 	CGContextStrokePath(context);
 }
 
+- (void)drawEventFrom:(NSDate *)eventFrom to:(NSDate *)eventTo colors:(NSArray *)colors {
+	NSDateComponents *dateComponentsFrom = [self.gregorian components:NSDayCalendarUnit fromDate:self.startDate toDate:eventFrom options:0];
+	NSDateComponents *dateComponentsTo = nil;
+	if ([eventFrom isEqualToDate:eventTo]) {
+		NSInteger row, col;
+		row = dateComponentsFrom.day / 7;
+		col = dateComponentsFrom.day % 7;
+
+		CGContextRef context = UIGraphicsGetCurrentContext();
+
+		CGRect drawingRect = CGRectMake(columnWidth * col + 3.0f, weekdayHeaderHeight + rowHeight * row + 20.0f, columnWidth - 4.0f, 14.0f);
+
+		UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRoundedRect:drawingRect cornerRadius:7.0f];
+		[bezierPath addClip];
+		drawLinearGradient(context, drawingRect, [NSArray arrayWithObjects:(__bridge id)[[colors objectAtIndex:1] CGColor],(__bridge id)[[colors objectAtIndex:2] CGColor], nil]);
+
+		CGContextSetStrokeColorWithColor(context, [(UIColor *)[colors objectAtIndex:0] CGColor]);
+		[bezierPath stroke];
+
+		CGFloat radius = 4.0f, margin = 3.0f;
+		CGContextAddArc(context, CGRectGetMinX(drawingRect) + margin + radius + 1.0f, CGRectGetMinY(drawingRect) + margin + radius, radius, 0.0, M_PI * 2.0, 1);
+		CGContextSetFillColorWithColor(context, [[colors objectAtIndex:4] CGColor]);
+		CGContextFillPath(context);
+
+		CGContextAddArc(context, CGRectGetMinX(drawingRect) + margin + radius + 1.0f, CGRectGetMinY(drawingRect) + margin + radius, radius, 0.0, M_PI * 2.0, 1);
+		CGContextSetStrokeColorWithColor(context, [[colors objectAtIndex:3] CGColor]);
+		CGContextStrokePath(context);
+
+		NSString *eventTitle = @"Event";
+		CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
+		CGContextSetFillColorWithColor(context, [[UIColor blackColor] CGColor]);
+		[eventTitle drawAtPoint:CGPointMake(CGRectGetMinX(drawingRect) + radius * 2 + margin + 4.0f, CGRectGetMinY(drawingRect)) withFont:[UIFont systemFontOfSize:10.0]];
+	} else {
+		dateComponentsTo = [self.gregorian components:NSDayCalendarUnit fromDate:self.startDate toDate:eventTo options:0];
+	}
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
@@ -141,9 +189,7 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
 	// Determine how many weeks in the given month.
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDate *startDate = [self firstDateOfMonthWithCalendar:gregorian];
-	numberOfRow = [self numberOfWeeksWithCalendar:gregorian];
+	numberOfRow = [self numberOfWeeksWithCalendar:self.gregorian];
 
 	weekdayHeaderHeight = 20.0f;
 	columnWidth = CGRectGetWidth(drawingRect) / 7.0;
@@ -154,7 +200,7 @@
 
 	NSDateComponents *addComponent = [[NSDateComponents alloc] init];
 	addComponent.day = 1;
-	NSDate *currentDate = startDate;
+	NSDate *currentDate = self.startDate;
 
 	CGContextSetAllowsAntialiasing(context, true);
 
@@ -166,11 +212,11 @@
 
 	UIColor *todayTextColor = [UIColor whiteColor];
 
-	NSDateComponents *dateComponentsForToday = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *dateComponentsForToday = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
 
 	for (NSUInteger row = 0; row < numberOfRow; row++) {
 		for (NSUInteger col = 0; col < 7; col++) {
-			NSDateComponents *currentDateComponent = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
+			NSDateComponents *currentDateComponent = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
 
 			CGContextSaveGState(context);
 
@@ -187,17 +233,28 @@
 
 			CGContextRestoreGState(context);
 
-			currentDate = [gregorian dateByAddingComponents:addComponent toDate:currentDate options:0];
+			currentDate = [self.gregorian dateByAddingComponents:addComponent toDate:currentDate options:0];
 		}
 	}
+
+	NSArray *eventColors = [NSArray arrayWithObjects:
+			[UIColor colorWithRed:199.0f/255.0f green:202.0f/255.0f blue:229.0f/255.0f alpha:1.0f], // border color
+			[UIColor colorWithRed:223.0f/255.0f green:227.0f/255.0f blue:255.0f/255.0f alpha:1.0f], // fill gradient start
+			[UIColor colorWithRed:233.0f/255.0f green:235.0f/255.0f blue:255.0f/255.0f alpha:1.0f], // fill gradient end
+			[UIColor colorWithRed:38.0f/255.0f green:60.0f/255.0f blue:166.0f/255.0f alpha:1.0f], // circle border
+			[UIColor colorWithRed:106.0f/255.0f green:117.0f/255.0f blue:299.0f/255.0f alpha:1.0f], nil];	// circle fill color
+	[self drawEventFrom:self.startDate to:self.startDate colors:eventColors];
+
+	self.gregorian = nil;
 }
+
 
 - (void)drawTodayMarkAtCol:(NSInteger)col atRow:(NSInteger)row context:(CGContextRef)context {
 	CGContextSaveGState(context);
 
 	NSArray *colors = [NSArray arrayWithObjects:
-			(__bridge id)[[UIColor colorWithRed:119.0f/255.0f green:122.0f/255.0f blue:243.0f/255.0f alpha:1.0f] CGColor],
-			(__bridge id)[[UIColor colorWithRed:93.0f/255.0f green:89.0f/255.0f blue:208.0f/255.0f alpha:1.0f] CGColor], nil];
+			(__bridge id)[[UIColor colorWithRed:119.0f / 255.0f green:122.0f / 255.0f blue:243.0f / 255.0f alpha:1.0f] CGColor],
+			(__bridge id)[[UIColor colorWithRed:93.0f / 255.0f green:89.0f / 255.0f blue:208.0f / 255.0f alpha:1.0f] CGColor], nil];
 	CGRect drawRect = CGRectMake(col * columnWidth, row * rowHeight + weekdayHeaderHeight, columnWidth, 22.0f);
 	drawLinearGradient(context, drawRect, colors);
 
@@ -208,6 +265,20 @@
 	CGContextStrokePath(context);
 
 	CGContextRestoreGState(context);
+}
+
+- (NSCalendar *)gregorian {
+	if (nil == _gregorian) {
+		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	}
+	return _gregorian;
+}
+
+- (NSDate *)startDate {
+	if (nil == _startDate) {
+		_startDate = [self firstDateOfMonthWithCalendar:self.gregorian];
+	}
+	return _startDate;
 }
 
 @end
