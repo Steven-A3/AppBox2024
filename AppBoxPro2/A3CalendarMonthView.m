@@ -43,6 +43,7 @@
 	_month = dateComponents.month;		// July
 	_weekStartSunday = YES;
 
+	self.contentMode = UIViewContentModeRedraw;
 	self.backgroundColor = [UIColor whiteColor];
 }
 
@@ -245,6 +246,7 @@
 			[UIColor colorWithRed:106.0f/255.0f green:117.0f/255.0f blue:299.0f/255.0f alpha:1.0f], nil];	// circle fill color
 	[self drawEventFrom:self.startDate to:self.startDate colors:eventColors];
 
+	self.startDate = nil;
 	self.gregorian = nil;
 }
 

@@ -13,6 +13,8 @@ void addRightGradientLayer8Point(UIView *targetView);
 void drawLinearGradient(CGContextRef context, CGRect rect, NSArray *colors);
 BOOL UserInterfacePortrait();
 
+extern float dash_line_pattern[];
+
 @interface A3Utilities : NSObject
 
 @end

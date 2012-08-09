@@ -11,10 +11,10 @@
 
 @interface A3CalendarMonthFrameViewController ()
 
-@property (nonatomic, weak) IBOutlet UILabel *big3LetterMonthLabel;
-@property (nonatomic, weak) IBOutlet UILabel *smallFullMonthLabel;
-@property (nonatomic, weak) IBOutlet UILabel *yearLabel;
-@property (nonatomic, weak) IBOutlet A3CalendarMonthView *monthView;
+@property (nonatomic, strong) IBOutlet UILabel *big3LetterMonthLabel;
+@property (nonatomic, strong) IBOutlet UILabel *smallFullMonthLabel;
+@property (nonatomic, strong) IBOutlet UILabel *yearLabel;
+@property (nonatomic, strong) IBOutlet A3CalendarMonthView *monthView;
 
 @end
 
@@ -32,7 +32,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+	[self updateLabels];
 }
 
 - (void)viewDidUnload
@@ -60,14 +61,14 @@
 	[self updateLabels];
 }
 
-- (void)changeYear:(NSInteger)yearDiffence month:(NSInteger)monthDifference {
+- (void)changeYear:(NSInteger)yearDifference month:(NSInteger)monthDifference {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
 	dateComponents.month = self.monthView.month;
 	dateComponents.year = self.monthView.year;
 	NSDate *currentDate = [gregorian dateFromComponents:dateComponents];
 	NSDateComponents *addComponents = [[NSDateComponents alloc] init];
-	addComponents.year = yearDiffence;
+	addComponents.year = yearDifference;
 	addComponents.month = monthDifference;
 
 	NSDate *newDate = [gregorian dateByAddingComponents:addComponents toDate:currentDate options:0];

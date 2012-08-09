@@ -7,16 +7,11 @@
 //
 
 #import "A3CalendarWeekContentsView.h"
+#import "A3CalendarWeekViewMetrics.h"
+#import "A3Utilities.h"
+#import "A3CalendarWeekView.h"
 
-@implementation A3CalendarWeekContentsView {
-	CGFloat timeTextWidth;
-	CGFloat dayAndWeekdayBarHeight;
-	CGFloat numberOfColumn;
-	CGFloat columnWidth;		// 7 weekday
-	CGFloat rowHeight;			// 24 hours
-	CGFloat allDayEventHeight;
-	CGFloat calendarHeight;
-}
+@implementation A3CalendarWeekContentsView
 @synthesize startDate = _startDate;
 
 
@@ -25,6 +20,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+		self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }
@@ -33,44 +29,74 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-    // Drawing code
-	timeTextWidth = 60.0f;
-	dayAndWeekdayBarHeight = 20.0f;
-	allDayEventHeight = 30.0f;
-	rowHeight = 44.0f;
-	numberOfColumn = 7;
-	calendarHeight = CGRectGetHeight(rect) - dayAndWeekdayBarHeight;
-
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
-	CGContextSetRGBFillColor(context, 250.0f/255.0f, 252.0f/255.0f, 252.0f/255.0f, 1.0f);
-	CGContextAddRect(context, CGRectMake(timeTextWidth, dayAndWeekdayBarHeight, columnWidth, calendarHeight));
-	CGContextAddRect(context, CGRectMake(CGRectGetMaxX(rect)-columnWidth, dayAndWeekdayBarHeight, columnWidth, calendarHeight));
+	CGContextSaveGState(context);
+	CGContextSetAllowsAntialiasing(context, false);
+
+	CGFloat left = CGRectGetMinX(rect) + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH;
+	CGFloat top = CGRectGetMinY(rect);
+	CGFloat right = CGRectGetMaxX(rect) - 1.0f;
+	CGFloat bottom = CGRectGetMaxY(rect);
+	CGFloat columnWidth = (CGRectGetWidth(rect) - A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH) / 7.0;
+	CGFloat rowHeight = A3_CALENDAR_WEEKVIEW_ROW_HEIGHT;
+
+	CGContextSetFillColorWithColor(context, A3_CALENDAR_WEEK_VIEW_BACKGROUND_COLOR);
+	CGContextAddRect(context, CGRectMake(left, top, columnWidth, CGRectGetHeight(rect)));
+	CGContextAddRect(context, CGRectMake(right - columnWidth, top, columnWidth, CGRectGetHeight(rect)));
 	CGContextFillPath(context);
 
-	CGFloat originX = timeTextWidth;
-	CGFloat originY = dayAndWeekdayBarHeight;
-	CGContextSetRGBStrokeColor(context, 192.0f/255.0f, 193.0f/255.0f, 194.0f/255.0f, 1.0f);
+	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_VIEW_LINE_COLOR);
 
-	CGContextMoveToPoint(context, timeTextWidth, dayAndWeekdayBarHeight + allDayEventHeight - 5.0f);
-	CGContextAddLineToPoint(context, CGRectGetWidth(rect), dayAndWeekdayBarHeight + allDayEventHeight - 5.0f);
-
-	CGContextMoveToPoint(context, timeTextWidth, dayAndWeekdayBarHeight + allDayEventHeight);
-	CGContextAddLineToPoint(context, CGRectGetWidth(rect), dayAndWeekdayBarHeight + allDayEventHeight);
-
-	// Add vertical line
+	// Add vertical lines
 	for (NSInteger index = 0; index < 8; index++) {
-		CGContextMoveToPoint(context, timeTextWidth + columnWidth * index, dayAndWeekdayBarHeight);
-		CGContextAddLineToPoint(context, timeTextWidth + columnWidth * index, CGRectGetHeight(rect));
+		CGFloat x = left + columnWidth * index - (index == 7 ? 1.0f : 0.0f);
+		CGContextMoveToPoint(context, x, top);
+		CGContextAddLineToPoint(context, x, bottom);
 	}
 
-	// Add horizontal line
-	originY = dayAndWeekdayBarHeight + allDayEventHeight;
-	for (NSInteger index = 0; index < 24; index++) {
-		CGContextMoveToPoint(context, timeTextWidth, originY + rowHeight * index);
-		CGContextAddLineToPoint(context, CGRectGetMaxX(rect), originY + rowHeight * index);
+	// Add horizontal hour lines
+	for (NSInteger index = 0; index < 23; index++) {
+		CGFloat y = top + rowHeight * (index + 1);
+		CGContextMoveToPoint(context, left, y);
+		CGContextAddLineToPoint(context, right, y);
 	}
-	CGContextFillPath(context);
+	CGContextStrokePath(context);
+
+	CGContextSetLineDash(context, 1.0f, dash_line_pattern, 2);
+	for (NSInteger index = 0; index < 24; index++) {
+		CGFloat y = top + rowHeight * index + rowHeight / 2.0f;
+		CGContextMoveToPoint(context, left, y);
+		CGContextAddLineToPoint(context, right, y);
+	}
+	CGContextStrokePath(context);
+
+	CGContextRestoreGState(context);
+
+	CGContextSetAllowsAntialiasing(context, true);
+	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_HEADER_TEXT_COLOR);
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *dateComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+	dateComponents.hour = 1;
+	NSDate *currentHour = [gregorian dateFromComponents:dateComponents];
+
+	NSDateComponents *addingComponents = [[NSDateComponents alloc] init];
+	addingComponents.hour = 1;
+
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:@"h a"];
+	UIFont *hourFont = [UIFont systemFontOfSize:10.0f];
+	left = CGRectGetMinX(rect);
+	for (NSInteger index = 0; index < 23; index++) {
+		NSString *hourText = [dateFormatter stringFromDate:currentHour];
+		CGSize size = [hourText sizeWithFont:hourFont];
+
+		CGFloat x = left + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH - size.width - 3.0f;
+		CGFloat y = top + rowHeight * (index + 1) - size.height / 2.0f;
+		[hourText drawAtPoint:CGPointMake(x, y) withFont:hourFont];
+
+		currentHour = [gregorian dateByAddingComponents:addingComponents toDate:currentHour options:0];
+	}
 }
 
 @end

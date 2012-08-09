@@ -10,18 +10,17 @@
 
 @interface A3MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate>
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
-@property (weak, nonatomic) IBOutlet CoolButton *editButton;
-@property (weak, nonatomic) IBOutlet CoolButton *plusButton;
-@property (weak, nonatomic) IBOutlet UIView *hotMenuView;
-@property (weak, nonatomic) IBOutlet UIView *leftGradientHotMenuView;
-@property (weak, nonatomic) IBOutlet UIView *rightGradientHotMenuView;
-@property (weak, nonatomic) IBOutlet UIView *leftGradientOnMenuView;
-@property (weak, nonatomic) IBOutlet UIView *rightGradientOnMenuView;
-@property (weak, nonatomic) IBOutlet UITableView *menuTableView;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) IBOutlet CoolButton *editButton;
+@property (nonatomic, strong) IBOutlet CoolButton *plusButton;
+@property (nonatomic, strong) IBOutlet UIView *hotMenuView;
+@property (nonatomic, strong) IBOutlet UIView *leftGradientHotMenuView;
+@property (nonatomic, strong) IBOutlet UIView *rightGradientHotMenuView;
+@property (nonatomic, strong) IBOutlet UIView *leftGradientOnMenuView;
+@property (nonatomic, strong) IBOutlet UIView *rightGradientOnMenuView;
+@property (nonatomic, strong) IBOutlet UITableView *menuTableView;
+@property (nonatomic, strong) IBOutlet UISearchBar *searchBar;
 
 - (IBAction)plusButtonTouchUpInside:(UIButton *)sender;
-
 
 @end

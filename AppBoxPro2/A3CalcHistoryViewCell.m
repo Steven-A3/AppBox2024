@@ -51,8 +51,6 @@
 	}
 }
 
-static float pattern[] = {2.0f, 2.0f};
-
 - (void)drawRect:(CGRect)rect {
 	[super drawRect:rect];
 
@@ -74,7 +72,7 @@ static float pattern[] = {2.0f, 2.0f};
 	// So given a dash pattern of {10, 10} with a phase of 5, you would draw 5 points (since phase plus 5 yields 10 points),
 	// then skip 10, draw 10, skip 10, draw 10, etc.
 
-	CGContextSetLineDash(context, 1.0f, pattern, 2);
+	CGContextSetLineDash(context, 1.0f, dash_line_pattern, 2);
 
 	// Draw a horizontal line, vertical line, rectangle and circle for comparison
 	CGContextMoveToPoint(context, CGRectGetMinX(self.bounds), CGRectGetMaxY(self.bounds));

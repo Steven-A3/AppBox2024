@@ -1,0 +1,14 @@
+//
+//  A3CalendarWeekViewMetrics.h
+//  AppBoxPro2
+//
+//  Created by Byeong Kwon Kwak on 8/9/12.
+//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//
+
+#define A3_CALENDAR_WEEK_VIEW_LINE_COLOR			[UIColor colorWithRed:192.0f/255.0f green:193.0f/255.0f blue:194.0f/255.0f alpha:1.0f].CGColor
+#define A3_CALENDAR_WEEK_VIEW_BACKGROUND_COLOR		[UIColor colorWithRed:250.0f/255.0f green:252.0f/255.0f blue:252.0f/255.0f alpha:1.0f].CGColor
+#define A3_CALENDAR_WEEK_HEADER_TEXT_COLOR			[UIColor colorWithRed:101.0f/255.0f green:101.0f blue:101.0f/255.0f alpha:1.0f].CGColor
+#define A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH		40.0f
+#define A3_CALENDAR_WEEKVIEW_ROW_HEIGHT				44.0f
+#define A3_CALENDAR_WEEKVIEW_HEIGHT					A3_CALENDAR_WEEKVIEW_ROW_HEIGHT * 24

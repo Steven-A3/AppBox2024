@@ -11,9 +11,9 @@
 
 @interface A3CalcHistoryContentsView : UIView
 
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *resultLabel;
-@property (weak, nonatomic) IBOutlet A3CalcExpressionView *expressionView;
+@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
+@property (nonatomic, strong) IBOutlet UILabel *resultLabel;
+@property (nonatomic, strong) IBOutlet A3CalcExpressionView *expressionView;
 
 @end
 

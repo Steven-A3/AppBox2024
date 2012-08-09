@@ -20,13 +20,13 @@
 @interface A3CalculatorViewController ()
 - (void)buildGradientLayers;
 
-@property (weak) IBOutlet UIScrollView *buttonsScrollView;
-@property (strong) UIView *topLineAboveHistoryHeaderView;
-@property (strong) DDPageControl *pageControl;
-@property (strong) A3GrayAppHeaderView *grayAppHeaderView;
-@property (strong, nonatomic) CoolButton *editHistoryButton;
-@property (strong) UITableView *historyTableView;
-@property (weak) IBOutlet A3CalcExpressionView *expressionView;
+@property (nonatomic, strong) IBOutlet UIScrollView *buttonsScrollView;
+@property (nonatomic, strong) UIView *topLineAboveHistoryHeaderView;
+@property (nonatomic, strong) DDPageControl *pageControl;
+@property (nonatomic, strong) A3GrayAppHeaderView *grayAppHeaderView;
+@property (nonatomic, strong) CoolButton *editHistoryButton;
+@property (nonatomic, strong) UITableView *historyTableView;
+@property (nonatomic, strong) IBOutlet A3CalcExpressionView *expressionView;
 
 - (void)layoutSubViews;
 

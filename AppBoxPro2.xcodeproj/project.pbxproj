@@ -26,6 +26,9 @@
 		683DCDDD15CA705D00D7B7EC /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDD815CA705D00D7B7EC /* CoolButton.m */; };
 		683DCDDE15CA705D00D7B7EC /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 683DCDDA15CA705D00D7B7EC /* DDPageControl.m */; };
 		684E255415AC3A3300D52A7B /* A3CalculatorDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */; };
+		685E8C9215D37C9E003A936D /* A3CalendarWeekViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E8C9015D37C9E003A936D /* A3CalendarWeekViewController.m */; };
+		685E8C9315D37C9E003A936D /* A3CalendarWeekViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E8C9115D37C9E003A936D /* A3CalendarWeekViewController.xib */; };
+		685E8C9915D38048003A936D /* A3CalendarWeekHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E8C9815D38048003A936D /* A3CalendarWeekHeaderView.m */; };
 		685F969115CBA5DA007DA8E2 /* A3DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F969015CBA5DA007DA8E2 /* A3DatePickerViewController.m */; };
 		68740173158980DB002B2C92 /* icon_sc_magnifier_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */; };
 		68740174158980DB002B2C92 /* icon_sc_magnifier.png in Resources */ = {isa = PBXBuildFile; fileRef = 68740170158980DB002B2C92 /* icon_sc_magnifier.png */; };
@@ -135,6 +138,7 @@
 
 /* Begin PBXFileReference section */
 		17D427CD6E4D5804941BF6F5 /* A3CalendarPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarPreferences.h; sourceTree = "<group>"; };
+		17D42C75E2729EECE4468796 /* A3CalendarWeekViewMetrics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarWeekViewMetrics.h; sourceTree = "<group>"; };
 		17D42DBE8962BC0E19DC2786 /* A3CalendarPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarPreferences.m; sourceTree = "<group>"; };
 		6818AF1215C7716000233FA6 /* A3CalendarMonthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarMonthView.h; sourceTree = "<group>"; };
 		6818AF1315C7716000233FA6 /* A3CalendarMonthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarMonthView.m; sourceTree = "<group>"; };
@@ -162,6 +166,11 @@
 		683DCDDA15CA705D00D7B7EC /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DDPageControl.m; path = Controls/DDPageControl.m; sourceTree = "<group>"; };
 		684E255215AC3A3300D52A7B /* A3CalculatorDisplayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorDisplayView.h; sourceTree = "<group>"; };
 		684E255315AC3A3300D52A7B /* A3CalculatorDisplayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorDisplayView.m; sourceTree = "<group>"; };
+		685E8C8F15D37C9E003A936D /* A3CalendarWeekViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarWeekViewController.h; sourceTree = "<group>"; };
+		685E8C9015D37C9E003A936D /* A3CalendarWeekViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarWeekViewController.m; sourceTree = "<group>"; };
+		685E8C9115D37C9E003A936D /* A3CalendarWeekViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarWeekViewController.xib; sourceTree = "<group>"; };
+		685E8C9715D38048003A936D /* A3CalendarWeekHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarWeekHeaderView.h; sourceTree = "<group>"; };
+		685E8C9815D38048003A936D /* A3CalendarWeekHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarWeekHeaderView.m; sourceTree = "<group>"; };
 		685F968F15CBA5DA007DA8E2 /* A3DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DatePickerViewController.h; sourceTree = "<group>"; };
 		685F969015CBA5DA007DA8E2 /* A3DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DatePickerViewController.m; sourceTree = "<group>"; };
 		6874016F158980DB002B2C92 /* icon_sc_magnifier_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_sc_magnifier_on.png; path = resources/icons/icon_sc_magnifier_on.png; sourceTree = "<group>"; };
@@ -294,6 +303,7 @@
 		6818AF0F15C7710800233FA6 /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				17D42C75E2729EECE4468796 /* A3CalendarWeekViewMetrics.h */,
 				17D427CD6E4D5804941BF6F5 /* A3CalendarPreferences.h */,
 				17D42DBE8962BC0E19DC2786 /* A3CalendarPreferences.m */,
 				6818AF1215C7716000233FA6 /* A3CalendarMonthView.h */,
@@ -313,6 +323,11 @@
 				6878A68515D107270036CB31 /* A3CalendarMonthFrameViewController.h */,
 				6878A68615D107270036CB31 /* A3CalendarMonthFrameViewController.m */,
 				6878A68815D10C490036CB31 /* A3CalendarContentsViewCommand.h */,
+				685E8C8F15D37C9E003A936D /* A3CalendarWeekViewController.h */,
+				685E8C9015D37C9E003A936D /* A3CalendarWeekViewController.m */,
+				685E8C9115D37C9E003A936D /* A3CalendarWeekViewController.xib */,
+				685E8C9715D38048003A936D /* A3CalendarWeekHeaderView.h */,
+				685E8C9815D38048003A936D /* A3CalendarWeekHeaderView.m */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -731,6 +746,7 @@
 				68CCEE2615C7FCD500B4A122 /* icon_leftarrow.png in Resources */,
 				68CCEE2715C7FCD500B4A122 /* icon_rightarrow.png in Resources */,
 				6878A68415D103DF0036CB31 /* A3CalendarMonthFrameView.xib in Resources */,
+				685E8C9315D37C9E003A936D /* A3CalendarWeekViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -796,6 +812,8 @@
 				683BCD4415CBE8FE00C1D3D0 /* A3CalendarWeekContentsView.m in Sources */,
 				6878A68715D107270036CB31 /* A3CalendarMonthFrameViewController.m in Sources */,
 				17D42EFA37B274AB3F9FFFEB /* A3CalendarPreferences.m in Sources */,
+				685E8C9215D37C9E003A936D /* A3CalendarWeekViewController.m in Sources */,
+				685E8C9915D38048003A936D /* A3CalendarWeekHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

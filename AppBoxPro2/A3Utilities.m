@@ -9,6 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3Utilities.h"
 
+float dash_line_pattern[] = {2.0f, 2.0f};
+
 @implementation A3Utilities
 
 @end
