@@ -107,8 +107,9 @@ typedef enum {
 			break;
 		case A3CalendarViewTypeWeek: {
 			A3CalendarWeekViewController *viewController = [[A3CalendarWeekViewController alloc] initWithNibName:@"A3CalendarWeekViewController" bundle:nil];
-			[viewController.view setFrame:self.calendarView.frame];
+			[viewController setSubviewFrame:self.calendarView.frame];
 			[self addChildViewController:viewController];
+			[viewController didMoveToParentViewController:self];
 			[self.calendarView addSubview:[viewController view]];
 			break;
 		}

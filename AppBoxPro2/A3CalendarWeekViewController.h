@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface A3CalendarWeekViewController : UIViewController
+@property (nonatomic, strong) NSDate *firstDateOfWeek;
+
+- (void)setSubviewFrame:(CGRect)frame;
+
 
 @end

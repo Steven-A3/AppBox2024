@@ -16,5 +16,7 @@ BOOL UserInterfacePortrait();
 extern float dash_line_pattern[];
 
 @interface A3Utilities : NSObject
++ (NSDate *)firstWeekdayOfDate:(NSDate *)date;
+
 
 @end

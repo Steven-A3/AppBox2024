@@ -13,6 +13,22 @@ float dash_line_pattern[] = {2.0f, 2.0f};
 
 @implementation A3Utilities
 
++ (NSDate *)firstWeekdayOfDate:(NSDate *)date {
+	NSDate *result;
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
+	// weekday 1 == sunday, 1SUN 2MON 3TUE 4WED 5THU 6FRI 7SAT
+	if (components.weekday > 1) {
+		NSDateComponents *subtractComponents = [[NSDateComponents alloc] init];
+		subtractComponents.day = 1 - components.weekday;
+		result = [gregorian dateByAddingComponents:subtractComponents toDate:date options:0];
+	} else {
+		result = date;
+	}
+
+	return result;
+}
+
 @end
 
 void addLeftGradientLayer8Point(UIView *targetView) {

@@ -9,6 +9,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import "A3CalendarWeekView.h"
 #import "A3CalendarWeekViewMetrics.h"
+#import "common.h"
 
 @interface A3CalendarWeekView ()
 @property(nonatomic, strong) A3CalendarWeekContentsView *contentsView;
@@ -58,8 +59,18 @@
 - (A3CalendarWeekContentsView *)contentsView {
 	if (nil == _contentsView) {
 		_contentsView = [[A3CalendarWeekContentsView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.bounds), self.contentSize.height)];
+		_contentsView.autoresizingMask = self.autoresizingMask;
 	}
 	return _contentsView;
+}
+
+- (void)resetContentSize {
+	FNLOG(@"bounds %f, %f", CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
+	FNLOG(@"contentsize %f, %f", self.contentSize.width, self.contentSize.height);
+	[self setContentSize:CGSizeMake(CGRectGetWidth(self.bounds), A3_CALENDAR_WEEKVIEW_HEIGHT)];
+	[self.contentsView setFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.bounds), A3_CALENDAR_WEEKVIEW_HEIGHT)];
+	[self.contentsView updateTimeMark];
+	FNLOG(@"contentsize %f, %f", self.contentSize.width, self.contentSize.height);
 }
 
 @end

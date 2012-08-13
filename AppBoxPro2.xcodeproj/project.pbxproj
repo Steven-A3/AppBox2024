@@ -64,6 +64,7 @@
 		68A15328159041E6007E1D8B /* SearchViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68A15327159041E6007E1D8B /* SearchViewiPad.xib */; };
 		68A1533715904670007E1D8B /* A3SearchIPADViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A1533615904670007E1D8B /* A3SearchIPADViewController.m */; };
 		68A24B0E15AE75CB0046E5DE /* A3AppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */; };
+		68B897D615D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B897D515D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.m */; };
 		68BAE5A515B41212000508BB /* CalculatorButtonsInFirstPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BAE5A415B41212000508BB /* CalculatorButtonsInFirstPage.xib */; };
 		68BAE5AC15B41768000508BB /* A3CalculatorButtonsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BAE5AA15B41768000508BB /* A3CalculatorButtonsViewController.m */; };
 		68BAE5AF15B417D2000508BB /* CalculatorButtonsInSecondPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BAE5AE15B417D2000508BB /* CalculatorButtonsInSecondPage.xib */; };
@@ -97,6 +98,7 @@
 		68D7E74515A15BF80012CDD4 /* A3BlackThickRoundedRectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */; };
 		68D7E74715A161380012CDD4 /* Calculator_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D7E74615A161380012CDD4 /* Calculator_iPad.xib */; };
 		68DBDCB515984480006AE286 /* green_check_in_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 68DBDCB415984480006AE286 /* green_check_in_circle.png */; };
+		68DD26DE15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DD26DD15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.m */; };
 		68E79A8A156A6EC1001BED0C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E79A89156A6EC1001BED0C /* QuartzCore.framework */; };
 		68E79A8A156A6EC1001BED0E /* A3BundleDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */; };
 		68EEC8DE158EB840000D3661 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68EEC8DD158EB840000D3661 /* MenuView.xib */; };
@@ -215,6 +217,8 @@
 		68A1533615904670007E1D8B /* A3SearchIPADViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SearchIPADViewController.m; sourceTree = "<group>"; };
 		68A24B0C15AE75CB0046E5DE /* A3AppHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppHeaderView.h; sourceTree = "<group>"; };
 		68A24B0D15AE75CB0046E5DE /* A3AppHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppHeaderView.m; sourceTree = "<group>"; };
+		68B897D415D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarWeekCurrentTimeMarkView.h; sourceTree = "<group>"; };
+		68B897D515D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarWeekCurrentTimeMarkView.m; sourceTree = "<group>"; };
 		68BAE5A415B41212000508BB /* CalculatorButtonsInFirstPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalculatorButtonsInFirstPage.xib; sourceTree = "<group>"; };
 		68BAE5A915B41768000508BB /* A3CalculatorButtonsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButtonsViewController.h; sourceTree = "<group>"; };
 		68BAE5AA15B41768000508BB /* A3CalculatorButtonsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButtonsViewController.m; sourceTree = "<group>"; };
@@ -259,6 +263,8 @@
 		68D7E74415A15BF80012CDD4 /* A3BlackThickRoundedRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BlackThickRoundedRectView.m; sourceTree = "<group>"; };
 		68D7E74615A161380012CDD4 /* Calculator_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Calculator_iPad.xib; sourceTree = "<group>"; };
 		68DBDCB415984480006AE286 /* green_check_in_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = green_check_in_circle.png; path = resources/icons/green_check_in_circle.png; sourceTree = "<group>"; };
+		68DD26DC15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarWeekTodayMarkView.h; sourceTree = "<group>"; };
+		68DD26DD15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarWeekTodayMarkView.m; sourceTree = "<group>"; };
 		68E79A89156A6EC1001BED0C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		68E79A8A156A6EC1001BED0D /* A3BundleDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BundleDataController.m; sourceTree = "<group>"; };
 		68E79A8A156A6EC1001BED0F /* A3BundleDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BundleDataController.h; sourceTree = "<group>"; };
@@ -328,6 +334,10 @@
 				685E8C9115D37C9E003A936D /* A3CalendarWeekViewController.xib */,
 				685E8C9715D38048003A936D /* A3CalendarWeekHeaderView.h */,
 				685E8C9815D38048003A936D /* A3CalendarWeekHeaderView.m */,
+				68DD26DC15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.h */,
+				68DD26DD15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.m */,
+				68B897D415D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.h */,
+				68B897D515D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.m */,
 			);
 			name = Calendar;
 			sourceTree = "<group>";
@@ -814,6 +824,8 @@
 				17D42EFA37B274AB3F9FFFEB /* A3CalendarPreferences.m in Sources */,
 				685E8C9215D37C9E003A936D /* A3CalendarWeekViewController.m in Sources */,
 				685E8C9915D38048003A936D /* A3CalendarWeekHeaderView.m in Sources */,
+				68DD26DE15D49CA400ACB83E /* A3CalendarWeekTodayMarkView.m in Sources */,
+				68B897D615D915A200834DE1 /* A3CalendarWeekCurrentTimeMarkView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
