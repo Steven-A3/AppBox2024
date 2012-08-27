@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleIdentifier</key>
+	<string>org.cocoapods.FRLayeredNavigationController-0.3.0</string>
+	<key>CFBundleName</key>
+	<string>FRLayeredNavigationController 0.3.0 Documentation</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	
+	
+	<key>DocSetDescription</key>
+	<string>FRLayeredNavigationController gives iPad developers a simple drop-in replacement for UINavigationController for great UIs. It is a view controller compositor which enables you to develop -- as we think -- great iPad apps. Influenced by the UI of the Twitter and Soundcloud iPad apps.</string>
+	
+	<key>DocSetFeedName</key>
+	<string>FRLayeredNavigationController 0.3.0 Documentation</string>
+	
+	<key>DocSetMinimumXcodeVersion</key>
+	<string>3.0</string>
+	
+	<key>DashDocSetFamily</key>
+	<string>appledoc</string>
+	<key>DocSetPublisherIdentifier</key>
+	<string>org.cocoapods.documentation</string>
+	<key>DocSetPublisherName</key>
+	<string>Johannes Weiß</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Johannes Weiß</string>
+</dict>
+</plist>

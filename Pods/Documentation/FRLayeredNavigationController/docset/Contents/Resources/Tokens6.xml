@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Categories/UIViewController+FRLayeredNavigationController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cat/UIViewController(FRLayeredNavigationController)</TokenIdentifier>
+			<Abstract type="html">The UIViewController(FRLayeredNavigationController) category provides convenience properties
+to access a view controller&apos;s FRLayeredNavigationItem and the nearest FRLayeredNavigationController. Just
+as the navigationItem and navigationController properties of UIViewController.</Abstract>
+			<DeclaredIn>UIViewController+FRLayeredNavigationController.h</DeclaredIn>
+			
+			<NodeRef refid="6"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/UIViewController(FRLayeredNavigationController)/setLayeredNavigationController:</TokenIdentifier>
+			<Abstract type="html">The nearest ancestor in the view controller hierarchy that is a FRLayeredNavigationController.</Abstract>
+			<DeclaredIn>UIViewController+FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, strong) FRLayeredNavigationController *layeredNavigationController</Declaration>
+			
+			
+			<Anchor>//api/name/layeredNavigationController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/UIViewController(FRLayeredNavigationController)/layeredNavigationController</TokenIdentifier>
+			<Abstract type="html">The nearest ancestor in the view controller hierarchy that is a FRLayeredNavigationController.</Abstract>
+			<DeclaredIn>UIViewController+FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, strong) FRLayeredNavigationController *layeredNavigationController</Declaration>
+			
+			
+			<Anchor>//api/name/layeredNavigationController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfm/UIViewController(FRLayeredNavigationController)/setLayeredNavigationItem:</TokenIdentifier>
+			<Abstract type="html">The navigation item used to represent the view controller inside a FRLayeredNavigationController.</Abstract>
+			<DeclaredIn>UIViewController+FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, strong) FRLayeredNavigationItem *layeredNavigationItem</Declaration>
+			
+			
+			<Anchor>//api/name/layeredNavigationItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/intfp/UIViewController(FRLayeredNavigationController)/layeredNavigationItem</TokenIdentifier>
+			<Abstract type="html">The navigation item used to represent the view controller inside a FRLayeredNavigationController.</Abstract>
+			<DeclaredIn>UIViewController+FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly, strong) FRLayeredNavigationItem *layeredNavigationItem</Declaration>
+			
+			
+			<Anchor>//api/name/layeredNavigationItem</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

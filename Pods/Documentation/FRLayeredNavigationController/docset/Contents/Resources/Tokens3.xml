@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/FRLayeredNavigationController.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/FRLayeredNavigationController</TokenIdentifier>
+			<Abstract type="html">The FRLayeredNavigationController class implements a container view controller that manages the navigation
+of hierarchical content. This class is not intended for subclassing.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>
+			
+			<NodeRef refid="3"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/initWithRootViewController:</TokenIdentifier>
+			<Abstract type="html">Initializes and returns a newly created layered navigation controller.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithRootViewController:(UIViewController *)rootViewController</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>rootViewController</Name>
+					<Abstract type="html">The view controller that resides at the bottom of the navigation stack.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/initWithRootViewController:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/initWithRootViewController:configuration:</TokenIdentifier>
+			<Abstract type="html">Initializes and returns a newly created layered navigation controller.
+Does the same as initWithRootViewController: but has the ability to configure some parameters for the
+root view controller.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (id)initWithRootViewController:(UIViewController *)rootViewController configuration:(void ( ^ ) ( FRLayeredNavigationItem *item ))configuration</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>rootViewController</Name>
+					<Abstract type="html">The view controller that resides at the bottom of the navigation stack.</Abstract>
+				</Parameter><Parameter>
+					<Name>configuration</Name>
+					<Abstract type="html">A block object you can use to control some parameters (such as the width) for the root view
+controller. The block&apos;s only parameter is an instance of FRLayeredNavigationItem .</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/initWithRootViewController:configuration:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/popViewControllerAnimated:</TokenIdentifier>
+			<Abstract type="html">Pops the top view controller from the navigation stack and updates the display.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (void)popViewControllerAnimated:(BOOL)animated</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>animated</Name>
+					<Abstract type="html">Set this value to YES to animate the transition. Pass NO if you are setting up a layered navigation
+controller before its view is displayed.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/popViewControllerAnimated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/popToRootViewControllerAnimated:</TokenIdentifier>
+			<Abstract type="html">Pops all the view controllers on the stack except the root view controller and updates the display.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (void)popToRootViewControllerAnimated:(BOOL)animated</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>animated</Name>
+					<Abstract type="html">Set this value to YES to animate the transition. Pass NO if you are setting up a layered navigation
+controller before its view is displayed.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/popToRootViewControllerAnimated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/popToViewController:animated:</TokenIdentifier>
+			<Abstract type="html">Pops view controllers until the specified view controller is at the top of the navigation stack.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (void)popToViewController:(UIViewController *)vc animated:(BOOL)animated</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>vc</Name>
+					<Abstract type="html">The view controller until which to pop.</Abstract>
+				</Parameter><Parameter>
+					<Name>animated</Name>
+					<Abstract type="html">Set this value to YES to animate the transition. Pass NO if you are setting up a layered navigation
+controller before its view is displayed.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/popToViewController:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/pushViewController:inFrontOf:maximumWidth:animated:</TokenIdentifier>
+			<Abstract type="html">Pushes a view controller onto the stack on top of anchorViewController and updates the display.
+All view controllers already on top of anchorViewController get popped automatically first.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (void)pushViewController:(UIViewController *)viewController inFrontOf:(UIViewController *)anchorViewController maximumWidth:(BOOL)maxWidth animated:(BOOL)animated</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>viewController</Name>
+					<Abstract type="html">The UIViewController to push on the navigation stack.</Abstract>
+				</Parameter><Parameter>
+					<Name>anchorViewController</Name>
+					<Abstract type="html">The UIViewController on top of which the new view controller should get pushed.</Abstract>
+				</Parameter><Parameter>
+					<Name>maxWidth</Name>
+					<Abstract type="html">YES if viewController is a content view controller and should therefore use all the remaining
+screen width.</Abstract>
+				</Parameter><Parameter>
+					<Name>animated</Name>
+					<Abstract type="html">Set this value to YES to animate the transition. Pass NO if you are setting up a layered navigation
+controller before its view is displayed.</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/pushViewController:inFrontOf:maximumWidth:animated:</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationController/pushViewController:inFrontOf:maximumWidth:animated:configuration:</TokenIdentifier>
+			<Abstract type="html">Pushes a view controller onto the stack on top of anchorViewController and updates the display.
+All view controllers already on top of anchorViewController get popped automatically first.</Abstract>
+			<DeclaredIn>FRLayeredNavigationController.h</DeclaredIn>			
+			
+			<Declaration>- (void)pushViewController:(UIViewController *)viewController inFrontOf:(UIViewController *)anchorViewController maximumWidth:(BOOL)maxWidth animated:(BOOL)animated configuration:(void ( ^ ) ( FRLayeredNavigationItem *item ))configuration</Declaration>
+			<Parameters>
+				<Parameter>
+					<Name>viewController</Name>
+					<Abstract type="html">The UIViewController to push on the navigation stack.</Abstract>
+				</Parameter><Parameter>
+					<Name>anchorViewController</Name>
+					<Abstract type="html">The UIViewController on top of which the new view controller should get pushed.</Abstract>
+				</Parameter><Parameter>
+					<Name>maxWidth</Name>
+					<Abstract type="html">YES if viewController is a content view controller and should therefore use all the remaining
+screen width.</Abstract>
+				</Parameter><Parameter>
+					<Name>animated</Name>
+					<Abstract type="html">Set this value to YES to animate the transition. Pass NO if you are setting up a layered navigation
+controller before its view is displayed.</Abstract>
+				</Parameter><Parameter>
+					<Name>configuration</Name>
+					<Abstract type="html">A block object you can use to control some parameters (such as the width) for the new view
+controller. The block&apos;s only parameter is an newly created instance of FRLayeredNavigationItem .</Abstract>
+				</Parameter>
+			</Parameters>
+			
+			<Anchor>//api/name/pushViewController:inFrontOf:maximumWidth:animated:configuration:</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>

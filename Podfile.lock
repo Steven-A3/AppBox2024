@@ -1,0 +1,9 @@
+PODS:
+  - FRLayeredNavigationController (0.3.0)
+  - JSONKit (1.5pre)
+  - Reachability (3.0.0)
+
+DEPENDENCIES:
+  - FRLayeredNavigationController
+  - JSONKit (~> 1.4)
+  - Reachability (~> 3.0.0)

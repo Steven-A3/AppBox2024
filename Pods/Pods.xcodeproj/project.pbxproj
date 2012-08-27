@@ -1,0 +1,350 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		01BB9DAE68EA45FE9E37BAD7 /* FRLayerController+Protected.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 626EDD3BF521487C8F910C53 /* FRLayerController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0ED37ADD223042B785080B31 /* FRLayeredNavigationController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = DED1243583AF4DC2A995208C /* FRLayeredNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		296DFD050B9B47B0AC78C826 /* Reachability.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = F315BCFAC86C4D26B68FCFC6 /* Reachability.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		326DEC00C0E6413E91F3D9F8 /* FRLayeredNavigationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A8B60851F3A44A4E9402CFB3 /* FRLayeredNavigationItem.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		3CED748D9CC344EAAC589B1C /* FRLayeredNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A421EE9A5754B1C98D8AD2E /* FRLayeredNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		5D0ACFFDC5F9430D8B30FEA4 /* UIViewController+FRLayeredNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 820E3B47925044F88CCC76C4 /* UIViewController+FRLayeredNavigationController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		64FC3D279E2D49879D8E7FF9 /* FRLayerController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 680222EB1C51405B8D9699F2 /* FRLayerController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7C9D9A62BA334C2FBD9A15EF /* FRLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = C66FBE37B1BD488D9A7F06DF /* FRLayerController.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		989B705EA2CE4A0FB25C520F /* UIViewController+FRLayeredNavigationController.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 180C0B3CD6434F8ABA8F2B17 /* UIViewController+FRLayeredNavigationController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D64F0274BB34865BDDD1B7B /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B31B24082434795B8C8C822 /* Utils.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		ABEDF290D8594C9B81522D47 /* JSONKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 88C8D013685D4C34989D8CFD /* JSONKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BBCD7C417D024D8286CF09EA /* Utils.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6C5305B4662A41448A39C2F8 /* Utils.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C33324F4A34744BBAB345ED6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1F46C94358B74AAAAF8DA96C /* Foundation.framework */; };
+		C3468530C63D43B8B81E6CA4 /* FRLayeredNavigation.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E7019D69117144F98D92EA9E /* FRLayeredNavigation.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D227CD91D0884526BF6828D9 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = AE088093F4F644FAA91601F2 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-objc-isa-usage -Wno-format"; }; };
+		E06DD13BEC334EF091E3F5E9 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C9532C30B419496B92135DFE /* Reachability.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+		E24F7BE28BDC4FA3BE50C64A /* FRLayerChromeView.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 866DA0B755DF4AEB9DF1C4BD /* FRLayerChromeView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F1D03A480986403A954D0786 /* FRLayeredNavigationItem+Protected.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = C78CC3F5A95448D682F9584F /* FRLayeredNavigationItem+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F32B2BA1788B43A9BC1B9315 /* PodsDummy_Pods.m in Sources */ = {isa = PBXBuildFile; fileRef = 960DFC2BBBC34A86A2DF3A4B /* PodsDummy_Pods.m */; };
+		FAB8C3F8EDEA4036B3BFCE3A /* FRLayeredNavigationItem.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 30F2724C0E294CC29667158E /* FRLayeredNavigationItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FD970B22ED2B40CD83A398EC /* FRLayerChromeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2D758ED6B544E9B4D82BA6 /* FRLayerChromeView.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5E567F3B646445469411C791 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				E24F7BE28BDC4FA3BE50C64A /* FRLayerChromeView.h in CopyFiles */,
+				01BB9DAE68EA45FE9E37BAD7 /* FRLayerController+Protected.h in CopyFiles */,
+				64FC3D279E2D49879D8E7FF9 /* FRLayerController.h in CopyFiles */,
+				C3468530C63D43B8B81E6CA4 /* FRLayeredNavigation.h in CopyFiles */,
+				0ED37ADD223042B785080B31 /* FRLayeredNavigationController.h in CopyFiles */,
+				F1D03A480986403A954D0786 /* FRLayeredNavigationItem+Protected.h in CopyFiles */,
+				FAB8C3F8EDEA4036B3BFCE3A /* FRLayeredNavigationItem.h in CopyFiles */,
+				989B705EA2CE4A0FB25C520F /* UIViewController+FRLayeredNavigationController.h in CopyFiles */,
+				BBCD7C417D024D8286CF09EA /* Utils.h in CopyFiles */,
+				ABEDF290D8594C9B81522D47 /* JSONKit.h in CopyFiles */,
+				296DFD050B9B47B0AC78C826 /* Reachability.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0E2D758ED6B544E9B4D82BA6 /* FRLayerChromeView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FRLayerChromeView.m; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayerChromeView.m; sourceTree = SOURCE_ROOT; };
+		180C0B3CD6434F8ABA8F2B17 /* UIViewController+FRLayeredNavigationController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+FRLayeredNavigationController.h"; path = "FRLayeredNavigationController/FRLayeredNavigationController/UIViewController+FRLayeredNavigationController.h"; sourceTree = SOURCE_ROOT; };
+		1F46C94358B74AAAAF8DA96C /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2B31B24082434795B8C8C822 /* Utils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Utils.m; path = FRLayeredNavigationController/FRLayeredNavigationController/Utils.m; sourceTree = SOURCE_ROOT; };
+		30F2724C0E294CC29667158E /* FRLayeredNavigationItem.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FRLayeredNavigationItem.h; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayeredNavigationItem.h; sourceTree = SOURCE_ROOT; };
+		5A421EE9A5754B1C98D8AD2E /* FRLayeredNavigationController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FRLayeredNavigationController.m; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayeredNavigationController.m; sourceTree = SOURCE_ROOT; };
+		626EDD3BF521487C8F910C53 /* FRLayerController+Protected.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FRLayerController+Protected.h"; path = "FRLayeredNavigationController/FRLayeredNavigationController/FRLayerController+Protected.h"; sourceTree = SOURCE_ROOT; };
+		680222EB1C51405B8D9699F2 /* FRLayerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FRLayerController.h; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayerController.h; sourceTree = SOURCE_ROOT; };
+		6C5305B4662A41448A39C2F8 /* Utils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Utils.h; path = FRLayeredNavigationController/FRLayeredNavigationController/Utils.h; sourceTree = SOURCE_ROOT; };
+		820E3B47925044F88CCC76C4 /* UIViewController+FRLayeredNavigationController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+FRLayeredNavigationController.m"; path = "FRLayeredNavigationController/FRLayeredNavigationController/UIViewController+FRLayeredNavigationController.m"; sourceTree = SOURCE_ROOT; };
+		866DA0B755DF4AEB9DF1C4BD /* FRLayerChromeView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FRLayerChromeView.h; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayerChromeView.h; sourceTree = SOURCE_ROOT; };
+		88C8D013685D4C34989D8CFD /* JSONKit.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
+		960DFC2BBBC34A86A2DF3A4B /* PodsDummy_Pods.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = PodsDummy_Pods.m; sourceTree = SOURCE_ROOT; };
+		A8B60851F3A44A4E9402CFB3 /* FRLayeredNavigationItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FRLayeredNavigationItem.m; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayeredNavigationItem.m; sourceTree = SOURCE_ROOT; };
+		AE088093F4F644FAA91601F2 /* JSONKit.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
+		BA199579E9984C0892AD6D67 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = SOURCE_ROOT; };
+		C66FBE37B1BD488D9A7F06DF /* FRLayerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FRLayerController.m; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayerController.m; sourceTree = SOURCE_ROOT; };
+		C78CC3F5A95448D682F9584F /* FRLayeredNavigationItem+Protected.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "FRLayeredNavigationItem+Protected.h"; path = "FRLayeredNavigationController/FRLayeredNavigationController/FRLayeredNavigationItem+Protected.h"; sourceTree = SOURCE_ROOT; };
+		C9532C30B419496B92135DFE /* Reachability.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Reachability/Reachability.m; sourceTree = SOURCE_ROOT; };
+		CD8DA34BC95E45F3AEC90185 /* Pods-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-prefix.pch"; sourceTree = SOURCE_ROOT; };
+		DC37B2E90592471E866D000F /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		DED1243583AF4DC2A995208C /* FRLayeredNavigationController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FRLayeredNavigationController.h; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayeredNavigationController.h; sourceTree = SOURCE_ROOT; };
+		E7019D69117144F98D92EA9E /* FRLayeredNavigation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FRLayeredNavigation.h; path = FRLayeredNavigationController/FRLayeredNavigationController/FRLayeredNavigation.h; sourceTree = SOURCE_ROOT; };
+		F315BCFAC86C4D26B68FCFC6 /* Reachability.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Reachability/Reachability.h; sourceTree = SOURCE_ROOT; };
+		FD890116273C463E81EFFEB5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		63A2399FAB744B7AB08E23E3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C33324F4A34744BBAB345ED6 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		068D004AA1264666BA5EB323 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				D67A8E874B9544E0A9AAD176 /* Pods */,
+				960DFC2BBBC34A86A2DF3A4B /* PodsDummy_Pods.m */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		202F9926A6324C0B9D427BB0 /* FRLayeredNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				866DA0B755DF4AEB9DF1C4BD /* FRLayerChromeView.h */,
+				626EDD3BF521487C8F910C53 /* FRLayerController+Protected.h */,
+				680222EB1C51405B8D9699F2 /* FRLayerController.h */,
+				E7019D69117144F98D92EA9E /* FRLayeredNavigation.h */,
+				DED1243583AF4DC2A995208C /* FRLayeredNavigationController.h */,
+				C78CC3F5A95448D682F9584F /* FRLayeredNavigationItem+Protected.h */,
+				30F2724C0E294CC29667158E /* FRLayeredNavigationItem.h */,
+				180C0B3CD6434F8ABA8F2B17 /* UIViewController+FRLayeredNavigationController.h */,
+				6C5305B4662A41448A39C2F8 /* Utils.h */,
+				0E2D758ED6B544E9B4D82BA6 /* FRLayerChromeView.m */,
+				C66FBE37B1BD488D9A7F06DF /* FRLayerController.m */,
+				5A421EE9A5754B1C98D8AD2E /* FRLayeredNavigationController.m */,
+				A8B60851F3A44A4E9402CFB3 /* FRLayeredNavigationItem.m */,
+				820E3B47925044F88CCC76C4 /* UIViewController+FRLayeredNavigationController.m */,
+				2B31B24082434795B8C8C822 /* Utils.m */,
+			);
+			name = FRLayeredNavigationController;
+			sourceTree = "<group>";
+		};
+		29C96544FC2143A1A48E47A6 = {
+			isa = PBXGroup;
+			children = (
+				52F1D8F8A24B485CA19CF779 /* Products */,
+				C2D791CE893F41B8B82BC5B7 /* Pods */,
+				068D004AA1264666BA5EB323 /* Targets Support Files */,
+				E51914EB638C4AD3802E3248 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		380CF564B76C41BEBF5C0399 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				F315BCFAC86C4D26B68FCFC6 /* Reachability.h */,
+				C9532C30B419496B92135DFE /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
+		52F1D8F8A24B485CA19CF779 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FD890116273C463E81EFFEB5 /* libPods.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		979466E6E2164D13A1173D0E /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				88C8D013685D4C34989D8CFD /* JSONKit.h */,
+				AE088093F4F644FAA91601F2 /* JSONKit.m */,
+			);
+			name = JSONKit;
+			sourceTree = "<group>";
+		};
+		C2D791CE893F41B8B82BC5B7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				202F9926A6324C0B9D427BB0 /* FRLayeredNavigationController */,
+				979466E6E2164D13A1173D0E /* JSONKit */,
+				380CF564B76C41BEBF5C0399 /* Reachability */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D67A8E874B9544E0A9AAD176 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BA199579E9984C0892AD6D67 /* Pods-resources.sh */,
+				CD8DA34BC95E45F3AEC90185 /* Pods-prefix.pch */,
+				DC37B2E90592471E866D000F /* Pods.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E51914EB638C4AD3802E3248 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1F46C94358B74AAAAF8DA96C /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03F04CDAA4DD424F9129E61A /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15A30D31355045498217C200 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				A3E43FF83AF34D97997E0966 /* Sources */,
+				5E567F3B646445469411C791 /* CopyFiles */,
+				63A2399FAB744B7AB08E23E3 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = FD890116273C463E81EFFEB5 /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		20125EC783FC4D7A99B0F478 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 53AAE6F194864D24BAF24504 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 29C96544FC2143A1A48E47A6;
+			productRefGroup = 52F1D8F8A24B485CA19CF779 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03F04CDAA4DD424F9129E61A /* Pods */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A3E43FF83AF34D97997E0966 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FD970B22ED2B40CD83A398EC /* FRLayerChromeView.m in Sources */,
+				7C9D9A62BA334C2FBD9A15EF /* FRLayerController.m in Sources */,
+				3CED748D9CC344EAAC589B1C /* FRLayeredNavigationController.m in Sources */,
+				326DEC00C0E6413E91F3D9F8 /* FRLayeredNavigationItem.m in Sources */,
+				5D0ACFFDC5F9430D8B30FEA4 /* UIViewController+FRLayeredNavigationController.m in Sources */,
+				9D64F0274BB34865BDDD1B7B /* Utils.m in Sources */,
+				D227CD91D0884526BF6828D9 /* JSONKit.m in Sources */,
+				E06DD13BEC334EF091E3F5E9 /* Reachability.m in Sources */,
+				F32B2BA1788B43A9BC1B9315 /* PodsDummy_Pods.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		2030CCB2210F43689C133DB3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC37B2E90592471E866D000F /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_BUILD_HEADERS_SEARCH_PATHS}";
+				PODS_ROOT = "${SRCROOT}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3C558B9FC0E447DA94E5AC31 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		60049060BFC7434BA1997D7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC37B2E90592471E866D000F /* Pods.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Pods-prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_LDFLAGS = "";
+				PODS_HEADERS_SEARCH_PATHS = "${PODS_BUILD_HEADERS_SEARCH_PATHS}";
+				PODS_ROOT = "${SRCROOT}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		AEDC35604B2845CFBEDA09B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		15A30D31355045498217C200 /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2030CCB2210F43689C133DB3 /* Debug */,
+				60049060BFC7434BA1997D7D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53AAE6F194864D24BAF24504 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3C558B9FC0E447DA94E5AC31 /* Debug */,
+				AEDC35604B2845CFBEDA09B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 20125EC783FC4D7A99B0F478 /* Project object */;
+}

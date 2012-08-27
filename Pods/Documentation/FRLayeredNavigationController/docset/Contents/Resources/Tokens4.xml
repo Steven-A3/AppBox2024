@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Tokens version="1.0">
+	<File path="Classes/FRLayeredNavigationItem.html">
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/cl/FRLayeredNavigationItem</TokenIdentifier>
+			<Abstract type="html">FRLayeredNavigationItem is used to configure one view controller layer. It is very similar to UINavigationItem .</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>
+			
+			<NodeRef refid="4"/>
+		</Token>
+		
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setInitialViewPosition:</TokenIdentifier>
+			<Abstract type="html">The view position when the layers are compacted maximally.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem+Protected.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly) CGPoint initialViewPosition</Declaration>
+			
+			
+			<Anchor>//api/name/initialViewPosition</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/initialViewPosition</TokenIdentifier>
+			<Abstract type="html">The view position when the layers are compacted maximally.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem+Protected.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly) CGPoint initialViewPosition</Declaration>
+			
+			
+			<Anchor>//api/name/initialViewPosition</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setCurrentViewPosition:</TokenIdentifier>
+			<Abstract type="html">The current view position.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem+Protected.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly) CGPoint currentViewPosition</Declaration>
+			
+			
+			<Anchor>//api/name/currentViewPosition</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/currentViewPosition</TokenIdentifier>
+			<Abstract type="html">The current view position.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem+Protected.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readonly) CGPoint currentViewPosition</Declaration>
+			
+			
+			<Anchor>//api/name/currentViewPosition</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setTitle:</TokenIdentifier>
+			<Abstract type="html">The navigation item’s title displayed in the center of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, strong) NSString *title</Declaration>
+			
+			
+			<Anchor>//api/name/title</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/title</TokenIdentifier>
+			<Abstract type="html">The navigation item’s title displayed in the center of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, strong) NSString *title</Declaration>
+			
+			
+			<Anchor>//api/name/title</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setTitleView:</TokenIdentifier>
+			<Abstract type="html">A custom view displayed in the center of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, strong) UIView *titleView</Declaration>
+			
+			
+			<Anchor>//api/name/titleView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/titleView</TokenIdentifier>
+			<Abstract type="html">A custom view displayed in the center of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, strong) UIView *titleView</Declaration>
+			
+			
+			<Anchor>//api/name/titleView</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setWidth:</TokenIdentifier>
+			<Abstract type="html">The layer&apos;s width in points.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite) CGFloat width</Declaration>
+			
+			
+			<Anchor>//api/name/width</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/width</TokenIdentifier>
+			<Abstract type="html">The layer&apos;s width in points.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite) CGFloat width</Declaration>
+			
+			
+			<Anchor>//api/name/width</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setNextItemDistance:</TokenIdentifier>
+			<Abstract type="html">The minimal distance (when the child layer is as far on the left as possible) to the next layer in points.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite) CGFloat nextItemDistance</Declaration>
+			
+			
+			<Anchor>//api/name/nextItemDistance</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/nextItemDistance</TokenIdentifier>
+			<Abstract type="html">The minimal distance (when the child layer is as far on the left as possible) to the next layer in points.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite) CGFloat nextItemDistance</Declaration>
+			
+			
+			<Anchor>//api/name/nextItemDistance</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setHasChrome:</TokenIdentifier>
+			<Abstract type="html">If the view controller should get decorated by some UI chrome: the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite) BOOL hasChrome</Declaration>
+			
+			
+			<Anchor>//api/name/hasChrome</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/hasChrome</TokenIdentifier>
+			<Abstract type="html">If the view controller should get decorated by some UI chrome: the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite) BOOL hasChrome</Declaration>
+			
+			
+			<Anchor>//api/name/hasChrome</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setLeftBarButtonItem:</TokenIdentifier>
+			<Abstract type="html">A custom bar button item displayed on the left of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) UIBarButtonItem *leftBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/leftBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/leftBarButtonItem</TokenIdentifier>
+			<Abstract type="html">A custom bar button item displayed on the left of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) UIBarButtonItem *leftBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/leftBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setRightBarButtonItem:</TokenIdentifier>
+			<Abstract type="html">A custom bar button item displayed on the right of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) UIBarButtonItem *rightBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/rightBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/rightBarButtonItem</TokenIdentifier>
+			<Abstract type="html">A custom bar button item displayed on the right of the navigation bar.</Abstract>
+			<DeclaredIn>FRLayeredNavigationItem.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, strong) UIBarButtonItem *rightBarButtonItem</Declaration>
+			
+			
+			<Anchor>//api/name/rightBarButtonItem</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instm/FRLayeredNavigationItem/setLayerController:</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>FRLayeredNavigationItem+Protected.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, weak) FRLayerController *layerController</Declaration>
+			
+			
+			<Anchor>//api/name/layerController</Anchor>
+		</Token>
+		
+		<Token>
+			<TokenIdentifier>//apple_ref/occ/instp/FRLayeredNavigationItem/layerController</TokenIdentifier>
+			<Abstract type="html"></Abstract>
+			<DeclaredIn>FRLayeredNavigationItem+Protected.h</DeclaredIn>			
+			
+			<Declaration>@property (nonatomic, readwrite, weak) FRLayerController *layerController</Declaration>
+			
+			
+			<Anchor>//api/name/layerController</Anchor>
+		</Token>
+		
+	</File>
+</Tokens>
