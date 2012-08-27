@@ -1,13 +1,13 @@
 //
 //  CommonUIDefinitions.h
-//  AppBoxPro2
+//  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 6/16/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#ifndef AppBoxPro2_CommonUIDefinitions_h
-#define AppBoxPro2_CommonUIDefinitions_h
+#ifndef AppBox3_CommonUIDefinitions_h
+#define AppBox3_CommonUIDefinitions_h
 
 #define HOT_MENU_VIEW_WIDTH				54.0f
 #define MENU_VIEW_WIDTH					256.0f

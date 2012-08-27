@@ -1,14 +1,14 @@
 //
-//  AppBoxPro2Tests.m
-//  AppBoxPro2Tests
+//  AppBox3Tests.m
+//  AppBox3Tests
 //
 //  Created by Byeong Kwon Kwak on 4/25/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "AppBoxPro2Tests.h"
+#import "AppBox3Tests.h"
 
-@implementation AppBoxPro2Tests
+@implementation AppBox3Tests
 
 - (void)setUp
 {
@@ -26,7 +26,7 @@
 
 - (void)testExample
 {
-    STFail(@"Unit tests are not implemented yet in AppBoxPro2Tests");
+    STFail(@"Unit tests are not implemented yet in AppBox3Tests");
 }
 
 @end

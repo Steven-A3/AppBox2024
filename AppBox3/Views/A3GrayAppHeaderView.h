@@ -1,6 +1,6 @@
 //
 //  A3GrayAppHeaderView.h
-//  AppBoxPro2
+//  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 7/13/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.

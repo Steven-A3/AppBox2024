@@ -1,6 +1,6 @@
 //
 //  A3CalendarWeekHeaderView.m
-//  AppBoxPro2
+//  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/9/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.

@@ -37,7 +37,7 @@
 	if (__managedObjectModel != nil) {
 		return __managedObjectModel;
 	}
-	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBoxPro2" withExtension:@"momd"];
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
 	__managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
 	return __managedObjectModel;
 }
@@ -50,7 +50,7 @@
 		return __persistentStoreCoordinator;
 	}
 
-	NSURL *storeURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"AppBoxPro2" ofType:@"sqlite"]];
+	NSURL *storeURL = [NSURL URLWithString:[[NSBundle mainBundle] pathForResource:@"AppBox3" ofType:@"sqlite"]];
 
 	NSError *error = nil;
 	__persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

@@ -1,6 +1,6 @@
 //
 //  A3AppDelegate.m
-//  AppBoxPro2
+//  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 4/25/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
@@ -48,7 +48,7 @@
 	[self.window makeKeyAndVisible];
 
 
-	// Override point for customization after application launch.
+// Override point for customization after application launch.
 //    A3MainViewController *controller = (A3MainViewController *)self.window.rootViewController;
 //    controller.managedObjectContext = self.managedObjectContext;
     return YES;
@@ -121,7 +121,7 @@
     if (__managedObjectModel != nil) {
         return __managedObjectModel;
     }
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBoxPro2" withExtension:@"momd"];
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"AppBox3" withExtension:@"momd"];
     __managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return __managedObjectModel;
 }
@@ -134,11 +134,11 @@
         return __persistentStoreCoordinator;
     }
 
-    NSURL *storeURL = [[self applicationLibraryDirectory] URLByAppendingPathComponent:@"AppBoxPro2.sqlite"];
+    NSURL *storeURL = [[self applicationLibraryDirectory] URLByAppendingPathComponent:@"AppBox3.sqlite"];
 
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	if (![fileManager fileExistsAtPath:[storeURL path]]) {
-		NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"AppBoxPro2" ofType:@"sqlite"];
+		NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"AppBox3" ofType:@"sqlite"];
 		[fileManager copyItemAtPath:bundlePath toPath:[storeURL path] error:nil];
 	}
 

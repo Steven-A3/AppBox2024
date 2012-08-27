@@ -1,6 +1,6 @@
 //
 //  A3CalendarPreferences
-//  AppBoxPro2
+//  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/7/12 7:38 PM.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.

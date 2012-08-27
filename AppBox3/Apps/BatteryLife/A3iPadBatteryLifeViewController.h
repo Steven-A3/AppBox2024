@@ -1,6 +1,6 @@
 //
 //  A3iPadBatteryLifeViewController.h
-//  AppBoxPro2
+//  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 6/12/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
