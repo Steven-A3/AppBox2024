@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C351C315A48406A863E99F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2329DB00268042E9BF6520E4 /* libPods.a */; };
+		680318B815ECB00D008A8E21 /* A3CalendarDayAllDayEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680318B715ECB00D008A8E21 /* A3CalendarDayAllDayEventView.m */; };
 		682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
 		682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
@@ -104,6 +105,9 @@
 		683B958C15EB233500575377 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956215EB233500575377 /* A3GrayAppHeaderView.m */; };
 		683B958D15EB233500575377 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956415EB233500575377 /* A3RowSeparatorView.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
+		683B959915EB59D100575377 /* A3CalendarDayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 683B959815EB59D100575377 /* A3CalendarDayViewController.xib */; };
+		683B959F15EB60A600575377 /* A3CalendarDayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B959E15EB60A600575377 /* A3CalendarDayViewController.m */; };
+		685701EA15EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685701E915EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,6 +123,8 @@
 /* Begin PBXFileReference section */
 		2329DB00268042E9BF6520E4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4145230C773F4D058F9905F5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		680318B615ECB00D008A8E21 /* A3CalendarDayAllDayEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarDayAllDayEventView.h; sourceTree = "<group>"; };
+		680318B715ECB00D008A8E21 /* A3CalendarDayAllDayEventView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarDayAllDayEventView.m; sourceTree = "<group>"; };
 		682EA2D115EB10B000BD6AD4 /* AppBox3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBox3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		682EA2D515EB10B000BD6AD4 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		682EA2D715EB10B000BD6AD4 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -254,6 +260,11 @@
 		683B956315EB233500575377 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3RowSeparatorView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B956415EB233500575377 /* A3RowSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3RowSeparatorView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		683B959815EB59D100575377 /* A3CalendarDayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarDayViewController.xib; sourceTree = "<group>"; };
+		683B959D15EB60A600575377 /* A3CalendarDayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarDayViewController.h; sourceTree = "<group>"; };
+		683B959E15EB60A600575377 /* A3CalendarDayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarDayViewController.m; sourceTree = "<group>"; };
+		685701E815EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarDayCenterSeparatorView.h; sourceTree = "<group>"; };
+		685701E915EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarDayCenterSeparatorView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -498,6 +509,13 @@
 				683B953A15EB233500575377 /* A3CalendarWeekViewController.m */,
 				683B953B15EB233500575377 /* A3CalendarWeekViewController.xib */,
 				683B953C15EB233500575377 /* A3CalendarWeekViewMetrics.h */,
+				683B959815EB59D100575377 /* A3CalendarDayViewController.xib */,
+				683B959D15EB60A600575377 /* A3CalendarDayViewController.h */,
+				683B959E15EB60A600575377 /* A3CalendarDayViewController.m */,
+				685701E815EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.h */,
+				685701E915EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.m */,
+				680318B615ECB00D008A8E21 /* A3CalendarDayAllDayEventView.h */,
+				680318B715ECB00D008A8E21 /* A3CalendarDayAllDayEventView.m */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -720,6 +738,7 @@
 				683B958115EB233500575377 /* AppBox3.sqlite in Resources */,
 				683B958315EB233500575377 /* MenuView.xib in Resources */,
 				683B958815EB233500575377 /* SearchViewiPad.xib in Resources */,
+				683B959915EB59D100575377 /* A3CalendarDayViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -802,6 +821,9 @@
 				683B958B15EB233500575377 /* A3BlackThickRoundedRectView.m in Sources */,
 				683B958C15EB233500575377 /* A3GrayAppHeaderView.m in Sources */,
 				683B958D15EB233500575377 /* A3RowSeparatorView.m in Sources */,
+				683B959F15EB60A600575377 /* A3CalendarDayViewController.m in Sources */,
+				685701EA15EC5A930047F7C5 /* A3CalendarDayCenterSeparatorView.m in Sources */,
+				680318B815ECB00D008A8E21 /* A3CalendarDayAllDayEventView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
