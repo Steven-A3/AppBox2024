@@ -29,6 +29,13 @@ float dash_line_pattern[] = {2.0f, 2.0f};
 	return result;
 }
 
++ (NSDate *)dateByAddingDay:(NSInteger)difference toDate:(NSDate *)date {
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *differenceComponents = [[NSDateComponents alloc] init];
+	differenceComponents.day = difference;
+	return [gregorian dateByAddingComponents:differenceComponents toDate:date options:0];
+}
+
 @end
 
 void addLeftGradientLayer8Point(UIView *targetView) {

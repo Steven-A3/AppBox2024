@@ -85,7 +85,7 @@
 	// Add horizontal hour lines
 	for (NSInteger index = 0; index < 23; index++) {
 		CGFloat y = roundf(top + rowHeight * (index + 1));
-		FNLOG(@"%f", y);
+//		FNLOG(@"%f", y);
 		CGContextMoveToPoint(context, left, y);
 		CGContextAddLineToPoint(context, right, y);
 	}
@@ -126,6 +126,13 @@
 		currentHour = [gregorian dateByAddingComponents:addingComponents toDate:currentHour options:0];
 	}
 	[self updateTimeMark];
+}
+
+- (void)removeFromSuperview {
+	[super removeFromSuperview];
+
+	[self.timerMarkUpdateTimer invalidate];
+	self.timerMarkUpdateTimer = nil;
 }
 
 - (void)updateTimeMark {

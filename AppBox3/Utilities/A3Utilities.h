@@ -18,5 +18,7 @@ extern float dash_line_pattern[];
 @interface A3Utilities : NSObject
 + (NSDate *)firstWeekdayOfDate:(NSDate *)date;
 
++ (NSDate *)dateByAddingDay:(NSInteger)difference toDate:(NSDate *)date;
+
 
 @end
