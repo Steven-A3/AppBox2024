@@ -17,14 +17,29 @@
 @implementation A3CalendarWeekHeaderView
 @synthesize startDate = _startDate;
 
+- (void)initializeView {
+	self.contentMode = UIViewContentModeRedraw;
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
+	FNLOG(@"is it called?");
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+		[self initializeView];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	FNLOG(@"is it called?");
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		[self initializeView];
+	}
+
+	return self;
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -47,13 +62,13 @@
 //	FNLOG(@"left %f, colWidth = %f", left, colWidth);
 
 	CGContextSaveGState(context);
-	CGContextSetFillColorWithColor(context, A3_CALENDAR_WEEK_VIEW_BACKGROUND_COLOR);
+	CGContextSetFillColorWithColor(context, A3_CALENDAR_WEEK_VIEW_BACKGROUND_COLOR.CGColor);
 	CGContextAddRect( context, CGRectMake( left, top, roundf(colWidth), roundf(A3_CALENDAR_WEEK_HEADER_VIEW_ALL_DAY_HEIGHT + A3_CALENDAR_WEEK_HEADER_VIEW_SEPARATOR_HEIGHT ) ) );
 	CGContextAddRect(context, CGRectMake(roundf(right - colWidth), top, roundf(colWidth), roundf(A3_CALENDAR_WEEK_HEADER_VIEW_ALL_DAY_HEIGHT + A3_CALENDAR_WEEK_HEADER_VIEW_SEPARATOR_HEIGHT) ));
 	CGContextFillPath(context);
 	CGContextRestoreGState(context);
 
-	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_VIEW_LINE_COLOR);
+	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_VIEW_LINE_COLOR.CGColor);
 	CGContextMoveToPoint(context, left, top);
 	CGContextAddLineToPoint(context, left, bottom);
 	CGContextAddLineToPoint(context, right, bottom);
@@ -81,7 +96,7 @@
 	CGContextAddLineToPoint(context, right, top);
 	CGContextStrokePath(context);
 
-	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_HEADER_TEXT_COLOR);
+	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_HEADER_TEXT_COLOR.CGColor);
 	CGContextSetAllowsAntialiasing(context, true);
 	NSDate *currentDate = self.startDate;
 	FNLOG(@"%@", self.startDate);

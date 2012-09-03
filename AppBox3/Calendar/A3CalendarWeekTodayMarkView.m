@@ -33,26 +33,28 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
 	CGContextSetAllowsAntialiasing(context, false);
-	CGContextSetRGBStrokeColor(context, 28.0f/255.0f, 45.0f/255.0f, 174.0f/255.0f, 1.0f);
-	CGContextSetRGBFillColor(context, 28.0f/255.0f, 45.0f/255.0f, 174.0f/255.0f, 1.0f);
-	CGRect rectangleToDraw = CGRectMake(roundf(CGRectGetMinX(self.bounds)),
-			roundf(CGRectGetMinY(self.bounds)) + 1.0f,
-			roundf(CGRectGetWidth(self.bounds)) - 1.0f,
-			roundf(CGRectGetHeight(self.bounds)) - 1.0f);
-	FNLOG(@"todaymarkview %f, %f, %f, %f", rectangleToDraw.origin.x, rectangleToDraw.origin.y, rectangleToDraw.size.width, rectangleToDraw.size.height);
-	CGContextAddRect(context, rectangleToDraw);
 
-	CGContextMoveToPoint(context, roundf(CGRectGetMinX(self.bounds)), roundf(A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT));
-	CGContextAddLineToPoint(context, roundf(CGRectGetMaxX(self.bounds)), roundf(A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT));
-	CGContextStrokePath(context);
-
-	CGRect gradientRect = CGRectInset(CGRectMake(roundf(CGRectGetMinX(self.bounds)) - 1.0f, roundf(CGRectGetMinY(self.bounds)), roundf(CGRectGetWidth(self.bounds)) + 1.0f, roundf(A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT) + 1.0f), 1.0f, 1.0f);
+	CGRect gradientRect = CGRectInset(CGRectMake(roundf(CGRectGetMinX(self.bounds)), roundf(CGRectGetMinY(self.bounds)), roundf(CGRectGetWidth(self.bounds)), roundf(A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT) + 1.0f), 1.0f, 1.0f);
 	NSArray *colors = [NSArray arrayWithObjects:
 			(__bridge id)[UIColor colorWithRed:85.0f/255.0f green:90.0f/255.0f blue:241.0f/255.0f alpha:1.0f].CGColor,
 			(__bridge id)[UIColor colorWithRed:51.0f/255.0f green:52.0f/255.0f blue:196.0f/255.0f alpha:1.0f].CGColor,
 			nil];
 	FNLOG(@"gradient rect %f, %f, %f, %f", gradientRect.origin.x, gradientRect.origin.y, gradientRect.size.width, gradientRect.size.height);
 	drawLinearGradient(context, gradientRect, colors);
+
+	CGContextSetRGBStrokeColor(context, 28.0f/255.0f, 45.0f/255.0f, 174.0f/255.0f, 1.0f);
+	CGContextSetRGBFillColor(context, 28.0f/255.0f, 45.0f/255.0f, 174.0f/255.0f, 1.0f);
+	CGFloat offset = (UserInterfacePortrait()?2.0f:1.0f);
+	CGRect rectangleToDraw = CGRectMake(roundf(CGRectGetMinX(self.bounds)),
+			roundf(CGRectGetMinY(self.bounds)) + 1.0f,
+			roundf(CGRectGetWidth(self.bounds)) - offset,
+			roundf(CGRectGetHeight(self.bounds)) - 1.0f);
+	FNLOG(@"todaymarkview %f, %f, %f, %f", rectangleToDraw.origin.x, rectangleToDraw.origin.y, rectangleToDraw.size.width, rectangleToDraw.size.height);
+	CGContextAddRect(context, rectangleToDraw);
+
+	CGContextMoveToPoint(context, roundf(CGRectGetMinX(self.bounds)), roundf(A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT));
+	CGContextAddLineToPoint(context, roundf(CGRectGetMaxX(self.bounds)) - offset, roundf(A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT));
+	CGContextStrokePath(context);
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateFormat:@"d EEE"];

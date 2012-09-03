@@ -69,7 +69,7 @@
 	FNLOG(@"scrollview width %f, height %f", CGRectGetWidth(self.weekView.frame), CGRectGetHeight(self.weekView.frame));
 
 	[self setBottomLineFrame];
-	[self.weekView resetContentSize];
+	[self.weekView setContentSize];
 	[self setTodayMarkViewFrame];
 }
 
@@ -89,11 +89,14 @@
 - (void)setTodayMarkViewFrame {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:self.firstDateOfWeek toDate:[NSDate date] options:0];
-	if ((components.day >= 0) && (components.day < 7)) {
-		CGFloat columnWidth = roundf((CGRectGetWidth(self.weekView.frame) - A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH) / 7.0);
-		CGFloat x = CGRectGetMinX([self.view bounds]) + CGRectGetMinX(self.weekView.frame) + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH + columnWidth * components.day;
+	NSInteger index = components.day;
+	if ((index >= 0) && (index < 7)) {
+		index = 6;
+
+		CGFloat columnWidth = (CGRectGetWidth(self.weekView.frame) - A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH) / 7.0;
+		CGFloat x = CGRectGetMinX([self.view bounds]) + CGRectGetMinX(self.weekView.frame) + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH + columnWidth * index;
 		x = roundf(x);
-		CGRect frame = CGRectMake(x, roundf(CGRectGetMinY(self.headerView.frame)), columnWidth, roundf(CGRectGetHeight(self.weekView.frame) + CGRectGetHeight(self.headerView.frame) ) + 1.0f );
+		CGRect frame = CGRectMake(x, roundf(CGRectGetMinY(self.headerView.frame)), roundf(columnWidth + 0.5f + (index != 6?1.0f:0.0f)), roundf(CGRectGetHeight(self.weekView.frame) + CGRectGetHeight(self.headerView.frame) ) + 1.0f );
 		FNLOG(@"todayMarkviewFrame %f, %f, %f, %f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 		[self.todayMarkView setFrame:frame];
 	} else {

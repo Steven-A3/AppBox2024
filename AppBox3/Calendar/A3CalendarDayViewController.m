@@ -9,15 +9,18 @@
 #import "A3CalendarDayViewController.h"
 #import "A3CalendarMonthView.h"
 #import "A3Utilities.h"
+#import "A3CalendarDayHourlyView.h"
 
 @interface A3CalendarDayViewController ()
 @property (nonatomic, strong) IBOutlet UILabel *dateLabel;
 @property (nonatomic, strong) IBOutlet A3CalendarMonthView *monthView;
+@property (nonatomic, strong) IBOutlet A3CalendarDayHourlyView *hourlyView;
 
 @end
 
 @implementation A3CalendarDayViewController
 @synthesize dateLabel = _dateLabel;
+@synthesize hourlyView = _hourlyView;
 
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -44,6 +47,12 @@
     // Release any retained subviews of the main view.
 }
 
+- (void)viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+
+	[self.hourlyView resetContentSizeAfterLayoutChange];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
@@ -65,7 +74,7 @@
 
 - (void)updateDateLabel {
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+	[dateFormatter setDateFormat:@"EEEE, MMM d, y"];
 
 	self.dateLabel.text = [dateFormatter stringFromDate:self.currentDate];
 }

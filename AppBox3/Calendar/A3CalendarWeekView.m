@@ -64,7 +64,7 @@
 	return _contentsView;
 }
 
-- (void)resetContentSize {
+- (void)setContentSize {
 	FNLOG(@"bounds %f, %f", CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 	FNLOG(@"contentsize %f, %f", self.contentSize.width, self.contentSize.height);
 	[self setContentSize:CGSizeMake(CGRectGetWidth(self.bounds), A3_CALENDAR_WEEKVIEW_HEIGHT)];

@@ -10,7 +10,7 @@
 #import "A3CalendarWeekContentsView.h"
 
 @interface A3CalendarWeekView : UIScrollView
-- (void)resetContentSize;
+- (void)setContentSize;
 
 
 @end

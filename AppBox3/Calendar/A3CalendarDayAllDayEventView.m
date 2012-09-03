@@ -12,13 +12,27 @@
 
 @implementation A3CalendarDayAllDayEventView
 
+- (void)initializeView {
+	self.contentMode = UIViewContentModeRedraw;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+		[self initializeView];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		[self initializeView];
+	}
+
+	return self;
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -29,7 +43,7 @@
 	// "all-day" text
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
-	UIColor *textColor = [UIColor colorWithRed:101.0f/255.0f green:101.0f/255.0f blue:101.0f/255.0f alpha:1.0f];
+	UIColor *textColor = A3_CALENDAR_DAY_VIEW_TEXT_COLOR;
 	CGContextSetStrokeColorWithColor(context, textColor.CGColor);
 	CGContextSetFillColorWithColor(context, textColor.CGColor);
 
@@ -41,7 +55,7 @@
 
 	CGContextSetAllowsAntialiasing(context, false);
 
-	UIColor *lineColor = [UIColor colorWithRed:192.0f/255.0f green:193.0f/255.0f blue:194.0f/255.0f alpha:1.0f];
+	UIColor *lineColor = A3_CALENDAR_DAY_VIEW_LINE_COLOR;
 	CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
 	CGContextAddRect(context, CGRectInset(CGRectMake(A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH, CGRectGetMinY(rect), CGRectGetWidth(rect) - A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH, CGRectGetHeight(rect)), 1.0f, 1.0f) );
 	CGContextStrokePath(context);

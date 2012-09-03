@@ -85,11 +85,11 @@
 
 	[self.buttonsScrollView setContentSize:CGSizeMake(APP_VIEW_WIDTH * 2.0, CGRectGetHeight(self.buttonsScrollView.bounds))];
 
-	UIViewController *viewController = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"CalculatorButtonsInFirstPage" bundle:nil];
+	UIViewController *viewController = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"A3CalculatorButtonsInFirstPage" bundle:nil];
 	[viewController.view setFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewController.view.bounds))];
 	[self.buttonsScrollView addSubview: [viewController view] ];
 
-	UIViewController *viewController2 = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"CalculatorButtonsInSecondPage" bundle:nil];
+	UIViewController *viewController2 = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"A3CalculatorButtonsInSecondPage" bundle:nil];
 	[viewController2.view setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewController2.view.bounds))];
 	[self.buttonsScrollView addSubview: [viewController2 view] ];
 	
