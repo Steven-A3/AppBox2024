@@ -110,6 +110,8 @@
 		683B959F15EB60A600575377 /* A3CalendarDayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B959E15EB60A600575377 /* A3CalendarDayViewController.m */; };
 		685701EA15EC5A930047F7C5 /* A3CalendarVerticalSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685701E915EC5A930047F7C5 /* A3CalendarVerticalSeparatorView.m */; };
 		68A008C015F5AE030013D61A /* A3CalendarEventPropertyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A008BF15F5AE030013D61A /* A3CalendarEventPropertyCell.m */; };
+		68A008C315F5BD540013D61A /* A3CalendarYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68A008C215F5BD530013D61A /* A3CalendarYearViewController.xib */; };
+		68A008C615F5ED530013D61A /* A3CalendarYearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A008C515F5ED530013D61A /* A3CalendarYearViewController.m */; };
 		68BEB6F815F45902001C1B9A /* A3CalendarListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BEB6F715F45902001C1B9A /* A3CalendarListViewController.m */; };
 		68BEB70715F46E30001C1B9A /* A3CalendarEventsDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BEB70615F46E30001C1B9A /* A3CalendarEventsDelegateAndDataSource.m */; };
 		68BEB70B15F48517001C1B9A /* A3CalendarEventPropertyDelegateAndDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BEB70A15F48517001C1B9A /* A3CalendarEventPropertyDelegateAndDataSource.m */; };
@@ -275,6 +277,9 @@
 		685701E915EC5A930047F7C5 /* A3CalendarVerticalSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarVerticalSeparatorView.m; sourceTree = "<group>"; };
 		68A008BE15F5AE030013D61A /* A3CalendarEventPropertyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarEventPropertyCell.h; sourceTree = "<group>"; };
 		68A008BF15F5AE030013D61A /* A3CalendarEventPropertyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarEventPropertyCell.m; sourceTree = "<group>"; };
+		68A008C215F5BD530013D61A /* A3CalendarYearViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarYearViewController.xib; sourceTree = "<group>"; };
+		68A008C415F5ED530013D61A /* A3CalendarYearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarYearViewController.h; sourceTree = "<group>"; };
+		68A008C515F5ED530013D61A /* A3CalendarYearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarYearViewController.m; sourceTree = "<group>"; };
 		68BEB6F615F45902001C1B9A /* A3CalendarListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarListViewController.h; sourceTree = "<group>"; };
 		68BEB6F715F45902001C1B9A /* A3CalendarListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarListViewController.m; sourceTree = "<group>"; };
 		68BEB70515F46E30001C1B9A /* A3CalendarEventsDelegateAndDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarEventsDelegateAndDataSource.h; sourceTree = "<group>"; };
@@ -516,6 +521,8 @@
 				683B959D15EB60A600575377 /* A3CalendarDayViewController.h */,
 				683B959E15EB60A600575377 /* A3CalendarDayViewController.m */,
 				683B959815EB59D100575377 /* A3CalendarDayViewController.xib */,
+				68A008BE15F5AE030013D61A /* A3CalendarEventPropertyCell.h */,
+				68A008BF15F5AE030013D61A /* A3CalendarEventPropertyCell.m */,
 				68BEB70915F48517001C1B9A /* A3CalendarEventPropertyDelegateAndDataSource.h */,
 				68BEB70A15F48517001C1B9A /* A3CalendarEventPropertyDelegateAndDataSource.m */,
 				68BEB70515F46E30001C1B9A /* A3CalendarEventsDelegateAndDataSource.h */,
@@ -547,8 +554,9 @@
 				683B953A15EB233500575377 /* A3CalendarWeekViewController.m */,
 				683B953B15EB233500575377 /* A3CalendarWeekViewController.xib */,
 				683B953C15EB233500575377 /* A3CalendarWeekViewMetrics.h */,
-				68A008BE15F5AE030013D61A /* A3CalendarEventPropertyCell.h */,
-				68A008BF15F5AE030013D61A /* A3CalendarEventPropertyCell.m */,
+				68A008C215F5BD530013D61A /* A3CalendarYearViewController.xib */,
+				68A008C415F5ED530013D61A /* A3CalendarYearViewController.h */,
+				68A008C515F5ED530013D61A /* A3CalendarYearViewController.m */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -773,6 +781,7 @@
 				683B958815EB233500575377 /* SearchViewiPad.xib in Resources */,
 				683B959915EB59D100575377 /* A3CalendarDayViewController.xib in Resources */,
 				680F2D6015F087900049F979 /* A3CalendarListViewController.xib in Resources */,
+				68A008C315F5BD540013D61A /* A3CalendarYearViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -864,6 +873,7 @@
 				68BEB70715F46E30001C1B9A /* A3CalendarEventsDelegateAndDataSource.m in Sources */,
 				68BEB70B15F48517001C1B9A /* A3CalendarEventPropertyDelegateAndDataSource.m in Sources */,
 				68A008C015F5AE030013D61A /* A3CalendarEventPropertyCell.m in Sources */,
+				68A008C615F5ED530013D61A /* A3CalendarYearViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

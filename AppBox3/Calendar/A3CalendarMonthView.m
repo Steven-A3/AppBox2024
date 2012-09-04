@@ -36,6 +36,8 @@
 @synthesize startDate = _startDate;
 @synthesize bigCalendar = _bigCalendar;
 @synthesize currentDate = _currentDate;
+@synthesize drawWeekdayLabel = _drawWeekdayLabel;
+@synthesize doNotDrawTextOtherMonth = _doNotDrawTextOtherMonth;
 
 
 - (void)initialize {
@@ -45,9 +47,11 @@
 	_month = dateComponents.month;		// July
 	_weekStartSunday = YES;
 	_bigCalendar = YES;
+	_drawWeekdayLabel = YES;
+	_doNotDrawTextOtherMonth = NO;
 
 	self.contentMode = UIViewContentModeRedraw;
-	self.backgroundColor = [UIColor whiteColor];
+	self.backgroundColor = [UIColor clearColor];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -74,6 +78,7 @@
 	[super awakeFromNib];
 
 	FNLOG(@"Is big calendar %d", self.bigCalendar);
+	FNLOG(@"Draw Weekday Label %d", _drawWeekdayLabel);
 }
 
 - (NSDate *)firstDateOfMonthWithCalendar:(NSCalendar *)calendar {
@@ -101,19 +106,21 @@
 - (void)drawCalendarFrameInContext:(CGContextRef)context rect:(CGRect)rect {
 	// Draw weekday text as a header line.
 
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	NSArray *weekdaySymbols = [dateFormatter shortWeekdaySymbols];
-	UIFont *weekdaySymbolFont = [UIFont systemFontOfSize:12.0f];
+	if (_drawWeekdayLabel) {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		NSArray *weekdaySymbols = [dateFormatter shortWeekdaySymbols];
+		UIFont *weekdaySymbolFont = [UIFont systemFontOfSize:12.0f];
 
-	for (NSString *symbol in weekdaySymbols) {
-		CGSize sizeOfSymbol = [symbol sizeWithFont:weekdaySymbolFont];
-		CGPoint drawPoint;
-		if (self.bigCalendar) {
-			drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol] + 1) - sizeOfSymbol.width - rightMargin, 0.0f);
-		} else{
-			drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol]) + columnWidth/2.0f - sizeOfSymbol.width/2.0f, 0.0f);
+		for (NSString *symbol in weekdaySymbols) {
+			CGSize sizeOfSymbol = [symbol sizeWithFont:weekdaySymbolFont];
+			CGPoint drawPoint;
+			if (self.bigCalendar) {
+				drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol] + 1) - sizeOfSymbol.width - rightMargin, 0.0f);
+			} else{
+				drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol]) + columnWidth/2.0f - sizeOfSymbol.width/2.0f, 0.0f);
+			}
+			[symbol drawAtPoint:drawPoint withFont:weekdaySymbolFont];
 		}
-		[symbol drawAtPoint:drawPoint withFont:weekdaySymbolFont];
 	}
 
 	CGContextSetAllowsAntialiasing(context, false);
@@ -248,15 +255,17 @@
 				CGContextSetStrokeColorWithColor(context, todayTextColor.CGColor);
 				CGContextSetFillColorWithColor(context, todayTextColor.CGColor);
 			}
-			NSString *dayString = [NSString stringWithFormat:@"%d", drawingDateComponent.day];
-			CGSize size = [dayString sizeWithFont:font];
-			CGPoint point;
-			if (self.bigCalendar) {
-				point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight + 3.0f);
-			} else {
-				point = CGPointMake(col * columnWidth + columnWidth / 2.0f - size.width/2.0f, weekdayHeaderHeight + row * rowHeight + rowHeight / 2.0f - size.height/2.0f);
+			if ((drawingDateComponent.month == self.month) || !_doNotDrawTextOtherMonth) {
+				NSString *dayString = [NSString stringWithFormat:@"%d", drawingDateComponent.day];
+				CGSize size = [dayString sizeWithFont:font];
+				CGPoint point;
+				if (self.bigCalendar) {
+					point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight + 3.0f);
+				} else {
+					point = CGPointMake(col * columnWidth + columnWidth / 2.0f - size.width/2.0f, weekdayHeaderHeight + row * rowHeight + rowHeight / 2.0f - size.height/2.0f);
+				}
+				[dayString drawAtPoint:point withFont:font];
 			}
-			[dayString drawAtPoint:point withFont:font];
 
 			CGContextRestoreGState(context);
 
