@@ -15,6 +15,7 @@
 #import "A3CalendarMonthFrameViewController.h"
 #import "A3CalendarWeekViewController.h"
 #import "A3CalendarDayViewController.h"
+#import "A3CalendarListViewController.h"
 
 typedef enum {
 	A3CalendarViewTypeDay = 0,
@@ -124,8 +125,14 @@ typedef enum {
 		}
 		case A3CalendarViewTypeYear:
 			break;
-		case A3CalendarViewTypeList:
+		case A3CalendarViewTypeList: {
+			A3CalendarListViewController *viewController = [[A3CalendarListViewController alloc] initWithNibName:@"A3CalendarListViewController" bundle:nil];
+			[viewController.view setFrame:self.calendarView.frame];
+			[self addChildViewController:viewController];
+			[viewController didMoveToParentViewController:self];
+			[self.calendarView addSubview:[viewController view]];
 			break;
+		}
 	}
 }
 

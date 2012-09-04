@@ -1,14 +1,14 @@
 //
-//  A3CalendarDayCenterSeparatorView.m
+//  A3CalendarVerticalSeparatorView.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/28/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3CalendarDayCenterSeparatorView.h"
+#import "A3CalendarVerticalSeparatorView.h"
 
-@implementation A3CalendarDayCenterSeparatorView
+@implementation A3CalendarVerticalSeparatorView
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];

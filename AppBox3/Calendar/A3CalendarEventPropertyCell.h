@@ -1,15 +1,14 @@
 //
-//  A3CalendarPropertyView.h
+//  A3CalendarEventPropertyCell.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/31/12.
+//  Created by Byeong Kwon Kwak on 9/4/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface A3CalendarPropertyView : UIView
-
+@interface A3CalendarEventPropertyCell : UITableViewCell
 @property (nonatomic, strong) NSString *headerText;
 @property (nonatomic, strong) NSString *contentText;
 

@@ -1,5 +1,5 @@
 //
-//  A3CalendarDayCenterSeparatorView.h
+//  A3CalendarVerticalSeparatorView.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/28/12.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3CalendarDayCenterSeparatorView : UIView
+@interface A3CalendarVerticalSeparatorView : UIView
 
 @end
