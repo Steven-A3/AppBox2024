@@ -8,8 +8,9 @@
 
 #import "A3AppDelegate.h"
 
-#import "A3MainViewController.h"
+#import "A3MainViewController_iPad.h"
 #import "FRLayeredNavigation.h"
+#import "A3HomeViewController_iPhone.h"
 
 @interface A3AppDelegate ()
 - (NSURL *)applicationLibraryDirectory;
@@ -31,25 +32,34 @@
 {
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	// Override point for customization after application launch.
-	self.window.backgroundColor = [UIColor whiteColor];
 
+	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 
-	A3MainViewController *vc = [[A3MainViewController alloc] initWithNibName:@"MenuView" bundle:nil];
-	vc.managedObjectContext = self.managedObjectContext;
-	FRLayeredNavigationController *fvc = [[FRLayeredNavigationController alloc] initWithRootViewController:vc
-																							 configuration:^(FRLayeredNavigationItem *item) {
-																								 item.width = 256.0 + 54.0; //600;
-																								 item.nextItemDistance = 54; //2;
-																							 }];
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+		A3HomeViewController_iPhone *homeViewController_iPhone = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
+		homeViewController_iPhone.managedObjectContext = self.managedObjectContext;
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
+		self.window.rootViewController = navigationController;
+	} else {
+		self.window.backgroundColor = [UIColor whiteColor];
 
-	self.window.rootViewController = fvc;
-	fvc.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+		A3MainViewController_iPad *vc = [[A3MainViewController_iPad alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
+		vc.managedObjectContext = self.managedObjectContext;
+		FRLayeredNavigationController *fvc = [[FRLayeredNavigationController alloc] initWithRootViewController:vc
+																								 configuration:^(FRLayeredNavigationItem *item) {
+																									 item.width = 256.0 + 54.0; //600;
+																									 item.nextItemDistance = 54; //2;
+																								 }];
+
+		self.window.rootViewController = fvc;
+		fvc.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
+	}
 
 	[self.window makeKeyAndVisible];
 
 
 // Override point for customization after application launch.
-//    A3MainViewController *controller = (A3MainViewController *)self.window.rootViewController;
+//    A3MainViewController_iPad *controller = (A3MainViewController_iPad *)self.window.rootViewController;
 //    controller.managedObjectContext = self.managedObjectContext;
     return YES;
 }

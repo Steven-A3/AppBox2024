@@ -1,5 +1,5 @@
 //
-//  A3MainViewController.h
+//  A3MainViewController_iPad.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 4/25/12.
@@ -8,7 +8,7 @@
 
 #import "CoolButton.h"
 
-@interface A3MainViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface A3MainViewController_iPad : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) IBOutlet CoolButton *editButton;

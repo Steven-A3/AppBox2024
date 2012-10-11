@@ -1,5 +1,5 @@
 //
-//  A3MainViewController.m
+//  A3MainViewController_iPad.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 4/25/12.
@@ -7,7 +7,7 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "A3MainViewController.h"
+#import "A3MainViewController_iPad.h"
 #import "MenuItem.h"
 #import "MenuGroup.h"
 #import "common.h"
@@ -21,7 +21,7 @@
 #import "A3CalculatorViewController.h"
 #import "A3CalendarViewController.h"
 
-@interface A3MainViewController ()
+@interface A3MainViewController_iPad ()
 
 @property (strong, nonatomic) NSFetchedResultsController *menusFetchedResultsController;
 @property (strong, nonatomic) UIPopoverController *searchPopoverController;
@@ -37,7 +37,7 @@ typedef enum tagA3MenuWorkingMode {
 	A3_MENU_WORKING_MODE_IS_ADDING
 } A3MenuWorkingMode;
 
-@implementation A3MainViewController {
+@implementation A3MainViewController_iPad {
 	A3MenuWorkingMode menuWorkingMode;
 	CGRect leftButtonFrameOnMenu, rightButtonFrameOnMenu;
 	NSInteger numberOfRowsDeletedWhileEditing;
