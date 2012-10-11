@@ -1,93 +1,91 @@
 //
-//  A3CalendarWeekContentsView.m
+//  A3CalendarDayHourlyContentsView.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/3/12.
+//  Created by Byeong Kwon Kwak on 8/30/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
-#import "A3CalendarWeekContentsView.h"
+#import "A3CalendarDayHourlyContentsView.h"
 #import "A3CalendarWeekViewMetrics.h"
 #import "A3Utilities.h"
-#import "common.h"
 #import "A3CalendarCurrentTimeMarkView.h"
+#import "common.h"
 
-@interface A3CalendarWeekContentsView ()
-@property (nonatomic, strong) A3CalendarCurrentTimeMarkView *timeMarkView;
-@property (nonatomic, strong) NSTimer *timeMarkUpdateTimer;
+@interface A3CalendarDayHourlyContentsView ()
+@property(nonatomic, strong) A3CalendarCurrentTimeMarkView *timeMarkView;
+@property(nonatomic, strong) NSTimer *timeMarkUpdateTimer;
+
 
 @end
 
-@implementation A3CalendarWeekContentsView
-@synthesize startDate = _startDate;
+@implementation A3CalendarDayHourlyContentsView
 @synthesize timeMarkView = _timeMarkView;
 @synthesize timeMarkUpdateTimer = _timeMarkUpdateTimer;
 
+
+- (void)initializeView {
+	self.backgroundColor = [UIColor clearColor];
+	self.contentMode = UIViewContentModeRedraw;
+
+	[self addSubview:self.timeMarkView];
+
+	NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:60.0];
+	_timeMarkUpdateTimer = [[NSTimer alloc] initWithFireDate:fireDate
+													 interval:60.0
+													   target:self
+													 selector:@selector(updateTimeMark)
+													 userInfo:nil
+													  repeats:YES];
+
+	NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+	[runLoop addTimer:_timeMarkUpdateTimer forMode:NSDefaultRunLoopMode];
+}
 
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		self.backgroundColor = [UIColor clearColor];
-		self.contentMode = UIViewContentModeRedraw;
-
-		[self addSubview:self.timeMarkView];
-
-		NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:60.0];
-		_timeMarkUpdateTimer = [[NSTimer alloc] initWithFireDate:fireDate
-											   interval:60.0
-												 target:self
-											   selector:@selector(updateTimeMark)
-											   userInfo:nil
-												repeats:YES];
-
-		NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-		[runLoop addTimer:_timeMarkUpdateTimer forMode:NSDefaultRunLoopMode];
+		[self initializeView];
     }
     return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		[self initializeView];
+	}
+
+	return self;
 }
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
-	FNLOG(@"drawRect %f, %f, %f, %f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
-
+    // Drawing code
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
 	CGContextSaveGState(context);
 	CGContextSetAllowsAntialiasing(context, false);
 
-	CGFloat left = roundf(CGRectGetMinX(rect) + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH);
+	CGFloat left = roundf(CGRectGetMinX(rect) + A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH);
 	CGFloat top = roundf(CGRectGetMinY(rect));
 	CGFloat right = roundf(CGRectGetMaxX(rect) - 1.0f);
-	CGFloat bottom = roundf(CGRectGetMaxY(rect));
-	CGFloat columnWidth = (CGRectGetWidth(rect) - A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH) / 7.0;
-	CGFloat rowHeight = roundf(A3_CALENDAR_WEEKVIEW_ROW_HEIGHT);
+	CGFloat rowHeight = roundf(A3_CALENDAR_DAY_HOURLY_ROW_HEIGHT);
+	CGFloat width = roundf(CGRectGetWidth(rect) - A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH);
 	CGFloat height = roundf(CGRectGetHeight(rect));
 
-	CGContextSetFillColorWithColor(context, A3_CALENDAR_WEEK_VIEW_BACKGROUND_COLOR.CGColor);
-	CGContextAddRect(context, CGRectMake(left, top, roundf(columnWidth), height));
-	CGContextAddRect(context, CGRectMake(right - columnWidth, top, roundf(columnWidth), height));
-	CGContextFillPath(context);
+	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_DAY_VIEW_LINE_COLOR.CGColor);
 
-	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_VIEW_LINE_COLOR.CGColor);
-
-	// Add vertical lines
-	for (NSInteger index = 0; index < 8; index++) {
-		CGFloat x = left + columnWidth * index;
-		x = roundf(x) - (index == 7 ? 1.0f : 0.0f);
-		FNLOG(@"vertical line x coordinate %f", x);
-		CGContextMoveToPoint(context, x, top);
-		CGContextAddLineToPoint(context, x, bottom);
-	}
+	CGContextAddRect(context, CGRectMake(left, top + 1.0f, width - 1.0f, height));
+	CGContextStrokePath(context);
 
 	// Add horizontal hour lines
 	for (NSInteger index = 0; index < 23; index++) {
 		CGFloat y = roundf(top + rowHeight * (index + 1));
-//		FNLOG(@"%f", y);
 		CGContextMoveToPoint(context, left, y);
 		CGContextAddLineToPoint(context, right, y);
 	}
@@ -104,11 +102,11 @@
 	CGContextRestoreGState(context);
 
 	CGContextSetAllowsAntialiasing(context, true);
-	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_WEEK_HEADER_TEXT_COLOR.CGColor);
+	CGContextSetStrokeColorWithColor(context, A3_CALENDAR_DAY_VIEW_TEXT_COLOR.CGColor);
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *dateComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
 	dateComponents.hour = 1;
-	NSDate *currentHour = [gregorian dateFromComponents:dateComponents];
+	NSDate *drawingHour = [gregorian dateFromComponents:dateComponents];
 
 	NSDateComponents *addingComponents = [[NSDateComponents alloc] init];
 	addingComponents.hour = 1;
@@ -118,14 +116,14 @@
 	UIFont *hourFont = [UIFont systemFontOfSize:10.0f];
 	left = roundf(CGRectGetMinX(rect));
 	for (NSInteger index = 0; index < 23; index++) {
-		NSString *hourText = [dateFormatter stringFromDate:currentHour];
+		NSString *hourText = [dateFormatter stringFromDate:drawingHour];
 		CGSize size = [hourText sizeWithFont:hourFont];
 
-		CGFloat x = roundf(left + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH - size.width - 3.0f);
+		CGFloat x = roundf(left + A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH - size.width - 3.0f);
 		CGFloat y = roundf(top + rowHeight * (index + 1) - size.height / 2.0f);
 		[hourText drawAtPoint:CGPointMake(x, y) withFont:hourFont];
 
-		currentHour = [gregorian dateByAddingComponents:addingComponents toDate:currentHour options:0];
+		drawingHour = [gregorian dateByAddingComponents:addingComponents toDate:drawingHour options:0];
 	}
 	[self updateTimeMark];
 }
@@ -140,8 +138,8 @@
 - (void)updateTimeMark {
 	FNLOG(@"%f, %f, %f, %f", self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
 
-	CGFloat left = A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH - 20.0f;
-	CGFloat width = CGRectGetWidth(self.bounds) - A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH + 20.0f;
+	CGFloat left = A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH - 20.0f;
+	CGFloat width = CGRectGetWidth(self.bounds) - A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH + 20.0f;
 	CGFloat height = 15.0f;
 
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

@@ -569,7 +569,7 @@ typedef enum tagA3MenuWorkingMode {
 - (IBAction)calculatorButtonTouchUpInside:(UIButton *)sender {
 	[self setNextItemDistanceWIthInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
 
-	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"Calculator_iPad" bundle:nil];
+	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"A3Calculator_iPad" bundle:nil];
 	[self.layeredNavigationController pushViewController:viewController inFrontOf:self maximumWidth:YES animated:YES configuration:^(FRLayeredNavigationItem *item) {
 		item.hasChrome = NO;
 	}];

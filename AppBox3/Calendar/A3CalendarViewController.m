@@ -14,6 +14,9 @@
 #import "common.h"
 #import "A3CalendarMonthFrameViewController.h"
 #import "A3CalendarWeekViewController.h"
+#import "A3CalendarDayViewController.h"
+#import "A3CalendarListViewController.h"
+#import "A3CalendarYearViewController.h"
 
 typedef enum {
 	A3CalendarViewTypeDay = 0,
@@ -53,13 +56,9 @@ typedef enum {
     [super viewDidLoad];
 
 	[self.calendarView setBackgroundColor:[UIColor clearColor]];
-
-	// Do any additional setup after loading the view from its nib.
 	[self.todayButton setButtonColor:[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:222.0f/255.0f alpha:1.0f]];
-
-	A3CalendarMonthFrameViewController *viewController = [[A3CalendarMonthFrameViewController alloc] initWithNibName:@"A3CalendarMonthFrameView" bundle:nil];
-	[self addChildViewController:viewController];
-	[self.calendarView addSubview:[viewController view]];
+	[self.segmentedControl setSelectedSegmentIndex:A3CalendarViewTypeMonth];
+	[self changeCalendarType:self.segmentedControl];
 }
 
 - (void)viewDidUnload
@@ -103,8 +102,13 @@ typedef enum {
 		[viewController removeFromParentViewController];
 	}
 	switch ((A3CalendarViewType)segmentedControl.selectedSegmentIndex) {
-		case A3CalendarViewTypeDay:
+		case A3CalendarViewTypeDay: {
+			A3CalendarDayViewController *viewController = [[A3CalendarDayViewController alloc] initWithNibName:@"A3CalendarDayViewController" bundle:nil];
+			[viewController.view setFrame:self.calendarView.frame];
+			[self addChildViewController:viewController];
+			[self.calendarView addSubview:[viewController view]];
 			break;
+		}
 		case A3CalendarViewTypeWeek: {
 			A3CalendarWeekViewController *viewController = [[A3CalendarWeekViewController alloc] initWithNibName:@"A3CalendarWeekViewController" bundle:nil];
 			[viewController setSubviewFrame:self.calendarView.frame];
@@ -120,10 +124,21 @@ typedef enum {
 			[self.calendarView addSubview:[viewController view]];
 			break;
 		}
-		case A3CalendarViewTypeYear:
+		case A3CalendarViewTypeYear: {
+			A3CalendarYearViewController *viewController = [[A3CalendarYearViewController alloc] initWithNibName:@"A3CalendarYearViewController" bundle:nil];
+			[viewController.view setFrame:self.calendarView.frame];
+			[self addChildViewController:viewController];
+			[self.calendarView addSubview:[viewController view]];
 			break;
-		case A3CalendarViewTypeList:
+		}
+		case A3CalendarViewTypeList: {
+			A3CalendarListViewController *viewController = [[A3CalendarListViewController alloc] initWithNibName:@"A3CalendarListViewController" bundle:nil];
+			[viewController.view setFrame:self.calendarView.frame];
+			[self addChildViewController:viewController];
+			[viewController didMoveToParentViewController:self];
+			[self.calendarView addSubview:[viewController view]];
 			break;
+		}
 	}
 }
 

@@ -34,6 +34,10 @@
 @synthesize weekStartSunday = _weekStartSunday;
 @synthesize gregorian = _gregorian;
 @synthesize startDate = _startDate;
+@synthesize bigCalendar = _bigCalendar;
+@synthesize currentDate = _currentDate;
+@synthesize drawWeekdayLabel = _drawWeekdayLabel;
+@synthesize doNotDrawTextOtherMonth = _doNotDrawTextOtherMonth;
 
 
 - (void)initialize {
@@ -42,9 +46,12 @@
 	_year = dateComponents.year;
 	_month = dateComponents.month;		// July
 	_weekStartSunday = YES;
+	_bigCalendar = YES;
+	_drawWeekdayLabel = YES;
+	_doNotDrawTextOtherMonth = NO;
 
 	self.contentMode = UIViewContentModeRedraw;
-	self.backgroundColor = [UIColor whiteColor];
+	self.backgroundColor = [UIColor clearColor];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -65,6 +72,13 @@
 	}
 
 	return self;
+}
+
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	FNLOG(@"Is big calendar %d", self.bigCalendar);
+	FNLOG(@"Draw Weekday Label %d", _drawWeekdayLabel);
 }
 
 - (NSDate *)firstDateOfMonthWithCalendar:(NSCalendar *)calendar {
@@ -92,14 +106,21 @@
 - (void)drawCalendarFrameInContext:(CGContextRef)context rect:(CGRect)rect {
 	// Draw weekday text as a header line.
 
-	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-	NSArray *weekdaySymbols = [dateFormatter shortWeekdaySymbols];
-	UIFont *weekdaySymbolFont = [UIFont systemFontOfSize:12.0f];
+	if (_drawWeekdayLabel) {
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		NSArray *weekdaySymbols = [dateFormatter shortWeekdaySymbols];
+		UIFont *weekdaySymbolFont = [UIFont systemFontOfSize:12.0f];
 
-	for (NSString *symbol in weekdaySymbols) {
-		CGSize sizeOfSymbol = [symbol sizeWithFont:weekdaySymbolFont];
-		CGPoint drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol] + 1) - sizeOfSymbol.width - rightMargin, 0.0f);
-		[symbol drawAtPoint:drawPoint withFont:weekdaySymbolFont];
+		for (NSString *symbol in weekdaySymbols) {
+			CGSize sizeOfSymbol = [symbol sizeWithFont:weekdaySymbolFont];
+			CGPoint drawPoint;
+			if (self.bigCalendar) {
+				drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol] + 1) - sizeOfSymbol.width - rightMargin, 0.0f);
+			} else{
+				drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol]) + columnWidth/2.0f - sizeOfSymbol.width/2.0f, 0.0f);
+			}
+			[symbol drawAtPoint:drawPoint withFont:weekdaySymbolFont];
+		}
 	}
 
 	CGContextSetAllowsAntialiasing(context, false);
@@ -201,7 +222,7 @@
 
 	NSDateComponents *addComponent = [[NSDateComponents alloc] init];
 	addComponent.day = 1;
-	NSDate *currentDate = self.startDate;
+	NSDate *drawingDate = self.startDate;
 
 	CGContextSetAllowsAntialiasing(context, true);
 
@@ -214,40 +235,73 @@
 	UIColor *todayTextColor = [UIColor whiteColor];
 
 	NSDateComponents *dateComponentsForToday = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[NSDate date]];
+	NSDateComponents *dateComponentsForCurrentDate = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self.currentDate];
 
 	for (NSUInteger row = 0; row < numberOfRow; row++) {
 		for (NSUInteger col = 0; col < 7; col++) {
-			NSDateComponents *currentDateComponent = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:currentDate];
+			NSDateComponents *drawingDateComponent = [self.gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:drawingDate];
 
 			CGContextSaveGState(context);
 
-			if ([currentDateComponent isEqual:dateComponentsForToday]) {
+			if ([drawingDateComponent isEqual:dateComponentsForToday]) {
 				[self drawTodayMarkAtCol:col atRow:row context:context];
 
 				CGContextSetStrokeColorWithColor(context, todayTextColor.CGColor);
 				CGContextSetFillColorWithColor(context, todayTextColor.CGColor);
 			}
-			NSString *dayString = [NSString stringWithFormat:@"%d", currentDateComponent.day];
-			CGSize size = [dayString sizeWithFont:font];
-			CGPoint point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight + 3.0f);
-			[dayString drawAtPoint:point withFont:font];
+			if (!self.bigCalendar && ![dateComponentsForToday isEqual:dateComponentsForCurrentDate] && [drawingDateComponent isEqual:dateComponentsForCurrentDate]) {
+				[self drawCurrentDayMarkAtCol:col atRow:row context:context];
+
+				CGContextSetStrokeColorWithColor(context, todayTextColor.CGColor);
+				CGContextSetFillColorWithColor(context, todayTextColor.CGColor);
+			}
+			if ((drawingDateComponent.month == self.month) || !_doNotDrawTextOtherMonth) {
+				NSString *dayString = [NSString stringWithFormat:@"%d", drawingDateComponent.day];
+				CGSize size = [dayString sizeWithFont:font];
+				CGPoint point;
+				if (self.bigCalendar) {
+					point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight + 3.0f);
+				} else {
+					point = CGPointMake(col * columnWidth + columnWidth / 2.0f - size.width/2.0f, weekdayHeaderHeight + row * rowHeight + rowHeight / 2.0f - size.height/2.0f);
+				}
+				[dayString drawAtPoint:point withFont:font];
+			}
 
 			CGContextRestoreGState(context);
 
-			currentDate = [self.gregorian dateByAddingComponents:addComponent toDate:currentDate options:0];
+			drawingDate = [self.gregorian dateByAddingComponents:addComponent toDate:drawingDate options:0];
 		}
 	}
 
-	NSArray *eventColors = [NSArray arrayWithObjects:
-			[UIColor colorWithRed:199.0f/255.0f green:202.0f/255.0f blue:229.0f/255.0f alpha:1.0f], // border color
-			[UIColor colorWithRed:223.0f/255.0f green:227.0f/255.0f blue:255.0f/255.0f alpha:1.0f], // fill gradient start
-			[UIColor colorWithRed:233.0f/255.0f green:235.0f/255.0f blue:255.0f/255.0f alpha:1.0f], // fill gradient end
-			[UIColor colorWithRed:38.0f/255.0f green:60.0f/255.0f blue:166.0f/255.0f alpha:1.0f], // circle border
-			[UIColor colorWithRed:106.0f/255.0f green:117.0f/255.0f blue:299.0f/255.0f alpha:1.0f], nil];	// circle fill color
-	[self drawEventFrom:self.startDate to:self.startDate colors:eventColors];
-
+	if (self.bigCalendar) {
+		NSArray *eventColors = [NSArray arrayWithObjects:
+				[UIColor colorWithRed:199.0f/255.0f green:202.0f/255.0f blue:229.0f/255.0f alpha:1.0f], // border color
+				[UIColor colorWithRed:223.0f/255.0f green:227.0f/255.0f blue:255.0f/255.0f alpha:1.0f], // fill gradient start
+				[UIColor colorWithRed:233.0f/255.0f green:235.0f/255.0f blue:255.0f/255.0f alpha:1.0f], // fill gradient end
+				[UIColor colorWithRed:38.0f/255.0f green:60.0f/255.0f blue:166.0f/255.0f alpha:1.0f], // circle border
+				[UIColor colorWithRed:106.0f/255.0f green:117.0f/255.0f blue:299.0f/255.0f alpha:1.0f], nil];	// circle fill color
+		[self drawEventFrom:self.startDate to:self.startDate colors:eventColors];
+	}
 	self.startDate = nil;
 	self.gregorian = nil;
+}
+
+- (void)drawCurrentDayMarkAtCol:(NSInteger)col atRow:(NSInteger)row context:(CGContextRef)context {
+	CGContextSaveGState(context);
+
+	NSArray *colors = [NSArray arrayWithObjects:
+			(__bridge id)[[UIColor colorWithRed:131.0f / 255.0f green:132.0f / 255.0f blue:132.0f / 255.0f alpha:1.0f] CGColor],
+			(__bridge id)[[UIColor colorWithRed:99.0f / 255.0f green:100.0f / 255.0f blue:100.0f / 255.0f alpha:1.0f] CGColor], nil];
+	CGRect drawRect = CGRectMake(col * columnWidth, row * rowHeight + weekdayHeaderHeight, columnWidth, self.bigCalendar?22.0f:rowHeight);
+	drawLinearGradient(context, drawRect, colors);
+
+	CGContextSetAllowsAntialiasing(context, true);
+	CGContextSetRGBStrokeColor(context, 71.0f/255.0f, 72.0f/255.0f, 73.0f/255.0f, 1.0f);
+	CGContextSetLineWidth(context, 1.0f);
+	CGContextAddRect(context, drawRect);
+	CGContextStrokePath(context);
+
+	CGContextRestoreGState(context);
 }
 
 
@@ -257,7 +311,7 @@
 	NSArray *colors = [NSArray arrayWithObjects:
 			(__bridge id)[[UIColor colorWithRed:119.0f / 255.0f green:122.0f / 255.0f blue:243.0f / 255.0f alpha:1.0f] CGColor],
 			(__bridge id)[[UIColor colorWithRed:93.0f / 255.0f green:89.0f / 255.0f blue:208.0f / 255.0f alpha:1.0f] CGColor], nil];
-	CGRect drawRect = CGRectMake(col * columnWidth, row * rowHeight + weekdayHeaderHeight, columnWidth, 22.0f);
+	CGRect drawRect = CGRectMake(col * columnWidth, row * rowHeight + weekdayHeaderHeight, columnWidth, self.bigCalendar?22.0f:rowHeight);
 	drawLinearGradient(context, drawRect, colors);
 
 	CGContextSetAllowsAntialiasing(context, true);
@@ -280,7 +334,17 @@
 	if (nil == _startDate) {
 		_startDate = [self firstDateOfMonthWithCalendar:self.gregorian];
 	}
+	FNLOG(@"start date = %@", _startDate);
 	return _startDate;
+}
+
+- (void)setCurrentDate:(NSDate *)currentDate {
+	_currentDate = currentDate;
+	NSDateComponents *dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:_currentDate];
+	self.year = dateComponents.year;
+	self.month = dateComponents.month;
+
+	[self setNeedsDisplay];
 }
 
 @end

@@ -1,5 +1,5 @@
 //
-//  A3CalendarWeekCurrentTimeMarkView.m
+//  A3CalendarCurrentTimeMarkView.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/13/12.
@@ -7,11 +7,11 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
-#import "A3CalendarWeekCurrentTimeMarkView.h"
+#import "A3CalendarCurrentTimeMarkView.h"
 #import "common.h"
 #import "A3Utilities.h"
 
-@implementation A3CalendarWeekCurrentTimeMarkView
+@implementation A3CalendarCurrentTimeMarkView
 
 - (id)initWithFrame:(CGRect)frame
 {

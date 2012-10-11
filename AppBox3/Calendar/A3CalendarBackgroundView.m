@@ -29,6 +29,7 @@
 	self = [super initWithCoder:aDecoder];
 	if (self) {
 		self.backgroundColor = [UIColor clearColor];
+		self.contentMode = UIViewContentModeRedraw;
 	}
 
 	return self;

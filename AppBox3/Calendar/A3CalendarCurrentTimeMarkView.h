@@ -1,5 +1,5 @@
 //
-//  A3CalendarWeekCurrentTimeMarkView.h
+//  A3CalendarCurrentTimeMarkView.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/13/12.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3CalendarWeekCurrentTimeMarkView : UIView
+@interface A3CalendarCurrentTimeMarkView : UIView
 
 @end

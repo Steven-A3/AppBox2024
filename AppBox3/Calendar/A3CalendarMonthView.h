@@ -13,5 +13,9 @@
 @property (assign, nonatomic) NSInteger year;			// Default 2012
 @property (assign, nonatomic) NSInteger month;			// Default July
 @property (assign, nonatomic) BOOL weekStartSunday;		// Default YES
+@property (assign, nonatomic) BOOL bigCalendar;			// Default YES
+@property (assign, nonatomic) BOOL drawWeekdayLabel;	// Default YES
+@property (assign, nonatomic) BOOL doNotDrawTextOtherMonth;// Default NO
+@property (strong, nonatomic) NSDate *currentDate;		// Valid for small Calendar
 
 @end
