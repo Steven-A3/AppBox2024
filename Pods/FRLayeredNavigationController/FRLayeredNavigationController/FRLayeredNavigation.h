@@ -29,3 +29,4 @@
 #import "FRLayeredNavigationController.h"
 #import "FRLayeredNavigationItem.h"
 #import "UIViewController+FRLayeredNavigationController.h"
+#import "FRNavigationBar.h"

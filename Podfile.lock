@@ -1,9 +1,20 @@
-PODS:
-  - FRLayeredNavigationController (0.3.0)
-  - JSONKit (1.5pre)
-  - Reachability (3.0.0)
 
-DEPENDENCIES:
-  - FRLayeredNavigationController
-  - JSONKit (~> 1.4)
-  - Reachability (~> 3.0.0)
+SPEC CHECKSUMS: 
+  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
+  FRLayeredNavigationController: 6d2215a12bc9bea5e7cf9c918f3baa25dad08c6e
+  JSONKit: a01a22c75f27eae76b4badd55a91c20fe6e86477
+  AFNetworking: 758a1cb1ab5a0d22795ba1c44abb9cad395bc126
+
+PODS: 
+- AFNetworking (1.0)
+- FRLayeredNavigationController (0.4.1)
+- JSONKit (1.5pre)
+- Reachability (3.0.0)
+
+COCOAPODS: 0.15.1
+
+DEPENDENCIES: 
+- AFNetworking
+- FRLayeredNavigationController
+- JSONKit
+- Reachability

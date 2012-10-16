@@ -2,7 +2,9 @@ FRLayeredNavigationController
 =============================
 
 FRLayeredNavigationController, an iOS container view controller with an API
-similar to UINavigationController.
+similar to UINavigationController. Influenced by the UI of the Twitter and
+Soundcloud iPad apps, the user will think of a stack of paper and has similar
+interaction options.
 
 Official Project Home: https://github.com/weissi/FRLayeredNavigationController
 
@@ -11,6 +13,8 @@ to add FRLayeredNavigationController to your project.
 
 If you have further questions, feel free to [mail me](mailto:weiss@tux4u.de)!
 
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=JohannesWeiss&url=https://github.com/weissi/FRLayeredNavigationController&title=FRLayeredNavigationController&language=&tags=github&category=software)
+
 ©2012, [Johannes Weiß](mailto:weiss@tux4u.de) for
 [factis research GmbH](http://www.factisresearch.com).
 
@@ -18,9 +22,31 @@ If you have further questions, feel free to [mail me](mailto:weiss@tux4u.de)!
 Documentation
 =============
 
- - [The API documentation](http://weissi.github.com/FRLayeredNavigationController/docs/html/index.html)
- - [my blog post](http://factisresearch.blogspot.de/2012/06/uis-for-hierachical-ipad-apps.html)
- - [EuroCopa demo project](https://github.com/weissi/EuroCopaInfo)
+ - [The API Documentation](http://weissi.github.com/FRLayeredNavigationController/docs/html/index.html)
+ - [Blog Post](http://factisresearch.blogspot.de/2012/06/uis-for-hierachical-ipad-apps.html)
+ - [EuroCopa Demo Project](https://github.com/weissi/EuroCopaInfo)
+
+
+Features
+========
+
+ - The [API](http://weissi.github.com/FRLayeredNavigationController/docs/html/index.html)
+   feels very natural to iOS developers since it's very similar to the API of
+   `UINavigationController`
+ - FRLayeredNavigationController uses ARC (automatic reference counting) but you
+   can use it in your legacy projects without ARC, too
+ - Low memory conditions and rotation are handled correctly with
+   FRLayeredNavigationController
+ - FRLayeredNavigationController works on the iPad, the iPhone and iPod touch
+   but the UI concept is best on the iPad since the big screen
+ - You can easily install FRLayeredNavigationController using
+   [CocoaPods](http://cocoapods.org/) or manually (screencast and instructions
+   below)
+ - Correctly handles `view.frame` and `view.bounds` and has therefore no
+   problems with `view.transform` (such as rotations) as you can see on this
+   [screenshot](https://github.com/weissi/FRLayeredNavigationController/raw/master/FRLayeredNavigationControllerRotation.png).
+ - *App Store* compatible (uses only Public API and was already approved by
+   Apple)
 
 
 License
@@ -30,8 +56,8 @@ charge. FRLayeredNavigationController is licensed under the terms of the
 Modified BSD License.
 
 
-Watch the demo videos
-=====================
+Demo Videos
+===========
  - http://youtu.be/v_tXD_mL05E
  - http://youtu.be/q66HX2td_uc
 
@@ -42,11 +68,23 @@ Screenshots
 [![](https://github.com/weissi/FRLayeredNavigationController/raw/master/FRLayeredNavigationControllerScreenshot2.png)](https://github.com/weissi/FRLayeredNavigationController/raw/master/FRLayeredNavigationControllerScreenshot2.png)
 
 
+Known Users
+===========
+
+###[RecordBox](http://myrecordbox.com) ([App Store](http://itunes.apple.com/us/app/recordbox/id480534869?mt=8))###
+[![](http://a4.mzstatic.com/us/r1000/093/Purple/v4/50/61/93/50619376-7243-bf68-2192-d11bc8687106/mza_4403044630314584279.175x175-75.jpg)](http://myrecordbox.com)
+
+###[Checkpad MED](http://www.lohmann-birkner.de/lohmann/wDeutsch/HP_Checkpad/Index.php?navanchor=11610074)###
+[![](http://www.lohmann-birkner.de/lohmann/wMedia/headlogos/lub_hcc.gif)](http://www.lohmann-birkner.de/lohmann/wEnglish/HP_Checkpad/index.php?navanchor=13510008)
+
+
 Adding FRLayeredNavigationController to your project
 ====================================================
 
 FRLayeredNavigationController is compiled as static libraries. It use Xcode's
-"dependent project" facilities.
+"dependent project" facilities. If you're familiar with
+[CocoaPods](http://cocoapods.org/) use that, just add the `dependency
+'FRLayeredNavigationController'` to your `Podfile`.
 
 Here is how:  **Estimated time:** 5 minutes.
 

@@ -1,0 +1,78 @@
+//
+//  A3Weather.h
+//  AppBox3
+//
+//  Created by Byeong Kwon Kwak on 10/16/12.
+//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+typedef enum {
+	SCWeatherUnitCelcius = 0,
+	SCWeatherUnitFahrenheit,
+} A3WeatherUnit;
+
+typedef enum {
+	SCWeatherConditionTornado = 0,
+	SCWeatherConditionTropicalStrom,
+	SCWeatherConditionHurricane,
+	SCWeatherConditionSevereThunderstroms,
+	SCWeatherConditionThunderstorms,
+	SCWeatherConditionMixedRaindAndSnow,
+	SCWeatherConditionMixedRainAndSleet,
+	SCWeatherConditionMixedSnowAndSleet,
+	SCWeatherConditionFexxingDrizzle,
+	SCWeatherConditionDrizzle,
+	SCWeatherConditionFreezingRain,
+	SCWeatherConditionShowers,
+	SCWeatherConditionShowers2,
+	SCWeatherConditionSnowFlurries,
+	SCWeatherConditionLightSnowShowers,
+	SCWeatherConditionBlowingSnow,
+	SCWeatherConditionSnow,
+	SCWeatherConditionHail,
+	SCWeatherConditionSleet,
+	SCWeatherConditionDust,
+	SCWeatherConditionFoggy,
+	SCWeatherConditionHaze,
+	SCWeatherConditionSmoky,
+	SCWeatherConditionBlustery,
+	SCWeatherConditionWindy,
+	SCWeatherConditionCold,
+	SCWeatherConditionCloudy,
+	SCWeatherConditionMostlyCloudyNight,
+	SCWeatherConditionMostlyCloudyDay,
+	SCWeatherConditionPartlyCloudyNight,
+	SCWeatherConditionPartlyCloudyDay,
+	SCWeatherConditionClearNight,
+	SCWeatherConditionSunny,
+	SCWeatherConditionFairNight,
+	SCWeatherConditionFairDay,
+	SCWeatherConditionMixedRainAndHail,
+	SCWeatherConditionHot,
+	SCWeatherConditionIsolatedThunderstorms,
+	SCWeatherConditionScatteredThunderstorms,
+	SCWeatherConditionScatteredThunderstorms2,
+	SCWeatherConditionScatteredShowers,
+	SCWeatherConditionHeavySnow,
+	SCWeatherConditionScatteredSnowShowers,
+	SCWeatherConditionHeavySnow2,
+	SCWeatherConditionPartlyCloudy,
+	SCWeatherConditionThundershowers,
+	SCWeatherConditionSnowShowers,
+	SCWeatherConditionIsolatedThundershowers,
+	SCWeatherConditionNotAvailable,
+} A3WeatherCondition;
+
+@interface A3Weather : NSObject
+
+@property (nonatomic, strong)	NSString *WOEID;
+@property (nonatomic, assign)	A3WeatherUnit unit;
+@property (nonatomic, assign)	A3WeatherCondition condition;
+@property (nonatomic, assign)	int currentTemperature;
+@property (nonatomic, assign)	int highTemperature;
+@property (nonatomic, assign)	int lowTemperature;
+@property (nonatomic, strong)	NSString *description;
+
+@end

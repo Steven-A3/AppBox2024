@@ -26,9 +26,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "FRDLog.h"
 #import "FRLayerController.h"
 #import "FRLayerChromeView.h"
-#import "FRLayeredNavigation.h"
 #import "FRLayeredNavigationItem+Protected.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -43,6 +43,7 @@
 
 @property (nonatomic, strong) FRLayerChromeView *chromeView;
 @property (nonatomic, strong) UIView *borderView;
+@property (nonatomic, weak) UIView *contentView;
 
 @end
 
@@ -50,72 +51,72 @@
 
 #pragma mark - init/dealloc
 
-- (id)initWithContentViewController:(UIViewController *)vc maximumWidth:(BOOL)maxWidth {
+- (id)initWithContentViewController:(UIViewController *)vc maximumWidth:(BOOL)maxWidth
+{
     if ((self = [super init])) {
         _layeredNavigationItem = [[FRLayeredNavigationItem alloc] init];
         _layeredNavigationItem.layerController = self;
         _contentViewController = vc;
+        [_contentViewController addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:nil];
         _maximumWidth = maxWidth;
-
-        [self attachContentViewController];
     }
 
     return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if ([keyPath isEqualToString:@"title"]) {
+        self.chromeView.title = [change objectForKey:@"new"];
+    }
+}
+
 - (void)dealloc
 {
     self.layeredNavigationItem.layerController = nil;
-    [self detachContentViewController];
+    [_contentViewController removeObserver:self forKeyPath:@"title"];
 }
 
 #pragma mark - internal methods
 
-
-- (void)doViewLayout {
+- (void)doViewLayout
+{
     CGRect contentFrame = CGRectZero;
 
     if (self.layeredNavigationItem.hasChrome) {
         CGRect chromeFrame = CGRectMake(0,
                                         0,
-                                        self.view.bounds.size.width,
+                                        CGRectGetWidth(self.view.bounds),
                                         FRLayerChromeHeight);
         CGRect borderFrame = CGRectMake(0,
                                         FRLayerChromeHeight,
-                                        self.view.bounds.size.width,
-                                        self.view.bounds.size.height-FRLayerChromeHeight);
+                                        CGRectGetWidth(self.view.bounds),
+                                        CGRectGetHeight(self.view.bounds)-FRLayerChromeHeight);
         contentFrame = CGRectMake(1,
                                   FRLayerChromeHeight + 1,
-                                  self.view.bounds.size.width-2,
-                                  self.view.bounds.size.height-FRLayerChromeHeight-2);
+                                  CGRectGetWidth(self.view.bounds)-2,
+                                  CGRectGetHeight(self.view.bounds)-FRLayerChromeHeight-2);
         self.borderView.frame = borderFrame;
         self.chromeView.frame = chromeFrame;
     } else {
         contentFrame = CGRectMake(0,
                                   0,
-                                  self.view.bounds.size.width,
-                                  self.view.bounds.size.height);
+                                  CGRectGetWidth(self.view.bounds),
+                                  CGRectGetHeight(self.view.bounds));
     }
 
 
-    self.contentViewController.view.frame = contentFrame;
+    self.contentView.frame = contentFrame;
 }
 
-- (void)attachContentViewController
-{
-    [self addChildViewController:self.contentViewController];
-    [self.contentViewController didMoveToParentViewController:self];
-}
-
-- (void)detachContentViewController
-{
-    [self.contentViewController willMoveToParentViewController:nil];
-    [self.contentViewController removeFromParentViewController];
-}
 
 #pragma mark - UIViewController interface methods
 
-- (void)loadView {
+- (void)loadView
+{
     self.view = [[UIView alloc] init];
     self.view.backgroundColor = [UIColor clearColor];
 
@@ -133,11 +134,20 @@
         [self.view addSubview:self.chromeView];
         [self.view addSubview:self.borderView];
     }
-    [self.view addSubview:self.contentViewController.view];
+
+    if (self.contentView == nil && self.contentViewController.parentViewController == self) {
+        /* when loaded again after a low memory view removal */
+        self.contentView = self.contentViewController.view;
+    }
+
+    if (self.contentView != nil) {
+        [self.view addSubview:self.contentView];
+    }
 }
 
-- (void)viewWillLayoutSubviews {
-    if (self != [self.layeredNavigationController.childViewControllers objectAtIndex:0]) {
+- (void)viewWillLayoutSubviews
+{
+    if (self.layeredNavigationItem.displayShadow) {
         self.view.layer.shadowRadius = 10.0;
         self.view.layer.shadowOffset = CGSizeMake(-2.0, -3.0);
         self.view.layer.shadowOpacity = 0.5;
@@ -151,15 +161,48 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    NSLog(@"FRLayerController (%@): viewDidUnload", self);
+    FRDLOG(@"FRLayerController (%@): viewDidUnload", self);
 
     self.borderView = nil;
     self.chromeView = nil;
+    self.contentView = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-	return YES;
+    return YES;
+}
+
+- (void)willMoveToParentViewController:(UIViewController *)parent
+{
+    [super willMoveToParentViewController:parent];
+
+    if (parent != nil) {
+        /* will shortly attach to parent */
+        [self addChildViewController:self.contentViewController];
+
+        self.contentView = self.contentViewController.view;
+        [self.view addSubview:self.contentView];
+    } else {
+        /* will shortly detach from parent view controller */
+        [self.contentViewController willMoveToParentViewController:nil];
+
+        [self.contentView removeFromSuperview];
+        self.contentView = nil;
+    }
+}
+
+- (void)didMoveToParentViewController:(UIViewController *)parent
+{
+    [super didMoveToParentViewController:parent];
+
+    if (parent != nil) {
+        /* just attached to parent view controller */
+        [self.contentViewController didMoveToParentViewController:self];
+    } else {
+        /* did just detach */
+        [self.contentViewController removeFromParentViewController];
+    }
 }
 
 @synthesize contentViewController = _contentViewController;
@@ -167,5 +210,6 @@
 @synthesize borderView = _borderView;
 @synthesize chromeView = _chromeView;
 @synthesize layeredNavigationItem = _layeredNavigationItem;
+@synthesize contentView = _contentView;
 
 @end

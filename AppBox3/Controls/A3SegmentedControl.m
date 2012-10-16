@@ -50,7 +50,7 @@
 	(__bridge id) [[UIColor colorWithRed:225.0f / 255.0f green:226.0f / 255.0f blue:228.0f / 255.0f alpha:1.0f] CGColor]];
 	NSArray *colorsForNormal = @[
 	(__bridge id) [[UIColor colorWithRed:240.0f / 255.0f green:241.0f / 255.0f blue:242.0f / 255.0f alpha:1.0f] CGColor],
-	(__bridge id) [[UIColor colorWithRed:195.0f / 255.0f green:195.0f / 255.0f blue:196.0f / 255.0f alpha:1.0f] CGColor]];
+	(__bridge id) [[UIColor colorWithRed:194.0f / 255.0f green:194.0f / 255.0f blue:195.0f / 255.0f alpha:1.0f] CGColor]];
 
 	CGContextRef context = UIGraphicsGetCurrentContext();
 

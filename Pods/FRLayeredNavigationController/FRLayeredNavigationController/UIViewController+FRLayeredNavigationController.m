@@ -26,36 +26,46 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import "FRDLog.h"
 #import "UIViewController+FRLayeredNavigationController.h"
 
 #import "FRLayerController.h"
 
 @implementation UIViewController (FRLayeredNavigationController)
 
-- (FRLayeredNavigationController *)layeredNavigationController {
+- (FRLayeredNavigationController *)layeredNavigationController
+{
     UIViewController *here = self;
 
     while (here != nil) {
-        if([here class] == [FRLayeredNavigationController class]) {
+        if([here isKindOfClass:[FRLayeredNavigationController class]]) {
             return (FRLayeredNavigationController *)here;
         }
 
         here = here.parentViewController;
     }
 
+    FRDLOG(@"WARNING: No instance of FRLayeredNavigationController in view controller hierachy!");
+    FRDLOG(@"HINT: If you used [UIWindow addSubview:], change it to [UIWindow setRootViewController:]");
+
     return nil;
 }
 
-- (FRLayeredNavigationItem *)layeredNavigationItem {
+- (FRLayeredNavigationItem *)layeredNavigationItem
+{
     UIViewController *here = self;
 
     while (here != nil) {
-        if([here class] == [FRLayerController class]) {
+        if([here isKindOfClass:[FRLayerController class]]) {
             return ((FRLayerController *)here).layeredNavigationItem;
         }
 
         here = here.parentViewController;
     }
+
+    FRDLOG(@"WARNING: No instance of FRLayerController in view controller hierachy!");
+    FRDLOG(@"DEBUG: self: '%@', self.parentViewController: '%@'", self, self.parentViewController);
+    FRDLOG(@"HINT: The layeredNavigationItem property is nil until the view controller is shown on the screen.");
 
     return nil;
 }

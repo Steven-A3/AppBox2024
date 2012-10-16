@@ -41,6 +41,18 @@
 
 @implementation FRLayeredNavigationItem
 
+- (id)init
+{
+    if ((self = [super init])) {
+        self->_width = -1;
+        self->_nextItemDistance = -1;
+        self->_hasChrome = YES;
+        self->_displayShadow = YES;
+    }
+
+    return self;
+}
+
 - (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem
 {
     self.layerController.chromeView.leftBarButtonItem = leftBarButtonItem;
@@ -69,6 +81,7 @@
 @synthesize width = _width;
 @synthesize nextItemDistance = _nextItemDistance;
 @synthesize hasChrome = _hasChrome;
+@synthesize displayShadow = _displayShadow;
 @synthesize layerController = _layerController;
 
 @end
