@@ -10371,6 +10371,7 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{248, 0}, {8, 1004}}</string>
 								<reference key="NSSuperview" ref="1065377179"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="732769999"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>

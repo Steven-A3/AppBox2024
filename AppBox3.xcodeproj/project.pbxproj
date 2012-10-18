@@ -153,6 +153,8 @@
 		68C461661627D77900555C91 /* A3CalendarWeekViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C461491627D77900555C91 /* A3CalendarWeekViewController.xib */; };
 		68C461671627D77900555C91 /* A3CalendarYearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C4614C1627D77900555C91 /* A3CalendarYearViewController.m */; };
 		68C461681627D77900555C91 /* A3CalendarYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */; };
+		68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A2162FEC4500F71732 /* A3TickerScrollView.m */; };
+		68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A6162FEC7100F71732 /* A3TickerControl.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -363,6 +365,10 @@
 		68C4614B1627D77900555C91 /* A3CalendarYearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarYearViewController.h; sourceTree = "<group>"; };
 		68C4614C1627D77900555C91 /* A3CalendarYearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarYearViewController.m; sourceTree = "<group>"; };
 		68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarYearViewController.xib; sourceTree = "<group>"; };
+		68D178A1162FEC4500F71732 /* A3TickerScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TickerScrollView.h; sourceTree = "<group>"; };
+		68D178A2162FEC4500F71732 /* A3TickerScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TickerScrollView.m; sourceTree = "<group>"; };
+		68D178A5162FEC7100F71732 /* A3TickerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TickerControl.h; sourceTree = "<group>"; };
+		68D178A6162FEC7100F71732 /* A3TickerControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TickerControl.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +690,10 @@
 				683B954415EB233500575377 /* DDPageControl.m */,
 				6817825116253640008A6E4B /* A3SegmentedControl.h */,
 				6817825216253640008A6E4B /* A3SegmentedControl.m */,
+				68D178A1162FEC4500F71732 /* A3TickerScrollView.h */,
+				68D178A2162FEC4500F71732 /* A3TickerScrollView.m */,
+				68D178A5162FEC7100F71732 /* A3TickerControl.h */,
+				68D178A6162FEC7100F71732 /* A3TickerControl.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1021,6 +1031,8 @@
 				68C461651627D77900555C91 /* A3CalendarWeekViewController.m in Sources */,
 				68C461671627D77900555C91 /* A3CalendarYearViewController.m in Sources */,
 				687FB838162D5871004FB719 /* A3Weather.m in Sources */,
+				68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */,
+				68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
