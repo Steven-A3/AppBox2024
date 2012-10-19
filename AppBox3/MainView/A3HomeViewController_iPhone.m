@@ -11,6 +11,14 @@
 #import "AFJSONRequestOperation.h"
 #import "A3Weather.h"
 #import "A3TickerControl.h"
+#import "A3RoundedCornerView.h"
+#import "A3StatisticsViewController.h"
+
+enum {
+	A3PhoneHomeScreenSegmentSelectionStatistics = 0,
+	A3PhoneHomeScreenSegmentSelectionCalendar,
+	A3PhoneHomeScreenSegmentSelectionTimeline
+};
 
 @interface A3HomeViewController_iPhone ()
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -24,6 +32,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *todayHighLabel;
 @property (nonatomic, strong) IBOutlet UILabel *todayLowLabel;
 @property (nonatomic, strong) IBOutlet A3TickerControl *stockTickerControl;
+@property (nonatomic, strong) IBOutlet A3RoundedCornerView *weatherView;
+@property (nonatomic, strong) IBOutlet UIView *selectedView;
+@property (nonatomic, strong) IBOutlet A3SegmentedControl *segmentedControl;
 
 @end
 
@@ -35,6 +46,9 @@
     if (self) {
         // Custom initialization
 		[self setTitle:@"Home"];
+		[self.weatherView setHidden:YES];
+
+		[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
 	}
     return self;
 }
@@ -54,8 +68,9 @@
 	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
 	self.navigationItem.leftBarButtonItem = sideMenuButton;
 
-	[self.locationManager startUpdatingLocation];
+	[self segmentedControl:self.segmentedControl didChangedSelectedIndex:0 fromIndex:0];
 
+	[self.locationManager startUpdatingLocation];
 	[self downloadStockExchange];
 }
 
@@ -110,6 +125,16 @@
 
 - (void)segmentedControl:(A3SegmentedControl *)control didChangedSelectedIndex:(NSInteger)selectedIndex fromIndex:(NSInteger)fromIndex {
 	FNLOG(@"Check Selected Index %d, from: %d", selectedIndex, fromIndex);
+
+	switch (selectedIndex) {
+		case A3PhoneHomeScreenSegmentSelectionStatistics: {
+			A3StatisticsViewController *viewController = [[A3StatisticsViewController alloc] initWithNibName:nil bundle:nil];
+			[viewController.view setFrame:self.selectedView.bounds];
+			[self.selectedView addSubview:viewController.view];
+			[self addChildViewController:viewController];
+			break;
+		}
+	}
 }
 
 #pragma mark CLLocationManagerDelegate
@@ -171,6 +196,7 @@
 			self.todayHighLabel.text = [NSString stringWithFormat:@"H:%d°", self.currentWeather.highTemperature];
 			self.todayLowLabel.text = [NSString stringWithFormat:@"L:%d°", self.currentWeather.lowTemperature];
 
+			[self.weatherView setHidden:NO];
 			FNLOG(@"Weather: %@", self.currentWeather.description);
 		}
 
