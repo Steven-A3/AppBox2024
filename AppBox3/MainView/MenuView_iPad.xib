@@ -10371,7 +10371,6 @@ AAEAAQABA</bytes>
 								<string key="NSFrame">{{248, 0}, {8, 1004}}</string>
 								<reference key="NSSuperview" ref="1065377179"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<reference key="IBUIBackgroundColor" ref="732769999"/>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 							</object>
@@ -15190,16 +15189,31 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<string key="className">A3MainViewController_iPad</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="calculatorButtonTouchUpInside:">UIButton</string>
+						<string key="calendarButtonTouchUpInside:">id</string>
 						<string key="editButtonTouchUpInside:">UIButton</string>
 						<string key="plusButtonTouchUpInside:">UIButton</string>
+						<string key="searchButtonTouchUpInside:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="calculatorButtonTouchUpInside:">
+							<string key="name">calculatorButtonTouchUpInside:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="calendarButtonTouchUpInside:">
+							<string key="name">calendarButtonTouchUpInside:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="editButtonTouchUpInside:">
 							<string key="name">editButtonTouchUpInside:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBActionInfo" key="plusButtonTouchUpInside:">
 							<string key="name">plusButtonTouchUpInside:</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBActionInfo" key="searchButtonTouchUpInside:">
+							<string key="name">searchButtonTouchUpInside:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 					</dictionary>

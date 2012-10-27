@@ -6,8 +6,30 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <mach/vm_statistics.h>
+#import <mach/mach_host.h>
 #import "UIDevice+systemStatus.h"
 
 @implementation UIDevice (systemStatus)
+
++ (double)memoryUsage {
+	vm_statistics_data_t	vm_stat;
+	mach_msg_type_number_t	count;
+	kern_return_t		error;
+	error = host_statistics(mach_host_self(), HOST_VM_INFO,
+			(host_info_t)&vm_stat, &count);
+	double lastValidMemoryStat = 0.0;
+	if (error == KERN_SUCCESS) {
+		double total = (double)(vm_stat.free_count + vm_stat.wire_count + vm_stat.active_count + vm_stat.inactive_count);
+		lastValidMemoryStat = (total - (double)vm_stat.free_count) / total;
+	}
+	return lastValidMemoryStat;
+}
+
++ (double)storageUsage {
+	NSDictionary*fileAttributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSTemporaryDirectory() error:NULL];
+
+	return ([[fileAttributes objectForKey:NSFileSystemSize] doubleValue] - [[fileAttributes objectForKey:NSFileSystemFreeSize] doubleValue]) / [[fileAttributes objectForKey:NSFileSystemSize] doubleValue];
+}
 
 @end

@@ -92,6 +92,8 @@
 		685A0A3716242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
 		685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
 		685A0A3E1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
+		6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */; };
+		6870A0D7163647A50059BD2F /* A3HorizontalGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
 		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
 		68AFED2F1624E14E00B352AB /* HomeView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */; };
@@ -287,6 +289,10 @@
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView_iPad.xib; sourceTree = "<group>"; };
 		685A0A3C1624376F00E94B6B /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = AppBox3/Storyboard.storyboard; sourceTree = "<group>"; };
+		6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPhoneMenuTableViewController.h; sourceTree = "<group>"; };
+		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
+		6870A0D5163647A50059BD2F /* A3HorizontalGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HorizontalGradientView.h; sourceTree = "<group>"; };
+		6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HorizontalGradientView.m; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -738,6 +744,8 @@
 				681A81E6162519AA00521C89 /* A3HomeViewController_iPhone.m */,
 				68FEC6591630F314004F4A9E /* A3StatisticsViewController.h */,
 				68FEC65A1630F314004F4A9E /* A3StatisticsViewController.m */,
+				6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */,
+				6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -799,6 +807,8 @@
 				68FEC6561630E8E1004F4A9E /* A3StatisticsViewCellController.h */,
 				68FEC6571630E8E1004F4A9E /* A3StatisticsViewCellController.m */,
 				68FEC6541630E89F004F4A9E /* A3StatisticsViewCellController.xib */,
+				6870A0D5163647A50059BD2F /* A3HorizontalGradientView.h */,
+				6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1065,6 +1075,8 @@
 				68FEC6581630E8E1004F4A9E /* A3StatisticsViewCellController.m in Sources */,
 				68FEC65B1630F314004F4A9E /* A3StatisticsViewController.m in Sources */,
 				68024AD81631637600D396F0 /* UIDevice+systemStatus.m in Sources */,
+				6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */,
+				6870A0D7163647A50059BD2F /* A3HorizontalGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

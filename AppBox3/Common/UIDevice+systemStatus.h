@@ -9,5 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface UIDevice (systemStatus)
++ (double)memoryUsage;
+
++ (double)storageUsage;
+
 
 @end

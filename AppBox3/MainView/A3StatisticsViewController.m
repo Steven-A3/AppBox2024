@@ -8,6 +8,7 @@
 
 #import "A3StatisticsViewController.h"
 #import "A3StatisticsViewCellController.h"
+#import "UIDevice+systemStatus.h"
 #include <mach/mach_host.h>
 
 typedef enum {
@@ -34,26 +35,6 @@ typedef enum {
     return self;
 }
 
-- (double)getMemUsage {
-	vm_statistics_data_t	vm_stat;
-	mach_msg_type_number_t	count;
-	kern_return_t		error;
-	error = host_statistics(mach_host_self(), HOST_VM_INFO,
-			(host_info_t)&vm_stat, &count);
-	double lastValidMemstat = 0.0;
-	if (error == KERN_SUCCESS) {
-		double total = (double)(vm_stat.free_count + vm_stat.wire_count + vm_stat.active_count + vm_stat.inactive_count);
-		lastValidMemstat = (total - (double)vm_stat.free_count) / total;
-	}
-	return lastValidMemstat;
-}
-
-- (double)getStorageUsage {
-	NSDictionary* FileAttrs = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSTemporaryDirectory() error:NULL];
-
-	return ([[FileAttrs objectForKey:NSFileSystemSize] doubleValue] - [[FileAttrs objectForKey:NSFileSystemFreeSize] doubleValue]) / [[FileAttrs objectForKey:NSFileSystemSize] doubleValue];
-}
-
 - (UIView *)deviceStatusView {
 	UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(14.0f, 49.0f, 48.0f * 3.0f, 48.0f)];
 
@@ -64,13 +45,13 @@ typedef enum {
 	[batteryGaugeView setAccessibilityLabel:@"Battery Level"];
 	[statusView addSubview:batteryGaugeView];
 
-	double memoryUsage = [self getMemUsage];
+	double memoryUsage = [UIDevice memoryUsage];
 	UIView *memoryGaugeView = [[UIView alloc] initWithFrame:CGRectMake(48.0f + 3.0f, 9.0f + (1.0 - memoryUsage)*30.0f, 16.0f, 30.0f * memoryUsage)];
 	memoryGaugeView.backgroundColor = [UIColor colorWithRed:229.0f / 255.0f green:192.0f / 255.0f blue:36.0f / 255.0f alpha:1.0f];
 	[memoryGaugeView setAccessibilityLabel:@"Memory Usage"];
 	[statusView addSubview:memoryGaugeView];
 
-	double storageUsage = [self getStorageUsage];
+	double storageUsage = [UIDevice storageUsage];
 	UIView *storageGuageView = [[UIView alloc] initWithFrame:CGRectMake(48.0f * 2.0f - 9.0f, 8.0f + 32.0f * (1.0f - storageUsage), 28.0f, 32.0f * storageUsage)];
 	storageGuageView.backgroundColor = [UIColor colorWithRed:60.0f / 255.0f green:162.0f / 255.0f blue:24.0f / 255.0f alpha:1.0f];
 	[storageGuageView setAccessibilityLabel:@"Storage Usage"];
