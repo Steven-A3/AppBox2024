@@ -8,7 +8,8 @@
 
 #import "A3StatisticsViewController.h"
 #import "A3StatisticsViewCellController.h"
-#import "UIDevice+systemStatus.h"
+#import "A3UIDevice.h"
+#import "common.h"
 #include <mach/mach_host.h>
 
 typedef enum {
@@ -45,13 +46,13 @@ typedef enum {
 	[batteryGaugeView setAccessibilityLabel:@"Battery Level"];
 	[statusView addSubview:batteryGaugeView];
 
-	double memoryUsage = [UIDevice memoryUsage];
+	double memoryUsage = [A3UIDevice memoryUsage];
 	UIView *memoryGaugeView = [[UIView alloc] initWithFrame:CGRectMake(48.0f + 3.0f, 9.0f + (1.0 - memoryUsage)*30.0f, 16.0f, 30.0f * memoryUsage)];
 	memoryGaugeView.backgroundColor = [UIColor colorWithRed:229.0f / 255.0f green:192.0f / 255.0f blue:36.0f / 255.0f alpha:1.0f];
 	[memoryGaugeView setAccessibilityLabel:@"Memory Usage"];
 	[statusView addSubview:memoryGaugeView];
 
-	double storageUsage = [UIDevice storageUsage];
+	double storageUsage = [A3UIDevice storageUsage];
 	UIView *storageGuageView = [[UIView alloc] initWithFrame:CGRectMake(48.0f * 2.0f - 9.0f, 8.0f + 32.0f * (1.0f - storageUsage), 28.0f, 32.0f * storageUsage)];
 	storageGuageView.backgroundColor = [UIColor colorWithRed:60.0f / 255.0f green:162.0f / 255.0f blue:24.0f / 255.0f alpha:1.0f];
 	[storageGuageView setAccessibilityLabel:@"Storage Usage"];

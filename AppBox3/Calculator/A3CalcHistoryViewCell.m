@@ -9,6 +9,7 @@
 #import "A3CalcHistoryViewCell.h"
 #import "common.h"
 #import "A3Utilities.h"
+#import "A3UIDevice.h"
 
 @implementation A3CalcHistoryContentsView
 @synthesize dateLabel = _dateLabel;
@@ -38,7 +39,7 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
-	if (UserInterfacePortrait()) {
+	if ([A3UIDevice deviceOrientationIsPortrait]) {
 		CGFloat viewWidth = CGRectGetWidth(self.bounds)/2.0f;
 
 		[self.contentsView1 setFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), viewWidth, CGRectGetHeight(self.bounds) - 1.0f )];
@@ -78,7 +79,7 @@
 	CGContextMoveToPoint(context, CGRectGetMinX(self.bounds), CGRectGetMaxY(self.bounds));
 	CGContextAddLineToPoint(context, CGRectGetMaxX(self.bounds), CGRectGetMaxY(self.bounds));
 
-	if (UserInterfacePortrait()) {
+	if ([A3UIDevice deviceOrientationIsPortrait]) {
 		CGFloat location_X = CGRectGetWidth(self.bounds)/2.0;
 		CGContextMoveToPoint(context, location_X, CGRectGetMinY(self.bounds));
 		CGContextAddLineToPoint(context, location_X, CGRectGetMaxX(self.bounds));

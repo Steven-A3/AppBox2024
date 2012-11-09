@@ -7,11 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		18C3CFCC486641E3819BEF98 /* libPods-GHUnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */; };
 		1C351C315A48406A863E99F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2329DB00268042E9BF6520E4 /* libPods.a */; };
 		68024AD416313CF900D396F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68024AD316313CF900D396F0 /* Default-568h@2x.png */; };
-		68024AD81631637600D396F0 /* UIDevice+systemStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* UIDevice+systemStatus.m */; };
+		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
+		6809A74A163F8E0B002064E2 /* A3MainTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6809A749163F8E0B002064E2 /* A3MainTest.m */; };
+		68129E89164A5841008668F4 /* FacingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E7A164A5841008668F4 /* FacingView.m */; };
+		68129E8A164A5841008668F4 /* FoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E7C164A5841008668F4 /* FoldView.m */; };
+		68129E8B164A5841008668F4 /* MultiFoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E7E164A5841008668F4 /* MultiFoldView.m */; };
+		68129E8D164A5841008668F4 /* ShadowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E82164A5841008668F4 /* ShadowView.m */; };
+		68129E8E164A5841008668F4 /* TouchThroughUIView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E84164A5841008668F4 /* TouchThroughUIView.m */; };
+		68129E8F164A5841008668F4 /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E86164A5841008668F4 /* UIView+Screenshot.m */; };
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		681A81E7162519AA00521C89 /* A3HomeViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 681A81E6162519AA00521C89 /* A3HomeViewController_iPhone.m */; };
+		682CA319163F8A200052A559 /* A3GridStyleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */; };
+		682CA323163F8C5D0052A559 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
+		682CA324163F8C5D0052A559 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
+		682CA325163F8C5D0052A559 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
+		682CA32B163F8C5D0052A559 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 682CA329163F8C5D0052A559 /* InfoPlist.strings */; };
+		682CA32D163F8C5D0052A559 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 682CA32C163F8C5D0052A559 /* main.m */; };
+		682CA333163F8C5D0052A559 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 682CA332163F8C5D0052A559 /* Default.png */; };
+		682CA335163F8C5D0052A559 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682CA334163F8C5D0052A559 /* Default@2x.png */; };
+		682CA337163F8C5D0052A559 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682CA336163F8C5D0052A559 /* Default-568h@2x.png */; };
 		682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
 		682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
@@ -88,13 +105,23 @@
 		683B958C15EB233500575377 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956215EB233500575377 /* A3GrayAppHeaderView.m */; };
 		683B958D15EB233500575377 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956415EB233500575377 /* A3RowSeparatorView.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
+		68436ABC163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */; };
+		68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABF163E9DF5005E7A77 /* A3UIKit.m */; };
 		685A0A3616242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
 		685A0A3716242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
 		685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
 		685A0A3E1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
+		685EA926164CBE99000EA41D /* A3PaperFoldMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EA925164CBE99000EA41D /* A3PaperFoldMenuViewController.m */; };
+		685EA92A164CD32E000EA41D /* PaperFoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EA929164CD32E000EA41D /* PaperFoldView.m */; };
 		6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */; };
 		6870A0D7163647A50059BD2F /* A3HorizontalGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
+		6890255F16429466001A81B5 /* icon_aqua.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255916429466001A81B5 /* icon_aqua.png */; };
+		6890256016429466001A81B5 /* icon_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255A16429466001A81B5 /* icon_blue.png */; };
+		6890256116429466001A81B5 /* icon_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255B16429466001A81B5 /* icon_green.png */; };
+		6890256216429466001A81B5 /* icon_purple.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255C16429466001A81B5 /* icon_purple.png */; };
+		6890256316429466001A81B5 /* icon_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255D16429466001A81B5 /* icon_red.png */; };
+		6890256416429466001A81B5 /* icon_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255E16429466001A81B5 /* icon_yellow.png */; };
 		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
 		68AFED2F1624E14E00B352AB /* HomeView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */; };
 		68AFED4E1624E24D00B352AB /* bg_status_battery.png in Resources */ = {isa = PBXBuildFile; fileRef = 68AFED301624E24D00B352AB /* bg_status_battery.png */; };
@@ -159,6 +186,8 @@
 		68C461681627D77900555C91 /* A3CalendarYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */; };
 		68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A2162FEC4500F71732 /* A3TickerScrollView.m */; };
 		68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A6162FEC7100F71732 /* A3TickerControl.m */; };
+		68DECCC6164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DECCC4164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m */; };
+		68DECCC7164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68DECCC5164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib */; };
 		68FEC64D1630D8CC004F4A9E /* A3RoundedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FEC64C1630D8CC004F4A9E /* A3RoundedCornerView.m */; };
 		68FEC6551630E89F004F4A9E /* A3StatisticsViewCellController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68FEC6541630E89F004F4A9E /* A3StatisticsViewCellController.xib */; };
 		68FEC6581630E8E1004F4A9E /* A3StatisticsViewCellController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FEC6571630E8E1004F4A9E /* A3StatisticsViewCellController.m */; };
@@ -176,15 +205,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GHUnitTests.xcconfig"; path = "Pods/Pods-GHUnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
 		2329DB00268042E9BF6520E4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4145230C773F4D058F9905F5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		68024AD316313CF900D396F0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		68024AD61631637600D396F0 /* UIDevice+systemStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+systemStatus.h"; sourceTree = "<group>"; };
-		68024AD71631637600D396F0 /* UIDevice+systemStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+systemStatus.m"; sourceTree = "<group>"; };
+		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
+		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIDevice.m; sourceTree = "<group>"; };
+		6809A749163F8E0B002064E2 /* A3MainTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainTest.m; sourceTree = "<group>"; };
+		68129E79164A5841008668F4 /* FacingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacingView.h; sourceTree = "<group>"; };
+		68129E7A164A5841008668F4 /* FacingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacingView.m; sourceTree = "<group>"; };
+		68129E7B164A5841008668F4 /* FoldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoldView.h; sourceTree = "<group>"; };
+		68129E7C164A5841008668F4 /* FoldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoldView.m; sourceTree = "<group>"; };
+		68129E7D164A5841008668F4 /* MultiFoldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiFoldView.h; sourceTree = "<group>"; };
+		68129E7E164A5841008668F4 /* MultiFoldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiFoldView.m; sourceTree = "<group>"; };
+		68129E81164A5841008668F4 /* ShadowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShadowView.h; sourceTree = "<group>"; };
+		68129E82164A5841008668F4 /* ShadowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShadowView.m; sourceTree = "<group>"; };
+		68129E83164A5841008668F4 /* TouchThroughUIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchThroughUIView.h; sourceTree = "<group>"; };
+		68129E84164A5841008668F4 /* TouchThroughUIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchThroughUIView.m; sourceTree = "<group>"; };
+		68129E85164A5841008668F4 /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
+		68129E86164A5841008668F4 /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
 		6817825116253640008A6E4B /* A3SegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SegmentedControl.h; sourceTree = "<group>"; };
 		6817825216253640008A6E4B /* A3SegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SegmentedControl.m; sourceTree = "<group>"; };
 		681A81E5162519AA00521C89 /* A3HomeViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HomeViewController_iPhone.h; sourceTree = "<group>"; };
 		681A81E6162519AA00521C89 /* A3HomeViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeViewController_iPhone.m; sourceTree = "<group>"; };
+		682CA317163F8A200052A559 /* A3GridStyleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3GridStyleTableViewCell.h; path = AppBox3/ViewControllers/A3GridStyleTableViewCell.h; sourceTree = SOURCE_ROOT; };
+		682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3GridStyleTableViewCell.m; path = AppBox3/ViewControllers/A3GridStyleTableViewCell.m; sourceTree = SOURCE_ROOT; };
+		682CA321163F8C5D0052A559 /* GHUnitTests.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GHUnitTests.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		682CA328163F8C5D0052A559 /* GHUnitTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GHUnitTests-Info.plist"; sourceTree = "<group>"; };
+		682CA32A163F8C5D0052A559 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		682CA32C163F8C5D0052A559 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		682CA32E163F8C5D0052A559 /* GHUnitTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GHUnitTests-Prefix.pch"; sourceTree = "<group>"; };
+		682CA332163F8C5D0052A559 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		682CA334163F8C5D0052A559 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		682CA336163F8C5D0052A559 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		682EA2D115EB10B000BD6AD4 /* AppBox3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBox3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		682EA2D515EB10B000BD6AD4 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		682EA2D715EB10B000BD6AD4 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -287,14 +340,29 @@
 		683B956315EB233500575377 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3RowSeparatorView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B956415EB233500575377 /* A3RowSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3RowSeparatorView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		68436ABA163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SectionHeaderViewInMenuTableView.h; sourceTree = "<group>"; };
+		68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SectionHeaderViewInMenuTableView.m; sourceTree = "<group>"; };
+		68436ABE163E9DF5005E7A77 /* A3UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIKit.h; sourceTree = "<group>"; };
+		68436ABF163E9DF5005E7A77 /* A3UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIKit.m; sourceTree = "<group>"; };
 		685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView_iPad.xib; sourceTree = "<group>"; };
 		685A0A3C1624376F00E94B6B /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = AppBox3/Storyboard.storyboard; sourceTree = "<group>"; };
+		685EA924164CBE99000EA41D /* A3PaperFoldMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PaperFoldMenuViewController.h; sourceTree = "<group>"; };
+		685EA925164CBE99000EA41D /* A3PaperFoldMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PaperFoldMenuViewController.m; sourceTree = "<group>"; };
+		685EA928164CD32E000EA41D /* PaperFoldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperFoldView.h; sourceTree = "<group>"; };
+		685EA929164CD32E000EA41D /* PaperFoldView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaperFoldView.m; sourceTree = "<group>"; };
+		685EA92B164CDBD1000EA41D /* PaperFoldConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperFoldConstants.h; sourceTree = "<group>"; };
 		6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPhoneMenuTableViewController.h; sourceTree = "<group>"; };
 		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
 		6870A0D5163647A50059BD2F /* A3HorizontalGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HorizontalGradientView.h; sourceTree = "<group>"; };
 		6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HorizontalGradientView.m; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
+		6890255916429466001A81B5 /* icon_aqua.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_aqua.png; sourceTree = "<group>"; };
+		6890255A16429466001A81B5 /* icon_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_blue.png; sourceTree = "<group>"; };
+		6890255B16429466001A81B5 /* icon_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_green.png; sourceTree = "<group>"; };
+		6890255C16429466001A81B5 /* icon_purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_purple.png; sourceTree = "<group>"; };
+		6890255D16429466001A81B5 /* icon_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_red.png; sourceTree = "<group>"; };
+		6890255E16429466001A81B5 /* icon_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_yellow.png; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView_iPhone.xib; sourceTree = "<group>"; };
 		68AFED301624E24D00B352AB /* bg_status_battery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_status_battery.png; sourceTree = "<group>"; };
@@ -384,6 +452,9 @@
 		68D178A2162FEC4500F71732 /* A3TickerScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TickerScrollView.m; sourceTree = "<group>"; };
 		68D178A5162FEC7100F71732 /* A3TickerControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TickerControl.h; sourceTree = "<group>"; };
 		68D178A6162FEC7100F71732 /* A3TickerControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TickerControl.m; sourceTree = "<group>"; };
+		68DECCC3164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PhoneHomeCalendarMonthViewController.h; sourceTree = "<group>"; };
+		68DECCC4164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PhoneHomeCalendarMonthViewController.m; sourceTree = "<group>"; };
+		68DECCC5164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3PhoneHomeCalendarMonthViewController.xib; sourceTree = "<group>"; };
 		68FEC64B1630D8CC004F4A9E /* A3RoundedCornerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RoundedCornerView.h; sourceTree = "<group>"; };
 		68FEC64C1630D8CC004F4A9E /* A3RoundedCornerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3RoundedCornerView.m; sourceTree = "<group>"; };
 		68FEC6541630E89F004F4A9E /* A3StatisticsViewCellController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3StatisticsViewCellController.xib; sourceTree = "<group>"; };
@@ -391,9 +462,21 @@
 		68FEC6571630E8E1004F4A9E /* A3StatisticsViewCellController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StatisticsViewCellController.m; sourceTree = "<group>"; };
 		68FEC6591630F314004F4A9E /* A3StatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StatisticsViewController.h; sourceTree = "<group>"; };
 		68FEC65A1630F314004F4A9E /* A3StatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StatisticsViewController.m; sourceTree = "<group>"; };
+		C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GHUnitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		682CA31E163F8C5D0052A559 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				682CA323163F8C5D0052A559 /* UIKit.framework in Frameworks */,
+				682CA324163F8C5D0052A559 /* Foundation.framework in Frameworks */,
+				682CA325163F8C5D0052A559 /* CoreGraphics.framework in Frameworks */,
+				18C3CFCC486641E3819BEF98 /* libPods-GHUnitTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		682EA2CE15EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -422,15 +505,81 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		68129E78164A5841008668F4 /* PaperFold */ = {
+			isa = PBXGroup;
+			children = (
+				685EA92B164CDBD1000EA41D /* PaperFoldConstants.h */,
+				685EA928164CD32E000EA41D /* PaperFoldView.h */,
+				685EA929164CD32E000EA41D /* PaperFoldView.m */,
+				68129E79164A5841008668F4 /* FacingView.h */,
+				68129E7A164A5841008668F4 /* FacingView.m */,
+				68129E7B164A5841008668F4 /* FoldView.h */,
+				68129E7C164A5841008668F4 /* FoldView.m */,
+				68129E7D164A5841008668F4 /* MultiFoldView.h */,
+				68129E7E164A5841008668F4 /* MultiFoldView.m */,
+				68129E81164A5841008668F4 /* ShadowView.h */,
+				68129E82164A5841008668F4 /* ShadowView.m */,
+				68129E83164A5841008668F4 /* TouchThroughUIView.h */,
+				68129E84164A5841008668F4 /* TouchThroughUIView.m */,
+				68129E85164A5841008668F4 /* UIView+Screenshot.h */,
+				68129E86164A5841008668F4 /* UIView+Screenshot.m */,
+			);
+			name = PaperFold;
+			path = ViewControllers/PaperFold;
+			sourceTree = "<group>";
+		};
+		682CA31B163F8AC90052A559 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				68129E78164A5841008668F4 /* PaperFold */,
+				682CA317163F8A200052A559 /* A3GridStyleTableViewCell.h */,
+				682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		682CA31C163F8B0E0052A559 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				682EA2E615EB10B000BD6AD4 /* A3AppDelegate.h */,
+				682EA2E715EB10B000BD6AD4 /* A3AppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		682CA326163F8C5D0052A559 /* GHUnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				682CA327163F8C5D0052A559 /* Supporting Files */,
+				6809A749163F8E0B002064E2 /* A3MainTest.m */,
+			);
+			path = GHUnitTests;
+			sourceTree = "<group>";
+		};
+		682CA327163F8C5D0052A559 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				682CA328163F8C5D0052A559 /* GHUnitTests-Info.plist */,
+				682CA329163F8C5D0052A559 /* InfoPlist.strings */,
+				682CA32C163F8C5D0052A559 /* main.m */,
+				682CA32E163F8C5D0052A559 /* GHUnitTests-Prefix.pch */,
+				682CA332163F8C5D0052A559 /* Default.png */,
+				682CA334163F8C5D0052A559 /* Default@2x.png */,
+				682CA336163F8C5D0052A559 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		682EA2C615EB10B000BD6AD4 = {
 			isa = PBXGroup;
 			children = (
-				68024AD316313CF900D396F0 /* Default-568h@2x.png */,
 				682EA2DD15EB10B000BD6AD4 /* AppBox3 */,
 				682EA2F915EB10B000BD6AD4 /* AppBox3Tests */,
+				682CA326163F8C5D0052A559 /* GHUnitTests */,
 				682EA2D415EB10B000BD6AD4 /* Frameworks */,
 				682EA2D215EB10B000BD6AD4 /* Products */,
 				4145230C773F4D058F9905F5 /* Pods.xcconfig */,
+				0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -439,6 +588,7 @@
 			children = (
 				682EA2D115EB10B000BD6AD4 /* AppBox3.app */,
 				682EA2F115EB10B000BD6AD4 /* AppBox3Tests.octest */,
+				682CA321163F8C5D0052A559 /* GHUnitTests.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -446,14 +596,15 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				68AF607C162BCCEE00E98002 /* CoreLocation.framework */,
-				683B959215EB252400575377 /* QuartzCore.framework */,
-				682EA2D515EB10B000BD6AD4 /* UIKit.framework */,
-				682EA2D715EB10B000BD6AD4 /* Foundation.framework */,
-				682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */,
 				682EA2DB15EB10B000BD6AD4 /* CoreData.framework */,
-				682EA2F215EB10B000BD6AD4 /* SenTestingKit.framework */,
+				682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */,
+				68AF607C162BCCEE00E98002 /* CoreLocation.framework */,
+				682EA2D715EB10B000BD6AD4 /* Foundation.framework */,
 				2329DB00268042E9BF6520E4 /* libPods.a */,
+				683B959215EB252400575377 /* QuartzCore.framework */,
+				682EA2F215EB10B000BD6AD4 /* SenTestingKit.framework */,
+				682EA2D515EB10B000BD6AD4 /* UIKit.framework */,
+				C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -461,6 +612,7 @@
 		682EA2DD15EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXGroup;
 			children = (
+				682CA31C163F8B0E0052A559 /* AppDelegate */,
 				683B950C15EB233500575377 /* Apps */,
 				683B951015EB233500575377 /* Calculator */,
 				683B952115EB233500575377 /* Calendar */,
@@ -472,17 +624,15 @@
 				683B955215EB233500575377 /* Popup */,
 				683B955515EB233500575377 /* Search */,
 				683B955915EB233500575377 /* Utilities */,
+				682CA31B163F8AC90052A559 /* ViewControllers */,
 				683B955C15EB233500575377 /* Views */,
-				682EA2E615EB10B000BD6AD4 /* A3AppDelegate.h */,
-				682EA2E715EB10B000BD6AD4 /* A3AppDelegate.m */,
-				682EA2E915EB10B000BD6AD4 /* AppBox3.xcdatamodeld */,
-				683B94BE15EB230000575377 /* Resources */,
-				682EA2DE15EB10B000BD6AD4 /* Supporting Files */,
+				683B94BE15EB230000575377 /* {Resources} */,
+				682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */,
 			);
 			path = AppBox3;
 			sourceTree = "<group>";
 		};
-		682EA2DE15EB10B000BD6AD4 /* Supporting Files */ = {
+		682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */ = {
 			isa = PBXGroup;
 			children = (
 				682EA2DF15EB10B000BD6AD4 /* AppBox3-Info.plist */,
@@ -490,7 +640,7 @@
 				682EA2E315EB10B000BD6AD4 /* main.m */,
 				682EA2E515EB10B000BD6AD4 /* AppBox3-Prefix.pch */,
 			);
-			name = "Supporting Files";
+			name = "{Supporting Files}";
 			sourceTree = "<group>";
 		};
 		682EA2F915EB10B000BD6AD4 /* AppBox3Tests */ = {
@@ -512,19 +662,26 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		683B94BE15EB230000575377 /* Resources */ = {
+		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				68024AD316313CF900D396F0 /* Default-568h@2x.png */,
 				683B94BF15EB231C00575377 /* icons */,
 				685A0A3C1624376F00E94B6B /* Storyboard.storyboard */,
 			);
-			name = Resources;
+			name = "{Resources}";
 			path = ..;
 			sourceTree = "<group>";
 		};
 		683B94BF15EB231C00575377 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				6890255916429466001A81B5 /* icon_aqua.png */,
+				6890255A16429466001A81B5 /* icon_blue.png */,
+				6890255B16429466001A81B5 /* icon_green.png */,
+				6890255C16429466001A81B5 /* icon_purple.png */,
+				6890255D16429466001A81B5 /* icon_red.png */,
+				6890255E16429466001A81B5 /* icon_yellow.png */,
 				68AFED301624E24D00B352AB /* bg_status_battery.png */,
 				68AFED311624E24D00B352AB /* bg_status_battery@2x.png */,
 				68AFED321624E24D00B352AB /* bg_status_memory.png */,
@@ -700,8 +857,10 @@
 			children = (
 				683B953E15EB233500575377 /* common.h */,
 				683B953F15EB233500575377 /* CommonUIDefinitions.h */,
-				68024AD61631637600D396F0 /* UIDevice+systemStatus.h */,
-				68024AD71631637600D396F0 /* UIDevice+systemStatus.m */,
+				68024AD61631637600D396F0 /* A3UIDevice.h */,
+				68024AD71631637600D396F0 /* A3UIDevice.m */,
+				68436ABE163E9DF5005E7A77 /* A3UIKit.h */,
+				68436ABF163E9DF5005E7A77 /* A3UIKit.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -726,6 +885,7 @@
 		683B954515EB233500575377 /* Data Management */ = {
 			isa = PBXGroup;
 			children = (
+				682EA2E915EB10B000BD6AD4 /* AppBox3.xcdatamodeld */,
 				683B954615EB233500575377 /* A3BundleDataController.h */,
 				683B954715EB233500575377 /* A3BundleDataController.m */,
 				683B954815EB233500575377 /* AppBox3.sqlite */,
@@ -746,6 +906,11 @@
 				68FEC65A1630F314004F4A9E /* A3StatisticsViewController.m */,
 				6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */,
 				6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */,
+				68DECCC3164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.h */,
+				68DECCC4164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m */,
+				68DECCC5164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib */,
+				685EA924164CBE99000EA41D /* A3PaperFoldMenuViewController.h */,
+				685EA925164CBE99000EA41D /* A3PaperFoldMenuViewController.m */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -809,6 +974,8 @@
 				68FEC6541630E89F004F4A9E /* A3StatisticsViewCellController.xib */,
 				6870A0D5163647A50059BD2F /* A3HorizontalGradientView.h */,
 				6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */,
+				68436ABA163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.h */,
+				68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -816,6 +983,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		682CA320163F8C5D0052A559 /* GHUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 682CA338163F8C5D0052A559 /* Build configuration list for PBXNativeTarget "GHUnitTests" */;
+			buildPhases = (
+				682CA31D163F8C5D0052A559 /* Sources */,
+				682CA31E163F8C5D0052A559 /* Frameworks */,
+				682CA31F163F8C5D0052A559 /* Resources */,
+				16988509CF2F45499B715E4A /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GHUnitTests;
+			productName = GHUnitTests;
+			productReference = 682CA321163F8C5D0052A559 /* GHUnitTests.app */;
+			productType = "com.apple.product-type.application";
+		};
 		682EA2D015EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 682EA30415EB10B000BD6AD4 /* Build configuration list for PBXNativeTarget "AppBox3" */;
@@ -877,11 +1062,23 @@
 			targets = (
 				682EA2D015EB10B000BD6AD4 /* AppBox3 */,
 				682EA2F015EB10B000BD6AD4 /* AppBox3Tests */,
+				682CA320163F8C5D0052A559 /* GHUnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		682CA31F163F8C5D0052A559 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				682CA32B163F8C5D0052A559 /* InfoPlist.strings in Resources */,
+				682CA333163F8C5D0052A559 /* Default.png in Resources */,
+				682CA335163F8C5D0052A559 /* Default@2x.png in Resources */,
+				682CA337163F8C5D0052A559 /* Default-568h@2x.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		682EA2CF15EB10B000BD6AD4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -972,6 +1169,13 @@
 				68C461681627D77900555C91 /* A3CalendarYearViewController.xib in Resources */,
 				68FEC6551630E89F004F4A9E /* A3StatisticsViewCellController.xib in Resources */,
 				68024AD416313CF900D396F0 /* Default-568h@2x.png in Resources */,
+				6890255F16429466001A81B5 /* icon_aqua.png in Resources */,
+				6890256016429466001A81B5 /* icon_blue.png in Resources */,
+				6890256116429466001A81B5 /* icon_green.png in Resources */,
+				6890256216429466001A81B5 /* icon_purple.png in Resources */,
+				6890256316429466001A81B5 /* icon_red.png in Resources */,
+				6890256416429466001A81B5 /* icon_yellow.png in Resources */,
+				68DECCC7164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -988,6 +1192,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		16988509CF2F45499B715E4A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-GHUnitTests-resources.sh\"\n";
+		};
 		4D60866C0D7A4F40A22EB9A0 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1018,6 +1236,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		682CA31D163F8C5D0052A559 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				682CA32D163F8C5D0052A559 /* main.m in Sources */,
+				6809A74A163F8E0B002064E2 /* A3MainTest.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		682EA2CD15EB10B000BD6AD4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1074,9 +1301,21 @@
 				68FEC64D1630D8CC004F4A9E /* A3RoundedCornerView.m in Sources */,
 				68FEC6581630E8E1004F4A9E /* A3StatisticsViewCellController.m in Sources */,
 				68FEC65B1630F314004F4A9E /* A3StatisticsViewController.m in Sources */,
-				68024AD81631637600D396F0 /* UIDevice+systemStatus.m in Sources */,
+				68024AD81631637600D396F0 /* A3UIDevice.m in Sources */,
 				6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */,
 				6870A0D7163647A50059BD2F /* A3HorizontalGradientView.m in Sources */,
+				68436ABC163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m in Sources */,
+				68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */,
+				682CA319163F8A200052A559 /* A3GridStyleTableViewCell.m in Sources */,
+				68129E89164A5841008668F4 /* FacingView.m in Sources */,
+				68129E8A164A5841008668F4 /* FoldView.m in Sources */,
+				68129E8B164A5841008668F4 /* MultiFoldView.m in Sources */,
+				68129E8D164A5841008668F4 /* ShadowView.m in Sources */,
+				68129E8E164A5841008668F4 /* TouchThroughUIView.m in Sources */,
+				68129E8F164A5841008668F4 /* UIView+Screenshot.m in Sources */,
+				68DECCC6164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m in Sources */,
+				685EA926164CBE99000EA41D /* A3PaperFoldMenuViewController.m in Sources */,
+				685EA92A164CD32E000EA41D /* PaperFoldView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1099,6 +1338,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		682CA329163F8C5D0052A559 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				682CA32A163F8C5D0052A559 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		682EA2E015EB10B000BD6AD4 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1118,6 +1365,39 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		682CA339163F8C5D0052A559 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GHUnitTests/GHUnitTests-Prefix.pch";
+				INFOPLIST_FILE = "GHUnitTests/GHUnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		682CA33A163F8C5D0052A559 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */;
+			buildSettings = {
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "GHUnitTests/GHUnitTests-Prefix.pch";
+				INFOPLIST_FILE = "GHUnitTests/GHUnitTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		682EA30215EB10B000BD6AD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1140,7 +1420,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1161,7 +1441,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1230,6 +1510,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		682CA338163F8C5D0052A559 /* Build configuration list for PBXNativeTarget "GHUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				682CA339163F8C5D0052A559 /* Debug */,
+				682CA33A163F8C5D0052A559 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		682EA2CB15EB10B000BD6AD4 /* Build configuration list for PBXProject "AppBox3" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1266,7 +1555,8 @@
 				682EA2EA15EB10B000BD6AD4 /* AppBox3.xcdatamodel */,
 			);
 			currentVersion = 682EA2EA15EB10B000BD6AD4 /* AppBox3.xcdatamodel */;
-			path = AppBox3.xcdatamodeld;
+			name = AppBox3.xcdatamodeld;
+			path = ../AppBox3.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

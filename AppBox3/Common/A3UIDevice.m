@@ -8,9 +8,9 @@
 
 #import <mach/vm_statistics.h>
 #import <mach/mach_host.h>
-#import "UIDevice+systemStatus.h"
+#import "A3UIDevice.h"
 
-@implementation UIDevice (systemStatus)
+@implementation A3UIDevice
 
 + (double)memoryUsage {
 	vm_statistics_data_t	vm_stat;
@@ -30,6 +30,10 @@
 	NSDictionary*fileAttributes = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSTemporaryDirectory() error:NULL];
 
 	return ([[fileAttributes objectForKey:NSFileSystemSize] doubleValue] - [[fileAttributes objectForKey:NSFileSystemFreeSize] doubleValue]) / [[fileAttributes objectForKey:NSFileSystemSize] doubleValue];
+}
+
++ (BOOL)deviceOrientationIsPortrait; {
+	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
 }
 
 @end

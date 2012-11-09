@@ -36,8 +36,6 @@
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-	FNLOG(@"Check");
-
 	if ([_dataSource respondsToSelector:@selector(numberOfColumnsInSegmentedControl:)]) {
 		_numberOfSegment = [_dataSource numberOfColumnsInSegmentedControl:self];
 	}

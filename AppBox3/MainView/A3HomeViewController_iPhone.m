@@ -13,6 +13,10 @@
 #import "A3TickerControl.h"
 #import "A3RoundedCornerView.h"
 #import "A3StatisticsViewController.h"
+#import "A3iPhoneMenuTableViewController.h"
+#import "A3UIDevice.h"
+#import "CommonUIDefinitions.h"
+#import "PaperFoldView.h"
 
 enum {
 	A3PhoneHomeScreenSegmentSelectionStatistics = 0,
@@ -21,24 +25,29 @@ enum {
 };
 
 @interface A3HomeViewController_iPhone ()
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) A3Weather *currentWeather;
-@property (nonatomic, strong) NSDictionary *weatherCurrentCondition;
-@property (nonatomic, strong) NSMutableArray *weatherForecast;
-@property (nonatomic, strong) NSArray *stockExchangeArray;
 
+@property (nonatomic, strong) IBOutlet UIScrollView *mainScrollView;
 @property (nonatomic, strong) IBOutlet UIImageView *weatherCurrentConditionImageView;
 @property (nonatomic, strong) IBOutlet UILabel *currentTemperatureLabel;
 @property (nonatomic, strong) IBOutlet UILabel *todayHighLabel;
 @property (nonatomic, strong) IBOutlet UILabel *todayLowLabel;
 @property (nonatomic, strong) IBOutlet A3TickerControl *stockTickerControl;
 @property (nonatomic, strong) IBOutlet A3RoundedCornerView *weatherView;
-@property (nonatomic, strong) IBOutlet UIView *selectedView;
+@property (nonatomic, strong) IBOutlet UIView *contentsView;
 @property (nonatomic, strong) IBOutlet A3SegmentedControl *segmentedControl;
+@property (nonatomic, strong) A3iPhoneMenuTableViewController *menuTableViewController;
+
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) A3Weather *currentWeather;
+@property (nonatomic, strong) NSDictionary *weatherCurrentCondition;
+@property (nonatomic, strong) NSMutableArray *weatherForecast;
+@property (nonatomic, strong) NSArray *stockExchangeArray;
 
 @end
 
-@implementation A3HomeViewController_iPhone
+@implementation A3HomeViewController_iPhone {
+	BOOL showMenuTableView;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,12 +58,15 @@ enum {
 		[self.weatherView setHidden:YES];
 
 		[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
+		showMenuTableView = NO;
 	}
     return self;
 }
 
 - (void)sideMenuButtonAction {
-
+	self.paperFoldView.state  == PaperFoldStateLeftUnfolded ?
+			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
+			[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded animated:YES];
 }
 
 - (void)viewDidLoad
@@ -124,14 +136,21 @@ enum {
 #pragma mark A3SegmentedControlDelegate
 
 - (void)segmentedControl:(A3SegmentedControl *)control didChangedSelectedIndex:(NSInteger)selectedIndex fromIndex:(NSInteger)fromIndex {
-	FNLOG(@"Check Selected Index %d, from: %d", selectedIndex, fromIndex);
+//	FNLOG(@"Check Selected Index %d, from: %d", selectedIndex, fromIndex);
 
+	for (UIView *subView in [self.contentsView subviews]) {
+		[subView removeFromSuperview];
+	}
 	switch (selectedIndex) {
 		case A3PhoneHomeScreenSegmentSelectionStatistics: {
 			A3StatisticsViewController *viewController = [[A3StatisticsViewController alloc] initWithNibName:nil bundle:nil];
-			[viewController.view setFrame:self.selectedView.bounds];
-			[self.selectedView addSubview:viewController.view];
+			[viewController.view setFrame:self.contentsView.bounds];
+			[self.contentsView addSubview:viewController.view];
 			[self addChildViewController:viewController];
+			break;
+		}
+		case A3PhoneHomeScreenSegmentSelectionCalendar: {
+
 			break;
 		}
 	}
@@ -180,7 +199,7 @@ enum {
 		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
 		XMLParser.delegate = self;
 
-		FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//		FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
 
 		if ([XMLParser parse]) {
 			self.currentWeather.description = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
@@ -197,7 +216,7 @@ enum {
 			self.todayLowLabel.text = [NSString stringWithFormat:@"L:%d°", self.currentWeather.lowTemperature];
 
 			[self.weatherView setHidden:NO];
-			FNLOG(@"Weather: %@", self.currentWeather.description);
+//			FNLOG(@"Weather: %@", self.currentWeather.description);
 		}
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -212,7 +231,7 @@ enum {
 
 	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 		[self.locationManager stopUpdatingLocation];
-		FNLOG(@"JSON Result: %@", JSON);
+//		FNLOG(@"JSON Result: %@", JSON);
 		self.currentWeather.WOEID = [ [ [ [ [ JSON objectForKey:@"places" ] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
 
 		[self getWeatherInfoWithWOEID];
@@ -233,6 +252,7 @@ enum {
 	[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
 		NSString *theCityName = nil;
 		for (CLPlacemark *placeMark in placeMarks) {
+			/*
 			FNLOG(@"%@", [placeMarks description]);
 			FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
 			FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
@@ -240,6 +260,7 @@ enum {
 			FNLOG(@"locality: %@", placeMark.locality);
 			FNLOG(@"name: %@", placeMark.name);
 			FNLOG(@"subLocality: %@", placeMark.subLocality);
+			*/
 			theCityName = placeMark.locality;
 		}
 
@@ -284,7 +305,7 @@ enum {
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
 	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 		self.stockExchangeArray = [ [ [ JSON objectForKey:@"query"] objectForKey:@"results"] objectForKey:@"row"];
-		FNLOG(@"%@", _stockExchangeArray);
+//		FNLOG(@"%@", _stockExchangeArray);
 
 		[self startStockTicker];
 	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {

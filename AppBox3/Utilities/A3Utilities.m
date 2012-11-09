@@ -85,7 +85,3 @@ void drawLinearGradient(CGContextRef context, CGRect rect, NSArray *colors) {
     
     CGGradientRelease(gradient);
 }
-
-BOOL UserInterfacePortrait() {
-	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
-}

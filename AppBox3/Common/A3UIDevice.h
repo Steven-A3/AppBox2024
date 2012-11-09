@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIDevice (systemStatus)
+@interface A3UIDevice : NSObject
+
 + (double)memoryUsage;
-
 + (double)storageUsage;
-
++ (BOOL)deviceOrientationIsPortrait;
 
 @end

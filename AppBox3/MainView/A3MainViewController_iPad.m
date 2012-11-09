@@ -292,7 +292,7 @@ typedef enum tagA3MenuWorkingMode {
 	A3RowSeparatorView *separator = (A3RowSeparatorView *)[cell viewWithTag:TABLEVIEW_CELL_SEPARATOR_TAG];
 	if (nil == separator) {
 		CGFloat cellHeight = CGRectGetHeight(cell.bounds);
-		CGFloat cellWidth = MENU_VIEW_WIDTH - 20.0f;
+		CGFloat cellWidth = A3_MENU_TABLE_VIEW_WIDTH - 20.0f;
 		separator = [[A3RowSeparatorView alloc] initWithFrame:CGRectMake(10.0f, cellHeight - 1.0f, cellWidth, 2.0f)];
 		[separator setTag:TABLEVIEW_CELL_SEPARATOR_TAG];
 		[cell addSubview:separator];

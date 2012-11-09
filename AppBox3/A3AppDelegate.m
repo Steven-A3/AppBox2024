@@ -11,6 +11,7 @@
 #import "A3MainViewController_iPad.h"
 #import "FRLayeredNavigation.h"
 #import "A3HomeViewController_iPhone.h"
+#import "A3PaperFoldMenuViewController.h"
 
 @interface A3AppDelegate ()
 - (NSURL *)applicationLibraryDirectory;
@@ -36,10 +37,8 @@
 	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 
 	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-		A3HomeViewController_iPhone *homeViewController_iPhone = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
-		homeViewController_iPhone.managedObjectContext = self.managedObjectContext;
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
-		self.window.rootViewController = navigationController;
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3PaperFoldMenuViewController alloc] initWithNibName:nil bundle:nil];
+		self.window.rootViewController = paperFoldMenuViewController;
 	} else {
 		self.window.backgroundColor = [UIColor whiteColor];
 

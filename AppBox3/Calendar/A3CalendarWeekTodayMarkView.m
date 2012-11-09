@@ -11,6 +11,7 @@
 #import "A3CalendarWeekViewMetrics.h"
 #import "A3Utilities.h"
 #import "common.h"
+#import "A3UIDevice.h"
 
 @implementation A3CalendarWeekTodayMarkView
 
@@ -44,7 +45,7 @@
 
 	CGContextSetRGBStrokeColor(context, 28.0f/255.0f, 45.0f/255.0f, 174.0f/255.0f, 1.0f);
 	CGContextSetRGBFillColor(context, 28.0f/255.0f, 45.0f/255.0f, 174.0f/255.0f, 1.0f);
-	CGFloat offset = (UserInterfacePortrait()?2.0f:1.0f);
+	CGFloat offset = [A3UIDevice deviceOrientationIsPortrait] ? 2.0f : 1.0f;
 	CGRect rectangleToDraw = CGRectMake(roundf(CGRectGetMinX(self.bounds)),
 			roundf(CGRectGetMinY(self.bounds)) + 1.0f,
 			roundf(CGRectGetWidth(self.bounds)) - offset,
