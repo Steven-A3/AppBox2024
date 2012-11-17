@@ -4,6 +4,7 @@ pod 'JSONKit'
 pod 'Reachability'
 pod 'AFNetworking'
 pod 'FRLayeredNavigationController'
+pod 'QuickDialog'
 target :GHUnitTests do
 	pod 'GHUnitIOS'
 	pod 'OCMock'

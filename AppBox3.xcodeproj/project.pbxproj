@@ -107,6 +107,7 @@
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
 		68436ABC163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */; };
 		68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABF163E9DF5005E7A77 /* A3UIKit.m */; };
+		68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */; };
 		685A0A3616242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
 		685A0A3716242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
 		685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
@@ -122,6 +123,10 @@
 		6890256216429466001A81B5 /* icon_purple.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255C16429466001A81B5 /* icon_purple.png */; };
 		6890256316429466001A81B5 /* icon_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255D16429466001A81B5 /* icon_red.png */; };
 		6890256416429466001A81B5 /* icon_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255E16429466001A81B5 /* icon_yellow.png */; };
+		68AF3C9616532FDA00DB17D2 /* A3MonthCalendarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AF3C9516532FDA00DB17D2 /* A3MonthCalendarTest.m */; };
+		68AF3C981653328A00DB17D2 /* A3CalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C461371627D77900555C91 /* A3CalendarMonthView.m */; };
+		68AF3C991653345500DB17D2 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B955B15EB233500575377 /* A3Utilities.m */; };
+		68AF3C9A1653350B00DB17D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
 		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
 		68AFED2F1624E14E00B352AB /* HomeView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */; };
 		68AFED4E1624E24D00B352AB /* bg_status_battery.png in Resources */ = {isa = PBXBuildFile; fileRef = 68AFED301624E24D00B352AB /* bg_status_battery.png */; };
@@ -344,6 +349,8 @@
 		68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SectionHeaderViewInMenuTableView.m; sourceTree = "<group>"; };
 		68436ABE163E9DF5005E7A77 /* A3UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIKit.h; sourceTree = "<group>"; };
 		68436ABF163E9DF5005E7A77 /* A3UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIKit.m; sourceTree = "<group>"; };
+		68461012164E0B7F005BD9FC /* A3StrokedTextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StrokedTextButton.h; sourceTree = "<group>"; };
+		68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StrokedTextButton.m; sourceTree = "<group>"; };
 		685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView_iPad.xib; sourceTree = "<group>"; };
 		685A0A3C1624376F00E94B6B /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = AppBox3/Storyboard.storyboard; sourceTree = "<group>"; };
 		685EA924164CBE99000EA41D /* A3PaperFoldMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PaperFoldMenuViewController.h; sourceTree = "<group>"; };
@@ -363,6 +370,7 @@
 		6890255C16429466001A81B5 /* icon_purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_purple.png; sourceTree = "<group>"; };
 		6890255D16429466001A81B5 /* icon_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_red.png; sourceTree = "<group>"; };
 		6890255E16429466001A81B5 /* icon_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_yellow.png; sourceTree = "<group>"; };
+		68AF3C9516532FDA00DB17D2 /* A3MonthCalendarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MonthCalendarTest.m; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView_iPhone.xib; sourceTree = "<group>"; };
 		68AFED301624E24D00B352AB /* bg_status_battery.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg_status_battery.png; sourceTree = "<group>"; };
@@ -470,6 +478,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68AF3C9A1653350B00DB17D2 /* QuartzCore.framework in Frameworks */,
 				682CA323163F8C5D0052A559 /* UIKit.framework in Frameworks */,
 				682CA324163F8C5D0052A559 /* Foundation.framework in Frameworks */,
 				682CA325163F8C5D0052A559 /* CoreGraphics.framework in Frameworks */,
@@ -552,6 +561,7 @@
 			children = (
 				682CA327163F8C5D0052A559 /* Supporting Files */,
 				6809A749163F8E0B002064E2 /* A3MainTest.m */,
+				68AF3C9516532FDA00DB17D2 /* A3MonthCalendarTest.m */,
 			);
 			path = GHUnitTests;
 			sourceTree = "<group>";
@@ -878,6 +888,8 @@
 				68D178A2162FEC4500F71732 /* A3TickerScrollView.m */,
 				68D178A5162FEC7100F71732 /* A3TickerControl.h */,
 				68D178A6162FEC7100F71732 /* A3TickerControl.m */,
+				68461012164E0B7F005BD9FC /* A3StrokedTextButton.h */,
+				68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1242,6 +1254,9 @@
 			files = (
 				682CA32D163F8C5D0052A559 /* main.m in Sources */,
 				6809A74A163F8E0B002064E2 /* A3MainTest.m in Sources */,
+				68AF3C9616532FDA00DB17D2 /* A3MonthCalendarTest.m in Sources */,
+				68AF3C981653328A00DB17D2 /* A3CalendarMonthView.m in Sources */,
+				68AF3C991653345500DB17D2 /* A3Utilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1316,6 +1331,7 @@
 				68DECCC6164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m in Sources */,
 				685EA926164CBE99000EA41D /* A3PaperFoldMenuViewController.m in Sources */,
 				685EA92A164CD32E000EA41D /* PaperFoldView.m in Sources */,
+				68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1420,7 +1436,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1441,7 +1457,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";

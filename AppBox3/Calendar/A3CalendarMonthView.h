@@ -16,6 +16,13 @@
 @property (assign, nonatomic) BOOL bigCalendar;			// Default YES
 @property (assign, nonatomic) BOOL drawWeekdayLabel;	// Default YES
 @property (assign, nonatomic) BOOL doNotDrawTextOtherMonth;// Default NO
-@property (strong, nonatomic) NSDate *currentDate;		// Valid for small Calendar
+@property (strong, nonatomic) NSDate *currentDate;
+
+- (void)gotoYearByOffset:(NSInteger)offset;
+- (void)gotoPreviousYear;
+- (void)gotoNextYear;
+- (void)gotoMonthByOffset:(NSInteger)offset;
+- (void)gotoPreviousMonth;
+- (void)gotoNextMonth;
 
 @end

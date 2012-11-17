@@ -1,11 +1,23 @@
 
 SPEC CHECKSUMS: 
-  Reachability: 500bd76bf6cd8ff2c6fb715fc5f44ef6e4c024f2
   JSONKit: a01a22c75f27eae76b4badd55a91c20fe6e86477
-  FRLayeredNavigationController: 6d2215a12bc9bea5e7cf9c918f3baa25dad08c6e
-  AFNetworking: 758a1cb1ab5a0d22795ba1c44abb9cad395bc126
-  GHUnitIOS: 937e638f56a7784bd047736358d18561c382d8ed
+  AFNetworking: 4c11f857c9a18d65f4257c90a1e74ac49f0ac422
   OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
+  QuickDialog: 34f6199992c0658b0dbfbe35ba87c0ee4a65c2c9
+  GHUnitIOS: 937e638f56a7784bd047736358d18561c382d8ed
+  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  FRLayeredNavigationController: 6d2215a12bc9bea5e7cf9c918f3baa25dad08c6e
+
+PODS: 
+- AFNetworking (1.0.1)
+- FRLayeredNavigationController (0.4.1)
+- GHUnitIOS (0.5.5)
+- JSONKit (1.5pre)
+- OCMock (2.0.1)
+- QuickDialog (0.5)
+- Reachability (3.1.0)
+
+COCOAPODS: 0.15.1
 
 DEPENDENCIES: 
 - AFNetworking
@@ -13,14 +25,5 @@ DEPENDENCIES:
 - GHUnitIOS
 - JSONKit
 - OCMock
+- QuickDialog
 - Reachability
-
-COCOAPODS: 0.15.1
-
-PODS: 
-- AFNetworking (1.0)
-- FRLayeredNavigationController (0.4.1)
-- GHUnitIOS (0.5.5)
-- JSONKit (1.5pre)
-- OCMock (2.0.1)
-- Reachability (3.0.0)

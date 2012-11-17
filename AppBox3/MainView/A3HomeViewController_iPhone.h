@@ -16,5 +16,6 @@
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, weak)	PaperFoldView *paperFoldView;
+@property (nonatomic, strong) UIViewController *activeViewControllerForSelectedSegment;
 
 @end

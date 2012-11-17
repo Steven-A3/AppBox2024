@@ -10,7 +10,7 @@
 #define AppBox3_common_h
 
 #ifdef DEBUG
-#define FNLOG(p,...)		NSLog(@"%s "p, __FUNCTION__, ##__VA_ARGS__)
+#define FNLOG(p,...)		NSLog(@"%s line %d, "p, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #else
 #define FNLOG(p,...)
 #endif

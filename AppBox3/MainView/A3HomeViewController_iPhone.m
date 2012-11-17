@@ -17,6 +17,7 @@
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
 #import "PaperFoldView.h"
+#import "A3PhoneHomeCalendarMonthViewController.h"
 
 enum {
 	A3PhoneHomeScreenSegmentSelectionStatistics = 0,
@@ -138,22 +139,26 @@ enum {
 - (void)segmentedControl:(A3SegmentedControl *)control didChangedSelectedIndex:(NSInteger)selectedIndex fromIndex:(NSInteger)fromIndex {
 //	FNLOG(@"Check Selected Index %d, from: %d", selectedIndex, fromIndex);
 
-	for (UIView *subView in [self.contentsView subviews]) {
-		[subView removeFromSuperview];
+	if (self.activeViewControllerForSelectedSegment) {
+		[_activeViewControllerForSelectedSegment.view removeFromSuperview];
+		[_activeViewControllerForSelectedSegment removeFromParentViewController];
 	}
 	switch (selectedIndex) {
 		case A3PhoneHomeScreenSegmentSelectionStatistics: {
 			A3StatisticsViewController *viewController = [[A3StatisticsViewController alloc] initWithNibName:nil bundle:nil];
 			[viewController.view setFrame:self.contentsView.bounds];
 			[self.contentsView addSubview:viewController.view];
-			[self addChildViewController:viewController];
+			self.activeViewControllerForSelectedSegment = viewController;
 			break;
 		}
 		case A3PhoneHomeScreenSegmentSelectionCalendar: {
-
+			A3PhoneHomeCalendarMonthViewController *viewController = [[A3PhoneHomeCalendarMonthViewController alloc] initWithNibName:@"A3PhoneHomeCalendarMonthViewController" bundle:nil];
+			[self.contentsView addSubview:viewController.view];
+			self.activeViewControllerForSelectedSegment = viewController;
 			break;
 		}
 	}
+	[self addChildViewController:self.activeViewControllerForSelectedSegment];
 }
 
 #pragma mark CLLocationManagerDelegate

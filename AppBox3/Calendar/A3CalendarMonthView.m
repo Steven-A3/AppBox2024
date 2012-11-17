@@ -42,7 +42,8 @@
 
 - (void)initialize {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *dateComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:[NSDate date]];
+    _currentDate = [NSDate date];
+	NSDateComponents *dateComponents = [gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:_currentDate];
 	_year = dateComponents.year;
 	_month = dateComponents.month;		// July
 	_weekStartSunday = YES;
@@ -74,12 +75,14 @@
 	return self;
 }
 
+#ifdef DEBUG
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
-	FNLOG(@"Is big calendar %d", self.bigCalendar);
+	FNLOG(@"Is big calendar %d", _bigCalendar);
 	FNLOG(@"Draw Weekday Label %d", _drawWeekdayLabel);
 }
+#endif
 
 - (NSDate *)firstDateOfMonthWithCalendar:(NSCalendar *)calendar {
 	NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
@@ -334,7 +337,6 @@
 	if (nil == _startDate) {
 		_startDate = [self firstDateOfMonthWithCalendar:self.gregorian];
 	}
-	FNLOG(@"start date = %@", _startDate);
 	return _startDate;
 }
 
@@ -345,6 +347,37 @@
 	self.month = dateComponents.month;
 
 	[self setNeedsDisplay];
+}
+
+- (void)gotoYearByOffset:(NSInteger)offset {
+	_year = _year + offset;
+	[self setNeedsDisplay];
+}
+
+- (void)gotoPreviousYear {
+	[self gotoYearByOffset:-1];
+}
+
+- (void)gotoNextYear {
+	[self gotoYearByOffset:1];
+}
+
+- (void)gotoMonthByOffset:(NSInteger)offset {
+	_year += (_month + offset) / 12;
+	_month = (_month + offset) % 12;
+	if (_month <= 0) {
+		_month = 12 + _month;
+		_year--;
+	}
+	[self setNeedsDisplay];
+}
+
+- (void)gotoPreviousMonth {
+	[self gotoMonthByOffset:-1];
+}
+
+- (void)gotoNextMonth {
+	[self gotoMonthByOffset:1];
 }
 
 @end
