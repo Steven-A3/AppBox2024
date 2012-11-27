@@ -1,0 +1,7 @@
+dependencies: \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTAxisLabelGroup.m \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTAxisLabelGroup.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTLayer.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTDefinitions.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTResponder.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/iPhoneOnly/CPTPlatformSpecificDefines.h

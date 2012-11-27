@@ -36,30 +36,11 @@
 
 	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3PaperFoldMenuViewController alloc] initWithNibName:nil bundle:nil];
-		self.window.rootViewController = paperFoldMenuViewController;
-	} else {
-		self.window.backgroundColor = [UIColor whiteColor];
-
-		A3MainViewController_iPad *vc = [[A3MainViewController_iPad alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
-		vc.managedObjectContext = self.managedObjectContext;
-		FRLayeredNavigationController *fvc = [[FRLayeredNavigationController alloc] initWithRootViewController:vc
-																								 configuration:^(FRLayeredNavigationItem *item) {
-																									 item.width = 256.0 + 54.0; //600;
-																									 item.nextItemDistance = 54; //2;
-																								 }];
-
-		self.window.rootViewController = fvc;
-		fvc.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
-	}
+	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3PaperFoldMenuViewController alloc] initWithNibName:nil bundle:nil];
+	self.window.rootViewController = paperFoldMenuViewController;
 
 	[self.window makeKeyAndVisible];
 
-
-// Override point for customization after application launch.
-//    A3MainViewController_iPad *controller = (A3MainViewController_iPad *)self.window.rootViewController;
-//    controller.managedObjectContext = self.managedObjectContext;
     return YES;
 }
 							

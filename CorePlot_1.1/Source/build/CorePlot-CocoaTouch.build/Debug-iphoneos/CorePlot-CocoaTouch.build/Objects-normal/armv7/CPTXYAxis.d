@@ -1,0 +1,26 @@
+dependencies: \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTXYAxis.m \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTXYAxis.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTAxis.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTDefinitions.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTLayer.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTResponder.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/iPhoneOnly/CPTPlatformSpecificDefines.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTTextStyle.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTAxisLabel.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTConstraints.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTExceptions.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTFill.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTLimitBand.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTLineCap.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTLineStyle.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTMutablePlotRange.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTPlotRange.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTPlotArea.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTAnnotationHostLayer.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTGraph.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTBorderedLayer.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTPlotSpace.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTUtilities.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/CPTXYPlotSpace.h \
+  /Users/bkk/Downloads/CorePlot_1.1/Source/framework/Source/NSCoderExtensions.h

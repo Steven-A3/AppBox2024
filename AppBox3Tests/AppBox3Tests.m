@@ -3,7 +3,7 @@
 //  AppBox3Tests
 //
 //  Created by Byeong Kwon Kwak on 4/25/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "AppBox3Tests.h"

@@ -1,0 +1,1 @@
+../../XBPageCurl/XBPageCurl/XBAnimationManager.h

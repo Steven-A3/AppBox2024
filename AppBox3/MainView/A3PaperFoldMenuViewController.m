@@ -10,6 +10,10 @@
 #import "A3iPhoneMenuTableViewController.h"
 #import "A3HomeViewController_iPhone.h"
 #import "CommonUIDefinitions.h"
+#import "A3HotMenuViewController.h"
+#import "A3HomeViewController_iPad.h"
+#import "A3UIDevice.h"
+#import "common.h"
 
 @interface A3PaperFoldMenuViewController ()
 
@@ -21,29 +25,57 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-		_paperFoldView = [[PaperFoldView alloc] initWithFrame:[[UIScreen mainScreen] bounds] ];
-		[_paperFoldView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth];
+		CGRect paperFoldViewFrame = [[UIScreen mainScreen] bounds];
+		// Custom initialization
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+			A3HotMenuViewController *hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
+			[self.view addSubview:[hotMenuViewController view]];
+			[self addChildViewController:hotMenuViewController];
+
+			paperFoldViewFrame.origin.x += hotMenuViewController.view.frame.size.width;
+			paperFoldViewFrame.size.width = 714.0f;
+		}
+
+		_paperFoldView = [[PaperFoldView alloc] initWithFrame:paperFoldViewFrame];
+		[_paperFoldView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
 		[_paperFoldView setDelegate:self];
 		[_paperFoldView setUseOptimizedScreenshot:NO];
 		[self.view addSubview:_paperFoldView];
 
-		_contentView = [[UIView alloc] initWithFrame:_paperFoldView.frame];
-		[_contentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth];
+		FNLOG(@"width: %f, height: %f", _paperFoldView.bounds.size.width, _paperFoldView.bounds.size.height);
+
+		_contentView = [[UIView alloc] initWithFrame:_paperFoldView.bounds];
+		[_contentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin];
 		[_paperFoldView setCenterContentView:_contentView];
 
-		A3HomeViewController_iPhone *homeViewController_iPhone = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
-		homeViewController_iPhone.paperFoldView = _paperFoldView;
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
-		[navigationController.view setFrame:_contentView.frame];
-		[self addChildViewController:navigationController];
-		[_contentView addSubview:[navigationController view]];
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+			A3HomeViewController_iPad *homeViewController_iPad = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
+			UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPad];
+			[navigationController.view setFrame:_contentView.bounds];
+			[self addChildViewController:navigationController];
+			[_contentView addSubview:[navigationController view]];
+
+			FNLOG(@"navigation width: %f, height: %f", navigationController.view.bounds.size.width, navigationController.view.bounds.size.height);
+		} else {
+			A3HomeViewController_iPhone *homeViewController_iPhone = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
+			homeViewController_iPhone.paperFoldView = _paperFoldView;
+			UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
+			[navigationController.view setFrame:_contentView.bounds];
+			[self addChildViewController:navigationController];
+			[_contentView addSubview:[navigationController view]];
+		}
 
 		UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];
 		_sideMenuTableViewController = [[A3iPhoneMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
 		[_sideMenuTableViewController.view setFrame:sideMenuView.frame];
 		[sideMenuView addSubview:_sideMenuTableViewController.view];
 		[_paperFoldView setLeftFoldContentView:sideMenuView foldCount:3 pullFactor:0.9];
+
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+			if (![A3UIDevice deviceOrientationIsPortrait]) {
+				[_paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded];
+			}
+		}
 	}
     return self;
 }

@@ -5,6 +5,7 @@ pod 'Reachability'
 pod 'AFNetworking'
 pod 'FRLayeredNavigationController'
 pod 'QuickDialog'
+pod 'XBPageCurl'
 target :GHUnitTests do
 	pod 'GHUnitIOS'
 	pod 'OCMock'

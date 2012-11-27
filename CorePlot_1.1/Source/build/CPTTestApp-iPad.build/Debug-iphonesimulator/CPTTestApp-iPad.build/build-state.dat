@@ -1,0 +1,582 @@
+TCPTTestApp-iPad
+v5
+r1
+cCheck dependencies
+cProcessInfoPlistFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/Info.plist CPTTestApp_iPad-Info.plist
+cCompileXIB /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xib
+cCompileXIB /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib
+cProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.pth CPTTestApp_iPad_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cLd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad normal i386
+cGenerateDSYMFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad
+cTouch /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk
+c0000000050949D710000000000000110
+t1351916913
+s272
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
+c00000000505A7F7C0000000000228FD0
+t1348108156
+s2265040
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/Foundation.framework/Foundation
+c00000000505A7F7D00000000003DCEF0
+t1348108157
+s4050672
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
+c00000000505A7F7D00000000000015F7
+t1348108157
+s5623
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/QuartzCore.framework/QuartzCore
+c00000000505A7F7E00000000001D57A0
+t1348108158
+s1922976
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
+c00000000505A7F7E0000000000000E8D
+t1348108158
+s3725
+
+N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk/System/Library/Frameworks/UIKit.framework/UIKit
+c00000000505A7F7F0000000000AB3D60
+t1348108159
+s11222368
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug-iphonesimulator/libCorePlot-CocoaTouch.a
+c0000000050AF2555000000000032EA78
+t1353655637
+s3336824
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp-iPad.LinkFileList
+c0000000050B061D90000000000000230
+t1353736665
+s560
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.o
+t1353736666
+s101112
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.o
+t1353736666
+s156092
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.o
+t1353736666
+s3916
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app
+t1353736666
+s238
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM
+t1353736666
+s102
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad
+t1353736666
+s1252280
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp_iPadViewController.nib
+t1353736665
+s1561
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/Info.plist
+t1353736665
+s836
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/MainWindow.nib
+t1353736665
+s1186
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/PkgInfo
+t1353736665
+s8
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/CorePlot-CocoaTouch.h
+c00000000509FEE08000000000000068F
+t1352658440
+s1679
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTAnnotation.h
+c00000000509FEE0B00000000000003E9
+t1352658443
+s1001
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTAnnotationHostLayer.h
+c00000000509FEE0B0000000000000181
+t1352658443
+s385
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTAxis.h
+c00000000509FEE0B00000000000023F8
+t1352658443
+s9208
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTAxisLabel.h
+c00000000509FEE0C000000000000042B
+t1352658444
+s1067
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTAxisSet.h
+c00000000509FEE0C000000000000022C
+t1352658444
+s556
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTAxisTitle.h
+c00000000509FEE0C000000000000006D
+t1352658444
+s109
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTBarPlot.h
+c00000000509FEE0D00000000000016C1
+t1352658445
+s5825
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTBorderedLayer.h
+c00000000509FEE0D000000000000026D
+t1352658445
+s621
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTCalendarFormatter.h
+c00000000509FEE0D000000000000027D
+t1352658445
+s637
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTColor.h
+c00000000509FEE0D000000000000044F
+t1352658445
+s1103
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTColorSpace.h
+c00000000509FEE0E000000000000019E
+t1352658446
+s414
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTConstraints.h
+c00000000509FEE0E00000000000003B5
+t1352658446
+s949
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTDefinitions.h
+c00000000509FEE0E000000000000169C
+t1352658446
+s5788
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTExceptions.h
+c00000000509FEE0F00000000000000E1
+t1352658447
+s225
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTFill.h
+c00000000509FEE0F000000000000034A
+t1352658447
+s842
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTGradient.h
+c00000000509FEE0F0000000000000C3D
+t1352658447
+s3133
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTGraph.h
+c00000000509FEE100000000000000EC0
+t1352658448
+s3776
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTImage.h
+c00000000509FEE1000000000000003DA
+t1352658448
+s986
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLayer.h
+c00000000509FEE100000000000000B86
+t1352658448
+s2950
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLayerAnnotation.h
+c00000000509FEE100000000000000209
+t1352658448
+s521
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLegend.h
+c00000000509FEE100000000000001047
+t1352658448
+s4167
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLegendEntry.h
+c00000000509FEE1000000000000003A4
+t1352658448
+s932
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLimitBand.h
+c00000000509FEE100000000000000227
+t1352658448
+s551
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLineCap.h
+c00000000509FEE100000000000000896
+t1352658448
+s2198
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTLineStyle.h
+c00000000509FEE110000000000000507
+t1352658449
+s1287
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTMutableLineStyle.h
+c00000000509FEE110000000000000272
+t1352658449
+s626
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTMutableNumericData+TypeConversion.h
+c00000000509FEE1100000000000002BE
+t1352658449
+s702
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTMutableNumericData.h
+c00000000509FEE110000000000000137
+t1352658449
+s311
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTMutablePlotRange.h
+c00000000509FEE110000000000000277
+t1352658449
+s631
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTMutableShadow.h
+c00000000509FEE110000000000000161
+t1352658449
+s353
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTMutableTextStyle.h
+c00000000509FEE11000000000000017E
+t1352658449
+s382
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTNumericData+TypeConversion.h
+c00000000509FEE11000000000000032E
+t1352658449
+s814
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTNumericData.h
+c00000000509FEE110000000000000D1C
+t1352658449
+s3356
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTNumericDataType.h
+c00000000509FEE1100000000000006C8
+t1352658449
+s1736
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPathExtensions.h
+c00000000509FEE120000000000000125
+t1352658450
+s293
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPieChart.h
+c00000000509FEE12000000000000160B
+t1352658450
+s5643
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlot.h
+c00000000509FEE120000000000002ADA
+t1352658450
+s10970
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlotArea.h
+c00000000509FEE120000000000000683
+t1352658450
+s1667
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlotAreaFrame.h
+c00000000509FEE12000000000000017C
+t1352658450
+s380
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlotRange.h
+c00000000509FEE1200000000000007FD
+t1352658450
+s2045
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlotSpace.h
+c00000000509FEE1200000000000017E1
+t1352658450
+s6113
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlotSpaceAnnotation.h
+c00000000509FEE1200000000000001A1
+t1352658450
+s417
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTPlotSymbol.h
+c00000000509FEE1200000000000009FB
+t1352658450
+s2555
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTRangePlot.h
+c00000000509FEE130000000000000E14
+t1352658451
+s3604
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTResponder.h
+c00000000509FEE13000000000000071A
+t1352658451
+s1818
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTScatterPlot.h
+c00000000509FEE130000000000001133
+t1352658451
+s4403
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTShadow.h
+c00000000509FEE13000000000000024E
+t1352658451
+s590
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTTextLayer.h
+c00000000509FEE130000000000000260
+t1352658451
+s608
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTTextStyle.h
+c00000000509FEE1300000000000004D7
+t1352658451
+s1239
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTTheme.h
+c00000000509FEE130000000000000600
+t1352658451
+s1536
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTTimeFormatter.h
+c00000000509FEE1300000000000001A2
+t1352658451
+s418
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTTradingRangePlot.h
+c00000000509FEE140000000000002555
+t1352658452
+s9557
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTUtilities.h
+c00000000509FEE140000000000000F1C
+t1352658452
+s3868
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTXYAxis.h
+c00000000509FEE14000000000000018C
+t1352658452
+s396
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTXYAxisSet.h
+c00000000509FEE1400000000000000F1
+t1352658452
+s241
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTXYGraph.h
+c00000000509FEE140000000000000160
+t1352658452
+s352
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/Source/CPTXYPlotSpace.h
+c00000000509FEE1400000000000002EE
+t1352658452
+s750
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/iPhoneOnly/CPTGraphHostingView.h
+c00000000509FEE0800000000000001C3
+t1352658440
+s451
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/iPhoneOnly/CPTPlatformSpecificCategories.h
+c00000000509FEE0800000000000003B0
+t1352658440
+s944
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/iPhoneOnly/CPTPlatformSpecificDefines.h
+c00000000509FEE0900000000000000BD
+t1352658441
+s189
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../framework/iPhoneOnly/CPTPlatformSpecificFunctions.h
+c00000000509FEE090000000000000161
+t1352658441
+s353
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib
+c00000000508D6A360000000000002C44
+t1351445046
+s11332
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPad_Prefix.pch
+c000000005047E56400000000000000C7
+t1346889060
+s199
+i<Foundation/Foundation.h>
+i<UIKit/UIKit.h>
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.h
+c00000000509FEE0400000000000001D2
+t1352658436
+s466
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m
+c00000000509FEE0400000000000002FF
+t1352658436
+s767
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.h
+c00000000509FEE0400000000000002D4
+t1352658436
+s724
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m
+c00000000509FEE0400000000000045EC
+t1352658436
+s17900
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xib
+c000000005047E5640000000000004D59
+t1346889060
+s19801
+
+N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m
+c00000000509FEE04000000000000013E
+t1352658436
+s318
+
+N/var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.pth
+t1353736665
+s4832388
+
+NCPTTestApp_iPad-Info.plist
+c000000005047E56400000000000004D6
+t1346889060
+s1238
+
+CBuild AST from /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m
+r0
+
+CBuild AST from /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m
+r0
+
+CBuild AST from /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m
+r0
+
+CCheck dependencies
+r0
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies28d1b693a560b641^ea05b793a560b641^---0#1#0#--18"Check dependencies36"4A7E5423-92B4-4CE2-BBA6-30EC85FF3B76-
+
+CCompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+s375429465.985713
+e375429466.054757
+r1
+xCompileC
+x../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.o
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection110"Compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m7c7efc599960b641^14050e5a9960b641^---0#0#0#-19%DVTDocumentLocation2@118"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m0000000000000000^4096"CompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.o Classes/CPTTestApp_iPadAppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=3.2 -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-project-headers.hmap -iquote../../framework -iquote../../framework/iPhoneOnly -iquote../../framework/MacOnly -iquote../../framework/Source -iquote../../framework/TestResources -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources/i386 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator -include /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch -MMD -MT dependencies -MF /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.d --serialize-diagnostics /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadAppDelegate.m -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadAppDelegate.o36"CCDD611E-44ED-4614-B491-99ABD1475E80-
+
+CCompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+s375429465.985701
+e375429466.088598
+r1
+xCompileC
+x../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.o
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m287efc599960b641^5cae165a9960b641^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m0000000000000000^4114"CompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.o Classes/CPTTestApp_iPadViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=3.2 -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-project-headers.hmap -iquote../../framework -iquote../../framework/iPhoneOnly -iquote../../framework/MacOnly -iquote../../framework/Source -iquote../../framework/TestResources -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources/i386 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator -include /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch -MMD -MT dependencies -MF /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.d --serialize-diagnostics /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/Classes/CPTTestApp_iPadViewController.m -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp_iPadViewController.o36"B01A2DAB-ABBA-4792-8B10-CB3EFB1865DA-
+
+CCompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+s375429465.985676
+e375429466.007606
+r1
+xCompileC
+x../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.o
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m077efc599960b641^dcf2015a9960b641^---0#0#0#-19%DVTDocumentLocation2@88"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m0000000000000000^3948"CompileC ../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.o main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=3.2 -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-project-headers.hmap -iquote../../framework -iquote../../framework/iPhoneOnly -iquote../../framework/MacOnly -iquote../../framework/Source -iquote../../framework/TestResources -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources/i386 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator -include /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch -MMD -MT dependencies -MF /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.d --serialize-diagnostics /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/main.m -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/main.o36"3B866622-B1C6-4D1B-9A38-1F4CFBD058C6-
+
+CCompileXIB /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib
+s375429465.189798
+e375429465.781917
+r1
+xCompileXIB
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib
+o2012-11-24 14:57:45.751 Interface Builder Cocoa Touch Tool[5197:f07] CFPreferences: user home directory at file://localhost/Users/bkk/Library/Application%20Support/iPhone%20Simulator/User/ is unavailable. User domains will be volatile.
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection109"Compiling /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib9a7b34599960b641^842bc8599960b641^-235"2012-11-24 14:57:45.751 Interface Builder Cocoa Touch Tool[5197:f07] CFPreferences: user home directory at file://localhost/Users/bkk/Library/Application%20Support/iPhone%20Simulator/User/ is unavailable. User domains will be volatile.-0#0#0#-19%DVTDocumentLocation2@115"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib0000000000000000^1011"CompileXIB CPTTestApp_iPadViewController.xib    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.2    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp_iPadViewController.nib /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPadViewController.xib --sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk36"C19265A2-4173-4383-ABD3-8AC2E8849013-
+
+CCompileXIB /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xib
+s375429465.189792
+e375429465.245756
+r1
+xCompileXIB
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xib
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection90"Compiling /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xibee7b34599960b641^bb2b3f599960b641^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xib0000000000000000^954"CompileXIB MainWindow.xib    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.2    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/MainWindow.nib /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/MainWindow.xib --sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk36"A75D01DF-8C9A-4733-ACC6-7AF25442561C-
+
+CGenerateDSYMFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad
+s375429466.228151
+e375429466.354899
+r1
+xGenerateDSYMFile
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection135"Generating /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM60ae3d5a9960b641^40db5a5a9960b641^---0#0#0#-19%DVTDocumentLocation2@140"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM000000000080d041^778"GenerateDSYMFile ../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM ../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app.dSYM36"61A8F3D2-8A0A-4797-8E10-0077F39609BD-
+
+CLd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad normal i386
+s375429466.101613
+e375429466.211985
+r1
+xLd
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad
+xnormal
+xi386
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection140"Link /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad753c1a5a9960b641^6f45365a9960b641^---0#0#0#--1489"Ld ../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad normal i386    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv IPHONEOS_DEPLOYMENT_TARGET 3.2    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch i386 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -L/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator -filelist /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/Objects-normal/i386/CPTTestApp-iPad.LinkFileList -Xlinker -objc_abi_version -Xlinker 2 -ObjC -all_load -fobjc-link-runtime -Xlinker -no_implicit_dylibs -mios-simulator-version-min=3.2 -framework Foundation -framework UIKit -framework CoreGraphics /Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug-iphonesimulator/libCorePlot-CocoaTouch.a -framework QuartzCore -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/CPTTestApp-iPad36"063FE5DE-292E-4738-AD55-66E938394125-
+
+CProcessInfoPlistFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/Info.plist CPTTestApp_iPad-Info.plist
+s375429465.154030
+e375429465.182039
+r1
+xProcessInfoPlistFile
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/Info.plist
+xCPTTestApp_iPad-Info.plist
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection34"Process CPTTestApp_iPad-Info.plist69ff2b599960b641^1c9a2e599960b641^---0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPad-Info.plist0000000000000000^773"ProcessInfoPlistFile ../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/Info.plist CPTTestApp_iPad-Info.plist    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility CPTTestApp_iPad-Info.plist -genpkginfo /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/PkgInfo -expandbuildsettings -format binary -platform iphonesimulator -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app/Info.plist36"7268CD6B-0A9E-4790-9515-1CED22B824AE-
+
+CProcessPCH /Users/bkk/Library/Developer/Xcode/DerivedData/CPTTestApp-iPad-flzhbotcopxrkeaplvrcjlcdpirb/Index/PrecompiledHeaders/CPTTestApp_iPad_Prefix-dcbnvvujrqcvquajtkgqxanjuocy_ast/CPTTestApp_iPad_Prefix.pch.pth CPTTestApp_iPad_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
+r0
+
+CProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.pth CPTTestApp_iPad_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+s375429465.789778
+e375429465.978522
+r1
+xProcessPCH
+x/var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.pth
+xCPTTestApp_iPad_Prefix.pch
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.llvm.clang.1_0.compiler
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection37"Precompile CPTTestApp_iPad_Prefix.pch6e4dca599960b641^8d80fa599960b641^---0#0#0#-19%DVTDocumentLocation2@108"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPad_Prefix.pch0000000000000000^3901"ProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.pth CPTTestApp_iPad_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch i386 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator6.0.sdk -fexceptions -fasm-blocks -Wprotocol -Wdeprecated-declarations -g -fvisibility=hidden -Wno-sign-conversion -fobjc-abi-version=2 -fobjc-legacy-dispatch "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -mios-simulator-version-min=3.2 -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/CPTTestApp-iPad-project-headers.hmap -iquote../../framework -iquote../../framework/iPhoneOnly -iquote../../framework/MacOnly -iquote../../framework/Source -iquote../../framework/TestResources -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources/i386 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/CPTTestApp-iPad.build/Debug-iphonesimulator/CPTTestApp-iPad.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator --serialize-diagnostics /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/CPTTestApp_iPad_Prefix.pch -o /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.pth -MMD -MT dependencies -MF /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/CPTTestApp_iPad_Prefix-amannfbtahzojjdxktdeqstyaitj/CPTTestApp_iPad_Prefix.pch.d36"E3428D54-E2ED-48CE-B7C8-27A8ADBFE899-
+
+CTouch /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app
+s375429466.371734
+e375429466.401694
+r1
+xTouch
+x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection125"Touch /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.appd0d0635a9960b641^9dd5665a9960b641^---0#0#0#--470"Touch ../../build/Debug-iphonesimulator/CPTTestApp-iPad.app    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CPTTestApp-iPad/../../build/Debug-iphonesimulator/CPTTestApp-iPad.app36"C1967574-5EBF-4681-9286-DA0B022C0C95-
+

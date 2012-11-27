@@ -12,7 +12,7 @@
 #import "PaperFoldView.h"
 
 @interface A3HomeViewController_iPhone : UIViewController
-		<A3SegmentedControlDataSource, A3SegmentedControlDelegate, CLLocationManagerDelegate, NSXMLParserDelegate>
+		<A3SegmentedControlDataSource, A3SegmentedControlDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, weak)	PaperFoldView *paperFoldView;

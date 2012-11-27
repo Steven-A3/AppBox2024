@@ -17,3 +17,9 @@ install_resource()
       ;;
   esac
 }
+install_resource 'XBPageCurl/XBPageCurl/Resources/FragmentShader.glsl'
+install_resource 'XBPageCurl/XBPageCurl/Resources/NextPageFragmentShader.glsl'
+install_resource 'XBPageCurl/XBPageCurl/Resources/NextPageNoTextureFragmentShader.glsl'
+install_resource 'XBPageCurl/XBPageCurl/Resources/NextPageNoTextureVertexShader.glsl'
+install_resource 'XBPageCurl/XBPageCurl/Resources/NextPageVertexShader.glsl'
+install_resource 'XBPageCurl/XBPageCurl/Resources/VertexShader.glsl'
