@@ -10,7 +10,9 @@
 #import "A3StockTickerControl.h"
 #import "A3WeatherStickerViewController.h"
 #import "A3StatisticsViewController.h"
+#import "PaperFoldView.h"
 #import "A3PhoneHomeCalendarMonthViewController.h"
+#import "A3GradientView.h"
 
 @interface A3HomeViewController_iPad ()
 @property (nonatomic, strong) IBOutlet UIScrollView *mainScrollView;
@@ -19,6 +21,9 @@
 @property (nonatomic, strong) IBOutlet UILabel *calendarLabel;
 @property (nonatomic, strong) IBOutlet UIView *calendarView;
 @property (nonatomic, strong) A3StatisticsViewController *statisticsViewController;
+
+@property (nonatomic, strong) IBOutlet A3GradientView *calendarTopGradient, *calendarLeftGradient, *calendarRightGradient;
+@property (nonatomic, strong) IBOutlet A3GradientView *timelineTopGradient, *timelineLeftGradient, *timelineRightGradient;
 
 @end
 
@@ -45,6 +50,43 @@
 	return _statisticsViewController;
 }
 
+- (void)setupGradientViews {
+	NSArray *gradientColors1 = @[
+			(__bridge id)[UIColor colorWithRed:186.0f/255.0f green:187.0f/255.0f blue:189.0f/255.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:186.0f/255.0f green:187.0f/255.0f blue:189.0f/255.0f alpha:0.0f].CGColor
+	];
+	self.calendarTopGradient.gradientColors = gradientColors1;
+	self.calendarTopGradient.vertical = NO;
+	[self.calendarTopGradient setNeedsDisplay];
+
+	self.timelineTopGradient.gradientColors = gradientColors1;
+	self.timelineTopGradient.vertical = NO;
+	[self.timelineTopGradient setNeedsDisplay];
+
+	NSArray *gradientColors2 = @[
+			(__bridge id)[UIColor colorWithRed:200.0f/255.0f green:201.0f/255.0f blue:201.0f/255.0f alpha:0.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:200.0f/255.0f green:201.0f/255.0f blue:202.0f/255.0f alpha:1.0f].CGColor
+	];
+	self.calendarLeftGradient.gradientColors = gradientColors2;
+	self.calendarLeftGradient.vertical = YES;
+	[self.calendarLeftGradient setNeedsDisplay];
+	self.timelineLeftGradient.gradientColors = gradientColors2;
+	self.timelineLeftGradient.vertical = YES;
+	[self.timelineLeftGradient setNeedsDisplay];
+
+	NSArray *gradientColors3 = @[
+			(__bridge id)[UIColor colorWithRed:200.0f/255.0f green:201.0f/255.0f blue:202.0f/255.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:200.0f/255.0f green:201.0f/255.0f blue:202.0f/255.0f alpha:0.0f].CGColor
+	];
+	self.calendarRightGradient.gradientColors = gradientColors3;
+	self.calendarRightGradient.vertical = YES;
+	[self.calendarRightGradient setNeedsDisplay];
+
+	self.timelineRightGradient.gradientColors = gradientColors3;
+	self.timelineRightGradient.vertical = YES;
+	[self.timelineRightGradient setNeedsDisplay];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -69,6 +111,14 @@
 	A3PhoneHomeCalendarMonthViewController *calendarMonthViewController = [[A3PhoneHomeCalendarMonthViewController alloc] initWithNibName:@"A3PhoneHomeCalendarMonthViewController" bundle:nil];
 	[self.calendarView addSubview:[calendarMonthViewController view] ];
     [self addChildViewController:calendarMonthViewController];
+
+	[self setupGradientViews];
+}
+
+- (void)sideMenuButtonAction {
+	self.paperFoldView.state  == PaperFoldStateLeftUnfolded ?
+			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
+			[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

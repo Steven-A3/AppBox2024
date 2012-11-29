@@ -115,7 +115,7 @@
 		685EA926164CBE99000EA41D /* A3PaperFoldMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EA925164CBE99000EA41D /* A3PaperFoldMenuViewController.m */; };
 		685EA92A164CD32E000EA41D /* PaperFoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EA929164CD32E000EA41D /* PaperFoldView.m */; };
 		6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */; };
-		6870A0D7163647A50059BD2F /* A3HorizontalGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */; };
+		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
 		6886A30C165776C00013A4C9 /* A3SalesCalcViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886A30B165776C00013A4C9 /* A3SalesCalcViewController.m */; };
 		6890255F16429466001A81B5 /* icon_aqua.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255916429466001A81B5 /* icon_aqua.png */; };
@@ -396,8 +396,8 @@
 		685EA92B164CDBD1000EA41D /* PaperFoldConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaperFoldConstants.h; sourceTree = "<group>"; };
 		6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPhoneMenuTableViewController.h; sourceTree = "<group>"; };
 		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
-		6870A0D5163647A50059BD2F /* A3HorizontalGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HorizontalGradientView.h; sourceTree = "<group>"; };
-		6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HorizontalGradientView.m; sourceTree = "<group>"; };
+		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
+		6870A0D6163647A50059BD2F /* A3GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3GradientView.m; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
 		6886A30A165776C00013A4C9 /* A3SalesCalcViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcViewController.h; path = "Apps/Sales Calc/A3SalesCalcViewController.h"; sourceTree = "<group>"; };
@@ -1102,8 +1102,8 @@
 				68FEC6561630E8E1004F4A9E /* A3StatisticsViewCellController.h */,
 				68FEC6571630E8E1004F4A9E /* A3StatisticsViewCellController.m */,
 				68FEC6541630E89F004F4A9E /* A3StatisticsViewCellController.xib */,
-				6870A0D5163647A50059BD2F /* A3HorizontalGradientView.h */,
-				6870A0D6163647A50059BD2F /* A3HorizontalGradientView.m */,
+				6870A0D5163647A50059BD2F /* A3GradientView.h */,
+				6870A0D6163647A50059BD2F /* A3GradientView.m */,
 				68436ABA163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.h */,
 				68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */,
 			);
@@ -1476,7 +1476,7 @@
 				68FEC65B1630F314004F4A9E /* A3StatisticsViewController.m in Sources */,
 				68024AD81631637600D396F0 /* A3UIDevice.m in Sources */,
 				6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */,
-				6870A0D7163647A50059BD2F /* A3HorizontalGradientView.m in Sources */,
+				6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */,
 				68436ABC163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m in Sources */,
 				68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */,
 				682CA319163F8A200052A559 /* A3GridStyleTableViewCell.m in Sources */,

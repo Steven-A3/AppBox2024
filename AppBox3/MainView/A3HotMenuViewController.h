@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface A3HotMenuViewController : UIViewController
+@property (nonatomic, weak) UINavigationController *navigationController;
 
 @end

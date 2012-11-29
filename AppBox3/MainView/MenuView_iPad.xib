@@ -41,6 +41,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrameSize">{6, 1004}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1030007146"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="732769999">
 							<int key="NSColorSpace">3</int>
@@ -57,6 +58,8 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{48, 0}, {6, 1004}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<reference key="IBUIBackgroundColor" ref="732769999"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -66,6 +69,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 20}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="187958068"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -103,6 +107,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 80}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="315688360"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -131,6 +136,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 141}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="113356853"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -159,6 +165,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 202}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="946296943"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -187,6 +194,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 260}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="851862777"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -215,6 +223,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 320}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="572741799"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -243,6 +252,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 380}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="259588566"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -271,6 +281,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 830}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="614830010"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -295,6 +306,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 890}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="650246316"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -323,6 +335,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 950}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="287071368"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -349,6 +362,7 @@
 				<object class="NSPSMatrix" key="NSFrameMatrix"/>
 				<string key="NSFrameSize">{54, 1004}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="222571221"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">10</int>
@@ -10215,6 +10229,24 @@ AAEAAQABA</bytes>
 					</object>
 					<int key="connectionID">134</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">calendarButtonTouchUpInside:</string>
+						<reference key="source" ref="946296943"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">137</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">calculatorButtonTouchUpInside:</string>
+						<reference key="source" ref="851862777"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">135</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -10279,17 +10311,18 @@ AAEAAQABA</bytes>
 						<int key="objectID">39</int>
 						<reference key="object" ref="851862777"/>
 						<reference key="parent" ref="368741098"/>
+						<string key="objectName">Calculator Button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">38</int>
 						<reference key="object" ref="946296943"/>
 						<reference key="parent" ref="368741098"/>
+						<string key="objectName">Calendar Button</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">37</int>
 						<reference key="object" ref="113356853"/>
 						<reference key="parent" ref="368741098"/>
-						<string key="objectName">CalculatorButton</string>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">36</int>
@@ -10370,9 +10403,34 @@ AAEAAQABA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">134</int>
+			<int key="maxID">137</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">A3HotMenuViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="leftGradientView">UIView</string>
+						<string key="rightGradientView">UIView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="leftGradientView">
+							<string key="name">leftGradientView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="rightGradientView">
+							<string key="name">rightGradientView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/A3HotMenuViewController.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">

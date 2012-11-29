@@ -7,7 +7,7 @@
 //
 
 #import "A3GridStyleTableViewCell.h"
-#import "A3HorizontalGradientView.h"
+#import "A3GradientView.h"
 #import "CommonUIDefinitions.h"
 
 @interface A3GridStyleTableViewCell ()
@@ -54,7 +54,7 @@
 		[subview removeFromSuperview];
 	}
 
-	A3HorizontalGradientView *gradientView = [[A3HorizontalGradientView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), 2.0f)];
+	A3GradientView *gradientView = [[A3GradientView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), 2.0f)];
 	NSArray *gradientColors = @[(__bridge id)[[UIColor colorWithRed:215.0f/255.0f green:217.0f/255.0f blue:219.0f/255.0f alpha:1.0f] CGColor],
 	(__bridge id)[[UIColor colorWithRed:236.0f/255.0f green:236.0f/255.0f blue:237.0f/255.0f alpha:1.0f] CGColor]];
 	gradientView.gradientColors = gradientColors;

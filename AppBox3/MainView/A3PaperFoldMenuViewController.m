@@ -16,6 +16,8 @@
 #import "common.h"
 
 @interface A3PaperFoldMenuViewController ()
+@property (nonatomic, strong)	UINavigationController *navigationController;
+@property (nonatomic, strong)	A3HotMenuViewController *hotMenuViewController;
 
 @end
 
@@ -28,11 +30,11 @@
 		CGRect paperFoldViewFrame = [[UIScreen mainScreen] bounds];
 		// Custom initialization
 		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-			A3HotMenuViewController *hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
-			[self.view addSubview:[hotMenuViewController view]];
-			[self addChildViewController:hotMenuViewController];
+			self.hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
+			[self.view addSubview:[_hotMenuViewController view]];
+			[self addChildViewController:_hotMenuViewController];
 
-			paperFoldViewFrame.origin.x += hotMenuViewController.view.frame.size.width;
+			paperFoldViewFrame.origin.x += _hotMenuViewController.view.frame.size.width;
 			paperFoldViewFrame.size.width = 714.0f;
 		}
 
@@ -50,19 +52,20 @@
 
 		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 			A3HomeViewController_iPad *homeViewController_iPad = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
-			UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPad];
-			[navigationController.view setFrame:_contentView.bounds];
-			[self addChildViewController:navigationController];
-			[_contentView addSubview:[navigationController view]];
+			homeViewController_iPad.paperFoldView = _paperFoldView;
+			self.navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPad];
+			[_navigationController.view setFrame:_contentView.bounds];
+			[self addChildViewController:_navigationController];
+			[_contentView addSubview:[_navigationController view]];
 
-			FNLOG(@"navigation width: %f, height: %f", navigationController.view.bounds.size.width, navigationController.view.bounds.size.height);
+			self.hotMenuViewController.navigationController = _navigationController;
 		} else {
 			A3HomeViewController_iPhone *homeViewController_iPhone = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
 			homeViewController_iPhone.paperFoldView = _paperFoldView;
-			UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
-			[navigationController.view setFrame:_contentView.bounds];
-			[self addChildViewController:navigationController];
-			[_contentView addSubview:[navigationController view]];
+			self.navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
+			[_navigationController.view setFrame:_contentView.bounds];
+			[self addChildViewController:_navigationController];
+			[_contentView addSubview:[_navigationController view]];
 		}
 
 		UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];

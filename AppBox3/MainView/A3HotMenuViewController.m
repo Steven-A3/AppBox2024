@@ -9,12 +9,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3HotMenuViewController.h"
 #import "A3Utilities.h"
+#import "A3CalculatorViewController.h"
+#import "A3CalendarViewController.h"
 
 @interface A3HotMenuViewController ()
 
-@property(nonatomic, strong) IBOutlet UIView *leftGradientView;
-@property(nonatomic, strong) IBOutlet UIView *rightGradientView;
-
+@property (nonatomic, strong) IBOutlet UIView *leftGradientView;
+@property (nonatomic, strong) IBOutlet UIView *rightGradientView;
 
 @end
 
@@ -69,6 +70,18 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)calculatorButtonTouchUpInside:(UIButton *)sender {
+	[self.navigationController popToRootViewControllerAnimated:YES];
+	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"A3Calculator_iPad" bundle:nil];
+	[self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (IBAction)calendarButtonTouchUpInside:(id)sender {
+	[self.navigationController popToRootViewControllerAnimated:YES];
+	A3CalendarViewController *viewController = [[A3CalendarViewController alloc] initWithNibName:@"A3CalendarViewController" bundle:nil];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 @end
