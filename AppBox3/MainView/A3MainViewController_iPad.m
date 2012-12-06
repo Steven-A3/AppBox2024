@@ -15,7 +15,6 @@
 #import "A3Utilities.h"
 #import "A3RowSeparatorView.h"
 #import "A3iPadBatteryLifeViewController.h"
-#import "FRLayeredNavigation.h"
 #import "A3SearchIPADViewController.h"
 #import "A3AppDelegate.h"
 #import "A3CalculatorViewController.h"

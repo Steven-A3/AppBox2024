@@ -24,12 +24,14 @@
 @synthesize image = _image;
 @synthesize value = _value;
 @synthesize accessoryType = _accessoryType;
+@synthesize keepSelected = _keepSelected;
 
 
 - (QLabelElement *)initWithTitle:(NSString *)title Value:(id)value {
-   self = [super init];
-   _title = title;
-   _value = value;
+    self = [super init];
+    _title = title;
+    _value = value;
+    _keepSelected = YES;
     return self;
 }
 
@@ -50,7 +52,7 @@
     cell.textLabel.text = _title;
     cell.detailTextLabel.text = [_value description];
     cell.imageView.image = _image;
-    cell.accessoryType = self.sections!= nil || self.controllerAction!=nil ? (_accessoryType != (int) nil ? _accessoryType : UITableViewCellAccessoryDisclosureIndicator) : UITableViewCellAccessoryNone;
+    cell.accessoryType = _accessoryType != UITableViewCellAccessoryNone ? _accessoryType : ( self.sections!= nil || self.controllerAction!=nil ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone);
     cell.selectionStyle = self.sections!= nil || self.controllerAction!=nil ? UITableViewCellSelectionStyleBlue: UITableViewCellSelectionStyleNone;
 
     return cell;
@@ -58,6 +60,8 @@
 
 - (void)selected:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller indexPath:(NSIndexPath *)path {
     [super selected:tableView controller:controller indexPath:path];
+    if (self.keepSelected)
+        [tableView deselectRowAtIndexPath:path animated:YES];
 }
 
 

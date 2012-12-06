@@ -35,6 +35,14 @@
     return self;
 }
 
+-(void)setNumberValue:(NSNumber *)number {
+    self.boolValue = number.boolValue;
+}
+
+-(NSNumber *)numberValue {
+    return [NSNumber numberWithBool:self.boolValue];
+}
+
 - (void)setOnImageName:(NSString *)name {
     self.onImage = [UIImage imageNamed:name];
 }
@@ -57,8 +65,9 @@
 
     } else {
         UIButton *boolButton = [[UIButton alloc] init];
-        [boolButton setImage:self.offImage forState:UIControlStateNormal];
-        [boolButton setImage:self.onImage forState:UIControlStateSelected];
+        [boolButton setImage:self.offImage forState: UIControlStateNormal];
+        [boolButton setImage:self.onImage forState: UIControlStateSelected];
+        [boolButton setImage:self.onImage forState: UIControlStateSelected | UIControlStateDisabled];
         cell.accessoryView = boolButton;
         boolButton.enabled = self.enabled;
         boolButton.selected = self.boolValue;
@@ -71,9 +80,13 @@
 - (void)selected:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller indexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     self.boolValue = !self.boolValue;
-    if ([cell.accessoryView class] == [UIImageView class]){
-        ((UIImageView *)cell.accessoryView).image =  self.boolValue ? _onImage : _offImage;
+    if ([cell.accessoryView class] == [UIButton class]) {
+        ((UIButton *)cell.accessoryView).selected = self.boolValue;
     }
+    else if ([cell.accessoryView class] == [UISwitch class]) {
+        [((UISwitch *)cell.accessoryView) setOn:self.boolValue animated:YES];
+    }
+
     if (self.controllerAction==nil)
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self handleElementSelected:controller];
@@ -96,6 +109,9 @@
     self.boolValue = ((UISwitch *)boolSwitch).on;
     if ((_controller != nil && self.controllerAction != nil) || _onSelected != nil) {
         [self handleElementSelected:_controller];
+    }
+    if (self.onValueChanged!=nil){
+        self.onValueChanged();
     }
 }
 

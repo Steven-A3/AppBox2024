@@ -8,13 +8,19 @@
 
 #import "A3PhoneHomeCalendarMonthViewController.h"
 #import "A3CalendarMonthView.h"
-#import "common.h"
+#import "QuickDialog.h"
+#import "A3BookendShapeView.h"
+#import "A3UIKit.h"
 
 @interface A3PhoneHomeCalendarMonthViewController ()
 
 @property (nonatomic, strong) IBOutlet A3CalendarMonthView *calendarView;
 @property (nonatomic, strong) IBOutlet UILabel *yearLabel;
 @property (nonatomic, strong) IBOutlet UILabel *monthLabel;
+@property (nonatomic, strong) IBOutlet UITableView *eventTableView;
+@property (nonatomic, strong) IBOutlet A3BookendShapeView *bookendShapeView;
+
+@property (nonatomic, strong) QuickDialogController *eventDialogController;
 
 - (IBAction)buttonPreviousYearPressed;
 - (IBAction)buttonNextYearPressed;
@@ -45,6 +51,23 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 	[self updateLabels];
+
+	QRootElement *eventRoot = [[QRootElement alloc] init];
+	QSection *eventSection = [[QSection alloc] init];
+
+	NSArray *events = @[@"Big Foot", @"Dinner w/John", @"Wide Awake"];
+	for (NSString *eventTitle in events) {
+		QLabelElement *labelElement = [[QLabelElement alloc] initWithTitle:eventTitle Value:@"all-day"];
+		NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"icon_purple" ofType:@"png"];
+		labelElement.image = [UIImage imageWithContentsOfFile:imagePath];
+		[eventSection addElement:labelElement];
+	}
+	[eventRoot addSection:eventSection];
+
+	self.eventDialogController = [[QuickDialogController alloc] initWithRoot:eventRoot];
+	[_eventDialogController.view setFrame:self.eventTableView.bounds];
+	[self.eventTableView addSubview:_eventDialogController.view];
+	_eventDialogController.quickDialogTableView.separatorColor = [A3UIKit colorForDashLineColor];
 }
 
 - (void)didReceiveMemoryWarning

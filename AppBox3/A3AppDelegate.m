@@ -9,7 +9,6 @@
 #import "A3AppDelegate.h"
 
 #import "A3MainViewController_iPad.h"
-#import "FRLayeredNavigation.h"
 #import "A3HomeViewController_iPhone.h"
 #import "A3PaperFoldMenuViewController.h"
 

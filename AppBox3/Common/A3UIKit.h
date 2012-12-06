@@ -10,4 +10,8 @@
 
 @interface A3UIKit : NSObject
 
++ (void)drawBookendEffectRect:(CGRect)rect context:(CGContextRef)context;
+
+
++(UIColor *)colorForDashLineColor;
 @end

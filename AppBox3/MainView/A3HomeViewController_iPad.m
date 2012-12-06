@@ -13,6 +13,8 @@
 #import "PaperFoldView.h"
 #import "A3PhoneHomeCalendarMonthViewController.h"
 #import "A3GradientView.h"
+#import "QuickDialog.h"
+#import "A3TimeLineTableViewController.h"
 
 @interface A3HomeViewController_iPad ()
 @property (nonatomic, strong) IBOutlet UIScrollView *mainScrollView;
@@ -20,6 +22,7 @@
 @property (nonatomic, strong) IBOutlet UIView *contentsView;
 @property (nonatomic, strong) IBOutlet UILabel *calendarLabel;
 @property (nonatomic, strong) IBOutlet UIView *calendarView;
+@property (nonatomic, strong) IBOutlet UIView *timelineView;
 @property (nonatomic, strong) A3StatisticsViewController *statisticsViewController;
 
 @property (nonatomic, strong) IBOutlet A3GradientView *calendarTopGradient, *calendarLeftGradient, *calendarRightGradient;
@@ -112,7 +115,13 @@
 	[self.calendarView addSubview:[calendarMonthViewController view] ];
     [self addChildViewController:calendarMonthViewController];
 
+	A3TimeLineTableViewController *timeLineTableViewController = [[A3TimeLineTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	[timeLineTableViewController.view setFrame:self.timelineView.bounds];
+	[self.timelineView addSubview:timeLineTableViewController.view];
+	[self addChildViewController:timeLineTableViewController];
+
 	[self setupGradientViews];
+
 }
 
 - (void)sideMenuButtonAction {
