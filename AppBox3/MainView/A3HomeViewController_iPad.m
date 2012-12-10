@@ -96,10 +96,8 @@
 
 	[self.navigationController.navigationBar setBarStyle:UIStatusBarStyleBlackOpaque];
 
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"bt_applist" ofType:@"png"];
-	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
-	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
-	self.navigationItem.leftBarButtonItem = sideMenuButton;
+	[self addLeftBarButton];
+	[self addRightBarButton];
 
 	A3WeatherStickerViewController *weatherStickerVC = [[A3WeatherStickerViewController alloc] initWithNibName:nil bundle:nil];
 	CGRect frame = weatherStickerVC.view.frame;
@@ -122,6 +120,26 @@
 
 	[self setupGradientViews];
 
+}
+
+- (void)addLeftBarButton {
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"bt_applist" ofType:@"png"];
+	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
+	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
+	self.navigationItem.leftBarButtonItem = sideMenuButton;
+}
+
+- (void)addRightBarButton {
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_notification" ofType:@"png"];
+	UIImage *buttonImage = [UIImage imageWithContentsOfFile:imageFilePath];
+	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStylePlain target:self action:@selector(showNotificationButtonAction)];
+	self.navigationItem.rightBarButtonItem = button;
+}
+
+- (void)showNotificationButtonAction {
+	self.paperFoldView.state  == PaperFoldStateRightUnfolded ?
+			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
+			[self.paperFoldView setPaperFoldState:PaperFoldStateRightUnfolded animated:YES];
 }
 
 - (void)sideMenuButtonAction {

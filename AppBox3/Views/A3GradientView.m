@@ -26,6 +26,7 @@
     if (self) {
         // Initialization code
 		_vertical = NO;
+		self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }

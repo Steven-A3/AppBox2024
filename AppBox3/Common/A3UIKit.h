@@ -14,4 +14,7 @@
 
 
 +(UIColor *)colorForDashLineColor;
+
++ (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;
+
 @end

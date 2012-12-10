@@ -120,7 +120,10 @@
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		6872076C167091EF00D56507 /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6872076B167091EF00D56507 /* sample.jpg */; };
 		6872077B1670CC6A00D56507 /* A3SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872077A1670CC6A00D56507 /* A3SectionHeaderView.m */; };
+		6872123C1675B83500E55D06 /* A3NotificationTitleBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872123B1675B83500E55D06 /* A3NotificationTitleBGView.m */; };
+		687212441675C9AF00E55D06 /* A3NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687212431675C9AF00E55D06 /* A3NotificationCell.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
+		6883AAF716719D45004DEEE6 /* A3NotificationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */; };
 		6886A30C165776C00013A4C9 /* A3SalesCalcViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886A30B165776C00013A4C9 /* A3SalesCalcViewController.m */; };
 		6890255F16429466001A81B5 /* icon_aqua.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255916429466001A81B5 /* icon_aqua.png */; };
 		6890256016429466001A81B5 /* icon_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255A16429466001A81B5 /* icon_blue.png */; };
@@ -409,8 +412,14 @@
 		6872076B167091EF00D56507 /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
 		687207791670CC6A00D56507 /* A3SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SectionHeaderView.h; sourceTree = "<group>"; };
 		6872077A1670CC6A00D56507 /* A3SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SectionHeaderView.m; sourceTree = "<group>"; };
+		6872123A1675B83500E55D06 /* A3NotificationTitleBGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NotificationTitleBGView.h; sourceTree = "<group>"; };
+		6872123B1675B83500E55D06 /* A3NotificationTitleBGView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationTitleBGView.m; sourceTree = "<group>"; };
+		687212421675C9AF00E55D06 /* A3NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NotificationCell.h; sourceTree = "<group>"; };
+		687212431675C9AF00E55D06 /* A3NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationCell.m; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
+		6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NotificationTableViewController.h; path = ViewControllers/A3NotificationTableViewController.h; sourceTree = "<group>"; };
+		6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3NotificationTableViewController.m; path = ViewControllers/A3NotificationTableViewController.m; sourceTree = "<group>"; };
 		6886A30A165776C00013A4C9 /* A3SalesCalcViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcViewController.h; path = "Apps/Sales Calc/A3SalesCalcViewController.h"; sourceTree = "<group>"; };
 		6886A30B165776C00013A4C9 /* A3SalesCalcViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcViewController.m; path = "Apps/Sales Calc/A3SalesCalcViewController.m"; sourceTree = "<group>"; };
 		6890255916429466001A81B5 /* icon_aqua.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_aqua.png; sourceTree = "<group>"; };
@@ -639,6 +648,8 @@
 				68B2CD8C165E02A300BD998F /* A3WeatherStickerViewController.m */,
 				68B2CD89165DD68E00BD998F /* A3WeatherStickerViewController.xib */,
 				68129E78164A5841008668F4 /* PaperFold */,
+				6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */,
+				6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1120,6 +1131,10 @@
 				68555FF01670409F00F200B7 /* A3TimeLineTableViewCell.m */,
 				687207791670CC6A00D56507 /* A3SectionHeaderView.h */,
 				6872077A1670CC6A00D56507 /* A3SectionHeaderView.m */,
+				6872123A1675B83500E55D06 /* A3NotificationTitleBGView.h */,
+				6872123B1675B83500E55D06 /* A3NotificationTitleBGView.m */,
+				687212421675C9AF00E55D06 /* A3NotificationCell.h */,
+				687212431675C9AF00E55D06 /* A3NotificationCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1513,6 +1528,9 @@
 				68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */,
 				685560061670448D00F200B7 /* A3Utilities.m in Sources */,
 				6872077B1670CC6A00D56507 /* A3SectionHeaderView.m in Sources */,
+				6883AAF716719D45004DEEE6 /* A3NotificationTableViewController.m in Sources */,
+				6872123C1675B83500E55D06 /* A3NotificationTitleBGView.m in Sources */,
+				687212441675C9AF00E55D06 /* A3NotificationCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

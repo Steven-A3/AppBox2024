@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <mm_malloc.h>
 #import "A3UIKit.h"
 #import "A3Utilities.h"
 
@@ -97,6 +98,18 @@
 
 + (UIColor *)colorForDashLineColor {
 	return [UIColor colorWithPatternImage:[A3UIKit dashImage]];
+}
+
++ (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors {
+	CGSize size = CGSizeMake(rect.size.width, rect.size.height);
+	UIGraphicsBeginImageContextWithOptions(size, NO, 2.0f);
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGRect drawingRect = CGRectMake(0.0f, 0.0f, size.width, size.height);
+	drawLinearGradient(context, drawingRect, gradientColors);
+	UIImage *gradientImage = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return [UIColor colorWithPatternImage:gradientImage];
 }
 
 @end

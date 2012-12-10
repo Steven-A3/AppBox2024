@@ -14,10 +14,12 @@
 #import "A3HomeViewController_iPad.h"
 #import "A3UIDevice.h"
 #import "common.h"
+#import "A3NotificationTableViewController.h"
 
 @interface A3PaperFoldMenuViewController ()
 @property (nonatomic, strong)	UINavigationController *navigationController;
 @property (nonatomic, strong)	A3HotMenuViewController *hotMenuViewController;
+@property (nonatomic, strong)	A3NotificationTableViewController *notificationViewController;
 
 @end
 
@@ -79,6 +81,10 @@
 				[_paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded];
 			}
 		}
+
+		self.notificationViewController = [[A3NotificationTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		[_notificationViewController.view setFrame:CGRectMake(0.0f, 0.0f, 320.0f, CGRectGetHeight(_paperFoldView.frame))];
+		[_paperFoldView setRightFoldContentView:_notificationViewController.view foldCount:3 pullFactor:0.9];
 	}
     return self;
 }
