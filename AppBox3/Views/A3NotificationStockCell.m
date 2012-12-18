@@ -7,6 +7,7 @@
 //
 
 #import "A3NotificationStockCell.h"
+#import "A3HouseArrowView.h"
 
 @implementation A3NotificationStockCell
 
@@ -15,6 +16,15 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+		CGFloat width = CGRectGetWidth(self.bounds);
+		CGFloat offset = 10.0f;
+		CGFloat chartWidth = (width - offset * 2.0f) / 2.0f;
+		CGFloat chartHeight = 60.0f;
+		_leftChart = [[A3HouseArrowView alloc] initWithFrame:CGRectMake(offset, offset, chartWidth, chartHeight)];
+		[self addSubview:_leftChart];
+
+		_rightChart = [[A3HouseArrowView alloc] initWithFrame:CGRectMake(offset + chartWidth, offset, chartWidth, chartHeight)];
+		[self addSubview:_rightChart];
     }
     return self;
 }

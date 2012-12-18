@@ -10,4 +10,6 @@
 
 @interface A3HouseArrowView : UIView
 
+@property (nonatomic, strong) UILabel *changeLabel, *nameLabel, *valueLabel;
+
 @end

@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3HouseArrowView.h"
 
 @interface A3NotificationStockCell : UITableViewCell
+
+@property (nonatomic, strong) A3HouseArrowView *leftChart, *rightChart;
 
 @end

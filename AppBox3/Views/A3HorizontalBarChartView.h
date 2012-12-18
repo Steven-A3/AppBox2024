@@ -10,4 +10,6 @@
 
 @interface A3HorizontalBarChartView : UIView
 
+@property (nonatomic, assign) double leftValue, rightValue;
+
 @end
