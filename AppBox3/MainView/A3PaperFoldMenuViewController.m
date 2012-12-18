@@ -56,6 +56,7 @@
 			A3HomeViewController_iPad *homeViewController_iPad = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
 			homeViewController_iPad.paperFoldView = _paperFoldView;
 			self.navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPad];
+			self.navigationController.navigationBar.barStyle = UIStatusBarStyleBlackOpaque;
 			[_navigationController.view setFrame:_contentView.bounds];
 			[self addChildViewController:_navigationController];
 			[_contentView addSubview:[_navigationController view]];
@@ -72,6 +73,7 @@
 
 		UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];
 		_sideMenuTableViewController = [[A3iPhoneMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		_sideMenuTableViewController.paperFoldMenuViewController = self;
 		[_sideMenuTableViewController.view setFrame:sideMenuView.frame];
 		[sideMenuView addSubview:_sideMenuTableViewController.view];
 		[_paperFoldView setLeftFoldContentView:sideMenuView foldCount:3 pullFactor:0.9];
@@ -99,6 +101,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)pushViewControllerToNavigationController:(UIViewController *)viewController {
+	[self.navigationController popToRootViewControllerAnimated:NO];
+	[self.navigationController pushViewController:viewController animated:YES];
+	[self.paperFoldView setPaperFoldState:PaperFoldStateDefault];
 }
 
 @end

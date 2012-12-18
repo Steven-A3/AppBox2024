@@ -248,7 +248,7 @@
     if (nil == _editHistoryButton) {
         _editHistoryButton = [[CoolButton alloc] initWithFrame:CGRectZero];
         _editHistoryButton.buttonColor = [UIColor colorWithRed:135.0f/255.0f green:135.0f/255.0f blue:135.0f/255.0f alpha:1.0f];
-        _editHistoryButton.titleLabel.textColor = [UIColor whiteColor];
+		[_editHistoryButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _editHistoryButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
         [_editHistoryButton setTitle:@"Edit" forState:UIControlStateNormal];
         [self.grayAppHeaderView addSubview:_editHistoryButton];

@@ -9,6 +9,9 @@
 #import "A3iPhoneMenuTableViewController.h"
 #import "A3SectionHeaderViewInMenuTableView.h"
 #import "CommonUIDefinitions.h"
+#import "common.h"
+#import "A3SalesCalcViewController.h"
+#import "A3PaperFoldMenuViewController.h"
 
 @interface A3iPhoneMenuTableViewController ()
 
@@ -319,7 +322,7 @@
 		case A3_MENU_TABLE_VIEW_SECTION_APPS:
 			switch (index) {
 				case 0:
-					title = @"A";
+					title = @"Sales Calc";
 					break;
 				case 1:
 					title = @"B";
@@ -344,8 +347,12 @@
 }
 
 #pragma mark - GridViewControllerDelegate
-- (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)controller didSelectItemAtIndex:(NSInteger)selectedIndex {
-
+- (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
+	FNLOG(@"Check %d", selectedIndex);
+	if ((cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) && (selectedIndex == 0)) {
+		A3SalesCalcViewController *salesCalcViewController = [[A3SalesCalcViewController alloc] initWithNibName:nil bundle:nil];
+		[self.paperFoldMenuViewController pushViewControllerToNavigationController:salesCalcViewController];
+	}
 }
 
 @end

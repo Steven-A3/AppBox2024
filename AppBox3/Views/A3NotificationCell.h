@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3YellowXButton;
+
 @interface A3NotificationCell : UITableViewCell
+
+@property (nonatomic, strong) UILabel *messageText;
+@property (nonatomic, strong) UILabel *detailText;
+@property (nonatomic, strong) UILabel *detailText2;
+@property (nonatomic, strong) A3YellowXButton *xButton;
+
+- (void)layoutDetailTexts;
+
 
 @end

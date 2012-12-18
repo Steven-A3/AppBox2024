@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "A3GridStyleTableViewCell.h"
 
-@class MFSideMenu;
+@class A3PaperFoldMenuViewController;
 
 #define A3_MENU_TABLE_VIEW_SECTION_HEIGHT	44.0f
 
@@ -24,6 +24,6 @@ typedef enum NSUInteger {
 @interface A3iPhoneMenuTableViewController : UITableViewController
 <A3GridStyleTableViewCellDataSource, A3GridStyleTableViewCellDelegate>
 
-@property (nonatomic, weak) MFSideMenu *sideMenu;
+@property (nonatomic, weak) A3PaperFoldMenuViewController *paperFoldMenuViewController;
 
 @end

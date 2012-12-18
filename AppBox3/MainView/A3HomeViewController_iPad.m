@@ -94,8 +94,6 @@
 {
     [super viewDidLoad];
 
-	[self.navigationController.navigationBar setBarStyle:UIStatusBarStyleBlackOpaque];
-
 	[self addLeftBarButton];
 	[self addRightBarButton];
 

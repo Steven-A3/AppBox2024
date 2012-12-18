@@ -10,6 +10,9 @@
 #import "A3NotificationCell.h"
 #import "A3GradientView.h"
 #import "A3UIKit.h"
+#import "A3YellowXButton.h"
+#import "A3NotificationStockCell.h"
+#import "CoolButton.h"
 
 @interface A3NotificationTableViewController ()
 
@@ -26,6 +29,28 @@
     return self;
 }
 
+- (void)setTableHeaderView {
+
+	CGFloat width = 320.0f;
+	UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 44.0f)];
+	headerView.backgroundColor = [UIColor clearColor];
+	UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 0.0f, width - 68.0f, 44.0f)];
+	titleLabel.backgroundColor = [UIColor clearColor];
+	titleLabel.textColor = [UIColor whiteColor];
+	titleLabel.font = [UIFont systemFontOfSize:26.0f];
+	titleLabel.text = @"Notifications";
+	[headerView addSubview:titleLabel];
+
+	CoolButton *doneButton = [[CoolButton alloc] initWithFrame:CGRectMake(width - 58.0f, 44.0f/2.0f - 28.0f/2.0f, 48.0f, 28.0f)];
+	doneButton.buttonColor = [UIColor lightGrayColor];
+	doneButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
+	[doneButton setTitleColor:[UIColor colorWithRed:66.0f/255.0f green:66.0f/255.0f blue:66.0f/255.0f alpha:1.0f] forState:UIControlStateNormal];
+	[doneButton setTitle:@"Done" forState:UIControlStateNormal];
+	[headerView addSubview:doneButton];
+
+	self.tableView.tableHeaderView = headerView;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -34,6 +59,7 @@
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	self.tableView.sectionHeaderHeight = 40.0f;
 
+	[self setTableHeaderView];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -61,9 +87,56 @@
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)isChartRowForIndexPath:(NSIndexPath *)indexPath
 {
-    A3NotificationCell *cell = [[A3NotificationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+	return (([indexPath section]) == 2 || ([indexPath section] == 6));
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	CGFloat height = 44.0f;
+	if ([self isChartRowForIndexPath:indexPath]) {
+		height = 80.0f;
+	}
+	return height;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([self isChartRowForIndexPath:indexPath]) {
+		A3NotificationStockCell *stockCell = [[A3NotificationStockCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+		switch ([indexPath section]) {
+			case 2:
+				stockCell.leftChart.changeLabel.text = @"+0.03000000";
+				stockCell.leftChart.nameLabel.text = @"USD/KRW";
+				stockCell.leftChart.valueLabel.text = @"1073.33";
+				stockCell.rightChart.changeLabel.text = @"-4.07";
+				stockCell.rightChart.nameLabel.text = @"EUR/KRW";
+				stockCell.rightChart.valueLabel.text = @"1437.73";
+				break;
+			case 6:
+				stockCell.leftChart.changeLabel.text = @"-3.7700000";
+				stockCell.leftChart.nameLabel.text = @"GOOG";
+				stockCell.leftChart.valueLabel.text = @"740.98";
+				stockCell.rightChart.changeLabel.text = @"+55";
+				stockCell.rightChart.nameLabel.text = @"0033630.KQ";
+				stockCell.rightChart.valueLabel.text = @"3,935.00";
+				break;
+		}
+		return stockCell;
+	}
+
+	A3NotificationCell *cell = [[A3NotificationCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+
+	NSArray *titleArray = @[@"Good Morning", @"Remaining", @"", @"Lovely Jane's Birthday", @"Halloween", @"Next Period", @""];
+	cell.messageText.text = [titleArray objectAtIndex:[indexPath section]];
+
+	NSArray *detailedTextArray = @[@"13m ago", @"19%", @"", @"Today", @"D-16", @"Oct 23, 2012", @""];
+	cell.detailText.text = [detailedTextArray objectAtIndex:[indexPath section]];
+
+	NSArray *detailedText2Array = @[@"", @"", @"", @"to 5:05", @"", @"D-7", @""];
+	cell.detailText2.text = [detailedText2Array objectAtIndex:[indexPath section]];
+
+	[cell layoutDetailTexts];
+
 	return cell;
 }
 
@@ -87,6 +160,26 @@
 	NSArray *sectionTitles = @[@"Alarm Clock", @"Battery Life", @"Currency", @"Days Counter", @"Holidays", @"periodic Calendar", @"Stocks"];
 	sectionTitle.text = [sectionTitles objectAtIndex:section];
 
+	if ([sectionTitle.text isEqualToString:@"Currency"] || [sectionTitle.text isEqualToString:@"Stocks"]) {
+		CGFloat tableViewWidth = CGRectGetWidth(self.tableView.bounds);
+		CGFloat labelWidth = 150.0f;
+		CGFloat rightSpace = 10.0f * 2.0f + 30.0f;
+		UILabel *updateDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(tableViewWidth - rightSpace - labelWidth, 15.0f, labelWidth, 15.0f)];
+		updateDateLabel.backgroundColor = [UIColor clearColor];
+		updateDateLabel.textColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
+		updateDateLabel.textAlignment = UITextAlignmentRight;
+		updateDateLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+		[mySectionHeaderView addSubview:updateDateLabel];
+
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+		[dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+		updateDateLabel.text = [dateFormatter stringFromDate:[NSDate date]];
+
+		CGFloat buttonSize = 22.0f;
+		A3YellowXButton *xButton = [[A3YellowXButton alloc] initWithFrame:CGRectMake(tableViewWidth - 20.0f - buttonSize, 7.0f, buttonSize, buttonSize)];
+		[mySectionHeaderView addSubview:xButton];
+	}
 	return mySectionHeaderView;
 }
 

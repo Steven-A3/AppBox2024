@@ -17,4 +17,7 @@
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) A3iPhoneMenuTableViewController *sideMenuTableViewController;
 
+- (void)pushViewControllerToNavigationController:(UIViewController *)viewController;
+
+
 @end

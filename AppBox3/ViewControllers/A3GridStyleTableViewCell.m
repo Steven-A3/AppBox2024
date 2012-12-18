@@ -66,12 +66,14 @@
 	UIFont *labelFont = [UIFont systemFontOfSize:12.0f];
 	UIColor *textColor = [UIColor colorWithRed:118.0f/255.0f green:118.0f/255.0f blue:118.0f/255.0f alpha:1.0f];
 	UIColor *backgroundColor = [UIColor clearColor];
-	for (NSUInteger index = 0; index < numberOfItems; index++) {
+	for (NSInteger index = 0; index < numberOfItems; index++) {
 		UIImage *image = [self.dataSource gridStyleTableViewCell:self imageForIndex:index];
 		NSString *title = [self.dataSource gridStyleTableViewCell:self titleForIndex:index];
 
 		if (image && title) {
 			UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+			button.tag = index;
+			[button addTarget:self action:@selector(touchUpInsideButton:) forControlEvents:UIControlEventTouchUpInside];
 			[button setFrame:CGRectMake(((index % numberOfColumns) + 1) * columnWidth - columnWidth / 2.0f + A3_GRID_VIEW_LEFT_MARGIN - A3_GRID_VIEW_CELL_IMAGE_WIDTH / 2.0f,
 					A3_GRID_VIEW_TOP_MARGIN + rowHeight * (index / numberOfColumns),
 					A3_GRID_VIEW_CELL_IMAGE_WIDTH,
@@ -90,6 +92,12 @@
 			label.textAlignment = UITextAlignmentCenter;
 			[self addSubview:label];
 		}
+	}
+}
+
+- (void)touchUpInsideButton:(UIButton *)button {
+	if ([self.delegate respondsToSelector:@selector(gridStyleTableViewCell:didSelectItemAtIndex:)]) {
+		[self.delegate gridStyleTableViewCell:self didSelectItemAtIndex:button.tag];
 	}
 }
 

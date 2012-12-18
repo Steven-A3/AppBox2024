@@ -12,7 +12,25 @@
 
 @implementation A3UIKit
 
-+(void)drawHorizontalGradientToRect:(CGRect)rect withColors:(NSArray *)colors withContext:(CGContextRef)context {
++ (void)drawLinearGradientToContext:(CGContextRef)context rect:(CGRect)rect withColors:(NSArray *) colors {
+	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+	CGFloat locations[] = { 0.0f, 1.0f };
+
+	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) colors, locations);
+
+	CGPoint startPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect));
+	CGPoint endPoint = CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect));
+
+	CGContextSaveGState(context);
+	CGContextAddRect(context, rect);
+	CGContextClip(context);
+	CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+	CGContextRestoreGState(context);
+
+	CGGradientRelease(gradient);
+}
+
++ (void)drawHorizontalGradientToRect:(CGRect)rect withColors:(NSArray *)colors withContext:(CGContextRef)context {
 	drawLinearGradient(context, rect, colors);
 
 	CGContextSaveGState(context);

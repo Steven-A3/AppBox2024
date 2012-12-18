@@ -10,6 +10,8 @@
 
 @interface A3UIKit : NSObject
 
++ (void)drawLinearGradientToContext:(CGContextRef)context rect:(CGRect)rect withColors:(NSArray *)colors;
+
 + (void)drawBookendEffectRect:(CGRect)rect context:(CGContextRef)context;
 
 

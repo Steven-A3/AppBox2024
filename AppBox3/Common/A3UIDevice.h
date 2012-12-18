@@ -14,4 +14,7 @@
 + (double)storageUsage;
 + (BOOL)deviceOrientationIsPortrait;
 
++ (CGFloat)applicationHeightForCurrentOrientation;
+
+
 @end

@@ -9,6 +9,7 @@
 #import <mach/vm_statistics.h>
 #import <mach/mach_host.h>
 #import "A3UIDevice.h"
+#import "CommonUIDefinitions.h"
 
 @implementation A3UIDevice
 
@@ -34,6 +35,11 @@
 
 + (BOOL)deviceOrientationIsPortrait; {
 	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
+}
+
++ (CGFloat)applicationHeightForCurrentOrientation {
+	CGRect applicationFrame = [UIScreen mainScreen].applicationFrame;
+	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? applicationFrame.size.height : applicationFrame.size.width - kSystemStatusBarHeight;
 }
 
 @end
