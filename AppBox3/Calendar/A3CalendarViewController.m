@@ -17,6 +17,7 @@
 #import "A3CalendarDayViewController.h"
 #import "A3CalendarListViewController.h"
 #import "A3CalendarYearViewController.h"
+#import "A3UIKit.h"
 
 typedef enum {
 	A3CalendarViewTypeDay = 0,
@@ -54,6 +55,8 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.title = @"Calendar";
 
 	[self.calendarView setBackgroundColor:[UIColor clearColor]];
 	[self.todayButton setButtonColor:[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:222.0f/255.0f alpha:1.0f]];

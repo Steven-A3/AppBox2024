@@ -15,6 +15,7 @@
 #import "A3UIDevice.h"
 #import "common.h"
 #import "A3NotificationTableViewController.h"
+#import "A3UIKit.h"
 
 @interface A3PaperFoldMenuViewController ()
 @property (nonatomic, strong)	UINavigationController *navigationController;
@@ -56,7 +57,6 @@
 			A3HomeViewController_iPad *homeViewController_iPad = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
 			homeViewController_iPad.paperFoldView = _paperFoldView;
 			self.navigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPad];
-			self.navigationController.navigationBar.barStyle = UIStatusBarStyleBlackOpaque;
 			[_navigationController.view setFrame:_contentView.bounds];
 			[self addChildViewController:_navigationController];
 			[_contentView addSubview:[_navigationController view]];
@@ -70,6 +70,9 @@
 			[self addChildViewController:_navigationController];
 			[_contentView addSubview:[_navigationController view]];
 		}
+
+		self.navigationController.navigationBar.barStyle = UIStatusBarStyleBlackOpaque;
+		[A3UIKit setBackgroundImageForNavigationBar:self.navigationController.navigationBar];
 
 		UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];
 		_sideMenuTableViewController = [[A3iPhoneMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];

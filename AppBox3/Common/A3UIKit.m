@@ -130,4 +130,43 @@
 	return [UIColor colorWithPatternImage:gradientImage];
 }
 
++ (UIImage *)navigationBarBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics {
+	CGRect screenBounds = [UIScreen mainScreen].bounds;
+	CGSize imageSize = CGSizeMake(barMetrics == UIBarMetricsDefault ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds), 44.0f);
+	UIGraphicsBeginImageContextWithOptions(imageSize, YES, 2.0f);
+
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGRect rect = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
+
+	CGContextSetRGBStrokeColor(context, 66.0f/255.0f, 66.0f/255.0f, 67.0f/255.0f, 1.0f);
+	CGContextAddRect(context, rect);
+	CGContextStrokePath(context);
+
+	CGContextSetRGBFillColor(context, 0.0f, 0.0f, 0.0f, 0.8f);
+	CGContextAddRect(context, rect);
+	CGContextFillPath(context);
+
+	NSArray *leftColors = [NSArray arrayWithObjects:
+			(__bridge id)[UIColor colorWithRed:33.0f/255.0f green:33.0f/255.0f blue:34.0f/255.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:29.0f/255.0f green:29.0f/255.0f blue:29.0f/255.0f alpha:1.0f].CGColor,
+			nil];
+	[A3UIKit drawLinearGradientToContext:context rect:CGRectMake(CGRectGetMinX(rect), CGRectGetMinY(rect), 4.0f, CGRectGetHeight(rect) - 4.0f) withColors:leftColors];
+
+	NSArray *colors = [NSArray arrayWithObjects:
+			(__bridge id)[UIColor colorWithRed:48.0f/255.0f green:48.0f/255.0f blue:48.0f/255.0f alpha:1.0f].CGColor,
+			(__bridge id)[UIColor colorWithRed:24.0f/255.0f green:25.0f/255.0f blue:27.0f/255.0f alpha:1.0f].CGColor,
+			nil];
+	[A3UIKit drawLinearGradientToContext:context rect:CGRectMake(CGRectGetMinX(rect), CGRectGetMinY(rect), CGRectGetWidth(rect), 8.0f) withColors:colors];
+
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return image;
+}
+
++ (void)setBackgroundImageForNavigationBar:(UINavigationBar *)navigationBar {
+	[navigationBar setBackgroundImage:[A3UIKit navigationBarBackgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
+	[navigationBar setBackgroundImage:[A3UIKit navigationBarBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
+}
+
 @end

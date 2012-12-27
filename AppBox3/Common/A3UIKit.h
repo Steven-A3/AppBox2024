@@ -19,4 +19,7 @@
 
 + (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;
 
++ (void)setBackgroundImageForNavigationBar:(UINavigationBar *)navigationBar;
+
+
 @end

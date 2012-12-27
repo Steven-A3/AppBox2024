@@ -39,6 +39,8 @@
 		[self addSubview:_valueLabel];
 
 		[self layoutSubviews];
+
+		self.backgroundColor = [UIColor clearColor];
     }
     return self;
 }

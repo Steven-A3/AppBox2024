@@ -38,6 +38,8 @@
 #import "MultiFoldView.h"
 #import "TouchThroughUIView.h"
 
+typedef void (^CompletionBlock)();
+
 @protocol PaperFoldViewDelegate <NSObject>
 @optional
 // callback when paper fold transition state changes
@@ -47,7 +49,7 @@
 - (void)paperFoldView:(id)paperFoldView viewDidOffset:(CGPoint)offset;
 @end
 
-@interface PaperFoldView : UIView <MultiFoldViewDelegate>
+@interface PaperFoldView : UIView <MultiFoldViewDelegate, UIGestureRecognizerDelegate>
 
 // main content view
 @property (nonatomic, strong) TouchThroughUIView *contentView;
@@ -66,6 +68,7 @@
 @property (nonatomic, assign) PaperFoldState state, lastState;
 // enable and disable dragging
 @property (nonatomic, assign) BOOL enableLeftFoldDragging, enableRightFoldDragging, enableTopFoldDragging, enableBottomFoldDragging;
+@property (nonatomic, assign) BOOL enableHorizontalEdgeDragging;
 // indicate if the fold was triggered by finger panning, or set state
 @property (nonatomic, assign) BOOL isAutomatedFolding;
 @property (nonatomic, assign) id<PaperFoldViewDelegate> delegate;
@@ -74,6 +77,16 @@
 // optimized screenshot follows the scale of the screen
 // non-optimized is always the non-retina image
 @property (nonatomic, assign) BOOL useOptimizedScreenshot;
+// restrict the dragging gesture recogniser to a certain UIRect of this view. Useful to restrict
+// dragging to, say, a navigation bar.
+@property (nonatomic, assign) CGRect restrictedDraggingRect;
+// divider lines
+// these are exposed so that it is possible to hide the lines
+// especially when views have rounded corners
+@property (nonatomic, weak) UIView *leftDividerLine;
+@property (nonatomic, weak) UIView *rightDividerLine;
+@property (nonatomic, weak) UIView *topDividerLine;
+@property (nonatomic, weak) UIView *bottomDividerLine;
 
 // animate folding and unfolding when sent the offset of contentView
 // offset are either sent from pan gesture recognizer, or manual animation done with NSTimer after gesture ended
@@ -102,6 +115,9 @@
 // unfold the left and right view
 - (void)setPaperFoldState:(PaperFoldState)state;
 - (void)setPaperFoldState:(PaperFoldState)state animated:(BOOL)animated;
+- (void)setPaperFoldState:(PaperFoldState)state
+								 animated:(BOOL)animated
+							 completion:(CompletionBlock)completion;
 
 // deprecate methods
 // use setPaperFoldState: instead

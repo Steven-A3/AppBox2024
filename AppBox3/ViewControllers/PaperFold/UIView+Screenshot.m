@@ -67,12 +67,29 @@
         UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, 0.0);
     }
     
-    [self.layer renderInContext:UIGraphicsGetCurrentContext()];
     
-    UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
     
-    return screenshot;
+    if (UIGraphicsGetCurrentContext()==nil)
+    {
+        NSLog(@"UIGraphicsGetCurrentContext() is nil. You may have a UIView with CGRectZero");
+        return nil;
+    }
+    else
+    {
+        [self.layer renderInContext:UIGraphicsGetCurrentContext()];
+        
+        UIImage *screenshot = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+//        NSString *documentsDirectory = [paths objectAtIndex:0];
+//        NSString *testScreenshot = [documentsDirectory stringByAppendingPathComponent:@"test.png"];
+//        NSData *imageData = UIImagePNGRepresentation(screenshot);
+//        [imageData writeToFile:testScreenshot atomically:YES];
+        
+        return screenshot;
+    }
+    
 }
 
 - (UIImage*)screenshot

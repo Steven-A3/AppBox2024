@@ -14,6 +14,7 @@
 #define kRightViewUnfoldThreshold 0.3
 #define kTopViewUnfoldThreshold 0.3
 #define kBottomViewUnfoldThreshold 0.3
+#define kEdgeScrollWidth 40.0
 
 typedef enum
 {
@@ -24,8 +25,9 @@ typedef enum
 
 typedef enum
 {
-    FoldDirectionHorizontal = 0,
-    FoldDirectionVertical = 1,
+    FoldDirectionHorizontalRightToLeft = 0,
+    FoldDirectionHorizontalLeftToRight = 1,
+    FoldDirectionVertical = 2,
 } FoldDirection;
 
 typedef enum

@@ -11,8 +11,11 @@
 #import "A3UIDevice.h"
 #import "A3HorizontalBarChartView.h"
 #import "common.h"
+#import "A3CurrencyKeyboardViewController.h"
 
 @interface A3SalesCalcViewController ()
+
+@property (nonatomic, strong) A3CurrencyKeyboardViewController *keyboardViewController;
 
 @end
 
@@ -153,6 +156,7 @@
 			if ([cell isKindOfClass:[QEntryTableViewCell class]]) {
 				QEntryTableViewCell *entryTableViewCell = (QEntryTableViewCell *)cell;
 				[entryTableViewCell.textField setFont:[UIFont boldSystemFontOfSize:25.0f]];
+				entryTableViewCell.textField.inputView = self.keyboardViewController.view;
 			}
 			break;
 	}
@@ -168,6 +172,13 @@
 	[headerView addSubview:sectionText];
 
 	section.headerView = headerView;
+}
+
+- (A3CurrencyKeyboardViewController *)keyboardViewController {
+	if (nil == _keyboardViewController) {
+		_keyboardViewController = [[A3CurrencyKeyboardViewController alloc] initWithNibName:@"A3CurrencyKeyboardViewController" bundle:nil];
+	}
+	return _keyboardViewController;
 }
 
 @end

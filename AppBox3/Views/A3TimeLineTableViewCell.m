@@ -33,7 +33,6 @@
 
 		CGFloat margin = 10.0f;
 		CGFloat width = CGRectGetWidth(self.bounds);
-		CGFloat height = CGRectGetHeight(self.bounds);
 		_borderView = [[A3TimeLineEventItemView alloc] initWithFrame:CGRectMake(margin, 5.0f, width - 20.0f, 65.0f)];
 		_borderView.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin;
 		[self addSubview:_borderView];
