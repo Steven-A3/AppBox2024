@@ -24,20 +24,24 @@
     return self;
 }
 
+/*
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-
-//	[self.backgroundView setGradientColors:@[(__bridge id)[UIColor colorWithRed:158.0f/255.0f green:157.0f/255.0f blue:167.0f/255.0f alpha:1.0f].CGColor,
-//			(__bridge id)[UIColor colorWithRed:67.0f/255.0f green:68.0f/255.0f blue:75.0f/255.0f alpha:1.0f].CGColor] ];
-//	[self.backgroundView setNeedsDisplay];
 }
+*/
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)keyboardInputAction:(UIButton *)button {
+	if ([_keyInputDelegate respondsToSelector:@selector(insertText:)]) {
+		[_keyInputDelegate insertText:[button titleForState:UIControlStateNormal]];
+	}
 }
 
 @end

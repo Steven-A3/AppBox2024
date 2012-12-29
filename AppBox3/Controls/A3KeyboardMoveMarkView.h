@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3KeyboardMoveButton : UIButton
+@interface A3KeyboardMoveMarkView : UIView
 
 @end

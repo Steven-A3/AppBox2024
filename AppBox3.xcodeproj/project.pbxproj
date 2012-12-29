@@ -133,7 +133,7 @@
 		6890256316429466001A81B5 /* icon_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255D16429466001A81B5 /* icon_red.png */; };
 		6890256416429466001A81B5 /* icon_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255E16429466001A81B5 /* icon_yellow.png */; };
 		689307B7168C1B220085F508 /* A3KeyboardBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */; };
-		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveButton.m */; };
+		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
 		68AF3C9616532FDA00DB17D2 /* A3MonthCalendarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AF3C9516532FDA00DB17D2 /* A3MonthCalendarTest.m */; };
 		68AF3C981653328A00DB17D2 /* A3CalendarMonthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C461371627D77900555C91 /* A3CalendarMonthView.m */; };
 		68AF3C9A1653350B00DB17D2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
@@ -441,8 +441,8 @@
 		6890255E16429466001A81B5 /* icon_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_yellow.png; sourceTree = "<group>"; };
 		689307B5168C1B220085F508 /* A3KeyboardBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardBackgroundView.h; sourceTree = "<group>"; };
 		689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardBackgroundView.m; sourceTree = "<group>"; };
-		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveButton.h; sourceTree = "<group>"; };
-		68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardMoveButton.m; sourceTree = "<group>"; };
+		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveMarkView.h; sourceTree = "<group>"; };
+		68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardMoveMarkView.m; sourceTree = "<group>"; };
 		68AF3C9516532FDA00DB17D2 /* A3MonthCalendarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MonthCalendarTest.m; sourceTree = "<group>"; };
 		68AF607C162BCCEE00E98002 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeView_iPhone.xib; sourceTree = "<group>"; };
@@ -1064,8 +1064,8 @@
 				68BB306C16841F6000C3498B /* A3CurrencyKeyboardViewController.xib */,
 				68BB30701684452300C3498B /* A3KeyboardButton.h */,
 				68BB30711684452300C3498B /* A3KeyboardButton.m */,
-				68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveButton.h */,
-				68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveButton.m */,
+				68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */,
+				68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */,
 				689307B5168C1B220085F508 /* A3KeyboardBackgroundView.h */,
 				689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */,
 			);
@@ -1581,7 +1581,7 @@
 				68FCA6E5167EF61D00C3B0C4 /* A3HorizontalBarChartView.m in Sources */,
 				68BB306D16841F6000C3498B /* A3CurrencyKeyboardViewController.m in Sources */,
 				68BB30721684452300C3498B /* A3KeyboardButton.m in Sources */,
-				68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveButton.m in Sources */,
+				68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */,
 				689307B7168C1B220085F508 /* A3KeyboardBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,4 +10,6 @@
 
 @interface A3CurrencyKeyboardViewController : UIViewController
 
+@property (nonatomic, weak) id<UIKeyInput> keyInputDelegate;
+
 @end

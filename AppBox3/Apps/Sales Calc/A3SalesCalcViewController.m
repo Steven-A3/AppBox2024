@@ -44,15 +44,20 @@
 
 		QSection *section2 = [[QSection alloc] init];
 		QEntryElement *price = [[QEntryElement alloc] initWithTitle:@"Price:" Value:@"" Placeholder:@"$0.00 USD"];
+		price.delegate = self;
 		[section2 addElement:price];
 		QEntryElement *discount = [[QEntryElement alloc] initWithTitle:@"Discount:" Value:@"" Placeholder:@"0%"];
+		discount.delegate = self;
 		[section2 addElement:discount];
 		QEntryElement *additionalOff = [[QEntryElement alloc] initWithTitle:@"Additional Off:" Value:@"" Placeholder:@"0%"];
+		additionalOff.delegate = self;
 		[section2 addElement:additionalOff];
 		QEntryElement *tax = [[QEntryElement alloc] initWithTitle:@"Tax:" Value:@"" Placeholder:@"0%"];
+		tax.delegate = self;
 		[section2 addElement:tax];
 		QMultilineElement *notes = [QMultilineElement new];
 		notes.title = @"Notes:";
+		notes.delegate = self;
 		[section2 addElement:notes];
 		QButtonElement *simple = [[QButtonElement alloc] initWithTitle:@"Simple"];
 		[simple setControllerAction:@"onChangeType"];
@@ -172,6 +177,10 @@
 	[headerView addSubview:sectionText];
 
 	section.headerView = headerView;
+}
+
+- (void)QEntryDidBeginEditingElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
+    _keyboardViewController.keyInputDelegate = cell.textField;
 }
 
 - (A3CurrencyKeyboardViewController *)keyboardViewController {
