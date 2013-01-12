@@ -7,9 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QuickDialog.h"
+
+typedef NS_ENUM(NSInteger, A3CurrencyKeyboardType) {
+	A3CurrencyKeyboardTypeCurrency = 0,
+	A3CurrencyKeyboardTypePercent
+};
 
 @interface A3CurrencyKeyboardViewController : UIViewController
 
-@property (nonatomic, weak) id<UIKeyInput> keyInputDelegate;
+@property (nonatomic, weak) UIResponder<UIKeyInput> *keyInputDelegate;
+@property (nonatomic, weak) QEntryTableViewCell *entryTableViewCell;
+@property (nonatomic) 		A3CurrencyKeyboardType keyboardType;
+@property (nonatomic, strong) NSString *currencySymbol;
+@property (nonatomic, strong) NSString *currencyCode;
 
 @end

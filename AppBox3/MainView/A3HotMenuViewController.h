@@ -7,8 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PaperFoldView.h"
 
 @interface A3HotMenuViewController : UIViewController
-@property (nonatomic, weak) UINavigationController *navigationController;
+@property (nonatomic, weak) UINavigationController *myNavigationController;
+@property (nonatomic, weak) PaperFoldView *paperFoldView;
 
 @end

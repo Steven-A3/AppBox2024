@@ -12,10 +12,12 @@
 #import "A3HorizontalBarChartView.h"
 #import "common.h"
 #import "A3CurrencyKeyboardViewController.h"
+#import "EKKeyboardAvoidingScrollViewManager.h"
 
 @interface A3SalesCalcViewController ()
 
 @property (nonatomic, strong) A3CurrencyKeyboardViewController *keyboardViewController;
+@property (nonatomic, weak) QEntryTableViewCell *activeEntryTableViewCell;
 
 @end
 
@@ -38,9 +40,13 @@
 		myRoot.title = @"Sales Calc";
 		myRoot.grouped = YES;
 
-		QRadioSection *section1 = [[QRadioSection alloc] initWithItems:@[@"Original Price", @"Sale Price"] selected:0 title:@"Select Known Value"];
-	 	[self assignRowHeightToElementInSection:section1];
-		[myRoot addSection:section1];
+		QRadioSection *section0 = [[QRadioSection alloc] initWithItems:@[@"Original Price", @"Sale Price"] selected:0 title:@"Select Known Value"];
+		QSelectItemElement *section0Row0 = [section0.elements objectAtIndex:0];
+		section0Row0.controllerAction = @"onSelectOriginalPrice:";
+		QSelectItemElement *section0Row1 = [section0.elements objectAtIndex:1];
+		section0Row1.controllerAction = @"onSelectSalePrice:";
+		[self assignRowHeightToElementInSection:section0];
+		[myRoot addSection:section0];
 
 		QSection *section2 = [[QSection alloc] init];
 		QEntryElement *price = [[QEntryElement alloc] initWithTitle:@"Price:" Value:@"" Placeholder:@"$0.00 USD"];
@@ -117,6 +123,18 @@
 	[super viewWillAppear:animated];
 
 	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
+	[[EKKeyboardAvoidingScrollViewManager sharedInstance] registerScrollViewForKeyboardAvoiding:self.quickDialogTableView];
+
+	[self registerForKeyboardNotifications];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+
+	[[EKKeyboardAvoidingScrollViewManager sharedInstance] unregisterScrollViewFromKeyboardAvoiding:self.quickDialogTableView];
 }
 
 
@@ -181,13 +199,52 @@
 
 - (void)QEntryDidBeginEditingElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
     _keyboardViewController.keyInputDelegate = cell.textField;
+	_keyboardViewController.entryTableViewCell = cell;
+    cell.textField.inputAccessoryView = nil;
+
+	_activeEntryTableViewCell = cell;
+}
+
+- (void)registerForKeyboardNotifications
+{
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardWasShown:)
+												 name:UIKeyboardDidShowNotification object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(keyboardDidHide:)
+												 name:UIKeyboardDidHideNotification object:nil];}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification {
+	if (_activeEntryTableViewCell) {
+		NSIndexPath *indexPath = [self.quickDialogTableView indexPathForCell:_activeEntryTableViewCell];
+
+		[self.quickDialogTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+	}
+}
+
+- (void)keyboardDidHide:(NSNotification*)aNotification {
+	[self.quickDialogTableView setContentOffset:CGPointMake(0.0, 0.0)];
 }
 
 - (A3CurrencyKeyboardViewController *)keyboardViewController {
 	if (nil == _keyboardViewController) {
 		_keyboardViewController = [[A3CurrencyKeyboardViewController alloc] initWithNibName:@"A3CurrencyKeyboardViewController" bundle:nil];
+		[_keyboardViewController setKeyboardType:A3CurrencyKeyboardTypeCurrency];
 	}
 	return _keyboardViewController;
+}
+
+- (void)onSelectOriginalPrice:(QSelectItemElement *)selectItemElement {
+	QRadioSection *parentSection = (QRadioSection *)selectItemElement.parentSection;
+	parentSection.selected = 0;
+	[self.quickDialogTableView reloadData];
+}
+
+- (void)onSelectSalePrice:(QSelectItemElement *)selectItemElement {
+	QRadioSection *parentSection = (QRadioSection *)selectItemElement.parentSection;
+	parentSection.selected = 1;
+	[self.quickDialogTableView reloadData];
 }
 
 @end

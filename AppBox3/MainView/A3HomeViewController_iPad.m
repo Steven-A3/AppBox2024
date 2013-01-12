@@ -135,13 +135,15 @@
 }
 
 - (void)showNotificationButtonAction {
-	self.paperFoldView.state  == PaperFoldStateRightUnfolded ?
-			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
-			[self.paperFoldView setPaperFoldState:PaperFoldStateRightUnfolded animated:YES];
+	if (self.paperFoldView.state & PaperFoldStateRightUnfolded) {
+		[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES];
+	} else {
+		[self.paperFoldView setPaperFoldState:PaperFoldStateRightUnfolded animated:YES];
+	}
 }
 
 - (void)sideMenuButtonAction {
-	self.paperFoldView.state  == PaperFoldStateLeftUnfolded ?
+	self.paperFoldView.state & PaperFoldStateLeftUnfolded ?
 			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
 			[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded animated:YES];
 }

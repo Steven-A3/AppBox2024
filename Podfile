@@ -6,6 +6,7 @@ pod 'AFNetworking'
 pod 'QuickDialog'
 pod 'XBPageCurl'
 pod 'NYXImagesKit'
+
 target :GHUnitTests do
 	pod 'GHUnitIOS'
 	pod 'OCMock'

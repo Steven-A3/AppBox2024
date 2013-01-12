@@ -26,67 +26,25 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];
 	if (self) {
-		self.layer.shadowOffset=CGSizeMake(0, 1);
-		self.layer.shadowRadius=1;
-		self.layer.shadowOpacity=0.7;
-		self.layer.shadowColor=[UIColor blackColor].CGColor;
-		self.layer.shadowPath=[self newPathForRoundedRect:self.bounds radius:7];
+		[self setupLayer];
 	}
 
 	return self;
 }
 
-//- (void)awakeFromNib {
-//	[super awakeFromNib];
-//
-//	[self setupLayers];
-//}
-//
-//- (void)setupLayers {
-//	CGRect bounds = self.layer.bounds;
-//
-//	CGRect backRect = CGRectMake(0.0, 0.0, CGRectGetWidth(self.bounds) - 6.0, CGRectGetHeight(self.bounds) - 6.0);
-//	CAGradientLayer *backLayer = [CAGradientLayer layer];
-//	backLayer.colors = @[(__bridge id)[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0f].CGColor,
-//			(__bridge id)[UIColor colorWithRed:0.05 green:0.05 blue:0.05 alpha:1.0f].CGColor,
-//			(__bridge id)[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0f].CGColor];
-//	backLayer.locations = @[[NSNumber numberWithFloat:0.0], [NSNumber numberWithFloat:0.8], [NSNumber numberWithFloat:1.0]];
-//	backLayer.bounds = backRect;
-//	backLayer.anchorPoint = CGPointMake(0.0, 0.0);
-//	backLayer.shadowOpacity = 1;
-//	backLayer.shadowPath = [UIBezierPath bezierPathWithRoundedRect:backLayer.bounds cornerRadius:8.0].CGPath;
-//	backLayer.shadowColor = [UIColor blackColor].CGColor;
-//	backLayer.shadowRadius = 2.0;
-//	backLayer.shadowOffset = CGSizeMake(0.0, 1.0);
-//	backLayer.position = CGPointMake(3.0, 3.0);
-//	backLayer.borderColor = [UIColor colorWithRed:70.0/255.0 green:70.0/255.0 blue:70.0/255.0 alpha:1.0].CGColor;
-//	backLayer.borderWidth = 0.7;
-//	backLayer.backgroundColor = [UIColor whiteColor].CGColor;
-//	backLayer.cornerRadius = 8.0;
-//
-//	CGRect buttonRect = CGRectMake(CGRectGetMinX(backRect), CGRectGetMinY(backRect), CGRectGetWidth(backRect), CGRectGetHeight(backRect) - 5.0f);
-//
-//	_gradientLayer = [CAGradientLayer layer];
-//	_gradientLayer.anchorPoint = CGPointMake(0.0f, 0.0f);
-//	_gradientLayer.position = CGPointMake(0.0f, 3.0f);
-//	_gradientLayer.bounds = buttonRect;
-//	_gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:224.0f/255.0f green:224.0f/255.0f blue:227.0f/255.0f alpha:1.0f].CGColor,
-//	(__bridge id)[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:193.0f/255.0f alpha:1.0f].CGColor];
-//	_gradientLayer.startPoint = CGPointMake(0.5, 0.0);
-//	_gradientLayer.endPoint = CGPointMake(0.5, 1.0);
-//	_gradientLayer.borderColor = [UIColor clearColor].CGColor;
-//	_gradientLayer.cornerRadius = 8.0;
-//	_gradientLayer.borderWidth = 0.0;
-//	_gradientLayer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-//	_gradientLayer.shadowColor = [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1.0f].CGColor;
-//	_gradientLayer.shadowRadius = 3.0f;
-//	_gradientLayer.shadowPath = [UIBezierPath bezierPathWithRect:_gradientLayer.bounds].CGPath;
-//	_gradientLayer.shadowOpacity = 1;
-//
-//	[backLayer addSublayer:_gradientLayer];
-//
-//	[self.layer insertSublayer:backLayer atIndex:0];
-//}
+- (void)setFrame:(CGRect)frame {
+	[super setFrame:frame];
+
+	[self setupLayer];
+}
+
+- (void)setupLayer {
+	self.layer.shadowOffset=CGSizeMake(0, 1);
+	self.layer.shadowRadius=1;
+	self.layer.shadowOpacity=0.7;
+	self.layer.shadowColor=[UIColor blackColor].CGColor;
+	self.layer.shadowPath=[self newPathForRoundedRect:self.bounds radius:7];
+}
 
 -(void)setHighlighted:(BOOL)highlighted{
 	[super setHighlighted:highlighted];
@@ -208,7 +166,10 @@
 	CGContextSetShadowWithColor(context, CGSizeMake(0, 1), 1, [UIColor colorWithWhite:1 alpha:1].CGColor);
 	CGContextTranslateCTM(context, 0, rect.size.height);
 	CGContextScaleCTM(context, 1.0, -1.0);
-	if (_text) {
+
+//	_image = [super imageForState:self.state];
+//	FNLOG(@"%@", _image);
+//	if (_text) {
 //		//draw text
 //		CGContextSetTextMatrix(context, CGAffineTransformIdentity);
 //
@@ -259,45 +220,45 @@
 //		CFRelease(framesetter);
 //		CTFrameDraw(frame, context);
 //		CFRelease(frame);
-	}else if(_image){
-		// use image as mask to draw the key symbol
-
-		CGContextSaveGState(context);
-
-		CGImageRef maskRef = _image.CGImage;
-
-		CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
-				CGImageGetHeight(maskRef),
-				CGImageGetBitsPerComponent(maskRef),
-				CGImageGetBitsPerPixel(maskRef),
-				CGImageGetBytesPerRow(maskRef),
-				CGImageGetDataProvider(maskRef), NULL, false);
-
-		CGRect maskRect=CGRectMake(0, 0, _image.size.width, _image.size.height);
-		maskRect=CGRectOffset(maskRect, (rect.size.width-maskRect.size.width)/2.0, (rect.size.height-maskRect.size.height)/2.0);
-		maskRect=CGRectIntegral(maskRect);
-		CGRect shadowMaskRect=CGRectOffset(maskRect, 0, -0.5);
-
-		CGContextClipToMask(context, shadowMaskRect, mask);
-
-		[[UIColor colorWithWhite:1 alpha:0.8] setFill];
-
-		CGContextFillRect(context, maskRect);
-
-		CGContextRestoreGState(context);
-
-		CGContextClipToMask(context, maskRect, mask);
-
-		if (self.state & UIControlStateDisabled) {
-			[[UIColor colorWithWhite:0.5 alpha:1] setFill];
-		}else{
-			[[UIColor blackColor] setFill];
-		}
-
-		CGContextFillRect(context, maskRect);
-
-		CGImageRelease(mask);
-	}
+//	}else if(_image){
+//		// use image as mask to draw the key symbol
+//
+//		CGContextSaveGState(context);
+//
+//		CGImageRef maskRef = _image.CGImage;
+//
+//		CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
+//				CGImageGetHeight(maskRef),
+//				CGImageGetBitsPerComponent(maskRef),
+//				CGImageGetBitsPerPixel(maskRef),
+//				CGImageGetBytesPerRow(maskRef),
+//				CGImageGetDataProvider(maskRef), NULL, false);
+//
+//		CGRect maskRect=CGRectMake(0, 0, _image.size.width, _image.size.height);
+//		maskRect=CGRectOffset(maskRect, (rect.size.width-maskRect.size.width)/2.0, (rect.size.height-maskRect.size.height)/2.0);
+//		maskRect=CGRectIntegral(maskRect);
+//		CGRect shadowMaskRect=CGRectOffset(maskRect, 0, -0.5);
+//
+//		CGContextClipToMask(context, shadowMaskRect, mask);
+//
+//		[[UIColor colorWithWhite:1 alpha:0.8] setFill];
+//
+//		CGContextFillRect(context, maskRect);
+//
+//		CGContextRestoreGState(context);
+//
+//		CGContextClipToMask(context, maskRect, mask);
+//
+//		if (self.state & UIControlStateDisabled) {
+//			[[UIColor colorWithWhite:0.5 alpha:1] setFill];
+//		}else{
+//			[[UIColor blackColor] setFill];
+//		}
+//
+//		CGContextFillRect(context, maskRect);
+//
+//		CGImageRelease(mask);
+//	}
 
 	CGContextRestoreGState(context);
 }
@@ -339,7 +300,7 @@
 
 #pragma mark UIInputViewAudioFeedback
 
-- (BOOL) enableInputClicksWhenVisible {
+- (BOOL)enableInputClicksWhenVisible {
 	return YES;
 }
 

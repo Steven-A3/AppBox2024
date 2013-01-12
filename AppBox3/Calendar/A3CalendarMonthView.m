@@ -79,8 +79,8 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
-	FNLOG(@"Is big calendar %d", _bigCalendar);
-	FNLOG(@"Draw Weekday Label %d", _drawWeekdayLabel);
+//	FNLOG(@"Is big calendar %d", _bigCalendar);
+//	FNLOG(@"Draw Weekday Label %d", _drawWeekdayLabel);
 }
 #endif
 

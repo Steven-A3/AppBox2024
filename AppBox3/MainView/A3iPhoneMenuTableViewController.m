@@ -348,7 +348,7 @@
 
 #pragma mark - GridViewControllerDelegate
 - (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
-	FNLOG(@"Check %d", selectedIndex);
+
 	if ((cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) && (selectedIndex == 0)) {
 		A3SalesCalcViewController *salesCalcViewController = [[A3SalesCalcViewController alloc] initWithNibName:nil bundle:nil];
 		[self.paperFoldMenuViewController pushViewControllerToNavigationController:salesCalcViewController];

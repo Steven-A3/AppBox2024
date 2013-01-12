@@ -11,6 +11,8 @@
 #import "A3Utilities.h"
 #import "A3CalculatorViewController.h"
 #import "A3CalendarViewController.h"
+#import "A3UIDevice.h"
+#import "PaperFoldView.h"
 
 @interface A3HotMenuViewController ()
 
@@ -73,15 +75,19 @@
 }
 
 - (IBAction)calculatorButtonTouchUpInside:(UIButton *)sender {
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	[_myNavigationController popToRootViewControllerAnimated:NO];
+	BOOL deviceIsPortrait = [A3UIDevice deviceOrientationIsPortrait];
+	CGRect newFrame = deviceIsPortrait ? CGRectMake(0.0, 0.0, 714.0, 1004.0) : CGRectMake(0.0, 0.0, 714.0, 748.0);
+	[_myNavigationController.view setFrame:newFrame];
+	[_paperFoldView setPaperFoldState:deviceIsPortrait ? PaperFoldStateDefault : PaperFoldStateLeftUnfolded];
 	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"A3Calculator_iPad" bundle:nil];
-	[self.navigationController pushViewController:viewController animated:YES];
+	[_myNavigationController pushViewController:viewController animated:YES];
 }
 
 - (IBAction)calendarButtonTouchUpInside:(id)sender {
-	[self.navigationController popToRootViewControllerAnimated:YES];
+	[_myNavigationController popToRootViewControllerAnimated:NO];
 	A3CalendarViewController *viewController = [[A3CalendarViewController alloc] initWithNibName:@"A3CalendarViewController" bundle:nil];
-	[self.navigationController pushViewController:viewController animated:YES];
+	[_myNavigationController pushViewController:viewController animated:YES];
 }
 
 @end

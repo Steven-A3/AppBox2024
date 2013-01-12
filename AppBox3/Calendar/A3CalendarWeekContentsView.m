@@ -87,7 +87,6 @@
 	// Add horizontal hour lines
 	for (NSInteger index = 0; index < 23; index++) {
 		CGFloat y = roundf(top + rowHeight * (index + 1));
-//		FNLOG(@"%f", y);
 		CGContextMoveToPoint(context, left, y);
 		CGContextAddLineToPoint(context, right, y);
 	}
@@ -138,17 +137,13 @@
 }
 
 - (void)updateTimeMark {
-	FNLOG(@"%f, %f, %f, %f", self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
-
 	CGFloat left = A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH - 20.0f;
 	CGFloat width = CGRectGetWidth(self.bounds) - A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH + 20.0f;
 	CGFloat height = 15.0f;
 
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [gregorian components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]];
-	FNLOG(@"hour %d, minute %d", components.hour, components.minute);
 	CGFloat top = ( ((CGFloat)components.hour * 60.0f + (CGFloat)components.minute) / (24.0f * 60.0f) ) * CGRectGetHeight(self.bounds) + CGRectGetMinY(self.bounds) - 7.0f;
-	FNLOG(@"%f, %f, %f, %f", left, top, width, height);
 	[self.timeMarkView setFrame:CGRectMake(left, top, width, height)];
 }
 

@@ -48,6 +48,7 @@ typedef enum {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+		self.title = @"Calendar";
     }
     return self;
 }
@@ -55,8 +56,6 @@ typedef enum {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-	self.title = @"Calendar";
 
 	[self.calendarView setBackgroundColor:[UIColor clearColor]];
 	[self.todayButton setButtonColor:[UIColor colorWithRed:102.0f/255.0f green:102.0f/255.0f blue:222.0f/255.0f alpha:1.0f]];

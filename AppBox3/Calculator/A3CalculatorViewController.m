@@ -47,13 +47,9 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+		self.title = @"Calculator";
     }
     return self;
-}
-
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
-	FNLOG(@"pass");
 }
 
 - (void)viewDidLayoutSubviews {
@@ -63,16 +59,20 @@
 	[self layoutSubViews];
 }
 
-- (void)viewDidLoad
-{
-	FNLOG(@"viewDidLoad");
+- (void)addRightButton {
+	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"icon_app_settings" ofType:@"png"];
+	UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithContentsOfFile:imagePath] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+	self.navigationItem.rightBarButtonItem = rightButtonItem;
+}
 
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+
+	[self addRightButton];
 	[self buildGradientLayers];
 
 	self.pageControl = [[DDPageControl alloc] init];
-	[self.pageControl setCenter: CGPointMake(APP_VIEW_WIDTH / 2.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE - (44.0f / 2.0f)) ];
+	[self.pageControl setCenter: CGPointMake(APP_VIEW_WIDTH / 2.0f, 664.0 + 20.0) ];
 	[self.pageControl setNumberOfPages: 2 ];
 	[self.pageControl setCurrentPage: 0 ];
 	[self.pageControl addTarget: self action: @selector(pageControlClicked:) forControlEvents: UIControlEventValueChanged] ;
@@ -142,10 +142,11 @@
 		[self.historyTableView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	} else {
 		CGFloat historyViewWidth = APP_VIEW_WIDTH;
-		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE, historyViewWidth, 10.0f)];
-		[self.grayAppHeaderView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE + 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
+		CGFloat coord_Y = 704.0;
+		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(0.0f, coord_Y, historyViewWidth, 10.0f)];
+		[self.grayAppHeaderView setFrame:CGRectMake(0.0f, coord_Y + 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
         [self.editHistoryButton setFrame:CGRectMake(historyViewWidth - 10.0f - A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH, A3_CALCULATOR_HISTORY_HEADER_HEIGHT/2.0f - 15.0f, A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH, A3_CALCULATOR_HISTORY_EDIT_BUTTON_HEIGHT)];
-		[self.historyTableView setFrame:CGRectMake(0.0f, IPAD_SCREEN_HEIGHT_LANDSCAPE + 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_PORTRAIT - IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
+		[self.historyTableView setFrame:CGRectMake(0.0f, coord_Y+ 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_PORTRAIT - 704.0 - 44.0 - 10.0 - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	}
 }
 
@@ -154,8 +155,8 @@
 
 	CAGradientLayer *leftBorderGradient = [CAGradientLayer layer];
 	leftBorderGradient.anchorPoint = CGPointMake(0.0f, 0.0f);
-	leftBorderGradient.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE, CGRectGetHeight(bounds) - A3_APP_HEADER_BAR_HEIGHT);
-	leftBorderGradient.position = CGPointMake(0.0f, A3_APP_HEADER_BAR_HEIGHT);
+	leftBorderGradient.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE, CGRectGetHeight(bounds));
+	leftBorderGradient.position = CGPointMake(0.0f, 0.0);
 	leftBorderGradient.colors = [NSArray arrayWithObjects:
 			(__bridge id)[UIColor colorWithRed:203.0f/255.0f green:205.0f/255.0f blue:206.0f/255.0f alpha:1.0f].CGColor,
 			(__bridge id)[UIColor colorWithRed:240.0f/255.0f green:242.0f/255.0f blue:243.0f/255.0f alpha:1.0f].CGColor,
@@ -166,8 +167,8 @@
 
 	CAGradientLayer *rightBorderGradient = [CAGradientLayer layer];
 	rightBorderGradient.anchorPoint = CGPointMake(0.0f, 0.0f);
-	rightBorderGradient.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE, CGRectGetHeight(bounds) - A3_APP_HEADER_BAR_HEIGHT);
-	rightBorderGradient.position = CGPointMake(CGRectGetWidth(bounds) - A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE, A3_APP_HEADER_BAR_HEIGHT);
+	rightBorderGradient.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE, CGRectGetHeight(bounds));
+	rightBorderGradient.position = CGPointMake(CGRectGetWidth(bounds) - A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE, 0.0);
 	rightBorderGradient.colors = [NSArray arrayWithObjects:
 			(__bridge id)[UIColor colorWithRed:240.0f/255.0f green:242.0f/255.0f blue:243.0f/255.0f alpha:1.0f].CGColor,
 			(__bridge id)[UIColor colorWithRed:208.0f/255.0f green:210.0f/255.0f blue:211.0f/255.0f alpha:1.0f].CGColor,
@@ -189,7 +190,7 @@
 	bottomBorderGradient.endPoint = CGPointMake(0.5f, 1.0f);
 	[self.view.layer addSublayer:bottomBorderGradient];
 
-	CGFloat separatorOrigin_Y = IPAD_SCREEN_HEIGHT_LANDSCAPE - 44.0;
+	CGFloat separatorOrigin_Y = 665.0;
 
 	CALayer *separatorLayerUp = [CALayer layer];
 	separatorLayerUp.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetWidth(bounds), 1.0f);
@@ -218,7 +219,7 @@
 	[UIView commitAnimations];
 }
 
-#define ACALC_UI_HISTORY_CELL_HEIGHT			90.0f
+#define A3CALC_UI_HISTORY_CELL_HEIGHT            90.0f
 
 #pragma mark -- UITableView data source
 
@@ -238,7 +239,7 @@
 
 #pragma mark -- UITableView delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return ACALC_UI_HISTORY_CELL_HEIGHT;
+	return A3CALC_UI_HISTORY_CELL_HEIGHT;
 }
 
 

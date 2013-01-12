@@ -11,9 +11,9 @@
 
 @class A3iPhoneMenuTableViewController;
 
-@interface A3PaperFoldMenuViewController : UIViewController <PaperFoldViewDelegate>
+@interface A3PaperFoldMenuViewController : UIViewController <PaperFoldViewDelegate,MultiFoldViewDelegate>
 
-@property (nonatomic, strong) PaperFoldView *paperFoldView;
+@property (nonatomic, strong) PaperFoldView *paperFoldView, *paperFoldView2;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) A3iPhoneMenuTableViewController *sideMenuTableViewController;
 
