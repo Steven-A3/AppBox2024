@@ -1,9 +1,9 @@
 //
 //  MenuGroup.m
-//  AppBoxProPrepareData
+//  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 6/14/12.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 1/16/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "MenuGroup.h"
@@ -12,9 +12,9 @@
 
 @implementation MenuGroup
 
-@dynamic groupID;
 @dynamic name;
 @dynamic order;
-@dynamic menus;
+@dynamic unique_id;
+@dynamic menuItems;
 
 @end

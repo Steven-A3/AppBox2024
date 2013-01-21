@@ -21,6 +21,7 @@
 #define A3_APP_LANDSCAPE_FULL_WIDTH			970.0
 
 #define kSystemStatusBarHeight				20.0
+#define kSearchBarHeight					40.0
 #define A3_IPAD_PORTRAIT_KEYBOARD_HEIGHT	264.0
 #define	A3_IPAD_LANDSCAPE_KEYBOARD_HEIGHT	350.0
 

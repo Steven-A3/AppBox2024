@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1171" systemVersion="11E53" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
+    </entity>
+    <entity name="CurrencyItem" representedClassName="CurrencyItem" syncable="YES">
+        <attribute name="flagImageName" attributeType="String" syncable="YES"/>
+        <attribute name="symbol" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyFavorite" inverseName="currencyItem" inverseEntity="CurrencyFavorite" syncable="YES"/>
+    </entity>
+    <entity name="MenuFavorite" representedClassName="MenuFavorite" syncable="YES">
+        <attribute name="order" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="menuItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="favorite" inverseEntity="MenuItem" syncable="YES"/>
+    </entity>
     <entity name="MenuGroup" representedClassName="MenuGroup" syncable="YES">
-        <attribute name="groupID" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="String" syncable="YES"/>
-        <relationship name="menus" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="menuGroup" inverseEntity="MenuItem" syncable="YES"/>
+        <attribute name="unique_id" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="menuItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="group" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
         <attribute name="iconName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="isFavorite" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="menuID" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="order" attributeType="String" syncable="YES"/>
-        <relationship name="menuGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MenuGroup" inverseName="menus" inverseEntity="MenuGroup" syncable="YES"/>
+        <attribute name="unique_id" attributeType="String" syncable="YES"/>
+        <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuFavorite" inverseName="menuItem" inverseEntity="MenuFavorite" syncable="YES"/>
+        <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuGroup" inverseName="menuItems" inverseEntity="MenuGroup" syncable="YES"/>
     </entity>
     <elements>
+        <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
+        <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
-        <element name="MenuItem" positionX="178" positionY="9" width="128" height="135"/>
+        <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>
     </elements>
 </model>

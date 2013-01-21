@@ -1,9 +1,9 @@
 //
 //  MenuItem.h
-//  AppBoxProPrepareData
+//  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 6/22/12.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 1/16/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -14,10 +14,9 @@
 @interface MenuItem : NSManagedObject
 
 @property (nonatomic, retain) NSString * iconName;
-@property (nonatomic, retain) NSString * menuID;
+@property (nonatomic, retain) NSString * unique_id;
 @property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * order;
-@property (nonatomic, retain) NSNumber * isFavorite;
-@property (nonatomic, retain) MenuGroup *menuGroup;
+@property (nonatomic, retain) MenuGroup *group;
+@property (nonatomic, retain) NSManagedObject *favorite;
 
 @end

@@ -12,6 +12,7 @@
 #import "common.h"
 #import "A3UIDevice.h"
 #import "A3KeyboardMoveMarkView.h"
+#import "A3CurrencySelectViewController.h"
 
 @interface A3CurrencyKeyboardViewController ()
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton1;
@@ -33,6 +34,7 @@
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *doneButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardMoveMarkView *markView;
+@property (nonatomic, strong) UIPopoverController *myPopoverController;
 
 @end
 
@@ -84,6 +86,7 @@
 - (void)viewDidUnload {
 	[super viewDidUnload];
 
+	_myPopoverController = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -118,7 +121,11 @@
 }
 
 - (IBAction)bigButton1Action {
+	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 
+	_myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
+	[_myPopoverController presentPopoverFromRect:_bigButton1.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)bigButton2Action {

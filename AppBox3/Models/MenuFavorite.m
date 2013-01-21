@@ -1,21 +1,18 @@
 //
-//  MenuItem.m
+//  MenuFavorite.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 1/16/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "MenuFavorite.h"
 #import "MenuItem.h"
-#import "MenuGroup.h"
 
 
-@implementation MenuItem
+@implementation MenuFavorite
 
-@dynamic iconName;
-@dynamic unique_id;
-@dynamic name;
-@dynamic group;
-@dynamic favorite;
+@dynamic order;
+@dynamic menuItem;
 
 @end

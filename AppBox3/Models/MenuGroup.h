@@ -1,9 +1,9 @@
 //
 //  MenuGroup.h
-//  AppBoxProPrepareData
+//  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 6/14/12.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 1/16/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,17 +13,17 @@
 
 @interface MenuGroup : NSManagedObject
 
-@property (nonatomic, retain) NSString * groupID;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
-@property (nonatomic, retain) NSSet *menus;
+@property (nonatomic, retain) NSString * unique_id;
+@property (nonatomic, retain) NSSet *menuItems;
 @end
 
 @interface MenuGroup (CoreDataGeneratedAccessors)
 
-- (void)addMenusObject:(MenuItem *)value;
-- (void)removeMenusObject:(MenuItem *)value;
-- (void)addMenus:(NSSet *)values;
-- (void)removeMenus:(NSSet *)values;
+- (void)addMenuItemsObject:(MenuItem *)value;
+- (void)removeMenuItemsObject:(MenuItem *)value;
+- (void)addMenuItems:(NSSet *)values;
+- (void)removeMenuItems:(NSSet *)values;
 
 @end
