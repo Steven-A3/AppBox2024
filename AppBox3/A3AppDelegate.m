@@ -34,8 +34,8 @@
 
 	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 
-	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3PaperFoldMenuViewController alloc] initWithNibName:nil bundle:nil];
-	self.window.rootViewController = paperFoldMenuViewController;
+	_paperFoldMenuViewController = [[A3PaperFoldMenuViewController alloc] initWithNibName:nil bundle:nil];
+	self.window.rootViewController = _paperFoldMenuViewController;
 
 	[self.window makeKeyAndVisible];
 

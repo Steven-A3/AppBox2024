@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1811" systemVersion="12C3006" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C3006" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
@@ -14,17 +14,29 @@
         <relationship name="menuItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="favorite" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
     <entity name="MenuGroup" representedClassName="MenuGroup" syncable="YES">
+        <attribute name="menuGroupID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
         <attribute name="order" attributeType="String" syncable="YES"/>
-        <attribute name="unique_id" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="menuItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="group" inverseEntity="MenuItem" syncable="YES"/>
     </entity>
     <entity name="MenuItem" representedClassName="MenuItem" syncable="YES">
+        <attribute name="appID" attributeType="String" syncable="YES"/>
         <attribute name="iconName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="unique_id" attributeType="String" syncable="YES"/>
         <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuFavorite" inverseName="menuItem" inverseEntity="MenuFavorite" syncable="YES"/>
         <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuGroup" inverseName="menuItems" inverseEntity="MenuGroup" syncable="YES"/>
+    </entity>
+    <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
+        <attribute name="additionaloff" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="amountSaved" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="discount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isOriginalPrice" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalPrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="salePrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tax" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
@@ -32,5 +44,6 @@
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>
+        <element name="SalesCalcHistory" positionX="160" positionY="192" width="128" height="195"/>
     </elements>
 </model>

@@ -25,8 +25,6 @@
 
 - (id)initWithFrame:(CGRect)frame
 {
-	FNLOG(@"initWithFrame");
-
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
@@ -36,8 +34,6 @@
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
-	FNLOG(@"initWithCoder");
-
 	self = [super initWithCoder:aDecoder];
 	if (self) {
 		[self initialize];
@@ -61,7 +57,7 @@
 #define	CEV_REGEX_FLOAT_PATTERN			@"[-+]?((\\.[0-9]+|[0-9]+\\.[0-9]+)([eE][-+][0-9]+)?|[0-9]+)"
 
 - (BOOL)isOperatorClassForString:(NSString *)string {
-	return [self isStringMatchForPattern:@"\\+|\\-|x|/|=" withString:string];
+	return [self isStringMatchForPattern:@"(\\+|\\-|x|/|=|of)" withString:string];
 }
 
 - (BOOL)isNumberClassForString:(NSString *)string {
@@ -112,6 +108,28 @@
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 }
 
+- (UIFont *)fontAtIndex:(NSInteger)index {
+	UIFont *font;
+	if (_attributes && (index < [_attributes count]) && [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeFont]) {
+		font = [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeFont];
+	}
+	if (![font isKindOfClass:[UIFont class]]) {
+		font = CEV_VALUE_FONT;
+	}
+	return font;
+}
+
+- (UIColor *)colorAtIndex:(NSInteger)index {
+	UIColor *color;
+	if (_attributes && (index < [_attributes count]) && [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeTextColor]) {
+		color = [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeTextColor];
+	}
+	if (![color isKindOfClass:[UIColor class]]) {
+		color = CEV_VALUE_TEXT_COLOR;
+	}
+	return color;
+}
+
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
@@ -126,7 +144,7 @@
 	NSMutableArray *drawingPositions = [[NSMutableArray alloc] initWithCapacity:[self.expression count]];
 
 	CGFloat coordinateX = CEV_SIDE_MARGIN;
-	UIFont *valueFont = CEV_VALUE_FONT;
+	UIFont *valueFont;
 	for (NSInteger index = 0; index < [self.expression count];index++) {
 		[drawingPositions addObject:[NSNumber numberWithFloat:coordinateX]];
 
@@ -134,6 +152,7 @@
 		if ([self isOperatorClassForString:textToDisplay]) {
 			coordinateX += CEV_OPERATOR_WIDTH;
 		} else {
+			valueFont = [self fontAtIndex:index];
 			CGSize sizeOfText = [textToDisplay sizeWithFont:valueFont];
 			coordinateX += sizeOfText.width;
 		}
@@ -214,16 +233,22 @@
 	}
 
 	// Drawing for numbers and functions.
-	UIColor *valueColor = CEV_VALUE_TEXT_COLOR;
-	CGContextSetStrokeColorWithColor(context, valueColor.CGColor);
-	CGContextSetFillColorWithColor(context, valueColor.CGColor);
+	UIColor *valueColor;
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 
 	drawingPoint = CGPointMake(CEV_SIDE_MARGIN, 0.0f);
 	for (NSInteger index = 0; index < [self.expression count]; index++) {
 		NSString *textToDisplay = [self.expression objectAtIndex:index];
 		if (![self isOperatorClassForString:textToDisplay]) {
+			valueFont = [self fontAtIndex:index];
+
+			valueColor = [self colorAtIndex:index];
+			CGContextSetStrokeColorWithColor(context, valueColor.CGColor);
+			CGContextSetFillColorWithColor(context, valueColor.CGColor);
+
 			drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
+			CGSize size = [textToDisplay sizeWithFont:valueFont];
+			drawingPoint.y = CGRectGetHeight(self.bounds)/2.0 - size.height / 2.0;
 			[textToDisplay drawAtPoint:drawingPoint withFont:valueFont];
 		}
 	}

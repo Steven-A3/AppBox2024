@@ -6,6 +6,7 @@ pod 'AFNetworking'
 pod 'QuickDialog'
 pod 'XBPageCurl'
 pod 'NYXImagesKit'
+pod 'BCGenieEffect', '~> 1.0'
 
 target :GHUnitTests do
 	pod 'GHUnitIOS'

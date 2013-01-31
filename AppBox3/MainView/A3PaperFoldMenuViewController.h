@@ -19,5 +19,7 @@
 
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController;
 
+- (void)presentRightWingWithViewController:(UIViewController *)viewController;
+
 
 @end

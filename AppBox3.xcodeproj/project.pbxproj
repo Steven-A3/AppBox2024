@@ -103,6 +103,10 @@
 		683B958C15EB233500575377 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956215EB233500575377 /* A3GrayAppHeaderView.m */; };
 		683B958D15EB233500575377 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956415EB233500575377 /* A3RowSeparatorView.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
+		6840099A16B7726800D7E078 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840099916B7726800D7E078 /* MenuItem.m */; };
+		6840099B16B7726800D7E078 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840099916B7726800D7E078 /* MenuItem.m */; };
+		6840099E16B7726800D7E078 /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840099D16B7726800D7E078 /* MenuGroup.m */; };
+		6840099F16B7726800D7E078 /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840099D16B7726800D7E078 /* MenuGroup.m */; };
 		68436ABC163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */; };
 		68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABF163E9DF5005E7A77 /* A3UIKit.m */; };
 		68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */; };
@@ -114,6 +118,7 @@
 		685A0A3716242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
 		685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
 		685A0A3E1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
+		685ADA1216B94C750072483C /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 685ADA1116B94C750072483C /* SalesCalcHistory.m */; };
 		685D3EE31691A3FB00373863 /* QEntryTableViewCell+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 685D3EE21691A3FB00373863 /* QEntryTableViewCell+Extension.m */; };
 		685EA926164CBE99000EA41D /* A3PaperFoldMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EA925164CBE99000EA41D /* A3PaperFoldMenuViewController.m */; };
 		685EA92A164CD32E000EA41D /* PaperFoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 685EA929164CD32E000EA41D /* PaperFoldView.m */; };
@@ -126,22 +131,22 @@
 		685F728616A684DC004C7222 /* PrepareData.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 685F728516A684DC004C7222 /* PrepareData.1 */; };
 		685F728A16A68521004C7222 /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 682EA2E915EB10B000BD6AD4 /* AppBox3.xcdatamodeld */; };
 		685F729016A688DD004C7222 /* A3AppDataUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F728F16A688DD004C7222 /* A3AppDataUtility.m */; };
-		685F72B816A6DF7C004C7222 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72B716A6DF7C004C7222 /* MenuItem.m */; };
 		685F72BB16A6DF7C004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
-		685F72BE16A6DF7C004C7222 /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BD16A6DF7C004C7222 /* MenuGroup.m */; };
-		685F72C316A6DF8E004C7222 /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BD16A6DF7C004C7222 /* MenuGroup.m */; };
 		685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
-		685F72C516A6DF8E004C7222 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72B716A6DF7C004C7222 /* MenuItem.m */; };
 		6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */; };
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		6872076C167091EF00D56507 /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6872076B167091EF00D56507 /* sample.jpg */; };
 		6872077B1670CC6A00D56507 /* A3SectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872077A1670CC6A00D56507 /* A3SectionHeaderView.m */; };
 		6872123C1675B83500E55D06 /* A3NotificationTitleBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872123B1675B83500E55D06 /* A3NotificationTitleBGView.m */; };
 		687212441675C9AF00E55D06 /* A3NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687212431675C9AF00E55D06 /* A3NotificationCell.m */; };
+		687D385616BA1DEB006FA74E /* PageCurl.png in Resources */ = {isa = PBXBuildFile; fileRef = 687D385516BA1DEB006FA74E /* PageCurl.png */; };
+		687D385916BA3189006FA74E /* A3SalesCalcMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385816BA3189006FA74E /* A3SalesCalcMainViewController.m */; };
+		687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */; };
+		687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
 		6883AAF716719D45004DEEE6 /* A3NotificationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */; };
 		6884DFC3167AC5C400A8FFA7 /* A3NotificationStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */; };
-		6886A30C165776C00013A4C9 /* A3SalesCalcViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886A30B165776C00013A4C9 /* A3SalesCalcViewController.m */; };
+		6886A30C165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */; };
 		6890255F16429466001A81B5 /* icon_aqua.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255916429466001A81B5 /* icon_aqua.png */; };
 		6890256016429466001A81B5 /* icon_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255A16429466001A81B5 /* icon_blue.png */; };
 		6890256116429466001A81B5 /* icon_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255B16429466001A81B5 /* icon_green.png */; };
@@ -252,6 +257,9 @@
 		68C461661627D77900555C91 /* A3CalendarWeekViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C461491627D77900555C91 /* A3CalendarWeekViewController.xib */; };
 		68C461671627D77900555C91 /* A3CalendarYearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C4614C1627D77900555C91 /* A3CalendarYearViewController.m */; };
 		68C461681627D77900555C91 /* A3CalendarYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */; };
+		68C9DBEE16AEA30C00F34A54 /* CurrencyItem+name.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE10716AA7E80008D371E /* CurrencyItem+name.m */; };
+		68C9DBEF16AEA39400F34A54 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE11A16AA8123008D371E /* CurrencyItem.m */; };
+		68C9DBF016AEA39900F34A54 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6815871716A7A621006DC8D7 /* CurrencyFavorite.m */; };
 		68C9E4251667488300438CBF /* A3BookendShapeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E4241667488300438CBF /* A3BookendShapeView.m */; };
 		68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A2162FEC4500F71732 /* A3TickerScrollView.m */; };
 		68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A6162FEC7100F71732 /* A3TickerControl.m */; };
@@ -431,6 +439,10 @@
 		683B956315EB233500575377 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3RowSeparatorView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B956415EB233500575377 /* A3RowSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3RowSeparatorView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6840099816B7726800D7E078 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
+		6840099916B7726800D7E078 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
+		6840099C16B7726800D7E078 /* MenuGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuGroup.h; sourceTree = "<group>"; };
+		6840099D16B7726800D7E078 /* MenuGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuGroup.m; sourceTree = "<group>"; };
 		68436ABA163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SectionHeaderViewInMenuTableView.h; sourceTree = "<group>"; };
 		68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SectionHeaderViewInMenuTableView.m; sourceTree = "<group>"; };
 		68436ABE163E9DF5005E7A77 /* A3UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIKit.h; sourceTree = "<group>"; };
@@ -447,6 +459,8 @@
 		685560051670448D00F200B7 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView_iPad.xib; sourceTree = "<group>"; };
 		685A0A3C1624376F00E94B6B /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = AppBox3/Storyboard.storyboard; sourceTree = "<group>"; };
+		685ADA1016B94C750072483C /* SalesCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesCalcHistory.h; sourceTree = "<group>"; };
+		685ADA1116B94C750072483C /* SalesCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesCalcHistory.m; sourceTree = "<group>"; };
 		685D3EE11691A3FB00373863 /* QEntryTableViewCell+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "QEntryTableViewCell+Extension.h"; sourceTree = "<group>"; };
 		685D3EE21691A3FB00373863 /* QEntryTableViewCell+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "QEntryTableViewCell+Extension.m"; sourceTree = "<group>"; };
 		685EA924164CBE99000EA41D /* A3PaperFoldMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PaperFoldMenuViewController.h; sourceTree = "<group>"; };
@@ -464,12 +478,8 @@
 		685F728516A684DC004C7222 /* PrepareData.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = PrepareData.1; sourceTree = "<group>"; };
 		685F728E16A688DD004C7222 /* A3AppDataUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppDataUtility.h; sourceTree = "<group>"; };
 		685F728F16A688DD004C7222 /* A3AppDataUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppDataUtility.m; sourceTree = "<group>"; };
-		685F72B616A6DF7C004C7222 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
-		685F72B716A6DF7C004C7222 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
 		685F72B916A6DF7C004C7222 /* MenuFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuFavorite.h; sourceTree = "<group>"; };
 		685F72BA16A6DF7C004C7222 /* MenuFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuFavorite.m; sourceTree = "<group>"; };
-		685F72BC16A6DF7C004C7222 /* MenuGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuGroup.h; sourceTree = "<group>"; };
-		685F72BD16A6DF7C004C7222 /* MenuGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuGroup.m; sourceTree = "<group>"; };
 		6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPhoneMenuTableViewController.h; sourceTree = "<group>"; };
 		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
 		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
@@ -481,14 +491,21 @@
 		6872123B1675B83500E55D06 /* A3NotificationTitleBGView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationTitleBGView.m; sourceTree = "<group>"; };
 		687212421675C9AF00E55D06 /* A3NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NotificationCell.h; sourceTree = "<group>"; };
 		687212431675C9AF00E55D06 /* A3NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationCell.m; sourceTree = "<group>"; };
+		687D385516BA1DEB006FA74E /* PageCurl.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PageCurl.png; sourceTree = "<group>"; };
+		687D385716BA3189006FA74E /* A3SalesCalcMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcMainViewController.h; path = "Apps/Sales Calc/A3SalesCalcMainViewController.h"; sourceTree = "<group>"; };
+		687D385816BA3189006FA74E /* A3SalesCalcMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcMainViewController.m; path = "Apps/Sales Calc/A3SalesCalcMainViewController.m"; sourceTree = "<group>"; };
+		687D385A16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcHistoryTableViewCell.h; path = "Apps/Sales Calc/A3SalesCalcHistoryTableViewCell.h"; sourceTree = "<group>"; };
+		687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcHistoryTableViewCell.m; path = "Apps/Sales Calc/A3SalesCalcHistoryTableViewCell.m"; sourceTree = "<group>"; };
+		687D385C16BA31BD006FA74E /* A3SalesCalcHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcHistoryViewController.h; path = "Apps/Sales Calc/A3SalesCalcHistoryViewController.h"; sourceTree = "<group>"; };
+		687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcHistoryViewController.m; path = "Apps/Sales Calc/A3SalesCalcHistoryViewController.m"; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
 		6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NotificationTableViewController.h; path = ViewControllers/A3NotificationTableViewController.h; sourceTree = "<group>"; };
 		6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3NotificationTableViewController.m; path = ViewControllers/A3NotificationTableViewController.m; sourceTree = "<group>"; };
 		6884DFC1167AC5C400A8FFA7 /* A3NotificationStockCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NotificationStockCell.h; sourceTree = "<group>"; };
 		6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationStockCell.m; sourceTree = "<group>"; };
-		6886A30A165776C00013A4C9 /* A3SalesCalcViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcViewController.h; path = "Apps/Sales Calc/A3SalesCalcViewController.h"; sourceTree = "<group>"; };
-		6886A30B165776C00013A4C9 /* A3SalesCalcViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcViewController.m; path = "Apps/Sales Calc/A3SalesCalcViewController.m"; sourceTree = "<group>"; };
+		6886A30A165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcQuickDialogViewController.h; path = "Apps/Sales Calc/A3SalesCalcQuickDialogViewController.h"; sourceTree = "<group>"; };
+		6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcQuickDialogViewController.m; path = "Apps/Sales Calc/A3SalesCalcQuickDialogViewController.m"; sourceTree = "<group>"; };
 		6890255916429466001A81B5 /* icon_aqua.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_aqua.png; sourceTree = "<group>"; };
 		6890255A16429466001A81B5 /* icon_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_blue.png; sourceTree = "<group>"; };
 		6890255B16429466001A81B5 /* icon_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_green.png; sourceTree = "<group>"; };
@@ -628,6 +645,7 @@
 		68C4614B1627D77900555C91 /* A3CalendarYearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarYearViewController.h; sourceTree = "<group>"; };
 		68C4614C1627D77900555C91 /* A3CalendarYearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarYearViewController.m; sourceTree = "<group>"; };
 		68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarYearViewController.xib; sourceTree = "<group>"; };
+		68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3UserDefaults.h; sourceTree = "<group>"; };
 		68C9E4231667488300438CBF /* A3BookendShapeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BookendShapeView.h; sourceTree = "<group>"; };
 		68C9E4241667488300438CBF /* A3BookendShapeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BookendShapeView.m; sourceTree = "<group>"; };
 		68D178A1162FEC4500F71732 /* A3TickerScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TickerScrollView.h; sourceTree = "<group>"; };
@@ -905,6 +923,7 @@
 		683B94BF15EB231C00575377 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				687D385516BA1DEB006FA74E /* PageCurl.png */,
 				68D7A3961693BDCF00C0F0A8 /* keyboard_calculator_black.png */,
 				68D7A3971693BDCF00C0F0A8 /* keyboard_calculator_black@2x.png */,
 				68D7A3981693BDCF00C0F0A8 /* keyboard_calculator_white.png */,
@@ -1128,6 +1147,7 @@
 				68436ABF163E9DF5005E7A77 /* A3UIKit.m */,
 				68EBE0FB16AA7097008D371E /* A3Categories.h */,
 				68EBE0FC16AA7097008D371E /* A3Categories.m */,
+				68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1205,16 +1225,18 @@
 		683B954D15EB233500575377 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				685ADA1016B94C750072483C /* SalesCalcHistory.h */,
+				685ADA1116B94C750072483C /* SalesCalcHistory.m */,
+				6840099C16B7726800D7E078 /* MenuGroup.h */,
+				6840099D16B7726800D7E078 /* MenuGroup.m */,
+				6840099816B7726800D7E078 /* MenuItem.h */,
+				6840099916B7726800D7E078 /* MenuItem.m */,
 				68EBE11916AA8123008D371E /* CurrencyItem.h */,
 				68EBE11A16AA8123008D371E /* CurrencyItem.m */,
 				6815871616A7A621006DC8D7 /* CurrencyFavorite.h */,
 				6815871716A7A621006DC8D7 /* CurrencyFavorite.m */,
-				685F72BC16A6DF7C004C7222 /* MenuGroup.h */,
-				685F72BD16A6DF7C004C7222 /* MenuGroup.m */,
 				685F72B916A6DF7C004C7222 /* MenuFavorite.h */,
 				685F72BA16A6DF7C004C7222 /* MenuFavorite.m */,
-				685F72B616A6DF7C004C7222 /* MenuItem.h */,
-				685F72B716A6DF7C004C7222 /* MenuItem.m */,
 				687FB836162D5871004FB719 /* A3Weather.h */,
 				687FB837162D5871004FB719 /* A3Weather.m */,
 				68EBE10616AA7E80008D371E /* CurrencyItem+name.h */,
@@ -1308,8 +1330,14 @@
 		6886A308165774C60013A4C9 /* Sales Calc */ = {
 			isa = PBXGroup;
 			children = (
-				6886A30A165776C00013A4C9 /* A3SalesCalcViewController.h */,
-				6886A30B165776C00013A4C9 /* A3SalesCalcViewController.m */,
+				687D385A16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.h */,
+				687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */,
+				687D385C16BA31BD006FA74E /* A3SalesCalcHistoryViewController.h */,
+				687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */,
+				6886A30A165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.h */,
+				6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */,
+				687D385716BA3189006FA74E /* A3SalesCalcMainViewController.h */,
+				687D385816BA3189006FA74E /* A3SalesCalcMainViewController.m */,
 			);
 			name = "Sales Calc";
 			path = ..;
@@ -1420,7 +1448,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = A3;
-				LastUpgradeCheck = 0440;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 			};
 			buildConfigurationList = 682EA2CB15EB10B000BD6AD4 /* Build configuration list for PBXProject "AppBox3" */;
@@ -1588,6 +1616,7 @@
 				68D7A39B1693BDCF00C0F0A8 /* keyboard_calculator_black@2x.png in Resources */,
 				68D7A39C1693BDCF00C0F0A8 /* keyboard_calculator_white.png in Resources */,
 				68D7A39D1693BDCF00C0F0A8 /* keyboard_calculator_white@2x.png in Resources */,
+				687D385616BA1DEB006FA74E /* PageCurl.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1727,7 +1756,7 @@
 				685EA926164CBE99000EA41D /* A3PaperFoldMenuViewController.m in Sources */,
 				685EA92A164CD32E000EA41D /* PaperFoldView.m in Sources */,
 				68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */,
-				6886A30C165776C00013A4C9 /* A3SalesCalcViewController.m in Sources */,
+				6886A30C165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m in Sources */,
 				68B49C7F165CC52500BCD493 /* A3HotMenuViewController.m in Sources */,
 				68B2CD8D165E02A300BD998F /* A3WeatherStickerViewController.m in Sources */,
 				68B2CD90165E138D00BD998F /* A3StockTickerControl.m in Sources */,
@@ -1753,14 +1782,18 @@
 				68F95DE21694205200C7EE31 /* EKKeyboardAvoidingScrollView.m in Sources */,
 				68F95DE31694205200C7EE31 /* EKKeyboardAvoidingScrollViewManager.m in Sources */,
 				685F722A16A63084004C7222 /* A3CurrencyList.m in Sources */,
-				685F72B816A6DF7C004C7222 /* MenuItem.m in Sources */,
 				685F72BB16A6DF7C004C7222 /* MenuFavorite.m in Sources */,
-				685F72BE16A6DF7C004C7222 /* MenuGroup.m in Sources */,
 				6815871816A7A621006DC8D7 /* CurrencyFavorite.m in Sources */,
 				6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */,
 				68EBE0FD16AA7097008D371E /* A3Categories.m in Sources */,
 				68EBE10816AA7E80008D371E /* CurrencyItem+name.m in Sources */,
 				68EBE11B16AA8123008D371E /* CurrencyItem.m in Sources */,
+				6840099A16B7726800D7E078 /* MenuItem.m in Sources */,
+				6840099E16B7726800D7E078 /* MenuGroup.m in Sources */,
+				685ADA1216B94C750072483C /* SalesCalcHistory.m in Sources */,
+				687D385916BA3189006FA74E /* A3SalesCalcMainViewController.m in Sources */,
+				687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */,
+				687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1779,9 +1812,12 @@
 				685F727F16A684DB004C7222 /* main.m in Sources */,
 				685F728A16A68521004C7222 /* AppBox3.xcdatamodeld in Sources */,
 				685F729016A688DD004C7222 /* A3AppDataUtility.m in Sources */,
-				685F72C316A6DF8E004C7222 /* MenuGroup.m in Sources */,
 				685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */,
-				685F72C516A6DF8E004C7222 /* MenuItem.m in Sources */,
+				68C9DBEE16AEA30C00F34A54 /* CurrencyItem+name.m in Sources */,
+				68C9DBEF16AEA39400F34A54 /* CurrencyItem.m in Sources */,
+				68C9DBF016AEA39900F34A54 /* CurrencyFavorite.m in Sources */,
+				6840099B16B7726800D7E078 /* MenuItem.m in Sources */,
+				6840099F16B7726800D7E078 /* MenuGroup.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1863,6 +1899,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
@@ -1894,6 +1933,9 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;

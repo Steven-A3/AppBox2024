@@ -8,14 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum __tagA3CalcExpressionViewStyle {
+typedef NS_ENUM(NSUInteger, CalcExpressionViewStyle) {
 	CEV_FILL_BACKGROUND = 0,
 	CEV_TRANSPARENT_BACKGROUND
-} CalcExpressionViewStyle;
+};
+
+#define A3ExpressionAttributeFont		@"A3ExpressionAttributeFont"
+#define A3ExpressionAttributeTextColor	@"A3ExpressionAttributeTextColor"
 
 @interface A3CalcExpressionView : UIView
 
-@property (strong, nonatomic) NSArray *expression;
+@property (nonatomic, strong) NSArray *expression;
+@property (nonatomic, strong) NSArray *attributes;		// It's count must match with expression count.
 @property CalcExpressionViewStyle style;
 
 @end

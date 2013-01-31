@@ -16,11 +16,16 @@
 #import "common.h"
 #import "A3NotificationTableViewController.h"
 #import "A3UIKit.h"
+#import "A3SalesCalcMainViewController.h"
 
 @interface A3PaperFoldMenuViewController ()
 @property (nonatomic, strong)	UINavigationController *myNavigationController;
 @property (nonatomic, strong)	A3HotMenuViewController *hotMenuViewController;
 @property (nonatomic, strong)	A3NotificationTableViewController *notificationViewController, *notificationViewController2;
+@property (nonatomic) 			BOOL wideCenterView;
+@property (nonatomic, weak)		UIViewController *rightWingViewController;
+@property (nonatomic)			CGFloat paperFoldViewOffset, rightWingViewOffset;
+// wideCenterView is YES for calendar
 
 @end
 
@@ -41,15 +46,8 @@
 	// Do any additional setup after loading the view.
 
 	CGRect paperFoldViewFrame = [[UIScreen mainScreen] bounds];
-	// Custom initialization
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-		self.hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
-		[self.view addSubview:[_hotMenuViewController view]];
-		[self addChildViewController:_hotMenuViewController];
-
-		paperFoldViewFrame.origin.x += _hotMenuViewController.view.frame.size.width;
-		paperFoldViewFrame.size.width = 714.0f;
-	}
+	paperFoldViewFrame.origin.x += _hotMenuViewController.view.frame.size.width;
+	paperFoldViewFrame.size.width = 714.0f;
 
 	_paperFoldView = [[PaperFoldView alloc] initWithFrame:paperFoldViewFrame];
 	[_paperFoldView setDelegate:self];
@@ -73,6 +71,12 @@
 		self.myNavigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
 		[_contentView addSubview:[_myNavigationController view]];
 		[self addChildViewController:_myNavigationController];
+	}
+
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+		self.hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
+		[self.view addSubview:[_hotMenuViewController view]];
+		[self addChildViewController:_hotMenuViewController];
 	}
 
 	self.hotMenuViewController.myNavigationController = _myNavigationController;
@@ -225,6 +229,48 @@
 
 - (CGFloat)displacementOfMultiFoldView:(id)multiFoldView {
 	return HOT_MENU_VIEW_WIDTH + A3_MENU_TABLE_VIEW_WIDTH + APP_VIEW_WIDTH;
+}
+
+- (void)presentRightWingWithViewController:(UIViewController *)viewController {
+	_rightWingViewController = viewController;
+
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.3];
+	_rightWingViewOffset = CGRectGetWidth(viewController.view.bounds);
+
+	UIView *coverView = [[UIView alloc] initWithFrame:_paperFoldView.bounds];
+	coverView.backgroundColor = [UIColor clearColor];
+	[_paperFoldView addSubview:coverView];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCoverTapGesture:)];
+	[coverView addGestureRecognizer:tapGestureRecognizer];
+
+	UIViewController *topViewController = [_myNavigationController topViewController];
+	if ([topViewController isKindOfClass:[A3SalesCalcMainViewController class]]) {
+		_paperFoldViewOffset = 288.0;
+	} else {
+		_paperFoldViewOffset = _rightWingViewOffset;
+	}
+	_paperFoldView.frame = CGRectOffset(_paperFoldView.frame, -1.0 * _paperFoldViewOffset, 0.0);
+
+	[self.view addSubview:_rightWingViewController.view];
+	[self addChildViewController:_rightWingViewController];
+	_rightWingViewController.view.frame = CGRectOffset(_rightWingViewController.view.frame, -1 * _rightWingViewOffset, 0.0);
+	[UIView commitAnimations];
+}
+
+- (void)handleCoverTapGesture:(UITapGestureRecognizer *)sender {
+	[UIView animateWithDuration:0.3
+					 animations:^{
+						 _paperFoldView.frame = CGRectOffset(_paperFoldView.frame, _paperFoldViewOffset, 0.0);
+						 _rightWingViewController.view.frame = CGRectOffset(_rightWingViewController.view.frame, _rightWingViewOffset, 0.0);
+					 }
+					 completion:^(BOOL finished){
+						 // Remove cover view
+						 [[_paperFoldView.subviews lastObject] removeFromSuperview];
+						 [_rightWingViewController.view removeFromSuperview];
+						 [_rightWingViewController removeFromParentViewController];
+					 }];
 }
 
 @end

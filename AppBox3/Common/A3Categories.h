@@ -12,4 +12,7 @@
 
 - (NSString *)stringGroupByFirstInitial;
 
+- (float)floatValueEx;
+
+
 @end

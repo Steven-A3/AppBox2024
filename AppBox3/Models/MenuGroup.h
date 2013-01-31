@@ -2,7 +2,7 @@
 //  MenuGroup.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 1/16/13.
+//  Created by Byeong Kwon Kwak on 1/29/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
-@property (nonatomic, retain) NSString * unique_id;
+@property (nonatomic, retain) NSString * menuGroupID;
 @property (nonatomic, retain) NSSet *menuItems;
 @end
 

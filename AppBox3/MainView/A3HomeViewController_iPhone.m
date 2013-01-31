@@ -58,7 +58,7 @@ enum {
 {
     [super viewDidLoad];
 
-	[self.navigationController.navigationBar setBarStyle:UIStatusBarStyleBlackOpaque];
+	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 
 	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"bt_applist" ofType:@"png"];
 	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];

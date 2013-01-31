@@ -10,8 +10,8 @@
 #import "A3SectionHeaderViewInMenuTableView.h"
 #import "CommonUIDefinitions.h"
 #import "common.h"
-#import "A3SalesCalcViewController.h"
 #import "A3PaperFoldMenuViewController.h"
+#import "A3SalesCalcMainViewController.h"
 
 @interface A3iPhoneMenuTableViewController ()
 
@@ -350,7 +350,7 @@
 - (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
 
 	if ((cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) && (selectedIndex == 0)) {
-		A3SalesCalcViewController *salesCalcViewController = [[A3SalesCalcViewController alloc] initWithNibName:nil bundle:nil];
+		A3SalesCalcMainViewController *salesCalcViewController = [[A3SalesCalcMainViewController alloc] initWithNibName:nil bundle:nil];
 		[self.paperFoldMenuViewController pushViewControllerToNavigationController:salesCalcViewController];
 	}
 }
