@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "QuickDialog.h"
 
+@class SalesCalcHistory;
+
 @interface A3SalesCalcQuickDialogViewController : QuickDialogController
 		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate>
+- (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history;
+
 
 @end

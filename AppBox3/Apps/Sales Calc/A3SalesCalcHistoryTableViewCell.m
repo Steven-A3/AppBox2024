@@ -16,10 +16,10 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 		// Initialization code
-		[self addSubview:self.dateLabel];
-		[self addSubview:self.expressionView];
-		[self addSubview:self.salePriceLabel];
-		[self addSubview:self.notesLabel];
+		[self.contentView addSubview:self.dateLabel];
+		[self.contentView addSubview:self.expressionView];
+		[self.contentView addSubview:self.salePriceLabel];
+		[self.contentView addSubview:self.notesLabel];
     }
     return self;
 }

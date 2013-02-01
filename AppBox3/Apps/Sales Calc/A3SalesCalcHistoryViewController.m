@@ -13,7 +13,10 @@
 #import "A3SalesCalcHistoryTableViewCell.h"
 #import "SalesCalcHistory.h"
 #import "A3Categories.h"
+#import "A3SalesCalcQuickDialogViewController.h"
 #import "A3CalcExpressionView.h"
+#import "A3SalesCalcQuickDialogViewController.h"
+#import "A3UIDevice.h"
 
 @interface A3SalesCalcHistoryViewController ()
 
@@ -57,6 +60,7 @@
 												managedObjectContext:managedObjectContext
 												  sectionNameKeyPath:nil
 														   cacheName:@"SalesCalcHistory"];
+	theFetchedResultsController.delegate = self;
 	self.fetchedResultsController = theFetchedResultsController;
 
 	return _fetchedResultsController;
@@ -82,6 +86,8 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
+	[self setEditButton];
+
 	NSError *error;
 	if (![[self fetchedResultsController] performFetch:&error]) {
 		FNLOG(@"failed to load data.");
@@ -92,7 +98,9 @@
 	coverView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.9];
 	[self.view addSubview:coverView];
 
-	_myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
+	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 960) : CGRectMake(0.0, 0.0, 320.0, 704);
+
+	_myTableView = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
 	_myTableView.dataSource = self;
 	_myTableView.delegate = self;
 
@@ -102,6 +110,27 @@
 	_myTableView.backgroundColor = [UIColor clearColor];
 
 	[self.view addSubview:_myTableView];
+}
+
+- (void)setEditButton {
+	UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(onEditButton)];
+	self.navigationItem.rightBarButtonItem = editButton;
+}
+
+- (void)setDoneButton {
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneButton)];
+	self.navigationItem.rightBarButtonItem = doneButton;
+}
+
+- (void)onEditButton {
+	[_myTableView setEditing:NO];
+	[_myTableView setEditing:YES];
+	[self setDoneButton];
+}
+
+- (void)onDoneButton {
+	[_myTableView setEditing:NO];
+	[self setEditButton];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,28 +185,29 @@
 	return cell;
 }
 
-/*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the specified item to be editable.
     return YES;
 }
-*/
 
-/*
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	// If none of the above are returned, then return \"none\".
+	return UITableViewCellEditingStyleDelete;
+}
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		SalesCalcHistory *salesCalcHistory = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		NSManagedObjectContext *managedObjectContext = salesCalcHistory.managedObjectContext;
+		[managedObjectContext deleteObject:salesCalcHistory];
+	}
 }
-*/
 
 /*
 // Override to support rearranging the table view.
@@ -199,13 +229,81 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+	SalesCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+	[_myTableView deselectRowAtIndexPath:indexPath animated:YES];
+	[self.salesCalcQuickDialogViewController applyCurrentContentsWithSalesCalcHistory:history];
+}
+
+#pragma mark - NSFetchedResultController delegate
+
+/*
+ Assume self has a property 'tableView' -- as is the case for an instance of a UITableViewController
+ subclass -- and a method configureCell:atIndexPath: which updates the contents of a given cell
+ with information from a managed object at the given index path in the fetched results controller.
+ */
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+	FNLOG(@"Check");
+	[_myTableView beginUpdates];
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+		   atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+	FNLOG(@"Check");
+
+	switch(type) {
+		case NSFetchedResultsChangeInsert:
+			[_myTableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			break;
+
+		case NSFetchedResultsChangeDelete:
+			[_myTableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex]
+						  withRowAnimation:UITableViewRowAnimationFade];
+			break;
+	}
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
+	   atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
+	  newIndexPath:(NSIndexPath *)newIndexPath {
+	FNLOG(@"Check");
+
+	UITableView *tableView = _myTableView;
+
+	switch(type) {
+
+		case NSFetchedResultsChangeInsert:
+			[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			break;
+
+		case NSFetchedResultsChangeDelete:
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			break;
+
+		case NSFetchedResultsChangeUpdate:
+//			[self configureCell:[tableView cellForRowAtIndexPath:indexPath]
+//					atIndexPath:indexPath];
+			break;
+
+		case NSFetchedResultsChangeMove:
+			[tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			[tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]
+							 withRowAnimation:UITableViewRowAnimationFade];
+			break;
+	}
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+	FNLOG(@"Check");
+	[_myTableView endUpdates];
 }
 
 @end

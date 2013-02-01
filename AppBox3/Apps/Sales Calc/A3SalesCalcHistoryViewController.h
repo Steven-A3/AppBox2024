@@ -8,7 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3SalesCalcQuickDialogViewController;
+
 @interface A3SalesCalcHistoryViewController : UIViewController
-<UITableViewDataSource, UITableViewDelegate>
+<UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
+@property (nonatomic, weak) A3SalesCalcQuickDialogViewController *salesCalcQuickDialogViewController;
 
 @end

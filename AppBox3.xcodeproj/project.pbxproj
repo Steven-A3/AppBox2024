@@ -257,6 +257,7 @@
 		68C461661627D77900555C91 /* A3CalendarWeekViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C461491627D77900555C91 /* A3CalendarWeekViewController.xib */; };
 		68C461671627D77900555C91 /* A3CalendarYearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C4614C1627D77900555C91 /* A3CalendarYearViewController.m */; };
 		68C461681627D77900555C91 /* A3CalendarYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */; };
+		68C5756316BBE8FF00325739 /* KGDiscreetAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C5756216BBE8FF00325739 /* KGDiscreetAlertView.m */; };
 		68C9DBEE16AEA30C00F34A54 /* CurrencyItem+name.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE10716AA7E80008D371E /* CurrencyItem+name.m */; };
 		68C9DBEF16AEA39400F34A54 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE11A16AA8123008D371E /* CurrencyItem.m */; };
 		68C9DBF016AEA39900F34A54 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6815871716A7A621006DC8D7 /* CurrencyFavorite.m */; };
@@ -645,6 +646,8 @@
 		68C4614B1627D77900555C91 /* A3CalendarYearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarYearViewController.h; sourceTree = "<group>"; };
 		68C4614C1627D77900555C91 /* A3CalendarYearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarYearViewController.m; sourceTree = "<group>"; };
 		68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalendarYearViewController.xib; sourceTree = "<group>"; };
+		68C5756116BBE8FF00325739 /* KGDiscreetAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KGDiscreetAlertView.h; sourceTree = "<group>"; };
+		68C5756216BBE8FF00325739 /* KGDiscreetAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KGDiscreetAlertView.m; sourceTree = "<group>"; };
 		68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3UserDefaults.h; sourceTree = "<group>"; };
 		68C9E4231667488300438CBF /* A3BookendShapeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BookendShapeView.h; sourceTree = "<group>"; };
 		68C9E4241667488300438CBF /* A3BookendShapeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BookendShapeView.m; sourceTree = "<group>"; };
@@ -1267,6 +1270,8 @@
 		683B955C15EB233500575377 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				68C5756116BBE8FF00325739 /* KGDiscreetAlertView.h */,
+				68C5756216BBE8FF00325739 /* KGDiscreetAlertView.m */,
 				68F95DDD1694205200C7EE31 /* EKKeyboardAvoidingScrollView */,
 				683B955D15EB233500575377 /* A3AppHeaderView.h */,
 				683B955E15EB233500575377 /* A3AppHeaderView.m */,
@@ -1794,6 +1799,7 @@
 				687D385916BA3189006FA74E /* A3SalesCalcMainViewController.m in Sources */,
 				687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */,
 				687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */,
+				68C5756316BBE8FF00325739 /* KGDiscreetAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

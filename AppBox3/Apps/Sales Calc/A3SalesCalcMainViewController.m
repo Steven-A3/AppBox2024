@@ -46,9 +46,6 @@
 	[self.view addSubview:_quickDialogViewController.view];
 	[self addChildViewController:_quickDialogViewController];
 
-	UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:_quickDialogViewController action:@selector(onOrganize)];
-	self.navigationItem.rightBarButtonItem = rightButtonItem;
-
 	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"PageCurl" ofType:@"png"];
 	UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
 	UIImageView *curlView = [[UIImageView alloc] initWithImage:image];
@@ -63,8 +60,11 @@
 
 - (void)onHistory {
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
+	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0) : CGRectMake(0.0, 0.0, 320.0, 748.0);
+	[historyViewController.view setFrame:frame];
+	historyViewController.salesCalcQuickDialogViewController = _quickDialogViewController;
 	UINavigationController *historyNavigationController = [[UINavigationController alloc] initWithRootViewController:historyViewController];
-	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
+	frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
 	[historyNavigationController.view setFrame:frame];
 	historyNavigationController.view.layer.borderWidth = 1.0;
 	historyNavigationController.view.layer.borderColor = [UIColor lightGrayColor].CGColor;

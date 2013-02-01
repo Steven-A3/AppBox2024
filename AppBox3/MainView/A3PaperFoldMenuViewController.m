@@ -129,7 +129,7 @@
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController {
 	[self.myNavigationController popToRootViewControllerAnimated:NO];
 	[self.myNavigationController pushViewController:viewController animated:YES];
-	[self.paperFoldView setPaperFoldState:PaperFoldStateDefault];
+	[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded];
 }
 
 - (void)layoutNavigationController {
