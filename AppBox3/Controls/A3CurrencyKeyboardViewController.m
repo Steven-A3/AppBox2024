@@ -54,6 +54,12 @@
 
 - (void)setKeyboardType:(A3CurrencyKeyboardType)keyboardType {
 	_keyboardType = keyboardType;
+	[_bigButton1 setTitle:keyboardType == A3CurrencyKeyboardTypeCurrency ? _currencyCode : @"%" forState:UIControlStateNormal];
+}
+
+- (void)setCurrencyCode:(NSString *)currencyCode {
+	_currencyCode = currencyCode;
+	[_bigButton1 setTitle:_currencyCode forState:UIControlStateNormal];
 }
 
 - (void)viewDidLoad
@@ -121,15 +127,15 @@
 }
 
 - (IBAction)bigButton1Action {
-	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
-	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-
-	_myPopoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
-	[_myPopoverController presentPopoverFromRect:_bigButton1.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+	if ([_delegate respondsToSelector:@selector(handleBigButton1)]) {
+		[_delegate handleBigButton1];
+	}
 }
 
 - (IBAction)bigButton2Action {
-
+	if ([_delegate respondsToSelector:@selector(handleBigButton2)]) {
+		[_delegate handleBigButton2];
+	}
 }
 
 - (void)deviceOrientationDidChange {

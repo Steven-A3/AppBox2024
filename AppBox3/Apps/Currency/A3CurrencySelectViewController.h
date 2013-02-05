@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CurrencySelectViewControllerDelegate <NSObject>
+
+- (void)currencySelected:(NSString *)selectedCurrencyCode;
+
+@end
+
 @interface A3CurrencySelectViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+
+@property (nonatomic, weak) id<CurrencySelectViewControllerDelegate> delegate;
 
 @end

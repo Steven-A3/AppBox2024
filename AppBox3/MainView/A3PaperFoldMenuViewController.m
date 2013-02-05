@@ -22,10 +22,9 @@
 @property (nonatomic, strong)	UINavigationController *myNavigationController;
 @property (nonatomic, strong)	A3HotMenuViewController *hotMenuViewController;
 @property (nonatomic, strong)	A3NotificationTableViewController *notificationViewController, *notificationViewController2;
-@property (nonatomic) 			BOOL wideCenterView;
 @property (nonatomic, weak)		UIViewController *rightWingViewController;
 @property (nonatomic)			CGFloat paperFoldViewOffset, rightWingViewOffset;
-// wideCenterView is YES for calendar
+@property (nonatomic) BOOL keepNarrowWidthOnHorizontalOrientation;
 
 @end
 
@@ -109,7 +108,7 @@
 	self.notificationViewController2 = [[A3NotificationTableViewController alloc] initWithStyle:UITableViewStylePlain];
 	[_notificationViewController2.view setFrame:CGRectMake(0.0, 0.0, 256.0, self.view.bounds.size.height)];
 	[_paperFoldView2 setRightFoldContentView:_notificationViewController2.view foldCount:3 pullFactor:0.9];
-	[_paperFoldView2.contentView setBackgroundColor:[UIColor yellowColor]];
+	[_paperFoldView2.contentView setBackgroundColor:[UIColor blackColor]];
 	[self.view addSubview:_paperFoldView2];
 }
 
@@ -126,15 +125,21 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)pushViewControllerToNavigationController:(UIViewController *)viewController withOption:(BOOL)keepWidth {
+	[self pushViewControllerToNavigationController:viewController];
+	_keepNarrowWidthOnHorizontalOrientation = keepWidth;
+}
+
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController {
+	_keepNarrowWidthOnHorizontalOrientation = YES;
 	[self.myNavigationController popToRootViewControllerAnimated:NO];
 	[self.myNavigationController pushViewController:viewController animated:YES];
-	[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded];
+	PaperFoldState paperFoldState = [A3UIDevice deviceOrientationIsPortrait] ? PaperFoldStateDefault : PaperFoldStateLeftUnfolded;
+	[self.paperFoldView setPaperFoldState:paperFoldState];
 }
 
 - (void)layoutNavigationController {
-	UIViewController *viewController = [self.myNavigationController visibleViewController];
-	if ([viewController isKindOfClass:[A3HomeViewController_iPad class]]) {
+	if ([self resizeNavigationViewOnRotation]) {
 		PaperFoldState newState;
 		CGRect newNavigationViewFrame, foldViewFrame;
 		if ([A3UIDevice deviceOrientationIsPortrait]) {
@@ -161,6 +166,18 @@
 		[_paperFoldView2 setFrame:CGRectMake(1024.0, 0.0, 0.0, self.view.bounds.size.height)];
 		[_paperFoldView2 setPaperFoldState:PaperFoldStateDefault];
 	}
+}
+
+- (BOOL)resizeNavigationViewOnRotation {
+	return ([self.myNavigationController topViewController] == [self.myNavigationController.viewControllers objectAtIndex:0] ||
+			_keepNarrowWidthOnHorizontalOrientation);
+
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	FNLOG(@"check");
+	UIViewAutoresizing autoResizing = [self resizeNavigationViewOnRotation] ? UIViewAutoresizingFlexibleHeight : UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	_contentView.autoresizingMask = autoResizing;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
@@ -234,9 +251,8 @@
 - (void)presentRightWingWithViewController:(UIViewController *)viewController {
 	_rightWingViewController = viewController;
 
-	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:0.3];
-	_rightWingViewOffset = CGRectGetWidth(viewController.view.bounds);
+	[self.view addSubview:_rightWingViewController.view];
+	[self addChildViewController:_rightWingViewController];
 
 	UIView *coverView = [[UIView alloc] initWithFrame:_paperFoldView.bounds];
 	coverView.backgroundColor = [UIColor clearColor];
@@ -245,21 +261,23 @@
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCoverTapGesture:)];
 	[coverView addGestureRecognizer:tapGestureRecognizer];
 
+	_rightWingViewOffset = CGRectGetWidth(viewController.view.bounds);
 	UIViewController *topViewController = [_myNavigationController topViewController];
-	if ([topViewController isKindOfClass:[A3SalesCalcMainViewController class]]) {
+	if (![A3UIDevice deviceOrientationIsPortrait] &&
+			[topViewController isKindOfClass:[A3SalesCalcMainViewController class]]) {
 		_paperFoldViewOffset = 288.0;
 	} else {
 		_paperFoldViewOffset = _rightWingViewOffset;
 	}
-	_paperFoldView.frame = CGRectOffset(_paperFoldView.frame, -1.0 * _paperFoldViewOffset, 0.0);
 
-	[self.view addSubview:_rightWingViewController.view];
-	[self addChildViewController:_rightWingViewController];
+	[UIView beginAnimations:nil context:NULL];
+	[UIView setAnimationDuration:0.3];
+	_paperFoldView.frame = CGRectOffset(_paperFoldView.frame, -1.0 * _paperFoldViewOffset, 0.0);
 	_rightWingViewController.view.frame = CGRectOffset(_rightWingViewController.view.frame, -1 * _rightWingViewOffset, 0.0);
 	[UIView commitAnimations];
 }
 
-- (void)handleCoverTapGesture:(UITapGestureRecognizer *)sender {
+- (void)removeRightWingViewController {
 	[UIView animateWithDuration:0.3
 					 animations:^{
 						 _paperFoldView.frame = CGRectOffset(_paperFoldView.frame, _paperFoldViewOffset, 0.0);
@@ -271,6 +289,10 @@
 						 [_rightWingViewController.view removeFromSuperview];
 						 [_rightWingViewController removeFromParentViewController];
 					 }];
+}
+
+- (void)handleCoverTapGesture:(UITapGestureRecognizer *)sender {
+	[self removeRightWingViewController];
 }
 
 @end

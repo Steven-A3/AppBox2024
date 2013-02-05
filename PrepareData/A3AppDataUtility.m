@@ -286,7 +286,7 @@
 - (void)addFavoritesForCurrencyItem:(CurrencyItem *)currencyItem {
 	NSArray *favorites = @[@"USD", @"EUR", @"GBP", @"CAD", @"JPY", @"HKD", @"CNY", @"CHF", @"KRW"];
 
-	NSUInteger index = [favorites indexOfObject:currencyItem.symbol];
+	NSUInteger index = [favorites indexOfObject:currencyItem.currencyCode];
 	if (index != NSNotFound) {
 		CurrencyFavorite *currencyFavorite = [NSEntityDescription insertNewObjectForEntityForName:@"CurrencyFavorite" inManagedObjectContext:self.managedObjectContext];
 		currencyFavorite.order = [NSString stringWithFormat:@"0%d0", (int)index];
@@ -302,21 +302,21 @@
 
 	for (NSDictionary *yahooItem in yahooCurrencyArray) {
 		CurrencyItem *currencyItem = [NSEntityDescription insertNewObjectForEntityForName:@"CurrencyItem" inManagedObjectContext:self.managedObjectContext];
-		currencyItem.symbol = [[[[yahooItem objectForKey:@"resource"] objectForKey:@"fields"] objectForKey:@"symbol"] substringToIndex:3];
+		currencyItem.currencyCode = [[[[yahooItem objectForKey:@"resource"] objectForKey:@"fields"] objectForKey:@"symbol"] substringToIndex:3];
 		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-		[numberFormatter setCurrencyCode:currencyItem.symbol];
-		NSLog(@"%@ = %@, %@", currencyItem.symbol, [numberFormatter stringFromNumber:@0], [currencyItem localizedName]);
+		[numberFormatter setCurrencyCode:currencyItem.currencyCode];
+		NSLog(@"%@ = %@, %@", currencyItem.currencyCode, [numberFormatter stringFromNumber:@0], [currencyItem localizedName]);
 
-		currencyItem.flagImageName = [self countryNameForCurrencyCode:currencyItem.symbol];
+		currencyItem.flagImageName = [self countryNameForCurrencyCode:currencyItem.currencyCode];
 
 		[self addFavoritesForCurrencyItem:currencyItem];
 	}
 
 	// Add USD
 	CurrencyItem *usdCurrencyItem = [NSEntityDescription insertNewObjectForEntityForName:@"CurrencyItem" inManagedObjectContext:self.managedObjectContext];
-	usdCurrencyItem.symbol = @"USD";
-	usdCurrencyItem.flagImageName = [self countryNameForCurrencyCode:usdCurrencyItem.symbol];
+	usdCurrencyItem.currencyCode = @"USD";
+	usdCurrencyItem.flagImageName = [self countryNameForCurrencyCode:usdCurrencyItem.currencyCode];
 	[self addFavoritesForCurrencyItem:usdCurrencyItem];
 }
 
@@ -336,9 +336,9 @@
 	for (NSDictionary *item in yahooCurrencyArray) {
 		NSMutableArray *itemArray = [[NSMutableArray alloc] initWithCapacity:5];
 		// Add Symbol
-		NSString *symbol = [[[[item objectForKey:@"resource"] objectForKey:@"fields"] objectForKey:@"symbol"] substringToIndex:3];
+		NSString *symbol = [[[[item objectForKey:@"resource"] objectForKey:@"fields"] objectForKey:@"currencyCode"] substringToIndex:3];
 
-//		NSRange range = [regex rangeOfFirstMatchInString:symbol options:0 range:NSMakeRange(0, [symbol length])];
+//		NSRange range = [regex rangeOfFirstMatchInString:currencyCode options:0 range:NSMakeRange(0, [currencyCode length])];
 //		if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0))) {
 //			continue;
 //		}

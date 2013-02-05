@@ -29,6 +29,10 @@
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		self.tableView.allowsSelection = NO;
 		self.tableView.showsVerticalScrollIndicator = NO;
+
+		self.tableView.layer.borderWidth = 1.0;
+		self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
+		self.tableView.layer.cornerRadius = 4.0;
     }
     return self;
 }

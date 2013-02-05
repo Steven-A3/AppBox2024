@@ -202,7 +202,6 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		SalesCalcHistory *salesCalcHistory = [self.fetchedResultsController objectAtIndexPath:indexPath];
 		NSManagedObjectContext *managedObjectContext = salesCalcHistory.managedObjectContext;
 		[managedObjectContext deleteObject:salesCalcHistory];

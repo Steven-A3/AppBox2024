@@ -13,6 +13,7 @@
 #import "A3SalesCalcHistoryViewController.h"
 #import "A3PaperFoldMenuViewController.h"
 #import "A3AppDelegate.h"
+#import "A3CurrencySelectViewController.h"
 
 @interface A3SalesCalcMainViewController ()
 
@@ -28,6 +29,7 @@
     if (self) {
         // Custom initialization
 		self.title = @"Sales Calc";
+		self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
     }
     return self;
 }
@@ -46,19 +48,11 @@
 	[self.view addSubview:_quickDialogViewController.view];
 	[self addChildViewController:_quickDialogViewController];
 
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"PageCurl" ofType:@"png"];
-	UIImage *image = [UIImage imageWithContentsOfFile:imagePath];
-	UIImageView *curlView = [[UIImageView alloc] initWithImage:image];
-	curlView.autoresizingMask = UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin;
-	curlView.userInteractionEnabled = YES;
-	CGSize size = CGSizeMake(image.size.width / 2.0, image.size.height / 2.0);
-	curlView.frame = CGRectMake(CGRectGetMaxX(self.view.bounds) - size.width + 1.0, CGRectGetMaxY(self.view.bounds) - size.height, size.width, size.height);
-	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onHistory)];
-	[curlView addGestureRecognizer:gestureRecognizer];
-	[self.view addSubview:curlView];
+	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(presentHistoryViewController)];
+	self.navigationItem.rightBarButtonItem = barButtonItem;
 }
 
-- (void)onHistory {
+- (void)presentHistoryViewController {
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
 	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0) : CGRectMake(0.0, 0.0, 320.0, 748.0);
 	[historyViewController.view setFrame:frame];
@@ -72,7 +66,6 @@
 	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
 	[paperFoldMenuViewController presentRightWingWithViewController:historyNavigationController];
 }
-
 
 - (void)didReceiveMemoryWarning
 {

@@ -12,10 +12,10 @@
 
 - (NSString *)localizedName {
 	NSLocale *locale = [NSLocale currentLocale];
-	NSString *name = [locale displayNameForKey:NSLocaleCurrencyCode value:self.symbol];
+	NSString *name = [locale displayNameForKey:NSLocaleCurrencyCode value:self.currencyCode];
 	if ((nil == name) || ![name length]) {
 		NSArray *knownSymbols = @[@"XCP", @"ZMW", @"CNH", @"XDR", @"CLF"];
-		NSUInteger index = [knownSymbols indexOfObject:self.symbol];
+		NSUInteger index = [knownSymbols indexOfObject:self.currencyCode];
 		if (index != NSNotFound) {
 			NSArray *knownNames = @[@"Copper Highgrade", @"Zambian kwacha", @"Offshore Renminbi", @"Special Drawing Rights", @"Unidad de Fomento"];
 			name = [knownNames objectAtIndex:index];

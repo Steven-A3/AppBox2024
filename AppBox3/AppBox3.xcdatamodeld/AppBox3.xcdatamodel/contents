@@ -5,8 +5,9 @@
         <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
     </entity>
     <entity name="CurrencyItem" representedClassName="CurrencyItem" syncable="YES">
+        <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="flagImageName" attributeType="String" syncable="YES"/>
-        <attribute name="symbol" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyFavorite" inverseName="currencyItem" inverseEntity="CurrencyFavorite" syncable="YES"/>
     </entity>
     <entity name="MenuFavorite" representedClassName="MenuFavorite" syncable="YES">
@@ -40,7 +41,7 @@
     </entity>
     <elements>
         <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="90"/>
+        <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>

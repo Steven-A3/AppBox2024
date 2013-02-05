@@ -29,6 +29,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
+        self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 		_myTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		_myTableView.delegate = self;
 		_myTableView.dataSource = self;
@@ -150,7 +151,12 @@
 	}
     // Configure the cell...
 	CurrencyItem *currencyItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", currencyItem.symbol, [currencyItem localizedName]];
+	if (![currencyItem.name length]) {
+		currencyItem.name = [currencyItem localizedName];
+		NSError *error;
+		[self.managedObjectContext save:&error];
+	}
+	cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", currencyItem.currencyCode, currencyItem.name];
     
     return cell;
 }
@@ -198,13 +204,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+	CurrencyItem *currencyItem = [_fetchedResultsController objectAtIndexPath:indexPath];
+	if ([_delegate respondsToSelector:@selector(currencySelected:)]) {
+		[_delegate currencySelected:currencyItem.currencyCode];
+	}
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -217,7 +220,7 @@
 			entityForName:@"CurrencyItem" inManagedObjectContext:self.managedObjectContext];
 	[fetchRequest setEntity:entity];
 
-	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"symbol" ascending:YES];
+	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"currencyCode" ascending:YES];
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
 
 	[fetchRequest setFetchBatchSize:20];
@@ -225,7 +228,7 @@
 	NSFetchedResultsController *theFetchedResultsController =
 			[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
 												managedObjectContext:self.managedObjectContext
-												  sectionNameKeyPath:@"symbol.stringGroupByFirstInitial"
+												  sectionNameKeyPath:@"currencyCode.stringGroupByFirstInitial"
 														   cacheName:@"CurrencyItem"];
 	self.fetchedResultsController = theFetchedResultsController;
 
@@ -237,7 +240,7 @@
 {
 	NSString *query = searchText;
 	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"localizedName contains[cd] %@ or symbol contains[cd] %@", query, query];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ or currencyCode contains[cd] %@", query, query];
 		[self.fetchedResultsController.fetchRequest setPredicate:predicate];
 	}
 

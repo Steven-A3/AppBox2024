@@ -259,7 +259,6 @@
 		68C461681627D77900555C91 /* A3CalendarYearViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C4614D1627D77900555C91 /* A3CalendarYearViewController.xib */; };
 		68C5756316BBE8FF00325739 /* KGDiscreetAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C5756216BBE8FF00325739 /* KGDiscreetAlertView.m */; };
 		68C9DBEE16AEA30C00F34A54 /* CurrencyItem+name.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE10716AA7E80008D371E /* CurrencyItem+name.m */; };
-		68C9DBEF16AEA39400F34A54 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE11A16AA8123008D371E /* CurrencyItem.m */; };
 		68C9DBF016AEA39900F34A54 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6815871716A7A621006DC8D7 /* CurrencyFavorite.m */; };
 		68C9E4251667488300438CBF /* A3BookendShapeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E4241667488300438CBF /* A3BookendShapeView.m */; };
 		68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A2162FEC4500F71732 /* A3TickerScrollView.m */; };
@@ -268,11 +267,13 @@
 		68D7A39B1693BDCF00C0F0A8 /* keyboard_calculator_black@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D7A3971693BDCF00C0F0A8 /* keyboard_calculator_black@2x.png */; };
 		68D7A39C1693BDCF00C0F0A8 /* keyboard_calculator_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D7A3981693BDCF00C0F0A8 /* keyboard_calculator_white.png */; };
 		68D7A39D1693BDCF00C0F0A8 /* keyboard_calculator_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68D7A3991693BDCF00C0F0A8 /* keyboard_calculator_white@2x.png */; };
+		68DAF6ED16BFD7F500775372 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DAF6EC16BFD7F500775372 /* CurrencyItem.m */; };
+		68DAF6EE16BFD7F500775372 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DAF6EC16BFD7F500775372 /* CurrencyItem.m */; };
+		68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68DAF6EF16BFE3B000775372 /* Localizable.strings */; };
 		68DECCC6164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DECCC4164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m */; };
 		68DECCC7164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68DECCC5164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib */; };
 		68EBE0FD16AA7097008D371E /* A3Categories.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE0FC16AA7097008D371E /* A3Categories.m */; };
 		68EBE10816AA7E80008D371E /* CurrencyItem+name.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE10716AA7E80008D371E /* CurrencyItem+name.m */; };
-		68EBE11B16AA8123008D371E /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE11A16AA8123008D371E /* CurrencyItem.m */; };
 		68ED198C16648FE00062C599 /* A3HomeViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ED198B16648FE00062C599 /* A3HomeViewController_iPad.m */; };
 		68F3A9E61677320100DFCAB7 /* A3YellowXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F3A9E51677320100DFCAB7 /* A3YellowXButton.m */; };
 		68F95DE21694205200C7EE31 /* EKKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F95DDF1694205200C7EE31 /* EKKeyboardAvoidingScrollView.m */; };
@@ -659,6 +660,9 @@
 		68D7A3971693BDCF00C0F0A8 /* keyboard_calculator_black@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard_calculator_black@2x.png"; sourceTree = "<group>"; };
 		68D7A3981693BDCF00C0F0A8 /* keyboard_calculator_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = keyboard_calculator_white.png; sourceTree = "<group>"; };
 		68D7A3991693BDCF00C0F0A8 /* keyboard_calculator_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard_calculator_white@2x.png"; sourceTree = "<group>"; };
+		68DAF6EB16BFD7F500775372 /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
+		68DAF6EC16BFD7F500775372 /* CurrencyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyItem.m; sourceTree = "<group>"; };
+		68DAF6F016BFE3B000775372 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68DECCC3164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PhoneHomeCalendarMonthViewController.h; sourceTree = "<group>"; };
 		68DECCC4164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PhoneHomeCalendarMonthViewController.m; sourceTree = "<group>"; };
 		68DECCC5164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3PhoneHomeCalendarMonthViewController.xib; sourceTree = "<group>"; };
@@ -666,8 +670,6 @@
 		68EBE0FC16AA7097008D371E /* A3Categories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Categories.m; sourceTree = "<group>"; };
 		68EBE10616AA7E80008D371E /* CurrencyItem+name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrencyItem+name.h"; sourceTree = "<group>"; };
 		68EBE10716AA7E80008D371E /* CurrencyItem+name.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CurrencyItem+name.m"; sourceTree = "<group>"; };
-		68EBE11916AA8123008D371E /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
-		68EBE11A16AA8123008D371E /* CurrencyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyItem.m; sourceTree = "<group>"; };
 		68ED198A16648FE00062C599 /* A3HomeViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HomeViewController_iPad.h; sourceTree = "<group>"; };
 		68ED198B16648FE00062C599 /* A3HomeViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HomeViewController_iPad.m; sourceTree = "<group>"; };
 		68F3A9E41677320100DFCAB7 /* A3YellowXButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3YellowXButton.h; sourceTree = "<group>"; };
@@ -915,6 +917,7 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				68DAF6EF16BFE3B000775372 /* Localizable.strings */,
 				68024AD316313CF900D396F0 /* Default-568h@2x.png */,
 				683B94BF15EB231C00575377 /* icons */,
 				685A0A3C1624376F00E94B6B /* Storyboard.storyboard */,
@@ -1228,14 +1231,14 @@
 		683B954D15EB233500575377 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				68DAF6EB16BFD7F500775372 /* CurrencyItem.h */,
+				68DAF6EC16BFD7F500775372 /* CurrencyItem.m */,
 				685ADA1016B94C750072483C /* SalesCalcHistory.h */,
 				685ADA1116B94C750072483C /* SalesCalcHistory.m */,
 				6840099C16B7726800D7E078 /* MenuGroup.h */,
 				6840099D16B7726800D7E078 /* MenuGroup.m */,
 				6840099816B7726800D7E078 /* MenuItem.h */,
 				6840099916B7726800D7E078 /* MenuItem.m */,
-				68EBE11916AA8123008D371E /* CurrencyItem.h */,
-				68EBE11A16AA8123008D371E /* CurrencyItem.m */,
 				6815871616A7A621006DC8D7 /* CurrencyFavorite.h */,
 				6815871716A7A621006DC8D7 /* CurrencyFavorite.m */,
 				685F72B916A6DF7C004C7222 /* MenuFavorite.h */,
@@ -1622,6 +1625,7 @@
 				68D7A39C1693BDCF00C0F0A8 /* keyboard_calculator_white.png in Resources */,
 				68D7A39D1693BDCF00C0F0A8 /* keyboard_calculator_white@2x.png in Resources */,
 				687D385616BA1DEB006FA74E /* PageCurl.png in Resources */,
+				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1792,7 +1796,6 @@
 				6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */,
 				68EBE0FD16AA7097008D371E /* A3Categories.m in Sources */,
 				68EBE10816AA7E80008D371E /* CurrencyItem+name.m in Sources */,
-				68EBE11B16AA8123008D371E /* CurrencyItem.m in Sources */,
 				6840099A16B7726800D7E078 /* MenuItem.m in Sources */,
 				6840099E16B7726800D7E078 /* MenuGroup.m in Sources */,
 				685ADA1216B94C750072483C /* SalesCalcHistory.m in Sources */,
@@ -1800,6 +1803,7 @@
 				687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */,
 				687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */,
 				68C5756316BBE8FF00325739 /* KGDiscreetAlertView.m in Sources */,
+				68DAF6ED16BFD7F500775372 /* CurrencyItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1820,10 +1824,10 @@
 				685F729016A688DD004C7222 /* A3AppDataUtility.m in Sources */,
 				685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */,
 				68C9DBEE16AEA30C00F34A54 /* CurrencyItem+name.m in Sources */,
-				68C9DBEF16AEA39400F34A54 /* CurrencyItem.m in Sources */,
 				68C9DBF016AEA39900F34A54 /* CurrencyFavorite.m in Sources */,
 				6840099B16B7726800D7E078 /* MenuItem.m in Sources */,
 				6840099F16B7726800D7E078 /* MenuGroup.m in Sources */,
+				68DAF6EE16BFD7F500775372 /* CurrencyItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1860,6 +1864,14 @@
 				682EA2FD15EB10B000BD6AD4 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		68DAF6EF16BFE3B000775372 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				68DAF6F016BFE3B000775372 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

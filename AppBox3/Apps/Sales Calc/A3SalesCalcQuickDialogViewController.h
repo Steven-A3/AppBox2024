@@ -8,11 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "QuickDialog.h"
+#import "A3CurrencyKeyboardViewController.h"
+#import "A3CurrencySelectViewController.h"
 
 @class SalesCalcHistory;
 
 @interface A3SalesCalcQuickDialogViewController : QuickDialogController
-		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate>
+		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate, CurrencyKeyboardDelegate, CurrencySelectViewControllerDelegate>
 - (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history;
 
 
