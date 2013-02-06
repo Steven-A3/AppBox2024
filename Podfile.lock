@@ -1,4 +1,18 @@
 
+COCOAPODS: 0.16.0
+
+SPEC CHECKSUMS: 
+  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
+  QuickDialog: a479d4321f556d9493a1ddf5d0504c45028cbd82
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+  XBPageCurl: 6360a8e743f4d5b6e4d3313e3e24330e52a3262b
+  NYXImagesKit: 2f36d489ec32826b58a41d75833602dd13558769
+  SSCheckBoxView: 2e0cd91e959435e597da0606b669e473b546b502
+  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  BCGenieEffect: bc00729f71206c7fbcaed5c90215f957dbd786b1
+  GHUnitIOS: bf149b2c44084eee2785ce4ac3675c3a699e509d
+
 DEPENDENCIES: 
 - AFNetworking
 - BCGenieEffect (~> 1.0)
@@ -8,6 +22,7 @@ DEPENDENCIES:
 - OCMock
 - QuickDialog
 - Reachability
+- SSCheckBoxView
 - XBPageCurl
 
 PODS: 
@@ -19,17 +34,5 @@ PODS:
 - OCMock (2.0.1)
 - QuickDialog (0.6)
 - Reachability (3.1.0)
+- SSCheckBoxView (0.0.1)
 - XBPageCurl (0.0.1)
-
-COCOAPODS: 0.16.0
-
-SPEC CHECKSUMS: 
-  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
-  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
-  XBPageCurl: 6360a8e743f4d5b6e4d3313e3e24330e52a3262b
-  NYXImagesKit: 2f36d489ec32826b58a41d75833602dd13558769
-  BCGenieEffect: bc00729f71206c7fbcaed5c90215f957dbd786b1
-  QuickDialog: a479d4321f556d9493a1ddf5d0504c45028cbd82
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
-  GHUnitIOS: bf149b2c44084eee2785ce4ac3675c3a699e509d

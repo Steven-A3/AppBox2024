@@ -12,6 +12,7 @@
 #import "common.h"
 #import "A3PaperFoldMenuViewController.h"
 #import "A3SalesCalcMainViewController.h"
+#import "A3ExpenseListViewController.h"
 
 @interface A3iPhoneMenuTableViewController ()
 
@@ -329,7 +330,7 @@
 					title = @"Sales Calc";
 					break;
 				case 1:
-					title = @"B";
+					title = @"Expense List";
 					break;
 				case 2:
 					title = @"C";
@@ -353,9 +354,19 @@
 #pragma mark - GridViewControllerDelegate
 - (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
 
-	if ((cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) && (selectedIndex == 0)) {
-		A3SalesCalcMainViewController *salesCalcViewController = [[A3SalesCalcMainViewController alloc] initWithNibName:nil bundle:nil];
-		[self.paperFoldMenuViewController pushViewControllerToNavigationController:salesCalcViewController];
+	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) {
+		switch (selectedIndex) {
+			case 0: {
+				A3SalesCalcMainViewController *salesCalcViewController = [[A3SalesCalcMainViewController alloc] initWithNibName:nil bundle:nil];
+				[self.paperFoldMenuViewController pushViewControllerToNavigationController:salesCalcViewController];
+				break;
+			}
+			case 1:{
+				A3ExpenseListViewController *viewController = [[A3ExpenseListViewController alloc] initWithNibName:@"A3ExpenseListViewController" bundle:nil];
+				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
+				break;
+			}
+		}
 	}
 }
 

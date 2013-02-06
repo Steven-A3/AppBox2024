@@ -7,6 +7,7 @@ pod 'QuickDialog'
 pod 'XBPageCurl'
 pod 'NYXImagesKit'
 pod 'BCGenieEffect', '~> 1.0'
+pod 'SSCheckBoxView'
 
 target :GHUnitTests do
 	pod 'GHUnitIOS'

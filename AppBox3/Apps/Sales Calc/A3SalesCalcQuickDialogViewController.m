@@ -567,6 +567,8 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 }
 
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
+	_editingElement = nil;
+
 	NSUInteger index = [_keys indexOfObject:element.key];
 	if (index == 0) {
 		// price
@@ -754,7 +756,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 - (void)handleBigButton1 {
 	if ([_editingElement.key isEqualToString:SC_KEY_PRICE]) {
-		QEntryTableViewCell *cell = [self.quickDialogTableView cellForElement:_editingElement];
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:_editingElement];
 		[cell.textField resignFirstResponder];
 
 		[self presentCurrencySelectViewController];

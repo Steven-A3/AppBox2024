@@ -21,5 +21,7 @@
 
 + (void)setBackgroundImageForNavigationBar:(UINavigationBar *)navigationBar;
 
++ (void)addTopGradientLayerToView:(UIView *)view;
+
 
 @end

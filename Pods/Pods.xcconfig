@@ -1,7 +1,7 @@
-PODS_ROOT = ${SRCROOT}/Pods
-PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}
-PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/AFNetworking" "${PODS_ROOT}/BuildHeaders/BCGenieEffect" "${PODS_ROOT}/BuildHeaders/JSONKit" "${PODS_ROOT}/BuildHeaders/NYXImagesKit" "${PODS_ROOT}/BuildHeaders/QuickDialog" "${PODS_ROOT}/BuildHeaders/Reachability" "${PODS_ROOT}/BuildHeaders/XBPageCurl" "${PODS_ROOT}/BuildHeaders/GHUnitIOS" "${PODS_ROOT}/BuildHeaders/OCMock"
 OTHER_LDFLAGS = -ObjC -framework Accelerate -framework AssetsLibrary -framework CoreImage -framework CoreLocation -framework ImageIO -framework MapKit -framework MobileCoreServices -framework OpenGLES -framework QuartzCore -framework SystemConfiguration
+PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/BCGenieEffect" "${PODS_ROOT}/Headers/GHUnitIOS" "${PODS_ROOT}/Headers/JSONKit" "${PODS_ROOT}/Headers/NYXImagesKit" "${PODS_ROOT}/Headers/OCMock" "${PODS_ROOT}/Headers/QuickDialog" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/SSCheckBoxView" "${PODS_ROOT}/Headers/XBPageCurl"
+PODS_BUILD_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/BuildHeaders" "${PODS_ROOT}/BuildHeaders/AFNetworking" "${PODS_ROOT}/BuildHeaders/BCGenieEffect" "${PODS_ROOT}/BuildHeaders/GHUnitIOS" "${PODS_ROOT}/BuildHeaders/JSONKit" "${PODS_ROOT}/BuildHeaders/NYXImagesKit" "${PODS_ROOT}/BuildHeaders/OCMock" "${PODS_ROOT}/BuildHeaders/QuickDialog" "${PODS_ROOT}/BuildHeaders/Reachability" "${PODS_ROOT}/BuildHeaders/SSCheckBoxView" "${PODS_ROOT}/BuildHeaders/XBPageCurl"
 HEADER_SEARCH_PATHS = ${PODS_HEADERS_SEARCH_PATHS}
+PODS_ROOT = ${SRCROOT}/Pods
 ALWAYS_SEARCH_USER_PATHS = YES
-PODS_PUBLIC_HEADERS_SEARCH_PATHS = "${PODS_ROOT}/Headers" "${PODS_ROOT}/Headers/AFNetworking" "${PODS_ROOT}/Headers/BCGenieEffect" "${PODS_ROOT}/Headers/JSONKit" "${PODS_ROOT}/Headers/NYXImagesKit" "${PODS_ROOT}/Headers/QuickDialog" "${PODS_ROOT}/Headers/Reachability" "${PODS_ROOT}/Headers/XBPageCurl" "${PODS_ROOT}/Headers/GHUnitIOS" "${PODS_ROOT}/Headers/OCMock"
+PODS_HEADERS_SEARCH_PATHS = ${PODS_PUBLIC_HEADERS_SEARCH_PATHS}

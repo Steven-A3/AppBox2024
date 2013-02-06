@@ -21,6 +21,15 @@
     return self;
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder {
+	self = [super initWithCoder:aDecoder];
+	if (self) {
+		self.backgroundColor = [UIColor clearColor];
+	}
+
+	return self;
+}
+
 - (void)setLeftValue:(double)leftValue {
 	_leftValue = leftValue;
 	[self setNeedsDisplay];
