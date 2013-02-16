@@ -24,4 +24,9 @@
 + (void)addTopGradientLayerToView:(UIView *)view;
 
 
++ (NSString *)mediumStyleDateString:(NSDate *)date;
+
++ (NSNumberFormatter *)currencyNumberFormatter;
+
++ (NSNumberFormatter *)percentNumberFormatter;
 @end

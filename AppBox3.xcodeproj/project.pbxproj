@@ -44,6 +44,7 @@
 		682EA2F615EB10B000BD6AD4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2DB15EB10B000BD6AD4 /* CoreData.framework */; };
 		682EA2FE15EB10B000BD6AD4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 682EA2FC15EB10B000BD6AD4 /* InfoPlist.strings */; };
 		682EA30115EB10B000BD6AD4 /* AppBox3Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 682EA30015EB10B000BD6AD4 /* AppBox3Tests.m */; };
+		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		683B94E615EB231D00575377 /* app_clock_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 683B94C015EB231C00575377 /* app_clock_32.png */; };
 		683B94E715EB231D00575377 /* app_currency_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 683B94C115EB231C00575377 /* app_currency_32.png */; };
@@ -133,6 +134,7 @@
 		685F729016A688DD004C7222 /* A3AppDataUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F728F16A688DD004C7222 /* A3AppDataUtility.m */; };
 		685F72BB16A6DF7C004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
 		685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
+		6863053D16CB79470095381E /* A3UIStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6863053C16CB79470095381E /* A3UIStyle.m */; };
 		6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */; };
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		6872076C167091EF00D56507 /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6872076B167091EF00D56507 /* sample.jpg */; };
@@ -147,9 +149,35 @@
 		6883AAF716719D45004DEEE6 /* A3NotificationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */; };
 		6884DFC3167AC5C400A8FFA7 /* A3NotificationStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */; };
 		6886A30C165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */; };
+		688D74B316C4625400DBF033 /* A3ActionMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D74B116C4625400DBF033 /* A3ActionMenuViewController.m */; };
+		688D74B416C4625400DBF033 /* A3ActionMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 688D74B216C4625400DBF033 /* A3ActionMenuViewController.xib */; };
+		688D74C316C4853B00DBF033 /* A3LoanCalcViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D74C116C4853B00DBF033 /* A3LoanCalcViewController.m */; };
+		688D74C416C4853B00DBF033 /* A3LoanCalcViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 688D74C216C4853B00DBF033 /* A3LoanCalcViewController.xib */; };
+		688D74C816C4FC2700DBF033 /* A3LoanCalcPieChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D74C616C4FC2700DBF033 /* A3LoanCalcPieChartViewController.m */; };
+		688D74C916C4FC2700DBF033 /* A3LoanCalcPieChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 688D74C716C4FC2700DBF033 /* A3LoanCalcPieChartViewController.xib */; };
+		688D74CC16C5219D00DBF033 /* A3ToolbarBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D74CB16C5219D00DBF033 /* A3ToolbarBackgroundView.m */; };
+		688D74DF16C53AFD00DBF033 /* t_calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74CD16C53AFD00DBF033 /* t_calendar.png */; };
+		688D74E016C53AFD00DBF033 /* t_calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74CE16C53AFD00DBF033 /* t_calendar@2x.png */; };
+		688D74E116C53AFD00DBF033 /* t_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74CF16C53AFD00DBF033 /* t_facebook.png */; };
+		688D74E216C53AFD00DBF033 /* t_facebook@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D016C53AFD00DBF033 /* t_facebook@2x.png */; };
+		688D74E316C53AFD00DBF033 /* t_history.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D116C53AFD00DBF033 /* t_history.png */; };
+		688D74E416C53AFD00DBF033 /* t_history@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D216C53AFD00DBF033 /* t_history@2x.png */; };
+		688D74E516C53AFD00DBF033 /* t_mail.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D316C53AFD00DBF033 /* t_mail.png */; };
+		688D74E616C53AFD00DBF033 /* t_mail@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D416C53AFD00DBF033 /* t_mail@2x.png */; };
+		688D74E716C53AFD00DBF033 /* t_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D516C53AFD00DBF033 /* t_message.png */; };
+		688D74E816C53AFD00DBF033 /* t_message@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D616C53AFD00DBF033 /* t_message@2x.png */; };
+		688D74E916C53AFD00DBF033 /* t_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D716C53AFD00DBF033 /* t_settings.png */; };
+		688D74EA16C53AFD00DBF033 /* t_settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D816C53AFD00DBF033 /* t_settings@2x.png */; };
+		688D74EB16C53AFD00DBF033 /* t_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74D916C53AFD00DBF033 /* t_twitter.png */; };
+		688D74EC16C53AFD00DBF033 /* t_twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DA16C53AFD00DBF033 /* t_twitter@2x.png */; };
+		688D74ED16C53AFD00DBF033 /* tools_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DB16C53AFD00DBF033 /* tools_on.png */; };
+		688D74EE16C53AFD00DBF033 /* tools_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DC16C53AFD00DBF033 /* tools_on@2x.png */; };
+		688D74EF16C53AFD00DBF033 /* tools.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DD16C53AFD00DBF033 /* tools.png */; };
+		688D74F016C53AFD00DBF033 /* tools@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DE16C53AFD00DBF033 /* tools@2x.png */; };
 		688F7E1416C11A3E003687A7 /* A3ExpenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F7E1316C11A3E003687A7 /* A3ExpenseListViewController.m */; };
 		688F7E1616C1252C003687A7 /* A3ExpenseListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 688F7E1516C1252C003687A7 /* A3ExpenseListViewController.xib */; };
 		688F7E1916C12D1E003687A7 /* A3VerticalLinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F7E1816C12D1E003687A7 /* A3VerticalLinesView.m */; };
+		689022BB16CF950A00775F76 /* A3LoanCalcQuickDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 689022BA16CF950A00775F76 /* A3LoanCalcQuickDialogViewController.m */; };
 		6890255F16429466001A81B5 /* icon_aqua.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255916429466001A81B5 /* icon_aqua.png */; };
 		6890256016429466001A81B5 /* icon_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255A16429466001A81B5 /* icon_blue.png */; };
 		6890256116429466001A81B5 /* icon_green.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255B16429466001A81B5 /* icon_green.png */; };
@@ -502,6 +530,8 @@
 		682EA2FD15EB10B000BD6AD4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		682EA2FF15EB10B000BD6AD4 /* AppBox3Tests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = AppBox3Tests.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		682EA30015EB10B000BD6AD4 /* AppBox3Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = AppBox3Tests.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
+		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
 		6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySelectViewController.h; path = Apps/Currency/A3CurrencySelectViewController.h; sourceTree = "<group>"; };
 		6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySelectViewController.m; path = Apps/Currency/A3CurrencySelectViewController.m; sourceTree = "<group>"; };
 		683B94C015EB231C00575377 /* app_clock_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_clock_32.png; sourceTree = "<group>"; };
@@ -621,6 +651,8 @@
 		685F728F16A688DD004C7222 /* A3AppDataUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppDataUtility.m; sourceTree = "<group>"; };
 		685F72B916A6DF7C004C7222 /* MenuFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuFavorite.h; sourceTree = "<group>"; };
 		685F72BA16A6DF7C004C7222 /* MenuFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuFavorite.m; sourceTree = "<group>"; };
+		6863053B16CB79470095381E /* A3UIStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIStyle.h; sourceTree = "<group>"; };
+		6863053C16CB79470095381E /* A3UIStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIStyle.m; sourceTree = "<group>"; };
 		6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPhoneMenuTableViewController.h; sourceTree = "<group>"; };
 		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
 		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
@@ -647,11 +679,42 @@
 		6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationStockCell.m; sourceTree = "<group>"; };
 		6886A30A165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcQuickDialogViewController.h; path = "Apps/Sales Calc/A3SalesCalcQuickDialogViewController.h"; sourceTree = "<group>"; };
 		6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcQuickDialogViewController.m; path = "Apps/Sales Calc/A3SalesCalcQuickDialogViewController.m"; sourceTree = "<group>"; };
+		688D74B016C4625400DBF033 /* A3ActionMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuViewController.h; sourceTree = "<group>"; };
+		688D74B116C4625400DBF033 /* A3ActionMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuViewController.m; sourceTree = "<group>"; };
+		688D74B216C4625400DBF033 /* A3ActionMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3ActionMenuViewController.xib; sourceTree = "<group>"; };
+		688D74C016C4853B00DBF033 /* A3LoanCalcViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcViewController.h; path = "Loan Calc/A3LoanCalcViewController.h"; sourceTree = "<group>"; };
+		688D74C116C4853B00DBF033 /* A3LoanCalcViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcViewController.m; path = "Loan Calc/A3LoanCalcViewController.m"; sourceTree = "<group>"; };
+		688D74C216C4853B00DBF033 /* A3LoanCalcViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3LoanCalcViewController.xib; path = "Loan Calc/A3LoanCalcViewController.xib"; sourceTree = "<group>"; };
+		688D74C516C4FC2700DBF033 /* A3LoanCalcPieChartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcPieChartViewController.h; path = "Loan Calc/A3LoanCalcPieChartViewController.h"; sourceTree = "<group>"; };
+		688D74C616C4FC2700DBF033 /* A3LoanCalcPieChartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcPieChartViewController.m; path = "Loan Calc/A3LoanCalcPieChartViewController.m"; sourceTree = "<group>"; };
+		688D74C716C4FC2700DBF033 /* A3LoanCalcPieChartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3LoanCalcPieChartViewController.xib; path = "Loan Calc/A3LoanCalcPieChartViewController.xib"; sourceTree = "<group>"; };
+		688D74CA16C5219D00DBF033 /* A3ToolbarBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ToolbarBackgroundView.h; sourceTree = "<group>"; };
+		688D74CB16C5219D00DBF033 /* A3ToolbarBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ToolbarBackgroundView.m; sourceTree = "<group>"; };
+		688D74CD16C53AFD00DBF033 /* t_calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_calendar.png; sourceTree = "<group>"; };
+		688D74CE16C53AFD00DBF033 /* t_calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_calendar@2x.png"; sourceTree = "<group>"; };
+		688D74CF16C53AFD00DBF033 /* t_facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_facebook.png; sourceTree = "<group>"; };
+		688D74D016C53AFD00DBF033 /* t_facebook@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_facebook@2x.png"; sourceTree = "<group>"; };
+		688D74D116C53AFD00DBF033 /* t_history.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_history.png; sourceTree = "<group>"; };
+		688D74D216C53AFD00DBF033 /* t_history@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_history@2x.png"; sourceTree = "<group>"; };
+		688D74D316C53AFD00DBF033 /* t_mail.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_mail.png; sourceTree = "<group>"; };
+		688D74D416C53AFD00DBF033 /* t_mail@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_mail@2x.png"; sourceTree = "<group>"; };
+		688D74D516C53AFD00DBF033 /* t_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_message.png; sourceTree = "<group>"; };
+		688D74D616C53AFD00DBF033 /* t_message@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_message@2x.png"; sourceTree = "<group>"; };
+		688D74D716C53AFD00DBF033 /* t_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_settings.png; sourceTree = "<group>"; };
+		688D74D816C53AFD00DBF033 /* t_settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_settings@2x.png"; sourceTree = "<group>"; };
+		688D74D916C53AFD00DBF033 /* t_twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = t_twitter.png; sourceTree = "<group>"; };
+		688D74DA16C53AFD00DBF033 /* t_twitter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "t_twitter@2x.png"; sourceTree = "<group>"; };
+		688D74DB16C53AFD00DBF033 /* tools_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tools_on.png; sourceTree = "<group>"; };
+		688D74DC16C53AFD00DBF033 /* tools_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tools_on@2x.png"; sourceTree = "<group>"; };
+		688D74DD16C53AFD00DBF033 /* tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tools.png; sourceTree = "<group>"; };
+		688D74DE16C53AFD00DBF033 /* tools@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tools@2x.png"; sourceTree = "<group>"; };
 		688F7E1216C11A3E003687A7 /* A3ExpenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListViewController.h; path = "Expense List/A3ExpenseListViewController.h"; sourceTree = "<group>"; };
 		688F7E1316C11A3E003687A7 /* A3ExpenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListViewController.m; path = "Expense List/A3ExpenseListViewController.m"; sourceTree = "<group>"; };
 		688F7E1516C1252C003687A7 /* A3ExpenseListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3ExpenseListViewController.xib; path = "Expense List/A3ExpenseListViewController.xib"; sourceTree = "<group>"; };
 		688F7E1716C12D1E003687A7 /* A3VerticalLinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3VerticalLinesView.h; sourceTree = "<group>"; };
 		688F7E1816C12D1E003687A7 /* A3VerticalLinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3VerticalLinesView.m; sourceTree = "<group>"; };
+		689022B916CF950A00775F76 /* A3LoanCalcQuickDialogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcQuickDialogViewController.h; path = "Loan Calc/A3LoanCalcQuickDialogViewController.h"; sourceTree = "<group>"; };
+		689022BA16CF950A00775F76 /* A3LoanCalcQuickDialogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcQuickDialogViewController.m; path = "Loan Calc/A3LoanCalcQuickDialogViewController.m"; sourceTree = "<group>"; };
 		6890255916429466001A81B5 /* icon_aqua.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_aqua.png; sourceTree = "<group>"; };
 		6890255A16429466001A81B5 /* icon_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_blue.png; sourceTree = "<group>"; };
 		6890255B16429466001A81B5 /* icon_green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_green.png; sourceTree = "<group>"; };
@@ -1052,16 +1115,19 @@
 		682CA31B163F8AC90052A559 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				68555FEB167032B000F200B7 /* A3TimeLineTableViewController.h */,
-				68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */,
+				688D74B016C4625400DBF033 /* A3ActionMenuViewController.h */,
+				688D74B116C4625400DBF033 /* A3ActionMenuViewController.m */,
+				688D74B216C4625400DBF033 /* A3ActionMenuViewController.xib */,
 				682CA317163F8A200052A559 /* A3GridStyleTableViewCell.h */,
 				682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */,
+				6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */,
+				6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */,
+				68555FEB167032B000F200B7 /* A3TimeLineTableViewController.h */,
+				68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */,
 				68B2CD8B165E02A300BD998F /* A3WeatherStickerViewController.h */,
 				68B2CD8C165E02A300BD998F /* A3WeatherStickerViewController.m */,
 				68B2CD89165DD68E00BD998F /* A3WeatherStickerViewController.xib */,
 				68129E78164A5841008668F4 /* PaperFold */,
-				6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */,
-				6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1211,6 +1277,24 @@
 		683B94BF15EB231C00575377 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				688D74CD16C53AFD00DBF033 /* t_calendar.png */,
+				688D74CE16C53AFD00DBF033 /* t_calendar@2x.png */,
+				688D74CF16C53AFD00DBF033 /* t_facebook.png */,
+				688D74D016C53AFD00DBF033 /* t_facebook@2x.png */,
+				688D74D116C53AFD00DBF033 /* t_history.png */,
+				688D74D216C53AFD00DBF033 /* t_history@2x.png */,
+				688D74D316C53AFD00DBF033 /* t_mail.png */,
+				688D74D416C53AFD00DBF033 /* t_mail@2x.png */,
+				688D74D516C53AFD00DBF033 /* t_message.png */,
+				688D74D616C53AFD00DBF033 /* t_message@2x.png */,
+				688D74D716C53AFD00DBF033 /* t_settings.png */,
+				688D74D816C53AFD00DBF033 /* t_settings@2x.png */,
+				688D74D916C53AFD00DBF033 /* t_twitter.png */,
+				688D74DA16C53AFD00DBF033 /* t_twitter@2x.png */,
+				688D74DB16C53AFD00DBF033 /* tools_on.png */,
+				688D74DC16C53AFD00DBF033 /* tools_on@2x.png */,
+				688D74DD16C53AFD00DBF033 /* tools.png */,
+				688D74DE16C53AFD00DBF033 /* tools@2x.png */,
 				68AF5EB516C1E24C0040E984 /* add.png */,
 				68AF5EB616C1E24C0040E984 /* add@2x.png */,
 				68AF5EB716C1E24C0040E984 /* applist.png */,
@@ -1460,6 +1544,7 @@
 		683B950C15EB233500575377 /* Apps */ = {
 			isa = PBXGroup;
 			children = (
+				688D74BF16C484A600DBF033 /* Loan Calc */,
 				688F7E1116C11A1F003687A7 /* Expense List */,
 				68AA75EB16A53B43005742D8 /* Currency */,
 				6886A308165774C60013A4C9 /* Sales Calc */,
@@ -1571,6 +1656,8 @@
 				68EBE0FB16AA7097008D371E /* A3Categories.h */,
 				68EBE0FC16AA7097008D371E /* A3Categories.m */,
 				68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */,
+				6863053B16CB79470095381E /* A3UIStyle.h */,
+				6863053C16CB79470095381E /* A3UIStyle.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1692,6 +1779,8 @@
 		683B955C15EB233500575377 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */,
+				6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */,
 				683B955D15EB233500575377 /* A3AppHeaderView.h */,
 				683B955E15EB233500575377 /* A3AppHeaderView.m */,
 				683B955F15EB233500575377 /* A3BlackThickRoundedRectView.h */,
@@ -1727,6 +1816,8 @@
 				6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */,
 				68555FEF1670409F00F200B7 /* A3TimeLineTableViewCell.h */,
 				68555FF01670409F00F200B7 /* A3TimeLineTableViewCell.m */,
+				688D74CA16C5219D00DBF033 /* A3ToolbarBackgroundView.h */,
+				688D74CB16C5219D00DBF033 /* A3ToolbarBackgroundView.m */,
 				688F7E1716C12D1E003687A7 /* A3VerticalLinesView.h */,
 				688F7E1816C12D1E003687A7 /* A3VerticalLinesView.m */,
 				68F95DDD1694205200C7EE31 /* EKKeyboardAvoidingScrollView */,
@@ -1763,13 +1854,28 @@
 				687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */,
 				687D385C16BA31BD006FA74E /* A3SalesCalcHistoryViewController.h */,
 				687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */,
-				6886A30A165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.h */,
-				6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */,
 				687D385716BA3189006FA74E /* A3SalesCalcMainViewController.h */,
 				687D385816BA3189006FA74E /* A3SalesCalcMainViewController.m */,
+				6886A30A165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.h */,
+				6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */,
 			);
 			name = "Sales Calc";
 			path = ..;
+			sourceTree = "<group>";
+		};
+		688D74BF16C484A600DBF033 /* Loan Calc */ = {
+			isa = PBXGroup;
+			children = (
+				688D74C516C4FC2700DBF033 /* A3LoanCalcPieChartViewController.h */,
+				688D74C616C4FC2700DBF033 /* A3LoanCalcPieChartViewController.m */,
+				688D74C716C4FC2700DBF033 /* A3LoanCalcPieChartViewController.xib */,
+				688D74C016C4853B00DBF033 /* A3LoanCalcViewController.h */,
+				688D74C116C4853B00DBF033 /* A3LoanCalcViewController.m */,
+				688D74C216C4853B00DBF033 /* A3LoanCalcViewController.xib */,
+				689022B916CF950A00775F76 /* A3LoanCalcQuickDialogViewController.h */,
+				689022BA16CF950A00775F76 /* A3LoanCalcQuickDialogViewController.m */,
+			);
+			name = "Loan Calc";
 			sourceTree = "<group>";
 		};
 		688F7E1116C11A1F003687A7 /* Expense List */ = {
@@ -2194,6 +2300,27 @@
 				68AF5FBE16C1E24D0040E984 /* toolbar_shoppinglist@2x.png in Resources */,
 				68AF5FBF16C1E24D0040E984 /* weather_home_sun.png in Resources */,
 				68AF5FC016C1E24D0040E984 /* weather_home_sun@2x.png in Resources */,
+				688D74B416C4625400DBF033 /* A3ActionMenuViewController.xib in Resources */,
+				688D74C416C4853B00DBF033 /* A3LoanCalcViewController.xib in Resources */,
+				688D74C916C4FC2700DBF033 /* A3LoanCalcPieChartViewController.xib in Resources */,
+				688D74DF16C53AFD00DBF033 /* t_calendar.png in Resources */,
+				688D74E016C53AFD00DBF033 /* t_calendar@2x.png in Resources */,
+				688D74E116C53AFD00DBF033 /* t_facebook.png in Resources */,
+				688D74E216C53AFD00DBF033 /* t_facebook@2x.png in Resources */,
+				688D74E316C53AFD00DBF033 /* t_history.png in Resources */,
+				688D74E416C53AFD00DBF033 /* t_history@2x.png in Resources */,
+				688D74E516C53AFD00DBF033 /* t_mail.png in Resources */,
+				688D74E616C53AFD00DBF033 /* t_mail@2x.png in Resources */,
+				688D74E716C53AFD00DBF033 /* t_message.png in Resources */,
+				688D74E816C53AFD00DBF033 /* t_message@2x.png in Resources */,
+				688D74E916C53AFD00DBF033 /* t_settings.png in Resources */,
+				688D74EA16C53AFD00DBF033 /* t_settings@2x.png in Resources */,
+				688D74EB16C53AFD00DBF033 /* t_twitter.png in Resources */,
+				688D74EC16C53AFD00DBF033 /* t_twitter@2x.png in Resources */,
+				688D74ED16C53AFD00DBF033 /* tools_on.png in Resources */,
+				688D74EE16C53AFD00DBF033 /* tools_on@2x.png in Resources */,
+				688D74EF16C53AFD00DBF033 /* tools.png in Resources */,
+				688D74F016C53AFD00DBF033 /* tools@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2376,6 +2503,13 @@
 				688F7E1916C12D1E003687A7 /* A3VerticalLinesView.m in Sources */,
 				68AF5EB416C1D9E20040E984 /* A3SmallButton.m in Sources */,
 				68D292A516C20A5100F522BC /* A3ExpenseListTableViewCell.m in Sources */,
+				6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */,
+				688D74B316C4625400DBF033 /* A3ActionMenuViewController.m in Sources */,
+				688D74C316C4853B00DBF033 /* A3LoanCalcViewController.m in Sources */,
+				688D74C816C4FC2700DBF033 /* A3LoanCalcPieChartViewController.m in Sources */,
+				688D74CC16C5219D00DBF033 /* A3ToolbarBackgroundView.m in Sources */,
+				6863053D16CB79470095381E /* A3UIStyle.m in Sources */,
+				689022BB16CF950A00775F76 /* A3LoanCalcQuickDialogViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

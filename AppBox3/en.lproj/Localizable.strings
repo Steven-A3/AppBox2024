@@ -6,3 +6,14 @@
  */
 
 "Select Currency" = "화폐";
+"Loan Calc" = "Loan Calc";
+"Principal" = "Principal";
+"Principal:" = "Principal:";
+"Term:" = "Term:";
+"Interest Rate:" = "Interest Rate:";
+"Frequency:" = "Frequency:";
+"Start Date:" = "Start Date:";
+"Notes:" = "Notes:";
+"Monthly:" = "Monthly:";
+"Yearly:" = "Yearly:";
+"One-Time:" = "One-Time:";

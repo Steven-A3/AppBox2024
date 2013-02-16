@@ -11,6 +11,8 @@
 
 @implementation A3GradientView
 
+@synthesize startColor = _startColor;
+
 - (NSArray *)gradientColors {
 	if (nil == _gradientColors) {
 		// Set default color
@@ -38,6 +40,14 @@
 	}
 
 	return self;
+}
+
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	if (_startColor && _endColor) {
+		_gradientColors = @[(__bridge id)_startColor.CGColor, (__bridge id)_endColor.CGColor];
+	}
 }
 
 // Only override drawRect: if you perform custom drawing.

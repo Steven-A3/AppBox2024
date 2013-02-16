@@ -175,4 +175,24 @@
 	[view.layer addSublayer:gradientLayer];
 }
 
++ (NSString *)mediumStyleDateString:(NSDate *)date {
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+
+	return [dateFormatter stringFromDate:date];
+}
+
++ (NSNumberFormatter *)currencyNumberFormatter {
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+
+	return numberFormatter;
+}
+
++ (NSNumberFormatter *)percentNumberFormatter {
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+	[numberFormatter setMaximumFractionDigits:3];
+	return numberFormatter;
+}
 @end

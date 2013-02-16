@@ -13,6 +13,7 @@
 #import "A3PaperFoldMenuViewController.h"
 #import "A3SalesCalcMainViewController.h"
 #import "A3ExpenseListViewController.h"
+#import "A3LoanCalcViewController.h"
 
 @interface A3iPhoneMenuTableViewController ()
 
@@ -333,7 +334,7 @@
 					title = @"Expense List";
 					break;
 				case 2:
-					title = @"C";
+					title = @"Loan Calc";
 					break;
 				case 3:
 					title = @"남산";
@@ -363,6 +364,11 @@
 			}
 			case 1:{
 				A3ExpenseListViewController *viewController = [[A3ExpenseListViewController alloc] initWithNibName:@"A3ExpenseListViewController" bundle:nil];
+				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
+				break;
+			}
+			case 2: {
+				A3LoanCalcViewController *viewController = [[A3LoanCalcViewController alloc] initWithNibName:@"A3LoanCalcViewController" bundle:nil];
 				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
 				break;
 			}

@@ -14,6 +14,7 @@
 #import "A3PaperFoldMenuViewController.h"
 #import "A3AppDelegate.h"
 #import "A3CurrencySelectViewController.h"
+#import "A3UIKit.h"
 
 @interface A3SalesCalcMainViewController ()
 
@@ -30,6 +31,7 @@
         // Custom initialization
 		self.title = @"Sales Calc";
 		self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+		[A3UIKit addTopGradientLayerToView:self.view];
     }
     return self;
 }

@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) 	NSArray *gradientColors;
 @property (nonatomic)			BOOL vertical;
+@property (nonatomic, strong)	UIColor	*startColor, *endColor;
 
 @end
