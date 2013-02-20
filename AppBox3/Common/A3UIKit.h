@@ -15,6 +15,8 @@
 + (void)drawBookendEffectRect:(CGRect)rect context:(CGContextRef)context;
 
 
++ (UIImage *)backspaceImage;
+
 +(UIColor *)colorForDashLineColor;
 
 + (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;

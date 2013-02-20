@@ -8,15 +8,11 @@
 
 #import "A3CurrencyKeyboardViewController.h"
 #import "QEntryTableViewCell+Extension.h"
-#import "A3KeyboardButton.h"
-#import "common.h"
 #import "A3UIDevice.h"
 #import "A3KeyboardMoveMarkView.h"
-#import "A3CurrencySelectViewController.h"
+#import "A3UIKit.h"
 
 @interface A3CurrencyKeyboardViewController ()
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton1;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton2;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num1Button;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num2Button;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num3Button;
@@ -28,13 +24,8 @@
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num9Button;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num0Button;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *clearButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *dotButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *deleteButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *prevButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *doneButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardMoveMarkView *markView;
-@property (nonatomic, strong) UIPopoverController *myPopoverController;
 
 @end
 
@@ -54,7 +45,51 @@
 
 - (void)setKeyboardType:(A3CurrencyKeyboardType)keyboardType {
 	_keyboardType = keyboardType;
-	[_bigButton1 setTitle:keyboardType == A3CurrencyKeyboardTypeCurrency ? _currencyCode : @"%" forState:UIControlStateNormal];
+	NSString *bigButton1Title, *bigButton2Title;
+	switch (keyboardType) {
+		case A3CurrencyKeyboardTypeCurrency: {
+			bigButton1Title = _currencyCode;
+			bigButton2Title = @"%";
+			_bigButton1.blueColorOnHighlighted = NO;
+			_bigButton2.blueColorOnHighlighted = NO;
+			_bigButton1.selected = NO;
+			_bigButton2.selected = NO;
+			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			break;
+		}
+		case A3CurrencyKeyboardTypePercent: {
+			bigButton1Title = @"%";
+			bigButton2Title = @"$";
+			_bigButton1.blueColorOnHighlighted = NO;
+			_bigButton2.blueColorOnHighlighted = NO;
+			_bigButton1.selected = NO;
+			_bigButton2.selected = NO;
+
+			NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_black" ofType:@"png"];
+			UIImage *image = [UIImage imageWithContentsOfFile:imageFilePath];
+			[_bigButton2 setImage:image forState:UIControlStateNormal];
+			imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_white" ofType:@"png"];
+			image = [UIImage imageWithContentsOfFile:imageFilePath];
+			[_bigButton2 setImage:image forState:UIControlStateHighlighted];
+			[_bigButton2 setTitle:nil forState:UIControlStateNormal];
+			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			break;
+		}
+		case A3CurrencyKeyboardTypeMonthYear: {
+			bigButton1Title = @"Years";
+			bigButton2Title = @"Months";
+			_bigButton1.blueColorOnHighlighted = YES;
+			_bigButton2.blueColorOnHighlighted = YES;
+			_bigButton1.selected = NO;
+			_bigButton2.selected = NO;
+			[_bigButton2 setImage:nil forState:UIControlStateNormal];
+			[_bigButton2 setImage:nil forState:UIControlStateHighlighted];
+			[_dotButton setTitle:nil forState:UIControlStateNormal];
+			break;
+		}
+	}
+	[_bigButton1 setTitle:bigButton1Title forState:UIControlStateNormal];
+	[_bigButton2 setTitle:bigButton2Title forState:UIControlStateNormal];
 }
 
 - (void)setCurrencyCode:(NSString *)currencyCode {
@@ -66,25 +101,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-	switch (_keyboardType) {
-		case A3CurrencyKeyboardTypeCurrency: {
-			[_bigButton1 setTitle:_currencyCode forState:UIControlStateNormal];
-			NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_black" ofType:@"png"];
-			UIImage *image = [UIImage imageWithContentsOfFile:imageFilePath];
-			[_bigButton2 setImage:image forState:UIControlStateNormal];
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_white" ofType:@"png"];
-			image = [UIImage imageWithContentsOfFile:imageFilePath];
-			[_bigButton2 setImage:image forState:UIControlStateHighlighted];
-			[_bigButton2 setTitle:nil forState:UIControlStateNormal];
-			break;
-		}
-		case A3CurrencyKeyboardTypePercent:
-			[_bigButton1 setTitle:@"%" forState:UIControlStateNormal];
-			[_bigButton2 setTitle:_currencySymbol forState:UIControlStateNormal];
-			break;
-	}
 
 	[self deviceOrientationDidChange];
+
+	[_deleteButton setTitle:nil forState:UIControlStateNormal];
+	[_deleteButton setImage:[A3UIKit backspaceImage] forState:UIControlStateNormal];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceOrientationDidChange) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
@@ -92,7 +113,6 @@
 - (void)viewDidUnload {
 	[super viewDidUnload];
 
-	_myPopoverController = nil;
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -127,19 +147,26 @@
 }
 
 - (IBAction)bigButton1Action {
+	if (_keyboardType == A3CurrencyKeyboardTypeMonthYear) {
+		[_bigButton1 setSelected:YES];
+		[_bigButton2 setSelected:NO];
+	}
 	if ([_delegate respondsToSelector:@selector(handleBigButton1)]) {
 		[_delegate handleBigButton1];
 	}
 }
 
 - (IBAction)bigButton2Action {
+	if (_keyboardType == A3CurrencyKeyboardTypeMonthYear) {
+		[_bigButton1 setSelected:NO];
+		[_bigButton2 setSelected:YES];
+	}
 	if ([_delegate respondsToSelector:@selector(handleBigButton2)]) {
 		[_delegate handleBigButton2];
 	}
 }
 
 - (void)deviceOrientationDidChange {
-
 	if ([A3UIDevice deviceOrientationIsPortrait]) {
 		CGFloat bigBtnWidth = 124.0, bigBtnHeight = 118.0;
 		CGFloat btnWidth = 89.0, btnHeight = 57.0;

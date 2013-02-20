@@ -13,7 +13,6 @@
 
 @interface A3KeyboardButton ()
 
-@property (nonatomic, strong)	CAGradientLayer *gradientLayer;
 @property (nonatomic, strong)	UILabel *titleLabel;
 @property (nonatomic, strong)	NSString *text;
 @property (nonatomic, strong)	UIImage *image;
@@ -27,6 +26,7 @@
 	self = [super initWithCoder:aDecoder];
 	if (self) {
 		[self setupLayer];
+		[super setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
 	}
 
 	return self;
@@ -85,8 +85,13 @@
 	UIColor *ucolor2=[UIColor colorWithRed:223.0/255.0 green:223.0/255.0 blue:231.0/255 alpha:1];
 
 	if (self.state & (UIControlStateHighlighted | UIControlStateSelected)) {
-		ucolor1=[UIColor colorWithRed:179.0/255.0 green:179.0/255.0 blue:187.0/255 alpha:1];
-		ucolor2=[UIColor colorWithRed:130.0/255.0 green:130.0/255.0 blue:140.0/255 alpha:1];
+		if (_blueColorOnHighlighted) {
+			ucolor1=[UIColor colorWithRed:70.0/255.0 green:129.0/255.0 blue:223.0/255 alpha:1];
+			ucolor2=[UIColor colorWithRed:45.0/255.0 green:94.0/255.0 blue:181.0/255 alpha:1];
+		} else {
+			ucolor1=[UIColor colorWithRed:179.0/255.0 green:179.0/255.0 blue:187.0/255 alpha:1];
+			ucolor2=[UIColor colorWithRed:130.0/255.0 green:130.0/255.0 blue:140.0/255 alpha:1];
+		}
 	}
 
 	CGColorRef color1=ucolor1.CGColor;
@@ -166,99 +171,6 @@
 	CGContextSetShadowWithColor(context, CGSizeMake(0, 1), 1, [UIColor colorWithWhite:1 alpha:1].CGColor);
 	CGContextTranslateCTM(context, 0, rect.size.height);
 	CGContextScaleCTM(context, 1.0, -1.0);
-
-//	_image = [super imageForState:self.state];
-//	FNLOG(@"%@", _image);
-//	if (_text) {
-//		//draw text
-//		CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-//
-//		//    create font
-//		CGFontRef font = CTFontCreateWithName(CFSTR("Helvetica"), 26, NULL);
-//
-//
-//		CGMutablePathRef path = CGPathCreateMutable();
-//		CGRect boundingBox = CTFontGetBoundingBox(font);
-//
-//		//Get the position on the y axis
-//		float midHeight = rect.size.height / 2;
-//		midHeight -= boundingBox.size.height / 2;
-//
-//		CGPathAddRect(path, NULL, CGRectMake(0, midHeight, rect.size.width, boundingBox.size.height));
-//		//CGPathAddRect(path, NULL, rect);
-//
-//		// Initialize an attributed string.
-//		CFStringRef string = (__bridge_retained CFStringRef)self.text;//CFSTR("A");
-//		CFMutableAttributedStringRef attrString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
-//		CFAttributedStringReplaceString (attrString, CFRangeMake(0, 0), string);
-//
-//		//    create paragraph style and assign text alignment to it
-//		CTTextAlignment alignment = kCTCenterTextAlignment;
-//		CTParagraphStyleSetting _settings[] = {    {kCTParagraphStyleSpecifierAlignment, sizeof(alignment), &alignment} };
-//		CTParagraphStyleRef paragraphStyle = CTParagraphStyleCreate(_settings, sizeof(_settings) / sizeof(_settings[0]));
-//
-//		//    set paragraph style attribute
-//		CFAttributedStringSetAttribute(attrString, CFRangeMake(0, CFAttributedStringGetLength(attrString)), kCTParagraphStyleAttributeName, paragraphStyle);
-//
-//		//    set font attribute
-//		CFAttributedStringSetAttribute(attrString, CFRangeMake(0, CFAttributedStringGetLength(attrString)), kCTFontAttributeName, font);
-//		if (self.state & UIControlStateDisabled) {
-//			CFAttributedStringSetAttribute(attrString, CFRangeMake(0, CFAttributedStringGetLength(attrString)), kCTForegroundColorAttributeName, [UIColor colorWithWhite:0.5 alpha:1].CGColor);
-//		}
-//
-//		//    release paragraph style and font
-//		CFRelease(paragraphStyle);
-//		CFRelease(font);
-//
-//		// Create the framesetter with the attributed string.
-//		CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString(attrString);
-//		CFRelease(attrString);
-//
-//		// Create the frame and draw it into the graphics context
-//		CTFrameRef frame = CTFramesetterCreateFrame(framesetter,
-//				CFRangeMake(0, 0), path, NULL);
-//		CFRelease(framesetter);
-//		CTFrameDraw(frame, context);
-//		CFRelease(frame);
-//	}else if(_image){
-//		// use image as mask to draw the key symbol
-//
-//		CGContextSaveGState(context);
-//
-//		CGImageRef maskRef = _image.CGImage;
-//
-//		CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
-//				CGImageGetHeight(maskRef),
-//				CGImageGetBitsPerComponent(maskRef),
-//				CGImageGetBitsPerPixel(maskRef),
-//				CGImageGetBytesPerRow(maskRef),
-//				CGImageGetDataProvider(maskRef), NULL, false);
-//
-//		CGRect maskRect=CGRectMake(0, 0, _image.size.width, _image.size.height);
-//		maskRect=CGRectOffset(maskRect, (rect.size.width-maskRect.size.width)/2.0, (rect.size.height-maskRect.size.height)/2.0);
-//		maskRect=CGRectIntegral(maskRect);
-//		CGRect shadowMaskRect=CGRectOffset(maskRect, 0, -0.5);
-//
-//		CGContextClipToMask(context, shadowMaskRect, mask);
-//
-//		[[UIColor colorWithWhite:1 alpha:0.8] setFill];
-//
-//		CGContextFillRect(context, maskRect);
-//
-//		CGContextRestoreGState(context);
-//
-//		CGContextClipToMask(context, maskRect, mask);
-//
-//		if (self.state & UIControlStateDisabled) {
-//			[[UIColor colorWithWhite:0.5 alpha:1] setFill];
-//		}else{
-//			[[UIColor blackColor] setFill];
-//		}
-//
-//		CGContextFillRect(context, maskRect);
-//
-//		CGImageRelease(mask);
-//	}
 
 	CGContextRestoreGState(context);
 }

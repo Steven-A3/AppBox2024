@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3UIKit.h"
 #import "A3Utilities.h"
+#import "common.h"
 
 @implementation A3UIKit
 
@@ -113,6 +114,42 @@
 	UIGraphicsEndImageContext();
 
 	return dashImage;
+}
+
++ (UIImage *)backspaceImage {
+	CGSize imageSize = CGSizeMake(80.0, 18.0);
+	UIGraphicsBeginImageContextWithOptions(imageSize, NO, 2.0);
+
+	CGSize shapeSize = CGSizeMake(27.0, 18.0);
+
+	UIBezierPath *backspaceShape = [UIBezierPath bezierPath];
+	CGFloat minX = imageSize.width - shapeSize.width;
+	[backspaceShape moveToPoint:CGPointMake(minX, imageSize.height / 2.0 - 1.0)];
+	[backspaceShape addLineToPoint:CGPointMake(minX + 9.0, 0.0)];
+	CGFloat radius = 3.0;
+	CGFloat centerX = imageSize.width - radius - 1.0;
+	[backspaceShape addLineToPoint:CGPointMake(centerX, 0.0)];
+	[backspaceShape addArcWithCenter:CGPointMake(centerX, radius) radius:radius startAngle:DegreesToRadians(270.0) endAngle:DegreesToRadians(0.0) clockwise:YES];
+	[backspaceShape addLineToPoint:CGPointMake(imageSize.width - 1.0, imageSize.height - radius - 1.0)];
+	[backspaceShape addArcWithCenter:CGPointMake(centerX, imageSize.height - radius - 1.0) radius:radius startAngle:DegreesToRadians(0.0) endAngle:DegreesToRadians(90.0) clockwise:YES];
+	[backspaceShape addLineToPoint:CGPointMake(minX + 9.0, 17.0)];
+	[backspaceShape closePath];
+
+	UIColor *fillColor = [UIColor colorWithRed:61.0/255.0 green:61.0/255.0 blue:61.0/255.0 alpha:1.0];
+	[fillColor setFill];
+	[fillColor setStroke];
+	[backspaceShape fill];
+	[backspaceShape stroke];
+
+	UIColor *textColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0];
+	[textColor setFill];
+	[textColor setStroke];
+	[@"×" drawAtPoint:CGPointMake(minX + 9.0 + 2.0, -5.0) forWidth:14.0 withFont:[UIFont boldSystemFontOfSize:19.0] lineBreakMode:NSLineBreakByWordWrapping];
+
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return image;
 }
 
 + (UIColor *)colorForDashLineColor {

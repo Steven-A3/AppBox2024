@@ -401,6 +401,10 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[self calculateSalePrice];
 }
 
+#pragma mark --
+#pragma mark -- Override UIViewController
+
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
@@ -416,10 +420,9 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 	[self addDataToHistory];
 
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
-
 	[[EKKeyboardAvoidingScrollViewManager sharedInstance] unregisterScrollViewFromKeyboardAvoiding:self.quickDialogTableView];
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -429,6 +432,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark --
 #pragma mark - QuickDialogStyleProvider
 
 - (UIColor *)darkBlueColor {
@@ -506,7 +510,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 	if ([self entryIndexIsForNumbers:index]) {
 		cell.textField.inputView = self.keyboardViewController.view;
-		_keyboardViewController.delegate = self;
 		_keyboardViewController.keyInputDelegate = cell.textField;
 		_keyboardViewController.entryTableViewCell = cell;
 		if ([element.key isEqualToString:SC_KEY_PRICE]) {
@@ -608,14 +611,15 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 - (void)registerForKeyboardNotifications
 {
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWasShown:)
+											 selector:@selector(keyboardDidShow:)
 												 name:UIKeyboardDidShowNotification object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(keyboardDidHide:)
-												 name:UIKeyboardDidHideNotification object:nil];}
+												 name:UIKeyboardDidHideNotification object:nil];
+}
 
-- (void)keyboardWasShown:(NSNotification*)aNotification {
+- (void)keyboardDidShow:(NSNotification*)aNotification {
 	if (_editingElement) {
 		UITableViewCell *cell = [self.quickDialogTableView cellForElement:_editingElement];
 		NSIndexPath *indexPath = [self.quickDialogTableView indexPathForCell:cell];
@@ -631,7 +635,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 - (A3CurrencyKeyboardViewController *)keyboardViewController {
 	if (nil == _keyboardViewController) {
 		_keyboardViewController = [[A3CurrencyKeyboardViewController alloc] initWithNibName:@"A3CurrencyKeyboardViewController" bundle:nil];
-		[_keyboardViewController setKeyboardType:A3CurrencyKeyboardTypeCurrency];
+		_keyboardViewController.delegate = self;
 	}
 	return _keyboardViewController;
 }

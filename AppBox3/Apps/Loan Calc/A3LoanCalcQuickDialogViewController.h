@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <QuickDialog.h>
+#import "A3CurrencyKeyboardViewController.h"
 
-@interface A3LoanCalcQuickDialogViewController : QuickDialogController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider>
+@interface A3LoanCalcQuickDialogViewController : QuickDialogController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, CurrencyKeyboardDelegate>
 
 @end

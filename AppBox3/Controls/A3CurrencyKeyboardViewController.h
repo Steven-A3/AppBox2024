@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "QuickDialog.h"
+#import "A3KeyboardButton.h"
 
 @protocol CurrencyKeyboardDelegate <NSObject>
 @optional
@@ -19,7 +20,8 @@
 
 typedef NS_ENUM(NSInteger, A3CurrencyKeyboardType) {
 	A3CurrencyKeyboardTypeCurrency = 0,
-	A3CurrencyKeyboardTypePercent
+	A3CurrencyKeyboardTypePercent,
+	A3CurrencyKeyboardTypeMonthYear
 };
 
 @interface A3CurrencyKeyboardViewController : UIViewController
@@ -31,4 +33,10 @@ typedef NS_ENUM(NSInteger, A3CurrencyKeyboardType) {
 @property (nonatomic, strong) NSString *currencyCode;
 @property (nonatomic, weak) id<CurrencyKeyboardDelegate> delegate;			// Handle big button one and two
 
+@property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton1;
+@property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton2;
+@property (nonatomic, strong) IBOutlet A3KeyboardButton *dotButton;
+@property (nonatomic, strong) IBOutlet A3KeyboardButton *deleteButton;
+@property (nonatomic, strong) IBOutlet A3KeyboardButton *prevButton;
+@property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
 @end

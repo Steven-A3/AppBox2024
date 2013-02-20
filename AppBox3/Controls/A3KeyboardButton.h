@@ -10,4 +10,6 @@
 
 @interface A3KeyboardButton : UIButton
 
+@property (nonatomic)	BOOL blueColorOnHighlighted;
+
 @end
