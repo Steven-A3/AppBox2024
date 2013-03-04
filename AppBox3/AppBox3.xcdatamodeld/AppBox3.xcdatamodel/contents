@@ -10,6 +10,27 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyFavorite" inverseName="currencyItem" inverseEntity="CurrencyFavorite" syncable="YES"/>
     </entity>
+    <entity name="LoanCalcHistory" representedClassName="LoanCalcHistory" syncable="YES">
+        <attribute name="calculationFor" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="downPayment" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="editing" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="extraPaymentMonthly" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="extraPaymentOnetime" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="extraPaymentYearly" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="interestRate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="interestRatePerYear" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="principal" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="showAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="showDownPayment" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="showExtraPayment" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" syncable="YES"/>
+    </entity>
     <entity name="MenuFavorite" representedClassName="MenuFavorite" syncable="YES">
         <attribute name="order" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="menuItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuItem" inverseName="favorite" inverseEntity="MenuItem" syncable="YES"/>
@@ -42,6 +63,7 @@
     <elements>
         <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="330"/>
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>

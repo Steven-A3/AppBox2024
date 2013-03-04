@@ -40,26 +40,39 @@
 	[symbols appendString:@"%5EHSI,"];
 	[symbols appendString:@"%5EN225"];
 	NSString *yql = [NSString stringWithFormat:@"select * from csv where url='http://download.finance.yahoo.com/d/quotes.csv?s=%@&f=nsl1d1t1c1p2&e=.csv' and columns='Name,Symbol,Price,Date,Time,Change,PercentChange'", symbols];
-	NSMutableString *urlString = [[NSMutableString alloc] initWithString:[yql stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	[urlString replaceOccurrencesOfString:@"/" withString:@"%2F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [urlString length])];
-	[urlString replaceOccurrencesOfString:@":" withString:@"%3A" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [urlString length])];
-	[urlString replaceOccurrencesOfString:@"=" withString:@"%3D" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [urlString length])];
-	[urlString replaceOccurrencesOfString:@"," withString:@"%2C" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [urlString length])];
-	[urlString replaceOccurrencesOfString:@"?" withString:@"%3F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [urlString length])];
-	[urlString replaceOccurrencesOfString:@"&" withString:@"%26" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [urlString length])];
+	NSMutableString *paramString = [[NSMutableString alloc] initWithString:[yql stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	[paramString replaceOccurrencesOfString:@"/" withString:@"%2F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [paramString length])];
+	[paramString replaceOccurrencesOfString:@":" withString:@"%3A" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [paramString length])];
+	[paramString replaceOccurrencesOfString:@"=" withString:@"%3D" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [paramString length])];
+	[paramString replaceOccurrencesOfString:@"," withString:@"%2C" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [paramString length])];
+	[paramString replaceOccurrencesOfString:@"?" withString:@"%3F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [paramString length])];
+	[paramString replaceOccurrencesOfString:@"&" withString:@"%26" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [paramString length])];
 
 	NSMutableString *option = [[NSMutableString alloc] initWithString:@"&format=json&env=store://datatables.org/alltableswithkeys"];
 	[option replaceOccurrencesOfString:@"/" withString:@"%2F" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [option length])];
 	[option replaceOccurrencesOfString:@":" withString:@"%3A" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [option length])];
 
-	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:YQL_URL_STRING_FOR_STOCK, urlString, option]];
+	NSString *urlString = [NSString stringWithFormat:YQL_URL_STRING_FOR_STOCK, paramString, option];
+	FNLOG(@"%@", urlString);
+	NSURL *url = [NSURL URLWithString:urlString];
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
 	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-		self.stockExchangeArray = [ [ [ JSON objectForKey:@"query"] objectForKey:@"results"] objectForKey:@"row"];
-//		FNLOG(@"%@", _stockExchangeArray);
-
-		[self startStockTicker];
+		FNLOG(@"%@", JSON);
+		NSDictionary *query = [JSON objectForKey:@"query"];
+		if (query) {
+			NSDictionary *results = [ query objectForKey:@"results"];
+			if (results && [results isKindOfClass:[NSDictionary class]]) {
+				for (NSString *key in [results allKeys]) {
+					if ([key isEqualToString:@"row"]) {
+						_stockExchangeArray = [results objectForKey:@"row"];
+						if (_stockExchangeArray) {
+							[self startStockTicker];
+						}
+					}
+				}
+			}
+		}
 	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
 		FNLOG(@"fail to download stock: %@", response.debugDescription);
 	}];

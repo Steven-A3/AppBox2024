@@ -11,5 +11,8 @@
 @interface A3KeyboardButton : UIButton
 
 @property (nonatomic)	BOOL blueColorOnHighlighted;
+@property (nonatomic, strong)	UILabel *mainTitle;
+@property (nonatomic, strong)	UILabel *subTitle;
 
+- (void)removeExtraLabels;
 @end

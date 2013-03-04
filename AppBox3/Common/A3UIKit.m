@@ -232,4 +232,10 @@
 	[numberFormatter setMaximumFractionDigits:3];
 	return numberFormatter;
 }
+
++ (void)setUserDefaults:(id)object forKey:(NSString *)key {
+    [[NSUserDefaults standardUserDefaults] setObject:object forKey:key];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 @end

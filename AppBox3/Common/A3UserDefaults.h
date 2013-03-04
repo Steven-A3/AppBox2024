@@ -18,4 +18,11 @@
 #define A3SalesCalcDefaultSavedValueTax				@"A3SalesCalcDefaultSavedValueTax"
 #define A3SalesCalcDefaultSavedValueNotes			@"A3SalesCalcDefaultSavedValueNotes"
 
+#define A3LoanCalcDefaultCalculationFor				@"A3LoanCalcDefaultCalculationFor"
+#define A3LoanCalcDefaultShowDownPayment			@"A3LoanCalcDefaultShowDownPayment"
+#define A3LoanCalcDefaultShowExtraPayment			@"A3LoanCalcDefaultShowExtraPayment"
+#define A3LoanCalcDefaultShowAdvanced				@"A3LoanCalcDefaultShowAdvanced"
+#define A3LoanCalcDefaultUseTermTypeMonth           @"A3LoanCalcDefaultUseTermTypeMonth"
+#define A3LoanCalcDefaultUseSimpleInterest			@"A3LoanCalcDefaultUseSimpleInterest"
+
 #endif

@@ -17,7 +17,7 @@
 
 + (UIImage *)backspaceImage;
 
-+(UIColor *)colorForDashLineColor;
++ (UIColor *)colorForDashLineColor;
 
 + (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;
 
@@ -31,4 +31,6 @@
 + (NSNumberFormatter *)currencyNumberFormatter;
 
 + (NSNumberFormatter *)percentNumberFormatter;
+
++ (void)setUserDefaults:(id)object forKey:(NSString *)key;
 @end

@@ -7,26 +7,23 @@
 //
 
 #import <QuartzCore/QuartzCore.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "A3KeyboardButton.h"
 #import "A3UIKit.h"
 #import "common.h"
 
 @interface A3KeyboardButton ()
 
-@property (nonatomic, strong)	UILabel *titleLabel;
-@property (nonatomic, strong)	NSString *text;
-@property (nonatomic, strong)	UIImage *image;
-
 @end
 
 @implementation A3KeyboardButton
-@synthesize titleLabel = _titleLabel;
 
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];
 	if (self) {
 		[self setupLayer];
 		[super setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+		self.contentMode = UIViewContentModeRedraw;
 	}
 
 	return self;
@@ -67,6 +64,44 @@
 
 -(UIColor *)backgroundColor{
 	return [UIColor clearColor];
+}
+
+- (UILabel *)mainTitle {
+	if (nil == _mainTitle) {
+		CGRect frame = self.bounds;
+		frame.size.height = frame.size.height * 0.8;
+		_mainTitle = [[UILabel alloc] initWithFrame:frame];
+		_mainTitle.backgroundColor = [UIColor clearColor];
+		_mainTitle.font = super.titleLabel.font;
+		_mainTitle.textColor = [super titleColorForState:UIControlStateNormal];
+		_mainTitle.textAlignment = NSTextAlignmentCenter;
+		[self addSubview:_mainTitle];
+	}
+	return _mainTitle;
+}
+
+- (UILabel *)subTitle {
+	if (nil == _subTitle) {
+		CGRect frame = self.bounds;
+		frame.origin.y += frame.size.height * 0.4;
+		frame.size.height -= frame.size.height * 0.4;
+		_subTitle = [[UILabel alloc] initWithFrame:frame];
+		_subTitle.backgroundColor = [UIColor clearColor];
+		_subTitle.font = [UIFont boldSystemFontOfSize:16.0];
+		_subTitle.textColor = [UIColor colorWithRed:80.0/255.0 green:89.0/255.0 blue:102.0/255.0 alpha:1.0];
+		_subTitle.textAlignment = NSTextAlignmentCenter;
+		_subTitle.shadowOffset = CGSizeMake(0.0, 1.0);
+		_subTitle.shadowColor = [UIColor whiteColor];
+		[self addSubview:_subTitle];
+	}
+	return _subTitle;
+}
+
+- (void)removeExtraLabels {
+	[_mainTitle removeFromSuperview];
+	_mainTitle = nil;
+	[_subTitle removeFromSuperview];
+	_subTitle = nil;
 }
 
 - (void)drawRect:(CGRect)rect {

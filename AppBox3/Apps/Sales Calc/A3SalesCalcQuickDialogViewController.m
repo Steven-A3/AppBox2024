@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 @interface A3SalesCalcQuickDialogViewController ()
 
-@property (nonatomic, strong) A3CurrencyKeyboardViewController *keyboardViewController;
+@property (nonatomic, strong) A3NumberKeyboardViewController *keyboardViewController;
 @property (nonatomic, weak) QEntryElement *editingElement;
 @property (nonatomic, strong) NSArray *keys;
 @property (nonatomic, strong) A3HorizontalBarChartView *percentBarChart;
@@ -109,7 +109,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	if (nil == storedValue) {
 		_calculatorType = A3SalesCalculatorTypeAdvanced;
 	} else {
-		_calculatorType = [storedValue unsignedIntegerValue];
+		_calculatorType = (A3SalesCalculatorType) [storedValue unsignedIntegerValue];
 	}
 	return _calculatorType;
 }
@@ -119,7 +119,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	if (nil == storedValue) {
 		return A3SalesCalcKnownValueOriginalPrice;
 	}
-	return [storedValue unsignedIntegerValue];
+	return (A3SalesCalcKnownValue) [storedValue unsignedIntegerValue];
 }
 
 - (NSString *)savedValueForPrice {
@@ -146,11 +146,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	NSString *defaultValue;
 	defaultValue = [[NSUserDefaults standardUserDefaults] objectForKey:key];
 	return nil == defaultValue ? @"" : defaultValue;
-}
-
-- (void)putUserDefaultForKey:(NSString *)key withValue:(id) value {
-	[[NSUserDefaults standardUserDefaults] setObject:value forKey:key];
-	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)viewDidLoad {
@@ -274,13 +269,13 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	if (price == 0.0 || discount == 0.0)
 		return NO;
 
-	BOOL isOriginalPrice, isAdvanced;
+	BOOL isOriginalPrice = YES, isAdvanced;
+	isAdvanced = _calculatorType == A3SalesCalculatorTypeAdvanced;
 
 	if ([fetchedObjects count]) {
 		SalesCalcHistory *lastHistory = [fetchedObjects objectAtIndex:0];
 
 		isOriginalPrice = [self isOriginalPrice];
-		isAdvanced = _calculatorType == A3SalesCalculatorTypeAdvanced;
 
 		if (lastHistory && [lastHistory isKindOfClass:[SalesCalcHistory class]]) {
 			if ((lastHistory.isOriginalPrice == isOriginalPrice) &&
@@ -393,7 +388,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	} else {
 		_calculatorType = A3SalesCalculatorTypeAdvanced;
 	}
-	[self putUserDefaultForKey:A3SalesCalcDefaultCalculatorType withValue:[NSNumber numberWithUnsignedInteger:_calculatorType]];
+	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:_calculatorType] forKey:A3SalesCalcDefaultCalculatorType];
 
 	[self buildRoot];
 
@@ -425,7 +420,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -434,14 +428,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 #pragma mark --
 #pragma mark - QuickDialogStyleProvider
-
-- (UIColor *)darkBlueColor {
-	return [UIColor colorWithRed:40.0f/255.0f green:72.0f/255.0f blue:114.0f/255.0f alpha:1.0f];
-}
-
-- (UIColor *)grayColor {
-	return [UIColor colorWithRed:115.0f/255.0f green:115.0f/255.0f blue:115.0f/255.0f alpha:1.0f];
-}
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
 	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
@@ -514,9 +500,9 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 		_keyboardViewController.entryTableViewCell = cell;
 		if ([element.key isEqualToString:SC_KEY_PRICE]) {
 			_keyboardViewController.currencyCode = [self defaultCurrencyCode];
-			[_keyboardViewController setKeyboardType:A3CurrencyKeyboardTypeCurrency];
+			[_keyboardViewController setKeyboardType:A3NumberKeyboardTypeCurrency];
 		} else {
-			[_keyboardViewController setKeyboardType:A3CurrencyKeyboardTypePercent];
+			[_keyboardViewController setKeyboardType:A3NumberKeyboardTypePercent];
 		}
 		cell.textField.inputAccessoryView = nil;
 
@@ -538,23 +524,23 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	if (index == 0) {
 		// price
 		element.textValue = [self currencyFormattedString:cell.textField.text];
-		[self putUserDefaultForKey:A3SalesCalcDefaultSavedValuePrice withValue:element.textValue];
+		[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValuePrice];
 	} else if ([element.key isEqualToString:SC_KEY_NOTES]) {
-		[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueNotes withValue:cell.textField.text];
+		[A3UIKit setUserDefaults:cell.textField.text forKey:A3SalesCalcDefaultSavedValueNotes];
 	} else {
 		element.textValue = [self percentFormattedString:cell.textField.text];
 		switch (index) {
 			case 1:
 				// discount percent
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueDiscount withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueDiscount];
 				break;
 			case 2:
 				// Additional discount percent
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueAdditionalOff withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueAdditionalOff];
 				break;
 			case 3:
 				// Tax
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueTax withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueTax];
 				break;
 		}
 	}
@@ -574,29 +560,29 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 		// price
 		element.textValue = [self currencyFormattedString:cell.textField.text];
 		cell.textField.text = element.textValue;
-		[self putUserDefaultForKey:A3SalesCalcDefaultSavedValuePrice withValue:element.textValue];
+		[A3UIKit setUserDefaults:A3SalesCalcDefaultSavedValuePrice forKey:element.textValue];
 	} else if ([element.key isEqualToString:SC_KEY_NOTES]) {
 		element.textValue = cell.textField.text;
-		[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueNotes withValue:element.textValue];
+		[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueNotes];
 	} else {
 		element.textValue = [self percentFormattedString:cell.textField.text];
 		cell.textField.text = element.textValue;
 		switch (index) {
 			case 1:
 				// discount percent
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueDiscount withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueDiscount];
 				break;
 			case 2:
 				// Additional discount percent
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueAdditionalOff withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueAdditionalOff];
 				break;
 			case 3:
 				// Tax
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueTax withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueTax];
 				break;
 			case 4:
 				// Notes
-				[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueNotes withValue:element.textValue];
+				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueNotes];
 				break;
 		}
 	}
@@ -632,9 +618,9 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[self.quickDialogTableView setContentOffset:CGPointMake(0.0, 0.0)];
 }
 
-- (A3CurrencyKeyboardViewController *)keyboardViewController {
+- (A3NumberKeyboardViewController *)keyboardViewController {
 	if (nil == _keyboardViewController) {
-		_keyboardViewController = [[A3CurrencyKeyboardViewController alloc] initWithNibName:@"A3CurrencyKeyboardViewController" bundle:nil];
+		_keyboardViewController = [[A3NumberKeyboardViewController alloc] initWithNibName:@"A3NumberKeyboardViewController" bundle:nil];
 		_keyboardViewController.delegate = self;
 	}
 	return _keyboardViewController;
@@ -645,7 +631,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	parentSection.selected = 0;
 	[self.quickDialogTableView reloadData];
 
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedKnownValue withValue:[NSNumber numberWithUnsignedInteger:A3SalesCalcKnownValueOriginalPrice]];
+	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:A3SalesCalcKnownValueOriginalPrice] forKey:A3SalesCalcDefaultSavedKnownValue];
 	[self calculateSalePrice];
 }
 
@@ -654,7 +640,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	parentSection.selected = 1;
 	[self.quickDialogTableView reloadData];
 
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedKnownValue withValue:[NSNumber numberWithUnsignedInteger:A3SalesCaleKnownValueSalePrice]];
+	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:A3SalesCaleKnownValueSalePrice] forKey:A3SalesCalcDefaultSavedKnownValue];
 	[self calculateSalePrice];
 }
 
@@ -725,15 +711,14 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 - (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history {
 	_calculatorType = history.isAdvanced ? A3SalesCalculatorTypeAdvanced : A3SalesCalculatorTypeSimple;
-	[self putUserDefaultForKey:A3SalesCalcDefaultCalculatorType withValue:[NSNumber numberWithUnsignedInteger:_calculatorType]];
+	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:_calculatorType] forKey:A3SalesCalcDefaultCalculatorType];
 
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedKnownValue withValue:[NSNumber numberWithUnsignedInteger:history.isOriginalPrice ? A3SalesCalcKnownValueOriginalPrice : A3SalesCaleKnownValueSalePrice]];
-
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedValuePrice withValue:history.isOriginalPrice ? history.originalPrice : history.salePrice];
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueDiscount withValue:history.discount];
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueAdditionalOff withValue:history.additionaloff];
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueTax withValue:history.tax];
-	[self putUserDefaultForKey:A3SalesCalcDefaultSavedValueNotes withValue:history.notes];
+	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:history.isOriginalPrice ? A3SalesCalcKnownValueOriginalPrice : A3SalesCaleKnownValueSalePrice] forKey:A3SalesCalcDefaultSavedKnownValue];
+	[A3UIKit setUserDefaults:history.isOriginalPrice ? history.originalPrice : history.salePrice forKey:A3SalesCalcDefaultSavedValuePrice];
+	[A3UIKit setUserDefaults:history.discount forKey:A3SalesCalcDefaultSavedValueDiscount];
+	[A3UIKit setUserDefaults:history.additionaloff forKey:A3SalesCalcDefaultSavedValueAdditionalOff];
+	[A3UIKit setUserDefaults:history.tax forKey:A3SalesCalcDefaultSavedValueTax];
+	[A3UIKit setUserDefaults:history.notes forKey:A3SalesCalcDefaultSavedValueNotes];
 
 	[self buildRoot];
 
@@ -765,8 +750,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 }
 
 - (void)currencySelected:(NSString *)selectedCurrencyCode {
-	[[NSUserDefaults standardUserDefaults] setObject:selectedCurrencyCode forKey:A3SalesCalcDefaultCurrencyCode];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+	[A3UIKit setUserDefaults:selectedCurrencyCode forKey:A3SalesCalcDefaultCurrencyCode];
 
 	[[[A3AppDelegate instance] paperFoldMenuViewController] removeRightWingViewController];
 
@@ -774,5 +758,12 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[self calculateSalePrice];
 	[self reloadPriceElement];
 }
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	[_keyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+}
+
 
 @end

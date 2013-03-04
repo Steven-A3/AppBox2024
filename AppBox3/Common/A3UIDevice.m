@@ -33,6 +33,10 @@
 	return ([[fileAttributes objectForKey:NSFileSystemSize] doubleValue] - [[fileAttributes objectForKey:NSFileSystemFreeSize] doubleValue]) / [[fileAttributes objectForKey:NSFileSystemSize] doubleValue];
 }
 
++ (UIInterfaceOrientation)deviceOrientation {
+	return [[UIApplication sharedApplication] statusBarOrientation];
+}
+
 + (BOOL)deviceOrientationIsPortrait; {
 	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]);
 }

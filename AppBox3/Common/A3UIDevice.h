@@ -12,6 +12,9 @@
 
 + (double)memoryUsage;
 + (double)storageUsage;
+
++ (UIInterfaceOrientation)deviceOrientation;
+
 + (BOOL)deviceOrientationIsPortrait;
 
 + (CGFloat)applicationHeightForCurrentOrientation;
