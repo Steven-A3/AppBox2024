@@ -17,6 +17,7 @@
 - (void)handleBigButton2;
 - (NSString *)stringForBigButton1;
 - (NSString *)stringForBigButton2;
+- (void)clearButtonPressed;
 
 @end
 

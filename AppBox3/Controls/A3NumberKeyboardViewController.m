@@ -145,6 +145,12 @@
 	}
 }
 
+- (IBAction)clearButtonAction {
+	if ([_delegate respondsToSelector:@selector(clearButtonPressed)]) {
+		[_delegate clearButtonPressed];
+	}
+}
+
 - (IBAction)backspaceAction:(UIButton *)button {
 	if ([_keyInputDelegate respondsToSelector:@selector(deleteBackward)]) {
 		[_keyInputDelegate deleteBackward];

@@ -16,6 +16,7 @@
 #import "A3Formatter.h"
 
 @interface A3DateKeyboardViewController ()
+
 @property (nonatomic, strong)	IBOutlet A3KeyboardButton *blankButton;
 @property (nonatomic, strong)	IBOutlet A3KeyboardButton *yearButton;
 @property (nonatomic, strong)	IBOutlet A3KeyboardButton *monthButton;
@@ -47,6 +48,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+		_workingMode = A3DateKeyboardWorkingModeYearMonthDay;
     }
     return self;
 }
@@ -59,7 +61,7 @@
 	_monthButton.blueColorOnHighlighted = YES;
 	_dayButton.blueColorOnHighlighted = YES;
 
-	[self rotateToInterfaceOrientation:[A3UIDevice deviceOrientation]];
+	[self layoutForWorkingMode];
 }
 
 - (void)didReceiveMemoryWarning
@@ -193,6 +195,10 @@
 	}
 	_date = [gregorian dateFromComponents:dateComponents];
 	_displayLabel.text = [A3Formatter mediumStyleDateStringFromDate:_date];
+
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:element:)]) {
+		[_delegate dateKeyboardValueChangedDate:_date element:_element];
+	}
 }
 
 - (IBAction)prevButtonAction {
@@ -213,6 +219,10 @@
 	}
 	_date = nil;
 	_displayLabel.text = @"";
+
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:element:)]) {
+		[_delegate dateKeyboardValueChangedDate:_date element:_element];
+	}
 }
 
 - (IBAction)todayButtonAction {
@@ -221,6 +231,10 @@
 	}
 	_date = [NSDate date];
 	_displayLabel.text = [A3Formatter mediumStyleDateStringFromDate:_date];
+
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:element:)]) {
+		[_delegate dateKeyboardValueChangedDate:_date element:_element];
+	}
 }
 
 - (NSDate *)date {
@@ -237,26 +251,36 @@
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
-	CGFloat width_small, height_small, width_big;
+	CGFloat width_small, height_small, width_big, height_big;
 	if (UIDeviceOrientationIsPortrait(toInterfaceOrientation)) {
-		width_big = 124.0;
-		width_small = 89.0, height_small = 57.0;
+		width_big = 124.0; height_big = 118.0;
+		width_small = 89.0; height_small = 57.0;
 		col_1 = 74.0; col_2 = 237.0; col_3 = 338.0; col_4 = 440.0, col_5 = 570.0;
 		row_1 = 6.0; row_2 = 72.0; row_3 = 137.0; row_4 = 201.0;
 
 		[_markView setFrame:CGRectMake(755.0, 219.0, 8.0, 24.0)];
 	} else {
-		width_big = 172.0;
-		width_small = 108.0, height_small = 77.0;
+		width_big = 172.0; height_big = 164.0;
+		width_small = 108.0; height_small = 77.0;
 		col_1 = 114.0; col_2 = 332.0; col_3 = 455.0; col_4 = 578.0, col_5 = 735.0;
 		row_1 = 8.0; row_2 = 94.0; row_3 = 179.0; row_4 = 265.0;
 
 		[_markView setFrame:CGRectMake(999.0, 282.0, 10.0, 24.0)];
 	}
-	[_blankButton setFrame:CGRectMake(col_1, row_1, width_big, height_small)];
-	[_yearButton setFrame:CGRectMake(col_1, row_2, width_big, height_small)];
-	[_monthButton setFrame:CGRectMake(col_1, row_3, width_big, height_small)];
-	[_dayButton setFrame:CGRectMake(col_1, row_4, width_big, height_small)];
+	switch (_workingMode) {
+		case A3DateKeyboardWorkingModeYearMonthDay:
+			[_blankButton setFrame:CGRectMake(col_1, row_1, width_big, height_small)];
+			[_yearButton setFrame:CGRectMake(col_1, row_2, width_big, height_small)];
+			[_monthButton setFrame:CGRectMake(col_1, row_3, width_big, height_small)];
+			[_dayButton setFrame:CGRectMake(col_1, row_4, width_big, height_small)];
+			break;
+		case A3DateKeyboardWorkingModeYearMonth:
+			[_yearButton setFrame:CGRectMake(col_1, row_1, width_big, height_big)];
+			[_monthButton setFrame:CGRectMake(col_1, row_3, width_big, height_big)];
+			break;
+		case A3DateKeyboardWorkingModeMonth:
+			break;
+	}
 
 	[_num7_Jan_Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];
 	[_num4_Apr_Button setFrame:CGRectMake(col_2, row_2, width_small, height_small)];
@@ -277,6 +301,33 @@
 	[_prevButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
 	[_nextButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
 	[_doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
+}
+
+- (void)layoutForWorkingMode {
+	[self rotateToInterfaceOrientation:[A3UIDevice deviceOrientation]];
+
+	switch (_workingMode) {
+		case A3DateKeyboardWorkingModeYearMonthDay:
+			[_blankButton setHidden:NO];
+			[_yearButton setHidden:NO];
+			[_monthButton setHidden:NO];
+			[_dayButton setHidden:NO];
+			break;
+		case A3DateKeyboardWorkingModeYearMonth:
+			[_blankButton setHidden:YES];
+			[_yearButton setHidden:NO];
+			[_monthButton setHidden:NO];
+			[_dayButton setHidden:YES];
+			[self switchToYear];
+			break;
+		case A3DateKeyboardWorkingModeMonth:
+			[_blankButton setHidden:YES];
+			[_yearButton setHidden:YES];
+			[_monthButton setHidden:YES];
+			[_dayButton setHidden:YES];
+			[self switchToMonth];
+			break;
+	}
 }
 
 @end
