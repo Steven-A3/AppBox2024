@@ -90,7 +90,7 @@ typedef enum {
 		[self addPieChart];
 	}
 
-	NSArray *imageFilePaths = @[@"icon_home_events", @"icon_home_downloader", @"icon_home_notes", @"icon_home_photo", @"icon_home_wallet", @"icon_home_status"];
+	NSArray *imageFilePaths = @[@"home_events", @"home_downloader", @"home_notes", @"home_photo", @"home_wallet", @"home_status"];
 	NSArray *titleLabels = @[@"EVENTS", @"DOWNLOADER", @"NOTES", @"PHOTOS", @"Wallet", @"Device Status"];
 	NSAssert([titleLabels count] == 6, @"This has 6 cells");
 

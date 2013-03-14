@@ -91,13 +91,13 @@ enum {
 	NSString *imageFilePath = nil;
 	switch (index) {
 		case 0:
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_home_statistics" ofType:@"png"];
+			imageFilePath = [[NSBundle mainBundle] pathForResource:@"home_statistics" ofType:@"png"];
 			break;
 		case 1:
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_home_calendar" ofType:@"png"];
+			imageFilePath = [[NSBundle mainBundle] pathForResource:@"home_calendar" ofType:@"png"];
 			break;
 		case 2:
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_home_timeline" ofType:@"png"];
+			imageFilePath = [[NSBundle mainBundle] pathForResource:@"home_timeline" ofType:@"png"];
 			break;
 	}
 	UIImage *image = nil;

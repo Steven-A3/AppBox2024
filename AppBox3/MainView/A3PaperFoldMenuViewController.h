@@ -21,7 +21,7 @@
 
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController;
 
-- (void)presentRightWingWithViewController:(UIViewController *)viewController;
+- (void)presentRightWingWithViewController:(UIViewController *)viewController onClose:(void (^)())onCloseBlock;
 
 - (void)removeRightWingViewController;
 

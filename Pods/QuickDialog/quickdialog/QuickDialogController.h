@@ -14,12 +14,15 @@
 
 #import "QuickDialogTableView.h"
 
+@class QRootElement;
+@class QuickDialogTableView;
+
 @interface QuickDialogController : UIViewController <UIPopoverControllerDelegate> {
 
 @private
     QRootElement *_root;
-    id <UITableViewDataSource> _dataSource;
-    id <UITableViewDelegate> _delegate;
+    //    id <UITableViewDataSource> _dataSource;
+    //    id <UITableViewDelegate> _delegate;
     QuickDialogTableView * _quickDialogTableView;
 
     void (^_willDisappearCallback)(void);
@@ -33,22 +36,18 @@
 
 
 @property(nonatomic, strong) UIPopoverController *popoverBeingPresented;
+@property(nonatomic, strong) UIPopoverController *popoverForChildRoot;
+
 
 - (void)loadView;
 
 - (QuickDialogController *)initWithRoot:(QRootElement *)rootElement;
-
-- (void)displayViewController:(UIViewController *)newController;
-
-- (void)displayViewControllerForRoot:(QRootElement *)element;
-
-- (void)displayViewControllerInPopover:(QuickDialogController *)newController withNavigation:(BOOL)navigation;
-
 
 - (QuickDialogController *)controllerForRoot:(QRootElement *)root;
 
 + (QuickDialogController *)controllerForRoot:(QRootElement *)root;
 
 + (UINavigationController *)controllerWithNavigationForRoot:(QRootElement *)root;
+
 
 @end

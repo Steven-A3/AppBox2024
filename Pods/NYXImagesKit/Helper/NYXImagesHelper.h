@@ -4,8 +4,8 @@
 //
 //  Created by Matthias Tretter on 02/06/11.
 //  Originally Created by @Nyx0uf on 02/05/11.
-//  Copyright 2012 Benjamin Godard. All rights reserved.
-//  www.cococabyss.com
+//  Copyright 2012 Nyx0uf. All rights reserved.
+//  www.cocoaintheshell.com
 //
 
 
@@ -32,6 +32,13 @@
 
 /* iOS version runtime check */
 #define NYX_IOS_VERSION_LESS_THAN(__VERSIONSTRING) ([[[UIDevice currentDevice] systemVersion] compare:__VERSIONSTRING options:NSNumericSearch] == NSOrderedAscending)
+
+/* dispatch_release() not needed in iOS 6+ original idea from FMDB https://github.com/ccgus/fmdb/commit/aef763eeb64e6fa654e7d121f1df4c16a98d9f4f */
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+	#define NYX_DISPATCH_RELEASE(__QUEUE)
+#else
+	#define NYX_DISPATCH_RELEASE(__QUEUE) (dispatch_release(__QUEUE))
+#endif
 
 CGContextRef NYXCreateARGBBitmapContext(const size_t width, const size_t height, const size_t bytesPerRow);
 CGImageRef NYXCreateGradientImage(const size_t pixelsWide, const size_t pixelsHigh, const CGFloat fromAlpha, const CGFloat toAlpha);

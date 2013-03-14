@@ -1,1 +1,0 @@
-../../XBPageCurl/XBPageCurl/XBSnappingPoint.h

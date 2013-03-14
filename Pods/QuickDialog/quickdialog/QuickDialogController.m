@@ -13,7 +13,7 @@
 //
 
 #import "QuickDialogController.h"
-
+#import "QRootElement.h"
 @interface QuickDialogController ()
 
 + (Class)controllerClassForRoot:(QRootElement *)root;
@@ -33,6 +33,7 @@
 @synthesize quickDialogTableView = _quickDialogTableView;
 @synthesize resizeWhenKeyboardPresented = _resizeWhenKeyboardPresented;
 @synthesize popoverBeingPresented = _popoverBeingPresented;
+@synthesize popoverForChildRoot = _popoverForChildRoot;
 
 
 + (QuickDialogController *)buildControllerWithClass:(Class)controllerClass root:(QRootElement *)root {
@@ -51,7 +52,7 @@
     if (root.controllerName!=NULL){
         controllerClass = NSClassFromString(root.controllerName);
     } else {
-        controllerClass = [self class];
+        controllerClass = [QuickDialogController class];
     }
     return controllerClass;
 }
@@ -67,7 +68,6 @@
     self.quickDialogTableView = [[QuickDialogTableView alloc] initWithController:self];
 }
 
-// default impl
 - (void)setQuickDialogTableView:(QuickDialogTableView *)tableView
 {
     _quickDialogTableView = tableView;
@@ -104,8 +104,14 @@
     _viewOnScreen = YES;
     [self.quickDialogTableView viewWillAppear];
     [super viewWillAppear:animated];
-    if (_root!=nil)
+    if (_root!=nil) {
         self.title = _root.title;
+        self.navigationItem.title = _root.title;
+        if (_root.preselectedElementIndex !=nil)
+            [self.quickDialogTableView scrollToRowAtIndexPath:_root.preselectedElementIndex atScrollPosition:UITableViewScrollPositionTop animated:NO];
+
+    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -115,73 +121,6 @@
         _willDisappearCallback();
     }
 }
-
-- (void)popToPreviousRootElementOnMainThread {
-
-    if ([self popoverBeingPresented]!=nil){
-        [self.popoverBeingPresented dismissPopoverAnimated:YES];
-        if (self.popoverBeingPresented.delegate!=nil){
-            [self.popoverBeingPresented.delegate popoverControllerDidDismissPopover:self.popoverBeingPresented];
-        }
-    }
-    else if (self.navigationController!=nil){
-        [self.navigationController popViewControllerAnimated:YES];
-    } else {
-        [self dismissModalViewControllerAnimated:YES];
-    }
-}
-
-- (void)popToPreviousRootElement {
-    [self performSelectorOnMainThread:@selector(popToPreviousRootElementOnMainThread) withObject:nil waitUntilDone:YES];
-}
-
-- (void)displayViewController:(UIViewController *)newController {
-    if (self.navigationController != nil ){
-        [self.navigationController pushViewController:newController animated:YES];
-    } else {
-        [self presentModalViewController:newController animated:YES];
-    }
-}
-
-- (void)displayViewControllerForRoot:(QRootElement *)root {
-    QuickDialogController *newController = [self controllerForRoot: root];
-
-    if (root.presentationMode==QPresentationModeNormal) {
-        [self displayViewController:newController];
-
-    } else if (root.presentationMode == QPresentationModePopover || root.presentationMode == QPresentationModeNavigationInPopover) {
-        [self displayViewControllerInPopover:newController withNavigation:root.presentationMode==QPresentationModeNavigationInPopover];
-    }
-}
-
-- (void)displayViewControllerInPopover:(UIViewController *)newController withNavigation:(BOOL)navigation {
-
-    if ([UIDevice currentDevice].userInterfaceIdiom!=UIUserInterfaceIdiomPad){
-        [self displayViewController:newController];
-        return;
-    }
-
-    UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:
-        navigation ? [[UINavigationController alloc] initWithRootViewController :newController] : newController
-    ];
-    popoverController.popoverContentSize = CGSizeMake(320, 360);
-    if ([newController respondsToSelector:@selector(setPopoverBeingPresented:)]) {
-        [newController performSelector:@selector(setPopoverBeingPresented:) withObject:popoverController];
-    } else {
-        _popoverForChildRoot = popoverController;
-    }
-    popoverController.delegate = self;
-
-    CGRect position = [self.quickDialogTableView rectForRowAtIndexPath:self.quickDialogTableView.indexPathForSelectedRow];
-    [popoverController presentPopoverFromRect:position inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-}
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-    [self.quickDialogTableView reloadData];
-    _popoverForChildRoot = nil;
-
-}
-
 
 - (QuickDialogController *)controllerForRoot:(QRootElement *)root {
     Class controllerClass = [[self class] controllerClassForRoot:root];
@@ -212,6 +151,7 @@
             CGRect keyboardFrame = [self.view convertRect:keyboardEndFrame toView:nil];
             const UIEdgeInsets oldInset = self.quickDialogTableView.contentInset;
             self.quickDialogTableView.contentInset = UIEdgeInsetsMake(oldInset.top, oldInset.left,  up ? keyboardFrame.size.height : 0, oldInset.right);
+            self.quickDialogTableView.scrollIndicatorInsets = self.quickDialogTableView.contentInset;
         }
         completion:NULL];
 }

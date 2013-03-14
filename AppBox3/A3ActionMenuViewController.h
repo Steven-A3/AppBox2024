@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol A3ActionMenuDelegate <NSObject>
+- (void)settingsAction;
+- (void)emailAction;
+- (void)messageAction;
+- (void)twitterAction;
+- (void)facebookAction;
+
+@end
+
 @interface A3ActionMenuViewController : UIViewController
+@property (nonatomic, weak)	id<A3ActionMenuDelegate>	delegate;
 
 @end

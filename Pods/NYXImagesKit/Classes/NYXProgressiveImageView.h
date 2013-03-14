@@ -3,7 +3,7 @@
 //  NYXImagesKit
 //
 //  Created by @Nyx0uf on 13/01/12.
-//  Copyright 2012 Benjamin Godard. All rights reserved.
+//  Copyright 2012 Nyx0uf. All rights reserved.
 //  www.cocoaintheshell.com
 //  Caching stuff by raphaelp
 //
@@ -26,8 +26,8 @@
 +(void)resetImageCache;
 
 #pragma mark - Public properties
-/// Delegate (use weak if you target only iOS 5)
-@property (nonatomic, assign) IBOutlet id <NYXProgressiveImageViewDelegate> delegate;
+/// Delegate
+@property (nonatomic, weak) IBOutlet id <NYXProgressiveImageViewDelegate> delegate;
 /// Enable / Disable caching
 @property (nonatomic, getter = isCaching) BOOL caching;
 /// Cache time in seconds

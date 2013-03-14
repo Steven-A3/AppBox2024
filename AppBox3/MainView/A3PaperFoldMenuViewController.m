@@ -25,6 +25,7 @@
 @property (nonatomic, weak)		UIViewController *rightWingViewController;
 @property (nonatomic)			CGFloat paperFoldViewOffset, rightWingViewOffset;
 @property (nonatomic) BOOL keepNarrowWidthOnHorizontalOrientation;
+@property (nonatomic, copy)		void(^onCloseRightWingView)(void);
 
 @end
 
@@ -248,8 +249,19 @@
 	return HOT_MENU_VIEW_WIDTH + A3_MENU_TABLE_VIEW_WIDTH + APP_VIEW_WIDTH;
 }
 
-- (void)presentRightWingWithViewController:(UIViewController *)viewController {
-	_rightWingViewController = viewController;
+- (void)presentRightWingWithViewController:(UIViewController *)viewController onClose:(void (^)())onCloseBlock {
+	self.onCloseRightWingView = onCloseBlock;
+
+	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0) : CGRectMake(0.0, 0.0, 320.0, 748.0);
+	[viewController.view setFrame:frame];
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
+	[navigationController.view setFrame:frame];
+	navigationController.view.layer.borderWidth = 1.0;
+	navigationController.view.layer.borderColor = [UIColor lightGrayColor].CGColor;
+
+	_rightWingViewController = navigationController;
 
 	[self.view addSubview:_rightWingViewController.view];
 	[self addChildViewController:_rightWingViewController];
@@ -261,7 +273,7 @@
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleCoverTapGesture:)];
 	[coverView addGestureRecognizer:tapGestureRecognizer];
 
-	_rightWingViewOffset = CGRectGetWidth(viewController.view.bounds);
+	_rightWingViewOffset = CGRectGetWidth(navigationController.view.bounds);
 	UIViewController *topViewController = [_myNavigationController topViewController];
 	if (![A3UIDevice deviceOrientationIsPortrait] &&
 			[topViewController isKindOfClass:[A3SalesCalcMainViewController class]]) {
@@ -292,6 +304,9 @@
 }
 
 - (void)handleCoverTapGesture:(UITapGestureRecognizer *)sender {
+	if (self.onCloseRightWingView) {
+		self.onCloseRightWingView();
+	}
 	[self removeRightWingViewController];
 }
 

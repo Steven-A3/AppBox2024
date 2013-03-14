@@ -56,17 +56,11 @@
 
 - (void)presentHistoryViewController {
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
-	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0) : CGRectMake(0.0, 0.0, 320.0, 748.0);
-	[historyViewController.view setFrame:frame];
 	historyViewController.salesCalcQuickDialogViewController = _quickDialogViewController;
-	UINavigationController *historyNavigationController = [[UINavigationController alloc] initWithRootViewController:historyViewController];
-	frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
-	[historyNavigationController.view setFrame:frame];
-	historyNavigationController.view.layer.borderWidth = 1.0;
-	historyNavigationController.view.layer.borderColor = [UIColor lightGrayColor].CGColor;
 
 	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-	[paperFoldMenuViewController presentRightWingWithViewController:historyNavigationController];
+	[paperFoldMenuViewController presentRightWingWithViewController:historyViewController onClose:^{
+	}];
 }
 
 - (void)didReceiveMemoryWarning

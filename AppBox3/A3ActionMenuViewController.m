@@ -35,4 +35,34 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)settingsAction {
+	if ([_delegate respondsToSelector:@selector(settingsAction)]) {
+		[_delegate settingsAction];
+	}
+}
+
+- (IBAction)emailAction {
+	if ([_delegate respondsToSelector:@selector(emailAction)]) {
+		[_delegate emailAction];
+	}
+}
+
+- (IBAction)messageAction {
+	if ([_delegate respondsToSelector:@selector(messageAction)]) {
+		[_delegate messageAction];
+	}
+}
+
+- (IBAction)twitterAction {
+	if ([_delegate respondsToSelector:@selector(twitterAction)]) {
+		[_delegate twitterAction];
+	}
+}
+
+- (IBAction)facebookAction {
+	if ([_delegate respondsToSelector:@selector(facebookAction)]) {
+		[_delegate facebookAction];
+	}
+}
+
 @end

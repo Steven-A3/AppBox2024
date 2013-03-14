@@ -11,6 +11,8 @@
 #import "UIView+Screenshot.h"
 #import "A3UIKit.h"
 #import "A3LoanCalcQuickDialogViewController.h"
+#import "A3LoanCalcSettingsViewController.h"
+#import "A3AppDelegate.h"
 
 @interface A3LoanCalcViewController ()
 
@@ -35,8 +37,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-	UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(onActionButton)];
-	self.navigationItem.rightBarButtonItem = buttonItem;
+
+	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"tools" ofType:@"png"];
+	UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(onActionButton)];
+
+	self.navigationItem.rightBarButtonItem = barButtonItem;
 
 	[self addChildViewController:self.quickDialogViewController];
 	[self.view addSubview:self.quickDialogViewController.view];
@@ -63,6 +69,7 @@
 - (void)onActionButton {
 	_actionMenuViewController = [[A3ActionMenuViewController alloc] initWithNibName:@"A3ActionMenuViewController" bundle:nil];
 	_actionMenuViewController.view.frame = CGRectMake(0.0, 34.0, 714.0, 60.0);
+	_actionMenuViewController.delegate = self;
 	[self.navigationController.view insertSubview:[_actionMenuViewController view] belowSubview:self.view];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapCoverView)];
@@ -88,5 +95,34 @@
 		[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
 	}];
 }
+
+#pragma mark - A3ActionMenuDelegate
+- (void)settingsAction {
+	A3LoanCalcSettingsViewController *viewController = [[A3LoanCalcSettingsViewController alloc] initWithNibName:nil bundle:nil];
+
+	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+	[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:^{
+		[self.quickDialogViewController reloadContents];
+	}];
+
+	[self onTapCoverView];
+}
+
+- (void)emailAction {
+
+}
+
+- (void)messageAction {
+
+}
+
+- (void)twitterAction {
+
+}
+
+- (void)facebookAction {
+
+}
+
 
 @end

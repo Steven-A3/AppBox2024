@@ -43,27 +43,36 @@
 	self.layer.shadowPath=[self newPathForRoundedRect:self.bounds radius:7];
 }
 
--(void)setHighlighted:(BOOL)highlighted{
+- (void)setHighlighted:(BOOL)highlighted{
 	[super setHighlighted:highlighted];
+	_mainTitle.textColor = highlighted ? [super titleColorForState:UIControlStateHighlighted] : [super titleColorForState:UIControlStateNormal];
+	_subTitle.textColor = highlighted ? [super titleColorForState:UIControlStateHighlighted] : [self subTitleColor];
 	[self setNeedsDisplay];
 }
 
--(void)setSelected:(BOOL)selected{
+- (void)setSelected:(BOOL)selected{
 	[super setSelected:selected];
+
+	_mainTitle.textColor = selected ? [super titleColorForState:UIControlStateHighlighted] : [super titleColorForState:UIControlStateNormal];
+	_subTitle.textColor = selected ? [super titleColorForState:UIControlStateHighlighted] : [self subTitleColor];
 	[self setNeedsDisplay];
 }
 
--(void)setEnabled:(BOOL)enabled{
+- (void)setEnabled:(BOOL)enabled{
 	[super setEnabled:enabled];
 	[self setNeedsDisplay];
 }
 
--(BOOL)isOpaque{
+- (BOOL)isOpaque{
 	return NO;
 }
 
--(UIColor *)backgroundColor{
+- (UIColor *)backgroundColor{
 	return [UIColor clearColor];
+}
+
+- (UIColor *)subTitleColor {
+	return [UIColor colorWithRed:80.0/255.0 green:89.0/255.0 blue:102.0/255.0 alpha:1.0];
 }
 
 - (UILabel *)mainTitle {
@@ -88,7 +97,7 @@
 		_subTitle = [[UILabel alloc] initWithFrame:frame];
 		_subTitle.backgroundColor = [UIColor clearColor];
 		_subTitle.font = [UIFont boldSystemFontOfSize:16.0];
-		_subTitle.textColor = [UIColor colorWithRed:80.0/255.0 green:89.0/255.0 blue:102.0/255.0 alpha:1.0];
+		_subTitle.textColor = [self subTitleColor];
 		_subTitle.textAlignment = NSTextAlignmentCenter;
 		_subTitle.shadowOffset = CGSizeMake(0.0, 1.0);
 		_subTitle.shadowColor = [UIColor whiteColor];

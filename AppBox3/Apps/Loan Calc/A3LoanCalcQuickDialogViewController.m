@@ -1,6 +1,6 @@
-//
 //  A3LoanCalcQuickDialogViewController.m
 //  AppBox3
+//
 //
 //  Created by Byeong Kwon Kwak on 2/16/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
@@ -15,14 +15,14 @@
 #import "A3Categories.h"
 #import "LoanCalcHistory.h"
 #import "A3AppDelegate.h"
-#import "A3UserDefaults.h"
 #import "A3LoanCalcString.h"
 #import "A3Formatter.h"
 #import "A3ButtonTextField.h"
-#import "common.h"
+#import "QEntryTableViewCell+Extension.h"
 
 #define A3LC_KEY_CALCULATION_FOR		@"CalculationFor"
 #define A3LC_KEY_PRINCIPAL				@"principal"
+#define A3LC_KEY_MONTHLY_PAYMENT		@"monthlyPayment"
 #define A3LC_KEY_DOWN_PAYMENT 			@"downPayment"
 #define A3LC_KEY_TERM					@"term"
 #define A3LC_KEY_INTEREST_RATE			@"interestRate"
@@ -33,16 +33,10 @@
 #define A3LC_KEY_EXTRA_PAYMENT_YEARLY   @"extraPaymentYearly"
 #define A3LC_KEY_EXTRA_PAYMENT_ONETIME 	@"extraPaymentOnetime"
 
-typedef NS_ENUM(NSUInteger, A3LoanCalculatorCalculationFor) {
-	A3_LCCF_MonthlyPayment = 1,
-	A3_LCCF_DownPayment,
-	A3_LCCF_Principal,
-	A3_LCCF_TermYears,
-	A3_LCCF_TermMonths
-};
 
 typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	A3LCEntryPrincipal = 1,
+	A3LCEntryMonthlyPayment,
 	A3LCEntryDownPayment,
 	A3LCEntryTerm,
 	A3LCEntryInterestRate,
@@ -58,16 +52,11 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 
 #define A3LC_TAG_CALCULATION_FOR_VALUE 7667001	// L = 76, 67 = C, 001 = id for view tag
 
-@interface A3LoanCalcQuickDialogViewController ()
-
+@interface A3LoanCalcQuickDialogViewController () <UITextFieldDelegate>
+@property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
 @property (nonatomic, strong) 	QRootElement *rootElement;
-@property (nonatomic)			A3LoanCalculatorCalculationFor calculationFor;
 @property (nonatomic, strong) 	NSNumberFormatter *currencyNumberFormatter, *percentNumberFormatter;
 @property (nonatomic, strong) 	A3LoanCalcPieChartViewController *tableHeaderViewController;
-@property (nonatomic) 			BOOL showDownPayment;
-@property (nonatomic)			BOOL showExtraPayment;
-@property (nonatomic)			BOOL showAdvanced;
-@property (nonatomic)			BOOL useTermTypeMonth, useSimpleInterest;
 @property (nonatomic, strong)	NSMutableArray *keysForCurrency;
 @property (nonatomic, strong)	NSMutableDictionary *enumForEntryKeys;
 @property (nonatomic, strong)	A3NumberKeyboardViewController *numberKeyboardViewController;
@@ -123,6 +112,19 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	}
 }
 
+- (void)reloadContents {
+	_rootElement = nil;
+	self.root = [self rootElement];
+	[self.quickDialogTableView reloadData];
+}
+
+- (A3LoanCalcPreferences *)preferences {
+	if (nil == _preferences) {
+		_preferences = [[A3LoanCalcPreferences alloc] init];
+	}
+	return _preferences;
+}
+
 - (QRootElement *)rootElement {
 	if (nil == _rootElement) {
 		_keysForCurrency = [[NSMutableArray alloc] init];
@@ -140,14 +142,35 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		// Section 2: Input values
 		QSection *section2 = [[QSection alloc] init];
 
-		A3LoanCalculatorCalculationFor calculationFor = self.calculationFor;
-		if (calculationFor != A3_LCCF_Principal) [section2 addElement:[self principalElement]];
-		if (self.showDownPayment && (calculationFor != A3_LCCF_DownPayment)) [section2 addElement:[self downPaymentElement]];
-		if ((calculationFor != A3_LCCF_TermMonths) && (calculationFor != A3_LCCF_TermYears))
-		[section2 addElement:[self termElement]];
-		if (calculationFor != A3_LCCF_Principal) [section2 addElement:[self interestRateElement]];
+		A3LoanCalcCalculationFor calculationFor = self.preferences.calculationFor;
 
-		if (self.showAdvanced) {
+		switch (calculationFor) {
+			case A3_LCCF_MonthlyPayment:
+				[section2 addElement:[self principalElement]];
+				if (self.preferences.showDownPayment) [section2 addElement:[self downPaymentElement]];
+				[section2 addElement:[self termElement]];
+				break;
+			case A3_LCCF_DownPayment:
+				[section2 addElement:[self principalElement]];
+				[section2 addElement:[self monthlyPaymentElement]];
+				[section2 addElement:[self termElement]];
+				break;
+			case A3_LCCF_Principal:
+				if (self.preferences.showDownPayment) [section2 addElement:[self downPaymentElement]];
+				[section2 addElement:[self monthlyPaymentElement]];
+				[section2 addElement:[self termElement]];
+				break;
+			case A3_LCCF_TermYears:
+			case A3_LCCF_TermMonths:
+				[section2 addElement:[self principalElement]];
+				if (self.preferences.showDownPayment) [section2 addElement:[self downPaymentElement]];
+				[section2 addElement:[self monthlyPaymentElement]];
+				break;
+		}
+
+		[section2 addElement:[self interestRateElement]];
+
+		if (self.preferences.showAdvanced) {
 			[section2 addElement:[self frequencyElement]];
 			[section2 addElement:[self startDateElement]];
 			[section2 addElement:[self notesElement]];
@@ -157,7 +180,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		[_rootElement addSection:section1];
 		[_rootElement addSection:section2];
 
-		if (self.showExtraPayment) {
+		if (self.preferences.showExtraPayment) {
 			// Section 3: Extra Payments
 			QSection *section3 = [[QSection alloc] initWithTitle:@"Extra Payments"];
 			[section3 addElement:[self extraPaymentMonthly]];
@@ -201,9 +224,9 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 }
 
 - (QButtonElement *)typeChangeButtonElement {
-	NSString *buttonTitle =	self.showAdvanced ? @"Simple" : @"Advanced";
+	NSString *buttonTitle =	self.preferences.showAdvanced ? @"Simple" : @"Advanced";
 	QButtonElement *typeChangeButton = [[QButtonElement alloc] initWithTitle:buttonTitle];
-	typeChangeButton.controllerAction = @"onChangeType:";
+	typeChangeButton.controllerAction = @"onSimpleAdvanced:";
 	return typeChangeButton;
 }
 
@@ -251,6 +274,15 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	return principalElement;
 }
 
+- (QEntryElement *)monthlyPaymentElement {
+	QEntryElement *monthlyPaymentElement = [[QEntryElement alloc] initWithTitle:@"Monthly Payment:" Value:@"" Placeholder:@"$0.00"];
+	monthlyPaymentElement.key = A3LC_KEY_EXTRA_PAYMENT_MONTHLY;
+	monthlyPaymentElement.delegate = self;
+	[_keysForCurrency addObject:monthlyPaymentElement.key];
+	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryMonthlyPayment] forKey:A3LC_KEY_MONTHLY_PAYMENT];
+	return monthlyPaymentElement;
+}
+
 - (QEntryElement *)termElement {
 	QEntryElement *termElement = [[QEntryElement alloc] initWithTitle:NSLocalizedString(@"Term:", @"Term:") Value:@"" Placeholder:@"years or months"];
 	termElement.key = A3LC_KEY_TERM;
@@ -293,81 +325,6 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	return _tableHeaderViewController;
 }
 
-- (A3LoanCalculatorCalculationFor)calculationFor {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcDefaultCalculationFor];
-	if (value) {
-		return (A3LoanCalculatorCalculationFor) [value unsignedIntegerValue];
-	}
-	return A3_LCCF_MonthlyPayment;
-}
-
-- (void)setCalculationFor:(A3LoanCalculatorCalculationFor)calculationFor {
-	[[NSUserDefaults standardUserDefaults] setInteger:calculationFor forKey:A3LoanCalcDefaultCalculationFor];
-}
-
-- (BOOL)showDownPayment {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcDefaultShowDownPayment];
-	if (value) {
-		return [value boolValue];
-	}
-	return YES;
-}
-
-- (void)setShowDownPayment:(BOOL)showDownPayment {
-	[[NSUserDefaults standardUserDefaults] setBool:showDownPayment forKey:A3LoanCalcDefaultShowDownPayment];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (BOOL)showExtraPayment {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcDefaultShowExtraPayment];
-	if (value) {
-		return [value boolValue];
-	}
-	return YES;
-}
-
-- (void)setShowExtraPayment:(BOOL)showExtraPayment {
-	[[NSUserDefaults standardUserDefaults] setBool:showExtraPayment forKey:A3LoanCalcDefaultShowExtraPayment];
-}
-
-- (BOOL)showAdvanced {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcDefaultShowAdvanced];
-	if (value) {
-		return [value boolValue];
-	}
-	return YES;
-}
-
-- (void)setShowAdvanced:(BOOL)showAdvanced {
-	[[NSUserDefaults standardUserDefaults] setBool:showAdvanced forKey:A3LoanCalcDefaultShowAdvanced];
-}
-
-- (BOOL)useTermTypeMonth {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcDefaultUseTermTypeMonth];
-	if (value) {
-		return [value boolValue];
-	}
-	return YES;
-}
-
-- (BOOL)useSimpleInterest {
-	NSNumber *value = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcDefaultUseSimpleInterest];
-	if (value) {
-		return [value boolValue];
-	}
-	return NO;
-}
-
-- (void)setUseSimpleInterest:(BOOL)useSimpleInterest {
-	[[NSUserDefaults standardUserDefaults] setBool:useSimpleInterest forKey:A3LoanCalcDefaultUseSimpleInterest];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-
-- (void)setUseTermTypeMonth:(BOOL)useTermTypeMonth {
-	[[NSUserDefaults standardUserDefaults] setBool:useTermTypeMonth forKey:A3LoanCalcDefaultUseTermTypeMonth];
-}
-
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
 		_numberKeyboardViewController = [[A3NumberKeyboardViewController alloc] init];
@@ -395,6 +352,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	if (nil == _dateKeyboardForMonthInput) {
 		_dateKeyboardForMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
 		_dateKeyboardForMonthInput.workingMode = A3DateKeyboardWorkingModeMonth;
+		_dateKeyboardForMonthInput.delegate = self;
 	}
 	return _dateKeyboardForMonthInput;
 }
@@ -403,6 +361,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	if (nil == _dateKeyboardForYearMonthInput) {
 		_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
 		_dateKeyboardForYearMonthInput.workingMode = A3DateKeyboardWorkingModeYearMonth;
+		_dateKeyboardForYearMonthInput.delegate = self;
 	}
 	return _dateKeyboardForYearMonthInput;
 }
@@ -427,11 +386,11 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 
 			// Initialize with default values
 			// One time initialization
-			_editingObject.calculationFor = [NSNumber numberWithUnsignedInteger:self.calculationFor];
-			_editingObject.useSimpleInterest = [NSNumber numberWithBool:self.useSimpleInterest];
-			_editingObject.showDownPayment = [NSNumber numberWithBool:self.showDownPayment];
-			_editingObject.showExtraPayment = [NSNumber numberWithBool:self.showExtraPayment];
-			_editingObject.showAdvanced = [NSNumber numberWithBool:self.showAdvanced];
+			_editingObject.calculationFor = [NSNumber numberWithUnsignedInteger:self.preferences.calculationFor];
+			_editingObject.useSimpleInterest = [NSNumber numberWithBool:self.preferences.useSimpleInterest];
+			_editingObject.showDownPayment = [NSNumber numberWithBool:self.preferences.showDownPayment];
+			_editingObject.showExtraPayment = [NSNumber numberWithBool:self.preferences.showExtraPayment];
+			_editingObject.showAdvanced = [NSNumber numberWithBool:self.preferences.showAdvanced];
 			_editingObject.principal = @"";
 			_editingObject.downPayment = @"";
 			_editingObject.term = @"";
@@ -456,10 +415,10 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	if (nil == _extraPaymentYearlyMonth) {
 		_extraPaymentYearlyMonth = [[A3ButtonTextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 96.0, 32.0)];
 		_extraPaymentYearlyMonth.text = @"";
-		_extraPaymentYearlyMonth.placeholder = @"September";
+		_extraPaymentYearlyMonth.placeholder = [A3Formatter fullStyleMonthSymbolFromDate:[NSDate date]];
 		_extraPaymentYearlyMonth.textAlignment = NSTextAlignmentCenter;
 		_extraPaymentYearlyMonth.font = [UIFont boldSystemFontOfSize:14.0];
-		_extraPaymentYearlyMonth.inputView = self.dateKeyboardForMonthInput.view;
+		_extraPaymentYearlyMonth.delegate = self;
 	}
 	return _extraPaymentYearlyMonth;
 }
@@ -468,10 +427,10 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	if (nil == _extraPaymentOneTimeYearMonth) {
 		_extraPaymentOneTimeYearMonth = [[A3ButtonTextField alloc] initWithFrame:CGRectMake(0.0, 0.0, 132.0, 32.0)];
 		_extraPaymentOneTimeYearMonth.text = @"";
-		_extraPaymentOneTimeYearMonth.placeholder = @"September, 2013";
+		_extraPaymentOneTimeYearMonth.placeholder = [A3Formatter fullStyleYearMonthStringFromDate:[NSDate date]];
 		_extraPaymentOneTimeYearMonth.textAlignment = NSTextAlignmentCenter;
 		_extraPaymentOneTimeYearMonth.font = [UIFont boldSystemFontOfSize:14.0];
-		_extraPaymentOneTimeYearMonth.inputView = self.dateKeyboardForYearMonthInput.view;
+		_extraPaymentOneTimeYearMonth.delegate = self;
 	}
 	return _extraPaymentOneTimeYearMonth;
 }
@@ -500,6 +459,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (void)applyEntryCellAttribute:(QEntryTableViewCell *)cell {
 	cell.textField.font = [A3UIStyle fontForTableViewEntryCellTextField];
 	cell.textField.textColor = [A3UIStyle colorForTableViewCellLabelSelected];
+	cell.textField.textAlignment = NSTextAlignmentLeft;
 }
 
 - (void)configureSection2Cell:(UITableViewCell *)cell withElement:(QElement *)element {
@@ -534,7 +494,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 			if (object.startDate) {
 				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 				[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-				entryTableViewCell.textField.text = [dateFormatter stringFromDate:object.startDate];
+				entryTableViewCell.textField.text = [A3Formatter mediumStyleDateStringFromDate:object.startDate];
 			}
 		}
 		else if ([element.key isEqualToString:A3LC_KEY_FREQUENCY]) {
@@ -545,14 +505,6 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		}
 	}
 
-}
-
-- (NSString *)frequencyString:(NSNumber *)number {
-	switch ([number unsignedIntegerValue]) {
-
-		default:break;
-	}
-	return nil;
 }
 
 - (void)configureSectionZeroCell:(UITableViewCell *)cell withElement:(QElement *)element {
@@ -566,23 +518,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		valueLabel.textColor = [UIColor blackColor];
 		[cell.contentView addSubview:valueLabel];
 	}
-	switch (self.calculationFor) {
-		case A3_LCCF_DownPayment:
-			valueLabel.text = @"Down Payment";
-			break;
-		case A3_LCCF_MonthlyPayment:
-			valueLabel.text = @"Monthly Payment";
-			break;
-		case A3_LCCF_Principal:
-			valueLabel.text = @"Principal";
-			break;
-		case A3_LCCF_TermYears:
-			valueLabel.text = @"Term(Years)";
-			break;
-		case A3_LCCF_TermMonths:
-			valueLabel.text = @"Term(Months)";
-			break;
-	}
+	valueLabel.text = [A3LoanCalcString stringFromCalculationFor:self.preferences.calculationFor];
 	cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
 	cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
 	cell.detailTextLabel.font = [UIFont systemFontOfSize:20.0];
@@ -638,7 +574,19 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		NSIndexPath *indexPath = [self.quickDialogTableView indexPathForCell:cell];
 
 		[self.quickDialogTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
+		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
+	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
+		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
 	}
+}
+
+- (void)scrollToRowAtElementWithKey:(NSString *)key {
+	QElement *element = [self.quickDialogTableView.root elementWithKey:key];
+	UITableViewCell *cell = [self.quickDialogTableView cellForElement:element];
+	NSIndexPath *indexPath = [self.quickDialogTableView indexPathForCell:cell];
+
+	[self.quickDialogTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
 }
 
 #pragma mark - Entry Cell delegate
@@ -655,10 +603,13 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		cell.textField.inputView = self.numberKeyboardViewController.view;
 		_numberKeyboardViewController.keyInputDelegate = cell.textField;
 		_numberKeyboardViewController.entryTableViewCell = cell;
+		_numberKeyboardViewController.element = element;
 		_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 
 		float value = [cell.textField.text floatValueEx];
 		cell.textField.text = value == 0.0 ? @"" : [decimalStyleFormatter stringFromNumber:[NSNumber numberWithFloat:value]];
+
+		[_numberKeyboardViewController reloadPrevNextButtons];
 	}
 
 	LoanCalcHistory *object = self.editingObject;
@@ -674,12 +625,17 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
 			_numberKeyboardViewController.bigButton1.selected = YES;
 			_numberKeyboardViewController.entryTableViewCell = cell;
+			_numberKeyboardViewController.element = element;
+			[_numberKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryInterestRate: {
 			[self prepareYearMonthInput:cell decimalStyleFormatter:decimalStyleFormatter];
 			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
 			_numberKeyboardViewController.bigButton1.selected = YES;
+			_numberKeyboardViewController.entryTableViewCell = cell;
+			_numberKeyboardViewController.element = element;
+			[_numberKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryFrequency: {
@@ -691,24 +647,36 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 			_temporaryLabelForEditing.text = cell.textField.text;
 			[cell.textField addSubview:_temporaryLabelForEditing];
 
+			cell.textField.clearButtonMode = UITextFieldViewModeNever;
+
 			cell.textField.inputView = self.frequencyKeyboardViewController.view;
 			_frequencyKeyboardViewController.delegate = self;
 			_frequencyKeyboardViewController.entryTableViewCell = cell;
+			_frequencyKeyboardViewController.element = element;
 			[_frequencyKeyboardViewController setSelectedFrequency:object.frequency];
+			[_frequencyKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryStartDate: {
+			if (object.startDate == nil) {
+				object.startDate = [NSDate date];
+			}
 			cell.textField.inputView = self.dateKeyboardViewController.view;
 			[self prepareTemporaryEditingLabelForCell:cell];
 			_dateKeyboardViewController.delegate = self;
 			_dateKeyboardViewController.element = element;
 			_dateKeyboardViewController.entryTableViewCell = cell;
 			_dateKeyboardViewController.displayLabel = _temporaryLabelForEditing;
+			_dateKeyboardViewController.date = object.startDate;
 			[_dateKeyboardViewController resetToDefaultState];
 
 			cell.textField.text = [A3Formatter mediumStyleDateStringFromDate:object.startDate];
 			_temporaryLabelForEditing.text = cell.textField.text;
 			[cell.textField addSubview:_temporaryLabelForEditing];
+
+			cell.textField.clearButtonMode = UITextFieldViewModeNever;
+
+			[_dateKeyboardForMonthInput reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryNotes:break;
@@ -720,65 +688,64 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 }
 
 - (void)QEntryEditingChangedForElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
-	[self.editingObject setValue:cell.textField.text forKey:element.key];
+	LoanCalcHistory *object = self.editingObject;
+
+	A3LoanCalculatorEntry entry = (A3LoanCalculatorEntry) [[_enumForEntryKeys objectForKey:element.key] unsignedIntegerValue];
+	switch (entry) {
+		case A3LCEntryPrincipal:
+		case A3LCEntryDownPayment:
+		case A3LCEntryExtraPaymentMonthly:
+		case A3LCEntryExtraPaymentYearly:
+		case A3LCEntryExtraPaymentOneTime:
+			element.textValue = [self currencyFormattedString:cell.textField.text];
+			[object setValue:element.textValue forKey:element.key];
+			break;
+		case A3LCEntryTerm:
+			[self updateTermValueFromTextField:element text:cell.textField.text object:object];
+			break;
+		case A3LCEntryInterestRate:
+			[self updateInterestValueFromTextField:element text:cell.textField.text object:object];
+			break;
+		case A3LCEntryNotes:
+			[object setValue:cell.textField.text forKey:element.key];
+			break;
+		case A3LCEntryFrequency:
+		case A3LCEntryStartDate:
+			break;
+	}
+	[self calculate];
 }
 
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
 	_editingElement = nil;
 	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
 
-	// It will handle principal, downPayment, extraPayments.
-	if ([_keysForCurrency indexOfObject:element.key] != NSNotFound) {
-		element.textValue = [self currencyFormattedString:cell.textField.text];
-		cell.textField.text = element.textValue;
-	}
-
 	LoanCalcHistory *object = self.editingObject;
-	if ([element.key isEqualToString:A3LC_KEY_START_DATE]) {
-
-	}
-	else if ([element.key isEqualToString:A3LC_KEY_FREQUENCY])
-	{
-		object.frequency = _frequencyKeyboardViewController.selectedFrequency;
-		cell.textField.text = [A3LoanCalcString stringForFrequencyValue:object.frequency];
-	}
-	else
-	{
-		[object setValue:element.textValue forKey:element.key];
-	}
 
 	A3LoanCalculatorEntry entry = (A3LoanCalculatorEntry) [[_enumForEntryKeys objectForKey:element.key] unsignedIntegerValue];
 	switch (entry) {
 		case A3LCEntryPrincipal:
 		case A3LCEntryDownPayment:
+		case A3LCEntryExtraPaymentMonthly:
+		case A3LCEntryExtraPaymentYearly:
+		case A3LCEntryExtraPaymentOneTime:
+			element.textValue = [self currencyFormattedString:cell.textField.text];
+			cell.textField.text = element.textValue;
+
+			[object setValue:element.textValue forKey:element.key];
 			break;
-		case A3LCEntryTerm: {
-			NSNumberFormatter *decimalStyleNumberFormatter = [[NSNumberFormatter alloc] init];
-			[decimalStyleNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-			float value = [cell.textField.text floatValue];
-			object.termTypeMonth = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
-			if (value == 0.0) {
-				cell.textField.text = @"";
-			} else {
-				NSString *termType = _numberKeyboardViewController.bigButton1.selected ? @"years" : @"months";
-				cell.textField.text = [NSString stringWithFormat:@"%@ %@", [decimalStyleNumberFormatter stringFromNumber:[NSNumber numberWithFloat:value]], termType];
-			}
-			object.term = cell.textField.text;
+		case A3LCEntryTerm:
+			[self updateTermValueFromTextField:element text:cell.textField.text object:object];
+			cell.textField.text = element.textValue;
 			break;
-		}
 		case A3LCEntryInterestRate: {
-			float value = [cell.textField.text floatValue] / 100.0;
-			object.interestRatePerYear = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
-			if (value != 0.0) {
-				NSString *termType = _numberKeyboardViewController.bigButton1.selected ? @"Annual" : @"Monthly";
-				cell.textField.text = [NSString stringWithFormat:@"%@ %@", termType, [self.percentNumberFormatter stringFromNumber:[NSNumber numberWithFloat:value]]];
-			} else {
-				cell.textField.text = @"";
-			}
-			object.interestRate = cell.textField.text;
+			[self updateInterestValueFromTextField:element text:cell.textField.text object:object];
+			cell.textField.text = element.textValue;
 			break;
 		}
 		case A3LCEntryFrequency:{
+			object.frequency = _frequencyKeyboardViewController.selectedFrequency;
+			cell.textField.text = [A3LoanCalcString stringForFrequencyValue:object.frequency];
 			[_temporaryLabelForEditing removeFromSuperview];
 			_temporaryLabelForEditing = nil;
 			break;
@@ -792,13 +759,34 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		case A3LCEntryNotes:
 			[object setValue:cell.textField.text forKey:element.key];
 			break;
-		case A3LCEntryExtraPaymentMonthly:
-			break;
-		case A3LCEntryExtraPaymentYearly:
-			break;
-		case A3LCEntryExtraPaymentOneTime:
-			break;
 	}
+	[self calculate];
+}
+
+- (void)updateTermValueFromTextField:(QEntryElement *)termElement text:(NSString *)text object:(LoanCalcHistory *)object {
+	NSNumberFormatter *decimalStyleNumberFormatter = [[NSNumberFormatter alloc] init];
+	[decimalStyleNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	float value = [text floatValue];
+	object.termTypeMonth = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
+	if (value == 0.0) {
+		termElement.textValue = @"";
+	} else {
+		termElement.textValue = _numberKeyboardViewController.bigButton1.selected ?
+				[A3LoanCalcString stringFromTermInYears:value] : [A3LoanCalcString stringFromTermInMonths:value];
+	}
+	object.term = termElement.textValue;
+}
+
+- (void)updateInterestValueFromTextField:(QEntryElement *)element text:(NSString *)text object:(LoanCalcHistory *)object {
+	float value = [text floatValue] / 100.0;
+	object.interestRatePerYear = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
+	if (value != 0.0) {
+		NSString *termType = _numberKeyboardViewController.bigButton1.selected ? @"Annual" : @"Monthly";
+		element.textValue = [NSString stringWithFormat:@"%@ %@", termType, [self.percentNumberFormatter stringFromNumber:[NSNumber numberWithFloat:value]]];
+	} else {
+		element.textValue = @"";
+	}
+	object.interestRate = element.textValue;
 }
 
 - (void)prepareTemporaryEditingLabelForCell:(QEntryTableViewCell *)cell {
@@ -813,6 +801,10 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		self.editingObject.startDate = date;
 		QEntryTableViewCell *cell = (QEntryTableViewCell *) [self.quickDialogTableView cellForElement:element];
 		cell.textField.text = [A3Formatter mediumStyleDateStringFromDate:date];
+	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
+		_extraPaymentYearlyMonth.text = [A3Formatter fullStyleMonthSymbolFromDate:date];
+	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
+		_extraPaymentOneTimeYearMonth.text = [A3Formatter fullStyleYearMonthStringFromDate:date];
 	}
 }
 
@@ -846,7 +838,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 
 #pragma mark - Button actions
 
-- (void)onChangeType:(QButtonElement *)buttonElement {
+- (void)onSimpleAdvanced:(QButtonElement *)buttonElement {
 	[_extraPaymentYearlyMonth resignFirstResponder];
 	[_extraPaymentOneTimeYearMonth resignFirstResponder];
 
@@ -854,10 +846,8 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	[self.quickDialogTableView deselectRowAtIndexPath:[self.quickDialogTableView indexPathForCell:cell] animated:YES];
 
 	QSection *section = [self.root.sections objectAtIndex:1];
-	NSUInteger insertIndex = self.showDownPayment ? 4 : 3;
-	if (!self.showAdvanced) {
-		[self setShowAdvanced:YES];
-
+	NSUInteger insertIndex = self.preferences.showDownPayment ? 4 : 3;
+	if (!self.preferences.showAdvanced) {
 		[section insertElement:[self frequencyElement] atIndex:insertIndex];
 		[section insertElement:[self startDateElement] atIndex:insertIndex + 1];
 		[section insertElement:[self notesElement] atIndex:insertIndex + 2];
@@ -865,18 +855,16 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		NSArray *addedRows = @[[NSIndexPath indexPathForRow:insertIndex inSection:1], [NSIndexPath indexPathForRow:insertIndex + 1 inSection:1], [NSIndexPath indexPathForRow:insertIndex + 2 inSection:1]];
 		[self.quickDialogTableView insertRowsAtIndexPaths:addedRows withRowAnimation:UITableViewRowAnimationBottom];
 
-		QTableViewCell *cell = [self.quickDialogTableView cellForElement:buttonElement];
+		[self.preferences setShowAdvanced:YES];
 		cell.textLabel.text = @"Simple";
 	}
 	else
 	{
 		[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(insertIndex,3)]];
 		[self.quickDialogTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIndex inSection:1], [NSIndexPath indexPathForRow:insertIndex + 1 inSection:1], [NSIndexPath indexPathForRow:insertIndex + 2 inSection:1]] withRowAnimation:UITableViewRowAnimationMiddle];
-		buttonElement.title = @"Advanced";
-		QTableViewCell *cell = [self.quickDialogTableView cellForElement:buttonElement];
-		cell.textLabel.text = @"Advanced";
 
-		[self setShowAdvanced:NO];
+		cell.textLabel.text = @"Advanced";
+		[self.preferences setShowAdvanced:NO];
 	}
 }
 
@@ -886,6 +874,194 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	[_frequencyKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 	[_numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 	[_dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (BOOL)prevAvailableForElement:(QEntryElement *)element {
+	return ![element.key isEqualToString:A3LC_KEY_PRINCIPAL];
+}
+
+- (BOOL)nextAvailableForElement:(QEntryElement *)element {
+	if (self.preferences.showExtraPayment) {
+		return _dateKeyboardForYearMonthInput == nil;
+	}
+	if (self.preferences.showAdvanced) {
+		return ![element.key isEqualToString:A3LC_KEY_NOTES];
+	}
+	return ![element.key isEqualToString:A3LC_KEY_INTEREST_RATE];
+}
+
+- (void)nextButtonPressedWithElement:(QEntryElement *)element {
+	if ([element.key isEqualToString:A3LC_KEY_EXTRA_PAYMENT_YEARLY]) {
+		[_extraPaymentYearlyMonth becomeFirstResponder];
+	} else if ([element.key isEqualToString:A3LC_KEY_EXTRA_PAYMENT_ONETIME]) {
+		[_extraPaymentOneTimeYearMonth becomeFirstResponder];
+	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
+		QElement *oneTimeElement = [self.quickDialogTableView.root elementWithKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
+		QEntryTableViewCell *cell = (QEntryTableViewCell *) [self.quickDialogTableView cellForElement:oneTimeElement];
+		[cell becomeFirstResponder];
+	} else {
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:element];
+		[cell handlePrevNextWithForNext:YES];
+	}
+}
+
+- (void)prevButtonPressedWithElement:(QEntryElement *)element {
+	if ([element.key isEqualToString:A3LC_KEY_EXTRA_PAYMENT_ONETIME]) {
+		[_extraPaymentYearlyMonth becomeFirstResponder];
+	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
+		QElement *prevElement = [self.quickDialogTableView.root elementWithKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:prevElement];
+		[cell becomeFirstResponder];
+	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
+		QElement *prevElement = [self.quickDialogTableView.root elementWithKey:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:prevElement];
+		[cell becomeFirstResponder];
+	} else {
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:element];
+		[cell handlePrevNextWithForNext:NO];
+	}
+}
+
+- (void)doneButtonPressedInDateKeyboard {
+	if (_editingElement) {
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:_editingElement];
+		[cell handleActionBarDone:nil];
+	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
+		[_extraPaymentYearlyMonth resignFirstResponder];
+	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
+		[_extraPaymentOneTimeYearMonth resignFirstResponder];
+	}
+}
+
+#pragma mark - Implement UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (textField == _extraPaymentYearlyMonth) {
+		textField.inputView = self.dateKeyboardForMonthInput.view;
+	} else if (textField == _extraPaymentOneTimeYearMonth) {
+		textField.inputView = self.dateKeyboardForYearMonthInput.view;
+	}
+	return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (textField == _extraPaymentYearlyMonth) {
+		_dateKeyboardForMonthInput = nil;
+	} else if (textField == _extraPaymentOneTimeYearMonth) {
+		_dateKeyboardForYearMonthInput = nil;
+	}
+}
+
+- (void)calculate {
+	switch (self.preferences.calculationFor) {
+		case A3_LCCF_MonthlyPayment:
+			[self calculateMonthlyPayment];
+			break;
+		case A3_LCCF_Principal:
+			[self calculatePrincipal];
+			break;
+		case A3_LCCF_DownPayment:
+			[self calculateDownPayment];
+			break;
+		case A3_LCCF_TermMonths:
+			[self calculateTerm:YES];
+			break;
+		case A3_LCCF_TermYears:
+			[self calculateTerm:NO];
+			break;
+	}
+}
+
+- (void)reloadResultRowWithValue:(NSString *)value {
+	QSection *section = [self.root.sections objectAtIndex:0];
+	QLabelElement *element = [section.elements objectAtIndex:0];
+	element.value = value;
+	[self.quickDialogTableView reloadCellForElements:element, nil];
+}
+
+- (float)monthlyInterestRate {
+	LoanCalcHistory *object = self.editingObject;
+	float monthlyInterestRate = [object.interestRate floatValueEx];
+	if ([object.interestRatePerYear boolValue]) {
+		monthlyInterestRate /= 12.0;
+	}
+	return monthlyInterestRate;
+}
+
+- (float)termInMonth {
+	LoanCalcHistory *object = self.editingObject;
+	float termMonth = [object.term floatValueEx];
+	if (![object.termTypeMonth boolValue]) {
+		termMonth *= 12.0;
+	}
+	return termMonth;
+}
+
+- (void)calculateMonthlyPayment {
+	float monthlyPayment;
+	float principal, downPayment = 0.0;
+	float monthlyInterestRate = self.monthlyInterestRate;
+	float termInMonth = self.termInMonth;
+
+	LoanCalcHistory *object = self.editingObject;
+	principal = [object.principal floatValueEx];
+	if (object.showDownPayment) {
+		downPayment = [object.downPayment floatValueEx];
+	}
+
+	monthlyPayment = (monthlyInterestRate / (1 - powf(1 + monthlyInterestRate, termInMonth))) * (principal - downPayment);
+
+	object.monthlyPayment = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:monthlyPayment]];
+	[self reloadResultRowWithValue:object.monthlyPayment];
+}
+
+- (void)calculatePrincipal {
+	float principal;
+	float monthlyPayment;
+	float downPayment = 0.0;
+	float monthlyInterestRate = self.monthlyInterestRate;
+	float termInMonth = self.termInMonth;
+
+	LoanCalcHistory *object = self.editingObject;
+	monthlyPayment = [object.monthlyPayment floatValueEx];
+	if (object.showDownPayment) {
+		downPayment = [object.downPayment floatValueEx];
+	}
+
+	principal = (powf(monthlyInterestRate + 1, termInMonth) * (downPayment * monthlyInterestRate + monthlyPayment) - monthlyInterestRate) / monthlyInterestRate * powf(monthlyInterestRate + 1, termInMonth);
+
+	object.principal = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:principal]];
+	[self reloadResultRowWithValue:object.principal];
+}
+
+- (void)calculateDownPayment {
+	LoanCalcHistory *object = self.editingObject;
+	float downPayment;
+	float principal = [object.principal floatValueEx];
+	float monthlyPayment = [object.monthlyPayment floatValueEx];
+	float monthlyInterestRate = self.monthlyInterestRate;
+	float termInMonth = self.termInMonth;
+
+	downPayment = (powf(monthlyInterestRate + 1, termInMonth) * (principal * monthlyPayment - monthlyPayment) + monthlyPayment) / monthlyInterestRate * powf(monthlyInterestRate + 1, termInMonth);
+
+	object.downPayment = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:downPayment]];
+	[self reloadResultRowWithValue:object.downPayment];
+}
+
+- (void)calculateTerm:(BOOL)inMonth {
+	LoanCalcHistory *object = self.editingObject;
+	float principal = [object.principal floatValueEx];
+	float downPayment = object.showDownPayment ? [object.downPayment floatValueEx] : 0.0;
+	float monthlyPayment = [object.monthlyPayment floatValueEx];
+	float monthlyInterestRate = self.monthlyInterestRate;
+	float term = logf(monthlyPayment / (-principal * monthlyInterestRate + downPayment * monthlyInterestRate + monthlyPayment)) / logf(monthlyInterestRate + 1.0);
+	if (inMonth) {
+		object.term = [A3LoanCalcString stringFromTermInMonths:term];
+	} else {
+		term /= 12.0;
+		object.term = [A3LoanCalcString stringFromTermInYears:term];
+	}
+	[self reloadResultRowWithValue:object.term];
 }
 
 @end

@@ -1,1 +1,0 @@
-../../XBPageCurl/XBPageCurl/XBCurlView.h

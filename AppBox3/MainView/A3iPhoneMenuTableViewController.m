@@ -96,7 +96,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	A3SectionHeaderViewInMenuTableView *sectionHeaderView = [[A3SectionHeaderViewInMenuTableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, A3_MENU_TABLE_VIEW_SECTION_HEIGHT)];
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"icon_weather_home_sun" ofType:@"png"];
+	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"weather_home_sun" ofType:@"png"];
 	UIImage *sectionImage = [UIImage imageWithContentsOfFile:imagePath];
 	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)section) {
 		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:

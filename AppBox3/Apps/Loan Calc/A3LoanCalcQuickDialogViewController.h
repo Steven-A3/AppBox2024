@@ -14,4 +14,5 @@
 
 @interface A3LoanCalcQuickDialogViewController : QuickDialogController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3NumberKeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
 
+- (void)reloadContents;
 @end

@@ -3,8 +3,8 @@
 //  NYXImagesKit
 //
 //  Created by @Nyx0uf on 02/05/11.
-//  Copyright 2012 Benjamin Godard. All rights reserved.
-//  www.cococabyss.com
+//  Copyright 2012 Nyx0uf. All rights reserved.
+//  www.cocoaintheshell.com
 //
 
 
@@ -17,14 +17,14 @@
 
 -(UIImage*)rotateInRadians:(float)radians
 {
-	const size_t width = self.size.width;
-	const size_t height = self.size.height;
+	const size_t width = (size_t)(self.size.width * self.scale);
+	const size_t height = (size_t)(self.size.height * self.scale);
 
 	CGRect imgRect = (CGRect){.origin.x = 0.0f, .origin.y = 0.0f, .size.width = width, .size.height = height};
 	CGRect rotatedRect = CGRectApplyAffineTransform(imgRect, CGAffineTransformMakeRotation(radians));
 
 	/// Create an ARGB bitmap context
-	CGContextRef bmContext = NYXCreateARGBBitmapContext(rotatedRect.size.width, rotatedRect.size.height, 0);
+	CGContextRef bmContext = NYXCreateARGBBitmapContext((size_t)rotatedRect.size.width, (size_t)rotatedRect.size.height, 0);
 	if (!bmContext)
 		return nil;
 	
@@ -41,7 +41,7 @@
 
 	/// Create an image object from the context
 	CGImageRef rotatedImageRef = CGBitmapContextCreateImage(bmContext);
-	UIImage* rotated = [UIImage imageWithCGImage:rotatedImageRef];
+	UIImage* rotated = [UIImage imageWithCGImage:rotatedImageRef scale:self.scale orientation:self.imageOrientation];
 
 	/// Cleanup
 	CGImageRelease(rotatedImageRef);
@@ -52,17 +52,14 @@
 
 -(UIImage*)rotateInDegrees:(float)degrees
 {
-	return [self rotateInRadians:NYX_DEGREES_TO_RADIANS(degrees)];
+	return [self rotateInRadians:(float)NYX_DEGREES_TO_RADIANS(degrees)];
 }
 
 -(UIImage*)rotateImagePixelsInRadians:(float)radians
 {
-	if (!(&vImageRotate_ARGB8888))
-		return nil;
-
 	/// Create an ARGB bitmap context
-	const size_t width = self.size.width;
-	const size_t height = self.size.height;
+	const size_t width = (size_t)(self.size.width * self.scale);
+	const size_t height = (size_t)(self.size.height * self.scale);
 	const size_t bytesPerRow = width * kNyxNumberOfComponentsPerARBGPixel;
 	CGContextRef bmContext = NYXCreateARGBBitmapContext(width, height, bytesPerRow);
 	if (!bmContext) 
@@ -85,7 +82,7 @@
 	vImageRotate_ARGB8888(&src, &dest, NULL, radians, bgColor, kvImageBackgroundColorFill);
 	
 	CGImageRef rotatedImageRef = CGBitmapContextCreateImage(bmContext);
-	UIImage* rotated = [UIImage imageWithCGImage:rotatedImageRef];
+	UIImage* rotated = [UIImage imageWithCGImage:rotatedImageRef scale:self.scale orientation:self.imageOrientation];
 	
 	/// Cleanup
 	CGImageRelease(rotatedImageRef);
@@ -96,14 +93,14 @@
 
 -(UIImage*)rotateImagePixelsInDegrees:(float)degrees
 {
-	return [self rotateImagePixelsInRadians:NYX_DEGREES_TO_RADIANS(degrees)];
+	return [self rotateImagePixelsInRadians:(float)NYX_DEGREES_TO_RADIANS(degrees)];
 }
 
 -(UIImage*)verticalFlip
 {
 	/// Create an ARGB bitmap context
-	const size_t originalWidth = self.size.width;
-	const size_t originalHeight = self.size.height;
+	const size_t originalWidth = (size_t)(self.size.width * self.scale);
+	const size_t originalHeight = (size_t)(self.size.height * self.scale);
 	CGContextRef bmContext = NYXCreateARGBBitmapContext(originalWidth, originalHeight, originalWidth * kNyxNumberOfComponentsPerARBGPixel);
 	if (!bmContext)
 		return nil;
@@ -121,7 +118,7 @@
 	
 	/// Create an image object from the context
 	CGImageRef flippedImageRef = CGBitmapContextCreateImage(bmContext);
-	UIImage* flipped = [UIImage imageWithCGImage:flippedImageRef];
+	UIImage* flipped = [UIImage imageWithCGImage:flippedImageRef scale:self.scale orientation:self.imageOrientation];
 	
 	/// Cleanup
 	CGImageRelease(flippedImageRef);
@@ -133,8 +130,8 @@
 -(UIImage*)horizontalFlip
 {
 	/// Create an ARGB bitmap context
-	const size_t originalWidth = self.size.width;
-	const size_t originalHeight = self.size.height;
+	const size_t originalWidth = (size_t)(self.size.width * self.scale);
+	const size_t originalHeight = (size_t)(self.size.height * self.scale);
 	CGContextRef bmContext = NYXCreateARGBBitmapContext(originalWidth, originalHeight, originalWidth * kNyxNumberOfComponentsPerARBGPixel);
 	if (!bmContext)
 		return nil;
@@ -152,7 +149,7 @@
 	
 	/// Create an image object from the context
 	CGImageRef flippedImageRef = CGBitmapContextCreateImage(bmContext);
-	UIImage* flipped = [UIImage imageWithCGImage:flippedImageRef];
+	UIImage* flipped = [UIImage imageWithCGImage:flippedImageRef scale:self.scale orientation:self.imageOrientation];
 	
 	/// Cleanup
 	CGImageRelease(flippedImageRef);

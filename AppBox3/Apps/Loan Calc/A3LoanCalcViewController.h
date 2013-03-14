@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <QuickDialog.h>
+#import "A3ActionMenuViewController.h"
 
-@interface A3LoanCalcViewController : UIViewController
+@interface A3LoanCalcViewController : UIViewController <A3ActionMenuDelegate>
 
 @end

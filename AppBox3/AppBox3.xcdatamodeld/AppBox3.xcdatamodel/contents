@@ -21,6 +21,7 @@
         <attribute name="frequency" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="interestRate" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="interestRatePerYear" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="monthlyPayment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="principal" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="showAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -63,7 +64,7 @@
     <elements>
         <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="330"/>
+        <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="345"/>
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>

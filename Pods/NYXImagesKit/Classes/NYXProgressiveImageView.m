@@ -3,7 +3,7 @@
 //  NYXImagesKit
 //
 //  Created by @Nyx0uf on 13/01/12.
-//  Copyright 2012 Benjamin Godard. All rights reserved.
+//  Copyright 2012 Nyx0uf. All rights reserved.
 //  www.cocoaintheshell.com
 //  Caching stuff by raphaelp
 //
@@ -51,10 +51,12 @@ typedef struct
 	int _imageHeight;
 	/// Expected image size
 	long long _expectedSize;
+	/// Image orientation
+	UIImageOrientation _imageOrientation;
 	/// Connection queue
 	dispatch_queue_t _queue;
 	/// Url
-	NSURL * _url;
+	NSURL* _url;
 	/// Delegate flags, avoid to many respondsToSelector
 	NyxDelegateFlags _delegateFlags;
 }
@@ -112,7 +114,8 @@ typedef struct
 
 -(void)dealloc
 {
-	dispatch_release(_queue), _queue = NULL;
+	NYX_DISPATCH_RELEASE(_queue);
+	_queue = NULL;
 }
 
 #pragma mark - Public
@@ -121,9 +124,9 @@ typedef struct
 	if (delegate != _delegate)
 	{
 		_delegate = delegate;
-		_delegateFlags.delegateImageDidLoadWithImage = [delegate respondsToSelector:@selector(imageDidLoadWithImage:)];
-		_delegateFlags.delegateImageDownloadCompletedWithImage = [delegate respondsToSelector:@selector(imageDownloadCompletedWithImage:)];
-		_delegateFlags.delegateImageDownloadFailedWithData = [delegate respondsToSelector:@selector(imageDownloadFailedWithData:)];
+		_delegateFlags.delegateImageDidLoadWithImage = (unsigned)[delegate respondsToSelector:@selector(imageDidLoadWithImage:)];
+		_delegateFlags.delegateImageDownloadCompletedWithImage = (unsigned)[delegate respondsToSelector:@selector(imageDownloadCompletedWithImage:)];
+		_delegateFlags.delegateImageDownloadFailedWithData = (unsigned)[delegate respondsToSelector:@selector(imageDownloadFailedWithData:)];
 	}
 }
 
@@ -213,7 +216,7 @@ typedef struct
 			CGImageRef imgTmp = [self createTransitoryImage:cgImage];
 			if (imgTmp)
 			{
-				__block UIImage* img = [[UIImage alloc] initWithCGImage:imgTmp];
+				__block UIImage* img = [[UIImage alloc] initWithCGImage:imgTmp scale:1.0f orientation:_imageOrientation];
 				CGImageRelease(imgTmp);
                 
 				dispatch_async(dispatch_get_main_queue(), ^{
@@ -242,6 +245,16 @@ typedef struct
 			val = CFDictionaryGetValue(dic, kCGImagePropertyPixelWidth);
 			if (val)
 				CFNumberGetValue(val, kCFNumberIntType, &_imageWidth);
+
+            val = CFDictionaryGetValue(dic, kCGImagePropertyOrientation);
+			if (val)
+			{
+				int orientation; // Note: This is an EXIF int for orientation, a number between 1 and 8
+				CFNumberGetValue(val, kCFNumberIntType, &orientation);
+				_imageOrientation = [NYXProgressiveImageView exifOrientationToiOSOrientation:orientation];
+			}
+			else
+				_imageOrientation = UIImageOrientationUp;
 			CFRelease(dic);
 		}
 	}
@@ -316,6 +329,7 @@ typedef struct
 	_cacheTime = kNyxDefaultCacheTimeValue;
 	_caching = NO;
 	_queue = dispatch_queue_create("com.cits.pdlqueue", DISPATCH_QUEUE_SERIAL);
+	_imageOrientation = UIImageOrientationUp;
 }
 
 -(CGImageRef)createTransitoryImage:(CGImageRef)partialImage
@@ -342,20 +356,55 @@ typedef struct
 	const char* concat_str = [[_url absoluteString] UTF8String];
 	if (!concat_str)
 		return @"";
-	
+
     unsigned char result[CC_MD5_DIGEST_LENGTH];
     CC_MD5(concat_str, strlen(concat_str), result);
-    
+
     NSMutableString* hash = [[NSMutableString alloc] init];
     for (unsigned int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
         [hash appendFormat:@"%02X", result[i]];
-    
+
     return [hash lowercaseString];
 }
 
 -(void)resetCache
 {
     [[[NSFileManager alloc] init] removeItemAtPath:[[NYXProgressiveImageView cacheDirectoryAddress] stringByAppendingPathComponent:[self cachedImageSystemName]] error:nil];
+}
+
++(UIImageOrientation)exifOrientationToiOSOrientation:(int)exifOrientation
+{
+	UIImageOrientation orientation = UIImageOrientationUp;
+	switch (exifOrientation)
+	{
+		case 1:
+			orientation = UIImageOrientationUp;
+			break;
+		case 3:
+			orientation = UIImageOrientationDown;
+			break;
+		case 8:
+			orientation = UIImageOrientationLeft;
+			break;
+		case 6:
+			orientation = UIImageOrientationRight;
+			break;
+		case 2:
+			orientation = UIImageOrientationUpMirrored;
+			break;
+		case 4:
+			orientation = UIImageOrientationDownMirrored;
+			break;
+		case 5:
+			orientation = UIImageOrientationLeftMirrored;
+			break;
+		case 7:
+			orientation = UIImageOrientationRightMirrored;
+			break;
+		default:
+			break;
+	}
+	return orientation;
 }
 
 @end

@@ -10,6 +10,8 @@
 #import "QuickDialog.h"
 #import "A3KeyboardButton.h"
 
+@class A3NumberKeyboardViewController;
+
 @protocol A3NumberKeyboardDelegate <NSObject>
 @optional
 
@@ -18,6 +20,11 @@
 - (NSString *)stringForBigButton1;
 - (NSString *)stringForBigButton2;
 - (void)clearButtonPressed;
+
+- (BOOL)prevAvailableForElement:(QEntryElement *)element;
+- (BOOL)nextAvailableForElement:(QEntryElement *)element;
+- (void)prevButtonPressedWithElement:(QEntryElement *)element;
+- (void)nextButtonPressedWithElement:(QEntryElement *)element;
 
 @end
 
@@ -32,6 +39,7 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 
 @property (nonatomic, weak) UIResponder<UIKeyInput> *keyInputDelegate;		// TextField, TextView, ... responder
 @property (nonatomic, weak) QEntryTableViewCell *entryTableViewCell;		// Handling Prev, Next button
+@property (nonatomic, weak) QEntryElement *element;
 @property (nonatomic) 		A3NumberKeyboardType keyboardType;
 @property (nonatomic, strong) NSString *currencySymbol;
 @property (nonatomic, strong) NSString *currencyCode;
@@ -43,6 +51,8 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *deleteButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *prevButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
+
+- (void)reloadPrevNextButtons;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 

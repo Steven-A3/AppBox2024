@@ -651,7 +651,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	price = [priceElement.textValue floatValueEx];
 	priceElement.textValue = price != 0 ? [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:price]] : @"";
 	priceElement.placeholder = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:0.0]];
-	[self.quickDialogTableView reloadCellForElements:priceElement];
+	[self.quickDialogTableView reloadCellForElements:priceElement, nil];
 }
 
 - (void)calculateSalePrice {
@@ -737,7 +737,8 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
 	tempNavigationController.view.frame = frame;
 
-	[[[A3AppDelegate instance] paperFoldMenuViewController] presentRightWingWithViewController:tempNavigationController];
+	[[[A3AppDelegate instance] paperFoldMenuViewController] presentRightWingWithViewController:tempNavigationController onClose:^{
+	}];
 }
 
 - (void)handleBigButton1 {

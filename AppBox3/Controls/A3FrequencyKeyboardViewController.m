@@ -56,6 +56,31 @@
 	self.annuallyButton.tag = A3LoanCalcFrequencyAnnually;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self reloadPrevNextButtons];
+}
+
+- (void)reloadPrevNextButtons {
+	if ([_delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
+		BOOL available = [_delegate nextAvailableForElement:_element];
+		[_nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
+		[_nextButton setEnabled:available];
+	} else {
+		[_nextButton setTitle:@"Next" forState:UIControlStateNormal];
+		[_nextButton setEnabled:YES];
+	}
+	if ([_delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
+		BOOL available = [_delegate prevAvailableForElement:_element];
+		[_prevButton setTitle:available ? @"Prev" : @"" forState:UIControlStateNormal];
+		[_prevButton setEnabled:available];
+	} else {
+		[_prevButton setTitle:@"Prev" forState:UIControlStateNormal];
+		[_prevButton setEnabled:YES];
+	}
+}
+
 - (void)viewDidUnload {
 	[super viewDidUnload];
 }
@@ -89,11 +114,19 @@
 }
 
 - (IBAction)prevButtonTouchUpInside:(UIButton *)button {
-	[_entryTableViewCell handlePrevNextWithForNext:NO];
+	if ([_delegate respondsToSelector:@selector(prevButtonPressedWithElement:)]) {
+		[_delegate prevButtonPressedWithElement:_element];
+	} else {
+		[_entryTableViewCell handlePrevNextWithForNext:NO];
+	}
 }
 
 - (IBAction)nextButtonTouchUpInside:(UIButton *)button {
-	[_entryTableViewCell handlePrevNextWithForNext:YES];
+	if ([_delegate respondsToSelector:@selector(nextButtonPressedWithElement:)]) {
+		[_delegate nextButtonPressedWithElement:_element];
+	} else {
+		[_entryTableViewCell handlePrevNextWithForNext:YES];
+	}
 }
 
 - (IBAction)doneButtonTouchUpInside:(UIButton *)button {

@@ -2,7 +2,7 @@
 //  LoanCalcHistory.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 2/28/13.
+//  Created by Byeong Kwon Kwak on 3/13/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -20,6 +20,7 @@
 @dynamic extraPaymentYearly;
 @dynamic frequency;
 @dynamic interestRate;
+@dynamic interestRatePerYear;
 @dynamic notes;
 @dynamic principal;
 @dynamic showAdvanced;
@@ -29,6 +30,6 @@
 @dynamic term;
 @dynamic termTypeMonth;
 @dynamic useSimpleInterest;
-@dynamic interestRatePerYear;
+@dynamic monthlyPayment;
 
 @end
