@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1536</int>
+		<int key="IBDocument.SystemTarget">1552</int>
 		<string key="IBDocument.SystemVersion">12C3006</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2844</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
 		<string key="IBDocument.AppKitVersion">1187.34</string>
 		<string key="IBDocument.HIToolboxVersion">625.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1930</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -41,6 +41,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrameSize">{6, 1004}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1030007146"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="732769999">
 							<int key="NSColorSpace">3</int>
@@ -57,7 +58,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{48, 0}, {6, 1004}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSWindow"/>
 						<reference key="IBUIBackgroundColor" ref="732769999"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 					</object>
@@ -67,6 +68,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 20}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="187958068"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -104,6 +106,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 80}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="315688360"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -132,6 +135,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 141}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="113356853"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -160,6 +164,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 202}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="946296943"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -188,6 +193,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 260}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="851862777"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -216,6 +222,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 320}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="572741799"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -244,6 +251,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 380}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="259588566"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -272,6 +280,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 830}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="614830010"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -296,6 +305,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 890}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="650246316"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -324,6 +334,7 @@
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
 						<string key="NSFrame">{{8, 950}, {38, 38}}</string>
 						<reference key="NSSuperview" ref="368741098"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="287071368"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -350,6 +361,7 @@
 				<object class="NSPSMatrix" key="NSFrameMatrix"/>
 				<string key="NSFrameSize">{54, 1004}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="222571221"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">10</int>
@@ -10266,10 +10278,10 @@ AAEAAQABA</bytes>
 							<reference ref="946296943"/>
 							<reference ref="113356853"/>
 							<reference ref="315688360"/>
-							<reference ref="187958068"/>
 							<reference ref="1030007146"/>
 							<reference ref="287071368"/>
 							<reference ref="222571221"/>
+							<reference ref="187958068"/>
 						</array>
 						<reference key="parent" ref="0"/>
 						<string key="objectName">HotMenuView</string>
@@ -10422,7 +10434,7 @@ AAEAAQABA</bytes>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1536" key="NS.object.0"/>
+			<real value="1552" key="NS.object.0"/>
 		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
@@ -10446,6 +10458,6 @@ AAEAAQABA</bytes>
 			<string key="icon_sc_settings.png">{38, 38}</string>
 			<string key="icon_sc_settings_on.png">{38, 38}</string>
 		</dictionary>
-		<string key="IBCocoaTouchPluginVersion">1930</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

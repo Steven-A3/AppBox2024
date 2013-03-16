@@ -19,6 +19,7 @@
 #import "A3Formatter.h"
 #import "A3ButtonTextField.h"
 #import "QEntryTableViewCell+Extension.h"
+#import "common.h"
 
 #define A3LC_KEY_CALCULATION_FOR		@"CalculationFor"
 #define A3LC_KEY_PRINCIPAL				@"principal"
@@ -93,6 +94,8 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	self.quickDialogTableView.backgroundColor = [A3UIStyle contentsBackgroundColor];
 	self.quickDialogTableView.tableHeaderView = self.tableHeaderViewController.view;
 	self.quickDialogTableView.styleProvider = self;
+
+	[self reloadGraphView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -113,6 +116,20 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 }
 
 - (void)reloadContents {
+	if (_editingObject) {
+		_editingObject.showDownPayment = [NSNumber numberWithBool:self.preferences.showDownPayment];
+		_editingObject.showExtraPayment = [NSNumber numberWithBool:_preferences.showExtraPayment];
+		_editingObject.useSimpleInterest = [NSNumber numberWithBool:_preferences.useSimpleInterest];
+		_editingObject.showAdvanced = [NSNumber numberWithBool:_preferences.showAdvanced];
+		_editingObject.calculationFor = [NSNumber numberWithUnsignedInteger:_preferences.calculationFor];
+
+		[self calculate];
+
+		NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+		NSError *error;
+		[managedObjectContext save:&error];
+	}
+
 	_rootElement = nil;
 	self.root = [self rootElement];
 	[self.quickDialogTableView reloadData];
@@ -125,6 +142,28 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	return _preferences;
 }
 
+- (NSString *)stringForCalculation {
+	NSString *string = @"";
+	LoanCalcHistory *object = self.editingObject;
+	switch ((A3LoanCalcCalculationFor)[object.calculationFor unsignedIntegerValue]) {
+		case A3_LCCF_MonthlyPayment:
+			string = object.monthlyPayment;
+			break;
+		case A3_LCCF_DownPayment:
+			string = object.downPayment;
+			break;
+		case A3_LCCF_Principal:
+			string = object.principal;
+			break;
+		case A3_LCCF_TermYears:
+		case A3_LCCF_TermMonths:
+			string = object.term;
+			break;
+	}
+	FNLOG(@"%@", string);
+	return string;
+}
+
 - (QRootElement *)rootElement {
 	if (nil == _rootElement) {
 		_keysForCurrency = [[NSMutableArray alloc] init];
@@ -135,7 +174,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		_rootElement.grouped = YES;
 
 		QSection *section1 = [[QSection alloc] init];
-		QLabelElement *section1element = [[QLabelElement alloc] initWithTitle:@"calculation for" Value:@"$193.052.00"];
+		QLabelElement *section1element = [[QLabelElement alloc] initWithTitle:@"calculation for" Value:self.stringForCalculation];
 		section1element.key = A3LC_KEY_CALCULATION_FOR;
 		[section1 addElement:section1element];
 
@@ -276,7 +315,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 
 - (QEntryElement *)monthlyPaymentElement {
 	QEntryElement *monthlyPaymentElement = [[QEntryElement alloc] initWithTitle:@"Monthly Payment:" Value:@"" Placeholder:@"$0.00"];
-	monthlyPaymentElement.key = A3LC_KEY_EXTRA_PAYMENT_MONTHLY;
+	monthlyPaymentElement.key = A3LC_KEY_MONTHLY_PAYMENT;
 	monthlyPaymentElement.delegate = self;
 	[_keysForCurrency addObject:monthlyPaymentElement.key];
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryMonthlyPayment] forKey:A3LC_KEY_MONTHLY_PAYMENT];
@@ -381,6 +420,11 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
 		if ([fetchedObjects count]) {
 			_editingObject = [fetchedObjects objectAtIndex:0];
+			[self.preferences setCalculationFor:(A3LoanCalcCalculationFor)[_editingObject.calculationFor unsignedIntegerValue]];
+			[_preferences setShowDownPayment:[_editingObject.showDownPayment boolValue]];
+			[_preferences setShowExtraPayment:[_editingObject.showExtraPayment boolValue]];
+			[_preferences setShowAdvanced:[_editingObject.showAdvanced boolValue]];
+			[_preferences setUseSimpleInterest:[_editingObject.useSimpleInterest boolValue]];
 		} else {
 			_editingObject = [NSEntityDescription insertNewObjectForEntityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 
@@ -617,7 +661,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	A3LoanCalculatorEntry entry = (A3LoanCalculatorEntry) [[_enumForEntryKeys objectForKey:element.key] unsignedIntegerValue];
 	switch (entry) {
 		case A3LCEntryPrincipal:
-			break;
+		case A3LCEntryMonthlyPayment:
 		case A3LCEntryDownPayment:
 			break;
 		case A3LCEntryTerm: {
@@ -693,6 +737,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	A3LoanCalculatorEntry entry = (A3LoanCalculatorEntry) [[_enumForEntryKeys objectForKey:element.key] unsignedIntegerValue];
 	switch (entry) {
 		case A3LCEntryPrincipal:
+		case A3LCEntryMonthlyPayment:
 		case A3LCEntryDownPayment:
 		case A3LCEntryExtraPaymentMonthly:
 		case A3LCEntryExtraPaymentYearly:
@@ -725,6 +770,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	A3LoanCalculatorEntry entry = (A3LoanCalculatorEntry) [[_enumForEntryKeys objectForKey:element.key] unsignedIntegerValue];
 	switch (entry) {
 		case A3LCEntryPrincipal:
+		case A3LCEntryMonthlyPayment:
 		case A3LCEntryDownPayment:
 		case A3LCEntryExtraPaymentMonthly:
 		case A3LCEntryExtraPaymentYearly:
@@ -767,7 +813,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	NSNumberFormatter *decimalStyleNumberFormatter = [[NSNumberFormatter alloc] init];
 	[decimalStyleNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	float value = [text floatValue];
-	object.termTypeMonth = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
+	object.termTypeMonth = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton2.selected];
 	if (value == 0.0) {
 		termElement.textValue = @"";
 	} else {
@@ -952,6 +998,23 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	}
 }
 
+- (void)reloadGraphView {
+	LoanCalcHistory *object = self.editingObject;
+	float principal = [object.principal floatValueEx];
+	float monthlyPayment = [object.monthlyPayment floatValueEx];
+	float termInMonth = self.termInMonth;
+	float totalAmount = monthlyPayment * termInMonth;
+	float totalInterest = totalAmount - principal;
+	float monthlyAverageInterest = totalInterest / termInMonth;
+
+	_tableHeaderViewController.totalAmount = [NSNumber numberWithFloat:totalAmount];
+	_tableHeaderViewController.principal = [NSNumber numberWithFloat:principal];
+	_tableHeaderViewController.totalInterest = [NSNumber numberWithFloat:totalInterest];
+	_tableHeaderViewController.monthlyPayment = [NSNumber numberWithFloat:monthlyPayment];
+	_tableHeaderViewController.monthlyAverageInterest = [NSNumber numberWithFloat:monthlyAverageInterest];
+	[_tableHeaderViewController reloadData];
+}
+
 - (void)calculate {
 	switch (self.preferences.calculationFor) {
 		case A3_LCCF_MonthlyPayment:
@@ -970,6 +1033,12 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 			[self calculateTerm:NO];
 			break;
 	}
+
+	[self reloadGraphView];
+
+	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSError *error;
+	[managedObjectContext save:&error];
 }
 
 - (void)reloadResultRowWithValue:(NSString *)value {
@@ -985,7 +1054,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	if ([object.interestRatePerYear boolValue]) {
 		monthlyInterestRate /= 12.0;
 	}
-	return monthlyInterestRate;
+	return monthlyInterestRate / 100.0;
 }
 
 - (float)termInMonth {
@@ -1009,7 +1078,9 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		downPayment = [object.downPayment floatValueEx];
 	}
 
-	monthlyPayment = (monthlyInterestRate / (1 - powf(1 + monthlyInterestRate, termInMonth))) * (principal - downPayment);
+	monthlyPayment = (monthlyInterestRate / (1 - powf(1 + monthlyInterestRate, -termInMonth))) * (principal - downPayment);
+
+	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, termInMonth, downPayment);
 
 	object.monthlyPayment = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:monthlyPayment]];
 	[self reloadResultRowWithValue:object.monthlyPayment];
@@ -1024,11 +1095,15 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 
 	LoanCalcHistory *object = self.editingObject;
 	monthlyPayment = [object.monthlyPayment floatValueEx];
+
+	principal = (monthlyPayment*powf(monthlyInterestRate+1,termInMonth)-monthlyPayment)/(monthlyInterestRate*powf(monthlyInterestRate+1,termInMonth));
+
 	if (object.showDownPayment) {
 		downPayment = [object.downPayment floatValueEx];
+		principal -= downPayment;
 	}
 
-	principal = (powf(monthlyInterestRate + 1, termInMonth) * (downPayment * monthlyInterestRate + monthlyPayment) - monthlyInterestRate) / monthlyInterestRate * powf(monthlyInterestRate + 1, termInMonth);
+	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, termInMonth, downPayment);
 
 	object.principal = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:principal]];
 	[self reloadResultRowWithValue:object.principal];
@@ -1042,7 +1117,10 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	float monthlyInterestRate = self.monthlyInterestRate;
 	float termInMonth = self.termInMonth;
 
-	downPayment = (powf(monthlyInterestRate + 1, termInMonth) * (principal * monthlyPayment - monthlyPayment) + monthlyPayment) / monthlyInterestRate * powf(monthlyInterestRate + 1, termInMonth);
+	float calculatedPrincipal = (monthlyPayment*powf(monthlyInterestRate+1,termInMonth)-monthlyPayment)/(monthlyInterestRate*powf(monthlyInterestRate+1,termInMonth));
+	downPayment = calculatedPrincipal - principal;
+
+	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, termInMonth, downPayment);
 
 	object.downPayment = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:downPayment]];
 	[self reloadResultRowWithValue:object.downPayment];
@@ -1054,7 +1132,12 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	float downPayment = object.showDownPayment ? [object.downPayment floatValueEx] : 0.0;
 	float monthlyPayment = [object.monthlyPayment floatValueEx];
 	float monthlyInterestRate = self.monthlyInterestRate;
-	float term = logf(monthlyPayment / (-principal * monthlyInterestRate + downPayment * monthlyInterestRate + monthlyPayment)) / logf(monthlyInterestRate + 1.0);
+
+	float calculatedPrincipal = principal - downPayment;
+	float term = logf(monthlyPayment/(monthlyPayment-calculatedPrincipal*monthlyInterestRate))/logf(monthlyInterestRate+1);
+
+	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterm = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, term, downPayment);
+
 	if (inMonth) {
 		object.term = [A3LoanCalcString stringFromTermInMonths:term];
 	} else {

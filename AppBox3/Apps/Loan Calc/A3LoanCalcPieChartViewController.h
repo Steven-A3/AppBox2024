@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CorePlot-CocoaTouch.h"
 
-@interface A3LoanCalcPieChartViewController : UIViewController
+@interface A3LoanCalcPieChartViewController : UIViewController <CPTPlotDataSource>
 
+@property (nonatomic)	NSNumber *principal, *totalInterest, *monthlyPayment, *monthlyAverageInterest, *totalAmount;
+
+- (void)reloadData;
 @end

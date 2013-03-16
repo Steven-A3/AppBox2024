@@ -9,9 +9,6 @@
 #import "A3StatisticsViewController.h"
 #import "A3StatisticsViewCellController.h"
 #import "A3UIDevice.h"
-#import "common.h"
-#import "CorePlot-CocoaTouch.h"
-#include <mach/mach_host.h>
 
 typedef enum {
 	A3StatisticsCellNameEvents = 0,
@@ -41,6 +38,12 @@ typedef enum {
 		self.values = @[@17, @124, @26, @3, @43];
     }
     return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[super didReceiveMemoryWarning];
+	// Dispose of any resources that can be recreated.
 }
 
 - (UIView *)deviceStatusView {
@@ -144,26 +147,6 @@ typedef enum {
 	}
 }
 
-- (NSArray *)plotLabels {
-	if (nil == _plotLabels) {
-		_plotLabels = @[@"Events", @"Downloader", @"Notes", @"Photos", @"Wallet"];
-	}
-	return _plotLabels;
-}
-
-- (NSArray *)plotFillColors {
-	if (nil == _plotFillColors) {
-		_plotFillColors = @[
-				[UIColor colorWithRed:163.0f/255.0f green:223.0f/255.0f blue:40.0f/255.0f alpha:1.0f],
-				[UIColor colorWithRed:2550.f/255.0f green:201.0f/255.0f blue:108.0f/255.0f alpha:1.0f],
-				[UIColor colorWithRed:55.0f/255.0f green:231.0f/255.0f blue:227.0f/255.0f alpha:1.0f],
-				[UIColor colorWithRed:253.0f/255.0f green:154.0f/244.0f blue:205.0f/255.0f alpha:1.0f],
-				[UIColor colorWithRed:154.0f/255.0f green:174.0f/255.0f blue:244.0f/255.0f alpha:1.0f]
-		];
-	}
-	return _plotFillColors;
-}
-
 - (void)addPieChart {
 	CGRect chartFrame = CGRectMake(0.0f, 0.0f, A3_STATISTICS_VIEW_PIE_CHART_SIZE, A3_STATISTICS_VIEW_PIE_CHART_SIZE);
 	self.graphHostingView = [[CPTGraphHostingView alloc] initWithFrame:chartFrame];
@@ -214,17 +197,17 @@ typedef enum {
 #pragma mark -
 #pragma mark Plot Data Source Methods
 
--(NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
+- (NSUInteger)numberOfRecordsForPlot:(CPTPlot *)plot
 {
 	return [_values count];
 }
 
--(NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
+- (NSNumber *)numberForPlot:(CPTPlot *)plot field:(NSUInteger)fieldEnum recordIndex:(NSUInteger)index
 {
 	return [_values objectAtIndex:index];
 }
 
--(CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index
+- (CPTLayer *)dataLabelForPlot:(CPTPlot *)plot recordIndex:(NSUInteger)index
 {
 	static CPTMutableTextStyle *labelTextStyle = nil;
 	if (!labelTextStyle) {
@@ -235,14 +218,28 @@ typedef enum {
 	return [[CPTTextLayer alloc] initWithText:[self.plotLabels objectAtIndex:index] style:labelTextStyle];
 }
 
--(CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx {
+- (CPTFill *)sliceFillForPieChart:(CPTPieChart *)pieChart recordIndex:(NSUInteger)idx {
 	return [[CPTFill alloc] initWithColor:[self.plotFillColors objectAtIndex:idx]];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (NSArray *)plotLabels {
+	if (nil == _plotLabels) {
+		_plotLabels = @[@"Events", @"Downloader", @"Notes", @"Photos", @"Wallet"];
+	}
+	return _plotLabels;
+}
+
+- (NSArray *)plotFillColors {
+	if (nil == _plotFillColors) {
+		_plotFillColors = @[
+				[UIColor colorWithRed:163.0f/255.0f green:223.0f/255.0f blue:40.0f/255.0f alpha:1.0f],
+				[UIColor colorWithRed:2550.f/255.0f green:201.0f/255.0f blue:108.0f/255.0f alpha:1.0f],
+				[UIColor colorWithRed:55.0f/255.0f green:231.0f/255.0f blue:227.0f/255.0f alpha:1.0f],
+				[UIColor colorWithRed:253.0f/255.0f green:154.0f/244.0f blue:205.0f/255.0f alpha:1.0f],
+				[UIColor colorWithRed:154.0f/255.0f green:174.0f/255.0f blue:244.0f/255.0f alpha:1.0f]
+		];
+	}
+	return _plotFillColors;
 }
 
 @end

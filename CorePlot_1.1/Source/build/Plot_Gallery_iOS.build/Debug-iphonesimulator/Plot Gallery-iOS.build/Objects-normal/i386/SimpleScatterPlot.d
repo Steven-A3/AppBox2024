@@ -1,7 +1,7 @@
 dependencies: \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.m \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.m \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.h \
   ../../framework/CorePlot-CocoaTouch.h \
   ../../framework/Source/CPTAnnotation.h \
   ../../framework/Source/CPTDefinitions.h \

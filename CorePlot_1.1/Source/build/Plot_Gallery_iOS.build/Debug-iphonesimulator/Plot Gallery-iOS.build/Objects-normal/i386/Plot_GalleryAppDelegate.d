@@ -1,7 +1,7 @@
 dependencies: \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.m \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/DetailViewController.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.m \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/DetailViewController.h \
   ../../framework/CorePlot-CocoaTouch.h \
   ../../framework/Source/CPTAnnotation.h \
   ../../framework/Source/CPTDefinitions.h \
@@ -61,7 +61,7 @@ dependencies: \
   ../../framework/Source/CPTXYAxisSet.h \
   ../../framework/Source/CPTXYGraph.h \
   ../../framework/Source/CPTXYPlotSpace.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/RootViewController.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotGallery.h
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/RootViewController.h \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotGallery.h

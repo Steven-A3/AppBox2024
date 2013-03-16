@@ -1,5 +1,5 @@
 dependencies: \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.m \
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.m \
   ../../framework/CorePlot-CocoaTouch.h \
   ../../framework/Source/CPTAnnotation.h \
   ../../framework/Source/CPTDefinitions.h \
@@ -59,4 +59,4 @@ dependencies: \
   ../../framework/Source/CPTXYAxisSet.h \
   ../../framework/Source/CPTXYGraph.h \
   ../../framework/Source/CPTXYPlotSpace.h \
-  /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.h
+  /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.h
