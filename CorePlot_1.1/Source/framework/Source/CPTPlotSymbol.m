@@ -412,11 +412,13 @@
 {
     CPTPlotSymbol *copy = [[[self class] allocWithZone:zone] init];
 
+    copy.anchorPoint         = self.anchorPoint;
     copy.size                = self.size;
     copy.symbolType          = self.symbolType;
     copy.usesEvenOddClipRule = self.usesEvenOddClipRule;
     copy.lineStyle           = [[self.lineStyle copy] autorelease];
     copy.fill                = [[self.fill copy] autorelease];
+    copy.shadow              = [[self.shadow copy] autorelease];
 
     if ( self.customSymbolPath ) {
         CGPathRef pathCopy = CGPathCreateCopy(self.customSymbolPath);
@@ -468,14 +470,16 @@
         layerSize.height += symbolMargin;
 
         self.anchorPoint = CPTPointMake(0.5, 0.5);
-        theCachedLayer   = CGLayerCreateWithContext(context, layerSize, NULL);
 
-        [self renderAsVectorInContext:CGLayerGetContext(theCachedLayer)
+        CGLayerRef newLayer = CGLayerCreateWithContext(context, layerSize, NULL);
+
+        [self renderAsVectorInContext:CGLayerGetContext(newLayer)
                               atPoint:CPTPointMake( layerSize.width * CPTFloat(0.5), layerSize.height * CPTFloat(0.5) )
                                 scale:scale];
 
-        self.cachedLayer = theCachedLayer;
-        CGLayerRelease(theCachedLayer);
+        self.cachedLayer = newLayer;
+        CGLayerRelease(newLayer);
+        theCachedLayer   = self.cachedLayer;
         self.anchorPoint = symbolAnchor;
     }
 
@@ -549,6 +553,7 @@
             CGContextTranslateCTM(context, center.x + ( symbolAnchor.x - CPTFloat(0.5) ) * symbolSize.width, center.y + ( symbolAnchor.y - CPTFloat(0.5) ) * symbolSize.height);
             CGContextScaleCTM(context, scale, scale);
             [self.shadow setShadowInContext:context];
+            CGContextBeginTransparencyLayer(context, NULL);
 
             if ( theFill ) {
                 // use fillRect instead of fillPath so that images and gradients are properly centered in the symbol
@@ -577,6 +582,7 @@
                 [theLineStyle strokePathInContext:context];
             }
 
+            CGContextEndTransparencyLayer(context);
             CGContextRestoreGState(context);
         }
     }
@@ -701,13 +707,11 @@
         {
             CGPathRef customPath = self.customSymbolPath;
             if ( customPath ) {
-                CGRect oldBounds                 = CGRectNull;
-                CGAffineTransform scaleTransform = CGAffineTransformIdentity;
+                CGRect oldBounds = CGPathGetBoundingBox(customPath);
+                CGFloat dx1      = symbolSize.width / oldBounds.size.width;
+                CGFloat dy1      = symbolSize.height / oldBounds.size.height;
 
-                oldBounds = CGPathGetBoundingBox(customPath);
-                CGFloat dx1 = symbolSize.width / oldBounds.size.width;
-                CGFloat dy1 = symbolSize.height / oldBounds.size.height;
-                scaleTransform = CGAffineTransformScale(CGAffineTransformIdentity, dx1, dy1);
+                CGAffineTransform scaleTransform = CGAffineTransformScale(CGAffineTransformIdentity, dx1, dy1);
                 scaleTransform = CGAffineTransformConcat( scaleTransform,
                                                           CGAffineTransformMakeTranslation(-halfSize.width, -halfSize.height) );
                 CGPathAddPath(symbolPath, &scaleTransform, customPath);

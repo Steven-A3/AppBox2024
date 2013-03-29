@@ -6,15 +6,13 @@
 #import "CPTLegend.h"
 #import "CPTLineStyle.h"
 #import "CPTMutableNumericData.h"
-#import "CPTNumericData.h"
 #import "CPTPlotArea.h"
+#import "CPTPlotRange.h"
 #import "CPTPlotSpace.h"
 #import "CPTPlotSpaceAnnotation.h"
-#import "CPTPlotSymbol.h"
 #import "CPTUtilities.h"
 #import "CPTXYPlotSpace.h"
 #import "NSCoderExtensions.h"
-#import <stdlib.h>
 
 /** @defgroup plotAnimationTradingRangePlot Trading Range Plot
  *  @brief Trading range plot properties that can be animated using Core Animation.
@@ -462,10 +460,8 @@ const CPTCoordinate dependentCoord   = CPTCoordinateY;
 
     CGPoint openPoint, highPoint, lowPoint, closePoint;
 
-    CPTPlotArea *thePlotArea              = self.plotArea;
     CPTPlotSpace *thePlotSpace            = self.plotSpace;
     CPTTradingRangePlotStyle thePlotStyle = self.plotStyle;
-    CGPoint originTransformed             = [self convertPoint:self.frame.origin fromLayer:thePlotArea];
     BOOL alignPoints                      = self.alignsPointsToPixels;
 
     CGContextBeginTransparencyLayer(context, NULL);
@@ -541,22 +537,22 @@ const CPTCoordinate dependentCoord   = CPTCoordinateY;
                     case CPTTradingRangePlotStyleOHLC:
                         [self drawOHLCInContext:context
                                         atIndex:i
-                                              x:xCoord + originTransformed.x
-                                           open:openPoint.y + originTransformed.y
-                                          close:closePoint.y + originTransformed.y
-                                           high:highPoint.y + originTransformed.y
-                                            low:lowPoint.y + originTransformed.y
+                                              x:xCoord
+                                           open:openPoint.y
+                                          close:closePoint.y
+                                           high:highPoint.y
+                                            low:lowPoint.y
                                     alignPoints:alignPoints];
                         break;
 
                     case CPTTradingRangePlotStyleCandleStick:
                         [self drawCandleStickInContext:context
                                                atIndex:i
-                                                     x:xCoord + originTransformed.x
-                                                  open:openPoint.y + originTransformed.y
-                                                 close:closePoint.y + originTransformed.y
-                                                  high:highPoint.y + originTransformed.y
-                                                   low:lowPoint.y + originTransformed.y
+                                                     x:xCoord
+                                                  open:openPoint.y
+                                                 close:closePoint.y
+                                                  high:highPoint.y
+                                                   low:lowPoint.y
                                            alignPoints:alignPoints];
                         break;
 
@@ -638,22 +634,22 @@ const CPTCoordinate dependentCoord   = CPTCoordinateY;
                     case CPTTradingRangePlotStyleOHLC:
                         [self drawOHLCInContext:context
                                         atIndex:i
-                                              x:xCoord + originTransformed.x
-                                           open:openPoint.y + originTransformed.y
-                                          close:closePoint.y + originTransformed.y
-                                           high:highPoint.y + originTransformed.y
-                                            low:lowPoint.y + originTransformed.y
+                                              x:xCoord
+                                           open:openPoint.y
+                                          close:closePoint.y
+                                           high:highPoint.y
+                                            low:lowPoint.y
                                     alignPoints:alignPoints];
                         break;
 
                     case CPTTradingRangePlotStyleCandleStick:
                         [self drawCandleStickInContext:context
                                                atIndex:i
-                                                     x:xCoord + originTransformed.x
-                                                  open:openPoint.y + originTransformed.y
-                                                 close:closePoint.y + originTransformed.y
-                                                  high:highPoint.y + originTransformed.y
-                                                   low:lowPoint.y + originTransformed.y
+                                                     x:xCoord
+                                                  open:openPoint.y
+                                                 close:closePoint.y
+                                                  high:highPoint.y
+                                                   low:lowPoint.y
                                            alignPoints:alignPoints];
                         break;
 
@@ -1316,7 +1312,7 @@ const CPTCoordinate dependentCoord   = CPTCoordinateY;
     }
 
     if ( result != NSNotFound ) {
-        CGFloat offset = CPTFloat(0.0);
+        CGFloat offset;
 
         switch ( self.plotStyle ) {
             case CPTTradingRangePlotStyleOHLC:

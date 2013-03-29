@@ -13,11 +13,15 @@
 #import "A3LoanCalcQuickDialogViewController.h"
 #import "A3LoanCalcSettingsViewController.h"
 #import "A3AppDelegate.h"
+#import "A3LoanCalcComparisonMainViewController.h"
 
 @interface A3LoanCalcViewController ()
 
 @property (nonatomic, strong) A3ActionMenuViewController *actionMenuViewController;
+@property (nonatomic, strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3LoanCalcQuickDialogViewController *quickDialogViewController;
+@property (nonatomic, strong) A3LoanCalcComparisonMainViewController *comparisonViewController;
+@property (nonatomic, strong) CAGradientLayer *topGradientLayer;
 
 @end
 
@@ -50,7 +54,9 @@
 	frame.size.height -= 44.0;
 	[_quickDialogViewController.view setFrame:frame];
 
-	[A3UIKit addTopGradientLayerToView:self.view];
+	_topGradientLayer = [A3UIKit addTopGradientLayerToView:self.view];
+
+	_segmentedControl.selectedSegmentIndex = 0;
 }
 
 - (void)didReceiveMemoryWarning
@@ -59,12 +65,39 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)segmentedControlValueChagend:(UISegmentedControl *)segmentedControl {
+	[_topGradientLayer removeFromSuperlayer];
+
+	if (segmentedControl.selectedSegmentIndex == 1) {
+		[self.quickDialogViewController removeFromParentViewController];
+		[self.quickDialogViewController.view removeFromSuperview];
+
+		[self addChildViewController:self.comparisonViewController];
+		[self.view addSubview:_comparisonViewController.view];
+	} else {
+		[_comparisonViewController removeFromParentViewController];
+		[_comparisonViewController.view removeFromSuperview];
+
+		[self addChildViewController:self.quickDialogViewController];
+		[self.view addSubview:_quickDialogViewController.view];
+	}
+	_topGradientLayer = [A3UIKit addTopGradientLayerToView:self.view];
+}
+
 - (A3LoanCalcQuickDialogViewController *)quickDialogViewController {
 	if (nil == _quickDialogViewController) {
 		_quickDialogViewController = [[A3LoanCalcQuickDialogViewController alloc] initWithNibName:nil bundle:nil];
 	}
 	return _quickDialogViewController;
 }
+
+- (A3LoanCalcComparisonMainViewController *)comparisonViewController {
+	if (nil == _comparisonViewController) {
+		_comparisonViewController = [[A3LoanCalcComparisonMainViewController alloc] initWithNibName:@"A3LoanCalcComparisonMainViewController" bundle:nil];
+	}
+	return _comparisonViewController;
+}
+
 
 - (void)onActionButton {
 	_actionMenuViewController = [[A3ActionMenuViewController alloc] initWithNibName:@"A3ActionMenuViewController" bundle:nil];

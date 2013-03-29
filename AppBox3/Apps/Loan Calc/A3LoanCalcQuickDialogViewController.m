@@ -20,34 +20,8 @@
 #import "A3ButtonTextField.h"
 #import "QEntryTableViewCell+Extension.h"
 #import "common.h"
+#import "LoanCalcHistory+calculation.h"
 
-#define A3LC_KEY_CALCULATION_FOR		@"CalculationFor"
-#define A3LC_KEY_PRINCIPAL				@"principal"
-#define A3LC_KEY_MONTHLY_PAYMENT		@"monthlyPayment"
-#define A3LC_KEY_DOWN_PAYMENT 			@"downPayment"
-#define A3LC_KEY_TERM					@"term"
-#define A3LC_KEY_INTEREST_RATE			@"interestRate"
-#define A3LC_KEY_FREQUENCY				@"frequency"
-#define A3LC_KEY_START_DATE				@"startDate"
-#define A3LC_KEY_NOTES					@"notes"
-#define A3LC_KEY_EXTRA_PAYMENT_MONTHLY  @"extraPaymentMonthly"
-#define A3LC_KEY_EXTRA_PAYMENT_YEARLY   @"extraPaymentYearly"
-#define A3LC_KEY_EXTRA_PAYMENT_ONETIME 	@"extraPaymentOnetime"
-
-
-typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
-	A3LCEntryPrincipal = 1,
-	A3LCEntryMonthlyPayment,
-	A3LCEntryDownPayment,
-	A3LCEntryTerm,
-	A3LCEntryInterestRate,
-	A3LCEntryFrequency,
-	A3LCEntryStartDate,
-	A3LCEntryNotes,
-	A3LCEntryExtraPaymentMonthly,
-	A3LCEntryExtraPaymentYearly,
-	A3LCEntryExtraPaymentOneTime
-};
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
 
@@ -107,7 +81,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (void)applyCommonAttributes {
 	for (QSection *section in self.rootElement.sections) {
 		for (QElement *element in section.elements) {
-			element.height = A3_CALCULATOR_APP_ROW_HEIGHT;
+			element.height = A3_LOAN_CALC_ROW_HEIGHT;
 			if ([element isKindOfClass:[QEntryElement class]]) {
 				((QEntryElement *)element).delegate = self;
 			}
@@ -272,7 +246,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (QEntryElement *)notesElement {
 	QEntryElement *notes = [[QEntryElement alloc] initWithTitle:NSLocalizedString(@"Notes:", @"Notes:") Value:@"" Placeholder:@"(Optional)"];
 	notes.key = A3LC_KEY_NOTES;
-	notes.height = A3_CALCULATOR_APP_ROW_HEIGHT;
+	notes.height = A3_LOAN_CALC_ROW_HEIGHT;
 	notes.delegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryNotes] forKey:A3LC_KEY_NOTES];
 	return notes;
@@ -281,7 +255,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (QEntryElement *)startDateElement {
 	QEntryElement *startDate = [[QEntryElement alloc] initWithTitle:NSLocalizedString(@"Start Date:", @"Start Date:") Value:@"" Placeholder:[A3UIKit mediumStyleDateString:[NSDate date]]];
 	startDate.key = A3LC_KEY_START_DATE;
-	startDate.height = A3_CALCULATOR_APP_ROW_HEIGHT;
+	startDate.height = A3_LOAN_CALC_ROW_HEIGHT;
 	startDate.delegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryStartDate] forKey:A3LC_KEY_START_DATE];
 	return startDate;
@@ -290,7 +264,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (QEntryElement *)frequencyElement {
 	QEntryElement *frequency = [[QEntryElement alloc] initWithTitle:NSLocalizedString(@"Frequency:", @"Frequency:") Value:@"" Placeholder:@"Monthly"];
 	frequency.key = A3LC_KEY_FREQUENCY;
-	frequency.height = A3_CALCULATOR_APP_ROW_HEIGHT;
+	frequency.height = A3_LOAN_CALC_ROW_HEIGHT;
 	frequency.delegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryFrequency] forKey:A3LC_KEY_FREQUENCY];
 	return frequency;
@@ -411,7 +385,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 		[fetchRequest setEntity:entity];
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"editing == YES"];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(editing == YES) and (location == 'S')"];
 		[fetchRequest setPredicate:predicate];
 		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
 		[fetchRequest setSortDescriptors:@[sortDescriptor]];
@@ -427,29 +401,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 			[_preferences setUseSimpleInterest:[_editingObject.useSimpleInterest boolValue]];
 		} else {
 			_editingObject = [NSEntityDescription insertNewObjectForEntityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
-
-			// Initialize with default values
-			// One time initialization
-			_editingObject.calculationFor = [NSNumber numberWithUnsignedInteger:self.preferences.calculationFor];
-			_editingObject.useSimpleInterest = [NSNumber numberWithBool:self.preferences.useSimpleInterest];
-			_editingObject.showDownPayment = [NSNumber numberWithBool:self.preferences.showDownPayment];
-			_editingObject.showExtraPayment = [NSNumber numberWithBool:self.preferences.showExtraPayment];
-			_editingObject.showAdvanced = [NSNumber numberWithBool:self.preferences.showAdvanced];
-			_editingObject.principal = @"";
-			_editingObject.downPayment = @"";
-			_editingObject.term = @"";
-			_editingObject.termTypeMonth = [NSNumber numberWithBool:YES];
-			_editingObject.interestRate = @"";
-			_editingObject.interestRatePerYear = [NSNumber numberWithBool:YES];
-			_editingObject.frequency = [NSNumber numberWithInteger:0];
-			_editingObject.startDate = nil;
-			_editingObject.notes = @"";
-			_editingObject.created = [NSDate date];
-			_editingObject.extraPaymentMonthly = @"";
-			_editingObject.extraPaymentYearly = @"";
-			_editingObject.extraPaymentOnetime = @"";
-
-			_editingObject.editing = [NSNumber numberWithBool:YES];
+            [_editingObject initializeValues];
 		}
 	}
 	return _editingObject;
@@ -727,6 +679,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		case A3LCEntryExtraPaymentMonthly:break;
 		case A3LCEntryExtraPaymentYearly:break;
 		case A3LCEntryExtraPaymentOneTime:break;
+		default:break;
 	}
 	cell.textField.inputAccessoryView = nil;
 }
@@ -756,6 +709,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 			break;
 		case A3LCEntryFrequency:
 		case A3LCEntryStartDate:
+		default:
 			break;
 	}
 	[self calculate];
@@ -805,6 +759,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 		case A3LCEntryNotes:
 			[object setValue:cell.textField.text forKey:element.key];
 			break;
+		default:break;
 	}
 	[self calculate];
 }
@@ -1002,7 +957,7 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	LoanCalcHistory *object = self.editingObject;
 	float principal = [object.principal floatValueEx];
 	float monthlyPayment = [object.monthlyPayment floatValueEx];
-	float termInMonth = self.termInMonth;
+	float termInMonth = self.editingObject.termInMonth;
 	float totalAmount = monthlyPayment * termInMonth;
 	float totalInterest = totalAmount - principal;
 	float monthlyAverageInterest = totalInterest / termInMonth;
@@ -1018,19 +973,24 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (void)calculate {
 	switch (self.preferences.calculationFor) {
 		case A3_LCCF_MonthlyPayment:
-			[self calculateMonthlyPayment];
+			[self.editingObject calculateMonthlyPayment];
+			[self reloadResultRowWithValue:_editingObject.monthlyPayment];
 			break;
 		case A3_LCCF_Principal:
-			[self calculatePrincipal];
+            [self.editingObject calculatePrincipal];
+			[self reloadResultRowWithValue:_editingObject.principal];
 			break;
 		case A3_LCCF_DownPayment:
-			[self calculateDownPayment];
+			[self.editingObject calculateDownPayment];
+			[self reloadResultRowWithValue:_editingObject.downPayment];
 			break;
 		case A3_LCCF_TermMonths:
-			[self calculateTerm:YES];
+			[self.editingObject calculateTerm:YES];
+			[self reloadResultRowWithValue:_editingObject.term];
 			break;
 		case A3_LCCF_TermYears:
-			[self calculateTerm:NO];
+			[self.editingObject calculateTerm:NO];
+			[self reloadResultRowWithValue:_editingObject.term];
 			break;
 	}
 
@@ -1046,105 +1006,6 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	QLabelElement *element = [section.elements objectAtIndex:0];
 	element.value = value;
 	[self.quickDialogTableView reloadCellForElements:element, nil];
-}
-
-- (float)monthlyInterestRate {
-	LoanCalcHistory *object = self.editingObject;
-	float monthlyInterestRate = [object.interestRate floatValueEx];
-	if ([object.interestRatePerYear boolValue]) {
-		monthlyInterestRate /= 12.0;
-	}
-	return monthlyInterestRate / 100.0;
-}
-
-- (float)termInMonth {
-	LoanCalcHistory *object = self.editingObject;
-	float termMonth = [object.term floatValueEx];
-	if (![object.termTypeMonth boolValue]) {
-		termMonth *= 12.0;
-	}
-	return termMonth;
-}
-
-- (void)calculateMonthlyPayment {
-	float monthlyPayment;
-	float principal, downPayment = 0.0;
-	float monthlyInterestRate = self.monthlyInterestRate;
-	float termInMonth = self.termInMonth;
-
-	LoanCalcHistory *object = self.editingObject;
-	principal = [object.principal floatValueEx];
-	if (object.showDownPayment) {
-		downPayment = [object.downPayment floatValueEx];
-	}
-
-	monthlyPayment = (monthlyInterestRate / (1 - powf(1 + monthlyInterestRate, -termInMonth))) * (principal - downPayment);
-
-	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, termInMonth, downPayment);
-
-	object.monthlyPayment = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:monthlyPayment]];
-	[self reloadResultRowWithValue:object.monthlyPayment];
-}
-
-- (void)calculatePrincipal {
-	float principal;
-	float monthlyPayment;
-	float downPayment = 0.0;
-	float monthlyInterestRate = self.monthlyInterestRate;
-	float termInMonth = self.termInMonth;
-
-	LoanCalcHistory *object = self.editingObject;
-	monthlyPayment = [object.monthlyPayment floatValueEx];
-
-	principal = (monthlyPayment*powf(monthlyInterestRate+1,termInMonth)-monthlyPayment)/(monthlyInterestRate*powf(monthlyInterestRate+1,termInMonth));
-
-	if (object.showDownPayment) {
-		downPayment = [object.downPayment floatValueEx];
-		principal -= downPayment;
-	}
-
-	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, termInMonth, downPayment);
-
-	object.principal = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:principal]];
-	[self reloadResultRowWithValue:object.principal];
-}
-
-- (void)calculateDownPayment {
-	LoanCalcHistory *object = self.editingObject;
-	float downPayment;
-	float principal = [object.principal floatValueEx];
-	float monthlyPayment = [object.monthlyPayment floatValueEx];
-	float monthlyInterestRate = self.monthlyInterestRate;
-	float termInMonth = self.termInMonth;
-
-	float calculatedPrincipal = (monthlyPayment*powf(monthlyInterestRate+1,termInMonth)-monthlyPayment)/(monthlyInterestRate*powf(monthlyInterestRate+1,termInMonth));
-	downPayment = calculatedPrincipal - principal;
-
-	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterminMonth = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, termInMonth, downPayment);
-
-	object.downPayment = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:downPayment]];
-	[self reloadResultRowWithValue:object.downPayment];
-}
-
-- (void)calculateTerm:(BOOL)inMonth {
-	LoanCalcHistory *object = self.editingObject;
-	float principal = [object.principal floatValueEx];
-	float downPayment = object.showDownPayment ? [object.downPayment floatValueEx] : 0.0;
-	float monthlyPayment = [object.monthlyPayment floatValueEx];
-	float monthlyInterestRate = self.monthlyInterestRate;
-
-	float calculatedPrincipal = principal - downPayment;
-	float term = logf(monthlyPayment/(monthlyPayment-calculatedPrincipal*monthlyInterestRate))/logf(monthlyInterestRate+1);
-
-	FNLOG("principal = %f\nmonthlyPayment = %f\nmonthlyInterestRate = %f\nterm = %f\ndownPayment = %f", principal, monthlyPayment, monthlyInterestRate, term, downPayment);
-
-	if (inMonth) {
-		object.term = [A3LoanCalcString stringFromTermInMonths:term];
-	} else {
-		term /= 12.0;
-		object.term = [A3LoanCalcString stringFromTermInYears:term];
-	}
-	[self reloadResultRowWithValue:object.term];
 }
 
 @end

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
-		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12C3006</string>
+		<int key="IBDocument.SystemTarget">1296</int>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.34</string>
-		<string key="IBDocument.HIToolboxVersion">625.00</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			<string key="NS.object.0">2083</string>
@@ -44,7 +44,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{114, 7}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="636612702"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -80,7 +79,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{114, 94}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1061441411"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -101,7 +99,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{114, 178}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="527522065"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -127,7 +124,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{114, 265}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="286753810"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -148,7 +144,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{332, 7}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="339190001"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -168,7 +163,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{455, 7}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="515772574"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -188,7 +182,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{578, 7}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="460339466"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -208,7 +201,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{332, 94}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="562613896"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -228,7 +220,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{455, 94}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1018121285"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -248,7 +239,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{578, 94}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="943794554"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -268,7 +258,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{332, 179}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="570205336"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -288,7 +277,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{455, 179}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="479367124"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -308,7 +296,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{578, 179}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="475609901"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -328,7 +315,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{332, 265}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1014027206"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -348,7 +334,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{455, 266}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="46034141"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -368,7 +353,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{578, 265}, {108, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="799258566"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -388,7 +372,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{735, 7}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="658395683"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -407,7 +390,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{735, 94}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="1020212006"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -428,7 +410,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{735, 179}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="459591062"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -449,7 +430,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{735, 265}, {172, 77}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="677283644"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -470,7 +450,6 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{999, 282}, {10, 24}}</string>
 								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
 									<int key="NSColorSpace">3</int>
@@ -484,7 +463,6 @@
 						</array>
 						<string key="NSFrameSize">{1024, 350}</string>
 						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="951917321"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -497,7 +475,6 @@
 				</array>
 				<string key="NSFrameSize">{1024, 350}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="650695902"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -1117,153 +1094,17 @@
 			<nil key="sourceID"/>
 			<int key="maxID">1038</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">A3DateKeyboardViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="blank2Button">A3KeyboardButton</string>
-						<string key="blankButton">A3KeyboardButton</string>
-						<string key="clear_Oct_Button">A3KeyboardButton</string>
-						<string key="dayButton">A3KeyboardButton</string>
-						<string key="doneButton">A3KeyboardButton</string>
-						<string key="markView">A3KeyboardMoveMarkView</string>
-						<string key="monthButton">A3KeyboardButton</string>
-						<string key="nextButton">A3KeyboardButton</string>
-						<string key="num0_Nov_Button">A3KeyboardButton</string>
-						<string key="num1_Jul_Button">A3KeyboardButton</string>
-						<string key="num2_Aug_Button">A3KeyboardButton</string>
-						<string key="num3_Sep_Button">A3KeyboardButton</string>
-						<string key="num4_Apr_Button">A3KeyboardButton</string>
-						<string key="num5_May_Button">A3KeyboardButton</string>
-						<string key="num6_Jun_Button">A3KeyboardButton</string>
-						<string key="num7_Jan_Button">A3KeyboardButton</string>
-						<string key="num8_Feb_Button">A3KeyboardButton</string>
-						<string key="num9_Mar_Button">A3KeyboardButton</string>
-						<string key="prevButton">A3KeyboardButton</string>
-						<string key="today_Dec_Button">A3KeyboardButton</string>
-						<string key="yearButton">A3KeyboardButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="blank2Button">
-							<string key="name">blank2Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="blankButton">
-							<string key="name">blankButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="clear_Oct_Button">
-							<string key="name">clear_Oct_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="dayButton">
-							<string key="name">dayButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="doneButton">
-							<string key="name">doneButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="markView">
-							<string key="name">markView</string>
-							<string key="candidateClassName">A3KeyboardMoveMarkView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="monthButton">
-							<string key="name">monthButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="nextButton">
-							<string key="name">nextButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num0_Nov_Button">
-							<string key="name">num0_Nov_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num1_Jul_Button">
-							<string key="name">num1_Jul_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num2_Aug_Button">
-							<string key="name">num2_Aug_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num3_Sep_Button">
-							<string key="name">num3_Sep_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num4_Apr_Button">
-							<string key="name">num4_Apr_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num5_May_Button">
-							<string key="name">num5_May_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num6_Jun_Button">
-							<string key="name">num6_Jun_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num7_Jan_Button">
-							<string key="name">num7_Jan_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num8_Feb_Button">
-							<string key="name">num8_Feb_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="num9_Mar_Button">
-							<string key="name">num9_Mar_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="prevButton">
-							<string key="name">prevButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="today_Dec_Button">
-							<string key="name">today_Dec_Button</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="yearButton">
-							<string key="name">yearButton</string>
-							<string key="candidateClassName">A3KeyboardButton</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3DateKeyboardViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3KeyboardBackgroundView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3KeyboardBackgroundView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3KeyboardButton</string>
-					<string key="superclassName">UIButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3KeyboardButton.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3KeyboardMoveMarkView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3KeyboardMoveMarkView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1296" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
+			<real value="4600" key="NS.object.0"/>
+		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

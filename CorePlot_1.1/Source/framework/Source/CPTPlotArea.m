@@ -8,7 +8,7 @@
 #import "CPTLineStyle.h"
 #import "CPTPlotGroup.h"
 
-static const int kCPTNumberOfLayers = 6; // number of primary layers to arrange
+static const size_t kCPTNumberOfLayers = 6; // number of primary layers to arrange
 
 /// @cond
 @interface CPTPlotArea()
@@ -261,6 +261,17 @@ static const int kCPTNumberOfLayers = 6; // number of primary layers to arrange
 
     [super renderAsVectorInContext:context];
 
+    BOOL useMask = self.masksToBounds;
+    self.masksToBounds = YES;
+    CGContextSaveGState(context);
+
+    CGPathRef maskPath = self.maskingPath;
+    if ( maskPath ) {
+        CGContextBeginPath(context);
+        CGContextAddPath(context, maskPath);
+        CGContextClip(context);
+    }
+
     [self.fill fillRect:self.bounds inContext:context];
 
     NSArray *theAxes = self.axisSet.axes;
@@ -271,6 +282,9 @@ static const int kCPTNumberOfLayers = 6; // number of primary layers to arrange
     for ( CPTAxis *axis in theAxes ) {
         [axis drawBackgroundLimitsInContext:context];
     }
+
+    CGContextRestoreGState(context);
+    self.masksToBounds = useMask;
 }
 
 /// @endcond
@@ -325,7 +339,7 @@ static const int kCPTNumberOfLayers = 6; // number of primary layers to arrange
 {
     CPTGraphLayerType *buLayerOrder = self.bottomUpLayerOrder;
 
-    for ( int i = 0; i < kCPTNumberOfLayers; i++ ) {
+    for ( size_t i = 0; i < kCPTNumberOfLayers; i++ ) {
         *(buLayerOrder++) = (CPTGraphLayerType)i;
     }
 
@@ -366,7 +380,7 @@ static const int kCPTNumberOfLayers = 6; // number of primary layers to arrange
     CPTGraphLayerType *buLayerOrder = self.bottomUpLayerOrder;
     unsigned idx                    = 0;
 
-    for ( NSInteger i = 0; i < kCPTNumberOfLayers; i++ ) {
+    for ( size_t i = 0; i < kCPTNumberOfLayers; i++ ) {
         if ( buLayerOrder[i] == layerType ) {
             break;
         }

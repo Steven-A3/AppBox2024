@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12B19</string>
-		<string key="IBDocument.InterfaceBuilderVersion">2549</string>
-		<string key="IBDocument.AppKitVersion">1187</string>
-		<string key="IBDocument.HIToolboxVersion">624.00</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">1498</string>
+			<string key="NS.object.0">2083</string>
 		</object>
 		<array key="IBDocument.IntegratedClassDependencies">
 			<string>IBProxyObject</string>
@@ -53,7 +53,6 @@
 								<int key="NSvFlags">274</int>
 								<string key="NSFrame">{{20, 20}, {330, 607}}</string>
 								<reference key="NSSuperview" ref="344469730"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="86586961"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="174002889">
@@ -73,7 +72,6 @@
 						</array>
 						<string key="NSFrameSize">{370, 642}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1052385953"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="641896762">
@@ -91,7 +89,6 @@
 								<int key="NSvFlags">277</int>
 								<string key="NSFrameSize">{20, 642}</string>
 								<reference key="NSSuperview" ref="86586961"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="910609010"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="641896762"/>
@@ -102,7 +99,6 @@
 						</array>
 						<string key="NSFrame">{{370, 0}, {20, 642}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="225342744"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -4507,7 +4503,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{20, 56}, {460, 32}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="864038364"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -4538,7 +4533,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<int key="NSvFlags">290</int>
 								<string key="NSFrame">{{20, 7}, {460, 50}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="757912474"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -4569,7 +4563,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<int key="NSvFlags">289</int>
 								<string key="NSFrame">{{516, 20}, {44, 28}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="453912746"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -4600,7 +4593,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<array class="NSMutableArray" key="NSSubviews"/>
 								<string key="NSFrame">{{20, 100}, {540, 1}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="813631212"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
@@ -4614,7 +4606,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<int key="NSvFlags">278</int>
 								<string key="NSFrame">{{20, 130}, {295, 493}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="432912609"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="174002889"/>
@@ -4633,7 +4624,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<array class="NSMutableArray" key="NSSubviews"/>
 								<string key="NSFrame">{{334, 130}, {226, 78}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="348585615"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor">
@@ -4651,8 +4641,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<array class="NSMutableArray" key="NSSubviews"/>
 								<string key="NSFrame">{{334, 211}, {226, 410}}</string>
 								<reference key="NSSuperview" ref="910609010"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="641896762"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -4661,7 +4649,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						</array>
 						<string key="NSFrame">{{390, 0}, {580, 654}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="318464387"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="641896762"/>
@@ -4670,7 +4657,6 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				</array>
 				<string key="NSFrameSize">{970, 642}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="344469730"/>
 				<reference key="IBUIBackgroundColor" ref="641896762"/>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -4920,119 +4906,23 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="sourceID"/>
 			<int key="maxID">79</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">A3CalendarDayAllDayEventView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3CalendarDayAllDayEventView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3CalendarDayHourlyView</string>
-					<string key="superclassName">UIScrollView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3CalendarDayHourlyView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3CalendarEventPropertyDelegateAndDataSource</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3CalendarEventPropertyDelegateAndDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3CalendarEventsDelegateAndDataSource</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3CalendarEventsDelegateAndDataSource.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3CalendarListViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">editButtonAction:</string>
-						<string key="NS.object.0">CoolButton</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">editButtonAction:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">editButtonAction:</string>
-							<string key="candidateClassName">CoolButton</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="editButton">CoolButton</string>
-						<string key="eventDateLabel">UILabel</string>
-						<string key="eventPropertyDelegateAndDataSource">A3CalendarEventPropertyDelegateAndDataSource</string>
-						<string key="eventTitleLabel">UILabel</string>
-						<string key="eventsDelegateAndDataSource">A3CalendarEventsDelegateAndDataSource</string>
-						<string key="eventsTableView">UITableView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="editButton">
-							<string key="name">editButton</string>
-							<string key="candidateClassName">CoolButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="eventDateLabel">
-							<string key="name">eventDateLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="eventPropertyDelegateAndDataSource">
-							<string key="name">eventPropertyDelegateAndDataSource</string>
-							<string key="candidateClassName">A3CalendarEventPropertyDelegateAndDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="eventTitleLabel">
-							<string key="name">eventTitleLabel</string>
-							<string key="candidateClassName">UILabel</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="eventsDelegateAndDataSource">
-							<string key="name">eventsDelegateAndDataSource</string>
-							<string key="candidateClassName">A3CalendarEventsDelegateAndDataSource</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="eventsTableView">
-							<string key="name">eventsTableView</string>
-							<string key="candidateClassName">UITableView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3CalendarListViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3CalendarVerticalSeparatorView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3CalendarVerticalSeparatorView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CoolButton</string>
-					<string key="superclassName">UIButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CoolButton.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
 			<real value="1296" key="NS.object.0"/>
 		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencyDefaults">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
+			<real value="1552" key="NS.object.0"/>
+		</object>
+		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
+			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
+			<real value="4600" key="NS.object.0"/>
+		</object>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">1498</string>
+		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
 </archive>

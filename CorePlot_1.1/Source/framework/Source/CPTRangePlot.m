@@ -1,15 +1,13 @@
 #import "CPTRangePlot.h"
 
-#import "CPTColor.h"
 #import "CPTExceptions.h"
 #import "CPTFill.h"
 #import "CPTLegend.h"
 #import "CPTLineStyle.h"
 #import "CPTMutableNumericData.h"
-#import "CPTNumericData.h"
 #import "CPTPathExtensions.h"
 #import "CPTPlotArea.h"
-#import "CPTPlotSpace.h"
+#import "CPTPlotRange.h"
 #import "CPTPlotSpace.h"
 #import "CPTPlotSpaceAnnotation.h"
 #import "CPTUtilities.h"
@@ -577,8 +575,8 @@ typedef struct CGPointError CGPointError;
     [super renderAsVectorInContext:context];
 
     // Calculate view points, and align to user space
-    CGPointError *viewPoints = malloc( dataCount * sizeof(CGPointError) );
-    BOOL *drawPointFlags     = malloc( dataCount * sizeof(BOOL) );
+    CGPointError *viewPoints = calloc( dataCount, sizeof(CGPointError) );
+    BOOL *drawPointFlags     = calloc( dataCount, sizeof(BOOL) );
 
     CPTXYPlotSpace *thePlotSpace = (CPTXYPlotSpace *)self.plotSpace;
     [self calculatePointsToDraw:drawPointFlags numberOfPoints:dataCount forPlotSpace:thePlotSpace includeVisiblePointsOnly:NO];
@@ -638,7 +636,7 @@ typedef struct CGPointError CGPointError;
 
             CGContextSaveGState(context);
 
-            // Pick the current linestyle with a low alpha component
+            // Pick the current line style with a low alpha component
             [self.areaFill fillPathInContext:context];
 
             CGPathRelease(fillPath);
@@ -656,10 +654,10 @@ typedef struct CGPointError CGPointError;
                         halfBarWidth:halfBarWidth
                          alignPoints:alignPoints];
         }
-
-        free(viewPoints);
-        free(drawPointFlags);
     }
+
+    free(viewPoints);
+    free(drawPointFlags);
 }
 
 -(void)drawRangeInContext:(CGContextRef)context
@@ -953,7 +951,7 @@ typedef struct CGPointError CGPointError;
 -(NSUInteger)dataIndexFromInteractionPoint:(CGPoint)point
 {
     NSUInteger dataCount     = self.cachedDataCount;
-    CGPointError *viewPoints = malloc( dataCount * sizeof(CGPointError) );
+    CGPointError *viewPoints = calloc( dataCount, sizeof(CGPointError) );
     BOOL *drawPointFlags     = malloc( dataCount * sizeof(BOOL) );
 
     [self calculatePointsToDraw:drawPointFlags numberOfPoints:dataCount forPlotSpace:(id)self.plotSpace includeVisiblePointsOnly:YES];

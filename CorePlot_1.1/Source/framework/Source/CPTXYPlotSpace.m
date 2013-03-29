@@ -7,11 +7,8 @@
 #import "CPTMutablePlotRange.h"
 #import "CPTPlot.h"
 #import "CPTPlotArea.h"
-#import "CPTPlotArea.h"
 #import "CPTPlotAreaFrame.h"
 #import "CPTUtilities.h"
-#import "CPTXYAxis.h"
-#import "CPTXYAxisSet.h"
 #import "NSNumberExtensions.h"
 
 /// @cond
@@ -382,10 +379,16 @@
 
     // Set range
     NSDecimal zero = CPTDecimalFromInteger(0);
-    if ( unionXRange && !CPTDecimalEquals(unionXRange.length, zero) ) {
+    if ( unionXRange ) {
+        if ( CPTDecimalEquals(unionXRange.length, zero) ) {
+            [unionXRange unionPlotRange:self.xRange];
+        }
         self.xRange = unionXRange;
     }
-    if ( unionYRange && !CPTDecimalEquals(unionYRange.length, zero) ) {
+    if ( unionYRange ) {
+        if ( CPTDecimalEquals(unionYRange.length, zero) ) {
+            [unionYRange unionPlotRange:self.yRange];
+        }
         self.yRange = unionYRange;
     }
 
@@ -489,7 +492,7 @@
     return coordinate;
 }
 
-// Log (only one version since there are no trancendental functions for NSDecimal)
+// Log (only one version since there are no transcendental functions for NSDecimal)
 -(CGFloat)viewCoordinateForViewLength:(CGFloat)viewLength logPlotRange:(CPTPlotRange *)range doublePrecisionPlotCoordinateValue:(double)plotCoord
 {
     if ( (range.minLimitDouble <= 0.0) || (range.maxLimitDouble <= 0.0) || (plotCoord <= 0.0) ) {
@@ -527,7 +530,7 @@
 // Plot area view point for plot point
 -(CGPoint)plotAreaViewPointForPlotPoint:(NSDecimal *)plotPoint
 {
-    CGSize layerSize      = CGSizeZero;
+    CGSize layerSize;
     CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
     if ( plotArea ) {
@@ -537,8 +540,8 @@
         return CGPointZero;
     }
 
-    CGFloat viewX = CPTFloat(0.0);
-    CGFloat viewY = CPTFloat(0.0);
+    CGFloat viewX;
+    CGFloat viewY;
 
     switch ( self.xScaleType ) {
         case CPTScaleTypeLinear:
@@ -577,7 +580,7 @@
 
 -(CGPoint)plotAreaViewPointForDoublePrecisionPlotPoint:(double *)plotPoint
 {
-    CGSize layerSize      = CGSizeZero;
+    CGSize layerSize;
     CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
     if ( plotArea ) {
@@ -587,8 +590,8 @@
         return CGPointZero;
     }
 
-    CGFloat viewX = CPTFloat(0.0);
-    CGFloat viewY = CPTFloat(0.0);
+    CGFloat viewX;
+    CGFloat viewY;
 
     switch ( self.xScaleType ) {
         case CPTScaleTypeLinear:
@@ -622,7 +625,7 @@
 // Plot point for view point
 -(void)plotPoint:(NSDecimal *)plotPoint forPlotAreaViewPoint:(CGPoint)point
 {
-    CGSize boundsSize     = CGSizeZero;
+    CGSize boundsSize;
     CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
     if ( plotArea ) {
@@ -664,7 +667,7 @@
 
 -(void)doublePrecisionPlotPoint:(double *)plotPoint forPlotAreaViewPoint:(CGPoint)point
 {
-    CGSize boundsSize     = CGSizeZero;
+    CGSize boundsSize;
     CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
 
     if ( plotArea ) {
@@ -751,17 +754,21 @@
 
 -(void)scaleBy:(CGFloat)interactionScale aboutPoint:(CGPoint)plotAreaPoint
 {
-    if ( !self.graph.plotAreaFrame || (interactionScale <= 1.e-6) ) {
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+
+    if ( !plotArea || (interactionScale <= 1.e-6) ) {
         return;
     }
-    if ( ![self.graph.plotAreaFrame.plotArea containsPoint:plotAreaPoint] ) {
+    if ( ![plotArea containsPoint:plotAreaPoint] ) {
         return;
     }
 
     // Ask the delegate if it is OK
+    id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
     BOOL shouldScale = YES;
-    if ( [self.delegate respondsToSelector:@selector(plotSpace:shouldScaleBy:aboutPoint:)] ) {
-        shouldScale = [self.delegate plotSpace:self shouldScaleBy:interactionScale aboutPoint:plotAreaPoint];
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:shouldScaleBy:aboutPoint:)] ) {
+        shouldScale = [theDelegate plotSpace:self shouldScaleBy:interactionScale aboutPoint:plotAreaPoint];
     }
     if ( !shouldScale ) {
         return;
@@ -810,9 +817,9 @@
     CPTPlotRange *newRangeY = [[[CPTPlotRange alloc] initWithLocation:newLocationY length:newLengthY] autorelease];
 
     // Delegate may still veto/modify the range
-    if ( [self.delegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
-        newRangeX = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
-        newRangeY = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
+    if ( [theDelegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
+        newRangeX = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
+        newRangeY = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
     }
 
     self.xRange = newRangeX;
@@ -836,10 +843,10 @@
  *  If the receiver has a @ref delegate and the delegate handles the event,
  *  this method always returns @YES.
  *  If @ref allowsUserInteraction is @NO
- *  or the graph does not have a @link CPTGraph::plotAreaFrame plotAreaFrame @endlink layer,
+ *  or the graph does not have a @link CPTPlotAreaFrame::plotArea plotArea @endlink layer,
  *  this method always returns @NO.
  *  Otherwise, if the @par{interactionPoint} is within the bounds of the
- *  @link CPTGraph::plotAreaFrame plotAreaFrame @endlink, a drag operation starts and
+ *  @link CPTPlotAreaFrame::plotArea plotArea @endlink, a drag operation starts and
  *  this method returns @YES.
  *
  *  @param event The OS event.
@@ -855,12 +862,13 @@
         return YES;
     }
 
-    if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame ) {
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    if ( !self.allowsUserInteraction || !plotArea ) {
         return NO;
     }
 
-    CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:self.graph.plotAreaFrame];
-    if ( [self.graph.plotAreaFrame containsPoint:pointInPlotArea] ) {
+    CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:plotArea];
+    if ( [plotArea containsPoint:pointInPlotArea] ) {
         // Handle event
         lastDragPoint = pointInPlotArea;
         isDragging    = YES;
@@ -879,7 +887,7 @@
  *  If the receiver has a @ref delegate and the delegate handles the event,
  *  this method always returns @YES.
  *  If @ref allowsUserInteraction is @NO
- *  or the graph does not have a @link CPTGraph::plotAreaFrame plotAreaFrame @endlink layer,
+ *  or the graph does not have a @link CPTPlotAreaFrame::plotArea plotArea @endlink layer,
  *  this method always returns @NO.
  *  Otherwise, if a drag operation is in progress, it ends and
  *  this method returns @YES.
@@ -896,7 +904,7 @@
         return YES;
     }
 
-    if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame ) {
+    if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame.plotArea ) {
         return NO;
     }
 
@@ -917,7 +925,7 @@
  *  If the receiver has a @ref delegate and the delegate handles the event,
  *  this method always returns @YES.
  *  If @ref allowsUserInteraction is @NO
- *  or the graph does not have a @link CPTGraph::plotAreaFrame plotAreaFrame @endlink layer,
+ *  or the graph does not have a @link CPTPlotAreaFrame::plotArea plotArea @endlink layer,
  *  this method always returns @NO.
  *  Otherwise, if a drag operation is in progress, the @ref xRange
  *  and @ref yRange are shifted to follow the drag and
@@ -935,18 +943,21 @@
         return YES;
     }
 
-    if ( !self.allowsUserInteraction || !self.graph.plotAreaFrame ) {
+    CPTPlotArea *plotArea = self.graph.plotAreaFrame.plotArea;
+    if ( !self.allowsUserInteraction || !plotArea ) {
         return NO;
     }
 
     if ( isDragging ) {
-        CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:self.graph.plotAreaFrame];
+        CGPoint pointInPlotArea = [self.graph convertPoint:interactionPoint toLayer:plotArea];
         CGPoint displacement    = CPTPointMake(pointInPlotArea.x - lastDragPoint.x, pointInPlotArea.y - lastDragPoint.y);
         CGPoint pointToUse      = pointInPlotArea;
 
+        id<CPTPlotSpaceDelegate> theDelegate = self.delegate;
+
         // Allow delegate to override
-        if ( [self.delegate respondsToSelector:@selector(plotSpace:willDisplaceBy:)] ) {
-            displacement = [self.delegate plotSpace:self willDisplaceBy:displacement];
+        if ( [theDelegate respondsToSelector:@selector(plotSpace:willDisplaceBy:)] ) {
+            displacement = [theDelegate plotSpace:self willDisplaceBy:displacement];
             pointToUse   = CPTPointMake(lastDragPoint.x + displacement.x, lastDragPoint.y + displacement.y);
         }
 
@@ -972,9 +983,9 @@
         }
 
         // Delegate override
-        if ( [self.delegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
-            self.xRange = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
-            self.yRange = [self.delegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
+        if ( [theDelegate respondsToSelector:@selector(plotSpace:willChangePlotRangeTo:forCoordinate:)] ) {
+            self.xRange = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeX forCoordinate:CPTCoordinateX];
+            self.yRange = [theDelegate plotSpace:self willChangePlotRangeTo:newRangeY forCoordinate:CPTCoordinateY];
         }
         else {
             self.xRange = newRangeX;

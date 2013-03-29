@@ -1,9 +1,10 @@
 #import "CPTLegend.h"
 
-#import "CPTDefinitions.h"
 #import "CPTExceptions.h"
+#import "CPTFill.h"
 #import "CPTGraph.h"
 #import "CPTLegendEntry.h"
+#import "CPTLineStyle.h"
 #import "CPTPlot.h"
 #import "CPTTextStyle.h"
 #import "CPTUtilities.h"
@@ -494,7 +495,7 @@ NSString *const CPTLegendNeedsReloadEntriesForPlotNotification = @"CPTLegendNeed
 
             left += theSwatchSize.width + theOffset;
 
-            [legendEntry drawTitleInRect:CPTAlignRectToUserSpace( context, CPTRectMake(left, rowPosition, actualColumnWidths[col], actualRowHeights[row]) )
+            [legendEntry drawTitleInRect:CPTAlignRectToUserSpace( context, CPTRectMake(left, rowPosition, actualColumnWidths[col] + CPTFloat(1.0), actualRowHeights[row]) )
                                inContext:context
                                    scale:self.contentsScale];
         }
@@ -618,7 +619,7 @@ NSString *const CPTLegendNeedsReloadEntriesForPlotNotification = @"CPTLegendNeed
         if ( (desiredColumnCount == 0) || (col < desiredColumnCount) ) {
             maxTitleWidth[col] = MAX(MAX(maxTitleWidth[col], titleSize.width), theSwatchSize.width);
 
-            if ( row < desiredColumnWidths.count ) {
+            if ( col < desiredColumnWidths.count ) {
                 id desiredColumnWidth = [desiredColumnWidths objectAtIndex:col];
                 if ( [desiredColumnWidth isKindOfClass:numberClass] ) {
                     maxTitleWidth[col] = MAX(maxTitleWidth[col], [(NSNumber *) desiredColumnWidth cgFloatValue]);

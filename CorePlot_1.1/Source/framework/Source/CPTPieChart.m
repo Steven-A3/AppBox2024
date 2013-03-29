@@ -1,17 +1,14 @@
 #import "CPTPieChart.h"
 
 #import "CPTColor.h"
-#import "CPTDefinitions.h"
 #import "CPTFill.h"
 #import "CPTLegend.h"
 #import "CPTLineStyle.h"
 #import "CPTMutableNumericData.h"
-#import "CPTNumericData.h"
 #import "CPTPathExtensions.h"
 #import "CPTPlotArea.h"
 #import "CPTPlotSpace.h"
 #import "CPTPlotSpaceAnnotation.h"
-#import "CPTTextLayer.h"
 #import "CPTUtilities.h"
 #import "NSCoderExtensions.h"
 #import "NSNumberExtensions.h"
@@ -526,7 +523,7 @@ static const CGFloat colorLookupTable[10][3] =
     BOOL hasNonZeroOffsets = NO;
     NSArray *offsetArray   = [self cachedArrayForKey:CPTPieChartBindingPieSliceRadialOffsets];
     for ( NSNumber *offset in offsetArray ) {
-        if ( [offset cgFloatValue] != 0.0 ) {
+        if ( [offset cgFloatValue] != CPTFloat(0.0) ) {
             hasNonZeroOffsets = YES;
             break;
         }
@@ -728,7 +725,7 @@ static const CGFloat colorLookupTable[10][3] =
 -(NSUInteger)pieSliceIndexAtAngle:(CGFloat)angle
 {
     // Convert the angle to its pie slice value
-    CGFloat pieAngle      = [self normalizedPosition:( angle / CPTFloat(2.0 * M_PI) )];
+    CGFloat pieAngle      = [self normalizedPosition:angle];
     CGFloat startingAngle = [self normalizedPosition:self.startAngle];
 
     // Iterate through the pie slices and compute their starting and ending angles.
@@ -887,7 +884,12 @@ static const CGFloat colorLookupTable[10][3] =
             label.displacement = CPTPointMake( labelRadius * cos(labelAngle), labelRadius * sin(labelAngle) );
 
             if ( self.labelRotationRelativeToRadius ) {
-                label.rotation = self.labelRotation + labelAngle;
+                CGFloat rotation = [self normalizedPosition:self.labelRotation + labelAngle];
+                if ( ( rotation > CPTFloat(0.25) ) && ( rotation < CPTFloat(0.75) ) ) {
+                    rotation -= CPTFloat(0.5);
+                }
+
+                label.rotation = rotation * CPTFloat(2.0 * M_PI);
             }
 
             contentLayer.hidden = NO;

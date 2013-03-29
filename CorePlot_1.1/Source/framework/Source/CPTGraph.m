@@ -3,7 +3,6 @@
 #import "CPTAxis.h"
 #import "CPTAxisSet.h"
 #import "CPTExceptions.h"
-#import "CPTFill.h"
 #import "CPTGraphHostingView.h"
 #import "CPTLayerAnnotation.h"
 #import "CPTLegend.h"
@@ -299,7 +298,7 @@ NSString *const CPTGraphNeedsRedrawNotification = @"CPTGraphNeedsRedrawNotificat
 -(id)initWithCoder:(NSCoder *)coder
 {
     if ( (self = [super initWithCoder:coder]) ) {
-        hostingView              = [[coder decodeObjectForKey:@"CPTGraph.hostingView"] retain];
+        hostingView              = [coder decodeObjectForKey:@"CPTGraph.hostingView"];
         plotAreaFrame            = [[coder decodeObjectForKey:@"CPTGraph.plotAreaFrame"] retain];
         plots                    = [[coder decodeObjectForKey:@"CPTGraph.plots"] mutableCopy];
         plotSpaces               = [[coder decodeObjectForKey:@"CPTGraph.plotSpaces"] mutableCopy];
@@ -599,6 +598,7 @@ NSString *const CPTGraphNeedsRedrawNotification = @"CPTGraphNeedsRedrawNotificat
     for ( CPTAxis *axis in self.axisSet.axes ) {
         if ( axis.plotSpace == plotSpace ) {
             [axis setNeedsRelabel];
+            [axis updateAxisTitle];
             backgroundBandsNeedRedraw |= (axis.backgroundLimitBands.count > 0);
         }
     }

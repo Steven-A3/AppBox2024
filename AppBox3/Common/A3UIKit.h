@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface A3UIKit : NSObject
 
@@ -16,21 +17,13 @@
 
 
 + (UIImage *)backspaceImage;
-
 + (UIColor *)colorForDashLineColor;
-
 + (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;
-
 + (void)setBackgroundImageForNavigationBar:(UINavigationBar *)navigationBar;
-
-+ (void)addTopGradientLayerToView:(UIView *)view;
-
-
++ (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view;
 + (NSString *)mediumStyleDateString:(NSDate *)date;
-
 + (NSNumberFormatter *)currencyNumberFormatter;
-
 + (NSNumberFormatter *)percentNumberFormatter;
-
 + (void)setUserDefaults:(id)object forKey:(NSString *)key;
+
 @end

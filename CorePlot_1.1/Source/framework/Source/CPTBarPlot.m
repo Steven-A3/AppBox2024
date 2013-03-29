@@ -8,13 +8,9 @@
 #import "CPTMutableLineStyle.h"
 #import "CPTMutableNumericData.h"
 #import "CPTMutablePlotRange.h"
-#import "CPTMutableTextStyle.h"
-#import "CPTNumericData.h"
 #import "CPTPathExtensions.h"
 #import "CPTPlotArea.h"
-#import "CPTPlotRange.h"
 #import "CPTPlotSpaceAnnotation.h"
-#import "CPTTextLayer.h"
 #import "CPTUtilities.h"
 #import "CPTXYPlotSpace.h"
 #import "NSCoderExtensions.h"
@@ -750,10 +746,14 @@ NSString *const CPTBarPlotBindingBarLineStyles = @"barLineStyles"; ///< Bar line
 
     [super renderAsVectorInContext:context];
 
+    CGContextBeginTransparencyLayer(context, NULL);
+
     for ( NSUInteger ii = 0; ii < barCount; ii++ ) {
         // Draw
         [self drawBarInContext:context recordIndex:ii];
     }
+
+    CGContextEndTransparencyLayer(context);
 }
 
 -(BOOL)barAtRecordIndex:(NSUInteger)idx basePoint:(CGPoint *)basePoint tipPoint:(CGPoint *)tipPoint

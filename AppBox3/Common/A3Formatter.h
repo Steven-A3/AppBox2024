@@ -11,8 +11,9 @@
 @interface A3Formatter : NSObject
 
 + (NSString *)mediumStyleDateStringFromDate:(NSDate *)date;
-
 + (NSString *)fullStyleMonthSymbolFromDate:(NSDate *)date;
-
 + (NSString *)fullStyleYearMonthStringFromDate:(NSDate *)date;
++ (NSString *)stringWithCurrencyFormatFromNumber:(NSNumber *)number;
+
++ (NSString *)stringWithPercentFormatFromNumber:(NSNumber *)number;
 @end

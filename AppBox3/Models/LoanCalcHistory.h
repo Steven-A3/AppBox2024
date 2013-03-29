@@ -2,7 +2,7 @@
 //  LoanCalcHistory.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 3/13/13.
+//  Created by Byeong Kwon Kwak on 3/28/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -22,6 +22,7 @@
 @property (nonatomic, retain) NSNumber * frequency;
 @property (nonatomic, retain) NSString * interestRate;
 @property (nonatomic, retain) NSNumber * interestRatePerYear;
+@property (nonatomic, retain) NSString * monthlyPayment;
 @property (nonatomic, retain) NSString * notes;
 @property (nonatomic, retain) NSString * principal;
 @property (nonatomic, retain) NSNumber * showAdvanced;
@@ -31,6 +32,6 @@
 @property (nonatomic, retain) NSString * term;
 @property (nonatomic, retain) NSNumber * termTypeMonth;
 @property (nonatomic, retain) NSNumber * useSimpleInterest;
-@property (nonatomic, retain) NSString * monthlyPayment;
+@property (nonatomic, retain) NSString * location;
 
 @end

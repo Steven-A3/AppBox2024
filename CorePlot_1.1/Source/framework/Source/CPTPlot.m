@@ -6,19 +6,16 @@
 #import "CPTLegend.h"
 #import "CPTLineStyle.h"
 #import "CPTMutableNumericData+TypeConversion.h"
-#import "CPTMutableNumericData.h"
 #import "CPTMutablePlotRange.h"
-#import "CPTNumericData+TypeConversion.h"
-#import "CPTNumericData.h"
 #import "CPTPathExtensions.h"
 #import "CPTPlotArea.h"
 #import "CPTPlotAreaFrame.h"
 #import "CPTPlotSpace.h"
 #import "CPTPlotSpaceAnnotation.h"
+#import "CPTShadow.h"
 #import "CPTTextLayer.h"
 #import "CPTUtilities.h"
 #import "NSCoderExtensions.h"
-#import "NSNumberExtensions.h"
 #import <tgmath.h>
 
 /** @defgroup plotAnimation Plots
@@ -183,7 +180,7 @@ NSString *const CPTPlotBindingDataLabels = @"dataLabels"; ///< Plot data labels.
  **/
 @synthesize labelTextStyle;
 
-/** @property NSNumberFormatter *labelFormatter
+/** @property NSFormatter *labelFormatter
  *  @brief The number formatter used to format the data labels.
  *  Set this property to @nil to hide the data labels.
  *  If you need a non-numerical label, such as a date, you can use a formatter than turns
@@ -599,7 +596,7 @@ NSString *const CPTPlotBindingDataLabels = @"dataLabels"; ///< Plot data labels.
  **/
 +(id)nilData
 {
-    static id nilObject;
+    static id nilObject = nil;
 
     if ( !nilObject ) {
         nilObject = [[NSObject alloc] init];
@@ -1109,10 +1106,11 @@ NSString *const CPTPlotBindingDataLabels = @"dataLabels"; ///< Plot data labels.
 -(CPTNumericDataType)doubleDataType
 {
     static CPTNumericDataType dataType;
-    static BOOL inited = NO;
+    static BOOL initialized = NO;
 
-    if ( !inited ) {
-        dataType = CPTDataType( CPTFloatingPointDataType, sizeof(double), CFByteOrderGetCurrent() );
+    if ( !initialized ) {
+        dataType    = CPTDataType( CPTFloatingPointDataType, sizeof(double), CFByteOrderGetCurrent() );
+        initialized = YES;
     }
 
     return dataType;
@@ -1121,10 +1119,11 @@ NSString *const CPTPlotBindingDataLabels = @"dataLabels"; ///< Plot data labels.
 -(CPTNumericDataType)decimalDataType
 {
     static CPTNumericDataType dataType;
-    static BOOL inited = NO;
+    static BOOL initialized = NO;
 
-    if ( !inited ) {
-        dataType = CPTDataType( CPTDecimalDataType, sizeof(NSDecimal), CFByteOrderGetCurrent() );
+    if ( !initialized ) {
+        dataType    = CPTDataType( CPTDecimalDataType, sizeof(NSDecimal), CFByteOrderGetCurrent() );
+        initialized = YES;
     }
 
     return dataType;
@@ -1320,9 +1319,9 @@ NSString *const CPTPlotBindingDataLabels = @"dataLabels"; ///< Plot data labels.
     Class nullClass       = [NSNull class];
     Class annotationClass = [CPTAnnotation class];
 
-    CPTTextStyle *dataLabelTextStyle      = self.labelTextStyle;
-    NSNumberFormatter *dataLabelFormatter = self.labelFormatter;
-    BOOL plotProvidesLabels               = dataLabelTextStyle && dataLabelFormatter;
+    CPTTextStyle *dataLabelTextStyle = self.labelTextStyle;
+    NSFormatter *dataLabelFormatter  = self.labelFormatter;
+    BOOL plotProvidesLabels          = dataLabelTextStyle && dataLabelFormatter;
 
     BOOL hasCachedLabels         = NO;
     NSMutableArray *cachedLabels = (NSMutableArray *)[self cachedArrayForKey:CPTPlotBindingDataLabels];
@@ -1723,7 +1722,7 @@ NSString *const CPTPlotBindingDataLabels = @"dataLabels"; ///< Plot data labels.
     }
 }
 
--(void)setLabelFormatter:(NSNumberFormatter *)newTickLabelFormatter
+-(void)setLabelFormatter:(NSFormatter *)newTickLabelFormatter
 {
     if ( newTickLabelFormatter != labelFormatter ) {
         [labelFormatter release];

@@ -201,7 +201,7 @@
 	[navigationBar setBackgroundImage:[A3UIKit navigationBarBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
 }
 
-+ (void)addTopGradientLayerToView:(UIView *)view {
++ (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view {
 	CAGradientLayer *gradientLayer = [CAGradientLayer layer];
 	gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);
 	gradientLayer.position = CGPointMake(0.0, 1.0);
@@ -210,6 +210,8 @@
 	gradientLayer.bounds = CGRectMake(0.0, 0.0, view.bounds.size.width, 7.0);
 	gradientLayer.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.3].CGColor, (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
 	[view.layer addSublayer:gradientLayer];
+
+	return gradientLayer;
 }
 
 + (NSString *)mediumStyleDateString:(NSDate *)date {

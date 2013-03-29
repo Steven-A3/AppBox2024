@@ -9,6 +9,7 @@
 #import "A3StatisticsViewController.h"
 #import "A3StatisticsViewCellController.h"
 #import "A3UIDevice.h"
+#import "common.h"
 
 typedef enum {
 	A3StatisticsCellNameEvents = 0,
@@ -25,6 +26,7 @@ typedef enum {
 @property (nonatomic, strong)	CPTGraphHostingView *graphHostingView;
 @property (nonatomic, strong)	NSArray *plotLabels;
 @property (nonatomic, strong)	NSArray *plotFillColors;
+@property (nonatomic, strong)	NSMutableArray *statisticCells;
 
 @end
 
@@ -100,14 +102,20 @@ typedef enum {
 	NSString *imageFilePath;
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+
+	_statisticCells = [[NSMutableArray alloc] initWithCapacity:6];
 	for (NSUInteger i = 0; i < 6; i++) {
 		A3StatisticsViewCellController *cellController = [[A3StatisticsViewCellController alloc] initWithNibName:@"A3StatisticsViewCellController" bundle:nil];
+		[_statisticCells addObject:cellController];
+
 		CGFloat width = CGRectGetWidth(cellController.view.frame);
 		CGFloat height = CGRectGetHeight(cellController.view.frame);
 		[cellController.view setFrame:CGRectMake(offsetX + (i % numberOfColumns) * width, (i / numberOfColumns) * height, width, height)];
 
 		imageFilePath = [[NSBundle mainBundle] pathForResource:[imageFilePaths objectAtIndex:i] ofType:@"png"];
-		cellController.titleImage.image = [UIImage imageWithContentsOfFile:imageFilePath];
+		UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:imageFilePath]];
+		imageView.frame = cellController.titleImage.frame;
+		[cellController.view addSubview:imageView];
 		cellController.titleLabel.text = NSLocalizedString([titleLabels objectAtIndex:i], nil);
 		cellController.dateLabel.text = [NSString stringWithFormat:@"Updated %@", [dateFormatter stringFromDate:[NSDate date] ] ];
 
@@ -142,8 +150,8 @@ typedef enum {
 				[cellController.view addSubview:[self deviceStatusView]];
 				break;
 		}
-		[self.view addSubview:cellController.view];
 		[self addChildViewController:cellController];
+		[self.view addSubview:cellController.view];
 	}
 }
 

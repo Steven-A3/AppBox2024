@@ -37,4 +37,16 @@
 	return [dateFormatter stringFromDate:date];
 }
 
++ (NSString *)stringWithCurrencyFormatFromNumber:(NSNumber *)number {
+	NSNumberFormatter *currencyFormatter = [[NSNumberFormatter alloc] init];
+	[currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	return [currencyFormatter stringFromNumber:number];
+}
+
++ (NSString *)stringWithPercentFormatFromNumber:(NSNumber *)number {
+	NSNumberFormatter *percentFormatter = [[NSNumberFormatter alloc] init];
+	[percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+	return [percentFormatter stringFromNumber:number];
+}
+
 @end

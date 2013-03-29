@@ -3,44 +3,44 @@ v5
 r1
 cCheck dependencies
 cProcessInfoPlistFile "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app/Info.plist" Plot_Gallery-Info.plist
-cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.xib
 cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/MainWindow-iPad.xib
-cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/MainWindow.xib
-cCpResource src/ios/Icon.png "../../build/Debug-iphonesimulator/Plot Gallery.app/Icon.png"
+cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.xib
 cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/RootViewController.xib
+cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/MainWindow.xib
 cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/DetailView-iPad.xib
 cCompileXIB /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/DetailView.xib
+cCpResource src/ios/Icon.png "../../build/Debug-iphonesimulator/Plot Gallery.app/Icon.png"
 cCpResource Default-568h@2x.png "../../build/Debug-iphonesimulator/Plot Gallery.app/Default-568h@2x.png"
 cProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/Plot_Gallery_Prefix-hciqncnpfqntqdcxteyuzalubdcd/Plot_Gallery_Prefix.pch.pth Plot_Gallery_Prefix.pch normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotGallery.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotGallery.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CompositePlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CompositePlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SteppedScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SteppedScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RootViewController.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/RootViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DonutChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DonutChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RangePlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RangePlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotSpaceDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/PlotSpaceDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/LabelingPolicyDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LabelingPolicyDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotItem.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/GradientScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/GradientScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SimplePieChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimplePieChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/VerticalBarChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/VerticalBarChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SimpleScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/main.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/Plot_GalleryAppDelegate.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ThemeTableViewController.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotGalleryAppDelegate-iPhone.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/PlotGalleryAppDelegate-iPhone.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DetailViewController.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/DetailViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DatePlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DatePlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ThemeTableViewController.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/OHLCPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/OHLCPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/AxisDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/AxisDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CandlestickPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CandlestickPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotItem.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/UIViewController+LegacyRotation.o" "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UIViewController+LegacyRotation.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SimplePieChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimplePieChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotGallery.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotGallery.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/GradientScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/GradientScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/VerticalBarChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/VerticalBarChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CompositePlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CompositePlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SimpleScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/Plot_GalleryAppDelegate.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotGalleryAppDelegate-iPhone.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/PlotGalleryAppDelegate-iPhone.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/main.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/main.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DetailViewController.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/DetailViewController.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DonutChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DonutChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SteppedScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SteppedScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RangePlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RangePlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/AxisDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/AxisDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/LabelingPolicyDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LabelingPolicyDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RealTimePlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RealTimePlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotSpaceDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/PlotSpaceDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
+cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ColoredBarChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ColoredBarChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/LineCapDemo.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LineCapDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ControlChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ControlChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ColoredBarChart.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ColoredBarChart.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CurvedScatterPlot.o" /Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CurvedScatterPlot.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/UINavigationController+LegacyRotation.o" "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UINavigationController+LegacyRotation.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/UIViewController+LegacyRotation.o" "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UIViewController+LegacyRotation.m" normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 cLd "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app/Plot Gallery" normal i386
 cGenerateDSYMFile "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app.dSYM" "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app/Plot Gallery"
 cTouch "/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app"
@@ -947,11 +947,11 @@ t2
 s0
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app
-t1353747865
+t1363419825
 s442
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app.dSYM
-t1353747865
+t1363419825
 s102
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app/Default-568h@2x.png
@@ -987,8 +987,8 @@ t1353655637
 s8
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app/Plot Gallery
-t1353747865
-s1498112
+t1363419824
+s1493584
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Debug-iphonesimulator/Plot Gallery.app/RootViewController.nib
 t1353655638
@@ -999,56 +999,56 @@ t1353655638
 s1119
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/AxisDemo.o
-t1353655639
-s101744
+t1363419824
+s101768
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CandlestickPlot.o
-t1353655639
-s126636
+t1363419824
+s126700
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ColoredBarChart.o
-t1353655639
-s117384
+t1363419824
+s117456
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CompositePlot.o
-t1353655639
-s152652
+t1363419824
+s152812
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ControlChart.o
-t1353655639
-s117556
+t1363419824
+s117572
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/CurvedScatterPlot.o
-t1353655639
-s126588
+t1363419824
+s126636
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DatePlot.o
-t1353655639
-s111488
+t1363419824
+s111528
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DetailViewController.o
-t1353655639
-s110140
+t1363419824
+s110316
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/DonutChart.o
-t1353747865
-s111676
+t1363419824
+s111740
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/GradientScatterPlot.o
-t1353655639
-s122912
+t1363419824
+s122960
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/LabelingPolicyDemo.o
-t1353655639
-s104480
+t1363419824
+s104504
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/LineCapDemo.o
-t1353655639
-s93456
+t1363419824
+s93480
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/OHLCPlot.o
-t1353655639
-s123256
+t1363419824
+s123312
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/Plot Gallery.LinkFileList
 c00000000514422B000000000000015BA
@@ -1056,68 +1056,68 @@ t1363419824
 s5562
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotGallery.o
-t1353655639
-s84948
+t1363419824
+s85056
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotGalleryAppDelegate-iPhone.o
-t1353655639
-s91548
+t1363419824
+s91588
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotItem.o
-t1353655639
-s100928
+t1363419824
+s101140
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/PlotSpaceDemo.o
-t1353655639
-s102296
+t1363419824
+s102320
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/Plot_GalleryAppDelegate.o
-t1353655639
-s102588
+t1363419824
+s102652
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RangePlot.o
-t1353655639
-s118364
+t1363419824
+s118412
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RealTimePlot.o
-t1353655639
-s112380
+t1363419824
+s112444
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/RootViewController.o
-t1353655639
-s90664
+t1363419824
+s90744
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SimplePieChart.o
-t1353747691
-s110204
+t1363419824
+s110268
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SimpleScatterPlot.o
-t1353655639
-s122504
+t1363419824
+s122560
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/SteppedScatterPlot.o
-t1353655639
-s106968
+t1363419824
+s107008
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/ThemeTableViewController.o
-t1353655639
-s83156
+t1363419824
+s83244
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/UINavigationController+LegacyRotation.o
-t1353655639
-s69636
+t1363419824
+s69648
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/UIViewController+LegacyRotation.o
-t1353655639
-s67924
+t1363419824
+s67936
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/VerticalBarChart.o
-t1353655639
-s122988
+t1363419824
+s123076
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/main.o
-t1353655639
-s3932
+t1363419824
+s3940
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../../framework/CorePlot-CocoaTouch.h
 c00000000509FEE08000000000000068F
@@ -1429,10 +1429,20 @@ c00000000509FEE090000000000000161
 t1352658441
 s353
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UINavigationController+LegacyRotation.h
+c00000000509FEE070000000000000051
+t1352658439
+s81
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UINavigationController+LegacyRotation.m
 c00000000509FEE070000000000000138
 t1352658439
 s312
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UIViewController+LegacyRotation.h
+c00000000509FEE07000000000000004B
+t1352658439
+s75
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/../iOS Rotation Utilities/UIViewController+LegacyRotation.m
 c00000000509FEE070000000000000362
@@ -1452,6 +1462,11 @@ i<Availability.h>
 i<Foundation/Foundation.h>
 i<UIKit/UIKit.h>
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/DetailViewController.h
+c00000000509FEE0000000000000004D7
+t1352658432
+s1239
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/DetailViewController.m
 c00000000509FEE00000000000000174A
 t1352658432
@@ -1462,10 +1477,20 @@ c000000005047E5640000000000001EB4
 t1346889060
 s7860
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/RootViewController.h
+c00000000509FEE01000000000000018A
+t1352658433
+s394
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/RootViewController.m
 c00000000509FEE0100000000000009F4
 t1352658433
 s2548
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.h
+c00000000509FEE0100000000000002ED
+t1352658433
+s749
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ThemeTableViewController.m
 c00000000509FEE010000000000000907
@@ -1487,6 +1512,11 @@ c00000000509FC0F80000000000007838
 t1352646904
 s30776
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.h
+c00000000509FEE000000000000000308
+t1352658432
+s776
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/ipad/Plot_GalleryAppDelegate.m
 c00000000509FEE0000000000000004E1
 t1352658432
@@ -1501,6 +1531,11 @@ N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/io
 c000000005047E56400000000000074CF
 t1346889060
 s29903
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/PlotGalleryAppDelegate-iPhone.h
+c00000000509FEE0000000000000001EB
+t1352658432
+s491
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/ios/iphone/PlotGalleryAppDelegate-iPhone.m
 c00000000509FEE0000000000000003B6
@@ -1517,105 +1552,210 @@ c00000000509FEE00000000000000016E
 t1352658432
 s366
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/AxisDemo.h
+c00000000509FEE0100000000000000C6
+t1352658433
+s198
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/AxisDemo.m
 c00000000509FEE010000000000001737
 t1352658433
 s5943
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CandlestickPlot.h
+c00000000509FEE0100000000000000F6
+t1352658433
+s246
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CandlestickPlot.m
 c00000000509FEE0100000000000022F0
 t1352658433
 s8944
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ColoredBarChart.h
+c00000000509FEE0100000000000000E6
+t1352658433
+s230
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ColoredBarChart.m
 c00000000509FEE010000000000001C4A
 t1352658433
 s7242
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CompositePlot.h
+c00000000509FEE020000000000000453
+t1352658434
+s1107
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CompositePlot.m
 c00000000509FEE02000000000000520C
 t1352658434
 s21004
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ControlChart.h
+c00000000509FEE02000000000000009D
+t1352658434
+s157
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/ControlChart.m
 c00000000509FEE0200000000000025DD
 t1352658434
 s9693
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CurvedScatterPlot.h
+c00000000509FEE02000000000000018D
+t1352658434
+s397
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/CurvedScatterPlot.m
 c00000000509FEE0200000000000029F0
 t1352658434
 s10736
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DatePlot.h
+c00000000509FEE020000000000000177
+t1352658434
+s375
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DatePlot.m
 c00000000509FEE0200000000000011F4
 t1352658434
 s4596
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DonutChart.h
+c00000000509FEE020000000000000081
+t1352658434
+s129
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/DonutChart.m
 c0000000050B08D980000000000001AB1
 t1353747864
 s6833
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/GradientScatterPlot.h
+c00000000509FEE0200000000000001B8
+t1352658434
+s440
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/GradientScatterPlot.m
 c00000000509FEE0200000000000023B8
 t1352658434
 s9144
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LabelingPolicyDemo.h
+c00000000509FEE02000000000000007A
+t1352658434
+s122
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LabelingPolicyDemo.m
 c00000000509FEE02000000000000241E
 t1352658434
 s9246
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LineCapDemo.h
+c00000000509FEE02000000000000006C
+t1352658434
+s108
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/LineCapDemo.m
 c00000000509FEE020000000000000A92
 t1352658434
 s2706
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/OHLCPlot.h
+c00000000509FEE0200000000000000D2
+t1352658434
+s210
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/OHLCPlot.m
 c00000000509FEE030000000000002080
 t1352658435
 s8320
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/PlotSpaceDemo.h
+c00000000509FEE030000000000000070
+t1352658435
+s112
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/PlotSpaceDemo.m
 c00000000509FEE030000000000001E02
 t1352658435
 s7682
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RangePlot.h
+c00000000509FEE03000000000000011A
+t1352658435
+s282
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RangePlot.m
 c00000000509FEE030000000000001D6C
 t1352658435
 s7532
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RealTimePlot.h
+c00000000509FEE0300000000000000FC
+t1352658435
+s252
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/RealTimePlot.m
 c00000000509FEE0300000000000019B7
 t1352658435
 s6583
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimplePieChart.h
+c00000000509FEE03000000000000016E
+t1352658435
+s366
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimplePieChart.m
 c0000000050B08CE200000000000016CD
 t1353747682
 s5837
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.h
+c00000000509FEE0300000000000001B1
+t1352658435
+s433
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SimpleScatterPlot.m
 c00000000509FEE030000000000002541
 t1352658435
 s9537
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SteppedScatterPlot.h
+c00000000509FEE030000000000000184
+t1352658435
+s388
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/SteppedScatterPlot.m
 c00000000509FEE030000000000001171
 t1352658435
 s4465
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/VerticalBarChart.h
+c00000000509FEE0300000000000001A7
+t1352658435
+s423
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/VerticalBarChart.m
 c00000000509FEE03000000000000302A
 t1352658435
 s12330
 
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotGallery.h
+c00000000509FEE03000000000000018E
+t1352658435
+s398
+
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotGallery.m
 c00000000509FEE0300000000000005EC
 t1352658435
 s1516
+
+N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.h
+c00000000509FEE03000000000000066B
+t1352658435
+s1643
 
 N/Users/bkk/projects/AppBox3/CorePlot_1.1/Source/examples/CorePlotGallery/src/shared/PlotItem.m
 c00000000509FEE0300000000000020F8
@@ -1632,8 +1772,8 @@ t1353655639
 s4826640
 
 N/var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/Plot_Gallery_Prefix-hciqncnpfqntqdcxteyuzalubdcd/Plot_Gallery_Prefix.pch.pth
-t2
-s0
+t1363419824
+s4664664
 
 NPlot_Gallery-Info.plist
 c000000005083232D00000000000004EB
@@ -1816,7 +1956,7 @@ r0
 
 CCheck dependencies
 r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesb9c60b305af4b641^e7170d305af4b641^---0#1#0#--18"Check dependencies36"7ED87E80-82A9-401D-9DCF-AD7F82E0719C-
+lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciese50abbe643f9b641^58aebbe643f9b641^---0#1#0#--18"Check dependencies36"4568000B-5B9B-493B-948E-D827F0832580-
 
 CCompileC "../../build/Plot_Gallery_iOS.build/Debug-iphonesimulator/Plot Gallery-iOS.build/Objects-normal/i386/AxisDemo.o" /Users/bkk/Downloads/CorePlot_1.1/Source/examples/CorePlotGallery/src/plots/AxisDemo.m normal i386 objective-c com.apple.compilers.llvm.clang.1_0.compiler
 s375348439.485216
