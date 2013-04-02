@@ -1,21 +1,21 @@
 //
-//  A3Categories.m
+//  NSString+conversion.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 1/19/13.
+//  Created by Byeong Kwon Kwak on 4/1/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3Categories.h"
+#import "NSString+conversion.h"
 
-@implementation NSString (FetchedGroupByString)
+@implementation NSString (conversion)
 
 - (NSString *)stringGroupByFirstInitial {
-    NSString *temp = [self uppercaseString];
-    
-    if (!temp.length || temp.length == 1)
-        return temp;
-    return [temp substringToIndex:1];
+	NSString *temp = [self uppercaseString];
+
+	if (!temp.length || temp.length == 1)
+		return temp;
+	return [temp substringToIndex:1];
 }
 
 - (NSNumber *)numberFromCurrencyFormattedStringWithCurrencyCode:(NSString *)currencyCode {
@@ -52,14 +52,25 @@
 //	}
 //#endif
 
-	double result = 0.0;
+	float result = 0.0;
 
 	range = [regex rangeOfFirstMatchInString:self options:0 range:NSMakeRange(0, [self length])];
 	if (!NSEqualRanges(range, NSMakeRange(NSNotFound, 0) )) {
 		numberString = [self substringWithRange:range];
-		result = [[decimalStyleFormatter numberFromString:numberString] doubleValue];
+		result = [[decimalStyleFormatter numberFromString:numberString] floatValue];
 	}
 	return result;
+}
+
+- (NSString *)stringByDecimalConversion {
+	NSString *resultString;
+	float value = [self floatValueEx];
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	[numberFormatter setUsesGroupingSeparator:NO];
+	resultString = value == 0.0 ? @"" : [numberFormatter stringFromNumber:[NSNumber numberWithFloat:value]];
+
+	return resultString;
 }
 
 @end

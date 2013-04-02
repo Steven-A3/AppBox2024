@@ -7,9 +7,17 @@
 //
 
 #import "LoanCalcHistory+calculation.h"
-#import "A3Categories.h"
 #import "common.h"
 #import "A3LoanCalcString.h"
+#import "NSString+conversion.h"
+
+
+@interface LoanCalcHistory ()
+
+@property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
+
+@end
+
 
 @implementation LoanCalcHistory (calculation)
 
@@ -26,7 +34,7 @@
 	self.termTypeMonth = [NSNumber numberWithBool:YES];
 	self.interestRate = @"";
 	self.interestRatePerYear = [NSNumber numberWithBool:YES];
-	self.frequency = [NSNumber numberWithInteger:0];
+	self.frequency = [NSNumber numberWithInteger:A3LoanCalcFrequencyMonthly];
 	self.startDate = nil;
 	self.notes = @"";
 	self.created = [NSDate date];
@@ -134,6 +142,29 @@
 		term /= 12.0;
 		self.term = [A3LoanCalcString stringFromTermInYears:term];
 	}
+}
+
+- (void)calculate {
+	switch ((A3LoanCalcCalculationFor)self.calculationFor.unsignedIntegerValue) {
+		case A3_LCCF_MonthlyPayment:
+			[self calculateMonthlyPayment];
+			break;
+		case A3_LCCF_Principal:
+			[self calculatePrincipal];
+			break;
+		case A3_LCCF_DownPayment:
+			[self calculateDownPayment];
+			break;
+		case A3_LCCF_TermMonths:
+			[self calculateTerm:YES];
+			break;
+		case A3_LCCF_TermYears:
+			[self calculateTerm:NO];
+			break;
+	}
+
+	NSError *error;
+	[self.managedObjectContext save:&error];
 }
 
 @end

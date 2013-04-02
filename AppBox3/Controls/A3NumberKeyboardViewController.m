@@ -199,7 +199,11 @@
 }
 
 - (IBAction)doneAction {
-	[_entryTableViewCell handleActionBarDone:nil];
+	if ([_delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
+		[_delegate A3KeyboardViewControllerDoneButtonPressed];
+	} else {
+		[_entryTableViewCell handleActionBarDone:nil];
+	}
 }
 
 - (IBAction)bigButton1Action {

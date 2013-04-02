@@ -15,8 +15,11 @@
 @property (nonatomic)		BOOL	leftAlignment;
 @property (nonatomic)		LoanCalcHistory *object;
 @property (nonatomic, weak)	UIScrollView *mainScrollView;
+@property (nonatomic, weak)	A3LoanCalcComparisonTableViewDataSource *brother;
 
+- (void)switchSimpleAdvancedForTableView:(UITableView *)tableView buttonAtIndexPath:(NSIndexPath *)indexPath;
 - (void)registerKeyboardNotification;
-
 - (void)removeObservers;
+- (void)reloadMainScrollViewContentSize;
+
 @end

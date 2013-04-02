@@ -197,19 +197,19 @@
 	if (_monthButton.selected) {
 		dateComponents.month = [self monthNumberOfButton:button];
 	} else if (_yearButton.selected) {
-		NSUInteger year = dateComponents.year;
+		NSInteger year = dateComponents.year;
 		year -= year / 1000 * 1000;
 		year *= 10;
 		year += [self numberOfButton:button];
 		dateComponents.year = year;
 	} else {
-		NSUInteger day = dateComponents.day, entered = [self numberOfButton:button];
+		NSInteger day = dateComponents.day, entered = [self numberOfButton:button];
 		day *= 10;
 		day += entered;
 
 		NSRange range = [gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:_date];
 		if (day > range.length) {
-			NSUInteger temp = day - day / 100 * 100;
+			NSInteger temp = day - day / 100 * 100;
 			if (temp <= range.length) {
 				day = temp;
 			} else {
@@ -243,8 +243,8 @@
 }
 
 - (IBAction)doneButtonAction {
-	if ([_delegate respondsToSelector:@selector(doneButtonPressedInDateKeyboard)]) {
-		[_delegate doneButtonPressedInDateKeyboard];
+	if ([_delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
+		[_delegate A3KeyboardViewControllerDoneButtonPressed];
 	} else {
 		[_entryTableViewCell handleActionBarDone:nil];
 	}

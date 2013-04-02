@@ -25,6 +25,7 @@
 - (BOOL)nextAvailableForElement:(QEntryElement *)element;
 - (void)prevButtonPressedWithElement:(QEntryElement *)element;
 - (void)nextButtonPressedWithElement:(QEntryElement *)element;
+- (void)A3KeyboardViewControllerDoneButtonPressed;
 
 @end
 

@@ -14,10 +14,10 @@
 #import "A3UserDefaults.h"
 #import "SalesCalcHistory.h"
 #import "A3AppDelegate.h"
-#import "A3Categories.h"
 #import "KGDiscreetAlertView.h"
 #import "A3UIKit.h"
 #import "A3UIStyle.h"
+#import "NSString+conversion.h"
 
 typedef NS_ENUM(NSUInteger, A3SalesCalculatorType) {
 	A3SalesCalculatorTypeSimple = 1,

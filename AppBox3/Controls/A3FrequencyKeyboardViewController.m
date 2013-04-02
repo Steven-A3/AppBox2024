@@ -130,7 +130,11 @@
 }
 
 - (IBAction)doneButtonTouchUpInside:(UIButton *)button {
-	[_entryTableViewCell handleActionBarDone:nil];
+	if ([_delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
+		[_delegate A3KeyboardViewControllerDoneButtonPressed];
+	} else {
+		[_entryTableViewCell handleActionBarDone:nil];
+	}
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toOrientation {

@@ -12,7 +12,6 @@
 #import "A3UIKit.h"
 #import "CommonUIDefinitions.h"
 #import "EKKeyboardAvoidingScrollViewManager.h"
-#import "A3Categories.h"
 #import "LoanCalcHistory.h"
 #import "A3AppDelegate.h"
 #import "A3LoanCalcString.h"
@@ -21,6 +20,7 @@
 #import "QEntryTableViewCell+Extension.h"
 #import "common.h"
 #import "LoanCalcHistory+calculation.h"
+#import "NSString+conversion.h"
 
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
@@ -340,7 +340,7 @@
 
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
-		_numberKeyboardViewController = [[A3NumberKeyboardViewController alloc] init];
+		_numberKeyboardViewController = [[A3NumberKeyboardViewController alloc] initWithNibName:@"A3NumberKeyboardViewController" bundle:nil];
 		_numberKeyboardViewController.delegate = self;
 	}
 	return _numberKeyboardViewController;
@@ -357,6 +357,8 @@
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	if (nil == _dateKeyboardViewController) {
 		_dateKeyboardViewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
+		_dateKeyboardViewController.delegate = self;
 	}
 	return _dateKeyboardViewController;
 }
@@ -488,8 +490,6 @@
 
 		if ([element.key isEqualToString:A3LC_KEY_START_DATE]) {
 			if (object.startDate) {
-				NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-				[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
 				entryTableViewCell.textField.text = [A3Formatter mediumStyleDateStringFromDate:object.startDate];
 			}
 		}
@@ -565,12 +565,7 @@
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {
-	if (_editingElement) {
-		UITableViewCell *cell = [self.quickDialogTableView cellForElement:_editingElement];
-		NSIndexPath *indexPath = [self.quickDialogTableView indexPathForCell:cell];
-
-		[self.quickDialogTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
+	if ([_extraPaymentYearlyMonth isFirstResponder]) {
 		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
 	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
 		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
@@ -591,10 +586,6 @@
 	_editingElement = element;
 	cell.backgroundColor = [UIColor whiteColor];
 
-	NSNumberFormatter *decimalStyleFormatter = [[NSNumberFormatter alloc] init];
-	[decimalStyleFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-	[decimalStyleFormatter setUsesGroupingSeparator:NO];
-
 	if ([_keysForCurrency indexOfObject:element.key] != NSNotFound) {
 		cell.textField.inputView = self.numberKeyboardViewController.view;
 		_numberKeyboardViewController.keyInputDelegate = cell.textField;
@@ -602,8 +593,7 @@
 		_numberKeyboardViewController.element = element;
 		_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 
-		float value = [cell.textField.text floatValueEx];
-		cell.textField.text = value == 0.0 ? @"" : [decimalStyleFormatter stringFromNumber:[NSNumber numberWithFloat:value]];
+		cell.textField.text = [cell.textField.text stringByDecimalConversion];
 
 		[_numberKeyboardViewController reloadPrevNextButtons];
 	}
@@ -617,18 +607,20 @@
 		case A3LCEntryDownPayment:
 			break;
 		case A3LCEntryTerm: {
-			[self prepareYearMonthInput:cell decimalStyleFormatter:decimalStyleFormatter];
+			[self prepareYearMonthInput:cell];
 			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
-			_numberKeyboardViewController.bigButton1.selected = YES;
+			_numberKeyboardViewController.bigButton1.selected = !object.termTypeMonth.boolValue;
+			_numberKeyboardViewController.bigButton2.selected = object.termTypeMonth.boolValue;
 			_numberKeyboardViewController.entryTableViewCell = cell;
 			_numberKeyboardViewController.element = element;
 			[_numberKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryInterestRate: {
-			[self prepareYearMonthInput:cell decimalStyleFormatter:decimalStyleFormatter];
+			[self prepareYearMonthInput:cell];
 			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
-			_numberKeyboardViewController.bigButton1.selected = YES;
+			_numberKeyboardViewController.bigButton1.selected = object.interestRatePerYear.boolValue;
+			_numberKeyboardViewController.bigButton1.selected = !object.interestRatePerYear.boolValue;
 			_numberKeyboardViewController.entryTableViewCell = cell;
 			_numberKeyboardViewController.element = element;
 			[_numberKeyboardViewController reloadPrevNextButtons];
@@ -646,7 +638,6 @@
 			cell.textField.clearButtonMode = UITextFieldViewModeNever;
 
 			cell.textField.inputView = self.frequencyKeyboardViewController.view;
-			_frequencyKeyboardViewController.delegate = self;
 			_frequencyKeyboardViewController.entryTableViewCell = cell;
 			_frequencyKeyboardViewController.element = element;
 			[_frequencyKeyboardViewController setSelectedFrequency:object.frequency];
@@ -659,7 +650,6 @@
 			}
 			cell.textField.inputView = self.dateKeyboardViewController.view;
 			[self prepareTemporaryEditingLabelForCell:cell];
-			_dateKeyboardViewController.delegate = self;
 			_dateKeyboardViewController.element = element;
 			_dateKeyboardViewController.entryTableViewCell = cell;
 			_dateKeyboardViewController.displayLabel = _temporaryLabelForEditing;
@@ -815,12 +805,12 @@
 	_temporaryLabelForEditing.text = cell.textField.text;
 }
 
-- (void)prepareYearMonthInput:(QEntryTableViewCell *)cell decimalStyleFormatter:(NSNumberFormatter *)decimalStyleFormatter {
+- (void)prepareYearMonthInput:(QEntryTableViewCell *)cell {
 	cell.textField.inputView = self.numberKeyboardViewController.view;
 	_numberKeyboardViewController.keyInputDelegate = cell.textField;
 	_numberKeyboardViewController.entryTableViewCell = cell;
-	float value = [cell.textField.text floatValueEx];
-	cell.textField.text = (value == 0.0) ? @"" : [decimalStyleFormatter stringFromNumber:[NSNumber numberWithFloat:value]];
+    
+	cell.textField.text = [cell.textField.text stringByDecimalConversion];
 }
 
 - (NSString *)currencyFormattedString:(NSString *)source {
@@ -923,7 +913,7 @@
 	}
 }
 
-- (void)doneButtonPressedInDateKeyboard {
+- (void)A3KeyboardViewControllerDoneButtonPressed {
 	if (_editingElement) {
 		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:_editingElement];
 		[cell handleActionBarDone:nil];
@@ -971,34 +961,25 @@
 }
 
 - (void)calculate {
+	[self.editingObject calculate];
+	NSString *value;
 	switch (self.preferences.calculationFor) {
 		case A3_LCCF_MonthlyPayment:
-			[self.editingObject calculateMonthlyPayment];
-			[self reloadResultRowWithValue:_editingObject.monthlyPayment];
+			value = _editingObject.monthlyPayment;
 			break;
 		case A3_LCCF_Principal:
-            [self.editingObject calculatePrincipal];
-			[self reloadResultRowWithValue:_editingObject.principal];
+			value = _editingObject.principal;
 			break;
 		case A3_LCCF_DownPayment:
-			[self.editingObject calculateDownPayment];
-			[self reloadResultRowWithValue:_editingObject.downPayment];
+			value = _editingObject.downPayment;
 			break;
 		case A3_LCCF_TermMonths:
-			[self.editingObject calculateTerm:YES];
-			[self reloadResultRowWithValue:_editingObject.term];
-			break;
 		case A3_LCCF_TermYears:
-			[self.editingObject calculateTerm:NO];
-			[self reloadResultRowWithValue:_editingObject.term];
+			value = _editingObject.term;
 			break;
 	}
-
+	[self reloadResultRowWithValue:value];
 	[self reloadGraphView];
-
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
-	NSError *error;
-	[managedObjectContext save:&error];
 }
 
 - (void)reloadResultRowWithValue:(NSString *)value {

@@ -6,22 +6,32 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3LoanCalcComparisonTableViewDataSource.h"
 #import "CommonUIDefinitions.h"
 #import "A3LoanCalcPreferences.h"
 #import "A3UIStyle.h"
 #import "A3ButtonTextField.h"
 #import "A3Formatter.h"
+#import "A3NumberKeyboardViewController.h"
+#import "A3FrequencyKeyboardViewController.h"
+#import "A3DateKeyboardViewController.h"
+#import "A3LoanCalcString.h"
+#import "NSString+conversion.h"
 #import "common.h"
 
-@interface A3LoanCalcComparisonTableViewDataSource ()
+@interface A3LoanCalcComparisonTableViewDataSource () <A3NumberKeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
 @property (nonatomic, strong) NSMutableArray *contentsKeyIndex;
 @property (nonatomic, strong) NSMutableArray *contentsTypeIndex;
-@property (nonatomic, strong) NSMutableArray *textFieldsInSection1;
+@property (nonatomic, strong) NSMutableArray *textFields;
 @property (nonatomic, strong) A3ButtonTextField *extraPaymentYearlyMonth, *extraPaymentOneTimeYearMonth;
-@property (nonatomic, weak) LoanCalcHistory *leftObject, *rightObject;
 @property (nonatomic, weak) UITextField *editingTextField;
+@property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
+@property (nonatomic, strong) A3FrequencyKeyboardViewController *frequencyKeyboardViewController;
+@property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardViewController;
+@property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardForMonthInput;
+@property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardForYearMonthInput;
+@property (nonatomic, strong) NSNumberFormatter *currencyNumberFormatter;
+@property (nonatomic, strong) NSNumberFormatter *percentNumberFormatter;
 
 @end
 
@@ -46,15 +56,22 @@
 	return _contentsTypeIndex;
 }
 
-- (NSMutableArray *)textFieldsInSection1 {
-	if (nil == _textFieldsInSection1) {
-		_textFieldsInSection1 = [[NSMutableArray alloc] init];
+- (NSMutableArray *)textFields {
+	if (nil == _textFields) {
+		_textFields = [[NSMutableArray alloc] init];
 	}
-	return _textFieldsInSection1;
+	return _textFields;
 }
 
 - (UITextField *)textFieldWithTag:(NSInteger)tag {
-	UITextField *textField = [[UITextField alloc] initWithFrame:CGRectZero];
+	UITextField *textField;
+	for (textField in _textFields) {
+		if (textField.tag == tag) {
+			return textField;
+		}
+	}
+
+	textField= [[UITextField alloc] initWithFrame:CGRectZero];
 	textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	textField.delegate = self;
 	textField.textAlignment = _leftAlignment ? NSTextAlignmentLeft : NSTextAlignmentRight;
@@ -65,11 +82,57 @@
 	return textField;
 }
 
+- (void)insertFrequency {
+	for (NSString *key in _contentsKeyIndex) {
+		if ([key isEqualToString:A3LC_KEY_FREQUENCY]) {
+			return;
+		}
+	}
+	NSUInteger insertAt = _object.showDownPayment.boolValue ? 4 : 3;
+	[_contentsKeyIndex insertObject:A3LC_KEY_FREQUENCY atIndex:insertAt];
+	[_contentsTypeIndex insertObject:[NSNumber numberWithUnsignedInteger:A3LCEntryFrequency] atIndex:insertAt];
+	UITextField *textField = [self textFieldWithTag:A3LCEntryFrequency];
+	textField.placeholder = @"Monthly";
+	textField.text = [A3LoanCalcString stringForFrequencyValue:_object.frequency];
+	[_textFields addObject:textField];
+	[_textFields insertObject:textField atIndex:insertAt];
+}
+
+- (void)insertStartDate {
+	for (NSString *key in _contentsKeyIndex) {
+		if ([key isEqualToString:A3LC_KEY_START_DATE]) {
+			return;
+		}
+	}
+	NSUInteger insertAt = _object.showDownPayment.boolValue ? 5 : 4;
+	[_contentsKeyIndex insertObject:A3LC_KEY_START_DATE atIndex:insertAt];
+	[_contentsTypeIndex insertObject:[NSNumber numberWithUnsignedInteger:A3LCEntryStartDate] atIndex:insertAt];
+	UITextField *textField = [self textFieldWithTag:A3LCEntryStartDate];
+	textField.placeholder = [A3Formatter mediumStyleDateStringFromDate:[NSDate date]];
+	textField.text = [A3Formatter mediumStyleDateStringFromDate:_object.startDate];
+	[_textFields insertObject:textField atIndex:insertAt];
+}
+
+- (void)insertNotes {
+	for (NSString *key in _contentsKeyIndex) {
+		if ([key isEqualToString:A3LC_KEY_NOTES]) {
+			return;
+		}
+	}
+	NSUInteger insertAt = _object.showDownPayment.boolValue ? 6 : 5;
+	[_contentsKeyIndex insertObject:A3LC_KEY_NOTES atIndex:insertAt];
+	[_contentsTypeIndex insertObject:[NSNumber numberWithUnsignedInteger:A3LCEntryNotes] atIndex:insertAt];
+	UITextField *textField = [self textFieldWithTag:A3LCEntryNotes];
+	textField.placeholder = @"(Optional)";
+	textField.text = _object.notes;
+	[_textFields insertObject:textField atIndex:insertAt];
+}
+
 - (void)buildArray {
-	_contentsKeyIndex = nil; _contentsTypeIndex = nil; _textFieldsInSection1 = nil;
+	_contentsKeyIndex = nil; _contentsTypeIndex = nil; _textFields = nil;
 	[self contentsKeyIndex];
 	[self contentsTypeIndex];
-	[self textFieldsInSection1];
+	[self textFields];
 
 	A3LoanCalcCalculationFor calculationFor = (A3LoanCalcCalculationFor) [_object.calculationFor unsignedIntegerValue];
 	if (calculationFor != A3_LCCF_Principal) {
@@ -77,63 +140,75 @@
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryPrincipal]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryPrincipal];
 		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
-		[_textFieldsInSection1 addObject:textField];
+		textField.text = _object.principal;
+		[_textFields addObject:textField];
 	}
 	if ([self.object.showDownPayment boolValue] && (calculationFor != A3_LCCF_DownPayment)) {
 		[_contentsKeyIndex addObject:A3LC_KEY_DOWN_PAYMENT];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryDownPayment]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryDownPayment];
 		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
-		[_textFieldsInSection1 addObject:textField];
+		textField.text = _object.downPayment;
+		[_textFields addObject:textField];
 	}
 	if (calculationFor != A3_LCCF_MonthlyPayment) {
 		[_contentsKeyIndex addObject:A3LC_KEY_MONTHLY_PAYMENT];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryMonthlyPayment]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryMonthlyPayment];
 		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
-		[_textFieldsInSection1 addObject:textField];
+		textField.text = _object.monthlyPayment;
+		[_textFields addObject:textField];
 	}
 	if ((calculationFor != A3_LCCF_TermMonths) && (calculationFor != A3_LCCF_TermYears)) {
 		[_contentsKeyIndex addObject:A3LC_KEY_TERM];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryTerm]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryTerm];
 		textField.placeholder = @"years or months";
-		[_textFieldsInSection1 addObject:textField];
+		textField.text = _object.term;
+		[_textFields addObject:textField];
 	}
 	{
 		[_contentsKeyIndex addObject:A3LC_KEY_INTEREST_RATE];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryInterestRate]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryInterestRate];
 		textField.placeholder = [A3Formatter stringWithPercentFormatFromNumber:[NSNumber numberWithInteger:0]];
-		[_textFieldsInSection1 addObject:textField];
+		textField.text = _object.interestRate;
+		[_textFields addObject:textField];
 	}
 
-	{
-		[_contentsKeyIndex addObject:A3LC_KEY_FREQUENCY];
-		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryFrequency]];
-		UITextField *textField = [self textFieldWithTag:A3LCEntryFrequency];
-		textField.placeholder = @"Monthly";
-		[_textFieldsInSection1 addObject:textField];
-	}
-
-	{
-		[_contentsKeyIndex addObject:A3LC_KEY_START_DATE];
-		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryStartDate]];
-		UITextField *textField = [self textFieldWithTag:A3LCEntryStartDate];
-		textField.placeholder = [A3Formatter mediumStyleDateStringFromDate:[NSDate date]];
-		[_textFieldsInSection1 addObject:textField];
-	}
-
-	{
-		[_contentsKeyIndex addObject:A3LC_KEY_NOTES];
-		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryNotes]];
-		UITextField *textField = [self textFieldWithTag:A3LCEntryNotes];
-		textField.placeholder = @"(Optional)";
-		[_textFieldsInSection1 addObject:textField];
+	if (_object.showAdvanced.boolValue) {
+		[self insertFrequency];
+		[self insertStartDate];
+		[self insertNotes];
 	}
 
 	[_contentsKeyIndex addObject:@"BUTTON"];
 	[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryButton]];
+
+	[_textFields addObject:[self textFieldWithTag:A3LCEntryExtraPaymentMonthly]];
+	[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_MONTHLY];
+
+	if (_leftAlignment) {
+		[_textFields addObject:[self textFieldWithTag:A3LCEntryExtraPaymentYearly]];
+		[_textFields addObject:self.extraPaymentYearlyMonth];
+		[_textFields addObject:[self textFieldWithTag:A3LCEntryExtraPaymentOneTime]];
+		[_textFields addObject:self.extraPaymentOneTimeYearMonth];
+
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_YEARLY_MONTH];
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_ONETIME_YEAR_MONTH];
+	} else {
+		[_textFields addObject:self.extraPaymentYearlyMonth];
+		[_textFields addObject:[self textFieldWithTag:A3LCEntryExtraPaymentYearly]];
+		[_textFields addObject:self.extraPaymentOneTimeYearMonth];
+		[_textFields addObject:[self textFieldWithTag:A3LCEntryExtraPaymentOneTime]];
+
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_YEARLY_MONTH];
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_ONETIME_YEAR_MONTH];
+		[_contentsKeyIndex addObject:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
+	}
 }
 
 - (void)setTableView:(UITableView *)tableView {
@@ -201,6 +276,59 @@
 	return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+	[self switchSimpleAdvancedForTableView:tableView buttonAtIndexPath:indexPath];
+	[self.brother switchSimpleAdvancedForTableView:self.brother.tableView buttonAtIndexPath:indexPath];
+	[self reloadMainScrollViewContentSize];
+}
+
+- (void)switchSimpleAdvancedForTableView:(UITableView *)tableView buttonAtIndexPath:(NSIndexPath *)indexPath {
+	[_editingTextField resignFirstResponder];
+
+	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	if (cell.tag != A3LCEntryButton) {
+		return;
+	}
+	if (_object.showAdvanced.boolValue) {
+		cell.textLabel.text = @"Advanced";
+	} else {
+		cell.textLabel.text = @"Simple";
+	}
+
+	NSUInteger indexFrom = _object.showDownPayment.boolValue ? 4 : 3;
+	NSArray *indexPaths = @[[NSIndexPath indexPathForRow:indexFrom inSection:0], [NSIndexPath indexPathForRow:indexFrom + 1 inSection:0], [NSIndexPath indexPathForRow:indexFrom + 2 inSection:0]];
+	if (_object.showAdvanced.boolValue) {
+		NSIndexSet *indexSet = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(indexFrom, 3)];
+		[_contentsKeyIndex removeObjectsAtIndexes:indexSet];
+		[_contentsTypeIndex removeObjectsAtIndexes:indexSet];
+		[_textFields removeObjectsAtIndexes:indexSet];
+		_object.showAdvanced = [NSNumber numberWithBool:NO];
+
+		[tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+	} else {
+		[self insertFrequency];
+		[self insertStartDate];
+		[self insertNotes];
+		_object.showAdvanced = [NSNumber numberWithBool:YES];
+
+		[tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+	}
+}
+
+- (NSString *)imagePathForEntry:(A3LoanCalculatorEntry)entry {
+	static NSArray *imageNames = nil;
+	if (imageNames == nil) {
+		imageNames = @[@"comparison_principal_32", @"comparison_principal_32", @"comparison_principal_32",
+		@"comparison_term_32", @"comparison_rate_32", @"comparison_frequency_32", @"comparison_startdate_32",
+		@"comparison_note_32", @"", @"comparison_extra_monthly_32", @"comparison_extra_yearly_32",
+		@"comparison_extra_onetime_32"];
+	}
+	NSString *path = [[NSBundle mainBundle] pathForResource:[imageNames objectAtIndex:entry - 1] ofType:@"png"];
+	return path;
+}
+
 - (UITableViewCell *)configureCellforRow:(NSInteger)row {
 	UITableViewCell *cell;
 	static NSString *identifier = nil, *buttonCellIdentifier = nil;
@@ -221,20 +349,28 @@
 		case A3LCEntryFrequency:
 		case A3LCEntryStartDate:
 		case A3LCEntryNotes:
-			cell = [_tableView dequeueReusableCellWithIdentifier:identifier];
-			if (nil == cell) {
-				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-				cell.selectionStyle = UITableViewCellSelectionStyleNone;
-			}
-			textField = [_textFieldsInSection1 objectAtIndex:row];
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+			textField = [self textFieldWithTag:entry];
 			[textField removeFromSuperview];
 			textField.frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
 			[cell.contentView addSubview:textField];
+
+			if (!_leftAlignment) {
+				NSString *imagePath = [self imagePathForEntry:entry];
+				UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+				UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+				imageView.frame = CGRectMake(-15.0, 13.0, 32.0, 32.0);
+				[cell addSubview:imageView];
+			}
+
 			break;
 		case A3LCEntryButton:
 			cell = [_tableView dequeueReusableCellWithIdentifier:buttonCellIdentifier];
 			if (nil == cell) {
 				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:buttonCellIdentifier];
+				cell.tag = A3LCEntryButton;
 			}
 			cell.textLabel.text = [_object.showAdvanced boolValue] ? @"Simple" : @"Advanced";
 			cell.textLabel.textAlignment = _leftAlignment ? NSTextAlignmentLeft : NSTextAlignmentRight;
@@ -255,12 +391,21 @@
 	switch (row) {
 		case 0:
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentMonthly];
+			textField.frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
 			break;
 		case 1:
 		{
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentYearly];
+			CGRect frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
+			if (_leftAlignment) {
+				frame.size.width = 173.0;
+			} else {
+				frame.origin.x = 116.0;
+				frame.size.width = 189.0;
+			}
+			textField.frame = frame;
 
-			CGRect frame = self.extraPaymentYearlyMonth.frame;
+			frame = self.extraPaymentYearlyMonth.frame;
 			frame.origin.x = _leftAlignment ? 188.0 : 20.0;
 			frame.origin.y = 15.0;
 			_extraPaymentYearlyMonth.frame = frame;
@@ -269,8 +414,16 @@
 		}
 		case 2:{
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentOneTime];
+			CGRect frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
+			if (_leftAlignment) {
+				frame.size.width = 135.0;
+			} else {
+				frame.origin.x = 152.0;
+				frame.size.width = 153.0;
+			}
+			textField.frame = frame;
 
-			CGRect frame = self.extraPaymentOneTimeYearMonth.frame;
+			frame = self.extraPaymentOneTimeYearMonth.frame;
 			frame.origin.x = _leftAlignment ? 150.0 : 20.0;
 			frame.origin.y = 15.0;
 			_extraPaymentOneTimeYearMonth.frame = frame;
@@ -279,8 +432,15 @@
 		}
 	}
 	textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
-	textField.frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
 	[cell.contentView addSubview:textField];
+
+	if (!_leftAlignment) {
+		NSString *imagePath = [self imagePathForEntry:textField.tag];
+		UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+		UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+		imageView.frame = CGRectMake(-15.0, 13.0, 32.0, 32.0);
+		[cell addSubview:imageView];
+	}
 
 	return cell;
 }
@@ -309,12 +469,155 @@
 	return _extraPaymentOneTimeYearMonth;
 }
 
+- (NSString *)currencyFormattedString:(NSString *)source {
+	if ([source floatValue] == 0.0) return @"";
+	return [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:[source floatValue]]];
+}
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	_editingTextField = textField;
+	if (textField == _extraPaymentYearlyMonth) {
+		textField.inputView = self.dateKeyboardForMonthInput.view;
+		return YES;
+	} else if (textField == _extraPaymentOneTimeYearMonth) {
+		textField.inputView = self.dateKeyboardForYearMonthInput.view;
+		return YES;
+	}
+	A3LoanCalculatorEntry entryType = (A3LoanCalculatorEntry) textField.tag;
+	switch (entryType) {
+		case A3LCEntryPrincipal:
+		case A3LCEntryDownPayment:
+		case A3LCEntryMonthlyPayment:
+		case A3LCEntryExtraPaymentMonthly:
+		case A3LCEntryExtraPaymentYearly:
+		case A3LCEntryExtraPaymentOneTime:
+		{
+			textField.inputView = self.numberKeyboardViewController.view;
+			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+			_numberKeyboardViewController.keyInputDelegate = textField;
+
+			textField.text = [textField.text stringByDecimalConversion];
+
+			[_numberKeyboardViewController reloadPrevNextButtons];
+			break;
+		}
+		case A3LCEntryTerm:
+		{
+			textField.inputView = self.numberKeyboardViewController.view;
+			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
+			_numberKeyboardViewController.keyInputDelegate = textField;
+			_numberKeyboardViewController.bigButton1.selected = !_object.termTypeMonth.boolValue;
+			_numberKeyboardViewController.bigButton2.selected = _object.termTypeMonth.boolValue;
+
+			textField.text = [textField.text stringByDecimalConversion];
+
+			[_numberKeyboardViewController reloadPrevNextButtons];
+			break;
+		}
+		case A3LCEntryInterestRate:
+			textField.inputView = self.numberKeyboardViewController.view;
+			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
+			_numberKeyboardViewController.keyInputDelegate = textField;
+			_numberKeyboardViewController.bigButton1.selected = _object.interestRatePerYear.boolValue;
+			_numberKeyboardViewController.bigButton2.selected = !_object.interestRatePerYear.boolValue;
+
+			textField.text = [textField.text stringByDecimalConversion];
+
+			[_numberKeyboardViewController reloadPrevNextButtons];
+			break;
+		case A3LCEntryFrequency:
+			textField.inputView = self.frequencyKeyboardViewController.view;
+			textField.clearButtonMode = UITextFieldViewModeNever;
+			_frequencyKeyboardViewController.delegate = self;
+			_frequencyKeyboardViewController.selectedFrequency = _object.frequency;
+			[_frequencyKeyboardViewController reloadPrevNextButtons];
+			break;
+		case A3LCEntryStartDate:
+			if (_object.startDate == nil) {
+				_object.startDate = [NSDate date];
+				textField.text = [A3Formatter mediumStyleDateStringFromDate:_object.startDate];
+			}
+			textField.inputView = self.dateKeyboardViewController.view;
+			_dateKeyboardViewController.date = _object.startDate;
+			[_dateKeyboardViewController resetToDefaultState];
+			textField.clearButtonMode = UITextFieldViewModeNever;
+			[_dateKeyboardViewController reloadPrevNextButtons];
+			break;
+		case A3LCEntryNotes:break;
+		case A3LCEntryButton:break;
+	}
+	return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	FNLOG(@"Check");
+	A3LoanCalculatorEntry entryType = (A3LoanCalculatorEntry) textField.tag;
+	switch (entryType) {
+		case A3LCEntryPrincipal:
+		case A3LCEntryMonthlyPayment:
+		case A3LCEntryDownPayment: {
+			NSUInteger row = [_textFields indexOfObject:textField];
+			[_object setValue:[self currencyFormattedString:textField.text] forKey:[_contentsKeyIndex objectAtIndex:row]];
+			break;
+		}
+		case A3LCEntryTerm:
+			[self updateTermValueFromText:textField.text];
+			break;
+		case A3LCEntryInterestRate:
+			[self updateInterestValueFromText:textField.text];
+			break;
+		case A3LCEntryNotes:
+			[_object setValue:textField.text forKey:A3LC_KEY_NOTES];
+			break;
+		case A3LCEntryExtraPaymentMonthly:
+			[_object setValue:textField.text forKey:A3LC_KEY_EXTRA_PAYMENT_MONTHLY];
+			break;
+		case A3LCEntryExtraPaymentYearly:
+			[_object setValue:textField.text forKey:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
+			break;
+		case A3LCEntryExtraPaymentOneTime:
+			[_object setValue:textField.text forKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
+			break;
+		case A3LCEntryFrequency:
+		case A3LCEntryStartDate:
+		case A3LCEntryButton:
+			break;
+	}
 	return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+	FNLOG(@"Check");
+	A3LoanCalculatorEntry entryType = (A3LoanCalculatorEntry) textField.tag;
+	switch (entryType) {
+		case A3LCEntryPrincipal:
+		case A3LCEntryMonthlyPayment:
+		case A3LCEntryDownPayment:
+		case A3LCEntryExtraPaymentMonthly:
+		case A3LCEntryExtraPaymentYearly:
+		case A3LCEntryExtraPaymentOneTime:
+		{
+			NSUInteger row = [_textFields indexOfObject:textField];
+			textField.text = [self currencyFormattedString:textField.text];
+			[_object setValue:textField.text forKey:[_contentsKeyIndex objectAtIndex:row]];
+			break;
+		}
+		case A3LCEntryTerm:
+			[self updateTermValueFromText:textField.text];
+			textField.text = _object.term;
+			break;
+		case A3LCEntryInterestRate:
+			[self updateInterestValueFromText:textField.text];
+			textField.text = _object.interestRate;
+			break;
+		case A3LCEntryNotes:
+			[_object setValue:textField.text forKey:A3LC_KEY_NOTES];
+			break;
+		case A3LCEntryFrequency:
+		case A3LCEntryStartDate:
+		case A3LCEntryButton:
+			break;
+	}
 	return YES;
 }
 
@@ -342,6 +645,183 @@
 }
 
 - (void)keyboardDidHide:(NSNotification*)aNotification {
+}
+
+- (A3NumberKeyboardViewController *)numberKeyboardViewController {
+	if (nil == _numberKeyboardViewController) {
+		_numberKeyboardViewController = [[A3NumberKeyboardViewController alloc] init];
+		_numberKeyboardViewController.delegate = self;
+	}
+	return _numberKeyboardViewController;
+}
+
+- (void)updateTermValueFromText:(NSString *)text {
+	NSNumberFormatter *decimalStyleNumberFormatter = [[NSNumberFormatter alloc] init];
+	[decimalStyleNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	float value = [text floatValue];
+	_object.termTypeMonth = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton2.selected];
+	if (value == 0.0) {
+		_object.term = @"";
+	} else {
+		_object.term = _numberKeyboardViewController.bigButton1.selected ?
+				[A3LoanCalcString stringFromTermInYears:value] : [A3LoanCalcString stringFromTermInMonths:value];
+	}
+}
+
+- (void)updateInterestValueFromText:(NSString *)text {
+	float value = [text floatValue] / 100.0;
+	_object.interestRatePerYear = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
+	if (value != 0.0) {
+		NSString *termType = _numberKeyboardViewController.bigButton1.selected ? @"Annual" : @"Monthly";
+		_object.interestRate = [NSString stringWithFormat:@"%@ %@", termType, [self.percentNumberFormatter stringFromNumber:[NSNumber numberWithFloat:value]]];
+	} else {
+		_object.interestRate = @"";
+	}
+}
+
+- (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
+	if (nil == _frequencyKeyboardViewController) {
+		_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController" bundle:nil];
+		_frequencyKeyboardViewController.delegate = self;
+	}
+	return _frequencyKeyboardViewController;
+}
+
+- (A3DateKeyboardViewController *)dateKeyboardViewController {
+	if (nil == _dateKeyboardViewController) {
+		_dateKeyboardViewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
+		_dateKeyboardViewController.delegate = self;
+	}
+	return _dateKeyboardViewController;
+}
+
+- (A3DateKeyboardViewController *)dateKeyboardForMonthInput {
+	if (nil == _dateKeyboardForMonthInput) {
+		_dateKeyboardForMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardForMonthInput.workingMode = A3DateKeyboardWorkingModeMonth;
+		_dateKeyboardForMonthInput.delegate = self;
+	}
+	return _dateKeyboardForMonthInput;
+}
+
+- (A3DateKeyboardViewController *)dateKeyboardForYearMonthInput {
+	if (nil == _dateKeyboardForYearMonthInput) {
+		_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardForYearMonthInput.workingMode = A3DateKeyboardWorkingModeYearMonth;
+		_dateKeyboardForYearMonthInput.delegate = self;
+	}
+	return _dateKeyboardForYearMonthInput;
+}
+
+- (NSNumberFormatter *)currencyNumberFormatter {
+	if (nil == _currencyNumberFormatter) {
+		_currencyNumberFormatter = [[NSNumberFormatter alloc] init];
+		[_currencyNumberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	}
+	return _currencyNumberFormatter;
+}
+
+- (NSNumberFormatter *)percentNumberFormatter {
+	if (nil == _percentNumberFormatter) {
+		_percentNumberFormatter = [[NSNumberFormatter alloc] init];
+		[_percentNumberFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+	}
+	return _percentNumberFormatter;
+}
+
+- (void)handleBigButton1 {
+
+}
+
+- (void)handleBigButton2 {
+
+}
+
+- (NSString *)stringForBigButton1 {
+	return nil;
+}
+
+- (NSString *)stringForBigButton2 {
+	return nil;
+}
+
+- (void)clearButtonPressed {
+	if (_editingTextField) {
+		_editingTextField.text = @"";
+		NSUInteger index = [_textFields indexOfObject:_editingTextField];
+		[_object setValue:@"" forKey:[_contentsKeyIndex objectAtIndex:index]];
+	}
+}
+
+- (BOOL)prevAvailableForElement:(QEntryElement *)element {
+	return [_textFields indexOfObject:_editingTextField] != 0;
+}
+
+- (BOOL)nextAvailableForElement:(QEntryElement *)element {
+	return [_textFields lastObject] != _editingTextField;
+}
+
+- (void)prevButtonPressedWithElement:(QEntryElement *)element {
+	NSUInteger currentIndex = [_textFields indexOfObject:_editingTextField];
+	UITextField *newResponder = [_textFields objectAtIndex:(NSUInteger) MAX(currentIndex - 1, 0)];
+	if (_editingTextField != newResponder) {
+		[_editingTextField resignFirstResponder];
+		[newResponder becomeFirstResponder];
+	}
+}
+
+- (void)nextButtonPressedWithElement:(QEntryElement *)element {
+	NSUInteger currentIndex = [_textFields indexOfObject:_editingTextField];
+	UITextField *newResponder = [_textFields objectAtIndex:MIN(currentIndex + 1, [_textFields count] - 1)];
+	if (_editingTextField != newResponder) {
+		[_editingTextField resignFirstResponder];
+		[newResponder becomeFirstResponder];
+	}
+}
+
+- (void)dateKeyboardValueChangedDate:(NSDate *)date element:(QEntryElement *)element {
+	NSUInteger index = [_textFields indexOfObject:_editingTextField];
+	if (index != NSNotFound) {
+		NSString *key = [_contentsKeyIndex objectAtIndex:index];
+		[_object setValue:date forKey:key];
+		if ([key isEqualToString:A3LC_KEY_START_DATE]) {
+			_editingTextField.text = [A3Formatter mediumStyleDateStringFromDate:date];
+		} else if (_editingTextField == _extraPaymentYearlyMonth) {
+			_editingTextField.text = [A3Formatter fullStyleMonthSymbolFromDate:date];
+		} else if (_editingTextField == _extraPaymentOneTimeYearMonth) {
+			_editingTextField.text = [A3Formatter fullStyleYearMonthStringFromDate:date];
+		}
+	}
+}
+
+- (void)A3KeyboardViewControllerDoneButtonPressed {
+	FNLOG(@"Check");
+	[_editingTextField resignFirstResponder];
+}
+
+- (void)frequencySelected:(NSNumber *)frequencyObject cell:(QEntryTableViewCell *)cell {
+	_object.frequency = frequencyObject;
+	_editingTextField.text = [A3LoanCalcString stringForFrequencyValue:frequencyObject];
+}
+
+- (void)reloadMainScrollViewContentSize {
+	CGFloat height = 289.0;
+	CGFloat tableViewHeight = 0.0;
+	tableViewHeight += _object.showAdvanced.boolValue ? A3_LOAN_CALC_ROW_HEIGHT * 7.0 : A3_LOAN_CALC_ROW_HEIGHT * 4.0;
+	tableViewHeight += _object.showDownPayment.boolValue ? A3_LOAN_CALC_ROW_HEIGHT : 0.0;
+	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + A3_LOAN_CALC_ROW_HEIGHT * 3.0 : 0.0;
+	tableViewHeight += 34.0;
+
+	CGRect frame = self.brother.tableView.frame;
+	frame.size.height = tableViewHeight;
+	self.brother.tableView.frame = frame;
+
+	frame = self.tableView.frame;
+	frame.size.height = tableViewHeight;
+	self.tableView.frame = frame;
+
+	self.mainScrollView.contentSize = CGSizeMake(714.0, height + tableViewHeight);
 }
 
 @end

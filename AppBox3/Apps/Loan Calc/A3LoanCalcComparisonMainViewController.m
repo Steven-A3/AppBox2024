@@ -71,7 +71,6 @@
     // Do any additional setup after loading the view from its nib.
 
 	[self configureTopScrollView];
-	[self reloadScrollViewContentSize];
 
 	_loanACircleView.textLabel.text = @"A";
 	_loanACircleView.textLabel.textColor = [UIColor colorWithRed:115.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:1.0];
@@ -81,6 +80,14 @@
 
 	self.leftTableViewDataSource.object = self.leftObject;
 	self.rightTableViewDataSource.object = self.rightObject;
+	_leftTableViewDataSource.tableView = _leftTableView;
+	_rightTableViewDataSource.tableView = _rightTableView;
+	_leftTableViewDataSource.brother = _rightTableViewDataSource;
+	_rightTableViewDataSource.brother = _leftTableViewDataSource;
+
+	[_leftTableViewDataSource reloadMainScrollViewContentSize];
+
+	self.frequencyImageView.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -250,24 +257,10 @@
 	return _rightObject;
 }
 
-- (void)reloadScrollViewContentSize {
-	CGFloat height = 289.0;
-	CGFloat tableViewHeight = 0.0;
-	A3LoanCalcPreferences *preferences = [[A3LoanCalcPreferences alloc] init];
-	tableViewHeight += preferences.showAdvanced ? A3_LOAN_CALC_ROW_HEIGHT * 7.0 : A3_LOAN_CALC_ROW_HEIGHT * 4.0;
-	tableViewHeight += preferences.showDownPayment ? A3_LOAN_CALC_ROW_HEIGHT : 0.0;
-	tableViewHeight += preferences.showExtraPayment ? 53.0 + A3_LOAN_CALC_ROW_HEIGHT * 3.0 : 0.0;
-	tableViewHeight += 34.0;
+- (void)layoutImageViews {
+	CGRect frame = CGRectMake(342.0, 302.0, 32.0, 32.0);
 
-	CGRect frame = self.leftTableView.frame;
-	frame.size.height = tableViewHeight;
-	self.leftTableView.frame = frame;
 
-	frame = self.rightTableView.frame;
-	frame.size.height = tableViewHeight;
-	self.rightTableView.frame = frame;
-
-	self.mainScrollView.contentSize = CGSizeMake(714.0, height + tableViewHeight);
 }
 
 @end

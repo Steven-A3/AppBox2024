@@ -12,11 +12,10 @@
 #import "A3UIKit.h"
 #import "A3SalesCalcHistoryTableViewCell.h"
 #import "SalesCalcHistory.h"
-#import "A3Categories.h"
 #import "A3SalesCalcQuickDialogViewController.h"
 #import "A3CalcExpressionView.h"
-#import "A3SalesCalcQuickDialogViewController.h"
 #import "A3UIDevice.h"
+#import "NSString+conversion.h"
 
 @interface A3SalesCalcHistoryViewController ()
 
