@@ -48,4 +48,10 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 - (void)calculateTerm:(BOOL)inMonth;
 
 - (void)calculate;
+
+- (NSNumber *)totalAmount;
+
+- (NSNumber *)totalInterest;
+
+- (NSNumber *)monthlyAverageInterest;
 @end

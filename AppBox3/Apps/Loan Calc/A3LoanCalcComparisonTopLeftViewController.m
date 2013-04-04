@@ -7,6 +7,9 @@
 //
 
 #import "A3LoanCalcComparisonTopLeftViewController.h"
+#import "LoanCalcHistory.h"
+#import "NSString+conversion.h"
+#import "LoanCalcHistory+calculation.h"
 
 @interface A3LoanCalcComparisonTopLeftViewController ()
 
@@ -50,47 +53,26 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)setTotalAmountValue_A:(float)totalAmountValue_A {
-	_totalAmount_A.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:totalAmountValue_A]];
-}
+- (void)updateLabels {
+	_totalAmount_A.text = [self.numberFormatter stringFromNumber:_leftObject.totalAmount];
+	_totalAmount_B.text = [self.numberFormatter stringFromNumber:_rightObject.totalAmount];
+	NSNumber *principalA = [NSNumber numberWithFloat:_leftObject.principal.floatValueEx];
+	NSNumber *principalB = [NSNumber numberWithFloat:_rightObject.principal.floatValueEx];
+	_principal_A.text = [_numberFormatter stringFromNumber:principalA];
+	_principal_B.text = [_numberFormatter stringFromNumber:principalB];
+	_totalInterest_A.text = [self.numberFormatter stringFromNumber:_leftObject.totalInterest];
+	_totalInterest_B.text = [self.numberFormatter stringFromNumber:_rightObject.totalInterest];
+	NSNumber *monthlyPaymentA = [NSNumber numberWithFloat:_leftObject.monthlyPayment.floatValueEx];
+	NSNumber *monthlyPaymentB = [NSNumber numberWithFloat:_rightObject.monthlyPayment.floatValueEx];
+	_monthlyPayment_A.text = [_numberFormatter stringFromNumber:monthlyPaymentA];
+	_monthlyPayment_B.text = [_numberFormatter stringFromNumber:monthlyPaymentB];
 
-- (void)setTotalAmountValue_B:(float)totalAmountValue_B {
-	_totalAmount_B.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:totalAmountValue_B]];
-}
-
-- (void)setPrincipalValue_A:(float)principalValue_A {
-	_principal_A.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:principalValue_A]];
-}
-
-- (void)setPrincipalValue_B:(float)principalValue_B {
-	_principal_B.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:principalValue_B]];
-}
-
-- (void)setTotalInterestValue_A:(float)totalInterestValue_A {
-	_totalInterest_A.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:totalInterestValue_A]];
-}
-
-- (void)setTotalInterestValue_B:(float)totalInterestValue_B {
-	_totalInterest_B.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:totalInterestValue_B]];
-}
-
-- (void)setMonthlyPaymentValue_A:(float)monthlyPaymentValue_A {
-	_monthlyPayment_A.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:monthlyPaymentValue_A]];
-	[self updateLowestPaymentValueLabel];
-}
-
-- (void)setMonthlyPaymentValue_B:(float)monthlyPaymentValue_B {
-	_monthlyPayment_B.text = [self.numberFormatter stringFromNumber:[NSNumber numberWithFloat:monthlyPaymentValue_B]];
-	[self updateLowestPaymentValueLabel];
-}
-
-- (void)updateLowestPaymentValueLabel {
-	NSString *lowestSet = _monthlyPaymentValue_A > _monthlyPaymentValue_B ? @"Loan B" : @"Loan A";
+	NSString *lowestSet = monthlyPaymentA.floatValue > monthlyPaymentB.floatValue ? @"Loan B" : @"Loan A";
 	_lowestPaymentHead.text = lowestSet;
 
 	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	double difference = fabs(_monthlyPaymentValue_A - _monthlyPaymentValue_B);
+	double difference = fabs(monthlyPaymentA.floatValue - monthlyPaymentB.floatValue);
 	_lowestPaymentDiff.text = [NSString stringWithFormat:@"%@/mo", [numberFormatter stringFromNumber:[NSNumber numberWithDouble:difference]]];
 }
 

@@ -79,6 +79,7 @@
 	textField.tag = tag;
 	textField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	textField.textColor = [UIColor colorWithRed:115.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:1.0];
+	[textField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
 	return textField;
 }
 
@@ -94,7 +95,6 @@
 	UITextField *textField = [self textFieldWithTag:A3LCEntryFrequency];
 	textField.placeholder = @"Monthly";
 	textField.text = [A3LoanCalcString stringForFrequencyValue:_object.frequency];
-	[_textFields addObject:textField];
 	[_textFields insertObject:textField atIndex:insertAt];
 }
 
@@ -182,7 +182,6 @@
 		[self insertNotes];
 	}
 
-	[_contentsKeyIndex addObject:@"BUTTON"];
 	[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryButton]];
 
 	[_textFields addObject:[self textFieldWithTag:A3LCEntryExtraPaymentMonthly]];
@@ -220,6 +219,7 @@
 	NSInteger numberOfSection = 1;
 	if (_object.showExtraPayment)
 		numberOfSection = 2;
+	FNLOG(@"Number of Section %d", numberOfSection);
 	return numberOfSection;
 }
 
@@ -233,10 +233,12 @@
 			numberOfRows = 3;
 			break;
 	}
+	FNLOG(@"Number of rows in section %d in section %d", numberOfRows, section);
 	return numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	FNLOG(@"%@", indexPath);
 	UITableViewCell *cell = nil;
 	switch (indexPath.section) {
 		case 0:
@@ -246,6 +248,7 @@
 			cell = [self configureExtraPaymentCellforRow:indexPath.row];
 			break;
 	}
+	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
 	return cell;
 }
 
@@ -355,7 +358,7 @@
 			textField = [self textFieldWithTag:entry];
 			[textField removeFromSuperview];
 			textField.frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
-			[cell.contentView addSubview:textField];
+			[cell addSubview:textField];
 
 			if (!_leftAlignment) {
 				NSString *imagePath = [self imagePathForEntry:entry];
@@ -384,6 +387,7 @@
 }
 
 - (UITableViewCell *)configureExtraPaymentCellforRow:(NSInteger)row {
+	FNLOG(@"Chedk");
 	UITableViewCell *cell;
 	cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 	cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -409,7 +413,7 @@
 			frame.origin.x = _leftAlignment ? 188.0 : 20.0;
 			frame.origin.y = 15.0;
 			_extraPaymentYearlyMonth.frame = frame;
-			[cell.contentView addSubview:_extraPaymentYearlyMonth];
+			[cell addSubview:_extraPaymentYearlyMonth];
 			break;
 		}
 		case 2:{
@@ -427,12 +431,12 @@
 			frame.origin.x = _leftAlignment ? 150.0 : 20.0;
 			frame.origin.y = 15.0;
 			_extraPaymentOneTimeYearMonth.frame = frame;
-			[cell.contentView addSubview:_extraPaymentOneTimeYearMonth];
+			[cell addSubview:_extraPaymentOneTimeYearMonth];
 			break;
 		}
 	}
 	textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
-	[cell.contentView addSubview:textField];
+	[cell addSubview:textField];
 
 	if (!_leftAlignment) {
 		NSString *imagePath = [self imagePathForEntry:textField.tag];
@@ -475,6 +479,10 @@
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	UITableViewCell *cell = (UITableViewCell *)textField.superview;
+	cell.backgroundColor = [UIColor whiteColor];
+
+	FNLOG(@"Check");
 	_editingTextField = textField;
 	if (textField == _extraPaymentYearlyMonth) {
 		textField.inputView = self.dateKeyboardForMonthInput.view;
@@ -490,8 +498,7 @@
 		case A3LCEntryMonthlyPayment:
 		case A3LCEntryExtraPaymentMonthly:
 		case A3LCEntryExtraPaymentYearly:
-		case A3LCEntryExtraPaymentOneTime:
-		{
+		case A3LCEntryExtraPaymentOneTime: {
 			textField.inputView = self.numberKeyboardViewController.view;
 			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 			_numberKeyboardViewController.keyInputDelegate = textField;
@@ -501,8 +508,7 @@
 			[_numberKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
-		case A3LCEntryTerm:
-		{
+		case A3LCEntryTerm: {
 			textField.inputView = self.numberKeyboardViewController.view;
 			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
 			_numberKeyboardViewController.keyInputDelegate = textField;
@@ -543,13 +549,19 @@
 			textField.clearButtonMode = UITextFieldViewModeNever;
 			[_dateKeyboardViewController reloadPrevNextButtons];
 			break;
-		case A3LCEntryNotes:break;
-		case A3LCEntryButton:break;
+		case A3LCEntryNotes:
+			textField.returnKeyType = _object.showExtraPayment.boolValue ? UIReturnKeyNext : UIReturnKeyDone;
+			break;
+		case A3LCEntryButton:
+			break;
+	}
+	if ([_delegate respondsToSelector:@selector(loanCalcComparisonTableViewValueChanged)]) {
+		[_delegate loanCalcComparisonTableViewValueChanged];
 	}
 	return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (void)textFieldEditingChanged:(UITextField *)textField {
 	FNLOG(@"Check");
 	A3LoanCalculatorEntry entryType = (A3LoanCalculatorEntry) textField.tag;
 	switch (entryType) {
@@ -583,7 +595,10 @@
 		case A3LCEntryButton:
 			break;
 	}
-	return YES;
+	[_object calculate];
+	if ([_delegate respondsToSelector:@selector(loanCalcComparisonTableViewValueChanged)]) {
+		[_delegate loanCalcComparisonTableViewValueChanged];
+	}
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
@@ -618,6 +633,15 @@
 		case A3LCEntryButton:
 			break;
 	}
+	UITableViewCell *cell = (UITableViewCell *)textField.superview;
+	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+	if (textField.tag == A3LCEntryNotes) {
+		[self nextButtonPressedWithElement:nil];
+	}
 	return YES;
 }
 
@@ -638,8 +662,11 @@
 - (void)keyboardDidShow:(NSNotification *)notification {
 	if (_editingTextField) {
 		CGRect frame = [_editingTextField.superview convertRect:_editingTextField.frame toView:nil];
+		FNLOG(@"origin = %f, height = %f", frame.origin.y, frame.size.height);
 		frame = [self.mainScrollView convertRect:frame fromView:nil];
-		frame.size.height += 15.0;
+		FNLOG(@"origin = %f, height = %f", frame.origin.y, frame.size.height);
+		frame.origin.y -= 15.0;
+		frame.size.height += 30.0;
 		[self.mainScrollView scrollRectToVisible:frame animated:YES];
 	}
 }
@@ -751,6 +778,10 @@
 		_editingTextField.text = @"";
 		NSUInteger index = [_textFields indexOfObject:_editingTextField];
 		[_object setValue:@"" forKey:[_contentsKeyIndex objectAtIndex:index]];
+
+		if ([_delegate respondsToSelector:@selector(loanCalcComparisonTableViewValueChanged)]) {
+			[_delegate loanCalcComparisonTableViewValueChanged];
+		}
 	}
 }
 
@@ -764,6 +795,7 @@
 
 - (void)prevButtonPressedWithElement:(QEntryElement *)element {
 	NSUInteger currentIndex = [_textFields indexOfObject:_editingTextField];
+	FNLOG(@"%d %@", currentIndex, _textFields);
 	UITextField *newResponder = [_textFields objectAtIndex:(NSUInteger) MAX(currentIndex - 1, 0)];
 	if (_editingTextField != newResponder) {
 		[_editingTextField resignFirstResponder];
@@ -792,6 +824,9 @@
 		} else if (_editingTextField == _extraPaymentOneTimeYearMonth) {
 			_editingTextField.text = [A3Formatter fullStyleYearMonthStringFromDate:date];
 		}
+		if ([_delegate respondsToSelector:@selector(loanCalcComparisonTableViewValueChanged)]) {
+			[_delegate loanCalcComparisonTableViewValueChanged];
+		}
 	}
 }
 
@@ -803,6 +838,10 @@
 - (void)frequencySelected:(NSNumber *)frequencyObject cell:(QEntryTableViewCell *)cell {
 	_object.frequency = frequencyObject;
 	_editingTextField.text = [A3LoanCalcString stringForFrequencyValue:frequencyObject];
+
+	if ([_delegate respondsToSelector:@selector(loanCalcComparisonTableViewValueChanged)]) {
+		[_delegate loanCalcComparisonTableViewValueChanged];
+	}
 }
 
 - (void)reloadMainScrollViewContentSize {
@@ -811,7 +850,9 @@
 	tableViewHeight += _object.showAdvanced.boolValue ? A3_LOAN_CALC_ROW_HEIGHT * 7.0 : A3_LOAN_CALC_ROW_HEIGHT * 4.0;
 	tableViewHeight += _object.showDownPayment.boolValue ? A3_LOAN_CALC_ROW_HEIGHT : 0.0;
 	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + A3_LOAN_CALC_ROW_HEIGHT * 3.0 : 0.0;
-	tableViewHeight += 34.0;
+	tableViewHeight += 52.0;
+
+	FNLOG(@"tableViewHeight %f", tableViewHeight);
 
 	CGRect frame = self.brother.tableView.frame;
 	frame.size.height = tableViewHeight;
@@ -822,6 +863,15 @@
 	self.tableView.frame = frame;
 
 	self.mainScrollView.contentSize = CGSizeMake(714.0, height + tableViewHeight);
+}
+
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[_numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	[_frequencyKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	[_dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	[_dateKeyboardForMonthInput rotateToInterfaceOrientation:toInterfaceOrientation];
+	[_dateKeyboardForYearMonthInput rotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 @end

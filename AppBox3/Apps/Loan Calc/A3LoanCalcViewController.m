@@ -37,6 +37,13 @@
     return self;
 }
 
+- (CGRect)contentsViewFrame {
+	CGRect frame = self.view.bounds;
+	frame.size.height -= 44.0;
+
+	return frame;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -49,10 +56,8 @@
 	self.navigationItem.rightBarButtonItem = barButtonItem;
 
 	[self addChildViewController:self.quickDialogViewController];
-	[self.view addSubview:self.quickDialogViewController.view];
-	CGRect frame = self.view.bounds;
-	frame.size.height -= 44.0;
-	[_quickDialogViewController.view setFrame:frame];
+	_quickDialogViewController.view.frame = self.contentsViewFrame;
+	[self.view addSubview:_quickDialogViewController.view];
 
 	_topGradientLayer = [A3UIKit addTopGradientLayerToView:self.view];
 
@@ -73,12 +78,14 @@
 		[self.quickDialogViewController.view removeFromSuperview];
 
 		[self addChildViewController:self.comparisonViewController];
+		_comparisonViewController.view.frame = self.contentsViewFrame;
 		[self.view addSubview:_comparisonViewController.view];
 	} else {
 		[_comparisonViewController removeFromParentViewController];
 		[_comparisonViewController.view removeFromSuperview];
 
 		[self addChildViewController:self.quickDialogViewController];
+		_quickDialogViewController.view.frame = self.contentsViewFrame;
 		[self.view addSubview:_quickDialogViewController.view];
 	}
 	_topGradientLayer = [A3UIKit addTopGradientLayerToView:self.view];

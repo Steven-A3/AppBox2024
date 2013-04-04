@@ -865,6 +865,8 @@
 	[_frequencyKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 	[_numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 	[_dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	[_dateKeyboardForMonthInput rotateToInterfaceOrientation:toInterfaceOrientation];
+	[_dateKeyboardForYearMonthInput rotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 - (BOOL)prevAvailableForElement:(QEntryElement *)element {
@@ -944,19 +946,11 @@
 }
 
 - (void)reloadGraphView {
-	LoanCalcHistory *object = self.editingObject;
-	float principal = [object.principal floatValueEx];
-	float monthlyPayment = [object.monthlyPayment floatValueEx];
-	float termInMonth = self.editingObject.termInMonth;
-	float totalAmount = monthlyPayment * termInMonth;
-	float totalInterest = totalAmount - principal;
-	float monthlyAverageInterest = totalInterest / termInMonth;
-
-	_tableHeaderViewController.totalAmount = [NSNumber numberWithFloat:totalAmount];
-	_tableHeaderViewController.principal = [NSNumber numberWithFloat:principal];
-	_tableHeaderViewController.totalInterest = [NSNumber numberWithFloat:totalInterest];
-	_tableHeaderViewController.monthlyPayment = [NSNumber numberWithFloat:monthlyPayment];
-	_tableHeaderViewController.monthlyAverageInterest = [NSNumber numberWithFloat:monthlyAverageInterest];
+	_tableHeaderViewController.totalAmount = _editingObject.totalAmount;
+	_tableHeaderViewController.principal = [NSNumber numberWithFloat:_editingObject.principal.floatValueEx];
+	_tableHeaderViewController.totalInterest = _editingObject.totalInterest;
+	_tableHeaderViewController.monthlyPayment = [NSNumber numberWithFloat:_editingObject.monthlyPayment.floatValueEx];
+	_tableHeaderViewController.monthlyAverageInterest = _editingObject.monthlyAverageInterest;
 	[_tableHeaderViewController reloadData];
 }
 

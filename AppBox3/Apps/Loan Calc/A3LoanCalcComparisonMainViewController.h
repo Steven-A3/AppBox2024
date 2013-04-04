@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3LoanCalcComparisonMainViewController : UIViewController
+@interface A3LoanCalcComparisonMainViewController : UIViewController <UIScrollViewDelegate>
 
 @end

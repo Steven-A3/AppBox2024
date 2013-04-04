@@ -32,9 +32,6 @@
 		68024AD416313CF900D396F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68024AD316313CF900D396F0 /* Default-568h@2x.png */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		6809A74A163F8E0B002064E2 /* A3MainTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6809A749163F8E0B002064E2 /* A3MainTest.m */; };
-		68104C0316F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68104C0116F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.m */; };
-		68104C0416F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68104C0216F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.xib */; };
-		6811A4B116F95EB300D19F43 /* A3LoanCalcBarPlotItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6811A4B016F95EB300D19F43 /* A3LoanCalcBarPlotItem.m */; };
 		68129E89164A5841008668F4 /* FacingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E7A164A5841008668F4 /* FacingView.m */; };
 		68129E8A164A5841008668F4 /* FoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E7C164A5841008668F4 /* FoldView.m */; };
 		68129E8B164A5841008668F4 /* MultiFoldView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68129E7E164A5841008668F4 /* MultiFoldView.m */; };
@@ -61,6 +58,9 @@
 		682CA333163F8C5D0052A559 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 682CA332163F8C5D0052A559 /* Default.png */; };
 		682CA335163F8C5D0052A559 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682CA334163F8C5D0052A559 /* Default@2x.png */; };
 		682CA337163F8C5D0052A559 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682CA336163F8C5D0052A559 /* Default-568h@2x.png */; };
+		682E350E170D2E700061B67F /* A3LoanCalcSingleBarChartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682E350D170D2E700061B67F /* A3LoanCalcSingleBarChartController.m */; };
+		682E3512170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682E3510170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.m */; };
+		682E3513170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682E3511170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.xib */; };
 		682EA2D615EB10B000BD6AD4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D515EB10B000BD6AD4 /* UIKit.framework */; };
 		682EA2D815EB10B000BD6AD4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D715EB10B000BD6AD4 /* Foundation.framework */; };
 		682EA2DA15EB10B000BD6AD4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2D915EB10B000BD6AD4 /* CoreGraphics.framework */; };
@@ -163,6 +163,7 @@
 		688D74EE16C53AFD00DBF033 /* tools_on@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DC16C53AFD00DBF033 /* tools_on@2x.png */; };
 		688D74EF16C53AFD00DBF033 /* tools.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DD16C53AFD00DBF033 /* tools.png */; };
 		688D74F016C53AFD00DBF033 /* tools@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 688D74DE16C53AFD00DBF033 /* tools@2x.png */; };
+		688F277B170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F277A170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m */; };
 		688F7E1416C11A3E003687A7 /* A3ExpenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F7E1316C11A3E003687A7 /* A3ExpenseListViewController.m */; };
 		688F7E1616C1252C003687A7 /* A3ExpenseListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 688F7E1516C1252C003687A7 /* A3ExpenseListViewController.xib */; };
 		688F7E1916C12D1E003687A7 /* A3VerticalLinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F7E1816C12D1E003687A7 /* A3VerticalLinesView.m */; };
@@ -526,11 +527,6 @@
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIDevice.m; sourceTree = "<group>"; };
 		6809A749163F8E0B002064E2 /* A3MainTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MainTest.m; sourceTree = "<group>"; };
-		68104C0016F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LoanCalcComparisonTopLeftViewController.h; sourceTree = "<group>"; };
-		68104C0116F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LoanCalcComparisonTopLeftViewController.m; sourceTree = "<group>"; };
-		68104C0216F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LoanCalcComparisonTopLeftViewController.xib; sourceTree = "<group>"; };
-		6811A4AF16F95EB300D19F43 /* A3LoanCalcBarPlotItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcBarPlotItem.h; path = "Loan Calc/A3LoanCalcBarPlotItem.h"; sourceTree = "<group>"; };
-		6811A4B016F95EB300D19F43 /* A3LoanCalcBarPlotItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcBarPlotItem.m; path = "Loan Calc/A3LoanCalcBarPlotItem.m"; sourceTree = "<group>"; };
 		68129E79164A5841008668F4 /* FacingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacingView.h; sourceTree = "<group>"; };
 		68129E7A164A5841008668F4 /* FacingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacingView.m; sourceTree = "<group>"; };
 		68129E7B164A5841008668F4 /* FoldView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoldView.h; sourceTree = "<group>"; };
@@ -572,6 +568,11 @@
 		682CA332163F8C5D0052A559 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		682CA334163F8C5D0052A559 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		682CA336163F8C5D0052A559 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		682E350C170D2E700061B67F /* A3LoanCalcSingleBarChartController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcSingleBarChartController.h; path = "Loan Calc/A3LoanCalcSingleBarChartController.h"; sourceTree = "<group>"; };
+		682E350D170D2E700061B67F /* A3LoanCalcSingleBarChartController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcSingleBarChartController.m; path = "Loan Calc/A3LoanCalcSingleBarChartController.m"; sourceTree = "<group>"; };
+		682E350F170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcComparisonTopLeftViewController.h; path = "Loan Calc/A3LoanCalcComparisonTopLeftViewController.h"; sourceTree = "<group>"; };
+		682E3510170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcComparisonTopLeftViewController.m; path = "Loan Calc/A3LoanCalcComparisonTopLeftViewController.m"; sourceTree = "<group>"; };
+		682E3511170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3LoanCalcComparisonTopLeftViewController.xib; path = "Loan Calc/A3LoanCalcComparisonTopLeftViewController.xib"; sourceTree = "<group>"; };
 		682EA2D115EB10B000BD6AD4 /* AppBox3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AppBox3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		682EA2D515EB10B000BD6AD4 /* UIKit.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		682EA2D715EB10B000BD6AD4 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -726,6 +727,8 @@
 		688D74DC16C53AFD00DBF033 /* tools_on@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tools_on@2x.png"; sourceTree = "<group>"; };
 		688D74DD16C53AFD00DBF033 /* tools.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tools.png; sourceTree = "<group>"; };
 		688D74DE16C53AFD00DBF033 /* tools@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tools@2x.png"; sourceTree = "<group>"; };
+		688F2779170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcPrincipalBarChartController.h; path = "Loan Calc/A3LoanCalcPrincipalBarChartController.h"; sourceTree = "<group>"; };
+		688F277A170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcPrincipalBarChartController.m; path = "Loan Calc/A3LoanCalcPrincipalBarChartController.m"; sourceTree = "<group>"; };
 		688F7E1216C11A3E003687A7 /* A3ExpenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListViewController.h; path = "Expense List/A3ExpenseListViewController.h"; sourceTree = "<group>"; };
 		688F7E1316C11A3E003687A7 /* A3ExpenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListViewController.m; path = "Expense List/A3ExpenseListViewController.m"; sourceTree = "<group>"; };
 		688F7E1516C1252C003687A7 /* A3ExpenseListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3ExpenseListViewController.xib; path = "Expense List/A3ExpenseListViewController.xib"; sourceTree = "<group>"; };
@@ -1937,16 +1940,16 @@
 		688D74BF16C484A600DBF033 /* Loan Calc */ = {
 			isa = PBXGroup;
 			children = (
-				6811A4AF16F95EB300D19F43 /* A3LoanCalcBarPlotItem.h */,
-				6811A4B016F95EB300D19F43 /* A3LoanCalcBarPlotItem.m */,
+				682E350F170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.h */,
+				682E3510170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.m */,
+				682E3511170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.xib */,
+				688F2779170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.h */,
+				688F277A170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m */,
 				68B42B3816FA982600A73061 /* A3LoanCalcComparisonMainViewController.h */,
 				68B42B3916FA982600A73061 /* A3LoanCalcComparisonMainViewController.m */,
 				68B42B3A16FA982600A73061 /* A3LoanCalcComparisonMainViewController.xib */,
 				68137900170404340003201F /* A3LoanCalcComparisonTableViewDataSource.h */,
 				68137901170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m */,
-				68104C0016F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.h */,
-				68104C0116F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.m */,
-				68104C0216F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.xib */,
 				688D74C516C4FC2700DBF033 /* A3LoanCalcPieChartViewController.h */,
 				688D74C616C4FC2700DBF033 /* A3LoanCalcPieChartViewController.m */,
 				688D74C716C4FC2700DBF033 /* A3LoanCalcPieChartViewController.xib */,
@@ -1961,6 +1964,8 @@
 				688D74C016C4853B00DBF033 /* A3LoanCalcViewController.h */,
 				688D74C116C4853B00DBF033 /* A3LoanCalcViewController.m */,
 				688D74C216C4853B00DBF033 /* A3LoanCalcViewController.xib */,
+				682E350C170D2E700061B67F /* A3LoanCalcSingleBarChartController.h */,
+				682E350D170D2E700061B67F /* A3LoanCalcSingleBarChartController.m */,
 			);
 			name = "Loan Calc";
 			sourceTree = "<group>";
@@ -2327,7 +2332,6 @@
 				680060CC16F2CFE900219E41 /* icon_sc_mirror.png in Resources */,
 				680060CD16F2CFE900219E41 /* icon_sc_settings_on.png in Resources */,
 				680060CE16F2CFE900219E41 /* icon_sc_settings.png in Resources */,
-				68104C0416F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.xib in Resources */,
 				68B42B3C16FA982600A73061 /* A3LoanCalcComparisonMainViewController.xib in Resources */,
 				68B42B9116FABA2600A73061 /* comparison_discount_24.png in Resources */,
 				68B42B9216FABA2600A73061 /* comparison_discount_24@2x.png in Resources */,
@@ -2413,6 +2417,7 @@
 				6896049116FC0FA90030A2B9 /* icon_leftarrow.png in Resources */,
 				6896049216FC0FA90030A2B9 /* icon_rightarrow.png in Resources */,
 				681614061709B7AB00CBC6FE /* A3ActionMenuViewController.xib in Resources */,
+				682E3513170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2605,8 +2610,6 @@
 				68D8E86B16ED85B600A9AAD2 /* A3LoanCalcSettingsViewController.m in Sources */,
 				68D8E86E16ED89A500A9AAD2 /* A3LoanCalcPreferences.m in Sources */,
 				68D8E87116ED89D800A9AAD2 /* A3LoanCalcString.m in Sources */,
-				68104C0316F7FF0800E71E39 /* A3LoanCalcComparisonTopLeftViewController.m in Sources */,
-				6811A4B116F95EB300D19F43 /* A3LoanCalcBarPlotItem.m in Sources */,
 				68B42B3B16FA982600A73061 /* A3LoanCalcComparisonMainViewController.m in Sources */,
 				68B42B3F16FAA44800A73061 /* A3CircleView.m in Sources */,
 				17D42187ACB2CCE552683D75 /* DDPageControl.m in Sources */,
@@ -2616,6 +2619,9 @@
 				681613FB1709330800CBC6FE /* NSString+conversion.m in Sources */,
 				681614051709B7AB00CBC6FE /* A3ActionMenuViewController.m in Sources */,
 				687C3F47170A954600002C0D /* AppBox3.xcdatamodeld in Sources */,
+				688F277B170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m in Sources */,
+				682E350E170D2E700061B67F /* A3LoanCalcSingleBarChartController.m in Sources */,
+				682E3512170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2735,7 +2741,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2752,6 +2759,8 @@
 				HEADER_SEARCH_PATHS = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "C175BD07-EAA5-4365-926E-341F22FA2D9F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C175BD07-EAA5-4365-926E-341F22FA2D9F";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/CorePlot_1.1/Source/framework\"/**";
@@ -2769,7 +2778,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -2780,6 +2790,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-ObjC";
+				PROVISIONING_PROFILE = "C175BD07-EAA5-4365-926E-341F22FA2D9F";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C175BD07-EAA5-4365-926E-341F22FA2D9F";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/CorePlot_1.1/Source/framework\"/**";
@@ -2791,6 +2803,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4145230C773F4D058F9905F5 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2800,6 +2814,8 @@
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "64F23C16-B99F-4442-BF81-82E96F0F86A6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "64F23C16-B99F-4442-BF81-82E96F0F86A6";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/CorePlot_1.1/Source/framework\"/** \"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2809,6 +2825,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4145230C773F4D058F9905F5 /* Pods.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Yoon Jeong Kang (S6YYP4CXSY)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
 				HEADER_SEARCH_PATHS = (
@@ -2818,6 +2836,8 @@
 				INFOPLIST_FILE = "AppBox3/AppBox3-Info.plist";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "64F23C16-B99F-4442-BF81-82E96F0F86A6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "64F23C16-B99F-4442-BF81-82E96F0F86A6";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/CorePlot_1.1/Source/framework\"/** \"${PROJECT_DIR}/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};

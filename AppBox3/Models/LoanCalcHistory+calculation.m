@@ -167,4 +167,20 @@
 	[self.managedObjectContext save:&error];
 }
 
+- (NSNumber *)totalAmount {
+	float totalAmount = self.monthlyPayment.floatValueEx * self.termInMonth;
+	return [NSNumber numberWithFloat:totalAmount];
+}
+
+- (NSNumber *)totalInterest {
+	float totalInterest = self.monthlyPayment.floatValueEx * self.termInMonth - self.principal.floatValueEx;
+	return [NSNumber numberWithFloat:totalInterest];
+}
+
+- (NSNumber *)monthlyAverageInterest {
+	float termInMonth = self.termInMonth;
+	float average = (self.monthlyPayment.floatValueEx * termInMonth - self.principal.floatValueEx) / termInMonth;
+	return [NSNumber numberWithFloat:average];
+}
+
 @end

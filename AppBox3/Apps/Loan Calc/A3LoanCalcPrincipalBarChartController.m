@@ -1,19 +1,22 @@
 //
-//  A3LoanCalcBarPlotItem.m
+//  A3LoanCalcPrincipalBarChartController.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 3/20/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3LoanCalcBarPlotItem.h"
+#import "A3LoanCalcPrincipalBarChartController.h"
 #import "common.h"
+#import "LoanCalcHistory.h"
+#import "NSString+conversion.h"
+#import "LoanCalcHistory+calculation.h"
 
-@interface A3LoanCalcBarPlotItem ()
+@interface A3LoanCalcPrincipalBarChartController ()
 
 @end
 
-@implementation A3LoanCalcBarPlotItem
+@implementation A3LoanCalcPrincipalBarChartController
 
 - (id)init {
 	self = [super init];
@@ -29,17 +32,18 @@
 }
 
 - (float)yRangeForPrincipalTotalInterestGraph {
-	return MAX([_principal_A floatValue] + [_totalInterest_A floatValue], [_principal_B floatValue] + [_totalInterest_B floatValue]);
+	return MAX(_objectA.principal.floatValueEx + _objectA.totalInterest.floatValue, _objectB.principal.floatValueEx + _objectB.totalInterest.floatValue);
 }
 
 - (CPTGraphHostingView *)graphHostingView {
 	if (nil == _graphHostingView) {
 		_graphHostingView = [[CPTGraphHostingView alloc] initWithFrame:CGRectZero];
+		_graphHostingView.clipsToBounds = NO;
 	}
 	return _graphHostingView;
 }
 
-- (void)addBarPlotForPrincipal {
+- (void)configureBarChart {
 	CPTXYGraph *graph = [[CPTXYGraph alloc] initWithFrame:_graphHostingView.bounds];
 	_graphHostingView.hostedGraph = graph;
 
@@ -211,7 +215,7 @@
 	theLegend.swatchSize      = CGSizeMake(12.0, 12.0);
 	theLegend.textStyle       = legendTextStyle;
 
-	NSArray *plotPoint = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.2], [NSNumber numberWithInteger:-400], nil];
+	NSArray *plotPoint = [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.2], [NSNumber numberWithFloat:visibleRange * 0.2 * -1.0], nil];
 
 	CPTPlotSpaceAnnotation *legendAnnotation = [[CPTPlotSpaceAnnotation alloc] initWithPlotSpace:barPlotSpace anchorPlotPoint:plotPoint];
 	legendAnnotation.contentLayer = theLegend;
@@ -222,20 +226,26 @@
 }
 
 - (void)reloadData {
-	CPTXYGraph *graph = (CPTXYGraph *) _graphHostingView.hostedGraph;
-	CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) [graph plotSpaceAtIndex:0];
-	float yRange = [self yRangeForPrincipalTotalInterestGraph];
-	plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(yRange)];
-
-	CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
-	CPTAxis *y = axisSet.yAxis;
-	y.visibleRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(yRange)];
-
-	[graph reloadData];
-}
-
-- (void)addBarPlotForMonthlyPaymentWithFrame:(CGRect)frame {
-
+//	CPTXYGraph *graph = (CPTXYGraph *) _graphHostingView.hostedGraph;
+//	CPTXYPlotSpace *plotSpace = (CPTXYPlotSpace *) [graph plotSpaceAtIndex:0];
+//
+//	float yRange = [self yRangeForPrincipalTotalInterestGraph];
+//	float fullRange = yRange / 0.45;
+//	float base = fullRange * 0.40;
+//	float visibleRange = fullRange - base;
+//
+//	plotSpace.yRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(-base) length:CPTDecimalFromFloat(fullRange)];
+//
+//	CPTXYAxisSet *axisSet = (CPTXYAxisSet *)graph.axisSet;
+//	CPTAxis *y = axisSet.yAxis;
+//	y.visibleRange = [CPTPlotRange plotRangeWithLocation:CPTDecimalFromFloat(0.0) length:CPTDecimalFromFloat(visibleRange)];
+//
+//	CPTPlotSpaceAnnotation *legendAnnotation = [graph.plotAreaFrame.plotArea.annotations lastObject];
+//	legendAnnotation.anchorPlotPoint = @[@0.2, [NSNumber numberWithFloat:visibleRange*0.2 * -1.0]];
+//
+//	[graph reloadData];
+	_graphHostingView.hostedGraph = nil;
+	[self configureBarChart];
 }
 
 #pragma mark -
@@ -258,25 +268,23 @@
 		else {
 			num = [NSNumber numberWithInt:index + 1];
 		}
-		FNLOG(@"CPTBarPlotFieldBarLocation, index %d, %@, %@", index, plot.identifier, num);
 	}
 	else if ( fieldEnum == CPTBarPlotFieldBarTip ) {
 		// length
 		if ( [plot.identifier isEqual:@"Principal"] ) {
 			if (index == 0) {
-				num = _principal_A;
+				num = [NSNumber numberWithFloat:_objectA.principal.floatValueEx];
 			} else {
-				num = _principal_B;
+				num = [NSNumber numberWithFloat:_objectB.principal.floatValueEx];
 			}
 		}
 		else {
 			if (index == 0) {
-				num = [NSNumber numberWithFloat:[_principal_A floatValue] + [_totalInterest_A floatValue]];
+				num = [NSNumber numberWithFloat:_objectA.principal.floatValueEx + _objectA.totalInterest.floatValue];
 			} else {
-				num = [NSNumber numberWithFloat:[_principal_B floatValue] + [_totalInterest_B floatValue]];
+				num = [NSNumber numberWithFloat:_objectB.principal.floatValueEx + _objectB.totalInterest.floatValue];
 			}
 		}
-		FNLOG(@"CPTBarPlotFieldBarTip, index %d, %@, %@", index, plot.identifier, num);
 	}
 	else {
 		// base
@@ -285,12 +293,11 @@
 		}
 		else {
 			if (index == 0) {
-				num = _principal_A;
+				num = [NSNumber numberWithFloat:_objectA.principal.floatValueEx];
 			} else {
-				num = _principal_B;
+				num = [NSNumber numberWithFloat:_objectB.principal.floatValueEx];
 			}
 		}
-		FNLOG(@"base, index %d, %@, %@", index, plot.identifier, num);
 	}
 
 	return num;

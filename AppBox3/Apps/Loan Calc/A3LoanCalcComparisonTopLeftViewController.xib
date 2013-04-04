@@ -55,6 +55,7 @@
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<int key="IBUITextAlignment">2</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="666346951">
 							<int key="type">2</int>
@@ -65,7 +66,6 @@
 							<double key="NSSize">20</double>
 							<int key="NSfFlags">16</int>
 						</object>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="198439418">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -87,10 +87,10 @@
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<int key="IBUITextAlignment">2</int>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="515814349">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -112,10 +112,10 @@
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<int key="IBUITextAlignment">2</int>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="120710932">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -137,10 +137,10 @@
 						</object>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<int key="IBUITextAlignment">2</int>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="729550517">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -159,9 +159,9 @@
 						<reference key="IBUITextColor" ref="971571581"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="498132711">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -180,9 +180,9 @@
 						<reference key="IBUITextColor" ref="314957675"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="854094329">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -201,9 +201,9 @@
 						<reference key="IBUITextColor" ref="129112832"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUILabel" id="634020921">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -222,9 +222,9 @@
 						<reference key="IBUITextColor" ref="627468050"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
+						<float key="IBUIMinimumFontSize">8</float>
 						<reference key="IBUIFontDescription" ref="666346951"/>
 						<reference key="IBUIFont" ref="912085442"/>
-						<bool key="IBUIAdjustsFontSizeToFit">NO</bool>
 					</object>
 					<object class="IBUIView" id="435081367">
 						<reference key="NSNextResponder" ref="191373211"/>
@@ -488,7 +488,6 @@
 						<string key="NSFrame">{{148, 186}, {149, 21}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>

@@ -7,42 +7,32 @@
 //
 
 #import <CoreGraphics/CoreGraphics.h>
+#import <Foundation/Foundation.h>
 #import "A3LoanCalcComparisonMainViewController.h"
 #import "A3LoanCalcComparisonTopLeftViewController.h"
-#import "A3LoanCalcBarPlotItem.h"
+#import "A3LoanCalcPrincipalBarChartController.h"
 #import "DDPageControl.h"
 #import "A3CircleView.h"
 #import "common.h"
 #import "A3LoanCalcComparisonTableViewDataSource.h"
 #import "A3AppDelegate.h"
 #import "A3LoanCalcPreferences.h"
-#import "CommonUIDefinitions.h"
 #import "EKKeyboardAvoidingScrollViewManager.h"
+#import "A3LoanCalcSingleBarChartController.h"
 
-@interface A3LoanCalcComparisonMainViewController ()
+@interface A3LoanCalcComparisonMainViewController () <A3LoanCalcComparisonTableViewDataSourceDelegate>
 
 @property (nonatomic, weak) IBOutlet UIScrollView *mainScrollView;
 @property (nonatomic, weak) IBOutlet UIScrollView *topScrollView;
 @property (nonatomic, weak) IBOutlet UITableView *leftTableView;
 @property (nonatomic, weak) IBOutlet UITableView *rightTableView;
-@property (nonatomic, weak) IBOutlet UIImageView *principalImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *downPaymentImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *termImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *interestRateImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *frequencyImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *startDateImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *notesImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *extraPaymentMonthlyImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *extraPaymentYearlyImageView;
-@property (nonatomic, weak) IBOutlet UIImageView *extraPaymentOneTimeImageView;
 @property (nonatomic, weak) IBOutlet A3CircleView *loanACircleView, *loanBCircleView;
 @property (nonatomic, weak) IBOutlet DDPageControl *pageControl;
 
 @property (nonatomic, strong) A3LoanCalcComparisonTopLeftViewController *firstColumnInScrollView;
-
-@property (nonatomic, strong) A3LoanCalcBarPlotItem *secondColumnInScrollView;
-@property (nonatomic, strong) A3LoanCalcBarPlotItem *thirdColumnInScrollView;
-@property (nonatomic, strong) A3LoanCalcBarPlotItem *fourthColumnInScrollView;
+@property (nonatomic, strong) A3LoanCalcPrincipalBarChartController *secondColumnInScrollView;
+@property (nonatomic, strong) A3LoanCalcPrincipalBarChartController *thirdColumnInScrollView;
+@property (nonatomic, strong) A3LoanCalcSingleBarChartController *fourthColumnInScrollView;
 
 @property (nonatomic, strong) A3LoanCalcComparisonTableViewDataSource *leftTableViewDataSource, *rightTableViewDataSource;
 @property (nonatomic, strong) LoanCalcHistory *leftObject, *rightObject;
@@ -84,11 +74,19 @@
 	_rightTableViewDataSource.tableView = _rightTableView;
 	_leftTableViewDataSource.brother = _rightTableViewDataSource;
 	_rightTableViewDataSource.brother = _leftTableViewDataSource;
+	_leftTableViewDataSource.delegate = self;
+	_rightTableViewDataSource.delegate = self;
 
 	[_leftTableViewDataSource reloadMainScrollViewContentSize];
-
-	self.frequencyImageView.hidden = YES;
 }
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	[self.leftTableViewDataSource willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+	[self.rightTableViewDataSource willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
@@ -116,18 +114,31 @@
 
 	// add top left view
 	[_topScrollView addSubview:self.firstColumnInScrollView.view];
+	_firstColumnInScrollView.leftObject = self.leftObject;
+	_firstColumnInScrollView.rightObject = self.rightObject;
+	[_firstColumnInScrollView updateLabels];
 
 	CGRect boundsParent = self.topScrollView.bounds;
 	CGFloat columnWidth = boundsParent.size.width / 2.0;
+
 	self.secondColumnInScrollView.graphHostingView.frame = CGRectMake(columnWidth, 0.0, columnWidth, boundsParent.size.height);
 	[_topScrollView addSubview:self.secondColumnInScrollView.graphHostingView];
 
-	_secondColumnInScrollView.totalInterest_A = [NSNumber numberWithFloat:100.0];
-	_secondColumnInScrollView.totalInterest_B = [NSNumber numberWithFloat:100.0];
-	_secondColumnInScrollView.principal_A = [NSNumber numberWithFloat:1000.0];
-	_secondColumnInScrollView.principal_B = [NSNumber numberWithFloat:1000.0];
+	_secondColumnInScrollView.objectA = self.leftObject;
+	_secondColumnInScrollView.objectB = self.rightObject;
+	[_secondColumnInScrollView reloadData];
 
-	[_secondColumnInScrollView addBarPlotForPrincipal];
+	self.thirdColumnInScrollView.graphHostingView.frame = CGRectMake(columnWidth * 2.0, 0.0, columnWidth, boundsParent.size.height);
+	[_topScrollView addSubview:_thirdColumnInScrollView.graphHostingView];
+	_thirdColumnInScrollView.objectA = self.leftObject;
+	_thirdColumnInScrollView.objectB = self.rightObject;
+	[_thirdColumnInScrollView reloadData];
+
+	self.fourthColumnInScrollView.graphHostingView.frame = CGRectMake(columnWidth * 3.0, 0.0, columnWidth, boundsParent.size.height);
+	[_topScrollView addSubview:_fourthColumnInScrollView.graphHostingView];
+	_fourthColumnInScrollView.objectA = self.leftObject;
+	_fourthColumnInScrollView.objectB = self.rightObject;
+	[_fourthColumnInScrollView reloadData];
 
 	UIColor *lineColor = [UIColor colorWithRed:213.0/255.0 green:207.0/255.0 blue:192.0/255.0 alpha:1.0];
 	// add vertical line in the first page.
@@ -147,6 +158,15 @@
 	[_pageControl setOffColor: [UIColor blackColor] ];
 	[_pageControl setIndicatorDiameter: 6.0 ];
 	[_pageControl setIndicatorSpace: 8.0 ];
+	[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)pageControlValueChanged:(DDPageControl *)control {
+	[_topScrollView setContentOffset:CGPointMake(_topScrollView.contentSize.width / 2.0 * control.currentPage, 0.0) animated:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	_pageControl.currentPage = (NSInteger) (_topScrollView.contentOffset.x / (_topScrollView.contentSize.width / 2.0));
 }
 
 - (void)didReceiveMemoryWarning
@@ -162,23 +182,23 @@
 	return _firstColumnInScrollView;
 }
 
-- (A3LoanCalcBarPlotItem *)secondColumnInScrollView {
+- (A3LoanCalcPrincipalBarChartController *)secondColumnInScrollView {
 	if (nil == _secondColumnInScrollView) {
-		_secondColumnInScrollView = [[A3LoanCalcBarPlotItem alloc] init];
+		_secondColumnInScrollView = [[A3LoanCalcPrincipalBarChartController alloc] init];
 	}
 	return _secondColumnInScrollView;
 }
 
-- (A3LoanCalcBarPlotItem *)thirdColumnInScrollView {
+- (A3LoanCalcPrincipalBarChartController *)thirdColumnInScrollView {
 	if (nil == _thirdColumnInScrollView) {
-		_thirdColumnInScrollView = [[A3LoanCalcBarPlotItem alloc] init];
+		_thirdColumnInScrollView = [[A3LoanCalcPrincipalBarChartController alloc] init];
 	}
 	return _thirdColumnInScrollView;
 }
 
-- (A3LoanCalcBarPlotItem *)fourthColumnInScrollView {
+- (A3LoanCalcSingleBarChartController *)fourthColumnInScrollView {
 	if (nil == _fourthColumnInScrollView) {
-		_fourthColumnInScrollView = [[A3LoanCalcBarPlotItem alloc] init];
+		_fourthColumnInScrollView = [[A3LoanCalcSingleBarChartController alloc] init];
 	}
 	return _fourthColumnInScrollView;
 }
@@ -257,10 +277,11 @@
 	return _rightObject;
 }
 
-- (void)layoutImageViews {
-	CGRect frame = CGRectMake(342.0, 302.0, 32.0, 32.0);
-
-
+- (void)loanCalcComparisonTableViewValueChanged {
+	[_firstColumnInScrollView updateLabels];
+	[_secondColumnInScrollView reloadData];
+	[_thirdColumnInScrollView reloadData];
+	[_fourthColumnInScrollView reloadData];
 }
 
 @end

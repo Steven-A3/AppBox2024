@@ -34,11 +34,11 @@
 			</object>
 			<object class="IBUIScrollView" id="915821184">
 				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">268</int>
+				<int key="NSvFlags">272</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIScrollView" id="903819660">
 						<reference key="NSNextResponder" ref="915821184"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">292</int>
 						<array class="NSMutableArray" key="NSSubviews"/>
 						<string key="NSFrame">{{46, 20}, {626, 234}}</string>
 						<reference key="NSSuperview" ref="915821184"/>
@@ -66,7 +66,7 @@
 					</object>
 					<object class="IBUITableView" id="307820355">
 						<reference key="NSNextResponder" ref="915821184"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{38, 278}, {320, 638}}</string>
 						<reference key="NSSuperview" ref="915821184"/>
 						<reference key="NSWindow"/>
@@ -90,11 +90,11 @@
 					</object>
 					<object class="IBUITableView" id="413341329">
 						<reference key="NSNextResponder" ref="915821184"/>
-						<int key="NSvFlags">274</int>
+						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{357, 278}, {320, 638}}</string>
 						<reference key="NSSuperview" ref="915821184"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="306266466"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="919640971"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -116,7 +116,7 @@
 						<string key="NSFrame">{{180, 272}, {36, 36}}</string>
 						<reference key="NSSuperview" ref="915821184"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSNextKeyView" ref="413341329"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -235,6 +235,14 @@
 						<reference key="destination" ref="423856866"/>
 					</object>
 					<int key="connectionID">44</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">delegate</string>
+						<reference key="source" ref="903819660"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">48</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -368,7 +376,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">47</int>
+			<int key="maxID">48</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -384,49 +392,15 @@
 					<string key="className">A3LoanCalcComparisonMainViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="downPaymentImageView">UIImageView</string>
-						<string key="extraPaymentMonthlyImageView">UIImageView</string>
-						<string key="extraPaymentOneTimeImageView">UIImageView</string>
-						<string key="extraPaymentYearlyImageView">UIImageView</string>
-						<string key="frequencyImageView">UIImageView</string>
-						<string key="interestRateImageView">UIImageView</string>
 						<string key="leftTableView">UITableView</string>
 						<string key="loanACircleView">A3CircleView</string>
 						<string key="loanBCircleView">A3CircleView</string>
 						<string key="mainScrollView">UIScrollView</string>
-						<string key="notesImageView">UIImageView</string>
 						<string key="pageControl">DDPageControl</string>
-						<string key="principalImageView">UIImageView</string>
 						<string key="rightTableView">UITableView</string>
-						<string key="startDateImageView">UIImageView</string>
-						<string key="termImageView">UIImageView</string>
 						<string key="topScrollView">UIScrollView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="downPaymentImageView">
-							<string key="name">downPaymentImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="extraPaymentMonthlyImageView">
-							<string key="name">extraPaymentMonthlyImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="extraPaymentOneTimeImageView">
-							<string key="name">extraPaymentOneTimeImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="extraPaymentYearlyImageView">
-							<string key="name">extraPaymentYearlyImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="frequencyImageView">
-							<string key="name">frequencyImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="interestRateImageView">
-							<string key="name">interestRateImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="leftTableView">
 							<string key="name">leftTableView</string>
 							<string key="candidateClassName">UITableView</string>
@@ -443,29 +417,13 @@
 							<string key="name">mainScrollView</string>
 							<string key="candidateClassName">UIScrollView</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="notesImageView">
-							<string key="name">notesImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="pageControl">
 							<string key="name">pageControl</string>
 							<string key="candidateClassName">DDPageControl</string>
 						</object>
-						<object class="IBToOneOutletInfo" key="principalImageView">
-							<string key="name">principalImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="rightTableView">
 							<string key="name">rightTableView</string>
 							<string key="candidateClassName">UITableView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="startDateImageView">
-							<string key="name">startDateImageView</string>
-							<string key="candidateClassName">UIImageView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="termImageView">
-							<string key="name">termImageView</string>
-							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="topScrollView">
 							<string key="name">topScrollView</string>
