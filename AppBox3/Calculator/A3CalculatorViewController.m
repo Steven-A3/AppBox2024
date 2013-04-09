@@ -72,7 +72,7 @@
 	[self buildGradientLayers];
 
 	self.pageControl = [[DDPageControl alloc] init];
-	[self.pageControl setCenter: CGPointMake(APP_VIEW_WIDTH / 2.0f, 664.0 + 20.0) ];
+	[self.pageControl setCenter: CGPointMake(APP_VIEW_WIDTH_iPAD / 2.0f, 664.0 + 20.0) ];
 	[self.pageControl setNumberOfPages: 2 ];
 	[self.pageControl setCurrentPage: 0 ];
 	[self.pageControl addTarget: self action: @selector(pageControlClicked:) forControlEvents: UIControlEventValueChanged] ;
@@ -83,14 +83,14 @@
 	[self.pageControl setIndicatorSpace: 10.0f ];
 	[self.view addSubview:self.pageControl];
 
-	[self.buttonsScrollView setContentSize:CGSizeMake(APP_VIEW_WIDTH * 2.0, CGRectGetHeight(self.buttonsScrollView.bounds))];
+	[self.buttonsScrollView setContentSize:CGSizeMake(APP_VIEW_WIDTH_iPAD * 2.0, CGRectGetHeight(self.buttonsScrollView.bounds))];
 
 	UIViewController *viewController = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"A3CalculatorButtonsInFirstPage" bundle:nil];
-	[viewController.view setFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewController.view.bounds))];
+	[viewController.view setFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH_iPAD, CGRectGetHeight(viewController.view.bounds))];
 	[self.buttonsScrollView addSubview: [viewController view] ];
 
 	UIViewController *viewController2 = [[A3CalculatorButtonsViewController alloc] initWithNibName:@"A3CalculatorButtonsInSecondPage" bundle:nil];
-	[viewController2.view setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, APP_VIEW_WIDTH, CGRectGetHeight(viewController2.view.bounds))];
+	[viewController2.view setFrame:CGRectMake(APP_VIEW_WIDTH_iPAD, 0.0f, APP_VIEW_WIDTH_iPAD, CGRectGetHeight(viewController2.view.bounds))];
 	[self.buttonsScrollView addSubview: [viewController2 view] ];
 	
 	self.topLineAboveHistoryHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -135,13 +135,13 @@
 
 - (void)layoutSubViews {
 	if (UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation])) {
-		CGFloat historyViewWidth = IPAD_SCREEN_WIDTH_LANDSCAPE - HOT_MENU_VIEW_WIDTH - APP_VIEW_WIDTH;
-		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH, 0.0f, historyViewWidth, A3_CALCULATOR_VIEW_HEIGHT_OF_TOPLINE_ABOVE_TABLE_HEADER)];
-		[self.grayAppHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
+		CGFloat historyViewWidth = IPAD_SCREEN_WIDTH_LANDSCAPE - HOT_MENU_VIEW_WIDTH - APP_VIEW_WIDTH_iPAD;
+		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH_iPAD, 0.0f, historyViewWidth, A3_CALCULATOR_VIEW_HEIGHT_OF_TOPLINE_ABOVE_TABLE_HEADER)];
+		[self.grayAppHeaderView setFrame:CGRectMake(APP_VIEW_WIDTH_iPAD, 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
         [self.editHistoryButton setFrame:CGRectMake(historyViewWidth - A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH - 10.0f, A3_CALCULATOR_HISTORY_HEADER_HEIGHT / 2.0f - 15.0f, A3_CALCULATOR_HISTORY_EDIT_BUTTON_WIDTH, A3_CALCULATOR_HISTORY_EDIT_BUTTON_HEIGHT)];
-		[self.historyTableView setFrame:CGRectMake(APP_VIEW_WIDTH, 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
+		[self.historyTableView setFrame:CGRectMake(APP_VIEW_WIDTH_iPAD, 10.0f + A3_CALCULATOR_HISTORY_HEADER_HEIGHT, historyViewWidth, IPAD_SCREEN_HEIGHT_LANDSCAPE - 10.0f - A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
 	} else {
-		CGFloat historyViewWidth = APP_VIEW_WIDTH;
+		CGFloat historyViewWidth = APP_VIEW_WIDTH_iPAD;
 		CGFloat coord_Y = 704.0;
 		[self.topLineAboveHistoryHeaderView setFrame:CGRectMake(0.0f, coord_Y, historyViewWidth, 10.0f)];
 		[self.grayAppHeaderView setFrame:CGRectMake(0.0f, coord_Y + 10.0f, historyViewWidth, A3_CALCULATOR_HISTORY_HEADER_HEIGHT)];
@@ -179,7 +179,7 @@
 
 	CAGradientLayer *bottomBorderGradient = [CAGradientLayer layer];
 	bottomBorderGradient.anchorPoint = CGPointMake(0.0f, 0.0f);
-	bottomBorderGradient.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), APP_VIEW_WIDTH, A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE);
+	bottomBorderGradient.bounds = CGRectMake(CGRectGetMinX(bounds), CGRectGetMinY(bounds), APP_VIEW_WIDTH_iPAD, A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE);
 	bottomBorderGradient.position = CGPointMake(0.0f, CGRectGetHeight(bounds) - A3_CALCULATOR_VIEW_BORDER_GRADIENT_SIZE);
 	FNLOG(@"%f, %f", bottomBorderGradient.position.x, bottomBorderGradient.position.y);
 	bottomBorderGradient.colors = [NSArray arrayWithObjects:
@@ -208,14 +208,14 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	NSInteger currentPage = scrollView.contentOffset.x / APP_VIEW_WIDTH;
+	NSInteger currentPage = scrollView.contentOffset.x / APP_VIEW_WIDTH_iPAD;
 	[self.pageControl setCurrentPage:currentPage];
 }
 
 - (void)pageControlClicked:(DDPageControl *)control {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.4];
-	[self.buttonsScrollView setContentOffset:CGPointMake(APP_VIEW_WIDTH * control.currentPage, 0.0f)];
+	[self.buttonsScrollView setContentOffset:CGPointMake(APP_VIEW_WIDTH_iPAD * control.currentPage, 0.0f)];
 	[UIView commitAnimations];
 }
 

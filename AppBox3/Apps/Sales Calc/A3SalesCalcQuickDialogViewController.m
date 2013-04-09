@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 @interface A3SalesCalcQuickDialogViewController ()
 
-@property (nonatomic, strong) A3NumberKeyboardViewController *keyboardViewController;
+@property (nonatomic, strong) A3NumberKeyboardViewController_iPad *keyboardViewController;
 @property (nonatomic, weak) QEntryElement *editingElement;
 @property (nonatomic, strong) NSArray *keys;
 @property (nonatomic, strong) A3HorizontalBarChartView *percentBarChart;
@@ -156,10 +156,10 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	_rightMargin = 44.0 + 10.0;
 	_keys = @[SC_KEY_PRICE, SC_KEY_DISCOUNT, SC_KEY_ADDITIONAL_OFF, SC_KEY_TAX, SC_KEY_NOTES];
 
-	UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH, 120.0f)];
+	UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH_iPAD, 120.0f)];
 	CGFloat offsetX = 44.0f, offsetY = 38.0f;
 	CGFloat chartHeight = 44.0f;
-	CGFloat chartWidth = APP_VIEW_WIDTH - offsetX * 2.0f;
+	CGFloat chartWidth = APP_VIEW_WIDTH_iPAD - offsetX * 2.0f;
 	CGFloat labelHeight = 23.0f;
 	UIColor *chartLabelColor = [UIColor colorWithRed:73.0f/255.0f green:74.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
 	UIFont *chartLabelFont = [UIFont boldSystemFontOfSize:18.0f];
@@ -187,14 +187,14 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	_originalPriceLabel.text = @"Original Price";
 	[tableHeaderView addSubview:_originalPriceLabel];
 
-	_originalPriceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(APP_VIEW_WIDTH - _rightMargin - 200.0, offsetY + chartHeight + 5.0, 200.0, labelHeight)];
+	_originalPriceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(APP_VIEW_WIDTH_iPAD - _rightMargin - 200.0, offsetY + chartHeight + 5.0, 200.0, labelHeight)];
 	_originalPriceValueLabel.backgroundColor = [UIColor clearColor];
 	_originalPriceValueLabel.font = [UIFont boldSystemFontOfSize:20.0];
 	_originalPriceValueLabel.textColor = chartLabelColor;
 	_originalPriceValueLabel.textAlignment = NSTextAlignmentRight;
 	[tableHeaderView addSubview:_originalPriceValueLabel];
 
-	_percentBarChart = [[A3HorizontalBarChartView alloc] initWithFrame:CGRectMake(offsetX, offsetY, APP_VIEW_WIDTH - offsetX * 2.0f, chartHeight)];
+	_percentBarChart = [[A3HorizontalBarChartView alloc] initWithFrame:CGRectMake(offsetX, offsetY, APP_VIEW_WIDTH_iPAD - offsetX * 2.0f, chartHeight)];
 	[tableHeaderView addSubview:_percentBarChart];
 
 	_salePriceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(offsetX + 10.0, offsetY, 200.0, chartHeight)];
@@ -204,7 +204,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	_salePriceValueLabel.textAlignment = NSTextAlignmentLeft;
 	[tableHeaderView addSubview:_salePriceValueLabel];
 
-	_amountSavedValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(APP_VIEW_WIDTH - _rightMargin - 200.0, offsetY, 200.0, chartHeight)];
+	_amountSavedValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(APP_VIEW_WIDTH_iPAD - _rightMargin - 200.0, offsetY, 200.0, chartHeight)];
 	_amountSavedValueLabel.backgroundColor = [UIColor clearColor];
 	_amountSavedValueLabel.textColor = [UIColor whiteColor];
 	_amountSavedValueLabel.font = [UIFont boldSystemFontOfSize:22.0];
@@ -396,7 +396,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[self calculateSalePrice];
 }
 
-#pragma mark --
 #pragma mark -- Override UIViewController
 
 
@@ -426,8 +425,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark --
-#pragma mark - QuickDialogStyleProvider
+#pragma mark -- QuickDialogStyleProvider
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
 	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
@@ -461,8 +459,8 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 -(void)sectionHeaderWillAppearForSection:(QSection *)section atIndex:(NSInteger)index {
 	if ([section.key isEqualToString:SC_KEY_KNOWN_VALUE_SECTION]) {
-		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH, 44.0f)];
-		UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(64.0f, 0.0f, APP_VIEW_WIDTH - 64.0f * 2.0f, 44.0f)];
+		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH_iPAD, 44.0f)];
+		UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(64.0f, 0.0f, APP_VIEW_WIDTH_iPAD - 64.0f * 2.0f, 44.0f)];
 		sectionText.backgroundColor = [UIColor clearColor];
 		sectionText.font = [UIFont boldSystemFontOfSize:24.0f];
 		sectionText.textColor = [UIColor blackColor];
@@ -618,10 +616,8 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[self.quickDialogTableView setContentOffset:CGPointMake(0.0, 0.0)];
 }
 
-- (A3NumberKeyboardViewController *)keyboardViewController {
+- (A3NumberKeyboardViewController_iPad *)keyboardViewController {
 	if (nil == _keyboardViewController) {
-		_keyboardViewController = [[A3NumberKeyboardViewController alloc] initWithNibName:@"A3NumberKeyboardViewController" bundle:nil];
-		_keyboardViewController.delegate = self;
 	}
 	return _keyboardViewController;
 }
@@ -700,7 +696,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	CGSize sizeForLabel = [_originalPriceLabel.text sizeWithFont:_originalPriceLabel.font];
 	CGSize sizeForValue = [_originalPriceValueLabel.text sizeWithFont:_originalPriceValueLabel.font];
 	CGRect labelFrame = _originalPriceLabel.frame;
-	labelFrame.origin.x = APP_VIEW_WIDTH - _rightMargin - 10.0 - sizeForValue.width - sizeForLabel.width;
+	labelFrame.origin.x = APP_VIEW_WIDTH_iPAD - _rightMargin - 10.0 - sizeForValue.width - sizeForLabel.width;
 	labelFrame.size.width = sizeForLabel.width;
 	[_originalPriceLabel setFrame:labelFrame];
 
@@ -765,6 +761,5 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 	[_keyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 }
-
 
 @end

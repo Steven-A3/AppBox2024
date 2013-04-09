@@ -170,4 +170,10 @@
 	[self.rightGraphView.hostedGraph reloadData];
 }
 
+- (IBAction)buttonPressed:(id)sender {
+	if ([_delegate respondsToSelector:@selector(loanCalcPieChartViewButtonPressed)]) {
+		[_delegate loanCalcPieChartViewButtonPressed];
+	}
+}
+
 @end

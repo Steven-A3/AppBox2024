@@ -43,7 +43,7 @@
 	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
-	self.view.frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, APP_VIEW_WIDTH, 960.0) : CGRectMake(0.0, 0.0, APP_VIEW_WIDTH, 704.0);
+	self.view.frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, APP_VIEW_WIDTH_iPAD, 960.0) : CGRectMake(0.0, 0.0, APP_VIEW_WIDTH_iPAD, 704.0);
 
 	_quickDialogViewController = [[A3SalesCalcQuickDialogViewController alloc] initWithNibName:nil bundle:nil];
 	_quickDialogViewController.view.frame = self.view.bounds;

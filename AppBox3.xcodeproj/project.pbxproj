@@ -76,6 +76,8 @@
 		682EA30115EB10B000BD6AD4 /* AppBox3Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 682EA30015EB10B000BD6AD4 /* AppBox3Tests.m */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
+		683386CA1713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 683386C91713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib */; };
+		683386CD1713DBBF007BC868 /* A3KeyboardButton_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 683386CC1713DBBF007BC868 /* A3KeyboardButton_iPhone.m */; };
 		683B956515EB233500575377 /* A3iPadBatteryLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B950F15EB233500575377 /* A3iPadBatteryLifeViewController.m */; };
 		683B956615EB233500575377 /* A3CalcExpressionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B951215EB233500575377 /* A3CalcExpressionView.m */; };
 		683B956715EB233500575377 /* A3CalcHistoryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B951415EB233500575377 /* A3CalcHistoryViewCell.m */; };
@@ -108,8 +110,8 @@
 		68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */; };
 		68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FF01670409F00F200B7 /* A3TimeLineTableViewCell.m */; };
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
-		685A0A3616242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
-		685A0A3716242BAB00E94B6B /* MenuView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */; };
+		685A0A3616242BAB00E94B6B /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView.xib */; };
+		685A0A3716242BAB00E94B6B /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3516242BAB00E94B6B /* MenuView.xib */; };
 		685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
 		685A0A3E1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
 		685ADA1216B94C750072483C /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 685ADA1116B94C750072483C /* SalesCalcHistory.m */; };
@@ -127,6 +129,7 @@
 		685F72BB16A6DF7C004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
 		685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
 		6863053D16CB79470095381E /* A3UIStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6863053C16CB79470095381E /* A3UIStyle.m */; };
+		686E31051713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */; };
 		6870A0D3163646210059BD2F /* A3iPhoneMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */; };
 		6870A0D7163647A50059BD2F /* A3GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6870A0D6163647A50059BD2F /* A3GradientView.m */; };
 		6872076C167091EF00D56507 /* sample.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6872076B167091EF00D56507 /* sample.jpg */; };
@@ -175,6 +178,7 @@
 		6890256316429466001A81B5 /* icon_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255D16429466001A81B5 /* icon_red.png */; };
 		6890256416429466001A81B5 /* icon_yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6890255E16429466001A81B5 /* icon_yellow.png */; };
 		689307B7168C1B220085F508 /* A3KeyboardBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */; };
+		6895B17E170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */; };
 		6896049116FC0FA90030A2B9 /* icon_leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6896048F16FC0FA90030A2B9 /* icon_leftarrow.png */; };
 		6896049216FC0FA90030A2B9 /* icon_rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 6896049016FC0FA90030A2B9 /* icon_rightarrow.png */; };
 		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
@@ -378,8 +382,8 @@
 		68B42BE116FABA2600A73061 /* tb_twitter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B42B9016FABA2600A73061 /* tb_twitter@2x.png */; };
 		68B49C7F165CC52500BCD493 /* A3HotMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B49C7E165CC52500BCD493 /* A3HotMenuViewController.m */; };
 		68B886DE16787BC8004E5F68 /* A3HouseArrowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B886DD16787BC8004E5F68 /* A3HouseArrowView.m */; };
-		68BB306D16841F6000C3498B /* A3NumberKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB306B16841F6000C3498B /* A3NumberKeyboardViewController.m */; };
-		68BB306E16841F6000C3498B /* A3NumberKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BB306C16841F6000C3498B /* A3NumberKeyboardViewController.xib */; };
+		68BB306D16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */; };
+		68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */; };
 		68BB30721684452300C3498B /* A3KeyboardButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB30711684452300C3498B /* A3KeyboardButton.m */; };
 		68BC7B85170A942400D7EE21 /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 681378F51703E5D40003201F /* LoanCalcHistory.m */; };
 		68BC7B86170A943C00D7EE21 /* SalesCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 685ADA1116B94C750072483C /* SalesCalcHistory.m */; };
@@ -594,6 +598,9 @@
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
 		6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySelectViewController.h; path = Apps/Currency/A3CurrencySelectViewController.h; sourceTree = "<group>"; };
 		6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencySelectViewController.m; path = Apps/Currency/A3CurrencySelectViewController.m; sourceTree = "<group>"; };
+		683386C91713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
+		683386CB1713DBBF007BC868 /* A3KeyboardButton_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardButton_iPhone.h; sourceTree = "<group>"; };
+		683386CC1713DBBF007BC868 /* A3KeyboardButton_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardButton_iPhone.m; sourceTree = "<group>"; };
 		683B950E15EB233500575377 /* A3iPadBatteryLifeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3iPadBatteryLifeViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B950F15EB233500575377 /* A3iPadBatteryLifeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3iPadBatteryLifeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		683B951115EB233500575377 /* A3CalcExpressionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3CalcExpressionView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -652,7 +659,7 @@
 		685560041670448D00F200B7 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		685560051670448D00F200B7 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		6857842216F0546D0072FC35 /* LoanCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcHistory.h; sourceTree = "<group>"; };
-		685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView_iPad.xib; sourceTree = "<group>"; };
+		685A0A3516242BAB00E94B6B /* MenuView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuView.xib; sourceTree = "<group>"; };
 		685A0A3C1624376F00E94B6B /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = AppBox3/Storyboard.storyboard; sourceTree = "<group>"; };
 		685ADA1016B94C750072483C /* SalesCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesCalcHistory.h; sourceTree = "<group>"; };
 		685ADA1116B94C750072483C /* SalesCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SalesCalcHistory.m; sourceTree = "<group>"; };
@@ -677,6 +684,9 @@
 		685F72BA16A6DF7C004C7222 /* MenuFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuFavorite.m; sourceTree = "<group>"; };
 		6863053B16CB79470095381E /* A3UIStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIStyle.h; sourceTree = "<group>"; };
 		6863053C16CB79470095381E /* A3UIStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIStyle.m; sourceTree = "<group>"; };
+		686E31031713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController_iPhone.h; sourceTree = "<group>"; };
+		686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController_iPhone.m; sourceTree = "<group>"; };
+		686E31061713F28E004A4BF2 /* A3KeyboardProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3KeyboardProtocol.h; sourceTree = "<group>"; };
 		6870A0D1163646210059BD2F /* A3iPhoneMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3iPhoneMenuTableViewController.h; sourceTree = "<group>"; };
 		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
 		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
@@ -744,6 +754,8 @@
 		6890255E16429466001A81B5 /* icon_yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_yellow.png; sourceTree = "<group>"; };
 		689307B5168C1B220085F508 /* A3KeyboardBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardBackgroundView.h; sourceTree = "<group>"; };
 		689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardBackgroundView.m; sourceTree = "<group>"; };
+		6895B17C170E7B2600B15365 /* A3LoanCalcAmortizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcAmortizationViewController.h; path = "Loan Calc/A3LoanCalcAmortizationViewController.h"; sourceTree = "<group>"; };
+		6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcAmortizationViewController.m; path = "Loan Calc/A3LoanCalcAmortizationViewController.m"; sourceTree = "<group>"; };
 		6896048F16FC0FA90030A2B9 /* icon_leftarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_leftarrow.png; sourceTree = "<group>"; };
 		6896049016FC0FA90030A2B9 /* icon_rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_rightarrow.png; sourceTree = "<group>"; };
 		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveMarkView.h; sourceTree = "<group>"; };
@@ -953,9 +965,9 @@
 		68B49C7E165CC52500BCD493 /* A3HotMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HotMenuViewController.m; sourceTree = "<group>"; };
 		68B886DC16787BC8004E5F68 /* A3HouseArrowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HouseArrowView.h; sourceTree = "<group>"; };
 		68B886DD16787BC8004E5F68 /* A3HouseArrowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HouseArrowView.m; sourceTree = "<group>"; };
-		68BB306A16841F6000C3498B /* A3NumberKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController.h; sourceTree = "<group>"; };
-		68BB306B16841F6000C3498B /* A3NumberKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController.m; sourceTree = "<group>"; };
-		68BB306C16841F6000C3498B /* A3NumberKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardViewController.xib; sourceTree = "<group>"; };
+		68BB306A16841F6000C3498B /* A3NumberKeyboardViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController_iPad.h; sourceTree = "<group>"; };
+		68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController_iPad.m; sourceTree = "<group>"; };
+		68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		68BB30701684452300C3498B /* A3KeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardButton.h; sourceTree = "<group>"; };
 		68BB30711684452300C3498B /* A3KeyboardButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardButton.m; sourceTree = "<group>"; };
 		68C460EE1627CFF900555C91 /* A3Calculator_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3Calculator_iPad.xib; sourceTree = "<group>"; };
@@ -1725,6 +1737,8 @@
 		683B954015EB233500575377 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				68C5097316E70DD500CC61FF /* A3ButtonTextField.h */,
+				68C5097416E70DD500CC61FF /* A3ButtonTextField.m */,
 				682796F816DF6CFD00BC68F3 /* A3DateKeyboardViewController.h */,
 				682796F916DF6CFD00BC68F3 /* A3DateKeyboardViewController.m */,
 				682796FA16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib */,
@@ -1735,11 +1749,17 @@
 				689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */,
 				68BB30701684452300C3498B /* A3KeyboardButton.h */,
 				68BB30711684452300C3498B /* A3KeyboardButton.m */,
+				683386CB1713DBBF007BC868 /* A3KeyboardButton_iPhone.h */,
+				683386CC1713DBBF007BC868 /* A3KeyboardButton_iPhone.m */,
 				68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */,
 				68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */,
-				68BB306A16841F6000C3498B /* A3NumberKeyboardViewController.h */,
-				68BB306B16841F6000C3498B /* A3NumberKeyboardViewController.m */,
-				68BB306C16841F6000C3498B /* A3NumberKeyboardViewController.xib */,
+				686E31061713F28E004A4BF2 /* A3KeyboardProtocol.h */,
+				68BB306A16841F6000C3498B /* A3NumberKeyboardViewController_iPad.h */,
+				68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */,
+				68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */,
+				686E31031713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.h */,
+				686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */,
+				683386C91713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib */,
 				6817825116253640008A6E4B /* A3SegmentedControl.h */,
 				6817825216253640008A6E4B /* A3SegmentedControl.m */,
 				68AF5EB216C1D9E20040E984 /* A3SmallButton.h */,
@@ -1758,8 +1778,6 @@
 				683B954215EB233500575377 /* CoolButton.m */,
 				685D3EE11691A3FB00373863 /* QEntryTableViewCell+Extension.h */,
 				685D3EE21691A3FB00373863 /* QEntryTableViewCell+Extension.m */,
-				68C5097316E70DD500CC61FF /* A3ButtonTextField.h */,
-				68C5097416E70DD500CC61FF /* A3ButtonTextField.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1795,7 +1813,7 @@
 				68FEC65A1630F314004F4A9E /* A3StatisticsViewController.m */,
 				68B2CD45165DCACB00BD998F /* HomeView_iPad.xib */,
 				68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */,
-				685A0A3516242BAB00E94B6B /* MenuView_iPad.xib */,
+				685A0A3516242BAB00E94B6B /* MenuView.xib */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -1966,6 +1984,8 @@
 				688D74C216C4853B00DBF033 /* A3LoanCalcViewController.xib */,
 				682E350C170D2E700061B67F /* A3LoanCalcSingleBarChartController.h */,
 				682E350D170D2E700061B67F /* A3LoanCalcSingleBarChartController.m */,
+				6895B17C170E7B2600B15365 /* A3LoanCalcAmortizationViewController.h */,
+				6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */,
 			);
 			name = "Loan Calc";
 			sourceTree = "<group>";
@@ -2130,7 +2150,7 @@
 				683B956815EB233500575377 /* A3CalcHistoryViewCellContentsView.xib in Resources */,
 				683B958115EB233500575377 /* AppBox3.sqlite in Resources */,
 				683B958815EB233500575377 /* SearchViewiPad.xib in Resources */,
-				685A0A3616242BAB00E94B6B /* MenuView_iPad.xib in Resources */,
+				685A0A3616242BAB00E94B6B /* MenuView.xib in Resources */,
 				685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */,
 				68AFED2F1624E14E00B352AB /* HomeView_iPhone.xib in Resources */,
 				68AFED4E1624E24D00B352AB /* bg_status_battery.png in Resources */,
@@ -2160,7 +2180,7 @@
 				68B2CD46165DCACB00BD998F /* HomeView_iPad.xib in Resources */,
 				68B2CD8A165DD68E00BD998F /* A3WeatherStickerViewController.xib in Resources */,
 				6872076C167091EF00D56507 /* sample.jpg in Resources */,
-				68BB306E16841F6000C3498B /* A3NumberKeyboardViewController.xib in Resources */,
+				68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */,
 				68D7A39A1693BDCF00C0F0A8 /* keyboard_calculator_black.png in Resources */,
 				68D7A39B1693BDCF00C0F0A8 /* keyboard_calculator_black@2x.png in Resources */,
 				68D7A39C1693BDCF00C0F0A8 /* keyboard_calculator_white.png in Resources */,
@@ -2418,6 +2438,7 @@
 				6896049216FC0FA90030A2B9 /* icon_rightarrow.png in Resources */,
 				681614061709B7AB00CBC6FE /* A3ActionMenuViewController.xib in Resources */,
 				682E3513170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.xib in Resources */,
+				683386CA1713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2426,7 +2447,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				682EA2FE15EB10B000BD6AD4 /* InfoPlist.strings in Resources */,
-				685A0A3716242BAB00E94B6B /* MenuView_iPad.xib in Resources */,
+				685A0A3716242BAB00E94B6B /* MenuView.xib in Resources */,
 				685A0A3E1624376F00E94B6B /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2573,7 +2594,7 @@
 				68B886DE16787BC8004E5F68 /* A3HouseArrowView.m in Sources */,
 				6884DFC3167AC5C400A8FFA7 /* A3NotificationStockCell.m in Sources */,
 				68FCA6E5167EF61D00C3B0C4 /* A3HorizontalBarChartView.m in Sources */,
-				68BB306D16841F6000C3498B /* A3NumberKeyboardViewController.m in Sources */,
+				68BB306D16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m in Sources */,
 				68BB30721684452300C3498B /* A3KeyboardButton.m in Sources */,
 				68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */,
 				689307B7168C1B220085F508 /* A3KeyboardBackgroundView.m in Sources */,
@@ -2622,6 +2643,9 @@
 				688F277B170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m in Sources */,
 				682E350E170D2E700061B67F /* A3LoanCalcSingleBarChartController.m in Sources */,
 				682E3512170D2EBB0061B67F /* A3LoanCalcComparisonTopLeftViewController.m in Sources */,
+				6895B17E170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m in Sources */,
+				683386CD1713DBBF007BC868 /* A3KeyboardButton_iPhone.m in Sources */,
+				686E31051713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

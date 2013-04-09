@@ -8,16 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#define DEVICE_IPAD	([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad)
+
 @interface A3UIDevice : NSObject
 
 + (double)memoryUsage;
 + (double)storageUsage;
-
 + (UIInterfaceOrientation)deviceOrientation;
-
 + (BOOL)deviceOrientationIsPortrait;
-
 + (CGFloat)applicationHeightForCurrentOrientation;
-
 
 @end

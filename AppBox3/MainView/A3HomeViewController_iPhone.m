@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreGraphics/CoreGraphics.h>
 #import "A3HomeViewController_iPhone.h"
 #import "A3TickerControl.h"
 #import "A3StatisticsViewController.h"
@@ -28,12 +29,9 @@ enum {
 @property (nonatomic, strong) IBOutlet A3SegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3iPhoneMenuTableViewController *menuTableViewController;
 
-
 @end
 
-@implementation A3HomeViewController_iPhone {
-	BOOL showMenuTableView;
-}
+@implementation A3HomeViewController_iPhone
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -43,7 +41,6 @@ enum {
 		[self setTitle:@"Home"];
 
 		[[UIDevice currentDevice] setBatteryMonitoringEnabled:YES];
-		showMenuTableView = NO;
 	}
     return self;
 }
@@ -58,9 +55,13 @@ enum {
 {
     [super viewDidLoad];
 
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	screenBounds.size.height -= 44.0 + 20.0;	// for navigation bar + status bar
+	_mainScrollView.frame = screenBounds;
+
 	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"bt_applist" ofType:@"png"];
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"applist" ofType:@"png"];
 	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
 	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
 	self.navigationItem.leftBarButtonItem = sideMenuButton;
@@ -135,12 +136,20 @@ enum {
 	switch (selectedIndex) {
 		case A3PhoneHomeScreenSegmentSelectionStatistics: {
 			A3StatisticsViewController *viewController = [[A3StatisticsViewController alloc] initWithNibName:nil bundle:nil];
+			_mainScrollView.contentSize = CGSizeMake(320.0, _contentsView.frame.origin.y + 288.0);
+			CGRect frame = _contentsView.frame;
+			frame.size.height = 288.0;
+			_contentsView.frame = frame;
 			[viewController.view setFrame:self.contentsView.bounds];
 			[self.contentsView addSubview:viewController.view];
 			self.activeViewControllerForSelectedSegment = viewController;
 			break;
 		}
 		case A3PhoneHomeScreenSegmentSelectionCalendar: {
+			_mainScrollView.contentSize = CGSizeMake(320.0, _contentsView.frame.origin.y + 370.0);
+			CGRect frame = _contentsView.frame;
+			frame.size.height = 370.0;
+			_contentsView.frame = frame;
 			A3PhoneHomeCalendarMonthViewController *viewController = [[A3PhoneHomeCalendarMonthViewController alloc] initWithNibName:@"A3PhoneHomeCalendarMonthViewController" bundle:nil];
 			[self.contentsView addSubview:viewController.view];
 			self.activeViewControllerForSelectedSegment = viewController;
@@ -149,7 +158,5 @@ enum {
 	}
 	[self addChildViewController:self.activeViewControllerForSelectedSegment];
 }
-
-
 
 @end

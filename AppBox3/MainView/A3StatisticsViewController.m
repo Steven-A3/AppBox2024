@@ -49,7 +49,7 @@ typedef enum {
 }
 
 - (UIView *)deviceStatusView {
-	UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(14.0f, 49.0f, 48.0f * 3.0f, 48.0f)];
+	UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(14.0f, 42.0f, 48.0f * 3.0f, 48.0f)];
 
 	float batteryLevel = MAX([[UIDevice currentDevice] batteryLevel], 0.0f);
 

@@ -18,12 +18,8 @@
 @property (nonatomic, strong) A3iPhoneMenuTableViewController *sideMenuTableViewController;
 
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController withOption:(BOOL)keepWidth;
-
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController;
-
 - (void)presentRightWingWithViewController:(UIViewController *)viewController onClose:(void (^)())onCloseBlock;
-
 - (void)removeRightWingViewController;
-
 
 @end

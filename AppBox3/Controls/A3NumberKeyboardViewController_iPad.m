@@ -1,18 +1,17 @@
 //
-//  A3NumberKeyboardViewController.m
+//  A3NumberKeyboardViewController_iPad.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 12/21/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3NumberKeyboardViewController.h"
+#import "A3NumberKeyboardViewController_iPad.h"
 #import "QEntryTableViewCell+Extension.h"
-#import "A3UIDevice.h"
 #import "A3KeyboardMoveMarkView.h"
 #import "A3UIKit.h"
 
-@interface A3NumberKeyboardViewController ()
+@interface A3NumberKeyboardViewController_iPad ()
 
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num1Button;
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *num2Button;
@@ -30,7 +29,7 @@
 
 @end
 
-@implementation A3NumberKeyboardViewController
+@implementation A3NumberKeyboardViewController_iPad
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

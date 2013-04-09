@@ -37,7 +37,7 @@
 	} else {
 		viewHeight = IPAD_SCREEN_HEIGHT_PORTRAIT;
 	}
-	A3BlackThickRoundedRectView *backgroundView = [[A3BlackThickRoundedRectView alloc] initWithFrame:CGRectMake(0.0, 0.0, APP_VIEW_WIDTH, viewHeight)];
+	A3BlackThickRoundedRectView *backgroundView = [[A3BlackThickRoundedRectView alloc] initWithFrame:CGRectMake(0.0, 0.0, APP_VIEW_WIDTH_iPAD, viewHeight)];
 	self.view = backgroundView;
 
 	self.view.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;

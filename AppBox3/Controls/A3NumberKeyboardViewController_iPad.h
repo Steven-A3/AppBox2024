@@ -1,5 +1,5 @@
 //
-//  A3NumberKeyboardViewController.h
+//  A3NumberKeyboardViewController_iPad.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 12/21/12.
@@ -9,34 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "QuickDialog.h"
 #import "A3KeyboardButton.h"
+#import "A3KeyboardProtocol.h"
 
-@class A3NumberKeyboardViewController;
-
-@protocol A3NumberKeyboardDelegate <NSObject>
-@optional
-
-- (void)handleBigButton1;
-- (void)handleBigButton2;
-- (NSString *)stringForBigButton1;
-- (NSString *)stringForBigButton2;
-- (void)clearButtonPressed;
-
-- (BOOL)prevAvailableForElement:(QEntryElement *)element;
-- (BOOL)nextAvailableForElement:(QEntryElement *)element;
-- (void)prevButtonPressedWithElement:(QEntryElement *)element;
-- (void)nextButtonPressedWithElement:(QEntryElement *)element;
-- (void)A3KeyboardViewControllerDoneButtonPressed;
-
-@end
-
-typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
-	A3NumberKeyboardTypeCurrency = 0,
-	A3NumberKeyboardTypePercent,
-	A3NumberKeyboardTypeMonthYear,
-	A3NumberKeyboardTypeInterestRate
-};
-
-@interface A3NumberKeyboardViewController : UIViewController
+@interface A3NumberKeyboardViewController_iPad : UIViewController
 
 @property (nonatomic, weak) UIResponder<UIKeyInput> *keyInputDelegate;		// TextField, TextView, ... responder
 @property (nonatomic, weak) QEntryTableViewCell *entryTableViewCell;		// Handling Prev, Next button
@@ -54,7 +29,6 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 @property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
 
 - (void)reloadPrevNextButtons;
-
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
 @end

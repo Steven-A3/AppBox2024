@@ -12,7 +12,7 @@
 #import "A3UIStyle.h"
 #import "A3ButtonTextField.h"
 #import "A3Formatter.h"
-#import "A3NumberKeyboardViewController.h"
+#import "A3NumberKeyboardViewController_iPad.h"
 #import "A3FrequencyKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3LoanCalcString.h"
@@ -25,7 +25,7 @@
 @property (nonatomic, strong) NSMutableArray *textFields;
 @property (nonatomic, strong) A3ButtonTextField *extraPaymentYearlyMonth, *extraPaymentOneTimeYearMonth;
 @property (nonatomic, weak) UITextField *editingTextField;
-@property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
+@property (nonatomic, strong) A3NumberKeyboardViewController_iPad *numberKeyboardViewController;
 @property (nonatomic, strong) A3FrequencyKeyboardViewController *frequencyKeyboardViewController;
 @property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardViewController;
 @property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardForMonthInput;
@@ -674,9 +674,9 @@
 - (void)keyboardDidHide:(NSNotification*)aNotification {
 }
 
-- (A3NumberKeyboardViewController *)numberKeyboardViewController {
+- (A3NumberKeyboardViewController_iPad *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
-		_numberKeyboardViewController = [[A3NumberKeyboardViewController alloc] init];
+		_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] init];
 		_numberKeyboardViewController.delegate = self;
 	}
 	return _numberKeyboardViewController;

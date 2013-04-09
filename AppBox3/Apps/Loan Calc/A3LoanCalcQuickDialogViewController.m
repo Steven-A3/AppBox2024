@@ -21,20 +21,21 @@
 #import "common.h"
 #import "LoanCalcHistory+calculation.h"
 #import "NSString+conversion.h"
+#import "A3LoanCalcAmortizationViewController.h"
 
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
 
 #define A3LC_TAG_CALCULATION_FOR_VALUE 7667001	// L = 76, 67 = C, 001 = id for view tag
 
-@interface A3LoanCalcQuickDialogViewController () <UITextFieldDelegate>
+@interface A3LoanCalcQuickDialogViewController () <UITextFieldDelegate, A3LoanCalcPieChartViewDelegate>
 @property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
 @property (nonatomic, strong) 	QRootElement *rootElement;
 @property (nonatomic, strong) 	NSNumberFormatter *currencyNumberFormatter, *percentNumberFormatter;
 @property (nonatomic, strong) 	A3LoanCalcPieChartViewController *tableHeaderViewController;
 @property (nonatomic, strong)	NSMutableArray *keysForCurrency;
 @property (nonatomic, strong)	NSMutableDictionary *enumForEntryKeys;
-@property (nonatomic, strong)	A3NumberKeyboardViewController *numberKeyboardViewController;
+@property (nonatomic, strong)	A3NumberKeyboardViewController_iPad *numberKeyboardViewController;
 @property (nonatomic, strong)	A3FrequencyKeyboardViewController *frequencyKeyboardViewController;
 @property (nonatomic, strong)	A3DateKeyboardViewController *dateKeyboardViewController;
 @property (nonatomic, strong)	A3DateKeyboardViewController *dateKeyboardForMonthInput;
@@ -43,6 +44,7 @@
 @property (nonatomic, strong)	LoanCalcHistory *editingObject;
 @property (nonatomic, strong)	UILabel *temporaryLabelForEditing;
 @property (nonatomic, strong)	A3ButtonTextField *extraPaymentYearlyMonth, *extraPaymentOneTimeYearMonth;
+@property (nonatomic, strong)	A3LoanCalcAmortizationViewController *amortizationVC;
 
 @end
 
@@ -334,13 +336,14 @@
 - (A3LoanCalcPieChartViewController *)tableHeaderViewController {
 	if (nil == _tableHeaderViewController) {
 		_tableHeaderViewController = [[A3LoanCalcPieChartViewController alloc] initWithNibName:@"A3LoanCalcPieChartViewController" bundle:nil];
+		_tableHeaderViewController.delegate = self;
 	}
 	return _tableHeaderViewController;
 }
 
-- (A3NumberKeyboardViewController *)numberKeyboardViewController {
+- (A3NumberKeyboardViewController_iPad *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
-		_numberKeyboardViewController = [[A3NumberKeyboardViewController alloc] initWithNibName:@"A3NumberKeyboardViewController" bundle:nil];
+		_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
 		_numberKeyboardViewController.delegate = self;
 	}
 	return _numberKeyboardViewController;
@@ -522,8 +525,8 @@
 
 -(void)sectionHeaderWillAppearForSection:(QSection *)section atIndex:(NSInteger)index {
 	if (index == 2) {
-		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH, 44.0f)];
-		UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(64.0f, 0.0f, APP_VIEW_WIDTH - 64.0f * 2.0f, 44.0f)];
+		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH_iPAD, 44.0f)];
+		UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(64.0f, 0.0f, APP_VIEW_WIDTH_iPAD - 64.0f * 2.0f, 44.0f)];
 		sectionText.backgroundColor = [UIColor clearColor];
 		sectionText.font = [UIFont boldSystemFontOfSize:24.0f];
 		sectionText.textColor = [UIColor blackColor];
@@ -981,6 +984,21 @@
 	QLabelElement *element = [section.elements objectAtIndex:0];
 	element.value = value;
 	[self.quickDialogTableView reloadCellForElements:element, nil];
+}
+
+- (void)loanCalcPieChartViewButtonPressed {
+	self.quickDialogTableView.scrollEnabled = NO;
+	_amortizationVC = [[A3LoanCalcAmortizationViewController alloc] initWithNibName:nil bundle:nil];
+	_amortizationVC.object = self.editingObject;
+	CGRect frame = self.quickDialogTableView.bounds;
+	FNLOG(@"%f, %f", frame.size.width, frame.size.height);
+	frame.origin.y = 274.0;
+	frame.size.height -= 274.0;
+	_amortizationVC.view.frame = frame;
+	FNLOG(@"%f, %f", frame.size.width, frame.size.height);
+
+	[self addChildViewController:_amortizationVC];
+	[self.quickDialogTableView addSubview:_amortizationVC.view];
 }
 
 @end

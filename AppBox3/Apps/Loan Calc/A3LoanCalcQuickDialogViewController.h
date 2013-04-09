@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <QuickDialog.h>
-#import "A3NumberKeyboardViewController.h"
+#import "A3NumberKeyboardViewController_iPad.h"
 #import "A3FrequencyKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
 

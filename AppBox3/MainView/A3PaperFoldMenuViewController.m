@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreGraphics/CoreGraphics.h>
 #import "A3PaperFoldMenuViewController.h"
 #import "A3iPhoneMenuTableViewController.h"
 #import "A3HomeViewController_iPhone.h"
@@ -40,77 +41,130 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-
-	CGRect paperFoldViewFrame = [[UIScreen mainScreen] bounds];
-	paperFoldViewFrame.origin.x += _hotMenuViewController.view.frame.size.width;
-	paperFoldViewFrame.size.width = 714.0f;
-
-	_paperFoldView = [[PaperFoldView alloc] initWithFrame:paperFoldViewFrame];
-	[_paperFoldView setDelegate:self];
-	[_paperFoldView setUseOptimizedScreenshot:NO];
-
-	[self.view addSubview:_paperFoldView];
-
-	_contentView = [[UIView alloc] initWithFrame:_paperFoldView.bounds];
-	[_contentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin];
-	[_paperFoldView setCenterContentView:_contentView];
-
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-		A3HomeViewController_iPad *homeViewController_iPad = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
-		homeViewController_iPad.paperFoldView = _paperFoldView;
-		self.myNavigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPad];
-		[_contentView addSubview:[_myNavigationController view]];
-		[self addChildViewController:_myNavigationController];
-	} else {
-		A3HomeViewController_iPhone *homeViewController_iPhone = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
-		homeViewController_iPhone.paperFoldView = _paperFoldView;
-		self.myNavigationController = [[UINavigationController alloc] initWithRootViewController:homeViewController_iPhone];
-		[_contentView addSubview:[_myNavigationController view]];
-		[self addChildViewController:_myNavigationController];
-	}
-
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-		self.hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView_iPad" bundle:nil];
-		[self.view addSubview:[_hotMenuViewController view]];
-		[self addChildViewController:_hotMenuViewController];
-	}
-
-	self.hotMenuViewController.myNavigationController = _myNavigationController;
-	self.hotMenuViewController.paperFoldView = _paperFoldView;
-
-	self.myNavigationController.navigationBar.tintColor = [UIColor blackColor];
-	[A3UIKit setBackgroundImageForNavigationBar:self.myNavigationController.navigationBar];
-
-	UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];
-	_sideMenuTableViewController = [[A3iPhoneMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
-	_sideMenuTableViewController.paperFoldMenuViewController = self;
-	[_sideMenuTableViewController.view setFrame:sideMenuView.frame];
-	[sideMenuView addSubview:_sideMenuTableViewController.view];
-	[_paperFoldView setLeftFoldContentView:sideMenuView foldCount:3 pullFactor:0.9];
-
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-		if (![A3UIDevice deviceOrientationIsPortrait]) {
-			[_paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded];
+- (PaperFoldView *)paperFoldView {
+	if (nil == _paperFoldView) {
+		CGRect paperFoldViewFrame = [[UIScreen mainScreen] bounds];
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+			paperFoldViewFrame.origin.x += self.hotMenuViewController.view.frame.size.width;
+			paperFoldViewFrame.size.width = APP_VIEW_WIDTH_iPAD;
+		} else {
+			paperFoldViewFrame.size.width = APP_VIEW_WIDTH_iPHONE;
 		}
+
+		_paperFoldView = [[PaperFoldView alloc] initWithFrame:paperFoldViewFrame];
+		[_paperFoldView setDelegate:self];
+		[_paperFoldView setUseOptimizedScreenshot:NO];
 	}
+	return _paperFoldView;
+}
 
-	self.notificationViewController = [[A3NotificationTableViewController alloc] initWithStyle:UITableViewStylePlain];
-	[_notificationViewController.view setFrame:CGRectMake(0.0, 0.0, NOTIFICATION_VIEW_WIDTH, self.view.bounds.size.height)];
-	[_paperFoldView setRightFoldContentView:_notificationViewController.view foldCount:3 pullFactor:0.9];
+- (UIView *)contentView {
+	if (nil == _contentView) {
+		_contentView = [[UIView alloc] initWithFrame:_paperFoldView.bounds];
+		[_contentView setAutoresizingMask:UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin];
+	}
+	return _contentView;
+}
 
-	_paperFoldView2 = [[PaperFoldView alloc] initWithFrame:paperFoldViewFrame];
-	[_paperFoldView2 setDelegate:self];
-	[_paperFoldView2 setUseOptimizedScreenshot:NO];
+- (UINavigationController *)myNavigationController {
+	if (nil == _myNavigationController) {
+		id rootViewController;
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+			A3HomeViewController_iPad *viewController = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
+			viewController.paperFoldView = self.paperFoldView;
+			rootViewController = viewController;
+		} else {
+			A3HomeViewController_iPhone *viewController = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
+			viewController.paperFoldView = self.paperFoldView;
+			rootViewController = viewController;
+		}
+		_myNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+		_myNavigationController.navigationBar.tintColor = [UIColor blackColor];
+		[A3UIKit setBackgroundImageForNavigationBar:_myNavigationController.navigationBar];
+	}
+	return _myNavigationController;
+}
 
-	self.notificationViewController2 = [[A3NotificationTableViewController alloc] initWithStyle:UITableViewStylePlain];
-	[_notificationViewController2.view setFrame:CGRectMake(0.0, 0.0, 256.0, self.view.bounds.size.height)];
-	[_paperFoldView2 setRightFoldContentView:_notificationViewController2.view foldCount:3 pullFactor:0.9];
-	[_paperFoldView2.contentView setBackgroundColor:[UIColor blackColor]];
-	[self.view addSubview:_paperFoldView2];
+- (A3HotMenuViewController *)hotMenuViewController {
+	if (nil == _hotMenuViewController) {
+		_hotMenuViewController = [[A3HotMenuViewController alloc] initWithNibName:@"MenuView" bundle:nil];
+		_hotMenuViewController.myNavigationController = self.myNavigationController;
+		_hotMenuViewController.paperFoldView = self.paperFoldView;
+	}
+	return _hotMenuViewController;
+}
+
+- (A3iPhoneMenuTableViewController *)sideMenuTableViewController {
+	if (nil == _sideMenuTableViewController) {
+		UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];
+		_sideMenuTableViewController = [[A3iPhoneMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		_sideMenuTableViewController.paperFoldMenuViewController = self;
+		[_sideMenuTableViewController.view setFrame:sideMenuView.frame];
+		[sideMenuView addSubview:_sideMenuTableViewController.view];
+		[_paperFoldView setLeftFoldContentView:sideMenuView foldCount:3 pullFactor:0.9];
+	}
+	return _sideMenuTableViewController;
+}
+
+- (A3NotificationTableViewController *)notificationViewController {
+	if (nil == _notificationViewController) {
+		_notificationViewController = [[A3NotificationTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		[_notificationViewController.view setFrame:CGRectMake(0.0, 0.0, NOTIFICATION_VIEW_WIDTH, self.view.bounds.size.height)];
+		[_paperFoldView setRightFoldContentView:_notificationViewController.view foldCount:3 pullFactor:0.9];
+	}
+	return _notificationViewController;
+}
+
+- (PaperFoldView *)paperFoldView2 {
+	if (nil == _paperFoldView2) {
+		_paperFoldView2 = [[PaperFoldView alloc] initWithFrame:self.paperFoldView.frame];
+		[_paperFoldView2 setDelegate:self];
+		[_paperFoldView2 setUseOptimizedScreenshot:NO];
+		[self.view addSubview:_paperFoldView2];
+	}
+	return _paperFoldView2;
+}
+
+- (A3NotificationTableViewController *)notificationViewController2 {
+	if (nil == _notificationViewController2) {
+		_notificationViewController2 = [[A3NotificationTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		[_notificationViewController2.view setFrame:CGRectMake(0.0, 0.0, 256.0, self.view.bounds.size.height)];
+		[_paperFoldView2 setRightFoldContentView:_notificationViewController2.view foldCount:3 pullFactor:0.9];
+		[_paperFoldView2.contentView setBackgroundColor:[UIColor blackColor]];
+	}
+	return _notificationViewController2;
+}
+
+- (void)configureiPadHomeScreen {
+	[self.view addSubview:self.paperFoldView];
+	[_paperFoldView setCenterContentView:self.contentView];
+
+	[_contentView addSubview:[self.myNavigationController view]];
+	[self addChildViewController:_myNavigationController];
+
+	[self.view addSubview:[self.hotMenuViewController view]];
+	[self addChildViewController:_hotMenuViewController];
+
+	[self sideMenuTableViewController];
+
+	if (![A3UIDevice deviceOrientationIsPortrait]) {
+		[_paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded];
+	}
+	[self notificationViewController];
+
+	[self paperFoldView2];
+	[self notificationViewController2];
+}
+
+- (void)configureiPhoneHomeScreen {
+	[self.view addSubview:self.paperFoldView];
+	[_paperFoldView setCenterContentView:self.contentView];
+
+	[_contentView addSubview:[self.myNavigationController view]];
+	[self addChildViewController:_myNavigationController];
+
+	[self sideMenuTableViewController];
+	[self notificationViewController];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -119,6 +173,17 @@
 	[self layoutNavigationController];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+	// Do any additional setup after loading the view.
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+		[self configureiPadHomeScreen];
+	} else {
+		[self configureiPhoneHomeScreen];
+	}
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -143,21 +208,28 @@
 	if ([self resizeNavigationViewOnRotation]) {
 		PaperFoldState newState;
 		CGRect newNavigationViewFrame, foldViewFrame;
+		CGFloat leftOffset = _hotMenuViewController != nil ? _hotMenuViewController.view.bounds.size.width : 0.0;
+		CGFloat viewWidth;
+		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+			viewWidth = [A3UIDevice deviceOrientationIsPortrait] ? APP_VIEW_WIDTH_iPAD : A3_APP_LANDSCAPE_FULL_WIDTH;
+		} else {
+			viewWidth = APP_VIEW_WIDTH_iPHONE;
+		}
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
 		if ([A3UIDevice deviceOrientationIsPortrait]) {
 			// Moved to portrait
 			newState = PaperFoldStateDefault;
-			newNavigationViewFrame = CGRectMake(0.0, 0.0, 714.0, 1004.0);
-			foldViewFrame = CGRectMake(54.0, 0.0, 714.0, 1004.0);;
-			[_hotMenuViewController.view setFrame:CGRectMake(0.0, 0.0, 54.0, 1004.0)];
 			_paperFoldView.enableRightFoldDragging = YES;
 		} else {
 			// Moved to landscape
 			newState = PaperFoldStateLeftUnfolded;
-			newNavigationViewFrame = CGRectMake(0.0, 0.0, 714.0, 748.0);
-			foldViewFrame = CGRectMake(54.0, 0.0, 970.0, 748.0);
-			[_hotMenuViewController.view setFrame:CGRectMake(0.0, 0.0, 54.0, 748.0)];
 			_paperFoldView.enableRightFoldDragging = NO;
 		}
+		newNavigationViewFrame = CGRectMake(0.0, 0.0, viewWidth, screenBounds.size.height);
+		foldViewFrame = CGRectMake(leftOffset, 0.0, viewWidth, screenBounds.size.height);
+		[_hotMenuViewController.view setFrame:CGRectMake(0.0, 0.0, HOT_MENU_VIEW_WIDTH, screenBounds.size.height)];
+
 		[_paperFoldView setFrame:foldViewFrame];
 		[_contentView setFrame:newNavigationViewFrame];
 		[_myNavigationController.view setFrame:_contentView.bounds];
@@ -246,7 +318,7 @@
 }
 
 - (CGFloat)displacementOfMultiFoldView:(id)multiFoldView {
-	return HOT_MENU_VIEW_WIDTH + A3_MENU_TABLE_VIEW_WIDTH + APP_VIEW_WIDTH;
+	return HOT_MENU_VIEW_WIDTH + A3_MENU_TABLE_VIEW_WIDTH + APP_VIEW_WIDTH_iPAD;
 }
 
 - (void)presentRightWingWithViewController:(UIViewController *)viewController onClose:(void (^)())onCloseBlock {

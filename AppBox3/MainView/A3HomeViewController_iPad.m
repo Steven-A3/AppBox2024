@@ -121,14 +121,14 @@
 }
 
 - (void)addLeftBarButton {
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"bt_applist" ofType:@"png"];
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"applist" ofType:@"png"];
 	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
 	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
 	self.navigationItem.leftBarButtonItem = sideMenuButton;
 }
 
 - (void)addRightBarButton {
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_notification" ofType:@"png"];
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"notification" ofType:@"png"];
 	UIImage *buttonImage = [UIImage imageWithContentsOfFile:imageFilePath];
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStylePlain target:self action:@selector(showNotificationButtonAction)];
 	self.navigationItem.rightBarButtonItem = button;
