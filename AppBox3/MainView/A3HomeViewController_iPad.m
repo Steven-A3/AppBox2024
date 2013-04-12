@@ -108,11 +108,12 @@
 	[self.contentsView insertSubview:[self.statisticsViewController view] belowSubview:self.calendarLabel ];
 
 	A3PhoneHomeCalendarMonthViewController *calendarMonthViewController = [[A3PhoneHomeCalendarMonthViewController alloc] initWithNibName:@"A3PhoneHomeCalendarMonthViewController" bundle:nil];
+    calendarMonthViewController.view.frame = self.calendarView.bounds;
 	[self.calendarView addSubview:[calendarMonthViewController view] ];
     [self addChildViewController:calendarMonthViewController];
 
 	A3TimeLineTableViewController *timeLineTableViewController = [[A3TimeLineTableViewController alloc] initWithStyle:UITableViewStylePlain];
-	[timeLineTableViewController.view setFrame:self.timelineView.bounds];
+	timeLineTableViewController.view.frame = self.timelineView.bounds;
 	[self.timelineView addSubview:timeLineTableViewController.view];
 	[self addChildViewController:timeLineTableViewController];
 

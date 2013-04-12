@@ -7,6 +7,7 @@
 //
 
 #import "A3UIStyle.h"
+#import "A3UIDevice.h"
 
 @implementation A3UIStyle
 
@@ -23,15 +24,18 @@
 }
 
 + (UIFont *)fontForTableViewCellLabel {
-	return [UIFont boldSystemFontOfSize:25.0];
+	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
+	return [UIFont boldSystemFontOfSize:fontSize];
 }
 
 + (UIFont *)fontForTableViewEntryCellLabel {
-	return [UIFont systemFontOfSize:25.0];
+	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
+	return [UIFont systemFontOfSize:fontSize];
 }
 
 + (UIFont *)fontForTableViewEntryCellTextField {
-	return [UIFont boldSystemFontOfSize:25.0];
+	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
+	return [UIFont boldSystemFontOfSize:fontSize];
 }
 
 @end

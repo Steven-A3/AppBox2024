@@ -152,6 +152,47 @@
 	return image;
 }
 
+
++ (UIImage *)backspaceImage2 {
+	CGSize imageSize = CGSizeMake(27.0, 18.0);
+	UIGraphicsBeginImageContextWithOptions(imageSize, NO, 2.0);
+
+	UIBezierPath *backspaceShape = [UIBezierPath bezierPath];
+	CGFloat minX = 0.0;
+	[backspaceShape moveToPoint:CGPointMake(minX, imageSize.height / 2.0 - 1.0)];
+	[backspaceShape addLineToPoint:CGPointMake(minX + 9.0, 0.0)];
+	CGFloat radius = 3.0;
+	CGFloat centerX = imageSize.width - radius - 1.0;
+	[backspaceShape addLineToPoint:CGPointMake(centerX, 0.0)];
+	[backspaceShape addArcWithCenter:CGPointMake(centerX, radius) radius:radius startAngle:DegreesToRadians(270.0) endAngle:DegreesToRadians(0.0) clockwise:YES];
+	[backspaceShape addLineToPoint:CGPointMake(imageSize.width - 1.0, imageSize.height - radius - 1.0)];
+	[backspaceShape addArcWithCenter:CGPointMake(centerX, imageSize.height - radius - 1.0) radius:radius startAngle:DegreesToRadians(0.0) endAngle:DegreesToRadians(90.0) clockwise:YES];
+	[backspaceShape addLineToPoint:CGPointMake(minX + 9.0, 17.0)];
+	[backspaceShape closePath];
+
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	CGContextSaveGState(context);
+//	CGContextSetShadowWithColor(context, CGSizeMake(0.0, -0.5), 1.0, [UIColor colorWithRed:49.0/255.0 green:53.0/255.0 blue:60.0/255.0 alpha:1.0].CGColor);
+	UIColor *fillColor = [UIColor whiteColor];
+	[fillColor setFill];
+	[fillColor setStroke];
+	[backspaceShape fill];
+	[backspaceShape stroke];
+
+	CGContextRestoreGState(context);
+
+	CGContextSetShadowWithColor(context, CGSizeMake(0.0, 0.5), 0.0, [UIColor colorWithRed:54.0/255.0 green:57.0/255.0 blue:60.0/255.0 alpha:1.0].CGColor);
+	UIColor *textColor = [UIColor colorWithRed:95.0/255.0 green:102.0/255.0 blue:115.0/255.0 alpha:1.0];
+	[textColor setFill];
+	[textColor setStroke];
+	[@"×" drawAtPoint:CGPointMake(minX + 9.0 + 2.0, -5.0) forWidth:14.0 withFont:[UIFont boldSystemFontOfSize:19.0] lineBreakMode:NSLineBreakByWordWrapping];
+
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return image;
+}
+
 + (UIColor *)colorForDashLineColor {
 	return [UIColor colorWithPatternImage:[A3UIKit dashImage]];
 }

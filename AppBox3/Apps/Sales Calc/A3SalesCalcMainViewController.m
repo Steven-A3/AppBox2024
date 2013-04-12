@@ -15,6 +15,9 @@
 #import "A3AppDelegate.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3UIKit.h"
+#import "A3SalesCalcQuickDialogViewController_iPad.h"
+#import "A3SalesCalcQuickDialogViewController_iPhone.h"
+#import "common.h"
 
 @interface A3SalesCalcMainViewController ()
 
@@ -43,9 +46,14 @@
 	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
 	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 
-	self.view.frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, APP_VIEW_WIDTH_iPAD, 960.0) : CGRectMake(0.0, 0.0, APP_VIEW_WIDTH_iPAD, 704.0);
+	self.view.frame = [A3UIDevice appFrame];
+	FNLOG(@"%f, %f", self.view.bounds.size.width, self.view.bounds.size.height);
 
-	_quickDialogViewController = [[A3SalesCalcQuickDialogViewController alloc] initWithNibName:nil bundle:nil];
+	if (DEVICE_IPAD) {
+		_quickDialogViewController = [[A3SalesCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
+	} else {
+		_quickDialogViewController = [[A3SalesCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+	}
 	_quickDialogViewController.view.frame = self.view.bounds;
 	[self.view addSubview:_quickDialogViewController.view];
 	[self addChildViewController:_quickDialogViewController];
@@ -58,9 +66,13 @@
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
 	historyViewController.salesCalcQuickDialogViewController = _quickDialogViewController;
 
-	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-	[paperFoldMenuViewController presentRightWingWithViewController:historyViewController onClose:^{
-	}];
+	if (DEVICE_IPAD) {
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+		[paperFoldMenuViewController presentRightWingWithViewController:historyViewController onClose:^{
+		}];
+	} else {
+		[self.navigationController pushViewController:historyViewController animated:YES];
+	}
 }
 
 - (void)didReceiveMemoryWarning

@@ -17,6 +17,9 @@
 
 
 + (UIImage *)backspaceImage;
+
++ (UIImage *)backspaceImage2;
+
 + (UIColor *)colorForDashLineColor;
 + (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;
 + (void)setBackgroundImageForNavigationBar:(UINavigationBar *)navigationBar;

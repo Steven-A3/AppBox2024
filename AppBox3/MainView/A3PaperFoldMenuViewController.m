@@ -36,7 +36,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-
+		_keepNarrowWidthOnHorizontalOrientation = YES;
 	}
     return self;
 }
@@ -212,10 +212,12 @@
 		CGFloat viewWidth;
 		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
 			viewWidth = [A3UIDevice deviceOrientationIsPortrait] ? APP_VIEW_WIDTH_iPAD : A3_APP_LANDSCAPE_FULL_WIDTH;
+			viewWidth = _keepNarrowWidthOnHorizontalOrientation ? APP_VIEW_WIDTH_iPAD : viewWidth;
 		} else {
 			viewWidth = APP_VIEW_WIDTH_iPHONE;
 		}
-		CGRect screenBounds = [[UIScreen mainScreen] bounds];
+		CGRect screenBounds = [A3UIDevice appFrame];
+		screenBounds.size.height += 44.0;
 
 		if ([A3UIDevice deviceOrientationIsPortrait]) {
 			// Moved to portrait

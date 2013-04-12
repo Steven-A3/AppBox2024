@@ -36,18 +36,15 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		_currencyCode = [numberFormatter currencyCode];
-		_currencySymbol = [numberFormatter currencySymbol];
 	}
     return self;
 }
 
 - (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
-	_keyboardType = keyboardType;
+	super.keyboardType = keyboardType;
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeCurrency: {
-			[self fillBigButtonTitleWith:_currencyCode bigButton2Title:@"%"];
+			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
 			_bigButton1.blueColorOnHighlighted = NO;
 			_bigButton2.blueColorOnHighlighted = NO;
 			_bigButton1.selected = NO;
@@ -117,8 +114,8 @@
 }
 
 - (void)setCurrencyCode:(NSString *)currencyCode {
-	_currencyCode = currencyCode;
-	[_bigButton1 setTitle:_currencyCode forState:UIControlStateNormal];
+	super.currencyCode = currencyCode;
+	[_bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
 }
 
 - (void)viewDidLoad
@@ -130,25 +127,6 @@
 
 	[_deleteButton setTitle:nil forState:UIControlStateNormal];
 	[_deleteButton setImage:[A3UIKit backspaceImage] forState:UIControlStateNormal];
-}
-
-- (void)reloadPrevNextButtons {
-	if ([_delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
-		BOOL available = [_delegate nextAvailableForElement:_element];
-		[_nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
-		[_nextButton setEnabled:available];
-	} else {
-		[_nextButton setTitle:@"Next" forState:UIControlStateNormal];
-		[_nextButton setEnabled:YES];
-	}
-	if ([_delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
-		BOOL available = [_delegate prevAvailableForElement:_element];
-		[_prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
-		[_prevButton setEnabled:available];
-	} else {
-		[_prevButton setTitle:@"Prev" forState:UIControlStateNormal];
-		[_prevButton setEnabled:YES];
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -164,64 +142,83 @@
 }
 
 - (IBAction)keyboardInputAction:(UIButton *)button {
-	if ([_keyInputDelegate respondsToSelector:@selector(insertText:)]) {
-		[_keyInputDelegate insertText:[button titleForState:UIControlStateNormal]];
+	if ([self.keyInputDelegate respondsToSelector:@selector(insertText:)]) {
+		[self.keyInputDelegate insertText:[button titleForState:UIControlStateNormal]];
 	}
 }
 
 - (IBAction)clearButtonAction {
-	if ([_delegate respondsToSelector:@selector(clearButtonPressed)]) {
-		[_delegate clearButtonPressed];
+	if ([self.delegate respondsToSelector:@selector(clearButtonPressed)]) {
+		[self.delegate clearButtonPressed];
 	}
 }
 
 - (IBAction)backspaceAction:(UIButton *)button {
-	if ([_keyInputDelegate respondsToSelector:@selector(deleteBackward)]) {
-		[_keyInputDelegate deleteBackward];
+	if ([self.keyInputDelegate respondsToSelector:@selector(deleteBackward)]) {
+		[self.keyInputDelegate deleteBackward];
 	}
 }
 
 - (IBAction)prevAction {
-	if ([_delegate respondsToSelector:@selector(prevButtonPressedWithElement:)]) {
-		[_delegate prevButtonPressedWithElement:_element];
+	if ([self.delegate respondsToSelector:@selector(prevButtonPressedWithElement:)]) {
+		[self.delegate prevButtonPressedWithElement:self.element];
 	} else {
-		[_entryTableViewCell handlePrevNextWithForNext:NO];
+		[self.entryTableViewCell handlePrevNextWithForNext:NO];
 	}
 }
 
 - (IBAction)nextAction {
-	if ([_delegate respondsToSelector:@selector(nextButtonPressedWithElement:)]) {
-		[_delegate nextButtonPressedWithElement:_element];
+	if ([self.delegate respondsToSelector:@selector(nextButtonPressedWithElement:)]) {
+		[self.delegate nextButtonPressedWithElement:self.element];
 	} else {
-		[_entryTableViewCell handlePrevNextWithForNext:YES];
+		[self.entryTableViewCell handlePrevNextWithForNext:YES];
 	}
 }
 
 - (IBAction)doneAction {
-	if ([_delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
-		[_delegate A3KeyboardViewControllerDoneButtonPressed];
+	if ([self.delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
+		[self.delegate A3KeyboardViewControllerDoneButtonPressed];
 	} else {
-		[_entryTableViewCell handleActionBarDone:nil];
+		[self.entryTableViewCell handleActionBarDone:nil];
 	}
 }
 
 - (IBAction)bigButton1Action {
-	if ((_keyboardType == A3NumberKeyboardTypeMonthYear) || (_keyboardType == A3NumberKeyboardTypeInterestRate)) {
+	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
 		[_bigButton1 setSelected:YES];
 		[_bigButton2 setSelected:NO];
 	}
-	if ([_delegate respondsToSelector:@selector(handleBigButton1)]) {
-		[_delegate handleBigButton1];
+	if ([self.delegate respondsToSelector:@selector(handleBigButton1)]) {
+		[self.delegate handleBigButton1];
 	}
 }
 
 - (IBAction)bigButton2Action {
-	if ((_keyboardType == A3NumberKeyboardTypeMonthYear) || (_keyboardType == A3NumberKeyboardTypeInterestRate)) {
+	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
 		[_bigButton1 setSelected:NO];
 		[_bigButton2 setSelected:YES];
 	}
-	if ([_delegate respondsToSelector:@selector(handleBigButton2)]) {
-		[_delegate handleBigButton2];
+	if ([self.delegate respondsToSelector:@selector(handleBigButton2)]) {
+		[self.delegate handleBigButton2];
+	}
+}
+
+- (void)reloadPrevNextButtons {
+	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
+		BOOL available = [self.delegate nextAvailableForElement:self.element];
+		[_nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
+		[_nextButton setEnabled:available];
+	} else {
+		[_nextButton setTitle:@"Next" forState:UIControlStateNormal];
+		[_nextButton setEnabled:YES];
+	}
+	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
+		BOOL available = [self.delegate prevAvailableForElement:self.element];
+		[_prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
+		[_prevButton setEnabled:available];
+	} else {
+		[_prevButton setTitle:@"Prev" forState:UIControlStateNormal];
+		[_prevButton setEnabled:YES];
 	}
 }
 

@@ -14,6 +14,7 @@
 #import "A3SalesCalcMainViewController.h"
 #import "A3ExpenseListViewController.h"
 #import "A3LoanCalcViewController.h"
+#import "A3UIDevice.h"
 
 @interface A3iPhoneMenuTableViewController ()
 
@@ -363,7 +364,8 @@
 				break;
 			}
 			case 1:{
-				A3ExpenseListViewController *viewController = [[A3ExpenseListViewController alloc] initWithNibName:@"A3ExpenseListViewController" bundle:nil];
+				NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", DEVICE_IPAD?@"iPad" : @"iPhone"];
+				A3ExpenseListViewController *viewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
 				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
 				break;
 			}

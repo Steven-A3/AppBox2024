@@ -8,11 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, A3ExpenseListTextFields) {
+	A3ExpenseListTextFieldItem = 1,
+	A3ExpenseListTextFieldPrice,
+	A3ExpenseListTextFieldQuantity
+};
+
 @class SSCheckBoxView;
 
 @interface A3ExpenseListTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) SSCheckBoxView *checkBox;
-@property (nonatomic, strong) UILabel *item, *price, *qty, *subtotal;
+@property (nonatomic, strong) UILabel *subtotal;
+@property (nonatomic, strong) UITextField *item, *price, *qty;
 
 @end

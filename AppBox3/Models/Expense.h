@@ -1,0 +1,33 @@
+//
+//  Expense.h
+//  AppBox3
+//
+//  Created by Byeong Kwon Kwak on 4/12/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+
+@class ExpenseDetail;
+
+@interface Expense : NSManagedObject
+
+@property (nonatomic, retain) NSString * budget;
+@property (nonatomic, retain) NSString * category;
+@property (nonatomic, retain) NSDate * date;
+@property (nonatomic, retain) NSString * location;
+@property (nonatomic, retain) NSString * notes;
+@property (nonatomic, retain) NSString * paymentType;
+@property (nonatomic, retain) NSString * title;
+@property (nonatomic, retain) NSSet *details;
+@end
+
+@interface Expense (CoreDataGeneratedAccessors)
+
+- (void)addDetailsObject:(ExpenseDetail *)value;
+- (void)removeDetailsObject:(ExpenseDetail *)value;
+- (void)addDetails:(NSSet *)values;
+- (void)removeDetails:(NSSet *)values;
+
+@end

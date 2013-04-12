@@ -7,7 +7,6 @@
 //
 
 #import "A3SalesCalcQuickDialogViewController.h"
-#import "CommonUIDefinitions.h"
 #import "A3UIDevice.h"
 #import "A3HorizontalBarChartView.h"
 #import "EKKeyboardAvoidingScrollViewManager.h"
@@ -18,46 +17,19 @@
 #import "A3UIKit.h"
 #import "A3UIStyle.h"
 #import "NSString+conversion.h"
+#import "A3HorizontalBarContainerView.h"
 
-typedef NS_ENUM(NSUInteger, A3SalesCalculatorType) {
-	A3SalesCalculatorTypeSimple = 1,
-	A3SalesCalculatorTypeAdvanced
-};
-
-typedef NS_ENUM(NSUInteger, A3SalesCalcEntryItemIndex) {
-	A3SalesCalcEntryIndexPrice = 0,
-	A3SalesCalcEntryIndexDiscount,
-	A3SalesCalcEntryIndexAdditionalOff,
-	A3SalesCalcEntryIndexTax,
-	A3SalesCalcEntryIndexNotes,
-};
-
-typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
-	A3SalesCalcKnownValueOriginalPrice = 0,
-	A3SalesCaleKnownValueSalePrice,
-};
 
 @interface A3SalesCalcQuickDialogViewController ()
 
-@property (nonatomic, strong) A3NumberKeyboardViewController_iPad *keyboardViewController;
 @property (nonatomic, weak) QEntryElement *editingElement;
 @property (nonatomic, strong) NSArray *keys;
-@property (nonatomic, strong) A3HorizontalBarChartView *percentBarChart;
-@property (nonatomic, strong) UILabel *originalPriceLabel, *originalPriceValueLabel;
-@property (nonatomic, strong) UILabel *salePriceValueLabel, *amountSavedValueLabel;
 @property (nonatomic) A3SalesCalculatorType calculatorType;
-@property (nonatomic) CGFloat rightMargin;
+@property (nonatomic) CGFloat rowHeight;
 @property (nonatomic, strong) NSNumberFormatter *currencyNumberFormatter, *percentNumberFormatter;
 
 @end
 
-#define	SC_KEY_PRICE				@"PRICE"
-#define SC_KEY_DISCOUNT				@"DISCOUNT"
-#define SC_KEY_ADDITIONAL_OFF		@"ADDITIONAL_OFF"
-#define SC_KEY_TAX					@"TAX"
-#define SC_KEY_NOTES				@"NOTES"
-#define SC_KEY_KNOWN_VALUE_SECTION	@"KNOWN_VALUE_SECTION"
-#define SC_KEY_NUMBER_SECTION		@"NUMBERS_SECTION"
 
 @implementation A3SalesCalcQuickDialogViewController
 
@@ -66,6 +38,12 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	// Custom initialization
 	self = [super initWithNibName:nil bundle:nil];
 	if (self) {
+		if (DEVICE_IPAD) {
+			_rowHeight = 58.0;
+		} else {
+			_rowHeight = 44.0;
+		}
+
 		[self buildRoot];
 	}
 	return self;
@@ -98,9 +76,8 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 }
 
 - (void)assignRowHeightToElementInSection:(QSection *)section {
-	CGFloat rowHeight = 58.0f;
 	for (QElement *element in section.elements) {
-		element.height = rowHeight;
+		element.height = _rowHeight;
 	}
 }
 
@@ -148,78 +125,23 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	return nil == defaultValue ? @"" : defaultValue;
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-
-	self.view.backgroundColor = [UIColor clearColor];
-
-	_rightMargin = 44.0 + 10.0;
-	_keys = @[SC_KEY_PRICE, SC_KEY_DISCOUNT, SC_KEY_ADDITIONAL_OFF, SC_KEY_TAX, SC_KEY_NOTES];
-
-	UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH_iPAD, 120.0f)];
-	CGFloat offsetX = 44.0f, offsetY = 38.0f;
-	CGFloat chartHeight = 44.0f;
-	CGFloat chartWidth = APP_VIEW_WIDTH_iPAD - offsetX * 2.0f;
-	CGFloat labelHeight = 23.0f;
-	UIColor *chartLabelColor = [UIColor colorWithRed:73.0f/255.0f green:74.0f/255.0f blue:73.0f/255.0f alpha:1.0f];
-	UIFont *chartLabelFont = [UIFont boldSystemFontOfSize:18.0f];
-
-	UILabel *labelLeftTop = [[UILabel alloc] initWithFrame:CGRectMake(offsetX + chartHeight / 2.0f, 12.0f, chartWidth / 2.0f - chartHeight / 2.0f, labelHeight)];
-	labelLeftTop.backgroundColor = [UIColor clearColor];
-	labelLeftTop.font = chartLabelFont;
-	labelLeftTop.textColor = chartLabelColor;
-	labelLeftTop.text = @"Sale Price";
-	[tableHeaderView addSubview:labelLeftTop];
-
-	UILabel *labelRightTop = [[UILabel alloc] initWithFrame:CGRectMake(offsetX + chartWidth / 2.0f, 12.0f, chartWidth / 2.0f - chartHeight/ 2.0f, labelHeight)];
-	labelRightTop.backgroundColor = [UIColor clearColor];
-	labelRightTop.font = chartLabelFont;
-	labelRightTop.textColor = chartLabelColor;
-	labelRightTop.textAlignment = NSTextAlignmentRight;
-	labelRightTop.text = @"Amount Saved";
-	[tableHeaderView addSubview:labelRightTop];
-
-	_originalPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(offsetX, offsetY + chartHeight + 5.0f, chartWidth - chartHeight / 2.0f, labelHeight)];
-	_originalPriceLabel.backgroundColor = [UIColor clearColor];
-	_originalPriceLabel.font = chartLabelFont;
-	_originalPriceLabel.textColor = chartLabelColor;
-	_originalPriceLabel.textAlignment = NSTextAlignmentRight;
-	_originalPriceLabel.text = @"Original Price";
-	[tableHeaderView addSubview:_originalPriceLabel];
-
-	_originalPriceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(APP_VIEW_WIDTH_iPAD - _rightMargin - 200.0, offsetY + chartHeight + 5.0, 200.0, labelHeight)];
-	_originalPriceValueLabel.backgroundColor = [UIColor clearColor];
-	_originalPriceValueLabel.font = [UIFont boldSystemFontOfSize:20.0];
-	_originalPriceValueLabel.textColor = chartLabelColor;
-	_originalPriceValueLabel.textAlignment = NSTextAlignmentRight;
-	[tableHeaderView addSubview:_originalPriceValueLabel];
-
-	_percentBarChart = [[A3HorizontalBarChartView alloc] initWithFrame:CGRectMake(offsetX, offsetY, APP_VIEW_WIDTH_iPAD - offsetX * 2.0f, chartHeight)];
-	[tableHeaderView addSubview:_percentBarChart];
-
-	_salePriceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(offsetX + 10.0, offsetY, 200.0, chartHeight)];
-	_salePriceValueLabel.backgroundColor = [UIColor clearColor];
-	_salePriceValueLabel.textColor = [UIColor whiteColor];
-	_salePriceValueLabel.font = [UIFont boldSystemFontOfSize:22.0];
-	_salePriceValueLabel.textAlignment = NSTextAlignmentLeft;
-	[tableHeaderView addSubview:_salePriceValueLabel];
-
-	_amountSavedValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(APP_VIEW_WIDTH_iPAD - _rightMargin - 200.0, offsetY, 200.0, chartHeight)];
-	_amountSavedValueLabel.backgroundColor = [UIColor clearColor];
-	_amountSavedValueLabel.textColor = [UIColor whiteColor];
-	_amountSavedValueLabel.font = [UIFont boldSystemFontOfSize:22.0];
-	_amountSavedValueLabel.textAlignment = NSTextAlignmentRight;
-	[tableHeaderView addSubview:_amountSavedValueLabel];
-
-	self.quickDialogTableView.tableHeaderView = tableHeaderView;
-	self.quickDialogTableView.styleProvider = self;
-	self.quickDialogTableView.backgroundView = nil;
-	self.quickDialogTableView.backgroundColor = [A3UIStyle contentsBackgroundColor];
+- (NSArray *)keys {
+	if (nil == _keys) {
+		_keys = @[SC_KEY_PRICE, SC_KEY_DISCOUNT, SC_KEY_ADDITIONAL_OFF, SC_KEY_TAX, SC_KEY_NOTES];
+	}
+	return _keys;
 }
 
 - (BOOL)isOriginalPrice {
 	QRadioSection *radioSection = (QRadioSection *)[self.root sectionWithKey:SC_KEY_KNOWN_VALUE_SECTION];
 	return (radioSection.selected == A3SalesCalcKnownValueOriginalPrice);
+}
+
+- (A3HorizontalBarContainerView *)tableHeaderView {
+	if (nil == _tableHeaderView) {
+		_tableHeaderView = [[A3HorizontalBarContainerView alloc] initWithFrame:CGRectZero];
+	}
+	return _tableHeaderView;
 }
 
 - (NSString *)discountString {
@@ -280,9 +202,9 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 		if (lastHistory && [lastHistory isKindOfClass:[SalesCalcHistory class]]) {
 			if ((lastHistory.isOriginalPrice == isOriginalPrice) &&
 					(lastHistory.isAdvanced == isAdvanced) &&
-					[lastHistory.salePrice isEqualToString:self.salePriceValueLabel.text] &&
-					[lastHistory.originalPrice isEqualToString:self.originalPriceValueLabel.text] &&
-					[lastHistory.amountSaved isEqualToString:self.amountSavedValueLabel.text] &&
+					[lastHistory.salePrice isEqualToString:self.tableHeaderView.chartLeftValueLabel.text] &&
+					[lastHistory.originalPrice isEqualToString:self.tableHeaderView.bottomValueLabel.text] &&
+					[lastHistory.amountSaved isEqualToString:self.tableHeaderView.chartRightValueLabel.text] &&
 					[lastHistory.discount isEqualToString:[self discountString]] &&
 					[lastHistory.additionaloff isEqualToString:[self additionalOffString]] &&
 					[lastHistory.tax isEqualToString:[self taxString]] &&
@@ -297,9 +219,9 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	history.isAdvanced = isAdvanced;
 	history.createdDate = [[NSDate date] timeIntervalSinceReferenceDate];
 
-	history.salePrice = self.salePriceValueLabel.text;
-	history.originalPrice = self.originalPriceValueLabel.text;
-	history.amountSaved = self.amountSavedValueLabel.text;
+	history.salePrice = self.tableHeaderView.chartLeftValueLabel.text;
+	history.originalPrice = self.tableHeaderView.bottomValueLabel.text;
+	history.amountSaved = self.tableHeaderView.chartRightValueLabel.text;
 	history.discount = [self discountString];
 	history.additionaloff = [self additionalOffString];
 	history.tax = [self taxString];
@@ -319,12 +241,14 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 - (QEntryElement *)additionalOffElement {
 	QEntryElement *additionalOff = [[QEntryElement alloc] initWithTitle:@"Additional Off:" Value:[self savedValueForAdditionalOff] Placeholder:@"0%"];
 	additionalOff.key = SC_KEY_ADDITIONAL_OFF;
+	additionalOff.height = _rowHeight;
 	additionalOff.delegate = self;
 	return additionalOff;
 }
 
 - (QEntryElement *)taxElement {
 	QEntryElement *tax = [[QEntryElement alloc] initWithTitle:@"Tax:" Value:[self savedValueForTax] Placeholder:@"0%"];
+	tax.height = _rowHeight;
 	tax.key = SC_KEY_TAX;
 	tax.delegate = self;
 	return tax;
@@ -345,10 +269,10 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[self assignRowHeightToElementInSection:section0];
 	[newRoot addSection:section0];
 
-	QSection *section2 = [[QSection alloc] init];
-	section2.key = SC_KEY_NUMBER_SECTION;
-	[self buildNumberSection:section2];
-	[newRoot addSection:section2];
+	QSection *section1 = [[QSection alloc] init];
+	section1.key = SC_KEY_NUMBER_SECTION;
+	[self buildNumberSection:section1];
+	[newRoot addSection:section1];
 
 	self.root = newRoot;
 }
@@ -376,31 +300,53 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 	NSString *buttonTitle = _calculatorType == A3SalesCalculatorTypeAdvanced ? @"Simple" : @"Advanced";
 	QButtonElement *simple = [[QButtonElement alloc] initWithTitle:buttonTitle];
-	[simple setControllerAction:@"onChangeType:"];
+	[simple setControllerAction:@"onSimpleAdvanced:"];
 	[section addElement:simple];
 
 	[self assignRowHeightToElementInSection:section];
 }
 
-- (void)onChangeType:(QButtonElement *)element {
+- (void)onSimpleAdvanced:(QButtonElement *)element {
+	UITableViewCell *cell = [self.quickDialogTableView cellForElement:element];
+	[self.quickDialogTableView deselectRowAtIndexPath:[self.quickDialogTableView indexPathForCell:cell] animated:YES];
+
+	NSUInteger index = 2;
+	QSection *section = [self.root.sections objectAtIndex:1];
+	NSArray *changedRows = @[[NSIndexPath indexPathForRow:index inSection:1], [NSIndexPath indexPathForRow:index + 1 inSection:1]];
 	if (_calculatorType == A3SalesCalculatorTypeAdvanced) {
+
+		[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, 2)]];
+		[self.quickDialogTableView deleteRowsAtIndexPaths:changedRows withRowAnimation:UITableViewRowAnimationBottom];
+		element.title = @"Advanced";
+
 		_calculatorType = A3SalesCalculatorTypeSimple;
 	} else {
+		[section insertElement:[self additionalOffElement] atIndex:index];
+		[section insertElement:[self taxElement] atIndex:index + 1];
+		[self.quickDialogTableView insertRowsAtIndexPaths:changedRows withRowAnimation:UITableViewRowAnimationBottom];
+		element.title = @"Simple";
+
 		_calculatorType = A3SalesCalculatorTypeAdvanced;
 	}
+	cell.textLabel.text = element.title;
+
 	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:_calculatorType] forKey:A3SalesCalcDefaultCalculatorType];
 
-	[self buildRoot];
-
-	[self.quickDialogTableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 1)] withRowAnimation:UITableViewRowAnimationBottom];
 	[self calculateSalePrice];
 }
 
 #pragma mark -- Override UIViewController
 
-
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+
+	self.view.backgroundColor = [UIColor clearColor];
+
+	self.quickDialogTableView.styleProvider = self;
+	self.quickDialogTableView.backgroundView = nil;
+	self.quickDialogTableView.backgroundColor = [A3UIStyle contentsBackgroundColor];
+
+	self.quickDialogTableView.tableHeaderView = self.tableHeaderView;
 
 	[[EKKeyboardAvoidingScrollViewManager sharedInstance] registerScrollViewForKeyboardAvoiding:self.quickDialogTableView];
 
@@ -444,25 +390,38 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 			break;
 		case 1:
 			if ([element isKindOfClass:[QButtonElement class]]) {
+				cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellTextField];
 				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelSelected];
 			} else {
+				cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
 				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
 			}
-			cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
 			if ([cell isKindOfClass:[QEntryTableViewCell class]]) {
 				QEntryTableViewCell *entryTableViewCell = (QEntryTableViewCell *)cell;
 				[entryTableViewCell.textField setFont:[A3UIStyle fontForTableViewEntryCellTextField]];
+				entryTableViewCell.textField.textAlignment = NSTextAlignmentLeft;
 			}
 			break;
 	}
 }
 
--(void)sectionHeaderWillAppearForSection:(QSection *)section atIndex:(NSInteger)index {
+- (void)sectionHeaderWillAppearForSection:(QSection *)section atIndex:(NSInteger)index {
 	if ([section.key isEqualToString:SC_KEY_KNOWN_VALUE_SECTION]) {
-		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, APP_VIEW_WIDTH_iPAD, 44.0f)];
-		UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(64.0f, 0.0f, APP_VIEW_WIDTH_iPAD - 64.0f * 2.0f, 44.0f)];
+		CGRect bounds = self.view.bounds;
+		CGFloat height, offsetX, fontSize;
+		if (DEVICE_IPAD) {
+			height = 44.0;
+			offsetX = 64.0;
+			fontSize = 24.0;
+		} else {
+			height = 32.0;
+			offsetX = 20.0;
+			fontSize = 18.0;
+		}
+		UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, bounds.size.width, height)];
+		UILabel *sectionText = [[UILabel alloc] initWithFrame:CGRectMake(offsetX, 0.0f, bounds.size.width - offsetX * 2.0f, height)];
 		sectionText.backgroundColor = [UIColor clearColor];
-		sectionText.font = [UIFont boldSystemFontOfSize:24.0f];
+		sectionText.font = [UIFont boldSystemFontOfSize:fontSize];
 		sectionText.textColor = [UIColor blackColor];
 		sectionText.text = section.title;
 		[headerView addSubview:sectionText];
@@ -488,7 +447,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 - (void)QEntryDidBeginEditingElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
     cell.backgroundColor = [UIColor whiteColor];
     
-	NSUInteger index = [_keys indexOfObject:element.key];
+	NSUInteger index = [self.keys indexOfObject:element.key];
 
 	_editingElement = element;
 
@@ -502,8 +461,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 		} else {
 			[_keyboardViewController setKeyboardType:A3NumberKeyboardTypePercent];
 		}
-		cell.textField.inputAccessoryView = nil;
-
 		NSNumberFormatter *decimalStyleFormatter = [[NSNumberFormatter alloc] init];
 		[decimalStyleFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 		[decimalStyleFormatter setUsesGroupingSeparator:NO];
@@ -515,10 +472,11 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 			cell.textField.text = @"";
 		}
 	}
+	cell.textField.inputAccessoryView = nil;
 }
 
 - (void)QEntryEditingChangedForElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
-    NSUInteger index = [_keys indexOfObject:element.key];
+    NSUInteger index = [self.keys indexOfObject:element.key];
 	if (index == 0) {
 		// price
 		element.textValue = [self currencyFormattedString:cell.textField.text];
@@ -553,7 +511,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 	_editingElement = nil;
 
-	NSUInteger index = [_keys indexOfObject:element.key];
+	NSUInteger index = [self.keys indexOfObject:element.key];
 	if (index == 0) {
 		// price
 		element.textValue = [self currencyFormattedString:cell.textField.text];
@@ -614,12 +572,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 - (void)keyboardDidHide:(NSNotification*)aNotification {
 	[self.quickDialogTableView setContentOffset:CGPointMake(0.0, 0.0)];
-}
-
-- (A3NumberKeyboardViewController_iPad *)keyboardViewController {
-	if (nil == _keyboardViewController) {
-	}
-	return _keyboardViewController;
 }
 
 - (void)onSelectOriginalPrice:(QSelectItemElement *)selectItemElement {
@@ -689,20 +641,13 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 
 	amountSaved = originalPrice - salePrice;
 
-	_salePriceValueLabel.text = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:salePrice]];
-	_amountSavedValueLabel.text = [_currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:amountSaved]];
-	_originalPriceValueLabel.text = [_currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:originalPrice]];
+	self.tableHeaderView.chartLeftValueLabel.text = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:salePrice]];
+	self.tableHeaderView.chartRightValueLabel.text = [_currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:amountSaved]];
+	[self.tableHeaderView setBottomLabelText:[_currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:originalPrice]]];
 
-	CGSize sizeForLabel = [_originalPriceLabel.text sizeWithFont:_originalPriceLabel.font];
-	CGSize sizeForValue = [_originalPriceValueLabel.text sizeWithFont:_originalPriceValueLabel.font];
-	CGRect labelFrame = _originalPriceLabel.frame;
-	labelFrame.origin.x = APP_VIEW_WIDTH_iPAD - _rightMargin - 10.0 - sizeForValue.width - sizeForLabel.width;
-	labelFrame.size.width = sizeForLabel.width;
-	[_originalPriceLabel setFrame:labelFrame];
-
-	_percentBarChart.leftValue = salePrice;
-	_percentBarChart.rightValue = amountSaved;
-	[_percentBarChart setNeedsDisplay];
+	self.tableHeaderView.percentBarChart.leftValue = salePrice;
+	self.tableHeaderView.percentBarChart.rightValue = amountSaved;
+	[self.tableHeaderView.percentBarChart setNeedsDisplay];
 }
 
 - (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history {
@@ -716,10 +661,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	[A3UIKit setUserDefaults:history.tax forKey:A3SalesCalcDefaultSavedValueTax];
 	[A3UIKit setUserDefaults:history.notes forKey:A3SalesCalcDefaultSavedValueNotes];
 
-	[self buildRoot];
-
-	[self.quickDialogTableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationBottom];
-
 	[self calculateSalePrice];
 	[self reloadPriceElement];
 }
@@ -729,12 +670,13 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0) : CGRectMake(0.0, 0.0, 320.0, 748.0);
 	viewController.view.frame = frame;
 	viewController.delegate = self;
-	UINavigationController *tempNavigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-	frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
-	tempNavigationController.view.frame = frame;
 
-	[[[A3AppDelegate instance] paperFoldMenuViewController] presentRightWingWithViewController:tempNavigationController onClose:^{
-	}];
+	if (DEVICE_IPAD) {
+		[[[A3AppDelegate instance] paperFoldMenuViewController] presentRightWingWithViewController:viewController onClose:^{
+		}];
+	} else {
+		[self.navigationController pushViewController:viewController animated:YES];
+	}
 }
 
 - (void)handleBigButton1 {
@@ -754,12 +696,6 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	self.currencyNumberFormatter = nil;
 	[self calculateSalePrice];
 	[self reloadPriceElement];
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	[_keyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 @end

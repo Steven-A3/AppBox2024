@@ -10,6 +10,23 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyFavorite" inverseName="currencyItem" inverseEntity="CurrencyFavorite" syncable="YES"/>
     </entity>
+    <entity name="Expense" representedClassName="Expense" syncable="YES">
+        <attribute name="budget" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="paymentType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExpenseDetail" inverseName="expense" inverseEntity="ExpenseDetail" syncable="YES"/>
+    </entity>
+    <entity name="ExpenseDetail" representedClassName="ExpenseDetail" syncable="YES">
+        <attribute name="item" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="expense" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Expense" inverseName="details" inverseEntity="Expense" syncable="YES"/>
+    </entity>
     <entity name="LoanCalcHistory" representedClassName="LoanCalcHistory" syncable="YES">
         <attribute name="calculationFor" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
@@ -67,6 +84,8 @@
     <elements>
         <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="Expense" positionX="160" positionY="192" width="128" height="165"/>
+        <element name="ExpenseDetail" positionX="160" positionY="192" width="128" height="120"/>
         <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="390"/>
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>

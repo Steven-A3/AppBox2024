@@ -18,4 +18,5 @@
 + (BOOL)deviceOrientationIsPortrait;
 + (CGFloat)applicationHeightForCurrentOrientation;
 
++ (CGRect)appFrame;
 @end

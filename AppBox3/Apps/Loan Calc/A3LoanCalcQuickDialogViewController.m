@@ -850,16 +850,17 @@
 		[self.quickDialogTableView insertRowsAtIndexPaths:addedRows withRowAnimation:UITableViewRowAnimationBottom];
 
 		[self.preferences setShowAdvanced:YES];
-		cell.textLabel.text = @"Simple";
+		buttonElement.title = @"Simple";
 	}
 	else
 	{
 		[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(insertIndex,3)]];
 		[self.quickDialogTableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIndex inSection:1], [NSIndexPath indexPathForRow:insertIndex + 1 inSection:1], [NSIndexPath indexPathForRow:insertIndex + 2 inSection:1]] withRowAnimation:UITableViewRowAnimationMiddle];
 
-		cell.textLabel.text = @"Advanced";
+		buttonElement.title = @"Advanced";
 		[self.preferences setShowAdvanced:NO];
 	}
+	cell.textLabel.text = buttonElement.title;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

@@ -8,8 +8,10 @@
 
 #import <mach/vm_statistics.h>
 #import <mach/mach_host.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
+#import "common.h"
 
 @implementation A3UIDevice
 
@@ -44,6 +46,20 @@
 + (CGFloat)applicationHeightForCurrentOrientation {
 	CGRect applicationFrame = [UIScreen mainScreen].applicationFrame;
 	return UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]) ? applicationFrame.size.height : applicationFrame.size.width - kSystemStatusBarHeight;
+}
+
++ (CGRect)appFrame {
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	if (![self deviceOrientationIsPortrait]) {
+		CGFloat height = screenBounds.size.width;
+		screenBounds.size.width = screenBounds.size.height;
+		screenBounds.size.height = height;
+	}
+	if (DEVICE_IPAD) {
+		screenBounds.size.width = APP_VIEW_WIDTH_iPAD;
+	}
+	screenBounds.size.height -= 44.0 + 20.0;
+	return screenBounds;
 }
 
 @end

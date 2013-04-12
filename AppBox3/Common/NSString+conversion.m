@@ -7,6 +7,7 @@
 //
 
 #import "NSString+conversion.h"
+#import "common.h"
 
 @implementation NSString (conversion)
 
@@ -46,9 +47,9 @@
 	NSRange range;
 
 //#ifdef DEBUG
-//	NSArray *matches = [regex matchesInString:string options:0 range:NSMakeRange(0, [string length])];
+//	NSArray *matches = [regex matchesInString:self options:0 range:NSMakeRange(0, [self length])];
 //	for (NSTextCheckingResult *result in matches) {
-//		FNLOG(@"%@", [string substringWithRange:result.range]);
+//		FNLOG(@"%@", [self substringWithRange:result.range]);
 //	}
 //#endif
 
