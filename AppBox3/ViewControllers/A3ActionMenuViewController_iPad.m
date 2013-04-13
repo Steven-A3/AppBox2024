@@ -1,18 +1,19 @@
 //
-//  A3ActionMenuViewController.m
+//  A3ActionMenuViewController_iPad.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 2/8/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3ActionMenuViewController.h"
+#import "A3ActionMenuViewController_iPad.h"
+#import "A3ActionMenuViewControllerDelegate.h"
 
-@interface A3ActionMenuViewController ()
+@interface A3ActionMenuViewController_iPad ()
 
 @end
 
-@implementation A3ActionMenuViewController
+@implementation A3ActionMenuViewController_iPad
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

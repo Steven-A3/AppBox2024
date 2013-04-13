@@ -136,9 +136,9 @@ enum {
 	switch (selectedIndex) {
 		case A3PhoneHomeScreenSegmentSelectionStatistics: {
 			A3StatisticsViewController *viewController = [[A3StatisticsViewController alloc] initWithNibName:nil bundle:nil];
-			_mainScrollView.contentSize = CGSizeMake(320.0, _contentsView.frame.origin.y + 288.0);
+			_mainScrollView.contentSize = CGSizeMake(320.0, _contentsView.frame.origin.y + 310.0);
 			CGRect frame = _contentsView.frame;
-			frame.size.height = 288.0;
+			frame.size.height = 310.0;
 			_contentsView.frame = frame;
 			[viewController.view setFrame:self.contentsView.bounds];
 			[self.contentsView addSubview:viewController.view];

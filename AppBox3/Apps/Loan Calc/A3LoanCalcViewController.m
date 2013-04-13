@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3ActionMenuViewControllerDelegate.h"
 #import "A3LoanCalcViewController.h"
-#import "A3ActionMenuViewController.h"
-#import "UIView+Screenshot.h"
 #import "A3UIKit.h"
 #import "A3LoanCalcQuickDialogViewController.h"
 #import "A3LoanCalcSettingsViewController.h"
@@ -17,7 +16,6 @@
 
 @interface A3LoanCalcViewController ()
 
-@property (nonatomic, strong) A3ActionMenuViewController *actionMenuViewController;
 @property (nonatomic, strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3LoanCalcQuickDialogViewController *quickDialogViewController;
 @property (nonatomic, strong) A3LoanCalcComparisonMainViewController *comparisonViewController;
@@ -49,11 +47,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"tools" ofType:@"png"];
-	UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
-	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(onActionButton)];
-
-	self.navigationItem.rightBarButtonItem = barButtonItem;
+	[self addToolsButtonWithAction:@selector(onActionButton)];
 
 	[self addChildViewController:self.quickDialogViewController];
 	_quickDialogViewController.view.frame = self.contentsViewFrame;
@@ -107,33 +101,7 @@
 
 
 - (void)onActionButton {
-	_actionMenuViewController = [[A3ActionMenuViewController alloc] initWithNibName:@"A3ActionMenuViewController" bundle:nil];
-	_actionMenuViewController.view.frame = CGRectMake(0.0, 34.0, 714.0, 60.0);
-	_actionMenuViewController.delegate = self;
-	[self.navigationController.view insertSubview:[_actionMenuViewController view] belowSubview:self.view];
-
-	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapCoverView)];
-	UIImage *image = [self.view screenshotWithOptimization:NO];
-	UIImageView *coverView = [[UIImageView alloc] initWithImage:image];
-	coverView.frame = CGRectOffset(self.view.bounds, 0.0, 44.0);
-	coverView.userInteractionEnabled = YES;
-	coverView.backgroundColor = [UIColor clearColor];
-	[coverView addGestureRecognizer:tapGestureRecognizer];
-	[self.navigationController.view addSubview:coverView];
-
-	[UIView animateWithDuration:0.3 animations:^{
-		coverView.frame = CGRectOffset(coverView.frame, 0.0, 50.0);
-	}];
-}
-
-- (void)onTapCoverView {
-	UIView *coverView = [[self.navigationController.view subviews] lastObject];
-	[UIView animateWithDuration:0.3 animations:^{
-		coverView.frame = CGRectOffset(coverView.frame, 0.0, -50.0);
-	} completion:^(BOOL finished){
-		[coverView removeFromSuperview];
-		[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
-	}];
+	[self presentActionMenuWithDelegate:self];
 }
 
 #pragma mark - A3ActionMenuDelegate
@@ -145,7 +113,7 @@
 		[self.quickDialogViewController reloadContents];
 	}];
 
-	[self onTapCoverView];
+	[self closeActionMenuView];
 }
 
 - (void)emailAction {
