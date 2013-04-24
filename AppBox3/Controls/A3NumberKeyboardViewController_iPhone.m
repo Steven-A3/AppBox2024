@@ -40,53 +40,56 @@
 }
 
 - (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
-	super.keyboardType = keyboardType;
+	A3KeyboardButton_iPhone *bigButton1 = (A3KeyboardButton_iPhone *) self.bigButton1;
+	A3KeyboardButton_iPhone *bigButton2 = (A3KeyboardButton_iPhone *) self.bigButton2;
+
+	self.keyboardType = keyboardType;
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
-			_bigButton1.blueColorOnSelectedState = NO;
-			_bigButton2.blueColorOnSelectedState = NO;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
+			bigButton1.blueColorOnSelectedState = NO;
+			bigButton2.blueColorOnSelectedState = NO;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
 			[_dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypePercent: {
 			[self fillBigButtonTitleWith:@"%" bigButton2Title:@"$"];
-			_bigButton1.blueColorOnSelectedState = NO;
-			_bigButton2.blueColorOnSelectedState = NO;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
+			bigButton1.blueColorOnSelectedState = NO;
+			bigButton2.blueColorOnSelectedState = NO;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
 
 			NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_black" ofType:@"png"];
 			UIImage *image = [UIImage imageWithContentsOfFile:imageFilePath];
-			[_bigButton2 setImage:image forState:UIControlStateNormal];
+			[bigButton2 setImage:image forState:UIControlStateNormal];
 			imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_white" ofType:@"png"];
 			image = [UIImage imageWithContentsOfFile:imageFilePath];
-			[_bigButton2 setImage:image forState:UIControlStateHighlighted];
-			[_bigButton2 setTitle:nil forState:UIControlStateNormal];
+			[bigButton2 setImage:image forState:UIControlStateHighlighted];
+			[bigButton2 setTitle:nil forState:UIControlStateNormal];
 			[_dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeMonthYear: {
 			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			_bigButton1.blueColorOnSelectedState = YES;
-			_bigButton2.blueColorOnSelectedState = YES;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
-			[_bigButton2 setImage:nil forState:UIControlStateNormal];
-			[_bigButton2 setImage:nil forState:UIControlStateHighlighted];
+			bigButton1.blueColorOnSelectedState = YES;
+			bigButton2.blueColorOnSelectedState = YES;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
+			[bigButton2 setImage:nil forState:UIControlStateNormal];
+			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
 			[_dotButton setTitle:nil forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeInterestRate: {
 			[self fillBigButtonTitleWith:@"% /year" bigButton2Title:@"% /month"];
-			_bigButton1.blueColorOnSelectedState = YES;
-			_bigButton2.blueColorOnSelectedState = YES;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
-			[_bigButton2 setImage:nil forState:UIControlStateNormal];
-			[_bigButton2 setImage:nil forState:UIControlStateHighlighted];
+			bigButton1.blueColorOnSelectedState = YES;
+			bigButton2.blueColorOnSelectedState = YES;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
+			[bigButton2 setImage:nil forState:UIControlStateNormal];
+			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
 			[_dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
@@ -95,7 +98,7 @@
 
 - (void)fillBigButtonTitleWith:(NSString *)defaultTitle1 bigButton2Title:(NSString *)defaultTitle2 {
 	NSString *bigButton1Title = nil, *bigButton2Title = nil;
-	id <A3NumberKeyboardDelegate> o = self.delegate;
+	id <A3KeyboardDelegate> o = self.delegate;
 	if ([o respondsToSelector:@selector(stringForBigButton1)]) {
 		bigButton1Title = [o stringForBigButton1];
 	}
@@ -108,13 +111,13 @@
 	if (bigButton2Title == nil) {
 		bigButton2Title = defaultTitle2;
 	}
-	[_bigButton1 setTitle:bigButton1Title forState:UIControlStateNormal];
-	[_bigButton2 setTitle:bigButton2Title forState:UIControlStateNormal];
+	[self.bigButton1 setTitle:bigButton1Title forState:UIControlStateNormal];
+	[self.bigButton2 setTitle:bigButton2Title forState:UIControlStateNormal];
 }
 
 - (void)setCurrencyCode:(NSString *)currencyCode {
 	super.currencyCode = currencyCode;
-	[_bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
+	[self.bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
 }
 
 - (void)viewDidLoad
@@ -159,8 +162,8 @@
 
 - (IBAction)bigButton1Action {
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
-		[_bigButton1 setSelected:YES];
-		[_bigButton2 setSelected:NO];
+		[self.bigButton1 setSelected:YES];
+		[self.bigButton2 setSelected:NO];
 	}
 	if ([self.delegate respondsToSelector:@selector(handleBigButton1)]) {
 		[self.delegate handleBigButton1];
@@ -169,8 +172,8 @@
 
 - (IBAction)bigButton2Action {
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
-		[_bigButton1 setSelected:NO];
-		[_bigButton2 setSelected:YES];
+		[self.bigButton1 setSelected:NO];
+		[self.bigButton2 setSelected:YES];
 	}
 	if ([self.delegate respondsToSelector:@selector(handleBigButton2)]) {
 		[self.delegate handleBigButton2];

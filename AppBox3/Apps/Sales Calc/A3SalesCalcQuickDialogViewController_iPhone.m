@@ -40,12 +40,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (A3NumberKeyboardViewController *)keyboardViewController {
-	if (nil == super.keyboardViewController) {
-		super.keyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
-		super.keyboardViewController.delegate = self;
-	}
-	return super.keyboardViewController;
-}
-
 @end

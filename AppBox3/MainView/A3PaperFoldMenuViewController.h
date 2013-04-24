@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "PaperFoldView.h"
+#import "A3AppViewController.h"
 
 @class A3iPhoneMenuTableViewController;
 
-@interface A3PaperFoldMenuViewController : UIViewController <PaperFoldViewDelegate,MultiFoldViewDelegate>
+@interface A3PaperFoldMenuViewController : A3AppViewController <PaperFoldViewDelegate,MultiFoldViewDelegate>
 
 @property (nonatomic, strong) PaperFoldView *paperFoldView, *paperFoldView2;
 @property (nonatomic, strong) UIView *contentView;

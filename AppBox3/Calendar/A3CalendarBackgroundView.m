@@ -9,6 +9,7 @@
 #import "A3CalendarBackgroundView.h"
 #import "A3Utilities.h"
 #import "A3UIKit.h"
+#import "UIView+A3Drawing.h"
 
 #define A3_CBV_TOP_GRADIENT_HEIGHT		4.0f
 #define A3_CBV_BOOKEND_AREA_HEIGHT		7.0f
@@ -55,7 +56,7 @@
 	CGContextFillPath(context);
 
 	CGRect bookendRect = CGRectMake(CGRectGetMinX(rect), CGRectGetMaxY(rect) - A3_CBV_BOTTOM_AREA_HEIGHT - A3_CBV_BOOKEND_AREA_HEIGHT + 1.0f, CGRectGetWidth(rect), CGRectGetHeight(rect));
-	[A3UIKit drawBookendEffectRect:bookendRect context:context];
+	[self drawBookendEffectRect:bookendRect context:context];
 
 	NSArray *colorsB = [NSArray arrayWithObjects:
 			(__bridge id)[[UIColor colorWithRed:235.0f/255.0f green:237.0f/255.0f blue:238.0f/255.0f alpha:1.0f] CGColor],

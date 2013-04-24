@@ -8,6 +8,7 @@
 
 #import "A3ActionMenuBackgroundView.h"
 #import "A3UIKit.h"
+#import "UIView+A3Drawing.h"
 
 @implementation A3ActionMenuBackgroundView
 
@@ -55,14 +56,14 @@
 	(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
 	CGFloat gradientHeight = 3.0;
 	CGRect gradientRect = CGRectMake(CGRectGetMinX(rect), CGRectGetMinY(rect) + 10.0, CGRectGetWidth(rect) - 25.0, gradientHeight);
-	[A3UIKit drawLinearGradientToContext:context rect:gradientRect withColors:topGradientColors];
+	[self drawLinearGradientToContext:context rect:gradientRect withColors:topGradientColors];
 	gradientRect = CGRectMake(CGRectGetWidth(rect) - 10.0, CGRectGetMinY(rect) + 10.0, 10.0, gradientHeight);
-	[A3UIKit drawLinearGradientToContext:context rect:gradientRect withColors:topGradientColors];
+	[self drawLinearGradientToContext:context rect:gradientRect withColors:topGradientColors];
 
 	NSArray *bottomGradientColors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
 	(id)[UIColor colorWithWhite:0.0 alpha:0.9].CGColor];
 	gradientRect = CGRectMake(CGRectGetMinX(rect), CGRectGetMaxY(rect) - gradientHeight, CGRectGetWidth(rect), gradientHeight);
-	[A3UIKit drawLinearGradientToContext:context rect:gradientRect withColors:bottomGradientColors];
+	[self drawLinearGradientToContext:context rect:gradientRect withColors:bottomGradientColors];
 }
 
 @end

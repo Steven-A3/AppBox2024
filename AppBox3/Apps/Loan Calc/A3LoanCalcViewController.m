@@ -13,8 +13,9 @@
 #import "A3LoanCalcSettingsViewController.h"
 #import "A3AppDelegate.h"
 #import "A3LoanCalcComparisonMainViewController.h"
+#import "UIViewController+A3AppCategory.h"
 
-@interface A3LoanCalcViewController ()
+@interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3LoanCalcQuickDialogViewController *quickDialogViewController;
@@ -53,7 +54,7 @@
 	_quickDialogViewController.view.frame = self.contentsViewFrame;
 	[self.view addSubview:_quickDialogViewController.view];
 
-	_topGradientLayer = [A3UIKit addTopGradientLayerToView:self.view];
+	_topGradientLayer = [self addTopGradientLayerToView:self.view];
 
 	_segmentedControl.selectedSegmentIndex = 0;
 }
@@ -82,7 +83,7 @@
 		_quickDialogViewController.view.frame = self.contentsViewFrame;
 		[self.view addSubview:_quickDialogViewController.view];
 	}
-	_topGradientLayer = [A3UIKit addTopGradientLayerToView:self.view];
+	_topGradientLayer = [self addTopGradientLayerToView:self.view];
 }
 
 - (A3LoanCalcQuickDialogViewController *)quickDialogViewController {

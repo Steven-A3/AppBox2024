@@ -25,6 +25,7 @@
 
 - (void)setCalculationFor:(A3LoanCalcCalculationFor)calculationFor {
 	[[NSUserDefaults standardUserDefaults] setInteger:calculationFor forKey:A3LoanCalcDefaultCalculationFor];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)showDownPayment {

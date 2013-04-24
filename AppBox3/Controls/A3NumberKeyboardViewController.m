@@ -8,6 +8,7 @@
 
 #import "A3NumberKeyboardViewController.h"
 #import "QEntryTableViewCell+Extension.h"
+#import "A3KeyboardButton.h"
 
 @interface A3NumberKeyboardViewController ()
 
@@ -74,14 +75,17 @@
 }
 
 - (IBAction)doneAction {
-	if ([_delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
-		[_delegate A3KeyboardViewControllerDoneButtonPressed];
+	if ([_delegate respondsToSelector:@selector(A3KeyboardDoneButtonPressed)]) {
+		[_delegate A3KeyboardDoneButtonPressed];
 	} else {
 		[_entryTableViewCell handleActionBarDone:nil];
 	}
 }
 
 - (void)reloadPrevNextButtons {
+}
+
+- (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 }
 
 @end

@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 	A3NumberKeyboardTypeInterestRate
 };
 
-@protocol A3NumberKeyboardDelegate <NSObject>
+@protocol A3KeyboardDelegate <NSObject>
 @optional
 
 - (void)handleBigButton1;
@@ -28,6 +28,6 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (BOOL)nextAvailableForElement:(QEntryElement *)element;
 - (void)prevButtonPressedWithElement:(QEntryElement *)element;
 - (void)nextButtonPressedWithElement:(QEntryElement *)element;
-- (void)A3KeyboardViewControllerDoneButtonPressed;
+- (void)A3KeyboardDoneButtonPressed;
 
 @end

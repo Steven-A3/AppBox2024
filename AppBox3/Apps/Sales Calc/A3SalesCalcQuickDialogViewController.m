@@ -18,15 +18,13 @@
 #import "A3UIStyle.h"
 #import "NSString+conversion.h"
 #import "A3HorizontalBarContainerView.h"
-
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3SalesCalcQuickDialogViewController ()
 
-@property (nonatomic, weak) QEntryElement *editingElement;
 @property (nonatomic, strong) NSArray *keys;
 @property (nonatomic) A3SalesCalculatorType calculatorType;
 @property (nonatomic) CGFloat rowHeight;
-@property (nonatomic, strong) NSNumberFormatter *currencyNumberFormatter, *percentNumberFormatter;
 
 @end
 
@@ -47,32 +45,6 @@
 		[self buildRoot];
 	}
 	return self;
-}
-
-- (NSString *)defaultCurrencyCode {
-	NSString *code = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcDefaultCurrencyCode];
-	if (![code length]) {
-		NSLocale *locale = [NSLocale currentLocale];
-		code = [locale objectForKey:NSLocaleCurrencyCode];
-		[[NSUserDefaults standardUserDefaults] setObject:code forKey:A3SalesCalcDefaultCurrencyCode];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-	return code;
-}
-
-- (NSNumberFormatter *)currencyNumberFormatter {
-	if (nil == _currencyNumberFormatter) {
-        _currencyNumberFormatter = [A3UIKit currencyNumberFormatter];
-		[_currencyNumberFormatter setCurrencyCode:[self defaultCurrencyCode]];
-	}
-	return _currencyNumberFormatter;
-}
-
-- (NSNumberFormatter *)percentNumberFormatter {
-	if (nil == _percentNumberFormatter) {
-		_percentNumberFormatter = [A3UIKit percentNumberFormatter];
-	}
-	return _percentNumberFormatter;
 }
 
 - (void)assignRowHeightToElementInSection:(QSection *)section {
@@ -340,17 +312,11 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	self.view.backgroundColor = [UIColor clearColor];
-
 	self.quickDialogTableView.styleProvider = self;
 	self.quickDialogTableView.backgroundView = nil;
 	self.quickDialogTableView.backgroundColor = [A3UIStyle contentsBackgroundColor];
 
 	self.quickDialogTableView.tableHeaderView = self.tableHeaderView;
-
-	[[EKKeyboardAvoidingScrollViewManager sharedInstance] registerScrollViewForKeyboardAvoiding:self.quickDialogTableView];
-
-	[self registerForKeyboardNotifications];
 
 	[self calculateSalePrice];
 }
@@ -360,9 +326,6 @@
 
 	[self addDataToHistory];
 
-	[[EKKeyboardAvoidingScrollViewManager sharedInstance] unregisterScrollViewFromKeyboardAvoiding:self.quickDialogTableView];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -391,7 +354,7 @@
 		case 1:
 			if ([element isKindOfClass:[QButtonElement class]]) {
 				cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellTextField];
-				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelSelected];
+				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellButton];
 			} else {
 				cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
 				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
@@ -449,17 +412,17 @@
     
 	NSUInteger index = [self.keys indexOfObject:element.key];
 
-	_editingElement = element;
+	self.editingElement = element;
 
 	if ([self entryIndexIsForNumbers:index]) {
-		cell.textField.inputView = self.keyboardViewController.view;
-		_keyboardViewController.keyInputDelegate = cell.textField;
-		_keyboardViewController.entryTableViewCell = cell;
+		cell.textField.inputView = self.numberKeyboardViewController.view;
+		self.numberKeyboardViewController.keyInputDelegate = cell.textField;
+		self.self.numberKeyboardViewController.entryTableViewCell = cell;
 		if ([element.key isEqualToString:SC_KEY_PRICE]) {
-			_keyboardViewController.currencyCode = [self defaultCurrencyCode];
-			[_keyboardViewController setKeyboardType:A3NumberKeyboardTypeCurrency];
+			self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
+			[self.numberKeyboardViewController setKeyboardType:A3NumberKeyboardTypeCurrency];
 		} else {
-			[_keyboardViewController setKeyboardType:A3NumberKeyboardTypePercent];
+			[self.numberKeyboardViewController setKeyboardType:A3NumberKeyboardTypePercent];
 		}
 		NSNumberFormatter *decimalStyleFormatter = [[NSNumberFormatter alloc] init];
 		[decimalStyleFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -509,7 +472,7 @@
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
 	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
 
-	_editingElement = nil;
+	self.editingElement = nil;
 
 	NSUInteger index = [self.keys indexOfObject:element.key];
 	if (index == 0) {
@@ -548,30 +511,6 @@
 	}
 
 	[self addHistoryWithAlertView];
-}
-
-- (void)registerForKeyboardNotifications
-{
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardDidShow:)
-												 name:UIKeyboardDidShowNotification object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardDidHide:)
-												 name:UIKeyboardDidHideNotification object:nil];
-}
-
-- (void)keyboardDidShow:(NSNotification*)aNotification {
-	if (_editingElement) {
-		UITableViewCell *cell = [self.quickDialogTableView cellForElement:_editingElement];
-		NSIndexPath *indexPath = [self.quickDialogTableView indexPathForCell:cell];
-
-		[self.quickDialogTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-	}
-}
-
-- (void)keyboardDidHide:(NSNotification*)aNotification {
-	[self.quickDialogTableView setContentOffset:CGPointMake(0.0, 0.0)];
 }
 
 - (void)onSelectOriginalPrice:(QSelectItemElement *)selectItemElement {
@@ -642,8 +581,8 @@
 	amountSaved = originalPrice - salePrice;
 
 	self.tableHeaderView.chartLeftValueLabel.text = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:salePrice]];
-	self.tableHeaderView.chartRightValueLabel.text = [_currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:amountSaved]];
-	[self.tableHeaderView setBottomLabelText:[_currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:originalPrice]]];
+	self.tableHeaderView.chartRightValueLabel.text = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:amountSaved]];
+	[self.tableHeaderView setBottomLabelText:[self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:originalPrice]]];
 
 	self.tableHeaderView.percentBarChart.leftValue = salePrice;
 	self.tableHeaderView.percentBarChart.rightValue = amountSaved;
@@ -680,8 +619,8 @@
 }
 
 - (void)handleBigButton1 {
-	if ([_editingElement.key isEqualToString:SC_KEY_PRICE]) {
-		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:_editingElement];
+	if ([self.editingElement.key isEqualToString:SC_KEY_PRICE]) {
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:self.editingElement];
 		[cell.textField resignFirstResponder];
 
 		[self presentCurrencySelectViewController];

@@ -1,5 +1,5 @@
 //
-//  A3ExpenseListDetailsViewController.h
+//  A3ExpenseListDetailsTableViewController.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 4/13/13.
@@ -10,7 +10,7 @@
 
 @class A3HorizontalBarContainerView;
 
-@interface A3ExpenseListDetailsViewController : ATSDragToReorderTableViewController
+@interface A3ExpenseListDetailsTableViewController : ATSDragToReorderTableViewController
 
 @property (nonatomic, weak) A3HorizontalBarContainerView *chartContainerView;
 

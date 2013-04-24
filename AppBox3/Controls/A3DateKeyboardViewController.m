@@ -340,6 +340,12 @@
 	[_doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
 }
 
+- (void)setWorkingMode:(A3DateKeyboardWorkingMode)workingMode {
+	_workingMode = workingMode;
+	[self layoutForWorkingMode];
+}
+
+
 - (void)layoutForWorkingMode {
 	[self rotateToInterfaceOrientation:[A3UIDevice deviceOrientation]];
 

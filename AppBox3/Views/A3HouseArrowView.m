@@ -9,6 +9,7 @@
 #import "A3HouseArrowView.h"
 #import "A3UIKit.h"
 #import "common.h"
+#import "UIView+A3Drawing.h"
 
 @implementation A3HouseArrowView
 
@@ -129,7 +130,7 @@
 				(__bridge id)[UIColor colorWithRed:246.0f/255.0f green:71.0f/255.0f blue:63.0f/255.0f alpha:1.0f].CGColor];
 	}
 
-	[A3UIKit drawLinearGradientToContext:context rect:rect withColors:gradientColors];
+	[self drawLinearGradientToContext:context rect:rect withColors:gradientColors];
 
 }
 

@@ -11,8 +11,9 @@
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3FrequencyKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
+#import "A3QuickDialogController.h"
 
-@interface A3LoanCalcQuickDialogViewController : QuickDialogController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3NumberKeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
+@interface A3LoanCalcQuickDialogViewController : A3QuickDialogController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
 
 - (void)reloadContents;
 @end

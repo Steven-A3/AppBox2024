@@ -11,14 +11,13 @@
 @interface A3UIStyle : NSObject
 
 + (UIColor *)contentsBackgroundColor;
-
 + (UIColor *)colorForTableViewCellLabelNormal;
-
 + (UIColor *)colorForTableViewCellLabelSelected;
 
++ (UIColor *)colorForTableViewCellButton;
+
 + (UIFont *)fontForTableViewCellLabel;
-
 + (UIFont *)fontForTableViewEntryCellLabel;
-
 + (UIFont *)fontForTableViewEntryCellTextField;
+
 @end

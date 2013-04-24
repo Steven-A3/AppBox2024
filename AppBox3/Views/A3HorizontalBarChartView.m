@@ -8,6 +8,7 @@
 
 #import "A3HorizontalBarChartView.h"
 #import "A3UIKit.h"
+#import "UIView+A3Drawing.h"
 
 @implementation A3HorizontalBarChartView
 
@@ -88,11 +89,11 @@
 			gradientColors = self.gradientColorsForEmptyChart;
 			lineColor = self.lineColorForEmptyChart;
 		}
-		[A3UIKit drawLinearGradientToContext:context rect:rect withColors:gradientColors];
+		[self drawLinearGradientToContext:context rect:rect withColors:gradientColors];
 		CGContextSetStrokeColorWithColor(context, lineColor.CGColor);
 		[chart stroke];
 	} else {
-		CGFloat leftWidth = (_leftValue / (_leftValue + _rightValue)) * CGRectGetWidth(rect);
+		CGFloat leftWidth = (CGFloat) ((_leftValue / (_leftValue + _rightValue)) * CGRectGetWidth(rect));
 		CGFloat rightWidth = CGRectGetWidth(rect) - leftWidth;
 		CGFloat height = CGRectGetHeight(rect);
 		CGFloat cornerRadius = height / 2.0f;
@@ -101,7 +102,7 @@
 		CGContextSaveGState(context);
 		UIBezierPath *leftChart = [UIBezierPath bezierPathWithRoundedRect:leftRect byRoundingCorners:UIRectCornerTopLeft|UIRectCornerBottomLeft cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
 		[leftChart addClip];
-		[A3UIKit drawLinearGradientToContext:context rect:leftRect withColors:self.gradientColorsForLeftChart];
+		[self drawLinearGradientToContext:context rect:leftRect withColors:self.gradientColorsForLeftChart];
 		CGContextSetStrokeColorWithColor(context, self.lineColorForLeftChart.CGColor);
 		[leftChart stroke];
 		CGContextRestoreGState(context);
@@ -110,7 +111,7 @@
 		UIBezierPath *rightChart = [UIBezierPath bezierPathWithRoundedRect:rightRect byRoundingCorners:UIRectCornerTopRight|UIRectCornerBottomRight cornerRadii:CGSizeMake(cornerRadius, cornerRadius)];
 		[rightChart addClip];
 		[rightChart stroke];
-		[A3UIKit drawLinearGradientToContext:context rect:rightRect withColors:self.gradientColorsForRightChart];
+		[self drawLinearGradientToContext:context rect:rightRect withColors:self.gradientColorsForRightChart];
 	}
 }
 

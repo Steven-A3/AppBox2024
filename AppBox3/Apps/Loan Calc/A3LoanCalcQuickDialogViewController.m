@@ -22,6 +22,7 @@
 #import "LoanCalcHistory+calculation.h"
 #import "NSString+conversion.h"
 #import "A3LoanCalcAmortizationViewController.h"
+#import "UIViewController+A3AppCategory.h"
 
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
@@ -31,15 +32,9 @@
 @interface A3LoanCalcQuickDialogViewController () <UITextFieldDelegate, A3LoanCalcPieChartViewDelegate>
 @property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
 @property (nonatomic, strong) 	QRootElement *rootElement;
-@property (nonatomic, strong) 	NSNumberFormatter *currencyNumberFormatter, *percentNumberFormatter;
 @property (nonatomic, strong) 	A3LoanCalcPieChartViewController *tableHeaderViewController;
 @property (nonatomic, strong)	NSMutableArray *keysForCurrency;
 @property (nonatomic, strong)	NSMutableDictionary *enumForEntryKeys;
-@property (nonatomic, strong)	A3NumberKeyboardViewController_iPad *numberKeyboardViewController;
-@property (nonatomic, strong)	A3FrequencyKeyboardViewController *frequencyKeyboardViewController;
-@property (nonatomic, strong)	A3DateKeyboardViewController *dateKeyboardViewController;
-@property (nonatomic, strong)	A3DateKeyboardViewController *dateKeyboardForMonthInput;
-@property (nonatomic, strong)	A3DateKeyboardViewController *dateKeyboardForYearMonthInput;
 @property (nonatomic, weak)		QEntryElement *editingElement;
 @property (nonatomic, strong)	LoanCalcHistory *editingObject;
 @property (nonatomic, strong)	UILabel *temporaryLabelForEditing;
@@ -319,69 +314,12 @@
 	return [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:0.0]];
 }
 
-- (NSNumberFormatter *)currencyNumberFormatter {
-	if (nil == _currencyNumberFormatter) {
-		_currencyNumberFormatter = [A3UIKit currencyNumberFormatter];
-	}
-	return _currencyNumberFormatter;
-}
-
-- (NSNumberFormatter *)percentNumberFormatter {
-	if (nil == _percentNumberFormatter) {
-		_percentNumberFormatter = [A3UIKit percentNumberFormatter];
-	}
-	return _percentNumberFormatter;
-}
-
 - (A3LoanCalcPieChartViewController *)tableHeaderViewController {
 	if (nil == _tableHeaderViewController) {
 		_tableHeaderViewController = [[A3LoanCalcPieChartViewController alloc] initWithNibName:@"A3LoanCalcPieChartViewController" bundle:nil];
 		_tableHeaderViewController.delegate = self;
 	}
 	return _tableHeaderViewController;
-}
-
-- (A3NumberKeyboardViewController_iPad *)numberKeyboardViewController {
-	if (nil == _numberKeyboardViewController) {
-		_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
-		_numberKeyboardViewController.delegate = self;
-	}
-	return _numberKeyboardViewController;
-}
-
-- (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
-	if (nil == _frequencyKeyboardViewController) {
-		_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController" bundle:nil];
-		_frequencyKeyboardViewController.delegate = self;
-	}
-	return _frequencyKeyboardViewController;
-}
-
-- (A3DateKeyboardViewController *)dateKeyboardViewController {
-	if (nil == _dateKeyboardViewController) {
-		_dateKeyboardViewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
-		_dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
-		_dateKeyboardViewController.delegate = self;
-	}
-	return _dateKeyboardViewController;
-}
-
-- (A3DateKeyboardViewController *)dateKeyboardForMonthInput {
-	if (nil == _dateKeyboardForMonthInput) {
-		_dateKeyboardForMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
-		_dateKeyboardForMonthInput.workingMode = A3DateKeyboardWorkingModeMonth;
-		_dateKeyboardForMonthInput.delegate = self;
-	}
-	return _dateKeyboardForMonthInput;
-}
-
-- (A3DateKeyboardViewController *)dateKeyboardForYearMonthInput {
-	if (nil == _dateKeyboardForYearMonthInput) {
-		_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
-		_dateKeyboardForYearMonthInput.workingMode = A3DateKeyboardWorkingModeYearMonth;
-		_dateKeyboardForYearMonthInput.delegate = self;
-	}
-	return _dateKeyboardForYearMonthInput;
 }
 
 - (LoanCalcHistory *)editingObject {
@@ -479,7 +417,7 @@
 - (void)configureSection1Cell:(UITableViewCell *)cell withElement:(QElement *)element {
 	if ([element isKindOfClass:[QButtonElement class]]) {
 		cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellTextField];
-		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelSelected];
+		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellButton];
 	} else {
 		cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
 		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
@@ -540,31 +478,10 @@
 #pragma mark -
 #pragma mark - Override UIViewController
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	[[EKKeyboardAvoidingScrollViewManager sharedInstance] registerScrollViewForKeyboardAvoiding:self.quickDialogTableView];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardDidShow:)
-												 name:UIKeyboardDidShowNotification object:nil];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardDidHide:)
-												 name:UIKeyboardDidHideNotification object:nil];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-
-	[[EKKeyboardAvoidingScrollViewManager sharedInstance] unregisterScrollViewFromKeyboardAvoiding:self.quickDialogTableView];
-
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 - (void)keyboardDidHide:(NSNotification*)aNotification {
-	_dateKeyboardViewController = nil;
-	_numberKeyboardViewController = nil;
-	_frequencyKeyboardViewController = nil;
+	self.dateKeyboardViewController = nil;
+	self.numberKeyboardViewController = nil;
+	self.dateKeyboardViewController = nil;
 }
 
 - (void)keyboardDidShow:(NSNotification *)notification {
@@ -572,6 +489,11 @@
 		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
 	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
 		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
+	} else {
+		NSIndexPath *indexPath = [self.quickDialogTableView indexForElement:self.editingElement];
+		if (indexPath.section == 2) {
+			[self scrollToRowAtElementWithKey:self.editingElement.key];
+		}
 	}
 }
 
@@ -586,19 +508,19 @@
 #pragma mark - Entry Cell delegate
 
 - (void)QEntryDidBeginEditingElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
-	_editingElement = element;
+	self.editingElement = element;
 	cell.backgroundColor = [UIColor whiteColor];
 
 	if ([_keysForCurrency indexOfObject:element.key] != NSNotFound) {
 		cell.textField.inputView = self.numberKeyboardViewController.view;
-		_numberKeyboardViewController.keyInputDelegate = cell.textField;
-		_numberKeyboardViewController.entryTableViewCell = cell;
-		_numberKeyboardViewController.element = element;
-		_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+		self.numberKeyboardViewController.keyInputDelegate = cell.textField;
+		self.numberKeyboardViewController.entryTableViewCell = cell;
+		self.numberKeyboardViewController.element = element;
+		self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 
 		cell.textField.text = [cell.textField.text stringByDecimalConversion];
 
-		[_numberKeyboardViewController reloadPrevNextButtons];
+		[self.numberKeyboardViewController reloadPrevNextButtons];
 	}
 
 	LoanCalcHistory *object = self.editingObject;
@@ -611,22 +533,22 @@
 			break;
 		case A3LCEntryTerm: {
 			[self prepareYearMonthInput:cell];
-			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
-			_numberKeyboardViewController.bigButton1.selected = !object.termTypeMonth.boolValue;
-			_numberKeyboardViewController.bigButton2.selected = object.termTypeMonth.boolValue;
-			_numberKeyboardViewController.entryTableViewCell = cell;
-			_numberKeyboardViewController.element = element;
-			[_numberKeyboardViewController reloadPrevNextButtons];
+			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
+			self.numberKeyboardViewController.bigButton1.selected = !object.termTypeMonth.boolValue;
+			self.numberKeyboardViewController.bigButton2.selected = object.termTypeMonth.boolValue;
+			self.numberKeyboardViewController.entryTableViewCell = cell;
+			self.numberKeyboardViewController.element = element;
+			[self.numberKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryInterestRate: {
 			[self prepareYearMonthInput:cell];
-			_numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
-			_numberKeyboardViewController.bigButton1.selected = object.interestRatePerYear.boolValue;
-			_numberKeyboardViewController.bigButton1.selected = !object.interestRatePerYear.boolValue;
-			_numberKeyboardViewController.entryTableViewCell = cell;
-			_numberKeyboardViewController.element = element;
-			[_numberKeyboardViewController reloadPrevNextButtons];
+			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
+			self.numberKeyboardViewController.bigButton1.selected = object.interestRatePerYear.boolValue;
+			self.numberKeyboardViewController.bigButton1.selected = !object.interestRatePerYear.boolValue;
+			self.numberKeyboardViewController.entryTableViewCell = cell;
+			self.numberKeyboardViewController.element = element;
+			[self.numberKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryFrequency: {
@@ -641,10 +563,10 @@
 			cell.textField.clearButtonMode = UITextFieldViewModeNever;
 
 			cell.textField.inputView = self.frequencyKeyboardViewController.view;
-			_frequencyKeyboardViewController.entryTableViewCell = cell;
-			_frequencyKeyboardViewController.element = element;
-			[_frequencyKeyboardViewController setSelectedFrequency:object.frequency];
-			[_frequencyKeyboardViewController reloadPrevNextButtons];
+			self.frequencyKeyboardViewController.entryTableViewCell = cell;
+			self.frequencyKeyboardViewController.element = element;
+			[self.frequencyKeyboardViewController setSelectedFrequency:object.frequency];
+			[self.frequencyKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryStartDate: {
@@ -652,12 +574,13 @@
 				object.startDate = [NSDate date];
 			}
 			cell.textField.inputView = self.dateKeyboardViewController.view;
+			self.dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
 			[self prepareTemporaryEditingLabelForCell:cell];
-			_dateKeyboardViewController.element = element;
-			_dateKeyboardViewController.entryTableViewCell = cell;
-			_dateKeyboardViewController.displayLabel = _temporaryLabelForEditing;
-			_dateKeyboardViewController.date = object.startDate;
-			[_dateKeyboardViewController resetToDefaultState];
+			self.dateKeyboardViewController.element = element;
+			self.dateKeyboardViewController.entryTableViewCell = cell;
+			self.dateKeyboardViewController.displayLabel = _temporaryLabelForEditing;
+			self.dateKeyboardViewController.date = object.startDate;
+			[self.dateKeyboardViewController resetToDefaultState];
 
 			cell.textField.text = [A3Formatter mediumStyleDateStringFromDate:object.startDate];
 			_temporaryLabelForEditing.text = cell.textField.text;
@@ -665,7 +588,7 @@
 
 			cell.textField.clearButtonMode = UITextFieldViewModeNever;
 
-			[_dateKeyboardForMonthInput reloadPrevNextButtons];
+			[self.dateKeyboardViewController reloadPrevNextButtons];
 			break;
 		}
 		case A3LCEntryNotes:break;
@@ -709,7 +632,7 @@
 }
 
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
-	_editingElement = nil;
+	self.editingElement = nil;
 	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
 
 	LoanCalcHistory *object = self.editingObject;
@@ -737,7 +660,7 @@
 			break;
 		}
 		case A3LCEntryFrequency:{
-			object.frequency = _frequencyKeyboardViewController.selectedFrequency;
+			object.frequency = self.frequencyKeyboardViewController.selectedFrequency;
 			cell.textField.text = [A3LoanCalcString stringForFrequencyValue:object.frequency];
 			[_temporaryLabelForEditing removeFromSuperview];
 			_temporaryLabelForEditing = nil;
@@ -761,11 +684,11 @@
 	NSNumberFormatter *decimalStyleNumberFormatter = [[NSNumberFormatter alloc] init];
 	[decimalStyleNumberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
 	float value = [text floatValue];
-	object.termTypeMonth = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton2.selected];
+	object.termTypeMonth = [NSNumber numberWithBool:self.numberKeyboardViewController.bigButton2.selected];
 	if (value == 0.0) {
 		termElement.textValue = @"";
 	} else {
-		termElement.textValue = _numberKeyboardViewController.bigButton1.selected ?
+		termElement.textValue = self.numberKeyboardViewController.bigButton1.selected ?
 				[A3LoanCalcString stringFromTermInYears:value] : [A3LoanCalcString stringFromTermInMonths:value];
 	}
 	object.term = termElement.textValue;
@@ -773,9 +696,9 @@
 
 - (void)updateInterestValueFromTextField:(QEntryElement *)element text:(NSString *)text object:(LoanCalcHistory *)object {
 	float value = [text floatValue] / 100.0;
-	object.interestRatePerYear = [NSNumber numberWithBool:_numberKeyboardViewController.bigButton1.selected];
+	object.interestRatePerYear = [NSNumber numberWithBool:self.numberKeyboardViewController.bigButton1.selected];
 	if (value != 0.0) {
-		NSString *termType = _numberKeyboardViewController.bigButton1.selected ? @"Annual" : @"Monthly";
+		NSString *termType = self.numberKeyboardViewController.bigButton1.selected ? @"Annual" : @"Monthly";
 		element.textValue = [NSString stringWithFormat:@"%@ %@", termType, [self.percentNumberFormatter stringFromNumber:[NSNumber numberWithFloat:value]]];
 	} else {
 		element.textValue = @"";
@@ -810,8 +733,8 @@
 
 - (void)prepareYearMonthInput:(QEntryTableViewCell *)cell {
 	cell.textField.inputView = self.numberKeyboardViewController.view;
-	_numberKeyboardViewController.keyInputDelegate = cell.textField;
-	_numberKeyboardViewController.entryTableViewCell = cell;
+	self.numberKeyboardViewController.keyInputDelegate = cell.textField;
+	self.numberKeyboardViewController.entryTableViewCell = cell;
     
 	cell.textField.text = [cell.textField.text stringByDecimalConversion];
 }
@@ -822,11 +745,11 @@
 }
 
 - (void)clearButtonPressed {
-	if (_editingElement) {
-		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:_editingElement];
+	if (self.editingElement) {
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:self.editingElement];
 		cell.textField.text = @"";
-		_editingElement.textValue = @"";
-		[self.editingObject setValue:@"" forKey:_editingElement.key];
+		self.editingElement.textValue = @"";
+		[self.editingObject setValue:@"" forKey:self.editingElement.key];
 	}
 }
 
@@ -866,11 +789,9 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	[_frequencyKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
-	[_numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
-	[_dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
-	[_dateKeyboardForMonthInput rotateToInterfaceOrientation:toInterfaceOrientation];
-	[_dateKeyboardForYearMonthInput rotateToInterfaceOrientation:toInterfaceOrientation];
+	[self.frequencyKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	[self.numberKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
+	[self.dateKeyboardViewController rotateToInterfaceOrientation:toInterfaceOrientation];
 }
 
 - (BOOL)prevAvailableForElement:(QEntryElement *)element {
@@ -879,7 +800,7 @@
 
 - (BOOL)nextAvailableForElement:(QEntryElement *)element {
 	if (self.preferences.showExtraPayment) {
-		return _dateKeyboardForYearMonthInput == nil;
+		return ![_extraPaymentOneTimeYearMonth isFirstResponder];
 	}
 	if (self.preferences.showAdvanced) {
 		return ![element.key isEqualToString:A3LC_KEY_NOTES];
@@ -919,9 +840,9 @@
 	}
 }
 
-- (void)A3KeyboardViewControllerDoneButtonPressed {
-	if (_editingElement) {
-		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:_editingElement];
+- (void)A3KeyboardDoneButtonPressed {
+	if (self.editingElement) {
+		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:self.editingElement];
 		[cell handleActionBarDone:nil];
 	} else if ([_extraPaymentYearlyMonth isFirstResponder]) {
 		[_extraPaymentYearlyMonth resignFirstResponder];
@@ -934,19 +855,17 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	if (textField == _extraPaymentYearlyMonth) {
-		textField.inputView = self.dateKeyboardForMonthInput.view;
+		textField.inputView = self.dateKeyboardViewController.view;
+		self.dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeMonth;
 	} else if (textField == _extraPaymentOneTimeYearMonth) {
-		textField.inputView = self.dateKeyboardForYearMonthInput.view;
+		textField.inputView = self.dateKeyboardViewController.view;
+		self.dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonth;
 	}
 	return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	if (textField == _extraPaymentYearlyMonth) {
-		_dateKeyboardForMonthInput = nil;
-	} else if (textField == _extraPaymentOneTimeYearMonth) {
-		_dateKeyboardForYearMonthInput = nil;
-	}
+
 }
 
 - (void)reloadGraphView {

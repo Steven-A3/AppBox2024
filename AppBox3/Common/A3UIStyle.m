@@ -23,6 +23,10 @@
 	return [UIColor colorWithRed:40.0f/255.0f green:72.0f/255.0f blue:114.0f/255.0f alpha:1.0f];
 }
 
++ (UIColor *)colorForTableViewCellButton {
+	return [UIColor colorWithRed:40.0f/255.0f green:72.0f/255.0f blue:114.0f/255.0f alpha:1.0f];
+}
+
 + (UIFont *)fontForTableViewCellLabel {
 	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
 	return [UIFont boldSystemFontOfSize:fontSize];

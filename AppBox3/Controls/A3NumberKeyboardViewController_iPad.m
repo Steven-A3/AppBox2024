@@ -13,18 +13,18 @@
 
 @interface A3NumberKeyboardViewController_iPad ()
 
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num1Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num2Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num3Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num4Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num5Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num6Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num7Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num8Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num9Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *num0Button;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *clearButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *doneButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num1Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num2Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num3Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num4Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num5Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num6Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num7Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num8Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num9Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *num0Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *clearButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *doneButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardMoveMarkView *markView;
 
 @end
@@ -42,53 +42,56 @@
 
 - (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
 	super.keyboardType = keyboardType;
+	A3KeyboardButton *bigButton1 = (A3KeyboardButton *) self.bigButton1;
+	A3KeyboardButton *bigButton2 = (A3KeyboardButton *) self.bigButton2;
+
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
-			_bigButton1.blueColorOnHighlighted = NO;
-			_bigButton2.blueColorOnHighlighted = NO;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
-			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			bigButton1.blueColorOnHighlighted = NO;
+			bigButton2.blueColorOnHighlighted = NO;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypePercent: {
 			[self fillBigButtonTitleWith:@"%" bigButton2Title:@"$"];
-			_bigButton1.blueColorOnHighlighted = NO;
-			_bigButton2.blueColorOnHighlighted = NO;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
+			bigButton1.blueColorOnHighlighted = NO;
+			bigButton2.blueColorOnHighlighted = NO;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
 
 			NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_black" ofType:@"png"];
 			UIImage *image = [UIImage imageWithContentsOfFile:imageFilePath];
-			[_bigButton2 setImage:image forState:UIControlStateNormal];
+			[bigButton2 setImage:image forState:UIControlStateNormal];
 			imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_white" ofType:@"png"];
 			image = [UIImage imageWithContentsOfFile:imageFilePath];
-			[_bigButton2 setImage:image forState:UIControlStateHighlighted];
-			[_bigButton2 setTitle:nil forState:UIControlStateNormal];
-			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			[bigButton2 setImage:image forState:UIControlStateHighlighted];
+			[bigButton2 setTitle:nil forState:UIControlStateNormal];
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeMonthYear: {
 			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			_bigButton1.blueColorOnHighlighted = YES;
-			_bigButton2.blueColorOnHighlighted = YES;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
-			[_bigButton2 setImage:nil forState:UIControlStateNormal];
-			[_bigButton2 setImage:nil forState:UIControlStateHighlighted];
-			[_dotButton setTitle:nil forState:UIControlStateNormal];
+			bigButton1.blueColorOnHighlighted = YES;
+			bigButton2.blueColorOnHighlighted = YES;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
+			[bigButton2 setImage:nil forState:UIControlStateNormal];
+			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
+			[self.dotButton setTitle:nil forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeInterestRate: {
 			[self fillBigButtonTitleWith:@"% /year" bigButton2Title:@"% /month"];
-			_bigButton1.blueColorOnHighlighted = YES;
-			_bigButton2.blueColorOnHighlighted = YES;
-			_bigButton1.selected = NO;
-			_bigButton2.selected = NO;
-			[_bigButton2 setImage:nil forState:UIControlStateNormal];
-			[_bigButton2 setImage:nil forState:UIControlStateHighlighted];
-			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			bigButton1.blueColorOnHighlighted = YES;
+			bigButton2.blueColorOnHighlighted = YES;
+			bigButton1.selected = NO;
+			bigButton2.selected = NO;
+			[bigButton2 setImage:nil forState:UIControlStateNormal];
+			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
 	}
@@ -96,7 +99,7 @@
 
 - (void)fillBigButtonTitleWith:(NSString *)defaultTitle1 bigButton2Title:(NSString *)defaultTitle2 {
 	NSString *bigButton1Title = nil, *bigButton2Title = nil;
-	id <A3NumberKeyboardDelegate> o = self.delegate;
+	id <A3KeyboardDelegate> o = self.delegate;
 	if ([o respondsToSelector:@selector(stringForBigButton1)]) {
 		bigButton1Title = [o stringForBigButton1];
 	}
@@ -109,13 +112,13 @@
 	if (bigButton2Title == nil) {
 		bigButton2Title = defaultTitle2;
 	}
-	[_bigButton1 setTitle:bigButton1Title forState:UIControlStateNormal];
-	[_bigButton2 setTitle:bigButton2Title forState:UIControlStateNormal];
+	[self.bigButton1 setTitle:bigButton1Title forState:UIControlStateNormal];
+	[self.bigButton2 setTitle:bigButton2Title forState:UIControlStateNormal];
 }
 
 - (void)setCurrencyCode:(NSString *)currencyCode {
 	super.currencyCode = currencyCode;
-	[_bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
+	[self.bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
 }
 
 - (void)viewDidLoad
@@ -125,8 +128,8 @@
 
 	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] ];
 
-	[_deleteButton setTitle:nil forState:UIControlStateNormal];
-	[_deleteButton setImage:[A3UIKit backspaceImage] forState:UIControlStateNormal];
+	[self.deleteButton setTitle:nil forState:UIControlStateNormal];
+	[self.deleteButton setImage:[A3UIKit backspaceImage] forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -176,8 +179,8 @@
 }
 
 - (IBAction)doneAction {
-	if ([self.delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
-		[self.delegate A3KeyboardViewControllerDoneButtonPressed];
+	if ([self.delegate respondsToSelector:@selector(A3KeyboardDoneButtonPressed)]) {
+		[self.delegate A3KeyboardDoneButtonPressed];
 	} else {
 		[self.entryTableViewCell handleActionBarDone:nil];
 	}
@@ -185,8 +188,8 @@
 
 - (IBAction)bigButton1Action {
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
-		[_bigButton1 setSelected:YES];
-		[_bigButton2 setSelected:NO];
+		[self.bigButton1 setSelected:YES];
+		[self.bigButton2 setSelected:NO];
 	}
 	if ([self.delegate respondsToSelector:@selector(handleBigButton1)]) {
 		[self.delegate handleBigButton1];
@@ -195,8 +198,8 @@
 
 - (IBAction)bigButton2Action {
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
-		[_bigButton1 setSelected:NO];
-		[_bigButton2 setSelected:YES];
+		[self.bigButton1 setSelected:NO];
+		[self.bigButton2 setSelected:YES];
 	}
 	if ([self.delegate respondsToSelector:@selector(handleBigButton2)]) {
 		[self.delegate handleBigButton2];
@@ -206,19 +209,19 @@
 - (void)reloadPrevNextButtons {
 	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
 		BOOL available = [self.delegate nextAvailableForElement:self.element];
-		[_nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
-		[_nextButton setEnabled:available];
+		[self.nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
+		[self.nextButton setEnabled:available];
 	} else {
-		[_nextButton setTitle:@"Next" forState:UIControlStateNormal];
-		[_nextButton setEnabled:YES];
+		[self.nextButton setTitle:@"Next" forState:UIControlStateNormal];
+		[self.nextButton setEnabled:YES];
 	}
 	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
 		BOOL available = [self.delegate prevAvailableForElement:self.element];
-		[_prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
-		[_prevButton setEnabled:available];
+		[self.prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
+		[self.prevButton setEnabled:available];
 	} else {
-		[_prevButton setTitle:@"Prev" forState:UIControlStateNormal];
-		[_prevButton setEnabled:YES];
+		[self.prevButton setTitle:@"Prev" forState:UIControlStateNormal];
+		[self.prevButton setEnabled:YES];
 	}
 }
 
@@ -241,8 +244,8 @@
 
 		[_markView setFrame:CGRectMake(999.0, 282.0, 10.0, 24.0)];
 	}
-	[_bigButton1 setFrame:CGRectMake(col_1, row_1, width_big, height_big)];
-	[_bigButton2 setFrame:CGRectMake(col_1, row_3, width_big, height_big)];
+	[self.bigButton1 setFrame:CGRectMake(col_1, row_1, width_big, height_big)];
+	[self.bigButton2 setFrame:CGRectMake(col_1, row_3, width_big, height_big)];
 
 	[_num7Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];
 	[_num8Button setFrame:CGRectMake(col_3, row_1, width_small, height_small)];
@@ -258,12 +261,12 @@
 
 	[_clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
 	[_num0Button setFrame:CGRectMake(col_3, row_4, width_small, height_small)];
-	[_dotButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
+	[self.dotButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
 
-	[_deleteButton setFrame:CGRectMake(col_5, row_1, width_big, height_small)];
-	[_prevButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
-	[_nextButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
-	[_doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
+	[self.deleteButton setFrame:CGRectMake(col_5, row_1, width_big, height_small)];
+	[self.prevButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
+	[self.nextButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
+	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
 }
 
 @end

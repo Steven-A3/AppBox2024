@@ -11,19 +11,11 @@
 
 @interface A3UIKit : NSObject
 
-+ (void)drawLinearGradientToContext:(CGContextRef)context rect:(CGRect)rect withColors:(NSArray *)colors;
-
 + (void)drawBookendEffectRect:(CGRect)rect context:(CGContextRef)context;
-
-
 + (UIImage *)backspaceImage;
-
 + (UIImage *)backspaceImage2;
-
 + (UIColor *)colorForDashLineColor;
 + (UIColor *)gradientColorRect:(CGRect)rect withColors:(NSArray *)gradientColors;
-+ (void)setBackgroundImageForNavigationBar:(UINavigationBar *)navigationBar;
-+ (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view;
 + (NSString *)mediumStyleDateString:(NSDate *)date;
 + (NSNumberFormatter *)currencyNumberFormatter;
 + (NSNumberFormatter *)percentNumberFormatter;

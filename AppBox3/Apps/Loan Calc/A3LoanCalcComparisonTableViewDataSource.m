@@ -19,7 +19,7 @@
 #import "NSString+conversion.h"
 #import "common.h"
 
-@interface A3LoanCalcComparisonTableViewDataSource () <A3NumberKeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
+@interface A3LoanCalcComparisonTableViewDataSource () <A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
 @property (nonatomic, strong) NSMutableArray *contentsKeyIndex;
 @property (nonatomic, strong) NSMutableArray *contentsTypeIndex;
 @property (nonatomic, strong) NSMutableArray *textFields;
@@ -830,7 +830,7 @@
 	}
 }
 
-- (void)A3KeyboardViewControllerDoneButtonPressed {
+- (void)A3KeyboardDoneButtonPressed {
 	FNLOG(@"Check");
 	[_editingTextField resignFirstResponder];
 }

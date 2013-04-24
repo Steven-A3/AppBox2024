@@ -14,12 +14,12 @@
 
 @interface A3NumberKeyboardViewController_iPad : A3NumberKeyboardViewController
 
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton1;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *bigButton2;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *dotButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *deleteButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *prevButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
+@property (nonatomic, weak) IBOutlet UIButton *bigButton1;
+@property (nonatomic, weak) IBOutlet UIButton *bigButton2;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *dotButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *deleteButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *prevButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton *nextButton;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 

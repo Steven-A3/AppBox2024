@@ -18,6 +18,7 @@
 #import "A3SalesCalcQuickDialogViewController_iPad.h"
 #import "A3SalesCalcQuickDialogViewController_iPhone.h"
 #import "common.h"
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3SalesCalcMainViewController ()
 
@@ -34,7 +35,7 @@
         // Custom initialization
 		self.title = @"Sales Calc";
 		self.view.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-		[A3UIKit addTopGradientLayerToView:self.view];
+		[self addTopGradientLayerToView:self.view];
     }
     return self;
 }

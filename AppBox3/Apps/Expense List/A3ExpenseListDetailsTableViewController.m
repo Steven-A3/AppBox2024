@@ -1,12 +1,12 @@
 //
-//  A3ExpenseListDetailsViewController.m
+//  A3ExpenseListDetailsTableViewController.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 4/13/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3ExpenseListDetailsViewController.h"
+#import "A3ExpenseListDetailsTableViewController.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
@@ -20,7 +20,7 @@
 #import "A3UIDevice.h"
 #import "A3VerticalLinesView.h"
 
-@interface A3ExpenseListDetailsViewController () <UITextFieldDelegate, A3NumberKeyboardDelegate>
+@interface A3ExpenseListDetailsTableViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 
 @property (nonatomic, weak) UITextField *editingTextField;
 @property (nonatomic, strong) Expense *expenseObject;
@@ -28,11 +28,11 @@
 @property (nonatomic, weak) ExpenseDetail *editingDetail;
 @property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
 @property (nonatomic, strong) NSArray *orderedDetails;
-@property (nonatomic, strong) A3ExpenseListDetailsViewController *detailsViewController;
+@property (nonatomic, strong) A3ExpenseListDetailsTableViewController *detailsViewController;
 
 @end
 
-@implementation A3ExpenseListDetailsViewController
+@implementation A3ExpenseListDetailsTableViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,15 +48,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	A3VerticalLinesView *tableViewBackground = [[A3VerticalLinesView alloc] initWithFrame:CGRectZero];
-	if (DEVICE_IPAD) {
-		tableViewBackground.positions = @[@51.0, @53.0, @302.0, @412.0, @473.0];
-	} else {
-		tableViewBackground.positions = @[@40.0, @42.0, @140.0, @210.0, @240.0];
-	}
-
-	tableViewBackground.backgroundColor = [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:248.0/255.0 alpha:1.0];
-	self.tableView.backgroundView = tableViewBackground;
+	self.tableView.backgroundColor = [UIColor clearColor];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,7 +148,7 @@
 - (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
 	A3ExpenseListTableViewCell *cell = [self cellWithReuseIdentifier:nil];
 	[self fillCell:cell forIndexPath:indexPath];
-	cell.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.6];
+//	cell.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.6];
 
 	return cell;
 }
@@ -500,7 +492,7 @@
 	[self handlePrevNext:NO];
 }
 
-- (void)A3KeyboardViewControllerDoneButtonPressed {
+- (void)A3KeyboardDoneButtonPressed {
 	[_editingTextField resignFirstResponder];
 }
 

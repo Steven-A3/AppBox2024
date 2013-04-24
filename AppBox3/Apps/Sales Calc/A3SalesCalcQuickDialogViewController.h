@@ -10,6 +10,7 @@
 #import "QuickDialog.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3CurrencySelectViewController.h"
+#import "A3QuickDialogController.h"
 
 @class SalesCalcHistory;
 @class A3HorizontalBarContainerView;
@@ -40,10 +41,9 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 #define SC_KEY_KNOWN_VALUE_SECTION	@"KNOWN_VALUE_SECTION"
 #define SC_KEY_NUMBER_SECTION		@"NUMBERS_SECTION"
 
-@interface A3SalesCalcQuickDialogViewController : QuickDialogController
-		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate, A3NumberKeyboardDelegate, CurrencySelectViewControllerDelegate>
+@interface A3SalesCalcQuickDialogViewController : A3QuickDialogController
+		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate, A3KeyboardDelegate, CurrencySelectViewControllerDelegate>
 
-@property (nonatomic, strong) A3NumberKeyboardViewController *keyboardViewController;
 @property (nonatomic, strong) A3HorizontalBarContainerView *tableHeaderView;
 
 - (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history;

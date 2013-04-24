@@ -8,6 +8,7 @@
 
 #import "A3BookendShapeView.h"
 #import "A3UIKit.h"
+#import "UIView+A3Drawing.h"
 
 @implementation A3BookendShapeView
 
@@ -36,7 +37,7 @@
 {
     // Drawing code
 	CGContextRef context = UIGraphicsGetCurrentContext();
-	[A3UIKit drawBookendEffectRect:rect context:context];
+	[self drawBookendEffectRect:rect context:context];
 }
 
 @end

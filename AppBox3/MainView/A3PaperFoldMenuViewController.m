@@ -18,6 +18,7 @@
 #import "A3NotificationTableViewController.h"
 #import "A3UIKit.h"
 #import "A3SalesCalcMainViewController.h"
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3PaperFoldMenuViewController ()
 @property (nonatomic, strong)	UINavigationController *myNavigationController;
@@ -80,7 +81,8 @@
 		}
 		_myNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
 		_myNavigationController.navigationBar.tintColor = [UIColor blackColor];
-		[A3UIKit setBackgroundImageForNavigationBar:_myNavigationController.navigationBar];
+
+		[self setBlackBackgroundImageForNavigationBar];
 	}
 	return _myNavigationController;
 }

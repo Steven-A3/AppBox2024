@@ -39,21 +39,4 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (A3NumberKeyboardViewController *)keyboardViewController {
-	if (nil == self.keyboardViewController) {
-			self.keyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
-		self.keyboardViewController.delegate = self;
-	}
-	return self.keyboardViewController;
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	A3NumberKeyboardViewController_iPad *kbvc = (A3NumberKeyboardViewController_iPad *) self.keyboardViewController;
-	if ([kbvc respondsToSelector:@selector(rotateToInterfaceOrientation:)]) {
-		[kbvc rotateToInterfaceOrientation:toInterfaceOrientation];
-	}
-}
-
 @end

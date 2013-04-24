@@ -14,13 +14,17 @@
 #import "A3HorizontalBarChartView.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "ATSDragToReorderTableViewController.h"
-#import "A3ExpenseListDetailsViewController.h"
+#import "A3ExpenseListDetailsTableViewController.h"
+#import "A3VerticalLinesView.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3ExpenseListAddBudgetViewController.h"
+#import "A3UIStyle.h"
 
-@interface A3ExpenseListViewController () <UITextFieldDelegate, A3NumberKeyboardDelegate, A3ActionMenuViewControllerDelegate>
+@interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet A3HorizontalBarContainerView *chartContainerView;
 @property (nonatomic, weak) IBOutlet UITableView *myTableView;
-@property (nonatomic, strong) A3ExpenseListDetailsViewController *detailsViewController;
+@property (nonatomic, strong) A3ExpenseListDetailsTableViewController *detailsViewController;
 
 @end
 
@@ -32,7 +36,7 @@
     if (self) {
         // Custom initialization
 		self.title = @"Expense List";
-        [A3UIKit addTopGradientLayerToView:self.view];
+        [self addTopGradientLayerToView:self.view];
 	}
     return self;
 }
@@ -46,6 +50,7 @@
 	A3SmallButton *editButton = [[A3SmallButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 32.0, 30.0)];
 	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"edit" ofType:@"png"];
 	[editButton setImage:[UIImage imageWithContentsOfFile:imageFilePath] forState:UIControlStateNormal];
+	[editButton addTarget:self action:@selector(editButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	_chartContainerView.accessoryView = editButton;
 
 	// Do any additional setup after loading the view.
@@ -87,13 +92,35 @@
 
 	[_chartContainerView setBottomLabelText:_chartContainerView.bottomValueLabel.text];
 
+	A3VerticalLinesView *tableViewBackground = [[A3VerticalLinesView alloc] initWithFrame:_myTableView.bounds];
+	if (DEVICE_IPAD) {
+		tableViewBackground.positions = @[@51.0, @53.0, @302.0, @412.0, @473.0];
+	} else {
+		tableViewBackground.positions = @[@40.0, @42.0, @140.0, @210.0, @240.0];
+	}
+
+	tableViewBackground.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	[_myTableView addSubview:tableViewBackground];
+	[_myTableView setScrollEnabled:NO];
+
 	[_myTableView addSubview:self.detailsViewController.view];
 }
 
-- (A3ExpenseListDetailsViewController *)detailsViewController {
+- (void)editButtonAction {
+	if (!DEVICE_IPAD){
+		A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithNibName:nil bundle:nil];
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:navController animated:YES completion:nil];
+	}
+
+}
+
+- (A3ExpenseListDetailsTableViewController *)detailsViewController {
 	if (nil == _detailsViewController) {
-		_detailsViewController = [[A3ExpenseListDetailsViewController alloc] initWithStyle:UITableViewStylePlain];
+		_detailsViewController = [[A3ExpenseListDetailsTableViewController alloc] initWithStyle:UITableViewStylePlain];
 		_detailsViewController.view.frame = _myTableView.bounds;
+		_detailsViewController.view.backgroundColor = _myTableView.backgroundColor;
+		_detailsViewController.tableView.rowHeight = _myTableView.rowHeight;
 		_detailsViewController.chartContainerView = self.chartContainerView;
 	}
 	return _detailsViewController;
