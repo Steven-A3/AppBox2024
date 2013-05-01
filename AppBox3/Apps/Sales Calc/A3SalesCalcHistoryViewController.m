@@ -12,7 +12,6 @@
 #import "A3UIKit.h"
 #import "A3SalesCalcHistoryTableViewCell.h"
 #import "SalesCalcHistory.h"
-#import "A3SalesCalcQuickDialogViewController.h"
 #import "A3CalcExpressionView.h"
 #import "A3UIDevice.h"
 #import "NSString+conversion.h"
@@ -21,7 +20,6 @@
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
-@property (nonatomic, strong) NSNumberFormatter *currencyNumberFormatter;
 @property (nonatomic, strong) UITableView *myTableView;
 
 @end
@@ -49,7 +47,10 @@
 			entityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
-	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"editing == NO"];
+	[fetchRequest setPredicate:predicate];
+
+	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
 	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
 
 	[fetchRequest setFetchBatchSize:20];
@@ -164,7 +165,7 @@
 	}
 
 	SalesCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:[NSDate dateWithTimeIntervalSinceReferenceDate:history.createdDate]];
+	cell.dateLabel.text = [self.dateFormatter stringFromDate:history.created];
 
 	cell.salePriceLabel.text = history.salePrice;
 	cell.notesLabel.text = history.notes;
@@ -230,7 +231,13 @@
 	SalesCalcHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	[_myTableView deselectRowAtIndexPath:indexPath animated:YES];
-	[self.salesCalcQuickDialogViewController applyCurrentContentsWithSalesCalcHistory:history];
+	id <A3SalesCalcQuickDialogDelegate> o = self.delegate;
+	if ([o respondsToSelector:@selector(reloadContentsWithObject:)]) {
+		[o reloadContentsWithObject:history];
+	}
+	if (!DEVICE_IPAD) {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
 #pragma mark - NSFetchedResultController delegate

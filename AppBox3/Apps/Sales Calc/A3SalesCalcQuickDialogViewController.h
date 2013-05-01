@@ -10,7 +10,7 @@
 #import "QuickDialog.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3CurrencySelectViewController.h"
-#import "A3QuickDialogController.h"
+#import "A3QuickDialogContainerController.h"
 
 @class SalesCalcHistory;
 @class A3HorizontalBarContainerView;
@@ -33,19 +33,19 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 	A3SalesCaleKnownValueSalePrice,
 };
 
-#define	SC_KEY_PRICE				@"PRICE"
-#define SC_KEY_DISCOUNT				@"DISCOUNT"
-#define SC_KEY_ADDITIONAL_OFF		@"ADDITIONAL_OFF"
-#define SC_KEY_TAX					@"TAX"
-#define SC_KEY_NOTES				@"NOTES"
+#define	SC_KEY_PRICE				@"price"
+#define SC_KEY_DISCOUNT				@"discount"
+#define SC_KEY_ADDITIONAL_OFF		@"additionalOff"
+#define SC_KEY_TAX					@"tax"
+#define SC_KEY_NOTES				@"notes"
+
 #define SC_KEY_KNOWN_VALUE_SECTION	@"KNOWN_VALUE_SECTION"
 #define SC_KEY_NUMBER_SECTION		@"NUMBERS_SECTION"
+#define SC_KEY_SIMPLE_ADVANCED		@"SIMPLE_ADVANCED"
 
-@interface A3SalesCalcQuickDialogViewController : A3QuickDialogController
+@interface A3SalesCalcQuickDialogViewController : A3QuickDialogContainerController
 		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate, A3KeyboardDelegate, CurrencySelectViewControllerDelegate>
 
 @property (nonatomic, strong) A3HorizontalBarContainerView *tableHeaderView;
-
-- (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history;
 
 @end

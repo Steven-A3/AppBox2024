@@ -114,7 +114,7 @@
 		[self.quickDialogViewController reloadContents];
 	}];
 
-	[self closeActionMenuView];
+	[self closeActionMenuViewWithAnimation:NO ];
 }
 
 - (void)emailAction {

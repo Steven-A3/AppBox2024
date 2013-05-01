@@ -7,9 +7,9 @@
 //
 
 #import "QuickDialogController.h"
-#import "A3QuickDialogController.h"
+#import "A3QuickDialogContainerController.h"
 #import "A3AppViewController.h"
 
-@interface A3ExpenseListAddBudgetViewController : A3AppViewController
+@interface A3ExpenseListAddBudgetViewController : A3QuickDialogContainerController
 
 @end

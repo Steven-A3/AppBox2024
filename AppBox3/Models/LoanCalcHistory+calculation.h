@@ -22,6 +22,7 @@
 #define A3LC_KEY_EXTRA_PAYMENT_ONETIME 				@"extraPaymentOnetime"
 #define A3LC_KEY_EXTRA_PAYMENT_YEARLY_MONTH 		@"extraPaymentYearlyMonth"
 #define A3LC_KEY_EXTRA_PAYMENT_ONETIME_YEAR_MONTH	@"extraPaymentOnetimeYearMonth"
+#define A3LC_KEY_SIMPLE_ADVANCED					@"simpleAdvanced"
 
 typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 	A3LCEntryPrincipal = 1,

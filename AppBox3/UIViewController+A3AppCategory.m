@@ -51,6 +51,11 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 }
 
 - (void)presentActionMenuWithDelegate:(id<A3ActionMenuViewControllerDelegate>) delegate {
+	{
+		UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
+		if (nil != coverView) return;
+	}
+
 	CGRect frame = self.actionMenuViewController.view.frame;
 	frame.origin.y = 34.0;
 	self.actionMenuViewController.view.frame = frame;
@@ -62,7 +67,7 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	}
 	[self.navigationController.view insertSubview:[self.actionMenuViewController view] belowSubview:self.view];
 
-	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeActionMenuView)];
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnCoverView:)];
 	UIImage *image = [self.view screenshotWithOptimization:NO];
 	UIImageView *coverView = [[UIImageView alloc] initWithImage:image];
 	coverView.tag = A3_ACTION_MENU_COVER_VIEW_TAG;
@@ -77,14 +82,25 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	}];
 }
 
-- (void)closeActionMenuView {
+- (void)tapGestureOnCoverView:(id)sender {
+	[self closeActionMenuViewWithAnimation:YES];
+}
+
+- (void)closeActionMenuViewWithAnimation:(BOOL)animate {
 	UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
-	[UIView animateWithDuration:0.3 animations:^{
-		coverView.frame = CGRectOffset(coverView.frame, 0.0, -50.0);
-	} completion:^(BOOL finished){
+	if (nil == coverView) return;
+
+	if (animate) {
+		[UIView animateWithDuration:0.3 animations:^{
+			coverView.frame = CGRectOffset(coverView.frame, 0.0, -50.0);
+		} completion:^(BOOL finished){
+			[coverView removeFromSuperview];
+			[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
+		}];
+	} else {
 		[coverView removeFromSuperview];
 		[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
-	}];
+	}
 }
 
 - (void)addToolsButtonWithAction:(SEL)action {
@@ -182,7 +198,7 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 		[formatter setNumberStyle:NSNumberFormatterPercentStyle];
 		objc_setAssociatedObject(self, key_percentFormatter, formatter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
-	return nil;
+	return formatter;
 }
 
 - (void)setPercentFormatter:(NSNumberFormatter *)percentFormatter {
@@ -287,5 +303,16 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 
 	return gradientLayer;
 }
+
+- (NSString *)currencyFormattedString:(NSString *)source {
+	if ([source floatValue] == 0.0) return @"";
+	return [self.currencyFormatter stringFromNumber:[NSNumber numberWithFloat:[source floatValue]]];
+}
+
+- (NSString *)percentFormattedString:(NSString *)source {
+	if ([source floatValue] == 0.0) return @"";
+	return [self.percentFormatter stringFromNumber:[NSNumber numberWithFloat:[source floatValue] / 100.0]];
+}
+
 
 @end

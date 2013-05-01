@@ -6,13 +6,10 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3ExpenseListPreferences.h"
 #import "A3UIStyle.h"
-#import "A3UIKit.h"
-#import "CoolButton.h"
 #import "A3BarButton.h"
 #import "A3TopGradientBackgroundView.h"
 
@@ -23,9 +20,9 @@ static NSString *A3ExpenseListAddBudgetKeyTitle = @"Title";
 static NSString *A3ExpenseListAddBudgetKeyDate = @"Date";
 static NSString *A3ExpenseListAddBudgetKeyLocation = @"Location";
 static NSString *A3ExpenseListAddBudgetKeyNotes = @"Notes";
+static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced";
 
 @interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider>
-@property (nonatomic, strong) A3QuickDialogController *quickDialogController;
 @property (nonatomic, strong) A3ExpenseListPreferences *pref;
 @end
 
@@ -83,13 +80,6 @@ static NSString *A3ExpenseListAddBudgetKeyNotes = @"Notes";
     // Dispose of any resources that can be recreated.
 }
 
-- (A3QuickDialogController *)quickDialogController {
-	if (nil == _quickDialogController) {
-		_quickDialogController = [[A3QuickDialogController alloc] initWithRoot:[self configureRootElements]];
-	}
-	return _quickDialogController;
-}
-
 - (UIBarButtonItem *)doneButton {
 	A3BarButton *doneButton = [[A3BarButton alloc] initWithFrame:CGRectZero];
 	doneButton.bounds = CGRectMake(0.0, 0.0, 52.0, 30.0);
@@ -125,9 +115,11 @@ static NSString *A3ExpenseListAddBudgetKeyNotes = @"Notes";
 - (QButtonElement *)showSimpleAdvancedElement {
 	QButtonElement *element = [[QButtonElement alloc] init];
 	element.title = [self.pref addBudgetShowAdvanced] ? @"Simple" : @"Advanced";
+	element.key = A3ExpenseListAddBudgetKeyShowSimpleAdvanced;
 	element.onSelected = ^{
-		QuickDialogTableView *tableView = self.quickDialogController.quickDialogTableView;
-		NSIndexPath *indexPath = [tableView indexForElement:element];
+		QuickDialogTableView *tableView = self.quickDialogTableView;
+		QButtonElement *buttonElement = (QButtonElement *) [self.root elementWithKey:A3ExpenseListAddBudgetKeyShowSimpleAdvanced];
+		NSIndexPath *indexPath = [tableView indexForElement:buttonElement];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		NSArray *indexPaths = @[[NSIndexPath indexPathForRow:3 inSection:0],

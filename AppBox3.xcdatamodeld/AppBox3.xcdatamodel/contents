@@ -70,12 +70,13 @@
         <relationship name="group" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="MenuGroup" inverseName="menuItems" inverseEntity="MenuGroup" syncable="YES"/>
     </entity>
     <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
-        <attribute name="additionaloff" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="additionalOff" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="amountSaved" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="createdDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="discount" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="editing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isOriginalPrice" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isKnownValueOriginalPrice" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="originalPrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="salePrice" optional="YES" attributeType="String" syncable="YES"/>
@@ -90,6 +91,6 @@
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>
-        <element name="SalesCalcHistory" positionX="160" positionY="192" width="128" height="195"/>
+        <element name="SalesCalcHistory" positionX="160" positionY="192" width="128" height="210"/>
     </elements>
 </model>

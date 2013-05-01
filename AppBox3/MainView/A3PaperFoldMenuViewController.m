@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3PaperFoldMenuViewController.h"
 #import "A3iPhoneMenuTableViewController.h"
 #import "A3HomeViewController_iPhone.h"
@@ -16,9 +15,6 @@
 #import "A3UIDevice.h"
 #import "common.h"
 #import "A3NotificationTableViewController.h"
-#import "A3UIKit.h"
-#import "A3SalesCalcMainViewController.h"
-#import "UIViewController+A3AppCategory.h"
 
 @interface A3PaperFoldMenuViewController ()
 @property (nonatomic, strong)	UINavigationController *myNavigationController;
@@ -80,9 +76,6 @@
 			rootViewController = viewController;
 		}
 		_myNavigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-		_myNavigationController.navigationBar.tintColor = [UIColor blackColor];
-
-		[self setBlackBackgroundImageForNavigationBar];
 	}
 	return _myNavigationController;
 }
@@ -154,8 +147,8 @@
 	}
 	[self notificationViewController];
 
-	[self paperFoldView2];
-	[self notificationViewController2];
+//	[self paperFoldView2];
+//	[self notificationViewController2];
 }
 
 - (void)configureiPhoneHomeScreen {
@@ -231,7 +224,7 @@
 			_paperFoldView.enableRightFoldDragging = NO;
 		}
 		newNavigationViewFrame = CGRectMake(0.0, 0.0, viewWidth, screenBounds.size.height);
-		foldViewFrame = CGRectMake(leftOffset, 0.0, viewWidth, screenBounds.size.height);
+		foldViewFrame = CGRectMake(leftOffset, 0.0, viewWidth + 310.0, screenBounds.size.height);
 		[_hotMenuViewController.view setFrame:CGRectMake(0.0, 0.0, HOT_MENU_VIEW_WIDTH, screenBounds.size.height)];
 
 		[_paperFoldView setFrame:foldViewFrame];
@@ -350,13 +343,7 @@
 	[coverView addGestureRecognizer:tapGestureRecognizer];
 
 	_rightWingViewOffset = CGRectGetWidth(navigationController.view.bounds);
-	UIViewController *topViewController = [_myNavigationController topViewController];
-	if (![A3UIDevice deviceOrientationIsPortrait] &&
-			[topViewController isKindOfClass:[A3SalesCalcMainViewController class]]) {
-		_paperFoldViewOffset = 288.0;
-	} else {
-		_paperFoldViewOffset = _rightWingViewOffset;
-	}
+	_paperFoldViewOffset = _rightWingViewOffset;
 
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.3];

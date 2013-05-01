@@ -43,7 +43,7 @@
 	A3KeyboardButton_iPhone *bigButton1 = (A3KeyboardButton_iPhone *) self.bigButton1;
 	A3KeyboardButton_iPhone *bigButton2 = (A3KeyboardButton_iPhone *) self.bigButton2;
 
-	self.keyboardType = keyboardType;
+	super.keyboardType = keyboardType;
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];

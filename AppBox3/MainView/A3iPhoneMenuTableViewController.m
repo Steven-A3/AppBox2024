@@ -9,12 +9,12 @@
 #import "A3iPhoneMenuTableViewController.h"
 #import "A3SectionHeaderViewInMenuTableView.h"
 #import "CommonUIDefinitions.h"
-#import "common.h"
 #import "A3PaperFoldMenuViewController.h"
-#import "A3SalesCalcMainViewController.h"
 #import "A3ExpenseListViewController.h"
 #import "A3LoanCalcViewController.h"
 #import "A3UIDevice.h"
+#import "A3SalesCalcQuickDialogViewController_iPad.h"
+#import "A3SalesCalcQuickDialogViewController_iPhone.h"
 
 @interface A3iPhoneMenuTableViewController ()
 
@@ -359,8 +359,13 @@
 	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) {
 		switch (selectedIndex) {
 			case 0: {
-				A3SalesCalcMainViewController *salesCalcViewController = [[A3SalesCalcMainViewController alloc] initWithNibName:nil bundle:nil];
-				[self.paperFoldMenuViewController pushViewControllerToNavigationController:salesCalcViewController];
+				UIViewController *viewController;
+				if (DEVICE_IPAD) {
+					viewController = [[A3SalesCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
+				} else {
+					viewController = [[A3SalesCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+				}
+				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
 				break;
 			}
 			case 1:{

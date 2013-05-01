@@ -9,7 +9,6 @@
 #import "A3SalesCalcQuickDialogViewController.h"
 #import "A3UIDevice.h"
 #import "A3HorizontalBarChartView.h"
-#import "EKKeyboardAvoidingScrollViewManager.h"
 #import "A3UserDefaults.h"
 #import "SalesCalcHistory.h"
 #import "A3AppDelegate.h"
@@ -19,15 +18,17 @@
 #import "NSString+conversion.h"
 #import "A3HorizontalBarContainerView.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3SalesCalcHistoryViewController.h"
+#import "SalesCalcHistory+controller.h"
+#import "NSManagedObject+Clone.h"
+#import "common.h"
 
-@interface A3SalesCalcQuickDialogViewController ()
+@interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate>
 
 @property (nonatomic, strong) NSArray *keys;
-@property (nonatomic) A3SalesCalculatorType calculatorType;
-@property (nonatomic) CGFloat rowHeight;
+@property (nonatomic, strong) SalesCalcHistory *editingObject;
 
 @end
-
 
 @implementation A3SalesCalcQuickDialogViewController
 
@@ -36,65 +37,35 @@
 	// Custom initialization
 	self = [super initWithNibName:nil bundle:nil];
 	if (self) {
-		if (DEVICE_IPAD) {
-			_rowHeight = 58.0;
-		} else {
-			_rowHeight = 44.0;
-		}
+		[self addTopGradientLayerToView:self.view];
 
-		[self buildRoot];
+		self.title = @"Sales Calc";
 	}
 	return self;
 }
 
-- (void)assignRowHeightToElementInSection:(QSection *)section {
-	for (QElement *element in section.elements) {
-		element.height = _rowHeight;
-	}
-}
+- (SalesCalcHistory *)editingObject {
+	if (_editingObject) return _editingObject;
 
-- (A3SalesCalculatorType)calculatorType {
-	NSNumber *storedValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcDefaultCalculatorType];
-	if (nil == storedValue) {
-		_calculatorType = A3SalesCalculatorTypeAdvanced;
+	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
+	[fetchRequest setEntity:entity];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"editing == YES"];
+	[fetchRequest setPredicate:predicate];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+	[fetchRequest setSortDescriptors:@[sortDescriptor]];
+	[fetchRequest setFetchLimit:1];
+	NSError *error;
+	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+	if ([fetchedObjects count] == 1) {
+		_editingObject = [fetchedObjects objectAtIndex:0];
 	} else {
-		_calculatorType = (A3SalesCalculatorType) [storedValue unsignedIntegerValue];
+		_editingObject = [NSEntityDescription insertNewObjectForEntityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
+		[_editingObject fillDefaultValues];
 	}
-	return _calculatorType;
-}
 
-- (A3SalesCalcKnownValue)knownValue {
-	NSNumber *storedValue = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcDefaultSavedKnownValue];
-	if (nil == storedValue) {
-		return A3SalesCalcKnownValueOriginalPrice;
-	}
-	return (A3SalesCalcKnownValue) [storedValue unsignedIntegerValue];
-}
-
-- (NSString *)savedValueForPrice {
-	return [self getUserDefaultForKey:A3SalesCalcDefaultSavedValuePrice];
-}
-
-- (NSString *)savedValueForDiscount {
-	return [self getUserDefaultForKey:A3SalesCalcDefaultSavedValueDiscount];
-}
-
-- (NSString *)savedValueForAdditionalOff {
-	return [self getUserDefaultForKey:A3SalesCalcDefaultSavedValueAdditionalOff];
-}
-
-- (NSString *)savedValueForTax {
-	return [self getUserDefaultForKey:A3SalesCalcDefaultSavedValueTax];
-}
-
-- (NSString *)savedValueForNotes {
-	return [self getUserDefaultForKey:A3SalesCalcDefaultSavedValueNotes];
-}
-
-- (NSString *)getUserDefaultForKey:(NSString *)key {
-	NSString *defaultValue;
-	defaultValue = [[NSUserDefaults standardUserDefaults] objectForKey:key];
-	return nil == defaultValue ? @"" : defaultValue;
+	return _editingObject;
 }
 
 - (NSArray *)keys {
@@ -104,11 +75,6 @@
 	return _keys;
 }
 
-- (BOOL)isOriginalPrice {
-	QRadioSection *radioSection = (QRadioSection *)[self.root sectionWithKey:SC_KEY_KNOWN_VALUE_SECTION];
-	return (radioSection.selected == A3SalesCalcKnownValueOriginalPrice);
-}
-
 - (A3HorizontalBarContainerView *)tableHeaderView {
 	if (nil == _tableHeaderView) {
 		_tableHeaderView = [[A3HorizontalBarContainerView alloc] initWithFrame:CGRectZero];
@@ -116,88 +82,17 @@
 	return _tableHeaderView;
 }
 
-- (NSString *)discountString {
-	QEntryElement *entryElement;
-	entryElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_DISCOUNT];
-	return entryElement.textValue;
-}
-
-- (NSString *)additionalOffString {
-	QEntryElement *entryElement;
-	entryElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_ADDITIONAL_OFF];
-	return entryElement.textValue;
-}
-
-- (NSString *)taxString {
-	QEntryElement *entryElement;
-	entryElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_TAX];
-	return entryElement.textValue;
-}
-
-- (NSString *)notesString {
-	QEntryElement *entryElement;
-	entryElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_NOTES];
-	return entryElement.textValue;
-}
-
 - (BOOL)addDataToHistory {
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
-
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
-	[fetchRequest setEntity:entity];
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"createdDate" ascending:NO];
-	[fetchRequest setSortDescriptors:@[sortDescriptor]];
-	[fetchRequest setFetchLimit:1];
-	NSError *error;
-	NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
-
-	QEntryElement *priceElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_PRICE];
-	QEntryElement *discountElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_DISCOUNT];
-
-	float price, discount;
-
-	price = [priceElement.textValue floatValueEx];
-	discount = [discountElement.textValue floatValueEx];
-
-	if (price == 0.0 || discount == 0.0)
+	if (![_editingObject hasChanges]) {
 		return NO;
-
-	BOOL isOriginalPrice = YES, isAdvanced;
-	isAdvanced = _calculatorType == A3SalesCalculatorTypeAdvanced;
-
-	if ([fetchedObjects count]) {
-		SalesCalcHistory *lastHistory = [fetchedObjects objectAtIndex:0];
-
-		isOriginalPrice = [self isOriginalPrice];
-
-		if (lastHistory && [lastHistory isKindOfClass:[SalesCalcHistory class]]) {
-			if ((lastHistory.isOriginalPrice == isOriginalPrice) &&
-					(lastHistory.isAdvanced == isAdvanced) &&
-					[lastHistory.salePrice isEqualToString:self.tableHeaderView.chartLeftValueLabel.text] &&
-					[lastHistory.originalPrice isEqualToString:self.tableHeaderView.bottomValueLabel.text] &&
-					[lastHistory.amountSaved isEqualToString:self.tableHeaderView.chartRightValueLabel.text] &&
-					[lastHistory.discount isEqualToString:[self discountString]] &&
-					[lastHistory.additionaloff isEqualToString:[self additionalOffString]] &&
-					[lastHistory.tax isEqualToString:[self taxString]] &&
-					[lastHistory.notes isEqualToString:[self notesString]] )
-				return NO;
-		}
 	}
 
-	SalesCalcHistory *history = [NSEntityDescription insertNewObjectForEntityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSError *error;
 
-	history.isOriginalPrice = isOriginalPrice;
-	history.isAdvanced = isAdvanced;
-	history.createdDate = [[NSDate date] timeIntervalSinceReferenceDate];
-
-	history.salePrice = self.tableHeaderView.chartLeftValueLabel.text;
-	history.originalPrice = self.tableHeaderView.bottomValueLabel.text;
-	history.amountSaved = self.tableHeaderView.chartRightValueLabel.text;
-	history.discount = [self discountString];
-	history.additionaloff = [self additionalOffString];
-	history.tax = [self taxString];
-	history.notes = [self notesString];
+	SalesCalcHistory *historyObject = (SalesCalcHistory *) [_editingObject cloneInContext:managedObjectContext];
+	historyObject.created = [NSDate date];
+	historyObject.editing = @NO;
 
 	[managedObjectContext save:&error];
 
@@ -205,40 +100,43 @@
 }
 
 - (void)addHistoryWithAlertView {
-	if ([self addDataToHistory]) {
-		[KGDiscreetAlertView showDiscreetAlertWithText:@"Calculation added to History" inView:self.parentViewController.view];
-	}
+//	if ([self addDataToHistory]) {
+//		[KGDiscreetAlertView showDiscreetAlertWithText:@"Calculation added to History" inView:self.parentViewController.view];
+//	}
 }
 
 - (QEntryElement *)additionalOffElement {
-	QEntryElement *additionalOff = [[QEntryElement alloc] initWithTitle:@"Additional Off:" Value:[self savedValueForAdditionalOff] Placeholder:@"0%"];
+	A3PercentEntryElement *additionalOff = [[A3PercentEntryElement alloc] initWithTitle:@"Additional Off:" Value:self.editingObject.additionalOff Placeholder:@"0%"];
 	additionalOff.key = SC_KEY_ADDITIONAL_OFF;
-	additionalOff.height = _rowHeight;
 	additionalOff.delegate = self;
 	return additionalOff;
 }
 
 - (QEntryElement *)taxElement {
-	QEntryElement *tax = [[QEntryElement alloc] initWithTitle:@"Tax:" Value:[self savedValueForTax] Placeholder:@"0%"];
-	tax.height = _rowHeight;
+	A3PercentEntryElement *tax = [[A3PercentEntryElement alloc] initWithTitle:@"Tax:" Value:self.editingObject.tax Placeholder:@"0%"];
 	tax.key = SC_KEY_TAX;
 	tax.delegate = self;
 	return tax;
 }
 
-- (void)buildRoot {
+- (QRootElement *)rootElement {
 	QRootElement *newRoot = [[QRootElement alloc] init];
 	newRoot.controllerName = @"A3SalesCalcQuickDialogViewController";
 	newRoot.title = @"Sales Calc";
 	newRoot.grouped = YES;
 
-	QRadioSection *section0 = [[QRadioSection alloc] initWithItems:@[@"Original Price", @"Sale Price"] selected:[self knownValue] title:@"Select Known Value"];
+	QRadioSection *section0 = [[QRadioSection alloc] initWithItems:@[@"Original Price", @"Sale Price"] selected:self.editingObject.isKnownValueOriginalPrice.boolValue ? 0 : 1 title:@"Select Known Value"];
 	section0.key = SC_KEY_KNOWN_VALUE_SECTION;
 	QSelectItemElement *section0Row0 = [section0.elements objectAtIndex:0];
-	section0Row0.controllerAction = @"onSelectOriginalPrice:";
+	section0Row0.height = self.rowHeight;
+	section0Row0.onSelected = ^{
+		[self switchKnownPriceWithSelection:0];
+	};
 	QSelectItemElement *section0Row1 = [section0.elements objectAtIndex:1];
-	section0Row1.controllerAction = @"onSelectSalePrice:";
-	[self assignRowHeightToElementInSection:section0];
+	section0Row1.height = self.rowHeight;
+	section0Row1.onSelected = ^{
+		[self switchKnownPriceWithSelection:1];
+	};
 	[newRoot addSection:section0];
 
 	QSection *section1 = [[QSection alloc] init];
@@ -246,68 +144,84 @@
 	[self buildNumberSection:section1];
 	[newRoot addSection:section1];
 
-	self.root = newRoot;
+	return newRoot;
 }
 
+- (void)switchKnownPriceWithSelection:(NSUInteger)selection {
+	QRadioSection *radioSection = (QRadioSection *) [self.root sectionWithKey:SC_KEY_KNOWN_VALUE_SECTION];
+	radioSection.selected = selection;
+	[self.quickDialogTableView reloadData];
+
+	[A3UIKit setUserDefaults:selection == 0 ? @YES : @NO forKey:A3SalesCalcDefaultKnownValueOriginalPrice];
+	[self calculateSalePrice];
+}
+
+
 - (void)buildNumberSection:(QSection *)section {
-	QEntryElement *price = [[QEntryElement alloc] initWithTitle:@"Price:" Value:[self savedValueForPrice] Placeholder:@"$0.00 USD"];
+	A3CurrencyEntryElement *price = [[A3CurrencyEntryElement alloc] initWithTitle:@"Price:" Value:self.editingObject.price Placeholder:self.zeroCurrency];
 	price.key = SC_KEY_PRICE;
 	price.delegate = self;
 	[section addElement:price];
 
-	QEntryElement *discount = [[QEntryElement alloc] initWithTitle:@"Discount:" Value:[self savedValueForDiscount] Placeholder:@"0%"];
+	A3PercentEntryElement *discount = [[A3PercentEntryElement alloc] initWithTitle:@"Discount:" Value:self.editingObject.discount Placeholder:@"0%"];
 	discount.key = SC_KEY_DISCOUNT;
 	discount.delegate = self;
 	[section addElement:discount];
 
-	if (self.calculatorType == A3SalesCalculatorTypeAdvanced) {
+	if (self.editingObject.isAdvanced) {
 		[section addElement:[self additionalOffElement]];
 		[section addElement:[self taxElement]];
 	}
 
-	QEntryElement *notes = [[QEntryElement alloc] initWithTitle:@"Notes" Value:[self savedValueForNotes] Placeholder:@"(Optional)"];
+	A3EntryElement *notes = [[A3EntryElement alloc] initWithTitle:@"Notes" Value:self.editingObject.notes Placeholder:@"(Optional)"];
 	notes.key = SC_KEY_NOTES;
 	notes.delegate = self;
 	[section addElement:notes];
 
-	NSString *buttonTitle = _calculatorType == A3SalesCalculatorTypeAdvanced ? @"Simple" : @"Advanced";
-	QButtonElement *simple = [[QButtonElement alloc] initWithTitle:buttonTitle];
-	[simple setControllerAction:@"onSimpleAdvanced:"];
+	NSString *buttonTitle = self.editingObject.isAdvanced ? @"Advanced" : @"Simple";
+	A3ButtonElement *simple = [[A3ButtonElement alloc] initWithTitle:buttonTitle];
+	simple.key = SC_KEY_SIMPLE_ADVANCED;
+	simple.onSelected = ^{
+		[self onSimpleAdvanced];
+	};
 	[section addElement:simple];
-
-	[self assignRowHeightToElementInSection:section];
 }
 
-- (void)onSimpleAdvanced:(QButtonElement *)element {
+- (void)onSimpleAdvanced {
+	A3ButtonElement *element = (A3ButtonElement *) [self.root elementWithKey:SC_KEY_SIMPLE_ADVANCED];
 	UITableViewCell *cell = [self.quickDialogTableView cellForElement:element];
 	[self.quickDialogTableView deselectRowAtIndexPath:[self.quickDialogTableView indexPathForCell:cell] animated:YES];
 
 	NSUInteger index = 2;
 	QSection *section = [self.root.sections objectAtIndex:1];
 	NSArray *changedRows = @[[NSIndexPath indexPathForRow:index inSection:1], [NSIndexPath indexPathForRow:index + 1 inSection:1]];
-	if (_calculatorType == A3SalesCalculatorTypeAdvanced) {
-
+	if (self.editingObject.isAdvanced.boolValue) {
 		[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(index, 2)]];
 		[self.quickDialogTableView deleteRowsAtIndexPaths:changedRows withRowAnimation:UITableViewRowAnimationBottom];
 		element.title = @"Advanced";
 
-		_calculatorType = A3SalesCalculatorTypeSimple;
+		_editingObject.isAdvanced = @NO;
 	} else {
 		[section insertElement:[self additionalOffElement] atIndex:index];
 		[section insertElement:[self taxElement] atIndex:index + 1];
 		[self.quickDialogTableView insertRowsAtIndexPaths:changedRows withRowAnimation:UITableViewRowAnimationBottom];
 		element.title = @"Simple";
 
-		_calculatorType = A3SalesCalculatorTypeAdvanced;
+		_editingObject.isAdvanced = @YES;
 	}
 	cell.textLabel.text = element.title;
 
-	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:_calculatorType] forKey:A3SalesCalcDefaultCalculatorType];
+	[A3UIKit setUserDefaults:_editingObject.isAdvanced forKey:A3SalesCalcDefaultShowAdvanced];
 
 	[self calculateSalePrice];
 }
 
 #pragma mark -- Override UIViewController
+- (void)viewDidLoad {
+	[super viewDidLoad];
+
+	[self addToolsButtonWithAction:@selector(onActionButton)];
+}
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
@@ -325,13 +239,50 @@
 	[super viewDidDisappear:animated];
 
 	[self addDataToHistory];
+}
 
+- (void)onActionButton {
+	FNLOG(@"Check");
+	[self presentActionMenuWithDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)presentHistoryViewController {
+	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
+	historyViewController.delegate = self;
+
+	if (DEVICE_IPAD) {
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+		[paperFoldMenuViewController presentRightWingWithViewController:historyViewController onClose:^{
+		}];
+	} else {
+		[self.navigationController pushViewController:historyViewController animated:YES];
+	}
+}
+
+- (void)reloadContentsWithObject:(SalesCalcHistory *)history {
+	self.editingObject.editing = @NO;
+	self.editingObject.created = [NSDate date];
+
+	history.editing = @YES;
+
+	NSError *error;
+	[history.managedObjectContext save:&error];
+
+	_editingObject = history;
+
+	[[NSUserDefaults standardUserDefaults] setObject:_editingObject.isKnownValueOriginalPrice forKey:A3SalesCalcDefaultKnownValueOriginalPrice];
+	[[NSUserDefaults standardUserDefaults] setObject:_editingObject.isAdvanced forKey:A3SalesCalcDefaultShowAdvanced];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	[self.quickDialogTableView reloadData];
+
+	[self calculateSalePrice];
 }
 
 #pragma mark -- QuickDialogStyleProvider
@@ -397,45 +348,10 @@
 	return (index >= A3SalesCalcEntryIndexPrice) && (index <= A3SalesCalcEntryIndexTax);
 }
 
-- (NSString *)currencyFormattedString:(NSString *)source {
-	if ([source floatValue] == 0.0) return @"";
-	return [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithFloat:[source floatValue]]];
-}
-
-- (NSString *)percentFormattedString:(NSString *)source {
-	if ([source floatValue] == 0.0) return @"";
-	return [self.percentNumberFormatter stringFromNumber:[NSNumber numberWithFloat:[source floatValue] / 100.0]];
-}
+#pragma mark -- QEntryElement delegate
 
 - (void)QEntryDidBeginEditingElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
-    cell.backgroundColor = [UIColor whiteColor];
-    
-	NSUInteger index = [self.keys indexOfObject:element.key];
-
-	self.editingElement = element;
-
-	if ([self entryIndexIsForNumbers:index]) {
-		cell.textField.inputView = self.numberKeyboardViewController.view;
-		self.numberKeyboardViewController.keyInputDelegate = cell.textField;
-		self.self.numberKeyboardViewController.entryTableViewCell = cell;
-		if ([element.key isEqualToString:SC_KEY_PRICE]) {
-			self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
-			[self.numberKeyboardViewController setKeyboardType:A3NumberKeyboardTypeCurrency];
-		} else {
-			[self.numberKeyboardViewController setKeyboardType:A3NumberKeyboardTypePercent];
-		}
-		NSNumberFormatter *decimalStyleFormatter = [[NSNumberFormatter alloc] init];
-		[decimalStyleFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		[decimalStyleFormatter setUsesGroupingSeparator:NO];
-
-		float value = [cell.textField.text floatValueEx];
-		if (value != 0.0) {
-			cell.textField.text = [decimalStyleFormatter stringFromNumber:[NSNumber numberWithDouble:value]];
-		} else {
-			cell.textField.text = @"";
-		}
-	}
-	cell.textField.inputAccessoryView = nil;
+	[super QEntryDidBeginEditingElement:element andCell:cell];
 }
 
 - (void)QEntryEditingChangedForElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
@@ -443,25 +359,12 @@
 	if (index == 0) {
 		// price
 		element.textValue = [self currencyFormattedString:cell.textField.text];
-		[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValuePrice];
+		self.editingObject.price = element.textValue;
 	} else if ([element.key isEqualToString:SC_KEY_NOTES]) {
-		[A3UIKit setUserDefaults:cell.textField.text forKey:A3SalesCalcDefaultSavedValueNotes];
+		self.editingObject.notes = cell.textField.text;
 	} else {
 		element.textValue = [self percentFormattedString:cell.textField.text];
-		switch (index) {
-			case 1:
-				// discount percent
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueDiscount];
-				break;
-			case 2:
-				// Additional discount percent
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueAdditionalOff];
-				break;
-			case 3:
-				// Tax
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueTax];
-				break;
-		}
+		[self.editingObject setValue:element.textValue forKey:element.key];
 	}
 
 	if ([self entryIndexIsForNumbers:index]) {
@@ -470,40 +373,15 @@
 }
 
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
-
-	self.editingElement = nil;
+	[super QEntryDidEndEditingElement:element andCell:cell];
 
 	NSUInteger index = [self.keys indexOfObject:element.key];
 	if (index == 0) {
 		// price
-		element.textValue = [self currencyFormattedString:cell.textField.text];
-		cell.textField.text = element.textValue;
-		[A3UIKit setUserDefaults:A3SalesCalcDefaultSavedValuePrice forKey:element.textValue];
-	} else if ([element.key isEqualToString:SC_KEY_NOTES]) {
-		element.textValue = cell.textField.text;
-		[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueNotes];
+		self.editingObject.price = element.textValue;
 	} else {
-		element.textValue = [self percentFormattedString:cell.textField.text];
-		cell.textField.text = element.textValue;
-		switch (index) {
-			case 1:
-				// discount percent
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueDiscount];
-				break;
-			case 2:
-				// Additional discount percent
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueAdditionalOff];
-				break;
-			case 3:
-				// Tax
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueTax];
-				break;
-			case 4:
-				// Notes
-				[A3UIKit setUserDefaults:element.textValue forKey:A3SalesCalcDefaultSavedValueNotes];
-				break;
-		}
+		element.textValue = cell.textField.text;
+		[self.editingObject setValue:element.textValue forKey:element.key];
 	}
 
 	if ([self entryIndexIsForNumbers:index]) {
@@ -513,31 +391,13 @@
 	[self addHistoryWithAlertView];
 }
 
-- (void)onSelectOriginalPrice:(QSelectItemElement *)selectItemElement {
-	QRadioSection *parentSection = (QRadioSection *)selectItemElement.parentSection;
-	parentSection.selected = 0;
-	[self.quickDialogTableView reloadData];
-
-	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:A3SalesCalcKnownValueOriginalPrice] forKey:A3SalesCalcDefaultSavedKnownValue];
-	[self calculateSalePrice];
-}
-
-- (void)onSelectSalePrice:(QSelectItemElement *)selectItemElement {
-	QRadioSection *parentSection = (QRadioSection *)selectItemElement.parentSection;
-	parentSection.selected = 1;
-	[self.quickDialogTableView reloadData];
-
-	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:A3SalesCaleKnownValueSalePrice] forKey:A3SalesCalcDefaultSavedKnownValue];
-	[self calculateSalePrice];
-}
-
 - (void)reloadPriceElement {
 	// Re-assign priceElement textField.
 	QEntryElement *priceElement = (QEntryElement *)[self.root elementWithKey:SC_KEY_PRICE];
 	float price;
 	price = [priceElement.textValue floatValueEx];
-	priceElement.textValue = price != 0 ? [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:price]] : @"";
-	priceElement.placeholder = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:0.0]];
+	priceElement.textValue = price != 0 ? [self.currencyFormatter stringFromNumber:[NSNumber numberWithDouble:price]] : @"";
+	priceElement.placeholder = [self.currencyFormatter stringFromNumber:[NSNumber numberWithDouble:0.0]];
 	[self.quickDialogTableView reloadCellForElements:priceElement, nil];
 }
 
@@ -556,7 +416,7 @@
 		// Know original price, get sale price
 		originalPrice = price;
 
-		if (self.calculatorType == A3SalesCalculatorTypeSimple) {
+		if (!self.editingObject.isAdvanced) {
 			salePrice = originalPrice * (1.0 - discount / 100.0);
 		} else {
 			additionalOff = [additionalOffElement.textValue floatValueEx];
@@ -567,7 +427,7 @@
 	} else {
 		// Know sale price, get original price
 		salePrice = price;
-		if (self.calculatorType == A3SalesCalculatorTypeSimple) {
+		if (!self.editingObject.isAdvanced) {
 			originalPrice = salePrice / (1.0 - discount / 100.0);
 		} else {
 			additionalOff = [additionalOffElement.textValue floatValueEx];
@@ -580,28 +440,17 @@
 
 	amountSaved = originalPrice - salePrice;
 
-	self.tableHeaderView.chartLeftValueLabel.text = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:salePrice]];
-	self.tableHeaderView.chartRightValueLabel.text = [self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:amountSaved]];
-	[self.tableHeaderView setBottomLabelText:[self.currencyNumberFormatter stringFromNumber:[NSNumber numberWithDouble:originalPrice]]];
+	self.editingObject.salePrice = [self.currencyFormatter stringFromNumber:[NSNumber numberWithDouble:salePrice]];
+	self.editingObject.amountSaved = [self.currencyFormatter stringFromNumber:[NSNumber numberWithDouble:amountSaved]];
+	self.editingObject.originalPrice = [self.currencyFormatter stringFromNumber:[NSNumber numberWithDouble:originalPrice]];
+
+	self.tableHeaderView.chartLeftValueLabel.text = self.editingObject.salePrice;
+	self.tableHeaderView.chartRightValueLabel.text = self.editingObject.amountSaved;
+	[self.tableHeaderView setBottomLabelText:self.editingObject.originalPrice];
 
 	self.tableHeaderView.percentBarChart.leftValue = salePrice;
 	self.tableHeaderView.percentBarChart.rightValue = amountSaved;
 	[self.tableHeaderView.percentBarChart setNeedsDisplay];
-}
-
-- (void)applyCurrentContentsWithSalesCalcHistory:(SalesCalcHistory *)history {
-	_calculatorType = history.isAdvanced ? A3SalesCalculatorTypeAdvanced : A3SalesCalculatorTypeSimple;
-	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:_calculatorType] forKey:A3SalesCalcDefaultCalculatorType];
-
-	[A3UIKit setUserDefaults:[NSNumber numberWithUnsignedInteger:history.isOriginalPrice ? A3SalesCalcKnownValueOriginalPrice : A3SalesCaleKnownValueSalePrice] forKey:A3SalesCalcDefaultSavedKnownValue];
-	[A3UIKit setUserDefaults:history.isOriginalPrice ? history.originalPrice : history.salePrice forKey:A3SalesCalcDefaultSavedValuePrice];
-	[A3UIKit setUserDefaults:history.discount forKey:A3SalesCalcDefaultSavedValueDiscount];
-	[A3UIKit setUserDefaults:history.additionaloff forKey:A3SalesCalcDefaultSavedValueAdditionalOff];
-	[A3UIKit setUserDefaults:history.tax forKey:A3SalesCalcDefaultSavedValueTax];
-	[A3UIKit setUserDefaults:history.notes forKey:A3SalesCalcDefaultSavedValueNotes];
-
-	[self calculateSalePrice];
-	[self reloadPriceElement];
 }
 
 - (void)presentCurrencySelectViewController {
@@ -632,9 +481,17 @@
 
 	[[[A3AppDelegate instance] paperFoldMenuViewController] removeRightWingViewController];
 
-	self.currencyNumberFormatter = nil;
+	self.currencyFormatter = nil;
 	[self calculateSalePrice];
 	[self reloadPriceElement];
+}
+
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcDefaultCurrencyCode];
+	if (![currencyCode length]) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
 }
 
 @end

@@ -11,7 +11,6 @@
 
 @interface A3UIKit : NSObject
 
-+ (void)drawBookendEffectRect:(CGRect)rect context:(CGContextRef)context;
 + (UIImage *)backspaceImage;
 + (UIImage *)backspaceImage2;
 + (UIColor *)colorForDashLineColor;

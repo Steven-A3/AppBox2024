@@ -7,11 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3SalesCalcQuickDialogViewController.h"
+
+@class SalesCalcHistory;
+
+@protocol A3SalesCalcQuickDialogDelegate <NSObject>
+- (void)reloadContentsWithObject:(SalesCalcHistory *)object;
+@end
 
 @class A3SalesCalcQuickDialogViewController;
 
 @interface A3SalesCalcHistoryViewController : UIViewController
 <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
-@property (nonatomic, weak) A3SalesCalcQuickDialogViewController *salesCalcQuickDialogViewController;
+@property (nonatomic, weak) id<A3SalesCalcQuickDialogDelegate> delegate;
 
 @end

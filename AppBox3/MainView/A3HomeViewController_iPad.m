@@ -15,6 +15,7 @@
 #import "A3GradientView.h"
 #import "QuickDialog.h"
 #import "A3TimeLineTableViewController.h"
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3HomeViewController_iPad ()
 @property (nonatomic, strong) IBOutlet UIScrollView *mainScrollView;
@@ -90,9 +91,11 @@
 	[self.timelineRightGradient setNeedsDisplay];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+
+	self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+	[self setBlackBackgroundImageForNavigationBar];
 
 	[self addLeftBarButton];
 	[self addRightBarButton];

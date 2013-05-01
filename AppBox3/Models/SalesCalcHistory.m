@@ -2,7 +2,7 @@
 //  SalesCalcHistory.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 1/30/13.
+//  Created by Byeong Kwon Kwak on 4/30/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -11,15 +11,16 @@
 
 @implementation SalesCalcHistory
 
-@dynamic additionaloff;
-@dynamic createdDate;
+@dynamic additionalOff;
+@dynamic amountSaved;
+@dynamic created;
 @dynamic discount;
 @dynamic isAdvanced;
-@dynamic isOriginalPrice;
+@dynamic isKnownValueOriginalPrice;
 @dynamic notes;
+@dynamic originalPrice;
 @dynamic salePrice;
 @dynamic tax;
-@dynamic originalPrice;
-@dynamic amountSaved;
+@dynamic editing;
 
 @end

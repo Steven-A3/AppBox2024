@@ -32,4 +32,5 @@
 - (void)reloadPrevNextButtons;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toOrientation;
+
 @end

@@ -212,7 +212,7 @@
 
 - (void)setTableView:(UITableView *)tableView {
 	_tableView = tableView;
-	tableView.rowHeight = A3_LOAN_CALC_ROW_HEIGHT;
+	tableView.rowHeight = A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -253,7 +253,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return A3_LOAN_CALC_ROW_HEIGHT;
+	return A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -847,9 +847,9 @@
 - (void)reloadMainScrollViewContentSize {
 	CGFloat height = 289.0;
 	CGFloat tableViewHeight = 0.0;
-	tableViewHeight += _object.showAdvanced.boolValue ? A3_LOAN_CALC_ROW_HEIGHT * 7.0 : A3_LOAN_CALC_ROW_HEIGHT * 4.0;
-	tableViewHeight += _object.showDownPayment.boolValue ? A3_LOAN_CALC_ROW_HEIGHT : 0.0;
-	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + A3_LOAN_CALC_ROW_HEIGHT * 3.0 : 0.0;
+	tableViewHeight += _object.showAdvanced.boolValue ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD * 7.0 : A3_TABLE_VIEW_ROW_HEIGHT_IPAD * 4.0;
+	tableViewHeight += _object.showDownPayment.boolValue ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : 0.0;
+	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + A3_TABLE_VIEW_ROW_HEIGHT_IPAD * 3.0 : 0.0;
 	tableViewHeight += 52.0;
 
 	FNLOG(@"tableViewHeight %f", tableViewHeight);

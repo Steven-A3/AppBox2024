@@ -12,13 +12,8 @@
 #pragma mark ------ Sales Calc
 
 #define A3SalesCalcDefaultCurrencyCode              @"A3SalesCalcDefaultCurrencyCode"
-#define A3SalesCalcDefaultCalculatorType            @"A3SalesCalcDefaultCalculatorType"
-#define A3SalesCalcDefaultSavedKnownValue 			@"A3SalesCalcDefaultSavedKnownValue"
-#define A3SalesCalcDefaultSavedValuePrice			@"A3SalesCalcDefaultSavedValuePrice"
-#define A3SalesCalcDefaultSavedValueDiscount		@"A3SalesCalcDefaultSavedValueDiscount"
-#define A3SalesCalcDefaultSavedValueAdditionalOff	@"A3SalesCalcDefaultSavedValueAdditionalOff"
-#define A3SalesCalcDefaultSavedValueTax				@"A3SalesCalcDefaultSavedValueTax"
-#define A3SalesCalcDefaultSavedValueNotes			@"A3SalesCalcDefaultSavedValueNotes"
+#define A3SalesCalcDefaultKnownValueOriginalPrice	@"A3SalesCalcDefaultKnownValueOriginalPrice"
+#define A3SalesCalcDefaultShowAdvanced				@"A3SalesCalcDefaultShowAdvanced"
 
 #pragma mark ------ Loan Calc
 

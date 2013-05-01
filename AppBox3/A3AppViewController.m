@@ -7,9 +7,19 @@
 //
 
 #import "A3AppViewController.h"
+#import "UIViewController+A3AppCategory.h"
+#import "common.h"
 
 
 @implementation A3AppViewController {
 
 }
+
+- (void)viewWillDisappear:(BOOL)animated {
+	FNLOG(@"check");
+	[super viewWillDisappear:animated];
+
+	[self closeActionMenuViewWithAnimation:NO];
+}
+
 @end

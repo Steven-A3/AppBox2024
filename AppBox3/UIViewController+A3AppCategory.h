@@ -26,7 +26,8 @@
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 
 - (void)presentActionMenuWithDelegate:(id <A3ActionMenuViewControllerDelegate>)delegate;
-- (void)closeActionMenuView;
+
+- (void)closeActionMenuViewWithAnimation:(BOOL)animate;
 - (void)addToolsButtonWithAction:(SEL)action;
 - (NSString *)zeroCurrency;
 
@@ -35,4 +36,7 @@
 
 - (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view;
 
+- (NSString *)currencyFormattedString:(NSString *)source;
+
+- (NSString *)percentFormattedString:(NSString *)source;
 @end
