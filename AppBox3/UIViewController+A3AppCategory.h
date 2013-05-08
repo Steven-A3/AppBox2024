@@ -39,4 +39,6 @@
 - (NSString *)currencyFormattedString:(NSString *)source;
 
 - (NSString *)percentFormattedString:(NSString *)source;
+
+- (void)alertCheck;
 @end

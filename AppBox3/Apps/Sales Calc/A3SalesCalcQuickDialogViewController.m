@@ -12,9 +12,7 @@
 #import "A3UserDefaults.h"
 #import "SalesCalcHistory.h"
 #import "A3AppDelegate.h"
-#import "KGDiscreetAlertView.h"
 #import "A3UIKit.h"
-#import "A3UIStyle.h"
 #import "NSString+conversion.h"
 #import "A3HorizontalBarContainerView.h"
 #import "UIViewController+A3AppCategory.h"
@@ -23,7 +21,7 @@
 #import "NSManagedObject+Clone.h"
 #import "common.h"
 
-@interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate>
+@interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate, A3ActionMenuViewControllerDelegate, A3QuickDialogCellStyleDelegate>
 
 @property (nonatomic, strong) NSArray *keys;
 @property (nonatomic, strong) SalesCalcHistory *editingObject;
@@ -109,6 +107,8 @@
 	A3PercentEntryElement *additionalOff = [[A3PercentEntryElement alloc] initWithTitle:@"Additional Off:" Value:self.editingObject.additionalOff Placeholder:@"0%"];
 	additionalOff.key = SC_KEY_ADDITIONAL_OFF;
 	additionalOff.delegate = self;
+	additionalOff.cellStyleDelegate = self;
+	additionalOff.height = [self heightForElement:additionalOff];
 	return additionalOff;
 }
 
@@ -116,6 +116,8 @@
 	A3PercentEntryElement *tax = [[A3PercentEntryElement alloc] initWithTitle:@"Tax:" Value:self.editingObject.tax Placeholder:@"0%"];
 	tax.key = SC_KEY_TAX;
 	tax.delegate = self;
+	tax.cellStyleDelegate = self;
+	tax.height = [self heightForElement:tax];
 	return tax;
 }
 
@@ -161,11 +163,13 @@
 	A3CurrencyEntryElement *price = [[A3CurrencyEntryElement alloc] initWithTitle:@"Price:" Value:self.editingObject.price Placeholder:self.zeroCurrency];
 	price.key = SC_KEY_PRICE;
 	price.delegate = self;
+	price.cellStyleDelegate = self;
 	[section addElement:price];
 
 	A3PercentEntryElement *discount = [[A3PercentEntryElement alloc] initWithTitle:@"Discount:" Value:self.editingObject.discount Placeholder:@"0%"];
 	discount.key = SC_KEY_DISCOUNT;
 	discount.delegate = self;
+	discount.cellStyleDelegate = self;
 	[section addElement:discount];
 
 	if (self.editingObject.isAdvanced) {
@@ -176,6 +180,7 @@
 	A3EntryElement *notes = [[A3EntryElement alloc] initWithTitle:@"Notes" Value:self.editingObject.notes Placeholder:@"(Optional)"];
 	notes.key = SC_KEY_NOTES;
 	notes.delegate = self;
+	notes.cellStyleDelegate = self;
 	[section addElement:notes];
 
 	NSString *buttonTitle = self.editingObject.isAdvanced ? @"Advanced" : @"Simple";
@@ -184,6 +189,7 @@
 	simple.onSelected = ^{
 		[self onSimpleAdvanced];
 	};
+	simple.cellStyleDelegate = self;
 	[section addElement:simple];
 }
 
@@ -225,10 +231,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-
-	self.quickDialogTableView.styleProvider = self;
-	self.quickDialogTableView.backgroundView = nil;
-	self.quickDialogTableView.backgroundColor = [A3UIStyle contentsBackgroundColor];
 
 	self.quickDialogTableView.tableHeaderView = self.tableHeaderView;
 
@@ -288,34 +290,18 @@
 #pragma mark -- QuickDialogStyleProvider
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	cell.backgroundColor = [self tableViewBackgroundColor];
 
-	switch (indexPath.section) {
-		case 0:
-			cell.textLabel.font = [A3UIStyle fontForTableViewCellLabel];
-			if ([element.parentSection isKindOfClass:[QRadioSection class]]) {
-				QRadioSection *radioSection = (QRadioSection *)element.parentSection;
-				if (radioSection.selected == indexPath.row) {
-					cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelSelected];
-				} else {
-					cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
-				}
-			}
-			break;
-		case 1:
-			if ([element isKindOfClass:[QButtonElement class]]) {
-				cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellTextField];
-				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellButton];
+	if (indexPath.section == 0) {
+		cell.textLabel.font = [self fontForCellLabel];
+		if ([element isKindOfClass:[QSelectItemElement class]]) {
+			QRadioSection *radioSection = (QRadioSection *)element.parentSection;
+			if (radioSection.selected == indexPath.row) {
+				cell.textLabel.textColor = [self colorForCellLabelSelected];
 			} else {
-				cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
-				cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
+				cell.textLabel.textColor = [self colorForCellLabelNormal];
 			}
-			if ([cell isKindOfClass:[QEntryTableViewCell class]]) {
-				QEntryTableViewCell *entryTableViewCell = (QEntryTableViewCell *)cell;
-				[entryTableViewCell.textField setFont:[A3UIStyle fontForTableViewEntryCellTextField]];
-				entryTableViewCell.textField.textAlignment = NSTextAlignmentLeft;
-			}
-			break;
+		}
 	}
 }
 

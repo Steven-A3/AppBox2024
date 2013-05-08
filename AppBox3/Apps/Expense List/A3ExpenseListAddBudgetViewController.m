@@ -9,9 +9,11 @@
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3ExpenseListPreferences.h"
-#import "A3UIStyle.h"
 #import "A3BarButton.h"
-#import "A3TopGradientBackgroundView.h"
+#import "A3UIDevice.h"
+#import "common.h"
+#import "A3PaperFoldMenuViewController.h"
+#import "A3AppDelegate.h"
 
 static NSString *A3ExpenseListAddBudgetKeyBugdet = @"Bugdet";
 static NSString *A3ExpenseListAddBudgetKeyCategory = @"Category";
@@ -22,7 +24,7 @@ static NSString *A3ExpenseListAddBudgetKeyLocation = @"Location";
 static NSString *A3ExpenseListAddBudgetKeyNotes = @"Notes";
 static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced";
 
-@interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider>
+@interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3QuickDialogCellStyleDelegate>
 @property (nonatomic, strong) A3ExpenseListPreferences *pref;
 @end
 
@@ -35,6 +37,8 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 		// Custom initialization
 
 		self.title = @"Add Budget";
+
+		[self addTopGradientLayerToView:self.view];
 	}
     return self;
 }
@@ -49,28 +53,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	self.navigationController.navigationBar.clipsToBounds = YES;
 	self.navigationItem.rightBarButtonItem = [self doneButton];
 
-	self.view.backgroundColor = [A3UIStyle contentsBackgroundColor];
-
-	self.quickDialogController.view.frame = self.view.bounds;
-
-	QuickDialogTableView *tableView = self.quickDialogController.quickDialogTableView;
-
-	tableView.backgroundView = nil;
-	tableView.backgroundColor = [UIColor clearColor];
-	tableView.styleProvider = self;
-
-	CGRect frame = self.view.bounds;
-	frame.size.height = 10.0;
-	UIView *headerView = [[UIView alloc] initWithFrame:frame];
-	headerView.backgroundColor = [UIColor clearColor];
-	tableView.tableHeaderView = headerView;
-
-	[self.view addSubview:self.quickDialogController.view];
-
-	frame = self.view.bounds;
-	frame.size.height = 10.0;
-	A3TopGradientBackgroundView *backgroundView = [[A3TopGradientBackgroundView alloc] initWithFrame:frame];
-	[self.view addSubview:backgroundView];
 }
 
 
@@ -90,10 +72,24 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (void)doneButtonAction {
-	[self dismissViewControllerAnimated:YES completion:nil];
+	if (DEVICE_IPAD){
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+		[paperFoldMenuViewController removeRightWingViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
-- (QRootElement *)configureRootElements {
+- (UIColor *)tableViewBackgroundColor {
+	return [UIColor colorWithRed:241.0/255.0 green:242.0/255.0 blue:243.0/255.0 alpha:1.0];
+}
+
+- (UIColor *)colorForCellBackground {
+	FNLOG();
+	return [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
+}
+
+- (QRootElement *)rootElement {
 	QSection *section = [[QSection alloc] init];
 	[section addElement:[self budgetElement]];
 	[section addElement:[self categoryElement]];
@@ -101,24 +97,25 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	[section addElement:[self showSimpleAdvancedElement]];
 
 	if ([self.pref addBudgetShowAdvanced]) {
-		[self insertAdvanedElement];
+		[self insertAdvanedElement:section ];
 	}
 
-	QRootElement *rootElement = [[QRootElement alloc] init];
-	rootElement.title = @"Add Budget";
-	rootElement.grouped = YES;
-	[rootElement addSection:section];
+	QRootElement *root = [[QRootElement alloc] init];
+	root.title = @"Add Budget";
+	root.grouped = YES;
+	[root addSection:section];
 
-	return rootElement;
+	return root;
 }
 
 - (QButtonElement *)showSimpleAdvancedElement {
-	QButtonElement *element = [[QButtonElement alloc] init];
+	A3ButtonElement *element = [[A3ButtonElement alloc] initWithTitle:@""];
 	element.title = [self.pref addBudgetShowAdvanced] ? @"Simple" : @"Advanced";
 	element.key = A3ExpenseListAddBudgetKeyShowSimpleAdvanced;
+	element.cellStyleDelegate = self;
 	element.onSelected = ^{
 		QuickDialogTableView *tableView = self.quickDialogTableView;
-		QButtonElement *buttonElement = (QButtonElement *) [self.root elementWithKey:A3ExpenseListAddBudgetKeyShowSimpleAdvanced];
+		A3ButtonElement *buttonElement = (A3ButtonElement *) [self.root elementWithKey:A3ExpenseListAddBudgetKeyShowSimpleAdvanced];
 		NSIndexPath *indexPath = [tableView indexForElement:buttonElement];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -132,7 +129,8 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 			[self.pref setAddBudgetShowAdvanced:NO];
 		} else {
-			[self insertAdvanedElement];
+			QSection *section = [self.quickDialogController.quickDialogTableView.root.sections objectAtIndex:0];
+			[self insertAdvanedElement:section ];
 			[tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
 
 			[self.pref setAddBudgetShowAdvanced:YES];
@@ -141,14 +139,13 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	return element;
 }
 
-- (void)insertAdvanedElement {
-	QSection *sectionZero = [self.quickDialogController.quickDialogTableView.root.sections objectAtIndex:0];
-	if ([sectionZero.elements count] != 4) return;
+- (void)insertAdvanedElement:(QSection *)section {
+	if ([section.elements count] != 4) return;
 
-	[sectionZero insertElement:[self titleElement] atIndex:3];
-	[sectionZero insertElement:[self dateElement] atIndex:4];
-	[sectionZero insertElement:[self locationElement] atIndex:5];
-	[sectionZero insertElement:[self notesElement] atIndex:6];
+	[section insertElement:[self titleElement] atIndex:3];
+	[section insertElement:[self dateElement] atIndex:4];
+	[section insertElement:[self locationElement] atIndex:5];
+	[section insertElement:[self notesElement] atIndex:6];
 }
 
 - (void)makeItSimple {
@@ -158,76 +155,75 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	[sectionZero.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(3, 4)] ];
 }
 
-- (QEntryElement *)titleElement {
-	QEntryElement *element = [[QEntryElement alloc] initWithTitle:@"Title" Value:@"" Placeholder:@"(Optional)"];
-	element.key = A3ExpenseListAddBudgetKeyTitle;
-	element.delegate = self;
-	return element;
-}
-
-- (QDateTimeInlineElement *)dateElement {
-	QDateTimeInlineElement *element = [[QDateTimeInlineElement alloc] initWithTitle:@"Date" date:[NSDate date]];
-	element.key = A3ExpenseListAddBudgetKeyDate;
-	element.delegate = self;
-	return element;
-}
-
-- (QLabelElement *)locationElement {
-	QLabelElement *element = [[QLabelElement alloc] initWithTitle:@"Location" Value:@"Current Location"];
-	element.key = A3ExpenseListAddBudgetKeyLocation;
-	element.onSelected = ^{
-	};
-	return element;
-}
-
-- (QEntryElement *)notesElement {
-	QEntryElement *element = [[QEntryElement alloc] initWithTitle:@"Notes" Value:@"" Placeholder:@"(Optional)"];
-	element.key = A3ExpenseListAddBudgetKeyNotes;
-	element.delegate = self;
-	return element;
-}
-
 - (QEntryElement *)budgetElement {
-	QEntryElement *element = [[QEntryElement alloc] initWithTitle:@"Budget" Value:@"" Placeholder:[self zeroCurrency]];
+	A3CurrencyEntryElement *element = [[A3CurrencyEntryElement alloc] initWithTitle:@"Budget" Value:@"" Placeholder:[self zeroCurrency]];
 	element.key = A3ExpenseListAddBudgetKeyBugdet;
 	element.delegate = self;
+	element.cellStyleDelegate = self;
 	return element;
 }
 
-- (QRadioElement *)categoryElement {
-	QRadioElement *element = [[QRadioElement alloc] initWithItems:@[@""] selected:0 title:@"Category"];
+- (QEntryElement *)categoryElement {
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Category" Value:@"Shopping" Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyCategory;
 	element.delegate = self;
-	element.controllerAction = @"selectCategory";
+	element.cellStyleDelegate = self;
+	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
 	return element;
 }
 
 - (QEntryElement *)paymentType {
-	QEntryElement *element = [[QEntryElement alloc] initWithTitle:@"Payment Type" Value:@"Cash" Placeholder:@""];
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Payment Type" Value:@"Cash" Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyPaymentType;
 	element.delegate = self;
+	element.cellStyleDelegate = self;
+	return element;
+}
+
+- (QEntryElement *)titleElement {
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Title" Value:@"" Placeholder:@"(Optional)"];
+	element.key = A3ExpenseListAddBudgetKeyTitle;
+	element.delegate = self;
+	element.cellStyleDelegate = self;
+	return element;
+}
+
+- (QDateTimeInlineElement *)dateElement {
+	A3DateTimeInlineElement *element = [[A3DateTimeInlineElement alloc] initWithTitle:@"Date" date:[NSDate date]];
+	element.key = A3ExpenseListAddBudgetKeyDate;
+	element.delegate = self;
+	element.cellStyleDelegate = self;
+	return element;
+}
+
+- (QEntryElement *)locationElement {
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Location" Value:@"Current Location" Placeholder:@""];
+	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	element.key = A3ExpenseListAddBudgetKeyLocation;
+	element.delegate = self;
+	element.cellStyleDelegate = self;
+	return element;
+}
+
+- (QEntryElement *)notesElement {
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Notes" Value:@"" Placeholder:@"(Optional)"];
+	element.key = A3ExpenseListAddBudgetKeyNotes;
+	element.delegate = self;
+	element.cellStyleDelegate = self;
 	return element;
 }
 
 #pragma mark - QuickDialogTableViewStyleProvider
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	[super cell:cell willAppearForElement:element atIndexPath:indexPath];
 
-	if ([cell isKindOfClass:[QEntryTableViewCell class]]) {
-		cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
-		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
+	cell.backgroundColor = [self colorForCellBackground];
 
-		QEntryTableViewCell *entryCell = (QEntryTableViewCell *) cell;
-		entryCell.textField.font = [A3UIStyle fontForTableViewEntryCellTextField];
-		entryCell.textField.textAlignment = NSTextAlignmentLeft;
-
-	} else if ([element isKindOfClass:[QButtonElement class]]) {
-		cell.textLabel.font = [A3UIStyle fontForTableViewCellLabel];
-		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellButton];
-	} else {
-		cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
-		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
+	if ([element isKindOfClass:[QRadioElement class]]) {
+		cell.detailTextLabel.font = [self fontForEntryCellTextField];
+		cell.detailTextLabel.textColor = [self colorForEntryCellTextField];
 	}
 }
 
@@ -236,6 +232,27 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 		_pref = [[A3ExpenseListPreferences alloc] init];
 	}
 	return _pref;
+}
+
+#pragma mark -- Font and Colors
+
+- (UIFont *)fontForCellLabel {
+	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 17.0;
+	return [UIFont boldSystemFontOfSize:fontSize];
+}
+
+- (UIFont *)fontForEntryCellLabel {
+	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 17.0;
+	return [UIFont systemFontOfSize:fontSize];
+}
+
+- (UIFont *)fontForEntryCellTextField {
+	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 17.0;
+	return [UIFont boldSystemFontOfSize:fontSize];
+}
+
+- (CGFloat)heightForElement:(QElement *)element {
+	return 44.0;
 }
 
 @end

@@ -10,7 +10,6 @@
 #import "EKKeyboardAvoidingScrollViewManager.h"
 #import "UIViewController+A3AppCategory.h"
 #import "common.h"
-#import "A3UIStyle.h"
 #import "NSString+conversion.h"
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
@@ -69,7 +68,7 @@
 
 	self.quickDialogController.quickDialogTableView.styleProvider = self;
 	self.quickDialogController.quickDialogTableView.backgroundView = nil;
-	self.quickDialogController.quickDialogTableView.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	self.quickDialogController.quickDialogTableView.backgroundColor = [self tableViewBackgroundColor];
 
 	[[EKKeyboardAvoidingScrollViewManager sharedInstance] registerScrollViewForKeyboardAvoiding:self.quickDialogTableView];
 
@@ -123,33 +122,10 @@
 #pragma mark -- QuickDialog CELL Style Provider Delegate
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	FNLOG(@"Check");
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
-
-	if ([element isKindOfClass:[QButtonElement class]]) {
-		cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellTextField];
-		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellButton];
-	} else
-	if ([element isKindOfClass:[QEntryElement class]]) {
-		cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
-		cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
-
-		QEntryTableViewCell *entryCell = (QEntryTableViewCell *) cell;
-		entryCell.textField.font = [A3UIStyle fontForTableViewEntryCellTextField];
-		entryCell.textField.textColor = [A3UIStyle colorForTableViewCellLabelSelected];
-		entryCell.textField.textAlignment = NSTextAlignmentLeft;
-	}
+	cell.backgroundColor = [self tableViewBackgroundColor];
 }
 
-- (void)prepareNumberKeyboard:(QEntryTableViewCell *)cell forElelement:(QEntryElement *)element {
-	cell.textField.inputView = self.numberKeyboardViewController.view;
-	self.numberKeyboardViewController.keyInputDelegate = cell.textField;
-	self.numberKeyboardViewController.entryTableViewCell = cell;
-	self.numberKeyboardViewController.element = element;
-
-	cell.textField.text = [cell.textField.text stringByDecimalConversion];
-	[self.numberKeyboardViewController reloadPrevNextButtons];
-}
+#pragma mark -- QEntryElement Delegate
 
 - (void)QEntryDidBeginEditingElement:(QEntryElement *)element  andCell:(QEntryTableViewCell *)cell {
 	FNLOG(@"Check");
@@ -204,7 +180,7 @@
 	FNLOG(@"Check");
 
 	self.editingElement = nil;
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	cell.backgroundColor = [self tableViewBackgroundColor];
 
 	if ([element isKindOfClass:[A3CurrencyEntryElement class]]) {
 		element.textValue = [self currencyFormattedString:cell.textField.text];
@@ -215,6 +191,16 @@
 	} else {
 		element.textValue = cell.textField.text;
 	}
+}
+
+- (void)prepareNumberKeyboard:(QEntryTableViewCell *)cell forElelement:(QEntryElement *)element {
+	cell.textField.inputView = self.numberKeyboardViewController.view;
+	self.numberKeyboardViewController.keyInputDelegate = cell.textField;
+	self.numberKeyboardViewController.entryTableViewCell = cell;
+	self.numberKeyboardViewController.element = element;
+
+	cell.textField.text = [cell.textField.text stringByDecimalConversion];
+	[self.numberKeyboardViewController reloadPrevNextButtons];
 }
 
 @end

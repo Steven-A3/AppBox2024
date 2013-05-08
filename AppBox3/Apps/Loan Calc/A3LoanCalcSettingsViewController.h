@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuickDialog.h>
+#import "A3QuickDialogContainerController.h"
 
-@interface A3LoanCalcSettingsViewController : QuickDialogController <QuickDialogStyleProvider>
+@interface A3LoanCalcSettingsViewController : A3QuickDialogContainerController <QuickDialogStyleProvider>
 
 @end

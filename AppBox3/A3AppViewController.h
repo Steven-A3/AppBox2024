@@ -8,6 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface A3AppViewController : UIViewController
+
+- (UIFont *)fontForCellLabel;
+- (UIFont *)fontForEntryCellLabel;
+- (UIFont *)fontForEntryCellTextField;
+- (UIColor *)tableViewBackgroundColor;
+- (UIColor *)colorForCellLabelNormal;
+- (UIColor *)colorForCellLabelSelected;
+- (UIColor *)colorForCellButton;
+- (UIColor *)colorForEntryCellTextField;
+- (CGFloat)heightForElement:(QElement *)element;
+
 @end

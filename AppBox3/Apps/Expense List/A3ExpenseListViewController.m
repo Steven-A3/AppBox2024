@@ -7,7 +7,6 @@
 //
 
 #import "A3ExpenseListViewController.h"
-#import "A3UIKit.h"
 #import "A3UIDevice.h"
 #import "A3HorizontalBarContainerView.h"
 #import "A3SmallButton.h"
@@ -18,7 +17,8 @@
 #import "A3VerticalLinesView.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3ExpenseListAddBudgetViewController.h"
-#import "A3UIStyle.h"
+#import "A3PaperFoldMenuViewController.h"
+#import "A3AppDelegate.h"
 
 @interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate>
 
@@ -36,7 +36,6 @@
     if (self) {
         // Custom initialization
 		self.title = @"Expense List";
-        [self addTopGradientLayerToView:self.view];
 	}
     return self;
 }
@@ -44,8 +43,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-	[self addToolsButtonWithAction:@selector(onActionButton)];
 
 	A3SmallButton *editButton = [[A3SmallButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 32.0, 30.0)];
 	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"edit" ofType:@"png"];
@@ -99,20 +96,25 @@
 		tableViewBackground.positions = @[@40.0, @42.0, @140.0, @210.0, @240.0];
 	}
 
-	tableViewBackground.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	tableViewBackground.backgroundColor = [self tableViewBackgroundColor];
 	[_myTableView addSubview:tableViewBackground];
 	[_myTableView setScrollEnabled:NO];
 
 	[_myTableView addSubview:self.detailsViewController.view];
+
+	[self addTopGradientLayerToView:self.view];
+	[self addToolsButtonWithAction:@selector(onActionButton:)];
 }
 
 - (void)editButtonAction {
-	if (!DEVICE_IPAD){
-		A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithNibName:nil bundle:nil];
+	A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithNibName:nil bundle:nil];
+	if (DEVICE_IPAD){
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
+	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:navController animated:YES completion:nil];
 	}
-
 }
 
 - (A3ExpenseListDetailsTableViewController *)detailsViewController {
@@ -136,8 +138,12 @@
 	[self.detailsViewController calculate];
 }
 
-- (void)onActionButton {
+- (void)onActionButton:(UIButton *)button {
+	button.enabled = NO;
+
 	[self presentActionMenuWithDelegate:self];
+
+	button.enabled = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -145,5 +151,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end

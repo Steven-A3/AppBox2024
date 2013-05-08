@@ -8,7 +8,6 @@
 
 #import "A3LoanCalcPieChartViewController.h"
 #import "common.h"
-#import "A3UIStyle.h"
 
 @interface A3LoanCalcPieChartViewController ()
 
@@ -70,7 +69,7 @@
 	graph.paddingBottom = 0.0f;
 	graph.axisSet = nil;
 	graph.plotAreaFrame.borderLineStyle = nil;
-	graph.backgroundColor = [A3UIStyle contentsBackgroundColor].CGColor;
+	graph.backgroundColor = [self tableViewBackgroundColor].CGColor;
 
 	CPTMutableLineStyle *clearLineStyle = [CPTMutableLineStyle lineStyle];
 	clearLineStyle.lineColor = [CPTColor clearColor];
@@ -97,7 +96,7 @@
 	pieChart.shadow = whiteShadow;
 	pieChart.overlayFill = [CPTFill fillWithGradient:overlayGradient];
 	pieChart.labelOffset = -30.0f;
-	pieChart.backgroundColor = [A3UIStyle contentsBackgroundColor].CGColor;
+	pieChart.backgroundColor = [self tableViewBackgroundColor].CGColor;
 
 	[graph addPlot:pieChart];
 

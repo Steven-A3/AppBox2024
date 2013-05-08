@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3AppViewController.h"
 
-@interface A3ExpenseListViewController : UIViewController
+@interface A3ExpenseListViewController : A3AppViewController
 
 @end
 

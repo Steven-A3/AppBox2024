@@ -8,8 +8,6 @@
 
 #import "A3LoanCalcComparisonTableViewDataSource.h"
 #import "CommonUIDefinitions.h"
-#import "A3LoanCalcPreferences.h"
-#import "A3UIStyle.h"
 #import "A3ButtonTextField.h"
 #import "A3Formatter.h"
 #import "A3NumberKeyboardViewController_iPad.h"
@@ -75,7 +73,9 @@
 	textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	textField.delegate = self;
 	textField.textAlignment = _leftAlignment ? NSTextAlignmentLeft : NSTextAlignmentRight;
-	textField.font = [A3UIStyle fontForTableViewEntryCellTextField];
+	if ([_delegate respondsToSelector:@selector(fontForEntryCellTextField)]) {
+		textField.font = [_delegate fontForEntryCellTextField];
+	}
 	textField.tag = tag;
 	textField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	textField.textColor = [UIColor colorWithRed:115.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:1.0];
@@ -248,7 +248,9 @@
 			cell = [self configureExtraPaymentCellforRow:indexPath.row];
 			break;
 	}
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	if ([_delegate respondsToSelector:@selector(tableViewBackgroundColor)]) {
+		cell.backgroundColor = [_delegate tableViewBackgroundColor];
+	}
 	return cell;
 }
 
@@ -377,8 +379,12 @@
 			}
 			cell.textLabel.text = [_object.showAdvanced boolValue] ? @"Simple" : @"Advanced";
 			cell.textLabel.textAlignment = _leftAlignment ? NSTextAlignmentLeft : NSTextAlignmentRight;
-			cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellTextField];
-			cell.textLabel.textColor = [UIColor colorWithRed:40.0/255.0 green:70.0/255.0 blue:115.0/255.0 alpha:1.0];
+			if ([_delegate respondsToSelector:@selector(fontForEntryCellTextField)]) {
+				cell.textLabel.font = [_delegate fontForEntryCellTextField];
+			}
+			if ([_delegate respondsToSelector:@selector(colorForCellButton)]) {
+				cell.textLabel.textColor = [_delegate colorForCellButton];
+			}
 			break;
 		default:
 			break;
@@ -634,7 +640,9 @@
 			break;
 	}
 	UITableViewCell *cell = (UITableViewCell *)textField.superview;
-	cell.backgroundColor = [A3UIStyle contentsBackgroundColor];
+	if ([_delegate respondsToSelector:@selector(tableViewBackgroundColor)]) {
+		cell.backgroundColor = [_delegate tableViewBackgroundColor];
+	}
 	return YES;
 }
 

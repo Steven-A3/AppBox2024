@@ -17,6 +17,7 @@
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
+#import "common.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -25,6 +26,7 @@ static char const *const key_dateKeyboardViewController 		= "key_dateKeyboardVie
 static char const *const key_currencyFormatter					= "key_currencyFormatter";
 static char const *const key_decimalFormatter 					= "key_decimalFormatter";
 static char const *const key_percentFormatter					= "key_percentFormatter";
+static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 @implementation UIViewController (A3AppCategory)
 
@@ -51,9 +53,14 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 }
 
 - (void)presentActionMenuWithDelegate:(id<A3ActionMenuViewControllerDelegate>) delegate {
+	if (self.actionMenuAnimating) return;
+
 	{
 		UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
-		if (nil != coverView) return;
+		if (nil != coverView) {
+			[self closeActionMenuViewWithAnimation:YES];
+			return;
+		}
 	}
 
 	CGRect frame = self.actionMenuViewController.view.frame;
@@ -61,9 +68,9 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	self.actionMenuViewController.view.frame = frame;
 
 	if (DEVICE_IPAD) {
-		((A3ActionMenuViewController_iPad *)self.actionMenuViewController).delegate = delegate;
+		((A3ActionMenuViewController_iPad *) self.actionMenuViewController).delegate = delegate;
 	} else {
-		((A3ActionMenuViewController_iPhone *)self.actionMenuViewController).delegate = delegate;
+		((A3ActionMenuViewController_iPhone *) self.actionMenuViewController).delegate = delegate;
 	}
 	[self.navigationController.view insertSubview:[self.actionMenuViewController view] belowSubview:self.view];
 
@@ -79,6 +86,9 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 
 	[UIView animateWithDuration:0.3 animations:^{
 		coverView.frame = CGRectOffset(coverView.frame, 0.0, 50.0);
+		self.actionMenuAnimating = YES;
+	} completion:^(BOOL finished){
+		self.actionMenuAnimating = NO;
 	}];
 }
 
@@ -87,15 +97,19 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 }
 
 - (void)closeActionMenuViewWithAnimation:(BOOL)animate {
+	if (self.actionMenuAnimating) return;
+
 	UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
 	if (nil == coverView) return;
 
 	if (animate) {
 		[UIView animateWithDuration:0.3 animations:^{
 			coverView.frame = CGRectOffset(coverView.frame, 0.0, -50.0);
+			self.actionMenuAnimating = YES;
 		} completion:^(BOOL finished){
 			[coverView removeFromSuperview];
 			[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
+			self.actionMenuAnimating = NO;
 		}];
 	} else {
 		[coverView removeFromSuperview];
@@ -314,5 +328,18 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	return [self.percentFormatter stringFromNumber:[NSNumber numberWithFloat:[source floatValue] / 100.0]];
 }
 
+- (void)setActionMenuAnimating:(BOOL)animating {
+	objc_setAssociatedObject(self, key_actionMenuAnimating, [NSNumber numberWithBool:animating], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)actionMenuAnimating {
+	NSNumber *number = objc_getAssociatedObject(self, key_actionMenuAnimating);
+	return number.boolValue;
+}
+
+- (void)alertCheck {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Check" message:@"Nice!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alertView show];
+}
 
 @end

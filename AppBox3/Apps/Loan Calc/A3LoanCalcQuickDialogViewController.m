@@ -8,7 +8,6 @@
 
 #import "A3LoanCalcQuickDialogViewController.h"
 #import "A3LoanCalcPieChartViewController.h"
-#import "A3UIStyle.h"
 #import "A3UIKit.h"
 #import "CommonUIDefinitions.h"
 #import "LoanCalcHistory.h"
@@ -28,7 +27,7 @@
 
 #define A3LC_TAG_CALCULATION_FOR_VALUE 7667001	// L = 76, 67 = C, 001 = id for view tag
 
-@interface A3LoanCalcQuickDialogViewController () <UITextFieldDelegate, A3LoanCalcPieChartViewDelegate>
+@interface A3LoanCalcQuickDialogViewController () <UITextFieldDelegate, A3LoanCalcPieChartViewDelegate, A3QuickDialogCellStyleDelegate>
 @property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
 @property (nonatomic, strong) 	A3LoanCalcPieChartViewController *tableHeaderViewController;
 @property (nonatomic, strong)	NSMutableDictionary *enumForEntryKeys;
@@ -130,6 +129,7 @@
 	QSection *section1 = [[QSection alloc] init];
 	A3LabelElement *section1element = [[A3LabelElement alloc] initWithTitle:@"calculation for" Value:self.stringForCalculation];
 	section1element.key = A3LC_KEY_CALCULATION_FOR;
+	section1element.cellStyleDelegate = self;
 	[section1 addElement:section1element];
 
 	// Section 2: Input values
@@ -191,6 +191,7 @@
 	A3CurrencyEntryElement *extraPaymentOneTime = [[A3CurrencyEntryElement alloc] initWithTitle:NSLocalizedString(@"One-Time:", @"One-Time:") Value:@"" Placeholder:[self zeroCurrency]];
 	extraPaymentOneTime.key = A3LC_KEY_EXTRA_PAYMENT_ONETIME;
 	extraPaymentOneTime.delegate = self;
+	extraPaymentOneTime.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryExtraPaymentOneTime] forKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
 	return extraPaymentOneTime;
 }
@@ -199,6 +200,7 @@
 	A3CurrencyEntryElement *extraPaymentYearly = [[A3CurrencyEntryElement alloc] initWithTitle:NSLocalizedString(@"Yearly:", @"Yearly:") Value:@"" Placeholder:[self zeroCurrency]];
 	extraPaymentYearly.key = A3LC_KEY_EXTRA_PAYMENT_YEARLY;
 	extraPaymentYearly.delegate = self;
+	extraPaymentYearly.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryExtraPaymentYearly] forKey:A3LC_KEY_EXTRA_PAYMENT_YEARLY];
 	return extraPaymentYearly;
 }
@@ -207,6 +209,7 @@
 	A3CurrencyEntryElement *extraPaymentMonthly = [[A3CurrencyEntryElement alloc] initWithTitle:NSLocalizedString(@"Monthly:", @"Monthly:") Value:@"" Placeholder:[self zeroCurrency]];
 	extraPaymentMonthly.key = A3LC_KEY_EXTRA_PAYMENT_MONTHLY;
 	extraPaymentMonthly.delegate = self;
+	extraPaymentMonthly.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryExtraPaymentMonthly] forKey:A3LC_KEY_EXTRA_PAYMENT_MONTHLY];
 	return extraPaymentMonthly;
 }
@@ -214,6 +217,7 @@
 - (QButtonElement *)typeChangeButtonElement {
 	NSString *buttonTitle =	self.preferences.showAdvanced ? @"Simple" : @"Advanced";
 	A3ButtonElement *simpleAdvancedButton = [[A3ButtonElement alloc] initWithTitle:buttonTitle];
+	simpleAdvancedButton.cellStyleDelegate = self;
 	simpleAdvancedButton.key = A3LC_KEY_SIMPLE_ADVANCED;
 	simpleAdvancedButton.onSelected = ^{
 		[self onSimpleAdvanced];
@@ -222,10 +226,11 @@
 }
 
 - (QEntryElement *)notesElement {
-	QEntryElement *notes = [[QEntryElement alloc] initWithTitle:NSLocalizedString(@"Notes:", @"Notes:") Value:@"" Placeholder:@"(Optional)"];
+	A3EntryElement *notes = [[A3EntryElement alloc] initWithTitle:NSLocalizedString(@"Notes:", @"Notes:") Value:@"" Placeholder:@"(Optional)"];
 	notes.key = A3LC_KEY_NOTES;
 	notes.height = A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
 	notes.delegate = self;
+	notes.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryNotes] forKey:A3LC_KEY_NOTES];
 	return notes;
 }
@@ -235,6 +240,7 @@
 	startDate.key = A3LC_KEY_START_DATE;
 	startDate.height = A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
 	startDate.delegate = self;
+	startDate.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryStartDate] forKey:A3LC_KEY_START_DATE];
 	return startDate;
 }
@@ -244,6 +250,7 @@
 	frequency.key = A3LC_KEY_FREQUENCY;
 	frequency.height = A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
 	frequency.delegate = self;
+	frequency.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryFrequency] forKey:A3LC_KEY_FREQUENCY];
 	return frequency;
 }
@@ -252,6 +259,7 @@
 	A3InterestEntryElement *interestRate = [[A3InterestEntryElement alloc] initWithTitle:NSLocalizedString(@"Interest Rate:", @"Interest Rate:") Value:@"" Placeholder:@"Annual 0%"];
 	interestRate.key = A3LC_KEY_INTEREST_RATE;
 	interestRate.delegate = self;
+	interestRate.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryInterestRate] forKey:A3LC_KEY_INTEREST_RATE];
 	return interestRate;
 }
@@ -260,6 +268,7 @@
 	A3CurrencyEntryElement *principalElement = [[A3CurrencyEntryElement alloc] initWithTitle:NSLocalizedString(@"Principal:", @"Principal") Value:@"" Placeholder:@"$0.00"];
 	principalElement.key = A3LC_KEY_PRINCIPAL;
 	principalElement.delegate = self;
+	principalElement.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryPrincipal] forKey:A3LC_KEY_PRINCIPAL];
 	return principalElement;
 }
@@ -268,6 +277,7 @@
 	A3CurrencyEntryElement *monthlyPaymentElement = [[A3CurrencyEntryElement alloc] initWithTitle:@"Monthly Payment:" Value:@"" Placeholder:@"$0.00"];
 	monthlyPaymentElement.key = A3LC_KEY_MONTHLY_PAYMENT;
 	monthlyPaymentElement.delegate = self;
+	monthlyPaymentElement.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryMonthlyPayment] forKey:A3LC_KEY_MONTHLY_PAYMENT];
 	return monthlyPaymentElement;
 }
@@ -276,6 +286,7 @@
 	A3TermEntryElement *termElement = [[A3TermEntryElement alloc] initWithTitle:NSLocalizedString(@"Term:", @"Term:") Value:@"" Placeholder:@"years or months"];
 	termElement.key = A3LC_KEY_TERM;
 	termElement.delegate = self;
+	termElement.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryTerm] forKey:A3LC_KEY_TERM];
 	return termElement;
 }
@@ -284,6 +295,7 @@
 	A3CurrencyEntryElement *downPaymentElement = [[A3CurrencyEntryElement alloc] initWithTitle:@"Down Payment:" Value:@"" Placeholder:[self zeroCurrency]];
 	downPaymentElement.key = A3LC_KEY_DOWN_PAYMENT;
 	downPaymentElement.delegate = self;
+	downPaymentElement.cellStyleDelegate = self;
 	[_enumForEntryKeys setObject:[NSNumber numberWithUnsignedInteger:A3LCEntryDownPayment] forKey:A3LC_KEY_DOWN_PAYMENT];
 	return downPaymentElement;
 }
@@ -412,8 +424,8 @@
 		[cell.contentView addSubview:valueLabel];
 	}
 	valueLabel.text = [A3LoanCalcString stringFromCalculationFor:self.preferences.calculationFor];
-	cell.textLabel.font = [A3UIStyle fontForTableViewEntryCellLabel];
-	cell.textLabel.textColor = [A3UIStyle colorForTableViewCellLabelNormal];
+	cell.textLabel.font = [self fontForEntryCellLabel];
+	cell.textLabel.textColor = [self colorForCellLabelNormal];
 	cell.detailTextLabel.font = [UIFont systemFontOfSize:20.0];
 }
 

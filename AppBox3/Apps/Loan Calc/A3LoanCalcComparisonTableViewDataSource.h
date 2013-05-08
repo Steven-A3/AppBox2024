@@ -12,6 +12,9 @@
 @protocol A3LoanCalcComparisonTableViewDataSourceDelegate <NSObject>
 
 - (void)loanCalcComparisonTableViewValueChanged;
+- (UIColor *)tableViewBackgroundColor;
+- (UIFont *)fontForEntryCellTextField;
+- (UIColor *)colorForCellButton;
 
 @end
 
