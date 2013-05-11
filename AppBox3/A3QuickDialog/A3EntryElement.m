@@ -10,6 +10,7 @@
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
 #import "common.h"
+#import "A3SelectItemTableViewCell.h"
 
 @implementation QElement (CustomStyle)
 
@@ -124,6 +125,34 @@
 - (CGFloat)getRowHeightForTableView:(QuickDialogTableView *)tableView {
 	[self updateCellHeightWithDelegate:_cellStyleDelegate];
 	return [super getRowHeightForTableView:tableView];
+}
+
+@end
+
+@implementation A3SelectItemElement
+
+- (id)init {
+	self = [super init];
+	if (self) {
+
+	}
+
+	return self;
+}
+
+- (UITableViewCell *)getCellForTableView:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller {
+	QAppearance *newAppearance = [[self class] appearance];
+	[self applyLabelElementAppearanceWithDelegate:_cellStyleDelegate appearance:newAppearance];
+	self.appearance = newAppearance;
+
+	static NSString *cellIdentifier;
+	cellIdentifier = @"A3SelectItemTableViewCell";
+	A3SelectItemTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (nil == cell) {
+		cell = [[A3SelectItemTableViewCell alloc] initWithReuseIdentifier:cellIdentifier];
+	}
+	cell.textLabel.text = self.title;
+	return cell;
 }
 
 @end

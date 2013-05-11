@@ -7,7 +7,6 @@
 //
 
 #import "A3GradientView.h"
-#import "A3Utilities.h"
 
 @implementation A3GradientView
 

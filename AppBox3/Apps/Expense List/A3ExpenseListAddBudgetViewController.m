@@ -14,6 +14,8 @@
 #import "common.h"
 #import "A3PaperFoldMenuViewController.h"
 #import "A3AppDelegate.h"
+#import "A3DatePickerView.h"
+#import "A3Formatter.h"
 
 static NSString *A3ExpenseListAddBudgetKeyBugdet = @"Bugdet";
 static NSString *A3ExpenseListAddBudgetKeyCategory = @"Category";
@@ -26,9 +28,13 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 @interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3QuickDialogCellStyleDelegate>
 @property (nonatomic, strong) A3ExpenseListPreferences *pref;
+@property (nonatomic, strong) A3DatePickerView *datePickerView;
+@property (nonatomic, strong) UILabel *tempDateLabel;
 @end
 
-@implementation A3ExpenseListAddBudgetViewController
+@implementation A3ExpenseListAddBudgetViewController {
+	BOOL	_datePickerAnimationInProgress;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -54,7 +60,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	self.navigationItem.rightBarButtonItem = [self doneButton];
 
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -85,7 +90,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (UIColor *)colorForCellBackground {
-	FNLOG();
 	return [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
 }
 
@@ -169,6 +173,9 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	element.delegate = self;
 	element.cellStyleDelegate = self;
 	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	element.onSelected = ^{
+		[self onSelectCategory];
+	};
 
 	return element;
 }
@@ -189,8 +196,8 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	return element;
 }
 
-- (QDateTimeInlineElement *)dateElement {
-	A3DateTimeInlineElement *element = [[A3DateTimeInlineElement alloc] initWithTitle:@"Date" date:[NSDate date]];
+- (A3EntryElement *)dateElement {
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Date" Value:[A3Formatter mediumStyleDateStringFromDate:[NSDate date]] Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyDate;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -219,11 +226,10 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
 	[super cell:cell willAppearForElement:element atIndexPath:indexPath];
 
-	cell.backgroundColor = [self colorForCellBackground];
-
-	if ([element isKindOfClass:[QRadioElement class]]) {
-		cell.detailTextLabel.font = [self fontForEntryCellTextField];
-		cell.detailTextLabel.textColor = [self colorForEntryCellTextField];
+	if ([element isKindOfClass:[A3SelectItemElement class]]) {
+		cell.backgroundColor = [UIColor colorWithRed:227.0 / 255.0 green:228.0 / 255.0 blue:230.0 / 255.0 alpha:1.0];
+	} else {
+		cell.backgroundColor = [self colorForCellBackground];
 	}
 }
 
@@ -253,6 +259,126 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 - (CGFloat)heightForElement:(QElement *)element {
 	return 44.0;
+}
+
+#pragma mark -- QEntryElement delegate
+
+- (void)QEntryDidBeginEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
+	[super QEntryDidBeginEditingElement:element andCell:cell];
+
+	if ([element.key isEqualToString:A3ExpenseListAddBudgetKeyDate]) {
+		_tempDateLabel = [[UILabel alloc] initWithFrame:cell.textField.frame];
+		_tempDateLabel.backgroundColor = [UIColor clearColor];
+		_tempDateLabel.font = cell.textField.font;
+		_tempDateLabel.textColor = cell.textField.textColor;
+		_tempDateLabel.text = cell.textField.text;
+		[cell.textField.superview addSubview:_tempDateLabel];
+		cell.textField.hidden = YES;
+		UIView *unvisibleView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+		unvisibleView.backgroundColor = [UIColor clearColor];
+		cell.textField.inputView = unvisibleView;
+
+		[self presentDatePickerView];
+	}
+}
+
+- (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
+	[super QEntryDidEndEditingElement:element andCell:cell];
+
+	if (!_datePickerAnimationInProgress && [_datePickerView superview]) {
+		cell.textField.hidden = NO;
+		cell.textField.text = _tempDateLabel.text;
+		[_tempDateLabel removeFromSuperview];
+		_tempDateLabel = nil;
+		[self dismissDatePickerView];
+	}
+}
+
+#pragma mark -- DatePicker view
+
+- (A3DatePickerView *)datePickerView {
+	if (nil == _datePickerView) {
+		_datePickerView = [[A3DatePickerView alloc] initWithFrame:CGRectZero];
+		[_datePickerView.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _datePickerView;
+}
+
+- (void)dateChanged:(UIDatePicker *)picker {
+	_tempDateLabel.text = [A3Formatter mediumStyleDateStringFromDate:picker.date];
+}
+
+- (void)presentDatePickerView {
+	_datePickerAnimationInProgress = YES;
+
+	CGSize size = [self.datePickerView sizeThatFits:CGSizeZero];
+	CGRect bounds = self.view.bounds;
+	CGRect frame = CGRectMake(bounds.origin.x, bounds.origin.y + bounds.size.height, size.width, size.height);
+	_datePickerView.frame = frame;
+	[self.view addSubview:_datePickerView];
+	[UIView animateWithDuration:0.3 animations:^{
+
+		CGRect newFrame = self.datePickerView.frame;
+		newFrame.origin.y -= size.height;
+		self.datePickerView.frame = newFrame;
+	} completion:^(BOOL finished) {
+		_datePickerAnimationInProgress = NO;
+	}];
+}
+
+- (void)dismissDatePickerView {
+	if (_datePickerAnimationInProgress) return;
+
+	[UIView animateWithDuration:0.3 animations:^{
+		_datePickerAnimationInProgress = YES;
+
+		CGRect frame = self.datePickerView.frame;
+		frame.origin.y += frame.size.height;
+		self.datePickerView.frame = frame;
+	} completion:^(BOOL finished) {
+		[self.datePickerView removeFromSuperview];
+		_datePickerView = nil;
+		_datePickerAnimationInProgress = NO;
+	}];
+}
+
+#pragma mark -- Category
+
+- (void)onSelectCategory {
+	NSArray *category = @[@"Food", @"Personal", @"Pets", @"School", @"Service", @"Shopping", @"Transportation", @"Travel", @"Utilities", @"Uncategorized"];
+
+	NSInteger numberOfRows = [category count];
+	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:0];
+	NSMutableArray *insertObjects = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
+	NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
+	NSInteger row = 2;
+	for (NSString *title in category) {
+		A3SelectItemElement *element = [[A3SelectItemElement alloc] init];
+		element.title = title;
+		NSString *item = title;
+		element.onSelected = ^{
+			[self onSelectCategoryItem:item];
+		};
+		[insertObjects addObject:element];
+		[indexPaths addObject:[NSIndexPath indexPathForRow:row++ inSection:0]];
+	}
+	[section.elements insertObjects:insertObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, [category count])]];
+
+	[self.quickDialogTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+
+}
+
+- (void)onSelectCategoryItem:(NSString *)item {
+	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:0];
+	[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 10)]];
+
+	NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:10];
+	NSInteger row = 2, count = 0;
+	for (; count < 10; count++) {
+		[indexPaths addObject:[NSIndexPath indexPathForRow:row++ inSection:0]];
+	}
+
+	[self.quickDialogTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
 }
 
 @end

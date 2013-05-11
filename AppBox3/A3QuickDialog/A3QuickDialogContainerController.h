@@ -66,6 +66,12 @@
 @interface A3PercentEntryElement : A3EntryElement
 @end
 
+@interface A3SelectItemElement : QRootElement
+@property (nonatomic, weak) id<A3QuickDialogCellStyleDelegate> cellStyleDelegate;
+
+- (id)init;
+@end
+
 @interface A3DateTimeInlineElement : QDateTimeInlineElement
 @property (nonatomic, weak) id<A3QuickDialogCellStyleDelegate> cellStyleDelegate;
 

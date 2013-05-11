@@ -7,16 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17D4203B85EB759DAEE0CA84 /* A3SelectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */; };
 		17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */; };
 		17D42187ACB2CCE552683D75 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423E78CCDBD799FDC5F53 /* DDPageControl.m */; };
+		17D422DADCE0273BDB701E6A /* A3_30x30Button.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C78033A26F4867E3A98 /* A3_30x30Button.m */; };
 		17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */; };
-		17D42489991381420A33BF6C /* A3EntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42AEAD9AF9B35B5F82683 /* A3EntryElement.m */; };
+		17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */; };
+		17D42769D90A0C42F30651C5 /* A3EntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FBDC84CF1512076660E /* A3EntryElement.m */; };
 		17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */; };
 		17D42C081077F39153329C27 /* A3AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */; };
-		17D42C52D23B88E8B3E05D61 /* A3QuickDialogContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4258E049B53C8892FA023 /* A3QuickDialogContainerController.m */; };
 		17D42CF548BE309C2DFE1AC3 /* A3ExpenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */; };
 		17D42E08425437778937884E /* UIViewController+A3AppCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */; };
 		17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F17E6A37A2E93CD352 /* A3BarButton.m */; };
+		17D42F50FDCD6477C8FDF273 /* A3QuickDialogContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */; };
 		18C3CFCC486641E3819BEF98 /* libPods-GHUnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */; };
 		1C351C315A48406A863E99F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2329DB00268042E9BF6520E4 /* libPods.a */; };
 		68004B88172FB2700005BFF2 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68004B87172FB2700005BFF2 /* NSManagedObject+Clone.m */; };
@@ -525,25 +528,31 @@
 
 /* Begin PBXFileReference section */
 		0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GHUnitTests.xcconfig"; path = "Pods/Pods-GHUnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DatePickerView.m; sourceTree = "<group>"; };
 		17D422F17E6A37A2E93CD352 /* A3BarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BarButton.m; sourceTree = "<group>"; };
 		17D423E78CCDBD799FDC5F53 /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDPageControl.m; sourceTree = "<group>"; };
 		17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TopGradientBackgroundView.m; sourceTree = "<group>"; };
 		17D42555502BAE799F0E27FF /* A3TopGradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TopGradientBackgroundView.h; sourceTree = "<group>"; };
 		17D4258A50FF2A7B06B41FF2 /* SalesCalcHistory+controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SalesCalcHistory+controller.h"; sourceTree = "<group>"; };
-		17D4258E049B53C8892FA023 /* A3QuickDialogContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3QuickDialogContainerController.m; path = ViewControllers/A3QuickDialogContainerController.m; sourceTree = "<group>"; };
+		17D426630AB9804BD87B1DD5 /* A3_30x30Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3_30x30Button.h; sourceTree = "<group>"; };
 		17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+A3Drawing.m"; sourceTree = "<group>"; };
 		17D4270077B60CF1557410C5 /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDPageControl.h; sourceTree = "<group>"; };
 		17D4278591728157F10924BE /* A3ExpenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListViewController.h; path = "Expense List/A3ExpenseListViewController.h"; sourceTree = "<group>"; };
 		17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SalesCalcHistory+controller.m"; sourceTree = "<group>"; };
+		17D428133FDEC757E3C375DE /* A3DatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DatePickerView.h; sourceTree = "<group>"; };
 		17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+A3AppCategory.m"; sourceTree = "<group>"; };
+		17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QuickDialogContainerController.m; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
 		17D4293792D37AC8D8FB54A2 /* UIViewController+A3AppCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+A3AppCategory.h"; sourceTree = "<group>"; };
-		17D42AEAD9AF9B35B5F82683 /* A3EntryElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3EntryElement.m; path = ViewControllers/A3EntryElement.m; sourceTree = "<group>"; };
 		17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppViewController.m; sourceTree = "<group>"; };
+		17D42C78033A26F4867E3A98 /* A3_30x30Button.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3_30x30Button.m; sourceTree = "<group>"; };
+		17D42CB0F4362D9B943BEA57 /* A3SelectItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SelectItemTableViewCell.h; sourceTree = "<group>"; };
+		17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SelectItemTableViewCell.m; sourceTree = "<group>"; };
 		17D42DA493E88CB63A73CF6A /* A3AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppViewController.h; sourceTree = "<group>"; };
 		17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListViewController.m; path = "Expense List/A3ExpenseListViewController.m"; sourceTree = "<group>"; };
-		17D42E3FC43BF705B63E41B3 /* A3QuickDialogContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3QuickDialogContainerController.h; path = ViewControllers/A3QuickDialogContainerController.h; sourceTree = "<group>"; };
 		17D42F64418FD4FA28719114 /* A3BarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BarButton.h; sourceTree = "<group>"; };
+		17D42FBDC84CF1512076660E /* A3EntryElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3EntryElement.m; sourceTree = "<group>"; };
+		17D42FF3629221C7F25442F5 /* A3QuickDialogContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QuickDialogContainerController.h; sourceTree = "<group>"; };
 		2329DB00268042E9BF6520E4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4145230C773F4D058F9905F5 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
 		68004B86172FB2700005BFF2 /* NSManagedObject+Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Clone.h"; sourceTree = "<group>"; };
@@ -1217,6 +1226,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17D42F99A50E066A63B28F81 /* A3QuickDialog */ = {
+			isa = PBXGroup;
+			children = (
+				17D42FBDC84CF1512076660E /* A3EntryElement.m */,
+				17D42FF3629221C7F25442F5 /* A3QuickDialogContainerController.h */,
+				17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */,
+				17D42CB0F4362D9B943BEA57 /* A3SelectItemTableViewCell.h */,
+				17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */,
+			);
+			path = A3QuickDialog;
+			sourceTree = "<group>";
+		};
 		68129E78164A5841008668F4 /* PaperFold */ = {
 			isa = PBXGroup;
 			children = (
@@ -1264,11 +1285,8 @@
 				68129E78164A5841008668F4 /* PaperFold */,
 				17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */,
 				17D4293792D37AC8D8FB54A2 /* UIViewController+A3AppCategory.h */,
-				17D4258E049B53C8892FA023 /* A3QuickDialogContainerController.m */,
-				17D42E3FC43BF705B63E41B3 /* A3QuickDialogContainerController.h */,
 				17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */,
 				17D42DA493E88CB63A73CF6A /* A3AppViewController.h */,
-				17D42AEAD9AF9B35B5F82683 /* A3EntryElement.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1369,6 +1387,7 @@
 				683B955C15EB233500575377 /* Views */,
 				683B94BE15EB230000575377 /* {Resources} */,
 				682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */,
+				17D42F99A50E066A63B28F81 /* A3QuickDialog */,
 			);
 			path = AppBox3;
 			sourceTree = "<group>";
@@ -1854,6 +1873,8 @@
 				685D3EE21691A3FB00373863 /* QEntryTableViewCell+Extension.m */,
 				17D422F17E6A37A2E93CD352 /* A3BarButton.m */,
 				17D42F64418FD4FA28719114 /* A3BarButton.h */,
+				17D42C78033A26F4867E3A98 /* A3_30x30Button.m */,
+				17D426630AB9804BD87B1DD5 /* A3_30x30Button.h */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -2003,6 +2024,8 @@
 				17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */,
 				17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */,
 				17D42555502BAE799F0E27FF /* A3TopGradientBackgroundView.h */,
+				17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */,
+				17D428133FDEC757E3C375DE /* A3DatePickerView.h */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2754,15 +2777,18 @@
 				684C019B171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m in Sources */,
 				684C019E171FE245008AD3D5 /* A3ExpenseListPreferences.m in Sources */,
 				17D42E08425437778937884E /* UIViewController+A3AppCategory.m in Sources */,
-				17D42C52D23B88E8B3E05D61 /* A3QuickDialogContainerController.m in Sources */,
 				17D42C081077F39153329C27 /* A3AppViewController.m in Sources */,
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
 				17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */,
 				17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */,
-				17D42489991381420A33BF6C /* A3EntryElement.m in Sources */,
 				17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */,
 				68004B88172FB2700005BFF2 /* NSManagedObject+Clone.m in Sources */,
 				68004B8E172FEB290005BFF2 /* SalesCalcHistory.m in Sources */,
+				17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */,
+				17D422DADCE0273BDB701E6A /* A3_30x30Button.m in Sources */,
+				17D42769D90A0C42F30651C5 /* A3EntryElement.m in Sources */,
+				17D42F50FDCD6477C8FDF273 /* A3QuickDialogContainerController.m in Sources */,
+				17D4203B85EB759DAEE0CA84 /* A3SelectItemTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
