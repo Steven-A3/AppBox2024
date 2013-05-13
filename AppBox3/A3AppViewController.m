@@ -43,6 +43,10 @@
 	return [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:249.0/255.0 alpha:1.0];
 }
 
+- (UIColor *)cellBackgroundColor {
+	return [UIColor colorWithRed:248.0/255.0 green:248.0/255.0 blue:249.0/255.0 alpha:1.0];
+}
+
 - (UIColor *)colorForCellLabelNormal {
 	return [UIColor colorWithRed:115.0f/255.0f green:115.0f/255.0f blue:115.0f/255.0f alpha:1.0f];
 }

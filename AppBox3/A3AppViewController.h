@@ -14,6 +14,7 @@
 - (UIFont *)fontForEntryCellLabel;
 - (UIFont *)fontForEntryCellTextField;
 - (UIColor *)tableViewBackgroundColor;
+- (UIColor *)cellBackgroundColor;
 - (UIColor *)colorForCellLabelNormal;
 - (UIColor *)colorForCellLabelSelected;
 - (UIColor *)colorForCellButton;

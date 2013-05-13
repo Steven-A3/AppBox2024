@@ -15,6 +15,7 @@
 
 @protocol A3QuickDialogCellStyleDelegate <NSObject>
 
+- (UIColor *)cellBackgroundColor;
 - (UIColor *)tableViewBackgroundColor;
 - (UIFont *)fontForCellLabel;
 - (UIFont *)fontForEntryCellLabel;
@@ -68,6 +69,9 @@
 
 @interface A3SelectItemElement : QRootElement
 @property (nonatomic, weak) id<A3QuickDialogCellStyleDelegate> cellStyleDelegate;
+@property (nonatomic) BOOL startRow;
+@property (nonatomic) BOOL endRow;
+@property (nonatomic) BOOL selected;
 
 - (id)init;
 @end

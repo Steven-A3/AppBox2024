@@ -29,11 +29,13 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 @interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3QuickDialogCellStyleDelegate>
 @property (nonatomic, strong) A3ExpenseListPreferences *pref;
 @property (nonatomic, strong) A3DatePickerView *datePickerView;
-@property (nonatomic, strong) UILabel *tempDateLabel;
+@property (nonatomic, strong) UILabel *tempLabel;
 @end
 
 @implementation A3ExpenseListAddBudgetViewController {
 	BOOL	_datePickerAnimationInProgress;
+	BOOL 	_categorySelectionInProgress;
+	BOOL	_paymentTypeSelectionInProgress;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -89,7 +91,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	return [UIColor colorWithRed:241.0/255.0 green:242.0/255.0 blue:243.0/255.0 alpha:1.0];
 }
 
-- (UIColor *)colorForCellBackground {
+- (UIColor *)cellBackgroundColor {
 	return [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
 }
 
@@ -127,17 +129,20 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 				[NSIndexPath indexPathForRow:4 inSection:0],
 				[NSIndexPath indexPathForRow:5 inSection:0],
 				[NSIndexPath indexPathForRow:6 inSection:0]];
+		QTableViewCell *cell = (QTableViewCell *) [tableView cellForElement:buttonElement];
 		if (self.pref.addBudgetShowAdvanced) {
 			[self makeItSimple];
 			[tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
 
 			[self.pref setAddBudgetShowAdvanced:NO];
+			cell.textLabel.text = @"Advanced";
 		} else {
 			QSection *section = [self.quickDialogController.quickDialogTableView.root.sections objectAtIndex:0];
 			[self insertAdvanedElement:section ];
 			[tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
 
 			[self.pref setAddBudgetShowAdvanced:YES];
+			cell.textLabel.text = @"Simple";
 		}
 	};
 	return element;
@@ -173,10 +178,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	element.delegate = self;
 	element.cellStyleDelegate = self;
 	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-	element.onSelected = ^{
-		[self onSelectCategory];
-	};
-
 	return element;
 }
 
@@ -185,6 +186,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	element.key = A3ExpenseListAddBudgetKeyPaymentType;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
+	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	return element;
 }
 
@@ -229,7 +231,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	if ([element isKindOfClass:[A3SelectItemElement class]]) {
 		cell.backgroundColor = [UIColor colorWithRed:227.0 / 255.0 green:228.0 / 255.0 blue:230.0 / 255.0 alpha:1.0];
 	} else {
-		cell.backgroundColor = [self colorForCellBackground];
+		cell.backgroundColor = [self cellBackgroundColor];
 	}
 }
 
@@ -267,18 +269,14 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	[super QEntryDidBeginEditingElement:element andCell:cell];
 
 	if ([element.key isEqualToString:A3ExpenseListAddBudgetKeyDate]) {
-		_tempDateLabel = [[UILabel alloc] initWithFrame:cell.textField.frame];
-		_tempDateLabel.backgroundColor = [UIColor clearColor];
-		_tempDateLabel.font = cell.textField.font;
-		_tempDateLabel.textColor = cell.textField.textColor;
-		_tempDateLabel.text = cell.textField.text;
-		[cell.textField.superview addSubview:_tempDateLabel];
-		cell.textField.hidden = YES;
-		UIView *unvisibleView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
-		unvisibleView.backgroundColor = [UIColor clearColor];
-		cell.textField.inputView = unvisibleView;
-
+		[self coverTextFieldWithTempLabel:cell.textField];
 		[self presentDatePickerView];
+	} else if ([element.key isEqualToString:A3ExpenseListAddBudgetKeyCategory]) {
+		[self coverTextFieldWithTempLabel:cell.textField];
+		[self onSelectCategoryForElement:element];
+	} else if ([element.key isEqualToString:A3ExpenseListAddBudgetKeyPaymentType]) {
+		[self coverTextFieldWithTempLabel:cell.textField];
+		[self onSelectPaymentType:element];
 	}
 }
 
@@ -287,11 +285,32 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 	if (!_datePickerAnimationInProgress && [_datePickerView superview]) {
 		cell.textField.hidden = NO;
-		cell.textField.text = _tempDateLabel.text;
-		[_tempDateLabel removeFromSuperview];
-		_tempDateLabel = nil;
+		cell.textField.text = _tempLabel.text;
+		[_tempLabel removeFromSuperview];
+		_tempLabel = nil;
 		[self dismissDatePickerView];
 	}
+	if (_categorySelectionInProgress) {
+		cell.textField.hidden = NO;
+		[self removeCategoryItemsWithCell:cell ];
+	}
+	if (_paymentTypeSelectionInProgress) {
+		cell.textField.hidden = NO;
+		[self removePaymentTypeItemsWithCell:cell ];
+	}
+}
+
+- (void)coverTextFieldWithTempLabel:(UITextField *)textField {
+	_tempLabel = [[UILabel alloc] initWithFrame:textField.frame];
+	_tempLabel.backgroundColor = [UIColor clearColor];
+	_tempLabel.font = textField.font;
+	_tempLabel.textColor = textField.textColor;
+	_tempLabel.text = textField.text;
+	[textField.superview addSubview:_tempLabel];
+	textField.hidden = YES;
+	UIView *unvisibleView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 1.0, 1.0)];
+	unvisibleView.backgroundColor = [UIColor clearColor];
+	textField.inputView = unvisibleView;
 }
 
 #pragma mark -- DatePicker view
@@ -305,7 +324,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (void)dateChanged:(UIDatePicker *)picker {
-	_tempDateLabel.text = [A3Formatter mediumStyleDateStringFromDate:picker.date];
+	_tempLabel.text = [A3Formatter mediumStyleDateStringFromDate:picker.date];
 }
 
 - (void)presentDatePickerView {
@@ -344,14 +363,26 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 #pragma mark -- Category
 
-- (void)onSelectCategory {
+- (void)onSelectCategoryForElement:(QEntryElement *)entryElement {
+	if (_categorySelectionInProgress) {
+		QTableViewCell *cell = (QTableViewCell *) [self.quickDialogTableView cellForElement:entryElement];
+		[self removeCategoryItemsWithCell:cell ];
+		return;
+	}
+
+	_categorySelectionInProgress = YES;
+
 	NSArray *category = @[@"Food", @"Personal", @"Pets", @"School", @"Service", @"Shopping", @"Transportation", @"Travel", @"Utilities", @"Uncategorized"];
+
+	QEntryTableViewCell *cell = (QEntryTableViewCell *) [self.quickDialogTableView cellForElement:entryElement];
+	cell.accessoryView = [self downArrowButton];
 
 	NSInteger numberOfRows = [category count];
 	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:0];
 	NSMutableArray *insertObjects = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
 	NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
-	NSInteger row = 2;
+	const NSInteger rowStart = 2;
+	NSInteger row = rowStart;
 	for (NSString *title in category) {
 		A3SelectItemElement *element = [[A3SelectItemElement alloc] init];
 		element.title = title;
@@ -359,16 +390,47 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 		element.onSelected = ^{
 			[self onSelectCategoryItem:item];
 		};
+		if (row == (rowStart + numberOfRows) - 1) {
+			element.endRow = YES;
+		}
+		if ([entryElement.textValue isEqualToString:title]) {
+			element.selected = YES;
+		}
+
 		[insertObjects addObject:element];
 		[indexPaths addObject:[NSIndexPath indexPathForRow:row++ inSection:0]];
 	}
-	[section.elements insertObjects:insertObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, [category count])]];
-
+	[section.elements insertObjects:insertObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(rowStart, numberOfRows)]];
 	[self.quickDialogTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+}
 
+- (UIImageView *)downArrowButton {
+	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"DownAccessory" ofType:@"png"];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:filepath]];
+	return imageView;
 }
 
 - (void)onSelectCategoryItem:(NSString *)item {
+	FNLOG(@"%@", item);
+	QEntryElement *element = (QEntryElement *) [self.quickDialogTableView.root elementWithKey:A3ExpenseListAddBudgetKeyCategory];
+	element.textValue = item;
+	QEntryTableViewCell *cell = (QEntryTableViewCell *) [self.quickDialogTableView cellForElement:element];
+	cell.textField.text = item;
+	cell.textField.hidden = NO;
+	[cell.textField resignFirstResponder];
+
+	[self removeCategoryItemsWithCell:cell ];
+}
+
+- (void)removeCategoryItemsWithCell:(QTableViewCell *)cell {
+	if (!_categorySelectionInProgress) return;
+
+	cell.accessoryView = nil;
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+	[_tempLabel removeFromSuperview];
+	_tempLabel = nil;
+
 	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:0];
 	[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(2, 10)]];
 
@@ -379,6 +441,87 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	}
 
 	[self.quickDialogTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+
+	_categorySelectionInProgress = NO;
+}
+
+#pragma mark -- Payment Type
+
+- (void)onSelectPaymentType:(QEntryElement *)entryElement {
+	if (_paymentTypeSelectionInProgress) {
+		QTableViewCell *cell = (QTableViewCell *) [self.quickDialogTableView cellForElement:entryElement];
+
+		[self removePaymentTypeItemsWithCell:cell ];
+		return;
+	}
+
+	_paymentTypeSelectionInProgress = YES;
+
+	QEntryTableViewCell *cell = (QEntryTableViewCell *) [self.quickDialogTableView cellForElement:entryElement];
+	cell.accessoryView = [self downArrowButton];
+
+	NSArray *paymentTypes = @[@"Cash", @"Check", @"Credit", @"Debit Card", @"Gift Card"];
+	NSInteger numberOfRows = [paymentTypes count];
+
+	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:0];
+	NSMutableArray *insertObjects = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
+	NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
+	const NSInteger rowStart = 3;
+	NSInteger row = rowStart;
+	for (NSString *title in paymentTypes) {
+		A3SelectItemElement *element = [[A3SelectItemElement alloc] init];
+		element.title = title;
+		NSString *item = title;
+		element.onSelected = ^{
+			[self onSelectPaymentTypeItem:item];
+		};
+		if (row == (rowStart + numberOfRows) - 1) {
+			element.endRow = YES;
+		}
+		if ([entryElement.textValue isEqualToString:title]) {
+			element.selected = YES;
+		}
+		[insertObjects addObject:element];
+		[indexPaths addObject:[NSIndexPath indexPathForRow:row++ inSection:0]];
+	}
+	[section.elements insertObjects:insertObjects atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(rowStart, numberOfRows)]];
+	[self.quickDialogTableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+}
+
+- (void)onSelectPaymentTypeItem:(NSString *)string {
+	QEntryElement *element = (QEntryElement *) [self.quickDialogTableView.root elementWithKey:A3ExpenseListAddBudgetKeyPaymentType];
+	element.textValue = string;
+	QEntryTableViewCell *cell = (QEntryTableViewCell *) [self.quickDialogTableView cellForElement:element];
+	cell.textField.text = string;
+	cell.textField.hidden = NO;
+	[cell.textField resignFirstResponder];
+
+	[self removePaymentTypeItemsWithCell:cell ];
+}
+
+- (void)removePaymentTypeItemsWithCell:(QTableViewCell *)cell {
+	if (!_paymentTypeSelectionInProgress) return;
+
+	cell.accessoryView = nil;
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+	[_tempLabel removeFromSuperview];
+	_tempLabel = nil;
+
+	const NSInteger rowStart = 3;
+	NSInteger numberOfRows = 5;
+	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:0];
+	[section.elements removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(rowStart, numberOfRows)]];
+
+	NSMutableArray *indexPaths = [[NSMutableArray alloc] initWithCapacity:numberOfRows];
+	NSInteger row = rowStart, count = 0;
+	for (; count < numberOfRows; count++) {
+		[indexPaths addObject:[NSIndexPath indexPathForRow:row++ inSection:0]];
+	}
+
+	[self.quickDialogTableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+
+	_paymentTypeSelectionInProgress = NO;
 }
 
 @end

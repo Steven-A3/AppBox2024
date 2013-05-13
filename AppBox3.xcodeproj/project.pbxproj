@@ -63,6 +63,8 @@
 		681A81E7162519AA00521C89 /* A3HomeViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 681A81E6162519AA00521C89 /* A3HomeViewController_iPhone.m */; };
 		682796FB16DF6CFD00BC68F3 /* A3DateKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682796F916DF6CFD00BC68F3 /* A3DateKeyboardViewController.m */; };
 		682796FC16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682796FA16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib */; };
+		6829150017412B0200F41464 /* DownAccessory.png in Resources */ = {isa = PBXBuildFile; fileRef = 682914FE17412B0200F41464 /* DownAccessory.png */; };
+		6829150117412B0200F41464 /* DownAccessory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682914FF17412B0200F41464 /* DownAccessory@2x.png */; };
 		682B18AE171647A700C1C0FD /* A3HorizontalBarContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 682B18AD171647A700C1C0FD /* A3HorizontalBarContainerView.m */; };
 		682B18B01716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682B18AF1716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib */; };
 		682CA319163F8A200052A559 /* A3GridStyleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */; };
@@ -613,6 +615,8 @@
 		682796F816DF6CFD00BC68F3 /* A3DateKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController.h; sourceTree = "<group>"; };
 		682796F916DF6CFD00BC68F3 /* A3DateKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateKeyboardViewController.m; sourceTree = "<group>"; };
 		682796FA16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController.xib; sourceTree = "<group>"; };
+		682914FE17412B0200F41464 /* DownAccessory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DownAccessory.png; sourceTree = "<group>"; };
+		682914FF17412B0200F41464 /* DownAccessory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownAccessory@2x.png"; sourceTree = "<group>"; };
 		682B18AC171647A700C1C0FD /* A3HorizontalBarContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HorizontalBarContainerView.h; sourceTree = "<group>"; };
 		682B18AD171647A700C1C0FD /* A3HorizontalBarContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HorizontalBarContainerView.m; sourceTree = "<group>"; };
 		682B18AF1716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3ExpenseListViewController_iPhone.xib; path = "Expense List/A3ExpenseListViewController_iPhone.xib"; sourceTree = "<group>"; };
@@ -1437,6 +1441,8 @@
 		683B94BF15EB231C00575377 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				682914FE17412B0200F41464 /* DownAccessory.png */,
+				682914FF17412B0200F41464 /* DownAccessory@2x.png */,
 				6896048F16FC0FA90030A2B9 /* icon_leftarrow.png */,
 				6896049016FC0FA90030A2B9 /* icon_rightarrow.png */,
 				68AF5EB516C1E24C0040E984 /* add.png */,
@@ -2106,18 +2112,18 @@
 		688F7E1116C11A1F003687A7 /* Expense List */ = {
 			isa = PBXGroup;
 			children = (
+				684C0199171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.h */,
+				684C019A171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m */,
 				682E07EB17196B01007112B9 /* A3ExpenseListDetailsTableViewController.h */,
 				682E07EC17196B01007112B9 /* A3ExpenseListDetailsTableViewController.m */,
+				684C019C171FE245008AD3D5 /* A3ExpenseListPreferences.h */,
+				684C019D171FE245008AD3D5 /* A3ExpenseListPreferences.m */,
 				68D292A316C20A5100F522BC /* A3ExpenseListTableViewCell.h */,
 				68D292A416C20A5100F522BC /* A3ExpenseListTableViewCell.m */,
 				17D4278591728157F10924BE /* A3ExpenseListViewController.h */,
 				17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */,
 				688F7E1516C1252C003687A7 /* A3ExpenseListViewController_iPad.xib */,
 				682B18AF1716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib */,
-				684C0199171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.h */,
-				684C019A171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m */,
-				684C019C171FE245008AD3D5 /* A3ExpenseListPreferences.h */,
-				684C019D171FE245008AD3D5 /* A3ExpenseListPreferences.m */,
 			);
 			name = "Expense List";
 			sourceTree = "<group>";
@@ -2561,6 +2567,8 @@
 				683386CA1713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib in Resources */,
 				682B18B01716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib in Resources */,
 				682E07DF17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib in Resources */,
+				6829150017412B0200F41464 /* DownAccessory.png in Resources */,
+				6829150117412B0200F41464 /* DownAccessory@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

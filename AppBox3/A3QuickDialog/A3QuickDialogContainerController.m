@@ -180,7 +180,7 @@
 	FNLOG(@"Check");
 
 	self.editingElement = nil;
-	cell.backgroundColor = [self tableViewBackgroundColor];
+	cell.backgroundColor = [self cellBackgroundColor];
 
 	if ([element isKindOfClass:[A3CurrencyEntryElement class]]) {
 		element.textValue = [self currencyFormattedString:cell.textField.text];

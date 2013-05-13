@@ -11,6 +11,9 @@
 @interface A3SelectItemTableViewCell : QTableViewCell
 
 @property (nonatomic, strong) UILabel *checkMark;
+@property (nonatomic) BOOL startRow;
+@property (nonatomic) BOOL endRow;
 
 - (id)initWithReuseIdentifier:(NSString *)identifier;
+
 @end

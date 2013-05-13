@@ -93,6 +93,7 @@
 	self.appearance = newAppearance;
 
 	QEntryTableViewCell *cell = (QEntryTableViewCell *) [super getCellForTableView:tableView controller:controller];
+	FNLOG(@"%@", cell);
 	cell.textField.adjustsFontSizeToFitWidth = YES;
 	return cell;
 }
@@ -151,7 +152,13 @@
 	if (nil == cell) {
 		cell = [[A3SelectItemTableViewCell alloc] initWithReuseIdentifier:cellIdentifier];
 	}
+	cell.checkMark.hidden = !self.selected;
 	cell.textLabel.text = self.title;
+	cell.textLabel.textColor = self.selected ?
+			[UIColor colorWithRed:40.0 / 255.0 green:70.0 / 255.00 blue:115.0/255.0 alpha:1.0] :
+			[UIColor colorWithRed:61.0 / 255.0 green:61.0 / 255.0 blue:61.0 / 255.0 alpha:1.0];
+	cell.startRow = self.startRow;
+	cell.endRow = self.endRow;
 	return cell;
 }
 
