@@ -16,6 +16,7 @@
 #import "A3AppDelegate.h"
 #import "A3DatePickerView.h"
 #import "A3Formatter.h"
+#import "A3AddLocationViewController.h"
 
 static NSString *A3ExpenseListAddBudgetKeyBugdet = @"Bugdet";
 static NSString *A3ExpenseListAddBudgetKeyCategory = @"Category";
@@ -59,7 +60,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	[self setSilverBackgroundImageForNavigationBar];
 
 	self.navigationController.navigationBar.clipsToBounds = YES;
-	self.navigationItem.rightBarButtonItem = [self doneButton];
+	self.navigationItem.rightBarButtonItem = [self barButtonItemWithTitle:@"Done" action:@selector(doneButtonAction)];
 
 }
 
@@ -67,15 +68,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (UIBarButtonItem *)doneButton {
-	A3BarButton *doneButton = [[A3BarButton alloc] initWithFrame:CGRectZero];
-	doneButton.bounds = CGRectMake(0.0, 0.0, 52.0, 30.0);
-	[doneButton setTitle:@"Done" forState:UIControlStateNormal];
-	[doneButton addTarget:self action:@selector(doneButtonAction) forControlEvents:UIControlEventTouchUpInside];
-
-	return [[UIBarButtonItem alloc] initWithCustomView:doneButton];
 }
 
 - (void)doneButtonAction {
@@ -206,12 +198,15 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	return element;
 }
 
-- (QEntryElement *)locationElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Location" Value:@"Current Location" Placeholder:@""];
+- (id)locationElement {
+	A3LabelElement *element = [[A3LabelElement alloc] initWithTitle:@"Location" Value:@"Current Location"];
 	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	element.key = A3ExpenseListAddBudgetKeyLocation;
-	element.delegate = self;
 	element.cellStyleDelegate = self;
+	element.onSelected = ^{
+		A3AddLocationViewController *viewController = [[A3AddLocationViewController alloc] init];
+		[self.navigationController pushViewController:viewController animated:YES];
+	};
 	return element;
 }
 

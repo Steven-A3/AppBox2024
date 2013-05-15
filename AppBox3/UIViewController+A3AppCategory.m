@@ -18,6 +18,7 @@
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "common.h"
+#import "A3BarButton.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -340,6 +341,15 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)alertCheck {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Check" message:@"Nice!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 	[alertView show];
+}
+
+- (UIBarButtonItem *)barButtonItemWithTitle:(NSString *)title action:(SEL)selector {
+	A3BarButton *aButton = [[A3BarButton alloc] initWithFrame:CGRectZero];
+	aButton.bounds = CGRectMake(0.0, 0.0, 52.0, 30.0);
+	[aButton setTitle:title forState:UIControlStateNormal];
+	[aButton addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+
+	return [[UIBarButtonItem alloc] initWithCustomView:aButton];
 }
 
 @end

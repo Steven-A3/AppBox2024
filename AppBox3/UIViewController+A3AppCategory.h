@@ -41,4 +41,6 @@
 - (NSString *)percentFormattedString:(NSString *)source;
 
 - (void)alertCheck;
+
+- (UIBarButtonItem *)barButtonItemWithTitle:(NSString *)title action:(SEL)selector;
 @end

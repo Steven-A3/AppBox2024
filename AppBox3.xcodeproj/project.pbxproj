@@ -7,19 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17D42034CB5B96D2834578E4 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D4278FFD6B1A280DF08DD8 /* pin@2x.png */; };
 		17D4203B85EB759DAEE0CA84 /* A3SelectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */; };
+		17D420B1916740F0DE46BE6C /* poweredByFoursquare_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D4227FFA0460C2ECAE4F0D /* poweredByFoursquare_gray.png */; };
 		17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */; };
+		17D4214BE6CE4609897ABAF7 /* FSTargetCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */; };
+		17D4217B4F6CFD3CB2AB0D15 /* A3LocationPlacemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */; };
 		17D42187ACB2CCE552683D75 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423E78CCDBD799FDC5F53 /* DDPageControl.m */; };
 		17D422DADCE0273BDB701E6A /* A3_30x30Button.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C78033A26F4867E3A98 /* A3_30x30Button.m */; };
 		17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */; };
+		17D425C1CA8744BF63BFE9D7 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D426A30AE4D488D077B876 /* pin.png */; };
 		17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */; };
 		17D42769D90A0C42F30651C5 /* A3EntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FBDC84CF1512076660E /* A3EntryElement.m */; };
+		17D427E89F21BF9CB6F34460 /* poweredByFoursquare_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D425E6F8D175EB7455F7FD /* poweredByFoursquare_gray@2x.png */; };
+		17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D42F881F8676137DFCC56A /* FSWebLogin.xib */; };
+		17D42A703C7FED539C1C2F2F /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F380B3180F46415F59 /* Foursquare2.m */; };
 		17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */; };
 		17D42C081077F39153329C27 /* A3AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */; };
+		17D42C1D1934D1D8D770DE4A /* A3AddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */; };
+		17D42CB5264D70E079FC6EFF /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4209966A3C234828C4038 /* FSConverter.m */; };
 		17D42CF548BE309C2DFE1AC3 /* A3ExpenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */; };
 		17D42E08425437778937884E /* UIViewController+A3AppCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */; };
 		17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F17E6A37A2E93CD352 /* A3BarButton.m */; };
 		17D42F50FDCD6477C8FDF273 /* A3QuickDialogContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */; };
+		17D42F5E206BDDF86D880CC5 /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421752A4D7403CF3080DD /* FSVenue.m */; };
+		17D42F5FD45C92F0F9F5D7D4 /* FSWebLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423FB47020C540F70AA8F /* FSWebLogin.m */; };
+		17D42FA1520333EF8598AEE9 /* FSRequester.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422E56CE0BDC7213428A1 /* FSRequester.m */; };
 		18C3CFCC486641E3819BEF98 /* libPods-GHUnitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */; };
 		1C351C315A48406A863E99F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2329DB00268042E9BF6520E4 /* libPods.a */; };
 		68004B88172FB2700005BFF2 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68004B87172FB2700005BFF2 /* NSManagedObject+Clone.m */; };
@@ -55,6 +68,7 @@
 		681378F61703E5D40003201F /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 681378F51703E5D40003201F /* LoanCalcHistory.m */; };
 		681378FF1703F8720003201F /* LoanCalcHistory+calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */; };
 		68137902170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 68137901170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m */; };
+		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
 		6815871816A7A621006DC8D7 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6815871716A7A621006DC8D7 /* CurrencyFavorite.m */; };
 		681613FB1709330800CBC6FE /* NSString+conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 681613FA1709330800CBC6FE /* NSString+conversion.m */; };
 		681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 681614031709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m */; };
@@ -65,6 +79,7 @@
 		682796FC16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682796FA16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib */; };
 		6829150017412B0200F41464 /* DownAccessory.png in Resources */ = {isa = PBXBuildFile; fileRef = 682914FE17412B0200F41464 /* DownAccessory.png */; };
 		6829150117412B0200F41464 /* DownAccessory@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 682914FF17412B0200F41464 /* DownAccessory@2x.png */; };
+		682961D2174267C6008D025E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682961D1174267C6008D025E /* MapKit.framework */; };
 		682B18AE171647A700C1C0FD /* A3HorizontalBarContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 682B18AD171647A700C1C0FD /* A3HorizontalBarContainerView.m */; };
 		682B18B01716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682B18AF1716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib */; };
 		682CA319163F8A200052A559 /* A3GridStyleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */; };
@@ -530,29 +545,50 @@
 
 /* Begin PBXFileReference section */
 		0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GHUnitTests.xcconfig"; path = "Pods/Pods-GHUnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		17D4209966A3C234828C4038 /* FSConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSConverter.m; sourceTree = "<group>"; };
+		17D421752A4D7403CF3080DD /* FSVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVenue.m; sourceTree = "<group>"; };
+		17D421954D4279983A5B5E90 /* FSTargetCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTargetCallback.h; sourceTree = "<group>"; };
 		17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DatePickerView.m; sourceTree = "<group>"; };
+		17D4227FFA0460C2ECAE4F0D /* poweredByFoursquare_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = poweredByFoursquare_gray.png; sourceTree = "<group>"; };
+		17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AddLocationViewController.m; sourceTree = "<group>"; };
+		17D422E56CE0BDC7213428A1 /* FSRequester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSRequester.m; sourceTree = "<group>"; };
 		17D422F17E6A37A2E93CD352 /* A3BarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BarButton.m; sourceTree = "<group>"; };
+		17D422F380B3180F46415F59 /* Foursquare2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Foursquare2.m; sourceTree = "<group>"; };
+		17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTargetCallback.m; sourceTree = "<group>"; };
 		17D423E78CCDBD799FDC5F53 /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDPageControl.m; sourceTree = "<group>"; };
+		17D423FB47020C540F70AA8F /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWebLogin.m; sourceTree = "<group>"; };
+		17D424036409E445A42632B0 /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
 		17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TopGradientBackgroundView.m; sourceTree = "<group>"; };
+		17D4250F7A7B1FD48550CE39 /* A3LocationPlacemarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LocationPlacemarkView.h; sourceTree = "<group>"; };
 		17D42555502BAE799F0E27FF /* A3TopGradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TopGradientBackgroundView.h; sourceTree = "<group>"; };
 		17D4258A50FF2A7B06B41FF2 /* SalesCalcHistory+controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SalesCalcHistory+controller.h"; sourceTree = "<group>"; };
+		17D42593D316F521BD1E00B7 /* FSVenue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSVenue.h; sourceTree = "<group>"; };
+		17D425E6F8D175EB7455F7FD /* poweredByFoursquare_gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poweredByFoursquare_gray@2x.png"; sourceTree = "<group>"; };
 		17D426630AB9804BD87B1DD5 /* A3_30x30Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3_30x30Button.h; sourceTree = "<group>"; };
+		17D426A30AE4D488D077B876 /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+A3Drawing.m"; sourceTree = "<group>"; };
 		17D4270077B60CF1557410C5 /* DDPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDPageControl.h; sourceTree = "<group>"; };
 		17D4278591728157F10924BE /* A3ExpenseListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListViewController.h; path = "Expense List/A3ExpenseListViewController.h"; sourceTree = "<group>"; };
+		17D4278FFD6B1A280DF08DD8 /* pin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pin@2x.png"; sourceTree = "<group>"; };
 		17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SalesCalcHistory+controller.m"; sourceTree = "<group>"; };
 		17D428133FDEC757E3C375DE /* A3DatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DatePickerView.h; sourceTree = "<group>"; };
 		17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+A3AppCategory.m"; sourceTree = "<group>"; };
+		17D42872DF9E5E4972080653 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare2.h; sourceTree = "<group>"; };
 		17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QuickDialogContainerController.m; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
 		17D4293792D37AC8D8FB54A2 /* UIViewController+A3AppCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+A3AppCategory.h"; sourceTree = "<group>"; };
+		17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LocationPlacemarkView.m; sourceTree = "<group>"; };
+		17D42C1ED3DC1562A8C8E687 /* A3AddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AddLocationViewController.h; sourceTree = "<group>"; };
 		17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppViewController.m; sourceTree = "<group>"; };
+		17D42C3B983E87974598E642 /* FSWebLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSWebLogin.h; sourceTree = "<group>"; };
 		17D42C78033A26F4867E3A98 /* A3_30x30Button.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3_30x30Button.m; sourceTree = "<group>"; };
+		17D42CADABECAF1980C2B1DE /* FSRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSRequester.h; sourceTree = "<group>"; };
 		17D42CB0F4362D9B943BEA57 /* A3SelectItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SelectItemTableViewCell.h; sourceTree = "<group>"; };
 		17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SelectItemTableViewCell.m; sourceTree = "<group>"; };
 		17D42DA493E88CB63A73CF6A /* A3AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppViewController.h; sourceTree = "<group>"; };
 		17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListViewController.m; path = "Expense List/A3ExpenseListViewController.m"; sourceTree = "<group>"; };
 		17D42F64418FD4FA28719114 /* A3BarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BarButton.h; sourceTree = "<group>"; };
+		17D42F881F8676137DFCC56A /* FSWebLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		17D42FBDC84CF1512076660E /* A3EntryElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3EntryElement.m; sourceTree = "<group>"; };
 		17D42FF3629221C7F25442F5 /* A3QuickDialogContainerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3QuickDialogContainerController.h; sourceTree = "<group>"; };
 		2329DB00268042E9BF6520E4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -601,6 +637,8 @@
 		681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LoanCalcHistory+calculation.m"; sourceTree = "<group>"; };
 		68137900170404340003201F /* A3LoanCalcComparisonTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcComparisonTableViewDataSource.h; path = "Loan Calc/A3LoanCalcComparisonTableViewDataSource.h"; sourceTree = "<group>"; };
 		68137901170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcComparisonTableViewDataSource.m; path = "Loan Calc/A3LoanCalcComparisonTableViewDataSource.m"; sourceTree = "<group>"; };
+		68144BC41743381600FD22CF /* A3PlacemarkBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PlacemarkBackgroundView.h; sourceTree = "<group>"; };
+		68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PlacemarkBackgroundView.m; sourceTree = "<group>"; };
 		6815871616A7A621006DC8D7 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyFavorite.h; sourceTree = "<group>"; };
 		6815871716A7A621006DC8D7 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyFavorite.m; sourceTree = "<group>"; };
 		681613F91709330800CBC6FE /* NSString+conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+conversion.h"; sourceTree = "<group>"; };
@@ -617,6 +655,7 @@
 		682796FA16DF6CFD00BC68F3 /* A3DateKeyboardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController.xib; sourceTree = "<group>"; };
 		682914FE17412B0200F41464 /* DownAccessory.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DownAccessory.png; sourceTree = "<group>"; };
 		682914FF17412B0200F41464 /* DownAccessory@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "DownAccessory@2x.png"; sourceTree = "<group>"; };
+		682961D1174267C6008D025E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		682B18AC171647A700C1C0FD /* A3HorizontalBarContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HorizontalBarContainerView.h; sourceTree = "<group>"; };
 		682B18AD171647A700C1C0FD /* A3HorizontalBarContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HorizontalBarContainerView.m; sourceTree = "<group>"; };
 		682B18AF1716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3ExpenseListViewController_iPhone.xib; path = "Expense List/A3ExpenseListViewController_iPhone.xib"; sourceTree = "<group>"; };
@@ -757,7 +796,7 @@
 		6870A0D2163646210059BD2F /* A3iPhoneMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3iPhoneMenuTableViewController.m; sourceTree = "<group>"; };
 		6870A0D5163647A50059BD2F /* A3GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3GradientView.h; sourceTree = "<group>"; };
 		6870A0D6163647A50059BD2F /* A3GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3GradientView.m; sourceTree = "<group>"; };
-		6872076B167091EF00D56507 /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sample.jpg; sourceTree = "<group>"; };
+		6872076B167091EF00D56507 /* sample.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sample.jpg; path = AppBox3/sample.jpg; sourceTree = "<group>"; };
 		687207791670CC6A00D56507 /* A3SectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SectionHeaderView.h; sourceTree = "<group>"; };
 		6872077A1670CC6A00D56507 /* A3SectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SectionHeaderView.m; sourceTree = "<group>"; };
 		6872123A1675B83500E55D06 /* A3NotificationTitleBGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NotificationTitleBGView.h; sourceTree = "<group>"; };
@@ -1194,6 +1233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				682961D2174267C6008D025E /* MapKit.framework in Frameworks */,
 				685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */,
 				685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */,
 				68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */,
@@ -1230,6 +1270,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17D4248DA130E2DF938D7A4A /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				17D42C1ED3DC1562A8C8E687 /* A3AddLocationViewController.h */,
+				17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */,
+				17D4271FBD82911DA6B99E51 /* Foursquare2 */,
+				17D4250F7A7B1FD48550CE39 /* A3LocationPlacemarkView.h */,
+				17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		17D4271FBD82911DA6B99E51 /* Foursquare2 */ = {
+			isa = PBXGroup;
+			children = (
+				17D426A30AE4D488D077B876 /* pin.png */,
+				17D4278FFD6B1A280DF08DD8 /* pin@2x.png */,
+				17D42C3B983E87974598E642 /* FSWebLogin.h */,
+				17D423FB47020C540F70AA8F /* FSWebLogin.m */,
+				17D42872DF9E5E4972080653 /* Foursquare2.h */,
+				17D422F380B3180F46415F59 /* Foursquare2.m */,
+				17D42CADABECAF1980C2B1DE /* FSRequester.h */,
+				17D422E56CE0BDC7213428A1 /* FSRequester.m */,
+				17D42F881F8676137DFCC56A /* FSWebLogin.xib */,
+				17D421954D4279983A5B5E90 /* FSTargetCallback.h */,
+				17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */,
+				17D4227FFA0460C2ECAE4F0D /* poweredByFoursquare_gray.png */,
+				17D425E6F8D175EB7455F7FD /* poweredByFoursquare_gray@2x.png */,
+				17D427EAAA09870422BB413B /* Model */,
+			);
+			path = Foursquare2;
+			sourceTree = "<group>";
+		};
+		17D427EAAA09870422BB413B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				17D42593D316F521BD1E00B7 /* FSVenue.h */,
+				17D421752A4D7403CF3080DD /* FSVenue.m */,
+				17D424036409E445A42632B0 /* FSConverter.h */,
+				17D4209966A3C234828C4038 /* FSConverter.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		17D42F99A50E066A63B28F81 /* A3QuickDialog */ = {
 			isa = PBXGroup;
 			children = (
@@ -1331,6 +1415,7 @@
 		682EA2C615EB10B000BD6AD4 = {
 			isa = PBXGroup;
 			children = (
+				682961D1174267C6008D025E /* MapKit.framework */,
 				682EA2DD15EB10B000BD6AD4 /* AppBox3 */,
 				682EA2F915EB10B000BD6AD4 /* AppBox3Tests */,
 				682CA326163F8C5D0052A559 /* GHUnitTests */,
@@ -1375,7 +1460,7 @@
 		682EA2DD15EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXGroup;
 			children = (
-				6872076B167091EF00D56507 /* sample.jpg */,
+				17D42F99A50E066A63B28F81 /* A3QuickDialog */,
 				682CA31C163F8B0E0052A559 /* AppDelegate */,
 				683B950C15EB233500575377 /* Apps */,
 				683B951015EB233500575377 /* Calculator */,
@@ -1383,6 +1468,7 @@
 				683B953D15EB233500575377 /* Common */,
 				683B954015EB233500575377 /* Controls */,
 				683B954515EB233500575377 /* Data Management */,
+				17D4248DA130E2DF938D7A4A /* Location */,
 				683B954915EB233500575377 /* MainView */,
 				683B954D15EB233500575377 /* Models */,
 				683B955215EB233500575377 /* Popup */,
@@ -1391,7 +1477,6 @@
 				683B955C15EB233500575377 /* Views */,
 				683B94BE15EB230000575377 /* {Resources} */,
 				682EA2DE15EB10B000BD6AD4 /* {Supporting Files} */,
-				17D42F99A50E066A63B28F81 /* A3QuickDialog */,
 			);
 			path = AppBox3;
 			sourceTree = "<group>";
@@ -1429,6 +1514,7 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				6872076B167091EF00D56507 /* sample.jpg */,
 				68DAF6EF16BFE3B000775372 /* Localizable.strings */,
 				68024AD316313CF900D396F0 /* Default-568h@2x.png */,
 				683B94BF15EB231C00575377 /* icons */,
@@ -2032,6 +2118,8 @@
 				17D42555502BAE799F0E27FF /* A3TopGradientBackgroundView.h */,
 				17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */,
 				17D428133FDEC757E3C375DE /* A3DatePickerView.h */,
+				68144BC41743381600FD22CF /* A3PlacemarkBackgroundView.h */,
+				68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2569,6 +2657,11 @@
 				682E07DF17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib in Resources */,
 				6829150017412B0200F41464 /* DownAccessory.png in Resources */,
 				6829150117412B0200F41464 /* DownAccessory@2x.png in Resources */,
+				17D425C1CA8744BF63BFE9D7 /* pin.png in Resources */,
+				17D42034CB5B96D2834578E4 /* pin@2x.png in Resources */,
+				17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */,
+				17D420B1916740F0DE46BE6C /* poweredByFoursquare_gray.png in Resources */,
+				17D427E89F21BF9CB6F34460 /* poweredByFoursquare_gray@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2797,6 +2890,15 @@
 				17D42769D90A0C42F30651C5 /* A3EntryElement.m in Sources */,
 				17D42F50FDCD6477C8FDF273 /* A3QuickDialogContainerController.m in Sources */,
 				17D4203B85EB759DAEE0CA84 /* A3SelectItemTableViewCell.m in Sources */,
+				17D42C1D1934D1D8D770DE4A /* A3AddLocationViewController.m in Sources */,
+				17D42F5FD45C92F0F9F5D7D4 /* FSWebLogin.m in Sources */,
+				17D42A703C7FED539C1C2F2F /* Foursquare2.m in Sources */,
+				17D42FA1520333EF8598AEE9 /* FSRequester.m in Sources */,
+				17D4214BE6CE4609897ABAF7 /* FSTargetCallback.m in Sources */,
+				17D42F5E206BDDF86D880CC5 /* FSVenue.m in Sources */,
+				17D42CB5264D70E079FC6EFF /* FSConverter.m in Sources */,
+				17D4217B4F6CFD3CB2AB0D15 /* A3LocationPlacemarkView.m in Sources */,
+				68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

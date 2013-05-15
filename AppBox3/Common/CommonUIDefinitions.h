@@ -10,6 +10,7 @@
 #define AppBox3_CommonUIDefinitions_h
 
 #define HOT_MENU_VIEW_WIDTH					54.0
+#define A3_NORMAL_ROW_HEIGHT				44.0
 #define A3_MENU_TABLE_VIEW_WIDTH			256.0
 #define APP_VIEW_WIDTH_iPAD                 714.0
 #define APP_VIEW_WIDTH_iPHONE				320.0
