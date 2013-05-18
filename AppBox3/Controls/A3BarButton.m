@@ -12,35 +12,13 @@
 #import "A3UIKit.h"
 
 @interface A3BarButton ()
-
 @property (nonatomic, strong) CAGradientLayer *gradientLayer;
-
 @end
 
 
-@implementation A3BarButton {
-
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-	self = [super initWithFrame:frame];
-	if (self) {
-		// Initialization code
-	}
-	return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder {
-	self = [super initWithCoder:aDecoder];
-	if (self) {
-	}
-
-	return self;
-}
+@implementation A3BarButton
 
 - (void)configureLayers {
-	FNLOG(@"Check");
 	if (nil == _gradientLayer) {
 		_gradientLayer = [CAGradientLayer layer];
 		_gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);
@@ -54,7 +32,7 @@
 		[self.layer insertSublayer:_gradientLayer atIndex:0];
 	}
 	[self setTitleColor:[UIColor colorWithRed:55.0 / 255.0 green:55.0 / 255.0 blue:55.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-	self.titleLabel.font = [UIFont systemFontOfSize:13.0];
+	self.titleLabel.font = [UIFont boldSystemFontOfSize:13.0];
 }
 
 - (void)setGradientLayerColor {
@@ -75,14 +53,7 @@
 - (void)willMoveToSuperview:(UIView *)newSuperview {
 	[super willMoveToSuperview:newSuperview];
 
-	FNLOG(@"Check");
-
 	[self configureLayers];
-
-	UIImage *image = [self imageForState:UIControlStateNormal];
-	UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-	imageView.center = CGPointMake(self.center.x - self.frame.origin.x, self.center.y - self.frame.origin.y - 1.0);
-	[self addSubview:imageView];
 }
 
 @end

@@ -43,4 +43,6 @@
 - (void)alertCheck;
 
 - (UIBarButtonItem *)barButtonItemWithTitle:(NSString *)title action:(SEL)selector;
+
+- (UIBarButtonItem *)blackBarButtonItemWithTitle:(NSString *)title action:(SEL)selector;
 @end

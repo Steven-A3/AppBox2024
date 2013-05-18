@@ -10,25 +10,33 @@
 		17D42034CB5B96D2834578E4 /* pin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D4278FFD6B1A280DF08DD8 /* pin@2x.png */; };
 		17D4203B85EB759DAEE0CA84 /* A3SelectItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */; };
 		17D420B1916740F0DE46BE6C /* poweredByFoursquare_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D4227FFA0460C2ECAE4F0D /* poweredByFoursquare_gray.png */; };
+		17D420D504C2B6E09FECFDE6 /* NIKFontAwesomePathRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422ACAA4EE4CF600B1A1D /* NIKFontAwesomePathRenderer.m */; };
 		17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */; };
 		17D4214BE6CE4609897ABAF7 /* FSTargetCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */; };
 		17D4217B4F6CFD3CB2AB0D15 /* A3LocationPlacemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */; };
 		17D42187ACB2CCE552683D75 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423E78CCDBD799FDC5F53 /* DDPageControl.m */; };
 		17D422DADCE0273BDB701E6A /* A3_30x30Button.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C78033A26F4867E3A98 /* A3_30x30Button.m */; };
+		17D4235B678996668439565E /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D4227E7D59F72869C3BE40 /* CoreText.framework */; };
 		17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */; };
+		17D4237C3A92FEFF61E78393 /* A3BlackBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D420717A6638959975A60E /* A3BlackBarButton.m */; };
+		17D42450BEFE9BC68B3D03DA /* NIKFontAwesomeIconFactory+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421595AB73C178BD80DBE /* NIKFontAwesomeIconFactory+iOS.m */; };
+		17D425283F19996C081FDEDB /* NIKFontAwesomePathFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421193D59D3E484155237 /* NIKFontAwesomePathFactory.m */; };
 		17D425C1CA8744BF63BFE9D7 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D426A30AE4D488D077B876 /* pin.png */; };
 		17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */; };
 		17D42769D90A0C42F30651C5 /* A3EntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FBDC84CF1512076660E /* A3EntryElement.m */; };
 		17D427E89F21BF9CB6F34460 /* poweredByFoursquare_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D425E6F8D175EB7455F7FD /* poweredByFoursquare_gray@2x.png */; };
+		17D4283F145A57E1D0EE483C /* NIKFontAwesomeIconFactory+OSX.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42A381999590088A1DFDA /* NIKFontAwesomeIconFactory+OSX.m */; };
 		17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D42F881F8676137DFCC56A /* FSWebLogin.xib */; };
 		17D42A703C7FED539C1C2F2F /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F380B3180F46415F59 /* Foursquare2.m */; };
 		17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */; };
+		17D42BF63BD37C39F89FD91B /* NIKFontAwesomeIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42438236BD0B1FB72D741 /* NIKFontAwesomeIconFactory.m */; };
 		17D42C081077F39153329C27 /* A3AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */; };
 		17D42C1D1934D1D8D770DE4A /* A3AddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */; };
 		17D42CB5264D70E079FC6EFF /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4209966A3C234828C4038 /* FSConverter.m */; };
 		17D42CF548BE309C2DFE1AC3 /* A3ExpenseListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */; };
 		17D42E08425437778937884E /* UIViewController+A3AppCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */; };
 		17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F17E6A37A2E93CD352 /* A3BarButton.m */; };
+		17D42EACF69697B80C9F10BF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 17D4218BCE62E616D23A12E2 /* FontAwesome.otf */; };
 		17D42F50FDCD6477C8FDF273 /* A3QuickDialogContainerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */; };
 		17D42F5E206BDDF86D880CC5 /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421752A4D7403CF3080DD /* FSVenue.m */; };
 		17D42F5FD45C92F0F9F5D7D4 /* FSWebLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423FB47020C540F70AA8F /* FSWebLogin.m */; };
@@ -143,6 +151,8 @@
 		68436ABC163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABB163E9A72005E7A77 /* A3SectionHeaderViewInMenuTableView.m */; };
 		68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABF163E9DF5005E7A77 /* A3UIKit.m */; };
 		68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */; };
+		684815FA1747746F00AA53F1 /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = 684815F81747746F00AA53F1 /* search.png */; };
+		684815FB1747746F00AA53F1 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 684815F91747746F00AA53F1 /* search@2x.png */; };
 		684C019B171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684C019A171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m */; };
 		684C019E171FE245008AD3D5 /* A3ExpenseListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 684C019D171FE245008AD3D5 /* A3ExpenseListPreferences.m */; };
 		6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */; };
@@ -545,19 +555,31 @@
 
 /* Begin PBXFileReference section */
 		0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GHUnitTests.xcconfig"; path = "Pods/Pods-GHUnitTests.xcconfig"; sourceTree = SOURCE_ROOT; };
+		17D42068EF34B99B627B3BB1 /* NIKFontAwesomeIconFactory+iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NIKFontAwesomeIconFactory+iOS.h"; sourceTree = "<group>"; };
+		17D420717A6638959975A60E /* A3BlackBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BlackBarButton.m; sourceTree = "<group>"; };
 		17D4209966A3C234828C4038 /* FSConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSConverter.m; sourceTree = "<group>"; };
+		17D421193D59D3E484155237 /* NIKFontAwesomePathFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFontAwesomePathFactory.m; sourceTree = "<group>"; };
+		17D4212E53213E18884837B9 /* NIKFontAwesomeIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKFontAwesomeIcon.h; sourceTree = "<group>"; };
+		17D421595AB73C178BD80DBE /* NIKFontAwesomeIconFactory+iOS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIKFontAwesomeIconFactory+iOS.m"; sourceTree = "<group>"; };
 		17D421752A4D7403CF3080DD /* FSVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVenue.m; sourceTree = "<group>"; };
+		17D4218BCE62E616D23A12E2 /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file.otf; path = FontAwesome.otf; sourceTree = "<group>"; };
 		17D421954D4279983A5B5E90 /* FSTargetCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTargetCallback.h; sourceTree = "<group>"; };
+		17D421E7B4B9E0247451B9B4 /* NIKFontAwesomePathRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKFontAwesomePathRenderer.h; sourceTree = "<group>"; };
 		17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DatePickerView.m; sourceTree = "<group>"; };
+		17D421FC9C9766E0ECC64AFA /* A3BlackBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BlackBarButton.h; sourceTree = "<group>"; };
+		17D4227E7D59F72869C3BE40 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		17D4227FFA0460C2ECAE4F0D /* poweredByFoursquare_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = poweredByFoursquare_gray.png; sourceTree = "<group>"; };
+		17D422ACAA4EE4CF600B1A1D /* NIKFontAwesomePathRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFontAwesomePathRenderer.m; sourceTree = "<group>"; };
 		17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AddLocationViewController.m; sourceTree = "<group>"; };
 		17D422E56CE0BDC7213428A1 /* FSRequester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSRequester.m; sourceTree = "<group>"; };
 		17D422F17E6A37A2E93CD352 /* A3BarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BarButton.m; sourceTree = "<group>"; };
 		17D422F380B3180F46415F59 /* Foursquare2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Foursquare2.m; sourceTree = "<group>"; };
 		17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTargetCallback.m; sourceTree = "<group>"; };
+		17D423B2F7880FF7B4672219 /* NIKFontAwesomeIconFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKFontAwesomeIconFactory.h; sourceTree = "<group>"; };
 		17D423E78CCDBD799FDC5F53 /* DDPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDPageControl.m; sourceTree = "<group>"; };
 		17D423FB47020C540F70AA8F /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWebLogin.m; sourceTree = "<group>"; };
 		17D424036409E445A42632B0 /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
+		17D42438236BD0B1FB72D741 /* NIKFontAwesomeIconFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFontAwesomeIconFactory.m; sourceTree = "<group>"; };
 		17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TopGradientBackgroundView.m; sourceTree = "<group>"; };
 		17D4250F7A7B1FD48550CE39 /* A3LocationPlacemarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LocationPlacemarkView.h; sourceTree = "<group>"; };
 		17D42555502BAE799F0E27FF /* A3TopGradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TopGradientBackgroundView.h; sourceTree = "<group>"; };
@@ -577,6 +599,8 @@
 		17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QuickDialogContainerController.m; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
 		17D4293792D37AC8D8FB54A2 /* UIViewController+A3AppCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+A3AppCategory.h"; sourceTree = "<group>"; };
+		17D42A381999590088A1DFDA /* NIKFontAwesomeIconFactory+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIKFontAwesomeIconFactory+OSX.m"; sourceTree = "<group>"; };
+		17D42AC464D4C8F330A5A9D4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = file.md; path = README.md; sourceTree = "<group>"; };
 		17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LocationPlacemarkView.m; sourceTree = "<group>"; };
 		17D42C1ED3DC1562A8C8E687 /* A3AddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AddLocationViewController.h; sourceTree = "<group>"; };
 		17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppViewController.m; sourceTree = "<group>"; };
@@ -587,6 +611,9 @@
 		17D42CB58DB27FC1A8D44663 /* A3SelectItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SelectItemTableViewCell.m; sourceTree = "<group>"; };
 		17D42DA493E88CB63A73CF6A /* A3AppViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AppViewController.h; sourceTree = "<group>"; };
 		17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListViewController.m; path = "Expense List/A3ExpenseListViewController.m"; sourceTree = "<group>"; };
+		17D42E6ECF718F5B707B52AB /* NIKFontAwesomeIconFactory+OSX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NIKFontAwesomeIconFactory+OSX.h"; sourceTree = "<group>"; };
+		17D42ED991BEBCD15CF79E89 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		17D42F633A36404D8EBCB15B /* NIKFontAwesomePathFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIKFontAwesomePathFactory.h; sourceTree = "<group>"; };
 		17D42F64418FD4FA28719114 /* A3BarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BarButton.h; sourceTree = "<group>"; };
 		17D42F881F8676137DFCC56A /* FSWebLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		17D42FBDC84CF1512076660E /* A3EntryElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3EntryElement.m; sourceTree = "<group>"; };
@@ -755,6 +782,8 @@
 		68436ABF163E9DF5005E7A77 /* A3UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIKit.m; sourceTree = "<group>"; };
 		68461012164E0B7F005BD9FC /* A3StrokedTextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StrokedTextButton.h; sourceTree = "<group>"; };
 		68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StrokedTextButton.m; sourceTree = "<group>"; };
+		684815F81747746F00AA53F1 /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
+		684815F91747746F00AA53F1 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		684C0199171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListAddBudgetViewController.h; path = "Expense List/A3ExpenseListAddBudgetViewController.h"; sourceTree = "<group>"; };
 		684C019A171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListAddBudgetViewController.m; path = "Expense List/A3ExpenseListAddBudgetViewController.m"; sourceTree = "<group>"; };
 		684C019C171FE245008AD3D5 /* A3ExpenseListPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListPreferences.h; path = "Expense List/A3ExpenseListPreferences.h"; sourceTree = "<group>"; };
@@ -1244,6 +1273,7 @@
 				682EA2DC15EB10B000BD6AD4 /* CoreData.framework in Frameworks */,
 				68FEF10916649F2B00DD1F27 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				1C351C315A48406A863E99F1 /* libPods.a in Frameworks */,
+				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1270,14 +1300,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17D422CD75E86AEEFB870B87 /* Font-Awesome */ = {
+			isa = PBXGroup;
+			children = (
+				17D42E0C6E197622648A2BF5 /* font */,
+			);
+			path = "Font-Awesome";
+			sourceTree = "<group>";
+		};
 		17D4248DA130E2DF938D7A4A /* Location */ = {
 			isa = PBXGroup;
 			children = (
 				17D42C1ED3DC1562A8C8E687 /* A3AddLocationViewController.h */,
 				17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */,
-				17D4271FBD82911DA6B99E51 /* Foursquare2 */,
 				17D4250F7A7B1FD48550CE39 /* A3LocationPlacemarkView.h */,
 				17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */,
+				17D4271FBD82911DA6B99E51 /* Foursquare2 */,
 			);
 			path = Location;
 			sourceTree = "<group>";
@@ -1312,6 +1350,35 @@
 				17D4209966A3C234828C4038 /* FSConverter.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		17D42D5278D0B3283FBDE7F4 /* FontAwesomeIconFactory */ = {
+			isa = PBXGroup;
+			children = (
+				17D42ED991BEBCD15CF79E89 /* LICENSE */,
+				17D42AC464D4C8F330A5A9D4 /* README.md */,
+				17D422CD75E86AEEFB870B87 /* Font-Awesome */,
+				17D4212E53213E18884837B9 /* NIKFontAwesomeIcon.h */,
+				17D423B2F7880FF7B4672219 /* NIKFontAwesomeIconFactory.h */,
+				17D42438236BD0B1FB72D741 /* NIKFontAwesomeIconFactory.m */,
+				17D42F633A36404D8EBCB15B /* NIKFontAwesomePathFactory.h */,
+				17D421193D59D3E484155237 /* NIKFontAwesomePathFactory.m */,
+				17D421E7B4B9E0247451B9B4 /* NIKFontAwesomePathRenderer.h */,
+				17D422ACAA4EE4CF600B1A1D /* NIKFontAwesomePathRenderer.m */,
+				17D42068EF34B99B627B3BB1 /* NIKFontAwesomeIconFactory+iOS.h */,
+				17D421595AB73C178BD80DBE /* NIKFontAwesomeIconFactory+iOS.m */,
+				17D42E6ECF718F5B707B52AB /* NIKFontAwesomeIconFactory+OSX.h */,
+				17D42A381999590088A1DFDA /* NIKFontAwesomeIconFactory+OSX.m */,
+			);
+			path = FontAwesomeIconFactory;
+			sourceTree = "<group>";
+		};
+		17D42E0C6E197622648A2BF5 /* font */ = {
+			isa = PBXGroup;
+			children = (
+				17D4218BCE62E616D23A12E2 /* FontAwesome.otf */,
+			);
+			path = font;
 			sourceTree = "<group>";
 		};
 		17D42F99A50E066A63B28F81 /* A3QuickDialog */ = {
@@ -1415,7 +1482,6 @@
 		682EA2C615EB10B000BD6AD4 = {
 			isa = PBXGroup;
 			children = (
-				682961D1174267C6008D025E /* MapKit.framework */,
 				682EA2DD15EB10B000BD6AD4 /* AppBox3 */,
 				682EA2F915EB10B000BD6AD4 /* AppBox3Tests */,
 				682CA326163F8C5D0052A559 /* GHUnitTests */,
@@ -1424,6 +1490,7 @@
 				682EA2D215EB10B000BD6AD4 /* Products */,
 				4145230C773F4D058F9905F5 /* Pods.xcconfig */,
 				0BF8C1C6D79C4EECA3192851 /* Pods-GHUnitTests.xcconfig */,
+				17D42D5278D0B3283FBDE7F4 /* FontAwesomeIconFactory */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1441,6 +1508,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				682961D1174267C6008D025E /* MapKit.framework */,
 				683B959215EB252400575377 /* QuartzCore.framework */,
 				682EA2F215EB10B000BD6AD4 /* SenTestingKit.framework */,
 				682EA2D515EB10B000BD6AD4 /* UIKit.framework */,
@@ -1453,6 +1521,7 @@
 				68FEF10816649F2B00DD1F27 /* libCorePlot-CocoaTouch.a */,
 				C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */,
 				2329DB00268042E9BF6520E4 /* libPods.a */,
+				17D4227E7D59F72869C3BE40 /* CoreText.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1527,6 +1596,8 @@
 		683B94BF15EB231C00575377 /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				684815F81747746F00AA53F1 /* search.png */,
+				684815F91747746F00AA53F1 /* search@2x.png */,
 				682914FE17412B0200F41464 /* DownAccessory.png */,
 				682914FF17412B0200F41464 /* DownAccessory@2x.png */,
 				6896048F16FC0FA90030A2B9 /* icon_leftarrow.png */,
@@ -1967,6 +2038,8 @@
 				17D42F64418FD4FA28719114 /* A3BarButton.h */,
 				17D42C78033A26F4867E3A98 /* A3_30x30Button.m */,
 				17D426630AB9804BD87B1DD5 /* A3_30x30Button.h */,
+				17D421FC9C9766E0ECC64AFA /* A3BlackBarButton.h */,
+				17D420717A6638959975A60E /* A3BlackBarButton.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -2662,6 +2735,9 @@
 				17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */,
 				17D420B1916740F0DE46BE6C /* poweredByFoursquare_gray.png in Resources */,
 				17D427E89F21BF9CB6F34460 /* poweredByFoursquare_gray@2x.png in Resources */,
+				17D42EACF69697B80C9F10BF /* FontAwesome.otf in Resources */,
+				684815FA1747746F00AA53F1 /* search.png in Resources */,
+				684815FB1747746F00AA53F1 /* search@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2899,6 +2975,12 @@
 				17D42CB5264D70E079FC6EFF /* FSConverter.m in Sources */,
 				17D4217B4F6CFD3CB2AB0D15 /* A3LocationPlacemarkView.m in Sources */,
 				68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */,
+				17D42BF63BD37C39F89FD91B /* NIKFontAwesomeIconFactory.m in Sources */,
+				17D425283F19996C081FDEDB /* NIKFontAwesomePathFactory.m in Sources */,
+				17D420D504C2B6E09FECFDE6 /* NIKFontAwesomePathRenderer.m in Sources */,
+				17D42450BEFE9BC68B3D03DA /* NIKFontAwesomeIconFactory+iOS.m in Sources */,
+				17D4283F145A57E1D0EE483C /* NIKFontAwesomeIconFactory+OSX.m in Sources */,
+				17D4237C3A92FEFF61E78393 /* A3BlackBarButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

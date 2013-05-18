@@ -94,7 +94,7 @@
 - (UILabel *)nameLabel {
 	if (nil == _nameLabel) {
 		_nameLabel = [self newLabel];
-		_nameLabel.font = [UIFont boldSystemFontOfSize:20.0];
+		_nameLabel.font = [UIFont boldSystemFontOfSize:18.0];
 		_nameLabel.textColor = [UIColor blackColor];
 	}
 	return _nameLabel;
@@ -102,7 +102,7 @@
 
 - (UILabel *)newAddressLabel {
 	UILabel *label = [self newLabel];
-	label.font = [UIFont systemFontOfSize:16.0];
+	label.font = [UIFont systemFontOfSize:14.0];
 	label.textColor = [UIColor colorWithRed:115.0 / 255.0 green:115.0 / 255.0 blue:115.0 / 255.0 alpha:1.0];
 	return label;
 }

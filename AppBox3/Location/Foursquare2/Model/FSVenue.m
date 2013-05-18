@@ -31,4 +31,9 @@
 -(NSString*)title{
     return self.name;
 }
+
+- (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {
+	self.location.coordinate = newCoordinate;
+}
+
 @end
