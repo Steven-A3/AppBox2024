@@ -10,6 +10,10 @@
 #import "A3QuickDialogContainerController.h"
 #import "A3AppViewController.h"
 
-@interface A3ExpenseListAddBudgetViewController : A3QuickDialogContainerController
+@class Expense;
 
+@interface A3ExpenseListAddBudgetViewController : A3QuickDialogContainerController
+@property (nonatomic, weak) Expense *expenseObject;
+
+- (id)initWithObject:(Expense *)expense;
 @end

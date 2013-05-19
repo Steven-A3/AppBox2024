@@ -74,4 +74,13 @@
 	return resultString;
 }
 
++ (NSString *)combineString:(NSString *)string1 withString:(NSString *)string2 {
+	NSString *result = string1 != nil ? string1 : @"";
+	if (string2 != nil) {
+		result = [NSString stringWithFormat:@"%@ %@", result, string2];
+	}
+	result = [result stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
+	return result;
+}
+
 @end

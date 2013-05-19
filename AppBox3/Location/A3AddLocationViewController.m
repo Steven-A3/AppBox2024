@@ -10,6 +10,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import "A3AddLocationViewController.h"
+#import "FSVenue.h"
 #import "A3LocationPlacemarkView.h"
 #import "common.h"
 #import "CommonUIDefinitions.h"
@@ -20,6 +21,7 @@
 #import "FSConverter.h"
 #import "NIKFontAwesomeIconFactory.h"
 #import "NIKFontAwesomeIconFactory+iOS.h"
+#import "NSString+conversion.h"
 
 @interface A3AddLocationViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) MKMapView *mapView;
@@ -33,6 +35,7 @@
 @property (nonatomic, strong) UIView *tableViewBackgroundView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIView *searchView;
+@property (nonatomic, strong) FSVenue *selectedVenue;
 @end
 
 @implementation A3AddLocationViewController {
@@ -40,6 +43,15 @@
 	BOOL	tableViewVisible;
 	BOOL	hideTableView;
 	BOOL	firstUpdate;
+}
+
+- (id)initWithVenue:(FSVenue *)venue {
+	self = [super init];
+	if (self) {
+		_selectedVenue = venue;
+	}
+
+	return self;
 }
 
 - (void)viewDidLoad {
@@ -79,6 +91,7 @@
 }
 
 - (void)saveButtonAction {
+	[_delegate locationSelectedWithVenue:_selectedVenue];
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -100,17 +113,27 @@
 
 	firstUpdate = YES;
 
-	[self.locationManager startUpdatingLocation];
+	if (_selectedVenue) {
+		self.nearbyVenues = @[_selectedVenue];
+		[self proccessAnnotations];
+		[self updatePlacemarkViewWithVenue:_selectedVenue];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillShow:)
-												 name:UIKeyboardWillShowNotification
-											   object:nil];
+		CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:_selectedVenue.coordinate.latitude longitude:_selectedVenue.coordinate.longitude];
+		_lastKnownLocation = newLocation;
+		[self setupMapForLocation:newLocation animated:NO ];
+	} else {
+		[self.locationManager startUpdatingLocation];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(keyboardWillHide:)
-												 name:UIKeyboardWillHideNotification
-											   object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(keyboardWillShow:)
+													 name:UIKeyboardWillShowNotification
+												   object:nil];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(keyboardWillHide:)
+													 name:UIKeyboardWillHideNotification
+												   object:nil];
+	}
 }
 
 - (void)keyboardHeightFromNotification:(NSNotification *)notification {
@@ -231,7 +254,7 @@
 
 -(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
 	FNLOG(@"%@", newLocation);
-	[self setupMapForLocation:newLocation];
+	[self setupMapForLocation:newLocation animated:YES ];
 	[_locationManager stopUpdatingLocation];
 
 	_lastKnownLocation = newLocation;
@@ -259,20 +282,11 @@
 	}
 }
 
-- (NSString *)combineString:(NSString *)string1 withString:(NSString *)string2 {
-	NSString *result = string1 != nil ? string1 : @"";
-	if (string2 != nil) {
-		result = [NSString stringWithFormat:@"%@ %@", result, string2];
-	}
-	result = [result stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
-	return result;
-}
-
 - (void)updatePlacemarkView:(MKPlacemark *)placemark {
 	self.placemarkView.hidden = NO;
 	self.placemarkView.nameLabel.text = placemark.name;
-	self.placemarkView.addressLabel1.text = [self combineString:placemark.subThoroughfare withString:placemark.thoroughfare];
-	self.placemarkView.addressLabel2.text = [self combineString:[self combineString:placemark.subAdministrativeArea withString:placemark.administrativeArea] withString:placemark.postalCode];
+	self.placemarkView.addressLabel1.text = [NSString combineString:placemark.subThoroughfare withString:placemark.thoroughfare];
+	self.placemarkView.addressLabel2.text = [NSString combineString:[NSString combineString:placemark.subAdministrativeArea withString:placemark.administrativeArea] withString:placemark.postalCode];
 	self.placemarkView.addressLabel3.text = placemark.country;
 	[self.placemarkView setNeedsLayout];
 	FNLOG(@"%@", placemark);
@@ -281,14 +295,14 @@
 - (void)updatePlacemarkViewWithVenue:(FSVenue *)venue {
 	self.placemarkView.hidden = NO;
 	self.placemarkView.nameLabel.text = venue.name;
-	self.placemarkView.addressLabel1.text = venue.location.address;
-	self.placemarkView.addressLabel2.text = [self combineString:[self combineString:venue.location.city withString:venue.location.state] withString:venue.location.postalCode];
-	self.placemarkView.addressLabel3.text = venue.location.country;
+	self.placemarkView.addressLabel1.text = venue.location.address1;
+	self.placemarkView.addressLabel2.text = venue.location.address2;
+	self.placemarkView.addressLabel3.text = venue.location.address3;
 	self.placemarkView.contactLabel.text = venue.contact;
 	[self.placemarkView setNeedsLayout];
 }
 
--(void)setupMapForLocation:(CLLocation*)newLocation{
+- (void)setupMapForLocation:(CLLocation *)newLocation animated:(BOOL)animated {
 	MKCoordinateRegion region;
 	MKCoordinateSpan span;
 	span.latitudeDelta = 0.003;
@@ -298,7 +312,7 @@
 	location.longitude = newLocation.coordinate.longitude;
 	region.span = span;
 	region.center = location;
-	[self.mapView setRegion:region animated:YES];
+	[self.mapView setRegion:region animated:animated];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
@@ -329,7 +343,8 @@
 	FNLOG();
 
 	if ([view.annotation isKindOfClass:[FSVenue class]]) {
-		[self updatePlacemarkViewWithVenue:view.annotation];
+		_selectedVenue = (FSVenue *) view.annotation;
+		[self updatePlacemarkViewWithVenue:(FSVenue *) view.annotation];
 		if ([_searchField isFirstResponder]) {
 			[_searchField resignFirstResponder];
 			hideTableView = YES;
@@ -406,7 +421,7 @@
 											   [self presentTableView];
 											   FSVenue *venue = [_nearbyVenues objectAtIndex:0];
 											   CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:venue.location.coordinate.latitude longitude:venue.location.coordinate.longitude];
-											   [self setupMapForLocation:newLocation];
+											   [self setupMapForLocation:newLocation animated:YES ];
 										   } else {
 											   [self dismissTableView];
 										   }
@@ -557,12 +572,13 @@
 
 	FSVenue *venue = [self.nearbyVenues objectAtIndex:indexPath.row];
 	[self updatePlacemarkViewWithVenue:venue];
+	_selectedVenue = venue;
 
 	self.nearbyVenues = @[venue];
 	[self proccessAnnotations];
 
 	CLLocation *newLocation = [[CLLocation alloc] initWithLatitude:venue.coordinate.latitude longitude:venue.coordinate.longitude];
-	[self setupMapForLocation:newLocation];
+	[self setupMapForLocation:newLocation animated:YES ];
 
 	[self barButtonCancelSave];
 }

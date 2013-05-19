@@ -13,6 +13,7 @@
 		17D420D504C2B6E09FECFDE6 /* NIKFontAwesomePathRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422ACAA4EE4CF600B1A1D /* NIKFontAwesomePathRenderer.m */; };
 		17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */; };
 		17D4214BE6CE4609897ABAF7 /* FSTargetCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */; };
+		17D421789FF0D787F9D7911C /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D42835AF604EA6A37B16D4 /* MessageUI.framework */; };
 		17D4217B4F6CFD3CB2AB0D15 /* A3LocationPlacemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */; };
 		17D42187ACB2CCE552683D75 /* DDPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423E78CCDBD799FDC5F53 /* DDPageControl.m */; };
 		17D422DADCE0273BDB701E6A /* A3_30x30Button.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C78033A26F4867E3A98 /* A3_30x30Button.m */; };
@@ -22,6 +23,7 @@
 		17D42450BEFE9BC68B3D03DA /* NIKFontAwesomeIconFactory+iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421595AB73C178BD80DBE /* NIKFontAwesomeIconFactory+iOS.m */; };
 		17D425283F19996C081FDEDB /* NIKFontAwesomePathFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421193D59D3E484155237 /* NIKFontAwesomePathFactory.m */; };
 		17D425C1CA8744BF63BFE9D7 /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D426A30AE4D488D077B876 /* pin.png */; };
+		17D426A094D3528EC330687B /* A3ExpenseListHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D424E133F29A79C74485B6 /* A3ExpenseListHistoryTableViewCell.m */; };
 		17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421E9DFB6FCA92E262D10 /* A3DatePickerView.m */; };
 		17D42769D90A0C42F30651C5 /* A3EntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42FBDC84CF1512076660E /* A3EntryElement.m */; };
 		17D427E89F21BF9CB6F34460 /* poweredByFoursquare_gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 17D425E6F8D175EB7455F7FD /* poweredByFoursquare_gray@2x.png */; };
@@ -29,6 +31,7 @@
 		17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17D42F881F8676137DFCC56A /* FSWebLogin.xib */; };
 		17D42A703C7FED539C1C2F2F /* Foursquare2.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F380B3180F46415F59 /* Foursquare2.m */; };
 		17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */; };
+		17D42B71FF8938D845DF021E /* A3ExpenseListHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4228ADC6236265FC19374 /* A3ExpenseListHistoryViewController.m */; };
 		17D42BF63BD37C39F89FD91B /* NIKFontAwesomeIconFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42438236BD0B1FB72D741 /* NIKFontAwesomeIconFactory.m */; };
 		17D42C081077F39153329C27 /* A3AppViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */; };
 		17D42C1D1934D1D8D770DE4A /* A3AddLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */; };
@@ -64,6 +67,9 @@
 		680060CC16F2CFE900219E41 /* icon_sc_mirror.png in Resources */ = {isa = PBXBuildFile; fileRef = 680060C016F2CFE900219E41 /* icon_sc_mirror.png */; };
 		680060CD16F2CFE900219E41 /* icon_sc_settings_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 680060C116F2CFE900219E41 /* icon_sc_settings_on.png */; };
 		680060CE16F2CFE900219E41 /* icon_sc_settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 680060C216F2CFE900219E41 /* icon_sc_settings.png */; };
+		6801AB2217490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 6801AB2117490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.m */; };
+		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
+		6801AB271749203C00B162DB /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = 6801AB261749203C00B162DB /* Expense.m */; };
 		68024AD416313CF900D396F0 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68024AD316313CF900D396F0 /* Default-568h@2x.png */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		6809A74A163F8E0B002064E2 /* A3MainTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6809A749163F8E0B002064E2 /* A3MainTest.m */; };
@@ -188,10 +194,8 @@
 		687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */; };
 		687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
-		68822D3C1718020800127344 /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = 68822D3B1718020800127344 /* Expense.m */; };
 		68822D3F1718020900127344 /* ExpenseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 68822D3E1718020900127344 /* ExpenseDetail.m */; };
 		68822D401718023100127344 /* ExpenseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 68822D3E1718020900127344 /* ExpenseDetail.m */; };
-		68822D411718023100127344 /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = 68822D3B1718020800127344 /* Expense.m */; };
 		6883AAF716719D45004DEEE6 /* A3NotificationTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883AAF616719D45004DEEE6 /* A3NotificationTableViewController.m */; };
 		6884DFC3167AC5C400A8FFA7 /* A3NotificationStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */; };
 		6886A30C165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886A30B165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m */; };
@@ -569,6 +573,7 @@
 		17D421FC9C9766E0ECC64AFA /* A3BlackBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BlackBarButton.h; sourceTree = "<group>"; };
 		17D4227E7D59F72869C3BE40 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		17D4227FFA0460C2ECAE4F0D /* poweredByFoursquare_gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = poweredByFoursquare_gray.png; sourceTree = "<group>"; };
+		17D4228ADC6236265FC19374 /* A3ExpenseListHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListHistoryViewController.m; path = "Expense List/A3ExpenseListHistoryViewController.m"; sourceTree = "<group>"; };
 		17D422ACAA4EE4CF600B1A1D /* NIKFontAwesomePathRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFontAwesomePathRenderer.m; sourceTree = "<group>"; };
 		17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AddLocationViewController.m; sourceTree = "<group>"; };
 		17D422E56CE0BDC7213428A1 /* FSRequester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSRequester.m; sourceTree = "<group>"; };
@@ -580,6 +585,8 @@
 		17D423FB47020C540F70AA8F /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWebLogin.m; sourceTree = "<group>"; };
 		17D424036409E445A42632B0 /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
 		17D42438236BD0B1FB72D741 /* NIKFontAwesomeIconFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIKFontAwesomeIconFactory.m; sourceTree = "<group>"; };
+		17D4246DD7DDB5517CBFE33B /* A3ExpenseListHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListHistoryViewController.h; path = "Expense List/A3ExpenseListHistoryViewController.h"; sourceTree = "<group>"; };
+		17D424E133F29A79C74485B6 /* A3ExpenseListHistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListHistoryTableViewCell.m; path = "Expense List/A3ExpenseListHistoryTableViewCell.m"; sourceTree = "<group>"; };
 		17D425095F11911CE03A18C3 /* A3TopGradientBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TopGradientBackgroundView.m; sourceTree = "<group>"; };
 		17D4250F7A7B1FD48550CE39 /* A3LocationPlacemarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LocationPlacemarkView.h; sourceTree = "<group>"; };
 		17D42555502BAE799F0E27FF /* A3TopGradientBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TopGradientBackgroundView.h; sourceTree = "<group>"; };
@@ -595,6 +602,7 @@
 		17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SalesCalcHistory+controller.m"; sourceTree = "<group>"; };
 		17D428133FDEC757E3C375DE /* A3DatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DatePickerView.h; sourceTree = "<group>"; };
 		17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+A3AppCategory.m"; sourceTree = "<group>"; };
+		17D42835AF604EA6A37B16D4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		17D42872DF9E5E4972080653 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare2.h; sourceTree = "<group>"; };
 		17D42880C3169E5E77C7D615 /* A3QuickDialogContainerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3QuickDialogContainerController.m; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
@@ -602,6 +610,7 @@
 		17D42A381999590088A1DFDA /* NIKFontAwesomeIconFactory+OSX.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIKFontAwesomeIconFactory+OSX.m"; sourceTree = "<group>"; };
 		17D42AC464D4C8F330A5A9D4 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = file.md; path = README.md; sourceTree = "<group>"; };
 		17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LocationPlacemarkView.m; sourceTree = "<group>"; };
+		17D42B82653A52D214A38EEC /* A3ExpenseListHistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ExpenseListHistoryTableViewCell.h; path = "Expense List/A3ExpenseListHistoryTableViewCell.h"; sourceTree = "<group>"; };
 		17D42C1ED3DC1562A8C8E687 /* A3AddLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3AddLocationViewController.h; sourceTree = "<group>"; };
 		17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AppViewController.m; sourceTree = "<group>"; };
 		17D42C3B983E87974598E642 /* FSWebLogin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSWebLogin.h; sourceTree = "<group>"; };
@@ -643,6 +652,11 @@
 		680060C016F2CFE900219E41 /* icon_sc_mirror.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sc_mirror.png; sourceTree = "<group>"; };
 		680060C116F2CFE900219E41 /* icon_sc_settings_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sc_settings_on.png; sourceTree = "<group>"; };
 		680060C216F2CFE900219E41 /* icon_sc_settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sc_settings.png; sourceTree = "<group>"; };
+		6801AB2017490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3EmptyActionMenuViewController_iPad.h; sourceTree = "<group>"; };
+		6801AB2117490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3EmptyActionMenuViewController_iPad.m; sourceTree = "<group>"; };
+		6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3EmptyActionMenuViewController_iPad.xib; path = ViewControllers/A3EmptyActionMenuViewController_iPad.xib; sourceTree = "<group>"; };
+		6801AB251749203C00B162DB /* Expense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expense.h; sourceTree = "<group>"; };
+		6801AB261749203C00B162DB /* Expense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Expense.m; sourceTree = "<group>"; };
 		68024AD316313CF900D396F0 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIDevice.m; sourceTree = "<group>"; };
@@ -839,8 +853,6 @@
 		687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcHistoryViewController.m; path = "Apps/Sales Calc/A3SalesCalcHistoryViewController.m"; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
-		68822D3A1718020800127344 /* Expense.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expense.h; sourceTree = "<group>"; };
-		68822D3B1718020800127344 /* Expense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Expense.m; sourceTree = "<group>"; };
 		68822D3D1718020900127344 /* ExpenseDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpenseDetail.h; sourceTree = "<group>"; };
 		68822D3E1718020900127344 /* ExpenseDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpenseDetail.m; sourceTree = "<group>"; };
 		6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3NotificationTableViewController.h; path = ViewControllers/A3NotificationTableViewController.h; sourceTree = "<group>"; };
@@ -1274,6 +1286,7 @@
 				68FEF10916649F2B00DD1F27 /* libCorePlot-CocoaTouch.a in Frameworks */,
 				1C351C315A48406A863E99F1 /* libPods.a in Frameworks */,
 				17D4235B678996668439565E /* CoreText.framework in Frameworks */,
+				17D421789FF0D787F9D7911C /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1419,8 +1432,6 @@
 		682CA31B163F8AC90052A559 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				682E07E8171968A8007112B9 /* ATSDragToReorderTableViewController.h */,
-				682E07E9171968A8007112B9 /* ATSDragToReorderTableViewController.m */,
 				681614021709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.h */,
 				681614031709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m */,
 				681614041709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib */,
@@ -1428,6 +1439,11 @@
 				682E07DC17191D65007112B9 /* A3ActionMenuViewController_iPhone.m */,
 				682E07DD17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib */,
 				682E07E017191E1F007112B9 /* A3ActionMenuViewControllerDelegate.h */,
+				17D42DA493E88CB63A73CF6A /* A3AppViewController.h */,
+				17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */,
+				6801AB2017490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.h */,
+				6801AB2117490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.m */,
+				6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */,
 				682CA317163F8A200052A559 /* A3GridStyleTableViewCell.h */,
 				682CA318163F8A200052A559 /* A3GridStyleTableViewCell.m */,
 				6883AAF516719D45004DEEE6 /* A3NotificationTableViewController.h */,
@@ -1437,11 +1453,11 @@
 				68B2CD8B165E02A300BD998F /* A3WeatherStickerViewController.h */,
 				68B2CD8C165E02A300BD998F /* A3WeatherStickerViewController.m */,
 				68B2CD89165DD68E00BD998F /* A3WeatherStickerViewController.xib */,
+				682E07E8171968A8007112B9 /* ATSDragToReorderTableViewController.h */,
+				682E07E9171968A8007112B9 /* ATSDragToReorderTableViewController.m */,
 				68129E78164A5841008668F4 /* PaperFold */,
-				17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */,
 				17D4293792D37AC8D8FB54A2 /* UIViewController+A3AppCategory.h */,
-				17D42C3A7077F2C5B46CBC33 /* A3AppViewController.m */,
-				17D42DA493E88CB63A73CF6A /* A3AppViewController.h */,
+				17D4281ECC6009AA91E10BA5 /* UIViewController+A3AppCategory.m */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1522,6 +1538,7 @@
 				C2D8C92FED3D4862A60C2084 /* libPods-GHUnitTests.a */,
 				2329DB00268042E9BF6520E4 /* libPods.a */,
 				17D4227E7D59F72869C3BE40 /* CoreText.framework */,
+				17D42835AF604EA6A37B16D4 /* MessageUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2083,12 +2100,12 @@
 		683B954D15EB233500575377 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6801AB251749203C00B162DB /* Expense.h */,
+				6801AB261749203C00B162DB /* Expense.m */,
 				68004B8C172FEB290005BFF2 /* SalesCalcHistory.h */,
 				68004B8D172FEB290005BFF2 /* SalesCalcHistory.m */,
 				68822D3D1718020900127344 /* ExpenseDetail.h */,
 				68822D3E1718020900127344 /* ExpenseDetail.m */,
-				68822D3A1718020800127344 /* Expense.h */,
-				68822D3B1718020800127344 /* Expense.m */,
 				687FB836162D5871004FB719 /* A3Weather.h */,
 				687FB837162D5871004FB719 /* A3Weather.m */,
 				6815871616A7A621006DC8D7 /* CurrencyFavorite.h */,
@@ -2285,6 +2302,10 @@
 				17D42DEEEA5DC0A4BC5DA36E /* A3ExpenseListViewController.m */,
 				688F7E1516C1252C003687A7 /* A3ExpenseListViewController_iPad.xib */,
 				682B18AF1716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib */,
+				17D4246DD7DDB5517CBFE33B /* A3ExpenseListHistoryViewController.h */,
+				17D4228ADC6236265FC19374 /* A3ExpenseListHistoryViewController.m */,
+				17D42B82653A52D214A38EEC /* A3ExpenseListHistoryTableViewCell.h */,
+				17D424E133F29A79C74485B6 /* A3ExpenseListHistoryTableViewCell.m */,
 			);
 			name = "Expense List";
 			sourceTree = "<group>";
@@ -2738,6 +2759,7 @@
 				17D42EACF69697B80C9F10BF /* FontAwesome.otf in Resources */,
 				684815FA1747746F00AA53F1 /* search.png in Resources */,
 				684815FB1747746F00AA53F1 /* search@2x.png in Resources */,
+				6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2945,7 +2967,6 @@
 				68BA7511171500F200F3BA26 /* A3SalesCalcQuickDialogViewController_iPad.m in Sources */,
 				68BA75141715011700F3BA26 /* A3SalesCalcQuickDialogViewController_iPhone.m in Sources */,
 				682B18AE171647A700C1C0FD /* A3HorizontalBarContainerView.m in Sources */,
-				68822D3C1718020800127344 /* Expense.m in Sources */,
 				68822D3F1718020900127344 /* ExpenseDetail.m in Sources */,
 				682E07DE17191D65007112B9 /* A3ActionMenuViewController_iPhone.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
@@ -2981,6 +3002,10 @@
 				17D42450BEFE9BC68B3D03DA /* NIKFontAwesomeIconFactory+iOS.m in Sources */,
 				17D4283F145A57E1D0EE483C /* NIKFontAwesomeIconFactory+OSX.m in Sources */,
 				17D4237C3A92FEFF61E78393 /* A3BlackBarButton.m in Sources */,
+				6801AB2217490F2B00B162DB /* A3EmptyActionMenuViewController_iPad.m in Sources */,
+				6801AB271749203C00B162DB /* Expense.m in Sources */,
+				17D42B71FF8938D845DF021E /* A3ExpenseListHistoryViewController.m in Sources */,
+				17D426A094D3528EC330687B /* A3ExpenseListHistoryTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3007,7 +3032,6 @@
 				68BC7B85170A942400D7EE21 /* LoanCalcHistory.m in Sources */,
 				687C3F48170A954600002C0D /* AppBox3.xcdatamodeld in Sources */,
 				68822D401718023100127344 /* ExpenseDetail.m in Sources */,
-				68822D411718023100127344 /* Expense.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

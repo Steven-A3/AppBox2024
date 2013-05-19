@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3ExpenseListPreferences.h"
@@ -17,17 +18,19 @@
 #import "A3DatePickerView.h"
 #import "A3Formatter.h"
 #import "A3AddLocationViewController.h"
+#import "Expense.h"
+#import "FSVenue.h"
 
-static NSString *A3ExpenseListAddBudgetKeyBugdet = @"Bugdet";
-static NSString *A3ExpenseListAddBudgetKeyCategory = @"Category";
-static NSString *A3ExpenseListAddBudgetKeyPaymentType = @"Type";
-static NSString *A3ExpenseListAddBudgetKeyTitle = @"Title";
-static NSString *A3ExpenseListAddBudgetKeyDate = @"Date";
-static NSString *A3ExpenseListAddBudgetKeyLocation = @"Location";
-static NSString *A3ExpenseListAddBudgetKeyNotes = @"Notes";
+static NSString *A3ExpenseListAddBudgetKeyBugdet = @"budget";
+static NSString *A3ExpenseListAddBudgetKeyCategory = @"category";
+static NSString *A3ExpenseListAddBudgetKeyPaymentType = @"paymentType";
+static NSString *A3ExpenseListAddBudgetKeyTitle = @"title";
+static NSString *A3ExpenseListAddBudgetKeyDate = @"date";
+static NSString *A3ExpenseListAddBudgetKeyLocation = @"location";
+static NSString *A3ExpenseListAddBudgetKeyNotes = @"notes";
 static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced";
 
-@interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3QuickDialogCellStyleDelegate>
+@interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3QuickDialogCellStyleDelegate, A3AddLocationViewControllerDelegate>
 @property (nonatomic, strong) A3ExpenseListPreferences *pref;
 @property (nonatomic, strong) A3DatePickerView *datePickerView;
 @property (nonatomic, strong) UILabel *tempLabel;
@@ -39,17 +42,18 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	BOOL	_paymentTypeSelectionInProgress;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+- (id)initWithObject:(Expense *)expense {
+	_expenseObject = expense;
+	self = [super init];
+	if (self) {
 		// Custom initialization
 
 		self.title = @"Add Budget";
+		_expenseObject = expense;
 
 		[self addTopGradientLayerToView:self.view];
 	}
-    return self;
+	return self;
 }
 
 - (void)viewDidLoad
@@ -71,8 +75,12 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (void)doneButtonAction {
-	if (DEVICE_IPAD){
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+	A3AppDelegate *appDelegate = [A3AppDelegate instance];
+	NSError *error = nil;
+	[appDelegate.managedObjectContext save:&error];
+
+	if (DEVICE_IPAD) {
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [appDelegate paperFoldMenuViewController];
 		[paperFoldMenuViewController removeRightWingViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
@@ -157,7 +165,10 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)budgetElement {
-	A3CurrencyEntryElement *element = [[A3CurrencyEntryElement alloc] initWithTitle:@"Budget" Value:@"" Placeholder:[self zeroCurrency]];
+	A3CurrencyEntryElement *element;
+	element = [[A3CurrencyEntryElement alloc] initWithTitle:@"Budget:"
+													  Value:[self currencyFormattedString:_expenseObject.budget]
+												Placeholder:[self zeroCurrency]];
 	element.key = A3ExpenseListAddBudgetKeyBugdet;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -165,7 +176,9 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)categoryElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Category" Value:@"Shopping" Placeholder:@""];
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Category:"
+															  Value:_expenseObject.category
+														Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyCategory;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -174,7 +187,9 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)paymentType {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Payment Type" Value:@"Cash" Placeholder:@""];
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Payment Type:"
+															  Value:_expenseObject.paymentType
+														Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyPaymentType;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -183,7 +198,9 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)titleElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Title" Value:@"" Placeholder:@"(Optional)"];
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Title:"
+															  Value:_expenseObject.title
+														Placeholder:@"(Optional)"];
 	element.key = A3ExpenseListAddBudgetKeyTitle;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -191,7 +208,10 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (A3EntryElement *)dateElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Date" Value:[A3Formatter mediumStyleDateStringFromDate:[NSDate date]] Placeholder:@""];
+	A3EntryElement *element;
+	element = [[A3EntryElement alloc] initWithTitle:@"Date:"
+											  Value:[A3Formatter mediumStyleDateStringFromDate:[NSDate date]]
+										Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyDate;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -199,19 +219,50 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (id)locationElement {
-	A3LabelElement *element = [[A3LabelElement alloc] initWithTitle:@"Location" Value:@"Current Location"];
+	A3LabelElement *element;
+	element = [[A3LabelElement alloc] initWithTitle:@"Location:"
+											  Value:_expenseObject.location
+	];
 	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	element.key = A3ExpenseListAddBudgetKeyLocation;
 	element.cellStyleDelegate = self;
 	element.onSelected = ^{
-		A3AddLocationViewController *viewController = [[A3AddLocationViewController alloc] init];
+		FSVenue *venue = nil;
+		if ([_expenseObject.location length]) {
+			venue = [[FSVenue alloc] init];
+			venue.name = _expenseObject.location;
+			venue.location.address1 = _expenseObject.location_address1;
+			venue.location.address2 = _expenseObject.location_address2;
+			venue.location.address3 = _expenseObject.location_address3;
+			venue.location.coordinate = CLLocationCoordinate2DMake([_expenseObject.location_latitude doubleValue], [_expenseObject.location_longitude doubleValue]);
+			venue.contact = _expenseObject.locatoin_contact;
+		}
+		A3AddLocationViewController *viewController = [[A3AddLocationViewController alloc] initWithVenue:venue];
+		viewController.delegate = self;
 		[self.navigationController pushViewController:viewController animated:YES];
 	};
 	return element;
 }
 
+- (void)locationSelectedWithVenue:(FSVenue *)venue {
+	_expenseObject.location = venue.name;
+	_expenseObject.location_address1 = venue.location.address1;
+	_expenseObject.location_address2 = venue.location.address2;
+	_expenseObject.location_address3 = venue.location.address3;
+	_expenseObject.locatoin_contact = venue.contact;
+	_expenseObject.location_latitude = @(venue.location.coordinate.latitude);
+	_expenseObject.location_longitude = @(venue.location.coordinate.longitude);
+
+	A3LabelElement *element = (A3LabelElement *) [self.quickDialogTableView.root elementWithKey:A3ExpenseListAddBudgetKeyLocation];
+	element.value = venue.name;
+	[self.quickDialogTableView reloadCellForElements:element, nil];
+}
+
 - (QEntryElement *)notesElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Notes" Value:@"" Placeholder:@"(Optional)"];
+	A3EntryElement *element;
+	element = [[A3EntryElement alloc] initWithTitle:@"Notes:"
+											  Value:_expenseObject.notes
+										Placeholder:@"(Optional)"];
 	element.key = A3ExpenseListAddBudgetKeyNotes;
 	element.delegate = self;
 	element.cellStyleDelegate = self;
@@ -275,6 +326,10 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	}
 }
 
+- (void)QEntryEditingChangedForElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
+	[_expenseObject setValue:cell.textField.text forKey:element.key];
+}
+
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
 	[super QEntryDidEndEditingElement:element andCell:cell];
 
@@ -319,6 +374,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (void)dateChanged:(UIDatePicker *)picker {
+	_expenseObject.date = picker.date;
 	_tempLabel.text = [A3Formatter mediumStyleDateStringFromDate:picker.date];
 }
 
@@ -413,6 +469,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	cell.textField.text = item;
 	cell.textField.hidden = NO;
 	[cell.textField resignFirstResponder];
+	_expenseObject.category = item;
 
 	[self removeCategoryItemsWithCell:cell ];
 }
@@ -490,6 +547,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	cell.textField.text = string;
 	cell.textField.hidden = NO;
 	[cell.textField resignFirstResponder];
+	_expenseObject.paymentType = string;
 
 	[self removePaymentTypeItemsWithCell:cell ];
 }

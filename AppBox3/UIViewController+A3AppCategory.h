@@ -27,6 +27,8 @@
 
 - (void)presentActionMenuWithDelegate:(id <A3ActionMenuViewControllerDelegate>)delegate;
 
+- (void)presentEmptyActionMenu;
+
 - (void)closeActionMenuViewWithAnimation:(BOOL)animate;
 - (void)addToolsButtonWithAction:(SEL)action;
 - (NSString *)zeroCurrency;

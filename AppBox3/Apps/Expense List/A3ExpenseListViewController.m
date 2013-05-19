@@ -19,8 +19,13 @@
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "A3PaperFoldMenuViewController.h"
 #import "A3AppDelegate.h"
+#import "Expense.h"
+#import "common.h"
+#import "A3ExpenseListHistoryViewController.h"
+#import <MessageUI/MessageUI.h>
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate>
+@interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate, A3ExpenseListHistoryViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet A3HorizontalBarContainerView *chartContainerView;
 @property (nonatomic, weak) IBOutlet UITableView *myTableView;
@@ -28,7 +33,9 @@
 
 @end
 
-@implementation A3ExpenseListViewController
+@implementation A3ExpenseListViewController {
+	NSInteger numberOfActions;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -40,9 +47,8 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewDidLoad {
+	[super viewDidLoad];
 
 	A3SmallButton *editButton = [[A3SmallButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 32.0, 30.0)];
 	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"edit" ofType:@"png"];
@@ -74,7 +80,7 @@
 	_chartContainerView.bottomLabel.font = _chartContainerView.chartLabelFont;
 	_chartContainerView.bottomLabel.textColor = _chartContainerView.chartLabelColor;
 
-	_chartContainerView.bottomValueLabel.text = @"$250.00";
+	_chartContainerView.bottomValueLabel.text = [self currencyFormattedString:self.detailsViewController.expenseObject.budget];
 	_chartContainerView.bottomValueLabel.font = _chartContainerView.bottomValueFont;
 
 	_chartContainerView.chartLeftValueLabel.textColor = [UIColor whiteColor];
@@ -82,12 +88,10 @@
 
 	_chartContainerView.chartRightValueLabel.textColor = [UIColor whiteColor];
 	_chartContainerView.chartRightValueLabel.font = _chartContainerView.chartValueFont;
-	_chartContainerView.chartRightValueLabel.text = @"$0.00";
-
-	_chartContainerView.percentBarChart.leftValue = 183.49;
-	_chartContainerView.percentBarChart.rightValue = 66.51;
 
 	[_chartContainerView setBottomLabelText:_chartContainerView.bottomValueLabel.text];
+
+	[_detailsViewController calculate];
 
 	A3VerticalLinesView *tableViewBackground = [[A3VerticalLinesView alloc] initWithFrame:_myTableView.bounds];
 	if (DEVICE_IPAD) {
@@ -104,10 +108,12 @@
 
 	[self addTopGradientLayerToView:self.view];
 	[self addToolsButtonWithAction:@selector(onActionButton:)];
+
+	[self.detailsViewController calculate];
 }
 
 - (void)editButtonAction {
-	A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithNibName:nil bundle:nil];
+	A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithObject:self.detailsViewController.expenseObject];
 	if (DEVICE_IPAD){
 		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
 		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
@@ -132,18 +138,108 @@
 	[self.detailsViewController addNewItemButtonAction];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	[self.detailsViewController calculate];
-}
-
 - (void)onActionButton:(UIButton *)button {
 	button.enabled = NO;
 
-	[self presentActionMenuWithDelegate:self];
+	if (DEVICE_IPAD) {
+		[self presentEmptyActionMenu];
+		numberOfActions = 0;
+		[self addActionIcon:@"t_newList" title:@"New List" selector:@selector(newListAction)];
+		[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction)];
+		[self addActionIcon:@"t_mail" title:@"Mail" selector:@selector(shareAction)];
+	} else {
+		[self presentActionMenuWithDelegate:self];
+	}
 
 	button.enabled = YES;
+}
+
+- (void)newListAction {
+	FNLOG();
+	[self closeActionMenuViewWithAnimation:YES];
+	[self.detailsViewController makeNewList];
+}
+
+- (void)showHistoryAction {
+	[self closeActionMenuViewWithAnimation:YES];
+
+	A3ExpenseListHistoryViewController *viewController = [[A3ExpenseListHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.delegate = self.detailsViewController;
+	if (DEVICE_IPAD){
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
+	} else {
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:navController animated:YES completion:nil];
+	}
+}
+
+- (void)shareAction {
+	MFMailComposeViewController *picker = [[MFMailComposeViewController alloc] init];
+	picker.mailComposeDelegate = self;
+
+	[picker setSubject:@"Expense List"];
+
+	// Attach an image to the email
+//	NSString *path = [[NSBundle mainBundle] pathForResource:@"rainy" ofType:@"jpg"];
+//	NSData *myData = [NSData dataWithContentsOfFile:path];
+//	[picker addAttachmentData:myData mimeType:@"image/jpeg" fileName:@"rainy"];
+
+	// Fill out the email body text
+	NSString *emailBody = @"This is a Expense List data.";
+	[picker setMessageBody:emailBody isHTML:NO];
+
+	[self presentModalViewController:picker animated:YES];
+}
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller
+		  didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error {
+//	// Notifies users about errors associated with the interface
+//	switch (result)
+//	{
+//		case MFMailComposeResultCancelled:
+//			feedbackMsg.text = @"Result: Mail sending canceled";
+//			break;
+//		case MFMailComposeResultSaved:
+//			feedbackMsg.text = @"Result: Mail saved";
+//			break;
+//		case MFMailComposeResultSent:
+//			feedbackMsg.text = @"Result: Mail sent";
+//			break;
+//		case MFMailComposeResultFailed:
+//			feedbackMsg.text = @"Result: Mail sending failed";
+//			break;
+//		default:
+//			feedbackMsg.text = @"Result: Mail not sent";
+//			break;
+//	}
+	[self dismissModalViewControllerAnimated:YES];
+}
+
+- (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector {
+	static NSArray *coordinateX;
+	coordinateX = @[@156.0, @340.0, @523.0];
+
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	NSString *path = [[NSBundle mainBundle] pathForResource:iconName ofType:@"png"];
+	[button setImage:[UIImage imageWithContentsOfFile:path] forState:UIControlStateNormal];
+	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+	button.frame = CGRectMake([coordinateX[numberOfActions] floatValue], 18.0, 32.0, 32.0);
+	[self.actionMenuViewController.view addSubview:button];
+
+	CGRect frame = CGRectMake([coordinateX[numberOfActions] floatValue] + 37.0, 19.0, 130.0, 32.0);
+	UILabel *label = [[UILabel alloc] initWithFrame:frame];
+	label.backgroundColor = [UIColor clearColor];
+	label.text = title;
+	label.font = [UIFont systemFontOfSize:14.5];
+	label.textColor = [UIColor whiteColor];
+	label.userInteractionEnabled = YES;
+	[self.actionMenuViewController.view addSubview:label];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:selector];
+	[label addGestureRecognizer:tapGestureRecognizer];
+
+	numberOfActions++;
 }
 
 - (void)didReceiveMemoryWarning

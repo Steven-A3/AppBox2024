@@ -38,19 +38,19 @@
 
 - (IBAction)newListAction {
 	if ([_delegate respondsToSelector:@selector(newListAction)]) {
-		[_delegate settingsAction];
+		[_delegate newListAction];
 	}
 }
 
 - (IBAction)showHistoryAction {
 	if ([_delegate respondsToSelector:@selector(showHistoryAction)]) {
-		[_delegate emailAction];
+		[_delegate showHistoryAction];
 	}
 }
 
 - (IBAction)shareAction {
 	if ([_delegate respondsToSelector:@selector(shareAction)]) {
-		[_delegate messageAction];
+		[_delegate shareAction];
 	}
 }
 

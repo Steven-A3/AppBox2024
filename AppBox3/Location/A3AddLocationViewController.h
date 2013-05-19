@@ -8,6 +8,14 @@
 
 #include "A3AppViewController.h"
 
-@interface A3AddLocationViewController : A3AppViewController
+@class FSVenue;
 
+@protocol A3AddLocationViewControllerDelegate <NSObject>
+- (void)locationSelectedWithVenue:(FSVenue *)venue;
+@end
+
+@interface A3AddLocationViewController : A3AppViewController
+@property (nonatomic, weak) id<A3AddLocationViewControllerDelegate> delegate;
+
+- (id)initWithVenue:(FSVenue *)venue;
 @end

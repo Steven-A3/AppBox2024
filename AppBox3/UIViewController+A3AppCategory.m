@@ -20,6 +20,7 @@
 #import "common.h"
 #import "A3BarButton.h"
 #import "A3BlackBarButton.h"
+#import "A3EmptyActionMenuViewController_iPad.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -45,6 +46,20 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	} else {
 		A3ActionMenuViewController_iPhone *iPhoneViewController = [[A3ActionMenuViewController_iPhone alloc] initWithNibName:@"A3ActionMenuViewController_iPhone" bundle:nil];
 		viewController = iPhoneViewController;
+	}
+	objc_setAssociatedObject(self, key_actionMenuViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+	return viewController;
+}
+
+- (UIViewController *)emptyActionMenuViewController {
+	UIViewController *viewController = objc_getAssociatedObject(self, key_actionMenuViewController);
+
+	if (nil != viewController) return viewController;
+
+	if (DEVICE_IPAD) {
+		A3EmptyActionMenuViewController_iPad *iPadViewController = [[A3EmptyActionMenuViewController_iPad alloc] initWithNibName:@"A3EmptyActionMenuViewController_iPad" bundle:nil];
+		viewController = iPadViewController;
+	} else {
 	}
 	objc_setAssociatedObject(self, key_actionMenuViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	return viewController;
@@ -94,6 +109,41 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	}];
 }
 
+- (void)presentEmptyActionMenu {
+	if (self.actionMenuAnimating) return;
+
+	{
+		UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
+		if (nil != coverView) {
+			[self closeActionMenuViewWithAnimation:YES];
+			return;
+		}
+	}
+
+	CGRect frame = self.emptyActionMenuViewController.view.frame;
+	frame.origin.y = 34.0;
+	self.emptyActionMenuViewController.view.frame = frame;
+
+	[self.navigationController.view insertSubview:[self.actionMenuViewController view] belowSubview:self.view];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnCoverView:)];
+	UIImage *image = [self.view screenshotWithOptimization:NO];
+	UIImageView *coverView = [[UIImageView alloc] initWithImage:image];
+	coverView.tag = A3_ACTION_MENU_COVER_VIEW_TAG;
+	coverView.frame = CGRectOffset(self.view.bounds, 0.0, 44.0);
+	coverView.userInteractionEnabled = YES;
+	coverView.backgroundColor = [UIColor clearColor];
+	[coverView addGestureRecognizer:tapGestureRecognizer];
+	[self.navigationController.view addSubview:coverView];
+
+	[UIView animateWithDuration:0.3 animations:^{
+		coverView.frame = CGRectOffset(coverView.frame, 0.0, 50.0);
+		self.actionMenuAnimating = YES;
+	} completion:^(BOOL finished){
+		self.actionMenuAnimating = NO;
+	}];
+}
+
 - (void)tapGestureOnCoverView:(id)sender {
 	[self closeActionMenuViewWithAnimation:YES];
 }
@@ -112,10 +162,12 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 			[coverView removeFromSuperview];
 			[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
 			self.actionMenuAnimating = NO;
+			[self setActionMenuViewController:nil];
 		}];
 	} else {
 		[coverView removeFromSuperview];
 		[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
+		[self setActionMenuViewController:nil];
 	}
 }
 

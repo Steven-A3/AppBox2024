@@ -8,6 +8,7 @@
 
 #import "FSConverter.h"
 #import "FSVenue.h"
+#import "NSString+conversion.h"
 
 @implementation FSConverter
 
@@ -30,6 +31,11 @@
         
         [ann.location setCoordinate:CLLocationCoordinate2DMake([v[@"location"][@"lat"] doubleValue],
                                                       [v[@"location"][@"lng"] doubleValue])];
+
+		ann.location.address1 = ann.location.address;
+		ann.location.address2 = [NSString combineString:[NSString combineString:ann.location.city withString:ann.location.state] withString:ann.location.postalCode];
+		ann.location.address3 = ann.location.country;
+
         [objects addObject:ann];
     }
     return objects;

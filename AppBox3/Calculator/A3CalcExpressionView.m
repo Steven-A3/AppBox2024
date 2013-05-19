@@ -42,8 +42,6 @@
 	return self;
 }
 
-
-
 - (BOOL)isStringMatchForPattern:(NSString *)pattern withString:(NSString *)string {
 	NSError *error = NULL;
 	NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:&error];
@@ -74,11 +72,13 @@
 }
 */
 
-#define CEV_VIEW_HEIGHT						( ( self.style == CEV_FILL_BACKGROUND ) ? 25.0f : 20.0f)
+//#define CEV_VIEW_HEIGHT						( ( self.style == CEV_FILL_BACKGROUND ) ? 25.0f : 20.0f)
+#define CEV_VIEW_HEIGHT						CGRectGetHeight(rect)
 #define	CEV_SIDE_MARGIN						( ( self.style == CEV_FILL_BACKGROUND ) ? 8.0f : 6.0f)
 #define CEV_COLUMN_MARGIN					( ( self.style == CEV_FILL_BACKGROUND ) ? 6.0f : 4.0f)
 #define CEV_OPERATOR_WIDTH					( ( self.style == CEV_FILL_BACKGROUND ) ? 22.0f : 18.0f)
-#define CEV_OPERATOR_HEIGHT 				( ( self.style == CEV_FILL_BACKGROUND ) ? 16.0f : 12.0f)
+//#define CEV_OPERATOR_HEIGHT 				( ( self.style == CEV_FILL_BACKGROUND ) ? 16.0f : 12.0f)
+#define CEV_OPERATOR_HEIGHT 				(CGRectGetHeight(rect) - 6.0)
 #define CEV_VALUE_FONT    					[UIFont boldSystemFontOfSize:( ( self.style == CEV_FILL_BACKGROUND ) ? 20.0f : 14.0f)]
 #define CEV_OPERATOR_FONT					[UIFont boldSystemFontOfSize:( ( self.style == CEV_FILL_BACKGROUND ) ? 20.0f : 13.0f)]
 #define CEV_COLOR1							[UIColor whiteColor]
@@ -94,7 +94,7 @@
 											drawingPoint.y + operatorYOffset, \
 											CEV_OPERATOR_WIDTH,	\
 											CEV_OPERATOR_HEIGHT)
-#define CEV_OPERATOR_TEXT_OFFSET			(self.style == CEV_FILL_BACKGROUND ? -1.0f : -2.0f)
+#define CEV_OPERATOR_TEXT_OFFSET			(self.style == CEV_FILL_BACKGROUND ? -1.0f : 0.0f)
 
 - (UIBezierPath *)newOperatorPathWithRect:(CGRect)rect {
 	return [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:CEV_CORNER_RADIUS];
@@ -159,7 +159,8 @@
 		coordinateX += CEV_COLUMN_MARGIN;
 	}
 	fullWidth = coordinateX + CEV_SIDE_MARGIN - CEV_COLUMN_MARGIN;
-	CGFloat drawingOffset = MAX(CGRectGetWidth(self.bounds) - fullWidth, 0.0f);
+//	CGFloat drawingOffset = MAX(CGRectGetWidth(self.bounds) - fullWidth, 0.0f);
+	CGFloat drawingOffset = 0.0;
 
 	// Drawing for operator.
 	// Draw operator first for clipping.

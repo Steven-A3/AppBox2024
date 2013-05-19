@@ -10,6 +10,8 @@
 
 @interface NSString (conversion)
 
++ (NSString *)combineString:(NSString *)string1 withString:(NSString *)string2;
+
 - (NSString *)stringGroupByFirstInitial;
 - (float)floatValueEx;
 

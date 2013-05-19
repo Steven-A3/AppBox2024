@@ -148,7 +148,6 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">History</string>
 						<reference key="IBUITextColor" ref="191195621"/>
@@ -179,7 +178,7 @@
 						<reference key="IBUINormalTitleShadowColor" ref="800953221"/>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">t_share.png</string>
+							<string key="NSResourceName">t_mail.png</string>
 						</object>
 						<reference key="IBUIFontDescription" ref="726483922"/>
 						<reference key="IBUIFont" ref="831383816"/>
@@ -194,9 +193,8 @@
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<int key="IBUIContentMode">7</int>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-						<string key="IBUIText">Share</string>
+						<string key="IBUIText">Mail</string>
 						<reference key="IBUITextColor" ref="191195621"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">0</int>
@@ -476,8 +474,8 @@
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="t_history.png">{32, 32}</string>
+			<string key="t_mail.png">{32, 32}</string>
 			<string key="t_newList.png">{32, 32}</string>
-			<string key="t_share.png">{32, 32}</string>
 		</dictionary>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

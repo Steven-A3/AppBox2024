@@ -18,17 +18,15 @@
 #import "common.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
-#import "A3VerticalLinesView.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3HorizontalBarChartView.h"
 
 @interface A3ExpenseListDetailsTableViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 
 @property (nonatomic, weak) UITextField *editingTextField;
-@property (nonatomic, strong) Expense *expenseObject;
-@property (nonatomic, strong) NSNumberFormatter *currencyFormatter, *decimalFormatter;
 @property (nonatomic, weak) ExpenseDetail *editingDetail;
 @property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
 @property (nonatomic, strong) NSArray *orderedDetails;
-@property (nonatomic, strong) A3ExpenseListDetailsTableViewController *detailsViewController;
 
 @end
 
@@ -49,6 +47,14 @@
 	// Do any additional setup after loading the view.
 
 	self.tableView.backgroundColor = [UIColor clearColor];
+	[self calculate];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	NSError *error;
+	[[A3AppDelegate instance].managedObjectContext save:&error];
 }
 
 - (void)didReceiveMemoryWarning
@@ -153,8 +159,8 @@
 	return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
@@ -356,7 +362,7 @@
 		case A3ExpenseListTextFieldQuantity:
 			break;
 	}
-	FNLOG(@"%@", textField.text);
+	[self calculate];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -396,20 +402,41 @@
 	if ([fetchedObjects count]) {
 		_expenseObject = [fetchedObjects lastObject];
 	} else {
-		_expenseObject = [NSEntityDescription insertNewObjectForEntityForName:@"Expense" inManagedObjectContext:managedObjectContext];
-		_expenseObject.date = [NSDate date];
-
-		ExpenseDetail *newDetail = [NSEntityDescription insertNewObjectForEntityForName:@"ExpenseDetail" inManagedObjectContext:managedObjectContext];
-		newDetail.order = [NSString stringWithFormat:@"%010d", 100];
-
-		NSMutableSet *mutableDetails = [_expenseObject mutableSetValueForKey:@"details"];
-		[mutableDetails addObject:newDetail];
-
-		NSError *error;
-		[managedObjectContext save:&error];
+		[self addNewList];
 	}
 
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextObjectsDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:managedObjectContext];
 	return _expenseObject;
+}
+
+- (void)addNewList {
+	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	_expenseObject = [NSEntityDescription insertNewObjectForEntityForName:@"Expense" inManagedObjectContext:managedObjectContext];
+	_expenseObject.date = [NSDate date];
+
+	ExpenseDetail *newDetail = [NSEntityDescription insertNewObjectForEntityForName:@"ExpenseDetail" inManagedObjectContext:managedObjectContext];
+	newDetail.order = [NSString stringWithFormat:@"%010d", 100];
+
+	NSMutableSet *mutableDetails = [_expenseObject mutableSetValueForKey:@"details"];
+	[mutableDetails addObject:newDetail];
+
+	NSError *error;
+	[managedObjectContext save:&error];
+
+	_orderedDetails = nil;
+}
+
+- (void)managedObjectContextObjectsDidChange:(NSNotification *)notification {
+	NSSet *changed = [notification.userInfo objectForKey:NSUpdatedObjectsKey];
+
+    [changed enumerateObjectsUsingBlock:^(id obj, BOOL *stop) {
+		if (obj == _expenseObject) {
+			*stop = YES;
+			FNLOG(@"%@", obj);
+			[_chartContainerView setBottomLabelText:[self currencyFormattedString:_expenseObject.budget]];
+			[self calculate];
+		}
+	}];
 }
 
 - (void)addNewDetail {
@@ -441,23 +468,6 @@
 		return [NSString stringWithFormat:@"%010d", [lastObject.order integerValue] + 10000];
 	}
 	return [NSString stringWithFormat:@"%010d", 10000];
-}
-
-- (NSNumberFormatter *)currencyFormatter {
-	if (nil == _currencyFormatter) {
-		_currencyFormatter = [[NSNumberFormatter alloc] init];
-		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	}
-	return _currencyFormatter;
-}
-
-- (NSNumberFormatter *)decimalFormatter {
-	if (nil == _decimalFormatter) {
-		_decimalFormatter = [[NSNumberFormatter alloc] init];
-		[_decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		[_decimalFormatter setUsesGroupingSeparator:NO];
-	}
-	return _decimalFormatter;
 }
 
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
@@ -496,16 +506,49 @@
 	[_editingTextField resignFirstResponder];
 }
 
+- (void)makeNewList {
+	[self addNewList];
+	[self.tableView reloadData];
+	[self calculate];
+}
+
 #pragma mark - calculation
 
 - (void)calculate {
+	FNLOG();
 	NSArray *allObject = [self.expenseObject.details allObjects];
 
 	float total = 0.0;
 	for (ExpenseDetail *detail in allObject) {
 		total += [detail.price floatValueEx] * [detail.quantity floatValue];
 	}
-	_chartContainerView.chartLeftValueLabel.text = [self.currencyFormatter stringFromNumber:[NSNumber numberWithFloat:total]];
+	_chartContainerView.chartLeftValueLabel.text = [self.currencyFormatter stringFromNumber:@(total)];
+	float budget = [_expenseObject.budget floatValueEx];
+	float left = budget - total;
+
+	if (total != [_expenseObject.total floatValue]) {
+		_expenseObject.total = @(total);
+	}
+	if (left != [_expenseObject.left floatValue]) {
+		_expenseObject.left = @(left);
+	}
+
+	_chartContainerView.chartRightValueLabel.text = [self.currencyFormatter stringFromNumber:@(left)];
+	_chartContainerView.percentBarChart.leftValue = total;
+	_chartContainerView.percentBarChart.rightValue = MAX(0.0, left);
+	[_chartContainerView setBottomLabelText:[self currencyFormattedString:_expenseObject.budget]];
+}
+
+- (void)historySelected:(Expense *)expenseObject {
+	_expenseObject = expenseObject;
+	_expenseObject.date = [NSDate date];
+
+	NSError *error;
+	[[A3AppDelegate instance].managedObjectContext save:&error];
+
+	_orderedDetails = nil;
+	[self.tableView reloadData];
+	[self calculate];
 }
 
 @end
