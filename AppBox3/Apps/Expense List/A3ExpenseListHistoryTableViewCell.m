@@ -24,6 +24,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	if (self) {
+		self.backgroundColor = [UIColor colorWithRed:240.0 / 255.0 green:240.0 / 255.0 blue:242.0 / 255.0 alpha:1.0];
 		[self addSubview:self.dateLabel];
 		[self addSubview:self.expressionView];
 		[self addSubview:self.leftValueLabel];
@@ -106,7 +107,7 @@
 
 	self.expressionView.expression = @[[nf stringFromNumber:expenseObject.total], @"of", [nf stringFromNumber:@([expenseObject.budget floatValue]) ] ];
 	NSDictionary *redText = @{A3ExpressionAttributeFont:[UIFont boldSystemFontOfSize:20.0], A3ExpressionAttributeTextColor:[UIColor redColor]};
-	NSDictionary *blackText = @{A3ExpressionAttributeFont:[UIFont boldSystemFontOfSize:20.0], A3ExpressionAttributeTextColor:[UIColor redColor]};
+	NSDictionary *blackText = @{A3ExpressionAttributeFont:[UIFont boldSystemFontOfSize:20.0], A3ExpressionAttributeTextColor:[UIColor blackColor]};
 	self.expressionView.attributes = @[redText, @{}, blackText];
 	[self.expressionView setNeedsDisplay];
 }

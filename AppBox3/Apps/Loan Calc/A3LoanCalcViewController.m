@@ -14,6 +14,9 @@
 #import "A3AppDelegate.h"
 #import "A3LoanCalcComparisonMainViewController.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3UIDevice.h"
+#import "A3LoanCalcQuickDialogViewController_iPad.h"
+#import "A3LoanCalcQuickDialogViewController_iPhone.h"
 
 @interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
@@ -54,7 +57,7 @@
 	_quickDialogViewController.view.frame = self.contentsViewFrame;
 	[self.view addSubview:_quickDialogViewController.view];
 
-	_topGradientLayer = [self addTopGradientLayerToView:self.view];
+	_topGradientLayer = [self addTopGradientLayerToView:self.view position:1.0];
 
 	_segmentedControl.selectedSegmentIndex = 0;
 }
@@ -83,12 +86,16 @@
 		_quickDialogViewController.view.frame = self.contentsViewFrame;
 		[self.view addSubview:_quickDialogViewController.view];
 	}
-	_topGradientLayer = [self addTopGradientLayerToView:self.view];
+	_topGradientLayer = [self addTopGradientLayerToView:self.view position:1.0];
 }
 
 - (A3LoanCalcQuickDialogViewController *)quickDialogViewController {
 	if (nil == _quickDialogViewController) {
-		_quickDialogViewController = [[A3LoanCalcQuickDialogViewController alloc] initWithNibName:nil bundle:nil];
+		if (DEVICE_IPAD) {
+			_quickDialogViewController = [[A3LoanCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
+		} else {
+			_quickDialogViewController = [[A3LoanCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+		}
 	}
 	return _quickDialogViewController;
 }

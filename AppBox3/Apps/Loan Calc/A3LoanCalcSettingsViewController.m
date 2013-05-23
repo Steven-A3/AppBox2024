@@ -36,7 +36,9 @@
 
 - (QButtonElement *)elementForSection1WithValue:(A3LoanCalcCalculationFor)value {
 	QButtonElement *element = [[QButtonElement alloc] initWithTitle:[A3LoanCalcString stringFromCalculationFor:value]];
-	element.controllerAction = @"calculationForButtonAction:";
+	element.onSelected = ^{
+		[self calculationForButtonAction];
+	};
 	return element;
 }
 
@@ -121,7 +123,10 @@
 	return (value - 1 - ((value >= A3_LCCF_DownPayment) && ![self.preferences showDownPayment] ? 1 : 0));
 }
 
-- (void)calculationForButtonAction:(QButtonElement *)element {
+- (void)calculationForButtonAction {
+	QSection *section = [self.quickDialogTableView.root.sections objectAtIndex:1];
+	QElement *element = [section.elements objectAtIndex:0];
+
 	BOOL showDownPayment = [self.preferences showDownPayment];
 	NSArray *candidate;
 	if (showDownPayment) {
@@ -148,7 +153,6 @@
 	A3LoanCalcPreferences *preferences = [[A3LoanCalcPreferences alloc] init];
 	A3LoanCalcCalculationFor calculationFor = preferences.calculationFor;
 
-	QSection *section = [self.root.sections objectAtIndex:1];
 	NSMutableArray *changedRows = [[NSMutableArray alloc] init];
 	if ([section.elements count] == 1) {
 		NSUInteger index, selectedIndex;

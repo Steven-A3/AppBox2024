@@ -33,10 +33,17 @@
 - (void)addToolsButtonWithAction:(SEL)action;
 - (NSString *)zeroCurrency;
 
-- (void)setBlackBackgroundImageForNavigationBar;
-- (void)setSilverBackgroundImageForNavigationBar;
+- (UIImage *)navigationBarBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics;
 
-- (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view;
+- (void)setBlackBackgroundImageForNavigationBar;
+
+- (UIImage *)navigationBarSilverBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics;
+
+- (void)applySilverNavigationBarStyleToNavigationVC:(UINavigationController *)nvc;
+
+- (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position;
+
+- (CAGradientLayer *)addTopGradientLayerToWhiteView:(UIView *)view position:(CGFloat)position;
 
 - (NSString *)currencyFormattedString:(NSString *)source;
 

@@ -24,6 +24,7 @@
 
 - (void)applyEntryElementAppearanceWithDelegate:(id <A3QuickDialogCellStyleDelegate>)delegate appearance:(QAppearance *)appearance {
 	// Label Attributes
+	FNLOG(@"%@", self.key);
 	if ([delegate respondsToSelector:@selector(fontForEntryCellLabel)]) {
 		appearance.labelFont = [delegate fontForEntryCellLabel];
 	}
@@ -38,7 +39,6 @@
 	if ([delegate respondsToSelector:@selector(colorForEntryCellTextField)]) {
 		appearance.valueColorEnabled = [delegate colorForEntryCellTextField];
 	}
-	appearance.valueAlignment = NSTextAlignmentLeft;
 
 	// Entry Attributes
 	if ([delegate respondsToSelector:@selector(fontForEntryCellTextField)]) {
@@ -47,10 +47,10 @@
 	if ([delegate respondsToSelector:@selector(colorForEntryCellTextField)]) {
 		appearance.entryTextColorEnabled = [delegate colorForEntryCellTextField];
 	}
-	appearance.entryAlignment = NSTextAlignmentLeft;
 }
 
 - (void)applyLabelElementAppearanceWithDelegate:(id <A3QuickDialogCellStyleDelegate>)delegate appearance:(QAppearance *)appearance {
+	FNLOG(@"%@", self.key);
 	if ([delegate respondsToSelector:@selector(fontForEntryCellLabel)]) {
 		appearance.labelFont = [delegate fontForEntryCellLabel];
 	}
@@ -63,10 +63,10 @@
 	if ([delegate respondsToSelector:@selector(colorForEntryCellTextField)]) {
 		appearance.valueColorEnabled = [delegate colorForEntryCellTextField];
 	}
-	appearance.valueAlignment = NSTextAlignmentLeft;
 }
 
 - (void)applyButtonElementAppearanceWithDelegate:(id <A3QuickDialogCellStyleDelegate>)delegate appearance:(QAppearance *)appearance {
+	FNLOG(@"%@", self.key);
 	if ([delegate respondsToSelector:@selector(fontForCellLabel)]) {
 		appearance.labelFont = [delegate fontForCellLabel];
 	}
@@ -93,7 +93,6 @@
 	self.appearance = newAppearance;
 
 	QEntryTableViewCell *cell = (QEntryTableViewCell *) [super getCellForTableView:tableView controller:controller];
-	FNLOG(@"%@", cell);
 	cell.textField.adjustsFontSizeToFitWidth = YES;
 	return cell;
 }
@@ -116,6 +115,7 @@
 }
 
 - (UITableViewCell *)getCellForTableView:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller {
+	FNLOG(@"%@", self.key);
 	QAppearance *newAppearance = [[self class] appearance];
 	[self applyLabelElementAppearanceWithDelegate:_cellStyleDelegate appearance:newAppearance];
 	self.appearance = newAppearance;

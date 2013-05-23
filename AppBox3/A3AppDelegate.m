@@ -10,6 +10,7 @@
 
 #import "A3HomeViewController_iPhone.h"
 #import "A3PaperFoldMenuViewController.h"
+#import "A3UIDevice.h"
 
 @interface A3AppDelegate ()
 - (NSURL *)applicationLibraryDirectory;
@@ -175,6 +176,19 @@
 - (NSURL *)applicationLibraryDirectory
 {
 	return [[[NSFileManager defaultManager] URLsForDirectory:NSLibraryDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+	NSUInteger orientations;
+
+	if (DEVICE_IPAD) {
+		orientations = UIInterfaceOrientationMaskAll;
+	} else {
+		orientations = UIInterfaceOrientationMaskPortrait;
+	}
+	// Later if needed ask to visible view controller.
+
+	return orientations;
 }
 
 @end

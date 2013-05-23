@@ -51,7 +51,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 		self.title = @"Add Budget";
 		_expenseObject = expense;
 
-		[self addTopGradientLayerToView:self.view];
+		[self addTopGradientLayerToWhiteView:self.view position:1.0];
 	}
 	return self;
 }
@@ -61,11 +61,10 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	[self setSilverBackgroundImageForNavigationBar];
+	[self applySilverNavigationBarStyleToNavigationVC:self.navigationController ];
 
 	self.navigationController.navigationBar.clipsToBounds = YES;
 	self.navigationItem.rightBarButtonItem = [self barButtonItemWithTitle:@"Done" action:@selector(doneButtonAction)];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -111,6 +110,9 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	root.grouped = YES;
 	[root addSection:section];
 
+	QAppearance *appearance = [QRootElement appearance];
+	appearance.tableSeparatorColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:200.0 / 255.0 alpha:1.0];
+	root.appearance = appearance;
 	return root;
 }
 
@@ -166,7 +168,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 - (QEntryElement *)budgetElement {
 	A3CurrencyEntryElement *element;
-	element = [[A3CurrencyEntryElement alloc] initWithTitle:@"Budget:"
+	element = [[A3CurrencyEntryElement alloc] initWithTitle:@"Budget"
 													  Value:[self currencyFormattedString:_expenseObject.budget]
 												Placeholder:[self zeroCurrency]];
 	element.key = A3ExpenseListAddBudgetKeyBugdet;
@@ -176,7 +178,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)categoryElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Category:"
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Category"
 															  Value:_expenseObject.category
 														Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyCategory;
@@ -187,7 +189,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)paymentType {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Payment Type:"
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Payment Type"
 															  Value:_expenseObject.paymentType
 														Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyPaymentType;
@@ -198,7 +200,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (QEntryElement *)titleElement {
-	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Title:"
+	A3EntryElement *element = [[A3EntryElement alloc] initWithTitle:@"Title"
 															  Value:_expenseObject.title
 														Placeholder:@"(Optional)"];
 	element.key = A3ExpenseListAddBudgetKeyTitle;
@@ -209,7 +211,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 - (A3EntryElement *)dateElement {
 	A3EntryElement *element;
-	element = [[A3EntryElement alloc] initWithTitle:@"Date:"
+	element = [[A3EntryElement alloc] initWithTitle:@"Date"
 											  Value:[A3Formatter mediumStyleDateStringFromDate:[NSDate date]]
 										Placeholder:@""];
 	element.key = A3ExpenseListAddBudgetKeyDate;
@@ -220,7 +222,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 - (id)locationElement {
 	A3LabelElement *element;
-	element = [[A3LabelElement alloc] initWithTitle:@"Location:"
+	element = [[A3LabelElement alloc] initWithTitle:@"Location"
 											  Value:_expenseObject.location
 	];
 	element.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -260,7 +262,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 
 - (QEntryElement *)notesElement {
 	A3EntryElement *element;
-	element = [[A3EntryElement alloc] initWithTitle:@"Notes:"
+	element = [[A3EntryElement alloc] initWithTitle:@"Notes"
 											  Value:_expenseObject.notes
 										Placeholder:@"(Optional)"];
 	element.key = A3ExpenseListAddBudgetKeyNotes;

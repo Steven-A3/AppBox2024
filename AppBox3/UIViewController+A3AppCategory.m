@@ -21,6 +21,9 @@
 #import "A3BarButton.h"
 #import "A3BlackBarButton.h"
 #import "A3EmptyActionMenuViewController_iPad.h"
+#import "A3FrequencyKeyboardViewController_iPhone.h"
+#import "A3DateKeyboardViewController_iPad.h"
+#import "A3DateKeyboardViewController_iPhone.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -205,7 +208,11 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
 	A3FrequencyKeyboardViewController *viewController = objc_getAssociatedObject(self, key_frequencyKeyboardViewController);
 	if (nil == viewController) {
-		viewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController" bundle:nil];
+		if (DEVICE_IPAD) {
+			viewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController" bundle:nil];
+		} else {
+			viewController = [[A3FrequencyKeyboardViewController_iPhone alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPhone" bundle:nil];
+		}
 		viewController.delegate = (id <A3FrequencyKeyboardDelegate>) self;
 		objc_setAssociatedObject(self, key_frequencyKeyboardViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
@@ -219,7 +226,11 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	A3DateKeyboardViewController *viewController = objc_getAssociatedObject(self, key_dateKeyboardViewController);
 	if (nil == viewController) {
-		viewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		if (DEVICE_IPAD) {
+			viewController = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		} else {
+			viewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+		}
 		viewController.delegate = (id <A3DateKeyboardDelegate>) self;
 		viewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
 		objc_setAssociatedObject(self, key_dateKeyboardViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -345,6 +356,8 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	[self drawLinearGradientToContext:context rect:rect withColors:colors];
 
 	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:171.0/255.0 green:171.0/255.0 blue:171.0/255.0 alpha:1.0] CGColor]);
+	CGContextFillRect(context, CGRectMake(CGRectGetMinX(rect), CGRectGetMaxY(rect) - 2.0, CGRectGetWidth(rect), 1.0));
+	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:246.0/255.0 green:246.0/255.0 blue:246.0/255.0 alpha:1.0] CGColor]);
 	CGContextFillRect(context, CGRectMake(CGRectGetMinX(rect), CGRectGetMaxY(rect) - 1.0, CGRectGetWidth(rect), 1.0));
 
 	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -353,20 +366,39 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return image;
 }
 
-- (void)setSilverBackgroundImageForNavigationBar {
-	[self.navigationController.navigationBar setTitleTextAttributes:@{UITextAttributeTextColor:[UIColor colorWithRed:71.0/255.0 green:71.0/255.0 blue:71.0/255.0 alpha:1.0]}];
-	[self.navigationController.navigationBar setBackgroundImage:[self navigationBarSilverBackgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
-	[self.navigationController.navigationBar setBackgroundImage:[self navigationBarSilverBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
+- (void)applySilverNavigationBarStyleToNavigationVC:(UINavigationController *)nvc {
+	[nvc.navigationBar setTitleTextAttributes:@{
+			UITextAttributeTextColor:[UIColor colorWithRed:71.0/255.0 green:71.0/255.0 blue:71.0/255.0 alpha:1.0],
+			UITextAttributeTextShadowColor:[UIColor clearColor],
+			UITextAttributeTextShadowOffset: [NSValue valueWithCGSize:CGSizeMake(0.0, 0.0)]
+	}
+	];
+	[nvc.navigationBar setBackgroundImage:[self navigationBarSilverBackgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
+	[nvc.navigationBar setBackgroundImage:[self navigationBarSilverBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
 }
 
-- (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view {
+- (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position {
 	CAGradientLayer *gradientLayer = [CAGradientLayer layer];
 	gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);
-	gradientLayer.position = CGPointMake(0.0, 1.0);
+	gradientLayer.position = CGPointMake(0.0, position);
 	gradientLayer.startPoint = CGPointMake(0.5, 0.0);
 	gradientLayer.endPoint = CGPointMake(0.5, 1.0);
 	gradientLayer.bounds = CGRectMake(0.0, 0.0, view.bounds.size.width, 8.0);
 	gradientLayer.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.3].CGColor, (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
+	[view.layer addSublayer:gradientLayer];
+
+	return gradientLayer;
+}
+
+- (CAGradientLayer *)addTopGradientLayerToWhiteView:(UIView *)view position:(CGFloat)position {
+	CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+	gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);
+	gradientLayer.position = CGPointMake(0.0, position);
+	gradientLayer.startPoint = CGPointMake(0.5, 0.0);
+	gradientLayer.endPoint = CGPointMake(0.5, 1.0);
+	gradientLayer.bounds = CGRectMake(0.0, 0.0, view.bounds.size.width, 8.0);
+	gradientLayer.colors = @[(id)[UIColor colorWithRed:189.0/255.0 green:190.0/255.0 blue:191.0/255.0 alpha:1.0].CGColor,
+			(id)[UIColor colorWithRed:236.0/255.0 green:237.0/255.0 blue:238.0/255.0 alpha:1.0].CGColor];
 	[view.layer addSublayer:gradientLayer];
 
 	return gradientLayer;

@@ -33,9 +33,9 @@
 			checkboxFrame = CGRectMake(9.0, 11.0, 22.0, 22.0);
 			_font = [UIFont systemFontOfSize:18.0];
 		} else {
-			y = 8.0, labelHeight = 28.0, margin = 4.0;
-			locations = @[@42.0, @141.0, @211.0, @240.0];
-			widths = @[@97.0, @69.0, @29.0, @79.0];
+			y = 8.0, labelHeight = 28.0, margin = 3.0;
+			locations = @[@42.0, @136.0, @214.0, @240.0];
+			widths = @[@101.0, @75.0, @25.0, @79.0];
 			checkboxFrame = CGRectMake(5.0, 5.0, 22.0, 22.0);
 			_font = [UIFont systemFontOfSize:14.0];
 		}

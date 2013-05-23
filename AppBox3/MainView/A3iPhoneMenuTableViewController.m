@@ -97,7 +97,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	A3SectionHeaderViewInMenuTableView *sectionHeaderView = [[A3SectionHeaderViewInMenuTableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, A3_MENU_TABLE_VIEW_SECTION_HEIGHT)];
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"weather_home_sun" ofType:@"png"];
+	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"weather_sun_32_on" ofType:@"png"];
 	UIImage *sectionImage = [UIImage imageWithContentsOfFile:imagePath];
 	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)section) {
 		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
@@ -375,7 +375,13 @@
 				break;
 			}
 			case 2: {
-				A3LoanCalcViewController *viewController = [[A3LoanCalcViewController alloc] initWithNibName:@"A3LoanCalcViewController" bundle:nil];
+				NSString *nibName;
+				if (DEVICE_IPAD) {
+					nibName = @"A3LoanCalcViewController_iPad";
+				} else {
+					nibName = @"A3LoanCalcViewController_iPhone";
+				}
+				A3LoanCalcViewController *viewController = [[A3LoanCalcViewController alloc] initWithNibName:nibName bundle:nil];
 				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
 				break;
 			}

@@ -724,7 +724,7 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	if (nil == _dateKeyboardViewController) {
-		_dateKeyboardViewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardViewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		_dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
 		_dateKeyboardViewController.delegate = self;
 	}
@@ -733,7 +733,7 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardForMonthInput {
 	if (nil == _dateKeyboardForMonthInput) {
-		_dateKeyboardForMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardForMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		_dateKeyboardForMonthInput.workingMode = A3DateKeyboardWorkingModeMonth;
 		_dateKeyboardForMonthInput.delegate = self;
 	}
@@ -742,7 +742,7 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardForYearMonthInput {
 	if (nil == _dateKeyboardForYearMonthInput) {
-		_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController" bundle:nil];
+		_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		_dateKeyboardForYearMonthInput.workingMode = A3DateKeyboardWorkingModeYearMonth;
 		_dateKeyboardForYearMonthInput.delegate = self;
 	}

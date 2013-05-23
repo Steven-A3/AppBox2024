@@ -30,6 +30,27 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 
 @interface A3DateKeyboardViewController : UIViewController
 
+@property (nonatomic, weak)	IBOutlet UIButton *blankButton;
+@property (nonatomic, weak)	IBOutlet UIButton *yearButton;
+@property (nonatomic, weak)	IBOutlet UIButton *monthButton;
+@property (nonatomic, weak)	IBOutlet UIButton *dayButton;
+@property (nonatomic, weak)	IBOutlet UIButton *num7_Jan_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num8_Feb_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num9_Mar_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num4_Apr_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num5_May_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num6_Jun_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num1_Jul_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num2_Aug_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num3_Sep_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *clear_Oct_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *num0_Nov_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *today_Dec_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *blank2Button;
+@property (nonatomic, weak)	IBOutlet UIButton *prevButton;
+@property (nonatomic, weak)	IBOutlet UIButton *nextButton;
+@property (nonatomic, weak)	IBOutlet UIButton *doneButton;
+
 @property (nonatomic)			A3DateKeyboardWorkingMode 	workingMode;
 @property (nonatomic, weak)		UILabel 					*displayLabel;
 @property (nonatomic, weak)		QEntryTableViewCell 		*entryTableViewCell;
@@ -37,9 +58,28 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 @property (nonatomic, weak) 	id<A3DateKeyboardDelegate> 	delegate;
 @property (nonatomic, strong)	NSDate 						*date;
 
+- (void)initExtraLabels;
+
 - (void)reloadPrevNextButtons;
+
+- (NSArray *)monthOrder;
+
+- (NSArray *)numberOrder;
+
+- (IBAction)numberButtonAction:(UIButton *)button;
+
+- (IBAction)prevButtonAction;
+
+- (IBAction)nextButtonAction;
+
+- (IBAction)doneButtonAction;
+
+- (IBAction)clearButtonAction;
+
+- (IBAction)todayButtonAction;
 
 - (void)resetToDefaultState;
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
+- (void)layoutForWorkingMode;
 @end

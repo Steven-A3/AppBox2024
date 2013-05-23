@@ -12,8 +12,29 @@
 #import "A3FrequencyKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3QuickDialogContainerController.h"
+#import "LoanCalcHistory+calculation.h"
+#import "A3LoanCalcPieChartViewController.h"
+#import "A3LoanCalcChartViewController_iPhone.h"
+#import "A3LoanCalcPreferences.h"
 
-@interface A3LoanCalcQuickDialogViewController : A3QuickDialogContainerController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
+@interface A3LoanCalcQuickDialogViewController : A3QuickDialogContainerController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, A3QuickDialogCellStyleDelegate>
+
+@property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
+
+@property (nonatomic, strong) 	UIViewController *tableHeaderViewController;
+
+@property (nonatomic, strong)	A3LoanCalcPieChartController *chartController;
+
+@property (nonatomic, strong)	LoanCalcHistory *editingObject;
+
+- (UIView *)tableHeaderView;
 
 - (void)reloadContents;
+- (QElement *)calculationForElement;
+
+- (void)reloadGraphView;
+
+- (NSString *)valueForCalculationForField;
+
+- (void)onSelectCalculationFor;
 @end

@@ -1,0 +1,84 @@
+//
+//  A3DateKeyboardViewController_iPhone.m
+//  AppBox3
+//
+//  Created by Byeong Kwon Kwak on 5/22/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3DateKeyboardViewController_iPhone.h"
+#import "A3KeyboardButton_iPhone.h"
+
+@interface A3DateKeyboardViewController_iPhone ()
+
+@end
+
+@implementation A3DateKeyboardViewController_iPhone
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+
+	NSString *key = @"blueColorOnSelectedState";
+	[self.yearButton setValue:@YES forKey:key];
+	[self.monthButton setValue:@YES forKey:key];
+	[self.dayButton setValue:@YES forKey:key];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)removeExtraLabelsForButton:(UIButton *)button {
+	A3KeyboardButton_iPhone *aButton = (A3KeyboardButton_iPhone *) button;
+	if ([aButton respondsToSelector:@selector(removeExtraLabels)]) {
+		[aButton removeExtraLabels];
+	}
+}
+
+- (void)initExtraLabels {
+	[self removeExtraLabelsForButton:self.num7_Jan_Button];
+	[self removeExtraLabelsForButton:self.num8_Feb_Button];
+	[self removeExtraLabelsForButton:self.num9_Mar_Button];
+	[self removeExtraLabelsForButton:self.num4_Apr_Button];
+	[self removeExtraLabelsForButton:self.num5_May_Button];
+	[self removeExtraLabelsForButton:self.num6_Jun_Button];
+	[self removeExtraLabelsForButton:self.num1_Jul_Button];
+	[self removeExtraLabelsForButton:self.num2_Aug_Button];
+	[self removeExtraLabelsForButton:self.num3_Sep_Button];
+	[self removeExtraLabelsForButton:self.clear_Oct_Button];
+	[self removeExtraLabelsForButton:self.num0_Nov_Button];
+	[self removeExtraLabelsForButton:self.today_Dec_Button];
+}
+
+- (IBAction)switchToMonth {
+	self.yearButton.selected = NO;
+	self.monthButton.selected = YES;
+	self.dayButton.selected = NO;
+
+	NSArray *order = [self monthOrder];
+
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	NSArray *monthSymbols = dateFormatter.shortMonthSymbols;
+	NSUInteger index = 0;
+	for (A3KeyboardButton_iPhone *button in order) {
+		[button setTitle:@"" forState:UIControlStateNormal];
+		button.mainTitle.text = [monthSymbols objectAtIndex:index];
+		index++;
+		button.subTitle.text = [NSString stringWithFormat:@"%d", index];
+	}
+}
+
+@end

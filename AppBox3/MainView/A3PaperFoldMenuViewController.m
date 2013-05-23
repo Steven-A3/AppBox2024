@@ -15,6 +15,7 @@
 #import "A3UIDevice.h"
 #import "common.h"
 #import "A3NotificationTableViewController.h"
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3PaperFoldMenuViewController ()
 @property (nonatomic, strong)	UINavigationController *myNavigationController;
@@ -325,6 +326,7 @@
 	[viewController.view setFrame:frame];
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self applySilverNavigationBarStyleToNavigationVC:navigationController];
 	frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(768.0, 0.0, 320.0, 1004.0) : CGRectMake(1024.0, 0.0, 320.0, 748.0);
 	[navigationController.view setFrame:frame];
 	navigationController.view.layer.borderWidth = 1.0;

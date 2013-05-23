@@ -13,4 +13,8 @@
 @property (nonatomic) BOOL colorDarkGray;
 @property (nonatomic) BOOL blueColorOnSelectedState;
 
+@property (nonatomic, strong)	UILabel *mainTitle;
+@property (nonatomic, strong)	UILabel *subTitle;
+
+- (void)removeExtraLabels;
 @end

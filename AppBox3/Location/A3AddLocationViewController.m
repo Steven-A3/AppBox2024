@@ -268,7 +268,7 @@
 										  query:nil
 										  limit:@1
 										 intent:intentCheckin
-										 radius:@(500)
+										 radius:@(20000)
 									   callback:^(BOOL success, id result) {
 										   if (success) {
 											   NSDictionary *dic = result;
@@ -375,7 +375,7 @@
 										  query:[_searchView superview] != nil ? _searchField.text : nil
 										  limit:nil
 										 intent:intentCheckin
-										 radius:@(500)
+										 radius:@(20000)
 									   callback:^(BOOL success, id result) {
 										   if (success) {
 											   NSDictionary *dic = result;
@@ -408,7 +408,7 @@
 									  query:query
 									  limit:nil
 									 intent:intentCheckin
-									 radius:@(500)
+									 radius:@(20000)
 								   callback:^(BOOL success, id result) {
 									   if (success) {
 										   NSDictionary *dic = result;

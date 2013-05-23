@@ -35,7 +35,7 @@
 	// Custom initialization
 	self = [super initWithNibName:nil bundle:nil];
 	if (self) {
-		[self addTopGradientLayerToView:self.view];
+		[self addTopGradientLayerToView:self.view position:1.0];
 
 		self.title = @"Sales Calc";
 	}
@@ -104,7 +104,7 @@
 }
 
 - (QEntryElement *)additionalOffElement {
-	A3PercentEntryElement *additionalOff = [[A3PercentEntryElement alloc] initWithTitle:@"Additional Off:" Value:self.editingObject.additionalOff Placeholder:@"0%"];
+	A3PercentEntryElement *additionalOff = [[A3PercentEntryElement alloc] initWithTitle:@"Additional Off" Value:self.editingObject.additionalOff Placeholder:@"0%"];
 	additionalOff.key = SC_KEY_ADDITIONAL_OFF;
 	additionalOff.delegate = self;
 	additionalOff.cellStyleDelegate = self;
@@ -113,7 +113,7 @@
 }
 
 - (QEntryElement *)taxElement {
-	A3PercentEntryElement *tax = [[A3PercentEntryElement alloc] initWithTitle:@"Tax:" Value:self.editingObject.tax Placeholder:@"0%"];
+	A3PercentEntryElement *tax = [[A3PercentEntryElement alloc] initWithTitle:@"Tax" Value:self.editingObject.tax Placeholder:@"0%"];
 	tax.key = SC_KEY_TAX;
 	tax.delegate = self;
 	tax.cellStyleDelegate = self;
@@ -160,13 +160,13 @@
 
 
 - (void)buildNumberSection:(QSection *)section {
-	A3CurrencyEntryElement *price = [[A3CurrencyEntryElement alloc] initWithTitle:@"Price:" Value:self.editingObject.price Placeholder:self.zeroCurrency];
+	A3CurrencyEntryElement *price = [[A3CurrencyEntryElement alloc] initWithTitle:@"Price" Value:self.editingObject.price Placeholder:self.zeroCurrency];
 	price.key = SC_KEY_PRICE;
 	price.delegate = self;
 	price.cellStyleDelegate = self;
 	[section addElement:price];
 
-	A3PercentEntryElement *discount = [[A3PercentEntryElement alloc] initWithTitle:@"Discount:" Value:self.editingObject.discount Placeholder:@"0%"];
+	A3PercentEntryElement *discount = [[A3PercentEntryElement alloc] initWithTitle:@"Discount" Value:self.editingObject.discount Placeholder:@"0%"];
 	discount.key = SC_KEY_DISCOUNT;
 	discount.delegate = self;
 	discount.cellStyleDelegate = self;

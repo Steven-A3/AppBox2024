@@ -15,17 +15,6 @@
 
 @interface A3FrequencyKeyboardViewController ()
 
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *weeklyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *fortnightlyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *monthlyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *bimonthlyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *quarterlyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *semiAnnuallyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *annuallyButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *blankButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *prevButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *nextButton;
-@property (nonatomic, strong) IBOutlet A3KeyboardButton *doneButton;
 
 @end
 

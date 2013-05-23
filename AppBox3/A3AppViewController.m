@@ -18,13 +18,13 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-	FNLOG(@"check");
 	[super viewWillDisappear:animated];
 
 	[self closeActionMenuViewWithAnimation:NO];
 }
 
 - (UIFont *)fontForCellLabel {
+	FNLOG();
 	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
 	return [UIFont boldSystemFontOfSize:fontSize];
 }
@@ -56,12 +56,10 @@
 }
 
 - (UIColor *)colorForCellButton {
-	FNLOG();
 	return [UIColor colorWithRed:40.0f / 255.0f green:72.0f / 255.0f blue:114.0f / 255.0f alpha:1.0f];
 }
 
 - (CGFloat)heightForElement:(QElement *)element {
-	FNLOG();
 	return DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 }
 

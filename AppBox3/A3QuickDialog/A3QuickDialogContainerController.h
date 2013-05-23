@@ -36,6 +36,7 @@
 
 @interface A3LabelElement : QLabelElement
 @property (nonatomic, weak) id<A3QuickDialogCellStyleDelegate> cellStyleDelegate;
+@property (nonatomic, strong) NSString *centerValue;
 
 - (id)initWithTitle:(NSString *)string Value:(id)value;
 @end

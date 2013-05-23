@@ -7,18 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CorePlot-CocoaTouch.h"
 #import "A3AppViewController.h"
+@class A3LoanCalcPieChartController;
 
 @protocol A3LoanCalcPieChartViewDelegate <NSObject>
 - (void)loanCalcPieChartViewButtonPressed;
 
 @end
 
-@interface A3LoanCalcPieChartViewController : A3AppViewController <CPTPlotDataSource>
+@interface A3LoanCalcPieChartViewController : A3AppViewController
 
-@property (nonatomic)	NSNumber *principal, *totalInterest, *monthlyPayment, *monthlyAverageInterest, *totalAmount;
 @property (nonatomic, weak) id<A3LoanCalcPieChartViewDelegate> delegate;
+@property (nonatomic, weak) A3LoanCalcPieChartController *chartController;
 
 - (void)reloadData;
 

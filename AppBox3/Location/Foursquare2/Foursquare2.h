@@ -14,16 +14,16 @@
 
 //1
 #ifndef FS2_OAUTH_KEY
-#define FS2_OAUTH_KEY    (@"5P1OVCFK0CCVCQ5GBBCWRFGUVNX5R4WGKHL2DGJGZ32FDFKT")
+#define FS2_OAUTH_KEY    (@"S41X1SN5JUC0LEOG5PIAQODH3YIQHQQOK5S1XE5TOMON2AXT")
 #endif
 
 #ifndef FS2_OAUTH_SECRET
-#define FS2_OAUTH_SECRET (@"UPZJO0A0XL44IHCD1KQBMAYGCZ45Z03BORJZZJXELPWHPSAR")
+#define FS2_OAUTH_SECRET (@"KQWO4HZHJLETEZNCLZULIEC3S2VIV3PFPZ0RJ4YMYDZOAHBU")
 #endif
 
 //2, don't forget to added app url in your info plist file CFBundleURLTypes
 #ifndef FS2_REDIRECT_URL
-#define FS2_REDIRECT_URL @"app://testapp123"
+#define FS2_REDIRECT_URL @"app://net.allaboutapps.appbox3"
 #endif
 
 //3 update this date to use up-to-date Foursquare API

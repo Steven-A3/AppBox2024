@@ -10,7 +10,6 @@
 #import "A3UIDevice.h"
 #import "A3HorizontalBarContainerView.h"
 #import "A3SmallButton.h"
-#import "A3HorizontalBarChartView.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "ATSDragToReorderTableViewController.h"
 #import "A3ExpenseListDetailsTableViewController.h"
@@ -21,11 +20,9 @@
 #import "A3AppDelegate.h"
 #import "Expense.h"
 #import "common.h"
-#import "A3ExpenseListHistoryViewController.h"
 #import <MessageUI/MessageUI.h>
-#import <MessageUI/MFMailComposeViewController.h>
 
-@interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate, A3ExpenseListHistoryViewControllerDelegate, MFMailComposeViewControllerDelegate>
+@interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate, MFMailComposeViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet A3HorizontalBarContainerView *chartContainerView;
 @property (nonatomic, weak) IBOutlet UITableView *myTableView;
@@ -97,7 +94,7 @@
 	if (DEVICE_IPAD) {
 		tableViewBackground.positions = @[@51.0, @53.0, @302.0, @412.0, @473.0];
 	} else {
-		tableViewBackground.positions = @[@40.0, @42.0, @140.0, @210.0, @240.0];
+		tableViewBackground.positions = @[@40.0, @42.0, @142.0, @211.0, @240.0];
 	}
 
 	tableViewBackground.backgroundColor = [self tableViewBackgroundColor];
@@ -106,7 +103,7 @@
 
 	[_myTableView addSubview:self.detailsViewController.view];
 
-	[self addTopGradientLayerToView:self.view];
+	[self addTopGradientLayerToView:self.view position:1.0];
 	[self addToolsButtonWithAction:@selector(onActionButton:)];
 
 	[self.detailsViewController calculate];
@@ -119,6 +116,7 @@
 		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self applySilverNavigationBarStyleToNavigationVC:navController];
 		[self presentViewController:navController animated:YES completion:nil];
 	}
 }
@@ -170,6 +168,7 @@
 		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self applySilverNavigationBarStyleToNavigationVC:navController];
 		[self presentViewController:navController animated:YES completion:nil];
 	}
 }
