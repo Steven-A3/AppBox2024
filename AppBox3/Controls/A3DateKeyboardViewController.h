@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 - (BOOL)nextAvailableForElement:(QEntryElement *)element;
 - (void)prevButtonPressedWithElement:(QEntryElement *)element;
 - (void)nextButtonPressedWithElement:(QEntryElement *)element;
-- (void)A3KeyboardViewControllerDoneButtonPressed;
+- (void)A3KeyboardDoneButtonPressed;
 
 @end
 
@@ -59,6 +59,8 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 @property (nonatomic, strong)	NSDate 						*date;
 
 - (void)initExtraLabels;
+
+- (IBAction)switchToYear;
 
 - (void)reloadPrevNextButtons;
 

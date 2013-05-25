@@ -12,6 +12,7 @@
 #import "QEntryTableViewCell+Extension.h"
 #import "A3UIDevice.h"
 #import "common.h"
+#import "SFKImage.h"
 
 @interface A3FrequencyKeyboardViewController ()
 
@@ -51,23 +52,37 @@
 	[self reloadPrevNextButtons];
 }
 
+- (void)initSymbolFont {
+	[SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:30.0]];
+	[SFKImage setDefaultColor:[UIColor whiteColor]];
+}
+
 - (void)reloadPrevNextButtons {
-	if ([_delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
-		BOOL available = [_delegate nextAvailableForElement:_element];
-		[_nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
-		[_nextButton setEnabled:available];
-	} else {
-		[_nextButton setTitle:@"Next" forState:UIControlStateNormal];
-		[_nextButton setEnabled:YES];
+	[self initSymbolFont];
+
+	BOOL available = NO;
+	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
+		available = [self.delegate nextAvailableForElement:self.element];
 	}
-	if ([_delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
-		BOOL available = [_delegate prevAvailableForElement:_element];
-		[_prevButton setTitle:available ? @"Prev" : @"" forState:UIControlStateNormal];
-		[_prevButton setEnabled:available];
+	if (DEVICE_IPAD) {
+		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
 	} else {
-		[_prevButton setTitle:@"Prev" forState:UIControlStateNormal];
-		[_prevButton setEnabled:YES];
+		UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
+		[_nextButton setImage:image forState:UIControlStateNormal];
 	}
+	[_nextButton setEnabled:available];
+
+	available = NO;
+	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
+		available = [self.delegate prevAvailableForElement:self.element];
+	}
+	if (DEVICE_IPAD) {
+		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
+	} else {
+		UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;
+		[_prevButton setImage:image forState:UIControlStateNormal];
+	}
+	[_prevButton setEnabled:available];
 }
 
 - (void)viewDidUnload {
@@ -119,8 +134,8 @@
 }
 
 - (IBAction)doneButtonTouchUpInside:(UIButton *)button {
-	if ([_delegate respondsToSelector:@selector(A3KeyboardViewControllerDoneButtonPressed)]) {
-		[_delegate A3KeyboardViewControllerDoneButtonPressed];
+	if ([_delegate respondsToSelector:@selector(A3KeyboardDoneButtonPressed)]) {
+		[_delegate A3KeyboardDoneButtonPressed];
 	} else {
 		[_entryTableViewCell handleActionBarDone:nil];
 	}

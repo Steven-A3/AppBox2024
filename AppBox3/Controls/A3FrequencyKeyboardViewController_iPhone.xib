@@ -163,7 +163,6 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">↑</string>
 						<reference key="IBUIHighlightedTitleColor" ref="434482392"/>
 						<reference key="IBUINormalTitleColor" ref="434482392"/>
 						<reference key="IBUINormalTitleShadowColor" ref="769108991"/>
@@ -223,7 +222,6 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">↓</string>
 						<reference key="IBUIHighlightedTitleColor" ref="434482392"/>
 						<reference key="IBUINormalTitleColor" ref="434482392"/>
 						<reference key="IBUINormalTitleShadowColor" ref="769108991"/>
@@ -695,25 +693,25 @@
 					<string key="className">A3FrequencyKeyboardViewController</string>
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="doneButtonTouchUpInside">UIButton</string>
-						<string key="frequencyButtonTouchUpInside">UIButton</string>
-						<string key="nextButtonTouchUpInside">UIButton</string>
-						<string key="prevButtonTouchUpInside">UIButton</string>
+						<string key="doneButtonTouchUpInside:">UIButton</string>
+						<string key="frequencyButtonTouchUpInside:">UIButton</string>
+						<string key="nextButtonTouchUpInside:">UIButton</string>
+						<string key="prevButtonTouchUpInside:">UIButton</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="doneButtonTouchUpInside">
+						<object class="IBActionInfo" key="doneButtonTouchUpInside:">
 							<string key="name">doneButtonTouchUpInside:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBActionInfo" key="frequencyButtonTouchUpInside">
+						<object class="IBActionInfo" key="frequencyButtonTouchUpInside:">
 							<string key="name">frequencyButtonTouchUpInside:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBActionInfo" key="nextButtonTouchUpInside">
+						<object class="IBActionInfo" key="nextButtonTouchUpInside:">
 							<string key="name">nextButtonTouchUpInside:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
-						<object class="IBActionInfo" key="prevButtonTouchUpInside">
+						<object class="IBActionInfo" key="prevButtonTouchUpInside:">
 							<string key="name">prevButtonTouchUpInside:</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>

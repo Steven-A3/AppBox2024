@@ -45,9 +45,16 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="423856866"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor" id="919640971">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MCAwAA</bytes>
+						</object>
 						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<bool key="IBUIPagingEnabled">YES</bool>
+						<bool key="IBUIShowsHorizontalScrollIndicator">NO</bool>
+						<bool key="IBUIShowsVerticalScrollIndicator">NO</bool>
 					</object>
 					<object class="IBUIView" id="561059992">
 						<reference key="NSNextResponder" ref="915821184"/>
@@ -72,10 +79,7 @@
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="350323957"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor" id="919640971">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MCAwAA</bytes>
-						</object>
+						<reference key="IBUIBackgroundColor" ref="919640971"/>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIAlwaysBounceVertical">YES</bool>
 						<bool key="IBUIScrollEnabled">NO</bool>
@@ -133,7 +137,6 @@
 						<string key="NSFrame">{{503, 272}, {36, 36}}</string>
 						<reference key="NSSuperview" ref="915821184"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">3</int>
@@ -318,7 +321,7 @@
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">A3LoanCalcComparisonMainViewController</string>
+				<string key="-1.CustomClassName">A3LoanCalcComparisonMainViewController_iPad</string>
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="-2.CustomClassName">UIResponder</string>
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -376,10 +379,18 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">48</int>
+			<int key="maxID">49</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">A3AppViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/A3AppViewController.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">A3CircleView</string>
 					<string key="superclassName">UIView</string>
@@ -390,7 +401,7 @@
 				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">A3LoanCalcComparisonMainViewController</string>
-					<string key="superclassName">UIViewController</string>
+					<string key="superclassName">A3AppViewController</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="leftTableView">UITableView</string>
 						<string key="loanACircleView">A3CircleView</string>
@@ -433,6 +444,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/A3LoanCalcComparisonMainViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">A3LoanCalcComparisonMainViewController_iPad</string>
+					<string key="superclassName">A3LoanCalcComparisonMainViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/A3LoanCalcComparisonMainViewController_iPad.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

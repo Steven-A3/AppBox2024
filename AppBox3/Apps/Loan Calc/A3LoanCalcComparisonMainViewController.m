@@ -22,21 +22,6 @@
 
 @interface A3LoanCalcComparisonMainViewController () <A3LoanCalcComparisonTableViewDataSourceDelegate>
 
-@property (nonatomic, weak) IBOutlet UIScrollView *mainScrollView;
-@property (nonatomic, weak) IBOutlet UIScrollView *topScrollView;
-@property (nonatomic, weak) IBOutlet UITableView *leftTableView;
-@property (nonatomic, weak) IBOutlet UITableView *rightTableView;
-@property (nonatomic, weak) IBOutlet A3CircleView *loanACircleView, *loanBCircleView;
-@property (nonatomic, weak) IBOutlet DDPageControl *pageControl;
-
-@property (nonatomic, strong) A3LoanCalcComparisonTopLeftViewController *firstColumnInScrollView;
-@property (nonatomic, strong) A3LoanCalcPrincipalBarChartController *secondColumnInScrollView;
-@property (nonatomic, strong) A3LoanCalcPrincipalBarChartController *thirdColumnInScrollView;
-@property (nonatomic, strong) A3LoanCalcSingleBarChartController *fourthColumnInScrollView;
-
-@property (nonatomic, strong) A3LoanCalcComparisonTableViewDataSource *leftTableViewDataSource, *rightTableViewDataSource;
-@property (nonatomic, strong) LoanCalcHistory *leftObject, *rightObject;
-
 @end
 
 @implementation A3LoanCalcComparisonMainViewController
@@ -50,10 +35,6 @@
     return self;
 }
 
-- (void)dealloc {
-	FNLOG(@"dealloc?");
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -61,6 +42,7 @@
     // Do any additional setup after loading the view from its nib.
 
 	[self configureTopScrollView];
+	[self configurePageControl];
 
 	_loanACircleView.textLabel.text = @"A";
 	_loanACircleView.textLabel.textColor = [UIColor colorWithRed:115.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:1.0];
@@ -78,6 +60,20 @@
 	_rightTableViewDataSource.delegate = self;
 
 	[_leftTableViewDataSource reloadMainScrollViewContentSize];
+}
+
+- (void)configurePageControl {
+	[_pageControl setNumberOfPages:(NSInteger) (self.topScrollView.contentSize.width / self.topScrollView.bounds.size.width)];
+	[_pageControl setCurrentPage:0];
+	[_pageControl setType:DDPageControlTypeOnFullOffEmpty];
+	[_pageControl setOnColor: [UIColor colorWithRed:91.0/255.0 green:91.0/255.0 blue:91.0/255.0 alpha:1.0] ];
+	[_pageControl setOffColor: [UIColor blackColor] ];
+	[_pageControl setIndicatorDiameter: 6.0 ];
+	[_pageControl setIndicatorSpace: 8.0 ];
+	[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+	CGPoint center = _pageControl.center;
+	center.x = 160.0;
+	_pageControl.center = center;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -105,60 +101,6 @@
 }
 
 - (void)configureTopScrollView {
-	CGRect bounds = _topScrollView.bounds;
-	[_topScrollView setContentSize:CGSizeMake(bounds.size.width * 2.0, bounds.size.height)];
-	_topScrollView.backgroundColor = [UIColor clearColor];
-	_topScrollView.pagingEnabled = YES;
-	_topScrollView.showsHorizontalScrollIndicator = NO;
-	_topScrollView.showsVerticalScrollIndicator = NO;
-
-	// add top left view
-	[_topScrollView addSubview:self.firstColumnInScrollView.view];
-	_firstColumnInScrollView.leftObject = self.leftObject;
-	_firstColumnInScrollView.rightObject = self.rightObject;
-	[_firstColumnInScrollView updateLabels];
-
-	CGRect boundsParent = self.topScrollView.bounds;
-	CGFloat columnWidth = boundsParent.size.width / 2.0;
-
-	self.secondColumnInScrollView.graphHostingView.frame = CGRectMake(columnWidth, 0.0, columnWidth, boundsParent.size.height);
-	[_topScrollView addSubview:self.secondColumnInScrollView.graphHostingView];
-
-	_secondColumnInScrollView.objectA = self.leftObject;
-	_secondColumnInScrollView.objectB = self.rightObject;
-	[_secondColumnInScrollView reloadData];
-
-	self.thirdColumnInScrollView.graphHostingView.frame = CGRectMake(columnWidth * 2.0, 0.0, columnWidth, boundsParent.size.height);
-	[_topScrollView addSubview:_thirdColumnInScrollView.graphHostingView];
-	_thirdColumnInScrollView.objectA = self.leftObject;
-	_thirdColumnInScrollView.objectB = self.rightObject;
-	[_thirdColumnInScrollView reloadData];
-
-	self.fourthColumnInScrollView.graphHostingView.frame = CGRectMake(columnWidth * 3.0, 0.0, columnWidth, boundsParent.size.height);
-	[_topScrollView addSubview:_fourthColumnInScrollView.graphHostingView];
-	_fourthColumnInScrollView.objectA = self.leftObject;
-	_fourthColumnInScrollView.objectB = self.rightObject;
-	[_fourthColumnInScrollView reloadData];
-
-	UIColor *lineColor = [UIColor colorWithRed:213.0/255.0 green:207.0/255.0 blue:192.0/255.0 alpha:1.0];
-	// add vertical line in the first page.
-	UIView *verticalLine1 = [[UIView alloc] initWithFrame:CGRectMake(bounds.size.width / 2.0, 0.0, 1.0, 211.0)];
-	verticalLine1.backgroundColor = lineColor;
-	[_topScrollView addSubview:verticalLine1];
-
-	// add vertical line in the second page.
-	UIView *verticalLine2 = [[UIView alloc] initWithFrame:CGRectMake(bounds.size.width / 2.0 * 3.0, 0.0, 1.0, 211.0)];
-	verticalLine2.backgroundColor = lineColor;
-	[_topScrollView addSubview:verticalLine2];
-
-	[_pageControl setNumberOfPages:2];
-	[_pageControl setCurrentPage:0];
-	[_pageControl setType:DDPageControlTypeOnFullOffEmpty];
-	[_pageControl setOnColor: [UIColor colorWithRed:91.0/255.0 green:91.0/255.0 blue:91.0/255.0 alpha:1.0] ];
-	[_pageControl setOffColor: [UIColor blackColor] ];
-	[_pageControl setIndicatorDiameter: 6.0 ];
-	[_pageControl setIndicatorSpace: 8.0 ];
-	[_pageControl addTarget:self action:@selector(pageControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)pageControlValueChanged:(DDPageControl *)control {
@@ -173,34 +115,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (A3LoanCalcComparisonTopLeftViewController *)firstColumnInScrollView {
-	if (nil == _firstColumnInScrollView) {
-		_firstColumnInScrollView = [[A3LoanCalcComparisonTopLeftViewController alloc] initWithNibName:@"A3LoanCalcComparisonTopLeftViewController" bundle:nil];
-	}
-	return _firstColumnInScrollView;
-}
-
-- (A3LoanCalcPrincipalBarChartController *)secondColumnInScrollView {
-	if (nil == _secondColumnInScrollView) {
-		_secondColumnInScrollView = [[A3LoanCalcPrincipalBarChartController alloc] init];
-	}
-	return _secondColumnInScrollView;
-}
-
-- (A3LoanCalcPrincipalBarChartController *)thirdColumnInScrollView {
-	if (nil == _thirdColumnInScrollView) {
-		_thirdColumnInScrollView = [[A3LoanCalcPrincipalBarChartController alloc] init];
-	}
-	return _thirdColumnInScrollView;
-}
-
-- (A3LoanCalcSingleBarChartController *)fourthColumnInScrollView {
-	if (nil == _fourthColumnInScrollView) {
-		_fourthColumnInScrollView = [[A3LoanCalcSingleBarChartController alloc] init];
-	}
-	return _fourthColumnInScrollView;
 }
 
 - (A3LoanCalcComparisonTableViewDataSource *)leftTableViewDataSource {
@@ -278,10 +192,6 @@
 }
 
 - (void)loanCalcComparisonTableViewValueChanged {
-	[_firstColumnInScrollView updateLabels];
-	[_secondColumnInScrollView reloadData];
-	[_thirdColumnInScrollView reloadData];
-	[_fourthColumnInScrollView reloadData];
 }
 
 @end

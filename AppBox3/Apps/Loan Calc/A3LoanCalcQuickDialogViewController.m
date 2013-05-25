@@ -614,6 +614,7 @@
 	_temporaryLabelForEditing.backgroundColor = [UIColor whiteColor];
 	_temporaryLabelForEditing.textColor = cell.textField.textColor;
 	_temporaryLabelForEditing.font = cell.textField.font;
+	_temporaryLabelForEditing.textAlignment = UITextAlignmentRight;
  }
 
 - (void)dateKeyboardValueChangedDate:(NSDate *)date element:(QEntryElement *)element {

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreGraphics/CoreGraphics.h>
 #import "A3LoanCalcComparisonTableViewDataSource.h"
 #import "CommonUIDefinitions.h"
 #import "A3ButtonTextField.h"
@@ -16,6 +17,11 @@
 #import "A3LoanCalcString.h"
 #import "NSString+conversion.h"
 #import "common.h"
+#import "A3UIDevice.h"
+#import "A3NumberKeyboardViewController_iPhone.h"
+#import "A3FrequencyKeyboardViewController_iPhone.h"
+#import "A3DateKeyboardViewController_iPad.h"
+#import "A3DateKeyboardViewController_iPhone.h"
 
 @interface A3LoanCalcComparisonTableViewDataSource () <A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate>
 @property (nonatomic, strong) NSMutableArray *contentsKeyIndex;
@@ -23,7 +29,7 @@
 @property (nonatomic, strong) NSMutableArray *textFields;
 @property (nonatomic, strong) A3ButtonTextField *extraPaymentYearlyMonth, *extraPaymentOneTimeYearMonth;
 @property (nonatomic, weak) UITextField *editingTextField;
-@property (nonatomic, strong) A3NumberKeyboardViewController_iPad *numberKeyboardViewController;
+@property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
 @property (nonatomic, strong) A3FrequencyKeyboardViewController *frequencyKeyboardViewController;
 @property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardViewController;
 @property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardForMonthInput;
@@ -73,9 +79,7 @@
 	textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 	textField.delegate = self;
 	textField.textAlignment = _leftAlignment ? NSTextAlignmentLeft : NSTextAlignmentRight;
-	if ([_delegate respondsToSelector:@selector(fontForEntryCellTextField)]) {
-		textField.font = [_delegate fontForEntryCellTextField];
-	}
+	textField.font = [self textFont];
 	textField.tag = tag;
 	textField.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
 	textField.textColor = [UIColor colorWithRed:115.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:1.0];
@@ -139,7 +143,7 @@
 		[_contentsKeyIndex addObject:A3LC_KEY_PRINCIPAL];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryPrincipal]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryPrincipal];
-		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
+		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber: @0.0 ];
 		textField.text = _object.principal;
 		[_textFields addObject:textField];
 	}
@@ -147,7 +151,7 @@
 		[_contentsKeyIndex addObject:A3LC_KEY_DOWN_PAYMENT];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryDownPayment]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryDownPayment];
-		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
+		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber: @0.0 ];
 		textField.text = _object.downPayment;
 		[_textFields addObject:textField];
 	}
@@ -155,7 +159,7 @@
 		[_contentsKeyIndex addObject:A3LC_KEY_MONTHLY_PAYMENT];
 		[_contentsTypeIndex addObject:[NSNumber numberWithUnsignedInteger:A3LCEntryMonthlyPayment]];
 		UITextField *textField = [self textFieldWithTag:A3LCEntryMonthlyPayment];
-		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber:[NSNumber numberWithInteger:0]];
+		textField.placeholder = [A3Formatter stringWithCurrencyFormatFromNumber: @0.0 ];
 		textField.text = _object.monthlyPayment;
 		[_textFields addObject:textField];
 	}
@@ -212,13 +216,13 @@
 
 - (void)setTableView:(UITableView *)tableView {
 	_tableView = tableView;
-	tableView.rowHeight = A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
+	tableView.rowHeight = DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	NSInteger numberOfSection = 1;
-	if (_object.showExtraPayment)
-		numberOfSection = 2;
+//	if (_object.showExtraPayment)
+//		numberOfSection = 2;
 	FNLOG(@"Number of Section %d", numberOfSection);
 	return numberOfSection;
 }
@@ -248,14 +252,13 @@
 			cell = [self configureExtraPaymentCellforRow:indexPath.row];
 			break;
 	}
-	if ([_delegate respondsToSelector:@selector(tableViewBackgroundColor)]) {
-		cell.backgroundColor = [_delegate tableViewBackgroundColor];
-	}
+	// TODO:
+//	cell.backgroundColor = ;
 	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return A3_TABLE_VIEW_ROW_HEIGHT_IPAD;
+	return DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -271,7 +274,7 @@
 		frame = CGRectInset(frame, 20.0, 00.0);
 		UILabel *sectionTitleLabel = [[UILabel alloc] initWithFrame:frame];
 		sectionTitleLabel.backgroundColor = [UIColor clearColor];
-		sectionTitleLabel.font = [UIFont boldSystemFontOfSize:24.0];
+		sectionTitleLabel.font = [UIFont boldSystemFontOfSize:DEVICE_IPAD ? 24.0 : 18.0];
 		sectionTitleLabel.textColor = [UIColor colorWithRed:54.0/255.0 green:54.0/255.0 blue:54.0/255.0 alpha:1.0];
 		sectionTitleLabel.text = @"Extra Payments";
 		[sectionHeaderView addSubview:sectionTitleLabel];
@@ -325,13 +328,24 @@
 - (NSString *)imagePathForEntry:(A3LoanCalculatorEntry)entry {
 	static NSArray *imageNames = nil;
 	if (imageNames == nil) {
-		imageNames = @[@"comparison_principal_32", @"comparison_principal_32", @"comparison_principal_32",
-		@"comparison_term_32", @"comparison_rate_32", @"comparison_frequency_32", @"comparison_startdate_32",
-		@"comparison_note_32", @"", @"comparison_extra_monthly_32", @"comparison_extra_yearly_32",
-		@"comparison_extra_onetime_32"];
+		imageNames = @[@"comparison_principal_", @"comparison_principal_", @"comparison_principal_",
+		@"comparison_term_", @"comparison_rate_", @"comparison_frequency_", @"comparison_startdate_",
+		@"comparison_note_", @"", @"comparison_extra_monthly_", @"comparison_extra_yearly_",
+		@"comparison_extra_onetime_"];
 	}
-	NSString *path = [[NSBundle mainBundle] pathForResource:[imageNames objectAtIndex:entry - 1] ofType:@"png"];
+	NSString *imageName = [NSString stringWithFormat:@"%@%@", [imageNames objectAtIndex:entry - 1], DEVICE_IPAD ? @"32" : @"24"];
+	NSString *path = [[NSBundle mainBundle] pathForResource:imageName ofType:@"png"];
 	return path;
+}
+
+- (CGRect)textFieldFrameForCell:(UITableViewCell *)cell {
+	CGRect frame;
+	if (DEVICE_IPAD) {
+		frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
+	} else {
+		frame = CGRectInset(cell.contentView.bounds, 32.0, 10.0);
+	}
+	return frame;
 }
 
 - (UITableViewCell *)configureCellforRow:(NSInteger)row {
@@ -359,14 +373,15 @@
 
 			textField = [self textFieldWithTag:entry];
 			[textField removeFromSuperview];
-			textField.frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
+
+			textField.frame = [self textFieldFrameForCell:cell];
 			[cell addSubview:textField];
 
 			if (!_leftAlignment) {
 				NSString *imagePath = [self imagePathForEntry:entry];
 				UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
 				UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-				imageView.frame = CGRectMake(-15.0, 13.0, 32.0, 32.0);
+				imageView.frame = [self imageViewFrame];
 				[cell addSubview:imageView];
 			}
 
@@ -379,17 +394,27 @@
 			}
 			cell.textLabel.text = [_object.showAdvanced boolValue] ? @"Simple" : @"Advanced";
 			cell.textLabel.textAlignment = _leftAlignment ? NSTextAlignmentLeft : NSTextAlignmentRight;
-			if ([_delegate respondsToSelector:@selector(fontForEntryCellTextField)]) {
-				cell.textLabel.font = [_delegate fontForEntryCellTextField];
-			}
-			if ([_delegate respondsToSelector:@selector(colorForCellButton)]) {
-				cell.textLabel.textColor = [_delegate colorForCellButton];
-			}
+			cell.textLabel.font = [self textFont];
+			cell.textLabel.textColor = [self textColor];
 			break;
 		default:
 			break;
 	}
 	return cell;
+}
+
+- (UIColor *)textColor {
+	return [UIColor colorWithRed:115.0/255.0 green:115.0/255.0 blue:115.0/255.0 alpha:1.0];
+}
+
+- (UIFont *)textFont {
+	UIFont *font;
+	if (DEVICE_IPAD) {
+		font = [UIFont boldSystemFontOfSize:23.0];
+	} else {
+		font = [UIFont boldSystemFontOfSize:16.0];
+	}
+	return font;
 }
 
 - (UITableViewCell *)configureExtraPaymentCellforRow:(NSInteger)row {
@@ -401,41 +426,70 @@
 	switch (row) {
 		case 0:
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentMonthly];
-			textField.frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
+			textField.frame = [self textFieldFrameForCell:cell];
 			break;
 		case 1:
 		{
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentYearly];
-			CGRect frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
-			if (_leftAlignment) {
-				frame.size.width = 173.0;
+			CGRect frame = [self textFieldFrameForCell:cell];
+			if (DEVICE_IPAD) {
+				if (_leftAlignment) {
+					frame.size.width = 173.0;
+				} else {
+					frame.origin.x = 116.0;
+					frame.size.width = 189.0;
+				}
 			} else {
-				frame.origin.x = 116.0;
-				frame.size.width = 189.0;
+				if (_leftAlignment) {
+					frame.size.width = 100.0;
+				} else {
+					frame.origin.x = 116.0;
+					frame.size.width = 189.0;
+				}
 			}
 			textField.frame = frame;
 
 			frame = self.extraPaymentYearlyMonth.frame;
-			frame.origin.x = _leftAlignment ? 188.0 : 20.0;
-			frame.origin.y = 15.0;
+			if (DEVICE_IPAD) {
+				frame.origin.x = _leftAlignment ? 188.0 : 20.0;
+				frame.origin.y = 15.0;
+			} else {
+				frame.origin.x = _leftAlignment ? 100.0 : 20.0;
+				frame.origin.y = 8.0;
+				frame.size.width = 40.0;
+			}
 			_extraPaymentYearlyMonth.frame = frame;
 			[cell addSubview:_extraPaymentYearlyMonth];
 			break;
 		}
 		case 2:{
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentOneTime];
-			CGRect frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
-			if (_leftAlignment) {
-				frame.size.width = 135.0;
+			CGRect frame = [self textFieldFrameForCell:cell];
+			if (DEVICE_IPAD) {
+				if (_leftAlignment) {
+					frame.size.width = 135.0;
+				} else {
+					frame.origin.x = 152.0;
+					frame.size.width = 153.0;
+				}
 			} else {
-				frame.origin.x = 152.0;
-				frame.size.width = 153.0;
+				if (_leftAlignment) {
+				} else {
+					frame.origin.x = 70.0;
+				}
+				frame.size.width = 70.0;
 			}
 			textField.frame = frame;
 
 			frame = self.extraPaymentOneTimeYearMonth.frame;
-			frame.origin.x = _leftAlignment ? 150.0 : 20.0;
-			frame.origin.y = 15.0;
+			if (DEVICE_IPAD) {
+				frame.origin.x = _leftAlignment ? 150.0 : 20.0;
+				frame.origin.y = 15.0;
+			} else {
+				frame.origin.x = _leftAlignment ? 70.0 : 20.0;
+				frame.origin.y = 8.0;
+				frame.size.width = 70.0;
+			}
 			_extraPaymentOneTimeYearMonth.frame = frame;
 			[cell addSubview:_extraPaymentOneTimeYearMonth];
 			break;
@@ -448,11 +502,21 @@
 		NSString *imagePath = [self imagePathForEntry:textField.tag];
 		UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
 		UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-		imageView.frame = CGRectMake(-15.0, 13.0, 32.0, 32.0);
+		imageView.frame = [self imageViewFrame];
 		[cell addSubview:imageView];
 	}
 
 	return cell;
+}
+
+- (CGRect)imageViewFrame {
+	CGRect frame;
+	if (DEVICE_IPAD) {
+		frame = CGRectMake(-15.0, 13.0, 32.0, 32.0);
+	} else {
+		frame = CGRectMake(-8.0, 13.0, 24.0, 24.0);
+	}
+	return frame;
 }
 
 - (A3ButtonTextField *)extraPaymentYearlyMonth {
@@ -682,9 +746,13 @@
 - (void)keyboardDidHide:(NSNotification*)aNotification {
 }
 
-- (A3NumberKeyboardViewController_iPad *)numberKeyboardViewController {
+- (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
-		_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] init];
+		if (DEVICE_IPAD) {
+			_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] init];
+		} else {
+			_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] init];
+		}
 		_numberKeyboardViewController.delegate = self;
 	}
 	return _numberKeyboardViewController;
@@ -716,7 +784,11 @@
 
 - (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
 	if (nil == _frequencyKeyboardViewController) {
-		_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController" bundle:nil];
+		if (DEVICE_IPAD) {
+			_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPad" bundle:nil];
+		} else {
+			_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController_iPhone alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPhone" bundle:nil];
+		}
 		_frequencyKeyboardViewController.delegate = self;
 	}
 	return _frequencyKeyboardViewController;
@@ -724,7 +796,11 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	if (nil == _dateKeyboardViewController) {
-		_dateKeyboardViewController = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		if (DEVICE_IPAD) {
+			_dateKeyboardViewController = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		} else {
+			_dateKeyboardViewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+		}
 		_dateKeyboardViewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
 		_dateKeyboardViewController.delegate = self;
 	}
@@ -733,7 +809,11 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardForMonthInput {
 	if (nil == _dateKeyboardForMonthInput) {
-		_dateKeyboardForMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		if (DEVICE_IPAD) {
+			_dateKeyboardForMonthInput = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		} else {
+			_dateKeyboardForMonthInput = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+		}
 		_dateKeyboardForMonthInput.workingMode = A3DateKeyboardWorkingModeMonth;
 		_dateKeyboardForMonthInput.delegate = self;
 	}
@@ -742,7 +822,11 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardForYearMonthInput {
 	if (nil == _dateKeyboardForYearMonthInput) {
-		_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		if (DEVICE_IPAD) {
+			_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+		} else {
+			_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+		}
 		_dateKeyboardForYearMonthInput.workingMode = A3DateKeyboardWorkingModeYearMonth;
 		_dateKeyboardForYearMonthInput.delegate = self;
 	}
@@ -853,12 +937,12 @@
 }
 
 - (void)reloadMainScrollViewContentSize {
-	CGFloat height = 289.0;
-	CGFloat tableViewHeight = 0.0;
-	tableViewHeight += _object.showAdvanced.boolValue ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD * 7.0 : A3_TABLE_VIEW_ROW_HEIGHT_IPAD * 4.0;
-	tableViewHeight += _object.showDownPayment.boolValue ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : 0.0;
-	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + A3_TABLE_VIEW_ROW_HEIGHT_IPAD * 3.0 : 0.0;
-	tableViewHeight += 52.0;
+	CGFloat height = DEVICE_IPAD ? 289.0 : 192.0;
+	CGFloat tableViewHeight = 0.0, rowHeight = DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+	tableViewHeight += _object.showAdvanced.boolValue ?  rowHeight * 7.0 : rowHeight * 4.0;
+	tableViewHeight += _object.showDownPayment.boolValue ? rowHeight : 0.0;
+//	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + rowHeight * 3.0 : 0.0;
+	tableViewHeight += 20.0;
 
 	FNLOG(@"tableViewHeight %f", tableViewHeight);
 
@@ -870,7 +954,7 @@
 	frame.size.height = tableViewHeight;
 	self.tableView.frame = frame;
 
-	self.mainScrollView.contentSize = CGSizeMake(714.0, height + tableViewHeight);
+	self.mainScrollView.contentSize = CGSizeMake(DEVICE_IPAD ? 714.0 : 320.0, height + tableViewHeight);
 }
 
 

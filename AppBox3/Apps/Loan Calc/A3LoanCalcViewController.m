@@ -17,6 +17,8 @@
 #import "A3UIDevice.h"
 #import "A3LoanCalcQuickDialogViewController_iPad.h"
 #import "A3LoanCalcQuickDialogViewController_iPhone.h"
+#import "A3LoanCalcComparisonMainViewController_iPad.h"
+#import "A3LoanCalcComparisonMainViewController_iPhone.h"
 
 @interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
@@ -102,7 +104,11 @@
 
 - (A3LoanCalcComparisonMainViewController *)comparisonViewController {
 	if (nil == _comparisonViewController) {
-		_comparisonViewController = [[A3LoanCalcComparisonMainViewController alloc] initWithNibName:@"A3LoanCalcComparisonMainViewController" bundle:nil];
+		if (DEVICE_IPAD) {
+			_comparisonViewController = [[A3LoanCalcComparisonMainViewController_iPad alloc] initWithNibName:@"A3LoanCalcComparisonMainViewController_iPad" bundle:nil];
+		} else {
+			_comparisonViewController = [[A3LoanCalcComparisonMainViewController_iPhone alloc] initWithNibName:@"A3LoanCalcComparisonMainViewController_iPhone" bundle:nil];
+		}
 	}
 	return _comparisonViewController;
 }

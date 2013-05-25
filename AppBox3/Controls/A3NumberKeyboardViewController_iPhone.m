@@ -10,6 +10,8 @@
 #import "A3KeyboardButton_iPhone.h"
 #import "QEntryTableViewCell+Extension.h"
 #import "A3UIKit.h"
+#import "SFKImage.h"
+#import "A3UIDevice.h"
 
 @interface A3NumberKeyboardViewController_iPhone ()
 
@@ -83,7 +85,7 @@
 			break;
 		}
 		case A3NumberKeyboardTypeInterestRate: {
-			[self fillBigButtonTitleWith:@"% /year" bigButton2Title:@"% /month"];
+			[self fillBigButtonTitleWith:@"% /yr" bigButton2Title:@"% /mo"];
 			bigButton1.blueColorOnSelectedState = YES;
 			bigButton2.blueColorOnSelectedState = YES;
 			bigButton1.selected = NO;
@@ -129,23 +131,37 @@
 	[_deleteButton setImage:[A3UIKit backspaceImage2] forState:UIControlStateNormal];
 }
 
+- (void)initSymbolFont {
+	[SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:30.0]];
+	[SFKImage setDefaultColor:[UIColor whiteColor]];
+}
+
 - (void)reloadPrevNextButtons {
+	[self initSymbolFont];
+
+	BOOL available = NO;
 	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
-		BOOL available = [self.delegate nextAvailableForElement:self.element];
-		[_nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
-		[_nextButton setEnabled:available];
-	} else {
-		[_nextButton setTitle:@"Next" forState:UIControlStateNormal];
-		[_nextButton setEnabled:YES];
+		available = [self.delegate nextAvailableForElement:self.element];
 	}
+	if (DEVICE_IPAD) {
+		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
+	} else {
+		UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
+		[_nextButton setImage:image forState:UIControlStateNormal];
+	}
+	[_nextButton setEnabled:available];
+
+	available = NO;
 	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
-		BOOL available = [self.delegate prevAvailableForElement:self.element];
-		[_prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
-		[_prevButton setEnabled:available];
-	} else {
-		[_prevButton setTitle:@"Prev" forState:UIControlStateNormal];
-		[_prevButton setEnabled:YES];
+		available = [self.delegate prevAvailableForElement:self.element];
 	}
+	if (DEVICE_IPAD) {
+		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
+	} else {
+		UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;
+		[_prevButton setImage:image forState:UIControlStateNormal];
+	}
+	[_prevButton setEnabled:available];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
