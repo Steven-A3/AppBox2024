@@ -54,4 +54,6 @@
 - (UIBarButtonItem *)barButtonItemWithTitle:(NSString *)title action:(SEL)selector;
 
 - (UIBarButtonItem *)blackBarButtonItemWithTitle:(NSString *)title action:(SEL)selector;
+
+- (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector atIndex:(NSInteger)index1;
 @end

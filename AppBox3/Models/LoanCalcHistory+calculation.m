@@ -63,12 +63,28 @@
 	return monthlyInterestRate / 100.0;
 }
 
+- (float)yearlyInterestRate {
+	float interestRate = [self.interestRate floatValueEx];
+	if (![self.interestRatePerYear boolValue]) {
+		interestRate *= 12.0;
+	}
+	return interestRate / 100.0;
+}
+
 - (float)termInMonth {
 	float termMonth = [self.term floatValueEx];
 	if (![self.termTypeMonth boolValue]) {
 		termMonth *= 12.0;
 	}
 	return termMonth;
+}
+
+- (float)termInYear {
+	float term = [self.term floatValueEx];
+	if ([self.termTypeMonth boolValue]) {
+		term /= 12.0;
+	}
+	return term;
 }
 
 - (void)calculateMonthlyPayment {
@@ -142,6 +158,26 @@
 		term /= 12.0;
 		self.term = [A3LoanCalcString stringFromTermInYears:term];
 	}
+}
+
+- (NSString *)termString {
+	NSString *result;
+	if (self.termTypeMonth.boolValue) {
+		result = [NSString stringWithFormat:@"%d months", (int)self.termInMonth];
+	} else {
+		result = [NSString stringWithFormat:@"%f years", self.termInYear];
+	}
+	return result;
+}
+
+- (NSString *)conditionString {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+
+	return [NSString stringWithFormat:@"%@ %0.2f%% %@",
+									  [nf stringFromNumber:@([self.principal floatValueEx])],
+									  self.yearlyInterestRate,
+									  self.termString];
 }
 
 - (void)calculate {

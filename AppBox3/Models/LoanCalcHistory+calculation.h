@@ -42,12 +42,18 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 @interface LoanCalcHistory (calculation)
 
 - (void)initializeValues;
+
+- (float)yearlyInterestRate;
+
 - (float)termInMonth;
 - (float)monthlyInterestRate;
 - (void)calculateMonthlyPayment;
 - (void)calculatePrincipal;
 - (void)calculateDownPayment;
 - (void)calculateTerm:(BOOL)inMonth;
+
+- (NSString *)conditionString;
+
 - (void)calculate;
 - (NSNumber *)totalAmount;
 - (NSNumber *)totalInterest;

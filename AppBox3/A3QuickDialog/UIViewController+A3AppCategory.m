@@ -446,4 +446,28 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return [[UIBarButtonItem alloc] initWithCustomView:aButton];
 }
 
+- (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector atIndex:(NSInteger)index {
+	static NSArray *coordinateX;
+	coordinateX = @[@156.0, @340.0, @523.0];
+
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	NSString *path = [[NSBundle mainBundle] pathForResource:iconName ofType:@"png"];
+	[button setImage:[UIImage imageWithContentsOfFile:path] forState:UIControlStateNormal];
+	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+	button.frame = CGRectMake([coordinateX[index] floatValue], 18.0, 32.0, 32.0);
+	[self.actionMenuViewController.view addSubview:button];
+
+	CGRect frame = CGRectMake([coordinateX[index] floatValue] + 37.0, 19.0, 130.0, 32.0);
+	UILabel *label = [[UILabel alloc] initWithFrame:frame];
+	label.backgroundColor = [UIColor clearColor];
+	label.text = title;
+	label.font = [UIFont systemFontOfSize:14.5];
+	label.textColor = [UIColor whiteColor];
+	label.userInteractionEnabled = YES;
+	[self.actionMenuViewController.view addSubview:label];
+
+	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:selector];
+	[label addGestureRecognizer:tapGestureRecognizer];
+}
+
 @end

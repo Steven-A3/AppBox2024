@@ -53,7 +53,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	[self addToolsButtonWithAction:@selector(onActionButton)];
+	[self addToolsButtonWithAction:@selector(onActionButton:)];
 
 	[self addChildViewController:self.quickDialogViewController];
 	_quickDialogViewController.view.frame = self.contentsViewFrame;
@@ -114,8 +114,15 @@
 }
 
 
-- (void)onActionButton {
-	[self presentActionMenuWithDelegate:self];
+- (void)onActionButton:(UIButton *)button {
+	if (DEVICE_IPAD) {
+		[self presentEmptyActionMenu];
+		[self addActionIcon:@"t_newList" title:@"New List" selector:@selector(newListAction) atIndex:0];
+		[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction) atIndex:1];
+		[self addActionIcon:@"t_mail" title:@"Mail" selector:@selector(shareAction) atIndex:2];
+	} else {
+		[self presentActionMenuWithDelegate:self];
+	}
 }
 
 #pragma mark - A3ActionMenuDelegate

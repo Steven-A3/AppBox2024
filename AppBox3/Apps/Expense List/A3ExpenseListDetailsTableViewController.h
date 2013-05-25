@@ -12,7 +12,7 @@
 @class A3HorizontalBarContainerView;
 @class Expense;
 
-@interface A3ExpenseListDetailsTableViewController : ATSDragToReorderTableViewController <A3ExpenseListHistoryViewControllerDelegate>
+@interface A3ExpenseListDetailsTableViewController : ATSDragToReorderTableViewController <A3HistoryViewControllerDelegate>
 
 @property (nonatomic, weak) A3HorizontalBarContainerView *chartContainerView;
 

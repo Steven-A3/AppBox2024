@@ -6,13 +6,8 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-@class Expense;
+#import "A3HistoryViewController.h"
 
-@protocol A3ExpenseListHistoryViewControllerDelegate <NSObject>
-- (void)historySelected:(Expense *)expenseObject;
-@end
+@interface A3ExpenseListHistoryViewController : A3HistoryViewController
 
-@interface A3ExpenseListHistoryViewController : UIViewController
-
-@property (nonatomic, weak) id<A3ExpenseListHistoryViewControllerDelegate> delegate;
 @end
