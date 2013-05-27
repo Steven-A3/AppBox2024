@@ -1,30 +1,30 @@
 //
-//  A3LoanCalcHistoryViewController.m
+//  A3LoanCalcCompareHistoryViewController
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 5/25/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 5/27/13 1:57 PM.
+//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3LoanCalcHistoryViewController.h"
+#import "A3LoanCalcCompareHistoryViewController.h"
 #import "A3AppDelegate.h"
-#import "A3LoanCalcHistoryCell.h"
+#import "A3LoanCalcCompareHistoryCell.h"
 #import "LoanCalcHistory.h"
 #import "common.h"
 
-@interface A3LoanCalcHistoryViewController ()
 
-@end
+@implementation A3LoanCalcCompareHistoryViewController {
 
-@implementation A3LoanCalcHistoryViewController
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	FNLOG();
-	[self.myTableView registerNib:[UINib nibWithNibName:@"A3LoanCalcHistoryCell"
-											   bundle:[NSBundle mainBundle]]
-		 forCellReuseIdentifier:@"Single"];
+	FNLOG(@"%f", self.myTableView.bounds.size.width);
+	self.myTableView.rowHeight = 106.0;
+	[self.myTableView registerNib:[UINib nibWithNibName:@"A3LoanCalcCompareHistoryCell"
+												 bundle:[NSBundle mainBundle]]
+		   forCellReuseIdentifier:@"Comparison"];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -38,7 +38,7 @@
 			entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
 
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(editing == NO) and (location == 'S')"];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(editing == NO) and (location == 'A')"];
 	[fetchRequest setPredicate:predicate];
 
 	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
@@ -50,7 +50,7 @@
 			[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
 												managedObjectContext:managedObjectContext
 												  sectionNameKeyPath:nil
-														   cacheName:@"LoanCalcHistoryCache"];
+														   cacheName:@"LoanCalcCompareHistoryCache"];
 	theFetchedResultsController.delegate = self;
 	super.fetchedResultsController = theFetchedResultsController;
 
@@ -61,12 +61,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	static NSString *CellIdentifier = @"Single";
-	A3LoanCalcHistoryCell *cell = (A3LoanCalcHistoryCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	static NSString *CellIdentifier = @"Comparison";
+	A3LoanCalcCompareHistoryCell *cell = (A3LoanCalcCompareHistoryCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
 	// Configure the cell...
 	if (cell == nil) {
-		cell = [[A3LoanCalcHistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell = [[A3LoanCalcCompareHistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
 
 	LoanCalcHistory *object = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -74,6 +74,5 @@
 
 	return cell;
 }
-
 
 @end

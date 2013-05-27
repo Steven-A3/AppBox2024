@@ -10,6 +10,8 @@
 
 @interface A3Formatter : NSObject
 
++ (NSString *)shortStyleDateTimeStringFromDate:(NSDate *)date;
+
 + (NSString *)mediumStyleDateStringFromDate:(NSDate *)date;
 + (NSString *)fullStyleMonthSymbolFromDate:(NSDate *)date;
 + (NSString *)fullStyleYearMonthStringFromDate:(NSDate *)date;

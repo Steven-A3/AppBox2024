@@ -104,6 +104,8 @@
 }
 
 - (void)loanCalcComparisonTableViewValueChanged {
+	[super loanCalcComparisonTableViewValueChanged];
+
 	[_firstColumnInScrollView updateLabels];
 	[_secondColumnInScrollView reloadData];
 	[_thirdColumnInScrollView reloadData];

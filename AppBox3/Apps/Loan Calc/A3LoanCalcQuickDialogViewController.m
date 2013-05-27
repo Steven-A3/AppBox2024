@@ -19,6 +19,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
 #import "A3LoanCalcPieChartController.h"
+#import "NSManagedObject+Clone.h"
 
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
@@ -57,6 +58,12 @@
 
 	self.quickDialogTableView.tableHeaderView = self.tableHeaderView;
 	[self reloadGraphView];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	[self addDataToHistory];
 }
 
 - (A3LoanCalcPieChartController *)chartController {
@@ -535,7 +542,9 @@
 		default:
 			break;
 	}
+	FNLOG(@"%d", object.hasChanges);
 	[self calculate];
+	FNLOG(@"%d", object.hasChanges);
 }
 
 - (void)QEntryDidEndEditingElement:(QEntryElement *)element andCell:(QEntryTableViewCell *)cell {
@@ -580,7 +589,11 @@
 			break;
 		default:break;
 	}
+	FNLOG(@"%d", _editingObject.hasChanges);
 	[self calculate];
+	FNLOG(@"%d", _editingObject.hasChanges);
+
+	[self addDataToHistory];
 }
 
 - (void)updateTermValueFromTextField:(QEntryElement *)termElement text:(NSString *)text object:(LoanCalcHistory *)object {
@@ -884,6 +897,27 @@
 	[self.quickDialogTableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationNone];
 
 	[self calculate];
+}
+
+- (BOOL)addDataToHistory {
+	FNLOG(@"%@, %d", _editingObject.principal, _editingObject.hasChanges);
+
+	if (![_editingObject hasChanges]) {
+		return NO;
+	}
+
+	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSError *error;
+
+	LoanCalcHistory *historyObject = (LoanCalcHistory *) [_editingObject cloneInContext:managedObjectContext];
+	historyObject.created = [NSDate date];
+	historyObject.editing = @NO;
+
+	[managedObjectContext save:&error];
+
+	FNLOG();
+
+	return YES;
 }
 
 @end

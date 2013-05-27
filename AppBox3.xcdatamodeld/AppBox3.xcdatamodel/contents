@@ -59,6 +59,7 @@
         <attribute name="term" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="compareWith" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LoanCalcHistory" inverseName="compareWith" inverseEntity="LoanCalcHistory" syncable="YES"/>
     </entity>
     <entity name="MenuFavorite" representedClassName="MenuFavorite" syncable="YES">
         <attribute name="order" attributeType="String" indexed="YES" syncable="YES"/>
@@ -95,7 +96,7 @@
         <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
         <element name="Expense" positionX="160" positionY="192" width="128" height="285"/>
         <element name="ExpenseDetail" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="390"/>
+        <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="405"/>
         <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>

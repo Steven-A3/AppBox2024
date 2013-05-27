@@ -19,6 +19,7 @@
 #import "A3LoanCalcPreferences.h"
 #import "EKKeyboardAvoidingScrollViewManager.h"
 #import "A3LoanCalcSingleBarChartController.h"
+#import "NSManagedObject+Clone.h"
 
 @interface A3LoanCalcComparisonMainViewController () <A3LoanCalcComparisonTableViewDataSourceDelegate>
 
@@ -166,10 +167,12 @@
 		LoanCalcHistory *rightObject = [NSEntityDescription insertNewObjectForEntityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 		[object initializeValues];
 		object.location = @"A";
+		object.compareWith = rightObject;
 
 		[rightObject initializeValues];
 		rightObject.location = @"B";
 		rightObject.created = object.created;
+		rightObject.compareWith = object;
 
 		NSError *error;
 		[managedObjectContext save:&error];
@@ -180,18 +183,42 @@
 - (LoanCalcHistory *)leftObject {
 	if (nil == _leftObject) {
 		_leftObject = [self getEditingObjectForLeft:YES];
+		_rightObject = _leftObject.compareWith;
 	}
 	return _leftObject;
 }
 
 - (LoanCalcHistory *)rightObject {
 	if (nil == _rightObject) {
-		_rightObject = [self getEditingObjectForLeft:NO];
+		_leftObject = [self getEditingObjectForLeft:YES];
+		_rightObject = _leftObject.compareWith;
 	}
 	return _rightObject;
 }
 
 - (void)loanCalcComparisonTableViewValueChanged {
+	[self addDataToHistory];
+}
+
+- (void)addDataToHistory {
+	if (![self.leftObject hasChanges] && ![self.rightObject hasChanges]) {
+		FNLOG(@"Nothing to add.");
+		return;
+	}
+
+	NSManagedObjectContext *managedObjectContext = _leftObject.managedObjectContext;
+	LoanCalcHistory *newHistoryLeft = (LoanCalcHistory *) [_leftObject cloneInContext:managedObjectContext];
+	LoanCalcHistory *newHistoryRight = (LoanCalcHistory *) [_rightObject cloneInContext:managedObjectContext];
+	newHistoryLeft.editing = @NO;
+	newHistoryRight.editing = @NO;
+	newHistoryLeft.created = [NSDate date];
+	newHistoryRight.created = newHistoryLeft.created;
+	newHistoryLeft.compareWith = newHistoryRight;
+
+	NSError *error;
+	if ([managedObjectContext save:&error]) {
+		FNLOG(@"History saved successfully!");
+	}
 }
 
 @end

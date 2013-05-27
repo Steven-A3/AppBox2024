@@ -19,8 +19,11 @@
 #import "A3LoanCalcQuickDialogViewController_iPhone.h"
 #import "A3LoanCalcComparisonMainViewController_iPad.h"
 #import "A3LoanCalcComparisonMainViewController_iPhone.h"
+#import "A3HistoryViewController.h"
+#import "A3LoanCalcHistoryViewController.h"
+#import "A3LoanCalcCompareHistoryViewController.h"
 
-@interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
+@interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate, A3HistoryViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3LoanCalcQuickDialogViewController *quickDialogViewController;
@@ -117,9 +120,9 @@
 - (void)onActionButton:(UIButton *)button {
 	if (DEVICE_IPAD) {
 		[self presentEmptyActionMenu];
-		[self addActionIcon:@"t_newList" title:@"New List" selector:@selector(newListAction) atIndex:0];
-		[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction) atIndex:1];
-		[self addActionIcon:@"t_mail" title:@"Mail" selector:@selector(shareAction) atIndex:2];
+		[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction) atIndex:0];
+		[self addActionIcon:@"t_settings" title:@"Settings" selector:@selector(settingsAction) atIndex:1];
+		[self addActionIcon:@"t_share" title:@"Share" selector:@selector(shareAction) atIndex:2];
 	} else {
 		[self presentActionMenuWithDelegate:self];
 	}
@@ -137,21 +140,36 @@
 	[self closeActionMenuViewWithAnimation:NO ];
 }
 
-- (void)emailAction {
+- (void)showHistoryAction {
+	[self closeActionMenuViewWithAnimation:YES];
+
+	UIViewController *viewController;
+	if (self.segmentedControl.selectedSegmentIndex == 0) {
+		A3LoanCalcHistoryViewController *aviewController = [[A3LoanCalcHistoryViewController alloc] initWithNibName:nil bundle:nil];
+		aviewController.delegate = self;
+		viewController = aviewController;
+	} else {
+		A3LoanCalcCompareHistoryViewController *aviewController = [[A3LoanCalcCompareHistoryViewController alloc] initWithNibName:nil bundle:nil];
+		aviewController.delegate = self;
+		viewController = aviewController;
+	}
+
+	if (DEVICE_IPAD){
+		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
+		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
+	} else {
+		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self applySilverNavigationBarStyleToNavigationVC:navController];
+		[self presentViewController:navController animated:YES completion:nil];
+	}
+}
+
+- (void)shareAction {
 
 }
 
-- (void)messageAction {
+- (void)historySelected:(id)object {
 
 }
-
-- (void)twitterAction {
-
-}
-
-- (void)facebookAction {
-
-}
-
 
 @end

@@ -54,6 +54,10 @@ typedef NS_ENUM(NSUInteger, A3LoanCalculatorEntry) {
 
 - (NSString *)conditionString;
 
+- (NSString *)interestTermString;
+
+- (NSString *)monthlyPaymentString;
+
 - (void)calculate;
 - (NSNumber *)totalAmount;
 - (NSNumber *)totalInterest;

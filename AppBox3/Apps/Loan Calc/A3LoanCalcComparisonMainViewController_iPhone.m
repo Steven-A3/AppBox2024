@@ -79,6 +79,8 @@
 }
 
 - (void)loanCalcComparisonTableViewValueChanged {
+	[super loanCalcComparisonTableViewValueChanged];
+
 	[_pageOne updateLabels];
 	[_pageTwo reloadData];
 	[_pageThree reloadData];

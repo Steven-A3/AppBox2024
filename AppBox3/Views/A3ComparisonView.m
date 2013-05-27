@@ -10,62 +10,20 @@
 #import "CPTPlatformSpecificCategories.h"
 
 @interface A3ComparisonView ()
-@property (nonatomic, strong) UILabel *leftValueLabel;
-@property (nonatomic, strong) UILabel *rightValueLabel;
 @end
 
 @implementation A3ComparisonView {
 
 }
 
-- (id)initWithFrame:(CGRect)frame {
-	self = [super initWithFrame:frame];
-	if (self) {
-		[self addSubview:self.leftValueLabel];
-		[self addSubview:self.rightValueLabel];
-	}
+- (void)awakeFromNib {
+	[super awakeFromNib];
 
-	return self;
+	self.backgroundColor = [UIColor clearColor];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
 	return CGSizeMake(size.width, 28.0);
-}
-
-- (void)applyLabelAttribute:(UILabel *)label {
-	label.font = [UIFont boldSystemFontOfSize:22.0];
-	label.textColor = [UIColor whiteColor];
-	label.backgroundColor = [UIColor clearColor];
-}
-
-- (UILabel *)leftValueLabel {
-	if (nil == _leftValueLabel) {
-		CGRect frame = self.bounds;
-		frame.origin.x += 10.0;
-		frame.size.width = frame.size.width / 2.0 - 10.0;
-		_leftValueLabel = [[UILabel alloc] initWithFrame:frame];
-		[self applyLabelAttribute:_leftValueLabel];
-	}
-	return _leftValueLabel;
-}
-
-- (void)setLeftValue:(NSNumber *)leftValue {
-	_leftValue = leftValue;
-}
-
-- (void)setRightValue:(NSNumber *)rightValue {
-	_rightValue = rightValue;
-}
-
-- (UILabel *)rightValueLabel {
-	if (nil == _rightValueLabel) {
-		CGRect frame = self.bounds;
-		frame.origin.x = CGRectGetMinX(frame) + CGRectGetWidth(frame) / 2.0;
-		frame.size.width = frame.size.width / 2.0 - 10.0;
-		_rightValueLabel = [[UILabel alloc] initWithFrame:frame];
-		[self applyLabelAttribute:_rightValueLabel];
-	}
-	return _rightValueLabel;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -90,13 +48,17 @@
 			leftColor = self.bigColor;
 			rightColor = self.smallColor;
 		}
+		CGContextSaveGState(context);
 		[leftColor setFill];
 		[leftPath addClip];
 		[leftPath fill];
+		CGContextRestoreGState(context);
 
+		CGContextSaveGState(context);
 		[rightColor setFill];
 		[rightPath addClip];
 		[rightPath fill];
+		CGContextRestoreGState(context);
 	}
 }
 
@@ -157,7 +119,7 @@
 
 	// Path for left side for small
 	UIBezierPath *path = [UIBezierPath bezierPath];
-	[path moveToPoint:(CGPoint) {maxX, maxY}];
+	[path moveToPoint:(CGPoint) {maxX, minY}];
 	[path addLineToPoint:(CGPoint) {midX + gap, minY}];
 	[path addLineToPoint:(CGPoint) {midX + gap * 2.0, midY}];
 	[path addLineToPoint:(CGPoint) {midX + gap, maxY}];
@@ -176,7 +138,7 @@
 
 	// Path for left side for small
 	UIBezierPath *path = [UIBezierPath bezierPath];
-	[path moveToPoint:(CGPoint) {maxX, maxY}];
+	[path moveToPoint:(CGPoint) {maxX, minY}];
 	[path addLineToPoint:(CGPoint) {midX, minY}];
 	[path addLineToPoint:(CGPoint) {midX - gap, midY}];
 	[path addLineToPoint:(CGPoint) {midX, maxY}];

@@ -2,13 +2,14 @@
 //  LoanCalcHistory.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 4/1/13.
+//  Created by Byeong Kwon Kwak on 5/27/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class LoanCalcHistory;
 
 @interface LoanCalcHistory : NSManagedObject
 
@@ -18,7 +19,9 @@
 @property (nonatomic, retain) NSNumber * editing;
 @property (nonatomic, retain) NSString * extraPaymentMonthly;
 @property (nonatomic, retain) NSString * extraPaymentOnetime;
+@property (nonatomic, retain) NSDate * extraPaymentOnetimeYearMonth;
 @property (nonatomic, retain) NSString * extraPaymentYearly;
+@property (nonatomic, retain) NSDate * extraPaymentYearlyMonth;
 @property (nonatomic, retain) NSNumber * frequency;
 @property (nonatomic, retain) NSString * interestRate;
 @property (nonatomic, retain) NSNumber * interestRatePerYear;
@@ -33,7 +36,6 @@
 @property (nonatomic, retain) NSString * term;
 @property (nonatomic, retain) NSNumber * termTypeMonth;
 @property (nonatomic, retain) NSNumber * useSimpleInterest;
-@property (nonatomic, retain) NSDate * extraPaymentYearlyMonth;
-@property (nonatomic, retain) NSDate * extraPaymentOnetimeYearMonth;
+@property (nonatomic, retain) LoanCalcHistory *compareWith;
 
 @end

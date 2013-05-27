@@ -8,14 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class LoanCalcHistory;
+
 @interface A3LoanCalcCompareHistoryCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *date;
-@property (nonatomic, weak) IBOutlet UILabel *leftAmount;
-@property (nonatomic, weak) IBOutlet UILabel *leftCondition;
-@property (nonatomic, weak) IBOutlet UILabel *leftMonthlyPayment;
-@property (nonatomic, weak) IBOutlet UILabel *rightAmount;
-@property (nonatomic, weak) IBOutlet UILabel *rightCondition;
-@property (nonatomic, weak) IBOutlet UILabel *rightMonthlyPayment;
+- (void)setObject:(LoanCalcHistory *)object;
 
 @end

@@ -29,4 +29,5 @@
 
 - (void)configureTopScrollView;
 
+- (void)loanCalcComparisonTableViewValueChanged;
 @end

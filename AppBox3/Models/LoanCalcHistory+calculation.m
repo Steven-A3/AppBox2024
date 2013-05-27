@@ -23,18 +23,18 @@
 
 - (void)initializeValues {
 	A3LoanCalcPreferences *preferences = [[A3LoanCalcPreferences alloc] init];
-	self.calculationFor = [NSNumber numberWithUnsignedInteger:preferences.calculationFor];
-	self.useSimpleInterest = [NSNumber numberWithBool:preferences.useSimpleInterest];
-	self.showDownPayment = [NSNumber numberWithBool:preferences.showDownPayment];
-	self.showExtraPayment = [NSNumber numberWithBool:preferences.showExtraPayment];
-	self.showAdvanced = [NSNumber numberWithBool:preferences.showAdvanced];
+	self.calculationFor = @(preferences.calculationFor);
+	self.useSimpleInterest = @(preferences.useSimpleInterest);
+	self.showDownPayment = @(preferences.showDownPayment);
+	self.showExtraPayment = @(preferences.showExtraPayment);
+	self.showAdvanced = @(preferences.showAdvanced);
 	self.principal = @"";
 	self.downPayment = @"";
 	self.term = @"";
-	self.termTypeMonth = [NSNumber numberWithBool:YES];
+	self.termTypeMonth = @YES;
 	self.interestRate = @"";
-	self.interestRatePerYear = [NSNumber numberWithBool:YES];
-	self.frequency = [NSNumber numberWithInteger:A3LoanCalcFrequencyMonthly];
+	self.interestRatePerYear = @YES;
+	self.frequency = @(A3LoanCalcFrequencyMonthly);
 	self.startDate = nil;
 	self.notes = @"";
 	self.created = [NSDate date];
@@ -43,7 +43,7 @@
 	self.extraPaymentOnetime = @"";
 	self.location = @"S";	// S for single, A for comparison A, B for comparison B
 
-	self.editing = [NSNumber numberWithBool:YES];
+	self.editing = @YES;
 }
 
 - (NSNumberFormatter *)currencyFormatter {
@@ -161,11 +161,13 @@
 }
 
 - (NSString *)termString {
+	NSNumberFormatter *df = [[NSNumberFormatter alloc] init];
+	[df setNumberStyle:NSNumberFormatterDecimalStyle];
 	NSString *result;
 	if (self.termTypeMonth.boolValue) {
-		result = [NSString stringWithFormat:@"%d months", (int)self.termInMonth];
+		result = [NSString stringWithFormat:@"%dmonths", (int)self.termInMonth];
 	} else {
-		result = [NSString stringWithFormat:@"%f years", self.termInYear];
+		result = [NSString stringWithFormat:@"%@yrs", [df stringFromNumber:@(self.termInYear)] ];
 	}
 	return result;
 }
@@ -174,10 +176,23 @@
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 
-	return [NSString stringWithFormat:@"%@ %0.2f%% %@",
+	return [NSString stringWithFormat:@"%@ %@",
 									  [nf stringFromNumber:@([self.principal floatValueEx])],
-									  self.yearlyInterestRate,
+									  [self interestTermString]
+	];
+}
+
+- (NSString *)interestTermString {
+	NSNumberFormatter *df = [[NSNumberFormatter alloc] init];
+	[df setNumberStyle:NSNumberFormatterDecimalStyle];
+
+	return [NSString stringWithFormat:@"%@%% %@",
+									  [df stringFromNumber:@(self.yearlyInterestRate * 100.0)],
 									  self.termString];
+}
+
+- (NSString *)monthlyPaymentString {
+	return [NSString stringWithFormat:@"%@/mo", self.monthlyPayment];
 }
 
 - (void)calculate {
@@ -198,9 +213,6 @@
 			[self calculateTerm:NO];
 			break;
 	}
-
-	NSError *error;
-	[self.managedObjectContext save:&error];
 }
 
 - (NSNumber *)totalAmount {

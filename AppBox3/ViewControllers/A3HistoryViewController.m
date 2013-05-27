@@ -33,6 +33,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
+	CGRect bounds = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0 - 44.0) : CGRectMake(0.0, 0.0, 320.0, 748.0 - 44.0);
+	self.view.bounds = bounds;
+
 	NSError *error;
 	if (![[self fetchedResultsController] performFetch:&error]) {
 		FNLOG(@"failed to load data.");

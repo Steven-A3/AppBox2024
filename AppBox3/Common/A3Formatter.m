@@ -10,6 +10,15 @@
 
 @implementation A3Formatter
 
++ (NSString *)shortStyleDateTimeStringFromDate:(NSDate *)date {
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	[df setDateStyle:NSDateFormatterShortStyle];
+	[df setTimeStyle:NSDateFormatterShortStyle];
+	NSString *result = [df stringFromDate:date];
+
+	return result;
+}
+
 + (NSString *)mediumStyleDateStringFromDate:(NSDate *)date {
 	if (nil == date) {
 		return @"";
