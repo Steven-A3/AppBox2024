@@ -7,6 +7,7 @@
 //
 
 #import <objc/runtime.h>
+#import <CoreGraphics/CoreGraphics.h>
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
 #import "A3ActionMenuViewController_iPad.h"
@@ -24,6 +25,7 @@
 #import "A3FrequencyKeyboardViewController_iPhone.h"
 #import "A3DateKeyboardViewController_iPad.h"
 #import "A3DateKeyboardViewController_iPhone.h"
+#import "CommonUIDefinitions.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -59,11 +61,8 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 	if (nil != viewController) return viewController;
 
-	if (DEVICE_IPAD) {
-		A3EmptyActionMenuViewController_iPad *iPadViewController = [[A3EmptyActionMenuViewController_iPad alloc] initWithNibName:@"A3EmptyActionMenuViewController_iPad" bundle:nil];
-		viewController = iPadViewController;
-	} else {
-	}
+	A3EmptyActionMenuViewController_iPad *iPadViewController = [[A3EmptyActionMenuViewController_iPad alloc] initWithNibName:@"A3EmptyActionMenuViewController_iPad" bundle:nil];
+	viewController = iPadViewController;
 	objc_setAssociatedObject(self, key_actionMenuViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	return viewController;
 }
@@ -72,16 +71,17 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	objc_setAssociatedObject(self, key_actionMenuViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)presentActionMenuWithDelegate:(id<A3ActionMenuViewControllerDelegate>) delegate {
-	if (self.actionMenuAnimating) return;
-
-	{
-		UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
-		if (nil != coverView) {
-			[self closeActionMenuViewWithAnimation:YES];
-			return;
-		}
+- (BOOL)removeCoverView {
+	UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
+	if (nil != coverView) {
+		[self closeActionMenuViewWithAnimation:YES];
+		return YES;
 	}
+	return NO;
+}
+
+- (void)presentActionMenuWithDelegate:(id<A3ActionMenuViewControllerDelegate>) delegate {
+	if (self.actionMenuAnimating || [self removeCoverView]) return;
 
 	CGRect frame = self.actionMenuViewController.view.frame;
 	frame.origin.y = 34.0;
@@ -94,40 +94,24 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	}
 	[self.navigationController.view insertSubview:[self.actionMenuViewController view] belowSubview:self.view];
 
-	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnCoverView:)];
-	UIImage *image = [self.view screenshotWithOptimization:NO];
-	UIImageView *coverView = [[UIImageView alloc] initWithImage:image];
-	coverView.tag = A3_ACTION_MENU_COVER_VIEW_TAG;
-	coverView.frame = CGRectOffset(self.view.bounds, 0.0, 44.0);
-	coverView.userInteractionEnabled = YES;
-	coverView.backgroundColor = [UIColor clearColor];
-	[coverView addGestureRecognizer:tapGestureRecognizer];
-	[self.navigationController.view addSubview:coverView];
-
-	[UIView animateWithDuration:0.3 animations:^{
-		coverView.frame = CGRectOffset(coverView.frame, 0.0, 50.0);
-		self.actionMenuAnimating = YES;
-	} completion:^(BOOL finished){
-		self.actionMenuAnimating = NO;
-	}];
+	[self coverAndAnimateActionMenuView:self.actionMenuViewController.view];
 }
 
 - (void)presentEmptyActionMenu {
-	if (self.actionMenuAnimating) return;
-
-	{
-		UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
-		if (nil != coverView) {
-			[self closeActionMenuViewWithAnimation:YES];
-			return;
-		}
-	}
+	if (self.actionMenuAnimating || [self removeCoverView]) return;
 
 	CGRect frame = self.emptyActionMenuViewController.view.frame;
+	if (!DEVICE_IPAD) {
+		frame.size.width = APP_VIEW_WIDTH_iPHONE;
+	}
 	frame.origin.y = 34.0;
 	self.emptyActionMenuViewController.view.frame = frame;
 
-	[self.navigationController.view insertSubview:[self.actionMenuViewController view] belowSubview:self.view];
+	[self coverAndAnimateActionMenuView:self.emptyActionMenuViewController.view];
+}
+
+- (void)coverAndAnimateActionMenuView:(UIView *)actionMenuView {
+	[self.navigationController.view insertSubview:actionMenuView belowSubview:self.view];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnCoverView:)];
 	UIImage *image = [self.view screenshotWithOptimization:NO];
@@ -145,6 +129,8 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	} completion:^(BOOL finished){
 		self.actionMenuAnimating = NO;
 	}];
+
+	return;
 }
 
 - (void)tapGestureOnCoverView:(id)sender {
@@ -155,7 +141,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	if (self.actionMenuAnimating) return;
 
 	UIView *coverView = [self.navigationController.view viewWithTag:A3_ACTION_MENU_COVER_VIEW_TAG];
-	if (nil == coverView) return;
 
 	if (animate) {
 		[UIView animateWithDuration:0.3 animations:^{
@@ -163,13 +148,13 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 			self.actionMenuAnimating = YES;
 		} completion:^(BOOL finished){
 			[coverView removeFromSuperview];
-			[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
+			[self.actionMenuViewController.view removeFromSuperview];
 			self.actionMenuAnimating = NO;
 			[self setActionMenuViewController:nil];
 		}];
 	} else {
 		[coverView removeFromSuperview];
-		[[[self.navigationController.view subviews] lastObject] removeFromSuperview];	// remove menu view
+		[self.actionMenuViewController.view removeFromSuperview];
 		[self setActionMenuViewController:nil];
 	}
 }
@@ -338,6 +323,8 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)setBlackBackgroundImageForNavigationBar {
 	[self.navigationController.navigationBar setBackgroundImage:[self navigationBarBackgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
 	[self.navigationController.navigationBar setBackgroundImage:[self navigationBarBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
+
+	self.navigationController.navigationBar.tintColor = [UIColor blackColor];
 }
 
 - (UIImage *)navigationBarSilverBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics {
@@ -448,16 +435,26 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector atIndex:(NSInteger)index {
 	static NSArray *coordinateX;
-	coordinateX = @[@156.0, @340.0, @523.0];
+	CGFloat labelWidth, labelHeight;
+	if (DEVICE_IPAD) {
+		coordinateX = @[@156.0, @340.0, @523.0];
+		labelWidth = 130.0;
+		labelHeight = 32.0;
+	} else {
+		coordinateX = @[@20.0, @120.0, @225.0];
+		labelWidth = 65.0;
+		labelHeight = 30.0;
+	}
 
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 	NSString *path = [[NSBundle mainBundle] pathForResource:iconName ofType:@"png"];
-	[button setImage:[UIImage imageWithContentsOfFile:path] forState:UIControlStateNormal];
+	UIImage *buttonImage = [UIImage imageWithContentsOfFile:path];
+	[button setImage:buttonImage forState:UIControlStateNormal];
 	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-	button.frame = CGRectMake([coordinateX[index] floatValue], 18.0, 32.0, 32.0);
+	button.frame = CGRectMake([coordinateX[index] floatValue], 18.0, buttonImage.size.width, buttonImage.size.height);
 	[self.actionMenuViewController.view addSubview:button];
 
-	CGRect frame = CGRectMake([coordinateX[index] floatValue] + 37.0, 19.0, 130.0, 32.0);
+	CGRect frame = CGRectMake([coordinateX[index] floatValue] + buttonImage.size.width + 5.0, 19.0, labelWidth, labelHeight);
 	UILabel *label = [[UILabel alloc] initWithFrame:frame];
 	label.backgroundColor = [UIColor clearColor];
 	label.text = title;
@@ -468,6 +465,14 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:selector];
 	[label addGestureRecognizer:tapGestureRecognizer];
+}
+
+- (CGRect)boundsForRightSideView {
+	CGRect screenBounds = [[UIScreen mainScreen] bounds];
+	CGFloat height = [A3UIDevice deviceOrientationIsPortrait] ? screenBounds.size.height : screenBounds.size.width;
+	height -= 44.0 + 20.0;
+	CGRect bounds = CGRectMake(0.0, 0.0, 320.0, height);
+	return bounds;
 }
 
 @end

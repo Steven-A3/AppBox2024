@@ -51,7 +51,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    return NO;
 }
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
@@ -79,8 +79,16 @@
     if (section.title==nil)
         return 0;
 
-    if (!_tableView.root.grouped)
+    if (!_tableView.root.grouped)  {
+        QAppearance *appearance = ((QuickDialogTableView *) tableView).root.appearance;
+
+            return section.footer == NULL
+                    ? -1
+                    : [section.title sizeWithFont:appearance.sectionTitleFont constrainedToSize:CGSizeMake(tableView.frame.size.width-40, 1000000)].height+22;
+
+
         return 22.f;
+    }
 
     CGFloat stringTitleHeight = 0;
 
@@ -91,7 +99,7 @@
         QAppearance *appearance = ((QuickDialogTableView *)tableView).root.appearance;
         CGSize expectedLabelSize = [section.title sizeWithFont:appearance==nil? [UIFont systemFontOfSize:[UIFont labelFontSize]] : appearance.sectionTitleFont
                                               constrainedToSize:maximumLabelSize
-                                                  lineBreakMode:UILineBreakModeWordWrap];
+                                                  lineBreakMode:NSLineBreakByWordWrapping];
 
         stringTitleHeight = expectedLabelSize.height+23.f;
     }
@@ -152,6 +160,8 @@
     } else {
         if (section.headerView.tag==98989){
             ((UILabel *)[section.headerView.subviews objectAtIndex:0]).text = section.title;
+            ((UILabel *)[section.headerView.subviews objectAtIndex:0]).font = appearance.sectionTitleFont;
+            ((UILabel *)[section.headerView.subviews objectAtIndex:0]).textColor = appearance.sectionTitleColor;
         }
 
     }

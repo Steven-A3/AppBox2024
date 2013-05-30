@@ -77,12 +77,6 @@
 - (id)init;
 @end
 
-@interface A3DateTimeInlineElement : QDateTimeInlineElement
-@property (nonatomic, weak) id<A3QuickDialogCellStyleDelegate> cellStyleDelegate;
-
-- (id)initWithTitle:(NSString *)string date:(NSDate *)date;
-@end
-
 @interface A3QuickDialogContainerController : A3AppViewController <QuickDialogStyleProvider, QuickDialogEntryElementDelegate, A3KeyboardDelegate, A3DateKeyboardDelegate, A3FrequencyKeyboardDelegate>
 
 @property (nonatomic, weak) QRootElement *root;

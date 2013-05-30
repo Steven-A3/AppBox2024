@@ -66,6 +66,12 @@
 	[self addDataToHistory];
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	FNLOGRECT(self.view.frame);
+}
+
 - (A3LoanCalcPieChartController *)chartController {
 	if (nil == _chartController) {
 		_chartController = [[A3LoanCalcPieChartController alloc] init];
@@ -441,7 +447,7 @@
 	} else if ([_extraPaymentOneTimeYearMonth isFirstResponder]) {
 		[self scrollToRowAtElementWithKey:A3LC_KEY_EXTRA_PAYMENT_ONETIME];
 	} else {
-		NSIndexPath *indexPath = [self.quickDialogTableView indexForElement:self.editingElement];
+		NSIndexPath *indexPath = [self.editingElement getIndexPath];
 		if (indexPath.section == 2) {
 			[self scrollToRowAtElementWithKey:self.editingElement.key];
 		}

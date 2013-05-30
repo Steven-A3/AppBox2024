@@ -51,6 +51,7 @@ UIDatePicker *QDATEENTRY_GLOBAL_PICKER;
     QDateTimeInlineElement *const element = ((QDateTimeInlineElement *) _entryElement);
 
     _pickerView = [QDateEntryTableViewCell getPickerForDate];
+    _pickerView.timeZone = [NSTimeZone localTimeZone];
     [_pickerView sizeToFit];
     _textField.inputView = _pickerView;
     [_pickerView addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
@@ -59,8 +60,10 @@ UIDatePicker *QDATEENTRY_GLOBAL_PICKER;
     _pickerView.minimumDate = element.minimumDate;
     _pickerView.minuteInterval = element.minuteInterval;
     
-    if (element.dateValue!=nil)
+    if (element.mode != UIDatePickerModeCountDownTimer && element.dateValue != nil)
         _pickerView.date = element.dateValue;
+    else if (element.mode == UIDatePickerModeCountDownTimer && element.ticksValue != nil)
+        _pickerView.countDownDuration = [element.ticksValue doubleValue];
 
     [super textFieldDidBeginEditing:textField];
     self.selected = YES;

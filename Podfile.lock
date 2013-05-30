@@ -1,34 +1,34 @@
 PODS:
-  - AFNetworking (1.1.0)
+  - AFNetworking (1.2.1)
   - BCGenieEffect (1.0)
   - GHUnitIOS (0.5.6)
-  - JSONKit (1.5pre)
   - NYXImagesKit (2.2)
-  - OCMock (2.0.1)
-  - QuickDialog (0.7)
+  - OCMock (2.1.1)
+  - QuickDialog (0.8)
   - Reachability (3.1.0)
   - SSCheckBoxView (0.0.1)
+  - TTTAttributedLabel (1.6.4)
 
 DEPENDENCIES:
   - AFNetworking
   - BCGenieEffect (~> 1.0)
   - GHUnitIOS
-  - JSONKit
   - NYXImagesKit
   - OCMock
   - QuickDialog
   - Reachability
   - SSCheckBoxView
+  - TTTAttributedLabel
 
 SPEC CHECKSUMS:
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  AFNetworking: a44069e3c9c89867544f6639482f155c7e5f9b41
   BCGenieEffect: bc00729f71206c7fbcaed5c90215f957dbd786b1
   GHUnitIOS: bf149b2c44084eee2785ce4ac3675c3a699e509d
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
   NYXImagesKit: 945719043b7b06078ce20322799dcd1776bc3cea
-  OCMock: 77a9c4c57af6bf258a537d34cf09abf422affede
-  QuickDialog: 66329ef69be6d6f85d6b1cbb2ea57eb904a2c5a7
-  Reachability: 1c8584c5f26fa776695efef95caaa50402c94cfb
+  OCMock: 79212e5e328378af5cfd6edb5feacfd6c49cd8a3
+  QuickDialog: 465692c7c599ad41a0c46022c55779dd61a4d4fe
+  Reachability: ba94ecd4eaa037be3d0588b38956672588530c5b
   SSCheckBoxView: 2e0cd91e959435e597da0606b669e473b546b502
+  TTTAttributedLabel: da4ab75f6041f63c536343979578c8080d4b52c0
 
-COCOAPODS: 0.17.0.rc3
+COCOAPODS: 0.20.2

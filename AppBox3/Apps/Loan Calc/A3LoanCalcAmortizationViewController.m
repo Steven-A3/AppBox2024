@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3LoanCalcAmortizationViewController.h"
 #import "LoanCalcHistory.h"
 #import "NSNumberExtensions.h"
 #import "LoanCalcHistory+calculation.h"
 #import "NSString+conversion.h"
 #import "common.h"
+#import "A3UIDevice.h"
 
 
 @interface A3LoanCalcAmortizationViewController () <UITableViewDelegate, UITableViewDataSource>
@@ -40,6 +40,8 @@
 		_tableView.delegate = self;
 		_tableView.dataSource = self;
 		_tableView.separatorColor = [UIColor clearColor];
+		_tableView.rowHeight = DEVICE_IPAD ? 31.0 : 20.0;
+		_tableView.allowsSelection = NO;
 	}
 	return _tableView;
 }
@@ -49,115 +51,189 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:frame];
 	label.backgroundColor = [UIColor clearColor];
 	label.textColor = [UIColor whiteColor];
-	label.font = [UIFont boldSystemFontOfSize:18.0];
+	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 12.0;
+	label.font = [UIFont boldSystemFontOfSize:fontSize];
 	label.textAlignment = NSTextAlignmentCenter;
 	label.text = text;
 	return label;
 }
 
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
+- (void)willMoveToParentViewController:(UIViewController *)parent {
+	[super willMoveToParentViewController:parent];
 
-	CGRect tableViewFrame = CGRectInset(self.view.bounds, 44.0, 0.0);
-	tableViewFrame.origin.y += 52.0;
-	tableViewFrame.size.height -= 96.0;
-	FNLOG(@"%f, %f", tableViewFrame.size.width, tableViewFrame.size.height);
-	self.tableView.frame = tableViewFrame;
-
-	UIView *staticHeaderView = [self.view viewWithTag:2001];
-	CGRect frame = _tableView.frame;
-	frame.origin.y -= 32.0;
-	frame.size.height = 30.0;
-	staticHeaderView.frame = frame;
-
-	frame = staticHeaderView.frame;
-	frame.origin.y += 32.0;
-	frame.size.height = 1.0;
-	UIView *upperBorderLine = [self.view viewWithTag:2002];
-	upperBorderLine.frame = frame;
-
-	frame = tableViewFrame;
-	frame.origin.y = frame.origin.y + frame.size.height;
-	frame.size.height = 2.0;
-	UIView *bottomLineView = [self.view viewWithTag:2003];
-	bottomLineView.frame = frame;
-
-	frame = tableViewFrame;
-	frame.size.width = 1.0;
-	for (NSInteger index = 0; index < 4; index++) {
-		UIView *verticalLinView = [self.view viewWithTag:3001 + index];
-		frame.origin.x += [_columnWidth[index] cgFloatValue];
-		verticalLinView.frame = frame;
-	}
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-	FNLOG(@"Check");
-
+	self.view.translatesAutoresizingMaskIntoConstraints = NO;
 	self.view.backgroundColor = [UIColor whiteColor];
-	FNLOG(@"%f, %f", self.view.bounds.size.width, self.view.bounds.size.height);
-	CGRect tableViewFrame = CGRectInset(self.view.bounds, 44.0, 0.0);
-	tableViewFrame.origin.y += 52.0;
-	tableViewFrame.size.height -= 96.0;
-	FNLOG(@"%f, %f", tableViewFrame.size.width, tableViewFrame.size.height);
-	self.tableView.frame = tableViewFrame;
-	[self.view addSubview:_tableView];
-	_tableView.rowHeight = 31.0;
+	CGFloat rowHeight = DEVICE_IPAD ? 30.0 : 20.0;
+	CGFloat bottomMargin = 3.0;
+	CGFloat topMargin = 2.0;
+	CGRect frame = self.view.bounds;
+	frame.origin.y += rowHeight + topMargin;
+	frame.size.height -= rowHeight + bottomMargin + topMargin;
+	self.tableView.frame = frame;
+	self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.view addSubview:self.tableView];
 
-	_columnWidth = @[@96.0, @121.0, @122.0, @121.0, @167.0];
+	[self.view addConstraints:
+			@[
+					[NSLayoutConstraint constraintWithItem:_tableView
+												 attribute:NSLayoutAttributeLeft
+												 relatedBy:NSLayoutRelationEqual
+													toItem:self.view
+												 attribute:NSLayoutAttributeLeft
+												multiplier:1.0
+												  constant:0.0],
+					[NSLayoutConstraint constraintWithItem:_tableView
+												 attribute:NSLayoutAttributeTop
+												 relatedBy:NSLayoutRelationEqual
+													toItem:self.view
+												 attribute:NSLayoutAttributeTop
+												multiplier:1.0
+												  constant:rowHeight + topMargin],
+					[NSLayoutConstraint constraintWithItem:_tableView
+												 attribute:NSLayoutAttributeBottom
+												 relatedBy:NSLayoutRelationEqual
+													toItem:self.view
+												 attribute:NSLayoutAttributeBottom
+												multiplier:1.0
+												  constant:-bottomMargin],
+					[NSLayoutConstraint constraintWithItem:_tableView
+												 attribute:NSLayoutAttributeWidth
+												 relatedBy:NSLayoutRelationEqual
+													toItem:self.view
+												 attribute:NSLayoutAttributeWidth
+												multiplier:1.0
+												  constant:0.0],
+			]
+	];
+
+	FNLOGRECT(self.view.frame);
+	FNLOGRECT(self.tableView.frame);
+
+	if (DEVICE_IPAD) {
+		_columnWidth = @[@96.0, @121.0, @122.0, @121.0, @167.0];
+	} else {
+		_columnWidth = @[@56.0, @70.0, @60.0, @54.0, @80.0];
+	}
 
 	NSArray *columnTitle = @[@"Date", @"Payment", @"Principal", @"Interest", @"Balance"];
 
-	CGRect frame = _tableView.frame;
-	frame.origin.y -= 32.0;
-	frame.size.height = 30.0;
+	frame = self.view.bounds;
+	frame.size.height = rowHeight + 1;
 	UIView *staticHeaderView = [[UIView alloc] initWithFrame:frame];
-	staticHeaderView.tag = 2001;
 	staticHeaderView.backgroundColor = [UIColor colorWithRed:112.0/255.0 green:155.0/255.0 blue:192.0/255.0 alpha:1.0];
 	[self.view addSubview:staticHeaderView];
 
 	CGFloat offsetX = 0.0;
 	for (NSInteger index = 0; index < 5; index++) {
 		CGFloat width = [_columnWidth[index] cgFloatValue];
-		frame = CGRectMake(offsetX, 0.0, width, 30.0);
+		frame = CGRectMake(offsetX, 0.0, width, rowHeight);
 		UILabel *titleLabel = [self labelWithFrame:frame withText:columnTitle[index]];
 		[staticHeaderView addSubview:titleLabel];
 		offsetX += width;
 	}
 
-	CGFloat height = tableViewFrame.size.height - 32.0;
+	CGFloat height = self.view.bounds.size.height - (rowHeight + topMargin + bottomMargin);
 	UIColor *verticalLineColor = [UIColor colorWithRed:181.0/255.0 green:204.0/255.0 blue:221.0/255.0 alpha:1.0];
 	offsetX = 0.0;
 	for (NSInteger index = 0; index < 4; index++) {
 		offsetX += [_columnWidth[index] cgFloatValue];
-		frame = CGRectMake(offsetX, 32.0, 1.0, height);
+		frame = CGRectMake(offsetX, rowHeight + topMargin + bottomMargin, 1.0, height);
 		UIView *verticalLineView = [[UIView alloc] initWithFrame:frame];
 		verticalLineView.tag = 3001 + index;
 		verticalLineView.backgroundColor = verticalLineColor;
+		verticalLineView.translatesAutoresizingMaskIntoConstraints = NO;
 		[self.view addSubview:verticalLineView];
+		[self.view addConstraints:@[
+				[NSLayoutConstraint constraintWithItem:verticalLineView
+											 attribute:NSLayoutAttributeTop
+											 relatedBy:NSLayoutRelationEqual
+												toItem:self.view
+											 attribute:NSLayoutAttributeTop
+											multiplier:1.0
+											  constant:rowHeight + topMargin],
+				[NSLayoutConstraint constraintWithItem:verticalLineView
+											 attribute:NSLayoutAttributeLeft
+											 relatedBy:NSLayoutRelationEqual
+												toItem:self.view
+											 attribute:NSLayoutAttributeLeft
+											multiplier:1.0
+											  constant:offsetX],
+				[NSLayoutConstraint constraintWithItem:verticalLineView
+											 attribute:NSLayoutAttributeBottom
+											 relatedBy:NSLayoutRelationEqual
+												toItem:self.view
+											 attribute:NSLayoutAttributeBottom
+											multiplier:1.0
+											  constant:-bottomMargin],
+				[NSLayoutConstraint constraintWithItem:verticalLineView
+											 attribute:NSLayoutAttributeWidth
+											 relatedBy:NSLayoutRelationEqual
+												toItem:nil
+											 attribute:NSLayoutAttributeNotAnAttribute
+											multiplier:1.0
+											  constant:1.0]
+		]];
 	}
 
 	frame = staticHeaderView.frame;
-	frame.origin.y += 32.0;
+	frame.origin.y += rowHeight + topMargin;
 	frame.size.height = 1.0;
 	UIView *upperBorderLineView = [[UIView alloc] initWithFrame:frame];
-	upperBorderLineView.tag = 2002;
 	upperBorderLineView.backgroundColor = [UIColor colorWithRed:91.0/255.0 green:132.0/255.0 blue:185.0/255.0 alpha:1.0];
 	[self.view addSubview:upperBorderLineView];
 
-	frame = staticHeaderView.frame;
-	frame.origin.y = frame.origin.y + frame.size.height - 3.0;
-	frame.size.height = 2.0;
+	frame = self.view.bounds;
+	frame.origin.y = frame.origin.y + frame.size.height - bottomMargin;
+	frame.size.height = bottomMargin;
 	UIView *bottomLineView = [[UIView alloc] initWithFrame:frame];
-	bottomLineView.tag = 2003;
 	bottomLineView.backgroundColor = [UIColor colorWithRed:119.0/255.0 green:162.0/255.0 blue:196.0/255.0 alpha:1.0];
+	bottomLineView.translatesAutoresizingMaskIntoConstraints = NO;
 	[self.view addSubview:bottomLineView];
+
+	[self.view addConstraints:@[
+			[NSLayoutConstraint constraintWithItem:bottomLineView
+										 attribute:NSLayoutAttributeLeft
+										 relatedBy:NSLayoutRelationEqual
+											toItem:self.view
+										 attribute:NSLayoutAttributeLeft
+										multiplier:1.0
+										  constant:0],
+			[NSLayoutConstraint constraintWithItem:bottomLineView
+										 attribute:NSLayoutAttributeTop
+										 relatedBy:NSLayoutRelationEqual
+											toItem:self.view
+										 attribute:NSLayoutAttributeBottom
+										multiplier:1.0
+										  constant:-3.0],
+			[NSLayoutConstraint constraintWithItem:bottomLineView
+										 attribute:NSLayoutAttributeWidth
+										 relatedBy:NSLayoutRelationEqual
+											toItem:self.view
+										 attribute:NSLayoutAttributeWidth
+										multiplier:1.0
+										  constant:0.0],
+			[NSLayoutConstraint constraintWithItem:bottomLineView
+										 attribute:NSLayoutAttributeHeight
+										 relatedBy:NSLayoutRelationEqual
+											toItem:nil
+										 attribute:NSLayoutAttributeNotAnAttribute
+										multiplier:1.0
+										  constant:bottomMargin],
+	]];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	FNLOGRECT(self.view.frame);
+	FNLOGRECT(self.view.superview.frame);
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -203,14 +279,14 @@
 			offsetX += width;
 		}
 		offsetX -= [_columnWidth[4] cgFloatValue];
-		frame = CGRectMake(offsetX, -1.0, [_columnWidth[4] cgFloatValue], self.tableView.rowHeight - 1.0);
+		frame = CGRectMake(offsetX, 0.0, [_columnWidth[4] cgFloatValue], self.tableView.rowHeight);
 		UIView *rightBackground = [[UIView alloc] initWithFrame:frame];
 		rightBackground.backgroundColor = [UIColor colorWithRed:214.0/255.0 green:228.0/255.0 blue:233.0/255.0 alpha:1.0];
 		[cell insertSubview:rightBackground belowSubview:[cell viewWithTag:4]];
 
 		frame = CGRectMake(0.0, self.tableView.rowHeight - 1, offsetX, 1.0);
 		UIView *grayLineView = [[UIView alloc] initWithFrame:frame];
-		grayLineView.backgroundColor = [UIColor lightGrayColor];
+		grayLineView.backgroundColor = [UIColor colorWithRed:202.0 / 255.0 green:202.0 / 255.0 blue:202.0 / 255.0 alpha:1.0];
 		[cell addSubview:grayLineView];
 
 		frame = CGRectMake(offsetX, self.tableView.rowHeight - 1, [_columnWidth[4] cgFloatValue], 1.0);
@@ -229,11 +305,19 @@
 }
 
 - (UILabel *)valueLabelViewFrame:(CGRect)frame withTag:(NSInteger)tag {
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectInset(frame, 10.0, 5.0)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectInset(frame, DEVICE_IPAD ? 10.0 : 1.0, 3.0)];
 	label.backgroundColor = [UIColor clearColor];
-	label.font = [UIFont systemFontOfSize:13.0];
-	label.textColor = [UIColor colorWithRed:73.0/255.0 green:74.0/255.0 blue:73.0/255.0 alpha:1.0];
-	label.textAlignment = NSTextAlignmentRight;
+	if (tag == 5) {
+		label.font = [UIFont boldSystemFontOfSize:DEVICE_IPAD ? 13.0 : 11.0];
+		label.textColor = [UIColor colorWithRed:73.0/255.0 green:98.0/255.0 blue:145.0/255.0 alpha:1.0];
+	} else {
+		label.font = [UIFont systemFontOfSize:DEVICE_IPAD ? 13.0 : 11.0];
+		label.textColor = [UIColor colorWithRed:73.0/255.0 green:74.0/255.0 blue:73.0/255.0 alpha:1.0];
+	}
+	label.textAlignment = DEVICE_IPAD ? NSTextAlignmentRight : NSTextAlignmentCenter;
+	label.minimumScaleFactor = 0.5;
+	label.adjustsFontSizeToFitWidth = YES;
+	label.adjustsLetterSpacingToFitWidth = YES;
 	label.tag = tag;
 
 	return label;
@@ -335,6 +419,5 @@
 	}
 	_amortizationTable = [NSArray arrayWithArray:amortizationTable];
 }
-
 
 @end

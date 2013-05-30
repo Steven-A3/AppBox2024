@@ -14,6 +14,7 @@
 #import "A3PhoneHomeCalendarMonthViewController.h"
 #import "A3WeatherStickerViewController.h"
 #import "A3StockTickerControl.h"
+#import "UIViewController+A3AppCategory.h"
 
 enum {
 	A3PhoneHomeScreenSegmentSelectionStatistics = 0,
@@ -59,7 +60,7 @@ enum {
 	screenBounds.size.height -= 44.0 + 20.0;	// for navigation bar + status bar
 	_mainScrollView.frame = screenBounds;
 
-	[self.navigationController.navigationBar setBarStyle:UIBarStyleBlackOpaque];
+	[self setBlackBackgroundImageForNavigationBar];
 
 	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"applist" ofType:@"png"];
 	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];

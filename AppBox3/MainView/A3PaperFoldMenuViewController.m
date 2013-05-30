@@ -255,6 +255,9 @@
 	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
 	[self layoutNavigationController];
+
+	FNLOGRECT(self.contentView.frame);
+	FNLOGRECT(self.myNavigationController.view.frame);
 }
 
 - (CGRect)getHiddenNotificationViewFrame {

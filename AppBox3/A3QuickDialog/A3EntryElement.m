@@ -189,31 +189,6 @@
 
 @end
 
-@implementation A3DateTimeInlineElement
-
-- (id)initWithTitle:(NSString *)string date:(NSDate *)date {
-	self = [super initWithTitle:string date:date];
-	if (self) {
-	}
-
-	return self;
-}
-
-- (UITableViewCell *)getCellForTableView:(QuickDialogTableView *)tableView controller:(QuickDialogController *)controller {
-	QAppearance *newAppearance = [[self class] appearance];
-	[self applyLabelElementAppearanceWithDelegate:_cellStyleDelegate appearance:newAppearance];
-	self.appearance = newAppearance;
-
-	return [super getCellForTableView:tableView controller:controller];
-}
-
-- (CGFloat)getRowHeightForTableView:(QuickDialogTableView *)tableView {
-	[self updateCellHeightWithDelegate:_cellStyleDelegate];
-	return [super getRowHeightForTableView:tableView];
-}
-
-@end
-
 @implementation A3NumberEntryElement
 @end
 

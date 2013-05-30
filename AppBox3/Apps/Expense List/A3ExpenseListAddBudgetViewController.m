@@ -124,7 +124,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	element.onSelected = ^{
 		QuickDialogTableView *tableView = self.quickDialogTableView;
 		A3ButtonElement *buttonElement = (A3ButtonElement *) [self.root elementWithKey:A3ExpenseListAddBudgetKeyShowSimpleAdvanced];
-		NSIndexPath *indexPath = [tableView indexForElement:buttonElement];
+		NSIndexPath *indexPath = [buttonElement getIndexPath];
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
 		NSArray *indexPaths = @[[NSIndexPath indexPathForRow:3 inSection:0],

@@ -12,6 +12,7 @@
 #import "DDPageControl.h"
 #import "A3OnOffLeftRightButton.h"
 #import "A3LoanCalcPieChartController.h"
+#import "A3LoanCalcAmortizationViewController_iPhone.h"
 
 @interface A3LoanCalcQuickDialogViewController_iPhone () <A3LoanCalcChartViewControllerDelegate, UIScrollViewDelegate>
 
@@ -114,7 +115,16 @@
 
 	_firstPage_iPhone.graphHostingView.hostedGraph = [self.chartController graphWithFrame:_firstPage_iPhone.graphHostingView.bounds for:A3LoanCalcGraphWithPrincipal];
 	_secondPage_iPhone.graphHostingView.hostedGraph = [self.chartController graphWithFrame:_secondPage_iPhone.graphHostingView.bounds for:A3LoanCalcGraphWithMonthlyPayment];
+
+	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnHeaderView)];
+	[tableHeaderView addGestureRecognizer:gestureRecognizer];
 	return tableHeaderView;
+}
+
+- (void)tapOnHeaderView {
+	A3LoanCalcAmortizationViewController_iPhone *viewController = [[A3LoanCalcAmortizationViewController_iPhone alloc] initWithNibName:@"A3LoanCalcAmortizationViewController_iPhone" bundle:nil];
+	[viewController setObject:self.editingObject];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)scrollToPage:(NSInteger)page {

@@ -64,5 +64,4 @@
     self.selectedBackgroundView = element.appearance.selectedBackgroundView;
 
 }
-
 @end

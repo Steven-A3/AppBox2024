@@ -34,6 +34,7 @@
     QSection *section = [_tableView.root getVisibleSectionForIndex:indexPath.section];
     QElement *element = [section getVisibleElementForIndex:indexPath.row];
     UITableViewCell *cell = [element getCellForTableView:(QuickDialogTableView *) tableView controller:_tableView.controller];
+    cell.userInteractionEnabled = element.enabled;
     return cell;
 }
 
@@ -73,5 +74,7 @@
     }
     return tableView.editing;
 }
+
+
 
 @end

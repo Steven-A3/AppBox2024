@@ -22,6 +22,7 @@
 #import "A3HistoryViewController.h"
 #import "A3LoanCalcHistoryViewController.h"
 #import "A3LoanCalcCompareHistoryViewController.h"
+#import "common.h"
 
 @interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate, A3HistoryViewControllerDelegate>
 
@@ -118,14 +119,10 @@
 
 
 - (void)onActionButton:(UIButton *)button {
-	if (DEVICE_IPAD) {
-		[self presentEmptyActionMenu];
-		[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction) atIndex:0];
-		[self addActionIcon:@"t_settings" title:@"Settings" selector:@selector(settingsAction) atIndex:1];
-		[self addActionIcon:@"t_share" title:@"Share" selector:@selector(shareAction) atIndex:2];
-	} else {
-		[self presentActionMenuWithDelegate:self];
-	}
+	[self presentEmptyActionMenu];
+	[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction) atIndex:0];
+	[self addActionIcon:@"t_settings" title:@"Settings" selector:@selector(settingsAction) atIndex:1];
+	[self addActionIcon:@"t_share" title:@"Share" selector:@selector(shareAction) atIndex:2];
 }
 
 #pragma mark - A3ActionMenuDelegate
@@ -141,8 +138,6 @@
 }
 
 - (void)showHistoryAction {
-	[self closeActionMenuViewWithAnimation:YES];
-
 	UIViewController *viewController;
 	if (self.segmentedControl.selectedSegmentIndex == 0) {
 		A3LoanCalcHistoryViewController *aviewController = [[A3LoanCalcHistoryViewController alloc] initWithNibName:nil bundle:nil];
@@ -162,6 +157,8 @@
 		[self applySilverNavigationBarStyleToNavigationVC:navController];
 		[self presentViewController:navController animated:YES completion:nil];
 	}
+
+	[self closeActionMenuViewWithAnimation:NO];
 }
 
 - (void)shareAction {
@@ -170,6 +167,12 @@
 
 - (void)historySelected:(id)object {
 
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	FNLOGRECT(self.view.frame);
 }
 
 @end

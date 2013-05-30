@@ -34,12 +34,17 @@
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect
 {
+	CGFloat polyLineStartFromRight = 35.0;
+	CGFloat polyLineTopFromRight = 25.0;
+	CGFloat polyLineEndFromRight = 15.0;
+	CGFloat polyLineHeight = 10.0;
+
     // Drawing code
     UIBezierPath *clipPath = [UIBezierPath bezierPath];
-	[clipPath moveToPoint:CGPointMake(0.0, 10.0)];	// Left Top
-	[clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - 25.0, 10.0)];
-    [clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - 17.5, 0.0)];
-	[clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - 10.0, 10.0)];
+	[clipPath moveToPoint:CGPointMake(0.0, polyLineHeight)];	// Left Top
+	[clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - polyLineStartFromRight, polyLineHeight)];
+    [clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - polyLineTopFromRight, 0.0)];
+	[clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect) - polyLineEndFromRight, polyLineHeight)];
 	[clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect), 10.0)];	// Right Top
 	[clipPath addLineToPoint:CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect))];	// Right bottom
 	[clipPath addLineToPoint:CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect))];	// Left bottom
@@ -55,9 +60,9 @@
 	NSArray *topGradientColors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor,
 	(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
 	CGFloat gradientHeight = 3.0;
-	CGRect gradientRect = CGRectMake(CGRectGetMinX(rect), CGRectGetMinY(rect) + 10.0, CGRectGetWidth(rect) - 25.0, gradientHeight);
+	CGRect gradientRect = CGRectMake(CGRectGetMinX(rect), CGRectGetMinY(rect) + polyLineHeight, CGRectGetWidth(rect) - polyLineStartFromRight, gradientHeight);
 	[self drawLinearGradientToContext:context rect:gradientRect withColors:topGradientColors];
-	gradientRect = CGRectMake(CGRectGetWidth(rect) - 10.0, CGRectGetMinY(rect) + 10.0, 10.0, gradientHeight);
+	gradientRect = CGRectMake(CGRectGetWidth(rect) - polyLineEndFromRight, CGRectGetMinY(rect) + polyLineHeight, polyLineEndFromRight, gradientHeight);
 	[self drawLinearGradientToContext:context rect:gradientRect withColors:topGradientColors];
 
 	NSArray *bottomGradientColors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
