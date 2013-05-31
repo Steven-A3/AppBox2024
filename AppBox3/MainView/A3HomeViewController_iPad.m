@@ -96,7 +96,9 @@
 
 	[self setBlackBackgroundImageForNavigationBar];
 
-	[self addLeftBarButton];
+	[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
+	[self assignBackBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
+
 	[self addRightBarButton];
 
 	A3WeatherStickerViewController *weatherStickerVC = [[A3WeatherStickerViewController alloc] initWithNibName:nil bundle:nil];
@@ -121,13 +123,6 @@
 
 	[self setupGradientViews];
 
-}
-
-- (void)addLeftBarButton {
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"applist" ofType:@"png"];
-	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
-	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
-	self.navigationItem.leftBarButtonItem = sideMenuButton;
 }
 
 - (void)addRightBarButton {

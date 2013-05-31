@@ -6,18 +6,17 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3CalcExpressionView.h"
 #import "common.h"
 
-
-@interface A3CalcExpressionView ()
-
-@end
-
-@implementation A3CalcExpressionView
-@synthesize expression = _expression;
-@synthesize style = _style;
+@implementation A3CalcExpressionView {
+    UIFont *_valueFont;
+    UIColor *_valueColor;
+	UIFont *_operatorFont;
+	UIColor *_operatorColor;
+	UIColor *_backgroundColor;
+	CGFloat _fullWidth, _operatorWidth, _operatorHeight;
+}
 
 - (void)initialize {
 	self.backgroundColor = [UIColor clearColor];
@@ -73,14 +72,8 @@
 */
 
 //#define CEV_VIEW_HEIGHT						( ( self.style == CEV_FILL_BACKGROUND ) ? 25.0f : 20.0f)
-#define CEV_VIEW_HEIGHT						CGRectGetHeight(rect)
 #define	CEV_SIDE_MARGIN						( ( self.style == CEV_FILL_BACKGROUND ) ? 8.0f : 6.0f)
 #define CEV_COLUMN_MARGIN					( ( self.style == CEV_FILL_BACKGROUND ) ? 6.0f : 4.0f)
-#define CEV_OPERATOR_WIDTH					( ( self.style == CEV_FILL_BACKGROUND ) ? 22.0f : 18.0f)
-//#define CEV_OPERATOR_HEIGHT 				( ( self.style == CEV_FILL_BACKGROUND ) ? 16.0f : 12.0f)
-#define CEV_OPERATOR_HEIGHT 				(CGRectGetHeight(rect) - 6.0)
-#define CEV_VALUE_FONT    					[UIFont boldSystemFontOfSize:( ( self.style == CEV_FILL_BACKGROUND ) ? 20.0f : 14.0f)]
-#define CEV_OPERATOR_FONT					[UIFont boldSystemFontOfSize:( ( self.style == CEV_FILL_BACKGROUND ) ? 20.0f : 13.0f)]
 #define CEV_COLOR1							[UIColor whiteColor]
 #define CEV_COLOR2							[UIColor colorWithRed:155.0f/255.0f green:155.0f/255.0f blue:155.0f/255.0f alpha:1.0f]
 #define CEV_COLOR3							[UIColor colorWithRed:72.0f/255.0f green:74.0f/255.0f blue:64.0f/255.0f alpha:1.0f]
@@ -92,42 +85,71 @@
 #define	CEV_CORNER_RADIUS					(self.style == CEV_FILL_BACKGROUND ? 4.0f : 3.0f)
 #define CEV_PATH_FOR_ROUNDED_RECT			CGRectMake(drawingPoint.x, \
 											drawingPoint.y + operatorYOffset, \
-											CEV_OPERATOR_WIDTH,	\
-											CEV_OPERATOR_HEIGHT)
-#define CEV_OPERATOR_TEXT_OFFSET			(self.style == CEV_FILL_BACKGROUND ? -1.0f : 0.0f)
+											_operatorWidth,	\
+											_operatorHeight)
+#define CEV_OPERATOR_TEXT_OFFSET			(self.style == CEV_FILL_BACKGROUND ? -2.0f : -2.0f)
 
 - (UIBezierPath *)newOperatorPathWithRect:(CGRect)rect {
 	return [UIBezierPath bezierPathWithRoundedRect:rect cornerRadius:CEV_CORNER_RADIUS];
 }
 
 - (void)setOperatorTextColorForContext:(CGContextRef)context {
-	UIColor *operatorTextColor = CEV_OPERATOR_TEXT_COLOR;
-
-	CGContextSetStrokeColorWithColor(context, operatorTextColor.CGColor);
-	CGContextSetFillColorWithColor(context, operatorTextColor.CGColor);
+	CGContextSetStrokeColorWithColor(context, _operatorColor.CGColor);
+	CGContextSetFillColorWithColor(context, _operatorColor.CGColor);
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 }
 
-- (UIFont *)fontAtIndex:(NSInteger)index {
+- (UIFont *)fontAtIndex:(NSInteger)index forValue:(BOOL)forValue {
 	UIFont *font;
 	if (_attributes && (index < [_attributes count]) && [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeFont]) {
 		font = [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeFont];
 	}
 	if (![font isKindOfClass:[UIFont class]]) {
-		font = CEV_VALUE_FONT;
+		font = forValue ? _valueFont : _operatorFont;
 	}
 	return font;
 }
 
-- (UIColor *)colorAtIndex:(NSInteger)index {
+- (UIColor *)colorAtIndex:(NSInteger)index forValue:(BOOL)forValue {
 	UIColor *color;
 	if (_attributes && (index < [_attributes count]) && [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeTextColor]) {
 		color = [[_attributes objectAtIndex:index] objectForKey:A3ExpressionAttributeTextColor];
 	}
 	if (![color isKindOfClass:[UIColor class]]) {
-		color = CEV_VALUE_TEXT_COLOR;
+		color = forValue ? _valueColor : _operatorColor;
 	}
 	return color;
+}
+
+- (NSArray *)calcDrawingPositions {
+	NSMutableArray *drawingPositions = [[NSMutableArray alloc] initWithCapacity:[self.expression count]];
+
+	CGFloat coordinateX = CEV_SIDE_MARGIN;
+	UIFont *valueFont;
+	for (NSInteger index = 0; index < [self.expression count];index++) {
+		[drawingPositions addObject:[NSNumber numberWithFloat:coordinateX]];
+
+		NSString *textToDisplay = [self.expression objectAtIndex:index];
+		if ([self isOperatorClassForString:textToDisplay]) {
+			coordinateX += _operatorWidth;
+		} else {
+			valueFont = [self fontAtIndex:index forValue:YES];
+			CGSize sizeOfText = [textToDisplay sizeWithFont:valueFont];
+			coordinateX += sizeOfText.width;
+		}
+		coordinateX += CEV_COLUMN_MARGIN;
+	}
+	_fullWidth = coordinateX + CEV_SIDE_MARGIN - CEV_COLUMN_MARGIN;
+	return drawingPositions;
+}
+
+- (void)prepareAttributesWithRect:(CGRect)rect {
+	CGFloat fontSize = CGRectGetHeight(rect) - 4.0;
+	_valueFont = [UIFont boldSystemFontOfSize:fontSize];
+	_valueColor = CEV_VALUE_TEXT_COLOR;
+	_operatorFont = [UIFont boldSystemFontOfSize:fontSize];
+	_operatorColor = CEV_OPERATOR_TEXT_COLOR;
+	_backgroundColor = CEV_BACKGROUND_FILL_COLOR;
 }
 
 // Only override drawRect: if you perform custom drawing.
@@ -138,46 +160,29 @@
 	if (nil == self.expression)
 		return;
 
-	// Calculate full width and each drawing position for given expression to determine does it fit in bounds
-	CGFloat	fullWidth;
+	[self prepareAttributesWithRect:rect];
 
-	NSMutableArray *drawingPositions = [[NSMutableArray alloc] initWithCapacity:[self.expression count]];
-
-	CGFloat coordinateX = CEV_SIDE_MARGIN;
-	UIFont *valueFont;
-	for (NSInteger index = 0; index < [self.expression count];index++) {
-		[drawingPositions addObject:[NSNumber numberWithFloat:coordinateX]];
-
-		NSString *textToDisplay = [self.expression objectAtIndex:index];
-		if ([self isOperatorClassForString:textToDisplay]) {
-			coordinateX += CEV_OPERATOR_WIDTH;
-		} else {
-			valueFont = [self fontAtIndex:index];
-			CGSize sizeOfText = [textToDisplay sizeWithFont:valueFont];
-			coordinateX += sizeOfText.width;
-		}
-		coordinateX += CEV_COLUMN_MARGIN;
-	}
-	fullWidth = coordinateX + CEV_SIDE_MARGIN - CEV_COLUMN_MARGIN;
-//	CGFloat drawingOffset = MAX(CGRectGetWidth(self.bounds) - fullWidth, 0.0f);
 	CGFloat drawingOffset = 0.0;
 
 	// Drawing for operator.
 	// Draw operator first for clipping.
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
-	UIColor *backgroundColor = CEV_BACKGROUND_FILL_COLOR;
-	UIFont *operatorFont = CEV_OPERATOR_FONT;
-
 	CGPoint drawingPoint = {0.0f, 0.0f};
+	CGFloat viewHeight = CGRectGetHeight(rect);
+	_operatorWidth = ceilf(viewHeight * 20.0/25.0);
+	_operatorHeight = ceilf((viewHeight * 19.0 / 25.0));
+	FNLOG(@"%f", _operatorHeight);
+
+	NSArray *drawingPositions = [self calcDrawingPositions];
 
 	UIBezierPath *backgroundPath = nil;
 	if (self.style == CEV_FILL_BACKGROUND) {
-		backgroundPath = [UIBezierPath bezierPathWithRect:CGRectMake(drawingPoint.x + drawingOffset, drawingPoint.y, fullWidth, CEV_VIEW_HEIGHT)];
+		backgroundPath = [UIBezierPath bezierPathWithRect:CGRectMake(drawingPoint.x + drawingOffset, drawingPoint.y, _fullWidth, viewHeight)];
 		[backgroundPath setUsesEvenOddFillRule:YES];
 	}
 
-	CGFloat operatorYOffset = (CEV_VIEW_HEIGHT - CEV_OPERATOR_HEIGHT)/2.0;
+	CGFloat operatorYOffset = (viewHeight - _operatorHeight)/2.0;
 	if (self.style == CEV_FILL_BACKGROUND) {
 		// Colors for operator text
 		[self setOperatorTextColorForContext:context];
@@ -192,14 +197,14 @@
 					[backgroundPath appendPath:[self newOperatorPathWithRect:CEV_PATH_FOR_ROUNDED_RECT]];
 				}
 
-				CGSize textSize = [textToDisplay sizeWithFont:operatorFont];
+				CGSize textSize = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:NO]];
 				[textToDisplay drawAtPoint:
-						CGPointMake(drawingPoint.x + (CEV_OPERATOR_WIDTH - textSize.width) / 2.0f,
-								drawingPoint.y + (CEV_OPERATOR_HEIGHT - textSize.height) / 2.0f + operatorYOffset + CEV_OPERATOR_TEXT_OFFSET)
-								  withFont:operatorFont];
+						CGPointMake(drawingPoint.x + (_operatorWidth - textSize.width) / 2.0f,
+								drawingPoint.y + (_operatorHeight - textSize.height) / 2.0f + operatorYOffset + CEV_OPERATOR_TEXT_OFFSET)
+								  withFont:[self fontAtIndex:index forValue:NO]];
 			}
 		}
-		CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+		CGContextSetFillColorWithColor(context, _backgroundColor.CGColor);
 		[backgroundPath fill];
 	} else {
 		for (NSInteger index = 0; index < [self.expression count]; index++) {
@@ -214,7 +219,7 @@
 				}
 			}
 		}
-		CGContextSetFillColorWithColor(context, backgroundColor.CGColor);
+		CGContextSetFillColorWithColor(context, _backgroundColor.CGColor);
 		[backgroundPath fill];
 
 		[self setOperatorTextColorForContext:context];
@@ -224,33 +229,36 @@
 			if ([self isOperatorClassForString:textToDisplay]) {
 				drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
 
-				CGSize textSize = [textToDisplay sizeWithFont:operatorFont];
+				CGFloat offset = CEV_OPERATOR_TEXT_OFFSET;
+				if ([textToDisplay isEqualToString:@"of"]) {
+					offset = 0.0;
+				}
+				CGSize textSize = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:NO]];
 				[textToDisplay drawAtPoint:
-						CGPointMake(drawingPoint.x + (CEV_OPERATOR_WIDTH - textSize.width) / 2.0f,
-								drawingPoint.y + (CEV_OPERATOR_HEIGHT - textSize.height) / 2.0f + operatorYOffset + CEV_OPERATOR_TEXT_OFFSET)
-								  withFont:operatorFont];
+						CGPointMake(drawingPoint.x + (_operatorWidth - textSize.width) / 2.0f,
+								drawingPoint.y + (_operatorHeight - textSize.height) / 2.0f + operatorYOffset + offset)
+								  withFont:[self fontAtIndex:index forValue:NO]];
 			}
 		}
 	}
 
 	// Drawing for numbers and functions.
-	UIColor *valueColor;
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 
 	drawingPoint = CGPointMake(CEV_SIDE_MARGIN, 0.0f);
 	for (NSInteger index = 0; index < [self.expression count]; index++) {
 		NSString *textToDisplay = [self.expression objectAtIndex:index];
 		if (![self isOperatorClassForString:textToDisplay]) {
-			valueFont = [self fontAtIndex:index];
+			_valueFont = [self fontAtIndex:index forValue:YES];
 
-			valueColor = [self colorAtIndex:index];
-			CGContextSetStrokeColorWithColor(context, valueColor.CGColor);
-			CGContextSetFillColorWithColor(context, valueColor.CGColor);
+			_valueColor = [self colorAtIndex:index forValue:YES];
+			CGContextSetStrokeColorWithColor(context, [self colorAtIndex:index forValue:YES].CGColor);
+			CGContextSetFillColorWithColor(context, [self colorAtIndex:index forValue:YES].CGColor);
 
 			drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
-			CGSize size = [textToDisplay sizeWithFont:valueFont];
+			CGSize size = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:YES]];
 			drawingPoint.y = CGRectGetHeight(self.bounds)/2.0 - size.height / 2.0;
-			[textToDisplay drawAtPoint:drawingPoint withFont:valueFont];
+			[textToDisplay drawAtPoint:drawingPoint withFont:[self fontAtIndex:index forValue:YES]];
 		}
 	}
 }

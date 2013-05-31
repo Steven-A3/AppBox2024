@@ -108,7 +108,8 @@
 	self.expressionView.expression = @[[nf stringFromNumber:expenseObject.total], @"of", [nf stringFromNumber:@([expenseObject.budget floatValue]) ] ];
 	NSDictionary *redText = @{A3ExpressionAttributeFont:[UIFont boldSystemFontOfSize:20.0], A3ExpressionAttributeTextColor:[UIColor redColor]};
 	NSDictionary *blackText = @{A3ExpressionAttributeFont:[UIFont boldSystemFontOfSize:20.0], A3ExpressionAttributeTextColor:[UIColor blackColor]};
-	self.expressionView.attributes = @[redText, @{}, blackText];
+	NSDictionary *operatorText = @{A3ExpressionAttributeFont:[UIFont boldSystemFontOfSize:18.0]};
+	self.expressionView.attributes = @[redText, operatorText, blackText];
 	[self.expressionView setNeedsDisplay];
 }
 

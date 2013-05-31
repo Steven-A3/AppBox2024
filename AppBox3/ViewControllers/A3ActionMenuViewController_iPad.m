@@ -8,6 +8,7 @@
 
 #import "A3ActionMenuViewController_iPad.h"
 #import "A3ActionMenuViewControllerDelegate.h"
+#import "common.h"
 
 @interface A3ActionMenuViewController_iPad ()
 
@@ -64,6 +65,27 @@
 	if ([_delegate respondsToSelector:@selector(facebookAction)]) {
 		[_delegate facebookAction];
 	}
+}
+
+- (void)setImage:(NSString *)name selector:(SEL)selector atIndex:(NSUInteger)index {
+	NSString *filepath = [[NSBundle mainBundle] pathForResource:name ofType:@"png"];
+	UIImage *image = [UIImage imageWithContentsOfFile:filepath];
+	NSArray *buttons = @[_button1, _button2, _button3, _button4, _button5];
+	UIButton *theButton = buttons[index];
+
+	[theButton setImage:image forState:UIControlStateNormal];
+
+	for (NSString *actionName in [theButton actionsForTarget:_delegate forControlEvent:UIControlEventTouchUpInside]) {
+		FNLOG(@"%@", actionName);
+		[theButton removeTarget:_delegate action:NSSelectorFromString(actionName) forControlEvents:UIControlEventTouchUpInside];
+	}
+	[theButton addTarget:_delegate action:selector forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)setText:(NSString *)text atIndex:(NSUInteger)index {
+	NSArray *labels = @[_label1, _label2, _label3, _label4, _label5];
+	UILabel *label = labels[index];
+	label.text = text;
 }
 
 @end

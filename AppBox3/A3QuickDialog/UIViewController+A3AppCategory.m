@@ -475,4 +475,19 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return bounds;
 }
 
+- (UIBarButtonItem *)appListBarButtonItemWithSelector:(SEL)selector {
+	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"applist" ofType:@"png"];
+	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
+	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:selector];
+	return sideMenuButton;
+}
+
+- (void)assignLeftBarButtonItemWithAppListWithSelector:(SEL)selector {
+	self.navigationItem.leftBarButtonItem = [self appListBarButtonItemWithSelector:selector];
+}
+
+- (void)assignBackBarButtonItemWithAppListWithSelector:(SEL)selector {
+	self.navigationItem.backBarButtonItem = [self appListBarButtonItemWithSelector:selector];
+}
+
 @end

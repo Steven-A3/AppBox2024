@@ -21,26 +21,18 @@
 - (void)buildGradientLayers;
 
 @property (nonatomic, strong) IBOutlet UIScrollView *buttonsScrollView;
+@property (nonatomic, strong) IBOutlet A3CalcExpressionView *expressionView;
 @property (nonatomic, strong) UIView *topLineAboveHistoryHeaderView;
 @property (nonatomic, strong) DDPageControl *pageControl;
 @property (nonatomic, strong) A3GrayAppHeaderView *grayAppHeaderView;
 @property (nonatomic, strong) CoolButton *editHistoryButton;
 @property (nonatomic, strong) UITableView *historyTableView;
-@property (nonatomic, strong) IBOutlet A3CalcExpressionView *expressionView;
 
 - (void)layoutSubViews;
 
 @end
 
 @implementation A3CalculatorViewController
-@synthesize buttonsScrollView = _buttonsScrollView;
-@synthesize pageControl = _pageControl;
-@synthesize topLineAboveHistoryHeaderView = _topLineAboveHistoryHeaderView;
-@synthesize grayAppHeaderView = _grayAppHeaderView;
-@synthesize historyTableView = _historyTableView;
-@synthesize editHistoryButton = _editHistoryButton;
-@synthesize expressionView = _expressionView;
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -113,12 +105,6 @@
 	[self.expressionView setStyle:CEV_FILL_BACKGROUND];
 //	[self.expressionView setStyle:CEV_TRANSPARENT_BACKGROUND];
 	[self.expressionView setNeedsDisplay];
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

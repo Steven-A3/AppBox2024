@@ -41,12 +41,6 @@
 	[self updateDateLabel];
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
 - (void)viewDidLayoutSubviews {
 	[super viewDidLayoutSubviews];
 

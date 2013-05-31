@@ -61,11 +61,7 @@ enum {
 	_mainScrollView.frame = screenBounds;
 
 	[self setBlackBackgroundImageForNavigationBar];
-
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"applist" ofType:@"png"];
-	UIImage *sideMenuButtonImage = [UIImage imageWithContentsOfFile:imageFilePath];
-	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:@selector(sideMenuButtonAction)];
-	self.navigationItem.leftBarButtonItem = sideMenuButton;
+	[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
 
 	[self segmentedControl:self.segmentedControl didChangedSelectedIndex:0 fromIndex:0];
 

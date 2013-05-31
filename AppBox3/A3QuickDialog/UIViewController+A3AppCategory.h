@@ -58,4 +58,8 @@
 - (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector atIndex:(NSInteger)index1;
 
 - (CGRect)boundsForRightSideView;
+
+- (void)assignLeftBarButtonItemWithAppListWithSelector:(SEL)selector;
+
+- (void)assignBackBarButtonItemWithAppListWithSelector:(SEL)selector;
 @end

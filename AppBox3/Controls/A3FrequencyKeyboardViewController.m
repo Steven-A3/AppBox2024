@@ -85,10 +85,6 @@
 	[_prevButton setEnabled:available];
 }
 
-- (void)viewDidUnload {
-	[super viewDidUnload];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

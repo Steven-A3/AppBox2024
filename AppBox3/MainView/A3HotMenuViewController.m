@@ -80,7 +80,7 @@
 	CGRect newFrame = deviceIsPortrait ? CGRectMake(0.0, 0.0, 714.0, 1004.0) : CGRectMake(0.0, 0.0, 714.0, 748.0);
 	[_myNavigationController.view setFrame:newFrame];
 	[_paperFoldView setPaperFoldState:deviceIsPortrait ? PaperFoldStateDefault : PaperFoldStateLeftUnfolded];
-	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"A3Calculator_iPad" bundle:nil];
+	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"A3CalculatorViewController_iPad" bundle:nil];
 	[_myNavigationController pushViewController:viewController animated:YES];
 }
 

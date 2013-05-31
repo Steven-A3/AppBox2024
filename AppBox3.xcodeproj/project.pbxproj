@@ -443,7 +443,7 @@
 		68BB306D16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */; };
 		68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */; };
 		68BB30721684452300C3498B /* A3KeyboardButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB30711684452300C3498B /* A3KeyboardButton.m */; };
-		68C460F11627CFF900555C91 /* A3Calculator_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C460EE1627CFF900555C91 /* A3Calculator_iPad.xib */; };
+		68C460F11627CFF900555C91 /* A3CalculatorViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C460EE1627CFF900555C91 /* A3CalculatorViewController_iPad.xib */; };
 		68C460F21627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C460EF1627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib */; };
 		68C460F31627CFF900555C91 /* A3CalculatorButtonsInSecondPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C460F01627CFF900555C91 /* A3CalculatorButtonsInSecondPage.xib */; };
 		68C4614E1627D77900555C91 /* A3CalendarBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C4611D1627D77900555C91 /* A3CalendarBackgroundView.m */; };
@@ -1353,7 +1353,7 @@
 		68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		68BB30701684452300C3498B /* A3KeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardButton.h; sourceTree = "<group>"; };
 		68BB30711684452300C3498B /* A3KeyboardButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardButton.m; sourceTree = "<group>"; };
-		68C460EE1627CFF900555C91 /* A3Calculator_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3Calculator_iPad.xib; sourceTree = "<group>"; };
+		68C460EE1627CFF900555C91 /* A3CalculatorViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorViewController_iPad.xib; sourceTree = "<group>"; };
 		68C460EF1627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInFirstPage.xib; sourceTree = "<group>"; };
 		68C460F01627CFF900555C91 /* A3CalculatorButtonsInSecondPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInSecondPage.xib; sourceTree = "<group>"; };
 		68C4611C1627D77900555C91 /* A3CalendarBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarBackgroundView.h; sourceTree = "<group>"; };
@@ -2577,7 +2577,6 @@
 				683B951315EB233500575377 /* A3CalcHistoryViewCell.h */,
 				683B951415EB233500575377 /* A3CalcHistoryViewCell.m */,
 				683B951515EB233500575377 /* A3CalcHistoryViewCellContentsView.xib */,
-				68C460EE1627CFF900555C91 /* A3Calculator_iPad.xib */,
 				683B951615EB233500575377 /* A3CalculatorButton.h */,
 				683B951715EB233500575377 /* A3CalculatorButton.m */,
 				68C460EF1627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib */,
@@ -2588,6 +2587,7 @@
 				683B951B15EB233500575377 /* A3CalculatorDisplayView.m */,
 				683B951C15EB233500575377 /* A3CalculatorViewController.h */,
 				683B951D15EB233500575377 /* A3CalculatorViewController.m */,
+				68C460EE1627CFF900555C91 /* A3CalculatorViewController_iPad.xib */,
 			);
 			path = Calculator;
 			sourceTree = "<group>";
@@ -3209,7 +3209,7 @@
 				68AFED511624E24D00B352AB /* bg_status_memory@2x.png in Resources */,
 				68AFED521624E24D00B352AB /* bg_status_storage.png in Resources */,
 				68AFED531624E24D00B352AB /* bg_status_storage@2x.png in Resources */,
-				68C460F11627CFF900555C91 /* A3Calculator_iPad.xib in Resources */,
+				68C460F11627CFF900555C91 /* A3CalculatorViewController_iPad.xib in Resources */,
 				68C460F21627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib in Resources */,
 				68C460F31627CFF900555C91 /* A3CalculatorButtonsInSecondPage.xib in Resources */,
 				68C461541627D77900555C91 /* A3CalendarDayViewController.xib in Resources */,

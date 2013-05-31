@@ -20,6 +20,7 @@
 #import "SalesCalcHistory+controller.h"
 #import "NSManagedObject+Clone.h"
 #import "common.h"
+#import "A3ActionMenuViewController_iPad.h"
 
 @interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate, A3ActionMenuViewControllerDelegate, A3QuickDialogCellStyleDelegate>
 
@@ -222,7 +223,7 @@
 	[self calculateSalePrice];
 }
 
-#pragma mark -- Override UIViewController
+#pragma mark -- UIViewController
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
@@ -244,8 +245,16 @@
 }
 
 - (void)onActionButton {
-	FNLOG(@"Check");
-	[self presentActionMenuWithDelegate:self];
+	if (DEVICE_IPAD) {
+		[self presentActionMenuWithDelegate:self];
+		A3ActionMenuViewController_iPad *viewController = (A3ActionMenuViewController_iPad *) self.actionMenuViewController;
+		[viewController setImage:@"t_history" selector:@selector(presentHistoryViewController) atIndex:0];
+		[viewController setText:@"History" atIndex:0];
+	} else {
+		[self presentEmptyActionMenu];
+		[self addActionIcon:@"t_history" title:@"History" selector:@selector(presentHistoryViewController) atIndex:0];
+		[self addActionIcon:@"t_share" title:@"Share" selector:@selector(shareAction) atIndex:0];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -253,6 +262,27 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)shareAction {
+
+}
+
+- (void)emailAction {
+
+}
+
+- (void)messageAction {
+
+}
+
+- (void)twitterAction {
+
+}
+
+- (void)facebookAction {
+
+}
+
 
 - (void)presentHistoryViewController {
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
