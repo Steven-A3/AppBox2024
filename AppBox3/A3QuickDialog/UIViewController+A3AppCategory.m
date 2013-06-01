@@ -231,6 +231,14 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	NSNumberFormatter *formatter = objc_getAssociatedObject(self, key_currencyFormatter);
 	if (nil == formatter) {
 		formatter = [[NSNumberFormatter alloc] init];
+		NSString *userCurrencyCode = nil;
+		if ([self respondsToSelector:@selector(defaultCurrencyCode)]) {
+			userCurrencyCode = [self performSelector:@selector(defaultCurrencyCode)];
+			if ([userCurrencyCode length]) {
+				[formatter setCurrencyCode:userCurrencyCode];
+			}
+		}
+
 		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		objc_setAssociatedObject(self, key_currencyFormatter, formatter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
@@ -270,7 +278,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 }
 
 - (NSString *)zeroCurrency {
-	return [self.currencyFormatter stringFromNumber:[NSDecimalNumber zero]];
+	return [self.currencyFormatter stringFromNumber: @0 ];
 }
 
 - (void)drawLinearGradientToContext:(CGContextRef)context rect:(CGRect)rect withColors:(NSArray *) colors {

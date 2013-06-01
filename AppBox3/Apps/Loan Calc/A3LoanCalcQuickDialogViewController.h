@@ -16,8 +16,9 @@
 #import "A3LoanCalcPieChartViewController.h"
 #import "A3LoanCalcChartViewController_iPhone.h"
 #import "A3LoanCalcPreferences.h"
+#import "A3HistoryViewController.h"
 
-@interface A3LoanCalcQuickDialogViewController : A3QuickDialogContainerController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, A3QuickDialogCellStyleDelegate>
+@interface A3LoanCalcQuickDialogViewController : A3QuickDialogContainerController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, A3QuickDialogCellStyleDelegate, A3HistoryViewControllerDelegate>
 
 @property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
 

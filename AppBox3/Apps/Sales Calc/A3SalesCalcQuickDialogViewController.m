@@ -39,6 +39,7 @@
 		[self addTopGradientLayerToView:self.view position:1.0];
 
 		self.title = @"Sales Calc";
+
 	}
 	return self;
 }
@@ -123,6 +124,9 @@
 }
 
 - (QRootElement *)rootElement {
+	self.defaultCurrencyCode = [self userCurrencyCodeForKey:A3SalesCalcDefaultUserCurrencyCode];
+	FNLOG(@"User Currency Code: %@", self.defaultCurrencyCode);
+
 	QRootElement *newRoot = [[QRootElement alloc] init];
 	newRoot.controllerName = @"A3SalesCalcQuickDialogViewController";
 	newRoot.title = @"Sales Calc";
@@ -493,21 +497,19 @@
 }
 
 - (void)currencySelected:(NSString *)selectedCurrencyCode {
-	[A3UIKit setUserDefaults:selectedCurrencyCode forKey:A3SalesCalcDefaultCurrencyCode];
-
 	[[[A3AppDelegate instance] paperFoldMenuViewController] removeRightWingViewController];
 
+	[A3UIKit setUserDefaults:selectedCurrencyCode forKey:A3SalesCalcDefaultUserCurrencyCode];
+	self.defaultCurrencyCode = [self userCurrencyCodeForKey:A3SalesCalcDefaultUserCurrencyCode];
 	self.currencyFormatter = nil;
-	[self calculateSalePrice];
-	[self reloadPriceElement];
-}
 
-- (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcDefaultCurrencyCode];
-	if (![currencyCode length]) {
-		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-	}
-	return currencyCode;
+	// Now translate existing values with selected currency.
+	A3CurrencyEntryElement *price = (A3CurrencyEntryElement *) [self.quickDialogTableView.root elementWithKey:SC_KEY_PRICE];
+	price.textValue = [self.currencyFormatter stringFromNumber:@([price.textValue floatValueEx])];
+	self.editingObject.price = price.textValue;
+
+	[self.quickDialogTableView reloadData];
+	[self calculateSalePrice];
 }
 
 @end

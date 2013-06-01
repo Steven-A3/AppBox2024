@@ -10,11 +10,12 @@
 #import "A3AppViewController.h"
 #import "DDPageControl.h"
 #import "LoanCalcHistory+calculation.h"
+#import "A3HistoryViewController.h"
 
 @class A3LoanCalcComparisonTableViewDataSource;
 @class A3CircleView;
 
-@interface A3LoanCalcComparisonMainViewController : A3AppViewController <UIScrollViewDelegate>
+@interface A3LoanCalcComparisonMainViewController : A3AppViewController <UIScrollViewDelegate, A3HistoryViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UIScrollView *topScrollView;
 @property (nonatomic, strong) LoanCalcHistory *leftObject, *rightObject;
@@ -30,4 +31,6 @@
 - (void)configureTopScrollView;
 
 - (void)loanCalcComparisonTableViewValueChanged;
+
+- (void)reloadData;
 @end

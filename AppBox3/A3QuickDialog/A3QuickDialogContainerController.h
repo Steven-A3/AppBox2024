@@ -89,4 +89,5 @@
 - (QRootElement *)rootElement;
 - (void)registerForKeyboardNotifications;
 
+- (NSString *)userCurrencyCodeForKey:(NSString *)key;
 @end

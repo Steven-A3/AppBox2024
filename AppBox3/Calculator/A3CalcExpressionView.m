@@ -71,7 +71,6 @@
 }
 */
 
-//#define CEV_VIEW_HEIGHT						( ( self.style == CEV_FILL_BACKGROUND ) ? 25.0f : 20.0f)
 #define	CEV_SIDE_MARGIN						( ( self.style == CEV_FILL_BACKGROUND ) ? 8.0f : 6.0f)
 #define CEV_COLUMN_MARGIN					( ( self.style == CEV_FILL_BACKGROUND ) ? 6.0f : 4.0f)
 #define CEV_COLOR1							[UIColor whiteColor]

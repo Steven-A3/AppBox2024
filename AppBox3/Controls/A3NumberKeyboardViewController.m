@@ -9,6 +9,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "QEntryTableViewCell+Extension.h"
 #import "A3KeyboardButton.h"
+#import "common.h"
 
 @interface A3NumberKeyboardViewController ()
 
@@ -86,6 +87,14 @@
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+}
+
+- (void)setCurrencyCode:(NSString *)currencyCode {
+	_currencyCode = currencyCode;
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setCurrencyCode:currencyCode];
+	_currencySymbol = nf.currencySymbol;
+	FNLOG(@"%@, %@", _currencyCode, _currencySymbol);
 }
 
 @end

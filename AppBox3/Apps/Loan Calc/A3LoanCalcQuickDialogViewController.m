@@ -905,6 +905,8 @@
 	[self calculate];
 }
 
+#pragma mark -- HISTORY
+
 - (BOOL)addDataToHistory {
 	FNLOG(@"%@, %d", _editingObject.principal, _editingObject.hasChanges);
 
@@ -924,6 +926,12 @@
 	FNLOG();
 
 	return YES;
+}
+
+- (void)historySelected:(LoanCalcHistory *)object {
+	_editingObject = object;
+	[self calculate];
+	[self.quickDialogTableView reloadData];
 }
 
 @end

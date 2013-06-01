@@ -13,6 +13,7 @@
 #import "NSString+conversion.h"
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
+#import "A3UserDefaults.h"
 
 
 @interface A3QuickDialogContainerController ()
@@ -107,10 +108,6 @@
 	[self.quickDialogTableView setContentOffset:CGPointMake(0.0, 0.0)];
 }
 
-- (NSString *)defaultCurrencyCode {
-	return [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-}
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
@@ -195,12 +192,21 @@
 
 - (void)prepareNumberKeyboard:(QEntryTableViewCell *)cell forElelement:(QEntryElement *)element {
 	cell.textField.inputView = self.numberKeyboardViewController.view;
+	self.numberKeyboardViewController.currencyCode = self.defaultCurrencyCode;
 	self.numberKeyboardViewController.keyInputDelegate = cell.textField;
 	self.numberKeyboardViewController.entryTableViewCell = cell;
 	self.numberKeyboardViewController.element = element;
 
 	cell.textField.text = [cell.textField.text stringByDecimalConversion];
 	[self.numberKeyboardViewController reloadPrevNextButtons];
+}
+
+- (NSString *)userCurrencyCodeForKey:(NSString *)key {
+	NSString *userCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:key];
+	if (nil == userCurrencyCode) {
+		userCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3AppDefaultUserCurrencyCode];
+	}
+	return userCurrencyCode;
 }
 
 @end

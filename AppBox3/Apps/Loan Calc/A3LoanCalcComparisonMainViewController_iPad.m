@@ -106,6 +106,12 @@
 - (void)loanCalcComparisonTableViewValueChanged {
 	[super loanCalcComparisonTableViewValueChanged];
 
+	[self reloadData];
+}
+
+- (void)reloadData {
+	[super reloadData];
+
 	[_firstColumnInScrollView updateLabels];
 	[_secondColumnInScrollView reloadData];
 	[_thirdColumnInScrollView reloadData];
@@ -114,6 +120,20 @@
 
 - (UIFont *)fontForEntryCellTextField {
 	return [UIFont boldSystemFontOfSize:23.0];
+}
+
+- (void)setLeftObject:(LoanCalcHistory *)leftObject {
+	[super setLeftObject:leftObject];
+	LoanCalcHistory *rightObject = leftObject.compareWith;
+
+	_firstColumnInScrollView.leftObject = leftObject;
+	_firstColumnInScrollView.rightObject = rightObject;
+	_secondColumnInScrollView.objectA = leftObject;
+	_secondColumnInScrollView.objectB = rightObject;
+	_thirdColumnInScrollView.objectA = leftObject;
+	_thirdColumnInScrollView.objectB = rightObject;
+	_fourthColumnInScrollView.objectA = leftObject;
+	_fourthColumnInScrollView.objectB = rightObject;
 }
 
 @end

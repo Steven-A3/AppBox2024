@@ -6,26 +6,23 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
-#import <Foundation/Foundation.h>
 #import "A3LoanCalcComparisonMainViewController.h"
-#import "A3LoanCalcComparisonTopLeftViewController.h"
-#import "A3LoanCalcPrincipalBarChartController.h"
-#import "DDPageControl.h"
 #import "A3CircleView.h"
 #import "common.h"
 #import "A3LoanCalcComparisonTableViewDataSource.h"
 #import "A3AppDelegate.h"
 #import "A3LoanCalcPreferences.h"
 #import "EKKeyboardAvoidingScrollViewManager.h"
-#import "A3LoanCalcSingleBarChartController.h"
 #import "NSManagedObject+Clone.h"
 
 @interface A3LoanCalcComparisonMainViewController () <A3LoanCalcComparisonTableViewDataSourceDelegate>
 
 @end
 
-@implementation A3LoanCalcComparisonMainViewController
+@implementation A3LoanCalcComparisonMainViewController {
+
+}
+@synthesize leftObject = _leftObject, rightObject = _rightObject;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -200,6 +197,11 @@
 	[self addDataToHistory];
 }
 
+- (void)reloadData {
+	// This is a prototype implementation and sub clias _iPhone & _iPad have to
+	// complete it.
+}
+
 - (void)addDataToHistory {
 	if (![self.leftObject hasChanges] && ![self.rightObject hasChanges]) {
 		FNLOG(@"Nothing to add.");
@@ -219,6 +221,21 @@
 	if ([managedObjectContext save:&error]) {
 		FNLOG(@"History saved successfully!");
 	}
+}
+
+- (void)historySelected:(LoanCalcHistory *)object {
+	[self setLeftObject:object];
+
+	[self.leftTableView reloadData];
+	[self.rightTableView reloadData];
+	[self reloadData];
+}
+
+- (void)setLeftObject:(LoanCalcHistory *)leftObject {
+	_leftObject = leftObject;
+	_rightObject = leftObject.compareWith;
+	_leftTableViewDataSource.object = _leftObject;
+	_rightTableViewDataSource.object = _rightObject;
 }
 
 @end

@@ -24,7 +24,7 @@
 #import "A3LoanCalcCompareHistoryViewController.h"
 #import "common.h"
 
-@interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate, A3HistoryViewControllerDelegate>
+@interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3LoanCalcQuickDialogViewController *quickDialogViewController;
@@ -141,11 +141,11 @@
 	UIViewController *viewController;
 	if (self.segmentedControl.selectedSegmentIndex == 0) {
 		A3LoanCalcHistoryViewController *aviewController = [[A3LoanCalcHistoryViewController alloc] initWithNibName:nil bundle:nil];
-		aviewController.delegate = self;
+		aviewController.delegate = _quickDialogViewController;
 		viewController = aviewController;
 	} else {
 		A3LoanCalcCompareHistoryViewController *aviewController = [[A3LoanCalcCompareHistoryViewController alloc] initWithNibName:nil bundle:nil];
-		aviewController.delegate = self;
+		aviewController.delegate = _comparisonViewController;
 		viewController = aviewController;
 	}
 
@@ -162,10 +162,6 @@
 }
 
 - (void)shareAction {
-
-}
-
-- (void)historySelected:(id)object {
 
 }
 
