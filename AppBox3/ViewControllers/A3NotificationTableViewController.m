@@ -167,7 +167,7 @@
 		UILabel *updateDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(tableViewWidth - rightSpace - labelWidth, 15.0f, labelWidth, 15.0f)];
 		updateDateLabel.backgroundColor = [UIColor clearColor];
 		updateDateLabel.textColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
-		updateDateLabel.textAlignment = UITextAlignmentRight;
+		updateDateLabel.textAlignment = NSTextAlignmentRight;
 		updateDateLabel.font = [UIFont boldSystemFontOfSize:12.0f];
 		[mySectionHeaderView addSubview:updateDateLabel];
 

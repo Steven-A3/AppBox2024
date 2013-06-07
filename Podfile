@@ -6,7 +6,7 @@ pod 'QuickDialog'
 pod 'NYXImagesKit'
 pod 'BCGenieEffect', '~> 1.0'
 pod 'SSCheckBoxView'
-pod 'TTTAttributedLabel'
+pod 'JSMessagesViewController'
 
 target :GHUnitTests do
 	pod 'GHUnitIOS'

@@ -9,8 +9,8 @@
 // AFNetworking
 #define COCOAPODS_POD_AVAILABLE_AFNetworking
 #define COCOAPODS_VERSION_MAJOR_AFNetworking 1
-#define COCOAPODS_VERSION_MINOR_AFNetworking 2
-#define COCOAPODS_VERSION_PATCH_AFNetworking 1
+#define COCOAPODS_VERSION_MINOR_AFNetworking 3
+#define COCOAPODS_VERSION_PATCH_AFNetworking 0
 
 // BCGenieEffect
 #define COCOAPODS_POD_AVAILABLE_BCGenieEffect
@@ -23,6 +23,12 @@
 #define COCOAPODS_VERSION_MAJOR_GHUnitIOS 0
 #define COCOAPODS_VERSION_MINOR_GHUnitIOS 5
 #define COCOAPODS_VERSION_PATCH_GHUnitIOS 6
+
+// JSMessagesViewController
+#define COCOAPODS_POD_AVAILABLE_JSMessagesViewController
+#define COCOAPODS_VERSION_MAJOR_JSMessagesViewController 1
+#define COCOAPODS_VERSION_MINOR_JSMessagesViewController 1
+#define COCOAPODS_VERSION_PATCH_JSMessagesViewController 0
 
 // NYXImagesKit
 #define COCOAPODS_POD_AVAILABLE_NYXImagesKit
@@ -53,10 +59,4 @@
 #define COCOAPODS_VERSION_MAJOR_SSCheckBoxView 0
 #define COCOAPODS_VERSION_MINOR_SSCheckBoxView 0
 #define COCOAPODS_VERSION_PATCH_SSCheckBoxView 1
-
-// TTTAttributedLabel
-#define COCOAPODS_POD_AVAILABLE_TTTAttributedLabel
-#define COCOAPODS_VERSION_MAJOR_TTTAttributedLabel 1
-#define COCOAPODS_VERSION_MINOR_TTTAttributedLabel 6
-#define COCOAPODS_VERSION_PATCH_TTTAttributedLabel 4
 

@@ -92,7 +92,7 @@
 		stockTitle.text = titleString;
 		stockTitle.font = tickerFont;
 		stockTitle.textColor = [UIColor whiteColor];
-		stockTitle.textAlignment = UITextAlignmentCenter;
+		stockTitle.textAlignment = NSTextAlignmentCenter;
 		[tickerItemsArray addObject:stockTitle];
 
 		BOOL increase = [[stockInfo objectForKey:@"Change"] floatValue] >= 0.0f;
@@ -105,7 +105,7 @@
 		stockValueChange.backgroundColor = [UIColor clearColor];
 		stockValueChange.text = change;
 		stockValueChange.textColor = increase ? [UIColor greenColor] : [UIColor redColor];
-		stockValueChange.textAlignment = UITextAlignmentCenter;
+		stockValueChange.textAlignment = NSTextAlignmentCenter;
 		stockValueChange.font = tickerFont;
 		[tickerItemsArray addObject:stockValueChange];
 	}

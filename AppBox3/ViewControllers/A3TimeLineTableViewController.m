@@ -98,7 +98,7 @@
 	UILabel *sectionTitleLabel = [[UILabel alloc] initWithFrame:sectionFooterView.bounds];
 	sectionTitleLabel.font = [UIFont boldSystemFontOfSize:24.0f];
 	sectionTitleLabel.backgroundColor = [UIColor clearColor];
-	sectionTitleLabel.textAlignment = UITextAlignmentCenter;
+	sectionTitleLabel.textAlignment = NSTextAlignmentCenter;
 	sectionTitleLabel.text = @"2012";
 	[sectionFooterView addSubview:sectionTitleLabel];
 	return sectionFooterView;

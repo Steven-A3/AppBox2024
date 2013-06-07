@@ -103,7 +103,7 @@
 	if (nil == _locationLabel) {
 		_locationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0f, 47.0f, self.borderView.bounds.size.width - 20.0f, 14.0f)];
 		_locationLabel.backgroundColor = [UIColor clearColor];
-		_locationLabel.textAlignment = UITextAlignmentRight;
+		_locationLabel.textAlignment = NSTextAlignmentRight;
 		_locationLabel.font = [UIFont systemFontOfSize:13.0f];
 		_locationLabel.textColor = [UIColor lightGrayColor];
 		[self.borderView addSubview:_locationLabel];

@@ -89,7 +89,7 @@
 			label.textColor = textColor;
 			label.backgroundColor = backgroundColor;
 			label.font = labelFont;
-			label.textAlignment = UITextAlignmentCenter;
+			label.textAlignment = NSTextAlignmentCenter;
 			[self addSubview:label];
 		}
 	}

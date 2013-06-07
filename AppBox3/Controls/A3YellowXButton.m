@@ -31,7 +31,7 @@
 		CGRect xFrame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds) - height * 0.07f, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
 		UILabel *X = [[UILabel alloc] initWithFrame:xFrame];
 		X.text = @"×";
-		X.textAlignment = UITextAlignmentCenter;
+		X.textAlignment = NSTextAlignmentCenter;
 		X.font = [UIFont boldSystemFontOfSize:CGRectGetHeight(self.bounds) * 1.2];
 		X.textColor = [UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f];
 		X.backgroundColor = [UIColor clearColor];

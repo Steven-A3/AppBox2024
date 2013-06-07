@@ -53,7 +53,7 @@
 - (UILabel *)detailText {
 	if (nil == _detailText) {
 		_detailText = [[UILabel alloc] initWithFrame:CGRectZero];
-		_detailText.textAlignment = UITextAlignmentRight;
+		_detailText.textAlignment = NSTextAlignmentRight;
 		_detailText.font = [UIFont boldSystemFontOfSize:12.0f];
 		_detailText.textColor = [UIColor colorWithRed:153.0f/255.0f green:153.0f/255.0f blue:153.0f/255.0f alpha:1.0f];
 		_detailText.backgroundColor = [UIColor clearColor];
@@ -65,7 +65,7 @@
 - (UILabel *)detailText2 {
 	if (nil == _detailText2) {
 		_detailText2 = [[UILabel alloc] initWithFrame:CGRectZero];
-		_detailText2.textAlignment = UITextAlignmentRight;
+		_detailText2.textAlignment = NSTextAlignmentRight;
 		_detailText2.font = [UIFont boldSystemFontOfSize:12.0f];
 		_detailText2.textColor = [UIColor colorWithRed:184.0f/255.0f green:184.0f/255.0f blue:184.0f/255.0f alpha:1.0f];
 		_detailText2.backgroundColor = [UIColor clearColor];

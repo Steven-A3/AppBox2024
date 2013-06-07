@@ -200,10 +200,10 @@
 		_titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds))];
 		_titleLabel.textColor = [UIColor whiteColor];
 		_titleLabel.font = [UIFont boldSystemFontOfSize:30.0];
-		_titleLabel.minimumFontSize = 8.0;
+        _titleLabel.minimumScaleFactor = 0.5;
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.backgroundColor = [UIColor clearColor];
-		_titleLabel.textAlignment = UITextAlignmentCenter;
+		_titleLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_titleLabel];
 	}
 	return _titleLabel;

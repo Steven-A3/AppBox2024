@@ -182,7 +182,7 @@
 	NSString *emailBody = @"This is a Expense List data.";
 	[picker setMessageBody:emailBody isHTML:NO];
 
-	[self presentModalViewController:picker animated:YES];
+	[self presentViewController:picker animated:YES completion:nil];
 }
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller
@@ -206,7 +206,7 @@
 //			feedbackMsg.text = @"Result: Mail not sent";
 //			break;
 //	}
-	[self dismissModalViewControllerAnimated:YES];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
