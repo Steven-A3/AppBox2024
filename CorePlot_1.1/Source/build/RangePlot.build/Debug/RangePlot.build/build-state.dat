@@ -1,268 +1,0 @@
-TRangePlot
-v5
-r1
-cCheck dependencies
-cProcessInfoPlistFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Info.plist Info.plist
-cCopyStringsFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-cCompileXIB /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib
-cCpResource CorePlotIcon.icns ../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns
-cCpResource BlueTexture.png ../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.png
-cPBXCp /Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework ../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.framework
-cProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.pth RangePlot_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC ../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-cLd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot normal x86_64
-cTouch /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-c0000000050949D4F00000000000000AA
-t1351916879
-s170
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/Cocoa.framework/Headers/Cocoa.h
-c00000000505A7F8800000000000001E5
-t1348108168
-s485
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/System/Library/Frameworks/QuartzCore.framework/QuartzCore
-c00000000505A7F89000000000004DE20
-t1348108169
-s319008
-
-N/System/Library/Frameworks/Cocoa.framework/Cocoa
-c000000005012A40D0000000000006730
-t1343398925
-s26416
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework
-c0000000050B06E5E00000000000000EE
-t1353739870
-s238
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework/CorePlot
-c0000000050B06E5E0000000000157F98
-t1353739870
-s1408920
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/CorePlot.framework/CorePlot
-c0000000050B06E5E0000000000157F98
-t1353739870
-s1408920
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.framework
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Info.plist
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/PkgInfo
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.png
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/English.lproj/InfoPlist.strings
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/RangePlot.nib
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.o
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/RangePlot.LinkFileList
-c0000000050B06E5E000000000000011C
-t1353739870
-s284
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.o
-t2
-s0
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/BlueTexture.png
-c000000005047E5640000000000059EFE
-t1346889060
-s368382
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m
-c00000000509FEE070000000000001530
-t1352658439
-s5424
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/CorePlotIcon.icns
-c000000005047E5640000000000048DD5
-t1346889060
-s298453
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/English.lproj/InfoPlist.strings
-c000000005047E564000000000000005C
-t1346889060
-s92
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib
-c000000005047E564000000000001F8E1
-t1346889060
-s129249
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot_Prefix.pch
-c000000005047E5640000000000000097
-t1346889060
-s151
-i<Cocoa/Cocoa.h>
-
-N/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m
-c00000000509FEE070000000000000102
-t1352658439
-s258
-
-N/var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.pth
-t2
-s0
-
-NInfo.plist
-c000000005047E5640000000000000364
-t1346889060
-s868
-
-CBuild AST from /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m
-r0
-
-CBuild AST from /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciesea77eddea560b641^80f0eddea560b641^---0#1#0#--18"Check dependencies36"ED0F0A0B-B1FE-4022-8822-D45BFC9B2891-
-
-CCompileC ../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s375432671.564879
-e375432671.653205
-r1
-xCompileC
-x../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.o
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection80"Compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.ma9c190dfa560b641^e239a7dfa560b641^---0#0#0#-19%DVTDocumentLocation2@88"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m0000000000000000^3429"CompileC ../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.o Controller.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -fvisibility=hidden -Wno-sign-conversion "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-project-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/DerivedSources/x86_64 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug -include /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch -MMD -MT dependencies -MF /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.d --serialize-diagnostics /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Controller.m -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/Controller.o36"1F31DDDF-B298-41FB-AE61-20E6E7EE1367-
-
-CCompileC ../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s375432671.564930
-e375432671.595398
-r1
-xCompileC
-x../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.o
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection81"Compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.mfdc190dfa560b641^726d98dfa560b641^---0#0#0#-19%DVTDocumentLocation2@89"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m0000000000000000^3407"CompileC ../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.o Source/main.m normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c -arch x86_64 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -fvisibility=hidden -Wno-sign-conversion "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-project-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/DerivedSources/x86_64 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug -include /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch -MMD -MT dependencies -MF /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.d --serialize-diagnostics /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Source/main.m -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/main.o36"E90DA1AA-C128-4A4B-A54D-B8B9FFC2D11B-
-
-CCompileXIB /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib
-s375432670.948967
-e375432671.000271
-r1
-xCompileXIB
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection83"Compiling /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib6501f3dea560b641^6a1200dfa560b641^---0#0#0#-19%DVTDocumentLocation2@89"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib0000000000000000^624"CompileXIB RangePlot.xib    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    setenv XCODE_DEVELOPER_USR_PATH /Applications/Xcode.app/Contents/Developer/usr/bin/..    /Applications/Xcode.app/Contents/Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/RangePlot.nib /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot.xib --sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk36"B96EC874-0DD2-4FD4-95B0-A298BDB15B61-
-
-CCopyStringsFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings
-s375432670.948965
-e375432670.952402
-r1
-xCopyStringsFile
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/English.lproj/InfoPlist.strings
-xEnglish.lproj/InfoPlist.strings
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection36"Copy English.lproj/InfoPlist.strings8a04f3dea560b641^8dd0f3dea560b641^---0#0#0#-19%DVTDocumentLocation2@107"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/English.lproj/InfoPlist.strings0000000000000000^449"CopyStringsFile ../../build/Debug/RangePlot.app/Contents/Resources/English.lproj/InfoPlist.strings English.lproj/InfoPlist.strings    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    builtin-copyStrings --validate --inputencoding utf-16 --outputencoding UTF-16 --outdir /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/English.lproj -- English.lproj/InfoPlist.strings36"31139E91-5399-458E-85F8-4D90425DAE54-
-
-CCpResource BlueTexture.png ../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.png
-s375432670.949001
-e375432670.958979
-r1
-xCpResource
-xBlueTexture.png
-x../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.png
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection71"Copy ../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.pngd103f3dea560b641^2c80f5dea560b641^---0#0#0#-19%DVTDocumentLocation2@142"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.png000000000080d041^460"CpResource BlueTexture.png ../../build/Debug/RangePlot.app/Contents/Resources/BlueTexture.png    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/BlueTexture.png /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources36"9D91EF4B-1DD5-4979-A2FE-B02CD718C5B0-
-
-CCpResource CorePlotIcon.icns ../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns
-s375432670.948985
-e375432670.956884
-r1
-xCpResource
-xCorePlotIcon.icns
-x../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection73"Copy ../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns7006f3dea560b641^40f8f4dea560b641^---0#0#0#-19%DVTDocumentLocation2@144"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns000000000080d041^466"CpResource CorePlotIcon.icns ../../build/Debug/RangePlot.app/Contents/Resources/CorePlotIcon.icns    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/CorePlotIcon.icns /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Resources36"983D7284-351E-486F-9259-A3251A53D736-
-
-CLd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot normal x86_64
-s375432671.659572
-e375432671.691336
-r1
-xLd
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot
-xnormal
-xx86_64
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection121"Link /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot75e8a8dfa560b641^fcfbb0dfa560b641^---0#0#0#--1032"Ld ../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot normal x86_64    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    setenv MACOSX_DEPLOYMENT_TARGET 10.8    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -L/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug -filelist /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/Objects-normal/x86_64/RangePlot.LinkFileList -mmacosx-version-min=10.8 -fobjc-link-runtime /Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework/CorePlot -framework Cocoa -framework QuartzCore -framework CorePlot -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/MacOS/RangePlot36"FD4655F1-27B8-4893-8757-4D2CA383CDCF-
-
-CPBXCp /Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework ../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.framework
-s375432671.008270
-e375432671.022275
-r1
-xPBXCp
-x/Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework
-x../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.framework
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection75"Copy ../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.frameworkd82902dfa560b641^67b405dfa560b641^---0#0#0#-19%DVTDocumentLocation2@146"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.framework000000000080d041^512"PBXCp /Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework ../../build/Debug/RangePlot.app/Contents/Frameworks/CorePlot.framework    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/bkk/Downloads/CorePlot_1.1/Source/build/Debug/CorePlot.framework /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Frameworks36"3E7EDF38-4116-4B37-BA0C-B047563D2854-
-
-CProcessInfoPlistFile /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Info.plist Info.plist
-s375432670.937328
-e375432670.940686
-r1
-xProcessInfoPlistFile
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Info.plist
-xInfo.plist
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Process Info.plist4304f0dea560b641^63d1f0dea560b641^---0#0#0#-19%DVTDocumentLocation2@86"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/Info.plist0000000000000000^465"ProcessInfoPlistFile ../../build/Debug/RangePlot.app/Contents/Info.plist Info.plist    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    builtin-infoPlistUtility Info.plist -genpkginfo /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/PkgInfo -expandbuildsettings -platform macosx -o /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app/Contents/Info.plist36"BCCD5A83-FA26-4148-A505-3AC6F3081A46-
-
-CProcessPCH /Users/bkk/Library/Developer/Xcode/DerivedData/RangePlot-akvsjyfgyskosobbkgplraimzswa/Index/PrecompiledHeaders/RangePlot_Prefix-aexfqhpzfxhtxqdvyyjoaekouegq_ast/RangePlot_Prefix.pch.pth RangePlot_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.astbuilder
-r0
-
-CProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.pth RangePlot_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler
-s375432671.029585
-e375432671.557784
-r1
-xProcessPCH
-x/var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.pth
-xRangePlot_Prefix.pch
-xnormal
-xx86_64
-xobjective-c
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection31"Precompile RangePlot_Prefix.pche7a807dfa560b641^81cc8edfa560b641^---0#0#0#-19%DVTDocumentLocation2@96"file://localhost/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot_Prefix.pch0000000000000000^3420"ProcessPCH /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.pth RangePlot_Prefix.pch normal x86_64 objective-c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    setenv LANG en_US.US-ASCII    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x objective-c-header -arch x86_64 -fmessage-length=0 -std=c99 -Wno-trigraphs -fpascal-strings -O0 -Werror -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wno-implicit-atomic-properties -Wno-receiver-is-weak -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wno-empty-body -Wno-uninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -Wno-selector -Wno-strict-selector-match -Wno-undeclared-selector -Wno-deprecated-implementations -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk -fasm-blocks -Wprotocol -Wdeprecated-declarations -mmacosx-version-min=10.8 -g -fvisibility=hidden -Wno-sign-conversion "-DIBOutlet=__attribute__((iboutlet))" "-DIBOutletCollection(ClassName)=__attribute__((iboutletcollection(ClassName)))" "-DIBAction=void)__attribute__((ibaction)" -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-generated-files.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-own-target-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-all-target-headers.hmap -iquote /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/RangePlot-project-headers.hmap -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/DerivedSources/x86_64 -I/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/RangePlot.build/Debug/RangePlot.build/DerivedSources -F/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug --serialize-diagnostics /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.dia -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/RangePlot_Prefix.pch -o /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.pth -MMD -MT dependencies -MF /var/folders/wv/ymmt2yg9719f88q8y9kt94540000gn/C/com.apple.Xcode.501/SharedPrecompiledHeaders/RangePlot_Prefix-hcipngkcnyfrmmabsuivwlwkpiao/RangePlot_Prefix.pch.d36"80B9E98D-14D4-467E-8883-64A83157763F-
-
-CTouch /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app
-s375432671.699147
-e375432671.704242
-r1
-xTouch
-x/Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection97"Touch /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app3a07b3dfa560b641^aa49b4dfa560b641^---0#0#0#--219"Touch ../../build/Debug/RangePlot.app    cd /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot    /usr/bin/touch -c /Users/bkk/Downloads/CorePlot_1.1/Source/examples/RangePlot/../../build/Debug/RangePlot.app36"00C33C7F-4523-4E7A-836E-E0FFF5EE3BB4-
-
