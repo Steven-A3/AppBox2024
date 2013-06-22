@@ -1,4 +1,0 @@
-Documentation set was installed to Xcode!
-
-Path: /Users/bkk/Library/Developer/Shared/Documentation/DocSets/org.cocoapods.FRLayeredNavigationController-0.3.0.docset
-Time: 2012-08-27 03:29:11 +0000

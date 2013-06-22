@@ -20,6 +20,8 @@
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3HorizontalBarChartView.h"
+#import "MagicalRecord.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
 
 @interface A3ExpenseListDetailsTableViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 
@@ -53,8 +55,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	NSError *error;
-	[[A3AppDelegate instance].managedObjectContext save:&error];
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
 }
 
 - (void)didReceiveMemoryWarning
@@ -339,10 +340,6 @@
 
 	cell.subtotal.text = [self.currencyFormatter stringFromNumber:[NSNumber numberWithFloat:[_editingDetail.price floatValueEx] * [_editingDetail.quantity floatValueEx] ] ];
 
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
-	NSError *error;
-	[managedObjectContext save:&error];
-
 	[self calculate];
 
 	FNLOG(@"%@", textField.text);
@@ -390,7 +387,7 @@
 		return _expenseObject;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Expense" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
@@ -410,7 +407,7 @@
 }
 
 - (void)addNewList {
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
 	_expenseObject = [NSEntityDescription insertNewObjectForEntityForName:@"Expense" inManagedObjectContext:managedObjectContext];
 	_expenseObject.date = [NSDate date];
 
@@ -542,9 +539,6 @@
 - (void)historySelected:(Expense *)expenseObject {
 	_expenseObject = expenseObject;
 	_expenseObject.date = [NSDate date];
-
-	NSError *error;
-	[[A3AppDelegate instance].managedObjectContext save:&error];
 
 	_orderedDetails = nil;
 	[self.tableView reloadData];

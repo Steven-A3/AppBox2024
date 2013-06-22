@@ -1,1 +1,0 @@
-../../JSMessagesViewController/JSMessagesTableViewController/UIColor+JSMessagesView.h

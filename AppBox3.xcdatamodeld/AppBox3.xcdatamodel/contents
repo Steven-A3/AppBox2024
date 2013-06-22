@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12D78" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
@@ -91,6 +91,14 @@
         <attribute name="salePrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tax" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="TranslatorHistory" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sourceLanguageCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sourceText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="targetLanguageCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <elements>
         <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
         <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
@@ -101,5 +109,6 @@
         <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
         <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>
         <element name="SalesCalcHistory" positionX="160" positionY="192" width="128" height="210"/>
+        <element name="TranslatorHistory" positionX="160" positionY="192" width="128" height="135"/>
     </elements>
 </model>

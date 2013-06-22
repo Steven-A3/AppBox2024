@@ -188,7 +188,8 @@
 		for (NSInteger index = 0; index < [self.expression count]; index++) {
 			NSString *textToDisplay = [self.expression objectAtIndex:index];
 			if ([self isOperatorClassForString:textToDisplay]) {
-				drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
+                NSString *position = [drawingPositions objectAtIndex:index];
+				drawingPoint.x = [position floatValue] + drawingOffset;
 
 				if (nil == backgroundPath) {
 					backgroundPath = [self newOperatorPathWithRect:CEV_PATH_FOR_ROUNDED_RECT];
@@ -209,7 +210,8 @@
 		for (NSInteger index = 0; index < [self.expression count]; index++) {
 			NSString *textToDisplay = [self.expression objectAtIndex:index];
 			if ([self isOperatorClassForString:textToDisplay]) {
-				drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
+                NSString *position = [drawingPositions objectAtIndex:index];
+				drawingPoint.x = [position floatValue] + drawingOffset;
 
 				if (nil == backgroundPath) {
 					backgroundPath = [self newOperatorPathWithRect:CEV_PATH_FOR_ROUNDED_RECT];
@@ -226,7 +228,8 @@
 		for (NSInteger index = 0; index < [self.expression count]; index++) {
 			NSString *textToDisplay = [self.expression objectAtIndex:index];
 			if ([self isOperatorClassForString:textToDisplay]) {
-				drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
+                NSString *position = [drawingPositions objectAtIndex:index];
+				drawingPoint.x = [position floatValue] + drawingOffset;
 
 				CGFloat offset = CEV_OPERATOR_TEXT_OFFSET;
 				if ([textToDisplay isEqualToString:@"of"]) {
@@ -254,7 +257,8 @@
 			CGContextSetStrokeColorWithColor(context, [self colorAtIndex:index forValue:YES].CGColor);
 			CGContextSetFillColorWithColor(context, [self colorAtIndex:index forValue:YES].CGColor);
 
-			drawingPoint.x = [[drawingPositions objectAtIndex:index] floatValue] + drawingOffset;
+            NSString *position = [drawingPositions objectAtIndex:index];
+			drawingPoint.x = [position floatValue] + drawingOffset;
 			CGSize size = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:YES]];
 			drawingPoint.y = CGRectGetHeight(self.bounds)/2.0 - size.height / 2.0;
 			[textToDisplay drawAtPoint:drawingPoint withFont:[self fontAtIndex:index forValue:YES]];

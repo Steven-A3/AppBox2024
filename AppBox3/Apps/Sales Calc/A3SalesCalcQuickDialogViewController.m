@@ -21,6 +21,7 @@
 #import "NSManagedObject+Clone.h"
 #import "common.h"
 #import "A3ActionMenuViewController_iPad.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
 
 @interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate, A3ActionMenuViewControllerDelegate, A3QuickDialogCellStyleDelegate>
 
@@ -47,7 +48,7 @@
 - (SalesCalcHistory *)editingObject {
 	if (_editingObject) return _editingObject;
 
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
@@ -87,7 +88,7 @@
 		return NO;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
 	NSError *error;
 
 	SalesCalcHistory *historyObject = (SalesCalcHistory *) [_editingObject cloneInContext:managedObjectContext];

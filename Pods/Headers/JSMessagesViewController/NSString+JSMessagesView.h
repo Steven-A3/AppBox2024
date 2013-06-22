@@ -1,1 +1,0 @@
-../../JSMessagesViewController/JSMessagesTableViewController/NSString+JSMessagesView.h

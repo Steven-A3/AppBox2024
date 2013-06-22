@@ -1,1 +1,7 @@
-<?xml version='1.0' encoding='UTF-8'?><Workspace version='1.0'><FileRef location='group:CorePlot_1.1/Source/framework/CorePlot-CocoaTouch.xcodeproj'/><FileRef location='group:Pods/Pods.xcodeproj'/><FileRef location='group:AppBox3.xcodeproj'/></Workspace>
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:AppBox3.xcodeproj">
+   </FileRef>
+</Workspace>

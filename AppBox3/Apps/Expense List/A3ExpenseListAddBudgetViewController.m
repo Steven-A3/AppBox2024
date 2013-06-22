@@ -20,6 +20,8 @@
 #import "A3AddLocationViewController.h"
 #import "Expense.h"
 #import "FSVenue.h"
+#import "NSManagedObjectContext+MagicalRecord.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
 
 static NSString *A3ExpenseListAddBudgetKeyBugdet = @"budget";
 static NSString *A3ExpenseListAddBudgetKeyCategory = @"category";
@@ -74,11 +76,10 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (void)doneButtonAction {
-	A3AppDelegate *appDelegate = [A3AppDelegate instance];
-	NSError *error = nil;
-	[appDelegate.managedObjectContext save:&error];
+	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	if (DEVICE_IPAD) {
+		A3AppDelegate *appDelegate = [A3AppDelegate instance];
 		A3PaperFoldMenuViewController *paperFoldMenuViewController = [appDelegate paperFoldMenuViewController];
 		[paperFoldMenuViewController removeRightWingViewController];
 	} else {

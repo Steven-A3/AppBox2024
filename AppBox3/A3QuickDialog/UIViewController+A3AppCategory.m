@@ -459,10 +459,11 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	UIImage *buttonImage = [UIImage imageWithContentsOfFile:path];
 	[button setImage:buttonImage forState:UIControlStateNormal];
 	[button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-	button.frame = CGRectMake([coordinateX[index] floatValue], 18.0, buttonImage.size.width, buttonImage.size.height);
+    NSString *coordinateXStr = coordinateX[index];
+	button.frame = CGRectMake([coordinateXStr floatValue], 18.0, buttonImage.size.width, buttonImage.size.height);
 	[self.actionMenuViewController.view addSubview:button];
 
-	CGRect frame = CGRectMake([coordinateX[index] floatValue] + buttonImage.size.width + 5.0, 19.0, labelWidth, labelHeight);
+	CGRect frame = CGRectMake([coordinateXStr floatValue] + buttonImage.size.width + 5.0, 19.0, labelWidth, labelHeight);
 	UILabel *label = [[UILabel alloc] initWithFrame:frame];
 	label.backgroundColor = [UIColor clearColor];
 	label.text = title;

@@ -1,1 +1,0 @@
-../../JSMessagesViewController/JSMessagesTableViewController/UIView+AnimationOptionsForCurve.h

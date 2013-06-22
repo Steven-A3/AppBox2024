@@ -20,6 +20,7 @@
 #import "A3UIDevice.h"
 #import "A3LoanCalcPieChartController.h"
 #import "NSManagedObject+Clone.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
 
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
@@ -100,7 +101,7 @@
 
 		[self calculate];
 
-		NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
 		NSError *error;
 		[managedObjectContext save:&error];
 	}
@@ -300,7 +301,7 @@
 
 - (LoanCalcHistory *)editingObject {
 	if (nil == _editingObject) {
-		NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 		[fetchRequest setEntity:entity];
@@ -914,7 +915,7 @@
 		return NO;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
 	NSError *error;
 
 	LoanCalcHistory *historyObject = (LoanCalcHistory *) [_editingObject cloneInContext:managedObjectContext];

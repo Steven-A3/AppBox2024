@@ -14,6 +14,7 @@
 #import "A3LoanCalcPreferences.h"
 #import "EKKeyboardAvoidingScrollViewManager.h"
 #import "NSManagedObject+Clone.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
 
 @interface A3LoanCalcComparisonMainViewController () <A3LoanCalcComparisonTableViewDataSourceDelegate>
 
@@ -138,7 +139,7 @@
 }
 
 - (LoanCalcHistory *)getEditingObjectForLeft:(BOOL)left {
-	NSManagedObjectContext *managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];

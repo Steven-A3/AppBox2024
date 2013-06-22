@@ -12,10 +12,11 @@
 #import "CurrencyItem.h"
 #import "CurrencyItem+name.h"
 #import "A3AppDelegate.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
+#import "NSManagedObject+MagicalFinders.h"
 
 @interface A3CurrencySelectViewController ()
 
-@property (nonatomic, weak) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UIView *searchBarPlaceholderView;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -33,7 +34,6 @@
 		_myTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		_myTableView.delegate = self;
 		_myTableView.dataSource = self;
-		_managedObjectContext = [[A3AppDelegate instance] managedObjectContext];
 	}
 
 	return self;
@@ -153,8 +153,6 @@
 	CurrencyItem *currencyItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
 	if (![currencyItem.name length]) {
 		currencyItem.name = [currencyItem localizedName];
-		NSError *error;
-		[self.managedObjectContext save:&error];
 	}
 	cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", currencyItem.currencyCode, currencyItem.name];
     
@@ -211,26 +209,9 @@
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
-	if (_fetchedResultsController != nil) {
-		return _fetchedResultsController;
+	if (nil == _fetchedResultsController) {
+		_fetchedResultsController = [CurrencyItem MR_fetchAllGroupedBy:@"currencyCode.stringGroupByFirstInitial" withPredicate:nil sortedBy:@"currencyCode" ascending:YES];
 	}
-
-	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
-	NSEntityDescription *entity = [NSEntityDescription
-			entityForName:@"CurrencyItem" inManagedObjectContext:self.managedObjectContext];
-	[fetchRequest setEntity:entity];
-
-	NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"currencyCode" ascending:YES];
-	[fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-
-	[fetchRequest setFetchBatchSize:20];
-
-	NSFetchedResultsController *theFetchedResultsController =
-			[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-												managedObjectContext:self.managedObjectContext
-												  sectionNameKeyPath:@"currencyCode.stringGroupByFirstInitial"
-														   cacheName:@"CurrencyItem"];
-	self.fetchedResultsController = theFetchedResultsController;
 
 	return _fetchedResultsController;
 }

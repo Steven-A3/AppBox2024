@@ -15,4 +15,5 @@
     #import <SystemConfiguration/SystemConfiguration.h>
 	#import <MobileCoreServices/MobileCoreServices.h>
     #import <QuickDialog/QuickDialog.h>
+	#import <CoreData+MagicalRecord.h>
 #endif

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "A3AppDataUtility.h"
 #import "MenuGroup.h"
 #import "MenuItem.h"

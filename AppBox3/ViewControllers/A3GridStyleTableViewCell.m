@@ -22,7 +22,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	if (self) {
-		self.backgroundColor = [UIColor yellowColor];
+//		self.backgroundColor = [UIColor yellowColor];
 	}
 
 	return self;
@@ -51,13 +51,16 @@
 
 	// Remove all subviews from self.view
 	for (UIView *subview in [self subviews]) {
-		[subview removeFromSuperview];
+        if (subview.tag) {
+            [subview removeFromSuperview];
+        }
 	}
 
 	A3GradientView *gradientView = [[A3GradientView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), 2.0f)];
 	NSArray *gradientColors = @[(__bridge id)[[UIColor colorWithRed:215.0f/255.0f green:217.0f/255.0f blue:219.0f/255.0f alpha:1.0f] CGColor],
 	(__bridge id)[[UIColor colorWithRed:236.0f/255.0f green:236.0f/255.0f blue:237.0f/255.0f alpha:1.0f] CGColor]];
 	gradientView.gradientColors = gradientColors;
+    gradientView.tag = 1;
 	[self addSubview:gradientView];
 
 	CGFloat columnWidth = (CGRectGetWidth(self.bounds) - A3_GRID_VIEW_LEFT_MARGIN * 2.0f) / numberOfColumns;
@@ -79,6 +82,7 @@
 					A3_GRID_VIEW_CELL_IMAGE_WIDTH,
 					A3_GRID_VIEW_CELL_IMAGE_HEIGHT)];
 			[button setImage:image forState:UIControlStateNormal];
+            button.tag = 1;
 			[self addSubview:button];
 
 			CGRect labelFrame = CGRectMake(A3_GRID_VIEW_LEFT_MARGIN + columnWidth * (index % numberOfColumns),
@@ -90,6 +94,7 @@
 			label.backgroundColor = backgroundColor;
 			label.font = labelFont;
 			label.textAlignment = NSTextAlignmentCenter;
+            label.tag = 1;
 			[self addSubview:label];
 		}
 	}

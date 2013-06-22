@@ -95,8 +95,9 @@
 		stockTitle.textAlignment = NSTextAlignmentCenter;
 		[tickerItemsArray addObject:stockTitle];
 
-		BOOL increase = [[stockInfo objectForKey:@"Change"] floatValue] >= 0.0f;
-		NSString *change = [NSString stringWithFormat:@"%@ %@ %@",
+        NSString *change = [stockInfo objectForKey:@"Change"];
+		BOOL increase = [change floatValue] >= 0.0f;
+		change = [NSString stringWithFormat:@"%@ %@ %@",
 													  [stockInfo objectForKey:@"Change"],
 													  increase ? @"▲":@"▼",
 													  [stockInfo objectForKey:@"PercentChange"]];
