@@ -7,3 +7,6 @@
 [submodule "External/FontAwesomeIconFactory"]
 	path = External/FontAwesomeIconFactory
 	url = https://github.com/nschum/FontAwesomeIconFactory.git
+[submodule "External/KBPopupBubble"]
+	path = External/KBPopupBubble
+	url = https://github.com/psholtz/KBPopupBubble.git
