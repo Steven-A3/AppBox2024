@@ -4,3 +4,6 @@
 [submodule "External/AutoLayoutShorthand"]
 	path = External/AutoLayoutShorthand
 	url = https://github.com/rentzsch/AutoLayoutShorthand.git
+[submodule "External/FontAwesomeIconFactory"]
+	path = External/FontAwesomeIconFactory
+	url = https://github.com/nschum/FontAwesomeIconFactory.git
