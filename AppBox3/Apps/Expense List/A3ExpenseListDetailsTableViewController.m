@@ -16,12 +16,10 @@
 #import "NSString+conversion.h"
 #import "ExpenseDetail.h"
 #import "common.h"
-#import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3HorizontalBarChartView.h"
-#import "MagicalRecord.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
+#import "CoreData+MagicalRecord.h"
 
 @interface A3ExpenseListDetailsTableViewController () <UITextFieldDelegate, A3KeyboardDelegate>
 

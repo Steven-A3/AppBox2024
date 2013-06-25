@@ -9,6 +9,7 @@
 #import "A3GridStyleTableViewCell.h"
 #import "A3GradientView.h"
 #import "CommonUIDefinitions.h"
+#import "common.h"
 
 @interface A3GridStyleTableViewCell ()
 
@@ -54,8 +55,8 @@
         if (subview.tag) {
             [subview removeFromSuperview];
         }
-	}
 
+	}
 	A3GradientView *gradientView = [[A3GradientView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), 2.0f)];
 	NSArray *gradientColors = @[(__bridge id)[[UIColor colorWithRed:215.0f/255.0f green:217.0f/255.0f blue:219.0f/255.0f alpha:1.0f] CGColor],
 	(__bridge id)[[UIColor colorWithRed:236.0f/255.0f green:236.0f/255.0f blue:237.0f/255.0f alpha:1.0f] CGColor]];
@@ -75,14 +76,13 @@
 
 		if (image && title) {
 			UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-			button.tag = index;
+			button.tag = index + 333993;
 			[button addTarget:self action:@selector(touchUpInsideButton:) forControlEvents:UIControlEventTouchUpInside];
 			[button setFrame:CGRectMake(((index % numberOfColumns) + 1) * columnWidth - columnWidth / 2.0f + A3_GRID_VIEW_LEFT_MARGIN - A3_GRID_VIEW_CELL_IMAGE_WIDTH / 2.0f,
 					A3_GRID_VIEW_TOP_MARGIN + rowHeight * (index / numberOfColumns),
 					A3_GRID_VIEW_CELL_IMAGE_WIDTH,
 					A3_GRID_VIEW_CELL_IMAGE_HEIGHT)];
 			[button setImage:image forState:UIControlStateNormal];
-            button.tag = 1;
 			[self addSubview:button];
 
 			CGRect labelFrame = CGRectMake(A3_GRID_VIEW_LEFT_MARGIN + columnWidth * (index % numberOfColumns),
@@ -102,7 +102,7 @@
 
 - (void)touchUpInsideButton:(UIButton *)button {
 	if ([self.delegate respondsToSelector:@selector(gridStyleTableViewCell:didSelectItemAtIndex:)]) {
-		[self.delegate gridStyleTableViewCell:self didSelectItemAtIndex:button.tag];
+		[self.delegate gridStyleTableViewCell:self didSelectItemAtIndex:button.tag - 333993];
 	}
 }
 
