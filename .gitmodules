@@ -1,3 +1,6 @@
 [submodule "External/QuickDialog"]
 	path = External/QuickDialog
 	url = https://github.com/escoz/QuickDialog.git
+[submodule "External/AutoLayoutShorthand"]
+	path = External/AutoLayoutShorthand
+	url = https://github.com/rentzsch/AutoLayoutShorthand.git
