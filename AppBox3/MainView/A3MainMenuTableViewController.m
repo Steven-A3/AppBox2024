@@ -1,12 +1,12 @@
 //
-//  A3iPhoneMenuTableViewController.m
+//  A3MainMenuTableViewController.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 10/23/12.
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3iPhoneMenuTableViewController.h"
+#import "A3MainMenuTableViewController.h"
 #import "A3SectionHeaderViewInMenuTableView.h"
 #import "CommonUIDefinitions.h"
 #import "A3PaperFoldMenuViewController.h"
@@ -15,14 +15,16 @@
 #import "A3UIDevice.h"
 #import "A3SalesCalcQuickDialogViewController_iPad.h"
 #import "A3SalesCalcQuickDialogViewController_iPhone.h"
+#import "UIViewController+MMDrawerController.h"
+#import "UIViewController+navigation.h"
 
-@interface A3iPhoneMenuTableViewController ()
+@interface A3MainMenuTableViewController ()
 
 @property (nonatomic, retain)	NSMutableDictionary *gridStyleCells;
 
 @end
 
-@implementation A3iPhoneMenuTableViewController
+@implementation A3MainMenuTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -354,38 +356,38 @@
 }
 
 #pragma mark - GridViewControllerDelegate
-- (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
 
+- (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
 	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) {
+		UIViewController *targetViewController;
 		switch (selectedIndex) {
 			case 0: {
 				UIViewController *viewController;
-				if (DEVICE_IPAD) {
+				if (IS_IPAD) {
 					viewController = [[A3SalesCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
 				} else {
 					viewController = [[A3SalesCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
 				}
-				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
+				targetViewController = viewController;
 				break;
 			}
 			case 1:{
-				NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", DEVICE_IPAD?@"iPad" : @"iPhone"];
-				A3ExpenseListViewController *viewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
-				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
+				NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", IS_IPAD?@"iPad" : @"iPhone"];
+				targetViewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
 				break;
 			}
 			case 2: {
 				NSString *nibName;
-				if (DEVICE_IPAD) {
+				if (IS_IPAD) {
 					nibName = @"A3LoanCalcViewController_iPad";
 				} else {
 					nibName = @"A3LoanCalcViewController_iPhone";
 				}
-				A3LoanCalcViewController *viewController = [[A3LoanCalcViewController alloc] initWithNibName:nibName bundle:nil];
-				[self.paperFoldMenuViewController pushViewControllerToNavigationController:viewController];
+				targetViewController = [[A3LoanCalcViewController alloc] initWithNibName:nibName bundle:nil];
 				break;
 			}
 		}
+		[self popToRootAndPushViewController:targetViewController];
 	}
 }
 

@@ -467,7 +467,7 @@
 
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
 		} else {
 			_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];

@@ -18,7 +18,7 @@
 	if ([delegate respondsToSelector:@selector(heightForElement:)]) {
 		self.height = [delegate heightForElement:self];
 	} else {
-		self.height = DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+		self.height = IS_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 	}
 }
 

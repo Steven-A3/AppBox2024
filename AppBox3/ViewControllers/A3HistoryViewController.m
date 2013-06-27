@@ -98,6 +98,10 @@
 
 #pragma mark - Table view data source
 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return nil;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	// Return the number of sections.
@@ -162,7 +166,7 @@
 		[self.delegate historySelected:object];
 	}
 
-	if (!DEVICE_IPAD) {
+	if (!IS_IPAD) {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }

@@ -216,7 +216,7 @@
 
 - (void)setTableView:(UITableView *)tableView {
 	_tableView = tableView;
-	tableView.rowHeight = DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+	tableView.rowHeight = IS_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -258,7 +258,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+	return IS_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -274,7 +274,7 @@
 		frame = CGRectInset(frame, 20.0, 00.0);
 		UILabel *sectionTitleLabel = [[UILabel alloc] initWithFrame:frame];
 		sectionTitleLabel.backgroundColor = [UIColor clearColor];
-		sectionTitleLabel.font = [UIFont boldSystemFontOfSize:DEVICE_IPAD ? 24.0 : 18.0];
+		sectionTitleLabel.font = [UIFont boldSystemFontOfSize:IS_IPAD ? 24.0 : 18.0];
 		sectionTitleLabel.textColor = [UIColor colorWithRed:54.0/255.0 green:54.0/255.0 blue:54.0/255.0 alpha:1.0];
 		sectionTitleLabel.text = @"Extra Payments";
 		[sectionHeaderView addSubview:sectionTitleLabel];
@@ -333,14 +333,14 @@
 		@"comparison_note_", @"", @"comparison_extra_monthly_", @"comparison_extra_yearly_",
 		@"comparison_extra_onetime_"];
 	}
-	NSString *imageName = [NSString stringWithFormat:@"%@%@", [imageNames objectAtIndex:entry - 1], DEVICE_IPAD ? @"32" : @"24"];
+	NSString *imageName = [NSString stringWithFormat:@"%@%@", [imageNames objectAtIndex:entry - 1], IS_IPAD ? @"32" : @"24"];
 	NSString *path = [[NSBundle mainBundle] pathForResource:imageName ofType:@"png"];
 	return path;
 }
 
 - (CGRect)textFieldFrameForCell:(UITableViewCell *)cell {
 	CGRect frame;
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		frame = CGRectInset(cell.contentView.bounds, 15.0, 10.0);
 	} else {
 		frame = CGRectInset(cell.contentView.bounds, 32.0, 10.0);
@@ -409,7 +409,7 @@
 
 - (UIFont *)textFont {
 	UIFont *font;
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		font = [UIFont boldSystemFontOfSize:23.0];
 	} else {
 		font = [UIFont boldSystemFontOfSize:16.0];
@@ -432,7 +432,7 @@
 		{
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentYearly];
 			CGRect frame = [self textFieldFrameForCell:cell];
-			if (DEVICE_IPAD) {
+			if (IS_IPAD) {
 				if (_leftAlignment) {
 					frame.size.width = 173.0;
 				} else {
@@ -450,7 +450,7 @@
 			textField.frame = frame;
 
 			frame = self.extraPaymentYearlyMonth.frame;
-			if (DEVICE_IPAD) {
+			if (IS_IPAD) {
 				frame.origin.x = _leftAlignment ? 188.0 : 20.0;
 				frame.origin.y = 15.0;
 			} else {
@@ -465,7 +465,7 @@
 		case 2:{
 			textField = [self textFieldWithTag:A3LCEntryExtraPaymentOneTime];
 			CGRect frame = [self textFieldFrameForCell:cell];
-			if (DEVICE_IPAD) {
+			if (IS_IPAD) {
 				if (_leftAlignment) {
 					frame.size.width = 135.0;
 				} else {
@@ -482,7 +482,7 @@
 			textField.frame = frame;
 
 			frame = self.extraPaymentOneTimeYearMonth.frame;
-			if (DEVICE_IPAD) {
+			if (IS_IPAD) {
 				frame.origin.x = _leftAlignment ? 150.0 : 20.0;
 				frame.origin.y = 15.0;
 			} else {
@@ -511,7 +511,7 @@
 
 - (CGRect)imageViewFrame {
 	CGRect frame;
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		frame = CGRectMake(-15.0, 13.0, 32.0, 32.0);
 	} else {
 		frame = CGRectMake(-8.0, 13.0, 24.0, 24.0);
@@ -748,7 +748,7 @@
 
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	if (nil == _numberKeyboardViewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] init];
 		} else {
 			_numberKeyboardViewController = [[A3NumberKeyboardViewController_iPhone alloc] init];
@@ -784,7 +784,7 @@
 
 - (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
 	if (nil == _frequencyKeyboardViewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPad" bundle:nil];
 		} else {
 			_frequencyKeyboardViewController = [[A3FrequencyKeyboardViewController_iPhone alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPhone" bundle:nil];
@@ -796,7 +796,7 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	if (nil == _dateKeyboardViewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_dateKeyboardViewController = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		} else {
 			_dateKeyboardViewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
@@ -809,7 +809,7 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardForMonthInput {
 	if (nil == _dateKeyboardForMonthInput) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_dateKeyboardForMonthInput = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		} else {
 			_dateKeyboardForMonthInput = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
@@ -822,7 +822,7 @@
 
 - (A3DateKeyboardViewController *)dateKeyboardForYearMonthInput {
 	if (nil == _dateKeyboardForYearMonthInput) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		} else {
 			_dateKeyboardForYearMonthInput = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
@@ -937,8 +937,8 @@
 }
 
 - (void)reloadMainScrollViewContentSize {
-	CGFloat height = DEVICE_IPAD ? 289.0 : 192.0;
-	CGFloat tableViewHeight = 0.0, rowHeight = DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+	CGFloat height = IS_IPAD ? 289.0 : 192.0;
+	CGFloat tableViewHeight = 0.0, rowHeight = IS_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 	tableViewHeight += _object.showAdvanced.boolValue ?  rowHeight * 7.0 : rowHeight * 4.0;
 	tableViewHeight += _object.showDownPayment.boolValue ? rowHeight : 0.0;
 //	tableViewHeight += _object.showExtraPayment.boolValue ? 53.0 + rowHeight * 3.0 : 0.0;
@@ -954,7 +954,7 @@
 	frame.size.height = tableViewHeight;
 	self.tableView.frame = frame;
 
-	self.mainScrollView.contentSize = CGSizeMake(DEVICE_IPAD ? 714.0 : 320.0, height + tableViewHeight);
+	self.mainScrollView.contentSize = CGSizeMake(IS_IPAD ? 714.0 : 320.0, height + tableViewHeight);
 }
 
 

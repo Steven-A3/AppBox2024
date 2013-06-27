@@ -45,7 +45,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 	if (nil != viewController) return viewController;
 
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		A3ActionMenuViewController_iPad *iPadViewController = [[A3ActionMenuViewController_iPad alloc] initWithNibName:@"A3ActionMenuViewController_iPad" bundle:nil];
 		viewController = iPadViewController;
 	} else {
@@ -87,7 +87,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	frame.origin.y = 34.0;
 	self.actionMenuViewController.view.frame = frame;
 
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		((A3ActionMenuViewController_iPad *) self.actionMenuViewController).delegate = delegate;
 	} else {
 		((A3ActionMenuViewController_iPhone *) self.actionMenuViewController).delegate = delegate;
@@ -101,7 +101,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	if (self.actionMenuAnimating || [self removeCoverView]) return;
 
 	CGRect frame = self.emptyActionMenuViewController.view.frame;
-	if (!DEVICE_IPAD) {
+	if (!IS_IPAD) {
 		frame.size.width = APP_VIEW_WIDTH_iPHONE;
 	}
 	frame.origin.y = 34.0;
@@ -174,7 +174,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	A3NumberKeyboardViewController *viewController = objc_getAssociatedObject(self, key_numberKeyboardViewController);
 	if (nil == viewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			viewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
 			viewController.delegate = self;
 		} else {
@@ -193,7 +193,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
 	A3FrequencyKeyboardViewController *viewController = objc_getAssociatedObject(self, key_frequencyKeyboardViewController);
 	if (nil == viewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			viewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPad" bundle:nil];
 		} else {
 			viewController = [[A3FrequencyKeyboardViewController_iPhone alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPhone" bundle:nil];
@@ -211,7 +211,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	A3DateKeyboardViewController *viewController = objc_getAssociatedObject(self, key_dateKeyboardViewController);
 	if (nil == viewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			viewController = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 		} else {
 			viewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
@@ -444,7 +444,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector atIndex:(NSInteger)index {
 	static NSArray *coordinateX;
 	CGFloat labelWidth, labelHeight;
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		coordinateX = @[@156.0, @340.0, @523.0];
 		labelWidth = 130.0;
 		labelHeight = 32.0;

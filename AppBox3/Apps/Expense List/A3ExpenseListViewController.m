@@ -54,7 +54,7 @@
 
 	// Do any additional setup after loading the view.
 	_chartContainerView.chartLabelColor = [UIColor colorWithRed:73.0/255.0 green:74.0/255.0 blue:73.0/255.0 alpha:1.0];
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		_chartContainerView.chartLabelFont = [UIFont boldSystemFontOfSize:18.0];
 		_chartContainerView.chartValueFont = [UIFont boldSystemFontOfSize:22.0];
 		_chartContainerView.bottomValueFont = [UIFont boldSystemFontOfSize:20.0];
@@ -90,7 +90,7 @@
 	[_detailsViewController calculate];
 
 	A3VerticalLinesView *tableViewBackground = [[A3VerticalLinesView alloc] initWithFrame:_myTableView.bounds];
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		tableViewBackground.positions = @[@51.0, @53.0, @302.0, @412.0, @473.0];
 	} else {
 		tableViewBackground.positions = @[@40.0, @42.0, @142.0, @211.0, @240.0];
@@ -110,9 +110,10 @@
 
 - (void)editButtonAction {
 	A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithObject:self.detailsViewController.expenseObject];
-	if (DEVICE_IPAD){
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
+	if (IS_IPAD) {
+		MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+		[mm_drawerController setRightDrawerViewController:viewController];
+		[mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self applySilverNavigationBarStyleToNavigationVC:navController];
@@ -136,7 +137,7 @@
 }
 
 - (void)onActionButton:(UIButton *)button {
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		[self presentEmptyActionMenu];
 		[self addActionIcon:@"t_newList" title:@"New List" selector:@selector(newListAction) atIndex:0];
 		[self addActionIcon:@"t_history" title:@"History" selector:@selector(showHistoryAction) atIndex:1];
@@ -157,9 +158,10 @@
 
 	A3ExpenseListHistoryViewController *viewController = [[A3ExpenseListHistoryViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self.detailsViewController;
-	if (DEVICE_IPAD){
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
+	if (IS_IPAD){
+		MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+		[mm_drawerController setRightDrawerViewController:viewController];
+		[mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self applySilverNavigationBarStyleToNavigationVC:navController];

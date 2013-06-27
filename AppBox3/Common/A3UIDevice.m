@@ -55,7 +55,7 @@
 		screenBounds.size.width = screenBounds.size.height;
 		screenBounds.size.height = height;
 	}
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		screenBounds.size.width = APP_VIEW_WIDTH_iPAD;
 	}
 	screenBounds.size.height -= 44.0 + 20.0;

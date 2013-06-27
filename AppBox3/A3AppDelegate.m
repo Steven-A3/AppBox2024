@@ -7,12 +7,12 @@
 //
 
 #import "A3AppDelegate.h"
-
-#import "A3HomeViewController_iPhone.h"
-#import "A3PaperFoldMenuViewController.h"
 #import "A3UIDevice.h"
-#import "MagicalRecord.h"
 #import "MagicalRecord+Setup.h"
+#import "A3MainMenuTableViewController.h"
+#import "A3HomeViewController_iPad.h"
+#import "A3HomeViewController_iPhone.h"
+#import "MMDrawerVisualState.h"
 
 @interface A3AppDelegate ()
 
@@ -28,16 +28,32 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"AppBox3.sqlite"];
-
-	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	// Override point for customization after application launch.
 
-	[application setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"AppBox3.sqlite"];
 
-	_paperFoldMenuViewController = [[A3PaperFoldMenuViewController alloc] initWithNibName:nil bundle:nil];
-	self.window.rootViewController = _paperFoldMenuViewController;
+	A3MainMenuTableViewController *leftMenuViewController;
+	leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
 
+	UIViewController *rootViewController;
+	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+		A3HomeViewController_iPad *viewController = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
+		rootViewController = viewController;
+	} else {
+		A3HomeViewController_iPhone *viewController = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
+		rootViewController = viewController;
+	}
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
+
+	_mm_drawerController = [[MMDrawerController alloc]
+			initWithCenterViewController:navigationController leftDrawerViewController:leftMenuViewController];
+	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+	[_mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+	[_mm_drawerController setDrawerVisualStateBlock:[MMDrawerVisualState slideAndScaleVisualStateBlock]];
+
+	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+	self.window.rootViewController = _mm_drawerController;
 	[self.window makeKeyAndVisible];
 
     return YES;
@@ -74,7 +90,7 @@
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
 	NSUInteger orientations;
 
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		orientations = UIInterfaceOrientationMaskAll;
 	} else {
 		orientations = UIInterfaceOrientationMaskPortrait;

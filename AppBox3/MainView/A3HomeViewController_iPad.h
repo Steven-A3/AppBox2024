@@ -11,6 +11,5 @@
 @class PaperFoldView;
 
 @interface A3HomeViewController_iPad : UIViewController
-@property (nonatomic, weak)	PaperFoldView *paperFoldView;
 
 @end

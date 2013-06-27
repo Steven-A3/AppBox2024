@@ -25,17 +25,17 @@
 
 - (UIFont *)fontForCellLabel {
 	FNLOG();
-	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
+	CGFloat fontSize = IS_IPAD ? 25.0 : 17.0;
 	return [UIFont boldSystemFontOfSize:fontSize];
 }
 
 - (UIFont *)fontForEntryCellLabel {
-	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
+	CGFloat fontSize = IS_IPAD ? 25.0 : 17.0;
 	return [UIFont systemFontOfSize:fontSize];
 }
 
 - (UIFont *)fontForEntryCellTextField {
-	CGFloat fontSize = DEVICE_IPAD ? 25.0 : 17.0;
+	CGFloat fontSize = IS_IPAD ? 25.0 : 17.0;
 	return [UIFont boldSystemFontOfSize:fontSize];
 }
 
@@ -60,7 +60,7 @@
 }
 
 - (CGFloat)heightForElement:(QElement *)element {
-	return DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+	return IS_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 }
 
 - (UIColor *)colorForEntryCellTextField {

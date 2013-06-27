@@ -10,7 +10,7 @@
 #import "A3HomeViewController_iPhone.h"
 #import "A3TickerControl.h"
 #import "A3StatisticsViewController.h"
-#import "A3iPhoneMenuTableViewController.h"
+#import "A3MainMenuTableViewController.h"
 #import "A3PhoneHomeCalendarMonthViewController.h"
 #import "A3WeatherStickerViewController.h"
 #import "A3StockTickerControl.h"
@@ -28,7 +28,7 @@ enum {
 @property (nonatomic, strong) IBOutlet A3StockTickerControl *stockTickerControl;
 @property (nonatomic, strong) IBOutlet UIView *contentsView;
 @property (nonatomic, strong) IBOutlet A3SegmentedControl *segmentedControl;
-@property (nonatomic, strong) A3iPhoneMenuTableViewController *menuTableViewController;
+@property (nonatomic, strong) A3MainMenuTableViewController *menuTableViewController;
 
 @end
 
@@ -47,9 +47,6 @@ enum {
 }
 
 - (void)sideMenuButtonAction {
-	self.paperFoldView.state  == PaperFoldStateLeftUnfolded ?
-			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
-			[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded animated:YES];
 }
 
 - (void)viewDidLoad

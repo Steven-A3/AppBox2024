@@ -40,7 +40,7 @@
 	frame.size.height -= 0.0;
 	frame.origin.x -= 1.0;
 	_textLabel = [[UILabel alloc] initWithFrame:frame];
-	_textLabel.font = [UIFont boldSystemFontOfSize:DEVICE_IPAD ? 24.0 : 18.0];
+	_textLabel.font = [UIFont boldSystemFontOfSize:IS_IPAD ? 24.0 : 18.0];
 	_textLabel.textAlignment = NSTextAlignmentCenter;
 	_textLabel.backgroundColor = [UIColor clearColor];
 	_textLabel.center = CGPointMake(bounds.size.width / 2.0, bounds.size.height / 2.0);

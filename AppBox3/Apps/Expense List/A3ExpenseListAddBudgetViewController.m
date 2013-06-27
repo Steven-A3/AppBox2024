@@ -78,10 +78,9 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 - (void)doneButtonAction {
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
-	if (DEVICE_IPAD) {
-		A3AppDelegate *appDelegate = [A3AppDelegate instance];
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [appDelegate paperFoldMenuViewController];
-		[paperFoldMenuViewController removeRightWingViewController];
+	if (IS_IPAD) {
+		MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+		[mm_drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
@@ -294,17 +293,17 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 #pragma mark -- Font and Colors
 
 - (UIFont *)fontForCellLabel {
-	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 17.0;
+	CGFloat fontSize = IS_IPAD ? 18.0 : 17.0;
 	return [UIFont boldSystemFontOfSize:fontSize];
 }
 
 - (UIFont *)fontForEntryCellLabel {
-	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 17.0;
+	CGFloat fontSize = IS_IPAD ? 18.0 : 17.0;
 	return [UIFont systemFontOfSize:fontSize];
 }
 
 - (UIFont *)fontForEntryCellTextField {
-	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 17.0;
+	CGFloat fontSize = IS_IPAD ? 18.0 : 17.0;
 	return [UIFont boldSystemFontOfSize:fontSize];
 }
 

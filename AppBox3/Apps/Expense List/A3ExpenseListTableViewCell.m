@@ -26,7 +26,7 @@
 
 		CGFloat y, labelHeight, margin;
 		CGRect checkboxFrame;
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			y = 15.0, labelHeight = 28.0, margin = 12.0;
 			locations = @[@54.0, @302.0, @412.0, @473.0];
 			widths = @[@248.0, @110.0, @61.0, @153.0];

@@ -23,6 +23,7 @@
 #import "A3LoanCalcHistoryViewController.h"
 #import "A3LoanCalcCompareHistoryViewController.h"
 #import "common.h"
+#import "UIViewController+navigation.h"
 
 @interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
@@ -97,7 +98,7 @@
 
 - (A3LoanCalcQuickDialogViewController *)quickDialogViewController {
 	if (nil == _quickDialogViewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_quickDialogViewController = [[A3LoanCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
 		} else {
 			_quickDialogViewController = [[A3LoanCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
@@ -108,7 +109,7 @@
 
 - (A3LoanCalcComparisonMainViewController *)comparisonViewController {
 	if (nil == _comparisonViewController) {
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			_comparisonViewController = [[A3LoanCalcComparisonMainViewController_iPad alloc] initWithNibName:@"A3LoanCalcComparisonMainViewController_iPad" bundle:nil];
 		} else {
 			_comparisonViewController = [[A3LoanCalcComparisonMainViewController_iPhone alloc] initWithNibName:@"A3LoanCalcComparisonMainViewController_iPhone" bundle:nil];
@@ -129,8 +130,9 @@
 - (void)settingsAction {
 	A3LoanCalcSettingsViewController *viewController = [[A3LoanCalcSettingsViewController alloc] initWithNibName:nil bundle:nil];
 
-	A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-	[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:^{
+    MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+    [mm_drawerController setRightDrawerViewController:viewController];
+    [mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:^(BOOL finished) {
 		[self.quickDialogViewController reloadContents];
 	}];
 
@@ -149,9 +151,8 @@
 		viewController = aviewController;
 	}
 
-	if (DEVICE_IPAD){
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-		[paperFoldMenuViewController presentRightWingWithViewController:viewController onClose:nil];
+	if (IS_IPAD) {
+		[self showRightDrawerViewController:viewController];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self applySilverNavigationBarStyleToNavigationVC:navController];

@@ -40,7 +40,7 @@
 		_tableView.delegate = self;
 		_tableView.dataSource = self;
 		_tableView.separatorColor = [UIColor clearColor];
-		_tableView.rowHeight = DEVICE_IPAD ? 31.0 : 20.0;
+		_tableView.rowHeight = IS_IPAD ? 31.0 : 20.0;
 		_tableView.allowsSelection = NO;
 	}
 	return _tableView;
@@ -51,7 +51,7 @@
 	UILabel *label = [[UILabel alloc] initWithFrame:frame];
 	label.backgroundColor = [UIColor clearColor];
 	label.textColor = [UIColor whiteColor];
-	CGFloat fontSize = DEVICE_IPAD ? 18.0 : 12.0;
+	CGFloat fontSize = IS_IPAD ? 18.0 : 12.0;
 	label.font = [UIFont boldSystemFontOfSize:fontSize];
 	label.textAlignment = NSTextAlignmentCenter;
 	label.text = text;
@@ -63,7 +63,7 @@
 
 	self.view.translatesAutoresizingMaskIntoConstraints = NO;
 	self.view.backgroundColor = [UIColor whiteColor];
-	CGFloat rowHeight = DEVICE_IPAD ? 30.0 : 20.0;
+	CGFloat rowHeight = IS_IPAD ? 30.0 : 20.0;
 	CGFloat bottomMargin = 3.0;
 	CGFloat topMargin = 2.0;
 	CGRect frame = self.view.bounds;
@@ -109,7 +109,7 @@
 	FNLOGRECT(self.view.frame);
 	FNLOGRECT(self.tableView.frame);
 
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		_columnWidth = @[@96.0, @121.0, @122.0, @121.0, @167.0];
 	} else {
 		_columnWidth = @[@56.0, @70.0, @60.0, @54.0, @80.0];
@@ -305,16 +305,16 @@
 }
 
 - (UILabel *)valueLabelViewFrame:(CGRect)frame withTag:(NSInteger)tag {
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectInset(frame, DEVICE_IPAD ? 10.0 : 1.0, 3.0)];
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectInset(frame, IS_IPAD ? 10.0 : 1.0, 3.0)];
 	label.backgroundColor = [UIColor clearColor];
 	if (tag == 5) {
-		label.font = [UIFont boldSystemFontOfSize:DEVICE_IPAD ? 13.0 : 11.0];
+		label.font = [UIFont boldSystemFontOfSize:IS_IPAD ? 13.0 : 11.0];
 		label.textColor = [UIColor colorWithRed:73.0/255.0 green:98.0/255.0 blue:145.0/255.0 alpha:1.0];
 	} else {
-		label.font = [UIFont systemFontOfSize:DEVICE_IPAD ? 13.0 : 11.0];
+		label.font = [UIFont systemFontOfSize:IS_IPAD ? 13.0 : 11.0];
 		label.textColor = [UIColor colorWithRed:73.0/255.0 green:74.0/255.0 blue:73.0/255.0 alpha:1.0];
 	}
-	label.textAlignment = DEVICE_IPAD ? NSTextAlignmentRight : NSTextAlignmentCenter;
+	label.textAlignment = IS_IPAD ? NSTextAlignmentRight : NSTextAlignmentCenter;
 	label.minimumScaleFactor = 0.5;
 	label.adjustsFontSizeToFitWidth = YES;
 	label.adjustsLetterSpacingToFitWidth = YES;

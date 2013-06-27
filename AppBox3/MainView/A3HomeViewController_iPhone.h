@@ -15,7 +15,6 @@
 		<A3SegmentedControlDataSource, A3SegmentedControlDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@property (nonatomic, weak)	PaperFoldView *paperFoldView;
 @property (nonatomic, strong) UIViewController *activeViewControllerForSelectedSegment;
 
 @end

@@ -411,7 +411,7 @@
 	} else {
 		cell.accessoryType = UITableViewCellAccessoryNone;
 	}
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		cell.textLabel.font = [UIFont systemFontOfSize:25.0];
 
 		A3LabelElement *labelElement = (A3LabelElement *) element;
@@ -849,7 +849,7 @@
 			[rowsToInsert addObject:indexPath];
 
 			A3LabelElement *element = [[A3LabelElement alloc] initWithTitle:@"" Value:@""];
-			if (DEVICE_IPAD) {
+			if (IS_IPAD) {
 				element.title = @"";
 				element.centerValue = [A3LoanCalcString stringFromCalculationFor:item.unsignedIntegerValue];
 			} else {
@@ -892,7 +892,7 @@
 	[self.preferences setCalculationFor:selected];
 
 	A3LabelElement *selectedElement = [section.elements lastObject];
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		selectedElement.title = @"calculation for";
 	}
 	selectedElement.onSelected = ^{

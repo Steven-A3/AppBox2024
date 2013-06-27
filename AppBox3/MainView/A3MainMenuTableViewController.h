@@ -1,5 +1,5 @@
 //
-//  A3iPhoneMenuTableViewController.h
+//  A3MainMenuTableViewController.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 10/23/12.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "A3GridStyleTableViewCell.h"
-
-@class A3PaperFoldMenuViewController;
 
 #define A3_MENU_TABLE_VIEW_SECTION_HEIGHT	44.0f
 
@@ -21,9 +19,7 @@ typedef enum NSUInteger {
 	A3_MENU_TABLE_VIEW_SECTION_INFORMATION
 }  A3_MENU_TABLE_VIEW_SECTION_TYPE;
 
-@interface A3iPhoneMenuTableViewController : UITableViewController
+@interface A3MainMenuTableViewController : UITableViewController
 <A3GridStyleTableViewCellDataSource, A3GridStyleTableViewCellDelegate>
-
-@property (nonatomic, weak) A3PaperFoldMenuViewController *paperFoldMenuViewController;
 
 @end

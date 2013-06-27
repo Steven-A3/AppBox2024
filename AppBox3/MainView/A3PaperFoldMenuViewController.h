@@ -10,13 +10,13 @@
 #import "PaperFoldView.h"
 #import "A3AppViewController.h"
 
-@class A3iPhoneMenuTableViewController;
+@class A3MainMenuTableViewController;
 
 @interface A3PaperFoldMenuViewController : A3AppViewController <PaperFoldViewDelegate,MultiFoldViewDelegate>
 
 @property (nonatomic, strong) PaperFoldView *paperFoldView, *paperFoldView2;
 @property (nonatomic, strong) UIView *contentView;
-@property (nonatomic, strong) A3iPhoneMenuTableViewController *sideMenuTableViewController;
+@property (nonatomic, strong) A3MainMenuTableViewController *sideMenuTableViewController;
 
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController withOption:(BOOL)keepWidth;
 - (void)pushViewControllerToNavigationController:(UIViewController *)viewController;

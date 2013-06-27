@@ -28,7 +28,7 @@
 	FNLOG(@"Check");
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-		_rowHeight = DEVICE_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
+		_rowHeight = IS_IPAD ? A3_TABLE_VIEW_ROW_HEIGHT_IPAD : A3_TABLE_VIEW_ROW_HEIGHT_IPHONE;
 
 		self.view.frame = [A3UIDevice appFrame];
 		self.quickDialogController.view.frame = self.view.bounds;

@@ -114,7 +114,7 @@
 	CGFloat offsetX, offsetY, label_Y_Offset, chartHeight, chartWidth;
 	CGFloat labelHeight, headerViewHeight, label_X_Offset;
 
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		width = APP_VIEW_WIDTH_iPAD;
 		offsetX = 44.0;
 		offsetY = 45.0;
@@ -158,7 +158,7 @@
 	self.chartRightValueLabel.frame = CGRectMake(width - rightMargin - 200.0, offsetY, 200.0, chartHeight);
 	[self addSubview:_chartRightValueLabel];
 
-	if (!DEVICE_IPAD) {
+	if (!IS_IPAD) {
 		offsetY -= 2.0;
 		labelHeight = 26.0;
 	}
@@ -169,7 +169,7 @@
 - (void)setAccessoryView:(UIView *)accessoryView {
 	_accessoryView = accessoryView;
 
-	rightMargin = DEVICE_IPAD ? 44.0 + 10.0 : 20.0;
+	rightMargin = IS_IPAD ? 44.0 + 10.0 : 20.0;
 
 	CGRect bounds = self.bounds;
 	CGRect targetBounds = _accessoryView.bounds;

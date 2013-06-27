@@ -53,7 +53,7 @@
 	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
 		available = [self.delegate nextAvailableForElement:self.element];
 	}
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
 	} else {
 		UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
@@ -65,7 +65,7 @@
 	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
 		available = [self.delegate prevAvailableForElement:self.element];
 	}
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
 	} else {
 		UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;

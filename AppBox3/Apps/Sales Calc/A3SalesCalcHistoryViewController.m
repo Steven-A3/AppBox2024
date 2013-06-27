@@ -236,7 +236,7 @@
 	if ([o respondsToSelector:@selector(reloadContentsWithObject:)]) {
 		[o reloadContentsWithObject:history];
 	}
-	if (!DEVICE_IPAD) {
+	if (!IS_IPAD) {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }

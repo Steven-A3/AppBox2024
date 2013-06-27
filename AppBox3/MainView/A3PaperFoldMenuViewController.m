@@ -7,7 +7,7 @@
 //
 
 #import "A3PaperFoldMenuViewController.h"
-#import "A3iPhoneMenuTableViewController.h"
+#import "A3MainMenuTableViewController.h"
 #import "A3HomeViewController_iPhone.h"
 #import "CommonUIDefinitions.h"
 #import "A3HotMenuViewController.h"
@@ -42,7 +42,7 @@
 - (PaperFoldView *)paperFoldView {
 	if (nil == _paperFoldView) {
 		CGRect paperFoldViewFrame = [[UIScreen mainScreen] bounds];
-		if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+		if (IS_IPAD) {
 			paperFoldViewFrame.origin.x += self.hotMenuViewController.view.frame.size.width;
 			paperFoldViewFrame.size.width = APP_VIEW_WIDTH_iPAD;
 		} else {
@@ -90,10 +90,10 @@
 	return _hotMenuViewController;
 }
 
-- (A3iPhoneMenuTableViewController *)sideMenuTableViewController {
+- (A3MainMenuTableViewController *)sideMenuTableViewController {
 	if (nil == _sideMenuTableViewController) {
 		UIView *sideMenuView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, CGRectGetHeight(_paperFoldView.frame))];
-		_sideMenuTableViewController = [[A3iPhoneMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		_sideMenuTableViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
 		_sideMenuTableViewController.paperFoldMenuViewController = self;
 		[_sideMenuTableViewController.view setFrame:sideMenuView.frame];
 		[sideMenuView addSubview:_sideMenuTableViewController.view];

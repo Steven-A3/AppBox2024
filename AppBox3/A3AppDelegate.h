@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3PaperFoldMenuViewController.h"
+#import "MMDrawerController.h"
 
 @interface A3AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (readonly, strong, nonatomic) A3PaperFoldMenuViewController *paperFoldMenuViewController;
+@property (strong, nonatomic) MMDrawerController *mm_drawerController;
 
 + (A3AppDelegate *)instance;
 

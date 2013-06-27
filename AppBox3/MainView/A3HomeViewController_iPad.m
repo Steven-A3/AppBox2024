@@ -133,17 +133,9 @@
 }
 
 - (void)showNotificationButtonAction {
-	if (self.paperFoldView.state & PaperFoldStateRightUnfolded) {
-		[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES];
-	} else {
-		[self.paperFoldView setPaperFoldState:PaperFoldStateRightUnfolded animated:YES];
-	}
 }
 
 - (void)sideMenuButtonAction {
-	self.paperFoldView.state & PaperFoldStateLeftUnfolded ?
-			[self.paperFoldView setPaperFoldState:PaperFoldStateDefault animated:YES] :
-			[self.paperFoldView setPaperFoldState:PaperFoldStateLeftUnfolded animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

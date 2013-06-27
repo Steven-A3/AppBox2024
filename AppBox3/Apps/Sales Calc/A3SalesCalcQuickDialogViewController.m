@@ -22,6 +22,7 @@
 #import "common.h"
 #import "A3ActionMenuViewController_iPad.h"
 #import "NSManagedObjectContext+MagicalThreading.h"
+#import "UIViewController+navigation.h"
 
 @interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate, A3ActionMenuViewControllerDelegate, A3QuickDialogCellStyleDelegate>
 
@@ -250,7 +251,7 @@
 }
 
 - (void)onActionButton {
-	if (DEVICE_IPAD) {
+	if (IS_IPAD) {
 		[self presentActionMenuWithDelegate:self];
 		A3ActionMenuViewController_iPad *viewController = (A3ActionMenuViewController_iPad *) self.actionMenuViewController;
 		[viewController setImage:@"t_history" selector:@selector(presentHistoryViewController) atIndex:0];
@@ -293,10 +294,8 @@
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
 	historyViewController.delegate = self;
 
-	if (DEVICE_IPAD) {
-		A3PaperFoldMenuViewController *paperFoldMenuViewController = [[A3AppDelegate instance] paperFoldMenuViewController];
-		[paperFoldMenuViewController presentRightWingWithViewController:historyViewController onClose:^{
-		}];
+	if (IS_IPAD) {
+		[self showRightDrawerViewController:historyViewController];
 	} else {
 		[self.navigationController pushViewController:historyViewController animated:YES];
 	}
@@ -344,7 +343,7 @@
 	if ([section.key isEqualToString:SC_KEY_KNOWN_VALUE_SECTION]) {
 		CGRect bounds = self.view.bounds;
 		CGFloat height, offsetX, fontSize;
-		if (DEVICE_IPAD) {
+		if (IS_IPAD) {
 			height = 44.0;
 			offsetX = 64.0;
 			fontSize = 24.0;
@@ -480,9 +479,8 @@
 	viewController.view.frame = frame;
 	viewController.delegate = self;
 
-	if (DEVICE_IPAD) {
-		[[[A3AppDelegate instance] paperFoldMenuViewController] presentRightWingWithViewController:viewController onClose:^{
-		}];
+	if (IS_IPAD) {
+        [self showRightDrawerViewController:viewController];
 	} else {
 		[self.navigationController pushViewController:viewController animated:YES];
 	}
@@ -498,7 +496,7 @@
 }
 
 - (void)currencySelected:(NSString *)selectedCurrencyCode {
-	[[[A3AppDelegate instance] paperFoldMenuViewController] removeRightWingViewController];
+    [[[A3AppDelegate instance] mm_drawerController] closeDrawerAnimated:YES completion:nil];
 
 	[A3UIKit setUserDefaults:selectedCurrencyCode forKey:A3SalesCalcDefaultUserCurrencyCode];
 	self.defaultCurrencyCode = [self userCurrencyCodeForKey:A3SalesCalcDefaultUserCurrencyCode];
