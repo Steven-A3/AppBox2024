@@ -50,8 +50,7 @@
 	[clipPath addLineToPoint:CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect))];	// Left bottom
 	[clipPath closePath];
 
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"bg_actionMenu" ofType:@"png"];
-	[[UIColor colorWithPatternImage:[UIImage imageWithContentsOfFile:imagePath]] setFill];
+	[[UIColor colorWithPatternImage:[UIImage imageNamed:@"bg_actionMenu"]] setFill];
 
 	[clipPath fill];
 

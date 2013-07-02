@@ -73,9 +73,8 @@ typedef enum {
 	NSArray *imageNames = @[@"bg_status_battery", @"bg_status_memory", @"bg_status_storage"];
 	int i = 0;
 	for (NSString *filename in imageNames) {
-		NSString *imagePath = [[NSBundle mainBundle] pathForResource:filename ofType:@"png"];
 		UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(i * 48.0f - i*10.0f - (i == 1?2.0f:0.0f), 0.0f, 48.0f, 48.0f)];
-		imageView.image = [UIImage imageWithContentsOfFile:imagePath];
+		imageView.image = [UIImage imageNamed:filename];
 		[statusView addSubview:imageView];
 		i++;
 	}
@@ -99,7 +98,6 @@ typedef enum {
 	NSArray *titleLabels = @[@"EVENTS", @"DOWNLOADER", @"NOTES", @"PHOTOS", @"Wallet", @"Device Status"];
 	NSAssert([titleLabels count] == 6, @"This has 6 cells");
 
-	NSString *imageFilePath;
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
 
@@ -112,12 +110,11 @@ typedef enum {
 		CGFloat height = CGRectGetHeight(cellController.view.frame);
 		[cellController.view setFrame:CGRectMake(offsetX + (i % numberOfColumns) * width, (i / numberOfColumns) * height, width, height)];
 
-		imageFilePath = [[NSBundle mainBundle] pathForResource:[imageFilePaths objectAtIndex:i] ofType:@"png"];
-		UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:imageFilePath]];
-		imageView.frame = cellController.titleImage.frame;
-		[cellController.view addSubview:imageView];
+        cellController.titleImage.image = [UIImage imageNamed:imageFilePaths[i] ];
 		cellController.titleLabel.text = NSLocalizedString([titleLabels objectAtIndex:i], nil);
+        cellController.titleLabel.font = [UIFont systemFontOfSize:13.0];
 		cellController.dateLabel.text = [NSString stringWithFormat:@"Updated %@", [dateFormatter stringFromDate:[NSDate date] ] ];
+        cellController.dateLabel.font = [UIFont systemFontOfSize:12.0];
 
 		switch (i) {
 			case A3StatisticsCellNameEvents:
@@ -150,8 +147,8 @@ typedef enum {
 				[cellController.view addSubview:[self deviceStatusView]];
 				break;
 		}
-		[self addChildViewController:cellController];
 		[self.view addSubview:cellController.view];
+		[self addChildViewController:cellController];
 	}
 }
 

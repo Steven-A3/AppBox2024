@@ -190,8 +190,7 @@
 		_searchField = [[UITextField alloc] initWithFrame:frame];
 		_searchField.placeholder = @"Search";
 		_searchField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-		NSString *path = [[NSBundle mainBundle] pathForResource:@"search" ofType:@"png"];
-		UIImage *searchIcon = [UIImage imageWithContentsOfFile:path];
+		UIImage *searchIcon = [UIImage imageNamed:@"search"];
 		UIImageView *leftView = [[UIImageView alloc] initWithImage:searchIcon];
 		_searchField.leftView = leftView;
 		_searchField.leftViewMode = UITextFieldViewModeAlways;
@@ -495,8 +494,7 @@
 - (UIView *)footer {
 	CGRect frame = CGRectMake(0.0, 44.0 * 3.0 + 1.0, CGRectGetWidth(self.view.bounds), 44.0);
 	UIView *view = [[UIView alloc] initWithFrame:frame];
-	NSString *path = [[NSBundle mainBundle] pathForResource:@"poweredByFoursquare_gray" ofType:@"png"];
-	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:path]];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"poweredByFoursquare_gray"]];
 	frame = imageView.bounds;
 	frame.origin.x = 42.0;
 	frame.origin.y -= 10.0;

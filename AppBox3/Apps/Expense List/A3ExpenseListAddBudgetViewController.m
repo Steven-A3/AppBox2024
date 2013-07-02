@@ -458,8 +458,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (UIImageView *)downArrowButton {
-	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"DownAccessory" ofType:@"png"];
-	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:filepath]];
+	UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"DownAccessory"]];
 	return imageView;
 }
 

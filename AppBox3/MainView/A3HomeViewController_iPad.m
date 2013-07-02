@@ -126,8 +126,7 @@
 }
 
 - (void)addRightBarButton {
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"notification" ofType:@"png"];
-	UIImage *buttonImage = [UIImage imageWithContentsOfFile:imageFilePath];
+	UIImage *buttonImage = [UIImage imageNamed:@"notification"];
 	UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithImage:buttonImage style:UIBarButtonItemStylePlain target:self action:@selector(showNotificationButtonAction)];
 	self.navigationItem.rightBarButtonItem = button;
 }

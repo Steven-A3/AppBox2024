@@ -16,6 +16,8 @@
 	UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 	[navigationController popToRootViewControllerAnimated:NO];
 	[navigationController pushViewController:viewController animated:YES];
+
+    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 }
 
 - (void)showRightDrawerViewController:(UIViewController *)viewController {

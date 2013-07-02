@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3HomeViewController_iPhone.h"
 #import "A3TickerControl.h"
 #import "A3StatisticsViewController.h"
@@ -15,6 +14,9 @@
 #import "A3WeatherStickerViewController.h"
 #import "A3StockTickerControl.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+MMDrawerController.h"
+#import "common.h"
+#import "AutoLayoutShorthand.h"
 
 enum {
 	A3PhoneHomeScreenSegmentSelectionStatistics = 0,
@@ -47,6 +49,7 @@ enum {
 }
 
 - (void)sideMenuButtonAction {
+	[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (void)viewDidLoad
@@ -57,7 +60,7 @@ enum {
 	screenBounds.size.height -= 44.0 + 20.0;	// for navigation bar + status bar
 	_mainScrollView.frame = screenBounds;
 
-	[self setBlackBackgroundImageForNavigationBar];
+
 	[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
 
 	[self segmentedControl:self.segmentedControl didChangedSelectedIndex:0 fromIndex:0];
@@ -83,21 +86,21 @@ enum {
 }
 
 - (UIImage *)segmentedControl:(A3SegmentedControl *)control imageForIndex:(NSUInteger)index{
-	NSString *imageFilePath = nil;
+	NSString *imageName = nil;
 	switch (index) {
 		case 0:
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"home_statistics" ofType:@"png"];
+			imageName = @"home_statistics";
 			break;
 		case 1:
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"home_calendar" ofType:@"png"];
+			imageName = @"home_calendar";
 			break;
 		case 2:
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"home_timeline" ofType:@"png"];
+			imageName = @"home_timeline";
 			break;
 	}
 	UIImage *image = nil;
-	if (imageFilePath) {
-		image = [UIImage imageWithContentsOfFile:imageFilePath];
+	if (imageName) {
+		image = [UIImage imageNamed:imageName];
 	}
 	return image;
 }
@@ -131,26 +134,40 @@ enum {
 		case A3PhoneHomeScreenSegmentSelectionStatistics: {
 			A3StatisticsViewController *viewController = [[A3StatisticsViewController alloc] initWithNibName:nil bundle:nil];
 			_mainScrollView.contentSize = CGSizeMake(320.0, _contentsView.frame.origin.y + 310.0);
-			CGRect frame = _contentsView.frame;
-			frame.size.height = 310.0;
-			_contentsView.frame = frame;
-			[viewController.view setFrame:self.contentsView.bounds];
 			[self.contentsView addSubview:viewController.view];
 			self.activeViewControllerForSelectedSegment = viewController;
 			break;
 		}
 		case A3PhoneHomeScreenSegmentSelectionCalendar: {
 			_mainScrollView.contentSize = CGSizeMake(320.0, _contentsView.frame.origin.y + 370.0);
-			CGRect frame = _contentsView.frame;
-			frame.size.height = 370.0;
-			_contentsView.frame = frame;
 			A3PhoneHomeCalendarMonthViewController *viewController = [[A3PhoneHomeCalendarMonthViewController alloc] initWithNibName:@"A3PhoneHomeCalendarMonthViewController" bundle:nil];
+            [viewController.view setFrame:_contentsView.bounds];
 			[self.contentsView addSubview:viewController.view];
+            
 			self.activeViewControllerForSelectedSegment = viewController;
 			break;
 		}
 	}
 	[self addChildViewController:self.activeViewControllerForSelectedSegment];
+}
+
+- (void)viewDidLayoutSubviews {
+	[super viewDidLayoutSubviews];
+
+	CGSize contentSize;
+	switch (_segmentedControl.selectedIndex) {
+		case A3PhoneHomeScreenSegmentSelectionStatistics:
+			contentSize = CGSizeMake(320.0, 504.0);
+			break;
+		case A3PhoneHomeScreenSegmentSelectionCalendar: {
+			contentSize = CGSizeMake(320.0, 564.0);
+			break;
+        }
+		case A3PhoneHomeScreenSegmentSelectionTimeline:
+			contentSize = CGSizeMake(320.0, 564.0);
+			break;
+	}
+	_mainScrollView.contentSize = contentSize;
 }
 
 @end

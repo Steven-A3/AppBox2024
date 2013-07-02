@@ -52,8 +52,7 @@
 }
 
 - (void)addRightButton {
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"icon_app_settings" ofType:@"png"];
-	UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithContentsOfFile:imagePath] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+	UIBarButtonItem *rightButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_app_settings"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
 	self.navigationItem.rightBarButtonItem = rightButtonItem;
 }
 

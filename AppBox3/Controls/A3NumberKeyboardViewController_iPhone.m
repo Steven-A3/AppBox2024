@@ -63,11 +63,9 @@
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 
-			NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_black" ofType:@"png"];
-			UIImage *image = [UIImage imageWithContentsOfFile:imageFilePath];
+			UIImage *image = [UIImage imageNamed:@"keyboard_calculator_black.png"];
 			[bigButton2 setImage:image forState:UIControlStateNormal];
-			imageFilePath = [[NSBundle mainBundle] pathForResource:@"keyboard_calculator_white" ofType:@"png"];
-			image = [UIImage imageWithContentsOfFile:imageFilePath];
+			image = [UIImage imageNamed:@"keyboard_calculator_white"];
 			[bigButton2 setImage:image forState:UIControlStateHighlighted];
 			[bigButton2 setTitle:nil forState:UIControlStateNormal];
 			[_dotButton setTitle:@"." forState:UIControlStateNormal];

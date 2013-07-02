@@ -47,8 +47,7 @@
 	[super viewDidLoad];
 
 	A3SmallButton *editButton = [[A3SmallButton alloc] initWithFrame:CGRectMake(0.0, 0.0, 32.0, 30.0)];
-	NSString *imageFilePath = [[NSBundle mainBundle] pathForResource:@"edit" ofType:@"png"];
-	[editButton setImage:[UIImage imageWithContentsOfFile:imageFilePath] forState:UIControlStateNormal];
+	[editButton setImage:[UIImage imageNamed:@"edit"] forState:UIControlStateNormal];
 	[editButton addTarget:self action:@selector(editButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	_chartContainerView.accessoryView = editButton;
 

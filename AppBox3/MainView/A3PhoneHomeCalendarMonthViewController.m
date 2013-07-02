@@ -11,8 +11,9 @@
 #import "QuickDialog.h"
 #import "A3BookendShapeView.h"
 #import "A3UIKit.h"
+#import "AutoLayoutShorthand.h"
 
-@interface A3PhoneHomeCalendarMonthViewController ()
+@interface A3PhoneHomeCalendarMonthViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) IBOutlet A3CalendarMonthView *calendarView;
 @property (nonatomic, strong) IBOutlet UILabel *yearLabel;
@@ -50,24 +51,12 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
 	[self updateLabels];
+}
 
-	QRootElement *eventRoot = [[QRootElement alloc] init];
-	QSection *eventSection = [[QSection alloc] init];
-
-	NSArray *events = @[@"Big Foot", @"Dinner w/John", @"Wide Awake"];
-	for (NSString *eventTitle in events) {
-		QLabelElement *labelElement = [[QLabelElement alloc] initWithTitle:eventTitle Value:@"all-day"];
-		NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"icon_purple" ofType:@"png"];
-		labelElement.image = [UIImage imageWithContentsOfFile:imagePath];
-		[eventSection addElement:labelElement];
-	}
-	[eventRoot addSection:eventSection];
-
-	self.eventDialogController = [[QuickDialogController alloc] initWithRoot:eventRoot];
-	[_eventDialogController.view setFrame:self.eventTableView.bounds];
-	[self.eventTableView addSubview:_eventDialogController.view];
-	_eventDialogController.quickDialogTableView.separatorColor = [A3UIKit colorForDashLineColor];
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning
@@ -95,6 +84,35 @@
 	[self.calendarView gotoNextMonth];
 	[self updateLabels];
 }
+
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+	[super didMoveToParentViewController:parent];
+}
+
+
+#pragma mark -- UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 3;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *cellIdentifier = @"Cell";
+
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+
+	if(cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+	}
+
+	NSArray *events = @[@"Big Foot", @"Dinner w/John", @"Wide Awake"];
+	cell.textLabel.text = events[indexPath.row];
+	cell.imageView.image = [UIImage imageNamed:@"icon_purple"];
+	cell.detailTextLabel.text = @"all-day";
+
+	return cell;
+}
+
+#pragma mark -- UITableViewDelegate
 
 
 @end

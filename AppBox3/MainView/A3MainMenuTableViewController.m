@@ -99,8 +99,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	A3SectionHeaderViewInMenuTableView *sectionHeaderView = [[A3SectionHeaderViewInMenuTableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, A3_MENU_TABLE_VIEW_SECTION_HEIGHT)];
-	NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"weather_sun_32_on" ofType:@"png"];
-	UIImage *sectionImage = [UIImage imageWithContentsOfFile:imagePath];
+	UIImage *sectionImage = [UIImage imageNamed:@"weather_sun_32_on"];
 	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)section) {
 		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
 			sectionHeaderView.title = NSLocalizedString(@"Shortcut", nil);
@@ -231,62 +230,50 @@
 }
 
 - (UIImage *)gridStyleTableViewCell:(A3GridStyleTableViewCell *)controller imageForIndex:(NSInteger)index {
-	NSString *imageFilePath;
 	UIImage *returningImage = nil;
 	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)controller.tag) {
 		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
 			switch (index) {
 				case 0:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_aqua" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_aqua"];
 					break;
 				case 1:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_blue" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_blue"];
 					break;
 				case 2:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_green" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_green"];
 					break;
 			}
 			break;
 		case A3_MENU_TABLE_VIEW_SECTION_FAVORITES:
 			switch (index) {
 				case 0:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_purple" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_purple"];
 					break;
 				case 1:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_red" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_red"];
 					break;
 				case 2:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_yellow" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_yellow"];
 					break;
 			}
 			break;
 		case A3_MENU_TABLE_VIEW_SECTION_APPS:
 			switch (index) {
 				case 0:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_aqua" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_aqua"];
 					break;
 				case 1:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_blue" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_blue"];
 					break;
 				case 2:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_green" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_green"];
 					break;
 				case 3:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_purple" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_purple"];
 					break;
 				case 4:
-					imageFilePath = [[NSBundle mainBundle] pathForResource:@"icon_red" ofType:@"png"];
-					returningImage = [UIImage imageWithContentsOfFile:imageFilePath];
+					returningImage = [UIImage imageNamed:@"icon_red"];
 					break;
 			}
 			break;

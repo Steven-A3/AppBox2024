@@ -68,8 +68,7 @@
 }
 
 - (void)setImage:(NSString *)name selector:(SEL)selector atIndex:(NSUInteger)index {
-	NSString *filepath = [[NSBundle mainBundle] pathForResource:name ofType:@"png"];
-	UIImage *image = [UIImage imageWithContentsOfFile:filepath];
+	UIImage *image = [UIImage imageNamed:name];
 	NSArray *buttons = @[_button1, _button2, _button3, _button4, _button5];
 	UIButton *theButton = buttons[index];
 

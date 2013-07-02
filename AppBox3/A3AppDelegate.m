@@ -50,7 +50,7 @@
 			initWithCenterViewController:navigationController leftDrawerViewController:leftMenuViewController];
 	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
 	[_mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-	[_mm_drawerController setDrawerVisualStateBlock:[MMDrawerVisualState slideAndScaleVisualStateBlock]];
+	[_mm_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = _mm_drawerController;
@@ -98,6 +98,33 @@
 	// Later if needed ask to visible view controller.
 
 	return orientations;
+}
+
+
+- (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
+	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
+			^(MMDrawerController * drawerController, MMDrawerSide drawerSide, CGFloat percentVisible){
+				CGFloat minScale = .95;
+				CGFloat scale = minScale + (percentVisible*(1.0-minScale));
+				CATransform3D scaleTransform =  CATransform3DMakeScale(scale, scale, scale);
+
+				CGFloat maxDistance = 10;
+				CGFloat distance = maxDistance * percentVisible;
+				CATransform3D translateTransform;
+				UIViewController * sideDrawerViewController;
+				if(drawerSide == MMDrawerSideLeft) {
+					sideDrawerViewController = drawerController.leftDrawerViewController;
+					translateTransform = CATransform3DMakeTranslation((maxDistance-distance), 0.0, 0.0);
+				}
+				else if(drawerSide == MMDrawerSideRight){
+					sideDrawerViewController = drawerController.rightDrawerViewController;
+					translateTransform = CATransform3DMakeTranslation(-(maxDistance-distance), 0.0, 0.0);
+				}
+
+				[sideDrawerViewController.view.layer setTransform:CATransform3DConcat(scaleTransform, translateTransform)];
+				[sideDrawerViewController.view setAlpha:percentVisible];
+			};
+	return visualStateBlock;
 }
 
 @end
