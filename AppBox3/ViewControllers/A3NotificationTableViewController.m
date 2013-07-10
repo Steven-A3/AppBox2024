@@ -55,7 +55,6 @@
 {
     [super viewDidLoad];
 
-	self.tableView.backgroundColor = [UIColor viewFlipsideBackgroundColor];
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 	self.tableView.sectionHeaderHeight = 40.0f;
 

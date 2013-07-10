@@ -12,7 +12,6 @@
 #import "A3CalculatorViewController.h"
 #import "A3CalendarViewController.h"
 #import "A3UIDevice.h"
-#import "PaperFoldView.h"
 
 @interface A3HotMenuViewController ()
 
@@ -72,16 +71,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)calculatorButtonTouchUpInside:(UIButton *)sender {
-	[_myNavigationController popToRootViewControllerAnimated:NO];
-	BOOL deviceIsPortrait = [A3UIDevice deviceOrientationIsPortrait];
-	CGRect newFrame = deviceIsPortrait ? CGRectMake(0.0, 0.0, 714.0, 1004.0) : CGRectMake(0.0, 0.0, 714.0, 748.0);
-	[_myNavigationController.view setFrame:newFrame];
-	[_paperFoldView setPaperFoldState:deviceIsPortrait ? PaperFoldStateDefault : PaperFoldStateLeftUnfolded];
-	A3CalculatorViewController *viewController = [[A3CalculatorViewController alloc] initWithNibName:@"A3CalculatorViewController_iPad" bundle:nil];
-	[_myNavigationController pushViewController:viewController animated:YES];
 }
 
 - (IBAction)calendarButtonTouchUpInside:(id)sender {

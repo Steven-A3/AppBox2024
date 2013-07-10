@@ -94,7 +94,6 @@
 		FNLOG(@"failed to load data.");
 	}
 
-	self.view.backgroundColor = [UIColor scrollViewTexturedBackgroundColor];
 	UIView *coverView = [[UIView alloc] initWithFrame:self.view.bounds];
 	coverView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.9];
 	[self.view addSubview:coverView];

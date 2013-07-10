@@ -117,11 +117,11 @@
 	left = roundf(CGRectGetMinX(rect));
 	for (NSInteger index = 0; index < 23; index++) {
 		NSString *hourText = [dateFormatter stringFromDate:drawingHour];
-		CGSize size = [hourText sizeWithFont:hourFont];
+		CGSize size = [hourText sizeWithAttributes:@{NSFontAttributeName:hourFont}];
 
 		CGFloat x = roundf(left + A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH - size.width - 3.0f);
 		CGFloat y = roundf(top + rowHeight * (index + 1) - size.height / 2.0f);
-		[hourText drawAtPoint:CGPointMake(x, y) withFont:hourFont];
+		[hourText drawAtPoint:CGPointMake(x, y) withAttributes:@{NSFontAttributeName:hourFont}];
 
 		drawingHour = [gregorian dateByAddingComponents:addingComponents toDate:drawingHour options:0];
 	}

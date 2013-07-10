@@ -39,8 +39,6 @@
 
 - (UIImage *)navigationBarSilverBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics;
 
-- (void)applySilverNavigationBarStyleToNavigationVC:(UINavigationController *)nvc;
-
 - (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position;
 
 - (CAGradientLayer *)addTopGradientLayerToWhiteView:(UIView *)view position:(CGFloat)position;

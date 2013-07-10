@@ -115,7 +115,6 @@
 		[mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self applySilverNavigationBarStyleToNavigationVC:navController];
 		[self presentViewController:navController animated:YES completion:nil];
 	}
 }
@@ -163,7 +162,6 @@
 		[mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
 	} else {
 		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self applySilverNavigationBarStyleToNavigationVC:navController];
 		[self presentViewController:navController animated:YES completion:nil];
 	}
 }

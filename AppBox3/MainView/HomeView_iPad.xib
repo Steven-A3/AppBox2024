@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4457.9" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1296" defaultVersion="1536" identifier="iOS"/>
+        <deployment version="1296" defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3682.9"/>
     </dependencies>
     <objects>
@@ -27,7 +27,7 @@
             <rect key="frame" x="0.0" y="0.0" width="714" height="960"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="bg_Home_top_iPad.png" id="7">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="bg_Home_top_iPad" id="7">
                     <rect key="frame" x="0.0" y="0.0" width="714" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
@@ -111,6 +111,6 @@
         </scrollView>
     </objects>
     <resources>
-        <image name="bg_Home_top_iPad.png" width="704" height="128"/>
+        <image name="bg_Home_top_iPad" width="704" height="128"/>
     </resources>
 </document>

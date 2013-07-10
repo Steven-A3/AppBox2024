@@ -63,8 +63,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	[self applySilverNavigationBarStyleToNavigationVC:self.navigationController ];
-
 	self.navigationController.navigationBar.clipsToBounds = YES;
 	self.navigationItem.rightBarButtonItem = [self barButtonItemWithTitle:@"Done" action:@selector(doneButtonAction)];
 }

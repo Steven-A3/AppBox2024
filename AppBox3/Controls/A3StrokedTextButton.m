@@ -45,17 +45,17 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-	CGSize size = [self.customTitle sizeWithFont:self.titleLabel.font];
+	CGSize size = [self.customTitle sizeWithAttributes:@{NSFontAttributeName:self.titleLabel.font}];
 	CGPoint drawingPoint = CGPointMake(CGRectGetWidth(rect)/2.0f - size.width/2.0f, CGRectGetHeight(rect)/2.0f - size.height/2.0f);
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetTextDrawingMode(context, kCGTextStroke);
 	CGContextSetStrokeColorWithColor(context, [self titleColorForState:self.state].CGColor);
-	[self.customTitle drawAtPoint:drawingPoint withFont:self.titleLabel.font];
+	[self.customTitle drawAtPoint:drawingPoint withAttributes:@{NSFontAttributeName:self.titleLabel.font}];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
 	[super setHighlighted:highlighted];
-	FNLOG(@"Check");
+
 	[self setNeedsDisplay];
 }
 

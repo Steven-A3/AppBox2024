@@ -112,9 +112,9 @@
 
 	for (NSInteger index = 0; index < 7; index++) {
 		NSString *text = [dateFormatter stringFromDate:currentDate];
-		CGSize size = [text sizeWithFont:font];
+		CGSize size = [text sizeWithAttributes:@{NSFontAttributeName:font}];
 		x = roundf(left + colWidth * (index + 1) - size.width - 5.0f);
-		[text drawAtPoint:CGPointMake(x, y) withFont:font];
+		[text drawAtPoint:CGPointMake(x, y) withAttributes:@{NSFontAttributeName:font}];
 
 		currentDate = [gregorian dateByAddingComponents:addingComponents toDate:currentDate options:0];
 	}
@@ -122,10 +122,10 @@
 	{
 		NSString *allDay = @"all-day";
 		UIFont *allDayFont = [UIFont systemFontOfSize:11.0];
-		CGSize size = [allDay sizeWithFont:allDayFont];
+		CGSize size = [allDay sizeWithAttributes:@{NSFontAttributeName:allDayFont}];
 		CGFloat x = roundf( A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH - A3_CALENDAR_WEEK_HEADER_VIEW_TEXT_RIGHT_MARGIN - size.width );
 		CGFloat y = roundf( A3_CALENDAR_WEEK_HEADER_VIEW_LABEL_HEIGHT + (A3_CALENDAR_WEEK_HEADER_VIEW_ALL_DAY_HEIGHT / 2.0f - size.height/2.0f) );
-		[allDay drawAtPoint:CGPointMake(x, y) withFont:allDayFont];
+		[allDay drawAtPoint:CGPointMake(x, y) withAttributes:@{NSFontAttributeName:allDayFont}];
 	}
 }
 

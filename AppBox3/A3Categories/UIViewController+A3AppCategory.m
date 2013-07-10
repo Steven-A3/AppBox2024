@@ -7,7 +7,6 @@
 //
 
 #import <objc/runtime.h>
-#import <CoreGraphics/CoreGraphics.h>
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
 #import "A3ActionMenuViewController_iPad.h"
@@ -18,7 +17,6 @@
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
-#import "common.h"
 #import "A3BarButton.h"
 #import "A3BlackBarButton.h"
 #import "A3EmptyActionMenuViewController_iPad.h"
@@ -114,12 +112,12 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	[self.navigationController.view insertSubview:actionMenuView belowSubview:self.view];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureOnCoverView:)];
-	UIImage *image = [self.view screenshotWithOptimization:NO];
-	UIImageView *coverView = [[UIImageView alloc] initWithImage:image];
+
+	UIImageView *coverView = [[UIImageView alloc] init];
+	coverView.image = [self.view imageByRenderingView];
 	coverView.tag = A3_ACTION_MENU_COVER_VIEW_TAG;
 	coverView.frame = CGRectOffset(self.view.bounds, 0.0, 44.0);
 	coverView.userInteractionEnabled = YES;
-	coverView.backgroundColor = [UIColor clearColor];
 	[coverView addGestureRecognizer:tapGestureRecognizer];
 	[self.navigationController.view addSubview:coverView];
 
@@ -225,6 +223,10 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (void)setDateKeyboardViewController:(A3DateKeyboardViewController *)dateKeyboardViewController1 {
 	objc_setAssociatedObject(self, key_dateKeyboardViewController, dateKeyboardViewController1, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (NSString *)defaultCurrencyCode {
+    return nil;
 }
 
 - (NSNumberFormatter *)currencyFormatter {
@@ -359,17 +361,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	UIGraphicsEndImageContext();
 
 	return image;
-}
-
-- (void)applySilverNavigationBarStyleToNavigationVC:(UINavigationController *)nvc {
-	[nvc.navigationBar setTitleTextAttributes:@{
-			UITextAttributeTextColor:[UIColor colorWithRed:71.0/255.0 green:71.0/255.0 blue:71.0/255.0 alpha:1.0],
-			UITextAttributeTextShadowColor:[UIColor clearColor],
-			UITextAttributeTextShadowOffset: [NSValue valueWithCGSize:CGSizeMake(0.0, 0.0)]
-	}
-	];
-	[nvc.navigationBar setBackgroundImage:[self navigationBarSilverBackgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
-	[nvc.navigationBar setBackgroundImage:[self navigationBarSilverBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
 }
 
 - (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position {

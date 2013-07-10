@@ -72,14 +72,14 @@
 	CGContextSetShouldAntialias(context, true);
 	if (self.title) {
 		UIFont *textFont = [UIFont boldSystemFontOfSize:16.0f];
-		CGSize size = [self.title sizeWithFont:textFont];
+		CGSize size = [self.title sizeWithAttributes:@{NSFontAttributeName:textFont}];
 		UIColor *textColor = [UIColor blackColor];
 		CGContextSetStrokeColorWithColor(context, textColor.CGColor);
 		CGContextSetFillColorWithColor(context, textColor.CGColor);
 		[self.title drawAtPoint:CGPointMake(
 				10.0f * 2.0f + (self.image?self.image.size.width:0.0f),
 				CGRectGetHeight(rect)/2.0f - size.height / 2.0f)
-					   withFont:textFont];
+                 withAttributes:@{NSFontAttributeName:textFont}];
 	}
 
 	NSString *openCollapseText;
@@ -88,22 +88,22 @@
 	if (self.collapsed) {
 		openCollapseText = @"›";
 
-		CGSize size = [openCollapseText sizeWithFont:font];
+		CGSize size = [openCollapseText sizeWithAttributes:@{NSFontAttributeName:font}];
 		[openCollapseText drawAtPoint:CGPointMake(
 				CGRectGetWidth(rect) - 20.0f - size.width,
 				(CGRectGetHeight(rect)/2.0f - size.height/2.0f) - 2.0f)
-							 withFont:font];
+                       withAttributes:@{NSFontAttributeName:font}];
 	} else {
 		openCollapseText = @"»";
 
-		CGSize size = [openCollapseText sizeWithFont:font];
+		CGSize size = [openCollapseText sizeWithAttributes:@{NSFontAttributeName:font}];
 
 		CGContextRotateCTM(context, DegreesToRadians(-90.0));
 
 		[openCollapseText drawAtPoint:CGPointMake(
 				-32.0f,
 				CGRectGetWidth(rect) - 10.0f - size.width - 20.0f)
-							 withFont:font];
+                       withAttributes:@{NSFontAttributeName:font}];
 	}
 
 	CGContextRestoreGState(context);

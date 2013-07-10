@@ -115,14 +115,14 @@
 		UIFont *weekdaySymbolFont = [UIFont systemFontOfSize:12.0f];
 
 		for (NSString *symbol in weekdaySymbols) {
-			CGSize sizeOfSymbol = [symbol sizeWithFont:weekdaySymbolFont];
+			CGSize sizeOfSymbol = [symbol sizeWithAttributes:@{NSFontAttributeName:weekdaySymbolFont}];
 			CGPoint drawPoint;
 			if (self.bigCalendar) {
 				drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol] + 1) - sizeOfSymbol.width - rightMargin, 0.0f);
 			} else{
 				drawPoint = CGPointMake(columnWidth * ([weekdaySymbols indexOfObject:symbol]) + columnWidth/2.0f - sizeOfSymbol.width/2.0f, 0.0f);
 			}
-			[symbol drawAtPoint:drawPoint withFont:weekdaySymbolFont];
+			[symbol drawAtPoint:drawPoint withAttributes:@{NSFontAttributeName:weekdaySymbolFont}];
 		}
 	}
 
@@ -198,7 +198,7 @@
 		NSString *eventTitle = @"Event";
 		CGContextSetStrokeColorWithColor(context, [[UIColor blackColor] CGColor]);
 		CGContextSetFillColorWithColor(context, [[UIColor blackColor] CGColor]);
-		[eventTitle drawAtPoint:CGPointMake(CGRectGetMinX(drawingRect) + radius * 2 + margin + 4.0f, CGRectGetMinY(drawingRect)) withFont:[UIFont systemFontOfSize:10.0]];
+		[eventTitle drawAtPoint:CGPointMake(CGRectGetMinX(drawingRect) + radius * 2 + margin + 4.0f, CGRectGetMinY(drawingRect)) withAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:10.0]}];
 	} else {
 		dateComponentsTo = [self.gregorian components:NSDayCalendarUnit fromDate:self.startDate toDate:eventTo options:0];
 	}
@@ -260,14 +260,14 @@
 			}
 			if ((drawingDateComponent.month == self.month) || !_doNotDrawTextOtherMonth) {
 				NSString *dayString = [NSString stringWithFormat:@"%d", drawingDateComponent.day];
-				CGSize size = [dayString sizeWithFont:font];
+				CGSize size = [dayString sizeWithAttributes:@{NSFontAttributeName:font}];
 				CGPoint point;
 				if (self.bigCalendar) {
 					point = CGPointMake((col + 1) * columnWidth - size.width - rightMargin, weekdayHeaderHeight + row * rowHeight + 3.0f);
 				} else {
 					point = CGPointMake(col * columnWidth + columnWidth / 2.0f - size.width/2.0f, weekdayHeaderHeight + row * rowHeight + rowHeight / 2.0f - size.height/2.0f);
 				}
-				[dayString drawAtPoint:point withFont:font];
+				[dayString drawAtPoint:point withAttributes:@{NSFontAttributeName:font}];
 			}
 
 			CGContextRestoreGState(context);

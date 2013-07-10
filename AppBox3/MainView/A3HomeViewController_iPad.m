@@ -10,7 +10,6 @@
 #import "A3StockTickerControl.h"
 #import "A3WeatherStickerViewController.h"
 #import "A3StatisticsViewController.h"
-#import "PaperFoldView.h"
 #import "A3PhoneHomeCalendarMonthViewController.h"
 #import "A3GradientView.h"
 #import "QuickDialog.h"

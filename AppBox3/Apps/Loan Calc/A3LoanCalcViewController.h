@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <QuickDialog.h>
 #import "A3ActionMenuViewController_iPad.h"
 
 @interface A3LoanCalcViewController : UIViewController

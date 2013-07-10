@@ -95,8 +95,8 @@
 
 - (void)setBottomLabelText:(NSString *)text {
 	_bottomValueLabel.text = text;
-	CGSize sizeForLabel = [_bottomLabel.text sizeWithFont:_bottomLabel.font];
-	CGSize sizeForValue = [text sizeWithFont:_bottomValueLabel.font];
+	CGSize sizeForLabel = [_bottomLabel.text sizeWithAttributes:@{NSFontAttributeName:_bottomLabel.font}];
+	CGSize sizeForValue = [text sizeWithAttributes:@{NSFontAttributeName:_bottomValueLabel.font}];
 	CGRect labelFrame = _bottomLabel.frame;
 	labelFrame.origin.x = self.bounds.size.width - rightMargin - 10.0 - sizeForValue.width - sizeForLabel.width;
 	labelFrame.size.width = sizeForLabel.width;

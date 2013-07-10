@@ -317,7 +317,6 @@
 	label.textAlignment = IS_IPAD ? NSTextAlignmentRight : NSTextAlignmentCenter;
 	label.minimumScaleFactor = 0.5;
 	label.adjustsFontSizeToFitWidth = YES;
-	label.adjustsLetterSpacingToFitWidth = YES;
 	label.tag = tag;
 
 	return label;

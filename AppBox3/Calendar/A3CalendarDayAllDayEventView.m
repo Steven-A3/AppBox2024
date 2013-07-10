@@ -49,9 +49,9 @@
 
 	UIFont *font = [UIFont systemFontOfSize:11.0];
 	NSString *alldayText = @"all-day";
-	CGSize size = [alldayText sizeWithFont:font];
+	CGSize size = [alldayText sizeWithAttributes:@{NSFontAttributeName : font}];
 	CGPoint point = CGPointMake(A3_CALENDAR_DAY_ALL_DAY_EVENT_ROW_HEADER_WIDTH - 5.0f - size.width, CGRectGetHeight(rect)/2.0f - size.height / 2.0f);
-	[alldayText drawAtPoint:point withFont:font];
+	[alldayText drawAtPoint:point withAttributes:@{NSFontAttributeName : font}];
 
 	CGContextSetAllowsAntialiasing(context, false);
 

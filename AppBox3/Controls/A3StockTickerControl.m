@@ -86,7 +86,7 @@
 
 	for (NSDictionary *stockInfo in self.stockExchangeArray) {
 		NSString *titleString = [NSString stringWithFormat:@"%@  %@", [stockInfo objectForKey:@"Name"], [stockInfo objectForKey:@"Price"]];
-		CGSize size = [titleString sizeWithFont:tickerFont];
+		CGSize size = [titleString sizeWithAttributes:@{NSFontAttributeName:tickerFont}];
 		UILabel *stockTitle = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width + 20.0f, 24.0f)];
 		stockTitle.backgroundColor = [UIColor clearColor];
 		stockTitle.text = titleString;
@@ -101,7 +101,7 @@
 													  [stockInfo objectForKey:@"Change"],
 													  increase ? @"▲":@"▼",
 													  [stockInfo objectForKey:@"PercentChange"]];
-		size = [change sizeWithFont:tickerFont];
+		size = [change sizeWithAttributes:@{NSFontAttributeName:tickerFont}];
 		UILabel *stockValueChange = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, size.width + 10.0f, 24.0f)];
 		stockValueChange.backgroundColor = [UIColor clearColor];
 		stockValueChange.text = change;

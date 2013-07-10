@@ -133,7 +133,7 @@
 			coordinateX += _operatorWidth;
 		} else {
 			valueFont = [self fontAtIndex:index forValue:YES];
-			CGSize sizeOfText = [textToDisplay sizeWithFont:valueFont];
+			CGSize sizeOfText = [textToDisplay sizeWithAttributes:@{NSFontAttributeName : valueFont}];
 			coordinateX += sizeOfText.width;
 		}
 		coordinateX += CEV_COLUMN_MARGIN;
@@ -185,7 +185,7 @@
 	if (self.style == CEV_FILL_BACKGROUND) {
 		// Colors for operator text
 		[self setOperatorTextColorForContext:context];
-		for (NSInteger index = 0; index < [self.expression count]; index++) {
+		for (NSUInteger index = 0; index < [self.expression count]; index++) {
 			NSString *textToDisplay = [self.expression objectAtIndex:index];
 			if ([self isOperatorClassForString:textToDisplay]) {
                 NSString *position = [drawingPositions objectAtIndex:index];
@@ -197,17 +197,18 @@
 					[backgroundPath appendPath:[self newOperatorPathWithRect:CEV_PATH_FOR_ROUNDED_RECT]];
 				}
 
-				CGSize textSize = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:NO]];
+                UIFont *font = [self fontAtIndex:index forValue:NO];
+				CGSize textSize = [textToDisplay sizeWithAttributes:@{NSFontAttributeName : font}];
 				[textToDisplay drawAtPoint:
 						CGPointMake(drawingPoint.x + (_operatorWidth - textSize.width) / 2.0f,
 								drawingPoint.y + (_operatorHeight - textSize.height) / 2.0f + operatorYOffset + CEV_OPERATOR_TEXT_OFFSET)
-								  withFont:[self fontAtIndex:index forValue:NO]];
+                            withAttributes:@{NSFontAttributeName: font}];
 			}
 		}
 		CGContextSetFillColorWithColor(context, _backgroundColor.CGColor);
 		[backgroundPath fill];
 	} else {
-		for (NSInteger index = 0; index < [self.expression count]; index++) {
+		for (NSUInteger index = 0; index < [self.expression count]; index++) {
 			NSString *textToDisplay = [self.expression objectAtIndex:index];
 			if ([self isOperatorClassForString:textToDisplay]) {
                 NSString *position = [drawingPositions objectAtIndex:index];
@@ -225,7 +226,7 @@
 
 		[self setOperatorTextColorForContext:context];
 
-		for (NSInteger index = 0; index < [self.expression count]; index++) {
+		for (NSUInteger index = 0; index < [self.expression count]; index++) {
 			NSString *textToDisplay = [self.expression objectAtIndex:index];
 			if ([self isOperatorClassForString:textToDisplay]) {
                 NSString *position = [drawingPositions objectAtIndex:index];
@@ -235,11 +236,12 @@
 				if ([textToDisplay isEqualToString:@"of"]) {
 					offset = 0.0;
 				}
-				CGSize textSize = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:NO]];
+				UIFont *font = [self fontAtIndex:index forValue:NO];
+				CGSize textSize = [textToDisplay sizeWithAttributes:@{NSFontAttributeName : font}];
 				[textToDisplay drawAtPoint:
 						CGPointMake(drawingPoint.x + (_operatorWidth - textSize.width) / 2.0f,
 								drawingPoint.y + (_operatorHeight - textSize.height) / 2.0f + operatorYOffset + offset)
-								  withFont:[self fontAtIndex:index forValue:NO]];
+							withAttributes:@{NSFontAttributeName : font}];
 			}
 		}
 	}
@@ -248,7 +250,7 @@
 	CGContextSetTextDrawingMode(context, kCGTextFill);
 
 	drawingPoint = CGPointMake(CEV_SIDE_MARGIN, 0.0f);
-	for (NSInteger index = 0; index < [self.expression count]; index++) {
+	for (NSUInteger index = 0; index < [self.expression count]; index++) {
 		NSString *textToDisplay = [self.expression objectAtIndex:index];
 		if (![self isOperatorClassForString:textToDisplay]) {
 			_valueFont = [self fontAtIndex:index forValue:YES];
@@ -259,9 +261,10 @@
 
             NSString *position = [drawingPositions objectAtIndex:index];
 			drawingPoint.x = [position floatValue] + drawingOffset;
-			CGSize size = [textToDisplay sizeWithFont:[self fontAtIndex:index forValue:YES]];
+			UIFont *font = [self fontAtIndex:index forValue:YES];
+			CGSize size = [textToDisplay sizeWithAttributes:@{NSFontAttributeName:font}];
 			drawingPoint.y = CGRectGetHeight(self.bounds)/2.0 - size.height / 2.0;
-			[textToDisplay drawAtPoint:drawingPoint withFont:[self fontAtIndex:index forValue:YES]];
+			[textToDisplay drawAtPoint:drawingPoint withAttributes:@{NSFontAttributeName:font}];
 		}
 	}
 }

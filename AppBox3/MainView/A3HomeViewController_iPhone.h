@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "A3SegmentedControl.h"
-#import "PaperFoldView.h"
 
 @interface A3HomeViewController_iPhone : UIViewController
 		<A3SegmentedControlDataSource, A3SegmentedControlDelegate>

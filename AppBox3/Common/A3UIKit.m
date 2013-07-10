@@ -64,7 +64,8 @@
 	UIColor *textColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0];
 	[textColor setFill];
 	[textColor setStroke];
-	[@"×" drawAtPoint:CGPointMake(minX + 9.0 + 2.0, -5.0) forWidth:14.0 withFont:[UIFont boldSystemFontOfSize:19.0] lineBreakMode:NSLineBreakByWordWrapping];
+    CGRect drawingRect = CGRectMake(minX + 9.0 + 2.0, -5.0, 14.0, 19.0);
+    [@"x" drawInRect:drawingRect withAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:19.0]}];
 
 	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();
@@ -105,7 +106,8 @@
 	UIColor *textColor = [UIColor colorWithRed:95.0/255.0 green:102.0/255.0 blue:115.0/255.0 alpha:1.0];
 	[textColor setFill];
 	[textColor setStroke];
-	[@"×" drawAtPoint:CGPointMake(minX + 9.0 + 2.0, -5.0) forWidth:14.0 withFont:[UIFont boldSystemFontOfSize:19.0] lineBreakMode:NSLineBreakByWordWrapping];
+    CGRect drawingRect = CGRectMake(minX + 9.0 + 2.0, -5.0, 14.0, 19.0);
+    [@"x" drawInRect:drawingRect withAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:19.0]}];
 
 	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
 	UIGraphicsEndImageContext();

@@ -8,7 +8,6 @@
 
 #import "A3SegmentedControl.h"
 #import "A3Utilities.h"
-#import "common.h"
 
 @implementation A3SegmentedControl
 
@@ -59,7 +58,7 @@
 	UIColor *titleColor = [UIColor colorWithRed:66.0f/255.0f green:66.0f/255.0f blue:66.0f/255.0f alpha:1.0f];
 	CGContextSetStrokeColorWithColor(context, titleColor.CGColor);
 	CGContextSetFillColorWithColor(context, titleColor.CGColor);
-	for (int i = 0; i < 3; i++) {
+	for (NSUInteger i = 0; i < 3; i++) {
 		CGRect subRect = CGRectMake(width * i, CGRectGetMinY(rect), width, height);
 		drawLinearGradient(context, subRect, i == _selectedIndex ? colorsForSelected : colorsForNormal);
 		// Draw image
@@ -69,11 +68,12 @@
 			if ([_dataSource respondsToSelector:@selector(segmentedControl:titleForIndex:)]) {
 				title = [_dataSource segmentedControl:self titleForIndex:i];
 			}
-			CGSize size = [title sizeWithFont:titleFont];
+            
+			CGSize size = [title sizeWithAttributes:@{NSFontAttributeName : titleFont}];
 			CGFloat contentsWidth = image.size.width + 5.0f + size.width;
 			CGFloat contentsStart = width * i + (width / 2.0f - contentsWidth / 2.0f);
 			[image drawAtPoint:CGPointMake(contentsStart, CGRectGetHeight(drawingRect)/2.0f - image.size.height/2.0f)];
-			[title drawAtPoint:CGPointMake(contentsStart + image.size.width + 5.0f, CGRectGetHeight(drawingRect) / 2.0f - size.height / 2.0f) withFont:titleFont];
+			[title drawAtPoint:CGPointMake(contentsStart + image.size.width + 5.0f, CGRectGetHeight(drawingRect) / 2.0f - size.height / 2.0f) withAttributes:@{NSFontAttributeName : titleFont}];
 		}
 	}
 

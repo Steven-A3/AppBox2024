@@ -118,11 +118,11 @@
 	left = roundf(CGRectGetMinX(rect));
 	for (NSInteger index = 0; index < 23; index++) {
 		NSString *hourText = [dateFormatter stringFromDate:currentHour];
-		CGSize size = [hourText sizeWithFont:hourFont];
+		CGSize size = [hourText sizeWithAttributes:@{NSFontAttributeName:hourFont}];
 
 		CGFloat x = roundf(left + A3_CALENDAR_WEEK_VIEW_ROW_HEADER_WIDTH - size.width - 3.0f);
 		CGFloat y = roundf(top + rowHeight * (index + 1) - size.height / 2.0f);
-		[hourText drawAtPoint:CGPointMake(x, y) withFont:hourFont];
+		[hourText drawAtPoint:CGPointMake(x, y) withAttributes:@{NSFontAttributeName:hourFont}];
 
 		currentHour = [gregorian dateByAddingComponents:addingComponents toDate:currentHour options:0];
 	}

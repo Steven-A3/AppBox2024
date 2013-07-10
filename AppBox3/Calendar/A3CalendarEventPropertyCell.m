@@ -105,7 +105,7 @@
 		[headerTextColor setFill];
 		[headerTextColor setStroke];
 		UIFont *headerFont = [UIFont systemFontOfSize:13.0f];
-		[_headerText drawAtPoint:CGPointMake(left + 11.0, top + 5.0f) withFont:headerFont];
+		[_headerText drawAtPoint:CGPointMake(left + 11.0, top + 5.0f) withAttributes:@{NSFontAttributeName:headerFont}];
 	}
 
 	if ([_contentText length]) {
@@ -113,9 +113,11 @@
 		[contentTextColor setFill];
 		[contentTextColor setStroke];
 		UIFont *contentFont = [UIFont systemFontOfSize:14.0f];
-		CGSize size = [_contentText sizeWithFont:contentFont constrainedToSize:CGSizeMake(drawingRect.size.width - 26.0f - 5.0f, drawingRect.size.height - A3_CALENDAR_PROPERTY_VIEW_HEADER_HEIGHT - 2.0f - 5.0f)];
-		CGRect contentRect = CGRectMake(left + 26.0f, top + A3_CALENDAR_PROPERTY_VIEW_HEADER_HEIGHT + 2.0f, size.width, size.height);
-		[_contentText drawInRect:contentRect withFont:contentFont];
+
+        CGRect boundingRect = [_contentText boundingRectWithSize:CGSizeMake(drawingRect.size.width - 26.0f - 5.0f, drawingRect.size.height - A3_CALENDAR_PROPERTY_VIEW_HEADER_HEIGHT - 2.0f - 5.0f) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : contentFont} context:nil];
+        
+		CGRect contentRect = CGRectMake(left + 26.0f, top + A3_CALENDAR_PROPERTY_VIEW_HEADER_HEIGHT + 2.0f, boundingRect.size.width, boundingRect.size.height);
+		[_contentText drawInRect:contentRect withAttributes:@{NSFontAttributeName:contentFont}];
 	}
 }
 

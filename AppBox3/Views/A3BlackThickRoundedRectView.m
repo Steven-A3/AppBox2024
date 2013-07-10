@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
 #import "A3BlackThickRoundedRectView.h"
 #import "common.h"
 

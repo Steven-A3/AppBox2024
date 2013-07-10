@@ -6,17 +6,47 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "AppBox3/MainView/A3HomeViewController_iPhone.m"
-            timestampString = "394098454.864718"
+            filePath = "AppBox3/Views/A3TimeLineTableViewCell.m"
+            timestampString = "394691048.874118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
-            landmarkName = "-segmentedControl:didChangedSelectedIndex:fromIndex:"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "-setPhoto:"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[A3TimeLineTableViewCell setPhoto:]"
+                  moduleName = "AppBox3"
+                  urlString = "file://localhost/Users/bkk/projects/AppBox3/AppBox3/Views/A3TimeLineTableViewCell.m"
+                  timestampString = "394691055.368765"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "65">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[A3TimeLineTableViewCell setPhoto:]"
+                  moduleName = "AppBox3 XCTests"
+                  urlString = "file://localhost/Users/bkk/projects/AppBox3/AppBox3/Views/A3TimeLineTableViewCell.m"
+                  timestampString = "394691055.977302"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "52"
+                  endingLineNumber = "52"
+                  offsetFromSymbolStart = "65">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

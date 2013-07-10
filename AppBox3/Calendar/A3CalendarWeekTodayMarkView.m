@@ -61,12 +61,13 @@
 	[dateFormatter setDateFormat:@"d EEE"];
 	NSString *text = [dateFormatter stringFromDate:[NSDate date]];
 	UIFont *font = A3_CALENDAR_WEEK_VIEW_HEADER_FONT;
-	CGSize size = [text sizeWithFont:font];
+	CGSize size = [text sizeWithAttributes:@{NSFontAttributeName:font}];
 	CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
 	CGContextSetFillColorWithColor(context, [UIColor whiteColor].CGColor);
 	CGContextSetAllowsAntialiasing(context, true);
 	[text drawAtPoint:CGPointMake(roundf(CGRectGetMaxX(self.bounds) - size.width - A3_CALENDAR_WEEK_HEADER_VIEW_TEXT_RIGHT_MARGIN),
-			roundf(CGRectGetMinY(self.bounds) + A3_CALENDAR_WEEK_HEADER_VIEW_TEXT_TOP_MARGIN)) withFont:font];
+                                  roundf(CGRectGetMinY(self.bounds) + A3_CALENDAR_WEEK_HEADER_VIEW_TEXT_TOP_MARGIN))
+       withAttributes:@{NSFontAttributeName:font}];
 }
 
 @end
