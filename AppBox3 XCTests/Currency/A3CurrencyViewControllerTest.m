@@ -34,7 +34,7 @@
     [super tearDown];
 }
 
-- (void)testViewControllerIsTableViewController {
+- (void)testCurrencyViewController {
     // Given
     
     // When
@@ -42,6 +42,7 @@
     // Then
 	expect([viewController class]).to.beSubclassOf([UITableViewController class]);
     expect([viewController numberOfSectionsInTableView:viewController.tableView]).to.equal(1);
+    expect([viewController tableView:viewController.tableView numberOfRowsInSection:0]).beGreaterThan(1);
 }
 
 @end

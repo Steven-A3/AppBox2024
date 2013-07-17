@@ -13,7 +13,6 @@
 #import "A3BarButton.h"
 #import "A3UIDevice.h"
 #import "common.h"
-#import "A3PaperFoldMenuViewController.h"
 #import "A3AppDelegate.h"
 #import "A3DatePickerView.h"
 #import "A3Formatter.h"

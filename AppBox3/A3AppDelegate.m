@@ -6,13 +6,15 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "MagicalRecord+Setup.h"
 #import "A3MainMenuTableViewController.h"
 #import "A3HomeViewController_iPad.h"
 #import "A3HomeViewController_iPhone.h"
-#import "MMDrawerVisualState.h"
+#import "A3AppDelegate+data.h"
+
 
 @interface A3AppDelegate ()
 
@@ -31,6 +33,10 @@
 	// Override point for customization after application launch.
 
 	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"AppBox3.sqlite"];
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self prepareDatabase];
+	});
 
 	A3MainMenuTableViewController *leftMenuViewController;
 	leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];

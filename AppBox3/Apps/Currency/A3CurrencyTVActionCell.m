@@ -1,14 +1,14 @@
 //
-//  A3CurrencyTableViewCell.m
+//  A3CurrencyTVActionCell.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 7/6/13.
+//  Created by Byeong Kwon Kwak on 7/13/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3CurrencyTableViewCell.h"
+#import "A3CurrencyTVActionCell.h"
 
-@implementation A3CurrencyTableViewCell
+@implementation A3CurrencyTVActionCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -25,5 +25,9 @@
 
     // Configure the view for the selected state
 }
+
+//- (void)prepareForReuse {
+//	[super prepareForReuse];
+//}
 
 @end

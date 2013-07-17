@@ -2,7 +2,7 @@
 //  CurrencyItem.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 2/4/13.
+//  Created by Byeong Kwon Kwak on 7/12/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,9 +12,11 @@
 
 @implementation CurrencyItem
 
-@dynamic flagImageName;
 @dynamic currencyCode;
+@dynamic flagImageName;
 @dynamic name;
+@dynamic rateToUSD;
+@dynamic updated;
 @dynamic favorite;
 
 @end

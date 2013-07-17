@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3383" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
     </entity>
+    <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="sourceCurrencyCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="targets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CurrencyHistoryItem" inverseName="history" inverseEntity="CurrencyHistoryItem" syncable="YES"/>
+    </entity>
+    <entity name="CurrencyHistoryItem" representedClassName="CurrencyHistoryItem" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="dateForRate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="rateToSource" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyHistory" inverseName="targets" inverseEntity="CurrencyHistory" syncable="YES"/>
+    </entity>
     <entity name="CurrencyItem" representedClassName="CurrencyItem" syncable="YES">
         <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
-        <attribute name="flagImageName" attributeType="String" syncable="YES"/>
+        <attribute name="flagImageName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rateToUSD" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="updated" attributeType="Date" syncable="YES"/>
         <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyFavorite" inverseName="currencyItem" inverseEntity="CurrencyFavorite" syncable="YES"/>
     </entity>
     <entity name="Expense" representedClassName="Expense" syncable="YES">
@@ -100,15 +114,17 @@
         <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CurrencyFavorite" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="CurrencyItem" positionX="160" positionY="192" width="128" height="105"/>
-        <element name="Expense" positionX="160" positionY="192" width="128" height="285"/>
-        <element name="ExpenseDetail" positionX="160" positionY="192" width="128" height="120"/>
-        <element name="LoanCalcHistory" positionX="160" positionY="192" width="128" height="405"/>
-        <element name="MenuFavorite" positionX="160" positionY="192" width="128" height="75"/>
-        <element name="MenuGroup" positionX="403" positionY="54" width="128" height="105"/>
-        <element name="MenuItem" positionX="178" positionY="9" width="128" height="120"/>
-        <element name="SalesCalcHistory" positionX="160" positionY="192" width="128" height="210"/>
-        <element name="TranslatorHistory" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="CurrencyFavorite" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CurrencyHistory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CurrencyHistoryItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CurrencyItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Expense" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="ExpenseDetail" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="LoanCalcHistory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MenuFavorite" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MenuGroup" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="MenuItem" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="SalesCalcHistory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TranslatorHistory" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

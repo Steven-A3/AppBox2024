@@ -16,7 +16,6 @@
 #import "A3VerticalLinesView.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3ExpenseListAddBudgetViewController.h"
-#import "A3PaperFoldMenuViewController.h"
 #import "A3AppDelegate.h"
 #import "Expense.h"
 #import "common.h"
