@@ -10,6 +10,6 @@
 
 @interface A3CurrencyTVActionCell : UITableViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *centerLabel;
+@property (nonatomic, weak) IBOutlet UIButton *centerButton;
 
 @end

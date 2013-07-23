@@ -148,20 +148,6 @@
 }
 */
 
-#pragma mark - Table view delegate
-
-- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
-	A3ExpenseListTableViewCell *cell = [self cellWithReuseIdentifier:nil];
-	[self fillCell:cell forIndexPath:indexPath];
-//	cell.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.6];
-
-	return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
 	NSInteger beforeValue, afterValue, newValue;
 	beforeValue = destinationIndexPath.row > 0 ?
@@ -189,6 +175,22 @@
 
 	NSError *error;
 	[self.expenseObject.managedObjectContext save:&error];
+}
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - ATSDragToReorderTableViewControllerDraggableIndicators
+
+- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
+	A3ExpenseListTableViewCell *cell = [self cellWithReuseIdentifier:nil];
+	[self fillCell:cell forIndexPath:indexPath];
+//	cell.backgroundColor = [UIColor colorWithWhite:0.8 alpha:0.6];
+
+	return cell;
 }
 
 #pragma mark - Keyboard

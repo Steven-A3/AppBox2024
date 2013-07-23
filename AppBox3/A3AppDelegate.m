@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "MagicalRecord+Setup.h"
@@ -14,7 +13,6 @@
 #import "A3HomeViewController_iPad.h"
 #import "A3HomeViewController_iPhone.h"
 #import "A3AppDelegate+data.h"
-
 
 @interface A3AppDelegate ()
 
@@ -38,6 +36,7 @@
 		[self prepareDatabase];
 	});
 
+
 	A3MainMenuTableViewController *leftMenuViewController;
 	leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
 
@@ -54,7 +53,7 @@
 
 	_mm_drawerController = [[MMDrawerController alloc]
 			initWithCenterViewController:navigationController leftDrawerViewController:leftMenuViewController];
-	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeAll];
+	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
 	[_mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 	[_mm_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
 
@@ -64,7 +63,7 @@
 
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

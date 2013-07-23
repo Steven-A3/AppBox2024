@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ATSDragToReorderTableViewController.h"
 
-@interface A3CurrencyViewController : UITableViewController
+@interface A3CurrencyViewController : ATSDragToReorderTableViewController
 
 @end

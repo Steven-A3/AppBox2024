@@ -12,6 +12,7 @@
 #import "NSManagedObject+MagicalAggregation.h"
 #import "NSManagedObject+MagicalRecord.h"
 #import "CurrencyItem+NetworkUtility.h"
+#import "NSString+conversion.h"
 
 @implementation CurrencyFavorite (initialize)
 
@@ -30,7 +31,7 @@
 
 		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
 		favorite.currencyItem = array[0];
-		favorite.order = [NSString stringWithFormat:@"0000%d00000000", idx];
+		favorite.order = [NSString orderStringWithOrder:(idx + 1) * 1000000];
 	}];
 }
 
