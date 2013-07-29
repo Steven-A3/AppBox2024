@@ -8,7 +8,11 @@
 
 #import "CurrencyItem.h"
 
+#define A3NotificationCurrencyRatesUpdated	@"A3NotificationCurrencyRatesUdpated"
+
 @interface CurrencyItem (NetworkUtility)
+
++ (void)updateCurrencyRates;
 
 + (void)resetCurrencyLists;
 @end

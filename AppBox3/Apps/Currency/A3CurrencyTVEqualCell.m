@@ -26,4 +26,8 @@
     // Configure the view for the selected state
 }
 
+- (CGFloat)menuWidth {
+	return 0.0;
+}
+
 @end

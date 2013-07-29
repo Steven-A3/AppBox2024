@@ -113,6 +113,10 @@ const CGFloat kVisibleWidth = 100.0;
 
 // un-swipe everything when the user scrolls
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	[self unswipeAll];
+}
+
+- (void)unswipeAll {
 	[self shiftRight:self.swipedCells];
 }
 
@@ -121,7 +125,8 @@ const CGFloat kVisibleWidth = 100.0;
 // Un-swipe everything when the user selects a cell.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)newIndexPath
 {
-	[self shiftRight:self.swipedCells];
+	[self unswipeAll];
+
 	// deselect
 	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC);
 	dispatch_after(delay, dispatch_get_main_queue(), ^{

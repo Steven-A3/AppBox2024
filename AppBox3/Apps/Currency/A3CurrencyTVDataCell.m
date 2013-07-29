@@ -57,7 +57,7 @@
 	if (!_valueField) {
 		_valueField = [[UITextField alloc] initWithFrame:CGRectMake(7.0, 0.0, 187.0, 83.0)];
 		_valueField.borderStyle = UITextBorderStyleNone;
-		_valueField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:60.0];
+		_valueField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
 		_valueField.adjustsFontSizeToFitWidth = YES;
 		_valueField.minimumFontSize = 10.0;
 		_valueField.translatesAutoresizingMaskIntoConstraints = NO;

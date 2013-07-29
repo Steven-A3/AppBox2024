@@ -16,6 +16,8 @@
 #import "CPTPlatformSpecificCategories.h"
 #import "CurrencyFavorite.h"
 #import "common.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
 
 @implementation CurrencyItem (NetworkUtility)
 
@@ -56,6 +58,8 @@
 			entity.rateToUSD = yahoo.rateToUSD;
 			entity.updated = yahoo.updated;
 		}];
+		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveToPersistentStoreAndWait];
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
 	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
 		FNLOG(@"AFJSONRequestOperation failed getting Yahoo all currency list.");
 	}];

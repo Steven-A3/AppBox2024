@@ -29,5 +29,8 @@
 //- (void)prepareForReuse {
 //	[super prepareForReuse];
 //}
+- (CGFloat)menuWidth {
+	return 0.0;
+}
 
 @end

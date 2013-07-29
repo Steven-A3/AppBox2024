@@ -17,4 +17,6 @@
 @interface UITableViewController (swipeMenu)
 
 - (void)setupSwipeRecognizers;
+
+- (void)unswipeAll;
 @end
