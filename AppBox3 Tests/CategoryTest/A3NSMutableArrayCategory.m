@@ -10,11 +10,11 @@
 #define EXP_SHORTHAND
 #import "Expecta.h"
 
-@interface A3NSMutableArrayCategory : XCTestCase
+@interface A3NSMutableArrayCategoryTest : XCTestCase
 
 @end
 
-@implementation A3NSMutableArrayCategory
+@implementation A3NSMutableArrayCategoryTest
 
 - (void)setUp
 {
@@ -26,11 +26,6 @@
 {
     // Put teardown code here; it will be run once, after the last test case.
     [super tearDown];
-}
-
-- (void)testExample
-{
-    XCTFail(@"No implementation for \"%s\"", __PRETTY_FUNCTION__);
 }
 
 - (void)testMoveItem {

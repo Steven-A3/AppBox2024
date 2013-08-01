@@ -15,4 +15,6 @@
 - (void)insertObjectToSortedArray:(id)object atIndex:(NSInteger)index1;
 
 - (void)addObjectToSortedArray:(id)object;
+
+- (void)exchangeObjectInSortedArrayAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 @end

@@ -489,4 +489,55 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	self.navigationItem.backBarButtonItem = [self appListBarButtonItemWithSelector:selector];
 }
 
+- (void)insertMoreMenuView {
+
+}
+
+- (void)addTwoButtons:(NSArray *)buttons toView:(UIView *)view {
+	NSAssert([buttons count] == 2, @"The number of buttons must 2 but it is %d", [buttons count]);
+	UIButton *button1 = buttons[0];
+	UIButton *button2 = buttons[1];
+	for (UIButton *button in buttons) {
+		[view addSubview:button];
+		[button setTranslatesAutoresizingMaskIntoConstraints:NO];
+	}
+	NSArray *views = NSDictionaryOfVariableBindings(button1, button2);
+	[view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[button1]-[button2]-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
+}
+
+- (void)addThreeButtons:(NSArray *)buttons toView:(UIView *)view {
+	NSAssert([buttons count] == 3, @"The number of buttons must 3 but it is %d", [buttons count]);
+	UIButton *button1 = buttons[0];
+	UIButton *button2 = buttons[1];
+	UIButton *button3 = buttons[2];
+	for (UIButton *button in buttons) {
+		[view addSubview:button];
+		[button setTranslatesAutoresizingMaskIntoConstraints:NO];
+	}
+	NSArray *views = NSDictionaryOfVariableBindings(button1, button2, button3);
+	[view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[button1]-[button2]-[button3]-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
+}
+
+- (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray {
+	CGRect frame;
+	frame = self.view.frame;
+	frame.size.height = 44.0;
+	frame.origin.y = -1.0;
+	UIView *moreMenuView = [[UIView alloc] initWithFrame:frame];
+	moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
+	frame.origin.y += 44.0;
+	frame.size.height = 1.0;
+	UIView *bottomLineView = [[UIView alloc] initWithFrame:frame];
+	bottomLineView.backgroundColor = [UIColor colorWithRed:203.0 / 255.0 green:203.0 / 255.0 blue:203.0 / 255.0 alpha:1.0];
+	[moreMenuView addSubview:bottomLineView];
+
+	if ([buttonsArray count] == 2) {
+		[self addTwoButtons:buttonsArray toView:moreMenuView];
+	} else {
+		[self addThreeButtons:buttonsArray toView:moreMenuView];
+	}
+
+	return moreMenuView;
+}
+
 @end

@@ -99,4 +99,19 @@ static NSString *const A3CommonPropertyOrder = @"order";
 	[self insertObjectToSortedArray:object atIndex:[self count]];
 }
 
+- (void)exchangeObjectInSortedArrayAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
+	if  (	[self[idx1] respondsToSelector:@selector(order)] &&
+			[self[idx1] respondsToSelector:@selector(setOrder:)] &&
+			[self[idx2] respondsToSelector:@selector(order)] &&
+			[self[idx2] respondsToSelector:@selector(setOrder:)]
+		)
+	{
+		id order = [self[idx1] valueForKey:A3CommonPropertyOrder];
+		[self[idx1] setValue:[self[idx2] valueForKey:A3CommonPropertyOrder] forKey:A3CommonPropertyOrder];
+		[self[idx2] setValue:order forKey:A3CommonPropertyOrder];
+	}
+
+	[self exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+}
+
 @end

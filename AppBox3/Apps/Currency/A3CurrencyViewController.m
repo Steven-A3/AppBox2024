@@ -26,7 +26,7 @@
 #import "NSMutableArray+A3Sort.h"
 #import "CurrencyItem+NetworkUtility.h"
 
-@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate>
+@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem, *plusItem;
@@ -324,6 +324,7 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		dataCell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyDataCellID forIndexPath:indexPath];
 		if (nil == dataCell) {
 			dataCell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyDataCellID];
+			dataCell.menuDelegate = self;
 		}
 
 		[self configureDataCell:dataCell atIndexPath:indexPath];
@@ -335,6 +336,8 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)configureDataCell:(A3CurrencyTVDataCell *)dataCell atIndexPath:(NSIndexPath *)indexPath {
+	dataCell.menuDelegate = self;
+
 	NSInteger dataIndex = indexPath.row;
 
 	dataCell.valueField.tag = dataIndex;
@@ -412,6 +415,7 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 #pragma mark - ATSDragToReorderTableViewControllerDraggableIndicators
 
 - (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
+	FNLOG();
 	UITableViewCell *cell = nil;
 	if ([self.favorites objectAtIndex:indexPath.row] == self.equalItem) {
 		A3CurrencyTVEqualCell *equalCell = [[A3CurrencyTVEqualCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
@@ -420,12 +424,12 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	} else if ([self.favorites objectAtIndex:indexPath.row] == self.plusItem) {
 		// Bottom row is reserved for "plus" action.
 		A3CurrencyTVActionCell *actionCell = [[A3CurrencyTVActionCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        
+
 		actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
 		[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
 
 		cell = actionCell;
-	} else if ( [ [self.favorites objectAtIndex:indexPath.row] isKindOfClass:[CurrencyFavorite class] ] ) {
+	} else if ([[self.favorites objectAtIndex:indexPath.row] isKindOfClass:[CurrencyFavorite class]]) {
 		A3CurrencyTVDataCell *dataCell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
 
 		[self configureDataCell:dataCell atIndexPath:indexPath];
@@ -557,6 +561,42 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
 	FNLOG();
 	return NO;
+}
+
+#pragma mark - A3CurrencyMenuDelegate
+- (void)swapActionForCell:(UITableViewCell *)cell {
+	[self unswipeAll];
+
+	NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
+	NSIndexPath *targetIndexPath;
+	if (sourceIndexPath.row == 0) {
+		targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
+	} else {
+		targetIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+	}
+	[self.favorites exchangeObjectInSortedArrayAtIndex:sourceIndexPath.row withObjectAtIndex:targetIndexPath.row];
+	[self.tableView reloadRowsAtIndexPaths:@[sourceIndexPath, targetIndexPath] withRowAnimation:UITableViewRowAnimationMiddle];
+
+    double delayInSeconds = 0.3;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self.tableView reloadData];
+	});
+}
+
+- (void)chartActionForCell:(UITableViewCell *)cell {
+	[self unswipeAll];
+
+}
+
+- (void)shareActionForCell:(UITableViewCell *)cell {
+	[self unswipeAll];
+
+}
+
+- (void)deleteActionForCell:(UITableViewCell *)cell {
+	[self unswipeAll];
+
 }
 
 @end

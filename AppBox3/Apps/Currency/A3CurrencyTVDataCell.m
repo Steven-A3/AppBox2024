@@ -162,6 +162,7 @@
 			[button setBackgroundColor:[UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0]];
 		}
 		button.frame = CGRectMake(idx * 72.0, 0.0, 72.0, 84.0);
+		button.tag = idx;
         [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         
 		[_menuView addSubview:button];
@@ -171,7 +172,31 @@
 }
 
 - (void)buttonPressed:(UIButton *)button {
-    FNLOG();
+	FNLOG(@"%d", button.tag);
+	switch (button.tag) {
+		case 0:
+			if ([_menuDelegate respondsToSelector:@selector(swapActionForCell:)]) {
+				[_menuDelegate swapActionForCell:self];
+			}
+			break;
+		case 1:
+			if ([_menuDelegate respondsToSelector:@selector(chartActionForCell:)]) {
+				[_menuDelegate chartActionForCell:self];
+			}
+			break;
+		case 2:
+			if ([_menuDelegate respondsToSelector:@selector(shareActionForCell:)]) {
+				[_menuDelegate shareActionForCell:self];
+			}
+			break;
+		case 3:
+			if ([_menuDelegate respondsToSelector:@selector(deleteActionForCell:)]) {
+				[_menuDelegate deleteActionForCell:self];
+			}
+			break;
+		default:
+			break;
+	}
 }
 
 @end

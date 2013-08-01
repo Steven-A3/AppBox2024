@@ -8,6 +8,13 @@
 
 #import "UITableViewController+swipeMenu.h"
 
+@protocol A3CurrencyMenuDelegate <NSObject>
+- (void)swapActionForCell:(UITableViewCell *)cell;
+- (void)chartActionForCell:(UITableViewCell *)cell;
+- (void)shareActionForCell:(UITableViewCell *)cell;
+- (void)deleteActionForCell:(UITableViewCell *)cell;
+@end
+
 @interface A3CurrencyTVDataCell : UITableViewCell <A3TableViewSwipeCellDelegate>
 
 @property (nonatomic, strong) UITextField *valueField;
@@ -15,5 +22,6 @@
 @property (nonatomic, strong) UILabel *rateLabel;
 @property (nonatomic, strong) UIImageView *flagImageView;
 @property (nonatomic, strong) UIView *separatorLineView;
+@property (nonatomic, weak) id<A3CurrencyMenuDelegate>	menuDelegate;
 
 @end
