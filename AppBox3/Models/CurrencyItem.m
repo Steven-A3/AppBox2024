@@ -2,7 +2,7 @@
 //  CurrencyItem.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 7/12/13.
+//  Created by Byeong Kwon Kwak on 8/2/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @dynamic name;
 @dynamic rateToUSD;
 @dynamic updated;
+@dynamic locale;
 @dynamic favorite;
 
 @end

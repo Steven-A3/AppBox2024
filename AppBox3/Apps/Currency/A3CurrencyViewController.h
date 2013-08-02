@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "ATSDragToReorderTableViewController.h"
 
+extern NSString *const A3CurrencyDataCellID;
+
 @interface A3CurrencyViewController : ATSDragToReorderTableViewController
 
 @end

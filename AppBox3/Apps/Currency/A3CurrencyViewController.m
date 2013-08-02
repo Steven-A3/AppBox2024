@@ -25,6 +25,7 @@
 #import "A3CurrencyTVEqualCell.h"
 #import "NSMutableArray+A3Sort.h"
 #import "CurrencyItem+NetworkUtility.h"
+#import "A3CurrencyChartViewController.h"
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate>
 
@@ -44,9 +45,9 @@
     BOOL _draggingFirstRow;
 }
 
-static NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
-static NSString *const A3CurrencyActionCellID = @"A3CurrencyActionCell";
-static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
+NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
+NSString *const A3CurrencyActionCellID = @"A3CurrencyActionCell";
+NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -70,6 +71,8 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self	action:@selector(appsButtonAction:)];
 	self.navigationItem.leftBarButtonItem = barButtonItem;
@@ -587,6 +590,12 @@ static NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 - (void)chartActionForCell:(UITableViewCell *)cell {
 	[self unswipeAll];
 
+	A3CurrencyChartViewController *viewController = [[A3CurrencyChartViewController alloc] initWithNibName:@"A3CurrencyChartViewController" bundle:nil];
+	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+	CurrencyFavorite *favoriteZero = self.favorites[0], *favorite = self.favorites[indexPath.row];
+	viewController.sourceCurrencyCode = favoriteZero.currencyItem.currencyCode;
+	viewController.targetCurrencyCode = favorite.currencyItem.currencyCode;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)shareActionForCell:(UITableViewCell *)cell {

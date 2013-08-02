@@ -39,6 +39,15 @@
     NSLog(@"%@", currencyArray);
     
     expect([currencyArray count]).to.equal(@166);
+    
+    NSArray *array = [NSLocale availableLocaleIdentifiers];
+    for (NSString *localeIdentifier in array) {
+        NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
+        NSString *currencyCode = [locale objectForKey:NSLocaleCurrencyCode];
+        if (currencyCode) {
+            NSLog(@"%@, %@, %@", localeIdentifier, currencyCode, [locale objectForKey:NSLocaleCurrencySymbol]);
+        }
+    }
 }
 
 - (void)testResetCurrencyFavorite {

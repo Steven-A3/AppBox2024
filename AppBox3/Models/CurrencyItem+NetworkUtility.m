@@ -86,6 +86,8 @@
 	NSError *error;
 	id JSON = [NSJSONSerialization JSONObjectWithData:yahooData options:NSJSONReadingMutableContainers error:&error];
 
+	
+
 	NSDate *updated = nil;
 	NSArray *yahooArray = JSON[@"list"][@"resources"];
 	for (id obj in yahooArray) {

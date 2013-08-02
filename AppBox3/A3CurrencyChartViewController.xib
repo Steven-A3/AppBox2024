@@ -6,6 +6,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3CurrencyChartViewController">
             <connections>
+                <outlet property="chartView" destination="xV6-wu-1m2" id="4fU-or-Ihy"/>
+                <outlet property="segmentedControl" destination="7k9-Yw-aZ1" id="9l8-R1-zRq"/>
+                <outlet property="tableView" destination="g4S-ZW-4BT" id="3C7-ag-LxI"/>
+                <outlet property="titleView" destination="reF-rx-dxl" id="jaX-uC-ImL"/>
+                <outlet property="valueView" destination="5Rv-gj-VEg" id="fLa-iT-gGC"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -14,8 +19,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="g4S-ZW-4BT">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="168"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="84" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="g4S-ZW-4BT">
+                    <rect key="frame" x="0.0" y="64" width="320" height="168"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -23,7 +28,7 @@
                     </constraints>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ukk-Z6-Jsj" userLabel="Line up">
-                    <rect key="frame" x="0.0" y="179" width="320" height="1"/>
+                    <rect key="frame" x="0.0" y="243" width="320" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -31,7 +36,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="reF-rx-dxl">
-                    <rect key="frame" x="0.0" y="180" width="320" height="22"/>
+                    <rect key="frame" x="0.0" y="244" width="320" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -39,7 +44,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Rv-gj-VEg">
-                    <rect key="frame" x="0.0" y="202" width="320" height="22"/>
+                    <rect key="frame" x="0.0" y="266" width="320" height="22"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -48,7 +53,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WgZ-84-AYt" userLabel="Line below">
-                    <rect key="frame" x="0.0" y="224" width="320" height="1"/>
+                    <rect key="frame" x="0.0" y="288" width="320" height="1"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -56,7 +61,7 @@
                     </constraints>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="7k9-Yw-aZ1">
-                    <rect key="frame" x="17" y="253" width="286" height="29"/>
+                    <rect key="frame" x="17" y="317" width="286" height="29"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <segments>
                         <segment title="1 Day"/>
@@ -65,9 +70,12 @@
                         <segment title="5 Mos"/>
                         <segment title="1 Year"/>
                     </segments>
+                    <connections>
+                        <action selector="segmentedControlValueChanged:" destination="-1" eventType="valueChanged" id="pxh-d6-7h6"/>
+                    </connections>
                 </segmentedControl>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xV6-wu-1m2">
-                    <rect key="frame" x="17" y="307" width="286" height="241"/>
+                    <rect key="frame" x="17" y="371" width="286" height="177"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
             </subviews>
@@ -78,7 +86,7 @@
                 <constraint firstAttribute="trailing" secondItem="g4S-ZW-4BT" secondAttribute="trailing" id="8XQ-Sf-NyM"/>
                 <constraint firstAttribute="bottom" secondItem="xV6-wu-1m2" secondAttribute="bottom" constant="20" id="92f-1j-CeN"/>
                 <constraint firstItem="xV6-wu-1m2" firstAttribute="top" secondItem="7k9-Yw-aZ1" secondAttribute="top" constant="54" id="9pN-gQ-fc2"/>
-                <constraint firstItem="g4S-ZW-4BT" firstAttribute="top" secondItem="1" secondAttribute="top" id="BkF-ij-SSJ"/>
+                <constraint firstItem="g4S-ZW-4BT" firstAttribute="top" secondItem="1" secondAttribute="top" constant="64" id="BkF-ij-SSJ"/>
                 <constraint firstAttribute="trailing" secondItem="xV6-wu-1m2" secondAttribute="trailing" constant="17" id="Fgn-Ml-g0T"/>
                 <constraint firstItem="xV6-wu-1m2" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="17" id="Jsb-CT-jrI"/>
                 <constraint firstItem="reF-rx-dxl" firstAttribute="trailing" secondItem="5Rv-gj-VEg" secondAttribute="trailing" id="Qnj-ex-zFB"/>

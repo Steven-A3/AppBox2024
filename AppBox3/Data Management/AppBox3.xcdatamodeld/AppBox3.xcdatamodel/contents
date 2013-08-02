@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3383" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3389" systemVersion="12E55" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
@@ -19,6 +19,7 @@
     <entity name="CurrencyItem" representedClassName="CurrencyItem" syncable="YES">
         <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="flagImageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="locale" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="rateToUSD" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="updated" attributeType="Date" syncable="YES"/>

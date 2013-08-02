@@ -100,10 +100,12 @@ static NSString *const A3CommonPropertyOrder = @"order";
 }
 
 - (void)exchangeObjectInSortedArrayAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2 {
-	if  (	[self[idx1] respondsToSelector:@selector(order)] &&
-			[self[idx1] respondsToSelector:@selector(setOrder:)] &&
-			[self[idx2] respondsToSelector:@selector(order)] &&
-			[self[idx2] respondsToSelector:@selector(setOrder:)]
+    SEL selectorOrder = sel_registerName("order");
+    SEL selectorSetOrder = sel_registerName("setOrder:");
+	if  (	[self[idx1] respondsToSelector:selectorOrder] &&
+			[self[idx1] respondsToSelector:selectorSetOrder] &&
+			[self[idx2] respondsToSelector:selectorOrder] &&
+			[self[idx2] respondsToSelector:selectorSetOrder]
 		)
 	{
 		id order = [self[idx1] valueForKey:A3CommonPropertyOrder];
