@@ -31,6 +31,9 @@
 
 - (void)closeActionMenuViewWithAnimation:(BOOL)animate;
 - (void)addToolsButtonWithAction:(SEL)action;
+
+- (A3NumberKeyboardViewController *)simpleNumberKeyboard;
+
 - (NSString *)zeroCurrency;
 
 - (UIImage *)navigationBarBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics;
@@ -60,4 +63,24 @@
 - (void)assignLeftBarButtonItemWithAppListWithSelector:(SEL)selector;
 
 - (void)assignBackBarButtonItemWithAppListWithSelector:(SEL)selector;
+
+- (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
+
+- (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
+
+- (void)dismissMoreMenuView:(UIView *)moreMenuView tableView:(UITableView *)tableView;
+
+- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
+
+- (UIButton *)shareButton;
+
+- (void)shareButtonAction:(UIButton *)button;
+
+- (UIButton *)historyButton;
+
+- (void)historyButtonAction:(UIButton *)button;
+
+- (UIButton *)settingsButton;
+
+- (void)settingsButtonAction:(UIButton *)button;
 @end

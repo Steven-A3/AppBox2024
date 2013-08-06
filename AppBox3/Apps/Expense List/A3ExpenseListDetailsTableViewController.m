@@ -478,7 +478,7 @@
 	return _numberKeyboardViewController;
 }
 
-- (void)clearButtonPressed {
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	_editingTextField.text = @"";
 }
 
@@ -498,7 +498,7 @@
 	[self handlePrevNext:NO];
 }
 
-- (void)A3KeyboardDoneButtonPressed {
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[_editingTextField resignFirstResponder];
 }
 

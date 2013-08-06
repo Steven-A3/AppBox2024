@@ -135,6 +135,7 @@
 		684C019B171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684C019A171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m */; };
 		684C019E171FE245008AD3D5 /* A3ExpenseListPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 684C019D171FE245008AD3D5 /* A3ExpenseListPreferences.m */; };
 		6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */; };
+		6854F0BB17ACF95900E882B8 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854F0BA17ACF95900E882B8 /* CurrencyItem.m */; };
 		68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */; };
 		68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FF01670409F00F200B7 /* A3TimeLineTableViewCell.m */; };
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
@@ -261,7 +262,6 @@
 		687C19501783E08300415FCE /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */; };
 		687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */; };
 		687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */; };
-		687FA2F317ABE079003357BA /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FA2F217ABE079003357BA /* CurrencyItem.m */; };
 		687FB838162D5871004FB719 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FB837162D5871004FB719 /* A3Weather.m */; };
 		68822D3F1718020900127344 /* ExpenseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 68822D3E1718020900127344 /* ExpenseDetail.m */; };
 		68822D401718023100127344 /* ExpenseDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = 68822D3E1718020900127344 /* ExpenseDetail.m */; };
@@ -673,6 +673,8 @@
 		684C019D171FE245008AD3D5 /* A3ExpenseListPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListPreferences.m; path = "Expense List/A3ExpenseListPreferences.m"; sourceTree = "<group>"; };
 		6854E91C166F3E8D00497126 /* A3TimeLineEventItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TimeLineEventItemView.h; sourceTree = "<group>"; };
 		6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TimeLineEventItemView.m; sourceTree = "<group>"; };
+		6854F0B917ACF95900E882B8 /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
+		6854F0BA17ACF95900E882B8 /* CurrencyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyItem.m; sourceTree = "<group>"; };
 		68555FEB167032B000F200B7 /* A3TimeLineTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TimeLineTableViewController.h; path = ViewControllers/A3TimeLineTableViewController.h; sourceTree = "<group>"; };
 		68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TimeLineTableViewController.m; path = ViewControllers/A3TimeLineTableViewController.m; sourceTree = "<group>"; };
 		68555FEF1670409F00F200B7 /* A3TimeLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TimeLineTableViewCell.h; sourceTree = "<group>"; };
@@ -909,8 +911,6 @@
 		687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcHistoryTableViewCell.m; path = "Apps/Sales Calc/A3SalesCalcHistoryTableViewCell.m"; sourceTree = "<group>"; };
 		687D385C16BA31BD006FA74E /* A3SalesCalcHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcHistoryViewController.h; path = "Apps/Sales Calc/A3SalesCalcHistoryViewController.h"; sourceTree = "<group>"; };
 		687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SalesCalcHistoryViewController.m; path = "Apps/Sales Calc/A3SalesCalcHistoryViewController.m"; sourceTree = "<group>"; };
-		687FA2F117ABE079003357BA /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
-		687FA2F217ABE079003357BA /* CurrencyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyItem.m; sourceTree = "<group>"; };
 		687FB836162D5871004FB719 /* A3Weather.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Weather.h; sourceTree = "<group>"; };
 		687FB837162D5871004FB719 /* A3Weather.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Weather.m; sourceTree = "<group>"; };
 		68822D3D1718020900127344 /* ExpenseDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpenseDetail.h; sourceTree = "<group>"; };
@@ -1691,8 +1691,8 @@
 		683B954D15EB233500575377 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				687FA2F117ABE079003357BA /* CurrencyItem.h */,
-				687FA2F217ABE079003357BA /* CurrencyItem.m */,
+				6854F0B917ACF95900E882B8 /* CurrencyItem.h */,
+				6854F0BA17ACF95900E882B8 /* CurrencyItem.m */,
 				687FB836162D5871004FB719 /* A3Weather.h */,
 				687FB837162D5871004FB719 /* A3Weather.m */,
 				17D4266E047FBF02000FA3A1 /* A3YahooCurrency.h */,
@@ -2838,7 +2838,7 @@
 				68822D3F1718020900127344 /* ExpenseDetail.m in Sources */,
 				682E07DE17191D65007112B9 /* A3ActionMenuViewController_iPhone.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
-				687FA2F317ABE079003357BA /* CurrencyItem.m in Sources */,
+				6854F0BB17ACF95900E882B8 /* CurrencyItem.m in Sources */,
 				682E07ED17196B01007112B9 /* A3ExpenseListDetailsTableViewController.m in Sources */,
 				17D42CF548BE309C2DFE1AC3 /* A3ExpenseListViewController.m in Sources */,
 				684C019B171FE106008AD3D5 /* A3ExpenseListAddBudgetViewController.m in Sources */,

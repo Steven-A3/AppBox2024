@@ -38,6 +38,8 @@
 @property (nonatomic, strong) UIButton *updateButton;
 @property (nonatomic, strong) UIButton *yahooButton;
 @property (nonatomic, weak)	UITextField *firstResponder;
+@property (nonatomic, strong) NSArray *moreMenuButtons;
+@property (nonatomic, strong) UIView *moreMenuView;
 
 @end
 
@@ -77,8 +79,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self	action:@selector(appsButtonAction:)];
 	self.navigationItem.leftBarButtonItem = barButtonItem;
 
-	UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"◦ ◦ ◦" style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
-	self.navigationItem.rightBarButtonItem = moreButtonItem;
+	[self rightButtonMoreButton];
 
 	self.tableView.rowHeight = 84.0;
 	self.tableView.separatorColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:200.0 / 255.0 alpha:1.0];
@@ -91,8 +92,11 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+}
 
-
+- (void)rightButtonMoreButton {
+	UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"◦ ◦ ◦" style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
+	self.navigationItem.rightBarButtonItem = moreButtonItem;
 }
 
 - (void)reloadUpdateDateLabel {
@@ -128,6 +132,66 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[[[A3AppDelegate instance] mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
 
 	}];
+	if ([_moreMenuView superview]) {
+		[self dismissMoreMenuView:_moreMenuView tableView:self.tableView];
+		[self rightButtonMoreButton];
+	}
+}
+
+- (void)moreButtonAction:(UIButton *)button {
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+
+	_moreMenuButtons = @[self.shareButton, self.historyButton , self.settingsButton];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView ];
+}
+
+- (void)doneButtonAction:(id)button {
+	[self dismissMoreMenu];
+}
+
+- (void)dismissMoreMenu {
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
+}
+
+- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView tableView:self.tableView];
+	[self.view removeGestureRecognizer:gestureRecognizer];
+}
+
+- (NSNumberFormatter *)currencyFormatterWithCode:(NSString *)currencyCode {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[nf setCurrencyCode:currencyCode];
+	return nf;
+}
+
+- (void)shareButtonAction:(UIButton *)button {
+	[self dismissMoreMenu];
+
+	CurrencyFavorite *source = self.favorites[0], *target = self.favorites[2];
+	NSNumberFormatter *sourceNF = [self currencyFormatterWithCode:source.currencyItem.currencyCode];
+	NSNumberFormatter *targetNF = [self currencyFormatterWithCode:target.currencyItem.currencyCode];
+	float rate = target.currencyItem.rateToUSD.floatValue / source.currencyItem.rateToUSD.floatValue;
+	NSString *activityItem = [NSString stringWithFormat:@"%@ equals %@ with rate %0.4f",
+		[sourceNF stringFromNumber:self.currencyHistory.value],
+		[targetNF stringFromNumber:@(self.currencyHistory.value.floatValue * rate)],
+			rate];
+
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem] applicationActivities:nil];
+	[self presentViewController:activityController animated:YES completion:^{
+
+	}];
+}
+
+- (void)historyButtonAction:(UIButton *)button {
+	[self dismissMoreMenu];
+
+
+}
+
+- (void)settingsButtonAction:(UIButton *)button {
+	[self dismissMoreMenu];
 }
 
 - (void)didReceiveMemoryWarning
@@ -457,11 +521,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	if(textField.tag == 0) {
-		A3NumberKeyboardViewController_iPhone *vc = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
-		vc.keyInputDelegate = textField;
-		vc.delegate = self;
-		self.numberKeyboardViewController = vc;
-		textField.inputView = [vc view];
+		A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
+		self.numberKeyboardViewController = keyboardVC;
+		keyboardVC.keyInputDelegate = textField;
+		keyboardVC.delegate = self;
+		self.numberKeyboardViewController = keyboardVC;
+		textField.inputView = [keyboardVC view];
 
 		_firstResponder = textField;
 		return YES;
@@ -470,17 +535,16 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)clearButtonPressed {
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.keyInputDelegate;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
 	}
 }
 
-- (void)A3KeyboardDoneButtonPressed {
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	[self.numberKeyboardViewController.keyInputDelegate resignFirstResponder];
 }
-
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 	FNLOG();
@@ -502,6 +566,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self updateTextFieldsWithSourceTextField:textField];
 
 	_firstResponder = nil;
+	self.numberKeyboardViewController = nil;
 }
 
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {

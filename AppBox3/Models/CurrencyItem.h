@@ -2,7 +2,7 @@
 //  CurrencyItem.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/2/13.
+//  Created by Byeong Kwon Kwak on 8/3/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -18,7 +18,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * rateToUSD;
 @property (nonatomic, retain) NSDate * updated;
-@property (nonatomic, retain) NSString * locale;
+@property (nonatomic, retain) NSString * currencySymbol;
 @property (nonatomic, retain) CurrencyFavorite *favorite;
 
 @end

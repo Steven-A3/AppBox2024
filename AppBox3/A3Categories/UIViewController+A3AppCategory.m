@@ -24,6 +24,7 @@
 #import "A3DateKeyboardViewController_iPad.h"
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "CommonUIDefinitions.h"
+#import "common.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -169,16 +170,36 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	self.navigationItem.rightBarButtonItem = barButtonItem;
 }
 
+- (A3NumberKeyboardViewController *)iPadNumberKeyboard {
+	return [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
+}
+
+- (A3NumberKeyboardViewController *)simpleNumberKeyboard {
+	A3NumberKeyboardViewController *viewController;
+	if (IS_IPHONE) {
+		viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
+	} else {
+		viewController = [self iPadNumberKeyboard];
+	}
+	return viewController;
+}
+
+- (A3NumberKeyboardViewController *)normalNumberKeyboard {
+	A3NumberKeyboardViewController *viewController;
+	if (IS_IPAD) {
+		viewController = [self iPadNumberKeyboard];
+		viewController.delegate = self;
+	} else {
+		viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
+		viewController.delegate = self;
+	}
+	return viewController;
+}
+
 - (A3NumberKeyboardViewController *)numberKeyboardViewController {
 	A3NumberKeyboardViewController *viewController = objc_getAssociatedObject(self, key_numberKeyboardViewController);
 	if (nil == viewController) {
-		if (IS_IPAD) {
-			viewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
-			viewController.delegate = self;
-		} else {
-			viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
-			viewController.delegate = self;
-		}
+		viewController = [self normalNumberKeyboard];
 		objc_setAssociatedObject(self, key_numberKeyboardViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	return viewController;
@@ -489,10 +510,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	self.navigationItem.backBarButtonItem = [self appListBarButtonItemWithSelector:selector];
 }
 
-- (void)insertMoreMenuView {
-
-}
-
 - (void)addTwoButtons:(NSArray *)buttons toView:(UIView *)view {
 	NSAssert([buttons count] == 2, @"The number of buttons must 2 but it is %d", [buttons count]);
 	UIButton *button1 = buttons[0];
@@ -501,8 +518,26 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 		[view addSubview:button];
 		[button setTranslatesAutoresizingMaskIntoConstraints:NO];
 	}
-	NSArray *views = NSDictionaryOfVariableBindings(button1, button2);
-	[view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[button1]-[button2]-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
+	[view addConstraint:[NSLayoutConstraint constraintWithItem:button1
+													 attribute:NSLayoutAttributeBottom
+													 relatedBy:NSLayoutRelationEqual
+														toItem:view
+													 attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-10.0]];
+	[view addConstraint:[NSLayoutConstraint constraintWithItem:button2
+													 attribute:NSLayoutAttributeBottom
+													 relatedBy:NSLayoutRelationEqual
+														toItem:view
+													 attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-10.0]];
+	[view addConstraint:[NSLayoutConstraint constraintWithItem:button1
+													 attribute:NSLayoutAttributeCenterX
+													 relatedBy:NSLayoutRelationEqual
+														toItem:view
+													 attribute:NSLayoutAttributeCenterX multiplier:2.0 * 1.0 / 3.0 constant:0.0]];
+	[view addConstraint:[NSLayoutConstraint constraintWithItem:button2
+													 attribute:NSLayoutAttributeCenterX
+													 relatedBy:NSLayoutRelationEqual
+														toItem:view
+													 attribute:NSLayoutAttributeCenterX multiplier:2.0 * 2.0 / 3.0 constant:0.0]];
 }
 
 - (void)addThreeButtons:(NSArray *)buttons toView:(UIView *)view {
@@ -514,8 +549,18 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 		[view addSubview:button];
 		[button setTranslatesAutoresizingMaskIntoConstraints:NO];
 	}
-	NSArray *views = NSDictionaryOfVariableBindings(button1, button2, button3);
-	[view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[button1]-[button2]-[button3]-|" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views]];
+	NSDictionary *views = NSDictionaryOfVariableBindings(button1, button2, button3);
+	[view addConstraint:[NSLayoutConstraint constraintWithItem:button1
+													 attribute:NSLayoutAttributeBottom
+													 relatedBy:NSLayoutRelationEqual
+														toItem:view
+													 attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-10.0]];
+	[view addConstraint:[NSLayoutConstraint constraintWithItem:button2
+													 attribute:NSLayoutAttributeCenterX
+													 relatedBy:NSLayoutRelationEqual
+														toItem:view
+													 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
+	[view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[button1]-[button2]-[button3]-|" options:NSLayoutFormatAlignAllBaseline metrics:nil views:views]];
 }
 
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray {
@@ -538,6 +583,109 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	}
 
 	return moreMenuView;
+}
+
+- (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView {
+	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
+	CGRect clippingViewFrame = moreMenuView.frame;
+	clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0;
+	UIView *clippingView = [[UIView alloc] initWithFrame:clippingViewFrame];
+	clippingView.clipsToBounds = YES;
+	CGRect frame = clippingView.bounds;
+	frame.origin.y -= frame.size.height;
+	moreMenuView.frame = frame;
+	[clippingView addSubview:moreMenuView];
+
+	[self.navigationController.view insertSubview:clippingView belowSubview:self.view];
+
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect newFrame = moreMenuView.frame;
+		newFrame.origin.y = 0.0;
+		moreMenuView.frame = newFrame;
+
+		if (tableView) {
+			UIEdgeInsets insets = tableView.contentInset;
+			insets.top += clippingViewFrame.size.height;
+			tableView.contentInset = insets;
+
+			if (tableView.contentOffset.y == -64.0) {
+				CGPoint offset = tableView.contentOffset;
+				offset.y = -108.0;
+				tableView.contentOffset = offset;
+			}
+		} else {
+			newFrame = CGRectOffset(self.view.frame, 0.0, clippingViewFrame.size.height);
+			self.view.frame = newFrame;
+		}
+	}];
+
+	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moreMenuDismissAction:)];
+	[self.view addGestureRecognizer:gestureRecognizer];
+
+	return clippingView;
+}
+
+- (void)dismissMoreMenuView:(UIView *)moreMenuView tableView:(UITableView *)tableView {
+	UIView *menuView = moreMenuView.subviews[0];
+	[UIView animateWithDuration:0.3 animations:^{
+		CGRect frame = menuView.frame;
+		frame = CGRectOffset(frame, 0.0, -44.0);
+		menuView.frame = frame;
+
+		if (tableView) {
+			UIEdgeInsets insets = tableView.contentInset;
+			insets.top -= moreMenuView.frame.size.height;
+			tableView.contentInset = insets;
+
+			if (tableView.contentOffset.y > insets.top) {
+				CGPoint offset = tableView.contentOffset;
+				offset.y = insets.top;
+				tableView.contentOffset = offset;
+			}
+		} else {
+			frame = CGRectOffset(self.view.frame, 0.0, moreMenuView.frame.size.height);
+			self.view.frame = frame;
+		}
+	} completion:^(BOOL finished) {
+		[moreMenuView removeFromSuperview];
+	}];
+}
+
+- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
+	FNLOG(@"You have to override this method to close moreMenuView properly.");
+}
+
+- (UIButton *)shareButton {
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+	[button setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(shareButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	return button;
+}
+
+- (void)shareButtonAction:(UIButton *)button {
+
+}
+
+- (UIButton *)historyButton {
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+	[button setImage:[UIImage imageNamed:@"star01"] forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(historyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	return button;
+}
+
+- (void)historyButtonAction:(UIButton *)button {
+
+}
+
+- (UIButton *)settingsButton {
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+	[button setImage:[UIImage imageNamed:@"general"] forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(settingsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	return button;
+}
+
+- (void)settingsButtonAction:(UIButton *)button {
+
 }
 
 @end

@@ -9,6 +9,8 @@
 #import "CurrencyItem.h"
 
 @interface CurrencyItem (name)
++ (void)updateNames;
+
 - (NSString *)localizedName;
 
 @end

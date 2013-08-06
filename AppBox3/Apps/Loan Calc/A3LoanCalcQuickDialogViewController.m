@@ -655,7 +655,7 @@
 	_temporaryLabelForEditing.text = cell.textField.text;
 }
 
-- (void)clearButtonPressed {
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	if (self.editingElement) {
 		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:self.editingElement];
 		cell.textField.text = @"";
@@ -744,7 +744,7 @@
 	}
 }
 
-- (void)A3KeyboardDoneButtonPressed {
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	if (self.editingElement) {
 		QEntryTableViewCell *cell = (QEntryTableViewCell *)[self.quickDialogTableView cellForElement:self.editingElement];
 		[cell handleActionBarDone:nil];

@@ -11,8 +11,6 @@
 #import "common.h"
 #import "CurrencyItem.h"
 #import "CurrencyItem+name.h"
-#import "A3AppDelegate.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
 #import "NSManagedObject+MagicalFinders.h"
 
 @interface A3CurrencySelectViewController ()
@@ -34,6 +32,10 @@
 		_myTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		_myTableView.delegate = self;
 		_myTableView.dataSource = self;
+
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			[CurrencyItem updateNames];
+		});
 	}
 
 	return self;
@@ -42,17 +44,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	NSError *error;
-	if (![[self fetchedResultsController] performFetch:&error]) {
-		FNLOG(@"failed to load data.");
-	}
-
 	_myTableView.frame = self.view.bounds;
-	_myTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:_myTableView];
 
 	self.myTableView.tableHeaderView = self.searchBarPlaceholderView;
-	[self.view addSubview:self.searchBar];
+	[self.searchBarPlaceholderView addSubview:self.searchBar];
 }
 
 - (UIView *)searchBarPlaceholderView {
@@ -65,8 +61,11 @@
 - (UISearchBar *)searchBar {
 	if (nil == _searchBar) {
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), kSearchBarHeight)];
-		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_searchBar.delegate = self;
+		_searchBar.placeholder = @"USD";
+		_searchBar.translucent = YES;
+		_searchBar.text = @"";
+		_searchBar.tintColor = [UIColor redColor];
 	}
 	return _searchBar;
 }
@@ -159,45 +158,6 @@
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -206,13 +166,10 @@
 	if ([_delegate respondsToSelector:@selector(currencySelected:)]) {
 		[_delegate currencySelected:currencyItem.currencyCode];
 	}
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
-	if (nil == _fetchedResultsController) {
-		_fetchedResultsController = [CurrencyItem MR_fetchAllGroupedBy:@"currencyCode.stringGroupByFirstInitial" withPredicate:nil sortedBy:@"currencyCode" ascending:YES];
-	}
-
 	return _fetchedResultsController;
 }
 
@@ -222,15 +179,10 @@
 	NSString *query = searchText;
 	if (query && query.length) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ or currencyCode contains[cd] %@", query, query];
-		[self.fetchedResultsController.fetchRequest setPredicate:predicate];
+		_fetchedResultsController = [CurrencyItem MR_fetchAllSortedBy:@"currencyCode" ascending:YES withPredicate:predicate groupBy:nil delegate:nil];
+	} else {
+		_fetchedResultsController = nil;
 	}
-
-	NSError *error = nil;
-	if (![[self fetchedResultsController] performFetch:&error]) {
-		// Handle error
-		FNLOG(@"core data fetch failed");
-	}
-
 	[_myTableView reloadData];
 }
 
@@ -241,10 +193,7 @@
 // called when cancel button pressed
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-	[self.fetchedResultsController.fetchRequest setPredicate:nil];
-	NSError *error;
-	[self.fetchedResultsController performFetch:&error];
-
+	_fetchedResultsController = nil;
 	[_myTableView reloadData];
 }
 

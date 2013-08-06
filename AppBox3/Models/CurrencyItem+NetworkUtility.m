@@ -86,7 +86,23 @@
 	NSError *error;
 	id JSON = [NSJSONSerialization JSONObjectWithData:yahooData options:NSJSONReadingMutableContainers error:&error];
 
-	
+	NSArray *localesArray = [NSLocale availableLocaleIdentifiers];
+	NSMutableArray *validLocales = [[NSMutableArray alloc] initWithCapacity:[localesArray count]];
+	for (id localeid in localesArray) {
+		NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeid];
+		if ([[locale objectForKey:NSLocaleCurrencyCode] length]) {
+			[validLocales addObject:@{
+					NSLocaleCurrencyCode : [locale objectForKey:NSLocaleCurrencyCode],
+					NSLocaleIdentifier : localeid,
+					NSLocaleCurrencySymbol : [locale objectForKey:NSLocaleCurrencySymbol]
+			}];
+		}
+	}
+	NSComparator comparator = ^NSComparisonResult(NSDictionary *obj1, NSDictionary *obj2) {
+		return [obj1[NSLocaleCurrencyCode] compare:obj2[NSLocaleCurrencyCode]];
+	};
+	[validLocales sortUsingComparator:comparator];
+	NSLog(@"%@", validLocales);
 
 	NSDate *updated = nil;
 	NSArray *yahooArray = JSON[@"list"][@"resources"];
@@ -98,6 +114,10 @@
 		entity.rateToUSD = yahooCurrency.rateToUSD;
 		entity.updated = yahooCurrency.updated;
 		updated = [yahooCurrency.updated laterDate:updated];
+		NSUInteger index = [validLocales indexOfObject:@{NSLocaleCurrencyCode:yahooCurrency.currencyCode} inSortedRange:NSMakeRange(0, [validLocales count]) options:NSBinarySearchingFirstEqual usingComparator:comparator];
+		if (index != NSNotFound) {
+			entity.currencySymbol = validLocales[index][NSLocaleCurrencySymbol];
+		}
 	}
 
 	// Add special currency which does not exist in the yahoo data source.
@@ -106,26 +126,31 @@
 	usd.name = @"USD";
 	usd.rateToUSD = @1.0;
 	usd.updated = updated;
+    usd.currencySymbol = @"$";
 
-	/*
-	NSURLRequest *request = [[self class] yahooAllCurrenciesURLRequest];
-	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-		NSArray *yahooArray = JSON[@"list"][@"resources"];
-		[yahooArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            A3YahooCurrency *yahooCurrency = [[A3YahooCurrency alloc] initWithObject:obj];
-			CurrencyItem *entity = [CurrencyItem MR_createEntity];
-			entity.currencyCode = yahooCurrency.currencyCode;
-			entity.name = yahooCurrency.name;
-			entity.rateToUSD = yahooCurrency.rateToUSD;
-			entity.updated = yahooCurrency.updated;
-		}];
-		FNLOG(@"Operation completed.");
-	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-		FNLOG(@"AFJSONRequestOperation failed getting Yahoo all currency list.");
+	NSArray *exceptionList = @[
+			@{NSLocaleCurrencyCode:@"ALL", NSLocaleCurrencySymbol:@"Lek"},
+			@{NSLocaleCurrencyCode:@"AZN", NSLocaleCurrencySymbol:@"\u043c\u0430\u043d."},
+			@{NSLocaleCurrencyCode:@"BAM", NSLocaleCurrencySymbol:@"KM"},
+			@{NSLocaleCurrencyCode:@"DKK", NSLocaleCurrencySymbol:@"kr"},
+			@{NSLocaleCurrencyCode:@"HRK", NSLocaleCurrencySymbol:@"kn"},
+			@{NSLocaleCurrencyCode:@"LKR", NSLocaleCurrencySymbol:@"Rs."},
+			@{NSLocaleCurrencyCode:@"MAD", NSLocaleCurrencySymbol:@"\u062f.\u0645.\u200f"},
+			@{NSLocaleCurrencyCode:@"RUB", NSLocaleCurrencySymbol:@"\u0440\u0443\u0431."},
+			@{NSLocaleCurrencyCode:@"SEK", NSLocaleCurrencySymbol:@"kr"},
+			@{NSLocaleCurrencyCode:@"TND", NSLocaleCurrencySymbol:@"\u062f.\u062a.\u200f"},
+			@{NSLocaleCurrencyCode:@"TRY", NSLocaleCurrencySymbol:@"\u20ba"}
+	];
+
+	[exceptionList enumerateObjectsUsingBlock:^(NSDictionary *object, NSUInteger idx, BOOL *stop) {
+		NSArray *fetched = [CurrencyItem MR_findByAttribute:@"currencyCode" withValue:object[NSLocaleCurrencyCode]];
+		if ([fetched count]) {
+			CurrencyItem *item = fetched[0];
+			item.currencySymbol = object[NSLocaleCurrencySymbol];
+		}
 	}];
 
-	[operation start];
-*/
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveToPersistentStoreAndWait];
 }
 
 @end

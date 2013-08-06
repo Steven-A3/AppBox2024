@@ -7,6 +7,9 @@
 //
 
 #import "CurrencyItem+name.h"
+#import "NSManagedObject+MagicalFinders.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
 
 @implementation CurrencyItem (name)
 
@@ -24,6 +27,14 @@
 		}
 	}
 	return name;
+}
+
++ (void)updateNames {
+	NSArray *allItems = [CurrencyItem MR_findAll];
+	[allItems enumerateObjectsUsingBlock:^(CurrencyItem *obj, NSUInteger idx, BOOL *stop) {
+		obj.name = [obj localizedName];
+	}];
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveToPersistentStoreAndWait];
 }
 
 @end

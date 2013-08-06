@@ -865,7 +865,7 @@
 	return nil;
 }
 
-- (void)clearButtonPressed {
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	if (_editingTextField) {
 		_editingTextField.text = @"";
 		NSUInteger index = [_textFields indexOfObject:_editingTextField];
@@ -922,7 +922,7 @@
 	}
 }
 
-- (void)A3KeyboardDoneButtonPressed {
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	FNLOG(@"Check");
 	[_editingTextField resignFirstResponder];
 }
