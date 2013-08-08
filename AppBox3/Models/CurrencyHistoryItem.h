@@ -2,7 +2,7 @@
 //  CurrencyHistoryItem.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 7/16/13.
+//  Created by Byeong Kwon Kwak on 8/8/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -14,8 +14,8 @@
 @interface CurrencyHistoryItem : NSManagedObject
 
 @property (nonatomic, retain) NSString * currencyCode;
-@property (nonatomic, retain) NSNumber * rateToSource;
-@property (nonatomic, retain) NSDate * dateForRate;
+@property (nonatomic, retain) NSNumber * rate;
+@property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) CurrencyHistory *history;
 
 @end

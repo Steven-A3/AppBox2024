@@ -2,18 +2,20 @@
 //  CurrencyHistory.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 7/16/13.
+//  Created by Byeong Kwon Kwak on 8/7/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "CurrencyHistory.h"
+#import "CurrencyHistoryItem.h"
 
 
 @implementation CurrencyHistory
 
 @dynamic date;
-@dynamic sourceCurrencyCode;
+@dynamic currencyCode;
 @dynamic value;
+@dynamic rate;
 @dynamic targets;
 
 @end

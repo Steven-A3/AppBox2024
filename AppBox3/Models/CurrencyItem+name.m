@@ -11,6 +11,8 @@
 #import "NSManagedObjectContext+MagicalSaves.h"
 #import "NSManagedObjectContext+MagicalThreading.h"
 
+NSString *const A3KeyCurrencyCode = @"currencyCode";
+
 @implementation CurrencyItem (name)
 
 - (NSString *)localizedName {

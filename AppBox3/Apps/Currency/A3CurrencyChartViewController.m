@@ -17,6 +17,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3CurrencySelectViewController.h"
+#import "CurrencyItem+name.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CurrencySelectViewControllerDelegate>
 
@@ -126,7 +127,7 @@
 #pragma mark - CurrencyItem
 - (CurrencyItem *)sourceItem {
 	if (!_sourceItem) {
-		NSArray *fetchedResult = [CurrencyItem MR_findByAttribute:@"currencyCode" withValue:_sourceCurrencyCode];
+		NSArray *fetchedResult = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode];
 		NSAssert([fetchedResult count], @"%s, %s, CurrencyItem is empty or source currency code is not valid.", __FUNCTION__, __PRETTY_FUNCTION__);
 		_sourceItem = fetchedResult[0];
 	}
@@ -135,7 +136,7 @@
 
 - (CurrencyItem *)targetItem {
 	if (!_targetItem) {
-		NSArray *fetchedResult = [CurrencyItem MR_findByAttribute:@"currencyCode" withValue:_targetCurrencyCode];
+		NSArray *fetchedResult = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode];
 		NSAssert([fetchedResult count], @"%s, CurrencyItem is empty or target currency code is not valid.", __PRETTY_FUNCTION__);
         _targetItem = fetchedResult[0];
 	}
@@ -198,6 +199,7 @@
 	_selectionInSource = indexPath.row == 0;
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
+	viewController.allowChooseFavorite = YES;
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 

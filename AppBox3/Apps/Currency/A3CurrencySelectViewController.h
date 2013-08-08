@@ -14,8 +14,9 @@
 
 @end
 
-@interface A3CurrencySelectViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface A3CurrencySelectViewController : UITableViewController
 
 @property (nonatomic, weak) id<CurrencySelectViewControllerDelegate> delegate;
+@property (nonatomic)		BOOL allowChooseFavorite;
 
 @end

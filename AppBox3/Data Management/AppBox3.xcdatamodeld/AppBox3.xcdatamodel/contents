@@ -5,15 +5,16 @@
         <relationship name="currencyItem" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyItem" inverseName="favorite" inverseEntity="CurrencyItem" syncable="YES"/>
     </entity>
     <entity name="CurrencyHistory" representedClassName="CurrencyHistory" syncable="YES">
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="sourceCurrencyCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="targets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CurrencyHistoryItem" inverseName="history" inverseEntity="CurrencyHistoryItem" syncable="YES"/>
     </entity>
     <entity name="CurrencyHistoryItem" representedClassName="CurrencyHistoryItem" syncable="YES">
         <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="dateForRate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="rateToSource" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="rate" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyHistory" inverseName="targets" inverseEntity="CurrencyHistory" syncable="YES"/>
     </entity>
     <entity name="CurrencyItem" representedClassName="CurrencyItem" syncable="YES">

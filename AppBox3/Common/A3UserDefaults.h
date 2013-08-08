@@ -10,27 +10,32 @@
 #define AppBox3_A3UserDefaults_h
 
 #pragma mark ------ Global for App
-#define A3AppDefaultUserCurrencyCode				@"A3AppDefaultUserCurrencyCode"
+extern NSString *const A3AppDefaultUserCurrencyCode;
 
 #pragma mark ------ Sales Calc
 
-#define A3SalesCalcDefaultUserCurrencyCode          @"A3SalesCalcDefaultUserCurrencyCode"
-#define A3SalesCalcDefaultKnownValueOriginalPrice	@"A3SalesCalcDefaultKnownValueOriginalPrice"
-#define A3SalesCalcDefaultShowAdvanced				@"A3SalesCalcDefaultShowAdvanced"
+extern NSString *const A3SalesCalcDefaultUserCurrencyCode;
+extern NSString *const A3SalesCalcDefaultKnownValueOriginalPrice;
+extern NSString *const A3SalesCalcDefaultShowAdvanced;
 
 #pragma mark ------ Loan Calc
 
-#define A3LoanCalcDefaultUserCurrencyCode			@"A3LoanCalcDefaultUserCurrencyCode"
-#define A3LoanCalcDefaultCalculationFor				@"A3LoanCalcDefaultCalculationFor"
-#define A3LoanCalcDefaultShowDownPayment			@"A3LoanCalcDefaultShowDownPayment"
-#define A3LoanCalcDefaultShowExtraPayment			@"A3LoanCalcDefaultShowExtraPayment"
-#define A3LoanCalcDefaultShowAdvanced				@"A3LoanCalcDefaultShowAdvanced"
-#define A3LoanCalcDefaultUseTermTypeMonth           @"A3LoanCalcDefaultUseTermTypeMonth"
-#define A3LoanCalcDefaultUseSimpleInterest			@"A3LoanCalcDefaultUseSimpleInterest"
+extern NSString *const A3LoanCalcDefaultUserCurrencyCode;
+extern NSString *const A3LoanCalcDefaultCalculationFor;
+extern NSString *const A3LoanCalcDefaultShowDownPayment;
+extern NSString *const A3LoanCalcDefaultShowExtraPayment;
+extern NSString *const A3LoanCalcDefaultShowAdvanced;
+extern NSString *const A3LoanCalcDefaultUseTermTypeMonth;
+extern NSString *const A3LoanCalcDefaultUseSimpleInterest;
 
 #pragma mark ------ Expense List
-#define A3ExpenseListDefaultUserCurrencyCode		@"A3ExpenseListDefaultUserCurrencyCode"
-#define A3ExpenseListDefaultShowAdvanced			@"A3ExpenseListDefaultShowAdvanced"
-#define A3ExpenseListAddBudgetDefaultShowAdvanced   @"A3ExpenseListAddBudgetDefaultShowAdvanced"
+extern NSString *const A3ExpenseListDefaultUserCurrencyCode;
+extern NSString *const A3ExpenseListDefaultShowAdvanced;
+extern NSString *const A3ExpenseListAddBudgetDefaultShowAdvanced;
+
+#pragma mark ------ Currency Converter
+extern NSString *const A3CurrencyAutoUpdate;
+extern NSString *const A3CurrencyUseCellularData;
+extern NSString *const A3CurrencyShowNationalFlag;
 
 #endif

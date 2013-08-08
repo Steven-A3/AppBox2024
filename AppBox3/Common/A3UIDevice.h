@@ -20,4 +20,6 @@
 + (CGFloat)applicationHeightForCurrentOrientation;
 
 + (CGRect)appFrame;
+
++ (BOOL)hasCellularNetwork;
 @end

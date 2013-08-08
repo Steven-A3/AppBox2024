@@ -12,27 +12,22 @@
 #import "CurrencyItem.h"
 #import "CurrencyItem+name.h"
 #import "NSManagedObject+MagicalFinders.h"
+#import "CurrencyFavorite.h"
 
-@interface A3CurrencySelectViewController ()
+@interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) UIView *searchBarPlaceholderView;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) UITableView *myTableView;
 @property (nonatomic)	BOOL searchBarVisible;
 
 @end
 
 @implementation A3CurrencySelectViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithStyle:(UITableViewStyle)style {
+	self = [super initWithStyle:style];
 	if (self) {
-        self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
-		_myTableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-		_myTableView.delegate = self;
-		_myTableView.dataSource = self;
-
 		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 			[CurrencyItem updateNames];
 		});
@@ -44,65 +39,29 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	_myTableView.frame = self.view.bounds;
-	[self.view addSubview:_myTableView];
-
-	self.myTableView.tableHeaderView = self.searchBarPlaceholderView;
-	[self.searchBarPlaceholderView addSubview:self.searchBar];
+	[self mySearchDisplayController];
+	self.tableView.tableHeaderView = self.searchBar;
+    
+    self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 }
 
-- (UIView *)searchBarPlaceholderView {
-	if (nil == _searchBarPlaceholderView) {
-		_searchBarPlaceholderView = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.view.bounds), CGRectGetMinY(self.view.bounds), CGRectGetWidth(self.view.bounds), kSearchBarHeight)];
+- (UISearchDisplayController *)mySearchDisplayController {
+	if (!_mySearchDisplayController) {
+		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+		_mySearchDisplayController.searchBar.delegate = self;
+		_mySearchDisplayController.searchResultsTableView.delegate = self;
+		_mySearchDisplayController.searchResultsTableView.dataSource = self;
 	}
-	return _searchBarPlaceholderView;
+	return _mySearchDisplayController;
 }
 
 - (UISearchBar *)searchBar {
-	if (nil == _searchBar) {
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), kSearchBarHeight)];
+	if (!_searchBar) {
+		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
 		_searchBar.delegate = self;
 		_searchBar.placeholder = @"USD";
-		_searchBar.translucent = YES;
-		_searchBar.text = @"";
-		_searchBar.tintColor = [UIColor redColor];
 	}
 	return _searchBar;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	CGRect sbFrame = _searchBar.frame;
-	sbFrame.origin.y = _searchBarPlaceholderView.frame.origin.y - scrollView.contentOffset.y;
-
-	// it cannot move from the top of the screen
-	if (sbFrame.origin.y > 0) {
-		sbFrame.origin.y = 0;
-	}
-
-	_searchBar.frame = sbFrame;
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-	if ((scrollView.contentOffset.y < kSearchBarHeight)) {
-		if (scrollView.contentOffset.y <= 0) {
-			_searchBarVisible = YES;
-		} else {
-			[UIView beginAnimations:nil context:NULL];
-			[UIView setAnimationDuration:0.5];
-			CGRect searchBarFrame = self.searchBar.frame;
-			if (_searchBarVisible) {
-				scrollView.contentOffset = CGPointMake(0.0, kSearchBarHeight);
-				searchBarFrame.origin.y = -1.0 * kSearchBarHeight;
-				_searchBarVisible = NO;
-			} else {
-				scrollView.contentOffset = CGPointMake(0.0, 0.0);
-				searchBarFrame.origin.y = 0.0;
-				_searchBarVisible = YES;
-			}
-			_searchBar.frame = searchBarFrame;
-			[UIView commitAnimations];
-		}
-	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -153,16 +112,57 @@
 	if (![currencyItem.name length]) {
 		currencyItem.name = [currencyItem localizedName];
 	}
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ - %@", currencyItem.currencyCode, currencyItem.name];
+
+	UIColor *textColor;
+	if (_allowChooseFavorite) {
+		textColor = [UIColor blackColor];
+	} else {
+		if ([self isFavoriteItemForCurrencyItem:currencyItem]) {
+			textColor = self.view.tintColor;
+		} else {
+            textColor = [UIColor blackColor];
+        }
+	}
+
+	NSAttributedString *codeString = [[NSAttributedString alloc] initWithString:currencyItem.currencyCode
+																	 attributes:[self codeStringAttributeWithColor:textColor ]];
+	NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" - %@", currencyItem.name]
+																	 attributes:[self nameStringAttributeWithColor:textColor ]];
+	NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
+	[cellString appendAttributedString:codeString];
+	[cellString appendAttributedString:nameString];
+	cell.textLabel.attributedText = cellString;
     
     return cell;
+}
+
+- (NSDictionary *)codeStringAttributeWithColor:(UIColor *)color {
+	return @{
+			NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+			NSForegroundColorAttributeName:color};
+}
+
+- (NSDictionary *)nameStringAttributeWithColor:(UIColor *)color {
+	return @{
+			NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+			NSForegroundColorAttributeName:color};
+}
+
+- (BOOL)isFavoriteItemForCurrencyItem:(id)object {
+	NSArray *result = [CurrencyFavorite MR_findByAttribute:@"currencyItem" withValue:object];
+	return [result count] > 0;
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	CurrencyItem *currencyItem = [_fetchedResultsController objectAtIndexPath:indexPath];
+	CurrencyItem *currencyItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	if (!_allowChooseFavorite && [self isFavoriteItemForCurrencyItem:currencyItem]) {
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		return;
+	}
+
 	if ([_delegate respondsToSelector:@selector(currencySelected:)]) {
 		[_delegate currencySelected:currencyItem.currencyCode];
 	}
@@ -179,11 +179,11 @@
 	NSString *query = searchText;
 	if (query && query.length) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ or currencyCode contains[cd] %@", query, query];
-		_fetchedResultsController = [CurrencyItem MR_fetchAllSortedBy:@"currencyCode" ascending:YES withPredicate:predicate groupBy:nil delegate:nil];
+		_fetchedResultsController = [CurrencyItem MR_fetchAllSortedBy:A3KeyCurrencyCode ascending:YES withPredicate:predicate groupBy:nil delegate:nil];
 	} else {
 		_fetchedResultsController = nil;
 	}
-	[_myTableView reloadData];
+	[self.tableView reloadData];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
@@ -194,7 +194,7 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
 	_fetchedResultsController = nil;
-	[_myTableView reloadData];
+	[self.tableView reloadData];
 }
 
 // called when Search (in our case "Done") button pressed

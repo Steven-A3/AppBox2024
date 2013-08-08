@@ -573,7 +573,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	frame.origin.y += 44.0;
 	frame.size.height = 1.0;
 	UIView *bottomLineView = [[UIView alloc] initWithFrame:frame];
-	bottomLineView.backgroundColor = [UIColor colorWithRed:203.0 / 255.0 green:203.0 / 255.0 blue:203.0 / 255.0 alpha:1.0];
+	bottomLineView.backgroundColor = [UIColor colorWithRed:178.0 / 255.0 green:178.0 / 255.0 blue:178.0 / 255.0 alpha:1.0];
 	[moreMenuView addSubview:bottomLineView];
 
 	if ([buttonsArray count] == 2) {
@@ -668,7 +668,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (UIButton *)historyButton {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-	[button setImage:[UIImage imageNamed:@"star01"] forState:UIControlStateNormal];
+	[button setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(historyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	return button;
 }

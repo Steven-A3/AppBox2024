@@ -8,6 +8,8 @@
 
 #import "CurrencyItem.h"
 
+extern NSString *const A3KeyCurrencyCode;
+
 @interface CurrencyItem (name)
 + (void)updateNames;
 

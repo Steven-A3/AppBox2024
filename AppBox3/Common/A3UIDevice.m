@@ -9,6 +9,7 @@
 #import <mach/vm_statistics.h>
 #import <mach/mach_host.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
 #import "common.h"
@@ -60,6 +61,12 @@
 	}
 	screenBounds.size.height -= 44.0 + 20.0;
 	return screenBounds;
+}
+
++ (BOOL)hasCellularNetwork {
+	CTTelephonyNetworkInfo *ctInfo = [[CTTelephonyNetworkInfo alloc] init];
+	CTCarrier *carrier = ctInfo.subscriberCellularProvider;
+	return (carrier != nil);
 }
 
 @end

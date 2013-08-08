@@ -53,7 +53,7 @@
 
 	_mm_drawerController = [[MMDrawerController alloc]
 			initWithCenterViewController:navigationController leftDrawerViewController:leftMenuViewController];
-	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
+	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModePanningNavigationBar];
 	[_mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 	[_mm_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
 

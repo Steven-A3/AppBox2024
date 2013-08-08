@@ -9,6 +9,35 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3Utilities.h"
 
+#pragma mark ------ Global for App
+NSString *const A3AppDefaultUserCurrencyCode 				= @"A3AppDefaultUserCurrencyCode";
+
+#pragma mark ------ Sales Calc
+
+NSString *const A3SalesCalcDefaultUserCurrencyCode  		= @"A3SalesCalcDefaultUserCurrencyCode";
+NSString *const A3SalesCalcDefaultKnownValueOriginalPrice	= @"A3SalesCalcDefaultKnownValueOriginalPrice";
+NSString *const A3SalesCalcDefaultShowAdvanced				= @"A3SalesCalcDefaultShowAdvanced";
+
+#pragma mark ------ Loan Calc
+
+NSString *const A3LoanCalcDefaultUserCurrencyCode			= @"A3LoanCalcDefaultUserCurrencyCode";
+NSString *const A3LoanCalcDefaultCalculationFor				= @"A3LoanCalcDefaultCalculationFor";
+NSString *const A3LoanCalcDefaultShowDownPayment			= @"A3LoanCalcDefaultShowDownPayment";
+NSString *const A3LoanCalcDefaultShowExtraPayment			= @"A3LoanCalcDefaultShowExtraPayment";
+NSString *const A3LoanCalcDefaultShowAdvanced				= @"A3LoanCalcDefaultShowAdvanced";
+NSString *const A3LoanCalcDefaultUseTermTypeMonth           = @"A3LoanCalcDefaultUseTermTypeMonth";
+NSString *const A3LoanCalcDefaultUseSimpleInterest			= @"A3LoanCalcDefaultUseSimpleInterest";
+
+#pragma mark ------ Expense List
+NSString *const A3ExpenseListDefaultUserCurrencyCode		= @"A3ExpenseListDefaultUserCurrencyCode";
+NSString *const A3ExpenseListDefaultShowAdvanced			= @"A3ExpenseListDefaultShowAdvanced";
+NSString *const A3ExpenseListAddBudgetDefaultShowAdvanced   = @"A3ExpenseListAddBudgetDefaultShowAdvanced";
+
+#pragma mark ------ Currency Converter
+NSString *const A3CurrencyAutoUpdate						= @"A3CurrencyAutoUpdate";
+NSString *const A3CurrencyUseCellularData 					= @"A3CurrencyUseCellularData";
+NSString *const A3CurrencyShowNationalFlag					= @"A3CurrencyShowNationalFlag";
+
 float dash_line_pattern[] = {2.0f, 2.0f};
 
 @implementation A3Utilities
