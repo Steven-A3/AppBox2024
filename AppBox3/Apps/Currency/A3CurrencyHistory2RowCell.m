@@ -19,11 +19,30 @@
     return self;
 }
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[self useDynamicType];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+
+	[self useDynamicType];
+}
+
+- (void)useDynamicType {
+	self.L1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	self.L2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	self.R1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+	self.R2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 @end

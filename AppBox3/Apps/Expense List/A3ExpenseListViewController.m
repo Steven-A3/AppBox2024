@@ -19,6 +19,7 @@
 #import "A3AppDelegate.h"
 #import "Expense.h"
 #import "common.h"
+#import "UIViewController+MMDrawerController.h"
 #import <MessageUI/MessageUI.h>
 
 @interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate, MFMailComposeViewControllerDelegate>
@@ -109,7 +110,7 @@
 - (void)editButtonAction {
 	A3ExpenseListAddBudgetViewController *viewController = [[A3ExpenseListAddBudgetViewController alloc] initWithObject:self.detailsViewController.expenseObject];
 	if (IS_IPAD) {
-		MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+		MMDrawerController *mm_drawerController = [self mm_drawerController];
 		[mm_drawerController setRightDrawerViewController:viewController];
 		[mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
 	} else {
@@ -156,7 +157,7 @@
 	A3ExpenseListHistoryViewController *viewController = [[A3ExpenseListHistoryViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self.detailsViewController;
 	if (IS_IPAD){
-		MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+		MMDrawerController *mm_drawerController = [self mm_drawerController];
 		[mm_drawerController setRightDrawerViewController:viewController];
 		[mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:nil];
 	} else {

@@ -25,17 +25,6 @@
 
 @implementation A3CurrencySelectViewController
 
-- (id)initWithStyle:(UITableViewStyle)style {
-	self = [super initWithStyle:style];
-	if (self) {
-		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-			[CurrencyItem updateNames];
-		});
-	}
-
-	return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -59,7 +48,7 @@
 	if (!_searchBar) {
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
 		_searchBar.delegate = self;
-		_searchBar.placeholder = @"USD";
+		_searchBar.placeholder = @"Search";
 	}
 	return _searchBar;
 }

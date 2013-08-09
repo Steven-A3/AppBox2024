@@ -10,8 +10,10 @@
 #import "Reachability.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UIDevice.h"
+#import "UIViewController+A3AppCategory.h"
+#import "common.h"
 
-@interface A3CurrencySettingsViewController ()
+@interface A3CurrencySettingsViewController () <QuickDialogStyleProvider>
 
 @end
 
@@ -54,6 +56,18 @@
 	return self;
 }
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+
+	self.quickDialogTableView.styleProvider = self;
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.quickDialogTableView reloadData];
+}
+
 - (void)callDelegate {
 	id <A3CurrencySettingsDelegate> o = self.delegate;
 	if ([o respondsToSelector:@selector(currencyConfigurationChanged)]) {
@@ -72,6 +86,10 @@
 - (void)onShowNationalFlag:(QBooleanElement *)element {
 	[[NSUserDefaults standardUserDefaults] setCurrencyShowNationalFlag:element.boolValue];
 	[self callDelegate];
+}
+
+- (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
+	cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 }
 
 @end

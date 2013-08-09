@@ -21,6 +21,7 @@
 #import "FSVenue.h"
 #import "NSManagedObjectContext+MagicalRecord.h"
 #import "NSManagedObjectContext+MagicalSaves.h"
+#import "UIViewController+MMDrawerController.h"
 
 static NSString *A3ExpenseListAddBudgetKeyBugdet = @"budget";
 static NSString *A3ExpenseListAddBudgetKeyCategory = @"category";
@@ -76,7 +77,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
 
 	if (IS_IPAD) {
-		MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+		MMDrawerController *mm_drawerController = [self mm_drawerController];
 		[mm_drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];

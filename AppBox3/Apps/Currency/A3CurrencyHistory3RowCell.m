@@ -26,4 +26,70 @@
     // Configure the view for the selected state
 }
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[self doAutolayout];
+	[self useDynamicType];
+}
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+
+	[self useDynamicType];
+}
+
+- (void)useDynamicType {
+	self.L1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	self.L2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	self.L3.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	self.R1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+	self.R2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	self.R3.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+}
+
+- (void)doAutolayout {
+	_L1.translatesAutoresizingMaskIntoConstraints = NO;
+	_L2.translatesAutoresizingMaskIntoConstraints = NO;
+	_L3.translatesAutoresizingMaskIntoConstraints = NO;
+	_R1.translatesAutoresizingMaskIntoConstraints = NO;
+	_R2.translatesAutoresizingMaskIntoConstraints = NO;
+	_R3.translatesAutoresizingMaskIntoConstraints = NO;
+
+	[self addConstraintLeft:_L1 right:_R1 centerY:2.0 * (1.0 / 4.0) hMargin:12.0];
+	[self addConstraintLeft:_L2 right:_R2 centerY:1.0 hMargin:12.0];
+	[self addConstraintLeft:_L3 right:_R3 centerY:2.0 * (3.0 / 4.0) hMargin:12.0];
+}
+
+- (void)addConstraintLeft:(UILabel *)left right:(UILabel *)right centerY:(CGFloat)centerY hMargin:(CGFloat)hMargin {
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:left
+													 attribute:NSLayoutAttributeLeft
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeLeft
+													multiplier:1.0
+													  constant:10.0]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:left
+													 attribute:NSLayoutAttributeCenterY
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeCenterY
+													multiplier:centerY
+													  constant:0.0]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:right
+													 attribute:NSLayoutAttributeRight
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeRight
+													multiplier:1.0
+													  constant:-hMargin]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:right
+													 attribute:NSLayoutAttributeCenterY
+													 relatedBy:NSLayoutRelationEqual
+														toItem:left
+													 attribute:NSLayoutAttributeCenterY
+													multiplier:1.0
+													  constant:0.0]];
+}
+
 @end

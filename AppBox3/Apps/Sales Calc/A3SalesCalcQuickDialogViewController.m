@@ -23,6 +23,7 @@
 #import "A3ActionMenuViewController_iPad.h"
 #import "NSManagedObjectContext+MagicalThreading.h"
 #import "UIViewController+navigation.h"
+#import "UIViewController+MMDrawerController.h"
 
 @interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate, A3ActionMenuViewControllerDelegate, A3QuickDialogCellStyleDelegate>
 
@@ -496,7 +497,7 @@
 }
 
 - (void)currencySelected:(NSString *)selectedCurrencyCode {
-    [[[A3AppDelegate instance] mm_drawerController] closeDrawerAnimated:YES completion:nil];
+    [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 
 	[A3UIKit setUserDefaults:selectedCurrencyCode forKey:A3SalesCalcDefaultUserCurrencyCode];
 	self.defaultCurrencyCode = [self userCurrencyCodeForKey:A3SalesCalcDefaultUserCurrencyCode];

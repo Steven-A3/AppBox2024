@@ -8,7 +8,6 @@
 
 #import "A3ActionMenuViewControllerDelegate.h"
 #import "A3LoanCalcViewController.h"
-#import "A3UIKit.h"
 #import "A3LoanCalcQuickDialogViewController.h"
 #import "A3LoanCalcSettingsViewController.h"
 #import "A3AppDelegate.h"
@@ -19,11 +18,11 @@
 #import "A3LoanCalcQuickDialogViewController_iPhone.h"
 #import "A3LoanCalcComparisonMainViewController_iPad.h"
 #import "A3LoanCalcComparisonMainViewController_iPhone.h"
-#import "A3HistoryViewController.h"
 #import "A3LoanCalcHistoryViewController.h"
 #import "A3LoanCalcCompareHistoryViewController.h"
 #import "common.h"
 #import "UIViewController+navigation.h"
+#import "UIViewController+MMDrawerController.h"
 
 @interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
@@ -130,7 +129,7 @@
 - (void)settingsAction {
 	A3LoanCalcSettingsViewController *viewController = [[A3LoanCalcSettingsViewController alloc] initWithNibName:nil bundle:nil];
 
-    MMDrawerController *mm_drawerController = [[A3AppDelegate instance] mm_drawerController];
+    MMDrawerController *mm_drawerController = self.mm_drawerController;
     [mm_drawerController setRightDrawerViewController:viewController];
     [mm_drawerController openDrawerSide:MMDrawerSideRight animated:YES completion:^(BOOL finished) {
 		[self.quickDialogViewController reloadContents];

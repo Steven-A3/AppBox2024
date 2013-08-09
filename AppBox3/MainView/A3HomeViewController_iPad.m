@@ -12,9 +12,10 @@
 #import "A3StatisticsViewController.h"
 #import "A3PhoneHomeCalendarMonthViewController.h"
 #import "A3GradientView.h"
-#import "QuickDialog.h"
 #import "A3TimeLineTableViewController.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+MMDrawerController.h"
+#import "A3UIDevice.h"
 
 @interface A3HomeViewController_iPad ()
 @property (nonatomic, strong) IBOutlet UIScrollView *mainScrollView;
@@ -93,11 +94,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	[self setBlackBackgroundImageForNavigationBar];
-
-	[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
-	[self assignBackBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
-
 	[self addRightBarButton];
 
 	A3WeatherStickerViewController *weatherStickerVC = [[A3WeatherStickerViewController alloc] initWithNibName:nil bundle:nil];
@@ -134,6 +130,7 @@
 }
 
 - (void)sideMenuButtonAction {
+	[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -141,5 +138,16 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	if ( IS_LANDSCAPE ) {
+		self.navigationItem.leftBarButtonItem = nil;
+	} else {
+		[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
+	}
+}
+
 
 @end

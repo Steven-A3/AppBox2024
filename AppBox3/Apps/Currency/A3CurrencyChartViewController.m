@@ -15,9 +15,10 @@
 #import "A3CurrencyViewController.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3NumberKeyboardViewController.h"
-#import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3CurrencySelectViewController.h"
 #import "CurrencyItem+name.h"
+#import "A3UIDevice.h"
+#import "UIImage+animatedGIF.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CurrencySelectViewControllerDelegate>
 
@@ -30,10 +31,13 @@
 @property (nonatomic, strong) NSMutableArray *valueLabels;
 @property (nonatomic, strong) CurrencyItem *sourceItem, *targetItem;
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
+@property (nonatomic, strong) UIImageView *landscapeChartView;
+@property (nonatomic, strong) UIScrollView *landscapeView;
 
 @end
 
 @implementation A3CurrencyChartViewController {
+	float _sourceValue;
 	BOOL _selectionInSource;
 }
 
@@ -50,6 +54,8 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
+	_sourceValue = 1.0;
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -81,7 +87,11 @@
 		[_valueView addSubview:valueLabel];
 	}
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)doneButtonPressed {
@@ -161,14 +171,17 @@
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	if (indexPath.row == 0) {
-		cell.valueField.text = @"1";
+		[nf setCurrencyCode:self.sourceItem.currencyCode];
+
 		cell.valueField.delegate = self;
 		cell.valueField.textColor = self.tableView.tintColor;
 
-		[nf setCurrencyCode:self.sourceItem.currencyCode];
 		cell.rateLabel.text = [nf currencySymbol];
 		cell.codeLabel.text = self.sourceItem.currencyCode;
 		_sourceTextField = cell.valueField;
+
+		[nf setCurrencySymbol:@""];
+		cell.valueField.text = [nf stringFromNumber:@(_sourceValue)];
 	} else {
 		cell.valueField.text = self.targetValueString;
 		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %@", _targetItem.currencySymbol, [nf stringFromNumber:@(self.conversionRate)]];
@@ -179,8 +192,8 @@
 }
 
 - (float)targetValue {
-	float sourceValue = _sourceTextField ? _sourceTextField.text.floatValue : 1.0;
-	return sourceValue * self.conversionRate;
+	_sourceValue = _sourceTextField ? _sourceTextField.text.floatValue : 1.0;
+	return _sourceValue * self.conversionRate;
 }
 
 - (NSString *)targetValueString {
@@ -224,13 +237,31 @@
 		keyboardVC.keyInputDelegate = textField;
 		keyboardVC.delegate = self;
 		textField.inputView = [keyboardVC view];
+		textField.text = @"";
 		return YES;
 	}
 	return NO;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	self.numberKeyboardViewController = nil;
+
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[nf setCurrencyCode:_sourceItem.currencyCode];
+	[nf setCurrencySymbol:@""];
+
+	float value = [textField.text floatValue];
+	if (value < 1.0) {
+		value = 1.0;
+	}
+	textField.text = [nf stringFromNumber:@(value)];
+	_targetTextField.text = self.targetValueString;
 }
 
 - (void)textFieldDidChange:(id)textFieldDidChange {
@@ -292,6 +323,72 @@
 	FNLOG(@"%@", string);
 
 	return [NSURL URLWithString:string];
+}
+
+- (NSURL *)urlForBigChartImage {
+	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
+	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=l&region=%@&lang=%@",
+												  self.sourceItem.currencyCode, self.targetItem.currencyCode,
+												  types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],
+												  [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
+												  [[NSLocale preferredLanguages] objectAtIndex:0] ];
+
+	FNLOG(@"%@", string);
+
+	return [NSURL URLWithString:string];
+}
+
+- (NSUInteger)a3SupportedInterfaceOrientations {
+	return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (UIImageView *)landscapeChartView {
+	if (!_landscapeChartView) {
+		_landscapeChartView = [[UIImageView alloc] init];
+		[_landscapeChartView setImageWithURL:self.urlForBigChartImage];
+	}
+	return _landscapeChartView;
+}
+
+- (UIScrollView *)landscapeView {
+	if (!_landscapeView) {
+		_landscapeView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+		_landscapeView.backgroundColor = [UIColor whiteColor];
+	}
+	return _landscapeView;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	if (IS_IPAD) {
+		return;
+	}
+
+	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
+		if (!_landscapeView) {
+			[[UIApplication sharedApplication] setStatusBarHidden:YES];
+			[self.navigationController setNavigationBarHidden:YES animated:YES];
+			CGRect frame = [[UIScreen mainScreen] bounds];
+			CGFloat width = frame.size.width;
+			frame.size.width = frame.size.height;
+			frame.size.height = width;
+
+			self.landscapeView.frame = frame;
+			_landscapeView.contentSize = frame.size;
+			frame = CGRectInset(frame, 20.0, 20.0);
+			self.landscapeChartView.frame = frame;
+			[_landscapeView addSubview:_landscapeChartView];
+			[self.view addSubview:self.landscapeView];
+		}
+	} else {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO];
+		[self.navigationController setNavigationBarHidden:NO animated:YES];
+		[_landscapeChartView removeFromSuperview];
+		[_landscapeView removeFromSuperview];
+		_landscapeChartView = nil;
+		_landscapeView = nil;
+	}
 }
 
 @end

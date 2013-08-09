@@ -29,9 +29,21 @@
 		[self.contentView addSubview:self.rateLabel];
 		[self.contentView addSubview:self.flagImageView];
 		[self addSubview:self.separatorLineView];
+		[self useDynamicType];
 		[self addConstraints];
     }
     return self;
+}
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+
+	[self useDynamicType];
+}
+
+- (void)useDynamicType {
+	self.codeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	self.rateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 - (CGSize)sizeThatFits:(CGSize)size {
@@ -75,7 +87,7 @@
 
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
 
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-8-[_codeLabel]-2-|" options:0 metrics:nil views:views]];
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-2-[_codeLabel]|" options:0 metrics:nil views:views]];
 	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_codeLabel attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0]];
 
 	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-2-[_rateLabel]-8-|" options:0 metrics:nil views:views]];

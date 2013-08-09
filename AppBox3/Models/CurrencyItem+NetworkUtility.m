@@ -18,6 +18,7 @@
 #import "common.h"
 #import "NSManagedObjectContext+MagicalThreading.h"
 #import "NSManagedObjectContext+MagicalSaves.h"
+#import "CurrencyItem+name.h"
 
 @implementation CurrencyItem (NetworkUtility)
 
@@ -110,11 +111,14 @@
 		A3YahooCurrency *yahooCurrency = [[A3YahooCurrency alloc] initWithObject:obj];
 		CurrencyItem *entity = [CurrencyItem MR_createEntity];
 		entity.currencyCode = yahooCurrency.currencyCode;
-		entity.name = yahooCurrency.name;
+		entity.name = entity.localizedName;
 		entity.rateToUSD = yahooCurrency.rateToUSD;
 		entity.updated = yahooCurrency.updated;
 		updated = [yahooCurrency.updated laterDate:updated];
-		NSUInteger index = [validLocales indexOfObject:@{NSLocaleCurrencyCode:yahooCurrency.currencyCode} inSortedRange:NSMakeRange(0, [validLocales count]) options:NSBinarySearchingFirstEqual usingComparator:comparator];
+		NSUInteger index = [validLocales indexOfObject:@{NSLocaleCurrencyCode:yahooCurrency.currencyCode}
+										 inSortedRange:NSMakeRange(0, [validLocales count])
+											   options:NSBinarySearchingFirstEqual
+									   usingComparator:comparator];
 		if (index != NSNotFound) {
 			entity.currencySymbol = validLocales[index][NSLocaleCurrencySymbol];
 		}

@@ -83,4 +83,10 @@
 - (UIButton *)settingsButton;
 
 - (void)settingsButtonAction:(UIButton *)button;
+
+- (void)registerContentSizeCategoryDidChangeNotification;
+
+- (void)contentSizeDidChange:(NSNotification *)notification;
+
+- (void)removeObserver;
 @end

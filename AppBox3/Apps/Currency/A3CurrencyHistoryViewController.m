@@ -15,6 +15,8 @@
 #import "NSManagedObject+MagicalRecord.h"
 #import "NSManagedObjectContext+MagicalThreading.h"
 #import "NSManagedObjectContext+MagicalSaves.h"
+#import "UIViewController+A3AppCategory.h"
+#import "NSDate+TimeAgo.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -52,6 +54,16 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	 forCellReuseIdentifier:A3CurrencyHistory2RowCellID];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyHistory3RowCell" bundle:[NSBundle mainBundle]]
 	 forCellReuseIdentifier:A3CurrencyHistory3RowCellID];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)clearButtonAction:(id)button {
@@ -67,6 +79,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
 		_fetchedResultsController = nil;
 		[CurrencyHistory MR_truncateAll];
+		[CurrencyHistoryItem MR_truncateAll];
 		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
 
 		[self.tableView reloadData];
@@ -116,9 +129,9 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 
-	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-	[df setDateStyle:NSDateFormatterShortStyle];
-	[df setTimeStyle:NSDateFormatterShortStyle];
+//	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//	[df setDateStyle:NSDateFormatterShortStyle];
+//	[df setTimeStyle:NSDateFormatterShortStyle];
 
 	if ([currencyHistory.targets count] == 1) {
 		A3CurrencyHistory2RowCell *cell2Row = [tableView dequeueReusableCellWithIdentifier:A3CurrencyHistory2RowCellID forIndexPath:indexPath];
@@ -128,7 +141,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 		[nf setCurrencyCode:currencyHistory.currencyCode];
 		cell2Row.L1.text = [nf stringFromNumber:currencyHistory.value];
-		cell2Row.R1.text = [df stringFromDate:currencyHistory.date];
+		cell2Row.R1.text = [currencyHistory.date timeAgo];
 
 		CurrencyHistoryItem *item = currencyHistory.targets.allObjects[0];
 		float rate = item.rate.floatValue / currencyHistory.rate.floatValue;
@@ -147,7 +160,8 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
         [nf setCurrencyCode:currencyHistory.currencyCode];
         cell3Row.L1.text = [nf stringFromNumber:currencyHistory.value];
         
-        cell3Row.R1.text = [df stringFromDate:currencyHistory.date];
+//        cell3Row.R1.text = [df stringFromDate:currencyHistory.date];
+        cell3Row.R1.text = [currencyHistory.date timeAgo];
 
 		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
         NSArray *items = [currencyHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
@@ -185,6 +199,10 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
         // Delete the row from the data source
         
         CurrencyHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
+		[history.targets enumerateObjectsUsingBlock:^(CurrencyHistoryItem *obj, BOOL *stop) {
+			[obj MR_deleteEntity];
+		}];
+		history.targets = nil;
         [history MR_deleteEntity];
 		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
 		_fetchedResultsController = nil;

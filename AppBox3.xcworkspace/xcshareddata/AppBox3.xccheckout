@@ -2,12 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>B7B3D3A0-843F-4B86-A12E-41112A5E82CE</string>
 	<key>IDESourceControlProjectName</key>
 	<string>AppBox3</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>336075EE-AD81-4346-A73A-17CFD73E21CB</key>
+		<string>https://github.com/kevinlawler/NSDate-TimeAgo.git</string>
+		<key>3BDEBDC2-9521-4F61-B921-F23841D98635</key>
+		<string>https://github.com/mayoff/uiimage-from-animated-gif.git</string>
 		<key>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</key>
 		<string>https://github.com/nschum/FontAwesomeIconFactory.git</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
@@ -23,6 +29,10 @@
 	<string>AppBox3.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>336075EE-AD81-4346-A73A-17CFD73E21CB</key>
+		<string>../External/NSDate-TimeAgo</string>
+		<key>3BDEBDC2-9521-4F61-B921-F23841D98635</key>
+		<string>../External/uiimage-from-animated-gif</string>
 		<key>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</key>
 		<string>../External/FontAwesomeIconFactory</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
@@ -62,14 +72,6 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</string>
-			<key>IDESourceControlWCCName</key>
-			<string>FontAwesomeIconFactory</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Font-Awesome</string>
@@ -78,9 +80,33 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FontAwesomeIconFactory</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>336075EE-AD81-4346-A73A-17CFD73E21CB</string>
+			<key>IDESourceControlWCCName</key>
+			<string>NSDate-TimeAgo</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>C1859CE3-F109-4D71-B7A6-F9394A18C7BD</string>
 			<key>IDESourceControlWCCName</key>
 			<string>QuickDialog</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3BDEBDC2-9521-4F61-B921-F23841D98635</string>
+			<key>IDESourceControlWCCName</key>
+			<string>uiimage-from-animated-gif</string>
 		</dict>
 	</array>
 </dict>

@@ -125,8 +125,6 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
-	[_deleteButton setTitle:nil forState:UIControlStateNormal];
-	[_deleteButton setImage:[A3UIKit backspaceImage2] forState:UIControlStateNormal];
 }
 
 - (void)initSymbolFont {

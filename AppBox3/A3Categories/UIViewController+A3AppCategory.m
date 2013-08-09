@@ -497,8 +497,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 }
 
 - (UIBarButtonItem *)appListBarButtonItemWithSelector:(SEL)selector {
-	UIImage *sideMenuButtonImage = [UIImage imageNamed:@"applist"];
-	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithImage:sideMenuButtonImage style:UIBarButtonItemStyleBordered target:self action:selector];
+	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:selector];
 	return sideMenuButton;
 }
 
@@ -686,6 +685,18 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (void)settingsButtonAction:(UIButton *)button {
 
+}
+
+- (void)registerContentSizeCategoryDidChangeNotification {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+
+}
+
+- (void)removeObserver {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
