@@ -35,30 +35,6 @@
 		[self prepareDatabase];
 	});
 
-//	A3MainMenuTableViewController *leftMenuViewController;
-//	leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
-//
-//	UIViewController *rootViewController;
-//	if (IS_IPAD) {
-//		A3HomeViewController_iPad *viewController = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
-//		rootViewController = viewController;
-//	} else {
-//		A3HomeViewController_iPhone *viewController = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
-//		rootViewController = viewController;
-//	}
-//
-//	_navigationController = [[UINavigationController alloc] initWithRootViewController:rootViewController];
-//
-//	_mm_drawerController = [[A3DrawerController alloc]
-//			initWithCenterViewController:_navigationController leftDrawerViewController:leftMenuViewController];
-//	[_mm_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
-//	[_mm_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
-//	[_mm_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
-//
-//	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//	self.window.rootViewController = _mm_drawerController;
-//	[self.window makeKeyAndVisible];
-
 	_rootViewController = [[A3RootViewController alloc] initWithNibName:nil bundle:nil];
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

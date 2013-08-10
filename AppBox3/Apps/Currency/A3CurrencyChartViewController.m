@@ -213,7 +213,7 @@
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = YES;
-	[self.navigationController pushViewController:viewController animated:YES];
+	[self presentSubViewController:viewController];
 }
 
 - (void)currencySelected:(NSString *)selectedCurrencyCode {

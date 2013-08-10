@@ -17,6 +17,8 @@
 #import "NSManagedObjectContext+MagicalSaves.h"
 #import "UIViewController+A3AppCategory.h"
 #import "NSDate+TimeAgo.h"
+#import "A3UIDevice.h"
+#import "A3RootViewController.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -43,7 +45,12 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
     [super viewDidLoad];
 
 	self.title = @"History";
-    // Uncomment the following line to preserve selection between presentations.
+
+	if (IS_IPAD) {
+		[self leftBarButtonDoneButton];
+	}
+
+	// Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
@@ -56,6 +63,10 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	 forCellReuseIdentifier:A3CurrencyHistory3RowCellID];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self.A3RootViewController dismissRightSideViewController];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

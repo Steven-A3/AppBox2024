@@ -145,9 +145,8 @@
 	if ( IS_LANDSCAPE ) {
 		self.navigationItem.leftBarButtonItem = nil;
 	} else {
-		[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
+		[self leftBarButtonAppsButton];
 	}
 }
-
 
 @end

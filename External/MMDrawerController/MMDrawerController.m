@@ -21,6 +21,7 @@
 
 #import "MMDrawerController.h"
 #import "UIViewController+MMDrawerController.h"
+#import "A3UIDevice.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -109,6 +110,15 @@ static CAKeyframeAnimation * bounceKeyFrameAnimationForDistanceOnView(CGFloat di
     }
     return navBar;
 }
+
+- (void)setFrame:(CGRect)frame {
+	CGRect myFrame = frame;
+	if (IS_IPAD) {
+		myFrame.size.width = IS_LANDSCAPE ? 704.0 : 768.0;
+	}
+	[super setFrame:myFrame];
+}
+
 @end
 
 @interface MMDrawerController () <UIGestureRecognizerDelegate>{
@@ -138,7 +148,7 @@ static CAKeyframeAnimation * bounceKeyFrameAnimationForDistanceOnView(CGFloat di
 
 		[self setAnimationVelocity:MMDrawerDefaultAnimationVelocity];
 
-		[self setShowsShadow:YES];
+		[self setShowsShadow:NO];
 		[self setShouldStretchDrawer:YES];
 
 		[self setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeNone];
@@ -553,7 +563,7 @@ static CAKeyframeAnimation * bounceKeyFrameAnimationForDistanceOnView(CGFloat di
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	[self.view setBackgroundColor:[UIColor blackColor]];
+	[self.view setBackgroundColor:[UIColor whiteColor]];
 
 	[self setupGestureRecognizers];
 }
@@ -1098,6 +1108,17 @@ static inline CGFloat originXForDrawerOriginAndTargetOriginOffset(CGFloat origin
     return ((CGRectContainsPoint(leftBezelRect, point) ||
       CGRectContainsPoint(rightBezelRect, point)) &&
      [self isPointContainedWithinCenterViewContentRect:point]);
+}
+
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	if (IS_IPAD) {
+		CGRect frame = self.centerContainerView.frame;
+		frame.size.width = IS_LANDSCAPE ? 704.0 : 768.0;
+		self.centerContainerView.frame = frame;
+	}
 }
 
 @end

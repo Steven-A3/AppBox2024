@@ -25,6 +25,9 @@
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "CommonUIDefinitions.h"
 #import "common.h"
+#import "UIViewController+MMDrawerController.h"
+#import "A3RootViewController.h"
+#import "A3AppDelegate.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -38,6 +41,10 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 @implementation UIViewController (A3AppCategory)
 
 #define A3_ACTION_MENU_COVER_VIEW_TAG		79325
+
+- (A3RootViewController *)A3RootViewController {
+	return [[A3AppDelegate instance] rootViewController];
+}
 
 - (UIViewController *)actionMenuViewController {
 	UIViewController *viewController = objc_getAssociatedObject(self, key_actionMenuViewController);
@@ -351,39 +358,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return image;
 }
 
-- (void)setBlackBackgroundImageForNavigationBar {
-	[self.navigationController.navigationBar setBackgroundImage:[self navigationBarBackgroundImageForBarMetrics:UIBarMetricsDefault] forBarMetrics:UIBarMetricsDefault];
-	[self.navigationController.navigationBar setBackgroundImage:[self navigationBarBackgroundImageForBarMetrics:UIBarMetricsLandscapePhone] forBarMetrics:UIBarMetricsLandscapePhone];
-
-	self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-}
-
-- (UIImage *)navigationBarSilverBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics {
-	CGRect screenBounds = [UIScreen mainScreen].bounds;
-	CGSize imageSize = CGSizeMake(barMetrics == UIBarMetricsDefault ? CGRectGetWidth(screenBounds) : CGRectGetHeight(screenBounds), 44.0);
-	UIGraphicsBeginImageContextWithOptions(imageSize, YES, 2.0f);
-
-	CGContextRef context = UIGraphicsGetCurrentContext();
-	CGRect rect = CGRectMake(0.0f, 0.0f, imageSize.width, imageSize.height);
-
-	NSArray *colors = @[
-			(__bridge id)[UIColor colorWithRed:248.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f].CGColor,
-			(__bridge id)[UIColor colorWithRed:198.0f/255.0f green:199.0f/255.0f blue:199.0f/255.0f alpha:1.0f].CGColor,
-	];
-
-	[self drawLinearGradientToContext:context rect:rect withColors:colors];
-
-	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:171.0/255.0 green:171.0/255.0 blue:171.0/255.0 alpha:1.0] CGColor]);
-	CGContextFillRect(context, CGRectMake(CGRectGetMinX(rect), CGRectGetMaxY(rect) - 2.0, CGRectGetWidth(rect), 1.0));
-	CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:246.0/255.0 green:246.0/255.0 blue:246.0/255.0 alpha:1.0] CGColor]);
-	CGContextFillRect(context, CGRectMake(CGRectGetMinX(rect), CGRectGetMaxY(rect) - 1.0, CGRectGetWidth(rect), 1.0));
-
-	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-	UIGraphicsEndImageContext();
-
-	return image;
-}
-
 - (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position {
 	CAGradientLayer *gradientLayer = [CAGradientLayer layer];
 	gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);
@@ -496,17 +470,17 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return bounds;
 }
 
+- (void)leftBarButtonAppsButton {
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+}
+
+- (void)appsButtonAction {
+	[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+}
+
 - (UIBarButtonItem *)appListBarButtonItemWithSelector:(SEL)selector {
 	UIBarButtonItem *sideMenuButton = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:selector];
 	return sideMenuButton;
-}
-
-- (void)assignLeftBarButtonItemWithAppListWithSelector:(SEL)selector {
-	self.navigationItem.leftBarButtonItem = [self appListBarButtonItemWithSelector:selector];
-}
-
-- (void)assignBackBarButtonItemWithAppListWithSelector:(SEL)selector {
-	self.navigationItem.backBarButtonItem = [self appListBarButtonItemWithSelector:selector];
 }
 
 - (void)addTwoButtons:(NSArray *)buttons toView:(UIView *)view {
@@ -698,5 +672,23 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)removeObserver {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+- (void)presentSubViewController:(UIViewController *)viewController {
+	if (IS_IPHONE) {
+		[self.navigationController pushViewController:viewController animated:YES];
+	} else {
+		A3RootViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
+		[rootViewController presentRightSideViewController:viewController];
+	}
+}
+
+- (void)leftBarButtonDoneButton {
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+
+}
+
 
 @end

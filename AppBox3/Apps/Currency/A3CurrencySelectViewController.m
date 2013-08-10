@@ -13,13 +13,15 @@
 #import "CurrencyItem+name.h"
 #import "NSManagedObject+MagicalFinders.h"
 #import "CurrencyFavorite.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3RootViewController.h"
+#import "A3UIDevice.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic)	BOOL searchBarVisible;
 
 @end
 
@@ -28,10 +30,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	if (IS_IPAD) {
+		[self leftBarButtonDoneButton];
+	}
 	[self mySearchDisplayController];
 	self.tableView.tableHeaderView = self.searchBar;
     
     self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	if ([_delegate respondsToSelector:@selector(willDismissCurrencySelectView)]) {
+		[_delegate willDismissCurrencySelectView];
+	}
+	[self.A3RootViewController dismissRightSideViewController];
 }
 
 - (UISearchDisplayController *)mySearchDisplayController {

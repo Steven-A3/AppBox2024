@@ -48,20 +48,15 @@ enum {
     return self;
 }
 
-- (void)sideMenuButtonAction {
-	[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+	[self leftBarButtonAppsButton];
+
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 	screenBounds.size.height -= 44.0 + 20.0;	// for navigation bar + status bar
 	_mainScrollView.frame = screenBounds;
-
-
-	[self assignLeftBarButtonItemWithAppListWithSelector:@selector(sideMenuButtonAction)];
 
 	[self segmentedControl:self.segmentedControl didChangedSelectedIndex:0 fromIndex:0];
 

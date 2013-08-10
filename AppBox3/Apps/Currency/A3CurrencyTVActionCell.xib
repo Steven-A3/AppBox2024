@@ -13,8 +13,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="83"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LM-7B-sse">
-                        <rect key="frame" x="125" y="20" width="73" height="44"/>
+                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" placeholderIntrinsicWidth="69" placeholderIntrinsicHeight="84" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LM-7B-sse">
+                        <rect key="frame" x="126" y="0.0" width="69" height="84"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="60"/>
                         <state key="normal" title="">
@@ -26,6 +26,10 @@
                         </state>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="5LM-7B-sse" secondAttribute="centerY" id="2m4-EX-JBT"/>
+                    <constraint firstAttribute="centerX" secondItem="5LM-7B-sse" secondAttribute="centerX" id="VGs-nx-gGj"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="centerButton" destination="5LM-7B-sse" id="vph-gb-1DG"/>

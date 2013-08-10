@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class MMDrawerController;
+@class A3MMDrawerController;
 
 @interface A3RootViewController : UIViewController
 
 @property (nonatomic, strong) UINavigationController *navigationController;
-@property (nonatomic, strong) MMDrawerController *drawerController;
+@property (nonatomic, strong) A3MMDrawerController *drawerController;
 
+- (void)presentRightSideViewController:(UIViewController *)viewController;
+
+- (void)dismissRightSideViewController;
 @end

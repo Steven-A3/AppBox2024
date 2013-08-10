@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3ActionMenuViewControllerDelegate.h"
 #import "A3KeyboardProtocol.h"
+#import "A3RootViewController.h"
 
 @class A3NumberKeyboardViewController;
 @class A3FrequencyKeyboardViewController;
@@ -25,6 +26,8 @@
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 
+- (A3RootViewController *)A3RootViewController;
+
 - (void)presentActionMenuWithDelegate:(id <A3ActionMenuViewControllerDelegate>)delegate;
 
 - (void)presentEmptyActionMenu;
@@ -35,12 +38,6 @@
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 
 - (NSString *)zeroCurrency;
-
-- (UIImage *)navigationBarBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics;
-
-- (void)setBlackBackgroundImageForNavigationBar;
-
-- (UIImage *)navigationBarSilverBackgroundImageForBarMetrics:(UIBarMetrics)barMetrics;
 
 - (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position;
 
@@ -60,9 +57,7 @@
 
 - (CGRect)boundsForRightSideView;
 
-- (void)assignLeftBarButtonItemWithAppListWithSelector:(SEL)selector;
-
-- (void)assignBackBarButtonItemWithAppListWithSelector:(SEL)selector;
+- (void)leftBarButtonAppsButton;
 
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 
@@ -89,4 +84,10 @@
 - (void)contentSizeDidChange:(NSNotification *)notification;
 
 - (void)removeObserver;
+
+- (void)presentSubViewController:(UIViewController *)viewController;
+
+- (void)leftBarButtonDoneButton;
+
+- (void)doneButtonAction:(UIBarButtonItem *)button;
 @end

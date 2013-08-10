@@ -476,15 +476,9 @@
 
 - (void)presentCurrencySelectViewController {
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
-	CGRect frame = [A3UIDevice deviceOrientationIsPortrait] ? CGRectMake(0.0, 0.0, 320.0, 1004.0) : CGRectMake(0.0, 0.0, 320.0, 748.0);
-	viewController.view.frame = frame;
 	viewController.delegate = self;
 
-	if (IS_IPAD) {
-        [self showRightDrawerViewController:viewController];
-	} else {
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
+	[self presentSubViewController:viewController];
 }
 
 - (void)handleBigButton1 {

@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @protocol CurrencySelectViewControllerDelegate <NSObject>
-
 - (void)currencySelected:(NSString *)selectedCurrencyCode;
+
+@optional
+- (void)willDismissCurrencySelectView;
 
 @end
 

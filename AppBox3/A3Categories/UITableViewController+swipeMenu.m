@@ -128,10 +128,10 @@ const CGFloat kVisibleWidth = 100.0;
 	[self unswipeAll];
 
 	// deselect
-	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC);
-	dispatch_after(delay, dispatch_get_main_queue(), ^{
-		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-	});
+//	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC);
+//	dispatch_after(delay, dispatch_get_main_queue(), ^{
+//		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
+//	});
 }
 
 #pragma mark - required variables

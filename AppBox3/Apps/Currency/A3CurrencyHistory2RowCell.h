@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3CurrencyHistoryCell.h"
 
-@interface A3CurrencyHistory2RowCell : UITableViewCell
+@interface A3CurrencyHistory2RowCell : A3CurrencyHistoryCell
 
 @property (nonatomic, weak) IBOutlet UILabel *L1, *R1, *L2, *R2;
 

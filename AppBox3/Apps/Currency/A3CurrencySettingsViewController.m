@@ -12,6 +12,7 @@
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
 #import "common.h"
+#import "A3RootViewController.h"
 
 @interface A3CurrencySettingsViewController () <QuickDialogStyleProvider>
 
@@ -59,9 +60,16 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+	if (IS_IPAD) {
+		[self leftBarButtonDoneButton];
+	}
 	self.quickDialogTableView.styleProvider = self;
 
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self.A3RootViewController dismissRightSideViewController];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

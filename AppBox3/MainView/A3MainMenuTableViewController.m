@@ -18,6 +18,8 @@
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+navigation.h"
 #import "A3CurrencyViewController.h"
+#import "A3AppDelegate.h"
+#import "A3RootViewController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -36,9 +38,9 @@
 		self.tableView.allowsSelection = NO;
 		self.tableView.showsVerticalScrollIndicator = NO;
 
-		self.tableView.layer.borderWidth = 1.0;
-		self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
-		self.tableView.layer.cornerRadius = 4.0;
+//		self.tableView.layer.borderWidth = 1.0;
+//		self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
+//		self.tableView.layer.cornerRadius = 4.0;
     }
     return self;
 }
@@ -346,6 +348,17 @@
 #pragma mark - GridViewControllerDelegate
 
 - (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
+	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_SHORTCUT) {
+		switch (selectedIndex) {
+			case 0:	// Home
+			{
+				[[[[A3AppDelegate instance] rootViewController] navigationController] popToRootViewControllerAnimated:YES];
+				break;
+			}
+			default:
+				break;
+		}
+	} else
 	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) {
 		UIViewController *targetViewController;
 		switch (selectedIndex) {
@@ -359,8 +372,8 @@
 				targetViewController = viewController;
 				break;
 			}
-			case 1:{
-				NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", IS_IPAD?@"iPad" : @"iPhone"];
+			case 1: {
+				NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", IS_IPAD ? @"iPad" : @"iPhone"];
 				targetViewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
 				break;
 			}

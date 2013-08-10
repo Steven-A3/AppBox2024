@@ -10,3 +10,6 @@
 [submodule "External/KBPopupBubble"]
 	path = External/KBPopupBubble
 	url = https://github.com/psholtz/KBPopupBubble.git
+[submodule "External/NSDate-TimeAgo"]
+	path = External/NSDate-TimeAgo
+	url = https://github.com/kevinlawler/NSDate-TimeAgo.git

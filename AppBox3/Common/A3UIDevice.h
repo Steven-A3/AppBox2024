@@ -14,6 +14,8 @@
 #define IS_LANDSCAPE	(UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
 #define IS_PORTRAIT		(UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation]))
 
+#define IS_RETINA	([[UIScreen mainScreen] scale] == 2)
+
 @interface A3UIDevice : NSObject
 
 + (double)memoryUsage;

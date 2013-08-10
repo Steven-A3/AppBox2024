@@ -33,6 +33,7 @@
 #import "CurrencyHistoryItem.h"
 #import "A3CurrencyHistoryViewController.h"
 #import "UIViewController+MMDrawerController.h"
+#import "A3RootViewController.h"
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, CurrencySelectViewControllerDelegate, A3CurrencySettingsDelegate>
 
@@ -89,9 +90,19 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self	action:@selector(appsButtonAction:)];
 	self.navigationItem.leftBarButtonItem = barButtonItem;
 
-	[self rightButtonMoreButton];
+	if (IS_IPHONE) {
+		[self rightButtonMoreButton];
+	} else {
+		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+		UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
+		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		space.width = 24.0;
 
-    [self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
+		self.navigationItem.rightBarButtonItems = @[settings, space, history, space, share];
+	}
+
+	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
     
@@ -116,6 +127,18 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	if (IS_IPAD) {
+		if (IS_LANDSCAPE) {
+			self.navigationItem.leftBarButtonItem = nil;
+		} else {
+			[self leftBarButtonAppsButton];
+		}
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -177,6 +200,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)dismissMoreMenu {
+	if (IS_IPAD) return;
+
 	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
 }
 
@@ -203,7 +228,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self dismissMoreMenu];
 
 	A3CurrencyHistoryViewController *viewController = [[A3CurrencyHistoryViewController alloc] initWithNibName:nil bundle:nil];
-	[self.navigationController pushViewController:viewController animated:YES];
+	[self presentSubViewController:viewController];
 
 	_currencyHistory = nil;
 }
@@ -213,7 +238,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 	A3CurrencySettingsViewController *viewController = [[A3CurrencySettingsViewController alloc] initWithRoot:nil];
 	viewController.delegate = self;
-	[self.navigationController pushViewController:viewController animated:YES];
+	[self presentSubViewController:viewController];
 }
 
 - (void)currencyConfigurationChanged {
@@ -236,8 +261,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
         
         UIView *topSeparator = [[UIView alloc] initWithFrame:CGRectMake(-1.0, 0.0, frame.size.width + 1.0, 1.0)];
         topSeparator.layer.borderColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0].CGColor;
-        topSeparator.layer.borderWidth = 0.25;
+        topSeparator.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
         topSeparator.backgroundColor = [UIColor clearColor];
+		topSeparator.translatesAutoresizingMaskIntoConstraints = NO;
         [_bottomView addSubview:topSeparator];
 
 		[_bottomView addSubview:self.updateDateLabel];
@@ -245,6 +271,34 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[_bottomView addSubview:self.yahooButton];
 
 		NSDictionary *views = NSDictionaryOfVariableBindings(_updateButton, _updateDateLabel, _yahooButton);
+		[_bottomView addConstraint:
+				[NSLayoutConstraint constraintWithItem:topSeparator
+											 attribute:NSLayoutAttributeLeft
+											 relatedBy:NSLayoutRelationEqual
+												toItem:_bottomView
+											 attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0]];
+
+		[_bottomView addConstraint:
+				[NSLayoutConstraint constraintWithItem:topSeparator
+											 attribute:NSLayoutAttributeTop
+											 relatedBy:NSLayoutRelationEqual
+												toItem:_bottomView
+											 attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+
+		[_bottomView addConstraint:
+				[NSLayoutConstraint constraintWithItem:topSeparator
+											 attribute:NSLayoutAttributeRight
+											 relatedBy:NSLayoutRelationEqual
+												toItem:_bottomView
+											 attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0]];
+
+		[_bottomView addConstraint:
+				[NSLayoutConstraint constraintWithItem:topSeparator
+											 attribute:NSLayoutAttributeHeight
+											 relatedBy:NSLayoutRelationEqual
+												toItem:nil
+											 attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:1.0]];
+
 		[_bottomView addConstraint:
 				[NSLayoutConstraint constraintWithItem:_updateDateLabel
 											 attribute:NSLayoutAttributeCenterX
@@ -564,7 +618,15 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[self pushCurrencySelectViewController];
 	} else if (object == _plusItem) {
 		[self addCurrencyAction];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	} else {
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+}
+
+- (void)willDismissCurrencySelectView {
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)currencySelected:(NSString *)selectedCurrencyCode {
@@ -601,7 +663,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = NO;
-	[self.navigationController pushViewController:viewController animated:YES];
+	[self presentSubViewController:viewController];
 }
 
 #pragma mark -- UITextField delegate
