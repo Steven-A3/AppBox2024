@@ -19,12 +19,15 @@
 #import "CurrencyItem+name.h"
 #import "A3UIDevice.h"
 #import "UIImage+animatedGIF.h"
+#import "NSString+conversion.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CurrencySelectViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
+@property (nonatomic, weak) IBOutlet UIView *line1;
 @property (nonatomic, weak) IBOutlet UIView *titleView;
 @property (nonatomic, weak) IBOutlet UIView *valueView;
+@property (nonatomic, weak) IBOutlet UIView *line2;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, weak) IBOutlet UIImageView *chartView;
 @property (nonatomic, strong) NSMutableArray *titleLabels;
@@ -57,9 +60,7 @@
 
 	_sourceValue = 1.0;
 
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonPressed)];
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-//	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"<" style:UIBarButtonItemStylePlain target:self action:@selector(backButtonPressed:)];
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
@@ -69,20 +70,17 @@
 	self.tableView.scrollEnabled = NO;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
 
-	CGFloat width = CGRectGetWidth(self.titleView.bounds)/5.0;
+	[self setupConstraints];
+
 	NSInteger idx = 0;
-	CGRect frame = self.titleView.bounds;
-	frame.size.width = width;
 	_titleLabels = [[NSMutableArray alloc] initWithCapacity:5];
 	_valueLabels = [[NSMutableArray alloc] initWithCapacity:5];
 	for (;idx < 5; idx++) {
-		frame.origin.x = width * idx;
-
-		UILabel *label = [self labelWithFrame:frame];
+		UILabel *label = [self labelWithFrame:CGRectZero];
 		[_titleLabels addObject:label];
 		[_titleView addSubview:label];
 
-		UILabel *valueLabel = [self labelWithFrame:frame];
+		UILabel *valueLabel = [self labelWithFrame:CGRectZero];
 		[_valueLabels addObject:valueLabel];
 		[_valueView addSubview:valueLabel];
 	}
@@ -90,12 +88,60 @@
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
-- (void)contentSizeDidChange:(NSNotification *)notification {
-	[self.tableView reloadData];
+- (void)viewDidLayoutSubviews{
+	CGFloat width = CGRectGetWidth(self.titleView.bounds)/5.0;
+	NSInteger idx = 0;
+	CGRect frame = self.titleView.bounds;
+	frame.size.width = width;
+	for (;idx < 5; idx++) {
+		frame.origin.x = width * idx;
+
+		UILabel *label = _titleLabels[idx];
+		label.frame = frame;
+
+		UILabel *valueLabel = _valueLabels[idx];
+		valueLabel.frame = frame;
+	}
 }
 
-- (void)doneButtonPressed {
-	[self.navigationController popViewControllerAnimated:YES];
+- (void)setupConstraints {
+	// TableView
+	[self constraintForHorizontalLayout:_tableView width:1.0];
+	[self constraintForHorizontalLayout:_line1 width:1.0];
+	[self constraintForHorizontalLayout:_titleView width:1.0];
+	[self constraintForHorizontalLayout:_valueView width:1.0];
+	[self constraintForHorizontalLayout:_valueView width:1.0];
+	[self constraintForHorizontalLayout:_line2 width:1.0];
+	[self constraintForHorizontalLayout:_segmentedControl width:IS_IPHONE ? 0.9 : 0.8];
+	[self constraintForHorizontalLayout:_chartView width:IS_IPHONE ? 0.95 : 0.78];
+
+	NSNumber *space1 = @(IS_IPHONE ? 11.0 : 20.0);
+	NSNumber *space2 = @(IS_IPHONE ? 29.0 : 52.0);
+	NSNumber *chartHeight = @(IS_IPHONE ? 177.0 : 294.0);
+	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(168)]-space1-[_line1(1)][_titleView(22)][_valueView(22)][_line2(1)]-29-[_segmentedControl(28)]-space2-[_chartView(>=chartHeight)]-space2-|"
+																	  options:0
+																	  metrics:NSDictionaryOfVariableBindings(space1, space2, chartHeight)
+																		views:NSDictionaryOfVariableBindings(_tableView, _line1, _titleView, _valueView, _line2, _segmentedControl, _chartView)]];
+}
+
+- (void)constraintForHorizontalLayout:(UIView *)view width:(CGFloat)width {
+	view.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+														  attribute:NSLayoutAttributeCenterX
+														  relatedBy:NSLayoutRelationEqual
+															 toItem:self.view
+														  attribute:NSLayoutAttributeCenterX
+														 multiplier:1.0 constant:0.0]];
+	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+														  attribute:NSLayoutAttributeWidth
+														  relatedBy:NSLayoutRelationEqual
+															 toItem:self.view
+														  attribute:NSLayoutAttributeWidth
+														 multiplier:width constant:0.0]];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,7 +177,7 @@
 
 	[self fillCurrencyTable];
 	self.segmentedControl.selectedSegmentIndex = 0;
-	[self.chartView setImageWithURL:self.urlForChartImage];
+	[self.chartView setImageWithURL:IS_IPHONE ? self.urlForChartImage : self.urlForBigChartImage];
 }
 
 #pragma mark - CurrencyItem
@@ -168,23 +214,19 @@
 	if (!cell) {
 		cell = [[A3CurrencyTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyDataCellID];
 	}
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	if (indexPath.row == 0) {
-		[nf setCurrencyCode:self.sourceItem.currencyCode];
-
 		cell.valueField.delegate = self;
 		cell.valueField.textColor = self.tableView.tintColor;
 
-		cell.rateLabel.text = [nf currencySymbol];
+		cell.rateLabel.text = @"";
 		cell.codeLabel.text = self.sourceItem.currencyCode;
 		_sourceTextField = cell.valueField;
 
-		[nf setCurrencySymbol:@""];
+		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:self.sourceItem.currencyCode];
 		cell.valueField.text = [nf stringFromNumber:@(_sourceValue)];
 	} else {
 		cell.valueField.text = self.targetValueString;
-		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %@", _targetItem.currencySymbol, [nf stringFromNumber:@(self.conversionRate)]];
+		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %0.4f", _targetItem.currencySymbol, self.conversionRate];
 		cell.codeLabel.text = _targetItem.currencyCode;
 		_targetTextField = cell.valueField;
 	}
@@ -192,7 +234,7 @@
 }
 
 - (float)targetValue {
-	_sourceValue = _sourceTextField ? _sourceTextField.text.floatValue : 1.0;
+	_sourceValue = _sourceTextField ? [_sourceTextField.text floatValueEx] : 1.0;
 	return _sourceValue * self.conversionRate;
 }
 
@@ -200,15 +242,15 @@
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 	[nf setCurrencyCode:self.targetItem.currencyCode];
-	[nf setCurrencySymbol:@""];
+	if (IS_IPHONE) {
+		[nf setCurrencySymbol:@""];
+	}
 	return [nf stringFromNumber:@(self.targetValue)];
 }
 
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
-
 	_selectionInSource = indexPath.row == 0;
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
@@ -226,6 +268,10 @@
 	}
 	[self.tableView reloadData];
 	[self updateDisplay];
+}
+
+- (void)willDismissCurrencySelectView {
+	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -247,19 +293,25 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
+- (NSNumberFormatter *)currencyFormatterWithCurrencyCode:(NSString *)code {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[nf setCurrencyCode:code];
+	if (IS_IPHONE) {
+		[nf setCurrencySymbol:@""];
+	}
+	return nf;
+}
+
 - (void)textFieldDidEndEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	self.numberKeyboardViewController = nil;
-
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[nf setCurrencyCode:_sourceItem.currencyCode];
-	[nf setCurrencySymbol:@""];
 
 	float value = [textField.text floatValue];
 	if (value < 1.0) {
 		value = 1.0;
 	}
+	NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceItem.currencyCode];
 	textField.text = [nf stringFromNumber:@(value)];
 	_targetTextField.text = self.targetValueString;
 }
@@ -286,7 +338,7 @@
 #pragma makr - UISegmentedControl event handler
 
 - (IBAction)segmentedControlValueChanged:(UISegmentedControl *)control {
-	[self.chartView setImageWithURL:self.urlForChartImage];
+	[self.chartView setImageWithURL:IS_IPHONE ? self.urlForChartImage : self.urlForBigChartImage];
 }
 
 #pragma mark - currency table handler

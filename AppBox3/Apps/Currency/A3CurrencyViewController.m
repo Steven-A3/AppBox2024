@@ -34,6 +34,7 @@
 #import "A3CurrencyHistoryViewController.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3RootViewController.h"
+#import "NSString+conversion.h"
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, CurrencySelectViewControllerDelegate, A3CurrencySettingsDelegate>
 
@@ -532,14 +533,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	dataCell.codeLabel.text = favorite.currencyItem.currencyCode;
 }
 
-- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setCurrencyCode:code];
-	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[nf setCurrencySymbol:@""];
-	return [nf stringFromNumber:value];
-}
-
 - (A3CurrencyTVActionCell *)reusableActionCellForTableView:(UITableView *)tableView {
 	A3CurrencyTVActionCell *cell;
 	cell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyActionCellID];
@@ -668,14 +661,10 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 #pragma mark -- UITextField delegate
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-}
-
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	if(textField.tag == 0) {
 		if ([textField.text length]) {
-            float value = [textField.text floatValue];
+            float value = [textField.text floatValueEx];
             if (value > 1.0) {
                 [self putHistoryWithValue:@1.0];
                 _currencyHistory = nil;
@@ -696,6 +685,10 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	} else {
 		return NO;
 	}
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
@@ -730,24 +723,19 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	_firstResponder = nil;
 	self.numberKeyboardViewController = nil;
 
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-
 	CurrencyFavorite *currencyFavorite = self.favorites[0];
-	[nf setCurrencyCode:currencyFavorite.currencyItem.currencyCode];
-	[nf setCurrencySymbol:@""];
 	float value = [textField.text floatValue];
 	if (value < 1.0) {
 		value = 1.0;
 	}
-	textField.text = [nf stringFromNumber:@(value)];
+	textField.text = [self currencyFormattedStringForCurrency:currencyFavorite.currencyItem.currencyCode value:@(value)];
 	[self updateTextFieldsWithSourceTextField:textField];
 
 	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
 }
 
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
-	float fromValue = [textField.text floatValue];
+	float fromValue = [textField.text floatValueEx];
 	self.currencyHistory.value = @(fromValue);
 	FNLOG(@"%@", _currencyHistory.value);
 

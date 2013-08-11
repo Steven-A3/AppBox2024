@@ -9,6 +9,7 @@
 #import "A3CurrencyTVDataCell.h"
 #import "A3UIDevice.h"
 #import "common.h"
+#import "NSNumberExtensions.h"
 
 @interface A3CurrencyTVDataCell ()
 @property (nonatomic, strong) UIView *menuView;
@@ -80,22 +81,94 @@
 - (void)addConstraints {
     
 	NSDictionary *views = NSDictionaryOfVariableBindings(_valueField, _codeLabel, _rateLabel, _flagImageView, _separatorLineView);
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-7-[_valueField(187)]" options:0 metrics:nil views:views]];
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_valueField attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+	NSNumber *leftMargin = @(IS_IPHONE ? 15.0 : 28.0);
+	NSNumber *marginBetweenFlagCode = @(IS_IPHONE ? 2.0 : 10.0);
+	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 2.0 : 2.0);
 
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_flagImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+	// Value Field
+	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
+																	attribute:NSLayoutAttributeCenterY
+																	relatedBy:NSLayoutRelationEqual
+																	   toItem:self.contentView
+																	attribute:NSLayoutAttributeCenterY
+																   multiplier:1.0
+																	 constant:0.0]];
 
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
+	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
+																	attribute:NSLayoutAttributeLeft
+																	relatedBy:NSLayoutRelationEqual
+																	   toItem:self.contentView
+																	attribute:NSLayoutAttributeLeft
+																   multiplier:1.0
+																	 constant:leftMargin.cgFloatValue]];
 
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-2-[_codeLabel]|" options:0 metrics:nil views:views]];
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:_codeLabel attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0]];
+	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
+																	attribute:NSLayoutAttributeWidth
+																	relatedBy:NSLayoutRelationLessThanOrEqual
+																	   toItem:self.contentView
+																	attribute:NSLayoutAttributeWidth
+																   multiplier:0.6
+																	 constant:-leftMargin.cgFloatValue]];
 
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-2-[_rateLabel]-8-|" options:0 metrics:nil views:views]];
+	// Flag image View
+	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_flagImageView
+																	attribute:NSLayoutAttributeCenterY
+																	relatedBy:NSLayoutRelationEqual
+																	   toItem:self.contentView
+																	attribute:NSLayoutAttributeCenterY
+																   multiplier:1.0  constant:0.0]];
 
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:_separatorLineView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:-1.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0.0 constant:1.0]];
+	// Code Label
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel
+																 attribute:NSLayoutAttributeCenterY
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:self.contentView
+																 attribute:NSLayoutAttributeCenterY
+																multiplier:1.0 constant:0.0]];
+
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-marginBetweenFlagCode-[_codeLabel]|"
+																			 options:0
+																			 metrics:NSDictionaryOfVariableBindings(marginBetweenFlagCode)
+																			   views:views]];
+
+	// Rate Label
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel
+																 attribute:NSLayoutAttributeRight
+																 relatedBy:NSLayoutRelationEqual
+																	toItem:_codeLabel
+																 attribute:NSLayoutAttributeRight
+																multiplier:1.0 constant:0.0]];
+
+	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-VmarginBetweenCodeRate-[_rateLabel]-8-|"
+																			 options:0
+																			 metrics:NSDictionaryOfVariableBindings(VmarginBetweenCodeRate)
+																			   views:views]];
+
+	// Separator Line
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
+													 attribute:NSLayoutAttributeWidth
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeWidth
+													multiplier:1.0 constant:0.0]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
+													 attribute:NSLayoutAttributeCenterX
+													 relatedBy:NSLayoutRelationEqual
+														toItem:_separatorLineView
+													 attribute:NSLayoutAttributeCenterX
+													multiplier:1.0 constant:0.0]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
+													 attribute:NSLayoutAttributeBottom
+													 relatedBy:NSLayoutRelationEqual
+														toItem:self
+													 attribute:NSLayoutAttributeBottom
+													multiplier:1.0 constant:-1.0]];
+	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
+													 attribute:NSLayoutAttributeHeight
+													 relatedBy:NSLayoutRelationEqual
+														toItem:nil
+													 attribute:NSLayoutAttributeNotAnAttribute
+													multiplier:0.0 constant:1.0]];
 }
 
 - (UILabel *)codeLabel {

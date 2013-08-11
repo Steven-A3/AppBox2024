@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3CurrencyViewController.h"
 #import <objc/runtime.h>
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
@@ -28,6 +29,7 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3RootViewController.h"
 #import "A3AppDelegate.h"
+#import "A3NumberKeyboardSimpleVC_iPad.h"
 
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
@@ -186,7 +188,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	if (IS_IPHONE) {
 		viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPhone" bundle:nil];
 	} else {
-		viewController = [self iPadNumberKeyboard];
+		viewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPad" bundle:nil];
 	}
 	return viewController;
 }
@@ -690,5 +692,14 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 }
 
+- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setCurrencyCode:code];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 
+	if (IS_IPHONE) {
+		[nf setCurrencySymbol:@""];
+	}
+	return [nf stringFromNumber:value];
+}
 @end

@@ -10,21 +10,10 @@
 #import "QEntryTableViewCell+Extension.h"
 #import "A3KeyboardMoveMarkView.h"
 #import "A3UIKit.h"
+#import "A3UIDevice.h"
 
 @interface A3NumberKeyboardViewController_iPad ()
 
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num1Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num2Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num3Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num4Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num5Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num6Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num7Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num8Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num9Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *num0Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *clearButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *doneButton;
 @property (nonatomic, strong) IBOutlet A3KeyboardMoveMarkView *markView;
 
 @end
@@ -124,10 +113,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation] ];
-
-	[self.deleteButton setTitle:nil forState:UIControlStateNormal];
-	[self.deleteButton setImage:[A3UIKit backspaceImage] forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -223,11 +208,11 @@
 	}
 }
 
-- (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (void)viewWillLayoutSubviews {
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
-	if (UIDeviceOrientationIsPortrait(toInterfaceOrientation)) {
+	if (IS_PORTRAIT) {
 		width_big = 124.0, height_big = 118.0;
 		width_small = 89.0, height_small = 57.0;
 		col_1 = 74.0; col_2 = 237.0; col_3 = 338.0; col_4 = 440.0, col_5 = 570.0;

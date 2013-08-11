@@ -52,6 +52,7 @@
 		_mySearchDisplayController.searchBar.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
+		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
 	}
 	return _mySearchDisplayController;
 }
@@ -61,6 +62,7 @@
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
 		_searchBar.delegate = self;
 		_searchBar.placeholder = @"Search";
+		_searchBar.barTintColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 	}
 	return _searchBar;
 }
@@ -69,6 +71,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
+	FNLOG();
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+	FNLOG();
 }
 
 #pragma mark - Table view data source
@@ -167,7 +177,11 @@
 	if ([_delegate respondsToSelector:@selector(currencySelected:)]) {
 		[_delegate currencySelected:currencyItem.currencyCode];
 	}
-	[self.navigationController popViewControllerAnimated:YES];
+	if (IS_IPHONE) {
+		[self.navigationController popViewControllerAnimated:YES];
+	} else {
+		[self.A3RootViewController dismissRightSideViewController];
+	}
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {

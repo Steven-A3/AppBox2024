@@ -90,4 +90,6 @@
 - (void)leftBarButtonDoneButton;
 
 - (void)doneButtonAction:(UIBarButtonItem *)button;
+
+- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value;
 @end

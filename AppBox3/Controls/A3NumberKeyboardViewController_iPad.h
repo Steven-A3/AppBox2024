@@ -16,11 +16,22 @@
 
 @property (nonatomic, weak) IBOutlet UIButton *bigButton1;
 @property (nonatomic, weak) IBOutlet UIButton *bigButton2;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *dotButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *deleteButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *prevButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton *nextButton;
-
-- (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+@property (nonatomic, weak) IBOutlet UIButton *dotButton;
+@property (nonatomic, weak) IBOutlet UIButton *deleteButton;
+@property (nonatomic, weak) IBOutlet UIButton *prevButton;
+@property (nonatomic, weak) IBOutlet UIButton *nextButton;
+@property (nonatomic, weak) IBOutlet UIButton *num1Button;
+@property (nonatomic, weak) IBOutlet UIButton *num2Button;
+@property (nonatomic, weak) IBOutlet UIButton *num3Button;
+@property (nonatomic, weak) IBOutlet UIButton *num4Button;
+@property (nonatomic, weak) IBOutlet UIButton *num5Button;
+@property (nonatomic, weak) IBOutlet UIButton *num6Button;
+@property (nonatomic, weak) IBOutlet UIButton *num7Button;
+@property (nonatomic, weak) IBOutlet UIButton *num8Button;
+@property (nonatomic, weak) IBOutlet UIButton *num9Button;
+@property (nonatomic, weak) IBOutlet UIButton *num0Button;
+@property (nonatomic, weak) IBOutlet UIButton *clearButton;
+@property (nonatomic, weak) IBOutlet UIButton *doneButton;
+@property (nonatomic, weak) IBOutlet UIButton *calculatorButton;
 
 @end
