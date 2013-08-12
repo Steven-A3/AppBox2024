@@ -14,15 +14,21 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
+		_L1 = [self addUILabelWithColor:[UIColor blackColor]];
+		_L2 = [self addUILabelWithColor:[UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0]];
+
+		_R1 = [self addUILabelWithColor:[UIColor colorWithRed:142.0/255.0 green:147.0/255.0 blue:147.0/255.0 alpha:1.0]];
+		_R2 = [self addUILabelWithColor:[UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]];
+
+		[self useDynamicType];
+		[self doAutolayout];
     }
     return self;
 }
 
-- (void)awakeFromNib {
-	[super awakeFromNib];
-	[self doAutolayout];
-	[self useDynamicType];
+- (void)doAutolayout {
+	[self addConstraintLeft:_L1 right:_R1 centerY:2.0 * (1.0 / 4.0)];
+	[self addConstraintLeft:_L2 right:_R2 centerY:1.0];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -43,16 +49,6 @@
 	self.L2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	self.R1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 	self.R2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-}
-
-- (void)doAutolayout {
-	_L1.translatesAutoresizingMaskIntoConstraints = NO;
-	_L2.translatesAutoresizingMaskIntoConstraints = NO;
-	_R1.translatesAutoresizingMaskIntoConstraints = NO;
-	_R2.translatesAutoresizingMaskIntoConstraints = NO;
-
-	[self addConstraintLeft:_L1 right:_R1 centerY:2.0 * (1.0 / 4.0) hMargin:12.0];
-	[self addConstraintLeft:_L2 right:_R2 centerY:1.0 hMargin:12.0];
 }
 
 @end

@@ -13,29 +13,38 @@
 @implementation A3CurrencyHistoryCell {
 
 }
-- (void)addConstraintLeft:(UILabel *)left right:(UILabel *)right centerY:(CGFloat)centerY hMargin:(CGFloat)hMargin {
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:left
+
+- (UILabel *)addUILabelWithColor:(UIColor *)color {
+	UILabel *label = [[UILabel alloc] init];
+	label.textColor = color;
+	label.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.contentView addSubview:label];
+	return label;
+}
+
+- (void)addConstraintLeft:(UILabel *)left right:(UILabel *)right centerY:(CGFloat)centerY {
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:left
 													 attribute:NSLayoutAttributeLeft
 													 relatedBy:NSLayoutRelationEqual
-														toItem:self
+														toItem:self.contentView
 													 attribute:NSLayoutAttributeLeft
 													multiplier:1.0
-													  constant:10.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:left
+													  constant:15.0]];
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:left
 													 attribute:NSLayoutAttributeCenterY
 													 relatedBy:NSLayoutRelationEqual
-														toItem:self
+														toItem:self.contentView
 													 attribute:NSLayoutAttributeCenterY
 													multiplier:centerY
 													  constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:right
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:right
 													 attribute:NSLayoutAttributeRight
 													 relatedBy:NSLayoutRelationEqual
-														toItem:self
+														toItem:self.contentView
 													 attribute:NSLayoutAttributeRight
 													multiplier:1.0
-													  constant:-hMargin]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:right
+													  constant:-15.0]];
+	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:right
 													 attribute:NSLayoutAttributeCenterY
 													 relatedBy:NSLayoutRelationEqual
 														toItem:left

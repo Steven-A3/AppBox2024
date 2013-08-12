@@ -60,16 +60,20 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	if (IS_IPAD) {
-		[self leftBarButtonDoneButton];
-	}
+	[self rightBarButtonDoneButton];
+
 	self.quickDialogTableView.styleProvider = self;
+	self.quickDialogTableView.scrollEnabled = NO;
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	[self.A3RootViewController dismissRightSideViewController];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

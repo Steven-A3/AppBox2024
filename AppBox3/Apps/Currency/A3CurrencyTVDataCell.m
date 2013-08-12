@@ -104,10 +104,10 @@
 
 	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
 																	attribute:NSLayoutAttributeWidth
-																	relatedBy:NSLayoutRelationLessThanOrEqual
+																	relatedBy:NSLayoutRelationEqual
 																	   toItem:self.contentView
 																	attribute:NSLayoutAttributeWidth
-																   multiplier:0.6
+																   multiplier:IS_IPAD ? 0.8 : 0.6
 																	 constant:-leftMargin.cgFloatValue]];
 
 	// Flag image View
@@ -215,6 +215,9 @@
 
 - (void)addMenuView {
 	[self.superview insertSubview:self.menuView belowSubview:self];
+	if ([_menuDelegate respondsToSelector:@selector(menuAdded)]) {
+		[_menuDelegate menuAdded];
+	}
 }
 
 - (void)removeMenuView {

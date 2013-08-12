@@ -18,5 +18,11 @@
 
 - (void)setupSwipeRecognizers;
 
+- (void)shiftRight:(NSMutableSet *)cells;
+
+- (void)shiftLeft:(UITableViewCell <A3TableViewSwipeCellDelegate> *)cell;
+
 - (void)unswipeAll;
+
+- (NSMutableSet *)swipedCells;
 @end

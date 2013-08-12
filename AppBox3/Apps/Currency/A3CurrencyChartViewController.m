@@ -84,6 +84,7 @@
 		[_valueLabels addObject:valueLabel];
 		[_valueView addSubview:valueLabel];
 	}
+	[self setupFont];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -142,6 +143,16 @@
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
+	[self setupFont];
+}
+
+- (void)setupFont {
+	[_titleLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+		label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	}];
+	[_valueLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+		label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+	}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -156,7 +167,6 @@
 
 - (UILabel *)labelWithFrame:(CGRect)frame {
 	UILabel *label = [[UILabel alloc] initWithFrame:frame];
-	label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 	label.textColor = [UIColor blackColor];
 	label.textAlignment = NSTextAlignmentCenter;
 	label.adjustsFontSizeToFitWidth = YES;
@@ -225,6 +235,7 @@
 		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:self.sourceItem.currencyCode];
 		cell.valueField.text = [nf stringFromNumber:@(_sourceValue)];
 	} else {
+		cell.valueField.delegate = self;
 		cell.valueField.text = self.targetValueString;
 		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %0.4f", _targetItem.currencySymbol, self.conversionRate];
 		cell.codeLabel.text = _targetItem.currencyCode;
@@ -246,6 +257,20 @@
 		[nf setCurrencySymbol:@""];
 	}
 	return [nf stringFromNumber:@(self.targetValue)];
+}
+
+- (float)sourceValue {
+	return [_targetTextField.text floatValueEx] / self.conversionRate;
+}
+
+- (NSString *)sourceValueString {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[nf setCurrencyCode:self.sourceItem.currencyCode];
+	if (IS_IPHONE) {
+		[nf setCurrencySymbol:@""];
+	}
+	return [nf stringFromNumber:@(self.sourceValue)];
 }
 
 #pragma mark - UITableViewDelegate
@@ -277,16 +302,18 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	keyboardVC.keyInputDelegate = textField;
+	keyboardVC.delegate = self;
+	textField.inputView = [keyboardVC view];
+	textField.text = @"";
 	if (textField == _sourceTextField) {
-		A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
-		self.numberKeyboardViewController = keyboardVC;
-		keyboardVC.keyInputDelegate = textField;
-		keyboardVC.delegate = self;
-		textField.inputView = [keyboardVC view];
-		textField.text = @"";
-		return YES;
+		_targetTextField.text = [self targetValueString];
+	} else {
+		_sourceTextField.text = [self sourceValueString];
 	}
-	return NO;
+	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -311,13 +338,22 @@
 	if (value < 1.0) {
 		value = 1.0;
 	}
-	NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:_sourceItem.currencyCode];
+	NSNumberFormatter *nf;
+	if (textField == _sourceTextField) {
+		nf = [self currencyFormatterWithCurrencyCode:_sourceItem.currencyCode];
+	} else {
+		nf = [self currencyFormatterWithCurrencyCode:_targetItem.currencyCode];
+	}
 	textField.text = [nf stringFromNumber:@(value)];
-	_targetTextField.text = self.targetValueString;
 }
 
-- (void)textFieldDidChange:(id)textFieldDidChange {
-	_targetTextField.text = self.targetValueString;
+- (void)textFieldDidChange:(NSNotification *)notification {
+	UITextField *textField = notification.object;
+	if (textField == _sourceTextField) {
+		_targetTextField.text = self.targetValueString;
+	} else {
+		_sourceTextField.text = self.sourceValueString;
+	}
 }
 
 #pragma mark A3KeyboardViewControllerDelegate
@@ -326,13 +362,14 @@
 	if (keyInputDelegate == _sourceTextField) {
 		_sourceTextField.text = @"";
 		_targetTextField.text = self.targetValueString;
+	} else {
+		_targetTextField.text = @"";
+		_sourceTextField.text = self.sourceValueString;
 	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	if (keyInputDelegate == _sourceTextField) {
-		[_sourceTextField resignFirstResponder];
-	}
+	[keyInputDelegate resignFirstResponder];
 }
 
 #pragma makr - UISegmentedControl event handler

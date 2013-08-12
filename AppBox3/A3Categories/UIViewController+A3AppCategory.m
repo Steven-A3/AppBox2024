@@ -611,12 +611,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 			UIEdgeInsets insets = tableView.contentInset;
 			insets.top -= moreMenuView.frame.size.height;
 			tableView.contentInset = insets;
-
-			if (tableView.contentOffset.y > insets.top) {
-				CGPoint offset = tableView.contentOffset;
-				offset.y = insets.top;
-				tableView.contentOffset = offset;
-			}
 		} else {
 			frame = CGRectOffset(self.view.frame, 0.0, moreMenuView.frame.size.height);
 			self.view.frame = frame;
@@ -677,15 +671,16 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (void)presentSubViewController:(UIViewController *)viewController {
 	if (IS_IPHONE) {
-		[self.navigationController pushViewController:viewController animated:YES];
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self presentViewController:navigationController animated:YES completion:nil];
 	} else {
 		A3RootViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[rootViewController presentRightSideViewController:viewController];
 	}
 }
 
-- (void)leftBarButtonDoneButton {
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+- (void)rightBarButtonDoneButton {
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -702,4 +697,9 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	}
 	return [nf stringFromNumber:value];
 }
+
+- (void)setupBackBarButtonItem {
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+}
+
 @end

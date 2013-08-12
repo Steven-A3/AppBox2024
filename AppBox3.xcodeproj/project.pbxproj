@@ -395,8 +395,6 @@
 		68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */; };
 		68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E6F35517B27B8300F10ED9 /* CoreTelephony.framework */; };
 		68E6F36317B28B4F00F10ED9 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F36217B28B4F00F10ED9 /* CurrencyHistory.m */; };
-		68E6F36C17B2966500F10ED9 /* A3CurrencyHistory2RowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68E6F36B17B2966500F10ED9 /* A3CurrencyHistory2RowCell.xib */; };
-		68E6F36F17B29E0500F10ED9 /* A3CurrencyHistory3RowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68E6F36E17B29E0500F10ED9 /* A3CurrencyHistory3RowCell.xib */; };
 		68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */; };
 		68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */; };
 		68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */; };
@@ -1187,8 +1185,6 @@
 		68E6F35517B27B8300F10ED9 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		68E6F36117B28B4F00F10ED9 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyHistory.h; sourceTree = "<group>"; };
 		68E6F36217B28B4F00F10ED9 /* CurrencyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyHistory.m; sourceTree = "<group>"; };
-		68E6F36B17B2966500F10ED9 /* A3CurrencyHistory2RowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyHistory2RowCell.xib; path = Apps/Currency/A3CurrencyHistory2RowCell.xib; sourceTree = "<group>"; };
-		68E6F36E17B29E0500F10ED9 /* A3CurrencyHistory3RowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyHistory3RowCell.xib; path = Apps/Currency/A3CurrencyHistory3RowCell.xib; sourceTree = "<group>"; };
 		68E6F37017B2A06600F10ED9 /* A3CurrencyHistory2RowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistory2RowCell.h; path = Apps/Currency/A3CurrencyHistory2RowCell.h; sourceTree = "<group>"; };
 		68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistory2RowCell.m; path = Apps/Currency/A3CurrencyHistory2RowCell.m; sourceTree = "<group>"; };
 		68E6F37317B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistory3RowCell.h; path = Apps/Currency/A3CurrencyHistory3RowCell.h; sourceTree = "<group>"; };
@@ -2496,10 +2492,12 @@
 				68E6F34C17B25F5F00F10ED9 /* A3CurrencyChartViewController.xib */,
 				68E6F37017B2A06600F10ED9 /* A3CurrencyHistory2RowCell.h */,
 				68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */,
-				68E6F36B17B2966500F10ED9 /* A3CurrencyHistory2RowCell.xib */,
 				68E6F37317B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.h */,
 				68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */,
-				68E6F36E17B29E0500F10ED9 /* A3CurrencyHistory3RowCell.xib */,
+				17D42220C3CF119DC5027EB3 /* A3CurrencyHistoryCell.h */,
+				17D424F615E2893830803825 /* A3CurrencyHistoryCell.m */,
+				68E6F37717B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.h */,
+				68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */,
 				685F722816A63084004C7222 /* A3CurrencyList.h */,
 				685F722916A63084004C7222 /* A3CurrencyList.m */,
 				6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */,
@@ -2519,10 +2517,6 @@
 				68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */,
 				6890AB301786BA08004FECE4 /* A3CurrencyViewController.h */,
 				6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */,
-				68E6F37717B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.h */,
-				68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */,
-				17D424F615E2893830803825 /* A3CurrencyHistoryCell.m */,
-				17D42220C3CF119DC5027EB3 /* A3CurrencyHistoryCell.h */,
 			);
 			name = Currency;
 			path = ..;
@@ -2726,11 +2720,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68E6F36C17B2966500F10ED9 /* A3CurrencyHistory2RowCell.xib in Resources */,
 				682EA2E215EB10B000BD6AD4 /* InfoPlist.strings in Resources */,
 				6821E76C1786F2A800540DED /* A3CurrencyTableViewCell.xib in Resources */,
 				683B956815EB233500575377 /* A3CalcHistoryViewCellContentsView.xib in Resources */,
-				68E6F36F17B29E0500F10ED9 /* A3CurrencyHistory3RowCell.xib in Resources */,
 				683B958115EB233500575377 /* AppBox3.sqlite in Resources */,
 				683B958815EB233500575377 /* SearchViewiPad.xib in Resources */,
 				685A0A3616242BAB00E94B6B /* MenuView.xib in Resources */,

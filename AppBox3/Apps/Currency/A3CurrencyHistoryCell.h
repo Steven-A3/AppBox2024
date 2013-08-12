@@ -10,5 +10,7 @@
 
 
 @interface A3CurrencyHistoryCell : UITableViewCell
-- (void)addConstraintLeft:(UILabel *)left right:(UILabel *)right centerY:(CGFloat)centerY hMargin:(CGFloat)hMargin;
+- (UILabel *)addUILabelWithColor:(UIColor *)color;
+
+- (void)addConstraintLeft:(UILabel *)left right:(UILabel *)right centerY:(CGFloat)centerY;
 @end

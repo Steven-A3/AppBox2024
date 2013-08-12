@@ -30,20 +30,37 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	if (IS_IPAD) {
-		[self leftBarButtonDoneButton];
-	}
+	[self rightBarButtonDoneButton];
 	[self mySearchDisplayController];
 	self.tableView.tableHeaderView = self.searchBar;
     
     self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if ([_placeHolder length]) {
+		self.searchBar.text = _placeHolder;
+		[self filterContentForSearchText:_placeHolder];
+	}
+	[self.mySearchDisplayController setActive:YES];
+}
+
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if ([_delegate respondsToSelector:@selector(willDismissCurrencySelectView)]) {
 		[_delegate willDismissCurrencySelectView];
 	}
-	[self.A3RootViewController dismissRightSideViewController];
+
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		if (_shouldPopViewController) {
+			[self.navigationController popViewControllerAnimated:YES];
+		} else {
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
+	}
 }
 
 - (UISearchDisplayController *)mySearchDisplayController {
@@ -61,7 +78,7 @@
 	if (!_searchBar) {
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
 		_searchBar.delegate = self;
-		_searchBar.placeholder = @"Search";
+		_searchBar.placeholder = @"Search Currency";
 		_searchBar.barTintColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 	}
 	return _searchBar;
@@ -129,7 +146,7 @@
 		textColor = [UIColor blackColor];
 	} else {
 		if ([self isFavoriteItemForCurrencyItem:currencyItem]) {
-			textColor = self.view.tintColor;
+			textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 		} else {
             textColor = [UIColor blackColor];
         }
@@ -137,7 +154,7 @@
 
 	NSAttributedString *codeString = [[NSAttributedString alloc] initWithString:currencyItem.currencyCode
 																	 attributes:[self codeStringAttributeWithColor:textColor ]];
-	NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" - %@", currencyItem.name]
+	NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"   %@", currencyItem.name]
 																	 attributes:[self nameStringAttributeWithColor:textColor ]];
 	NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
 	[cellString appendAttributedString:codeString];
@@ -178,7 +195,11 @@
 		[_delegate currencySelected:currencyItem.currencyCode];
 	}
 	if (IS_IPHONE) {
-		[self.navigationController popViewControllerAnimated:YES];
+		if (_shouldPopViewController) {
+			[self.navigationController popViewControllerAnimated:YES];
+		} else {
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
 	} else {
 		[self.A3RootViewController dismissRightSideViewController];
 	}
@@ -201,15 +222,20 @@
 	[self.tableView reloadData];
 }
 
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+	_searchBar.text = @"";
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
 	[self filterContentForSearchText:searchText];
 }
 
 // called when cancel button pressed
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-	_fetchedResultsController = nil;
-	[self.tableView reloadData];
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+	[self doneButtonAction:nil];
+
+//	_fetchedResultsController = nil;
+//	[self.tableView reloadData];
 }
 
 // called when Search (in our case "Done") button pressed

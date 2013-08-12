@@ -73,7 +73,8 @@ const CGFloat kVisibleWidth = 100.0;
 				cell.frame = newFrame;
 			} completion:^(BOOL finished) {
 				if ([cell respondsToSelector:@selector(removeMenuView)]) {
-					[cell removeMenuView];
+					if (cell.frame.origin.x == 0.0)
+						[cell removeMenuView];
 				}
 			}];
 		}
@@ -85,8 +86,9 @@ const CGFloat kVisibleWidth = 100.0;
 
 
 // Animates the cells to the left offset with kVisibleWidth
--(void)shiftLeft:(UITableViewCell<A3TableViewSwipeCellDelegate> *)cell
-{
+-(void)shiftLeft:(UITableViewCell<A3TableViewSwipeCellDelegate> *)cell {
+	FNLOG();
+
 	bool cellAlreadySwiped = [self.swipedCells containsObject:cell];
 	if (!cellAlreadySwiped) {
 		// add the cell menu view and shift the cell to the right
@@ -117,21 +119,8 @@ const CGFloat kVisibleWidth = 100.0;
 }
 
 - (void)unswipeAll {
+    FNLOG();
 	[self shiftRight:self.swipedCells];
-}
-
-#pragma mark - UITableViewDelegate
-
-// Un-swipe everything when the user selects a cell.
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)newIndexPath
-{
-	[self unswipeAll];
-
-	// deselect
-//	dispatch_time_t delay = dispatch_time(DISPATCH_TIME_NOW, 0.1*NSEC_PER_SEC);
-//	dispatch_after(delay, dispatch_get_main_queue(), ^{
-//		[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
-//	});
 }
 
 #pragma mark - required variables

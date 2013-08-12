@@ -13,3 +13,6 @@
 [submodule "External/NSDate-TimeAgo"]
 	path = External/NSDate-TimeAgo
 	url = https://github.com/kevinlawler/NSDate-TimeAgo.git
+[submodule "External/Masonry"]
+	path = External/Masonry
+	url = https://github.com/Steven-Gwug/Masonry.git

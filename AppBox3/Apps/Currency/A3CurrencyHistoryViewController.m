@@ -46,27 +46,23 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 	self.title = @"History";
 
-	if (IS_IPAD) {
-		[self leftBarButtonDoneButton];
-	}
+	[self rightBarButtonDoneButton];
 
-	// Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
 
-	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyHistory2RowCell" bundle:[NSBundle mainBundle]]
-	 forCellReuseIdentifier:A3CurrencyHistory2RowCellID];
-	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyHistory3RowCell" bundle:[NSBundle mainBundle]]
-	 forCellReuseIdentifier:A3CurrencyHistory3RowCellID];
+	self.tableView.showsVerticalScrollIndicator = NO;
 
+	[self.tableView registerClass:[A3CurrencyHistory2RowCell class] forCellReuseIdentifier:A3CurrencyHistory2RowCellID];
+	[self.tableView registerClass:[A3CurrencyHistory3RowCell class] forCellReuseIdentifier:A3CurrencyHistory3RowCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	[self.A3RootViewController dismissRightSideViewController];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -106,7 +102,10 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-		_fetchedResultsController = [CurrencyHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+			_fetchedResultsController = [CurrencyHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+		if (![_fetchedResultsController.fetchedObjects count]) {
+			self.navigationItem.leftBarButtonItem = nil;
+		}
 	}
 	return _fetchedResultsController;
 }

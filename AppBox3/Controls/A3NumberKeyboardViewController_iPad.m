@@ -135,7 +135,7 @@
 
 - (IBAction)clearButtonAction {
 	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
-		[self.delegate A3KeyboardController:NULL clearButtonPressedTo:nil ];
+		[self.delegate A3KeyboardController:self clearButtonPressedTo:self.keyInputDelegate ];
 	}
 }
 
@@ -163,7 +163,7 @@
 
 - (IBAction)doneAction {
 	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:doneButtonPressedTo:)]) {
-		[self.delegate A3KeyboardController:nil doneButtonPressedTo:nil ];
+		[self.delegate A3KeyboardController:self doneButtonPressedTo:self.keyInputDelegate ];
 	} else {
 		[self.entryTableViewCell handleActionBarDone:nil];
 	}

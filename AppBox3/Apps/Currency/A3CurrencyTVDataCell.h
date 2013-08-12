@@ -9,6 +9,7 @@
 #import "UITableViewController+swipeMenu.h"
 
 @protocol A3CurrencyMenuDelegate <NSObject>
+- (void)menuAdded;
 - (void)swapActionForCell:(UITableViewCell *)cell;
 - (void)chartActionForCell:(UITableViewCell *)cell;
 - (void)shareActionForCell:(UITableViewCell *)cell;

@@ -11,6 +11,6 @@
 
 @interface A3CurrencyHistory2RowCell : A3CurrencyHistoryCell
 
-@property (nonatomic, weak) IBOutlet UILabel *L1, *R1, *L2, *R2;
+@property (nonatomic, weak) UILabel *L1, *R1, *L2, *R2;
 
 @end
