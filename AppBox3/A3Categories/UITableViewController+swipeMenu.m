@@ -115,7 +115,7 @@ const CGFloat kVisibleWidth = 100.0;
 
 // un-swipe everything when the user scrolls
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self unswipeAll];
+//	[self unswipeAll];
 }
 
 - (void)unswipeAll {

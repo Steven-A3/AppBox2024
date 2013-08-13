@@ -8,8 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol A3CurrencyChartViewDelegate <NSObject>
+- (void)chartViewControllerValueChanged:(NSNumber *)newValue;
+
+@end
+
 @interface A3CurrencyChartViewController : UIViewController
 
 @property (nonatomic, copy) NSString *sourceCurrencyCode, *targetCurrencyCode;
+@property (nonatomic, strong) NSNumber *initialValue;			// Assigned by caller, will not change, compare with textField
+@property (nonatomic, weak) id<A3CurrencyChartViewDelegate> delegate;
 
 @end

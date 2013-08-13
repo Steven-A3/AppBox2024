@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencyTVDataCell.h"
 #import "CurrencyItem.h"
@@ -20,6 +21,7 @@
 #import "A3UIDevice.h"
 #import "UIImage+animatedGIF.h"
 #import "NSString+conversion.h"
+#import "NSNumberExtensions.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CurrencySelectViewControllerDelegate>
 
@@ -36,11 +38,11 @@
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
 @property (nonatomic, strong) UIImageView *landscapeChartView;
 @property (nonatomic, strong) UIScrollView *landscapeView;
+@property (nonatomic, strong) NSNumber *sourceValue;
 
 @end
 
 @implementation A3CurrencyChartViewController {
-	float _sourceValue;
 	BOOL _selectionInSource;
 }
 
@@ -58,13 +60,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	_sourceValue = 1.0;
+	_sourceValue = _initialValue ? _initialValue : @(1.0);
 
+	// For the moment, it will be
+	// Effective when iPhone is used.
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
-    self.tableView.rowHeight = 84.0;
+    self.tableView.rowHeight = [[UIScreen mainScreen] bounds].size.height == 480.0 ? 70.0 : 84.0;
 	self.tableView.dataSource = self;
 	self.tableView.delegate = self;
 	self.tableView.scrollEnabled = NO;
@@ -89,6 +93,11 @@
 	[self registerContentSizeCategoryDidChangeNotification];
 }
 
+- (void)viewWillLayoutSubviews {
+	[self setupConstraints];
+}
+
+
 - (void)viewDidLayoutSubviews{
 	CGFloat width = CGRectGetWidth(self.titleView.bounds)/5.0;
 	NSInteger idx = 0;
@@ -106,23 +115,96 @@
 }
 
 - (void)setupConstraints {
-	// TableView
-	[self constraintForHorizontalLayout:_tableView width:1.0];
-	[self constraintForHorizontalLayout:_line1 width:1.0];
-	[self constraintForHorizontalLayout:_titleView width:1.0];
-	[self constraintForHorizontalLayout:_valueView width:1.0];
-	[self constraintForHorizontalLayout:_valueView width:1.0];
-	[self constraintForHorizontalLayout:_line2 width:1.0];
-	[self constraintForHorizontalLayout:_segmentedControl width:IS_IPHONE ? 0.9 : 0.8];
-	[self constraintForHorizontalLayout:_chartView width:IS_IPHONE ? 0.95 : 0.78];
+	[self.view removeConstraints:[self.view constraints]];
 
-	NSNumber *space1 = @(IS_IPHONE ? 11.0 : 20.0);
-	NSNumber *space2 = @(IS_IPHONE ? 29.0 : 52.0);
-	NSNumber *chartHeight = @(IS_IPHONE ? 177.0 : 294.0);
-	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(168)]-space1-[_line1(1)][_titleView(22)][_valueView(22)][_line2(1)]-29-[_segmentedControl(28)]-space2-[_chartView(>=chartHeight)]-space2-|"
+	FNLOGRECT([[UIScreen mainScreen] bounds]);
+	FNLOGRECT(self.view.frame);
+	FNLOGRECT(self.view.bounds);
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
+	NSNumber *tableViewHeight;
+	NSNumber *titleViewHeight;
+	NSNumber *space1;
+	NSNumber *space2;
+	NSNumber *space3;
+	NSNumber *space4;
+	NSNumber *chartHeight;
+	NSNumber *chartWidth;
+	NSNumber *segmentedControlWidth;
+
+	if (IS_IPHONE) {
+		if (screenBounds.size.height == 480.0) {
+			tableViewHeight = @140.0;
+			titleViewHeight = @22.0;
+			space1 = @10.0;
+			space2 = @10.0;
+			space3 = @14.0;
+			space4 = @14.0;
+			chartHeight = @154.0;
+			chartWidth = @263.0;
+		} else {
+			tableViewHeight = @168.0;
+			titleViewHeight = @30.0;
+			space1 = @17.0;
+			space2 = @17.0;
+			space3 = @18.0;
+			space4 = @19.0;
+			chartHeight = @175.0;
+			chartWidth = @300.0;
+		}
+		segmentedControlWidth = @300.0;
+	} else {
+		tableViewHeight = @168.0;
+		titleViewHeight = @30.0;
+
+		if (IS_LANDSCAPE) {
+			segmentedControlWidth = @555.0;
+			chartWidth = @555.0;
+			chartHeight = @312.0;
+			space1 = @33.0;
+			space2 = @33.0;
+			space3 = @34.0;
+			space4 = @34.0;
+		} else {
+			segmentedControlWidth = @605.0;
+			chartWidth = @605.0;
+			chartHeight = @340.0;
+			space1 = @50.0;
+			space2 = @50.0;
+			space3 = @20.0;
+			space4 = @242.0;
+		}
+	}
+
+	[self constraintForHorizontalLayout:_tableView];
+	[self constraintForHorizontalLayout:_line1];
+	[self constraintForHorizontalLayout:_titleView];
+	[self constraintForHorizontalLayout:_valueView];
+	[self constraintForHorizontalLayout:_valueView];
+	[self constraintForHorizontalLayout:_line2];
+	[self constraintForHorizontalLayout:_segmentedControl width:segmentedControlWidth.cgFloatValue];
+	[self constraintForHorizontalLayout:_chartView width:chartWidth.cgFloatValue];
+
+	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(tableViewHeight)]-space1-[_line1(1)][_titleView(titleViewHeight)][_valueView(titleViewHeight)][_line2(1)]-space2-[_segmentedControl(28)]-space3-[_chartView(chartHeight)]-space4-|"
 																	  options:0
-																	  metrics:NSDictionaryOfVariableBindings(space1, space2, chartHeight)
+																	  metrics:NSDictionaryOfVariableBindings(tableViewHeight, titleViewHeight, space1, space2, space3, space4, chartHeight)
 																		views:NSDictionaryOfVariableBindings(_tableView, _line1, _titleView, _valueView, _line2, _segmentedControl, _chartView)]];
+}
+
+- (void)constraintForHorizontalLayout:(UIView *)view {
+	view.translatesAutoresizingMaskIntoConstraints = NO;
+	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+														  attribute:NSLayoutAttributeCenterX
+														  relatedBy:NSLayoutRelationEqual
+															 toItem:self.view
+														  attribute:NSLayoutAttributeCenterX
+														 multiplier:1.0 constant:0.0]];
+	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
+														  attribute:NSLayoutAttributeWidth
+														  relatedBy:NSLayoutRelationEqual
+															 toItem:self.view
+														  attribute:NSLayoutAttributeWidth
+														 multiplier:1.0 constant:0.0]];
 }
 
 - (void)constraintForHorizontalLayout:(UIView *)view width:(CGFloat)width {
@@ -136,9 +218,9 @@
 	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
 														  attribute:NSLayoutAttributeWidth
 														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeWidth
-														 multiplier:width constant:0.0]];
+															 toItem:nil
+														  attribute:NSLayoutAttributeNotAnAttribute
+														 multiplier:0.0 constant:width]];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -233,7 +315,7 @@
 		_sourceTextField = cell.valueField;
 
 		NSNumberFormatter *nf = [self currencyFormatterWithCurrencyCode:self.sourceItem.currencyCode];
-		cell.valueField.text = [nf stringFromNumber:@(_sourceValue)];
+		cell.valueField.text = [nf stringFromNumber:_sourceValue];
 	} else {
 		cell.valueField.delegate = self;
 		cell.valueField.text = self.targetValueString;
@@ -245,8 +327,8 @@
 }
 
 - (float)targetValue {
-	_sourceValue = _sourceTextField ? [_sourceTextField.text floatValueEx] : 1.0;
-	return _sourceValue * self.conversionRate;
+	_sourceValue = @(_sourceTextField ? [_sourceTextField.text floatValueEx] : 1.0);
+	return _sourceValue.floatValue * self.conversionRate;
 }
 
 - (NSString *)targetValueString {
@@ -259,7 +341,7 @@
 	return [nf stringFromNumber:@(self.targetValue)];
 }
 
-- (float)sourceValue {
+- (float)sourceValueConvertedFromTarget {
 	return [_targetTextField.text floatValueEx] / self.conversionRate;
 }
 
@@ -270,7 +352,7 @@
 	if (IS_IPHONE) {
 		[nf setCurrencySymbol:@""];
 	}
-	return [nf stringFromNumber:@(self.sourceValue)];
+	return [nf stringFromNumber:@(self.sourceValueConvertedFromTarget)];
 }
 
 #pragma mark - UITableViewDelegate
@@ -334,17 +416,38 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 	self.numberKeyboardViewController = nil;
 
+    FNLOG(@"%@, %@", textField.text, textField);
+    if (![textField.text length])
+        return;
+    
 	float value = [textField.text floatValue];
 	if (value < 1.0) {
 		value = 1.0;
 	}
+    
 	NSNumberFormatter *nf;
 	if (textField == _sourceTextField) {
+		_sourceValue = @(value);
 		nf = [self currencyFormatterWithCurrencyCode:_sourceItem.currencyCode];
-	} else {
+        if (value > 0.0) {
+            [self notifyDelegateValueChangedWithValue:_sourceValue];
+        }
+	} else if (textField == _targetTextField) {
 		nf = [self currencyFormatterWithCurrencyCode:_targetItem.currencyCode];
+        if (value > 0.0) {
+            [self notifyDelegateValueChangedWithValue:@(self.sourceValueConvertedFromTarget)];
+        }
 	}
 	textField.text = [nf stringFromNumber:@(value)];
+}
+
+- (void)notifyDelegateValueChangedWithValue:(NSNumber *)newNumber {
+	if ([_delegate respondsToSelector:@selector(chartViewControllerValueChanged:)]) {
+		if (![_initialValue isEqualToNumber:newNumber]) {
+			[_delegate chartViewControllerValueChanged:newNumber];
+			_initialValue = newNumber;		// Update _initialValue too.
+		}
+	}
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {

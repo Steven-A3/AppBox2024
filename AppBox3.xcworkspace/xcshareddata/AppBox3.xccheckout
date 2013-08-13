@@ -18,6 +18,8 @@
 		<string>https://github.com/nschum/FontAwesomeIconFactory.git</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
 		<string>https://github.com/FortAwesome/Font-Awesome.git</string>
+		<key>B98EB309-4297-4826-AB64-726DAAD1FFCE</key>
+		<string>https://github.com/Steven-Gwug/Masonry.git</string>
 		<key>C1859CE3-F109-4D71-B7A6-F9394A18C7BD</key>
 		<string>https://github.com/escoz/QuickDialog.git</string>
 		<key>EC262D93-B1A5-41AE-A2FC-2FB0417063A9</key>
@@ -37,6 +39,8 @@
 		<string>../External/FontAwesomeIconFactory</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
 		<string>../External/FontAwesomeIconFactory/Font-Awesome</string>
+		<key>B98EB309-4297-4826-AB64-726DAAD1FFCE</key>
+		<string>../External/Masonry</string>
 		<key>C1859CE3-F109-4D71-B7A6-F9394A18C7BD</key>
 		<string>../External/QuickDialog</string>
 		<key>EC262D93-B1A5-41AE-A2FC-2FB0417063A9</key>
@@ -83,6 +87,14 @@
 			<string>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>FontAwesomeIconFactory</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>B98EB309-4297-4826-AB64-726DAAD1FFCE</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Masonry</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

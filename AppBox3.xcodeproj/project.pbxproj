@@ -373,6 +373,8 @@
 		68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */; };
 		68D292A516C20A5100F522BC /* A3ExpenseListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D292A416C20A5100F522BC /* A3ExpenseListTableViewCell.m */; };
 		68D48CEC17142B5200299354 /* A3NumberKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D48CEB17142B5200299354 /* A3NumberKeyboardViewController.m */; };
+		68D7697817BA947F003ACF0F /* A3TranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */; };
+		68D7698417BA965B003ACF0F /* libMasonry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D7698017BA962C003ACF0F /* libMasonry.a */; };
 		68D858E1174E3D4400E19B83 /* A3LoanCalcComparisonTopLeftViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D858E0174E3D4400E19B83 /* A3LoanCalcComparisonTopLeftViewController_iPhone.xib */; };
 		68D8E86B16ED85B600A9AAD2 /* A3LoanCalcSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D8E86A16ED85B600A9AAD2 /* A3LoanCalcSettingsViewController.m */; };
 		68D8E86E16ED89A500A9AAD2 /* A3LoanCalcPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D8E86D16ED89A500A9AAD2 /* A3LoanCalcPreferences.m */; };
@@ -447,6 +449,27 @@
 			proxyType = 1;
 			remoteGlobalIDString = 682EA2D015EB10B000BD6AD4;
 			remoteInfo = AppBox3;
+		};
+		68D7697F17BA962C003ACF0F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DD52F1AA179CA93B005CD195;
+			remoteInfo = Masonry;
+		};
+		68D7698117BA962C003ACF0F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DD52F1BB179CA93B005CD195;
+			remoteInfo = MasonryTests;
+		};
+		68D7698917BA9A5A003ACF0F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DD52F1A9179CA93B005CD195;
+			remoteInfo = Masonry;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -1148,6 +1171,9 @@
 		68D292A416C20A5100F522BC /* A3ExpenseListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListTableViewCell.m; path = "Expense List/A3ExpenseListTableViewCell.m"; sourceTree = "<group>"; };
 		68D48CEA17142B5200299354 /* A3NumberKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController.h; sourceTree = "<group>"; };
 		68D48CEB17142B5200299354 /* A3NumberKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController.m; sourceTree = "<group>"; };
+		68D7697617BA947F003ACF0F /* A3TranslatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorViewController.h; path = Translator/A3TranslatorViewController.h; sourceTree = "<group>"; };
+		68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorViewController.m; path = Translator/A3TranslatorViewController.m; sourceTree = "<group>"; };
+		68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = External/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 		68D858E0174E3D4400E19B83 /* A3LoanCalcComparisonTopLeftViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3LoanCalcComparisonTopLeftViewController_iPhone.xib; path = "Loan Calc/A3LoanCalcComparisonTopLeftViewController_iPhone.xib"; sourceTree = "<group>"; };
 		68D8E86916ED85B600A9AAD2 /* A3LoanCalcSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcSettingsViewController.h; path = "Loan Calc/A3LoanCalcSettingsViewController.h"; sourceTree = "<group>"; };
 		68D8E86A16ED85B600A9AAD2 /* A3LoanCalcSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcSettingsViewController.m; path = "Loan Calc/A3LoanCalcSettingsViewController.m"; sourceTree = "<group>"; };
@@ -1238,6 +1264,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D7698417BA965B003ACF0F /* libMasonry.a in Frameworks */,
 				68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */,
 				6895343E178679DB007061CA /* libCorePlot-CocoaTouch.a in Frameworks */,
 				686FCFC51775D16C00F19332 /* libQuickDialog.a in Frameworks */,
@@ -1536,6 +1563,7 @@
 				688F7E1116C11A1F003687A7 /* Expense List */,
 				688D74BF16C484A600DBF033 /* Loan Calc */,
 				6886A308165774C60013A4C9 /* Sales Calc */,
+				68D7697417BA9434003ACF0F /* Translator */,
 			);
 			path = Apps;
 			sourceTree = "<group>";
@@ -2531,6 +2559,7 @@
 				6890AB0B1786B800004FECE4 /* expecta */,
 				17D4240AE8645D82A36D626F /* FontAwesomeIconFactory */,
 				6876D71417A75EB700E16991 /* MagicalRecord */,
+				68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */,
 				68F1B11A1778560B00E81257 /* MMDrawerController */,
 				6872DD2D17B3D53F00C1BF44 /* NSDate-TimeAgo */,
 				686FCF331775CD1300F19332 /* NYXImagesKit */,
@@ -2570,6 +2599,24 @@
 				68CC1598174F76930000870F /* LigatureSymbols.ttf */,
 			);
 			name = Vendor;
+			sourceTree = "<group>";
+		};
+		68D7697417BA9434003ACF0F /* Translator */ = {
+			isa = PBXGroup;
+			children = (
+				68D7697617BA947F003ACF0F /* A3TranslatorViewController.h */,
+				68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */,
+			);
+			name = Translator;
+			sourceTree = "<group>";
+		};
+		68D7697B17BA962C003ACF0F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				68D7698017BA962C003ACF0F /* libMasonry.a */,
+				68D7698217BA962C003ACF0F /* MasonryTests.octest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		68F1B11A1778560B00E81257 /* MMDrawerController */ = {
@@ -2613,6 +2660,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				68D7698A17BA9A5A003ACF0F /* PBXTargetDependency */,
 				686FCF6A1775CD9700F19332 /* PBXTargetDependency */,
 			);
 			name = AppBox3;
@@ -2685,6 +2733,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 68D7697B17BA962C003ACF0F /* Products */;
+					ProjectRef = 68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */;
+				},
+				{
 					ProductGroup = 686FCF611775CD2400F19332 /* Products */;
 					ProjectRef = 686FCF601775CD2400F19332 /* QuickDialog.xcodeproj */;
 				},
@@ -2711,6 +2763,20 @@
 			fileType = archive.ar;
 			path = libQuickDialog.a;
 			remoteRef = 686FCF671775CD2400F19332 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		68D7698017BA962C003ACF0F /* libMasonry.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMasonry.a;
+			remoteRef = 68D7697F17BA962C003ACF0F /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		68D7698217BA962C003ACF0F /* MasonryTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MasonryTests.octest;
+			remoteRef = 68D7698117BA962C003ACF0F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -2891,6 +2957,7 @@
 				68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */,
 				6886A30C165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m in Sources */,
 				68B49C7F165CC52500BCD493 /* A3HotMenuViewController.m in Sources */,
+				68D7697817BA947F003ACF0F /* A3TranslatorViewController.m in Sources */,
 				68B2CD8D165E02A300BD998F /* A3WeatherStickerViewController.m in Sources */,
 				68B2CD90165E138D00BD998F /* A3StockTickerControl.m in Sources */,
 				68ED198C16648FE00062C599 /* A3HomeViewController_iPad.m in Sources */,
@@ -3152,6 +3219,11 @@
 			target = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
 			targetProxy = 6876D70717A75DAE00E16991 /* PBXContainerItemProxy */;
 		};
+		68D7698A17BA9A5A003ACF0F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Masonry;
+			targetProxy = 68D7698917BA9A5A003ACF0F /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -3277,7 +3349,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/QuickDialog/**";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/QuickDialog/** ${PROJECT_DIR}/External/Masonry/Masonry/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3303,7 +3375,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/QuickDialog/**";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/QuickDialog/** ${PROJECT_DIR}/External/Masonry/Masonry/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

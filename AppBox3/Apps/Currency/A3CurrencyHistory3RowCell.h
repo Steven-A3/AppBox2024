@@ -11,6 +11,7 @@
 
 @interface A3CurrencyHistory3RowCell : A3CurrencyHistoryCell
 
-@property (nonatomic, weak) UILabel *L1, *L2, *L3, *R1, *R2, *R3;
+@property (nonatomic, strong) NSArray *leftLabels, *rightLabels;
+@property (nonatomic, strong) NSNumber *numberOfLines;
 
 @end

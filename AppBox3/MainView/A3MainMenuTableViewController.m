@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
 #import "A3MainMenuTableViewController.h"
 #import "A3SectionHeaderViewInMenuTableView.h"
 #import "CommonUIDefinitions.h"
@@ -15,11 +14,11 @@
 #import "A3UIDevice.h"
 #import "A3SalesCalcQuickDialogViewController_iPad.h"
 #import "A3SalesCalcQuickDialogViewController_iPhone.h"
-#import "UIViewController+MMDrawerController.h"
 #import "UIViewController+navigation.h"
 #import "A3CurrencyViewController.h"
 #import "A3AppDelegate.h"
 #import "A3RootViewController.h"
+#import "A3TranslatorViewController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -333,7 +332,7 @@
 					title = @"Currency";
 					break;
 				case 4:
-					title = @"삼청동 맛집";
+					title = @"Translator";
 					break;
 			}
 			break;
@@ -389,6 +388,10 @@
 			}
 			case 3: {
 				targetViewController = [[A3CurrencyViewController alloc] initWithStyle:UITableViewStylePlain];
+				break;
+			}
+			case 4: {
+				targetViewController = [[A3TranslatorViewController alloc] initWithNibName:nil bundle:nil];
 				break;
 			}
 		}

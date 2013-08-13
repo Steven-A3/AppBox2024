@@ -11,7 +11,7 @@
 
 #ifdef DEBUG
 #define FNLOG(p,...)		NSLog(@"%s line %d, "p, __FUNCTION__, __LINE__, ##__VA_ARGS__)
-#define FNLOGRECT(rect)		NSLog(@"%s line %d, %f, %f, %f, %f", __FUNCTION__, __LINE__, rect.origin.x, rect.origin.y, \
+#define FNLOGRECT(rect)		NSLog(@"%s line %d, (%.1fx%.1f)-(%.1fx%.1f)", __FUNCTION__, __LINE__, rect.origin.x, rect.origin.y, \
  rect.size.width, rect.size.height)
 #else
 #define FNLOG(p,...)

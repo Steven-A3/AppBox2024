@@ -16,4 +16,6 @@
 	#import <MobileCoreServices/MobileCoreServices.h>
     #import <QuickDialog/QuickDialog.h>
 	#import <CoreData+MagicalRecord.h>
+#define MAS_SHORTHAND
+    #import <Masonry.h>
 #endif

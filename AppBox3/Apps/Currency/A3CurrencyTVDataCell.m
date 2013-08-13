@@ -83,7 +83,7 @@
 	NSDictionary *views = NSDictionaryOfVariableBindings(_valueField, _codeLabel, _rateLabel, _flagImageView, _separatorLineView);
 	NSNumber *leftMargin = @(IS_IPHONE ? 15.0 : 28.0);
 	NSNumber *marginBetweenFlagCode = @(IS_IPHONE ? 2.0 : 10.0);
-	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 2.0 : 2.0);
+	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 4.0 : 4.0);
 
 	// Value Field
 	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField

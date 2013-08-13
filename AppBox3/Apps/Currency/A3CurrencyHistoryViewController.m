@@ -18,7 +18,6 @@
 #import "UIViewController+A3AppCategory.h"
 #import "NSDate+TimeAgo.h"
 #import "A3UIDevice.h"
-#import "A3RootViewController.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 
@@ -26,10 +25,11 @@
 
 @end
 
-NSString *const A3CurrencyHistory2RowCellID = @"cell2Row";
 NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
-@implementation A3CurrencyHistoryViewController
+@implementation A3CurrencyHistoryViewController {
+
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -52,7 +52,20 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 
-	[self.tableView registerClass:[A3CurrencyHistory2RowCell class] forCellReuseIdentifier:A3CurrencyHistory2RowCellID];
+	UILabel *notice = [[UILabel alloc] init];
+	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	notice.textColor = [UIColor blackColor];
+	notice.text = @"Each history keeps max 4 currencies.";
+	notice.textAlignment = NSTextAlignmentCenter;
+
+	CGRect frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
+	UIView *footerView = [[UIView alloc] initWithFrame:frame];
+    footerView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+	notice.frame = footerView.bounds;
+	[footerView addSubview:notice];
+
+	self.tableView.tableFooterView = footerView;
+
 	[self.tableView registerClass:[A3CurrencyHistory3RowCell class] forCellReuseIdentifier:A3CurrencyHistory3RowCellID];
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -126,72 +139,42 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	CurrencyHistory *history = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	return  ([history.targets count] == 1) ? 60.0 : 74.0;
+	return 50.0 + [history.targets count] * 14.0;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    // Configure the cell...
 	CurrencyHistory *currencyHistory = [_fetchedResultsController objectAtIndexPath:indexPath];
 
 	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
 	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
 
-//	NSDateFormatter *df = [[NSDateFormatter alloc] init];
-//	[df setDateStyle:NSDateFormatterShortStyle];
-//	[df setTimeStyle:NSDateFormatterShortStyle];
+	A3CurrencyHistory3RowCell *cell = [tableView dequeueReusableCellWithIdentifier:A3CurrencyHistory3RowCellID forIndexPath:indexPath];
+	if (!cell) {
+		cell = [[A3CurrencyHistory3RowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyHistory3RowCellID];
+	}
 
-	if ([currencyHistory.targets count] == 1) {
-		A3CurrencyHistory2RowCell *cell2Row = [tableView dequeueReusableCellWithIdentifier:A3CurrencyHistory2RowCellID forIndexPath:indexPath];
-		if (!cell2Row) {
-			cell2Row = [[A3CurrencyHistory2RowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyHistory2RowCellID];
-		}
+	[nf setCurrencyCode:currencyHistory.currencyCode];
 
-		[nf setCurrencyCode:currencyHistory.currencyCode];
-		cell2Row.L1.text = [nf stringFromNumber:currencyHistory.value];
-		cell2Row.R1.text = [currencyHistory.date timeAgo];
+	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
+	NSArray *items = [currencyHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
 
-		CurrencyHistoryItem *item = currencyHistory.targets.allObjects[0];
+	NSInteger numberOfLines = [currencyHistory.targets count] + 1;
+	[cell setNumberOfLines:@(numberOfLines)];
+
+	((UILabel *) cell.leftLabels[0]).text = [nf stringFromNumber:currencyHistory.value];
+	((UILabel *) cell.rightLabels[0]).text = [currencyHistory.date timeAgo];
+
+	for (NSInteger index = 1; index < numberOfLines; index++) {
+		CurrencyHistoryItem *item = items[index - 1];
 		float rate = item.rate.floatValue / currencyHistory.rate.floatValue;
 		[nf setCurrencyCode:item.currencyCode];
-		cell2Row.L2.text = [nf stringFromNumber:@(currencyHistory.value.floatValue * rate)];
 
-		cell2Row.R2.text = [NSString stringWithFormat:@"%@ to %@ = %.4f", currencyHistory.currencyCode, item.currencyCode, rate];
-
-		cell = cell2Row;
-	} else {
-		A3CurrencyHistory3RowCell *cell3Row = [tableView dequeueReusableCellWithIdentifier:A3CurrencyHistory3RowCellID forIndexPath:indexPath];
-		if (!cell3Row) {
-			cell3Row = [[A3CurrencyHistory3RowCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3CurrencyHistory3RowCellID];
-        }
-        
-        [nf setCurrencyCode:currencyHistory.currencyCode];
-        cell3Row.L1.text = [nf stringFromNumber:currencyHistory.value];
-        
-//        cell3Row.R1.text = [df stringFromDate:currencyHistory.date];
-        cell3Row.R1.text = [currencyHistory.date timeAgo];
-
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-        NSArray *items = [currencyHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
-		CurrencyHistoryItem *item1 = items[0], *item2 = items[1];
-        
-        float rate = item1.rate.floatValue / currencyHistory.rate.floatValue;
-        [nf setCurrencyCode:item1.currencyCode];
-        cell3Row.L2.text = [nf stringFromNumber:@(currencyHistory.value.floatValue * rate)];
-        
-        cell3Row.R2.text = [NSString stringWithFormat:@"%@ to %@ = %.4f", currencyHistory.currencyCode, item1.currencyCode, rate];
-        
-        rate = item2.rate.floatValue / currencyHistory.rate.floatValue;
-        [nf setCurrencyCode:item2.currencyCode];
-        cell3Row.L3.text = [nf stringFromNumber:@(currencyHistory.value.floatValue * rate)];
-        
-        cell3Row.R3.text = [NSString stringWithFormat:@"%@ to %@ = %.4f", currencyHistory.currencyCode, item2.currencyCode, rate];
-
-		cell = cell3Row;
+		((UILabel *) cell.leftLabels[index]).text = [nf stringFromNumber:@(currencyHistory.value.floatValue * rate)];
+		((UILabel *) cell.rightLabels[index]).text = [NSString stringWithFormat:@"%@ to %@ = %.4f", currencyHistory.currencyCode, item.currencyCode, rate];
 	}
-    
+
     return cell;
 }
 
@@ -250,7 +233,6 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
  */
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
