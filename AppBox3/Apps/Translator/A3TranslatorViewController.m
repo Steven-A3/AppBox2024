@@ -11,6 +11,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "MMDrawerController.h"
 #import "UIViewController+MMDrawerController.h"
+#import "A3TranslatorMessageViewController.h"
 
 @interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -38,6 +39,7 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.navigationItem.hidesBackButton = YES;
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 
 	if (IS_IPHONE) {
 		[self leftBarButtonAppsButton];
@@ -57,7 +59,7 @@
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.view.top).with.offset(64.0 + 10.0);
 		make.centerX.equalTo(self.view.centerX);
-		make.width.equalTo(self.view.width).with.offset(-56.0 * 2.0);
+		make.width.equalTo(@(IS_IPHONE ? 206.0 : 300.0));
 		make.height.equalTo(@28);
 	}];
 
@@ -86,6 +88,7 @@
 
 	_addButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	[_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
+	[_addButton addTarget:self action:@selector(addButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:_addButton];
 
 	[_addButton makeConstraints:^(MASConstraintMaker *make) {
@@ -109,6 +112,11 @@
 - (void)appsButtonAction:(UIButton *)button {
 	[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 
+}
+
+- (void)addButtonAction {
+	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)editButtonAction {
