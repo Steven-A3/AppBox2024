@@ -107,12 +107,12 @@
         <attribute name="salePrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tax" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="TranslatorHistory" syncable="YES">
+    <entity name="TranslatorHistory" representedClassName="TranslatorHistory" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sourceLanguageCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="sourceText" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="targetLanguageCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="translatedLanguage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>

@@ -6,10 +6,20 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreText/CoreText.h>
 #import "A3TranslatorMessageViewController.h"
 #import "A3UIDevice.h"
+#import "TranslatorHistory.h"
+#import "NSManagedObject+MagicalRecord.h"
+#import "NSManagedObject+MagicalFinders.h"
+#import "A3TranslatorMessageCell.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
+#import "common.h"
+#import "AFHTTPRequestOperation.h"
+#import "AFJSONRequestOperation.h"
 
-@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate>
+@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;
@@ -18,8 +28,14 @@
 @property (nonatomic, strong) UIView *textEntryBarView;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) NSLayoutConstraint *textEntryBarViewBottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *textEntryBarViewHeightConstraint;
+@property (nonatomic, strong) UITableView *messageTableView;
+@property (nonatomic, strong) NSArray *messages;
+@property (nonatomic, strong) NSString *originalText;
 
 @end
+
+static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 @implementation A3TranslatorMessageViewController
 
@@ -49,7 +65,19 @@
 
 	[self observeKeyboard];
 
+	[self messageTableView];
+	[_messageTableView registerClass:[A3TranslatorMessageCell class] forCellReuseIdentifier:kTranslatorMessageCellID];
+
 	[self addTapGestureRecognizer];
+    
+    [self layoutTextEntryBarViewAnimated:NO ];
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self scrollToBottomAnimated:NO ];
 }
 
 - (void)addTapGestureRecognizer {
@@ -64,7 +92,7 @@
 }
 
 - (void)cancelButtonAction {
-
+	[self.messageTableView setEditing:!_messageTableView.isEditing];
 }
 
 - (void)addLanguageSelectView {
@@ -201,7 +229,6 @@
 	[_textEntryBarView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
-		make.height.equalTo(@44.0);
 	}];
 	_textEntryBarViewBottomConstraint = [NSLayoutConstraint constraintWithItem:_textEntryBarView
 																	 attribute:NSLayoutAttributeBottom
@@ -210,6 +237,13 @@
 																	 attribute:NSLayoutAttributeBottom
 																	multiplier:1.0 constant:0.0];
 	[self.view addConstraint:_textEntryBarViewBottomConstraint];
+	_textEntryBarViewHeightConstraint = [NSLayoutConstraint constraintWithItem:_textEntryBarView
+																	 attribute:NSLayoutAttributeHeight
+																	 relatedBy:NSLayoutRelationEqual
+																		toItem:nil
+																	 attribute:NSLayoutAttributeNotAnAttribute
+																	multiplier:0.0 constant:44.0];
+	[self.view addConstraint:_textEntryBarViewHeightConstraint];
 
 	UIView *line = [UIView new];
 	line.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
@@ -228,6 +262,7 @@
 	_textView.layer.borderWidth = 1.0;
 	_textView.layer.cornerRadius = 5.0;
 	_textView.delegate = self;
+	_textView.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 	[_textEntryBarView addSubview:_textView];
 
     [_textView makeConstraints:^(MASConstraintMaker *make) {
@@ -239,6 +274,7 @@
 	[translateButton setTitle:@"Translate" forState:UIControlStateNormal];
 	translateButton.titleLabel.font = [UIFont systemFontOfSize:17.0];
 	[translateButton setTitleColor:[UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+	[translateButton addTarget:self action:@selector(translateAction) forControlEvents:UIControlEventTouchUpInside];
 	[_textEntryBarView addSubview:translateButton];
 
 	[translateButton makeConstraints:^(MASConstraintMaker *make) {
@@ -248,6 +284,74 @@
 		make.right.equalTo(_textEntryBarView.right);
 	}];
 }
+
+#pragma mark - Translate Action
+
+- (void)translateAction {
+	if ([_textView.text length]) {
+		TranslatorHistory *newData = [TranslatorHistory MR_createEntity];
+		newData.originalText = _textView.text;
+        _originalText = _textView.text; // Save to async operation
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self askTranslateWithText:_originalText];
+		});
+
+		newData.date = [NSDate date];
+		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+
+		_messages = nil;
+
+		NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
+		[_messageTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+		_textView.text = @"";
+		[self layoutTextEntryBarViewAnimated:YES ];
+	}
+}
+
+static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.com/language/translate/v2?key=AIzaSyC_0kMLRm92yGQlDz5fvPOVHwWJiw8EVdY&target=";
+
+- (void)askTranslateWithText:(NSString *)originalText {
+	NSMutableString *urlString = [NSMutableString stringWithString:GOOGLE_TRANSLATE_API_V2_URL];
+	[urlString appendString:@"ko"];
+	[urlString appendString:@"&q="];
+	[urlString appendString:[originalText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ];
+
+	NSURL *url = [NSURL URLWithString:urlString];
+	FNLOG(@"%@", urlString);
+
+	NSURLRequest *translateRequest = [NSURLRequest requestWithURL:url];
+
+	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:translateRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+		NSArray *translations = [[JSON objectForKey:@"data"] objectForKey:@"translations"];
+
+		FNLOG(@"%@", [[translations lastObject] objectForKey:@"detectedSourceLanguage"]);
+		FNLOG(@"%@", [[translations lastObject] objectForKey:@"translatedText"]);
+		NSMutableString *translated = [NSMutableString stringWithCapacity:400];
+		NSString *translatedString = [[translations lastObject] objectForKey:@"translatedText"];
+		if (translatedString) {
+			[translated setString:translatedString];
+
+			[translated replaceOccurrencesOfString:@"&#39;" withString:@"'" options:0 range:NSMakeRange(0, [translated length])];
+
+			TranslatorHistory *lastData = [TranslatorHistory MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+			lastData.translatedText = translated;
+			lastData.translatedLanguage = [[translations lastObject] objectForKey:@"detectedSourceLanguage"];
+			[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+
+			NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
+			[_messageTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[self scrollToBottomAnimated:YES];
+		}
+	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+		FNLOG(@"fail to download stock: %@", response.debugDescription);
+	}];
+
+	[operation start];
+}
+
+#pragma mark - Keyboard Handler
 
 - (void)observeKeyboard {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
@@ -265,6 +369,8 @@
 	[UIView animateWithDuration:animationDuration animations:^{
 		_textEntryBarViewBottomConstraint.constant = -height;
 		[self.view layoutIfNeeded];
+	} completion:^(BOOL finished) {
+		[self scrollToBottomAnimated:YES ];
 	}];
 }
 
@@ -282,6 +388,80 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
 	return YES;
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidChange:(UITextView *)textView {
+    [self layoutTextEntryBarViewAnimated:YES ];
+}
+
+- (void)layoutTextEntryBarViewAnimated:(BOOL)animated {
+	CGRect boundingRect = [_textView.layoutManager usedRectForTextContainer:_textView.textContainer];
+	_textEntryBarViewHeightConstraint.constant = boundingRect.size.height + 16.0 + 14.0;
+	[self.view setNeedsLayout];
+    
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self scrollToBottomAnimated:animated ];
+    });
+}
+
+#pragma mark - messages
+
+- (NSArray *)messages {
+	if (!_messages) {
+		_messages = [TranslatorHistory MR_findAllSortedBy:@"date" ascending:YES];
+	}
+	return _messages;
+}
+
+#pragma mark - UITableViewDataSource
+
+- (UITableView *)messageTableView {
+	if (!_messageTableView) {
+		_messageTableView = [UITableView new];
+		_messageTableView.delegate = self;
+		_messageTableView.dataSource = self;
+		_messageTableView.showsVerticalScrollIndicator = NO;
+		_messageTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+		_messageTableView.allowsMultipleSelectionDuringEditing = YES;
+		[self.view addSubview:_messageTableView];
+
+		[_messageTableView makeConstraints:^(MASConstraintMaker *make) {
+			make.top.equalTo(@64.0);
+			make.left.equalTo(self.view.left);
+			make.right.equalTo(self.view.right);
+			make.bottom.equalTo(_textEntryBarView.top);
+		}];
+	}
+	return _messageTableView;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return [self.messages count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	TranslatorHistory *data = [self.messages objectAtIndex:indexPath.row];
+	return [A3TranslatorMessageCell cellHeightWithData:data bounds:self.view.bounds];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	A3TranslatorMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:kTranslatorMessageCellID forIndexPath:indexPath];
+	if (!cell) {
+		cell = [[A3TranslatorMessageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:kTranslatorMessageCellID];
+	}
+	[cell setMessageEntity:self.messages[indexPath.row]];
+	return cell;
+}
+
+- (void)scrollToBottomAnimated:(BOOL)animated {
+	if ([self.messages count]) {
+		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:[_messages count] - 1 inSection:0];
+		[self.messageTableView scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+	}
 }
 
 @end

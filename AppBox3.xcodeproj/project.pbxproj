@@ -64,6 +64,8 @@
 		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
 		6801AB271749203C00B162DB /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = 6801AB261749203C00B162DB /* Expense.m */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
+		681097B417BC7CD50096B6CE /* A3TranslatorMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 681097B317BC7CD50096B6CE /* A3TranslatorMessageCell.m */; };
+		681097BB17BC88CC0096B6CE /* TranslatorHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 681097BA17BC88CC0096B6CE /* TranslatorHistory.m */; };
 		681378FF1703F8720003201F /* LoanCalcHistory+calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */; };
 		68137902170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 68137901170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m */; };
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
@@ -595,6 +597,10 @@
 		6801AB261749203C00B162DB /* Expense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Expense.m; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIDevice.m; sourceTree = "<group>"; };
+		681097B217BC7CD50096B6CE /* A3TranslatorMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageCell.h; path = Translator/A3TranslatorMessageCell.h; sourceTree = "<group>"; };
+		681097B317BC7CD50096B6CE /* A3TranslatorMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageCell.m; path = Translator/A3TranslatorMessageCell.m; sourceTree = "<group>"; };
+		681097B917BC88CC0096B6CE /* TranslatorHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TranslatorHistory.h; sourceTree = "<group>"; };
+		681097BA17BC88CC0096B6CE /* TranslatorHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TranslatorHistory.m; sourceTree = "<group>"; };
 		681378FD1703F8710003201F /* LoanCalcHistory+calculation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LoanCalcHistory+calculation.h"; sourceTree = "<group>"; };
 		681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LoanCalcHistory+calculation.m"; sourceTree = "<group>"; };
 		68137900170404340003201F /* A3LoanCalcComparisonTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcComparisonTableViewDataSource.h; path = "Loan Calc/A3LoanCalcComparisonTableViewDataSource.h"; sourceTree = "<group>"; };
@@ -1786,6 +1792,8 @@
 		683B954D15EB233500575377 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				681097B917BC88CC0096B6CE /* TranslatorHistory.h */,
+				681097BA17BC88CC0096B6CE /* TranslatorHistory.m */,
 				68E6F37C17B2B48300F10ED9 /* CurrencyHistoryItem.h */,
 				68E6F37D17B2B48300F10ED9 /* CurrencyHistoryItem.m */,
 				68E6F36117B28B4F00F10ED9 /* CurrencyHistory.h */,
@@ -2592,10 +2600,12 @@
 		68D7697417BA9434003ACF0F /* Translator */ = {
 			isa = PBXGroup;
 			children = (
-				68D7697617BA947F003ACF0F /* A3TranslatorViewController.h */,
-				68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */,
+				681097B217BC7CD50096B6CE /* A3TranslatorMessageCell.h */,
+				681097B317BC7CD50096B6CE /* A3TranslatorMessageCell.m */,
 				68947C7D17BB8043001FEAAB /* A3TranslatorMessageViewController.h */,
 				68947C7E17BB8043001FEAAB /* A3TranslatorMessageViewController.m */,
+				68D7697617BA947F003ACF0F /* A3TranslatorViewController.h */,
+				68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */,
 			);
 			name = Translator;
 			sourceTree = "<group>";
@@ -2908,6 +2918,7 @@
 				68C461571627D77900555C91 /* A3CalendarEventsDelegateAndDataSource.m in Sources */,
 				68C461581627D77900555C91 /* A3CalendarListViewController.m in Sources */,
 				68C4615B1627D77900555C91 /* A3CalendarMonthFrameViewController.m in Sources */,
+				681097BB17BC88CC0096B6CE /* TranslatorHistory.m in Sources */,
 				68C4615C1627D77900555C91 /* A3CalendarMonthView.m in Sources */,
 				68C4615D1627D77900555C91 /* A3CalendarPreferences.m in Sources */,
 				68C4615E1627D77900555C91 /* A3CalendarVerticalSeparatorView.m in Sources */,
@@ -3085,6 +3096,7 @@
 				6895348A178686AF007061CA /* NYXProgressiveImageView.m in Sources */,
 				17D4246A21B50A1A4BFE8D50 /* A3LoanCalcQuickDialogViewController_iPhone.m in Sources */,
 				17D42F0579795C56CDA0DE68 /* A3LoanCalcQuickDialogViewController_iPad.m in Sources */,
+				681097B417BC7CD50096B6CE /* A3TranslatorMessageCell.m in Sources */,
 				17D426FB4E83A3C048DEA1E4 /* A3FrequencyKeyboardViewController_iPhone.m in Sources */,
 				68FEE387174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m in Sources */,
 				17D42478AEA4CF71673C8AE0 /* A3DateKeyboardViewController_iPad.m in Sources */,
