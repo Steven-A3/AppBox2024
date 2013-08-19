@@ -88,10 +88,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
-
-	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self	action:@selector(appsButtonAction:)];
-	self.navigationItem.leftBarButtonItem = barButtonItem;
+	[self makeBackButtonEmptyArrow];
+	[self leftBarButtonAppsButton];
 
 	if (IS_IPHONE) {
 		[self rightButtonMoreButton];
@@ -154,13 +152,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)dealloc {
 	[self removeObserver];
-}
-
-- (void)rightButtonMoreButton {
-	UIImage *image = [UIImage imageNamed:@"more_stroke"];
-	UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
-
-	self.navigationItem.rightBarButtonItem = moreButtonItem;
 }
 
 - (void)reloadUpdateDateLabel {

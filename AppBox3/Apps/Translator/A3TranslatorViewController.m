@@ -12,11 +12,20 @@
 #import "MMDrawerController.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3TranslatorMessageViewController.h"
+#import "TranslatorHistory.h"
+#import "NSManagedObject+MagicalFinders.h"
+#import "NSDate+TimeAgo.h"
+#import "A3TranslatorCircleView.h"
+#import "NSManagedObject+MagicalRecord.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
 
-@interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, strong) NSMutableArray *fetchedResults;
 
 @end
 
@@ -28,6 +37,7 @@
     if (self) {
 		// Custom initialization
 		self.title = @"Translator";
+		[self fetchedResults];
 	}
     return self;
 }
@@ -39,12 +49,12 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 	self.navigationItem.hidesBackButton = YES;
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+	[self makeBackButtonEmptyArrow];
 
 	if (IS_IPHONE) {
 		[self leftBarButtonAppsButton];
 	}
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
 
 	[self setupSubviews];
 }
@@ -116,11 +126,13 @@
 
 - (void)addButtonAction {
 	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.delegate = self;
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)editButtonAction {
-
+- (void)editButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self.tableView setEditing:!self.tableView.isEditing];
+	[barButtonItem setTitle: self.tableView.isEditing ? @"Done" : @"Edit"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,34 +143,130 @@
 
 #pragma mark - UITableView Data Source
 
+- (NSFetchedResultsController *)fetchedResultsController {
+	if (!_fetchedResultsController) {
+		_fetchedResultsController = [TranslatorHistory MR_fetchAllSortedBy:@"originalLanguage,translatedLanguage" ascending:YES withPredicate:nil groupBy:@"languageGroup" delegate:nil];
+	}
+
+	return _fetchedResultsController;
+}
+
+- (NSMutableArray *)fetchedResults {
+	if (!_fetchedResults) {
+		NSMutableArray *sortedByDateArray = [NSMutableArray arrayWithArray:[self.fetchedResultsController sections]];
+
+		[sortedByDateArray sortUsingComparator:^NSComparisonResult(id <NSFetchedResultsSectionInfo> obj1, id <NSFetchedResultsSectionInfo> obj2) {
+			return [[obj2.objects valueForKeyPath:@"@max.date"] compare:[obj1.objects valueForKeyPath:@"@max.date"]];
+		}];
+		_fetchedResults = sortedByDateArray;
+	}
+
+	return _fetchedResults;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 0;
+	return [self.fetchedResults count];
+}
+
+- (UIImage*)imageFromView:(UIView *)view
+{
+	// Create a graphics context with the target size
+	// On iOS 4 and later, use UIGraphicsBeginImageContextWithOptions to take the scale into consideration
+	// On iOS prior to 4, fall back to use UIGraphicsBeginImageContext
+	CGSize imageSize = [view bounds].size;
+	if (NULL != UIGraphicsBeginImageContextWithOptions)
+		UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+	else
+		UIGraphicsBeginImageContext(imageSize);
+
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	// -renderInContext: renders in the coordinate space of the layer,
+	// so we must first apply the layer's geometry to the graphics context
+	CGContextSaveGState(context);
+	// Center the context around the view's anchor point
+	CGContextTranslateCTM(context, [view center].x, [view center].y);
+	// Apply the view's transform about the anchor point
+	CGContextConcatCTM(context, [view transform]);
+	// Offset by the portion of the bounds left of and above the anchor point
+	CGContextTranslateCTM(context,
+			-[view bounds].size.width * [[view layer] anchorPoint].x,
+			-[view bounds].size.height * [[view layer] anchorPoint].y);
+
+	// Render the layer hierarchy to the current context
+	[[view layer] renderInContext:context];
+
+	// Restore the context
+	CGContextRestoreGState(context);
+
+	// Retrieve the screenshot image
+	UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+
+	UIGraphicsEndImageContext();
+
+	return image;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return nil;
+	static NSString *cellIdentifier = @"Cell";
+
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+
+	if(cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+	}
+
+	// Style for textLabel && detailTextLabel
+	cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+	cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
+
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
+
+	cell.textLabel.text = sectionInfo.name;
+	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+	circleView.textLabel.text = [NSString stringWithFormat:@"%d", [sectionInfo numberOfObjects]];
+	cell.imageView.image = [self imageFromView:circleView];
+
+	cell.detailTextLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgoWithLimit:60 * 60 * 24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
+	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+	return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
+	return YES;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"originalLanguage == %@ AND translatedLanguage == %@", [sectionInfo.objects[0] valueForKeyPath:@"originalLanguage"],  [sectionInfo.objects[0] valueForKeyPath:@"translatedLanguage"]];
+		[TranslatorHistory MR_deleteAllMatchingPredicate:predicate];
+		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
 
-}
-
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-
+		[self.fetchedResults removeObjectAtIndex:indexPath.row];
+		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
 }
 
 #pragma mark - UITableView Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
+	viewController.originalTextLanguage = [sectionInfo.objects[0] valueForKeyPath:@"originalLanguage"];
+	viewController.translatedTextLanguage = [sectionInfo.objects[0] valueForKeyPath:@"translatedLanguage"];
+	viewController.delegate = self;
+	[self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)translatorMessageViewControllerWillDismiss:(id)viewController {
+	_fetchedResults = nil;
+	_fetchedResultsController = nil;
+	[self.tableView reloadData];
 }
 
 @end

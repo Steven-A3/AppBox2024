@@ -15,8 +15,6 @@
 
 @interface A3TranslatorMessageCell ()
 
-@property (nonatomic, strong) UIImageView *rightMessageView;
-@property (nonatomic, strong) UIImageView *leftMessageView;
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) NSLayoutConstraint *rightMessageWidth;
 @property (nonatomic, strong) NSLayoutConstraint *rightMessageHeight;
@@ -30,9 +28,14 @@
 @implementation A3TranslatorMessageCell
 
 static const CGFloat kTranslatorCellTopPadding = 35.0;
-static const CGFloat kTranslatorCellBottomPadding = 18.0;
+static const CGFloat kTranslatorCellBottomPadding = 10.0;
 static const CGFloat kTranslatorCellLeftRightPadding = 27.0;
-static const CGFloat kTranslatorCellMessageInset = 10.0;
+static const CGFloat kTranslatorCellRightMessageInsetLeft = 12.0;
+static const CGFloat kTranslatorCellRightMessageInsetRight = 15.0;
+static const CGFloat kTranslatorCellLeftMessageInsetLeft = 15.0;
+static const CGFloat kTranslatorCellLeftMessageInsetRight = 12.0;
+static const CGFloat kTranslatorCellMessageInsetTop = 9.0;
+static const CGFloat kTranslatorCellMessageInsetBottom = 9.0;
 static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -40,6 +43,7 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+		self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -58,62 +62,39 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
 	_leftMessageHeight = nil;
 	_leftMessageWidth = nil;
 	_leftMessageLabel = nil;
+    
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
 + (CGFloat)cellHeightWithData:(TranslatorHistory *)data bounds:(CGRect)bounds {
 	CGFloat height = kTranslatorCellTopPadding + kTranslatorCellBottomPadding;
 	if ([data.originalText length]) {
-		CGRect boundingRect = [self boundingRectWithText:data.originalText withBounds:bounds];
-		FNLOGRECT(boundingRect);
+		CGRect boundingRect = boundingRectWithText(data.originalText, bounds);
+//		FNLOGRECT(boundingRect);
 		height += boundingRect.size.height;
-		height += kTranslatorCellMessageInset * 2.0;
+		height += (kTranslatorCellMessageInsetTop + kTranslatorCellMessageInsetBottom);
 	}
 	if ([data.translatedText length]) {
-		CGRect boundingRect = [self boundingRectWithText:data.translatedText withBounds:bounds];
+		CGRect boundingRect = boundingRectWithText(data.translatedText, bounds);
 		height += boundingRect.size.height;
-		height += kTranslatorCellMessageInset * 2.0;
+		height += (kTranslatorCellMessageInsetTop + kTranslatorCellMessageInsetBottom);
 		height += kTranslatorCellGapBetweenMessage;
 	}
-	FNLOG(@"%f", height);
+//	FNLOG(@"%f", height);
 	return height;
 }
 
-+ (CGRect)boundingRectWithText:(NSString *)text withBounds:(CGRect)bounds {
+CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 	CGFloat maxWidth = bounds.size.width * 0.64;
 
     NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody], NSForegroundColorAttributeName:[UIColor blackColor]}];
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
+    CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
     CGSize targetSize = CGSizeMake(maxWidth, CGFLOAT_MAX);
-    CGSize fitSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attributedString length]), NULL, targetSize, NULL);
-    CFRelease(framesetter);
+    CGSize fitSize = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, CFRangeMake(0, [attributedString length]), NULL, targetSize, NULL);
+    CFRelease(frameSetter);
 
+//	FNLOG(@"%f, %f", fitSize.width, fitSize.height);
 	return CGRectMake(0.0, 0.0, fitSize.width, fitSize.height);
-//
-//    return [attributedString boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-//							  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesFontLeading
-//							  context:nil];
-
-//	return [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-//							  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesFontLeading
-//						   attributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody], NSForegroundColorAttributeName:[UIColor blackColor]}
-//							  context:nil];
-}
-
-- (CGRect)boundingRectWithText:(NSString *)text {
-	CGFloat maxWidth = self.bounds.size.width * 0.64;
-
-	NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody], NSForegroundColorAttributeName:[UIColor blackColor]}];
-	CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attributedString);
-	CGSize targetSize = CGSizeMake(maxWidth, CGFLOAT_MAX);
-	CGSize fitSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, [attributedString length]), NULL, targetSize, NULL);
-	CFRelease(framesetter);
-
-	return CGRectMake(0.0, 0.0, fitSize.width, fitSize.height);
-
-//	return [text boundingRectWithSize:CGSizeMake(maxWidth, CGFLOAT_MAX)
-//							  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesDeviceMetrics | NSStringDrawingUsesFontLeading
-//						   attributes:@{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody], NSForegroundColorAttributeName:[UIColor blackColor]}
-//							  context:nil];
 }
 
 - (CGSize)intrinsicContentSize {
@@ -127,35 +108,46 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
     // Configure the view for the selected state
 }
 
+#pragma mark - SET MESSAGE ENTITY
+
 - (void)setMessageEntity:(TranslatorHistory *)messageEntity {
 	_messageEntity = messageEntity;
 
-	self.dateLabel.text = [_messageEntity.date timeAgo];
+	self.dateLabel.text = [_messageEntity.date timeAgoWithLimit:60 * 60 * 24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
 	[self.dateLabel sizeToFit];
 
 	if (_messageEntity.originalText) {
-		CGRect boundingRect = CGRectInset([self boundingRectWithText:_messageEntity.originalText], -(kTranslatorCellMessageInset), -kTranslatorCellMessageInset);
-		FNLOGRECT(boundingRect);
+		CGRect textRect = boundingRectWithText(_messageEntity.originalText, self.bounds);
+		textRect.size.width += 2.0;
+		textRect.size.height += 1.0;
+		CGRect boundingRect = UIEdgeInsetsInsetRect(textRect,
+				UIEdgeInsetsMake(-kTranslatorCellMessageInsetTop, -kTranslatorCellRightMessageInsetLeft, -kTranslatorCellMessageInsetBottom, -kTranslatorCellRightMessageInsetRight));
 
 		[self rightMessageView];
-		_rightMessageWidth.constant = boundingRect.size.width + 20.0;
-		_rightMessageHeight.constant = boundingRect.size.height + 2.0;
+		_rightMessageWidth.constant = boundingRect.size.width;
+		_rightMessageHeight.constant = boundingRect.size.height;
 
 		_rightMessageLabel.text = _messageEntity.originalText;
 	}
 
 	if (_messageEntity.translatedText) {
-		CGRect boundingRect = CGRectInset([self boundingRectWithText:_messageEntity.translatedText], -(kTranslatorCellMessageInset), -kTranslatorCellMessageInset);
+		CGRect textRect = boundingRectWithText(_messageEntity.translatedText, self.bounds);
+		textRect.size.width += 2.0;
+		textRect.size.height += 1.0;
+		CGRect boundingRect = UIEdgeInsetsInsetRect(textRect,
+				UIEdgeInsetsMake(-kTranslatorCellMessageInsetTop, -kTranslatorCellLeftMessageInsetLeft, -kTranslatorCellMessageInsetBottom, -kTranslatorCellLeftMessageInsetRight));
 
 		[self leftMessageView];
-		_leftMessageWidth.constant = boundingRect.size.width + 20.0;
-		_leftMessageHeight.constant = boundingRect.size.height + 2.0;
+		_leftMessageWidth.constant = boundingRect.size.width;
+		_leftMessageHeight.constant = boundingRect.size.height;
 
 		_leftMessageLabel.text = _messageEntity.translatedText;
 	}
 	[self invalidateIntrinsicContentSize];
 	[self layoutIfNeeded];
 }
+
+#pragma mark - Right Message View
 
 - (UIImageView *)rightMessageView {
 	if (!_rightMessageView) {
@@ -192,11 +184,23 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
 		[_rightMessageView addSubview:_rightMessageLabel];
 
 		[_rightMessageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_rightMessageView).insets(UIEdgeInsetsMake(kTranslatorCellMessageInset, kTranslatorCellMessageInset + 5.0, kTranslatorCellMessageInset, kTranslatorCellMessageInset + 5.0));
+			make.edges.equalTo(_rightMessageView).insets(UIEdgeInsetsMake(kTranslatorCellMessageInsetTop, kTranslatorCellRightMessageInsetLeft, kTranslatorCellMessageInsetBottom, kTranslatorCellRightMessageInsetRight));
 		}];
 
+		// Finally add gesture recognizer for copy paste.
+		UILongPressGestureRecognizer *gestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
+		[_rightMessageView addGestureRecognizer:gestureRecognizer];
+        _rightMessageView.userInteractionEnabled = YES;
 	}
 	return _rightMessageView;
+}
+
+- (void)longPressGestureHandler:(UILongPressGestureRecognizer *)gestureRecognizer {
+	if ([gestureRecognizer state] == UIGestureRecognizerStateBegan) {
+		if ([_delegate respondsToSelector:@selector(cell:longPressGestureRecognized:)]) {
+			[_delegate cell:self longPressGestureRecognized:gestureRecognizer];
+		}
+	}
 }
 
 - (UIImageView *)leftMessageView {
@@ -234,8 +238,13 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
 		[_leftMessageView addSubview:_leftMessageLabel];
 
 		[_leftMessageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_leftMessageView).insets(UIEdgeInsetsMake(kTranslatorCellMessageInset, kTranslatorCellMessageInset * 2.0, kTranslatorCellMessageInset, kTranslatorCellMessageInset));
+			make.edges.equalTo(_leftMessageView).insets(UIEdgeInsetsMake(kTranslatorCellMessageInsetTop, kTranslatorCellLeftMessageInsetLeft, kTranslatorCellMessageInsetBottom, kTranslatorCellLeftMessageInsetRight));
 		}];
+
+		// Finally add gesture recognizer for copy paste.
+		UILongPressGestureRecognizer *gestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGestureHandler:)];
+		[_leftMessageView addGestureRecognizer:gestureRecognizer];
+        _leftMessageView.userInteractionEnabled = YES;
 	}
 	return _leftMessageView;
 }
@@ -263,11 +272,9 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
 	return _dateLabel;
 }
 
-- (void)layoutSubviews {
-	[super layoutSubviews];
-
-	FNLOGRECT(_leftMessageView.frame);
-	FNLOGRECT(_leftMessageLabel.frame);
-}
+//- (void)layoutSubviews {
+//	[super layoutSubviews];
+//
+//}
 
 @end

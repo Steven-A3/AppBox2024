@@ -9,9 +9,9 @@
           "height" : 1
         },
         "capInsets" : {
-          "bottom" : 18,
-          "top" : 18,
-          "right" : 24,
+          "bottom" : 17,
+          "top" : 17,
+          "right" : 25,
           "left" : 18
         }
       },
@@ -28,9 +28,9 @@
           "height" : 1
         },
         "capInsets" : {
-          "bottom" : 36,
-          "top" : 36,
-          "right" : 47,
+          "bottom" : 34,
+          "top" : 34,
+          "right" : 50,
           "left" : 36
         }
       },

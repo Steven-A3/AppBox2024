@@ -679,11 +679,24 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	}
 }
 
+#pragma mark - Right Bar Button
+
 - (void)rightBarButtonDoneButton {
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
+
+}
+
+- (void)rightButtonMoreButton {
+	UIImage *image = [UIImage imageNamed:@"more_stroke"];
+	UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
+
+	self.navigationItem.rightBarButtonItem = moreButtonItem;
+}
+
+- (void)moreButtonAction:(UIBarButtonItem *)button {
 
 }
 
@@ -698,7 +711,10 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return [nf stringFromNumber:value];
 }
 
-- (void)setupBackBarButtonItem {
+/*! This will make back bar button title @"" and this will effective for child view controllers
+ * \returns void
+ */
+- (void)makeBackButtonEmptyArrow {
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
 

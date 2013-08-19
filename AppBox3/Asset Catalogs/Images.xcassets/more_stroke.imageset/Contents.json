@@ -3,12 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "more.stroke.png"
+      "filename" : "more_stroke.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "more.stroke@2x.png"
+      "filename" : "more_stroke@2x.png"
     }
   ],
   "info" : {

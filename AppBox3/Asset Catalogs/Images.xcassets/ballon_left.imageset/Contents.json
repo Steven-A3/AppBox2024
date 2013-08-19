@@ -9,8 +9,8 @@
           "height" : 1
         },
         "capInsets" : {
-          "bottom" : 18,
-          "top" : 18,
+          "bottom" : 17,
+          "top" : 16,
           "right" : 18,
           "left" : 24
         }
@@ -24,13 +24,13 @@
         "mode" : "9-part",
         "center" : {
           "mode" : "fill",
-          "width" : 2,
-          "height" : 2
+          "width" : 1,
+          "height" : 1
         },
         "capInsets" : {
-          "bottom" : 36,
-          "top" : 36,
-          "right" : 36,
+          "bottom" : 34,
+          "top" : 34,
+          "right" : 39,
           "left" : 48
         }
       },

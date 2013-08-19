@@ -62,9 +62,7 @@
 
 	_sourceValue = _initialValue ? _initialValue : @(1.0);
 
-	// For the moment, it will be
-	// Effective when iPhone is used.
-	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+	[self makeBackButtonEmptyArrow];
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];

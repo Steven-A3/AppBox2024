@@ -91,7 +91,11 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button;
 
+- (void)rightButtonMoreButton;
+
+- (void)moreButtonAction:(UIBarButtonItem *)button;
+
 - (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value;
 
-- (void)setupBackBarButtonItem;
+- (void)makeBackButtonEmptyArrow;
 @end

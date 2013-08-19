@@ -33,7 +33,8 @@
 	[self rightBarButtonDoneButton];
 	[self mySearchDisplayController];
 	self.tableView.tableHeaderView = self.searchBar;
-    
+
+    _searchBar.placeholder = @"Search Currency";
     self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
 }
 
@@ -78,7 +79,6 @@
 	if (!_searchBar) {
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
 		_searchBar.delegate = self;
-		_searchBar.placeholder = @"Search Currency";
 		_searchBar.barTintColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 	}
 	return _searchBar;
@@ -88,14 +88,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
-	FNLOG();
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-	FNLOG();
 }
 
 #pragma mark - Table view data source

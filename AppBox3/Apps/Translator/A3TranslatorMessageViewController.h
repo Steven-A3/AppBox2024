@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol A3TranslatorMessageViewControllerDelegate <NSObject>
+@optional
+- (void)translatorMessageViewControllerWillDismiss:(id)viewController;
+@end
+
 @interface A3TranslatorMessageViewController : UIViewController
+
+@property (nonatomic, weak) id<A3TranslatorMessageViewControllerDelegate> delegate;
+@property (nonatomic, copy) NSString *originalTextLanguage;
+@property (nonatomic, copy) NSString *translatedTextLanguage;
 
 @end
