@@ -307,9 +307,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 - (void)changeFavoriteButtonImage {
 	UIImage *image;
 	if (_messageEntity.favorite.boolValue) {
-		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:23.0]];
-		[SFKImage setDefaultColor:self.tintColor];
-		image = [SFKImage imageNamed:@"i"];
+		image = [UIImage imageNamed:@"star02_full"];
 	} else {
 		image = [UIImage imageNamed:@"star02"];
 	}

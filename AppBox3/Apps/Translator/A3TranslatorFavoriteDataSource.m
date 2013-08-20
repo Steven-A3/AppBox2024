@@ -46,9 +46,7 @@
 		cell = [[A3TranslatorFavoriteCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	}
 
-	[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:25.0]];
-	[SFKImage setDefaultColor:cell.tintColor];
-	UIImage *image = [SFKImage imageNamed:@"i"];
+	UIImage *image = [UIImage imageNamed:@"star01_full"];
 	cell.imageView.image = image;
 
 	TranslatorHistory *item = [self.fetchedResultsController objectAtIndexPath:indexPath];

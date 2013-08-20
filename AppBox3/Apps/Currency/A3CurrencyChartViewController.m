@@ -19,7 +19,6 @@
 #import "A3CurrencySelectViewController.h"
 #import "CurrencyItem+name.h"
 #import "A3UIDevice.h"
-#import "UIImage+animatedGIF.h"
 #import "NSString+conversion.h"
 #import "NSNumberExtensions.h"
 

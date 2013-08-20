@@ -159,7 +159,6 @@
 		685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6864D60117BBBA6300A215D7 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FF17BBBA6300A215D7 /* Media.xcassets */; };
-		6868073217B4B8E900B1FC30 /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = 6868072117B4B8E900B1FC30 /* UIImage+animatedGIF.m */; };
 		686E31051713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */; };
 		686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6C1775CEFE00F19332 /* CoreImage.framework */; };
 		686FCF6F1775CF9100F19332 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6E1775CF9100F19332 /* ImageIO.framework */; };
@@ -761,8 +760,6 @@
 		685F72BA16A6DF7C004C7222 /* MenuFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuFavorite.m; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		6864D5FF17BBBA6300A215D7 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = "AppBox3/Asset Catalogs/Media.xcassets"; sourceTree = "<group>"; };
-		6868072017B4B8E900B1FC30 /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
-		6868072117B4B8E900B1FC30 /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
 		686E31031713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController_iPhone.h; sourceTree = "<group>"; };
 		686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController_iPhone.m; sourceTree = "<group>"; };
 		686E31061713F28E004A4BF2 /* A3KeyboardProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3KeyboardProtocol.h; sourceTree = "<group>"; };
@@ -1966,24 +1963,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		6868071317B4B8E900B1FC30 /* uiimage-from-animated-gif */ = {
-			isa = PBXGroup;
-			children = (
-				6868071717B4B8E900B1FC30 /* uiimage-from-animated-gif */,
-			);
-			name = "uiimage-from-animated-gif";
-			path = "External/uiimage-from-animated-gif";
-			sourceTree = "<group>";
-		};
-		6868071717B4B8E900B1FC30 /* uiimage-from-animated-gif */ = {
-			isa = PBXGroup;
-			children = (
-				6868072017B4B8E900B1FC30 /* UIImage+animatedGIF.h */,
-				6868072117B4B8E900B1FC30 /* UIImage+animatedGIF.m */,
-			);
-			path = "uiimage-from-animated-gif";
-			sourceTree = "<group>";
-		};
 		686FCECE177573C300F19332 /* CorePlot */ = {
 			isa = PBXGroup;
 			children = (
@@ -2592,7 +2571,6 @@
 				686FCF421775CD1300F19332 /* Reachability */,
 				686FCF941775D00E00F19332 /* SSCheckBoxView */,
 				68CC1595174F76530000870F /* SymbolFontKit */,
-				6868071317B4B8E900B1FC30 /* uiimage-from-animated-gif */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -3102,7 +3080,6 @@
 				17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */,
 				6876D78217A75EB700E16991 /* MagicalRecord.m in Sources */,
 				686FCF8E1775CFDC00F19332 /* AFURLConnectionOperation.m in Sources */,
-				6868073217B4B8E900B1FC30 /* UIImage+animatedGIF.m in Sources */,
 				17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */,
 				17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */,
 				68ABEC4C1779BED3005AD85C /* AutoLayoutShorthand.m in Sources */,
