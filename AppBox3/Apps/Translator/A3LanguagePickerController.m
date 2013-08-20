@@ -41,6 +41,17 @@
 
 	[self mySearchDisplayController];
 	self.tableView.tableHeaderView = self.searchBar;
+	[self registerContentSizeCategoryDidChangeNotification];
+
+	_filteredContents = _languages;
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,7 +80,7 @@
 		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
 		_mySearchDisplayController.searchResultsTableView.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
+		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor whiteColor];
 	}
 	return _mySearchDisplayController;
 }
@@ -78,7 +89,6 @@
 	if (!_searchBar) {
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
 		_searchBar.delegate = self;
-		_searchBar.prompt = @"Select Language";
 		_searchBar.placeholder = @"Search Language";
 		_searchBar.barTintColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 	}
@@ -125,7 +135,12 @@
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	_filteredContents = [A3TranslatorLanguage filteredArrayWithArray:_languages searchString:searchText includeDetectLanguage:YES ];
+	if ([searchText length]) {
+		_filteredContents = [A3TranslatorLanguage filteredArrayWithArray:_languages searchString:searchText includeDetectLanguage:YES ];
+	} else {
+		_filteredContents = _languages;
+	}
+
 }
 
 // called when cancel button pressed

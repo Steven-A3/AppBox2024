@@ -75,7 +75,7 @@
 }
 
 - (void)barButtonCancelSave {
-	self.navigationItem.leftBarButtonItem = [self barButtonItemWithTitle:@"Cancel" action:@selector(cancelButtonAction)];
+	self.navigationItem.leftBarButtonItem = [self barButtonItemWithTitle:@"Cancel" action:@selector(editButtonAction)];
 	self.navigationItem.rightBarButtonItem = [self blackBarButtonItemWithTitle:@"Save" action:@selector(saveButtonAction)];
 }
 

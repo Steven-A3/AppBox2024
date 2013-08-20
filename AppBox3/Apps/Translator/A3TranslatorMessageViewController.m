@@ -21,6 +21,7 @@
 #import "A3TranslatorLanguage.h"
 #import "A3LanguagePickerController.h"
 #import "UIViewController+A3AppCategory.h"
+#import "SFKImage.h"
 
 @interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3LanguagePickerControllerDelegate>
 
@@ -35,7 +36,7 @@
 @property (nonatomic, strong) NSLayoutConstraint *textEntryBarViewHeightConstraint;
 @property (nonatomic, strong) UITableView *messageTableView;
 @property (nonatomic, strong) NSArray *messages;
-@property (nonatomic, strong) NSString *originalText;
+@property (nonatomic, copy) NSString *originalText;
 @property (nonatomic, weak) A3TranslatorMessageCell *selectedCell;
 @property (readwrite, retain) UIView *inputView;
 @property (nonatomic, strong) UITableView *searchResultsTableView;
@@ -47,6 +48,10 @@
 @property (nonatomic, strong) UIButton *setTargetLanguageButton;
 @property (nonatomic, strong) NSLayoutConstraint *setTargetLanguageButtonConstraint;
 @property (nonatomic, strong) TranslatorHistory *translatingMessage;
+@property (nonatomic, strong) UIBarButtonItem *toolbarDeleteButton;
+@property (nonatomic, strong) UIBarButtonItem *toolbarSetFavoriteButton;
+@property (nonatomic, strong) UIBarButtonItem *toolbarUnsetFavoriteButton;
+@property (nonatomic, strong) UIBarButtonItem *toolbarShareButton;
 
 @end
 
@@ -71,17 +76,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction)];
-
 	self.view.backgroundColor = [UIColor whiteColor];
-    self.view.clipsToBounds = YES;
 
 	[self addTextEntryView];
 
 	if ([_translatedTextLanguage length]) {
 		[self setTitleWithSelectedLanguage];
 		[self setupMessageTableView];
+		[self rightBarButtonEditButton];
 	} else {
 		self.title = @"New Translator";
 
@@ -90,8 +92,25 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self searchResultsTableView];
 	}
 
-    [self layoutTextEntryBarViewAnimated:NO ];
+	[self layoutTextEntryBarViewAnimated:NO ];
 	[self observeKeyboard];
+	[self registerContentSizeCategoryDidChangeNotification];
+
+	[self.view layoutIfNeeded];
+}
+
+- (void)rightBarButtonEditButton {
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction)];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[_messageTableView reloadData];
+	[_searchResultsTableView reloadData];
+	[self layoutTextEntryBarViewAnimated:NO];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)setTitleWithSelectedLanguage {
@@ -109,7 +128,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)setupMessageTableView {
 	[self messageTableView];
 	[_messageTableView registerClass:[A3TranslatorMessageCell class] forCellReuseIdentifier:kTranslatorMessageCellID];
-	[self addTapGestureRecognizer];
+//	[self addTapGestureRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -119,6 +138,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if (_messageTableView) {
 		[self scrollToBottomAnimated:NO ];
 		[_textView becomeFirstResponder];
+
+		[self.view layoutIfNeeded];
 	}
 }
 
@@ -132,10 +153,27 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}
 	_sourceLanguagePicker = nil;
 	_targetLanguagePicker = nil;
+
+	if (_selectItem) {
+		NSUInteger index = [self.messages indexOfObject:_selectItem];
+		if (index != NSNotFound) {
+			[_messageTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		} else {
+			FNLOG(@"Selected Item NOT Found!");
+		}
+
+		_selectItem = nil;
+	}
+
+	if ([_languageSelectView superview] && [self isFirstResponder]) {
+		[_targetLanguageSelectTextField becomeFirstResponder];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
+
+	[self.navigationController setToolbarHidden:YES animated:NO];
 
 	if ([_delegate respondsToSelector:@selector(translatorMessageViewControllerWillDismiss:)]) {
 		[_delegate translatorMessageViewControllerWillDismiss:self];
@@ -149,14 +187,30 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)tapGestureHandler {
+	FNLOG();
 	[self resignFirstResponder];
 	[_sourceLanguageSelectTextField resignFirstResponder];
 	[_targetLanguageSelectTextField resignFirstResponder];
 	[_textView resignFirstResponder];
 }
 
-- (void)cancelButtonAction {
-	[_messageTableView setEditing:!_messageTableView.isEditing];
+- (void)editButtonAction {
+	[_messageTableView setEditing:!_messageTableView.isEditing animated:YES];
+	[self.navigationItem.rightBarButtonItem setTitle:_messageTableView.isEditing ? @"Done" : @"Edit"];
+
+	if (_messageTableView.isEditing) {
+		[_textEntryBarView setHidden:YES];
+		[self addToolbar];
+	} else {
+		[self.navigationController setToolbarHidden:YES animated:YES];
+		double delayInSeconds = 0.4;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[_textEntryBarView setHidden:NO];
+		});
+	}
+	[self resignFirstResponder];
+	[_textView resignFirstResponder];
 }
 
 #pragma mark - Language Select View
@@ -184,7 +238,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 	_sourceLanguageSelectTextField = [self textFieldForLanguageSelect];
 	_sourceLanguageSelectTextField.text = @"Detect Language";
-	_sourceLanguageSelectTextField.placeholder = @"Enter language name";
 	UILabel *sourceLanguageLeftLabel = [self leftLabel];
 	sourceLanguageLeftLabel.text = @"From: ";
 	[sourceLanguageLeftLabel sizeToFit];
@@ -213,7 +266,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}];
 
 	_targetLanguageSelectTextField = [self textFieldForLanguageSelect];
-	_targetLanguageSelectTextField.placeholder = @"Enter language name";
 	UILabel *targetLanguageLeftLabel = [self leftLabel];
 	targetLanguageLeftLabel.text = @"To: ";
 	[targetLanguageLeftLabel sizeToFit];
@@ -294,7 +346,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_originalTextLanguage = language.code;
 	} else {
 		_targetLanguageSelectTextField.text = language.name;
-		self.translatedTextLanguage = language.code;
+		[self setTranslatedTextLanguage:language.code];
 	}
 	[self layoutLanguageSelectView];
 }
@@ -350,7 +402,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	textField.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	textField.textColor = [UIColor blackColor];
 	textField.delegate = self;
-	textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	textField.clearButtonMode = UITextFieldViewModeNever;
 	textField.leftViewMode = UITextFieldViewModeAlways;
 	return textField;
 }
@@ -358,6 +410,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)setTranslatedTextLanguage:(NSString *)translatedTextLanguage {
 	_translatedTextLanguage = [translatedTextLanguage mutableCopy];
 	[self layoutLanguageSelectView];
+	[self setTranslateButtonEnabled];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -377,6 +430,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	BOOL includeDetectLanguage = (textField == _sourceLanguageSelectTextField);
 	_searchResultsDelegate.languages = [A3TranslatorLanguage filteredArrayWithArray:_languages searchString:textField.text includeDetectLanguage:includeDetectLanguage ];
 	[_searchResultsTableView reloadData];
+	[_searchResultsTableView setHidden:![_searchResultsDelegate.languages count]];
 
 	A3TranslatorLanguage *match = [A3TranslatorLanguage findLanguageInArray:_languages searchString:textField.text];
 	if (textField == _sourceLanguageSelectTextField) {
@@ -389,9 +443,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	} else if (textField == _targetLanguageSelectTextField) {
 		if (match) {
 			_targetLanguageSelectTextField.text = match.name;
-			_translatedTextLanguage = match.code;
+			[self setTranslatedTextLanguage:match.code];
 		} else {
-			_translatedTextLanguage = nil;
+			[self setTranslatedTextLanguage:nil];
 		}
 	}
 	[self layoutLanguageSelectView];
@@ -424,6 +478,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[self searchResultsDelegate];
 		_searchResultsTableView.delegate = _searchResultsDelegate;
 		_searchResultsTableView.dataSource = _searchResultsDelegate;
+
+		[_searchResultsTableView setHidden:YES];
 	}
 	return _searchResultsTableView;
 }
@@ -442,10 +498,12 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_originalTextLanguage = language.code;
 	} else if ([_targetLanguageSelectTextField isFirstResponder]) {
 		_targetLanguageSelectTextField.text = language.name;
-		self.translatedTextLanguage = language.code;
+		[self setTranslatedTextLanguage:language.code];
 	}
 	_searchResultsDelegate.languages = nil;
 	[_searchResultsTableView reloadData];
+	[_searchResultsTableView setHidden:YES];
+
 	[self layoutLanguageSelectView];
 }
 
@@ -502,8 +560,10 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_translateButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	[_translateButton setTitle:@"Translate" forState:UIControlStateNormal];
 	_translateButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
-	[_translateButton setTitleColor:[UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
+	[_translateButton setTitleColor:self.view.tintColor forState:UIControlStateNormal];
+	[_translateButton setTitleColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
 	[_translateButton addTarget:self action:@selector(translateAction) forControlEvents:UIControlEventTouchUpInside];
+	[_translateButton setEnabled:NO];
 	[_textEntryBarView addSubview:_translateButton];
 
 	[_translateButton makeConstraints:^(MASConstraintMaker *make) {
@@ -517,6 +577,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 #pragma mark - Translate Action
 
 - (void)translateAction {
+	_textView.text = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if ([_textView.text length]) {
 		_translateButton.enabled = NO;
 
@@ -524,7 +585,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_translatingMessage.originalText = _textView.text;
 		_translatingMessage.originalLanguage = _originalTextLanguage;
 		_translatingMessage.translatedLanguage = _translatedTextLanguage;
-		_originalText = _textView.text; // Save to async operation
+		self.originalText = _textView.text; // Save to async operation
 		_translatingMessage.date = [NSDate date];
 		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
 
@@ -544,14 +605,16 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
 			[_messageTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-			_textView.text = @"";
 			[self layoutTextEntryBarViewAnimated:YES ];
 		}
+		_textView.text = @"";
 	}
 }
 
 - (void)switchToMessageView {
 	[self setupMessageTableView];
+	[self rightBarButtonEditButton];
+
 	[_messageTableView reloadData];
 
 	[UIView animateWithDuration:0.3 animations:^{
@@ -598,7 +661,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 		FNLOG(@"Detected Language: %@", [[translations lastObject] objectForKey:@"detectedSourceLanguage"]);
 		FNLOG(@"Translated Text: %@", [[translations lastObject] objectForKey:@"translatedText"]);
-		NSString *translatedString = [[[translations lastObject] objectForKey:@"translatedText"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
+		NSString *translatedString = [[[translations lastObject] objectForKey:@"translatedText"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if (![translatedString length]) {
 			translatedString = @"?";
 		}
@@ -609,14 +672,9 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
             detectedLangauge = @"en";
         }
 		[self addTranslatedString:translatedString detectedSourceLanguage:detectedLangauge];
-        
-		_translateButton.enabled = YES;
-        
 	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         
 		FNLOG(@"****************************************************\nFail to translation: %@\n**********************************************************", response.debugDescription);
-		_translateButton.enabled = YES;
-        
 	}];
 
 	[operation start];
@@ -698,14 +756,17 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 - (void)textViewDidChange:(UITextView *)textView {
     [self layoutTextEntryBarViewAnimated:YES ];
+	[self setTranslateButtonEnabled];
+}
 
-	UIColor *buttonColor = [textView.text length] ? self.view.tintColor : [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
-	[_translateButton setTitleColor:buttonColor forState:UIControlStateNormal];
+- (void)setTranslateButtonEnabled {
+	NSString *trimmed = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	[_translateButton setEnabled:[trimmed length] && [_translatedTextLanguage length]];
 }
 
 - (void)layoutTextEntryBarViewAnimated:(BOOL)animated {
 	FNLOG(@"%f, %f, %f, %f", _textView.contentInset.top, _textView.contentInset.bottom, _textView.contentInset.left, _textView.contentInset.right);
-    _textView.contentInset = UIEdgeInsetsMake(-2.0, 0, 0, 0);
+    _textView.contentInset = UIEdgeInsetsMake(-4.0, 0, 0, 0);
 	CGRect boundingRect = [_textView.layoutManager usedRectForTextContainer:_textView.textContainer];
     FNLOGRECT(boundingRect);
 	_textEntryBarViewHeightConstraint.constant = MAX(boundingRect.size.height, 16.0) + 8.0 * 2.0 + 5.0 * 2.0;
@@ -739,6 +800,9 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		_messageTableView.delegate = self;
 		_messageTableView.dataSource = self;
 		_messageTableView.showsVerticalScrollIndicator = NO;
+		_messageTableView.allowsSelection = NO;
+		_messageTableView.allowsSelectionDuringEditing = YES;
+		_messageTableView.allowsMultipleSelectionDuringEditing = YES;
 		_messageTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		if ([_languageSelectView superview]) {
 			[self.view insertSubview:_messageTableView belowSubview:_languageSelectView];
@@ -775,12 +839,37 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	return cell;
 }
 
+#pragma mark - UITableViewDelegate
+
 - (void)scrollToBottomAnimated:(BOOL)animated {
 	if ([self.messages count]) {
 		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:[_messages count] - 1 inSection:0];
 		[_messageTableView scrollToRowAtIndexPath:lastIndexPath atScrollPosition:UITableViewScrollPositionBottom animated:animated];
 	}
 }
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	return indexPath;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+	return indexPath;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSArray *selectedRows = [tableView indexPathsForSelectedRows];
+	if ([selectedRows count]) {
+		[self setEnabledForAllToolbarButtons:YES];
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSArray *selectedRows = [tableView indexPathsForSelectedRows];
+	if (![selectedRows count]) {
+		[self setEnabledForAllToolbarButtons:NO];
+	}
+}
+
 
 - (void)cell:(A3TranslatorMessageCell *)cell longPressGestureRecognized:(UILongPressGestureRecognizer *)gestureRecognizer {
     _selectedCell = cell;
@@ -819,7 +908,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 // UIMenuController requires that we can become first responder or it won't display
 - (BOOL)canBecomeFirstResponder
 {
-	return YES;
+	return !_messageTableView.isEditing;
 }
 
 - (void)copyTranslatedString {
@@ -881,6 +970,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	}
 }
 
+#pragma mark - UITextInputDelegate, it is for holding keyboard on screen.
+
 - (BOOL)hasText {
 	return NO;
 }
@@ -891,6 +982,88 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 - (void)deleteBackward {
 
+}
+
+#pragma mark - UIToolbar
+
+- (void)addToolbar {
+	_toolbarDeleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteActionFromToolbar)];
+
+	[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:33.0]];
+	[SFKImage setDefaultColor:[UIColor whiteColor]];
+	_toolbarSetFavoriteButton = [[UIBarButtonItem alloc] initWithImage:[SFKImage imageNamed:@"i"] style:UIBarButtonItemStylePlain target:self action:@selector(setFavoriteActionFromToolbar)];
+
+	_toolbarUnsetFavoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star01"] style:UIBarButtonItemStylePlain target:self action:@selector(unsetFavoriteActionFromToolbar)];
+
+	_toolbarShareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareActionFromToolbar)];
+
+	[self setEnabledForAllToolbarButtons:NO ];
+
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+
+	[self.navigationController setToolbarHidden:NO animated:YES];
+	[self.navigationController.toolbar setItems:@[_toolbarDeleteButton, space, _toolbarSetFavoriteButton, space, _toolbarUnsetFavoriteButton, space, _toolbarShareButton]
+									   animated:YES];
+}
+
+- (void)shareActionFromToolbar {
+	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
+	NSMutableString *shareMessage = [NSMutableString new];
+	for (NSIndexPath *indexPath in selectedIndexPaths) {
+		TranslatorHistory *item = _messages[indexPath.row];
+		[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is\n\"%@\"\nin %@", item.originalText, item.translatedText, [A3TranslatorLanguage localizedNameForCode:item.translatedLanguage]]];
+	}
+
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareMessage] applicationActivities:nil];
+	[self presentViewController:activityController animated:YES completion:nil];
+}
+
+- (void)setFavoriteActionFromToolbar {
+	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
+	for (NSIndexPath *indexPath in selectedIndexPaths) {
+		TranslatorHistory *item = _messages[indexPath.row];
+		[item setFavorite:@YES];
+
+		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
+		[cell changeFavoriteButtonImage];
+	}
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+}
+
+- (void)unsetFavoriteActionFromToolbar {
+	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
+	for (NSIndexPath *indexPath in selectedIndexPaths) {
+		TranslatorHistory *item = _messages[indexPath.row];
+		[item setFavorite:@NO];
+
+		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
+		[cell changeFavoriteButtonImage];
+	}
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+}
+
+- (void)deleteActionFromToolbar {
+	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
+	for (NSIndexPath *indexPath in selectedIndexPaths) {
+		TranslatorHistory *itemToDelete = _messages[indexPath.row];
+		[itemToDelete MR_deleteEntity];
+	}
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+
+	// Reload messages
+	_messages = nil;
+	[self messages];
+
+	[_messageTableView deleteRowsAtIndexPaths:selectedIndexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+
+	[self setEnabledForAllToolbarButtons:NO];
+}
+
+- (void)setEnabledForAllToolbarButtons:(BOOL)enabled {
+	[_toolbarDeleteButton setEnabled:enabled];
+	[_toolbarSetFavoriteButton setEnabled:enabled];
+	[_toolbarUnsetFavoriteButton setEnabled:enabled];
+	[_toolbarShareButton setEnabled:enabled];
 }
 
 @end

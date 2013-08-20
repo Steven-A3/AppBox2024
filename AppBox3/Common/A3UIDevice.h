@@ -16,6 +16,8 @@
 
 #define IS_RETINA	([[UIScreen mainScreen] scale] == 2)
 
+#define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] isEqualToString:@"ko"]
+
 @interface A3UIDevice : NSObject
 
 + (double)memoryUsage;

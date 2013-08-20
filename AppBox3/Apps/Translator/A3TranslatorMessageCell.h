@@ -23,4 +23,6 @@
 @property (nonatomic, weak) id<A3TranslatorMessageCellDelegate> delegate;
 
 + (CGFloat)cellHeightWithData:(TranslatorHistory *)data bounds:(CGRect)bounds;
+
+- (void)changeFavoriteButtonImage;
 @end

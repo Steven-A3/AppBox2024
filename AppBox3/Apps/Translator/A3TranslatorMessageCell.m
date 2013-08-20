@@ -12,6 +12,9 @@
 #import "A3Formatter.h"
 #import "common.h"
 #import "NSDate+TimeAgo.h"
+#import "SFKImage.h"
+#import "NSManagedObjectContext+MagicalThreading.h"
+#import "NSManagedObjectContext+MagicalSaves.h"
 
 @interface A3TranslatorMessageCell ()
 
@@ -22,6 +25,7 @@
 @property (nonatomic, strong) NSLayoutConstraint *leftMessageWidth;
 @property (nonatomic, strong) UILabel *rightMessageLabel;
 @property (nonatomic, strong) UILabel *leftMessageLabel;
+@property (nonatomic, strong) UIButton *favoriteButton;
 
 @end
 
@@ -29,21 +33,21 @@
 
 static const CGFloat kTranslatorCellTopPadding = 35.0;
 static const CGFloat kTranslatorCellBottomPadding = 10.0;
-static const CGFloat kTranslatorCellLeftRightPadding = 27.0;
+static const CGFloat kTranslatorCellLeftRightPadding = 15.0;
 static const CGFloat kTranslatorCellRightMessageInsetLeft = 12.0;
 static const CGFloat kTranslatorCellRightMessageInsetRight = 15.0;
 static const CGFloat kTranslatorCellLeftMessageInsetLeft = 15.0;
 static const CGFloat kTranslatorCellLeftMessageInsetRight = 12.0;
-static const CGFloat kTranslatorCellMessageInsetTop = 9.0;
-static const CGFloat kTranslatorCellMessageInsetBottom = 9.0;
-static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
+static const CGFloat kTranslatorCellMessageInsetTop = 5.0;
+static const CGFloat kTranslatorCellMessageInsetBottom = 5.0;
+static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-		self.selectionStyle = UITableViewCellSelectionStyleNone;
+		self.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     return self;
 }
@@ -63,23 +67,27 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 10.0;
 	_leftMessageWidth = nil;
 	_leftMessageLabel = nil;
     
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    self.selectionStyle = UITableViewCellSelectionStyleDefault;
 }
 
 + (CGFloat)cellHeightWithData:(TranslatorHistory *)data bounds:(CGRect)bounds {
-	CGFloat height = kTranslatorCellTopPadding + kTranslatorCellBottomPadding;
+	CGFloat height = 0;
 	if ([data.originalText length]) {
 		CGRect boundingRect = boundingRectWithText(data.originalText, bounds);
 //		FNLOGRECT(boundingRect);
 		height += boundingRect.size.height;
 		height += (kTranslatorCellMessageInsetTop + kTranslatorCellMessageInsetBottom);
+		height = MAX(height, 35);
 	}
 	if ([data.translatedText length]) {
 		CGRect boundingRect = boundingRectWithText(data.translatedText, bounds);
 		height += boundingRect.size.height;
 		height += (kTranslatorCellMessageInsetTop + kTranslatorCellMessageInsetBottom);
+		height = MAX(height, 35);
+
 		height += kTranslatorCellGapBetweenMessage;
 	}
+	height += kTranslatorCellTopPadding + kTranslatorCellBottomPadding;
 //	FNLOG(@"%f", height);
 	return height;
 }
@@ -106,6 +114,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+	FNLOG(@"%@", self.selectedBackgroundView);
 }
 
 #pragma mark - SET MESSAGE ENTITY
@@ -125,9 +134,12 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 		[self rightMessageView];
 		_rightMessageWidth.constant = boundingRect.size.width;
-		_rightMessageHeight.constant = boundingRect.size.height;
+		_rightMessageHeight.constant = MAX(boundingRect.size.height, 35);
+		FNLOG(@"rightMessageHeight = %f", _rightMessageHeight.constant);
 
 		_rightMessageLabel.text = _messageEntity.originalText;
+
+		[self favoriteButton];
 	}
 
 	if (_messageEntity.translatedText) {
@@ -139,9 +151,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 		[self leftMessageView];
 		_leftMessageWidth.constant = boundingRect.size.width;
-		_leftMessageHeight.constant = boundingRect.size.height;
+		_leftMessageHeight.constant = MAX(boundingRect.size.height, 35);
 
-		_leftMessageLabel.text = _messageEntity.translatedText;
+		_leftMessageLabel.text = [_messageEntity.translatedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	}
 	[self invalidateIntrinsicContentSize];
 	[self layoutIfNeeded];
@@ -184,7 +196,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[_rightMessageView addSubview:_rightMessageLabel];
 
 		[_rightMessageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_rightMessageView).insets(UIEdgeInsetsMake(kTranslatorCellMessageInsetTop, kTranslatorCellRightMessageInsetLeft, kTranslatorCellMessageInsetBottom, kTranslatorCellRightMessageInsetRight));
+			make.centerX.equalTo(_rightMessageView.centerX).with.offset(-3);
+			make.centerY.equalTo(_rightMessageView.centerY).with.offset(0);
+			make.width.equalTo(_rightMessageView.width).with.offset(-27);
 		}];
 
 		// Finally add gesture recognizer for copy paste.
@@ -238,7 +252,9 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[_leftMessageView addSubview:_leftMessageLabel];
 
 		[_leftMessageLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.edges.equalTo(_leftMessageView).insets(UIEdgeInsetsMake(kTranslatorCellMessageInsetTop, kTranslatorCellLeftMessageInsetLeft, kTranslatorCellMessageInsetBottom, kTranslatorCellLeftMessageInsetRight));
+			make.centerX.equalTo(_leftMessageView.centerX).with.offset(3);
+			make.centerY.equalTo(_leftMessageView.centerY).with.offset(0);
+			make.width.equalTo(_leftMessageView.width).with.offset(-27);
 		}];
 
 		// Finally add gesture recognizer for copy paste.
@@ -262,19 +278,49 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		_dateLabel = [UILabel new];
 		_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
 		_dateLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-		[self.contentView addSubview:_dateLabel];
+		[self addSubview:_dateLabel];
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(@14.0);
-			make.centerX.equalTo(self.contentView.centerX);
+			make.centerX.equalTo(self.centerX);
 		}];
 	}
 	return _dateLabel;
 }
 
-//- (void)layoutSubviews {
-//	[super layoutSubviews];
-//
-//}
+- (UIButton *)favoriteButton {
+	if (!_favoriteButton) {
+		_favoriteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		[self changeFavoriteButtonImage];
+		[_favoriteButton addTarget:self action:@selector(favoriteButtonAction) forControlEvents:UIControlEventTouchUpInside];
+
+		[self addSubview:_favoriteButton];
+
+		[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(_rightMessageView.centerY);
+			make.right.equalTo(_rightMessageView.left).with.offset(-15);
+		}];
+	}
+	return _favoriteButton;
+}
+
+- (void)changeFavoriteButtonImage {
+	UIImage *image;
+	if (_messageEntity.favorite.boolValue) {
+		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:23.0]];
+		[SFKImage setDefaultColor:self.tintColor];
+		image = [SFKImage imageNamed:@"i"];
+	} else {
+		image = [UIImage imageNamed:@"star02"];
+	}
+	[_favoriteButton setImage:image forState:UIControlStateNormal];
+}
+
+- (void)favoriteButtonAction {
+	_messageEntity.favorite = @(!_messageEntity.favorite.boolValue);
+	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+
+	[self changeFavoriteButtonImage];
+}
 
 @end

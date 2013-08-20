@@ -7,6 +7,8 @@
 //
 
 #import "A3TranslatorLanguage.h"
+#import "A3UIDevice.h"
+#import "NSString+conversion.h"
 
 static NSString *const kTranslatorAppleCode = @"AppleCode";
 static NSString *const kTranslatorGoogleCode = @"GoogleCode";
@@ -94,23 +96,43 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 }
 
 + (NSString *)localizedNameForCode:(NSString *)code {
+	if ([code isEqualToString:@"zh-Hans"]) return @"Simplified Chinese";
+	if ([code isEqualToString:@"zh-Hant"]) return @"Traditional Chinese";
 	return [[NSLocale currentLocale] displayNameForKey:NSLocaleLanguageCode value:code];
 }
 
 + (NSArray *)filteredArrayWithArray:(NSArray *)array searchString:(NSString *)searchString includeDetectLanguage:(BOOL)includeDetectLanguage {
-	NSString *format;
-	if (includeDetectLanguage) {
-		format = @"name contains[cd] %@";
+	NSString *trimmed = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	NSPredicate *predicate;
+	if (LANGUAGE_KOREAN) {
+		NSString *format;
+		if (includeDetectLanguage) {
+			format = @"name contains[cd] %@ OR name.componentsSeparatedByKorean contains %@";
+		} else {
+			format = @"(name contains[cd] %@ OR name.componentsSeparatedByKorean contains %@) AND code.length >= 1";
+		}
+		predicate = [NSPredicate predicateWithFormat:format, trimmed, trimmed];
 	} else {
-		format = @"name contains[cd] %@ AND code.length >= 1";
+		NSString *format;
+		if (includeDetectLanguage) {
+			format = @"name contains[cd] %@";
+		} else {
+			format = @"name contains[cd] %@ AND code.length >= 1";
+		}
+		predicate = [NSPredicate predicateWithFormat:format, searchString];
 	}
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:format, searchString];
 	return [array filteredArrayUsingPredicate:predicate];
 }
 
 + (A3TranslatorLanguage *)findLanguageInArray:(NSArray *)array searchString:(NSString *)searchString {
-	NSString *trimmed = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name like[cd] %@", trimmed];
+	NSString *trimmed = [searchString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+	NSPredicate *predicate;
+	if (LANGUAGE_KOREAN) {
+		predicate = [NSPredicate predicateWithFormat:@"name.componentsSeparatedByKorean contains %@", trimmed];
+	} else {
+		predicate = [NSPredicate predicateWithFormat:@"name like[cd] %@", trimmed];
+	}
 	NSArray *result = [array filteredArrayUsingPredicate:predicate];
 	if ([result count] == 1) {
 		return result[0];

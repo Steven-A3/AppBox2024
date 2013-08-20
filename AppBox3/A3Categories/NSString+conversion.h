@@ -14,6 +14,10 @@
 
 + (NSString *)orderStringWithOrder:(NSInteger)order;
 
+- (NSMutableString *)extendedSearchPatternForKoreanString;
+
+- (NSString *)componentsSeparatedByKorean;
+
 - (NSString *)stringByPaddingZeroLength10;
 
 - (NSString *)stringGroupByFirstInitial;

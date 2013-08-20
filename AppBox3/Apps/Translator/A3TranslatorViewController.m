@@ -19,13 +19,15 @@
 #import "NSManagedObject+MagicalRecord.h"
 #import "NSManagedObjectContext+MagicalThreading.h"
 #import "NSManagedObjectContext+MagicalSaves.h"
+#import "A3TranslatorFavoriteDataSource.h"
 
-@interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate>
+@interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) NSMutableArray *fetchedResults;
+@property (nonatomic, strong) A3TranslatorFavoriteDataSource *favoriteDataSource;
 
 @end
 
@@ -54,9 +56,27 @@
 	if (IS_IPHONE) {
 		[self leftBarButtonAppsButton];
 	}
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
 
+	[self rightBarButtonEditButton];
 	[self setupSubviews];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)rightBarButtonEditButton {
+	if ([self.fetchedResults count]) {
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+	} else {
+		self.navigationItem.rightBarButtonItem = nil;
+	}
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 #pragma mark - Setup Subview
@@ -64,6 +84,7 @@
 - (void)setupSubviews {
 	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Favorites"]];
 	_segmentedControl.selectedSegmentIndex = 0;
+	[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
 	[self.view addSubview:_segmentedControl];
 
 	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
@@ -105,6 +126,43 @@
 		make.centerX.equalTo(self.view.centerX);
 		make.bottom.equalTo(self.view.bottom).with.offset(-15.0);
 	}];
+}
+
+- (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
+	if (segmentedControl.selectedSegmentIndex == 0) {
+		[self rightBarButtonEditButton];
+
+		self.tableView.dataSource = self;
+		self.tableView.delegate = self;
+		[self.tableView reloadData];
+	} else {
+		[self.tableView setEditing:NO];
+
+		self.navigationItem.rightBarButtonItem = nil;
+
+		[self.favoriteDataSource resetData];
+		self.tableView.dataSource = self.favoriteDataSource;
+		self.tableView.delegate = self.favoriteDataSource;
+		[self.tableView reloadData];
+	}
+}
+
+- (A3TranslatorFavoriteDataSource *)favoriteDataSource {
+	if (!_favoriteDataSource) {
+		_favoriteDataSource = [A3TranslatorFavoriteDataSource new];
+		_favoriteDataSource.delegate = self;
+	}
+	return _favoriteDataSource;
+}
+
+- (void)translatorFavoriteItemSelected:(TranslatorHistory *)item {
+	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+
+	viewController.originalTextLanguage = item.originalLanguage;
+	viewController.translatedTextLanguage = item.translatedLanguage;
+	viewController.delegate = self;
+	viewController.selectItem = item;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -219,7 +277,6 @@
 	// Style for textLabel && detailTextLabel
 	cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-	cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
 
 	id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
 
@@ -248,9 +305,14 @@
 		[self.fetchedResults removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 	}
+	[self rightBarButtonEditButton];
 }
 
 #pragma mark - UITableView Delegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 48;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -264,9 +326,15 @@
 }
 
 - (void)translatorMessageViewControllerWillDismiss:(id)viewController {
-	_fetchedResults = nil;
-	_fetchedResultsController = nil;
+	if (_segmentedControl.selectedSegmentIndex == 0) {
+		_fetchedResults = nil;
+		_fetchedResultsController = nil;
+	} else {
+		[_favoriteDataSource resetData];
+	}
 	[self.tableView reloadData];
+
+	[self rightBarButtonEditButton];
 }
 
 @end

@@ -51,6 +51,7 @@
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) CurrencyHistory *currencyHistory;
 @property (nonatomic, strong) NSDate *animationStarted;
+@property (nonatomic, strong) UIView *draggableIndicatorView;
 
 @end
 
@@ -1046,9 +1047,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareString] applicationActivities:nil];
-	[self presentViewController:activityController animated:YES completion:^{
-
-	}];
+	[self presentViewController:activityController animated:YES completion:nil];
 }
 
 - (NSString *)stringForSource:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {

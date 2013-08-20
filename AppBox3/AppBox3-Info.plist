@@ -32,6 +32,7 @@
 	<array>
 		<string>LigatureSymbols.ttf</string>
 		<string>FontAwesome.otf</string>
+		<string>appbox.ttf</string>
 	</array>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>

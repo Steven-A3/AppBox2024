@@ -11,6 +11,7 @@
 #import "Expecta.h"
 #import "CurrencyItem+NetworkUtility.h"
 #import "CurrencyFavorite+initialize.h"
+#import "NSString+conversion.h"
 
 @interface A3CurrencyItemTest : XCTestCase
 
@@ -79,6 +80,10 @@
     NSLog(@"%@", array);
     
     expect([array count]).to.equal(@9);
+}
+
+- (void)testKorean {
+    NSLog(@"%@", [@"초성분리" componentsSeparatedByKorean]);
 }
 
 @end

@@ -101,4 +101,99 @@
 	return [string stringByPaddingZeroLength10];
 }
 
+- (NSMutableString *)extendedSearchPatternForKoreanString {
+	static NSArray *chosungArray = nil;
+
+    // 초성테이블이 만들어져 있지 않다면 만들어준다.
+    // (배열로 유니코드값 집어넣어도 되지만 직관적으로 하기위해서 NSObject로 넣어준다.)
+    // 초성 (19개)
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        chosungArray = @[
+						@"ㄱ", @"ㄲ",
+						@"ㄴ",
+						@"ㄷ", @"ㄸ",
+						@"ㄹ",
+						@"ㅁ",
+						@"ㅂ", @"ㅃ",
+						@"ㅅ", @"ㅆ",
+						@"ㅇ",
+						@"ㅈ",
+						@"ㅉ",
+						@"ㅊ",
+						@"ㅋ",
+						@"ㅌ",
+						@"ㅍ",
+						@"ㅎ"];
+    });
+
+	// 정규 표현식
+	NSMutableString *extendedSearchPattern = [[NSMutableString alloc] init];
+
+	// 입력된 문자열을 한자한자 분석한다.
+	for (int i = 0; i < [self length]; i++) {
+		unichar convertedCharacter = [self characterAtIndex:i];
+
+		// 자음인가? (Hangul Compatibility Jamo ㄱ-3131, ㅎ-314E)
+		if (convertedCharacter >= [@"ㄱ" characterAtIndex:0] && convertedCharacter <= [@"ㅎ" characterAtIndex:0]) {
+
+
+			// 일단 문자열에서 한글자만 때온다.
+			NSString *charterString = [self substringWithRange:NSMakeRange(i, 1)];
+
+			// 초성 테이블에서 몇번째 인덱스에 있는지 찾는다.
+			int soundInitIndex = 0;
+			for (NSString *soundInitCharterString in chosungArray) {
+				if ([soundInitCharterString isEqualToString:charterString]) {
+					break;
+				}
+				soundInitIndex++;
+			}
+
+			// Hangul Compatibility Jamo에서 Hangul Syllables로 유니코드 값을 바꿔 정규 표현식을 만든다.(입력된 자음 + 'ㅏ' 부터 입력된자음 + 'ㅣ' + 'ㅎ'까지 범위를 잡는다.)
+			[extendedSearchPattern appendString:[NSString stringWithFormat:@"[\\u%x-\\u%x]",
+																		   [@"가" characterAtIndex:0] + soundInitIndex * (21 * 28),
+																		   [@"가" characterAtIndex:0] + (soundInitIndex + 1) * (21 * 28) - 1]];
+
+		} else if (convertedCharacter >= [@"가" characterAtIndex:0] && convertedCharacter <= [@"힣" characterAtIndex:0]) {	// 자음+모음(또는 자음+모음+자음)인가?
+
+			convertedCharacter -= [@"가" characterAtIndex:0];
+
+			if (convertedCharacter % 28 == 0) {	// 자음+모음
+
+				[extendedSearchPattern appendString:[NSString stringWithFormat:@"[\\u%x-\\u%x]",
+																			   convertedCharacter + [@"가" characterAtIndex:0],
+																			   convertedCharacter + [@"가" characterAtIndex:0] + 28 - 1]];
+
+			} else {							// 자음+모음+자음
+
+				[extendedSearchPattern appendString:[NSString stringWithFormat:@"\\u%x",
+																			   convertedCharacter + [@"가" characterAtIndex:0]]];
+			}
+
+		} else {
+			[extendedSearchPattern appendString:[self substringWithRange:NSMakeRange(i, 1)]];
+		}
+	}
+
+	NSLog(@"%@", extendedSearchPattern);
+
+	return extendedSearchPattern;
+
+}
+
+- (NSString *)componentsSeparatedByKorean {
+	NSArray *chosung = [[NSArray alloc] initWithObjects:@"ㄱ",@"ㄲ",@"ㄴ",@"ㄷ",@"ㄸ",@"ㄹ",@"ㅁ",@"ㅂ",@"ㅃ",@"ㅅ",@"ㅆ",@"ㅇ",@"ㅈ",@"ㅉ",@"ㅊ",@"ㅋ",@"ㅌ",@"ㅍ",@"ㅎ",nil];
+	NSMutableString *result = [NSMutableString new];
+	for (int i=0;i<[self length];i++) {
+		NSInteger code = [self characterAtIndex:i];
+		if (code >= 44032 && code <= 55203) {
+			NSInteger uniCode = code - 44032;
+			NSInteger chosungIndex = uniCode / 21 / 28;
+			[result appendString:[chosung objectAtIndex:chosungIndex]];
+		}
+	}
+	return result;
+}
+
 @end

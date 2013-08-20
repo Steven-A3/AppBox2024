@@ -134,6 +134,9 @@
 		684E943717C1C3D00081A8B5 /* TranslatorHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E943617C1C3D00081A8B5 /* TranslatorHistory.m */; };
 		684E943C17C1C6260081A8B5 /* TranslatorHistory+addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E943B17C1C6260081A8B5 /* TranslatorHistory+addition.m */; };
 		684E944217C22E760081A8B5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684E944117C22E760081A8B5 /* Images.xcassets */; };
+		6850050717C30B500081FC1D /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6850050617C30B500081FC1D /* appbox.ttf */; };
+		6850050E17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6850050D17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m */; };
+		6850051517C325770081FC1D /* A3TranslatorFavoriteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6850051417C325770081FC1D /* A3TranslatorFavoriteCell.m */; };
 		6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */; };
 		6854F0BB17ACF95900E882B8 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854F0BA17ACF95900E882B8 /* CurrencyItem.m */; };
 		68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */; };
@@ -722,6 +725,11 @@
 		684E943A17C1C6260081A8B5 /* TranslatorHistory+addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TranslatorHistory+addition.h"; sourceTree = "<group>"; };
 		684E943B17C1C6260081A8B5 /* TranslatorHistory+addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TranslatorHistory+addition.m"; sourceTree = "<group>"; };
 		684E944117C22E760081A8B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "AppBox3/Asset Catalogs/Images.xcassets"; sourceTree = "<group>"; };
+		6850050617C30B500081FC1D /* appbox.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = appbox.ttf; path = AppBox3/appbox.ttf; sourceTree = "<group>"; };
+		6850050C17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorFavoriteDataSource.h; path = Translator/A3TranslatorFavoriteDataSource.h; sourceTree = "<group>"; };
+		6850050D17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteDataSource.m; path = Translator/A3TranslatorFavoriteDataSource.m; sourceTree = "<group>"; };
+		6850051317C325770081FC1D /* A3TranslatorFavoriteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorFavoriteCell.h; path = Translator/A3TranslatorFavoriteCell.h; sourceTree = "<group>"; };
+		6850051417C325770081FC1D /* A3TranslatorFavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteCell.m; path = Translator/A3TranslatorFavoriteCell.m; sourceTree = "<group>"; };
 		6854E91C166F3E8D00497126 /* A3TimeLineEventItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TimeLineEventItemView.h; sourceTree = "<group>"; };
 		6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TimeLineEventItemView.m; sourceTree = "<group>"; };
 		6854F0B917ACF95900E882B8 /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
@@ -1561,6 +1569,7 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				6850050617C30B500081FC1D /* appbox.ttf */,
 				6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */,
 				6864D5FF17BBBA6300A215D7 /* Media.xcassets */,
 				68476948177D309800EBE7CF /* WeatherIcons.xcassets */,
@@ -2631,6 +2640,10 @@
 				68947C7E17BB8043001FEAAB /* A3TranslatorMessageViewController.m */,
 				68D7697617BA947F003ACF0F /* A3TranslatorViewController.h */,
 				68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */,
+				6850050C17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.h */,
+				6850050D17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m */,
+				6850051317C325770081FC1D /* A3TranslatorFavoriteCell.h */,
+				6850051417C325770081FC1D /* A3TranslatorFavoriteCell.m */,
 			);
 			name = Translator;
 			sourceTree = "<group>";
@@ -2742,7 +2755,7 @@
 						DevelopmentTeam = 84XB754BWU;
 					};
 					6876D6F917A75DAE00E16991 = {
-						TestTargetID = 682EA2D015EB10B000BD6AD4;
+						TestTargetID = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
 					};
 				};
 			};
@@ -2859,6 +2872,7 @@
 				683386CA1713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib in Resources */,
 				682B18B01716612400C1C0FD /* A3ExpenseListViewController_iPhone.xib in Resources */,
 				682E07DF17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib in Resources */,
+				6850050717C30B500081FC1D /* appbox.ttf in Resources */,
 				6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */,
 				683269D61787D85100DC6B80 /* NationalFlags.xcassets in Resources */,
 				17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */,
@@ -3043,6 +3057,7 @@
 				68E6F37E17B2B48300F10ED9 /* CurrencyHistoryItem.m in Sources */,
 				68D8E86E16ED89A500A9AAD2 /* A3LoanCalcPreferences.m in Sources */,
 				68D8E87116ED89D800A9AAD2 /* A3LoanCalcString.m in Sources */,
+				6850051517C325770081FC1D /* A3TranslatorFavoriteCell.m in Sources */,
 				68E6F34717B25F1F00F10ED9 /* A3CurrencySettingsViewController.m in Sources */,
 				6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */,
 				68B42B3B16FA982600A73061 /* A3LoanCalcComparisonMainViewController.m in Sources */,
@@ -3157,6 +3172,7 @@
 				686FCF881775CFDC00F19332 /* AFHTTPClient.m in Sources */,
 				17D42E1157D48AA3C2AE1883 /* NIKFontAwesomeIconFactory.m in Sources */,
 				68B21A33177B1750006FCC5F /* MMDrawerVisualState.m in Sources */,
+				6850050E17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m in Sources */,
 				17D424936A1C292AAEC6A4BC /* NIKFontAwesomeIconFactory+iOS.m in Sources */,
 				17D42CA7D515E6DABEA1790F /* NIKFontAwesomePathFactory.m in Sources */,
 				17D42869434AFAAB8EA880E0 /* NIKFontAwesomePathRenderer.m in Sources */,

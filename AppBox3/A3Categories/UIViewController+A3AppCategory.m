@@ -657,6 +657,9 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 }
 
+/*! Register UIContentSizeCategoryDidChangeNotification
+ *  You must to override - (void)contentSizeDidChange:(NSNotification *)notification
+ */
 - (void)registerContentSizeCategoryDidChangeNotification {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
 }
