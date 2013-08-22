@@ -13,6 +13,7 @@
 #import "NSDate+TimeAgo.h"
 #import "A3TranslatorFavoriteCell.h"
 #import "SFKImage.h"
+#import "A3UIDevice.h"
 
 @interface A3TranslatorFavoriteDataSource ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -27,7 +28,7 @@
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"favorite == YES"];
-		_fetchedResultsController = [TranslatorHistory MR_fetchAllSortedBy:@"date" ascending:YES withPredicate:predicate groupBy:nil delegate:nil];
+		_fetchedResultsController = [TranslatorHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
 	}
 	return _fetchedResultsController;
 }
@@ -46,15 +47,19 @@
 		cell = [[A3TranslatorFavoriteCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	}
 
-	UIImage *image = [UIImage imageNamed:@"star01_full"];
-	cell.imageView.image = image;
+//	UIImage *image = [UIImage imageNamed:@"star02_full"];
+//	cell.imageView.image = image;
 
 	TranslatorHistory *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@", [A3TranslatorLanguage localizedNameForCode:item.originalLanguage],
-			[A3TranslatorLanguage localizedNameForCode:item.translatedLanguage]];
-	cell.detailTextLabel.text = item.translatedText;
-	cell.dateLabel.text = [item.date timeAgoWithLimit:60*60*24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
+														  [A3TranslatorLanguage localizedNameForCode:item.translatedLanguage]];
+	cell.detailTextLabel.text = item.originalText;
+	if (IS_IPAD) {
+		cell.dateLabel.text = [item.date timeAgo];
+	} else {
+		cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+	}
 
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 

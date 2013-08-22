@@ -21,6 +21,7 @@
 #import "A3UIDevice.h"
 #import "NSString+conversion.h"
 #import "NSNumberExtensions.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CurrencySelectViewControllerDelegate>
 

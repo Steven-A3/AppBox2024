@@ -22,6 +22,7 @@
 #import "NIKFontAwesomeIconFactory.h"
 #import "NIKFontAwesomeIconFactory+iOS.h"
 #import "NSString+conversion.h"
+#import "UIViewController+navigation.h"
 
 @interface A3AddLocationViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) MKMapView *mapView;

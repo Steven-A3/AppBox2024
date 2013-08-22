@@ -22,6 +22,7 @@
 #import "NSManagedObjectContext+MagicalRecord.h"
 #import "NSManagedObjectContext+MagicalSaves.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIViewController+navigation.h"
 
 static NSString *A3ExpenseListAddBudgetKeyBugdet = @"budget";
 static NSString *A3ExpenseListAddBudgetKeyCategory = @"category";

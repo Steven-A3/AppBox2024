@@ -35,6 +35,7 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3RootViewController.h"
 #import "NSString+conversion.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, CurrencySelectViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate>
 

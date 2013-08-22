@@ -20,6 +20,7 @@
 #import "Expense.h"
 #import "common.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIViewController+navigation.h"
 #import <MessageUI/MessageUI.h>
 
 @interface A3ExpenseListViewController () <UITextFieldDelegate, A3KeyboardDelegate, A3ActionMenuViewControllerDelegate, MFMailComposeViewControllerDelegate>

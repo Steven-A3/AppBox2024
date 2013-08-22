@@ -159,6 +159,9 @@
 		685F72C416A6DF8E004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6864D60117BBBA6300A215D7 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FF17BBBA6300A215D7 /* Media.xcassets */; };
+		686C64B217C4742700278686 /* UIViewController+network_connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 686C64B117C4742700278686 /* UIViewController+network_connection.m */; };
+		686C64B717C4946400278686 /* AppBox3-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 682EA2DF15EB10B000BD6AD4 /* AppBox3-Info.plist */; };
+		686C64BE17C4B4F700278686 /* A3TranslatorListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686C64BD17C4B4F700278686 /* A3TranslatorListCell.m */; };
 		686E31051713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */; };
 		686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6C1775CEFE00F19332 /* CoreImage.framework */; };
 		686FCF6F1775CF9100F19332 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6E1775CF9100F19332 /* ImageIO.framework */; };
@@ -305,7 +308,6 @@
 		6895B17E170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */; };
 		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
 		68ABEC4B1779BE76005AD85C /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 68ABEC4A1779BE76005AD85C /* FontAwesome.otf */; };
-		68ABEC4C1779BED3005AD85C /* AutoLayoutShorthand.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ABEC491779BCAA005AD85C /* AutoLayoutShorthand.m */; };
 		68AF5EB416C1D9E20040E984 /* A3SmallButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AF5EB316C1D9E20040E984 /* A3SmallButton.m */; };
 		68AF607D162BCCEE00E98002 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68AF607C162BCCEE00E98002 /* CoreLocation.framework */; };
 		68AFED2F1624E14E00B352AB /* HomeView_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68AFED2E1624E14E00B352AB /* HomeView_iPhone.xib */; };
@@ -760,6 +762,10 @@
 		685F72BA16A6DF7C004C7222 /* MenuFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuFavorite.m; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		6864D5FF17BBBA6300A215D7 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = "AppBox3/Asset Catalogs/Media.xcassets"; sourceTree = "<group>"; };
+		686C64B017C4742700278686 /* UIViewController+network_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+network_connection.h"; sourceTree = "<group>"; };
+		686C64B117C4742700278686 /* UIViewController+network_connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+network_connection.m"; sourceTree = "<group>"; };
+		686C64BC17C4B4F700278686 /* A3TranslatorListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorListCell.h; path = Translator/A3TranslatorListCell.h; sourceTree = "<group>"; };
+		686C64BD17C4B4F700278686 /* A3TranslatorListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorListCell.m; path = Translator/A3TranslatorListCell.m; sourceTree = "<group>"; };
 		686E31031713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController_iPhone.h; sourceTree = "<group>"; };
 		686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController_iPhone.m; sourceTree = "<group>"; };
 		686E31061713F28E004A4BF2 /* A3KeyboardProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3KeyboardProtocol.h; sourceTree = "<group>"; };
@@ -1071,8 +1077,6 @@
 		6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcAmortizationViewController.m; path = "Loan Calc/A3LoanCalcAmortizationViewController.m"; sourceTree = "<group>"; };
 		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveMarkView.h; sourceTree = "<group>"; };
 		68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardMoveMarkView.m; sourceTree = "<group>"; };
-		68ABEC481779BCAA005AD85C /* AutoLayoutShorthand.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AutoLayoutShorthand.h; sourceTree = "<group>"; };
-		68ABEC491779BCAA005AD85C /* AutoLayoutShorthand.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AutoLayoutShorthand.m; sourceTree = "<group>"; };
 		68ABEC4A1779BE76005AD85C /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.otf; path = "External/FontAwesomeIconFactory/Font-Awesome/font/FontAwesome.otf"; sourceTree = "<group>"; };
 		68AF5EB216C1D9E20040E984 /* A3SmallButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SmallButton.h; sourceTree = "<group>"; };
 		68AF5EB316C1D9E20040E984 /* A3SmallButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SmallButton.m; sourceTree = "<group>"; };
@@ -1408,18 +1412,10 @@
 				68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */,
 				68E6F35017B2722000F10ED9 /* NSUserDefaults+A3Defaults.h */,
 				68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */,
+				686C64B017C4742700278686 /* UIViewController+network_connection.h */,
+				686C64B117C4742700278686 /* UIViewController+network_connection.m */,
 			);
 			path = A3Categories;
-			sourceTree = "<group>";
-		};
-		17D42B4D1790A63AB66814E4 /* AutoLayoutShorthand */ = {
-			isa = PBXGroup;
-			children = (
-				68ABEC481779BCAA005AD85C /* AutoLayoutShorthand.h */,
-				68ABEC491779BCAA005AD85C /* AutoLayoutShorthand.m */,
-			);
-			name = AutoLayoutShorthand;
-			path = External/AutoLayoutShorthand;
 			sourceTree = "<group>";
 		};
 		17D42F99A50E066A63B28F81 /* A3QuickDialog */ = {
@@ -2555,7 +2551,6 @@
 			isa = PBXGroup;
 			children = (
 				686FCF741775CFDC00F19332 /* AFNetworking */,
-				17D42B4D1790A63AB66814E4 /* AutoLayoutShorthand */,
 				686FCECE177573C300F19332 /* CorePlot */,
 				6890AB0B1786B800004FECE4 /* expecta */,
 				17D4240AE8645D82A36D626F /* FontAwesomeIconFactory */,
@@ -2622,6 +2617,8 @@
 				6850050D17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m */,
 				6850051317C325770081FC1D /* A3TranslatorFavoriteCell.h */,
 				6850051417C325770081FC1D /* A3TranslatorFavoriteCell.m */,
+				686C64BC17C4B4F700278686 /* A3TranslatorListCell.h */,
+				686C64BD17C4B4F700278686 /* A3TranslatorListCell.m */,
 			);
 			name = Translator;
 			sourceTree = "<group>";
@@ -2733,7 +2730,7 @@
 						DevelopmentTeam = 84XB754BWU;
 					};
 					6876D6F917A75DAE00E16991 = {
-						TestTargetID = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
+						TestTargetID = 682EA2D015EB10B000BD6AD4;
 					};
 				};
 			};
@@ -2874,6 +2871,7 @@
 				68F95EDA174B329C0000205F /* A3LoanCalcViewController_iPhone.xib in Resources */,
 				68F95EDF174B51A30000205F /* A3LoanCalcChartViewController_iPhone.xib in Resources */,
 				68FEE384174C3E9A00DCC578 /* A3FrequencyKeyboardViewController_iPhone.xib in Resources */,
+				686C64B717C4946400278686 /* AppBox3-Info.plist in Resources */,
 				68FEE389174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
 				68FFC753174DDF73000637BE /* A3LoanCalcComparisonMainViewController_iPhone.xib in Resources */,
 				68D858E1174E3D4400E19B83 /* A3LoanCalcComparisonTopLeftViewController_iPhone.xib in Resources */,
@@ -2957,6 +2955,7 @@
 				68C461651627D77900555C91 /* A3CalendarWeekViewController.m in Sources */,
 				68C461671627D77900555C91 /* A3CalendarYearViewController.m in Sources */,
 				687FB838162D5871004FB719 /* A3Weather.m in Sources */,
+				686C64BE17C4B4F700278686 /* A3TranslatorListCell.m in Sources */,
 				68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */,
 				68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */,
 				68FEC64D1630D8CC004F4A9E /* A3RoundedCornerView.m in Sources */,
@@ -3057,6 +3056,7 @@
 				6895B17E170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m in Sources */,
 				68953478178686AF007061CA /* UIImage+Enhancing.m in Sources */,
 				683386CD1713DBBF007BC868 /* A3KeyboardButton_iPhone.m in Sources */,
+				686C64B217C4742700278686 /* UIViewController+network_connection.m in Sources */,
 				686E31051713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m in Sources */,
 				68D48CEC17142B5200299354 /* A3NumberKeyboardViewController.m in Sources */,
 				686FCF8F1775CFDC00F19332 /* AFXMLRequestOperation.m in Sources */,
@@ -3082,7 +3082,6 @@
 				686FCF8E1775CFDC00F19332 /* AFURLConnectionOperation.m in Sources */,
 				17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */,
 				17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */,
-				68ABEC4C1779BED3005AD85C /* AutoLayoutShorthand.m in Sources */,
 				6876D77A17A75EB700E16991 /* MagicalRecord+iCloud.m in Sources */,
 				68004B8E172FEB290005BFF2 /* SalesCalcHistory.m in Sources */,
 				6876D75617A75EB700E16991 /* NSNumber+MagicalDataImport.m in Sources */,

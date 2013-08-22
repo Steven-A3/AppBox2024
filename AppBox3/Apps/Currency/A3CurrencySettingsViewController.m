@@ -13,6 +13,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "common.h"
 #import "A3RootViewController.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencySettingsViewController () <QuickDialogStyleProvider>
 

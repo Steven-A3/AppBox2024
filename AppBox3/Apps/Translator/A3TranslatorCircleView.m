@@ -27,7 +27,7 @@
 	frame.origin.x -= 1.0;
 	_textLabel = [[UILabel alloc] initWithFrame:frame];
 	_textLabel.textColor = [UIColor whiteColor];
-	_textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+	_textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	_textLabel.textAlignment = NSTextAlignmentCenter;
 	_textLabel.center = CGPointMake(frame.size.width / 2.0, frame.size.height / 2.0);
 	[self addSubview:_textLabel];

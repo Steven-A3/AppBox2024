@@ -12,6 +12,7 @@
 #import "A3LoanCalcAmortizationViewController.h"
 #import "common.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+navigation.h"
 
 @interface A3LoanCalcAmortizationViewController_iPhone ()
 

@@ -11,7 +11,6 @@
 #import "QuickDialog.h"
 #import "A3BookendShapeView.h"
 #import "A3UIKit.h"
-#import "AutoLayoutShorthand.h"
 
 @interface A3PhoneHomeCalendarMonthViewController () <UITableViewDataSource, UITableViewDelegate>
 

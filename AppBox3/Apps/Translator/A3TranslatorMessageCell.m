@@ -55,6 +55,9 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
 - (void)prepareForReuse {
 	[super prepareForReuse];
 
+	[_favoriteButton removeFromSuperview];
+	_favoriteButton = nil;
+
 	[_rightMessageView removeFromSuperview];
 	_rightMessageView = nil;
 	_rightMessageWidth = nil;

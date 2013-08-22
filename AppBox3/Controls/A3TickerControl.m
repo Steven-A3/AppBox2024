@@ -27,7 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		[self addSubview:self.scrollView];
+		[self initialize];
     }
     return self;
 }
@@ -35,10 +35,17 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];
 	if (self) {
-		[self addSubview:self.scrollView];
+		[self initialize];
 	}
 
 	return self;
+}
+
+- (void)initialize {
+	[self addSubview:self.scrollView];
+	[_scrollView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self);
+	}];
 }
 
 - (A3TickerScrollView *)scrollView {
@@ -117,7 +124,7 @@
 
 	CGFloat originX = CGRectGetWidth(self.bounds);
 	for (UIView *newSubView in self.marqueeItems) {
-		newSubView.frame = CGRectMake(originX, CGRectGetMinY(newSubView.frame), CGRectGetWidth(newSubView.frame), CGRectGetHeight(newSubView.frame));
+		newSubView.frame = CGRectMake(originX, CGRectGetMinY(newSubView.frame), CGRectGetWidth(newSubView.frame), CGRectGetHeight(_scrollView.frame));
 		[self.scrollView addSubview:newSubView];
 		originX += CGRectGetWidth(newSubView.frame);
 	}

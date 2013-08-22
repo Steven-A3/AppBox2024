@@ -8,9 +8,9 @@
 
 #import "A3HistoryViewController.h"
 #import "A3UIKit.h"
-#import "UIViewController+A3AppCategory.h"
 #import "common.h"
 #import "A3UIDevice.h"
+#import "UIViewController+navigation.h"
 
 @interface A3HistoryViewController () <UITableViewDelegate, UITableViewDataSource>
 

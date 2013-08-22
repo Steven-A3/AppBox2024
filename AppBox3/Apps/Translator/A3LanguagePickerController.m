@@ -11,6 +11,7 @@
 #import "CommonUIDefinitions.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+navigation.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 

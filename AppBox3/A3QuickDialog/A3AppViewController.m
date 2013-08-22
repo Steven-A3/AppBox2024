@@ -7,10 +7,10 @@
 //
 
 #import "A3AppViewController.h"
-#import "UIViewController+A3AppCategory.h"
 #import "common.h"
 #import "A3UIDevice.h"
 #import "CommonUIDefinitions.h"
+#import "UIViewController+navigation.h"
 
 
 @implementation A3AppViewController {

@@ -16,6 +16,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3RootViewController.h"
 #import "A3UIDevice.h"
+#import "UIViewController+navigation.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 

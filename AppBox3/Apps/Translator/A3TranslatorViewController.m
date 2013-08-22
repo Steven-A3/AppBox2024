@@ -20,6 +20,9 @@
 #import "NSManagedObjectContext+MagicalThreading.h"
 #import "NSManagedObjectContext+MagicalSaves.h"
 #import "A3TranslatorFavoriteDataSource.h"
+#import "A3TickerControl.h"
+#import "UIViewController+navigation.h"
+#import "A3TranslatorListCell.h"
 
 @interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -57,17 +60,42 @@
 		[self leftBarButtonAppsButton];
 	}
 
-	[self rightBarButtonEditButton];
+	[self setupRightBarButton];
 	[self setupSubviews];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
-- (void)rightBarButtonEditButton {
-	if ([self.fetchedResults count]) {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+- (void)applicationDidEnterBackground:(NSNotification *)notification {
+	if ([self.tableView isEditing]) {
+		[self editButtonAction:self.navigationItem.rightBarButtonItem];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self setupRightBarButton];
+}
+
+- (void)setupRightBarButton {
+	if (_segmentedControl.selectedSegmentIndex == 0) {
+		if (![_fetchedResults count]) {
+			[_tableView setEditing:NO];
+			self.navigationItem.rightBarButtonItem = nil;
+			[self leftBarButtonAppsButton];
+		} else
+		if ([_tableView isEditing]) {
+			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonAction:)];
+			self.navigationItem.leftBarButtonItem = nil;
+		} else {
+			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit	target:self action:@selector(editButtonAction:)];
+			[self leftBarButtonAppsButton];
+		}
 	} else {
 		self.navigationItem.rightBarButtonItem = nil;
+		[self leftBarButtonAppsButton];
 	}
 }
 
@@ -130,7 +158,7 @@
 
 - (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
 	if (segmentedControl.selectedSegmentIndex == 0) {
-		[self rightBarButtonEditButton];
+		[self setupRightBarButton];
 
 		self.tableView.dataSource = self;
 		self.tableView.delegate = self;
@@ -190,7 +218,8 @@
 
 - (void)editButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self.tableView setEditing:!self.tableView.isEditing];
-	[barButtonItem setTitle: self.tableView.isEditing ? @"Done" : @"Edit"];
+
+	[self setupRightBarButton];
 }
 
 - (void)didReceiveMemoryWarning
@@ -266,27 +295,50 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	static NSString *cellIdentifier = @"Cell";
+	static NSString *cellIdentifier = @"TranslatorListCell";
+	UITableViewCell *cell;
 
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+	if (IS_IPHONE) {
+		UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
-	if(cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+		if(iPhone_cell == nil) {
+			iPhone_cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+		}
+
+		iPhone_cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+		iPhone_cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+		iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
+
+		id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
+
+		iPhone_cell.textLabel.text = sectionInfo.name;
+		A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+		circleView.textLabel.text = [NSString stringWithFormat:@"%d", [sectionInfo numberOfObjects]];
+		iPhone_cell.imageView.image = [self imageFromView:circleView];
+
+		iPhone_cell.detailTextLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgo];
+		iPhone_cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+		cell = iPhone_cell;
+	} else {
+		A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+
+		if(iPad_cell == nil) {
+			iPad_cell = [[A3TranslatorListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+		}
+
+		id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
+
+		iPad_cell.textLabel.text = sectionInfo.name;
+		A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+		circleView.textLabel.text = [NSString stringWithFormat:@"%d", [sectionInfo numberOfObjects]];
+		iPad_cell.imageView.image = [self imageFromView:circleView];
+
+		iPad_cell.dateLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgo];
+		iPad_cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+		cell = iPad_cell;
 	}
-
-	// Style for textLabel && detailTextLabel
-	cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-
-	id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
-
-	cell.textLabel.text = sectionInfo.name;
-	A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-	circleView.textLabel.text = [NSString stringWithFormat:@"%d", [sectionInfo numberOfObjects]];
-	cell.imageView.image = [self imageFromView:circleView];
-
-	cell.detailTextLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgoWithLimit:60 * 60 * 24 dateFormat:NSDateFormatterShortStyle andTimeFormat:NSDateFormatterShortStyle];
-	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
 	return cell;
 }
@@ -305,7 +357,7 @@
 		[self.fetchedResults removeObjectAtIndex:indexPath.row];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 	}
-	[self rightBarButtonEditButton];
+	[self setupRightBarButton];
 }
 
 #pragma mark - UITableView Delegate
@@ -334,7 +386,7 @@
 	}
 	[self.tableView reloadData];
 
-	[self rightBarButtonEditButton];
+	[self setupRightBarButton];
 }
 
 @end

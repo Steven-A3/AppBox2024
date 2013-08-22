@@ -14,6 +14,7 @@
 #import "A3HomeViewController_iPhone.h"
 #import "A3MMDrawerController.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+navigation.h"
 
 @interface A3RootViewController ()
 

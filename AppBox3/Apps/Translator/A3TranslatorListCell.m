@@ -1,23 +1,21 @@
 //
-//  A3TranslatorFavoriteCell.m
+//  A3TranslatorListCell.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/20/13.
+//  Created by Byeong Kwon Kwak on 8/21/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3TranslatorFavoriteCell.h"
+#import "A3TranslatorListCell.h"
 #import "A3UIDevice.h"
 
-@implementation A3TranslatorFavoriteCell
+@implementation A3TranslatorListCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		self.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-
-		// Initialization code
+        // Initialization code
 		_dateLabel = [UILabel new];
 		_dateLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
 		_dateLabel.textAlignment = NSTextAlignmentRight;
@@ -25,29 +23,16 @@
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.right.equalTo(self.contentView.right).with.offset(-2);
-			if (IS_IPAD) {
-				make.centerY.equalTo(self.contentView.centerY).with.offset(1.5);
-			} else {
-				make.baseline.equalTo(self.textLabel.baseline);
-			}
+			make.centerY.equalTo(self.contentView.centerY).with.offset(1.5);
 		}];
 		[self setupFont];
-	}
+    }
     return self;
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (void)setupFont {
 	self.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	self.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-
 }
 
 - (void)prepareForReuse {
