@@ -19,6 +19,7 @@
 #import "A3AppDelegate.h"
 #import "A3RootViewController.h"
 #import "A3TranslatorViewController.h"
+#import "A3HolidaysViewController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -221,7 +222,7 @@
 			numberOfItems = 3;
 			break;
 		case A3_MENU_TABLE_VIEW_SECTION_APPS:
-			numberOfItems = 5;
+			numberOfItems = 6;
 			break;
 		case A3_MENU_TABLE_VIEW_SECTION_SETTINGS:
 		case A3_MENU_TABLE_VIEW_SECTION_INFORMATION:
@@ -276,6 +277,9 @@
 					break;
 				case 4:
 					returningImage = [UIImage imageNamed:@"icon_red"];
+					break;
+				case 5:
+					returningImage = [UIImage imageNamed:@"icon_aqua"];
 					break;
 			}
 			break;
@@ -333,6 +337,9 @@
 					break;
 				case 4:
 					title = @"Translator";
+					break;
+				case 5:
+					title = @"Holidays";
 					break;
 			}
 			break;
@@ -392,6 +399,10 @@
 			}
 			case 4: {
 				targetViewController = [[A3TranslatorViewController alloc] initWithNibName:nil bundle:nil];
+				break;
+			}
+			case 5: {
+				targetViewController = [[A3HolidaysViewController alloc] initWithNibName:nil bundle:nil];
 				break;
 			}
 		}

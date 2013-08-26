@@ -30,6 +30,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 	[navigationController popToRootViewControllerAnimated:NO];
+	[navigationController setNavigationBarHidden:NO];
 	[navigationController pushViewController:viewController animated:YES];
 
 	if (IS_IPHONE || IS_PORTRAIT) {

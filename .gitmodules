@@ -13,3 +13,6 @@
 [submodule "External/Masonry"]
 	path = External/Masonry
 	url = https://github.com/Steven-Gwug/Masonry.git
+[submodule "External/objectiveflickr"]
+	path = External/objectiveflickr
+	url = https://github.com/lukhnos/objectiveflickr.git

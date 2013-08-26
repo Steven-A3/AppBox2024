@@ -196,4 +196,9 @@
 	return result;
 }
 
+- (NSString *)pathInLibraryDirectory {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
+}
+
 @end

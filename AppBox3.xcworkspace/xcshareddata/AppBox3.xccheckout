@@ -20,6 +20,8 @@
 		<string>https://github.com/FortAwesome/Font-Awesome.git</string>
 		<key>B98EB309-4297-4826-AB64-726DAAD1FFCE</key>
 		<string>https://github.com/Steven-Gwug/Masonry.git</string>
+		<key>BD78CE31-CF32-41DD-AFC4-04E0E54247CF</key>
+		<string>https://github.com/lukhnos/objectiveflickr.git</string>
 		<key>C1859CE3-F109-4D71-B7A6-F9394A18C7BD</key>
 		<string>https://github.com/escoz/QuickDialog.git</string>
 		<key>EC262D93-B1A5-41AE-A2FC-2FB0417063A9</key>
@@ -41,6 +43,8 @@
 		<string>../External/FontAwesomeIconFactory/Font-Awesome</string>
 		<key>B98EB309-4297-4826-AB64-726DAAD1FFCE</key>
 		<string>../External/Masonry</string>
+		<key>BD78CE31-CF32-41DD-AFC4-04E0E54247CF</key>
+		<string>../External/objectiveflickr</string>
 		<key>C1859CE3-F109-4D71-B7A6-F9394A18C7BD</key>
 		<string>../External/QuickDialog</string>
 		<key>EC262D93-B1A5-41AE-A2FC-2FB0417063A9</key>
@@ -103,6 +107,14 @@
 			<string>336075EE-AD81-4346-A73A-17CFD73E21CB</string>
 			<key>IDESourceControlWCCName</key>
 			<string>NSDate-TimeAgo</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>BD78CE31-CF32-41DD-AFC4-04E0E54247CF</string>
+			<key>IDESourceControlWCCName</key>
+			<string>objectiveflickr</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

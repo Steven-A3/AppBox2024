@@ -24,7 +24,7 @@
 		[self.contentView addSubview:_dateLabel];
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.right.equalTo(self.contentView.right).with.offset(-2);
+			make.right.equalTo(self.right).with.offset(-32);
 			if (IS_IPAD) {
 				make.centerY.equalTo(self.contentView.centerY).with.offset(1.5);
 			} else {

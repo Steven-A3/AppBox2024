@@ -18,6 +18,8 @@
 
 - (NSString *)componentsSeparatedByKorean;
 
+- (NSString *)pathInLibraryDirectory;
+
 - (NSString *)stringByPaddingZeroLength10;
 
 - (NSString *)stringGroupByFirstInitial;

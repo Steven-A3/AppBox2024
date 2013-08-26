@@ -36,4 +36,8 @@
 	expect(testData[4]).to.equal(@"b");
 }
 
+- (void)testNSStringFromSelector {
+    NSLog(@"%@", NSStringFromSelector(@selector(testMoveItem)));
+}
+
 @end

@@ -90,12 +90,14 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 	if (addDetectLanguage) {
 		A3TranslatorLanguage *detectLanguage = [A3TranslatorLanguage new];
 		detectLanguage.name = @"Detect Language";
+        detectLanguage.code = @"Detect";
 		[newArray insertObject:detectLanguage atIndex:0];
 	}
 	return newArray;
 }
 
 + (NSString *)localizedNameForCode:(NSString *)code {
+    if ([code isEqualToString:@"Detect"]) return @"";
 	if ([code isEqualToString:@"zh-Hans"]) return @"Simplified Chinese";
 	if ([code isEqualToString:@"zh-Hant"]) return @"Traditional Chinese";
 	NSString *result = [[NSLocale currentLocale] displayNameForKey:NSLocaleLanguageCode value:code];
