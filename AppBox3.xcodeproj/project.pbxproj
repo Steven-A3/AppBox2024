@@ -271,12 +271,12 @@
 		6876D78417A760BF00E16991 /* libExpecta-ios-universal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */; };
 		687C194F1783E08100415FCE /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */; };
 		687C19501783E08300415FCE /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */; };
-		687D0D0A17CAE519005AB571 /* HolidayDada+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayDada+Africa.m */; };
-		687D0D0B17CAE519005AB571 /* HolidayAmerica.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayAmerica.m */; };
-		687D0D0C17CAE519005AB571 /* HolidayAsia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayAsia.m */; };
+		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
+		687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
+		687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
 		687D0D0D17CAE519005AB571 /* HolidayCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0317CAE519005AB571 /* HolidayCommon.m */; };
-		687D0D0E17CAE519005AB571 /* HolidayEurope.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayEurope.m */; };
-		687D0D0F17CAE519005AB571 /* HolidayMiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayMiddleEast.m */; };
+		687D0D0E17CAE519005AB571 /* HolidayData+Europe.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayData+Europe.m */; };
+		687D0D0F17CAE519005AB571 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
 		687D0D1017CAE519005AB571 /* HolidayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0917CAE519005AB571 /* HolidayData.m */; };
 		687D385E16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385B16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.m */; };
 		687D385F16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D385D16BA31BD006FA74E /* A3SalesCalcHistoryViewController.m */; };
@@ -998,18 +998,18 @@
 		687C19341783DEBD00415FCE /* OCMockitoIOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OCMockitoIOS.framework; path = External/OCMockitoIOS.framework; sourceTree = "<group>"; };
 		687C193B1783DF0F00415FCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		687C194E1783E07500415FCE /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
-		687D0CFC17CAE519005AB571 /* HolidayDada+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayDada+Africa.h"; path = "Holidays/HolidayDada+Africa.h"; sourceTree = "<group>"; };
-		687D0CFD17CAE519005AB571 /* HolidayDada+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayDada+Africa.m"; path = "Holidays/HolidayDada+Africa.m"; sourceTree = "<group>"; };
-		687D0CFE17CAE519005AB571 /* HolidayAmerica.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HolidayAmerica.h; path = Holidays/HolidayAmerica.h; sourceTree = "<group>"; };
-		687D0CFF17CAE519005AB571 /* HolidayAmerica.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayAmerica.m; path = Holidays/HolidayAmerica.m; sourceTree = "<group>"; };
-		687D0D0017CAE519005AB571 /* HolidayAsia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HolidayAsia.h; path = Holidays/HolidayAsia.h; sourceTree = "<group>"; };
-		687D0D0117CAE519005AB571 /* HolidayAsia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayAsia.m; path = Holidays/HolidayAsia.m; sourceTree = "<group>"; };
+		687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Africa.h"; path = "Holidays/HolidayData+Africa.h"; sourceTree = "<group>"; };
+		687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Africa.m"; path = "Holidays/HolidayData+Africa.m"; sourceTree = "<group>"; };
+		687D0CFE17CAE519005AB571 /* HolidayData+America.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+America.h"; path = "Holidays/HolidayData+America.h"; sourceTree = "<group>"; };
+		687D0CFF17CAE519005AB571 /* HolidayData+America.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+America.m"; path = "Holidays/HolidayData+America.m"; sourceTree = "<group>"; };
+		687D0D0017CAE519005AB571 /* HolidayData+Asia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Asia.h"; path = "Holidays/HolidayData+Asia.h"; sourceTree = "<group>"; };
+		687D0D0117CAE519005AB571 /* HolidayData+Asia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Asia.m"; path = "Holidays/HolidayData+Asia.m"; sourceTree = "<group>"; };
 		687D0D0217CAE519005AB571 /* HolidayCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HolidayCommon.h; path = Holidays/HolidayCommon.h; sourceTree = "<group>"; };
 		687D0D0317CAE519005AB571 /* HolidayCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayCommon.m; path = Holidays/HolidayCommon.m; sourceTree = "<group>"; };
-		687D0D0417CAE519005AB571 /* HolidayEurope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HolidayEurope.h; path = Holidays/HolidayEurope.h; sourceTree = "<group>"; };
-		687D0D0517CAE519005AB571 /* HolidayEurope.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayEurope.m; path = Holidays/HolidayEurope.m; sourceTree = "<group>"; };
-		687D0D0617CAE519005AB571 /* HolidayMiddleEast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HolidayMiddleEast.h; path = Holidays/HolidayMiddleEast.h; sourceTree = "<group>"; };
-		687D0D0717CAE519005AB571 /* HolidayMiddleEast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayMiddleEast.m; path = Holidays/HolidayMiddleEast.m; sourceTree = "<group>"; };
+		687D0D0417CAE519005AB571 /* HolidayData+Europe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Europe.h"; path = "Holidays/HolidayData+Europe.h"; sourceTree = "<group>"; };
+		687D0D0517CAE519005AB571 /* HolidayData+Europe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Europe.m"; path = "Holidays/HolidayData+Europe.m"; sourceTree = "<group>"; };
+		687D0D0617CAE519005AB571 /* HolidayData+MiddleEast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+MiddleEast.h"; path = "Holidays/HolidayData+MiddleEast.h"; sourceTree = "<group>"; };
+		687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+MiddleEast.m"; path = "Holidays/HolidayData+MiddleEast.m"; sourceTree = "<group>"; };
 		687D0D0817CAE519005AB571 /* HolidayData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = HolidayData.h; path = Holidays/HolidayData.h; sourceTree = "<group>"; };
 		687D0D0917CAE519005AB571 /* HolidayData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayData.m; path = Holidays/HolidayData.m; sourceTree = "<group>"; };
 		687D385A16BA31BD006FA74E /* A3SalesCalcHistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SalesCalcHistoryTableViewCell.h; path = "Apps/Sales Calc/A3SalesCalcHistoryTableViewCell.h"; sourceTree = "<group>"; };
@@ -2408,18 +2408,18 @@
 		6888091217C640BC008B2856 /* Holidays */ = {
 			isa = PBXGroup;
 			children = (
-				687D0CFC17CAE519005AB571 /* HolidayDada+Africa.h */,
-				687D0CFD17CAE519005AB571 /* HolidayDada+Africa.m */,
-				687D0CFE17CAE519005AB571 /* HolidayAmerica.h */,
-				687D0CFF17CAE519005AB571 /* HolidayAmerica.m */,
-				687D0D0017CAE519005AB571 /* HolidayAsia.h */,
-				687D0D0117CAE519005AB571 /* HolidayAsia.m */,
+				687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */,
+				687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */,
+				687D0CFE17CAE519005AB571 /* HolidayData+America.h */,
+				687D0CFF17CAE519005AB571 /* HolidayData+America.m */,
+				687D0D0017CAE519005AB571 /* HolidayData+Asia.h */,
+				687D0D0117CAE519005AB571 /* HolidayData+Asia.m */,
 				687D0D0217CAE519005AB571 /* HolidayCommon.h */,
 				687D0D0317CAE519005AB571 /* HolidayCommon.m */,
-				687D0D0417CAE519005AB571 /* HolidayEurope.h */,
-				687D0D0517CAE519005AB571 /* HolidayEurope.m */,
-				687D0D0617CAE519005AB571 /* HolidayMiddleEast.h */,
-				687D0D0717CAE519005AB571 /* HolidayMiddleEast.m */,
+				687D0D0417CAE519005AB571 /* HolidayData+Europe.h */,
+				687D0D0517CAE519005AB571 /* HolidayData+Europe.m */,
+				687D0D0617CAE519005AB571 /* HolidayData+MiddleEast.h */,
+				687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */,
 				687D0D0817CAE519005AB571 /* HolidayData.h */,
 				687D0D0917CAE519005AB571 /* HolidayData.m */,
 				6888091317C640D7008B2856 /* A3HolidaysViewController.h */,
@@ -3126,7 +3126,7 @@
 				68DECCC6164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m in Sources */,
 				686FCF911775CFE400F19332 /* Reachability.m in Sources */,
 				686FCF901775CFDC00F19332 /* UIImageView+AFNetworking.m in Sources */,
-				687D0D0C17CAE519005AB571 /* HolidayAsia.m in Sources */,
+				687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */,
 				68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */,
 				6886A30C165776C00013A4C9 /* A3SalesCalcQuickDialogViewController.m in Sources */,
 				68B49C7F165CC52500BCD493 /* A3HotMenuViewController.m in Sources */,
@@ -3205,7 +3205,7 @@
 				68137902170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m in Sources */,
 				681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */,
 				688F277B170C4DEE0013BF81 /* A3LoanCalcPrincipalBarChartController.m in Sources */,
-				687D0D0A17CAE519005AB571 /* HolidayDada+Africa.m in Sources */,
+				687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */,
 				682E350E170D2E700061B67F /* A3LoanCalcSingleBarChartController.m in Sources */,
 				68953482178686AF007061CA /* UIImage+Rotating.m in Sources */,
 				6876D77817A75EB700E16991 /* MagicalRecord+ErrorHandling.m in Sources */,
@@ -3270,7 +3270,7 @@
 				68BAA81A17C123F2004780F4 /* A3TranslatorCircleView.m in Sources */,
 				68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */,
 				17D4237C3A92FEFF61E78393 /* A3BlackBarButton.m in Sources */,
-				687D0D0F17CAE519005AB571 /* HolidayMiddleEast.m in Sources */,
+				687D0D0F17CAE519005AB571 /* HolidayData+MiddleEast.m in Sources */,
 				6801AB271749203C00B162DB /* Expense.m in Sources */,
 				17D42B71FF8938D845DF021E /* A3ExpenseListHistoryViewController.m in Sources */,
 				17D426A094D3528EC330687B /* A3ExpenseListHistoryTableViewCell.m in Sources */,
@@ -3282,10 +3282,10 @@
 				681097B417BC7CD50096B6CE /* A3TranslatorMessageCell.m in Sources */,
 				17D426FB4E83A3C048DEA1E4 /* A3FrequencyKeyboardViewController_iPhone.m in Sources */,
 				68FEE387174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m in Sources */,
-				687D0D0E17CAE519005AB571 /* HolidayEurope.m in Sources */,
+				687D0D0E17CAE519005AB571 /* HolidayData+Europe.m in Sources */,
 				17D42478AEA4CF71673C8AE0 /* A3DateKeyboardViewController_iPad.m in Sources */,
 				68CC1593174F763E0000870F /* SFKImage.m in Sources */,
-				687D0D0B17CAE519005AB571 /* HolidayAmerica.m in Sources */,
+				687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */,
 				17D42AB37E797611D81FEC25 /* A3ComparisonView.m in Sources */,
 				68953488178686AF007061CA /* UIView+Screenshot.m in Sources */,
 				68DB84AC17507360004521E0 /* A3LoanCalcComparisonMainViewController_iPad.m in Sources */,

@@ -6,8 +6,7 @@
 //  Copyright 2010 AllAboutApps. All rights reserved.
 //
 
-#import "HolidayDada+Africa.h"
-#import "HolidayData.h"
+#import "HolidayData+Africa.h"
 
 // Country code in http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements
 

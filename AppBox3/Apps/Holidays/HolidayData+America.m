@@ -6,8 +6,7 @@
 //  Copyright 2010 AllAboutApps. All rights reserved.
 //
 
-#import "HolidayAmerica.h"
-#import "HolidayData.h"
+#import "HolidayData+America.h"
 
 /* 5760, 1999-2000
  * Saturday, September 7 - Rosh HaShanah*
@@ -27,9 +26,9 @@
  * Thursday, August 10 - Tisha B'Av
  2009-01-05 18:40 +09:00 */
 
+@implementation HolidayData (America)
 
-
-static NSInteger jewishTable[][14][2] = {
+static NSUInteger jewishTable[][14][2] = {
 	/*2000*/{{1, 22}, {3, 21}, {4, 20}, {5,  2}, {5, 10}, {5, 23}, {6,  9}, {8, 10}, {9, 14}, {10,  9}, {10, 14}, {10, 21}, {10, 22}, {12, 22}},
 	/*2001*/{{2,  8}, {3,  9}, {4,  8}, {4, 20}, {4, 26}, {5, 11}, {5, 28}, {6, 29}, {9, 11}, { 9, 27}, {10,  2}, {10,  9}, {10, 10}, {12, 10}},
 	/*2002*/{{1, 28}, {2, 26}, {3, 28}, {4,  9}, {4, 17}, {4, 30}, {5, 17}, {7, 18}, {9,  7}, { 9, 16}, { 9, 21}, { 9, 28}, { 9, 29}, {11, 30}},
@@ -82,7 +81,10 @@ static NSInteger jewishTable[][14][2] = {
 	/*2049*/{{1, 18}, {3, 18}, {4, 17}, {4, 29}, {5,  6}, {5, 20}, {6,  6}, {8,  8}, {9, 27}, {10,  6}, {10, 11}, {10, 18}, {10, 19}, {12, 20}}
 };
 
-NSMutableArray *newJewishHolidaysForYear(NSInteger year)
+
+/*! Jewish Hoiday rather than Israel Holiday
+ */
+- (NSMutableArray *)jewish_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	if ((year < 2000) || (year > 2049)) {
@@ -172,9 +174,11 @@ NSMutableArray *newJewishHolidaysForYear(NSInteger year)
 
 	
 	return holidays;
-}	
+}
 
-NSMutableArray *newDominicanRepublicHolidaysForYear(NSInteger year) 
+/*! Dominican Republic
+ */
+- (NSMutableArray *)do_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -270,8 +274,9 @@ NSMutableArray *newDominicanRepublicHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newUSVirginIslandsHolidaysForYear(NSInteger year) 
+/*! Virgin Islands United States
+ */
+- (NSMutableArray *)vi_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -422,7 +427,9 @@ NSMutableArray *newUSVirginIslandsHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-NSMutableArray *newAmericanHolidaysForYear(NSInteger year) 
+/*! United States
+ */
+- (NSMutableArray *)us_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -612,7 +619,9 @@ NSMutableArray *newAmericanHolidaysForYear(NSInteger year)
 }
 
 
-NSMutableArray *newJamaicaHolidaysForYear(NSInteger year) 
+/*! Jamaica
+ */
+- (NSMutableArray *)jm_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -697,7 +706,9 @@ NSMutableArray *newJamaicaHolidaysForYear(NSInteger year)
 }
 
 
-NSMutableArray *newNicaraguaHolidaysForYear(NSInteger year) 
+/*! Nicaragua
+ */
+- (NSMutableArray *)ni_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -791,7 +802,9 @@ NSMutableArray *newNicaraguaHolidaysForYear(NSInteger year)
 }
 
 
-NSMutableArray *newEquatorialGuineaHolidaysForYear(NSInteger year) 
+/*! Equatorial Guinea
+ */
+- (NSMutableArray *)gq_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -872,7 +885,9 @@ NSMutableArray *newEquatorialGuineaHolidaysForYear(NSInteger year)
 }
 
 
-NSMutableArray *newBrazilHolidaysForYear(NSInteger year) 
+/*! Brazil
+ */
+- (NSMutableArray *)br_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1003,7 +1018,9 @@ NSMutableArray *newBrazilHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-NSMutableArray *newColombiaHolidaysForYear(NSInteger year)
+/*! Colombia
+ */
+- (NSMutableArray *)co_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1154,8 +1171,8 @@ NSMutableArray *newColombiaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newChileHolidaysForYear(NSInteger year)
+// Chile
+- (NSMutableArray *)cl_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1250,8 +1267,8 @@ NSMutableArray *newChileHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newArgentinaHolidaysForYear(NSInteger year)
+// Argentina
+- (NSMutableArray *)ar_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1352,8 +1369,8 @@ NSMutableArray *newArgentinaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newMexicoHolidaysForYear(NSInteger year) 
+// Mexico
+- (NSMutableArray *)mx_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1507,7 +1524,8 @@ NSMutableArray *newMexicoHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-NSMutableArray *newEcuadorHolidaysForYear(NSInteger year) 
+// Ecuador
+- (NSMutableArray *)ec_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1592,8 +1610,8 @@ NSMutableArray *newEcuadorHolidaysForYear(NSInteger year)
 	return holidays;
 }	
 
-
-NSMutableArray *newPuertoRicoHolidaysForYear(NSInteger year) 
+// Puerto Rico
+- (NSMutableArray *)pr_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1722,8 +1740,8 @@ NSMutableArray *newPuertoRicoHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newCanadaHolidaysForYear(NSInteger year) 
+// Canada
+- (NSMutableArray *)ca_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1868,8 +1886,8 @@ NSMutableArray *newCanadaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newParaguayHolidaysForYear(NSInteger year) 
+// Paraguay
+- (NSMutableArray *)py_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -1957,8 +1975,8 @@ NSMutableArray *newParaguayHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newPeruHolidaysForYear(NSInteger year) 
+// Peru
+- (NSMutableArray *)pe_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2056,8 +2074,8 @@ NSMutableArray *newPeruHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newElSalvadorHolidaysForYear(NSInteger year) 
+// El Salvador
+- (NSMutableArray *)sv_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2146,8 +2164,8 @@ NSMutableArray *newElSalvadorHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newHondurasHolidaysForYear(NSInteger year) 
+// Honduras
+- (NSMutableArray *)hn_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2232,8 +2250,8 @@ NSMutableArray *newHondurasHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newGuatemalaHolidaysForYear(NSInteger year) 
+// Guatemala
+- (NSMutableArray *)gt_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2333,8 +2351,8 @@ NSMutableArray *newGuatemalaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newUruguayHolidaysForYear(NSInteger year) 
+// Uruguay
+- (NSMutableArray *)uy_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2464,8 +2482,8 @@ NSMutableArray *newUruguayHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newPanamaHolidaysForYear(NSInteger year) 
+// Panama
+- (NSMutableArray *)pa_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2640,8 +2658,8 @@ NSMutableArray *newPanamaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newVenezuelaHolidaysForYear(NSInteger year) 
+// Venezuela, Bolivarian Republic of
+- (NSMutableArray *)ve_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2787,8 +2805,8 @@ NSMutableArray *newVenezuelaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newCostaRicaHolidaysForYear(NSInteger year) 
+// Costa Rica
+- (NSMutableArray *)cr_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2871,8 +2889,8 @@ NSMutableArray *newCostaRicaHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newHaitiHolidaysForYear(NSInteger year) 
+// Haiti
+- (NSMutableArray *)ht_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -2998,8 +3016,8 @@ NSMutableArray *newHaitiHolidaysForYear(NSInteger year)
 	return holidays;
 }
 
-
-NSMutableArray *newBahamasHolidaysForYear(NSInteger year)
+// Bahamas
+- (NSMutableArray *)bs_HolidaysInYear:(NSUInteger)year
 {
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -3098,3 +3116,5 @@ NSMutableArray *newBahamasHolidaysForYear(NSInteger year)
 	
 	return holidays;
 }
+
+@end
