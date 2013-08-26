@@ -9,6 +9,16 @@
 #import "HolidayData.h"
 #import "A3UIDevice.h"
 
+NSString *const kHolidayName = @"name";
+NSString *const kHolidayIsPublic = @"public";
+NSString *const kHolidayDate = @"date";
+NSString *const kHolidayDuration = @"duration";
+//NSString *const kHolidayType = @"type";
+//NSString *const kHolidayMonth = @"month";
+//NSString *const kHolidayDay = @"day";
+//NSString *const kHolidayWeekday = @"weekday";
+//NSString *const kHolidayOrdinal = @"ordinal";
+
 @implementation HolidayData
 
 // Option 0, no adjustment
@@ -461,7 +471,9 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2009":@"2009-05-08",
 	@"2010":@"2010-05-28",
 	@"2011":@"2011-05-17",
-	@"2012":@"2012-05-05"
+	@"2012":@"2012-05-05",
+	@"2013":@"2013-05-24",
+	@"2014":@"2013-05-13"
 	};
 	NSDictionary *indonesia = @{
 	@"2007":@"2007-06-01",
@@ -469,14 +481,21 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2009":@"2009-05-09",
 	@"2010":@"2010-05-28",
 	@"2011":@"2011-05-17",
-	@"2012":@"2012-05-06"
+	@"2012":@"2012-05-06",
+	@"2013":@"2012-05-25",
+	@"2014":@"2012-05-14",
 	};
 	NSDictionary *malaysia = @{
 	@"2008":@"2008-05-19",
 	@"2009":@"2009-05-09",
 	@"2010":@"2010-05-28",
 	@"2011":@"2011-05-17",
-	@"2012":@"2012-05-05"
+	@"2012":@"2012-05-05",
+	@"2013":@"2012-05-24",
+	@"2014":@"2012-05-13",
+	@"2015":@"2012-06-01",
+	@"2016":@"2012-05-21",
+	@"2017":@"2012-05-10",
 	};
 	NSDictionary *bangladesh = @{
 	@"2004":@"2004-05-03",
@@ -487,7 +506,9 @@ static NSUInteger Eid_al_adha[][2] = {
 	@"2009":@"2009-05-08",
 	@"2010":@"2010-05-27",
 	@"2011":@"2011-05-17",
-	@"2012":@"2012-05-06"
+	@"2012":@"2012-05-06",
+	@"2013":@"2012-05-23",
+	@"2014":@"2012-05-06",
 	};
 
 	NSDictionary *vesak = @{

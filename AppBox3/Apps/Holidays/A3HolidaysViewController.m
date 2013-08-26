@@ -241,7 +241,7 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 		[imageView addMotionEffect:interpolationVertical];
 
 		[imageView displayImage];
-//		[imageView updateImageWithCountryCode:country];
+		[imageView updateImageWithCountryCode:country];
 
 		UITableView *tableView = [self tableView];
 		tableView.tag = idx;

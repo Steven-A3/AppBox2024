@@ -8,7 +8,6 @@
  */
 
 #include "HolidayCommon.h"
-#include "Constants.h"
 
 int indexOfCountryCode(NSArray *array, NSString *code) {
 	for (int i = 0; i < [array count]; i++) {

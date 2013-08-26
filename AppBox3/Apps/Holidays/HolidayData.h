@@ -18,8 +18,17 @@ enum weekdays {
 	Saturday,
 };
 
-@interface HolidayData : NSObject {
-}
+extern NSString *const kHolidayName;
+extern NSString *const kHolidayIsPublic;
+extern NSString *const kHolidayDate;
+extern NSString *const kHolidayDuration;
+//extern NSString *const kHolidayType;
+//extern NSString *const kHolidayMonth;
+//extern NSString *const kHolidayDay;
+//extern NSString *const kHolidayWeekday;
+//extern NSString *const kHolidayOrdinal;
+
+@interface HolidayData : NSObject
 
 + (NSDate *)adjustDate:(NSDate *)date calendar:(NSCalendar *)calendar option:(int)option;
 + (NSDate *)dateWithDay:(NSUInteger)day month:(NSUInteger)month year:(NSUInteger) year withCalendar:(NSCalendar *)calendar option:(int)option;

@@ -7,7 +7,6 @@
 //
 
 #import "HolidayData+Asia.h"
-#import "HolidayData.h"
 
 @implementation HolidayData (Asia)
 
@@ -24,12 +23,14 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
         case 2010:
         case 2012:
         case 2013:
-        case 2014:
             day = 4;
             break;
         case 2003:
         case 2007:
         case 2011:
+		case 2014:
+		case 2015:
+		case 2016:
             day = 5;
             break;
 		default:
@@ -45,108 +46,94 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 }
 
 // China
-- (NSMutableArray *)cn_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)cn_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Spring Festival(The Chinese New Year)
 	holidayName = @"The Chinese New Year";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	holidayName = @"The Chinese New Year's Eve";
 	date = [HolidayData dateFrom:date withOffset:-1];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Valentine's Day";
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Lantern Festival
 	holidayName = @"Lantern Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:15 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// International Women's Day
 	holidayName = @"International Women's Day";
 	date = [HolidayData dateWithDay:8 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Tree-Planting Day
 	holidayName = @"Arbor Day";
 	date = [HolidayData dateWithDay:12 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"April Fool's Day";
 	date = [HolidayData dateWithDay:1 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	date = qingmingForYear(year, gregorian);
 	if (date) {
 		holidayName = @"Qingming Festival";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	// International Labor Day
 	holidayName = @"International Worker's Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Duan Wu (Dragon Boat) Festival
 	holidayName = @"Dragon Boat Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:5 month:5 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Youth Day
 	holidayName = @"Youth Day";
 	date = [HolidayData dateWithDay:4 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:5 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Children's Day
 	holidayName = @"International Children's Day";
 	date = [HolidayData dateWithDay:1 month:6 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:3 month:6 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year >= 2000 && year <= 2020) {
 		NSInteger solstice = 21;
@@ -160,66 +147,56 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		}
 		holidayName = @"Summer Solstice";
 		date = [HolidayData dateWithDay:solstice month:6 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// The CPC's Birthday
 	holidayName = @"The CPC Founding Day";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Hong Kong Special Administrative Region Establishment Day";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Double Seven Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:7 month:7 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Spirit Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:15 month:7 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Army's Day
 	holidayName = @"Army Day";
 	date = [HolidayData dateWithDay:1 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Mid-Autumn Festival
 	holidayName = @"Mid-Autumn Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:15 month:8 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Teacher's Day
 	holidayName = @"Teacher's Day";
 	date = [HolidayData dateWithDay:10 month:9 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// National Day
 	holidayName = @"National Day";
 	date = [HolidayData dateWithDay:1 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Double Ninth Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:9 month:9 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Winter Solstice";
@@ -246,219 +223,172 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		}
 		if (day > 0) {
 			date = [HolidayData dateWithDay:day month:month year:year withCalendar:gregorian option:0];
-			holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-			[holidays addObject:holidayItem];
+			[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		}
 	}
 
 	holidayName = @"Macau Special Administrative Region Establishment Day";
 	date = [HolidayData dateWithDay:20 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Indonesia
-- (NSMutableArray *)id_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)id_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 
-	NSArray *holidayItem;
 	NSString *holidayName;
-	NSDate *date, *originalDate;
+	NSDate *date;
 
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Shared Holiday by Government Decree";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	// Spring Festival(The Chinese New Year)
 	holidayName = @"Chinese New Year (Imlek)";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"The Prophet's Birthday (Maulidur Rasul)";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, birthday, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Hari Raya Nyepi Tahun Baru (Hindu New Year)";
 	date = [HolidayData dateWithDay:16 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Good Friday (Hari Raya Paskah)";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Easter Day";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	date = [HolidayData getVesakDay:year forCountryCode:@"id" withCalendar:gregorian];
 	if (date) {
 		holidayName = @"Waisak (Buddha Day)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Ascension Day";
 	date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	if (year == 2009) {
 		holidayName = @"Public Holiday(Legislative Elections)";
-		date = [HolidayData dateWithDay:9 month:4 year:year withCalendar:gregorian option:3];
-		originalDate = [HolidayData dateWithDay:9 month:4 year:year withCalendar:gregorian option:0];
-		if (![date isEqualToDate:originalDate]) {
-			holidayItem = [NSArray arrayWithObjects:holidayName, date, originalDate, nil];
-		} else {
-			holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		}
-		[holidays addObject:holidayItem];
+		date = [HolidayData dateWithDay:9 month:4 year:year withCalendar:gregorian option:0];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 		holidayName = @"Public Holiday(Presidential Election)";
-		date = [HolidayData dateWithDay:9 month:7 year:year withCalendar:gregorian option:3];
-		originalDate = [HolidayData dateWithDay:9 month:7 year:year withCalendar:gregorian option:0];
-		if (![date isEqualToDate:originalDate]) {
-			holidayItem = [NSArray arrayWithObjects:holidayName, date, originalDate, nil];
-		} else {
-			holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		}
-		[holidays addObject:holidayItem];
+		date = [HolidayData dateWithDay:9 month:7 year:year withCalendar:gregorian option:0];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	date = [HolidayData getIsraAndMiraj:year withCalendar:gregorian];
 	if (date) {
 		holidayName = @"Prophet's Ascension(Isra' Miraj Nabi)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Independence Day";
-	date = [HolidayData dateWithDay:17 month:8 year:year withCalendar:gregorian option:3];
-	originalDate = [HolidayData dateWithDay:17 month:8 year:year withCalendar:gregorian option:0];
-	if (![date isEqualToDate:originalDate]) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, originalDate, nil];
-	} else {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	}
-	[holidays addObject:holidayItem];
+	date = [HolidayData dateWithDay:17 month:8 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Hari Raya Idul Fitri (End of Ramadan)";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 
 		holidayName = @"Idul Fitri Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 		holidayName = @"Shared Holiday by Government Decree";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
-
-
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-
 
 	holidayName = @"Idul Adha (Feast of Sacrifice)";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2006) {
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%d)", year - ((year > 2007)?578:579)];
 	date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2008) {
 		holidayName = @"Islamic New Year(1429)";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Shared Holiday by Government Decree";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"New Year's Eve Bank Holiday";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-
-
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
 // Singapore
-- (NSMutableArray *)sg_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)sg_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Spring Festival(The Chinese New Year)
 	holidayName = @"The Chinese New Year";
@@ -468,34 +398,29 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	}
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// International Labor Day
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	date = [HolidayData getVesakDay:year forCountryCode:@"sg" withCalendar:gregorian];
 	if (date) {
 		holidayName = @"Vesak Day";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"National Day";
 	date = [HolidayData dateWithDay:9 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	NSDateComponents *dc = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
 	if ([dc weekday] == Sunday) {
@@ -504,71 +429,62 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 		holidayName = @"National Day Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Hari Raya Puasa (End of Ramadan)";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	date = [HolidayData getDeepavaliForYear:year];
 	if (date) {
 		holidayName = @"Deepavali";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Hari Raya Haji (Feast of Sacrifice)";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	if (year == 2006) {
 		holidayName = @"Hari Raya Haji (Feast of Sacrifice)";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Macao
-- (NSMutableArray *)mo_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)mo_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day(Fraternidade Universal)";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Spring Festival(The Chinese New Year)
 	holidayName = @"Lunar New Year(Novo Ano Lunar)";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	{
@@ -577,12 +493,10 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		
 		holidayName = @"Lunar New Year Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 
 	}
@@ -597,80 +511,68 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 	}
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Holy Saturday";
 	date = [HolidayData getHolySaturday:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Day";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// International Labor Day
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Buddha's Birthday
 	holidayName = @"The Buddha's Birthday (Dia do Buda)";
 	date = [HolidayData chinaLunarDateWithSolarDay:8 month:4 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Duan Wu (Dragon Boat) Festival
 	holidayName = @"Tung Ng (Dragon Boat Festival)";
 	date = [HolidayData chinaLunarDateWithSolarDay:5 month:5 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"July Bank Holiday";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"PRC National Day";
 	date = [HolidayData dateWithDay:1 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"PRC National Day Holiday";
 	date = [HolidayData dateWithDay:2 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Mid-Autumn Festival
 	holidayName = @"Chong Chao (Mid-Autumn Festival)";
 	date = [HolidayData chinaLunarDateWithSolarDay:15 month:8 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	{
@@ -679,8 +581,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		
 		holidayName = @"Chong Chao Bank Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 
 	}
@@ -688,29 +589,24 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	holidayName = @"Chong Yeong (Ancestors' Day)";
 	date = [HolidayData chinaLunarDateWithSolarDay:9 month:9 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"All Souls Day(Dia de Finados)";
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Immaculate Conception";
 	date = [HolidayData dateWithDay:12 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Macau SARE Day";
 	date = [HolidayData dateWithDay:20 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Macau SARE Bank Holiday";
 	date = [HolidayData dateWithDay:21 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Dongzhi (Winter Solstice)";
 	{
@@ -736,54 +632,47 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		}
 		if (day > 0) {
 			date = [HolidayData dateWithDay:day month:month year:year withCalendar:gregorian option:0];
-			holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-			[holidays addObject:holidayItem];
+			[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		}
 	}
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Chiristmas Bank Holiday";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Hong Kong
-- (NSMutableArray *)hk_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)hk_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Spring Festival(The Chinese New Year)
 	holidayName = @"The Chinese New Year";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Ching Ming Festival";
@@ -796,109 +685,94 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 	}
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Holy Saturday";
 	date = [HolidayData getHolySaturday:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// International Labor Day
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Buddha's Birthday
 	holidayName = @"Buddha's Birthday";
 	date = [HolidayData chinaLunarDateWithSolarDay:8 month:4 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Duan Wu (Dragon Boat) Festival
 	holidayName = @"Dragon Boat Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:5 month:5 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Hong Kong Special Administrative Region Establishment Day";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Mid-Autumn Festival
 	holidayName = @"Mid-Autumn Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:16 month:8 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// National Day
 	holidayName = @"National Day of People's Republic of China";
 	date = [HolidayData dateWithDay:1 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Chung Yeung Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:9 month:9 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Korea
-- (NSMutableArray *)kr_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)kr_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	if (year == 2010) {
 		holidayName = @"Seol-nal(2.13~15)";
@@ -909,52 +783,44 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	}
 	date = [HolidayData koreaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Independence Movement Day
 	holidayName = @"Independence Movement Day";
 	date = [HolidayData dateWithDay:1 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Children's Day
 	holidayName = @"Children's Day";
 	date = [HolidayData dateWithDay:5 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Buddha's Birthday
 	holidayName = @"Buddha's Birthday";
 	date = [HolidayData koreaLunarDateWithSolarDay:8 month:4 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Memorial Day
 	holidayName = @"Memorial Day";
 	date = [HolidayData dateWithDay:6 month:6 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Liberation Day
 	holidayName = @"Liberation Day";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Foundation Day
 	holidayName = @"Foundation Day";
 	date = [HolidayData dateWithDay:3 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year == 2010) {
 		holidayName = @"Harvest Moon Festival(Sep 21~23)";
@@ -965,47 +831,41 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	}
 	date = [HolidayData koreaLunarDateWithSolarDay:15 month:8 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Christmas Day
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Japan
-- (NSMutableArray *)jp_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)jp_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Coming-of-Age Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:2 month:1 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Foundation Day";
 	date = [HolidayData dateWithDay:11 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Vernal Equinox";
 	// Adjust for known equinox
@@ -1018,38 +878,31 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 			break;
 	}
 	date = [HolidayData dateWithDay:equinox month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Shōwa Day";
 	date = [HolidayData dateWithDay:29 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:3 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Greenery Day";
 	date = [HolidayData dateWithDay:4 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Children's Day";
 	date = [HolidayData dateWithDay:5 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Marine Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:7 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Respect-for-the-Aged Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:9 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Autumnal Equinox";
 	// Adjust for known equinox
@@ -1076,171 +929,145 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 			break;
 	}
 	date = [HolidayData dateWithDay:autumnEquinox month:9 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Health and Sports Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:2 month:10 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Culture Day";
 	date = [HolidayData dateWithDay:3 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labor Thanksgiving Day";
 	date = [HolidayData dateWithDay:23 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"The Emperor's Birthday";
 	date = [HolidayData dateWithDay:23 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }	
 
 
 // Philippines
-- (NSMutableArray *)ph_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)ph_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"The Chinese New Year";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"People Power Day";
 	date = [HolidayData dateWithDay:25 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Sunday";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Bataan and Corregidor Day";
 	date = [HolidayData dateWithDay:9 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:12 month:6 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Ninoy Aquino Day";
 	date = [HolidayData dateWithDay:21 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Heroes' Day";
 	date = [HolidayData getLastWeekday:Monday OfMonth:8 forYear:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"All Saints Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Eidul Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Bonifacio Day";
 	date = [HolidayData dateWithDay:30 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Rizal Day";
 	date = [HolidayData dateWithDay:30 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }	
 
 // Taiwan
-- (NSMutableArray *)tw_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)tw_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"Founding Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Spring Festival(The Chinese New Year)
 	holidayName = @"The Chinese New Year";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Spring Festival(The Chinese New Year)
@@ -1251,141 +1078,119 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 	}
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Peace Memorial Day";
 	date = [HolidayData dateWithDay:28 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	date = qingmingForYear(year, gregorian);
 	if (date) {
 		holidayName = @"Qingming Festival(Tomb Sweeping Day)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Double Tenth Day";
 	date = [HolidayData dateWithDay:10 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Duan Wu (Dragon Boat) Festival
 	holidayName = @"Dragon Boat Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:5 month:5 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Mid-Autumn Festival
 	holidayName = @"Mid-Autumn Festival";
 	date = [HolidayData chinaLunarDateWithSolarDay:15 month:8 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
 
-	
 	return holidays;
 }
 
 // New Zealand
-- (NSMutableArray *)nz_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)nz_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Day after New Year's Day";
 	date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Southland Anniversary Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:1 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	if (year >= 2012) {
 		holidayName = @"Anniversary Day Auckland / Northland";
 		date = [HolidayData dateWithWeekday:Monday ordinal:5 month:1 year:year withCalendar:gregorian];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Waitangi Day";
 	date = [HolidayData dateWithDay:6 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Taranaki (New Plymouth) Anniversary Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:2 month:3 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Sunday";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:4 month:10 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Anzac Day";
 	date = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Queen's Birthday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:6 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Canterbury (South) Anniversary Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:4 month:9 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Hawkes' Bay Anniversary Day";
 	date = [HolidayData dateWithWeekday:Friday ordinal:3 month:10 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Marlborough Anniversary Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:5 month:10 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christchurch Show Day (Canterbury)";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:11 year:year withCalendar:gregorian];
@@ -1394,222 +1199,188 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
         components.day = 11;
         date = [gregorian dateByAddingComponents:components toDate:date options:0];
     }
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
     
 	holidayName = @"Westland Anniversary Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:12 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day is celebrated on December 25 with avoid weekend.
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Boxing Day is celebrated on December 26 with avoid weekend.
 	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year == 2011) {
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:27 month:12 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
 
-	
 	return holidays;
 }
 
 // Australia
-- (NSMutableArray *)au_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)au_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date, *additionalDate;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	additionalDate = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:1];
 	if (![additionalDate isEqualToDate:date]) {
 		holidayName = @"New Year's Day Public Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, additionalDate, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:additionalDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Australia Day(National Day)";
 	date = [HolidayData dateWithDay:26 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	additionalDate = [HolidayData dateWithDay:26 month:1 year:year withCalendar:gregorian option:1];
 	if (![additionalDate isEqualToDate:date]) {
 		holidayName = @"Australia Day Public Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, additionalDate, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:additionalDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Saturday";
 	date = [HolidayData getHolySaturday:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Sunday";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Labour Day(WA)";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:3 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labour Day(Tas, Vic)";
 	date = [HolidayData dateWithWeekday:Monday ordinal:2 month:3 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labour Day(ACT, NSW, SA)";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:10 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labour Day(Qld, NT)";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:5 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:5 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Anzac Day";
 	date = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	additionalDate = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:1];
 	if (![additionalDate isEqualToDate:date]) {
 		holidayName = @"Anzac Day Public Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, additionalDate, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:additionalDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Queen's Birthday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:2 month:6 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:1 month:9 year:year withCalendar:gregorian];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year == 2010) {
 		holidayName = @"Christmas Day Public Holiday";
 		date = [HolidayData dateWithDay:27 month:12 year:year withCalendar:gregorian option:1];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Boxing Day Public Holiday";
 		date = [HolidayData dateWithDay:28 month:12 year:year withCalendar:gregorian option:1];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2011) {
 		holidayName = @"Christmas Day Public Holiday";
 		date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:1];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Boxing Day Public Holiday";
 		date = [HolidayData dateWithDay:27 month:12 year:year withCalendar:gregorian option:1];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
-
-	
 	return holidays;
 }
 
 // Malaysia
-- (NSMutableArray *)my_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)my_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Federal Territory Day(KUL LBN PJY)";
 	date = [HolidayData dateWithDay:1 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Chinese New Year";
 	date = [HolidayData chinaLunarDateWithSolarDay:1 month:1 year:year];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
 		holidayName = @"Chinese New Year, Day 2";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 
 	}
@@ -1617,45 +1388,38 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	holidayName = @"The Prophet's Birthday (Maulidur Rasul)";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, birthday, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	date = [HolidayData getVesakDay:year forCountryCode:@"my" withCalendar:gregorian];
 	if (date) {
 		holidayName = @"Wesak Day(Birth of Buddha)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"King's Birthday";
 	date = [HolidayData dateWithDay:5 month:6 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"National Day";
 	date = [HolidayData dateWithDay:31 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Hari Raya Puasa (End of Ramadan)";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
 		holidayName = @"Hari Raya Puasa Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 
 	}
@@ -1663,290 +1427,243 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	date = [HolidayData getDeepavaliForYear:year];
 	if (date) {
 		holidayName = @"Deepavali";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Hari Raya Qurban (Feast of Sacrifice)";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = [@"Awal Muharram(Islamic New Year)" stringByAppendingFormat:@"(%d)", year - ((year > 2007)?578:579)];
 	date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2008) {
 		holidayName = @"Awal Muharram(Islamic New Year)(1429)";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-		
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // India
 - (NSMutableArray *)in_HolidaysInYear:(NSUInteger)year {
 	if ((year < 2006) || (year > 2013)) {
-		NSMutableArray *holidays = [[NSMutableArray alloc] init];
-		NSArray *holidayItem = [NSArray arrayWithObjects:@"Indian Holidays (2006~2013 only)", nil];
-		[holidays addObject:holidayItem];
-		
-		return holidays;
+		return nil;
 	}
 	
 	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"indian" ofType:@"plist"];
 	NSDictionary *indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
 	if (indianBook) {
-		NSMutableArray *holidayArray = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%d", year]]];
-		NSInteger index, count = [holidayArray count];
+		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%d", year]]];
+		NSInteger index, count = [book count];
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		[offsetDC setHour:9 - ([[NSTimeZone systemTimeZone] secondsFromGMT] / 3600)];
+
+		NSMutableArray *holidays = [NSMutableArray new];
+
 		for (index = 0; index < count; index++) {
-			NSMutableArray *item = [NSMutableArray arrayWithArray:[holidayArray objectAtIndex:index]];
+			NSMutableArray *item = [NSMutableArray arrayWithArray:[book objectAtIndex:index]];
 			NSDate *newDate = [gregorian dateByAddingComponents:offsetDC toDate:[item objectAtIndex:1] options:0];
-			[item replaceObjectAtIndex:1 withObject:newDate];
-			[holidayArray replaceObjectAtIndex:index withObject:item];
+
+			[holidays addObject:@{kHolidayName:[item objectAtIndex:0], kHolidayIsPublic:@YES, kHolidayDate:newDate, kHolidayDuration:@1}];
 		}
 
-	
-		return holidayArray;
+		return holidays;
 	}
 	return nil;
 }
 
 // Bangladesh
-- (NSMutableArray *)bd_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)bd_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"Shahid Dibosh(International Mother Language Day)";
 	date = [HolidayData dateWithDay:21 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Eid-e-Milad-Un Nabi(Prophet's Birthday)";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
 		NSDateComponents *dc = [[NSDateComponents alloc] init];
 		[dc setDay:1];
-		birthday = [gregorian dateByAddingComponents:dc toDate:birthday options:0];
 
-		holidayItem = [NSArray arrayWithObjects:holidayName, birthday, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:[gregorian dateByAddingComponents:dc toDate:birthday options:0], kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Sheikh Mujibur Rahman's Birth Anniversary";
 	date = [HolidayData dateWithDay:17 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day(National Day)";
 	date = [HolidayData dateWithDay:26 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Pahela Baishakh(Bengla New Year)";
 	date = [HolidayData dateWithDay:14 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	date = [HolidayData getVesakDay:year forCountryCode:@"bd" withCalendar:gregorian];
 	if (date) {
 		holidayName = @"Buddha Purnuma(Buddha Day)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"July Bank Holiday";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Shab e-Barat(Ascension of the Prophet)";
 	date = [HolidayData dateWithDay:28 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Mourning Day";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Sri Krishna Janamashtami";
 	date = [HolidayData dateWithDay:1 month:9 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Public Holiday for Shab-e-Qadar(Night of Destiny)";
 	date = [HolidayData dateWithDay:7 month:9 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Eid-ul-Fiter(End of Ramadan)";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		holidayName = @"Eid-ul-Fiter Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
-		
-
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Durga Puja(Bijoya Dashami)";
 	date = [HolidayData dateWithDay:17 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Revolution Day";
 	date = [HolidayData dateWithDay:7 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Eid-ul-Azha(Feast of Sacrifice)";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
 		holidayName = @"Eid-ul-Azha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
-		
-
-	}		
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	}
 	
 	holidayName = @"Bijoy Dibosh(Victory Day)";
 	date = [HolidayData dateWithDay:16 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year == 2009) {
 		holidayName = @"Ashura(Muharrum)";
 		date = [HolidayData dateWithDay:8 month:1 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [HolidayData dateWithDay:27 month:12 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2010) {
 		holidayName = @"Ashura(Muharrum)";
 		date = [HolidayData dateWithDay:17 month:12 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Pakistan
-- (NSMutableArray *)pk_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)pk_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	holidayName = @"New Year Bank Holiday";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Kashmir Day";
 	date = [HolidayData dateWithDay:5 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Eid Milad un Nabi(Prophet's Birthday)";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, birthday, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Pakistan Day";
 	date = [HolidayData dateWithDay:23 month:3 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"July Bank Holiday";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year == 2010) {
 		holidayName = @"Start of Ramadan Bank Holiday";
 		date = [HolidayData dateWithDay:12 month:8 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:14 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Eidul Fitr(End of Ramadan)";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
@@ -1954,256 +1671,208 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		holidayName = @"Eidul Fitr Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
-		
-
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Allama lqbal Day";
 	date = [HolidayData dateWithDay:9 month:11 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Eidul Azha(Feast of Sacrifice)";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
 		holidayName = @"Eidul Azha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
-		
-
-	}		
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	}
 	
 	if (year == 2010) {
 		holidayName = @"Ashura Holiday(Yaum-e-Ashur)";
 		date = [HolidayData dateWithDay:16 month:12 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 		holidayName = @"Ashura Holiday(Yaum-e-Ashur)";
 		date = [HolidayData dateWithDay:17 month:12 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Quaid-e-Azam's Birthday/Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Second Day of Christmas";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Anniversary of Benazir Bhutto's Death(Sindh)";
 	date = [HolidayData dateWithDay:27 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
-	
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	
 	return holidays;
 }
 
 // Thailand
-- (NSMutableArray *)th_HolidaysInYear:(NSUInteger)year
+- (NSMutableArray *)th_HolidaysInYear:(NSNumber *)yearObj
 {
+	NSUInteger year = [yearObj unsignedIntegerValue];
+
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 	
-	NSArray *holidayItem;
 	NSString *holidayName;
 	NSDate *date;
 	
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Makha Bucha Day";
 	date = [HolidayData dateWithDay:28 month:2 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if ((date = [HolidayData adjustDate:date calendar:gregorian option:1])) {
 		holidayName = @"Makha Bucha Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"King Rama | Memorial and Chakri Day";
 	date = [HolidayData dateWithDay:6 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Songkran (Thai New Year)";
 	date = [HolidayData dateWithDay:13 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Songkran Holiday";
 	date = [HolidayData dateWithDay:14 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Songkran Holiday";
 	date = [HolidayData dateWithDay:15 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Songkran Holiday";
 	date = [HolidayData dateWithDay:16 month:4 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if ((date = [HolidayData adjustDate:date calendar:gregorian option:1])) {
 		holidayName = @"National Labor Day(day in lieu)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Coronation Day";
 	date = [HolidayData dateWithDay:5 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Royal Ploughing Ceremony Holiday";
 	date = [HolidayData dateWithDay:13 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Emergency Public Holiday";
 	date = [HolidayData dateWithDay:14 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Emergency Public Holiday(Bangkok and neighboring provinces)";
 	date = [HolidayData dateWithDay:17 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Emergency Public Holiday(Bangkok and neighboring provinces)";
 	date = [HolidayData dateWithDay:18 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Emergency Public Holiday(Bangkok and neighboring provinces)";
 	date = [HolidayData dateWithDay:19 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Emergency Public Holiday(Bangkok and neighboring provinces)";
 	date = [HolidayData dateWithDay:20 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Nationwide Bank Holiday";
 	date = [HolidayData dateWithDay:20 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Emergency Public Holiday(Bangkok and neighboring provinces)";
 	date = [HolidayData dateWithDay:21 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Nationwide Bank Holiday";
 	date = [HolidayData dateWithDay:21 month:5 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	date = [HolidayData getVesakDay:year forCountryCode:@"th" withCalendar:gregorian];
 	if (date) {
 		holidayName = @"Visakha Bucha Day(Buddha Day)";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Mid Year Bank Holiday";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Asarnha Bucha Day";
 	date = [HolidayData dateWithDay:26 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Public Sector Holiday";
 	date = [HolidayData dateWithDay:27 month:7 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"HM the Queen's Birthday";
 	date = [HolidayData dateWithDay:12 month:8 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if (year == 2010) {
 		holidayName = @"Holiday for HM the Queen's Birthday";
 		date = [HolidayData dateWithDay:13 month:8 year:year withCalendar:gregorian option:0];
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Chulalongkorn Day(Rama V Day)";
 	date = [HolidayData dateWithDay:23 month:10 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if ((date = [HolidayData adjustDate:date calendar:gregorian option:1])) {
 		holidayName = @"Chulalongkorn Holiday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"HM the King's Birthday";
 	date = [HolidayData dateWithDay:5 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	if ((date = [HolidayData adjustDate:date calendar:gregorian option:1])) {
 		holidayName = @"Holiday for HM the King's Birthday";
-		holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-		[holidays addObject:holidayItem];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:10 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	holidayItem = [NSArray arrayWithObjects:holidayName, date, nil];
-	[holidays addObject:holidayItem];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 
 	
