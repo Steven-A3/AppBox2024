@@ -10,9 +10,9 @@
 
 @implementation HolidayData (MiddleEast) 
 
-- (NSMutableArray *)sa_HolidaysInYear:(NSNumber *)yearObj
+- (NSMutableArray *)sa_HolidaysInYear
 {
-	NSUInteger year = [yearObj unsignedIntegerValue];
+	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -177,9 +177,9 @@
 }	
 
 // United Arab Emirates
-- (NSMutableArray *)ae_HolidaysInYear:(NSNumber *)yearObj
+- (NSMutableArray *)ae_HolidaysInYear
 {
-	NSUInteger year = [yearObj unsignedIntegerValue];
+	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -325,9 +325,9 @@
 }	
 
 // Qatar
-- (NSMutableArray *)qa_HolidaysInYear:(NSNumber *)yearObj
+- (NSMutableArray *)qa_HolidaysInYear
 {
-	NSUInteger year = [yearObj unsignedIntegerValue];
+	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -435,9 +435,9 @@
 }	
 
 // Jordan
-- (NSMutableArray *)jo_HolidaysInYear:(NSNumber *)yearObj
+- (NSMutableArray *)jo_HolidaysInYear
 {
-	NSUInteger year = [yearObj unsignedIntegerValue];
+	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -556,9 +556,9 @@
 }	
 
 // Egypt
-- (NSMutableArray *)eg_HolidaysInYear:(NSNumber *)yearObj
+- (NSMutableArray *)eg_HolidaysInYear
 {
-	NSUInteger year = [yearObj unsignedIntegerValue];
+	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]
@@ -662,9 +662,9 @@
 }
 
 // Kuwait
-- (NSMutableArray *)kw_HolidaysInYear:(NSNumber *)yearObj
+- (NSMutableArray *)kw_HolidaysInYear
 {
-	NSUInteger year = [yearObj unsignedIntegerValue];
+	NSUInteger year = self.year;
 
 	NSMutableArray *holidays = [[NSMutableArray alloc] init];
 	NSCalendar *gregorian = [[NSCalendar alloc]

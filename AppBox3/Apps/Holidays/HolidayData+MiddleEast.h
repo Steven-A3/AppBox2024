@@ -10,15 +10,15 @@
 #import "HolidayData.h"
 
 @interface HolidayData (MiddleEast)
-- (NSMutableArray *)sa_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)sa_HolidaysInYear;
 
-- (NSMutableArray *)ae_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ae_HolidaysInYear;
 
-- (NSMutableArray *)qa_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)qa_HolidaysInYear;
 
-- (NSMutableArray *)jo_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)jo_HolidaysInYear;
 
-- (NSMutableArray *)eg_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)eg_HolidaysInYear;
 
-- (NSMutableArray *)kw_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)kw_HolidaysInYear;
 @end

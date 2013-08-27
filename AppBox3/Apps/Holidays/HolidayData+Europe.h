@@ -10,73 +10,73 @@
 #import "HolidayData.h"
 
 @interface HolidayData (Europe)
-- (NSMutableArray *)ie_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ie_HolidaysInYear;
 
-- (NSMutableArray *)gb_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)gb_HolidaysInYear;
 
-- (NSMutableArray *)pt_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)pt_HolidaysInYear;
 
-- (NSMutableArray *)no_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)no_HolidaysInYear;
 
-- (NSMutableArray *)dk_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)dk_HolidaysInYear;
 
-- (NSMutableArray *)lu_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)lu_HolidaysInYear;
 
-- (NSMutableArray *)be_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)be_HolidaysInYear;
 
-- (NSMutableArray *)fr_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)fr_HolidaysInYear;
 
-- (NSMutableArray *)re_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)re_HolidaysInYear;
 
-- (NSMutableArray *)nl_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)nl_HolidaysInYear;
 
-- (NSMutableArray *)de_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)de_HolidaysInYear;
 
-- (NSMutableArray *)tr_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)tr_HolidaysInYear;
 
-- (NSMutableArray *)ee_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ee_HolidaysInYear;
 
-- (NSMutableArray *)hr_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)hr_HolidaysInYear;
 
-- (NSMutableArray *)sk_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)sk_HolidaysInYear;
 
-- (NSMutableArray *)cz_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)cz_HolidaysInYear;
 
-- (NSMutableArray *)lv_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)lv_HolidaysInYear;
 
-- (NSMutableArray *)fi_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)fi_HolidaysInYear;
 
-- (NSMutableArray *)se_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)se_HolidaysInYear;
 
-- (NSMutableArray *)li_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)li_HolidaysInYear;
 
-- (NSMutableArray *)at_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)at_HolidaysInYear;
 
-- (NSMutableArray *)it_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)it_HolidaysInYear;
 
-- (NSMutableArray *)lt_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)lt_HolidaysInYear;
 
-- (NSMutableArray *)ru_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ru_HolidaysInYear;
 
-- (NSMutableArray *)es_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)es_HolidaysInYear;
 
-- (NSMutableArray *)mt_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)mt_HolidaysInYear;
 
-- (NSMutableArray *)ch_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ch_HolidaysInYear;
 
-- (NSMutableArray *)pl_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)pl_HolidaysInYear;
 
-- (NSMutableArray *)md_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)md_HolidaysInYear;
 
-- (NSMutableArray *)gr_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)gr_HolidaysInYear;
 
-- (NSMutableArray *)hu_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)hu_HolidaysInYear;
 
-- (NSMutableArray *)ro_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ro_HolidaysInYear;
 
-- (NSMutableArray *)ua_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)ua_HolidaysInYear;
 
-- (NSMutableArray *)mk_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)mk_HolidaysInYear;
 
-- (NSMutableArray *)bg_HolidaysInYear:(NSNumber *)yearObj;
+- (NSMutableArray *)bg_HolidaysInYear;
 @end

@@ -417,14 +417,12 @@
 		68DB84BC17508CC1004521E0 /* A3HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */; };
 		68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */; };
 		68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0917CAE519005AB571 /* HolidayData.m */; };
-		68DBF05117CB8AAB009CAC33 /* A3HolidaysViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888091417C640D7008B2856 /* A3HolidaysViewController.m */; };
 		68DBF05217CB8AAB009CAC33 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
 		68DBF05317CB8AAB009CAC33 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
 		68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
 		68DBF05517CB8AAB009CAC33 /* HolidayData+Country.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426EC699433D4B659CF5B /* HolidayData+Country.m */; };
 		68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayData+Europe.m */; };
 		68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
-		68DBF05817CB8AB6009CAC33 /* A3FlickrImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C26E8417C6F93A00751BE3 /* A3FlickrImageView.m */; };
 		68DECCC6164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DECCC4164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.m */; };
 		68DECCC7164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68DECCC5164BDFC4001BE053 /* A3PhoneHomeCalendarMonthViewController.xib */; };
 		68E6F34717B25F1F00F10ED9 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F34517B25F1F00F10ED9 /* A3CurrencySettingsViewController.m */; };
@@ -3402,7 +3400,6 @@
 				6876D76317A75EB700E16991 /* NSManagedObject+MagicalFinders.m in Sources */,
 				6876D76917A75EB700E16991 /* NSManagedObjectContext+MagicalObserving.m in Sources */,
 				6876D76517A75EB700E16991 /* NSManagedObject+MagicalRecord.m in Sources */,
-				68DBF05117CB8AAB009CAC33 /* A3HolidaysViewController.m in Sources */,
 				68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */,
 				6876D76D17A75EB700E16991 /* NSManagedObjectContext+MagicalSaves.m in Sources */,
 				68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */,
@@ -3420,7 +3417,6 @@
 				6876D76117A75EB700E16991 /* NSManagedObject+MagicalDataImport.m in Sources */,
 				6876D75717A75EB700E16991 /* NSNumber+MagicalDataImport.m in Sources */,
 				6876D78317A75EB700E16991 /* MagicalRecord.m in Sources */,
-				68DBF05817CB8AB6009CAC33 /* A3FlickrImageView.m in Sources */,
 				6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */,
 				6876D77917A75EB700E16991 /* MagicalRecord+ErrorHandling.m in Sources */,
 				68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */,
