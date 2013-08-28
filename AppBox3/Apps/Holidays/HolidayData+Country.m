@@ -25,4 +25,13 @@
 			];
 }
 
+- (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year {
+	self.year = year;
+	NSMutableArray *holidays = [self valueForKeyPath:[NSString stringWithFormat:@"%@_HolidaysInYear", countryCode]];
+	[holidays sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+		return [obj1[kHolidayDate] compare:obj2[kHolidayDate]];
+	}];
+	return holidays;
+}
+
 @end

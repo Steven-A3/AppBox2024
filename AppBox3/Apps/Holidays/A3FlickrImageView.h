@@ -18,10 +18,11 @@
 @interface A3FlickrImageView : A3ImageView
 
 @property (nonatomic, weak) id<A3FlickrImageViewDelegate> delegate;
-- (void)displayImage;
+@property (nonatomic, readonly, copy) NSString *countryCode;
+@property (nonatomic, readonly, copy) NSString *ownerString;
+@property (nonatomic, readonly, copy) NSString *urlString;
 
-- (void)updateImageWithCountryCode:(NSString *)country;
-
-- (void)updateImage;
+- (void)displayImageWithCountryCode:(NSString *)countryCode;
+- (void)startUpdate;
 
 @end

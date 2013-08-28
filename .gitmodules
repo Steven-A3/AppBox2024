@@ -16,3 +16,6 @@
 [submodule "External/objectiveflickr"]
 	path = External/objectiveflickr
 	url = https://github.com/lukhnos/objectiveflickr.git
+[submodule "External/MagicalRecord"]
+	path = External/MagicalRecord
+	url = https://github.com/Steven-Gwug/MagicalRecord.git

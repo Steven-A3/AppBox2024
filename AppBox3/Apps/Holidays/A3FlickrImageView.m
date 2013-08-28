@@ -12,24 +12,24 @@
 #import "common.h"
 #import "UIImageView+AFNetworking.h"
 #import "NSString+conversion.h"
+#import "Reachability.h"
 
 // NSUserDefaults
 // Image will be saved with
-NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";
-NSString *const kA3HolidayScreenImageOwner = @"kA3HolidayScreenImageOwner";
-NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
+NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";		// USE key + country code
+NSString *const kA3HolidayScreenImageOwner = @"kA3HolidayScreenImageOwner";		// USE key + country code
+NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";			// USE key + country code
+NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownloadDate";			// USE key + country code
 
 @interface A3FlickrImageView () <CLLocationManagerDelegate, OFFlickrAPIRequestDelegate>
 
 @property (nonatomic, strong) OFFlickrAPIContext *flickrContext;
 @property (nonatomic, strong) OFFlickrAPIRequest *flickrRequest;
-@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSArray *keywords;
-@property (nonatomic, copy) NSString *administrativeArea;
-@property (nonatomic, copy) NSString *cityName;
+@property (nonatomic, copy) NSString *countryName;
 @property (nonatomic, strong) NSURL *photoURL;
 @property (nonatomic, strong) NSMutableArray *photoArray;
-@property (nonatomic, strong) UILabel *photoLabel;
+@property (nonatomic, copy) NSString *countryCode;
 
 @end
 
@@ -51,7 +51,9 @@ NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
     return self;
 }
 
-- (void)displayImage {
+- (void)displayImageWithCountryCode:(NSString *)countryCode {
+	self.countryCode = countryCode;
+
 	NSString *pathForSavedImage = [self pathForSavedImage];
 	if (pathForSavedImage) {
 		[self setImage:[UIImage imageWithContentsOfFile:pathForSavedImage]];
@@ -62,20 +64,21 @@ NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
 	}
 }
 
-- (void)updateImageWithCountryCode:(NSString *)country {
-	NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:country];
-	FNLOG(@"Country name: %@", countryName);
+- (void)startUpdate {
 
-	self.cityName = countryName;
-	[self photosSearch];
-}
+	if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
+		if (!self.downloadDate || [[NSDate date] timeIntervalSinceDate:self.downloadDate] > 60 * 60 * 24) {
+			NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode];
+			FNLOG(@"Country name: %@", countryName);
 
-- (void)updateImage {
-	[self startAskLocation];
+			self.countryName = countryName;
+			[self photosSearch];
+		}
+	}
 }
 
 - (NSString *)pathForSavedImage {
-	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:kA3HolidayScreenImagePath];
+	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
 	if ([savedImageFilename length]) {
 		NSString *filePath = [savedImageFilename pathInLibraryDirectory];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
@@ -85,45 +88,11 @@ NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
 	return nil;
 }
 
-- (void)startAskLocation {
-	_locationManager = [[CLLocationManager alloc] init];
-	[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
-	[_locationManager setDelegate:self];
-	[_locationManager startUpdatingLocation];
-}
-
-#pragma mark - CLLocationManagerDelegate
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    [manager stopUpdatingLocation];
-
-	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-	[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
-		for (CLPlacemark *placeMark in placeMarks) {
-
-//			FNLOG(@"%@", [placeMarks description]);
-//			FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
-			FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
-//			FNLOG(@"areas of Interest: %@", placeMark.areasOfInterest);
-			FNLOG(@"locality: %@", placeMark.locality);
-//			FNLOG(@"name: %@", placeMark.name);
-//			FNLOG(@"subLocality: %@", placeMark.subLocality);
-//
-			[self setCityName:placeMark.locality];
-            [self setAdministrativeArea:placeMark.administrativeArea];
-		}
-
-		if (_cityName) {
-			[self photosSearch];
-		}
-	}];
-}
-
 - (void)photosSearch {
     if ([_flickrRequest isRunning]) return;
     
 	NSDictionary *arguments = @{
-			@"text" : [NSString stringWithFormat:@"%@ %@", _cityName, _keywords[_keywordIndex]],
+			@"text" : [NSString stringWithFormat:@"%@ %@", _countryName, _keywords[_keywordIndex]],
 			@"sort" : @"interestingness-desc",
 			@"content_type" : @"1",		// Photos only
 			@"max_upload_date" : [NSString stringWithFormat:@"%.f", [[NSDate dateWithTimeInterval:-(60*60*24*365*2) sinceDate:[NSDate date]] timeIntervalSince1970] ],
@@ -143,10 +112,7 @@ NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
 			_photoArray = [[obj valueForKeyPath:@"photo"] mutableCopy];
 
             FNLOG(@"number of photos: %d", [_photoArray count]);
-            if ([_photoArray count] < 50) {
-                self.cityName = self.administrativeArea;
-            }
-            
+
 			if ([_photoArray count]) {
 				[self photosGetInfo];
 			} else {
@@ -187,12 +153,12 @@ NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
 						}
 					}
 
-					[[NSUserDefaults standardUserDefaults] setObject:obj[@"id"] forKey:kA3HolidayScreenImagePath];
-					[[NSUserDefaults standardUserDefaults] setObject:name forKey:kA3HolidayScreenImageOwner];
+					[self setImagePath:obj[@"id"]];
+					[self setOwner:name];
 					if (photoURLString) {
-						[[NSUserDefaults standardUserDefaults] setObject:photoURLString forKey:kA3HolidayScreenImageURL];
+						[self setURLString:photoURLString];
 					}
-					[[NSUserDefaults standardUserDefaults] synchronize];
+					[self setDownloadDate];
 
 					[self setImage:[UIImage imageWithContentsOfFile:newFilePath]];
 
@@ -205,6 +171,57 @@ NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";
 			}
 		}
 	}];
+}
+
+- (NSString *)imagePathKey {
+	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImagePath, _countryCode];
+}
+
+- (NSString *)imagePath {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
+}
+
+- (void)setImagePath:(NSString *)path {
+	[[NSUserDefaults standardUserDefaults] setObject:path forKey:self.imagePathKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)ownerString {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:self.ownerKey];
+}
+
+- (void)setOwner:(NSString *)owner {
+	[[NSUserDefaults standardUserDefaults] setObject:owner forKey:self.ownerKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)urlString {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:self.urlKey];
+}
+
+- (void)setURLString:(NSString *)urlString {
+	[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:self.urlKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSDate *)downloadDate {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:self.dateKey];
+}
+
+- (void)setDownloadDate {
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:self.dateKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSString *)ownerKey {
+	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageOwner, _countryCode];
+}
+- (NSString *)urlKey {
+	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageURL, _countryCode];
+}
+
+- (NSString *)dateKey {
+	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageDownloadDate, _countryCode];
 }
 
 - (void)photosGetInfo {

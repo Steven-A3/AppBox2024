@@ -11,4 +11,6 @@
 @interface HolidayData (Country)
 
 - (NSArray *)supportedCountries;
+
+- (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year;
 @end

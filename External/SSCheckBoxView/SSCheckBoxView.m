@@ -49,9 +49,9 @@ static const CGFloat kHeight = 36.0f;
         return self;
     }
 
-    stateChangedSelector = nil;
+//    stateChangedSelector = nil;
     self.stateChangedBlock = nil;
-    delegate = nil;
+//    delegate = nil;
     style = aStyle;
     checked = aChecked;
     self.enabled = YES;
@@ -109,12 +109,12 @@ static const CGFloat kHeight = 36.0f;
     [self updateCheckBoxImage];
 }
 
-- (void) setStateChangedTarget:(id<NSObject>)target
-                      selector:(SEL)selector
-{
-    delegate = target;
-    stateChangedSelector = selector;
-}
+//- (void) setStateChangedTarget:(id<NSObject>)target
+//                      selector:(SEL)selector
+//{
+//    delegate = target;
+//    stateChangedSelector = selector;
+//}
 
 
 #pragma mark -
@@ -163,10 +163,11 @@ static const CGFloat kHeight = 36.0f;
         if (CGRectContainsPoint(validTouchArea, point)) {
             checked = !checked;
             [self updateCheckBoxImage];
-            if (delegate && stateChangedSelector) {
-                [delegate performSelector:stateChangedSelector withObject:self];
-            }
-            else if (stateChangedBlock) {
+//            if (delegate && stateChangedSelector) {
+//                [delegate performSelector:stateChangedSelector withObject:self];
+//            }
+//            else
+            if (stateChangedBlock) {
                 stateChangedBlock(self);
             }
         }

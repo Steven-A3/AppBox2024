@@ -33,4 +33,13 @@
 	return 0.0;
 }
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[_centerButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.contentView.centerX);
+		make.centerY.equalTo(self.contentView.centerY);
+	}];
+}
+
 @end

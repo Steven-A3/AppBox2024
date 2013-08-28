@@ -1179,9 +1179,8 @@
 	NSCalendar *gregorian = [[NSCalendar alloc]
 							 initWithCalendarIdentifier:NSGregorianCalendar];
 
-	NSArray *holidayItem;
 	NSString *holidayName;
-	NSDate *date, *originalDate;
+	NSDate *date;
 
 	// New years day
 	holidayName = @"New Year's Day";

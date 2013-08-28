@@ -30,4 +30,13 @@
 	return 0.0;
 }
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[_centerLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.contentView.centerX);
+		make.centerY.equalTo(self.contentView.centerY);
+	}];
+}
+
 @end

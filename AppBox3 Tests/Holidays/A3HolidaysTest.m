@@ -14,8 +14,6 @@
 
 @interface A3HolidaysTest : XCTestCase
 
-
-
 @end
 
 @implementation A3HolidaysTest {
@@ -27,7 +25,7 @@
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
     _holidayData = [HolidayData new];
-    _holidayData.year = 2013;
+    _holidayData.year = 2014;
 }
 
 - (void)tearDown
@@ -38,15 +36,34 @@
 
 - (void)testDataForAllCountry
 {
+	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
     NSArray *allCountry = [_holidayData supportedCountries];
 	[allCountry enumerateObjectsUsingBlock:^(NSString *countryCode, NSUInteger idx, BOOL *stop) {
         NSString *keyPath = [NSString stringWithFormat:@"%@_HolidaysInYear", countryCode];
         NSLog(@"%@", keyPath);
 		NSMutableArray *holidays = [_holidayData valueForKeyPath:keyPath];
-		expect(holidays).beKindOf([NSMutableArray class]);
+		expect([holidays isMemberOfClass:[NSMutableArray class]]).beTruthy;
 		[holidays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
             NSLog(@"%@", obj);
-			expect(obj).beKindOf([NSDictionary class]);
+            NSString *name = [obj objectForKey:kHolidayName];
+            expect([name isMemberOfClass:[NSString class]]).beTruthy;
+            expect([name length]).beGreaterThan(1);
+            
+            NSDate *date = [obj objectForKey:kHolidayDate];
+			expect(date).notTo.beNil;
+			expect([date isMemberOfClass:[NSDate class]]).beTruthy;
+
+			NSDateComponents *components = [calendar components:NSYearCalendarUnit fromDate:date];
+			expect(components.year).to.equal(2014);
+
+			id public = [obj objectForKey:kHolidayIsPublic];
+			expect(public).notTo.beNil;
+			expect([public isMemberOfClass:[NSNumber class]]).beTruthy;
+
+			id duration = [obj objectForKey:kHolidayDuration];
+			expect(duration).notTo.beNil;
+			expect([duration isMemberOfClass:[NSNumber class]]).beTruthy;
 		}];
 	}];
 }

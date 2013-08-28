@@ -11,7 +11,7 @@
 
 @interface HolidayData (America)
 
-- (NSMutableArray *)jewish_HolidaysInYear;
+- (NSMutableArray *)il_HolidaysInYear;
 
 - (NSMutableArray *)do_HolidaysInYear;
 

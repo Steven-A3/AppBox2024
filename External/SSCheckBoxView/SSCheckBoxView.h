@@ -44,11 +44,11 @@ typedef enum SSCheckBoxViewStyle_ {
     UIImageView *checkBoxImageView;
     UILabel *textLabel;
 
-    /* called when check box changes state */
-    // this method would be in the following form:
-    // - (void) checkBoxViewChangedState:(SSCheckBoxView *)cbv;
-    SEL stateChangedSelector;
-    id<NSObject> delegate;
+//    /* called when check box changes state */
+//    // this method would be in the following form:
+//    // - (void) checkBoxViewChangedState:(SSCheckBoxView *)cbv;
+//    SEL stateChangedSelector;
+//    id<NSObject> delegate;
 
     void (^stateChangedBlock)(SSCheckBoxView *cbv);
 }
@@ -66,7 +66,7 @@ typedef enum SSCheckBoxViewStyle_ {
 
 - (void) setChecked:(BOOL)isChecked;
 
-- (void) setStateChangedTarget:(id<NSObject>)target
-                      selector:(SEL)selector;
+//- (void) setStateChangedTarget:(id<NSObject>)target
+//                      selector:(SEL)selector;
 
 @end

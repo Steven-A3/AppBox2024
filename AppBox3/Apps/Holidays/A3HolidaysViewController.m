@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "A3HolidaysViewController.h"
 #import "A3FlickrImageView.h"
 #import "UIViewController+navigation.h"
@@ -13,11 +14,13 @@
 #import "A3UIDevice.h"
 #import "common.h"
 
+NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountrisForCurrentDevice";
+
 static NSString *const kHolidayViewComponentBorderView = @"borderView";		// bounds equals to self.view.bounds
 static NSString *const kHolidayViewComponentImageView = @"imageView";		// bounds equals to alledgeInsets -50
 static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds eqauls to bottom inset 54 from self.view.bounds
 
-@interface A3HolidaysViewController () <A3FlickrImageViewDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate>
+@interface A3HolidaysViewController () <A3FlickrImageViewDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) A3FlickrImageView *backgroundImageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -26,20 +29,26 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) NSArray *countries;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSString *countryCodeOfCurrentLocation;
 
 @end
 
-@implementation A3HolidaysViewController
+@implementation A3HolidaysViewController {
+	NSUInteger _indexForImageUpdatingPage;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
+	_indexForImageUpdatingPage = 0;
+
 	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
 
-	_countries = @[@"kr", @"us", @"jp", @"de"];
-
 	[self.navigationController setNavigationBarHidden:YES];
+
+	[self countries];
 
 	[self setupScrollView];
 	[self setupFooterView];		// Page Control must be setup first, left refers its numberOfPages
@@ -47,14 +56,25 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 	[self leftBarButtonAppsButton];
 
 	[self.view layoutIfNeeded];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	if (self.isMovingToParentViewController) {
-		[_backgroundImageView displayImage];
-		[_backgroundImageView updateImage];
+		[self.viewComponents enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			A3FlickrImageView *imageView = obj[kHolidayViewComponentImageView];
+			[imageView displayImageWithCountryCode:self.countries[idx]];
+		}];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (self.isMovingToParentViewController) {
+		[self startAskLocation];
 	}
 }
 
@@ -71,6 +91,78 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Settings
+
+- (NSArray *)countries {
+	if (!_countries) {
+		_countries = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesForCurrentDevice];
+		if (!_countries) {
+			_countries = @[[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode], @"us"];
+			[[NSUserDefaults standardUserDefaults] setObject:_countries forKey:kHolidayCountriesForCurrentDevice];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
+	}
+	return _countries;
+}
+
+- (void)startAskLocation {
+	_locationManager = [[CLLocationManager alloc] init];
+	[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
+	[_locationManager setDelegate:self];
+	[_locationManager startUpdatingLocation];
+}
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+	[manager stopUpdatingLocation];
+
+	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+	[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
+		for (CLPlacemark *placeMark in placeMarks) {
+//			FNLOG(@"%@", [placeMarks description]);
+//			FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
+//			FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
+//			FNLOG(@"areas of Interest: %@", placeMark.areasOfInterest);
+//			FNLOG(@"locality: %@", placeMark.locality);
+//			FNLOG(@"name: %@", placeMark.name);
+//			FNLOG(@"subLocality: %@", placeMark.subLocality);
+
+			self.countryCodeOfCurrentLocation = [placeMark.addressDictionary[@"CountryCode"] lowercaseString];
+		}
+	}];
+	if ([self.countryCodeOfCurrentLocation length]) {
+		if (![self.countries[0] isEqualToString:_countryCodeOfCurrentLocation]) {
+			NSMutableArray *tempArray = [_countries mutableCopy];
+			[tempArray insertObject:_countryCodeOfCurrentLocation atIndex:0];
+			_countries = tempArray;
+
+			[[NSUserDefaults standardUserDefaults] setObject:_countries forKey:kHolidayCountriesForCurrentDevice];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+
+			[_footerView removeFromSuperview];
+			[_scrollView removeFromSuperview];
+			_scrollView = nil;
+			_footerView = nil;
+			_viewComponents = nil;
+
+			[self setupScrollView];
+			[self setupFooterView];
+
+			[self.view layoutIfNeeded];
+		}
+	}
+	[self startUpdateImage];
+}
+
+- (void)startUpdateImage {
+	if (_indexForImageUpdatingPage < [self.countries count]) {
+		A3FlickrImageView *imageView = self.viewComponents[_indexForImageUpdatingPage][kHolidayViewComponentImageView];
+		[imageView startUpdate];
+		_indexForImageUpdatingPage++;
+	}
 }
 
 #pragma mark - Layout
@@ -175,6 +267,8 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 
 - (void)flickrImageViewImageUpdated:(A3FlickrImageView *)view {
 	[self setPhotoLabelText];
+
+	[self startUpdateImage];
 }
 
 - (void)openURL {
@@ -190,6 +284,7 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 }
 
 #pragma mark - Setup ScrollView
+
 - (void)setupScrollView {
 	_scrollView = [UIScrollView new];
 	_scrollView.backgroundColor = [UIColor clearColor];
@@ -211,7 +306,7 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 	CGFloat viewWidth = self.view.bounds.size.width;
 	CGFloat viewHeight = self.view.bounds.size.height;
 	NSInteger idx = 0;
-	for (NSString *country in _countries) {
+	for (NSString *countryCode in self.countries) {
 		// Border view
 		UIView *borderView = [UIView new];
 		borderView.frame = CGRectMake(idx * viewWidth, 0, viewWidth, viewHeight);
@@ -240,9 +335,6 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 		[imageView addMotionEffect:interpolationHorizontal];
 		[imageView addMotionEffect:interpolationVertical];
 
-		[imageView displayImage];
-		[imageView updateImageWithCountryCode:country];
-
 		UITableView *tableView = [self tableView];
 		tableView.tag = idx;
 		[borderView addSubview:tableView];
@@ -256,6 +348,8 @@ static NSString *const kHolidayViewComponentTableView = @"tableView";		// bounds
 				kHolidayViewComponentImageView : imageView,
 				kHolidayViewComponentTableView : tableView
 		}];
+
+		idx++;
 	}
 }
 
