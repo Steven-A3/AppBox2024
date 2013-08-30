@@ -523,8 +523,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)configurePlusCell:(A3CurrencyTVActionCell *)actionCell {
-	actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
-	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
+//	actionCell.centerButton.titleLabel.font = [UIFont fontWithName:@"FontAwesome" size:25.0];
+//	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
 	[actionCell.centerButton addTarget:self action:@selector(addCurrencyAction) forControlEvents:UIControlEventTouchUpInside];
 }
 

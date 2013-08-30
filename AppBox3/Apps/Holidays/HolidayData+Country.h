@@ -13,4 +13,8 @@
 - (NSArray *)supportedCountries;
 
 - (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year;
+
++ (NSArray *)userSelectedCountries;
+
++ (void)setUserSelectedCountries:(NSArray *)newData;
 @end

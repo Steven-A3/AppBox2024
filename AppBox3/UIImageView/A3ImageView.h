@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DKLiveBlurView.h"
 
-@interface A3ImageView : UIImageView
+@interface A3ImageView : DKLiveBlurView
 
 @end

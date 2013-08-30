@@ -16,8 +16,12 @@
 		<string>https://github.com/mayoff/uiimage-from-animated-gif.git</string>
 		<key>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</key>
 		<string>https://github.com/nschum/FontAwesomeIconFactory.git</string>
+		<key>7CFFA1A3-456E-4605-ADE9-092FDC61528C</key>
+		<string>https://github.com/Steven-Gwug/FXPageControl.git</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
 		<string>https://github.com/FortAwesome/Font-Awesome.git</string>
+		<key>A762705B-6A14-49B9-942B-2EF5E930D682</key>
+		<string>https://github.com/Steven-Gwug/DKLiveBlur.git</string>
 		<key>B98EB309-4297-4826-AB64-726DAAD1FFCE</key>
 		<string>https://github.com/Steven-Gwug/Masonry.git</string>
 		<key>BD78CE31-CF32-41DD-AFC4-04E0E54247CF</key>
@@ -28,6 +32,8 @@
 		<string>file://localhost/opt/git/AppBox3.git/</string>
 		<key>ED1D360B-7FF6-4F7A-BAAA-E49C04791662</key>
 		<string>https://github.com/rentzsch/AutoLayoutShorthand.git</string>
+		<key>F5C4172A-7273-413E-9C92-88367A8B2689</key>
+		<string>https://github.com/Steven-Gwug/SMPageControl.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>AppBox3.xcworkspace</string>
@@ -39,8 +45,12 @@
 		<string>../External/uiimage-from-animated-gif</string>
 		<key>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</key>
 		<string>../External/FontAwesomeIconFactory</string>
+		<key>7CFFA1A3-456E-4605-ADE9-092FDC61528C</key>
+		<string>../External/FXPageControl</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
 		<string>../External/FontAwesomeIconFactory/Font-Awesome</string>
+		<key>A762705B-6A14-49B9-942B-2EF5E930D682</key>
+		<string>../External/DKLiveBlur</string>
 		<key>B98EB309-4297-4826-AB64-726DAAD1FFCE</key>
 		<string>../External/Masonry</string>
 		<key>BD78CE31-CF32-41DD-AFC4-04E0E54247CF</key>
@@ -51,6 +61,8 @@
 		<string>..</string>
 		<key>ED1D360B-7FF6-4F7A-BAAA-E49C04791662</key>
 		<string>../External/AutoLayoutShorthand</string>
+		<key>F5C4172A-7273-413E-9C92-88367A8B2689</key>
+		<string>../External/SMPageControl</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>file://localhost/opt/git/AppBox3.git/</string>
@@ -80,6 +92,14 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A762705B-6A14-49B9-942B-2EF5E930D682</string>
+			<key>IDESourceControlWCCName</key>
+			<string>DKLiveBlur</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Font-Awesome</string>
@@ -91,6 +111,14 @@
 			<string>52B5AB96-8D17-4DB8-95F8-B77ED54E7C2A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>FontAwesomeIconFactory</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7CFFA1A3-456E-4605-ADE9-092FDC61528C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FXPageControl</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
@@ -123,6 +151,14 @@
 			<string>C1859CE3-F109-4D71-B7A6-F9394A18C7BD</string>
 			<key>IDESourceControlWCCName</key>
 			<string>QuickDialog</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F5C4172A-7273-413E-9C92-88367A8B2689</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SMPageControl</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

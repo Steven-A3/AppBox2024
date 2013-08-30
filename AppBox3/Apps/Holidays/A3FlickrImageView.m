@@ -13,6 +13,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+conversion.h"
 #import "Reachability.h"
+#import "UIImage+Resizing.h"
 
 // NSUserDefaults
 // Image will be saved with
@@ -56,12 +57,13 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 	NSString *pathForSavedImage = [self pathForSavedImage];
 	if (pathForSavedImage) {
-		[self setImage:[UIImage imageWithContentsOfFile:pathForSavedImage]];
+		[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:pathForSavedImage]];
 	}
 	if (!self.image) {
 		NSString *defaultImageFilePath = [[NSBundle mainBundle] pathForResource:@"IMG_0277" ofType:@"JPG"];
-		[self setImage:[UIImage imageWithContentsOfFile:defaultImageFilePath]];
+		[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultImageFilePath]];
 	}
+	[self setBlurLevel:0];
 }
 
 - (void)startUpdate {
@@ -160,7 +162,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 					}
 					[self setDownloadDate];
 
-					[self setImage:[UIImage imageWithContentsOfFile:newFilePath]];
+					[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:newFilePath]];
 
 					if ([_delegate respondsToSelector:@selector(flickrImageViewImageUpdated:)]) {
 						[_delegate flickrImageViewImageUpdated:self];
@@ -235,6 +237,14 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 - (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didFailWithError:(NSError *)inError {
 
+}
+
+- (void)cropSetOriginalImage:(UIImage *)image {
+	CGRect bounds = CGRectInset(self.bounds, -50, -50);
+	UIImage *scaledImage = [image scaleToCoverSize:bounds.size];
+	UIImage *croppedImage = [scaledImage cropToSize:bounds.size usingMode:NYXCropModeCenter];
+
+	self.originalImage = croppedImage;
 }
 
 @end

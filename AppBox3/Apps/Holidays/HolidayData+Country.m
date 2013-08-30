@@ -8,6 +8,8 @@
 
 #import "HolidayData+Country.h"
 
+NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountrisForCurrentDevice";
+
 @implementation HolidayData (Country)
 
 - (NSArray *)supportedCountries {
@@ -27,11 +29,26 @@
 
 - (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year {
 	self.year = year;
-	NSMutableArray *holidays = [self valueForKeyPath:[NSString stringWithFormat:@"%@_HolidaysInYear", countryCode]];
+	NSMutableArray *holidays = [self valueForKeyPath:[NSString stringWithFormat:@"%@_HolidaysInYear", [countryCode lowercaseString]]];
 	[holidays sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 		return [obj1[kHolidayDate] compare:obj2[kHolidayDate]];
 	}];
 	return holidays;
+}
+
++ (NSArray *)userSelectedCountries {
+	NSArray *countries = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesForCurrentDevice];
+	if (!countries) {
+		countries = @[[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode], @"us"];
+		[[NSUserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+	return countries;
+}
+
++ (void)setUserSelectedCountries:(NSArray *)newData {
+	[[NSUserDefaults standardUserDefaults] setObject:newData forKey:kHolidayCountriesForCurrentDevice];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

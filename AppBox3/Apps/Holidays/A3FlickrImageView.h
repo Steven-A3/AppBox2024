@@ -15,7 +15,7 @@
 - (void)flickrImageViewImageUpdated:(A3FlickrImageView *)view;
 @end
 
-@interface A3FlickrImageView : A3ImageView
+@interface A3FlickrImageView : DKLiveBlurView
 
 @property (nonatomic, weak) id<A3FlickrImageViewDelegate> delegate;
 @property (nonatomic, readonly, copy) NSString *countryCode;

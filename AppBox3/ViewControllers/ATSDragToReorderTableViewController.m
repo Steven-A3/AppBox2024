@@ -711,7 +711,9 @@ typedef enum {
 		cellCopy = [self.indicatorDelegate cellIdenticalToCellAtIndexPath:indexPath forDragTableViewController:self];
 	else
 		cellCopy = [self.tableView.dataSource tableView:self.tableView cellForRowAtIndexPath:indexPath];
-	cellCopy.frame = [self.tableView rectForRowAtIndexPath:indexPath];
+    CGRect frame = [self.tableView rectForRowAtIndexPath:indexPath];
+    frame.origin.y -= frame.size.height / 2.0;
+	cellCopy.frame = frame;
 
 	[self.tableView addSubview:cellCopy];
 	[self.tableView bringSubviewToFront:cellCopy];

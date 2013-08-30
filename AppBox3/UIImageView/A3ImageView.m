@@ -30,12 +30,4 @@
 }
 */
 
-- (void)setImage:(UIImage *)image {
-	CGRect bounds = CGRectInset(self.bounds, -50, -50);
-	UIImage *scaledImage = [image scaleToCoverSize:bounds.size];
-	UIImage *croppedImage = [scaledImage cropToSize:bounds.size usingMode:NYXCropModeCenter];
-	FNLOG(@"%f, %f >> %f, %f", image.size.width, image.size.height, croppedImage.size.width, croppedImage.size.height);
-	[super setImage:croppedImage ];
-}
-
 @end

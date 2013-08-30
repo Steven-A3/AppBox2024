@@ -380,7 +380,7 @@ static NSUInteger jewishTable[][14][2] = {
 	observance = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:2];
 	if (![date isEqualToDate:observance]) {
 		holidayName = @"New Year's Day(Observed)";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:observance, kHolidayDuration:@1}];
 	}
 
 	// Martin Luther King Day, Third Monday of January
@@ -465,7 +465,7 @@ static NSUInteger jewishTable[][14][2] = {
 	observance = [HolidayData dateWithDay:4 month:7 year:year withCalendar:gregorian option:2];
 	if (![date isEqualToDate:observance]) {
 		holidayName = @"Independence Day(Observed)";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:observance, kHolidayDuration:@1}];
 	}
 	
 	// Labor Day is the first Monday of September. 
@@ -499,7 +499,7 @@ static NSUInteger jewishTable[][14][2] = {
 	observance = [HolidayData dateWithDay:11 month:11 year:year withCalendar:gregorian option:0];
 	if (![date isEqualToDate:observance]) {
 		holidayName = @"Veterans Day(Observed)";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:observance, kHolidayDuration:@1}];
 	}
 	
 	// Thanksgiving Day is the fourth Thursday in November.
