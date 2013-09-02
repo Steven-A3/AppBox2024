@@ -15,7 +15,6 @@
 
 @interface A3HolidaysCountryViewCell ()
 
-@property (nonatomic, strong) A3FlickrImageView *backgroundImageView;
 @property (nonatomic, strong) UILabel *countryName;
 @property (nonatomic, strong) UILabel *upcomingHoliday;
 @property (nonatomic, strong) UILabel *daysLeft;
@@ -37,11 +36,30 @@
 
 		// Initialization code
 		_backgroundImageView = [A3FlickrImageView new];
+		_backgroundImageView.useForCountryList = YES;
 		[self.contentView addSubview:_backgroundImageView];
 
 		[_backgroundImageView makeConstraints:^(MASConstraintMaker *make) {
 			make.edges.equalTo(self.contentView);
 		}];
+
+		UIView *filter = [UIView new];
+		filter.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+		[_backgroundImageView addSubview:filter];
+		[filter makeConstraints:^(MASConstraintMaker *make) {
+			make.edges.equalTo(_backgroundImageView);
+		}];
+
+		_numberOfHolidays = [UILabel new];
+		_numberOfHolidays.textColor = [UIColor whiteColor];
+		_numberOfHolidays.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:65];
+		[self.contentView addSubview:_numberOfHolidays];
+
+		[_numberOfHolidays makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(self.contentView.centerY);
+			make.right.equalTo(self.contentView.right).with.offset(IS_IPHONE ? -15 : -28);
+		}];
+		[_numberOfHolidays setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
 		_countryName = [UILabel new];
 		_countryName.textColor = [UIColor whiteColor];
@@ -50,8 +68,10 @@
 
 		[_countryName makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.right.lessThanOrEqualTo(_numberOfHolidays.left);
 			make.centerY.equalTo(self.contentView.centerY).with.offset(-12);
 		}];
+		[_countryName setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 
 		_upcomingHoliday = [UILabel new];
 		_upcomingHoliday.textColor = [UIColor whiteColor];
@@ -68,18 +88,10 @@
 
 		[_daysLeft makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(_upcomingHoliday.right).with.offset(1);
+			make.right.lessThanOrEqualTo(_numberOfHolidays.left);
 			make.baseline.equalTo(_upcomingHoliday);
 		}];
-
-		_numberOfHolidays = [UILabel new];
-		_numberOfHolidays.textColor = [UIColor whiteColor];
-		_numberOfHolidays.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:65];
-		[self.contentView addSubview:_numberOfHolidays];
-
-		[_numberOfHolidays makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(self.contentView.centerY);
-			make.right.equalTo(self.contentView.right).with.offset(-28);
-		}];
+		[_daysLeft setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 
 		[self setFontsForLabels];
 		[self layoutIfNeeded];
@@ -110,7 +122,7 @@
 	_countryName.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode];
 
 	HolidayData *holidayData = [HolidayData new];
-	NSMutableArray *holidaysThisYear = [holidayData holidaysForCountry:_countryCode year:_thisYear];
+	NSMutableArray *holidaysThisYear = [holidayData holidaysForCountry:_countryCode year:_thisYear fullSet:NO ];
 	NSUInteger upcomingHolidayIndex = [holidaysThisYear indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
 		return [[NSDate date] compare:obj[kHolidayDate]] == NSOrderedAscending;
 	}];

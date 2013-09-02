@@ -7,12 +7,15 @@
 //
 
 #import "HolidayData+Country.h"
+#import "NSMutableArray+IMSExtensions.h"
 
 NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountrisForCurrentDevice";
+NSString *const kHolidayCountryExcludedHolidays = @"kHolidayCountryExcludedHolidays";
+NSString *const kHolidayCountriesShowLunarDates = @"kHolidayCountriesShowLunarDates"; // Holds array of country codes
 
 @implementation HolidayData (Country)
 
-- (NSArray *)supportedCountries {
++ (NSArray *)supportedCountries {
 	return @[
 			@"ar", @"au", @"at", @"be", @"bw", @"br", @"cm", @"ca", @"cf", @"cl", // 10
 			@"cn", @"co", @"hr", @"cz", @"dk", @"do", @"ec", @"eg", @"sv", @"gq", // 20
@@ -27,9 +30,19 @@ NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountrisForCurrentD
 			];
 }
 
-- (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year {
+- (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year fullSet:(BOOL)fullSet {
 	self.year = year;
 	NSMutableArray *holidays = [self valueForKeyPath:[NSString stringWithFormat:@"%@_HolidaysInYear", [countryCode lowercaseString]]];
+	if (!fullSet) {
+		NSArray *excludedHoliday = [[NSUserDefaults standardUserDefaults] objectForKey:[[self class] keyForExcludedHolidaysForCountry:countryCode]];
+		NSMutableArray *needToDelete = [NSMutableArray new];
+		for (NSDictionary *item in holidays) {
+			if ([excludedHoliday containsObject:item[kHolidayName]]) {
+				[needToDelete addObject:item];
+			}
+		}
+		[holidays removeObjectsInArray:needToDelete];
+	}
 	[holidays sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
 		return [obj1[kHolidayDate] compare:obj2[kHolidayDate]];
 	}];
@@ -39,7 +52,14 @@ NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountrisForCurrentD
 + (NSArray *)userSelectedCountries {
 	NSArray *countries = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesForCurrentDevice];
 	if (!countries) {
-		countries = @[[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode], @"us"];
+
+		countries = @[@"us", @"kr", @"jp", @"gb"];
+
+		NSString *systemCountry = [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] lowercaseString];
+
+		if (![countries containsObject:systemCountry]) {
+			countries = [@[systemCountry] arrayByAddingObjectsFromArray:countries];
+		}
 		[[NSUserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
@@ -49,6 +69,56 @@ NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountrisForCurrentD
 + (void)setUserSelectedCountries:(NSArray *)newData {
 	[[NSUserDefaults standardUserDefaults] setObject:newData forKey:kHolidayCountriesForCurrentDevice];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (NSInteger)thisYear {
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
+	return [components year];
+}
+
++ (id)keyForExcludedHolidaysForCountry:(NSString *)countryCode {
+	return [NSString stringWithFormat:@"%@%@", kHolidayCountryExcludedHolidays, countryCode];
+}
+
++ (NSArray *)candidateForLunarDates {
+	return @[@"kr", @"cn", @"hk", @"tw"];
+}
++ (NSMutableArray *)arrayOfShowingLunarDates {
+	NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:kHolidayCountriesShowLunarDates];
+	if (!array) {
+		array = [HolidayData candidateForLunarDates];
+		[[NSUserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+	return [array mutableCopy];
+}
+
++ (BOOL)needToShowLunarDatesForCountryCode:(NSString *)countryCode {
+	NSMutableArray *array = [HolidayData arrayOfShowingLunarDates];
+	return [array containsObject:countryCode];
+}
+
++ (BOOL)needToShowLunarDatesOptionMenuForCountryCode:(NSString *)countryCode {
+	return [[HolidayData candidateForLunarDates] containsObject:countryCode];
+}
+
++ (void)addCountryToShowLunarDatesSet:(NSString *)countryCode {
+	NSMutableArray *array = [HolidayData arrayOfShowingLunarDates];
+	if (![array containsObject:countryCode]) {
+		[array addObject:countryCode];
+		[[NSUserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+}
+
++ (void)removeCountryFromShowLunarDatesSet:(NSString *)countryCode {
+	NSMutableArray *array = [HolidayData arrayOfShowingLunarDates];
+	if ([array containsObject:countryCode]) {
+		[array removeObject:countryCode];
+		[[NSUserDefaults standardUserDefaults] setObject:array forKey:kHolidayCountriesShowLunarDates];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
 }
 
 @end

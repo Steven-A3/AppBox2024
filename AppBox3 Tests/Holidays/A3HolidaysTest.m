@@ -38,7 +38,7 @@
 {
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 
-    NSArray *allCountry = [_holidayData supportedCountries];
+    NSArray *allCountry = [HolidayData supportedCountries];
 	[allCountry enumerateObjectsUsingBlock:^(NSString *countryCode, NSUInteger idx, BOOL *stop) {
         NSString *keyPath = [NSString stringWithFormat:@"%@_HolidaysInYear", countryCode];
         NSLog(@"%@", keyPath);

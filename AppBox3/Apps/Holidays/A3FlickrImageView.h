@@ -21,8 +21,10 @@
 @property (nonatomic, readonly, copy) NSString *countryCode;
 @property (nonatomic, readonly, copy) NSString *ownerString;
 @property (nonatomic, readonly, copy) NSString *urlString;
+@property (nonatomic) BOOL useForCountryList;
 
 - (void)displayImageWithCountryCode:(NSString *)countryCode;
 - (void)startUpdate;
 
+- (void)deleteImage;
 @end

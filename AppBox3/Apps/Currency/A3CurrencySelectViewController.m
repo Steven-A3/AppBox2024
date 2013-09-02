@@ -7,22 +7,11 @@
 //
 
 #import "A3CurrencySelectViewController.h"
-#import "CommonUIDefinitions.h"
-#import "common.h"
 #import "CurrencyItem.h"
 #import "CurrencyItem+name.h"
-#import "NSManagedObject+MagicalFinders.h"
 #import "CurrencyFavorite.h"
-#import "UIViewController+A3AppCategory.h"
-#import "A3RootViewController.h"
-#import "A3UIDevice.h"
-#import "UIViewController+navigation.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
-
-@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
-@property (nonatomic, strong) UISearchBar *searchBar;
-@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
@@ -30,59 +19,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-	[self rightBarButtonDoneButton];
-	[self mySearchDisplayController];
-	self.tableView.tableHeaderView = self.searchBar;
-
-    _searchBar.placeholder = @"Search Currency";
-    self.title = NSLocalizedString(@"Select Currency", @"Select Currency");
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	if ([_placeHolder length]) {
-		self.searchBar.text = _placeHolder;
-		[self filterContentForSearchText:_placeHolder];
-	}
-	[self.mySearchDisplayController setActive:YES];
-}
-
-- (void)doneButtonAction:(UIBarButtonItem *)button {
-	if ([_delegate respondsToSelector:@selector(willDismissCurrencySelectView)]) {
-		[_delegate willDismissCurrencySelectView];
-	}
-
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
-	} else {
-		if (_shouldPopViewController) {
-			[self.navigationController popViewControllerAnimated:YES];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
-	}
-}
-
-- (UISearchDisplayController *)mySearchDisplayController {
-	if (!_mySearchDisplayController) {
-		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-		_mySearchDisplayController.searchBar.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.delegate = self;
-		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-	}
-	return _mySearchDisplayController;
-}
-
-- (UISearchBar *)searchBar {
-	if (!_searchBar) {
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
-		_searchBar.delegate = self;
-		_searchBar.barTintColor = [UIColor colorWithWhite:0.0 alpha:0.1];
-	}
-	return _searchBar;
+    
+    self.searchBar.placeholder = @"Search Currency";
+    self.title = @"Select Currency";
 }
 
 - (void)didReceiveMemoryWarning
@@ -91,34 +30,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+// The method to change the predicate of the FRC
+- (void)filterContentForSearchText:(NSString*)searchText
+{
+	NSString *query = searchText;
+	if (query && query.length) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ or currencyCode contains[cd] %@", query, query];
+		self.fetchedResultsController = [CurrencyItem MR_fetchAllSortedBy:A3KeyCurrencyCode ascending:YES withPredicate:predicate groupBy:nil delegate:nil];
+	} else {
+		self.fetchedResultsController = nil;
+	}
+	[self.tableView reloadData];
+}
+
 #pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return [[self.fetchedResultsController sections] count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-	return [sectionInfo numberOfObjects];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-	// Display the authors' names as section headings.
-	return [[[self.fetchedResultsController sections] objectAtIndex:section] name];
-}
-
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-	return [self.fetchedResultsController sectionIndexTitles];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-	return [self.fetchedResultsController sectionForSectionIndexTitle:title atIndex:index];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -135,7 +60,7 @@
 	}
 
 	UIColor *textColor;
-	if (_allowChooseFavorite) {
+	if (self.allowChooseFavorite) {
 		textColor = [UIColor blackColor];
 	} else {
 		if ([self isFavoriteItemForCurrencyItem:currencyItem]) {
@@ -179,62 +104,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	CurrencyItem *currencyItem = [self.fetchedResultsController objectAtIndexPath:indexPath];
-	if (!_allowChooseFavorite && [self isFavoriteItemForCurrencyItem:currencyItem]) {
+	if (!self.allowChooseFavorite && [self isFavoriteItemForCurrencyItem:currencyItem]) {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		return;
 	}
 
-	if ([_delegate respondsToSelector:@selector(currencySelected:)]) {
-		[_delegate currencySelected:currencyItem.currencyCode];
-	}
-	if (IS_IPHONE) {
-		if (_shouldPopViewController) {
-			[self.navigationController popViewControllerAnimated:YES];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
-	} else {
-		[self.A3RootViewController dismissRightSideViewController];
-	}
-}
-
-- (NSFetchedResultsController *)fetchedResultsController {
-	return _fetchedResultsController;
-}
-
-// The method to change the predicate of the FRC
-- (void)filterContentForSearchText:(NSString*)searchText
-{
-	NSString *query = searchText;
-	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name contains[cd] %@ or currencyCode contains[cd] %@", query, query];
-		_fetchedResultsController = [CurrencyItem MR_fetchAllSortedBy:A3KeyCurrencyCode ascending:YES withPredicate:predicate groupBy:nil delegate:nil];
-	} else {
-		_fetchedResultsController = nil;
-	}
-	[self.tableView reloadData];
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	_searchBar.text = @"";
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-	[self filterContentForSearchText:searchText];
-}
-
-// called when cancel button pressed
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	[self doneButtonAction:nil];
-
-//	_fetchedResultsController = nil;
-//	[self.tableView reloadData];
-}
-
-// called when Search (in our case "Done") button pressed
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-	[searchBar resignFirstResponder];
+	[self callDelegate:currencyItem.currencyCode];
 }
 
 @end

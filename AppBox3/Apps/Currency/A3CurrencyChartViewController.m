@@ -23,7 +23,7 @@
 #import "NSNumberExtensions.h"
 #import "UIViewController+navigation.h"
 
-@interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, CurrencySelectViewControllerDelegate>
+@interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 
 @property (nonatomic, weak) IBOutlet UITableView *tableView;
 @property (nonatomic, weak) IBOutlet UIView *line1;
@@ -363,19 +363,19 @@
 	[self presentSubViewController:viewController];
 }
 
-- (void)currencySelected:(NSString *)selectedCurrencyCode {
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if (_selectionInSource) {
-		self.sourceCurrencyCode = selectedCurrencyCode;
+		self.sourceCurrencyCode = selectedItem;
 		_sourceItem = nil;
 	} else {
-		self.targetCurrencyCode = selectedCurrencyCode;
+		self.targetCurrencyCode = selectedItem;
 		_targetItem = nil;
 	}
 	[self.tableView reloadData];
 	[self updateDisplay];
 }
 
-- (void)willDismissCurrencySelectView {
+- (void)willDismissSearchViewController {
 	[self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
 }
 

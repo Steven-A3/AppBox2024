@@ -14,6 +14,9 @@
 #import "NSString+conversion.h"
 #import "Reachability.h"
 #import "UIImage+Resizing.h"
+#import "A3UIDevice.h"
+#import "UIImage+Saving.h"
+#import "UIImage+Filtering.h"
 
 // NSUserDefaults
 // Image will be saved with
@@ -21,6 +24,13 @@ NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";		// US
 NSString *const kA3HolidayScreenImageOwner = @"kA3HolidayScreenImageOwner";		// USE key + country code
 NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";			// USE key + country code
 NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownloadDate";			// USE key + country code
+
+NSString *const kA3HolidayImageiPadLandScape = @"ipadLandscape";
+NSString *const kA3HolidayImageiPadPortrait = @"ipadProtrait";
+NSString *const kA3HolidayImageiPhone = @"iPhone";
+NSString *const kA3HolidayImageiPadLandScapeList = @"ipadLandscapeList";
+NSString *const kA3HolidayImageiPadPortraitList = @"ipadProtraitList";
+NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 @interface A3FlickrImageView () <CLLocationManagerDelegate, OFFlickrAPIRequestDelegate>
 
@@ -46,7 +56,7 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 		_flickrContext = [[OFFlickrAPIContext alloc] initWithAPIKey:OBJECTIVE_FLICKR_API_KEY sharedSecret:OBJECTIVE_FLICKR_API_SHARED_SECRET];
 		_flickrRequest = [[OFFlickrAPIRequest alloc] initWithAPIContext:_flickrContext];
 		[_flickrRequest setDelegate:self];
-		_keywords = @[@"street", @"sky", @"national park", @"street", @"street", @"bridge"];
+		_keywords = @[@"sky", @"national park", @"weather", @"bridge", @"mountain"];
 		_keywordIndex = arc4random_uniform([_keywords count] - 1);
 	}
     return self;
@@ -57,13 +67,25 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 	NSString *pathForSavedImage = [self pathForSavedImage];
 	if (pathForSavedImage) {
-		[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:pathForSavedImage]];
+		self.originalImage = [UIImage imageWithContentsOfFile:pathForSavedImage];
+	} else {
+		NSString *defaultImageFileName;
+		if (IS_IPHONE) {
+			defaultImageFileName = [NSString stringWithFormat:@"%@%@", @"default", kA3HolidayImageiPhone];
+		} else {
+			defaultImageFileName = [NSString stringWithFormat:@"%@%@", @"default", IS_LANDSCAPE ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
+		}
+		if (_useForCountryList) {
+			defaultImageFileName = [defaultImageFileName stringByAppendingString:@"List"];
+		}
+		if (![[NSFileManager defaultManager] fileExistsAtPath:[defaultImageFileName pathInLibraryDirectory] ] ) {
+			[self setImagePath:@"default"];
+            NSString *defaultOriginalImagePath = [[NSBundle mainBundle] pathForResource:@"IMG_0277" ofType:@"JPG"];
+			[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultOriginalImagePath]];
+		}
+        self.originalImage = [UIImage imageWithContentsOfFile:[defaultImageFileName pathInLibraryDirectory] ];
 	}
-	if (!self.image) {
-		NSString *defaultImageFilePath = [[NSBundle mainBundle] pathForResource:@"IMG_0277" ofType:@"JPG"];
-		[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultImageFilePath]];
-	}
-	[self setBlurLevel:0];
+	[self setBlurLevel:0.2];
 }
 
 - (void)startUpdate {
@@ -75,13 +97,26 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 
 			self.countryName = countryName;
 			[self photosSearch];
+
+			return;
 		}
+	}
+	if ([_delegate respondsToSelector:@selector(flickrImageViewImageUpdated:)]) {
+		[_delegate flickrImageViewImageUpdated:self];
 	}
 }
 
 - (NSString *)pathForSavedImage {
 	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
 	if ([savedImageFilename length]) {
+		if (IS_IPHONE) {
+			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, kA3HolidayImageiPhone];
+		} else {
+			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, IS_LANDSCAPE ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
+		}
+		if (_useForCountryList) {
+			savedImageFilename = [savedImageFilename stringByAppendingString:@"List"];
+		}
 		NSString *filePath = [savedImageFilename pathInLibraryDirectory];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
 			return filePath;
@@ -134,16 +169,16 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 				FNLOG(@"%@", obj);
 				FNLOG(@"%@", _photoURL);
 				AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:_photoURL] success:^(UIImage *image) {
-					NSString *pathForSavedImage = [self pathForSavedImage];
-					if (pathForSavedImage) {
-						NSError *error;
-						[[NSFileManager defaultManager] removeItemAtPath:pathForSavedImage error:&error];
+
+					if (![[self imagePath] isEqualToString:@"default"]) {
+						[self deleteImage];
 					}
 
-					NSString *newFilePath = [obj[@"id"] pathInLibraryDirectory];
-					NSData *data = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
-					[data writeToFile:newFilePath atomically:YES];
-
+//#if TARGET_IPHONE_SIMULATOR
+//					NSString *newFilePath = [obj[@"id"] pathInLibraryDirectory];
+//					NSData *data = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
+//					[data writeToFile:newFilePath atomically:YES];
+//#endif
 					NSString *name = obj[@"owner"][@"realname"];
 					if (![name length]) name = obj[@"owner"][@"username"];
 
@@ -156,13 +191,15 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 					}
 
 					[self setImagePath:obj[@"id"]];
+
 					[self setOwner:name];
+
 					if (photoURLString) {
 						[self setURLString:photoURLString];
 					}
 					[self setDownloadDate];
 
-					[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:newFilePath]];
+					[self cropSetOriginalImage:image];
 
 					if ([_delegate respondsToSelector:@selector(flickrImageViewImageUpdated:)]) {
 						[_delegate flickrImageViewImageUpdated:self];
@@ -240,11 +277,77 @@ NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownl
 }
 
 - (void)cropSetOriginalImage:(UIImage *)image {
-	CGRect bounds = CGRectInset(self.bounds, -50, -50);
-	UIImage *scaledImage = [image scaleToCoverSize:bounds.size];
-	UIImage *croppedImage = [scaledImage cropToSize:bounds.size usingMode:NYXCropModeCenter];
+	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
+	if (!filename) filename = @"default";
 
-	self.originalImage = croppedImage;
+	if (IS_IPAD) {
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
+		CGRect bounds = CGRectInset(screenBounds, -50, -50);
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
+		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+
+		bounds = screenBounds;
+		bounds.size.height = 84;
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortraitList] pathInLibraryDirectory];
+		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+
+		bounds = screenBounds;
+		bounds.size.width = screenBounds.size.height;
+		bounds.size.height = screenBounds.size.width;
+
+		bounds = CGRectInset(bounds, -50, -50);
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
+		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+
+		bounds = screenBounds;
+		bounds.size.width = screenBounds.size.height;
+		bounds.size.height = 84;
+
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScapeList] pathInLibraryDirectory];
+		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+
+	} else {
+		CGRect screenBounds = [[UIScreen mainScreen] bounds];
+
+		CGRect bounds = CGRectInset(screenBounds, -50, -50);
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
+		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+
+		bounds = screenBounds;
+		bounds.size.height = 84;
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhoneList] pathInLibraryDirectory];
+		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+	}
+}
+
+- (void)saveImage:(UIImage *)image bounds:(CGRect)bounds path:(NSString *)path usingMode:(NYXCropMode)cropMode {
+	UIImage *scaledImage = [image scaleToCoverSize:bounds.size];
+	UIImage *croppedImage = [scaledImage cropToSize:bounds.size usingMode:cropMode];
+	[UIImageJPEGRepresentation(croppedImage, 0.5) writeToFile:path atomically:YES];
+
+	return;
+}
+
+- (void)deleteImage {
+	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if (IS_IPAD) {
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
+		[fileManager removeItemAtPath:path error:nil];
+		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
+		[fileManager removeItemAtPath:path error:nil];
+	} else {
+		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
+		[fileManager removeItemAtPath:path error:nil];
+	}
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults removeObjectForKey:self.imagePathKey];
+	[defaults removeObjectForKey:self.ownerKey];
+	[defaults removeObjectForKey:self.urlKey];
+	[defaults removeObjectForKey:self.dateKey];
+	[defaults synchronize];
 }
 
 @end

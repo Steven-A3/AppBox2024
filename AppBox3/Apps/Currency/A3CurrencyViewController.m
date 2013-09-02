@@ -37,7 +37,7 @@
 #import "NSString+conversion.h"
 #import "UIViewController+navigation.h"
 
-@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, CurrencySelectViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate>
+@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem, *plusItem;
@@ -675,14 +675,14 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)willDismissCurrencySelectView {
+- (void)willDismissSearchViewController {
 	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)currencySelected:(NSString *)selectedCurrencyCode {
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 	if (_isAddingCurrency) {
-		NSArray *result = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedCurrencyCode];
+		NSArray *result = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedItem];
 		if ([result count]) {
 			CurrencyItem *currencyItem = result[0];
 			CurrencyFavorite *newFavorite = [CurrencyFavorite MR_createEntity];
@@ -695,7 +695,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		}
 	} else {
 		CurrencyFavorite *favorite = self.favorites[_selectedRow];
-		NSArray *results = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedCurrencyCode];
+		NSArray *results = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedItem];
 		if ([results count]) {
 			favorite.currencyItem = results[0];
 			[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];

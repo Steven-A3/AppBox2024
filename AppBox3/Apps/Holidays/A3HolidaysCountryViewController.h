@@ -7,8 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ATSDragToReorderTableViewController.h"
+
+@protocol A3HolidaysCountryViewControllerDelegate;
 
 @interface A3HolidaysCountryViewController : UIViewController
+
+@property (nonatomic, weak) id<A3HolidaysCountryViewControllerDelegate> delegate;
+
+@end
+
+@protocol A3HolidaysCountryViewControllerDelegate <NSObject>
+
+- (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode;
 
 @end

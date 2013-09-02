@@ -833,7 +833,11 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
+
+	holidayName = @"HangeulNal";
+	date = [HolidayData dateWithDay:9 month:10 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
 	// Christmas Day
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
@@ -1459,7 +1463,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 {
 	NSUInteger year = self.year;
 
-	if ((year < 2006) || (year > 2013)) {
+	if ((year < 2006) || (year > 2014)) {
 		return nil;
 	}
 	

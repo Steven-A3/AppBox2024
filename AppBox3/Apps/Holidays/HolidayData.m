@@ -1147,6 +1147,8 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 	return newDate;
 }
 
+/*! This calculates Chinese lunar dates
+ */
 + (NSDate *)lunarDateWithGregorianDate:(NSDate *)date
 {
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

@@ -10,11 +10,22 @@
 
 @interface HolidayData (Country)
 
-- (NSArray *)supportedCountries;
-
-- (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year;
-
++ (NSArray *)supportedCountries;
 + (NSArray *)userSelectedCountries;
 
+- (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year fullSet:(BOOL)fullSet;
+
++ (id)keyForExcludedHolidaysForCountry:(NSString *)countryCode;
+
++ (BOOL)needToShowLunarDatesForCountryCode:(NSString *)countryCode;
+
++ (BOOL)needToShowLunarDatesOptionMenuForCountryCode:(NSString *)countryCode;
+
++ (void)addCountryToShowLunarDatesSet:(NSString *)countryCode;
+
++ (void)removeCountryFromShowLunarDatesSet:(NSString *)countryCode;
+
 + (void)setUserSelectedCountries:(NSArray *)newData;
+
++ (NSInteger)thisYear;
 @end

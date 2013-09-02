@@ -1,0 +1,237 @@
+//
+//  A3HolidaysEditViewController.m
+//  AppBox3
+//
+//  Created by Byeong Kwon Kwak on 9/1/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3HolidaysEditViewController.h"
+#import "HolidayData.h"
+#import "HolidayData+Country.h"
+#import "UIViewController+navigation.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3HolidaysEditCell.h"
+#import "A3UIDevice.h"
+#import "A3HolidaysAddToDaysCounterViewController.h"
+
+@interface A3HolidaysEditViewController () <UIActionSheetDelegate>
+
+@property (nonatomic, strong) NSArray *holidaysForCountry;
+@property (nonatomic, strong) NSMutableArray *excludedHolidays;
+
+@end
+
+@implementation A3HolidaysEditViewController {
+    BOOL _dataUpdated;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+static NSString *CellIdentifier = @"Cell";
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+	UIBarButtonItem *addToDaysCounter = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addToDaysCounter"] style:UIBarButtonItemStylePlain target:self action:@selector(addToDaysCounter:)];
+	self.navigationItem.leftBarButtonItem = addToDaysCounter;
+
+	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
+    self.navigationItem.rightBarButtonItem = doneButton;
+
+	[self.tableView registerClass:[A3HolidaysEditCell class] forCellReuseIdentifier:CellIdentifier];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	}
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	if ([self isMovingFromParentViewController]) {
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)addToDaysCounter:(UIBarButtonItem *)button {
+	A3HolidaysAddToDaysCounterViewController *viewController = [[A3HolidaysAddToDaysCounterViewController alloc] initWithStyle:UITableViewStylePlain];
+	viewController.countryCode = _countryCode;
+	[self presentSubViewController:viewController];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[_delegate viewController:self willDismissViewControllerWithDataUpdated:_dataUpdated];
+
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+}
+
+- (void)resetButtonAction:(UIBarButtonItem *)button {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"This will rest all settigns.\nNo data will be deleted." delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Reset All" otherButtonTitles:nil];
+	[actionSheet showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (buttonIndex == actionSheet.destructiveButtonIndex) {
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+        _excludedHolidays = nil;
+		[self.tableView reloadData];
+		_dataUpdated = YES;
+	}
+}
+
+#pragma mark - Setup data
+
+- (void)setCountryCode:(NSString *)countryCode {
+	_countryCode = [countryCode mutableCopy];
+	HolidayData *holidayData = [HolidayData new];
+	_holidaysForCountry = [holidayData holidaysForCountry:_countryCode year:[HolidayData thisYear] fullSet:YES ];
+	NSArray *excludedList = [[NSUserDefaults standardUserDefaults] objectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+	_excludedHolidays = [excludedList mutableCopy];
+
+	self.title = [NSString stringWithFormat:@"%@ (%d)",
+			[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode], [_holidaysForCountry count]];
+}
+
+- (NSMutableArray *)excludedHolidays {
+	if (!_excludedHolidays) {
+		_excludedHolidays = [NSMutableArray new];
+	}
+	return _excludedHolidays;
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return [HolidayData needToShowLunarDatesOptionMenuForCountryCode:_countryCode] ? 4 : 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+	if (!section) return [_holidaysForCountry count];
+
+    return 1;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		A3HolidaysEditCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+
+		// Configure the cell...
+		NSDictionary *holiday = self.holidaysForCountry[indexPath.row];
+		cell.nameLabel.text = holiday[kHolidayName];
+		BOOL isPublic = [holiday[kHolidayIsPublic] boolValue];
+		[cell.publicMarkView setHidden:!isPublic];
+		[cell.publicLabel setHidden:!isPublic];
+		cell.switchControl.tag = indexPath.row;
+		[cell.switchControl addTarget:self action:@selector(switchControlAction:) forControlEvents:UIControlEventValueChanged];
+
+		[cell.switchControl setOn:![_excludedHolidays containsObject:holiday[kHolidayName]]];
+
+		return cell;
+	} else {
+		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+		switch (indexPath.section) {
+			case 1:
+				cell.textLabel.text = @"Reset Show/Hide Settings";
+				cell.textLabel.textColor = self.view.tintColor;
+				break;
+			case 2:
+				cell.textLabel.text = @"Choose Wallpaper";
+				cell.accessoryView = [self cameraButton];
+				break;
+			case 3:
+				cell.textLabel.text = @"Show Lunar Date";
+				cell.accessoryView = [self lunarSwitch];
+				break;
+		}
+		return cell;
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+	switch (indexPath.section) {
+		case 1:
+			[self resetButtonAction:nil];
+			break;
+		case 2:
+			[self pickWallpaper];
+			break;
+		case 3: {
+			UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+			[self lunarOnOff:(UISwitch *) cell.accessoryView];
+		}
+	}
+}
+
+- (UIButton *)cameraButton {
+	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+	[button setImage:[UIImage imageNamed:@"camera.png"] forState:UIControlStateNormal];
+	[button addTarget:self action:@selector(pickWallpaper) forControlEvents:UIControlEventTouchUpInside];
+	[button sizeToFit];
+	return button;
+}
+
+- (void)switchControlAction:(UISwitch *)switchControl {
+	NSDictionary *holiday = self.holidaysForCountry[switchControl.tag];
+	if (switchControl.isOn) {
+		[self.excludedHolidays removeObject:holiday[kHolidayName]];
+	} else {
+		if (![self.excludedHolidays containsObject:holiday[kHolidayName]]) {
+			[self.excludedHolidays addObject:holiday[kHolidayName]];
+		}
+	}
+	[[NSUserDefaults standardUserDefaults] setObject:_excludedHolidays forKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	_dataUpdated = YES;
+}
+
+- (UISwitch *)lunarSwitch {
+	UISwitch *lunarControl = [UISwitch new];
+	[lunarControl addTarget:self action:@selector(lunarOnOff:) forControlEvents:UIControlEventValueChanged];
+	return lunarControl;
+}
+
+- (void)pickWallpaper {
+
+}
+
+- (void)lunarOnOff:(UISwitch *)switchControl {
+
+}
+
+@end

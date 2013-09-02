@@ -12,8 +12,13 @@
 #import "A3HolidaysCountryViewCell.h"
 #import "A3CurrencyTVActionCell.h"
 #import "FMMoveTableView.h"
+#import "A3HolidaysCountrySearchViewController.h"
+#import "UIViewController+navigation.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3UIDevice.h"
+#import "A3FlickrImageView.h"
 
-@interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate>
+@interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3SearchViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *userSelectedCountries;
 @property (nonatomic, strong) FMMoveTableView *tableView;
@@ -113,7 +118,16 @@ extern NSString *const A3CurrencyActionCellID;
 }
 
 - (void)plusButtonAction {
+	A3HolidaysCountrySearchViewController *viewController = [[A3HolidaysCountrySearchViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.delegate = self;
+	[self presentSubViewController:viewController];
+}
 
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	[_userSelectedCountries addObject:selectedItem];
+	[HolidayData setUserSelectedCountries:_userSelectedCountries];
+
+	[self.tableView reloadData];
 }
 
 //- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -132,18 +146,29 @@ extern NSString *const A3CurrencyActionCellID;
 	return indexPath.row != [self.userSelectedCountries count];
 }
 
+extern NSString *const kA3HolidayScreenImagePath;
+extern NSString *const kA3HolidayScreenImageOwner;
+extern NSString *const kA3HolidayScreenImageURL;
+extern NSString *const kA3HolidayScreenImageDownloadDate;
+
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+
+		A3HolidaysCountryViewCell *cell = (A3HolidaysCountryViewCell *) [tableView cellForRowAtIndexPath:indexPath];
+		[cell.backgroundImageView deleteImage];
+
 		[self.userSelectedCountries removeObjectAtIndex:indexPath.row];
+		[HolidayData setUserSelectedCountries:_userSelectedCountries];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
 }
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.userSelectedCountries moveObjectFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[HolidayData setUserSelectedCountries:_userSelectedCountries];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -164,7 +189,20 @@ extern NSString *const A3CurrencyActionCellID;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == [_userSelectedCountries count]) {
+		[self plusButtonAction];
+		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	} else {
+		if (IS_IPAD) {
+			[self.A3RootViewController dismissRightSideViewController];
+		} else {
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
 
+		NSUInteger row = (NSUInteger) indexPath.row;
+
+		[_delegate viewController:self didFinishPickingCountry:self.userSelectedCountries[row]];
+	}
 }
 
 @end

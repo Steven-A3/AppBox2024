@@ -9,8 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "FMMoveTableViewCell.h"
 
+@class A3FlickrImageView;
+
 @interface A3HolidaysCountryViewCell : FMMoveTableViewCell
 
 @property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, strong) A3FlickrImageView *backgroundImageView;
 
 @end

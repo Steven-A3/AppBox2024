@@ -25,7 +25,7 @@
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-			make.centerY.equalTo(self.centerY).with.offset(-20);
+			make.centerY.equalTo(self.centerY).with.offset(-10);
 		}];
 
 		_dateLabel = [UILabel new];
@@ -34,7 +34,7 @@
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-			make.centerY.equalTo(self.centerY).with.offset(15);
+			make.centerY.equalTo(self.centerY).with.offset(10);
 		}];
 
 		_publicMark = [self createAddPublicMarkToSelf];
@@ -42,7 +42,7 @@
 		[_publicMark makeConstraints:^(MASConstraintMaker *make) {
 			make.width.equalTo(@18);
 			make.height.equalTo(@18);
-			make.centerY.equalTo(self.centerY).with.offset(15);
+			make.centerY.equalTo(self.centerY).with.offset(10);
 			make.left.equalTo(_dateLabel.right).with.offset(2);
 		}];
 
@@ -86,7 +86,6 @@
 	[super prepareForReuse];
 
 	FNLOG();
-
 	[_publicMark setHidden:YES];
 	[self assignFontsToLabels];
 }
@@ -94,10 +93,18 @@
 - (void)assignFontsToLabels {
 	_titleLabel.textColor = [UIColor whiteColor];
 	_dateLabel.textColor = [UIColor whiteColor];
+	_lunarImageView.tintColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+	_lunarDateLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+	_publicMark.layer.borderColor = [UIColor whiteColor].CGColor;
+	UILabel *label = _publicMark.subviews[0];
+	label.textColor = [UIColor whiteColor];
 
-	_titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-	_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	_titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	_lunarDateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+
+	[_lunarImageView setHidden:YES];
+	[_lunarDateLabel setHidden:YES];
 }
 
 @end

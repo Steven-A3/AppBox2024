@@ -25,8 +25,6 @@
 	publicString.textAlignment = NSTextAlignmentCenter;
 	[borderView addSubview:publicString];
 
-	[publicString sizeToFit];
-
 	[publicString makeConstraints:^(MASConstraintMaker *make) {
 		make.edges.equalTo(borderView);
 	}];

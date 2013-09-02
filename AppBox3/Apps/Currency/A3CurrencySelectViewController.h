@@ -7,20 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3SearchViewController.h"
 
-@protocol CurrencySelectViewControllerDelegate <NSObject>
-- (void)currencySelected:(NSString *)selectedCurrencyCode;
-
-@optional
-- (void)willDismissCurrencySelectView;
-
-@end
-
-@interface A3CurrencySelectViewController : UITableViewController
-
-@property (nonatomic, weak) id<CurrencySelectViewControllerDelegate> delegate;
-@property (nonatomic, copy) NSString *placeHolder;
-@property (nonatomic)		BOOL allowChooseFavorite;
-@property (nonatomic)		BOOL shouldPopViewController;
+@interface A3CurrencySelectViewController : A3SearchViewController
 
 @end

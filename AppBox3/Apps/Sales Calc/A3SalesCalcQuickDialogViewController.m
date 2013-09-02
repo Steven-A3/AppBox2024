@@ -490,10 +490,10 @@
 	}
 }
 
-- (void)currencySelected:(NSString *)selectedCurrencyCode {
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
     [self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 
-	[A3UIKit setUserDefaults:selectedCurrencyCode forKey:A3SalesCalcDefaultUserCurrencyCode];
+	[A3UIKit setUserDefaults:selectedItem forKey:A3SalesCalcDefaultUserCurrencyCode];
 	self.defaultCurrencyCode = [self userCurrencyCodeForKey:A3SalesCalcDefaultUserCurrencyCode];
 	self.currencyFormatter = nil;
 
