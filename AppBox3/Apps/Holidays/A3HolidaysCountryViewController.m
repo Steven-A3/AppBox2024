@@ -120,7 +120,9 @@ extern NSString *const A3CurrencyActionCellID;
 - (void)plusButtonAction {
 	A3HolidaysCountrySearchViewController *viewController = [[A3HolidaysCountrySearchViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
@@ -171,8 +173,7 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 	[HolidayData setUserSelectedCountries:_userSelectedCountries];
 }
 
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([self.userSelectedCountries count] == 1) {
 		return NO;
 	}
@@ -193,11 +194,7 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 		[self plusButtonAction];
 		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 	} else {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
+        [self dismissViewControllerAnimated:YES completion:nil];
 
 		NSUInteger row = (NSUInteger) indexPath.row;
 

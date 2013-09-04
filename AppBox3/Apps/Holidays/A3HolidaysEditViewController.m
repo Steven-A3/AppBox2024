@@ -14,11 +14,14 @@
 #import "A3HolidaysEditCell.h"
 #import "A3UIDevice.h"
 #import "A3HolidaysAddToDaysCounterViewController.h"
+#import "A3FlickrImageView.h"
+#import "A3HolidaysViewController.h"
 
-@interface A3HolidaysEditViewController () <UIActionSheetDelegate>
+@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
 @property (nonatomic, strong) NSMutableArray *excludedHolidays;
+@property (nonatomic, strong) A3FlickrImageView *imageView;
 
 @end
 
@@ -53,6 +56,7 @@ static NSString *CellIdentifier = @"Cell";
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
     self.navigationItem.rightBarButtonItem = doneButton;
 
+	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[A3HolidaysEditCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
@@ -81,17 +85,15 @@ static NSString *CellIdentifier = @"Cell";
 - (void)addToDaysCounter:(UIBarButtonItem *)button {
 	A3HolidaysAddToDaysCounterViewController *viewController = [[A3HolidaysAddToDaysCounterViewController alloc] initWithStyle:UITableViewStylePlain];
 	viewController.countryCode = _countryCode;
-	[self presentSubViewController:viewController];
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	[_delegate viewController:self willDismissViewControllerWithDataUpdated:_dataUpdated];
 
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)resetButtonAction:(UIBarButtonItem *)button {
@@ -128,6 +130,15 @@ static NSString *CellIdentifier = @"Cell";
 	}
 	return _excludedHolidays;
 }
+
+- (A3FlickrImageView *)imageView {
+	if (!_imageView) {
+		_imageView = [A3FlickrImageView new];
+		_imageView.countryCode = _countryCode;
+	}
+	return _imageView;
+}
+
 
 #pragma mark - Table view data source
 
@@ -168,13 +179,22 @@ static NSString *CellIdentifier = @"Cell";
 				cell.textLabel.textColor = self.view.tintColor;
 				break;
 			case 2:
-				cell.textLabel.text = @"Choose Wallpaper";
-				cell.accessoryView = [self cameraButton];
+			{
+				if ([self.imageView hasUserSuppliedImageForCountry:_countryCode]) {
+					cell.textLabel.text = @"Delete Wallpaper";
+				} else {
+					cell.textLabel.text = @"Choose Wallpaper";
+					cell.accessoryView = [self cameraButton];
+				}
 				break;
-			case 3:
+			}
+			case 3:{
 				cell.textLabel.text = @"Show Lunar Date";
-				cell.accessoryView = [self lunarSwitch];
+				UISwitch *switchControl = [self lunarSwitch];
+				[switchControl setOn:[HolidayData needToShowLunarDatesForCountryCode:_countryCode]];
+				cell.accessoryView = switchControl;
 				break;
+			}
 		}
 		return cell;
 	}
@@ -227,11 +247,42 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)pickWallpaper {
+	if ([self.imageView hasUserSuppliedImageForCountry:_countryCode]) {
+		[self.imageView deleteImage];
+		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
 
+		_dataUpdated = YES;
+	} else {
+		UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+		imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+		imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+		imagePickerController.delegate = self;
+
+		[self presentViewController:imagePickerController animated:YES completion:nil];
+	}
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+	[self dismissViewControllerAnimated:YES completion:nil];
+	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+
+	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+
+	[self.imageView saveUserSuppliedImage:image];
+	_dataUpdated = YES;
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)lunarOnOff:(UISwitch *)switchControl {
-
+	if (switchControl.isOn) {
+		[HolidayData addCountryToShowLunarDatesSet:_countryCode];
+	} else {
+		[HolidayData removeCountryFromShowLunarDatesSet:_countryCode];
+	}
+	_dataUpdated = YES;
 }
 
 @end

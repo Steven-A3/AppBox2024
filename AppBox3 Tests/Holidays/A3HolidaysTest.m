@@ -68,4 +68,24 @@
 	}];
 }
 
+- (void)testFonts {
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    NSLog(@"%@", [font description]);
+    
+    font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    NSLog(@"%@", [font description]);
+
+    font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    NSLog(@"%@", [font description]);
+    
+    font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    NSLog(@"%@", [font description]);
+    
+    font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+    NSLog(@"%@", [font description]);
+
+    font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    NSLog(@"%@", [font description]);
+}
+
 @end

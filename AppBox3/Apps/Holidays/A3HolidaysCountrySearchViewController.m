@@ -30,8 +30,14 @@ static NSString *const CellIdentifier = @"Cell";
 	self.searchBar.placeholder = @"Search Country";
 	self.title = @"Select Country";
 
+	self.mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,6 +110,11 @@ static NSString *const CellIdentifier = @"Cell";
 	}
 
 	[self callDelegate:data[HolidayCountryCode]];
+
+	if ([self.delegate respondsToSelector:@selector(searchViewController:itemSelectedWithItem:)]) {
+		[self.delegate searchViewController:self itemSelectedWithItem:data[HolidayCountryCode]];
+	}
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

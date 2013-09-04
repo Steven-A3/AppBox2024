@@ -27,14 +27,15 @@
 		self.accessoryView = _switchControl;
 
 		_publicLabel = [UILabel new];
+		_publicLabel.textAlignment = NSTextAlignmentCenter;
 		_publicLabel.textColor = [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
-		_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-		_publicLabel.text = @"Public";
+		_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:10];
+		_publicLabel.text = IS_IPHONE ? @"P" : @"Public";
 		[self addSubview:_publicLabel];
 
 		CGSize size = [_publicLabel.text sizeWithAttributes:@{NSFontAttributeName : _publicLabel.font}];
 		[_publicLabel makeConstraints:^(MASConstraintMaker *make) {
-			_publicMarkWidth = make.width.equalTo(@(size.width));
+			_publicMarkWidth = make.width.equalTo(@(size.width + 2));
 			_publicMarkHeight = make.height.equalTo(@(size.height));
 			make.centerY.equalTo(self.centerY);
 			if (IS_IPAD) {
@@ -53,8 +54,8 @@
 
 		[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerY.equalTo(self.centerY);
-			make.width.equalTo(@(size.width + 6));
-			make.height.equalTo(@(size.height + 6));
+			make.width.equalTo(@(size.width + 9));
+			make.height.equalTo(@(size.height + 4));
 			make.right.equalTo(self.right).with.offset(-84 + 3);
 		}];
 

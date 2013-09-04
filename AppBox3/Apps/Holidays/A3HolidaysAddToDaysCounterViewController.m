@@ -59,19 +59,11 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)button {
-	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
-	} else {
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setCountryCode:(NSString *)countryCode {

@@ -40,7 +40,6 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 @property (nonatomic, copy) NSString *countryName;
 @property (nonatomic, strong) NSURL *photoURL;
 @property (nonatomic, strong) NSMutableArray *photoArray;
-@property (nonatomic, copy) NSString *countryCode;
 
 @end
 
@@ -88,7 +87,14 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	[self setBlurLevel:0.2];
 }
 
+- (BOOL)hasUserSuppliedImageForCountry:(NSString *)code {
+	return [[self imagePath] isEqualToString:@"userSupplied"];
+}
+
 - (void)startUpdate {
+	if ([[self imagePath] isEqualToString:@"userSupplied"]) {
+		return;
+	}
 
 	if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
 		if (!self.downloadDate || [[NSDate date] timeIntervalSinceDate:self.downloadDate] > 60 * 60 * 24) {
@@ -174,11 +180,6 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 						[self deleteImage];
 					}
 
-//#if TARGET_IPHONE_SIMULATOR
-//					NSString *newFilePath = [obj[@"id"] pathInLibraryDirectory];
-//					NSData *data = [NSData dataWithData:UIImageJPEGRepresentation(image, 1.0)];
-//					[data writeToFile:newFilePath atomically:YES];
-//#endif
 					NSString *name = obj[@"owner"][@"realname"];
 					if (![name length]) name = obj[@"owner"][@"username"];
 
@@ -210,6 +211,15 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 			}
 		}
 	}];
+}
+
+- (void)saveUserSuppliedImage:(UIImage *)image {
+	if (![[self imagePath] isEqualToString:@"default"]) {
+		[self deleteImage];
+	}
+	[self setImagePath:@"userSupplied"];
+
+	[self cropSetOriginalImage:image];
 }
 
 - (NSString *)imagePathKey {

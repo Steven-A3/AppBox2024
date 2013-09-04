@@ -60,11 +60,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 - (void)viewDidLoad
 {
-    FNLOG();
     [super viewDidLoad];
 
 	_thisYear = [HolidayData thisYear];
-
 	_indexForImageUpdatingPage = 0;
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
@@ -73,7 +71,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self.navigationController.navigationBar setShadowImage:image];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:YES];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 	[self.navigationController setNavigationBarHidden:YES];
 
 	[self loadContents];
@@ -104,13 +102,15 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[super viewWillDisappear:animated];
 
 	if (self.isMovingFromParentViewController) {
-		[self.navigationController setNavigationBarHidden:NO];
-		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:YES];
-
-		[self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-		[self.navigationController.navigationBar setShadowImage:nil];
+		// Remove keyValue observer
+		for (NSInteger index = 0; index < [_viewComponents count]; index++) {
+			NSDictionary *component = _viewComponents[index];
+			A3FlickrImageView *imageView = component[kHolidayViewComponentImageView];
+			[imageView setScrollView:nil];
+		}
 	}
 }
+
 
 - (void)displayImagesInImageView {
 	[self.viewComponents enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -138,15 +138,20 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	A3HolidaysEditViewController *viewController = [[A3HolidaysEditViewController alloc] initWithStyle:UITableViewStyleGrouped];
 	viewController.delegate = self;
 	viewController.countryCode = _countries[_pageControl.currentPage];
-	[self presentSubViewController:viewController];
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)viewController:(UIViewController *)viewController willDismissViewControllerWithDataUpdated:(BOOL)updated {
 	if (updated) {
 		_holidayDataArray = nil;
-		UITableView *tableView = _viewComponents[_pageControl.currentPage][kHolidayViewComponentTableView];
-		[self updateTableHeaderView:tableView.tableHeaderView atPage:_pageControl.currentPage];
+		NSUInteger currentPage = (NSUInteger) _pageControl.currentPage;
+		UITableView *tableView = _viewComponents[currentPage][kHolidayViewComponentTableView];
+		[self updateTableHeaderView:tableView.tableHeaderView atPage:currentPage];
 		[tableView reloadData];
+		A3FlickrImageView *imageView = _viewComponents[currentPage][kHolidayViewComponentImageView];
+		[imageView displayImageWithCountryCode:_countries[currentPage]];
 	}
 }
 
@@ -213,6 +218,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	FNLOG(@"%d, %d", _indexForImageUpdatingPage, [self.viewComponents count]);
 	if (_indexForImageUpdatingPage < [self.viewComponents count]) {
 		dispatch_async(dispatch_get_main_queue(), ^{
+            if (_indexForImageUpdatingPage >= [_viewComponents count])
+                return;
+            
 			A3FlickrImageView *imageView = self.viewComponents[_indexForImageUpdatingPage][kHolidayViewComponentImageView];
 			_indexForImageUpdatingPage++;
 			[imageView startUpdate];
@@ -436,7 +444,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)listButtonAction {
 	A3HolidaysCountryViewController *viewController = [[A3HolidaysCountryViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
-	[self presentSubViewController:viewController];
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode {

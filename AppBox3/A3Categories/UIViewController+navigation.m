@@ -29,6 +29,14 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+
+	[navigationController setNavigationBarHidden:NO];
+	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+
+	[navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+	[navigationController.navigationBar setShadowImage:nil];
+
 	[navigationController popToRootViewControllerAnimated:NO];
 	[navigationController setNavigationBarHidden:NO];
 	[navigationController pushViewController:viewController animated:YES];
