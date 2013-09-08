@@ -22,12 +22,12 @@
 [submodule "External/DKLiveBlur"]
 	path = External/DKLiveBlur
 	url = https://github.com/Steven-Gwug/DKLiveBlur.git
-[submodule "External/SMPageControl"]
-	path = External/SMPageControl
-	url = https://github.com/Steven-Gwug/SMPageControl.git
 [submodule "External/FXPageControl"]
 	path = External/FXPageControl
 	url = https://github.com/Steven-Gwug/FXPageControl.git
 [submodule "External/FMMoveTableView"]
 	path = External/FMMoveTableView
 	url = https://github.com/Steven-Gwug/FMMoveTableView.git
+[submodule "External/MMDrawerController"]
+	path = External/MMDrawerController
+	url = https://github.com/Steven-Gwug/MMDrawerController.git

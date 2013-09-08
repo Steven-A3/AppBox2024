@@ -15,12 +15,12 @@
 	UIView *borderView = [UIView new];
 	borderView.layer.borderColor = [UIColor whiteColor].CGColor;
 	borderView.layer.borderWidth = IS_RETINA ? 1 : 0.5;
-	borderView.layer.cornerRadius = 9;
+	borderView.layer.cornerRadius = IS_IPHONE ? 9 : 5;
 
 	UILabel *publicString;
 	publicString = [UILabel new];
 	publicString.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
-	publicString.text = @"P";
+	publicString.text = IS_IPHONE ? @"P" : @"Public";
 	publicString.textColor = [UIColor whiteColor];
 	publicString.textAlignment = NSTextAlignmentCenter;
 	[borderView addSubview:publicString];

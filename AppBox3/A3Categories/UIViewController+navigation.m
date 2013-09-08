@@ -28,7 +28,15 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 @implementation UIViewController (navigation)
 
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
-	UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+	UINavigationController *navigationController;
+	if (IS_IPHONE) {
+		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+	} else {
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		[rootViewController setShowLeftView:NO];
+		navigationController = [rootViewController centerNavigationController];
+	}
 
 	[navigationController setNavigationBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
@@ -40,10 +48,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	[navigationController popToRootViewControllerAnimated:NO];
 	[navigationController setNavigationBarHidden:NO];
 	[navigationController pushViewController:viewController animated:YES];
-
-	if (IS_IPHONE || IS_PORTRAIT) {
-		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
-	}
 }
 
 - (void)showRightDrawerViewController:(UIViewController *)viewController {
@@ -337,7 +341,11 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 }
 
 - (void)appsButtonAction {
-	[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+	if (IS_IPHONE) {
+		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+	}
 }
 
 - (UIBarButtonItem *)appListBarButtonItemWithSelector:(SEL)selector {
@@ -522,7 +530,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 		[self presentViewController:navigationController animated:YES completion:nil];
 	} else {
-		A3RootViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
 		[rootViewController presentRightSideViewController:viewController];
 	}
 }
@@ -552,4 +560,15 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)makeBackButtonEmptyArrow {
 	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
 }
+
+- (CGRect)screenBoundsAdjustedWithOrientation {
+	CGRect bounds = [[UIScreen mainScreen] bounds];
+	if (IS_LANDSCAPE) {
+		CGFloat width = bounds.size.width;
+		bounds.size.width = bounds.size.height;
+		bounds.size.height = width;
+	}
+	return bounds;
+}
+
 @end

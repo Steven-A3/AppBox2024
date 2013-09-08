@@ -68,21 +68,27 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	if (pathForSavedImage) {
 		self.originalImage = [UIImage imageWithContentsOfFile:pathForSavedImage];
 	} else {
-		NSString *defaultImageFileName;
+		NSString *defaultImageFileName = @"default";
+		NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:[NSDate date]];
+		BOOL imageForDay = (dateComponents.hour >= 6 && dateComponents.hour < 18);
+		NSString *imageNameWithOption;
+		imageNameWithOption = [defaultImageFileName stringByAppendingString:imageForDay ? @"day" : @"night"];
 		if (IS_IPHONE) {
-			defaultImageFileName = [NSString stringWithFormat:@"%@%@", @"default", kA3HolidayImageiPhone];
+			imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, kA3HolidayImageiPhone];
 		} else {
-			defaultImageFileName = [NSString stringWithFormat:@"%@%@", @"default", IS_LANDSCAPE ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
+			imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, IS_LANDSCAPE ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
 		}
 		if (_useForCountryList) {
-			defaultImageFileName = [defaultImageFileName stringByAppendingString:@"List"];
+			imageNameWithOption = [imageNameWithOption stringByAppendingString:@"List"];
 		}
-		if (![[NSFileManager defaultManager] fileExistsAtPath:[defaultImageFileName pathInLibraryDirectory] ] ) {
-			[self setImagePath:@"default"];
-            NSString *defaultOriginalImagePath = [[NSBundle mainBundle] pathForResource:@"IMG_0277" ofType:@"JPG"];
-			[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultOriginalImagePath]];
+
+		if (![[NSFileManager defaultManager] fileExistsAtPath:[imageNameWithOption pathInLibraryDirectory]]) {
+			NSString *defaultOriginalImagePath = [[NSBundle mainBundle] pathForResource:@"day" ofType:@"jpg"];
+			[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultOriginalImagePath] name:[defaultImageFileName stringByAppendingString:@"day"]];
+			defaultOriginalImagePath = [[NSBundle mainBundle] pathForResource:@"night" ofType:@"jpg"];
+			[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultOriginalImagePath] name:[defaultImageFileName stringByAppendingString:@"night"]];
 		}
-        self.originalImage = [UIImage imageWithContentsOfFile:[defaultImageFileName pathInLibraryDirectory] ];
+        self.originalImage = [UIImage imageWithContentsOfFile:[imageNameWithOption pathInLibraryDirectory] ];
 	}
 	[self setBlurLevel:0.2];
 }
@@ -125,6 +131,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		}
 		NSString *filePath = [savedImageFilename pathInLibraryDirectory];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
+			FNLOG(@"%@", filePath);
 			return filePath;
 		}
 	}
@@ -200,7 +207,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 					}
 					[self setDownloadDate];
 
-					[self cropSetOriginalImage:image];
+					[self cropSetOriginalImage:image name: obj[@"id"] ];
 
 					if ([_delegate respondsToSelector:@selector(flickrImageViewImageUpdated:)]) {
 						[_delegate flickrImageViewImageUpdated:self];
@@ -214,12 +221,11 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)saveUserSuppliedImage:(UIImage *)image {
-	if (![[self imagePath] isEqualToString:@"default"]) {
-		[self deleteImage];
-	}
+	[self deleteImage];
+
 	[self setImagePath:@"userSupplied"];
 
-	[self cropSetOriginalImage:image];
+	[self cropSetOriginalImage:image name:@"userSupplied" ];
 }
 
 - (NSString *)imagePathKey {
@@ -231,7 +237,11 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)setImagePath:(NSString *)path {
-	[[NSUserDefaults standardUserDefaults] setObject:path forKey:self.imagePathKey];
+	if (!path) {
+		[[NSUserDefaults standardUserDefaults] removeObjectForKey:self.imagePathKey];
+	} else {
+		[[NSUserDefaults standardUserDefaults] setObject:path forKey:self.imagePathKey];
+	}
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -286,10 +296,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 }
 
-- (void)cropSetOriginalImage:(UIImage *)image {
-	NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
-	if (!filename) filename = @"default";
-
+- (void)cropSetOriginalImage:(UIImage *)image name:(NSString *)filename {
 	if (IS_IPAD) {
 		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 

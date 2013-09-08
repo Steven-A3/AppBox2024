@@ -109,8 +109,6 @@ static NSString *const CellIdentifier = @"Cell";
 		return;
 	}
 
-	[self callDelegate:data[HolidayCountryCode]];
-
 	if ([self.delegate respondsToSelector:@selector(searchViewController:itemSelectedWithItem:)]) {
 		[self.delegate searchViewController:self itemSelectedWithItem:data[HolidayCountryCode]];
 	}

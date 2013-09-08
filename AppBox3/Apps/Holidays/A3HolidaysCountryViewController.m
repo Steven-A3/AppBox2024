@@ -41,6 +41,10 @@ extern NSString *const A3CurrencyActionCellID;
 	_tableView.delegate = self;
 	[self.view addSubview:_tableView];
 
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[self.navigationController setNavigationBarHidden:YES];

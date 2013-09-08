@@ -8,10 +8,12 @@
 
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
-#import "MagicalRecord+Setup.h"
 #import "A3AppDelegate+data.h"
-#import "common.h"
-#import "A3RootViewController.h"
+#import "A3RootViewController_iPad.h"
+#import "A3HomeViewController_iPhone.h"
+#import "A3MainMenuTableViewController.h"
+#import "A3MMDrawerController.h"
+#import "A3NavigationController.h"
 
 @interface A3AppDelegate ()
 
@@ -35,10 +37,35 @@
 		[self prepareDatabase];
 	});
 
-	_rootViewController = [[A3RootViewController alloc] initWithNibName:nil bundle:nil];
+	UIViewController *rootViewController;
+	if (IS_IPAD) {
+		_rootViewController = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
+		rootViewController = _rootViewController;
+	} else {
+		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:leftMenuViewController];
+
+		A3HomeViewController_iPhone *centerViewController = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
+
+		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:centerViewController];
+
+		_drawerController = [[A3MMDrawerController alloc]
+				initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
+		[_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
+		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
+		[_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
+		[_drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
+		[_drawerController setShowsShadow:NO];
+
+		[_drawerController setMaximumLeftDrawerWidth:320.0];
+
+		_drawerController.view.frame = [[UIScreen mainScreen] bounds];
+
+		rootViewController = _drawerController;
+	}
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	self.window.rootViewController = _rootViewController;
+	self.window.rootViewController = rootViewController;
 	[self.window makeKeyAndVisible];
     return YES;
 }
@@ -72,22 +99,49 @@
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-	FNLOG();
+
 	NSUInteger orientations;
 
 	if (IS_IPAD) {
 		orientations = UIInterfaceOrientationMaskAll;
 	} else {
-		id<A3ViewControllerProtocol>visibleViewController = (id <A3ViewControllerProtocol>) [_rootViewController.navigationController visibleViewController];
+		A3NavigationController *navigationController = (A3NavigationController *) _drawerController.centerViewController;
+
+		id<A3ViewControllerProtocol>visibleViewController = (id <A3ViewControllerProtocol>) [navigationController visibleViewController];
 		if ([visibleViewController respondsToSelector:@selector(a3SupportedInterfaceOrientations)]) {
 			orientations = [visibleViewController a3SupportedInterfaceOrientations];
 		} else {
 			orientations = UIInterfaceOrientationMaskPortrait;
 		}
 	}
-	// Later if needed ask to visible view controller.
 
 	return orientations;
+}
+
+- (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
+	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
+			^(MMDrawerController * drawerController, MMDrawerSide drawerSide, CGFloat percentVisible){
+				CGFloat minScale = .95;
+				CGFloat scale = minScale + (percentVisible*(1.0-minScale));
+				CATransform3D scaleTransform =  CATransform3DMakeScale(scale, scale, scale);
+
+				CGFloat maxDistance = 10;
+				CGFloat distance = maxDistance * percentVisible;
+				CATransform3D translateTransform;
+				UIViewController * sideDrawerViewController;
+				if(drawerSide == MMDrawerSideLeft) {
+					sideDrawerViewController = drawerController.leftDrawerViewController;
+					translateTransform = CATransform3DMakeTranslation((maxDistance-distance), 0.0, 0.0);
+				}
+				else if(drawerSide == MMDrawerSideRight){
+					sideDrawerViewController = drawerController.rightDrawerViewController;
+					translateTransform = CATransform3DMakeTranslation(-(maxDistance-distance), 0.0, 0.0);
+				}
+
+				[sideDrawerViewController.view.layer setTransform:CATransform3DConcat(scaleTransform, translateTransform)];
+				[sideDrawerViewController.view setAlpha:percentVisible];
+			};
+	return visualStateBlock;
 }
 
 @end

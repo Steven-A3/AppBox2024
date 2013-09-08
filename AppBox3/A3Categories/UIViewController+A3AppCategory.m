@@ -18,7 +18,7 @@
 #import "A3FrequencyKeyboardViewController_iPhone.h"
 #import "A3DateKeyboardViewController_iPad.h"
 #import "A3DateKeyboardViewController_iPhone.h"
-#import "A3RootViewController.h"
+#import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 
@@ -31,7 +31,7 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 
 @implementation UIViewController (A3AppCategory)
 
-- (A3RootViewController *)A3RootViewController {
+- (A3RootViewController_iPad *)A3RootViewController {
 	return [[A3AppDelegate instance] rootViewController];
 }
 

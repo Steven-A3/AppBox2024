@@ -29,7 +29,11 @@
 		_publicLabel = [UILabel new];
 		_publicLabel.textAlignment = NSTextAlignmentCenter;
 		_publicLabel.textColor = [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
-		_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:10];
+		if (IS_IPHONE) {
+			_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:10];
+		} else {
+			_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+		}
 		_publicLabel.text = IS_IPHONE ? @"P" : @"Public";
 		[self addSubview:_publicLabel];
 
@@ -56,7 +60,11 @@
 			make.centerY.equalTo(self.centerY);
 			make.width.equalTo(@(size.width + 9));
 			make.height.equalTo(@(size.height + 4));
-			make.right.equalTo(self.right).with.offset(-84 + 3);
+			if (IS_IPAD) {
+				make.centerX.equalTo(self.centerX);
+			} else {
+				make.right.equalTo(self.right).with.offset(-84 + 3);
+			}
 		}];
 
 		_nameLabel = [UILabel new];
@@ -103,7 +111,11 @@
 
 
 - (void)setupFont {
-	_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	if (IS_IPHONE) {
+		_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:10];
+	} else {
+		_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	}
 	_nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 }
 

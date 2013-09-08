@@ -17,9 +17,10 @@
 #import "UIViewController+navigation.h"
 #import "A3CurrencyViewController.h"
 #import "A3AppDelegate.h"
-#import "A3RootViewController.h"
+#import "A3RootViewController_iPad.h"
 #import "A3TranslatorViewController.h"
 #import "A3HolidaysViewController.h"
+#import "UIViewController+MMDrawerController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -358,7 +359,12 @@
 		switch (selectedIndex) {
 			case 0:	// Home
 			{
-				[[[[A3AppDelegate instance] rootViewController] navigationController] popToRootViewControllerAnimated:YES];
+				if (IS_IPHONE) {
+					UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+					[navigationController popToRootViewControllerAnimated:YES];
+				} else {
+					[[[[A3AppDelegate instance] rootViewController] centerNavigationController] popToRootViewControllerAnimated:YES ];
+				}
 				break;
 			}
 			default:

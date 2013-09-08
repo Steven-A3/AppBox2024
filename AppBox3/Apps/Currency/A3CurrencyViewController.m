@@ -33,7 +33,7 @@
 #import "CurrencyHistoryItem.h"
 #import "A3CurrencyHistoryViewController.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3RootViewController.h"
+#import "A3RootViewController_iPad.h"
 #import "NSString+conversion.h"
 #import "UIViewController+navigation.h"
 

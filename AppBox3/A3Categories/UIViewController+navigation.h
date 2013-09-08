@@ -72,4 +72,6 @@
 - (void)moreButtonAction:(UIBarButtonItem *)button;
 
 - (void)makeBackButtonEmptyArrow;
+
+- (CGRect)screenBoundsAdjustedWithOrientation;
 @end

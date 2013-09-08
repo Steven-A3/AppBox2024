@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
 #import "A3KeyboardProtocol.h"
-#import "A3RootViewController.h"
+#import "A3RootViewController_iPad.h"
 
 @class A3NumberKeyboardViewController;
 @class A3FrequencyKeyboardViewController;
@@ -24,7 +24,7 @@
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
 
-- (A3RootViewController *)A3RootViewController;
+- (A3RootViewController_iPad *)A3RootViewController;
 
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 
