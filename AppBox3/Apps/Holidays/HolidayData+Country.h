@@ -8,6 +8,11 @@
 
 #import "HolidayData.h"
 
+extern NSString *const kHolidayCountryCode;
+extern NSString *const kHolidayCapitalCityName;
+extern NSString *const kHolidayTimeZone;
+extern NSString *const kA3TimeZoneName;
+
 @interface HolidayData (Country)
 
 + (NSArray *)supportedCountries;
@@ -25,7 +30,10 @@
 
 + (void)removeCountryFromShowLunarDatesSet:(NSString *)countryCode;
 
++ (NSTimeZone *)timeZoneForCountryCode:(NSString *)countryCode;
+
 + (void)setUserSelectedCountries:(NSArray *)newData;
 
 + (NSInteger)thisYear;
+
 @end

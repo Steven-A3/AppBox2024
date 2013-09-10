@@ -17,6 +17,8 @@
 #import "A3UIDevice.h"
 #import "UIImage+Saving.h"
 #import "UIImage+Filtering.h"
+#import "HolidayData.h"
+#import "HolidayData+Country.h"
 
 // NSUserDefaults
 // Image will be saved with
@@ -57,6 +59,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		[_flickrRequest setDelegate:self];
 		_keywords = @[@"sky", @"national park", @"weather", @"bridge", @"mountain"];
 		_keywordIndex = arc4random_uniform([_keywords count] - 1);
+        self.initialBlurLevel = 0.4;
 	}
     return self;
 }
@@ -69,8 +72,12 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		self.originalImage = [UIImage imageWithContentsOfFile:pathForSavedImage];
 	} else {
 		NSString *defaultImageFileName = @"default";
-		NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSHourCalendarUnit fromDate:[NSDate date]];
+		NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+		[calendar setTimeZone:[HolidayData timeZoneForCountryCode:_countryCode]];
+		NSDateComponents *dateComponents = [calendar components:NSHourCalendarUnit fromDate:[NSDate date]];
 		BOOL imageForDay = (dateComponents.hour >= 6 && dateComponents.hour < 18);
+		FNLOG(@"%@, %d", _countryCode, dateComponents.hour);
+
 		NSString *imageNameWithOption;
 		imageNameWithOption = [defaultImageFileName stringByAppendingString:imageForDay ? @"day" : @"night"];
 		if (IS_IPHONE) {
@@ -90,7 +97,6 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		}
         self.originalImage = [UIImage imageWithContentsOfFile:[imageNameWithOption pathInLibraryDirectory] ];
 	}
-	[self setBlurLevel:0.2];
 }
 
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code {
@@ -207,7 +213,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 					}
 					[self setDownloadDate];
 
-					[self cropSetOriginalImage:image name: obj[@"id"] ];
+					self.originalImage = [self cropSetOriginalImage:image name: obj[@"id"] ];
 
 					if ([_delegate respondsToSelector:@selector(flickrImageViewImageUpdated:)]) {
 						[_delegate flickrImageViewImageUpdated:self];
@@ -296,13 +302,17 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 }
 
-- (void)cropSetOriginalImage:(UIImage *)image name:(NSString *)filename {
+- (UIImage *)cropSetOriginalImage:(UIImage *)image name:(NSString *)filename {
+	UIImage *handledImage;
 	if (IS_IPAD) {
+		UIImage *returnedImage;
 		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
 		CGRect bounds = CGRectInset(screenBounds, -50, -50);
 		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
-		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		returnedImage = [self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+
+		if (IS_PORTRAIT) handledImage = returnedImage;
 
 		bounds = screenBounds;
 		bounds.size.height = 84;
@@ -315,7 +325,9 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 		bounds = CGRectInset(bounds, -50, -50);
 		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
-		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		returnedImage = [self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+
+		if (IS_LANDSCAPE) handledImage = returnedImage;
 
 		bounds = screenBounds;
 		bounds.size.width = screenBounds.size.height;
@@ -329,21 +341,22 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 		CGRect bounds = CGRectInset(screenBounds, -50, -50);
 		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
-		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		handledImage = [self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
 		bounds = screenBounds;
 		bounds.size.height = 84;
 		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhoneList] pathInLibraryDirectory];
-		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+		[self saveImage:handledImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
 	}
+	return handledImage;
 }
 
-- (void)saveImage:(UIImage *)image bounds:(CGRect)bounds path:(NSString *)path usingMode:(NYXCropMode)cropMode {
+- (UIImage *)saveImage:(UIImage *)image bounds:(CGRect)bounds path:(NSString *)path usingMode:(NYXCropMode)cropMode {
 	UIImage *scaledImage = [image scaleToCoverSize:bounds.size];
 	UIImage *croppedImage = [scaledImage cropToSize:bounds.size usingMode:cropMode];
 	[UIImageJPEGRepresentation(croppedImage, 0.5) writeToFile:path atomically:YES];
 
-	return;
+	return croppedImage;
 }
 
 - (void)deleteImage {

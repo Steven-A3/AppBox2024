@@ -25,7 +25,9 @@
 
 @end
 
-@implementation A3HolidaysCountryViewController
+@implementation A3HolidaysCountryViewController {
+	BOOL _countryEdited;
+}
 
 static NSString *const HolidayCellIdentifier = @"HolidayCountryViewCell";
 static NSString *const plusCellIdentifier = @"plusCellIdentifier";
@@ -35,6 +37,8 @@ extern NSString *const A3CurrencyActionCellID;
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+
+	_countryEdited = NO;
 
 	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	_tableView.dataSource = self;
@@ -130,19 +134,14 @@ extern NSString *const A3CurrencyActionCellID;
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	_countryEdited = YES;
+
 	[_userSelectedCountries addObject:selectedItem];
 	[HolidayData setUserSelectedCountries:_userSelectedCountries];
 
 	[self.tableView reloadData];
 }
 
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-//	if ( !indexPath.row || [self.userSelectedCountries count] == 1) {
-//		return UITableViewCellEditingStyleNone;
-//	}
-//	return indexPath.row != [self.userSelectedCountries count] ? UITableViewCellEditingStyleDelete : UITableViewCellEditingStyleNone;
-//}
-//
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
 	if ([self.userSelectedCountries count] == 1) {
@@ -162,6 +161,7 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
+		_countryEdited = YES;
 
 		A3HolidaysCountryViewCell *cell = (A3HolidaysCountryViewCell *) [tableView cellForRowAtIndexPath:indexPath];
 		[cell.backgroundImageView deleteImage];
@@ -175,6 +175,8 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.userSelectedCountries moveObjectFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	[HolidayData setUserSelectedCountries:_userSelectedCountries];
+
+	_countryEdited = YES;
 }
 
 - (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -202,7 +204,7 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 
 		NSUInteger row = (NSUInteger) indexPath.row;
 
-		[_delegate viewController:self didFinishPickingCountry:self.userSelectedCountries[row]];
+		[_delegate viewController:self didFinishPickingCountry:self.userSelectedCountries[row] dataChanged:_countryEdited];
 	}
 }
 

@@ -15,6 +15,7 @@
 
 @interface A3HolidaysCountryViewCell ()
 
+@property (nonatomic, strong) UIView *coverOnImageView;
 @property (nonatomic, strong) UILabel *countryName;
 @property (nonatomic, strong) UILabel *upcomingHoliday;
 @property (nonatomic, strong) UILabel *daysLeft;
@@ -30,6 +31,8 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+		self.selectionStyle = UITableViewCellSelectionStyleNone;
+
 		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 		NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
 		_thisYear = [components year];
@@ -43,10 +46,10 @@
 			make.edges.equalTo(self.contentView);
 		}];
 
-		UIView *filter = [UIView new];
-		filter.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-		[_backgroundImageView addSubview:filter];
-		[filter makeConstraints:^(MASConstraintMaker *make) {
+		_coverOnImageView = [UIView new];
+		_coverOnImageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+		[_backgroundImageView addSubview:_coverOnImageView];
+		[_coverOnImageView makeConstraints:^(MASConstraintMaker *make) {
 			make.edges.equalTo(_backgroundImageView);
 		}];
 
@@ -109,6 +112,7 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 
+	_coverOnImageView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 	[self setFontsForLabels];
 }
 
@@ -138,6 +142,7 @@
 
 - (void)prepareForMove {
 	_backgroundImageView.image = nil;
+	_coverOnImageView.backgroundColor = [UIColor whiteColor];
 	_countryName.text = @"";
 	_upcomingHoliday.text = @"";
 	_daysLeft.text = @"";

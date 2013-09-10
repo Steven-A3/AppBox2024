@@ -8,6 +8,7 @@
 
 #import "A3GradientView.h"
 #import "common.h"
+#import "NSNumberExtensions.h"
 
 @implementation A3GradientView
 
@@ -57,7 +58,18 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-	CGFloat locations[] = {0.0f, 1.0f};
+
+	CGFloat *locations;
+	if (_locations) {
+		locations = malloc(sizeof(CGFloat) * [_locations count]);
+		[_locations enumerateObjectsUsingBlock:^(NSNumber *number, NSUInteger idx, BOOL *stop) {
+			locations[idx] = [number cgFloatValue];
+		}];
+	} else {
+		locations = malloc(sizeof(CGFloat) * 2);
+        locations[0] = 0.0;
+        locations[1] = 1.0;
+	}
 
 	CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef) self.gradientColors, locations);
 
@@ -78,6 +90,7 @@
 	CGContextRestoreGState(context);
 
 	CGGradientRelease(gradient);
+	free(locations);
 }
 
 @end

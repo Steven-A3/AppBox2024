@@ -39,8 +39,8 @@
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 
     NSArray *allCountry = [HolidayData supportedCountries];
-	[allCountry enumerateObjectsUsingBlock:^(NSString *countryCode, NSUInteger idx, BOOL *stop) {
-        NSString *keyPath = [NSString stringWithFormat:@"%@_HolidaysInYear", countryCode];
+	[allCountry enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+        NSString *keyPath = [NSString stringWithFormat:@"%@_HolidaysInYear", obj[kHolidayCountryCode]];
         NSLog(@"%@", keyPath);
 		NSMutableArray *holidays = [_holidayData valueForKeyPath:keyPath];
 		expect([holidays isMemberOfClass:[NSMutableArray class]]).beTruthy;
@@ -86,6 +86,20 @@
 
     font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     NSLog(@"%@", [font description]);
+}
+
+- (void)testTimeZone {
+	NSArray *allCountries = [HolidayData supportedCountries];
+	expect([allCountries count] == 98).beTruthy;
+	[allCountries enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+
+		expect([[obj allKeys] count] == 2).beTruthy;
+
+		NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:obj[kA3TimeZoneName]];
+		expect(timeZone).notTo.beNil;
+        
+        NSLog(@"%@, %@, UTC%+d", [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]], timeZone, (int)[timeZone secondsFromGMT] / (60 * 60));
+	}];
 }
 
 @end

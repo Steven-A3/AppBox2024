@@ -18,11 +18,9 @@
 #import "FXPageControl.h"
 #import "NSDate+daysleft.h"
 #import "A3HolidaysCountryViewController.h"
-#import "NSMutableArray+IMSExtensions.h"
 #import "A3HolidaysEditViewController.h"
 #import "A3GradientView.h"
 #import "UIView+Screenshot.h"
-#import "A3NavigationController.h"
 
 static NSString *const kHolidayViewComponentBorderView = @"borderView";		// bounds equals to self.view.bounds
 static NSString *const kHolidayViewComponentImageView = @"imageView";		// bounds equals to alledgeInsets -50
@@ -327,6 +325,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self.view addSubview:listButton];
 
 	[listButton makeConstraints:^(MASConstraintMaker *make) {
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
 		make.right.equalTo(_footerView.right).with.offset(IS_IPAD ? -28 : -15);
 		make.centerY.equalTo(_footerView.centerY);
 	}];
@@ -474,23 +474,18 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
-- (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode {
-	[self updatePages];
-
+- (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode dataChanged:(BOOL)dataChanged {
 	NSInteger page = [self.countries indexOfObject:countryCode];
-	[self refreshViewContents];
+	if (dataChanged) {
+		[self updatePages];
+
+		[self refreshViewContents];
+
+		_stopUpdateImage = NO;
+		[self startUpdateImage];
+	}
 
 	[self jumpToPage:page];
-
-	_stopUpdateImage = NO;
-	[self startUpdateImage];
-
-//	double delayInSeconds = 0.3;
-//	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-//	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[self setFocusToPage:_pageControl.currentPage];
-//	});
-
 }
 
 - (void)updatePages {
@@ -527,9 +522,20 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
         UIView *borderView = obj[kHolidayViewComponentBorderView];
 		[self setupBorderView:borderView atIndex:idx];
         [borderView layoutIfNeeded];
-        
-		A3FlickrImageView *imageView = obj[kHolidayViewComponentImageView];
-		[imageView displayImageWithCountryCode:_countries[idx]];
+
+		double delayInSeconds = 0.1;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			A3FlickrImageView *imageView = obj[kHolidayViewComponentImageView];
+			[imageView displayImageWithCountryCode:_countries[idx]];
+
+			double delayInSeconds2 = 0.2;
+			dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds2 * NSEC_PER_SEC));
+			dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
+				UITableView *tableView = obj[kHolidayViewComponentTableView];
+				[tableView setContentOffset:tableView.contentOffset];
+			});
+		});
 
 		UITableView *tableView = obj[kHolidayViewComponentTableView];
 		[self updateTableHeaderView:tableView.tableHeaderView atPage:idx];
@@ -572,10 +578,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)setupScrollViewContents {
 	_viewComponents = [NSMutableArray new];
 
-	NSUInteger page = 0;
-	for (NSString *countryCode in self.countries) {
+	for (NSUInteger page = 0;page < [self.countries count]; page++) {
 		[self addNewPage:page];
-		page++;
 	}
 }
 
@@ -601,11 +605,16 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	}];
 
 	A3GradientView *gradientView = [A3GradientView new];
-	gradientView.gradientColors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor, (id)[UIColor colorWithWhite:0.0 alpha:0.9].CGColor];
+	gradientView.gradientColors = @[
+			(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+			(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor,
+			(id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor
+	];
+	gradientView.locations = @[@0.0, @0.2, @1.0];
 	[borderView addSubview:gradientView];
 
 	[gradientView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(borderView).with.insets(UIEdgeInsetsMake(borderView.bounds.size.height - 400, 0, 0, 0));
+		make.edges.equalTo(borderView).with.insets(UIEdgeInsetsMake(borderView.bounds.size.height - 200, 0, 0, 0));
 	}];
 
 	UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
@@ -663,7 +672,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
 	CGFloat viewHeight = UIInterfaceOrientationIsPortrait(interfaceOrientation) ? screenBounds.size.height : screenBounds.size.width;
-	viewHeight += 62.0;
+	viewHeight += 97.0;
 	viewHeight -= 54.0;
 
 	[headerView setFrame:CGRectMake(0, 0, UIInterfaceOrientationIsPortrait(interfaceOrientation) ? screenBounds.size.width : screenBounds.size.height, viewHeight)];
@@ -776,7 +785,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[nameLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(headerView.centerX);
 		make.width.equalTo(headerView).with.offset(IS_IPHONE ? -20 : -(28 * 2));
-		make.bottom.equalTo(headerView.bottom).with.offset(-62);
+		make.bottom.equalTo(segmentedControl.top).with.offset(-62);
 	}];
 
 	UILabel *daysLeftLabel = [UILabel new];
@@ -789,7 +798,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[daysLeftLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(headerView.centerX);
 		make.width.equalTo(headerView).with.offset(IS_IPHONE ? -20 : -(28 * 2));
-		make.bottom.equalTo(nameLabel.top).with.offset(-4);
+		make.bottom.equalTo(nameLabel.top).with.offset(4);
 	}];
 
 	UILabel *countryNameLabel = [UILabel new];
@@ -804,7 +813,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[countryNameLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(headerView.centerX);
 		make.width.equalTo(headerView).with.offset(IS_IPHONE ? -20 : -(28 * 2));
-		make.bottom.equalTo(daysLeftLabel.top).with.offset(-18);
+		make.bottom.equalTo(daysLeftLabel.top).with.offset(-9);
 	}];
 
 	[self updateTableHeaderView:headerView atPage:page];

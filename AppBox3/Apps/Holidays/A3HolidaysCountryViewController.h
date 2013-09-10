@@ -18,6 +18,6 @@
 
 @protocol A3HolidaysCountryViewControllerDelegate <NSObject>
 
-- (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode;
+- (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode dataChanged:(BOOL)dataChanged;
 
 @end

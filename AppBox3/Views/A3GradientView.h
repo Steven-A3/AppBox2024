@@ -11,6 +11,7 @@
 @interface A3GradientView : UIView
 
 @property (nonatomic, strong) 	NSArray *gradientColors;
+@property (nonatomic, strong)	NSArray *locations;
 @property (nonatomic)			BOOL vertical;
 @property (nonatomic, strong)	UIColor	*startColor, *endColor;
 

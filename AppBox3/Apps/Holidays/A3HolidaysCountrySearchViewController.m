@@ -50,10 +50,10 @@ static NSString *const CellIdentifier = @"Cell";
 	if (!_allCountries) {
 		NSArray *countryCodes = [HolidayData supportedCountries];
 		_allCountries = [NSMutableArray new];
-		[countryCodes enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		[countryCodes enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
 			[_allCountries addObject:@{
-					HolidayCountryCode:obj,
-					HolidayCountryDisplayName:[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj]
+					HolidayCountryCode:obj[kHolidayCountryCode],
+					HolidayCountryDisplayName:[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]]
 			}];
 		}];
 		[_allCountries sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
