@@ -143,6 +143,47 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 //					kHolidayTimeZone:@"WAT",
 					kA3TimeZoneName : @"Africa/Malabo"
 			},    // UTC+1
+//			@"ee", @"fi", @"fr", @"de", @"gr", @"gt", @"gn", @"gw", @"hn", @"hk", // 30
+			@{// Estonia
+					kHolidayCountryCode : @"ee",
+					kA3TimeZoneName : @"Europe/Tallinn"
+			},    // UTC+1
+			@{// Finland
+					kHolidayCountryCode : @"fi",
+					kA3TimeZoneName : @"Europe/Helsinki"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"fr",
+					kA3TimeZoneName : @"Europe/Paris"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"de",
+					kA3TimeZoneName : @"Europe/Berlin"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"gr",
+					kA3TimeZoneName : @"Europe/Athens"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"gt",
+					kA3TimeZoneName : @"America/Guatemala"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"gn",
+					kA3TimeZoneName : @"Africa/Conakry"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"gw",
+					kA3TimeZoneName : @"Africa/Bissau"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"hn",
+					kA3TimeZoneName : @"America/Tegucigalpa"
+			},    // UTC+1
+			@{
+					kHolidayCountryCode : @"hk",
+					kA3TimeZoneName : @"Asia/Hong_Kong"
+			},    // UTC+1
 			@{
 					kHolidayCountryCode : @"hu",
 //					kHolidayCapitalCityName:@"Budapest",
@@ -163,8 +204,8 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 			},    // UTC+0
 			@{
 					kHolidayCountryCode : @"it",
-					kHolidayCapitalCityName : @"Rome",
-					kHolidayTimeZone : @"CET",
+//					kHolidayCapitalCityName : @"Rome",
+//					kHolidayTimeZone : @"CET",
 					kA3TimeZoneName : @"Europe/Rome",
 			},    // UTC+1
 			@{	// Ivory Coast or Côte d'Ivoire
@@ -187,8 +228,8 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 			},    // UTC+9
 			@{
 					kHolidayCountryCode : @"il",
-					kHolidayCapitalCityName : @"Jerusalem",
-					kHolidayTimeZone : @"EET",
+//					kHolidayCapitalCityName : @"Jerusalem",
+//					kHolidayTimeZone : @"EET",
 					kA3TimeZoneName : @"Asia/Jerusalem",
 			},    // UTC+2
 			@{
@@ -461,8 +502,8 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 			},    // UTC+3
 			@{
 					kHolidayCountryCode : @"ve",
-					kHolidayCapitalCityName : @"Caracas",
-					kHolidayTimeZone : @"AST",
+//					kHolidayCapitalCityName : @"Caracas",
+//					kHolidayTimeZone : @"AST",
 					kA3TimeZoneName : @"America/Caracas",
 			},    // UTC-4:30 (Not exactly AST)
 			@{
@@ -656,7 +697,6 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 
 + (NSTimeZone *)timeZoneForCountryCode:(NSString *)countryCode {
 	NSArray *countries = [HolidayData supportedCountries];
-	NSUInteger index = NSNotFound;
 	for (NSDictionary *obj in countries) {
 		if ([obj[kHolidayCountryCode] isEqualToString:countryCode]) {
 			return [NSTimeZone timeZoneWithName:obj[kA3TimeZoneName]];

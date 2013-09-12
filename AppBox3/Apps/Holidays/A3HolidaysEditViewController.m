@@ -17,11 +17,12 @@
 #import "A3FlickrImageView.h"
 #import "A3HolidaysViewController.h"
 
-@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
 @property (nonatomic, strong) NSMutableArray *excludedHolidays;
 @property (nonatomic, strong) A3FlickrImageView *imageView;
+@property (nonatomic, strong) UIPopoverController *imagePickerPopoverController;
 
 @end
 
@@ -58,6 +59,12 @@ static NSString *CellIdentifier = @"Cell";
 
 	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[A3HolidaysEditCell class] forCellReuseIdentifier:CellIdentifier];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -73,6 +80,8 @@ static NSString *CellIdentifier = @"Cell";
 
 	if ([self isMovingFromParentViewController]) {
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+		[self removeObserver];
     }
 }
 
@@ -181,8 +190,11 @@ static NSString *CellIdentifier = @"Cell";
 			case 2:
 			{
 				if ([self.imageView hasUserSuppliedImageForCountry:_countryCode]) {
+					cell.textLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:58.0/255.0 blue:48.0/255.0 alpha:1.0];
 					cell.textLabel.text = @"Delete Wallpaper";
+					cell.accessoryView = [self.imageView thumbnailOfUserSuppliedImage];
 				} else {
+					cell.textLabel.textColor = [UIColor blackColor];
 					cell.textLabel.text = @"Choose Wallpaper";
 					cell.accessoryView = [self cameraButton];
 				}
@@ -256,20 +268,34 @@ static NSString *CellIdentifier = @"Cell";
 		UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
 		imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
 		imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+		imagePickerController.allowsEditing = YES;
 		imagePickerController.delegate = self;
 
-		[self presentViewController:imagePickerController animated:YES completion:nil];
+		if (IS_IPHONE) {
+			[self presentViewController:imagePickerController animated:YES completion:nil];
+		} else {
+			_imagePickerPopoverController = [[UIPopoverController alloc] initWithContentViewController:imagePickerController];
+			UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+			[_imagePickerPopoverController presentPopoverFromRect:[self.view convertRect:cell.frame fromView:self.tableView] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionDown animated:YES];
+			_imagePickerPopoverController.delegate = self;
+		}
 	}
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-	[self dismissViewControllerAnimated:YES completion:nil];
-	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+	if (IS_IPHONE) {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	} else {
+		[_imagePickerPopoverController dismissPopoverAnimated:YES];
+		_imagePickerPopoverController = nil;
+	}
 
-	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+	UIImage *image = [info valueForKey:UIImagePickerControllerEditedImage];
 
 	[self.imageView saveUserSuppliedImage:image];
 	_dataUpdated = YES;
+
+	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {

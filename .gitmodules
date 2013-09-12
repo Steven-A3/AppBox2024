@@ -31,3 +31,9 @@
 [submodule "External/MMDrawerController"]
 	path = External/MMDrawerController
 	url = https://github.com/Steven-Gwug/MMDrawerController.git
+[submodule "External/NSDate-Extensions"]
+	path = External/NSDate-Extensions
+	url = https://github.com/Steven-Gwug/NSDate-Extensions.git
+[submodule "External/FXLabel"]
+	path = External/FXLabel
+	url = https://github.com/Steven-Gwug/FXLabel.git

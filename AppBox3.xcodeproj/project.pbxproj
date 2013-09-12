@@ -141,6 +141,8 @@
 		6850050717C30B500081FC1D /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6850050617C30B500081FC1D /* appbox.ttf */; };
 		6850050E17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 6850050D17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m */; };
 		6850051517C325770081FC1D /* A3TranslatorFavoriteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6850051417C325770081FC1D /* A3TranslatorFavoriteCell.m */; };
+		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
+		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
 		6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */; };
 		6854F0BB17ACF95900E882B8 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854F0BA17ACF95900E882B8 /* CurrencyItem.m */; };
 		68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */; };
@@ -757,6 +759,10 @@
 		6850050D17C3217A0081FC1D /* A3TranslatorFavoriteDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteDataSource.m; path = Translator/A3TranslatorFavoriteDataSource.m; sourceTree = "<group>"; };
 		6850051317C325770081FC1D /* A3TranslatorFavoriteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorFavoriteCell.h; path = Translator/A3TranslatorFavoriteCell.h; sourceTree = "<group>"; };
 		6850051417C325770081FC1D /* A3TranslatorFavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteCell.m; path = Translator/A3TranslatorFavoriteCell.m; sourceTree = "<group>"; };
+		68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate-Utilities.h"; path = "External/NSDate-Extensions/NSDate-Utilities.h"; sourceTree = "<group>"; };
+		68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate-Utilities.m"; path = "External/NSDate-Extensions/NSDate-Utilities.m"; sourceTree = "<group>"; };
+		68521A4417E1FF2E00E08FB1 /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXLabel.h; path = External/FXLabel/FXLabel/FXLabel.h; sourceTree = "<group>"; };
+		68521A4517E1FF2E00E08FB1 /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXLabel.m; path = External/FXLabel/FXLabel/FXLabel.m; sourceTree = "<group>"; };
 		6854E91C166F3E8D00497126 /* A3TimeLineEventItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TimeLineEventItemView.h; sourceTree = "<group>"; };
 		6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TimeLineEventItemView.m; sourceTree = "<group>"; };
 		6854F0B917ACF95900E882B8 /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
@@ -2053,6 +2059,24 @@
 			name = protocols;
 			sourceTree = "<group>";
 		};
+		68521A3617E1EB9B00E08FB1 /* NSDate-Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */,
+				68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */,
+			);
+			name = "NSDate-Extensions";
+			sourceTree = "<group>";
+		};
+		68521A4317E1FF1C00E08FB1 /* FXLabel */ = {
+			isa = PBXGroup;
+			children = (
+				68521A4417E1FF2E00E08FB1 /* FXLabel.h */,
+				68521A4517E1FF2E00E08FB1 /* FXLabel.m */,
+			);
+			name = FXLabel;
+			sourceTree = "<group>";
+		};
 		685F727D16A684DB004C7222 /* PrepareData */ = {
 			isa = PBXGroup;
 			children = (
@@ -2779,6 +2803,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				68521A4317E1FF1C00E08FB1 /* FXLabel */,
+				68521A3617E1EB9B00E08FB1 /* NSDate-Extensions */,
 				68F9391117D0DDA50082234C /* FMMoveTableView */,
 				68B9B15217CF4D6B003ACAD0 /* FXPageControl */,
 				686FCF741775CFDC00F19332 /* AFNetworking */,
@@ -3226,6 +3252,7 @@
 				687FB838162D5871004FB719 /* A3Weather.m in Sources */,
 				686C64BE17C4B4F700278686 /* A3TranslatorListCell.m in Sources */,
 				68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */,
+				68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */,
 				68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */,
 				68B6A1E517CCC198008E0296 /* NSPersistentStore+MagicalRecord.m in Sources */,
 				68B6A1D817CCC198008E0296 /* NSObject+MagicalDataImport.m in Sources */,
@@ -3428,6 +3455,7 @@
 				6859C58A17532E6800DE1C4A /* LoanCalcHistory.m in Sources */,
 				17D4242B1CA511FEB92F1279 /* A3EmptyActionMenuViewController_iPad.m in Sources */,
 				17D427D503C7883FCDBDE4EF /* A3LoanCalcAmortizationViewController_iPhone.m in Sources */,
+				68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */,
 				17D42C236F4752F3CAAD49B5 /* A3LoanCalcCompareHistoryViewController.m in Sources */,
 				6895347A178686AF007061CA /* UIImage+Filtering.m in Sources */,
 				68953476178686AF007061CA /* UIImage+Blurring.m in Sources */,

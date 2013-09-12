@@ -7,6 +7,7 @@
 //
 
 
+@class FXLabel;
 typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 	A3HolidayCellTypeSingleLine = 0,	// Name -P Date
 	A3HolidayCellTypeDoubleLine,		// Long Name
@@ -19,11 +20,11 @@ typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 
 @interface A3HolidaysCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) FXLabel *titleLabel;
 @property (nonatomic, strong) UIView *publicMark;
-@property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) FXLabel *dateLabel;
 @property (nonatomic, strong) UIImageView *lunarImageView;
-@property (nonatomic, strong) UILabel *lunarDateLabel;
+@property (nonatomic, strong) FXLabel *lunarDateLabel;
 @property (nonatomic) A3HolidayCellType	cellType;
 
 @end

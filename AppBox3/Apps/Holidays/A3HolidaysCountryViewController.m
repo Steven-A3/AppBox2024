@@ -66,6 +66,20 @@ extern NSString *const A3CurrencyActionCellID;
 	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[A3HolidaysCountryViewCell class] forCellReuseIdentifier:HolidayCellIdentifier];
 	[self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	if (self.isMovingFromParentViewController) {
+		[self removeObserver];
+	}
 }
 
 

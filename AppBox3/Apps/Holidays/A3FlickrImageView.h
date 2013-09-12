@@ -27,7 +27,9 @@
 
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code;
 
-- (void)startUpdate;
+- (UIImageView *)thumbnailOfUserSuppliedImage;
+
+- (BOOL)startUpdate;
 
 - (void)saveUserSuppliedImage:(UIImage *)image;
 

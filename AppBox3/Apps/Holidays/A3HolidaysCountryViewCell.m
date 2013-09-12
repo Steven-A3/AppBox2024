@@ -12,14 +12,15 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "NSDate+daysleft.h"
+#import "FXLabel.h"
 
 @interface A3HolidaysCountryViewCell ()
 
 @property (nonatomic, strong) UIView *coverOnImageView;
-@property (nonatomic, strong) UILabel *countryName;
-@property (nonatomic, strong) UILabel *upcomingHoliday;
-@property (nonatomic, strong) UILabel *daysLeft;
-@property (nonatomic, strong) UILabel *numberOfHolidays;
+@property (nonatomic, strong) FXLabel *countryName;
+@property (nonatomic, strong) FXLabel *upcomingHoliday;
+@property (nonatomic, strong) FXLabel *daysLeft;
+@property (nonatomic, strong) FXLabel *numberOfHolidays;
 
 @end
 
@@ -53,9 +54,10 @@
 			make.edges.equalTo(_backgroundImageView);
 		}];
 
-		_numberOfHolidays = [UILabel new];
+		_numberOfHolidays = [FXLabel new];
 		_numberOfHolidays.textColor = [UIColor whiteColor];
 		_numberOfHolidays.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:65];
+		[self setupShadow:_numberOfHolidays];
 		[self.contentView addSubview:_numberOfHolidays];
 
 		[_numberOfHolidays makeConstraints:^(MASConstraintMaker *make) {
@@ -64,9 +66,12 @@
 		}];
 		[_numberOfHolidays setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
-		_countryName = [UILabel new];
+		_countryName = [FXLabel new];
 		_countryName.textColor = [UIColor whiteColor];
 		_countryName.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:30];
+		_countryName.adjustsFontSizeToFitWidth = YES;
+		_countryName.minimumScaleFactor = 0.5;
+		[self setupShadow:_countryName];
 		[self.contentView addSubview:_countryName];
 
 		[_countryName makeConstraints:^(MASConstraintMaker *make) {
@@ -76,8 +81,9 @@
 		}];
 		[_countryName setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
 
-		_upcomingHoliday = [UILabel new];
+		_upcomingHoliday = [FXLabel new];
 		_upcomingHoliday.textColor = [UIColor whiteColor];
+		[self setupShadow:_upcomingHoliday];
 		[self.contentView addSubview:_upcomingHoliday];
 
 		[_upcomingHoliday makeConstraints:^(MASConstraintMaker *make) {
@@ -85,8 +91,9 @@
 			make.left.equalTo(_countryName.left);
 		}];
 
-		_daysLeft = [UILabel new];
+		_daysLeft = [FXLabel new];
 		_daysLeft.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+		[self setupShadow:_daysLeft];
 		[self.contentView addSubview:_daysLeft];
 
 		[_daysLeft makeConstraints:^(MASConstraintMaker *make) {
@@ -117,8 +124,8 @@
 }
 
 - (void)setFontsForLabels {
-	_upcomingHoliday.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	_daysLeft.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	_upcomingHoliday.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	_daysLeft.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
 }
 
 - (void)setCountryCode:(NSString *)countryCode {
@@ -149,5 +156,10 @@
 	_numberOfHolidays.text = @"";
 }
 
+- (void)setupShadow:(FXLabel *)label {
+	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.45];
+	label.shadowOffset = CGSizeMake(0, 2);
+	label.shadowBlur = 5;
+}
 
 @end

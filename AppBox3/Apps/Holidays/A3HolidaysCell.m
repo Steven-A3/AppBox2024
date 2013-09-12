@@ -8,8 +8,8 @@
 
 #import "A3HolidaysCell.h"
 #import "UITableViewCell+accessory.h"
-#import "common.h"
 #import "A3UIDevice.h"
+#import "FXLabel.h"
 
 @interface A3HolidaysCell ()
 
@@ -25,10 +25,11 @@
     if (self) {
 		// Initialization code
 
-		_titleLabel = [UILabel new];
+		_titleLabel = [FXLabel new];
 		_titleLabel.textColor = [UIColor whiteColor];
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.minimumScaleFactor = 0.5;
+		[self setShadowToLabel:_titleLabel];
 		[self addSubview:_titleLabel];
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -37,14 +38,19 @@
 			_titleCenterY = make.centerY.equalTo(self.centerY).with.offset(0);
 		}];
 
-		_lunarDateLabel = [UILabel new];
+		_lunarDateLabel = [FXLabel new];
 		_lunarDateLabel.textAlignment = NSTextAlignmentRight;
 		_lunarDateLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+		_lunarDateLabel.adjustsFontSizeToFitWidth = YES;
+		_lunarDateLabel.minimumScaleFactor = 0.5;
 		[self addSubview:_lunarDateLabel];
 
 		[_lunarDateLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
 			make.centerY.equalTo(self.centerY).offset(15);
+			if (IS_IPHONE) {
+				make.width.equalTo(@78);
+			}
 		}];
 
 		_lunarImageView = [UIImageView new];
@@ -54,7 +60,11 @@
 
 		[_lunarImageView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerY.equalTo(_lunarDateLabel.centerY);
-			make.right.equalTo(_lunarDateLabel.left).with.offset(-10);
+			if (IS_IPHONE) {
+				make.left.equalTo(self.right).with.offset(-113);
+			} else {
+				make.right.equalTo(_lunarDateLabel.left).with.offset(-10);
+			}
 		}];
 
 		self.backgroundColor = [UIColor clearColor];
@@ -64,6 +74,12 @@
 		[self assignFontsToLabels];
 	}
     return self;
+}
+
+- (void)setShadowToLabel:(FXLabel *)label {
+	label.shadowOffset = CGSizeMake(0, 2);
+	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.24];
+	label.shadowBlur = 4;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -107,11 +123,15 @@
 	[_lunarDateLabel setHidden:YES];
 }
 
-- (UILabel *)dateLabel {
+- (FXLabel *)dateLabel {
 	if (!_dateLabel) {
-		_dateLabel = [UILabel new];
+		_dateLabel = [FXLabel new];
 		_dateLabel.textColor = [UIColor whiteColor];
 		_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+		_dateLabel.adjustsFontSizeToFitWidth = YES;
+		_dateLabel.minimumScaleFactor = 0.5;
+		_dateLabel.textAlignment = NSTextAlignmentRight;
+		[self setShadowToLabel:_dateLabel];
 		[self addSubview:_dateLabel];
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -120,13 +140,19 @@
 				case A3HolidayCellTypeLunar1:
 					make.baseline.equalTo(_titleLabel.baseline);
 					make.right.equalTo(self.right).offset(IS_IPHONE ? -15 : -28);
+					if (IS_IPHONE) {
+						make.width.equalTo(@(78));
+					}
 					break;
 				case A3HolidayCellTypeDoubleLine:
 					make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
+					if (IS_IPHONE) {
+						make.width.equalTo(@(78));
+					}
 					make.centerY.equalTo(self.centerY).with.offset(15);
 					break;
 				case A3HolidayCellTypeLunar2:
-					make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+					make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 + 18 + 5 : 28 + 18 + 5);
 					make.centerY.equalTo(self.centerY).with.offset(15);
 					break;
 			}
@@ -145,10 +171,10 @@
 					case A3HolidayCellTypeSingleLine:
 					case A3HolidayCellTypeDoubleLine:
 					case A3HolidayCellTypeLunar1:
-						make.right.equalTo(_dateLabel.left).with.offset(-2);
+						make.left.equalTo(self.right).with.offset(-113);
 						break;
 					case A3HolidayCellTypeLunar2:
-						make.left.equalTo(_dateLabel.right).with.offset(2);
+						make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 						break;
 				}
 			} else {

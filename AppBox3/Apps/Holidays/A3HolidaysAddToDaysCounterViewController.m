@@ -50,6 +50,20 @@ static NSString *CellIdentifier = @"Cell";
 	self.title = @"Holidays";
 
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	if (self.isMovingFromParentViewController) {
+		[self removeObserver];
+	}
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

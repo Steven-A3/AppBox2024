@@ -28,7 +28,7 @@
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// St Patrick's Day, 17 March
-	holidayName = @"St Patrick's Day";
+	holidayName = @"Saint Patrick's Day";
 	date = [HolidayData dateWithDay:17 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -38,7 +38,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"May Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:5 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -65,7 +65,7 @@
 	return holidays;
 }
 
-// United Kingdom
+// United Kingdom http://en.wikipedia.org/wiki/Public_holidays_in_the_United_Kingdom#England.2C_Northern_Ireland_and_Wales
 - (NSMutableArray *)gb_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -113,10 +113,10 @@
 	
 	holidayName = @"Saint David's Day(Wales)";
 	date = [HolidayData dateWithDay:1 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// St Patrick's Day, 17 March
-	holidayName = @"St Patrick's Day(Northern Ireland)";
+	holidayName = @"St Patrick's Day(Northern Ireland only)";
 	date = [HolidayData dateWithDay:17 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -127,7 +127,7 @@
 		[offsetDC setDay:-21];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
@@ -136,7 +136,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Monday(England/Wales)";
+	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -144,7 +144,7 @@
 	
 	holidayName = @"St George's Day(England)";
 	date = [HolidayData dateWithDay:23 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	if (year == 2011) {
 		holidayName = @"Royal Wedding Bank Holiday";
@@ -153,7 +153,7 @@
 	}
 	
 	// Early May Bank Holiday, First Monday in May
-	holidayName = @"Early May Bank Holiday";
+	holidayName = @"May Day Bank Holiday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:5 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -175,24 +175,25 @@
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:3 month:6 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Battle of the Boyne(Northern Ireland)";
+	holidayName = @"Battle of the Boyne(Northern Ireland only)";
 	date = [HolidayData dateWithDay:12 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Summer Bank Holiday";
+	holidayName = @"Late Summer Bank Holiday";
 	date = [HolidayData getLastWeekday:Monday OfMonth:8 forYear:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St Andrew's Day(Scotland)";
 	date = [HolidayData dateWithDay:30 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //todo: 26 or 27, 26th December, if it be not a Sunday. 27th December in a year in which 25th or 26th December is a Sunday
 	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -256,7 +257,7 @@
 	}
 	
 	// Easter Day 
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -266,7 +267,7 @@
 	date = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -335,7 +336,7 @@
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 		
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Maundy Thursday";
@@ -350,7 +351,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -362,7 +363,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -426,7 +427,7 @@
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 		
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Maundy Thursday";
@@ -441,7 +442,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -471,7 +472,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -485,11 +486,11 @@
 	
 	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:5 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Eve's Day";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"First Day of Christmas";
@@ -503,7 +504,7 @@
 	return holidays;
 }
 
-// Luxembourg
+// Luxembourg http://www.banquedeluxembourg.com/bank/en/bank_luxembourg_public-holidays
 - (NSMutableArray *)lu_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -520,7 +521,7 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Carnival (jour férié d'usage)";
+	holidayName = @"Carnival";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil) {
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
@@ -528,7 +529,7 @@
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
 		
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
@@ -537,10 +538,10 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -549,7 +550,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -559,10 +560,10 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday(Pentecost)";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Whit Monday";
@@ -571,7 +572,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Grand Duke's Birthday (National Day)";
+	holidayName = @"Luxembourg National Holiday";
 	date = [HolidayData dateWithDay:23 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -581,13 +582,13 @@
 	
 	holidayName = @"Luxembourg City Kermesse (jour férié d'usqge)";
 	date = [HolidayData dateWithDay:23 month:7 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"All Saints Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas Eve";
+	holidayName = @"Christmas Eve(afternoon)";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -595,14 +596,14 @@
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Saint-Ètienne";
+	holidayName = @"St Stephen's Day / Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
-// Belgium
+// Belgium http://en.wikipedia.org/wiki/Public_holidays_in_Belgium language: english/dutch/french/german
 - (NSMutableArray *)be_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -619,7 +620,7 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -631,7 +632,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -696,16 +697,18 @@
 	
 	holidayName = @"Valentine's Day";
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Grand Mother's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:1 month:3 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Easter Day";
+    //todo: Good Friday
+    
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -714,11 +717,11 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"V-E Day";
+	holidayName = @"Victory in Europe Day";
 	date = [HolidayData dateWithDay:8 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -733,18 +736,18 @@
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if ([date isEqualToDate:mothersday]) {
 		mothersday = [HolidayData dateWithWeekday:Sunday ordinal:1 month:6 year:year withCalendar:gregorian];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:mothersday, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:mothersday, kHolidayDuration:@1}];
 	} else {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:mothersday, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:mothersday, kHolidayDuration:@1}];
 	}
 	holidayName = @"Pentecost";
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:3 month:6 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Whit Monday";
 	date = [HolidayData getWhitMonday:year western:YES withCalendar:gregorian];
@@ -762,7 +765,7 @@
 	
 	holidayName = @"Grand Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:1 month:10 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"All Saints Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
@@ -775,6 +778,10 @@
 	// Christmas Day
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = @"St. Stephen's Day(only in Alsace and Moselle)";
+	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
@@ -800,13 +807,13 @@
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -815,11 +822,11 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Victory Day";
+	holidayName = @"1945 Victory Day";
 	date = [HolidayData dateWithDay:8 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -829,10 +836,10 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday(Pentecost)";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Whit Monday";
@@ -841,25 +848,25 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"National Day";
+	holidayName = @"Bastille Day";
 	date = [HolidayData dateWithDay:14 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Assumption Day";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"All Saints Day";
+	holidayName = @"All Saints' Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Armistice Day";
+	holidayName = @"Remembrance Day";
 	date = [HolidayData dateWithDay:11 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Abolition Day";
 	date = [HolidayData dateWithDay:20 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas Day";
@@ -889,26 +896,31 @@
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+    //todo: easter와 easter monday 분리할것
 	holidayName = @"Easter and Easter Monday";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+    holidayName = @"King's Day";
+	date = [HolidayData dateWithDay:27 month:4 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Queen's Day";
 	date = [HolidayData dateWithDay:30 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Remembrance of the dead";
 	date = [HolidayData dateWithDay:4 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Liberation Day";
 	date = [HolidayData dateWithDay:5 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Ascension Day";
 	date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
@@ -924,7 +936,7 @@
 	
 	holidayName = @"Saint Nicholas' Eve";
 	date = [HolidayData dateWithDay:5 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas Day(25~26)";
@@ -958,7 +970,7 @@
 	
 	holidayName = @"Valentine's Day";
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Carnival Monday";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
@@ -967,7 +979,7 @@
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:-2];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	}
 	
@@ -977,14 +989,14 @@
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	}
 	
 	holidayName = @"Ash Wednesday";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
@@ -993,10 +1005,10 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -1005,13 +1017,13 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:5 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Ascension Day";
 	date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
@@ -1019,10 +1031,10 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Whit Monday";
@@ -1037,13 +1049,13 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Peace of Augsburg";
+	holidayName = @"Peace Festival";
 	date = [HolidayData dateWithDay:8 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Assumption Day";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"German Unity Day";
 	date = [HolidayData dateWithDay:3 month:10 year:year withCalendar:gregorian option:0];
@@ -1051,11 +1063,11 @@
 	
 	holidayName = @"Thanksgiving Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:1 month:10 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Halloween";
 	date = [HolidayData dateWithDay:31 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Reformation Day";
 	date = [HolidayData dateWithDay:31 month:10 year:year withCalendar:gregorian option:0];
@@ -1073,10 +1085,10 @@
 		[addDC setDay:-5*7 - ([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:targetDate, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:targetDate, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Repentance Day";
+	holidayName = @"Day of Repentance and Prayer";
 	date = [HolidayData dateWithDay:23 month:11 year:year withCalendar:gregorian option:0];
 	NSDateComponents *dc = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
 	NSDateComponents *addDC = [[NSDateComponents alloc] init];
@@ -1099,7 +1111,7 @@
 		[addDC setDay:-4*7 - ([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:targetDate, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:targetDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"1.Advent";
@@ -1113,7 +1125,7 @@
 		[addDC setDay:-3*7 - ([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:targetDate, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:targetDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"2.Advent";
@@ -1124,16 +1136,16 @@
 		[addDC setDay:-2*7 - ([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:targetDate, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:targetDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Barbara";
 	date = [HolidayData dateWithDay:4 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St Nicholas";
 	date = [HolidayData dateWithDay:6 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"3.Advent";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
@@ -1143,7 +1155,7 @@
 		[addDC setDay:-7 - ([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:targetDate, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:targetDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"4.Advent";
@@ -1154,24 +1166,24 @@
 		[addDC setDay:-([dc weekday] == 1?8:[dc weekday]) + 1];
 		NSDate *targetDate = [gregorian dateByAddingComponents:addDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:targetDate, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:targetDate, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas Day 1";
+	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas Day 2";
+	holidayName = @"St Stephen's Day / Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }	
@@ -1197,7 +1209,7 @@
 	date = [HolidayData dateWithDay:23 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour and Solidarity Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1223,7 +1235,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Sacrifice Feast";
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
@@ -1234,7 +1246,7 @@
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Sacrifice Feast";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
@@ -1261,7 +1273,7 @@
 	
 	holidayName = @"Afternoon before Independence Day";
 	date = [HolidayData dateWithDay:23 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:24 month:2 year:year withCalendar:gregorian option:0];
@@ -1273,7 +1285,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1283,7 +1295,7 @@
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Whit Sunday(Pentecost)";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1291,7 +1303,7 @@
 	
 	holidayName = @"Afternoon before Victory Day";
 	date = [HolidayData dateWithDay:22 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Victory Day";
 	date = [HolidayData dateWithDay:23 month:6 year:year withCalendar:gregorian option:0];
@@ -1300,10 +1312,14 @@
 	holidayName = @"Midsummer/Saint John's Day";
 	date = [HolidayData dateWithDay:24 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = @"Day of Restoration of Independence";
+	date = [HolidayData dateWithDay:20 month:8 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Afternoon before Christmas Eve";
 	date = [HolidayData dateWithDay:23 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
@@ -1313,13 +1329,13 @@
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Second Day of Christmas";
+	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Afternoon before New Year's Day";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }	
@@ -1345,7 +1361,7 @@
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1357,7 +1373,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1415,7 +1431,7 @@
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"New Year's Day";
+	holidayName = @"Day of the Establishment of the Slovak Republic";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1435,7 +1451,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1455,7 +1471,7 @@
 	date = [HolidayData dateWithDay:1 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Day of Our Lady of Sorrows, patron saint of Slovakia";
+	holidayName = @"Day of Blessed Virgin Mary, patron saint of Slovakia";
 	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1496,7 +1512,7 @@
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"New Year's Day";
+	holidayName = @"Restoration Day of the Independent Czech State/New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1506,7 +1522,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1573,7 +1589,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1585,14 +1601,16 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Declaration of Independence";
+	holidayName = @"Restoration of Independence day";
 	date = [HolidayData dateWithDay:4 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //todo: "Mother's day" - Second Sunday of May
+    
 	holidayName = @"Midsummer Eve";
 	date = [HolidayData dateWithDay:23 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1613,7 +1631,7 @@
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Second Day of Christmas";
+	holidayName = @"Boxing Day/Second Day of Christmas";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1624,7 +1642,7 @@
 	return holidays;
 }	
 
-// Finland
+// Finland http://en.wikipedia.org/wiki/Public_holidays_in_Finland
 - (NSMutableArray *)fi_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1651,7 +1669,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1663,7 +1681,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"May Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1679,7 +1697,9 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Midsummer's Day";
+    //todo: "Midsummer Eve" - Friday between 19 June and 25 June
+    
+	holidayName = @"Midsummer Day";
 	date = [HolidayData dateWithDay:20 month:6 year:year withCalendar:gregorian option:0];
 	{
 		NSDateComponents *dc = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
@@ -1743,7 +1763,7 @@
 	
 	holidayName = @"Twelfth Night";
 	date = [HolidayData dateWithDay:5 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
@@ -1752,7 +1772,7 @@
 	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
@@ -1761,16 +1781,16 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Saturday";
+	holidayName = @"Holy Saturday";
 	date = [HolidayData dateFrom:date withOffset:-1];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -1781,9 +1801,9 @@
 	
 	holidayName = @"Walpurgis Night";
 	date = [HolidayData dateWithDay:30 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1796,10 +1816,10 @@
 	holidayName = @"Ascension Eve";
 	date = [HolidayData dateFrom:date withOffset:-1];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1825,7 +1845,7 @@
 	holidayName = @"Midsummer's Eve";
 	date = [HolidayData dateFrom:date withOffset:-1];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"All Saints Day";
@@ -1844,24 +1864,24 @@
 	holidayName = @"All Saints Eve";
 	date = [HolidayData dateFrom:date withOffset:-1];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	holidayName = @"2nd Day of Christmas";
+	holidayName = @"Boxing Day ";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }	
@@ -1885,7 +1905,7 @@
 	
 	holidayName = @"Saint Berchtolds' Day";
 	date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
@@ -1897,7 +1917,7 @@
 	
 	holidayName = @"Shrove Tuesday";
 	date = [HolidayData dateWithDay:3 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Saint Joseph's Day";
 	date = [HolidayData dateWithDay:19 month:3 year:year withCalendar:gregorian option:0];
@@ -1906,13 +1926,13 @@
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -1921,7 +1941,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1931,10 +1951,10 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday(Pentecost)";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Whit Monday";
@@ -1943,17 +1963,17 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Corpus Christi Day";
+	holidayName = @"Corpus Christi";
 	date = [HolidayData getCorpusChristi:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"National Day";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Mary's Birthday (Nativity of Our Lady)";
+	holidayName = @"Nativity of Our Lady";
 	date = [HolidayData dateWithDay:8 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1961,13 +1981,13 @@
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Immaculate Conception";
+	holidayName = @"Feast of the Immaculate Conception";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas Day";
@@ -1980,12 +2000,12 @@
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }	
 
-// Austria
+// Austria http://www.austria.info/uk/practical-information/public-holidays-daylight-savings-time-1138825.html
 - (NSMutableArray *)at_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2008,27 +2028,29 @@
 	
 	holidayName = @"Saint Joseph";
 	date = [HolidayData dateWithDay:19 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+    //todo: "Easter"
+    
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"National Holiday";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Saint Florian";
 	date = [HolidayData dateWithDay:4 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Ascension Day";
 	date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
@@ -2054,13 +2076,13 @@
 	
 	holidayName = @"Rupert of Salzburg";
 	date = [HolidayData dateWithDay:24 month:9 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Carinthian Plebiscite";
 	date = [HolidayData dateWithDay:10 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"National Day (Declaration of Neutrality)";
+	holidayName = @"National Holiday";
 	date = [HolidayData dateWithDay:26 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2070,11 +2092,11 @@
 	
 	holidayName = @"Martin of Tours";
 	date = [HolidayData dateWithDay:11 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Leopold III, Margrave of Austria";
 	date = [HolidayData dateWithDay:15 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Immaculate Conception";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
@@ -2082,20 +2104,20 @@
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"St. Stephen's Day";
+	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }	
@@ -2121,10 +2143,10 @@
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -2133,11 +2155,11 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Anniversary of Liberation";
+	holidayName = @"Liberation Day";
 	date = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2145,7 +2167,7 @@
 	date = [HolidayData dateWithDay:2 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Ferragosto/Assumption Day";
+	holidayName = @"Assumption Day";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2155,11 +2177,11 @@
 	
 	holidayName = @"Day of Dead";
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Victory Day";
 	date = [HolidayData dateWithDay:4 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Immaculate Conception";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
@@ -2194,22 +2216,22 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Day of Re-establishment of the State of Lithuania(1918)";
+	holidayName = @"the Day of Restoration of the State of Lithuania (1918)";
 	date = [HolidayData dateWithDay:16 month:2 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Day of Restitution of Independence of Lithuania";
+	holidayName = @"Day of Restoration of Independence of Lithuania (from the Soviet Union, 1990)";
 	date = [HolidayData dateWithDay:11 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Easter Day 
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2237,6 +2259,10 @@
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    holidayName = @"Christmas eve";
+	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Christmas Day(25~26)";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -2256,12 +2282,13 @@
 	NSString *holidayName;
 	NSDate *date;
 	
+    //todo: In addition to New Year's Day (Новый год Novy god) on 1 January, 2–5 January are public holidays as well,[1][2] called New Year holiday http://en.wikipedia.org/wiki/Public_holidays_in_Russia
 	// New years day
-	holidayName = @"New Year's Day";
+	holidayName = @"New Year holiday";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Orthodox Christmas";
+	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:7 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2273,7 +2300,11 @@
 	date = [HolidayData dateWithDay:8 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Spring and Labor Day";
+    holidayName = @"National Flag Day";
+	date = [HolidayData dateWithDay:22 month:8 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    
+	holidayName = @"Spring and Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2292,7 +2323,7 @@
 	return holidays;
 }
 
-// Spain
+// Spain http://www.holidayyear.com/holidays/Spain
 - (NSMutableArray *)es_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2315,12 +2346,12 @@
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithDay:19 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Holy Thursday";
+	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
@@ -2332,24 +2363,24 @@
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St. George's Day / Castile and León Day";
 	date = [HolidayData dateWithDay:23 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St. John's Day";
 	date = [HolidayData dateWithDay:24 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St. James Day";
 	date = [HolidayData dateWithDay:25 month:7 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
@@ -2357,9 +2388,9 @@
 	
 	holidayName = @"Covadonga and Guadalupe Day";
 	date = [HolidayData dateWithDay:24 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Hispanic Day(Columbus Day)";
+	holidayName = @"Hispanic Day";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2382,7 +2413,7 @@
 	
 	holidayName = @"St. Stephen's Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
@@ -2412,7 +2443,7 @@
 	date = [HolidayData dateWithDay:19 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Freedom Day (Jum il-Helsien)";
+	holidayName = @"Freedom Day";
 	date = [HolidayData dateWithDay:31 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2422,13 +2453,13 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Workers' Day (Jum il-Haddiem)";
+	holidayName = @"Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2436,19 +2467,19 @@
 	date = [HolidayData dateWithDay:7 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Feast of St. Peter and St. Paul (L-Imnarja)";
+	holidayName = @"Feast of St. Peter and St. Paul";
 	date = [HolidayData dateWithDay:29 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Feast of Assumption";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Feast of Our Lady of Victories (Jum il-Vittorja)";
+	holidayName = @"Victory Day";
 	date = [HolidayData dateWithDay:8 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day(Jum I-Indipendenza)";
+	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:21 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2456,7 +2487,7 @@
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Republic Day (Jum ir-Repubblika)";
+	holidayName = @"Republic Day";
 	date = [HolidayData dateWithDay:13 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2487,37 +2518,37 @@
 
 	holidayName = @"Saint Berchtolds' Day";
 	date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Saint Joseph's Day";
 	date = [HolidayData dateWithDay:19 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Ascension Day";
 	date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
@@ -2528,18 +2559,18 @@
 	holidayName = @"Whit Monday";
 	date = [HolidayData getWhitMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Corpus Christi";
 	date = [HolidayData getCorpusChristi:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"St. Peter and St. Paul";
 	date = [HolidayData dateWithDay:29 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Swiss National Day";
 	date = [HolidayData dateWithDay:1 month:8 year:year withCalendar:gregorian option:0];
@@ -2547,23 +2578,23 @@
 
 	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Swiss federal fast";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:3 month:9 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Swiss federal fast Monday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:9 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"All Saints Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Immaculate Conception";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	// Christmas Day
 	holidayName = @"Christmas Day";
@@ -2572,12 +2603,12 @@
 
 	holidayName = @"St. Stephen's Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
-// Poland
+// Poland http://en.wikipedia.org/wiki/Public_holidays_in_Poland
 - (NSMutableArray *)pl_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2594,25 +2625,26 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //todo: in effect since 2011
 	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Grandma's Day";
 	date = [HolidayData dateWithDay:21 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Grandpa's Day";
 	date = [HolidayData dateWithDay:22 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Valentine's Day";
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"April Fool's Day";
 	date = [HolidayData dateWithDay:1 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
@@ -2630,23 +2662,27 @@
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Constitution Day May 3";
+	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:3 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //todo: "Pentecost" - 7th Sunday after Easter
+    
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithDay:26 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //todo: "Corpus Christi" - 9th Thursday after Easter
+    
 	holidayName = @"Children's Day";
 	date = [HolidayData dateWithDay:1 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithDay:23 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Assumption Day";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2654,9 +2690,9 @@
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"All Souls' Day";
+	holidayName = @"All Souls Day";
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:11 month:11 year:year withCalendar:gregorian option:0];
@@ -2664,25 +2700,25 @@
 	
 	holidayName = @"St. Andrew's Day";
 	date = [HolidayData dateWithDay:30 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
-	holidayName = @"First Day of Christmas";
+	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Second Day of Christmas";
+	holidayName = @"Boxing Day";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
-// Moldova Repblic Of
+// Moldova Repblic Of http://en.wikipedia.org/wiki/Public_holidays_in_Moldova
 - (NSMutableArray *)md_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2702,40 +2738,41 @@
 	if (year == 2009) {
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:5 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:9 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Orthodox Christmas (Craciunul)";
+    //todo: January 7–8
+	holidayName = @"Craciun pe Rit Vechi(Russian Orthodox Christmas)";
 	date = [HolidayData dateWithDay:7 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Orthodox Christmas Holiday";
 	date = [HolidayData dateWithDay:8 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Intl' Women's Day";
+	holidayName = @"International Women's Day";
 	date = [HolidayData dateWithDay:8 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Orthodox Easter(Paste)";
+	holidayName = @"Orthodox Easter";
 	date = [HolidayData getOrthodoxEaster:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Orthodox Easter Monday(Doua zi de Paste)";
+	holidayName = @"Orthodox Easter Monday(Bright or Renewal Monday)";
 	date = [HolidayData getEasterMonday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -2743,32 +2780,32 @@
 	
 	holidayName = @"Memory/Parents' Day(Pastele Blanjinilor)";
 	date = [HolidayData dateWithDay:27 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Intl' Solidarity Day of Workers";
+	holidayName = @"Labour Day (Moldova)";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Victory Day(Ziua Victoriei)";
+	holidayName = @"Victory and Commemoration Day";
 	date = [HolidayData dateWithDay:9 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day(Ziua Republicii)";
+	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:27 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"National Language Day(Limba Noastra)";
+	holidayName = @"Limba Noastra (National Language Day)";
 	date = [HolidayData dateWithDay:31 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Chisinau Day (Hramul Chisinaului)";
+	holidayName = @"Craciun pe stil Nou (Western Christmas)";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
-// Greece
+// Greece http://en.wikipedia.org/wiki/Public_holidays_in_Greece
 - (NSMutableArray *)gr_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2785,13 +2822,13 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Theophany";
+	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"The Three Holy Hierarchs(School only)";
 	date = [HolidayData dateWithDay:30 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Clean Monday";
 	date = [HolidayData getOrthodoxEaster:year withCalendar:gregorian];
@@ -2805,56 +2842,63 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"25th of March";
+	holidayName = @"Annunciation/Independence Day";
 	date = [HolidayData dateWithDay:25 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Great and Holy Friday";
+	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Pascha";
+	holidayName = @"Easter";
 	date = [HolidayData getOrthodoxEaster:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Bright Monday";
+	holidayName = @"Easter Monday";
 	date = [HolidayData getEasterMonday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Holy Sprit Monday";
+    //todo: "Pentecost" - Easter + 49 days
+	holidayName = @"Pentecost";
+	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
+	if (date != nil) {
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+	}
+
+	holidayName = @"Whit Monday";
 	date = [HolidayData getWhitMonday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
-	holidayName = @"Labor Day";
+
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"The Dormition of the Holy Virgin";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"The \"Ochi day\"";
+	holidayName = @"Ochi day";
 	date = [HolidayData dateWithDay:28 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Polytechneio(School only)";
 	date = [HolidayData dateWithDay:17 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Synaxis of the Mother of God";
+	holidayName = @"Glorifying Mother of God";
 	date = [HolidayData dateWithDay:26 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -2882,7 +2926,7 @@
 	date = [HolidayData dateWithDay:15 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Easter Sunday";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -2894,17 +2938,17 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Pentecost Sunday";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Pentecost Monday";
+	holidayName = @"Whit Monday";
 	date = [HolidayData getWhitMonday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -2946,27 +2990,31 @@
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"New Year's Day(Jan 1~2)";
+	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = @"Day after New Year's Day";
+	date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Unification Day";
 	date = [HolidayData dateWithDay:24 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Dragobetele";
 	date = [HolidayData dateWithDay:24 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Spring festival";
 	date = [HolidayData dateWithDay:1 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Women's Day";
 	date = [HolidayData dateWithDay:8 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Easter(Orthodox)";
+	holidayName = @"Easter";
 	date = [HolidayData getOrthodoxEaster:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -2975,7 +3023,7 @@
 	holidayName = @"Heroes' Day(Ascension)";
 	date = [HolidayData getAscensionDay:year western:NO withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Pentecost";
@@ -2987,27 +3035,31 @@
 	holidayName = @"Whit Monday";
 	date = [HolidayData getWhitMonday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Children's Day";
 	date = [HolidayData dateWithDay:1 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Flag Day";
 	date = [HolidayData dateWithDay:26 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Anthem Day";
 	date = [HolidayData dateWithDay:29 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Dormition of the Theotokos";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = @"St. Andrew's Day";
+	date = [HolidayData dateWithDay:30 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Great Union Day";
@@ -3016,7 +3068,7 @@
 	
 	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day(25~26)";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
@@ -3045,27 +3097,27 @@
 	if (year == 2010) {
 		holidayName = @"Bank Holiday";
 		date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:4 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:5 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Public Holiday";
 		date = [HolidayData dateWithDay:8 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Bank Holiday";
 		date = [HolidayData dateWithDay:9 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Orthodox Christmas";
@@ -3074,13 +3126,13 @@
 	
 	holidayName = @"Orthodox New Year";
 	date = [HolidayData dateWithDay:14 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Unification Day";
 	date = [HolidayData dateWithDay:22 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Women's Day";
+	holidayName = @"International Women's Day";
 	date = [HolidayData dateWithDay:8 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -3093,13 +3145,18 @@
 	holidayName = @"Orthodox Easter Monday";
 	date = [HolidayData getEasterMonday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+    //todo: "May 1 & 2"
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-	
+
+	holidayName = @"Labour Day Holiday";
+	date = [HolidayData dateWithDay:2 month:5 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
 	if (year == 2010) {
 		holidayName = @"Labor Day Holiday";
 		date = [HolidayData dateWithDay:3 month:5 year:year withCalendar:gregorian option:0];
@@ -3117,7 +3174,7 @@
 	if (year == 2010) {
 		holidayName = @"Victory Day Holiday";
 		date = [HolidayData dateWithDay:10 month:5 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Orthodox Pentecost(Triytsia)";
@@ -3131,7 +3188,7 @@
 		NSDateComponents *dc = [[NSDateComponents alloc] init];
 		[dc setDay:1];
 		date = [gregorian dateByAddingComponents:dc toDate:date options:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	}
 	
@@ -3165,59 +3222,59 @@
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"New Year's Day(Nova Godina)";
+	holidayName = @"New Year";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Badnik";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Orthodox Christmas";
+	holidayName = @"Christmas Day(Orthodox)";
 	date = [HolidayData dateWithDay:7 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Bogojavlenie(Vodici)";
 	date = [HolidayData dateWithDay:19 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	date = [HolidayData getGoodFriday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
-		holidayName = @"Orthodox Good Friday(Veliki Petok)";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		holidayName = @"Orthodox Good Friday";
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	date = [HolidayData getOrthodoxEaster:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayName = @"Orthodox Easter(Prv den veligden)";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		holidayName = @"Orthodox Easter";
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	date = [HolidayData getEasterMonday:year western:NO withCalendar:gregorian];
 	if (date != nil) {
-		holidayName = @"Orthodox Easter Monday(Vtor den Veligden)";
+		holidayName = @"Orthodox Easter Monday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labour Day(Den na trudot)";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Duhovden(All Souls)";
 	date = [HolidayData dateWithDay:21 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	holidayName = @"Saints Cyril and Methodius' Day";
 	date = [HolidayData dateWithDay:24 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Iliden Day(Republic Day)";
+	holidayName = @"Day of the Republic";
 	date = [HolidayData dateWithDay:2 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Golema Bogorodica(Dormition of the Holy Mother of God)";
 	date = [HolidayData dateWithDay:28 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:8 month:9 year:year withCalendar:gregorian option:0];
@@ -3230,14 +3287,14 @@
 		date = [gregorian dateByAddingComponents:dc toDate:date options:0];
 
 		holidayName = @"Ramazan Bajram(End of Ramadan)";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
-	holidayName = @"Uprising Against Fascism Day";
+	holidayName = @"Revolution Day";
 	date = [HolidayData dateWithDay:11 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Day of the Macedonian Revolution";
+	holidayName = @"Day of the Macedonian Revolution Struggle";
 	date = [HolidayData dateWithDay:23 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -3248,14 +3305,14 @@
 		[dc setDay:-1];
 		date = [gregorian dateByAddingComponents:dc toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Day of the Albanian Alphabet";
 	date = [HolidayData dateWithDay:22 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"St. Kliment Ohirdski(St. Clement of Ohrid)";
+	holidayName = @"Saint Clement of Ohrid Day";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -3279,7 +3336,7 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Liberation Day(National Day)";
+	holidayName = @"Liberation Day";
 	date = [HolidayData dateWithDay:3 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -3305,17 +3362,17 @@
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Saint George's Day/Army Day";
+	holidayName = @"Saint George's Day";
 	date = [HolidayData dateWithDay:6 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	if (year == 2010) {
 		holidayName = @"Saint George's Day Bridge Public Holiday";
 		date = [HolidayData dateWithDay:7 month:5 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Culture and Literacy Day";
+	holidayName = @"Bulgarian Education and Culture, and Slavonic Literature Day";
 	date = [HolidayData dateWithDay:24 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -3345,7 +3402,7 @@
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 
 	return holidays;

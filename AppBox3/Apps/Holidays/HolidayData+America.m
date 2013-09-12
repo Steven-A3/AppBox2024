@@ -105,59 +105,59 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Tu Bishvat";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][0][1] month:jewishTable[year - 2000][0][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Purim";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][1][1] month:jewishTable[year - 2000][1][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Pesach*";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][2][1] month:jewishTable[year - 2000][2][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Yom Ha'Shoah";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][3][1] month:jewishTable[year - 2000][3][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Yom Ha'atzmaut";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][4][1] month:jewishTable[year - 2000][4][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Lag Ba'omer";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][5][1] month:jewishTable[year - 2000][5][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Shavuot*";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][6][1] month:jewishTable[year - 2000][6][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Tisha B'Av";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][7][1] month:jewishTable[year - 2000][7][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = [@"Rosh HaShanah*" stringByAppendingString:[NSString stringWithFormat:@"(%d)", year + 3761]];
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][8][1] month:jewishTable[year - 2000][8][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Yom Kippur*";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][9][1] month:jewishTable[year - 2000][9][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Sukkot*";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][10][1] month:jewishTable[year - 2000][10][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Shemini Atzeret*";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][11][1] month:jewishTable[year - 2000][11][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Simchat Torah*";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][12][1] month:jewishTable[year - 2000][12][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Hanukkah";
 	date = [HolidayData dateWithDay:jewishTable[year - 2000][13][1] month:jewishTable[year - 2000][13][0] year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
@@ -179,16 +179,16 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Catholic day of the Epiphany";
+	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
-	holidayName = @"Dia de la Altagracia(Patroness Day)";
+	holidayName = @"Our Lady of Altagracia";
 	date = [HolidayData dateWithDay:21 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Duarte's Day";
-	date = [HolidayData dateWithDay:25 month:1 year:year withCalendar:gregorian option:0];
+	holidayName = @"Duarte's Birthday";
+	date = [HolidayData dateWithDay:26 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
@@ -202,29 +202,29 @@ static NSUInteger jewishTable[][14][2] = {
 	}
 	
 	// Labor Day is the first Monday of September. 
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Corpus Christi
-	holidayName = @"Catholic Corpus Christi";
+	holidayName = @"Corpus Christi";
 	date = [HolidayData getCorpusChristi:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
+    
 	holidayName = @"Restoration Day";
 	date = [HolidayData dateWithDay:16 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Virgen de las Mercedes(A Patroness Day)";
+	holidayName = @"Our Lady of las Mercedes";
 	date = [HolidayData dateWithDay:24 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:6 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-	
+    
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -232,7 +232,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-/*! Virgin Islands United States
+/*! Virgin Islands United States http://en.wikipedia.org/wiki/Public_holidays_in_the_United_States_Virgin_Islands
  */
 - (NSMutableArray *)vi_HolidaysInYear
 {
@@ -249,17 +249,17 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Epiphany";
+	holidayName = @"Three Kings Day";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Martin Luther King Day, Third Monday of January
 	holidayName = @"Martin Luther King Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:1 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Presidents' Day";
-	date = [HolidayData dateWithDay:16 month:2 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:2 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Transfer Day";
@@ -279,10 +279,10 @@ static NSUInteger jewishTable[][14][2] = {
 	}
 	
 	// Easter Day 
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -293,11 +293,11 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Children's Carnival Day";
 	date = [HolidayData dateWithDay:24 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Grand Carnival Day";
 	date = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Memorial Day is observed the last Monday of May.
 	holidayName = @"Memorial Day";
@@ -306,20 +306,20 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Organic Act Day";
 	date = [HolidayData dateWithDay:15 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Emancipation Day";
 	date = [HolidayData dateWithDay:3 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Independence Day is July 4th.
-	holidayName = @"Independence Day";
+	holidayName = @"American Independence Day";
 	date = [HolidayData dateWithDay:4 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Hurricane Supplication Day";
 	date = [HolidayData dateWithDay:27 month:7 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Labor Day is the first Monday of September. 
 	holidayName = @"Labor Day";
@@ -333,7 +333,7 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Hurricane Thanksgiving Day";
 	date = [HolidayData dateWithDay:27 month:7 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Liberty Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
@@ -360,7 +360,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-/*! United States
+/*! United States http://en.wikipedia.org/wiki/Public_holidays_in_the_United_States#Federal_holidays
  */
 - (NSMutableArray *)us_HolidaysInYear
 {
@@ -384,7 +384,7 @@ static NSUInteger jewishTable[][14][2] = {
 	}
 
 	// Martin Luther King Day, Third Monday of January
-	holidayName = @"Martin Luther King Day";
+	holidayName = @"Martin Luther King, Jr. Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:1 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -401,7 +401,9 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Washington's Birthday";
+    //todo: "Inauguration Day" - January 20 (or 21st if the 20th is a Sunday) following a Presidential election http://en.wikipedia.org/wiki/Federal_holidays_in_the_United_States
+    
+ 	holidayName = @"Washington's Birthday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:2 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -527,7 +529,7 @@ static NSUInteger jewishTable[][14][2] = {
 }
 
 
-/*! Jamaica
+/*! Jamaica http://en.wikipedia.org/wiki/Public_holidays_in_Jamaica
  */
 - (NSMutableArray *)jm_HolidaysInYear
 {
@@ -557,10 +559,10 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -586,7 +588,7 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Heroes' Day";
-	date = [HolidayData dateWithDay:19 month:10 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:10 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
@@ -601,7 +603,7 @@ static NSUInteger jewishTable[][14][2] = {
 }
 
 
-/*! Nicaragua
+/*! Nicaragua http://en.wikipedia.org/wiki/Public_holidays_in_Nicaragua
  */
 - (NSMutableArray *)ni_HolidaysInYear
 {
@@ -615,7 +617,7 @@ static NSUInteger jewishTable[][14][2] = {
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"New Year's Day";
+	holidayName = @"New Years";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -623,13 +625,13 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:2 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Holy Thursday";
+	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -645,6 +647,10 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:25 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    holidayName = @"Fiesta de Santa Ana";
+	date = [HolidayData dateWithDay:26 month:7 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Fiesta de Santo Domingo";
 	date = [HolidayData dateWithDay:1 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -674,7 +680,7 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
-	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
@@ -707,13 +713,13 @@ static NSUInteger jewishTable[][14][2] = {
 	}
 	
 	// Easter Day 
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -722,17 +728,17 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Corpus Christi
-	holidayName = @"Corpus Christi Day";
+	holidayName = @"Corpus Christi";
 	date = [HolidayData getCorpusChristi:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Freedom Day (Golpe de la Libertad)";
+	holidayName = @"Freedom Day";
 	date = [HolidayData dateWithDay:3 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Constitution Day (Carta de Akonibe)";
+	holidayName = @"Constitution Day";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -742,7 +748,7 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Immaculate Conception Day";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
@@ -778,56 +784,56 @@ static NSUInteger jewishTable[][14][2] = {
 		[offsetdc setDay:-2];
 		date = [gregorian dateByAddingComponents:offsetdc toDate:ashWednesday options:0];
 		
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		holidayName = @"Carnival Tuesday";
 		[offsetdc setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetdc toDate:ashWednesday options:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		// Ash Wednesday
 		holidayName = @"Ash Wednesday";
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:ashWednesday, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:ashWednesday, kHolidayDuration:@1}];
 	}
 	
 	// Good Friday
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	// Tiradentes
-	holidayName = @"Tiradentes";
+	holidayName = @"Tiradentes' Day";
 	date = [HolidayData dateWithDay:21 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Mothers' Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:5 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Corpus Christi
 	holidayName = @"Corpus Christi";
 	date = [HolidayData getCorpusChristi:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Valentine Day";
 	date = [HolidayData dateWithDay:12 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St. John's Day";
 	date = [HolidayData dateWithDay:24 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Fathers' Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:8 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Independence Day
 	holidayName = @"Independence Day";
@@ -845,22 +851,22 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Proclamation of the Republic Day
-	holidayName = @"Proclamation of the Republic";
+	holidayName = @"Republic Day";
 	date = [HolidayData dateWithDay:15 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
-	holidayName = @"Christmas";
+	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
@@ -891,7 +897,7 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:19 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Moundy Thursday";
+	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -925,11 +931,11 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"St. Peter and St. Paul";
+	holidayName = @"Saint Peter and Saint Paul";
 	date = [HolidayData dateWithDay:29 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day";
+	holidayName = @"Declaration of Independence";
 	date = [HolidayData dateWithDay:20 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -990,7 +996,7 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"Holy Saturday";
 	date = [HolidayData getHolySaturday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Labor Day";
@@ -1001,7 +1007,7 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:21 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"St. Peter and St. Paul";
+	holidayName = @"Saint Peter and Saint Paul";
 	date = [HolidayData dateWithDay:29 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1013,7 +1019,7 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"National Holiday";
+	holidayName = @"Independence Day of Chile";
 	date = [HolidayData dateWithDay:18 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1021,7 +1027,11 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:19 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Columbus Day";
+      holidayName = @"Public Holiday";
+	date = [HolidayData dateWithDay:20 month:9 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+	holidayName = @"Race Day";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1033,7 +1043,12 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Immaculate Conception";
+      holidayName = @"Presidential Elections";
+	date = [HolidayData dateWithDay:17 month:11 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+    
+	holidayName = @"Immaculate Conception Day";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1044,7 +1059,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// Argentina
+// Argentina http://en.wikipedia.org/wiki/Public_holidays_in_Argentina
 - (NSMutableArray *)ar_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1061,6 +1076,9 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+     //todo: "Carnival (Monday)" - Celebrated Monday and Tuesday before Ash Wednesday
+     //todo: "Carnival (Tuesday)" - Celebrated Monday and Tuesday before Ash Wednesday
+    
 	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
@@ -1073,39 +1091,43 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Memorial Day";
+	holidayName = @"Day of Remembrance for Truth and Justice";
 	date = [HolidayData dateWithDay:24 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Malvinas Day";
+	holidayName = @"Day of the veterans and the fallen in Malvinas War";
 	date = [HolidayData dateWithDay:2 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Revolución de Mayo";
+	holidayName = @"Day of the First National Government";
 	date = [HolidayData dateWithDay:25 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"National Flag Day";
-	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:6 year:year withCalendar:gregorian];
+	date = [HolidayData dateWithWeekday:Monday ordinal:20 month:6 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"National Independence Day";
+	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:9 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Anniversary of the death of General José de San Martín";
-	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:8 year:year withCalendar:gregorian];
+	date = [HolidayData dateWithWeekday:Monday ordinal:17 month:8 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-	
-	holidayName = @"Columbus Day";
+
+	holidayName = @"Day of Respect for Cultural Diversity";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Immaculate Conception";
+	holidayName = @"Day of National Sovereignty";
+	date = [HolidayData dateWithWeekday:Monday ordinal:4 month:11 year:year withCalendar:gregorian];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+	holidayName = @"Immaculate Conception Day";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1125,7 +1147,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// Mexico
+// Mexico http://en.wikipedia.org/wiki/Public_holidays_in_Mexico
 - (NSMutableArray *)mx_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1145,20 +1167,20 @@ static NSUInteger jewishTable[][14][2] = {
 	// Epiphany
 	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Constitution Day";
-	date = [HolidayData dateWithDay:5 month:2 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:2 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Valentine's Day, is celebrated on February 14th. 
 	holidayName = @"Valentine's Day";
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Flag Day";
 	date = [HolidayData dateWithDay:24 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Benito Juárez's Birthday";
 	date = [HolidayData dateWithDay:21 month:3 year:year withCalendar:gregorian option:0];
@@ -1167,52 +1189,52 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Sunday";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Children's Day";
 	date = [HolidayData dateWithDay:30 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labour Day";
+	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Cinco de Mayo";
 	date = [HolidayData dateWithDay:5 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithDay:10 month:5 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:3 month:6 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Presidential Address";
 	date = [HolidayData dateWithDay:1 month:9 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Young Cadets";
 	date = [HolidayData dateWithDay:13 month:9 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Shout of Dolores";
 	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:16 month:9 year:year withCalendar:gregorian option:0];
@@ -1220,27 +1242,34 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Columbus Day";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"All Saints Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"All Souls Day";
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Revolution Day";
 	date = [HolidayData dateWithDay:20 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //ok_todo: "Change of Federal Government" - December 1, Every six years, when a new President is sworn in office. Next observance: December 1, 2018.
+	if (((year + 4) % 6) == 0) {
+		holidayName = @"Change of Federal Government";
+		date = [HolidayData dateWithDay:1 month:12 year:year withCalendar:gregorian option:0];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	}
+    
 	holidayName = @"Day of the Virgin of Guadalupe";
 	date = [HolidayData dateWithDay:12 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
@@ -1248,12 +1277,12 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
 
-// Ecuador
+// Ecuador http://en.wikipedia.org/wiki/Public_holidays_in_Ecuador
 - (NSMutableArray *)ec_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1282,7 +1311,7 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1323,7 +1352,7 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
-}// Puerto Rico
+}// Puerto Rico http://en.wikipedia.org/wiki/Public_holidays_in_Puerto_Rico#Official_public_holidays
 - (NSMutableArray *)pr_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1340,7 +1369,7 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Epiphany";
+	holidayName = @"Three Kings Day/Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1348,7 +1377,12 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:11 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"President's Day, Washington's Birthday";
+    //ok_todo: "Martin Luther King, Jr. Day" - Third Monday in January
+	holidayName = @"Martin Luther King, Jr. Day";
+	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:1 year:year withCalendar:gregorian];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+	holidayName = @"Presidents' Day, Washington's Birthday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:2 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1383,7 +1417,7 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:7 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Commonwealth Constitution Day";
+	holidayName = @"Constitution of Puerto Rico Day";
 	date = [HolidayData dateWithDay:25 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1426,12 +1460,12 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"New year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
 
-// Canada
+// Canada http://en.wikipedia.org/wiki/Public_holidays_in_Canada
 - (NSMutableArray *)ca_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1450,23 +1484,23 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Valentine's Day";
 	date = [HolidayData dateWithDay:14 month:2 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Alberta Family Day";
+	holidayName = @"Family Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:3 month:2 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Daylight Saving Time Begins";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:3 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"St Patrick's Day";
 	date = [HolidayData dateWithDay:17 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"April Fool's Day";
 	date = [HolidayData dateWithDay:1 month:4 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
@@ -1477,7 +1511,7 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -1488,11 +1522,11 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:5 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Father's Day";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:3 month:6 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Victoria Day";
 	date = [HolidayData dateWithDay:24 month:5 year:year withCalendar:gregorian option:0];
@@ -1508,18 +1542,19 @@ static NSUInteger jewishTable[][14][2] = {
 
 	holidayName = @"Saint Jean Baptiste";
 	date = [HolidayData dateWithDay:24 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    //ok_todo: July 2 when July 1 is a Sunday
 	holidayName = @"Canada Day";
-	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:3];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Civic Holiday";
+	holidayName = @"August Civic Holiday";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:8 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Alberta Heritage Day";
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Labour Day";
 	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:9 year:year withCalendar:gregorian];
@@ -1531,11 +1566,11 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Halloween";
 	date = [HolidayData dateWithDay:31 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Daylight Saving Time Ends";
 	date = [HolidayData dateWithWeekday:Sunday ordinal:1 month:11 year:year withCalendar:gregorian];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Remembrance Day";
 	date = [HolidayData dateWithDay:11 month:11 year:year withCalendar:gregorian option:0];
@@ -1553,7 +1588,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// Paraguay
+// Paraguay http://en.wikipedia.org/wiki/Public_holidays_in_Paraguay
 - (NSMutableArray *)py_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1570,7 +1605,7 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"National Heroes' Day";
+	holidayName = @"Heroes' Day";
 	date = [HolidayData dateWithDay:1 month:3 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1586,21 +1621,21 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Labor Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"National Independence Day";
+	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:15 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Chaco Armistice Day";
+	holidayName = @"Chaco Armistice";
 	date = [HolidayData dateWithDay:12 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1623,12 +1658,12 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"New Year's Eve Bank Holiday";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
 
-// Peru
+// Peru http://en.wikipedia.org/wiki/Public_holidays_in_Peru
 - (NSMutableArray *)pe_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1657,7 +1692,7 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1699,7 +1734,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// El Salvador
+// El Salvador http://en.wikipedia.org/wiki/Public_holidays_in_El_Salvador#Public_holidays
 - (NSMutableArray *)sv_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1714,13 +1749,13 @@ static NSUInteger jewishTable[][14][2] = {
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Peace Accords Day";
 	date = [HolidayData dateWithDay:16 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Holy Week";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil)
 	{
@@ -1743,6 +1778,10 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:10 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+      holidayName = @"Father's Day";
+	date = [HolidayData dateWithDay:17 month:6 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+   
 	holidayName = @"August Festivals(Aug 1~7)";
 	date = [HolidayData dateWithDay:1 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1751,7 +1790,11 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Día de la Raza(Columbus Day)";
+      holidayName = @"Day of the children";
+	date = [HolidayData dateWithDay:1 month:10 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+	holidayName = @"Day of the race";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1759,23 +1802,31 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+      holidayName = @"National Festival Of Pupusa(Nov 7~13)";
+	date = [HolidayData dateWithDay:7 month:11 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Queen of the Peace Day";
 	date = [HolidayData dateWithDay:21 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Festival Day of the Virgin Guadalupe";
 	date = [HolidayData dateWithDay:12 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+      holidayName = @"New Year's Eve";
+	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
 
-// Honduras
+// Honduras http://en.wikipedia.org/wiki/Public_holidays_in_Honduras
 - (NSMutableArray *)hn_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1810,17 +1861,17 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Americas' Day";
+	holidayName = @"America's Day";
 	date = [HolidayData dateWithDay:14 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1828,11 +1879,11 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"General Francisco Morazán's Birthday";
+	holidayName = @"Francisco Morazan's Day/Soldier's Day";
 	date = [HolidayData dateWithDay:3 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Día de la Raza(Columbus Day)";
+	holidayName = @"Columbus Day";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1848,7 +1899,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// Guatemala
+// Guatemala http://en.wikipedia.org/wiki/Public_holidays_in_Guatemala
 - (NSMutableArray *)gt_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1861,35 +1912,35 @@ static NSUInteger jewishTable[][14][2] = {
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"New Year's Day";
+	holidayName = @"New Year Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Holy Saturday";
 	date = [HolidayData getHolySaturday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1899,11 +1950,11 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"July Bank Holiday";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Assumption Day(only for Guatemala City)";
+	holidayName = @"Assumption of Mary(Guatemala City only)";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
@@ -1913,11 +1964,11 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:20 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"All Saints Day";
+	holidayName = @"All Saints' Day";
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas Eve";
+	holidayName = @"Christmas Eve(afternoon only)";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1926,14 +1977,14 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"New year's Eve";
+	holidayName = @"New year's Eve(afternoon only)";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
 
-// Uruguay
+// Uruguay http://en.wikipedia.org/wiki/Public_holidays_in_Uruguay
 - (NSMutableArray *)uy_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -1951,7 +2002,7 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Epiphany
-	holidayName = @"Epiphany";
+	holidayName = @"Children's Day";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -1966,37 +2017,39 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Maundy Thursday(Semana Santa)";
+	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Good Friday(Semana Santa)";
+	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+     //todo: "Tourism Week"  - in place of Christian Holy week, moveable in late March or early April
+    
 	holidayName = @"Landing of the 33 Patriots Day";
 	date = [HolidayData dateWithDay:19 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"International Workers' Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Battle of Las Piedras Day";
+	holidayName = @"Battle of Las Piedras";
 	date = [HolidayData dateWithDay:18 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Birthday of José Gervasio Artigas";
+	holidayName = @"Birthday of José Gervasio Artigas and Never Again Day";
 	date = [HolidayData dateWithDay:19 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2004,26 +2057,26 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:18 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day(Declaratoria de la Florida";
+	holidayName = @"Independence Day";
 	date = [HolidayData dateWithDay:25 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Día de la Raza/Sarandí Battle Day";
+	holidayName = @"Day of the race(Columbus Day)";
 	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"All Souls Day";
+	holidayName = @"Deceased ones day";
 	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas";
+	holidayName = @"Day of the Family";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
-// Panama
+// Panama http://en.wikipedia.org/wiki/Public_holidays_in_Panama
 - (NSMutableArray *)pa_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2041,10 +2094,10 @@ static NSUInteger jewishTable[][14][2] = {
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Martyrs' Day";
-	date = [HolidayData dateWithDay:12 month:1 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithDay:9 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Carnaval(Shrove Monday)";
+	holidayName = @"Carnival's Monday";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil)
 	{
@@ -2055,7 +2108,7 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Carnaval(Mardi Gras)";
+	holidayName = @"Carnival's Tuesday";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil)
 	{
@@ -2066,16 +2119,16 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Carnival(Ash Wednesday)";
+	holidayName = @"Ash Wednesday";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Maundy Thursday";
 	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Good Friday";
@@ -2087,28 +2140,28 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"Holy Saturday";
 	date = [HolidayData getHolySaturday:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Presidential Inauguration Day";
 	date = [HolidayData dateWithDay:1 month:7 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Panama La Vieja Day";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day(Colombia)";
+	holidayName = @"Separation Day from Colombia";
 	date = [HolidayData dateWithDay:3 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2120,11 +2173,11 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:5 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Los Santos Uprising Day";
-	date = [HolidayData dateWithDay:5 month:11 year:year withCalendar:gregorian option:0];
+	holidayName = @"The Uprising of Los Santos";
+	date = [HolidayData dateWithDay:10 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day(Espana)";
+	holidayName = @"Independence Day from Spain";
 	date = [HolidayData dateWithDay:28 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2134,20 +2187,20 @@ static NSUInteger jewishTable[][14][2] = {
 	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas";
+	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
 	date = [HolidayData dateWithDay:31 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 	return holidays;
 }
 
-// Venezuela, Bolivarian Republic of
+// Venezuela, Bolivarian Republic of http://en.wikipedia.org/wiki/Public_holidays_in_Venezuela
 - (NSMutableArray *)ve_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2168,7 +2221,19 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"Epiphany";
 	date = [HolidayData dateWithDay:6 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
-	
+	 
+      holidayName = @"Feast of the Divina Pastora";
+	date = [HolidayData dateWithDay:14 month:1 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+      holidayName = @"Youth Day";
+	date = [HolidayData dateWithDay:12 month:2 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+      holidayName = @"Federation Day";
+	date = [HolidayData dateWithDay:20 month:2 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Carnival(Monday & Tuesday)";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil)
@@ -2179,6 +2244,10 @@ static NSUInteger jewishTable[][14][2] = {
 
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
+    
+      holidayName = @"International Women's Day";
+	date = [HolidayData dateWithDay:8 month:3 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Holy Week";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
@@ -2203,7 +2272,21 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Battle of Carabobo";
+	holidayName = @"Fiesta de las Cruces";
+	date = [HolidayData dateWithDay:3 month:5 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+	//ok_todo: "Mother's Day" - Second Sunday of May (movable)
+	holidayName = @"Fiesta de las Cruces";
+	date = [HolidayData dateWithWeekday:Sunday ordinal:2 month:5 year:year withCalendar:gregorian];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+
+	holidayName = @"Fiesta de las Cruces";
+	date = [HolidayData dateWithDay:3 month:5 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+	
+	holidayName = @"Solemnity of Saint John the Baptist, Battle of Carabobo";
 	date = [HolidayData dateWithDay:24 month:6 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2211,12 +2294,16 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:5 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Birth of Simón Bolívar";
+	holidayName = @"Birth of Simón Bolívar, Navy Day";
 	date = [HolidayData dateWithDay:24 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Flag Day";
 	date = [HolidayData dateWithDay:3 month:8 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+	holidayName = @"Birth of the Blessed Virgin Mary and feasts of the Virgen del Valle and Our Lady of Coromoto";
+	date = [HolidayData dateWithDay:8 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Day of Indigenous Resistance";
@@ -2227,16 +2314,32 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:1 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+	holidayName = @"All Souls Day";
+	date = [HolidayData dateWithDay:2 month:11 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
 	holidayName = @"Feria of La Chinita(Nov. 17~19)";
 	date = [HolidayData dateWithDay:17 month:11 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Immaculate Conception";
 	date = [HolidayData dateWithDay:8 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+	holidayName = @"Venezuelan Air Force Day";
+	date = [HolidayData dateWithDay:10 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+	holidayName = @"Simon Bolivar Memorial Day";
+	date = [HolidayData dateWithDay:17 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
 	holidayName = @"Christmas Eve";
 	date = [HolidayData dateWithDay:24 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
+	holidayName = @"Christmas Day";
+	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"New Year's Eve";
@@ -2246,7 +2349,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// Costa Rica
+// Costa Rica http://en.wikipedia.org/wiki/Public_holidays_in_Costa_Rica
 - (NSMutableArray *)cr_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2275,29 +2378,29 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Juan Santamaria Day";
+	holidayName = @"Juan Santa Maria Day";
 	date = [HolidayData dateWithDay:11 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Guanacaste Day";
+	holidayName = @"Anexion de Guancaste Day";
 	date = [HolidayData dateWithDay:25 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Lady of the Angel's Day";
+	holidayName = @"Virgin of Los Angeles Day";
 	date = [HolidayData dateWithDay:2 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Mother's Day/Assumption";
+	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2305,9 +2408,13 @@ static NSUInteger jewishTable[][14][2] = {
 	date = [HolidayData dateWithDay:15 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+	holidayName = @"Cultures National Day";
+	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	
 	holidayName = @"Día de la Raza Holiday";
 	date = [HolidayData dateWithDay:18 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	// Christmas Day
 	holidayName = @"Christmas Day";
@@ -2317,7 +2424,7 @@ static NSUInteger jewishTable[][14][2] = {
 	return holidays;
 }
 
-// Haiti
+// Haiti http://en.wikipedia.org/wiki/Public_holidays_in_Haiti
 - (NSMutableArray *)ht_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2330,15 +2437,15 @@ static NSUInteger jewishTable[][14][2] = {
 	NSDate *date;
 	
 	// New years day
-	holidayName = @"Independence Day";
+	holidayName = @"New Year's Day and Independence Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:2];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Ancestry Day/National Day";
+	holidayName = @"Ancestry Day";
 	date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Carnaval Monday";
+	holidayName = @"Lundi Gras(Carnaval Monday)";
 	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
 	if (date != nil)
 	{
@@ -2346,7 +2453,7 @@ static NSUInteger jewishTable[][14][2] = {
 		[offsetDC setDay:-2];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Mardi Gras";
@@ -2360,27 +2467,48 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+	//ok_todo: "Ash Wednesday"
+	holidayName = @"Ash Wednesday";
+	date = [HolidayData getAshWednesday:year withCalendar:gregorian];
+	if (date != nil) {
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+	}
+
+    //ok_todo: "Maundy Thursday"
+	holidayName = @"Maundy Thursday";
+	date = [HolidayData getMaundiThursday:year withCalendar:gregorian];
+	if (date != nil) {
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	}
+
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
-	
-	holidayName = @"Pan-American Day/Bastilla's Day";
+    
+    //ok_todo: "Easter"
+	holidayName = @"Easter";
+	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
+	if (date != nil) {
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+	}
+
+	holidayName = @"Pan-American Day";
 	date = [HolidayData dateWithDay:14 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labor and Agriculture Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Ascension";
+	holidayName = @"Ascension Day";
 	date = [HolidayData getAscensionDay:year western:YES withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Flag and University Day";
+	holidayName = @"Flag and Universities Day";
 	date = [HolidayData dateWithDay:18 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -2390,11 +2518,11 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Assumption";
+	holidayName = @"Assumption of Mary";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Anniversary of the Death of Dessalines";
+	holidayName = @"Dessalines Day";
 	date = [HolidayData dateWithDay:17 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 
@@ -2413,15 +2541,19 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"Armed Forces Day";
 	date = [HolidayData dateWithDay:18 month:11 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    holidayName = @"Discovery Day";
+	date = [HolidayData dateWithDay:5 month:12 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Christmas";
+	holidayName = @"Christmas Day";
 	date = [HolidayData dateWithDay:25 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	return holidays;
 }
 
-// Bahamas
+// Bahamas https://en.wikipedia.org/wiki/Public_holidays_in_the_Bahamas http://www.bahamas.com/holidays
 - (NSMutableArray *)bs_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -2444,10 +2576,10 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Easter Day";
+	holidayName = @"Easter";
 	date = [HolidayData getEasterDayOfYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Easter Monday";
@@ -2456,10 +2588,10 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Whit Sunday(Pentecost)";
+	holidayName = @"Pentecost";
 	date = [HolidayData getPentecost:year western:YES withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Whit Monday";
@@ -2468,26 +2600,28 @@ static NSUInteger jewishTable[][14][2] = {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labour Day";
-	date = [HolidayData dateWithDay:4 month:6 year:year withCalendar:gregorian option:0];
+	//ok_todo: on the first Friday in June
+	holidayName = @"Labor Day";
+	date = [HolidayData dateWithWeekday:Friday ordinal:1 month:6 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Independence Day";
+	holidayName = @"Bahamas Independence Day";
 	date = [HolidayData dateWithDay:10 month:7 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	if (year == 2010) {
-		holidayName = @"Independence Day(day in lieu)";
+		holidayName = @"Bahamas Independence Day(day in lieu)";
 		date = [HolidayData dateWithDay:12 month:7 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+	//ok_todo: First Monday in August
 	holidayName = @"Emancipation Day";
-	date = [HolidayData dateWithDay:2 month:8 year:year withCalendar:gregorian option:0];
+	date = [HolidayData dateWithWeekday:Monday ordinal:1 month:8 year:year withCalendar:gregorian];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Discovery Day/Columbus Day Holiday";
-	date = [HolidayData dateWithDay:11 month:10 year:year withCalendar:gregorian option:0];
+	holidayName = @"National Heroes' Day";
+	date = [HolidayData dateWithDay:12 month:10 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Christmas Day";

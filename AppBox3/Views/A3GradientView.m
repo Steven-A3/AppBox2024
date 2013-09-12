@@ -27,8 +27,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-		_vertical = NO;
-		self.backgroundColor = [UIColor clearColor];
+		[self initialize];
     }
     return self;
 }
@@ -36,11 +35,16 @@
 - (id)initWithCoder:(NSCoder *)aDecoder {
 	self = [super initWithCoder:aDecoder];
 	if (self) {
-		_vertical = NO;
-		self.backgroundColor = [UIColor clearColor];
+		[self initialize];
 	}
 
 	return self;
+}
+
+- (void)initialize {
+	_vertical = NO;
+	self.backgroundColor = [UIColor clearColor];
+	self.contentMode = UIViewContentModeRedraw;
 }
 
 - (void)awakeFromNib {

@@ -10,6 +10,7 @@
 
 @implementation HolidayData (MiddleEast) 
 
+// Saudi Arabia
 - (NSMutableArray *)sa_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -26,24 +27,25 @@
 	if (year == 2009) {
 		holidayName = @"Ashura";
 		date = [HolidayData dateWithDay:8 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [HolidayData dateWithDay:27 month:12 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2010) {
 		holidayName = @"Ashura";
 		date = [HolidayData dateWithDay:16 month:12 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Mawlid al-Navi (Prophet's Birthday)";
+	holidayName = @"Prophet's Birthday";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:birthday, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Eid al Fitr(End of Ramadan)";
+	//todo: Observed officially for 10 days, by most private institutions from 3 to 7 days.
+	holidayName = @"Eid al-Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -52,7 +54,7 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr Holiday";
+		holidayName = @"Eid al-Fitr Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
@@ -80,11 +82,12 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"National Day";
+	holidayName = @"Saudi National Day";
 	date = [HolidayData dateWithDay:23 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Eid al Adha (Feast of Sacrifice)";
+	//todo: Observed officially for 10 days, by most private institutions from 5 to 7 days.
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -92,7 +95,7 @@
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -108,11 +111,11 @@
 		date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 		[offsetDC setDay:-1];
 		
-		holidayName = @"Eid al Adha Holiday (Arafat Day)";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -124,14 +127,14 @@
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Eid al Adha (Feast of Sacrifice)";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -147,11 +150,11 @@
 		date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 		[offsetDC setDay:-1];
 		
-		holidayName = @"Eid al Adha Holiday (Arafat Day)";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -165,12 +168,12 @@
 	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%d)", year - ((year > 2007)?578:579)];
 	date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
 	if (date != nil) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	if (year == 2008) {
 		holidayName = @"Islamic New Year(1429)";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	return holidays;
@@ -193,43 +196,44 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Public Sector Holiday (Death of Umm al-Quwain ruler)";
+	holidayName = @"Public Sector Holiday(Death of Umm al-Quwain ruler)";
 	date = [HolidayData dateWithDay:2 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Public Sector Holiday (Death of Umm al-Quwain ruler)";
+	holidayName = @"Public Sector Holiday(Death of Umm al-Quwain ruler)";
 	date = [HolidayData dateWithDay:3 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Public Sector Holiday (Death of Umm al-Quwain ruler)";
+	holidayName = @"Public Sector Holiday(Death of Umm al-Quwain ruler)";
 	date = [HolidayData dateWithDay:4 month:1 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Private Sector Holiday(The Prophet's Birthday)";
+	holidayName = @"Private Sector Holiday(Prophet's Birthday)";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:birthday, kHolidayDuration:@1}];
 
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:-1];
 
 		date = [gregorian dateByAddingComponents:offsetDC toDate:birthday options:0];
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 
 		
 	}
 
 	date = [HolidayData getIsraAndMiraj:year withCalendar:gregorian];
 	if (date) {
-		holidayName = @"Prophet's Ascension(Isra and Miraj)";
+		holidayName = @"Isra and Mi'raj";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	holidayName = @"Sheikh Zayed's Accession";
 	date = [HolidayData dateWithDay:6 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Eid al Fitr(End of Ramadan)";
+    //3 days holiday
+	holidayName = @"Eid al-Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -237,7 +241,7 @@
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Fitr Holiday";
+		holidayName = @"Eid al-Fitr Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -247,11 +251,12 @@
 		date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 		[offsetDC setDay:-1];
 		
-		holidayName = @"Eid al Fitr Holiday (Last Day of Ramadan)";
+		holidayName = @"Eid al-Fitr";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
+    //2 days holiday
 	holidayName = @"National Day";
 	date = [HolidayData dateWithDay:2 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -260,7 +265,8 @@
 	date = [HolidayData dateWithDay:3 month:12 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Eid al Adha (Feast of Sacrifice)";
+    //3 days holiday
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -268,7 +274,7 @@
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -286,14 +292,14 @@
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Eid al Adha (Feast of Sacrifice)";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -324,7 +330,7 @@
 	return holidays;
 }	
 
-// Qatar
+// Qatar http://en.wikipedia.org/wiki/Public_holidays_in_Qatar
 - (NSMutableArray *)qa_HolidaysInYear
 {
 	NSUInteger year = self.year;
@@ -339,9 +345,15 @@
 	// New years day
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
+    
+    //todo: "National Sports Day" - on the second Tuesday of February (from 2012 AD)
+    
+    holidayName = @" Independence Day";
+	date = [HolidayData dateWithDay:3 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Eid al Fitr(End of Ramadan)";
+	holidayName = @"Eid al-Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -350,30 +362,30 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 		[offsetDC setDay:-1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Eid al Adha (Feast of Sacrifice)";
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -382,26 +394,26 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 		[offsetDC setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Eid al Adha (Feast of Sacrifice)";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -409,21 +421,21 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 		[offsetDC setDay:-1];
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
@@ -451,13 +463,13 @@
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Mawlid al-Navi (Prophet's Birthday)";
+	holidayName = @"Prophet's Birthday";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
@@ -476,7 +488,7 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Eid al Fitr(End of Ramadan)";
+	holidayName = @"Eid al-Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -485,19 +497,19 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr";
+		holidayName = @"Eid al-Fitr";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr Bank Holiday";
+		holidayName = @"Eid al-Fitr Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Eid al Adha (Feast of Sacrifice)";
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -506,24 +518,24 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Eid al Adha (Feast of Sacrifice)";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -531,19 +543,19 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
@@ -567,31 +579,35 @@
 	NSString *holidayName;
 	NSDate *date;
 	
-	holidayName = @"Christmas(Old Calendarists)";
+	holidayName = @"Christmas Day";
 	int day = 7;
 	if (year >= 2100) day = 8;
 		date = [HolidayData dateWithDay:day month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    holidayName = @"Police Day";
+	date = [HolidayData dateWithDay:25 month:1 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Sportsmen's Day";
 	date = [HolidayData dateWithDay:1 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Mother's Day";
 	date = [HolidayData dateWithDay:21 month:3 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Sinai Liberation Day";
 	date = [HolidayData dateWithDay:25 month:4 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Labor Day";
+	holidayName = @"Labour Day";
 	date = [HolidayData dateWithDay:1 month:5 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Evacuation Day(Eid el-Galaa)";
 	date = [HolidayData dateWithDay:18 month:6 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Revolution Day";
 	date = [HolidayData dateWithDay:23 month:7 year:year withCalendar:gregorian option:0];
@@ -599,7 +615,7 @@
 	
 	holidayName = @"Flooding of the Nile(Wafaa Elnil)";
 	date = [HolidayData dateWithDay:15 month:8 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Armed Forces Day";
 	date = [HolidayData dateWithDay:6 month:10 year:year withCalendar:gregorian option:0];
@@ -607,17 +623,17 @@
 	
 	holidayName = @"Egyptian Naval Day";
 	date = [HolidayData dateWithDay:21 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Suez Day / Popular Resistance Day";
 	date = [HolidayData dateWithDay:24 month:10 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	holidayName = @"Victory Day";
 	date = [HolidayData dateWithDay:23 month:12 year:year withCalendar:gregorian option:0];
-	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Sham El Nessim(Spring Festival)";
+	holidayName = @"Spring Festival(Sham El Nessim)";
 	date = [HolidayData getShamElNessim:year withCalendar:gregorian];
 	if (date != nil) {	// Only if it gets the date.
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -634,26 +650,26 @@
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Prophet Mohamed's Birthday";
+	holidayName = @"Prophet's Birthday";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Ramadan Feast";
+	holidayName = @"Eid al-Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Sacrifice Feast";
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Sacrifice Feast";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
@@ -673,12 +689,12 @@
 	NSString *holidayName;
 	NSDate *date;
 	
-	holidayName = @"Gregorian New Year";
+	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
 	if (year == 2010) {
-		holidayName = @"Gregorian New Year Holiday";
+		holidayName = @"New Year's Day";
 		date = [HolidayData dateWithDay:3 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
@@ -687,6 +703,10 @@
 	date = [HolidayData dateWithDay:25 month:2 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
+    holidayName = @"Liberation Day";
+	date = [HolidayData dateWithDay:26 month:2 year:year withCalendar:gregorian option:0];
+	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    
 	holidayName = @"Prophet's Birthday";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
@@ -695,7 +715,7 @@
 	
 	date = [HolidayData getIsraAndMiraj:year withCalendar:gregorian];
 	if (date != nil) {
-		holidayName = @"Prophet's Ascension(Isra and Miraj)";
+		holidayName = @"Isra and Mi'raj";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
@@ -703,7 +723,7 @@
 	date = [HolidayData dateWithDay:9 month:9 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	
-	holidayName = @"Eid al Fitr(End of Ramadan)";
+	holidayName = @"Eid al-Fitr";
 	date = [HolidayData getRamadanFeast:year withCalendar:gregorian option:0];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -712,14 +732,14 @@
 		[offsetDC setDay:1];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
-		holidayName = @"Eid al Fitr Holiday";
+		holidayName = @"Eid al-Fitr Holiday";
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 	
-	holidayName = @"Eid al Adha (Feast of Sacrifice)";
+	holidayName = @"Eid al-Adha";
 	date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -727,7 +747,7 @@
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -748,14 +768,14 @@
 	}
 	
 	if (year == 2006) {
-		holidayName = @"Eid al Adha (Feast of Sacrifice)";
+		holidayName = @"Eid al-Adha";
 		date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		[offsetDC setDay:1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		
@@ -768,7 +788,7 @@
 		date = [HolidayData getSacrificeFeast:year withCalendar:gregorian];
 		[offsetDC setDay:-1];
 		
-		holidayName = @"Eid al Adha Holiday";
+		holidayName = @"Eid al-Adha Holiday";
 		date = [gregorian dateByAddingComponents:offsetDC toDate:date options:0];
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 		

@@ -90,10 +90,11 @@
 
 - (void)testTimeZone {
 	NSArray *allCountries = [HolidayData supportedCountries];
-	expect([allCountries count] == 98).beTruthy;
+	expect(@([allCountries count])).equal(@98);
+    NSLog(@"%d", [allCountries count]);
 	[allCountries enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
 
-		expect([[obj allKeys] count] == 2).beTruthy;
+		expect(@([[obj allKeys] count])).equal(@2);
 
 		NSTimeZone *timeZone = [NSTimeZone timeZoneWithName:obj[kA3TimeZoneName]];
 		expect(timeZone).notTo.beNil;

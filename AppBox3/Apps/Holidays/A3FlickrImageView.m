@@ -57,7 +57,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		_flickrContext = [[OFFlickrAPIContext alloc] initWithAPIKey:OBJECTIVE_FLICKR_API_KEY sharedSecret:OBJECTIVE_FLICKR_API_SHARED_SECRET];
 		_flickrRequest = [[OFFlickrAPIRequest alloc] initWithAPIContext:_flickrContext];
 		[_flickrRequest setDelegate:self];
-		_keywords = @[@"sky", @"national park", @"weather", @"bridge", @"mountain"];
+		_keywords = @[@"sea", @"weather", @"bridge", @"mountain"];
 		_keywordIndex = arc4random_uniform([_keywords count] - 1);
         self.initialBlurLevel = 0.4;
 	}
@@ -99,13 +99,31 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	}
 }
 
-- (BOOL)hasUserSuppliedImageForCountry:(NSString *)code {
-	return [[self imagePath] isEqualToString:@"userSupplied"];
+- (NSString *)userSuppliedImageNameWithCountryCode {
+	return [NSString stringWithFormat:@"userSupplied_%@", _countryCode];
 }
 
-- (void)startUpdate {
-	if ([[self imagePath] isEqualToString:@"userSupplied"]) {
-		return;
+- (BOOL)hasUserSuppliedImageForCountry:(NSString *)code {
+	return [[self imagePath] isEqualToString:[self userSuppliedImageNameWithCountryCode]];
+}
+
+- (UIImageView *)thumbnailOfUserSuppliedImage {
+	if ([self hasUserSuppliedImageForCountry:_countryCode]) {
+		NSString *path = [self pathForSavedImage];
+		if (path) {
+			UIImage *image = [UIImage imageWithContentsOfFile:[self pathForSavedImage]];
+			CGSize size = CGSizeMake(30, 30);
+			image = [image scaleToCoverSize:size];
+			image = [image cropToSize:size usingMode:NYXCropModeCenter];
+			return [[UIImageView alloc] initWithImage:image];
+		}
+	}
+	return nil;
+}
+
+- (BOOL)startUpdate {
+	if ([[self imagePath] isEqualToString:[self userSuppliedImageNameWithCountryCode]]) {
+		return NO;
 	}
 
 	if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
@@ -116,12 +134,10 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 			self.countryName = countryName;
 			[self photosSearch];
 
-			return;
+			return YES;
 		}
 	}
-	if ([_delegate respondsToSelector:@selector(flickrImageViewImageUpdated:)]) {
-		[_delegate flickrImageViewImageUpdated:self];
-	}
+	return NO;
 }
 
 - (NSString *)pathForSavedImage {
@@ -229,9 +245,10 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 - (void)saveUserSuppliedImage:(UIImage *)image {
 	[self deleteImage];
 
-	[self setImagePath:@"userSupplied"];
+	NSString *imageName = [self userSuppliedImageNameWithCountryCode];
+	[self setImagePath:imageName];
 
-	[self cropSetOriginalImage:image name:@"userSupplied" ];
+	[self cropSetOriginalImage:image name:imageName];
 }
 
 - (NSString *)imagePathKey {
@@ -302,22 +319,110 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 }
 
+- (UIImage *)rotateImage:(UIImage *)image {
+	if (image.imageOrientation == UIImageOrientationUp) {
+		return image;
+	}
+
+	CGImageRef imgRef = image.CGImage;
+
+	CGFloat width = CGImageGetWidth(imgRef);
+	CGFloat height = CGImageGetHeight(imgRef);
+
+	CGAffineTransform transform;
+	CGRect bounds = CGRectMake(0, 0, width, height);
+	CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));
+	CGFloat boundHeight;
+	UIImageOrientation orient = image.imageOrientation;
+	switch (orient) {
+		case UIImageOrientationUp: //EXIF = 1
+			transform = CGAffineTransformIdentity;
+			break;
+
+		case UIImageOrientationUpMirrored: //EXIF = 2
+			transform = CGAffineTransformMakeTranslation(imageSize.width, 0.0);
+			transform = CGAffineTransformScale(transform, -1.0, 1.0);
+			break;
+
+		case UIImageOrientationDown: //EXIF = 3
+			transform = CGAffineTransformMakeTranslation(imageSize.width, imageSize.height);
+			transform = CGAffineTransformRotate(transform, M_PI);
+			break;
+
+		case UIImageOrientationDownMirrored: //EXIF = 4
+			transform = CGAffineTransformMakeTranslation(0.0, imageSize.height);
+			transform = CGAffineTransformScale(transform, 1.0, -1.0);
+			break;
+
+		case UIImageOrientationLeftMirrored: //EXIF = 5
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeTranslation(imageSize.height, imageSize.width);
+			transform = CGAffineTransformScale(transform, -1.0, 1.0);
+			transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
+			break;
+
+		case UIImageOrientationLeft: //EXIF = 6
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeTranslation(0.0, imageSize.width);
+			transform = CGAffineTransformRotate(transform, 3.0 * M_PI / 2.0);
+			break;
+
+		case UIImageOrientationRightMirrored: //EXIF = 7
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeScale(-1.0, 1.0);
+			transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+			break;
+
+		case UIImageOrientationRight: //EXIF = 8
+			boundHeight = bounds.size.height;
+			bounds.size.height = bounds.size.width;
+			bounds.size.width = boundHeight;
+			transform = CGAffineTransformMakeTranslation(imageSize.height, 0.0);
+			transform = CGAffineTransformRotate(transform, M_PI / 2.0);
+			break;
+
+		default:
+			[NSException raise:NSInternalInconsistencyException format:@"Invalid image orientation"];
+
+	}
+
+	UIGraphicsBeginImageContext(bounds.size);
+
+	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	CGContextConcatCTM(context, transform);
+
+	CGContextDrawImage(UIGraphicsGetCurrentContext(), CGRectMake(0, 0, width, height), imgRef);
+	UIImage *imageCopy = UIGraphicsGetImageFromCurrentImageContext();
+	UIGraphicsEndImageContext();
+
+	return imageCopy;
+}
+
 - (UIImage *)cropSetOriginalImage:(UIImage *)image name:(NSString *)filename {
+    UIImage *originalImage = [self rotateImage:image];
 	UIImage *handledImage;
+
 	if (IS_IPAD) {
 		UIImage *returnedImage;
 		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
 		CGRect bounds = CGRectInset(screenBounds, -50, -50);
 		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
-		returnedImage = [self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
 		if (IS_PORTRAIT) handledImage = returnedImage;
 
 		bounds = screenBounds;
 		bounds.size.height = 84;
 		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortraitList] pathInLibraryDirectory];
-		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+		[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
 
 		bounds = screenBounds;
 		bounds.size.width = screenBounds.size.height;
@@ -325,7 +430,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 		bounds = CGRectInset(bounds, -50, -50);
 		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
-		returnedImage = [self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
 		if (IS_LANDSCAPE) handledImage = returnedImage;
 
@@ -334,14 +439,14 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		bounds.size.height = 84;
 
 		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScapeList] pathInLibraryDirectory];
-		[self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
+		[self saveImage:returnedImage bounds:bounds path:path usingMode:(NYXCropModeTopCenter)];
 
 	} else {
 		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
 		CGRect bounds = CGRectInset(screenBounds, -50, -50);
 		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
-		handledImage = [self saveImage:image bounds:bounds path:path usingMode:(NYXCropModeCenter)];
+		handledImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
 		bounds = screenBounds;
 		bounds.size.height = 84;
@@ -352,9 +457,12 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (UIImage *)saveImage:(UIImage *)image bounds:(CGRect)bounds path:(NSString *)path usingMode:(NYXCropMode)cropMode {
-	UIImage *scaledImage = [image scaleToCoverSize:bounds.size];
-	UIImage *croppedImage = [scaledImage cropToSize:bounds.size usingMode:cropMode];
-	[UIImageJPEGRepresentation(croppedImage, 0.5) writeToFile:path atomically:YES];
+	CGSize newSize = CGSizeMake(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
+    FNLOG(@"%f, %f", newSize.width, newSize.height);
+	UIImage *scaledImage = [image scaleToCoverSize:newSize];
+
+	UIImage *croppedImage = [scaledImage cropToSize:newSize usingMode:cropMode];
+	[UIImagePNGRepresentation(croppedImage) writeToFile:path atomically:YES];
 
 	return croppedImage;
 }
