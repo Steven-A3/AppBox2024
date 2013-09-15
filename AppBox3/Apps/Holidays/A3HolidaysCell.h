@@ -21,7 +21,8 @@ typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 @interface A3HolidaysCell : UITableViewCell
 
 @property (nonatomic, strong) FXLabel *titleLabel;
-@property (nonatomic, strong) UIView *publicMark;
+@property (nonatomic, strong) UIView *publicMarkView;
+@property (nonatomic, strong) UILabel *publicLabel;
 @property (nonatomic, strong) FXLabel *dateLabel;
 @property (nonatomic, strong) UIImageView *lunarImageView;
 @property (nonatomic, strong) FXLabel *lunarDateLabel;

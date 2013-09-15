@@ -16,8 +16,11 @@
 #import "A3HolidaysAddToDaysCounterViewController.h"
 #import "A3FlickrImageView.h"
 #import "A3HolidaysViewController.h"
+#import "UIImage+Rotating.h"
+#import "common.h"
+#import "A3ImageCropperViewController.h"
 
-@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate>
+@interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
 @property (nonatomic, strong) NSMutableArray *excludedHolidays;
@@ -192,7 +195,12 @@ static NSString *CellIdentifier = @"Cell";
 				if ([self.imageView hasUserSuppliedImageForCountry:_countryCode]) {
 					cell.textLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:58.0/255.0 blue:48.0/255.0 alpha:1.0];
 					cell.textLabel.text = @"Delete Wallpaper";
-					cell.accessoryView = [self.imageView thumbnailOfUserSuppliedImage];
+					UIImageView *imageView = [self.imageView thumbnailOfUserSuppliedImage];
+					imageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
+					imageView.layer.borderWidth = 0.1;
+					imageView.layer.cornerRadius = 15;
+					imageView.layer.masksToBounds = YES;
+					cell.accessoryView = imageView;
 				} else {
 					cell.textLabel.textColor = [UIColor blackColor];
 					cell.textLabel.text = @"Choose Wallpaper";
@@ -268,7 +276,6 @@ static NSString *CellIdentifier = @"Cell";
 		UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
 		imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
 		imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-		imagePickerController.allowsEditing = YES;
 		imagePickerController.delegate = self;
 
 		if (IS_IPHONE) {
@@ -290,16 +297,40 @@ static NSString *CellIdentifier = @"Cell";
 		_imagePickerPopoverController = nil;
 	}
 
-	UIImage *image = [info valueForKey:UIImagePickerControllerEditedImage];
+	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
+	FNLOG(@"%d", image.imageOrientation);
+
+	A3ImageCropperViewController *cropper = [[A3ImageCropperViewController alloc] initWithImage:image withHudView:nil];
+	cropper.delegate = self;
+	[self.navigationController pushViewController:cropper animated:YES];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)restoreNavigationBarBackground {
+	[self.navigationController.navigationBar setBackgroundImage:nil forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:nil];
+}
+
+- (void)imageCropper:(A3ImageCropperViewController *)cropper didFinishCroppingWithImage:(UIImage *)image {
 
 	[self.imageView saveUserSuppliedImage:image];
 	_dataUpdated = YES;
 
-	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+	double delayInSeconds = 0.5;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+	});
+	[self restoreNavigationBarBackground];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[self dismissViewControllerAnimated:YES completion:nil];
+- (void)imageCropperDidCancel:(A3ImageCropperViewController *)cropper {
+	[self restoreNavigationBarBackground];
+	[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)lunarOnOff:(UISwitch *)switchControl {

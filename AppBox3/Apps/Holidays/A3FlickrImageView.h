@@ -23,7 +23,7 @@
 @property (nonatomic, readonly, copy) NSString *urlString;
 @property (nonatomic) BOOL useForCountryList;
 
-- (void)displayImageWithCountryCode:(NSString *)countryCode;
+- (void)displayImageWithCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation;
 
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code;
 

@@ -15,8 +15,10 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3SearchViewController.h"
 
+@implementation A3SearchTargetItem
+@end
 
-@interface A3SearchViewController ()
+@interface A3SearchViewController () <UISearchDisplayDelegate>
 @end
 
 @implementation A3SearchViewController {
@@ -25,9 +27,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+	[self configureSections];
+
+	self.view.backgroundColor = [UIColor whiteColor];
+
+	self.tableView = [UITableView new];
+	_tableView.frame = self.view.bounds;
+	_tableView.delegate = self;
+	_tableView.dataSource = self;
+	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	_tableView.showsVerticalScrollIndicator = NO;
+	_tableView.contentInset = UIEdgeInsetsMake(kSearchBarHeight + 4, 0, 0, 0);
+	[self.view addSubview:_tableView];
+
+	[self.view addSubview:self.searchBar];
 	[self rightBarButtonDoneButton];
 	[self mySearchDisplayController];
-	self.tableView.tableHeaderView = self.searchBar;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -37,7 +52,6 @@
 		self.searchBar.text = _placeHolder;
 		[self filterContentForSearchText:_placeHolder];
 	}
-	[self.mySearchDisplayController setActive:YES];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -59,34 +73,24 @@
 - (UISearchDisplayController *)mySearchDisplayController {
 	if (!_mySearchDisplayController) {
 		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+		_mySearchDisplayController.delegate = self;
 		_mySearchDisplayController.searchBar.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
 		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2];
+		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
+
 	}
 	return _mySearchDisplayController;
 }
 
 - (UISearchBar *)searchBar {
 	if (!_searchBar) {
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
+		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 64.0, self.view.bounds.size.width, kSearchBarHeight)];
+		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
 		_searchBar.delegate = self;
-		_searchBar.barTintColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 	}
 	return _searchBar;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return [[self.fetchedResultsController sections] count];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-	id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
-	return [sectionInfo numberOfObjects];
 }
 
 - (void)callDelegate:(NSString *)selectedItem {
@@ -104,11 +108,6 @@
 	}
 }
 
-// The method to change the predicate of the FRC
-- (void)filterContentForSearchText:(NSString*)searchText
-{
-}
-
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
 	_searchBar.text = @"";
 }
@@ -119,7 +118,6 @@
 
 // called when cancel button pressed
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	[self doneButtonAction:nil];
 
 }
 
@@ -128,4 +126,140 @@
 {
 	[searchBar resignFirstResponder];
 }
+
+#pragma mark UISearchDisplayControllerDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
+	[self.tableView setHidden:YES];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+	[self.tableView setHidden:NO];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
+
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+
+	CGRect frame = _searchBar.frame;
+	frame.origin.y = 20.0;
+	_searchBar.frame = frame;
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+	CGRect frame = _searchBar.frame;
+	frame.origin.y = 64.0;
+	_searchBar.frame = frame;
+
+}
+
+- (UILocalizedIndexedCollation *)collation {
+	if (!_collation) {
+		[self configureSections];
+	}
+	return _collation;
+}
+
+- (void)configureSections {
+	// Get the current collation and keep a reference to it.
+	_collation = [UILocalizedIndexedCollation currentCollation];
+
+	NSInteger index, sectionTitlesCount = [[self.collation sectionTitles] count];
+
+	NSMutableArray *newSectionsArray = [[NSMutableArray alloc] initWithCapacity:sectionTitlesCount];
+
+	// Set up the sections array: elements are mutable arrays that will contain the time zones for that section.
+	for (index = 0; index < sectionTitlesCount; index++) {
+		NSMutableArray *array = [[NSMutableArray alloc] init];
+		[newSectionsArray addObject:array];
+	}
+
+	// Segregate the time zones into the appropriate arrays.
+	for (id object in self.allData) {
+
+		// Ask the collation which section number the time zone belongs in, based on its locale name.
+		NSInteger sectionNumber = [self.collation sectionForObject:object collationStringSelector:NSSelectorFromString(@"displayName")];
+
+		// Get the array for the section.
+		NSMutableArray *sections = newSectionsArray[sectionNumber];
+
+		//  Add the time zone to the section.
+		[sections addObject:object];
+	}
+
+	// Now that all the data's in place, each section array needs to be sorted.
+	for (index = 0; index < sectionTitlesCount; index++) {
+
+		NSMutableArray *dataArrayForSection = newSectionsArray[index];
+
+		// If the table view or its contents were editable, you would make a mutable copy here.
+		NSArray *sortedDataArrayForSection = [self.collation sortedArrayFromArray:dataArrayForSection collationStringSelector:NSSelectorFromString(@"displayName")];
+
+		// Replace the existing array with the sorted array.
+		newSectionsArray[index] = sortedDataArrayForSection;
+	}
+
+	self.sectionsArray = newSectionsArray;
+}
+
+- (void)filterContentForSearchText:(NSString*)searchText
+{
+	NSString *query = searchText;
+	if (query && query.length) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"displayName contains[cd] %@", query];
+		_filteredResults = [self.allData filteredArrayUsingPredicate:predicate];
+	} else {
+		_filteredResults = nil;
+	}
+	[self.tableView reloadData];
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		return 1;
+	} else {
+		return [[self.collation sectionTitles] count];
+	}
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		return [_filteredResults count];
+	} else {
+		NSArray *rowsInSection = (self.sectionsArray)[section];
+
+		return [rowsInSection count];
+	}
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (tableView == self.tableView) {
+		return [self.collation sectionTitles][section];
+	}
+	return nil;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+	if (tableView == self.tableView) {
+		return [self.collation sectionIndexTitles];
+	}
+	return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+	return [self.collation sectionForSectionIndexTitleAtIndex:index];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return nil;
+}
+
 @end

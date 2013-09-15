@@ -144,7 +144,7 @@
 	_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft] ];
 	_numberOfHolidays.text = [NSString stringWithFormat:@"%d", [holidaysThisYear count]];
 
-	[_backgroundImageView displayImageWithCountryCode:_countryCode];
+	[_backgroundImageView displayImageWithCountryCode:_countryCode orientation:CURRENT_ORIENTATION];
 }
 
 - (void)prepareForMove {

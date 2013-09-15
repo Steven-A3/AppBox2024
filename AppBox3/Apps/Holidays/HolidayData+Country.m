@@ -633,6 +633,11 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 
 		if (![countries containsObject:systemCountry]) {
 			countries = [@[systemCountry] arrayByAddingObjectsFromArray:countries];
+		} else {
+			NSMutableArray *mutableCountries = [countries mutableCopy];
+			[mutableCountries removeObject:systemCountry];
+			[mutableCountries insertObject:systemCountry atIndex:0];
+			countries = [[NSArray alloc] initWithArray:mutableCountries];
 		}
 		[[NSUserDefaults standardUserDefaults] setObject:countries forKey:kHolidayCountriesForCurrentDevice];
 		[[NSUserDefaults standardUserDefaults] synchronize];

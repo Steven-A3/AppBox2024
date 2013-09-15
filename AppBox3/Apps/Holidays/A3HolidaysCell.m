@@ -43,6 +43,7 @@
 		_lunarDateLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
 		_lunarDateLabel.adjustsFontSizeToFitWidth = YES;
 		_lunarDateLabel.minimumScaleFactor = 0.5;
+		[self setShadowToLabel:_lunarDateLabel];
 		[self addSubview:_lunarDateLabel];
 
 		[_lunarDateLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -97,8 +98,10 @@
 	[_dateLabel removeFromSuperview];
 	_dateLabel = nil;
 
-	[_publicMark removeFromSuperview];
-	_publicMark = nil;
+	[_publicLabel removeFromSuperview];
+	_publicLabel = nil;
+	[_publicMarkView removeFromSuperview];
+	_publicMarkView = nil;
 
 	[self assignFontsToLabels];
 
@@ -111,9 +114,8 @@
 	_dateLabel.textColor = [UIColor whiteColor];
 	_lunarImageView.tintColor = [UIColor colorWithWhite:1.0 alpha:0.7];
 	_lunarDateLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-	_publicMark.layer.borderColor = [UIColor whiteColor].CGColor;
-	UILabel *label = _publicMark.subviews[0];
-	label.textColor = [UIColor whiteColor];
+	_publicMarkView.layer.borderColor = [UIColor whiteColor].CGColor;
+	_publicLabel.textColor = [UIColor whiteColor];
 
 	_titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -158,32 +160,64 @@
 			}
 		}];
 
-		_publicMark = [self createAddPublicMarkToSelf];
+		if (IS_IPHONE) {
+			_publicMarkView = [self createAddPublicMarkToSelf];
+			_publicLabel = _publicMarkView.subviews[0];
 
-		[_publicMark makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_dateLabel.centerY);
+			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
+				make.centerY.equalTo(_dateLabel.centerY);
 
-			if (IS_IPHONE) {
-				make.width.equalTo(@18);
-				make.height.equalTo(@18);
+				if (IS_IPHONE) {
+					make.width.equalTo(@18);
+					make.height.equalTo(@18);
 
-				switch (_cellType) {
-					case A3HolidayCellTypeSingleLine:
-					case A3HolidayCellTypeDoubleLine:
-					case A3HolidayCellTypeLunar1:
-						make.left.equalTo(self.right).with.offset(-113);
-						break;
-					case A3HolidayCellTypeLunar2:
-						make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-						break;
+					switch (_cellType) {
+						case A3HolidayCellTypeSingleLine:
+						case A3HolidayCellTypeDoubleLine:
+						case A3HolidayCellTypeLunar1:
+							make.left.equalTo(self.right).with.offset(-113);
+							break;
+						case A3HolidayCellTypeLunar2:
+							make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+							break;
+					}
+				} else {
+					CGSize size = [@"Public" sizeWithAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Light" size:10]}];
+					make.width.equalTo(@(size.width + 8));
+					make.height.equalTo(@18);
+					make.centerX.equalTo(self.centerX);
 				}
-			} else {
-				CGSize size = [@"Public" sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Light" size:10]}];
-				make.width.equalTo(@(size.width + 8));
-				make.height.equalTo(@18);
+			}];
+		} else {
+			_publicLabel = [UILabel new];
+			_publicLabel.textAlignment = NSTextAlignmentCenter;
+			_publicLabel.textColor = [UIColor whiteColor];
+			_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:13];
+			_publicLabel.text = @"Public";
+			[self addSubview:_publicLabel];
+
+			CGSize size = [_publicLabel.text sizeWithAttributes:@{NSFontAttributeName : _publicLabel.font}];
+			[_publicLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.width.equalTo(@(size.width + 2));
+				make.height.equalTo(@(size.height));
+				make.centerY.equalTo(self.centerY);
 				make.centerX.equalTo(self.centerX);
-			}
-		}];
+			}];
+			[_publicLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+
+			_publicMarkView = [UIView new];
+			_publicMarkView.layer.borderColor = [UIColor whiteColor].CGColor;
+			_publicMarkView.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
+			_publicMarkView.layer.cornerRadius = 5;
+			[self insertSubview:_publicMarkView belowSubview:_publicLabel];
+
+			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
+				make.centerY.equalTo(self.centerY);
+				make.width.equalTo(@(size.width + 9));
+				make.height.equalTo(@(size.height + 4));
+				make.centerX.equalTo(self.centerX);
+			}];
+		}
 
 	}
 	return _dateLabel;

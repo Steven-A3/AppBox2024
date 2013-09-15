@@ -32,7 +32,7 @@
 		if (IS_IPHONE) {
 			_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:10];
 		} else {
-			_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+			_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:13];
 		}
 		_publicLabel.text = IS_IPHONE ? @"P" : @"Public";
 		[self addSubview:_publicLabel];
@@ -101,21 +101,10 @@
 	[super prepareForReuse];
 
 	[self setupFont];
-
-//	CGSize size = [_publicLabel.text sizeWithAttributes:@{NSFontAttributeName : _publicLabel.font}];
-//	_publicMarkHeight.offset(size.height);
-//	_publicMarkWidth.offset(size.width);
-//
-//	[self layoutIfNeeded];
 }
 
 
 - (void)setupFont {
-	if (IS_IPHONE) {
-		_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:10];
-	} else {
-		_publicLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	}
 	_nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 }
 

@@ -57,17 +57,17 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		_flickrContext = [[OFFlickrAPIContext alloc] initWithAPIKey:OBJECTIVE_FLICKR_API_KEY sharedSecret:OBJECTIVE_FLICKR_API_SHARED_SECRET];
 		_flickrRequest = [[OFFlickrAPIRequest alloc] initWithAPIContext:_flickrContext];
 		[_flickrRequest setDelegate:self];
-		_keywords = @[@"sea", @"weather", @"bridge", @"mountain"];
+		_keywords = @[@"nature", @"bridge"];
 		_keywordIndex = arc4random_uniform([_keywords count] - 1);
         self.initialBlurLevel = 0.4;
 	}
     return self;
 }
 
-- (void)displayImageWithCountryCode:(NSString *)countryCode {
+- (void)displayImageWithCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation {
 	self.countryCode = countryCode;
 
-	NSString *pathForSavedImage = [self pathForSavedImage];
+	NSString *pathForSavedImage = [self pathForSavedImage:orientation];
 	if (pathForSavedImage) {
 		self.originalImage = [UIImage imageWithContentsOfFile:pathForSavedImage];
 	} else {
@@ -83,7 +83,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		if (IS_IPHONE) {
 			imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, kA3HolidayImageiPhone];
 		} else {
-			imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, IS_LANDSCAPE ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
+			imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, UIInterfaceOrientationIsLandscape(orientation) ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
 		}
 		if (_useForCountryList) {
 			imageNameWithOption = [imageNameWithOption stringByAppendingString:@"List"];
@@ -109,9 +109,9 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 - (UIImageView *)thumbnailOfUserSuppliedImage {
 	if ([self hasUserSuppliedImageForCountry:_countryCode]) {
-		NSString *path = [self pathForSavedImage];
+		NSString *path = [self pathForSavedImage:CURRENT_ORIENTATION];
 		if (path) {
-			UIImage *image = [UIImage imageWithContentsOfFile:[self pathForSavedImage]];
+			UIImage *image = [UIImage imageWithContentsOfFile:[self pathForSavedImage:CURRENT_ORIENTATION]];
 			CGSize size = CGSizeMake(30, 30);
 			image = [image scaleToCoverSize:size];
 			image = [image cropToSize:size usingMode:NYXCropModeCenter];
@@ -140,13 +140,13 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	return NO;
 }
 
-- (NSString *)pathForSavedImage {
+- (NSString *)pathForSavedImage:(UIInterfaceOrientation)orientation {
 	NSString *savedImageFilename = [[NSUserDefaults standardUserDefaults] objectForKey:self.imagePathKey];
 	if ([savedImageFilename length]) {
 		if (IS_IPHONE) {
 			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, kA3HolidayImageiPhone];
 		} else {
-			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, IS_LANDSCAPE ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
+			savedImageFilename = [NSString stringWithFormat:@"%@%@", savedImageFilename, UIInterfaceOrientationIsLandscape(orientation) ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
 		}
 		if (_useForCountryList) {
 			savedImageFilename = [savedImageFilename stringByAppendingString:@"List"];
@@ -242,13 +242,18 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	}];
 }
 
+- (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didFailWithError:(NSError *)inError {
+    FNLOG(@"%@,%@,%@,%@", inError.localizedDescription, inError.localizedRecoveryOptions, inError.localizedRecoverySuggestion, inError.localizedFailureReason);
+}
+
 - (void)saveUserSuppliedImage:(UIImage *)image {
 	[self deleteImage];
 
 	NSString *imageName = [self userSuppliedImageNameWithCountryCode];
 	[self setImagePath:imageName];
 
-	[self cropSetOriginalImage:image name:imageName];
+    UIImage *rotatedImage = [self rotateImage:image];
+	[self cropSetOriginalImage:rotatedImage name:imageName];
 }
 
 - (NSString *)imagePathKey {
@@ -315,13 +320,33 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	[_photoArray removeObjectAtIndex:index];
 }
 
-- (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didFailWithError:(NSError *)inError {
-
-}
-
 - (UIImage *)rotateImage:(UIImage *)image {
-	if (image.imageOrientation == UIImageOrientationUp) {
-		return image;
+	UIImageOrientation translatedOrientation = image.imageOrientation;
+	switch (image.imageOrientation) {
+		case UIImageOrientationUp:
+			translatedOrientation = UIImageOrientationDownMirrored;
+            break;
+		case UIImageOrientationDown:
+			translatedOrientation = UIImageOrientationUpMirrored;
+			break;
+		case UIImageOrientationLeft:
+			translatedOrientation = UIImageOrientationLeftMirrored;
+			break;
+		case UIImageOrientationRight:
+			translatedOrientation = UIImageOrientationRightMirrored;
+			break;
+		case UIImageOrientationUpMirrored:
+			translatedOrientation = UIImageOrientationUp;
+			break;
+		case UIImageOrientationDownMirrored:
+			translatedOrientation = UIImageOrientationDown;
+			break;
+		case UIImageOrientationLeftMirrored:
+			translatedOrientation = UIImageOrientationLeft;
+			break;
+		case UIImageOrientationRightMirrored:
+			translatedOrientation = UIImageOrientationRight;
+			break;
 	}
 
 	CGImageRef imgRef = image.CGImage;
@@ -333,8 +358,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	CGRect bounds = CGRectMake(0, 0, width, height);
 	CGSize imageSize = CGSizeMake(CGImageGetWidth(imgRef), CGImageGetHeight(imgRef));
 	CGFloat boundHeight;
-	UIImageOrientation orient = image.imageOrientation;
-	switch (orient) {
+	switch (translatedOrientation) {
 		case UIImageOrientationUp: //EXIF = 1
 			transform = CGAffineTransformIdentity;
 			break;
@@ -405,15 +429,15 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	return imageCopy;
 }
 
-- (UIImage *)cropSetOriginalImage:(UIImage *)image name:(NSString *)filename {
-    UIImage *originalImage = [self rotateImage:image];
+- (UIImage *)cropSetOriginalImage:(UIImage *)originalImage name:(NSString *)filename {
 	UIImage *handledImage;
+	CGFloat interpolationFactor = 10;
 
 	if (IS_IPAD) {
 		UIImage *returnedImage;
 		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
-		CGRect bounds = CGRectInset(screenBounds, -50, -50);
+		CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
 		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadPortrait] pathInLibraryDirectory];
 		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
@@ -428,7 +452,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		bounds.size.width = screenBounds.size.height;
 		bounds.size.height = screenBounds.size.width;
 
-		bounds = CGRectInset(bounds, -50, -50);
+		bounds = CGRectInset(bounds, -interpolationFactor, -interpolationFactor);
 		path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPadLandScape] pathInLibraryDirectory];
 		returnedImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 
@@ -444,7 +468,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	} else {
 		CGRect screenBounds = [[UIScreen mainScreen] bounds];
 
-		CGRect bounds = CGRectInset(screenBounds, -50, -50);
+		CGRect bounds = CGRectInset(screenBounds, -interpolationFactor, -interpolationFactor);
 		NSString *path = [[NSString stringWithFormat:@"%@%@", filename, kA3HolidayImageiPhone] pathInLibraryDirectory];
 		handledImage = [self saveImage:originalImage bounds:bounds path:path usingMode:(NYXCropModeCenter)];
 

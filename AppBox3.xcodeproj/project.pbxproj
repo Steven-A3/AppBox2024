@@ -429,6 +429,9 @@
 		68F3A9E61677320100DFCAB7 /* A3YellowXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F3A9E51677320100DFCAB7 /* A3YellowXButton.m */; };
 		68F4946517BF6701005B577B /* A3LanguagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4946417BF6701005B577B /* A3LanguagePickerController.m */; };
 		68F4947117BF9BCB005B577B /* A3TranslatorLanguageTVDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4947017BF9BCB005B577B /* A3TranslatorLanguageTVDelegate.m */; };
+		68F4EE8117E461A0009BDE05 /* A3ImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8017E461A0009BDE05 /* A3ImageCropperViewController.m */; };
+		68F4EE8817E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8717E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.m */; };
+		68F4EE8F17E4C0F9009BDE05 /* A3FSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */; };
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F95DE21694205200C7EE31 /* EKKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F95DDF1694205200C7EE31 /* EKKeyboardAvoidingScrollView.m */; };
@@ -1349,6 +1352,12 @@
 		68F4946417BF6701005B577B /* A3LanguagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LanguagePickerController.m; path = Translator/A3LanguagePickerController.m; sourceTree = "<group>"; };
 		68F4946F17BF9BCB005B577B /* A3TranslatorLanguageTVDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorLanguageTVDelegate.h; path = Translator/A3TranslatorLanguageTVDelegate.h; sourceTree = "<group>"; };
 		68F4947017BF9BCB005B577B /* A3TranslatorLanguageTVDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorLanguageTVDelegate.m; path = Translator/A3TranslatorLanguageTVDelegate.m; sourceTree = "<group>"; };
+		68F4EE7F17E461A0009BDE05 /* A3ImageCropperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ImageCropperViewController.h; path = UIImageView/A3ImageCropperViewController.h; sourceTree = "<group>"; };
+		68F4EE8017E461A0009BDE05 /* A3ImageCropperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ImageCropperViewController.m; path = UIImageView/A3ImageCropperViewController.m; sourceTree = "<group>"; };
+		68F4EE8617E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FixedHeightSegmentedControl.h; sourceTree = "<group>"; };
+		68F4EE8717E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FixedHeightSegmentedControl.m; sourceTree = "<group>"; };
+		68F4EE8D17E4C0F9009BDE05 /* A3FSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3FSegmentedControl.h; sourceTree = "<group>"; };
+		68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3FSegmentedControl.m; sourceTree = "<group>"; };
 		68F9391517D0DDBB0082234C /* FMMoveTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMMoveTableView.h; sourceTree = "<group>"; };
 		68F9391617D0DDBB0082234C /* FMMoveTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableView.m; sourceTree = "<group>"; };
 		68F9391717D0DDBB0082234C /* FMMoveTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMMoveTableViewCell.h; sourceTree = "<group>"; };
@@ -1878,6 +1887,10 @@
 				683B954215EB233500575377 /* CoolButton.m */,
 				17D426904883F7E9B5AA523B /* A3NumberKeyboardSimpleVC_iPad.m */,
 				17D423EF9F1ACCB93C71C1A4 /* A3NumberKeyboardSimpleVC_iPad.h */,
+				68F4EE8617E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.h */,
+				68F4EE8717E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.m */,
+				68F4EE8D17E4C0F9009BDE05 /* A3FSegmentedControl.h */,
+				68F4EE8E17E4C0F9009BDE05 /* A3FSegmentedControl.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -2386,12 +2399,20 @@
 			children = (
 				68C26E8317C6F93A00751BE3 /* A3FlickrImageView.h */,
 				68C26E8417C6F93A00751BE3 /* A3FlickrImageView.m */,
+				688257B617D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.h */,
+				688257B717D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m */,
 				683224BB17CE1B7800973F34 /* A3HolidaysCell.h */,
 				683224BC17CE1B7800973F34 /* A3HolidaysCell.m */,
+				687FF89817D1931100130ABC /* A3HolidaysCountrySearchViewController.h */,
+				687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */,
 				68B9B16117D02B85003ACAD0 /* A3HolidaysCountryViewCell.h */,
 				68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */,
 				68B9B15A17D01EB6003ACAD0 /* A3HolidaysCountryViewController.h */,
 				68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */,
+				688257AF17D37D37006429D3 /* A3HolidaysEditCell.h */,
+				688257B017D37D37006429D3 /* A3HolidaysEditCell.m */,
+				688257A817D37863006429D3 /* A3HolidaysEditViewController.h */,
+				688257A917D37863006429D3 /* A3HolidaysEditViewController.m */,
 				6888091317C640D7008B2856 /* A3HolidaysViewController.h */,
 				6888091417C640D7008B2856 /* A3HolidaysViewController.m */,
 				687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */,
@@ -2409,14 +2430,6 @@
 				687D0D0817CAE519005AB571 /* HolidayData.h */,
 				687D0D0917CAE519005AB571 /* HolidayData.m */,
 				68B6A18A17CC398A008E0296 /* indian.plist */,
-				687FF89817D1931100130ABC /* A3HolidaysCountrySearchViewController.h */,
-				687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */,
-				688257A817D37863006429D3 /* A3HolidaysEditViewController.h */,
-				688257A917D37863006429D3 /* A3HolidaysEditViewController.m */,
-				688257AF17D37D37006429D3 /* A3HolidaysEditCell.h */,
-				688257B017D37D37006429D3 /* A3HolidaysEditCell.m */,
-				688257B617D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.h */,
-				688257B717D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m */,
 			);
 			name = Holidays;
 			sourceTree = "<group>";
@@ -2796,6 +2809,8 @@
 			children = (
 				68C26F1417C71CF400751BE3 /* A3ImageView.h */,
 				68C26F1517C71CF400751BE3 /* A3ImageView.m */,
+				68F4EE7F17E461A0009BDE05 /* A3ImageCropperViewController.h */,
+				68F4EE8017E461A0009BDE05 /* A3ImageCropperViewController.m */,
 			);
 			name = UIImageView;
 			sourceTree = "<group>";
@@ -3205,6 +3220,7 @@
 				683B958015EB233500575377 /* A3BundleDataController.m in Sources */,
 				68B6A1EC17CCC198008E0296 /* MagicalRecord+ShorthandSupport.m in Sources */,
 				683B958615EB233500575377 /* A3DatePickerViewController.m in Sources */,
+				68F4EE8817E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.m in Sources */,
 				683B958715EB233500575377 /* A3SearchIPADViewController.m in Sources */,
 				683B958B15EB233500575377 /* A3BlackThickRoundedRectView.m in Sources */,
 				683B958C15EB233500575377 /* A3GrayAppHeaderView.m in Sources */,
@@ -3432,6 +3448,7 @@
 				688257B817D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m in Sources */,
 				17D4246A21B50A1A4BFE8D50 /* A3LoanCalcQuickDialogViewController_iPhone.m in Sources */,
 				17D42F0579795C56CDA0DE68 /* A3LoanCalcQuickDialogViewController_iPad.m in Sources */,
+				68F4EE8117E461A0009BDE05 /* A3ImageCropperViewController.m in Sources */,
 				681097B417BC7CD50096B6CE /* A3TranslatorMessageCell.m in Sources */,
 				17D426FB4E83A3C048DEA1E4 /* A3FrequencyKeyboardViewController_iPhone.m in Sources */,
 				68FEE387174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m in Sources */,
@@ -3478,6 +3495,7 @@
 				6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */,
 				17D4231293FB8F354FDF02BB /* A3AppViewController.m in Sources */,
 				17D42E6AC287CEB0BE8039D0 /* A3YahooCurrency.m in Sources */,
+				68F4EE8F17E4C0F9009BDE05 /* A3FSegmentedControl.m in Sources */,
 				68C26EE717C704FB00751BE3 /* LFHTTPRequest.m in Sources */,
 				68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */,
 				688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */,

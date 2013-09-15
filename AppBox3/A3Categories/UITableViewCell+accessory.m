@@ -8,6 +8,7 @@
 
 #import "UITableViewCell+accessory.h"
 #import "A3UIDevice.h"
+#import "common.h"
 
 @implementation UITableViewCell (accessory)
 
@@ -15,11 +16,11 @@
 	UIView *borderView = [UIView new];
 	borderView.layer.borderColor = [UIColor whiteColor].CGColor;
 	borderView.layer.borderWidth = IS_RETINA ? 1 : 0.5;
-	borderView.layer.cornerRadius = IS_IPHONE ? 9 : 5;
+	borderView.layer.cornerRadius = 5;
 
 	UILabel *publicString;
 	publicString = [UILabel new];
-	publicString.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
+	publicString.font = IS_IPHONE ? [UIFont fontWithName:@"HelveticaNeue-Light" size:10] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	publicString.text = IS_IPHONE ? @"P" : @"Public";
 	publicString.textColor = [UIColor whiteColor];
 	publicString.textAlignment = NSTextAlignmentCenter;

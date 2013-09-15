@@ -24,6 +24,7 @@
 #import "NSDate-Utilities.h"
 #import "FXLabel.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3FSegmentedControl.h"
 
 static NSString *const kHolidayViewComponentBorderView = @"borderView";		// bounds equals to self.view.bounds
 static NSString *const kHolidayViewComponentImageView = @"imageView";		// bounds equals to alledgeInsets -50
@@ -60,6 +61,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	NSUInteger _indexForImageUpdatingPage;
 	BOOL	_stopUpdateImage;
 	NSInteger _thisYear;
+	UIInterfaceOrientation _previousOrientation;
+	CGFloat _lastKnownOffset;
 }
 
 - (void)viewDidLoad
@@ -89,10 +92,17 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[super viewWillAppear:animated];
 
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 
 	if (self.isMovingToParentViewController) {
 		A3FlickrImageView *imageView = self.viewComponents[0][kHolidayViewComponentImageView];
-		[imageView displayImageWithCountryCode:self.countries[0]];
+		[imageView displayImageWithCountryCode:self.countries[0] orientation:CURRENT_ORIENTATION];
+	} else {
+		if (_previousOrientation != CURRENT_ORIENTATION) {
+			[self reloadTableHeaderViews:CURRENT_ORIENTATION];
+			[self reloadImages:CURRENT_ORIENTATION];
+			[self jumpToPage:self.pageControl.currentPage];
+		}
 	}
 }
 
@@ -101,6 +111,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 	if (self.isMovingToParentViewController) {
 		[self startAskLocation];
+
+		[self reloadDataForCurrentPageWithYear:_thisYear];
 
 		NSDate *fireDate = [[NSDate dateTomorrow] dateAtStartOfDay];
 		FNLOG(@"%@, %f", fireDate, [fireDate timeIntervalSinceNow]/(60 * 60));
@@ -114,13 +126,15 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
 		[runLoop addTimer:_dayChangedTimer forMode:NSDefaultRunLoopMode];
 
-		dispatch_async(dispatch_get_main_queue(), ^{
+		[self registerContentSizeCategoryDidChangeNotification];
+
+		double delayInSeconds = 1.0;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 			[self displayImagesInImageView];
 
 			[self startUpdateImage];
 		});
-
-		[self registerContentSizeCategoryDidChangeNotification];
 	}
 }
 
@@ -140,24 +154,29 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		_dayChangedTimer = nil;
 
 		[self removeObserver];
+	} else {
+		_previousOrientation = CURRENT_ORIENTATION;
+		if (!self.navigationController.navigationBarHidden) {
+			[self tapOnScrollView];
+		}
 	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
-	[self refreshViewContents];
+	[self refreshViewContentsWithResetImage:NO ];
 }
 
 - (void)dayChanged:(NSTimer *)timer {
 	[_dayChangedTimer invalidate];
 	_dayChangedTimer = nil;
 
-	[self refreshViewContents];
+	[self refreshViewContentsWithResetImage:NO ];
 }
 
 - (void)displayImagesInImageView {
 	[self.viewComponents enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		A3FlickrImageView *imageView = obj[kHolidayViewComponentImageView];
-		[imageView displayImageWithCountryCode:self.countries[idx]];
+		[imageView displayImageWithCountryCode:self.countries[idx] orientation:CURRENT_ORIENTATION];
 	}];
 
 	[self setPhotoLabelText];
@@ -200,7 +219,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	tableView.tableFooterView = [self tableFooterViewAtPage:currentPage tableView:tableView];
 	[tableView reloadData];
 	A3FlickrImageView *imageView = _viewComponents[currentPage][kHolidayViewComponentImageView];
-	[imageView displayImageWithCountryCode:_countries[currentPage]];
+	[imageView displayImageWithCountryCode:_countries[currentPage] orientation:CURRENT_ORIENTATION];
 	[self setPhotoLabelText];
 }
 
@@ -254,7 +273,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
                 [HolidayData setUserSelectedCountries:_countries];
                 
                 [self updatePages];
-                [self refreshViewContents];
+                [self refreshViewContentsWithResetImage:YES ];
             }
         }
         _stopUpdateImage = NO;
@@ -328,21 +347,30 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	[_viewComponents enumerateObjectsUsingBlock:^(NSDictionary *component, NSUInteger idx, BOOL *stop) {
-		UITableView *tableView = component[kHolidayViewComponentTableView];
-		tableView.tableHeaderView = [self tableHeaderViewAtPage:idx interfaceOrientation:toInterfaceOrientation];
-		[tableView.tableHeaderView layoutIfNeeded];
-	}];
+    FNLOG();
+	[self reloadTableHeaderViews:toInterfaceOrientation];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+    FNLOG();
+	[self reloadImages:toInterfaceOrientation];
 	[self jumpToPage:_pageControl.currentPage];
+}
 
+- (void)reloadTableHeaderViews:(UIInterfaceOrientation)orientation {
+	[_viewComponents enumerateObjectsUsingBlock:^(NSDictionary *component, NSUInteger idx, BOOL *stop) {
+		UITableView *tableView = component[kHolidayViewComponentTableView];
+		tableView.tableHeaderView = [self tableHeaderViewAtPage:idx interfaceOrientation:orientation];
+		[tableView.tableHeaderView layoutIfNeeded];
+	}];
+}
+
+- (void)reloadImages:(UIInterfaceOrientation)orientation {
 	[_viewComponents enumerateObjectsUsingBlock:^(NSDictionary *component, NSUInteger idx, BOOL *stop) {
 		A3FlickrImageView *imageView = component[kHolidayViewComponentImageView];
-		[imageView displayImageWithCountryCode:_countries[idx]];
+		[imageView displayImageWithCountryCode:_countries[idx] orientation:orientation];
 	}];
 }
 
@@ -450,6 +478,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 		UITapGestureRecognizer *tapGestureRecognizer2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(openURL)];
 		[_photoLabel2 addGestureRecognizer:tapGestureRecognizer2];
+
+		[_photoLabel1 setHidden:YES];
+		[_photoLabel2 setHidden:YES];
 	}
 	return _photoLabel1;
 }
@@ -459,7 +490,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)jumpToPage:(NSInteger)page {
-	CGFloat width = self.view.bounds.size.width;
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGFloat width = screenBounds.size.width;
+    _scrollView.contentSize = CGSizeMake(width * _pageControl.numberOfPages, screenBounds.size.height);
 	[_scrollView setContentOffset:CGPointMake(width * page, 0) animated:YES];
 	self.pageControl.currentPage = page;
 	[self setFocusToPage:page];
@@ -541,14 +574,14 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
         _countries = nil;
 		[self updatePages];
 
-		[self refreshViewContents];
+		[self refreshViewContentsWithResetImage:YES ];
 
 		_stopUpdateImage = NO;
 		[self startUpdateImage];
 	}
 
 	NSInteger page = [self.countries indexOfObject:countryCode];
-	[self jumpToPage:page];
+    [self jumpToPage:page];
 }
 
 - (void)updatePages {
@@ -579,26 +612,28 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	}
 }
 
-- (void)refreshViewContents {
+- (void)refreshViewContentsWithResetImage:(BOOL)resetImage {
 	_scrollView.contentSize = CGSizeMake(self.view.bounds.size.width * _pageControl.numberOfPages, self.view.bounds.size.height);
 	[_viewComponents enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         UIView *borderView = obj[kHolidayViewComponentBorderView];
 		[self setupBorderView:borderView atIndex:idx];
         [borderView layoutIfNeeded];
 
-		double delayInSeconds = 0.1;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			A3FlickrImageView *imageView = obj[kHolidayViewComponentImageView];
-			[imageView displayImageWithCountryCode:_countries[idx]];
+		if (resetImage) {
+			double delayInSeconds = 0.1;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				A3FlickrImageView *imageView = obj[kHolidayViewComponentImageView];
+				[imageView displayImageWithCountryCode:_countries[idx] orientation:CURRENT_ORIENTATION];
 
-			double delayInSeconds2 = 0.2;
-			dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds2 * NSEC_PER_SEC));
-			dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
-				UITableView *tableView = obj[kHolidayViewComponentTableView];
-				[tableView setContentOffset:tableView.contentOffset];
+				double delayInSeconds2 = 0.2;
+				dispatch_time_t popTime2 = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds2 * NSEC_PER_SEC));
+				dispatch_after(popTime2, dispatch_get_main_queue(), ^(void){
+					UITableView *tableView = obj[kHolidayViewComponentTableView];
+					[tableView setContentOffset:tableView.contentOffset];
+				});
 			});
-		});
+		}
 
 		UITableView *tableView = obj[kHolidayViewComponentTableView];
 		[self updateTableHeaderView:tableView.tableHeaderView atPage:idx];
@@ -630,7 +665,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[_scrollView addGestureRecognizer:gestureRecognizer];
 
 	_topGradientView = [A3GradientView new];
-	_topGradientView.gradientColors = @[(id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor, (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
+	_topGradientView.gradientColors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor, (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
 	[self.view insertSubview:_topGradientView aboveSubview:_scrollView];
 
 	[_topGradientView makeConstraints:^(MASConstraintMaker *make) {
@@ -651,6 +686,12 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[[UIApplication sharedApplication] setStatusBarHidden:!navigationBarHidden];
 	[self.navigationController setNavigationBarHidden:!navigationBarHidden];
 	[_topGradientView setHidden:!navigationBarHidden];
+
+	if (navigationBarHidden) {
+		UITableView *tableView = _viewComponents[_pageControl.currentPage][kHolidayViewComponentTableView];
+
+		[self scrollToRightPosition:tableView enforceToMiddle:NO animated:YES];
+	}
 }
 
 - (void)setupScrollViewContents {
@@ -664,6 +705,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)addNewPage:(NSInteger)page {
 	CGFloat viewWidth = self.view.bounds.size.width;
 	CGFloat viewHeight = self.view.bounds.size.height;
+	CGFloat interpolationFactor = 10;
 
 	// Border view
 	UIView *borderView = [UIView new];
@@ -680,32 +722,32 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	[borderView addSubview:imageView];
 
 	[imageView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(borderView).insets(UIEdgeInsetsMake(-50, -50, -50, -50));
+		make.edges.equalTo(borderView).insets(UIEdgeInsetsMake(-interpolationFactor, -interpolationFactor, -interpolationFactor, -interpolationFactor));
 	}];
 
 	A3GradientView *gradientView = [A3GradientView new];
 	gradientView.gradientColors = @[
 			(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-			(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor,
+//			(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor,
 			(id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor
 	];
-	gradientView.locations = @[@0.0, @0.2, @1.0];
+//	gradientView.locations = @[@0.0, @0.2, @1.0];
 	[borderView addSubview:gradientView];
 
 	[gradientView makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(borderView.bottom).with.offset(-200);
+		make.top.equalTo(borderView.bottom).with.offset(-150);
 		make.left.equalTo(borderView.left);
 		make.right.equalTo(borderView.right);
 		make.bottom.equalTo(borderView.bottom);
 	}];
 
 	UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-	interpolationHorizontal.minimumRelativeValue = @-50.0;
-	interpolationHorizontal.maximumRelativeValue = @50.0;
+	interpolationHorizontal.minimumRelativeValue = @(-interpolationFactor);
+	interpolationHorizontal.maximumRelativeValue = @(interpolationFactor);
 
 	UIInterpolatingMotionEffect *interpolationVertical = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-	interpolationVertical.minimumRelativeValue = @-50.0;
-	interpolationVertical.maximumRelativeValue = @50.0;
+	interpolationVertical.minimumRelativeValue = @(-interpolationFactor);
+	interpolationVertical.maximumRelativeValue = @(interpolationFactor);
 
 	[imageView addMotionEffect:interpolationHorizontal];
 	[imageView addMotionEffect:interpolationVertical];
@@ -799,26 +841,24 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		make.height.equalTo(@1);
 	}];
 
-	UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Upcoming", @"Past"]];
+	A3FSegmentedControl *segmentedControl = [A3FSegmentedControl new];
 	segmentedControl.tag = HolidaysHeaderViewSegmentedControl;
-	segmentedControl.tintColor = [UIColor colorWithWhite:1.0 alpha:0.7];
-	segmentedControl.selectedSegmentIndex = 0;
 	[segmentedControl addTarget:self action:@selector(upcomingPastChanged:) forControlEvents:UIControlEventValueChanged];
-
-	[segmentedControl setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]} forState:UIControlStateSelected];
 	[headerView addSubview:segmentedControl];
+
+	segmentedControl.selectedSegmentIndex = 0;
 
 	[segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPHONE) {
+			make.left.equalTo(headerView.left).with.offset(5);
+			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 			make.width.equalTo(@192);
 			make.height.equalTo(@30);
-			make.left.equalTo(headerView.left).with.offset(5);
-			make.bottom.equalTo(headerView.bottom).with.offset(-7);
 		} else {
 			make.width.equalTo(@300);
-			make.height.equalTo(@30);
 			make.left.equalTo(headerView.left).with.offset(28);
-			make.bottom.equalTo(headerView.bottom).with.offset(-7);
+			make.bottom.equalTo(headerView.bottom).with.offset(-6);
+			make.height.equalTo(@30);
 		}
 	}];
 
@@ -831,12 +871,12 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[yearBorderView makeConstraints:^(MASConstraintMaker *make) {
 		if (IS_IPHONE) {
 			make.width.equalTo(@108);
-			make.height.equalTo(@31);
+			make.height.equalTo(@30);
 			make.right.equalTo(headerView.right).with.offset(-5);
 			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 		} else {
 			make.width.equalTo(@150);
-			make.height.equalTo(@31);
+			make.height.equalTo(@30);
 			make.right.equalTo(headerView.right).with.offset(-28);
 			make.bottom.equalTo(headerView.bottom).with.offset(-6);
 		}
@@ -855,7 +895,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		make.width.equalTo(@40);
 		make.height.equalTo(@40);
 		make.centerY.equalTo(yearBorderView.centerY);
-		make.centerX.equalTo(yearBorderView.centerX).with.offset(-33);
+		make.centerX.equalTo(yearBorderView.centerX).with.offset(IS_IPHONE ? -33 : -45);
 	}];
 
 	UIButton *nextYearButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -867,7 +907,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[nextYearButton makeConstraints:^(MASConstraintMaker *make) {
 		make.width.equalTo(@40);
 		make.height.equalTo(@40);
-		make.centerX.equalTo(yearBorderView.centerX).with.offset(33);
+		make.centerX.equalTo(yearBorderView.centerX).with.offset(IS_IPHONE ? 33 : 45);
 		make.centerY.equalTo(yearBorderView.centerY);
 	}];
 
@@ -885,7 +925,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	FXLabel *nameLabel = [FXLabel new];
 	nameLabel.tag = HolidaysHeaderViewNameLabel;
 	nameLabel.textColor = [UIColor whiteColor];
-	nameLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:30];
+	nameLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:26];
 	nameLabel.textAlignment = NSTextAlignmentCenter;
 	nameLabel.adjustsFontSizeToFitWidth = YES;
 	nameLabel.minimumScaleFactor = 0.5;
@@ -895,10 +935,11 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[nameLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(headerView.centerX);
 		make.width.equalTo(headerView).with.offset(IS_IPHONE ? -20 : -(28 * 2));
-		make.bottom.equalTo(segmentedControl.top).with.offset(IS_IPHONE ? -62 : -124);
+		make.bottom.equalTo(yearBorderView.top).with.offset(IS_IPHONE ? -62 : -124);
 	}];
 
 	FXLabel *daysLeftLabel = [FXLabel new];
+	daysLeftLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:17];
 	daysLeftLabel.tag = HolidaysHeaderViewDaysLeftLabel;
 	daysLeftLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 	daysLeftLabel.textAlignment = NSTextAlignmentCenter;
@@ -958,15 +999,13 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		nameLabel.text = upcomingHoliday[kHolidayName];
         
         UILabel *daysLeftLabel = (UILabel *)[tableHeaderView viewWithTag:HolidaysHeaderViewDaysLeftLabel];
-		daysLeftLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
 		daysLeftLabel.text = [upcomingHoliday[kHolidayDate] daysLeft];
         
-        UISegmentedControl *segmentedControl = (UISegmentedControl *) [tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
-		[segmentedControl setTitle:[NSString stringWithFormat:@"Upcoming %d", [holidaysInPage count] - myPosition]
-				 forSegmentAtIndex:0];
-		[segmentedControl setTitle:[NSString stringWithFormat:@"Past %d", myPosition]
-				 forSegmentAtIndex:1];
-        
+        A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
+		segmentedControl.items = @[
+				[NSString stringWithFormat:@"Upcoming %d", [holidaysInPage count] - myPosition],
+				[NSString stringWithFormat:@"Past %d", myPosition]
+		];
 		FNLOG(@"%d + %d = %d : %d", [holidaysInPage count] - myPosition, myPosition, myPosition + [holidaysInPage count] - myPosition + 1, [holidaysInPage count]);
 	}
 }
@@ -981,32 +1020,29 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	[_holidayDataArray replaceObjectAtIndex:currentPage withObject:holidays];
 
 	UITableView *tableView = [self tableViewAtCurrentPage];
-	UISegmentedControl *segmentedControl = (UISegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
+	A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
 	NSInteger upcoming, past;
 	if (_thisYear == year) {
 		NSUInteger myPosition = [self upcomingFirstHolidayInPage:currentPage];
 		upcoming = [holidays count] - myPosition;
 		past = myPosition;
-		[segmentedControl setEnabled:YES forSegmentAtIndex:0];
-		[segmentedControl setEnabled:YES forSegmentAtIndex:1];
+		segmentedControl.states = @[@YES, @YES];
 		[segmentedControl setSelectedSegmentIndex:0];
 	} else if (year > _thisYear) {
 		upcoming = [holidays count];
 		past = 0;
-		[segmentedControl setEnabled:YES forSegmentAtIndex:0];
-		[segmentedControl setEnabled:NO forSegmentAtIndex:1];
+		segmentedControl.states = @[@YES, @NO];
 		[segmentedControl setSelectedSegmentIndex:0];
 	} else {
 		upcoming = 0;
 		past = [holidays count];
-		[segmentedControl setEnabled:NO forSegmentAtIndex:0];
-		[segmentedControl setEnabled:YES forSegmentAtIndex:1];
+		segmentedControl.states = @[@NO, @YES];
 		[segmentedControl setSelectedSegmentIndex:1];
 	}
-	[segmentedControl setTitle:[NSString stringWithFormat:@"Upcoming %d", upcoming]
-			 forSegmentAtIndex:0];
-	[segmentedControl setTitle:[NSString stringWithFormat:@"Past %d", past]
-			 forSegmentAtIndex:1];
+	segmentedControl.items = @[
+			[NSString stringWithFormat:@"Upcoming %d", upcoming],
+			[NSString stringWithFormat:@"Past %d", past]
+	];
 	tableView.tableFooterView = [self tableFooterViewAtPage:currentPage tableView:tableView];
 	[tableView reloadData];
 }
@@ -1021,6 +1057,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	if (array) {
 		yearLabel.text = [NSString stringWithFormat:@"%d", year];
 		[self reloadDataForCurrentPageWithYear:year];
+		[self scrollToRightPosition:tableView enforceToMiddle:YES animated:NO];
 	} else {
 		[self alertNotAvailableYear:year];
 	}
@@ -1041,15 +1078,18 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	if (array) {
 		yearLabel.text = [NSString stringWithFormat:@"%d", year];
 		[self reloadDataForCurrentPageWithYear:year];
+		[self scrollToRightPosition:tableView enforceToMiddle:YES animated:NO];
 	} else {
 		[self alertNotAvailableYear:year];
 	}
 }
 
-- (void)upcomingPastChanged:(UISegmentedControl *)segmentedControl {
+- (void)upcomingPastChanged:(A3FSegmentedControl *)segmentedControl {
 	UITableView *tableView = _viewComponents[_pageControl.currentPage][kHolidayViewComponentTableView];
 	tableView.tableFooterView = [self tableFooterViewAtPage:_pageControl.currentPage tableView:tableView];
 	[tableView reloadData];
+    
+	[self scrollToRightPosition:tableView enforceToMiddle:YES animated:NO ];
 }
 
 - (NSUInteger)upcomingFirstHolidayInPage:(NSUInteger)page {
@@ -1102,7 +1142,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	NSArray *holidaysInPage = self.holidayDataArray[tableView.tag];
 
 	if (_thisYear == [self yearForTableView:tableView]) {
-		UISegmentedControl *segmentedControl = (UISegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
+		A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
 		NSUInteger upcomingIndex = [self upcomingFirstHolidayInPage:tableView.tag];
 		// Return the number of rows in the section.
 		return !segmentedControl.selectedSegmentIndex ? [holidaysInPage count] - upcomingIndex : upcomingIndex;
@@ -1141,22 +1181,22 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[holidayCell setCellType:cellType];
 
 		if ([self yearForTableView:tableView] == _thisYear) {
-			UISegmentedControl *segmentedControl = (UISegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
+			A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
 			if (!segmentedControl.selectedSegmentIndex && !indexPath.row) {
 				holidayCell.titleLabel.textColor = self.view.tintColor;
 				holidayCell.dateLabel.textColor = self.view.tintColor;
 				holidayCell.lunarImageView.tintColor = self.view.tintColor;
 				holidayCell.lunarDateLabel.textColor = self.view.tintColor;
-				holidayCell.publicMark.layer.borderColor = self.view.tintColor.CGColor;
-				UILabel *label = holidayCell.publicMark.subviews[0];
-				label.textColor = self.view.tintColor;
+				holidayCell.publicMarkView.layer.borderColor = self.view.tintColor.CGColor;
+				holidayCell.publicLabel.textColor = self.view.tintColor;
 			}
 		}
 
 		NSDateFormatter *df = [self dateFormatter];
 		holidayCell.titleLabel.text = cellData[kHolidayName];
 		holidayCell.dateLabel.text = [df stringFromDate: cellData[kHolidayDate] ];
-		[holidayCell.publicMark setHidden:![cellData[kHolidayIsPublic] boolValue]];
+		[holidayCell.publicMarkView setHidden:![cellData[kHolidayIsPublic] boolValue]];
+		[holidayCell.publicLabel setHidden:![cellData[kHolidayIsPublic] boolValue]];
 
 		if (showLunar) {
 			BOOL isKorean = [_countries[tableView.tag] isEqualToString:@"kr"];
@@ -1197,7 +1237,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	NSDictionary *holidayData;
 	NSArray *holidays = self.holidayDataArray[tableView.tag];
 	if (_thisYear == [self yearForTableView:tableView]) {
-		UISegmentedControl *segmentedControl = (UISegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
+		A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
 		NSUInteger upcomingIndex = [self upcomingFirstHolidayInPage:tableView.tag];
 
 		holidayData = holidays[!segmentedControl.selectedSegmentIndex ?
@@ -1211,19 +1251,11 @@ static NSString *const CellIdentifier = @"holidaysCell";
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    FNLOG(@"%f", scrollView.contentOffset.y);
 	if (scrollView == _scrollView) {
 		NSInteger currentPage = (NSInteger) (scrollView.contentOffset.x / self.view.bounds.size.width);
 		[self setFocusToPage:currentPage];
 	}
-}
-
-- (void)setFocusToPage:(NSInteger)page {
-	UIView *borderView = _viewComponents[page][kHolidayViewComponentBorderView];
-	[_scrollView bringSubviewToFront:borderView];
-	borderView.clipsToBounds = NO;
-	[_pageControl setCurrentPage:page];
-    
-	[self setPhotoLabelText];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -1235,7 +1267,57 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			UIView *borderView = viewComponent[kHolidayViewComponentBorderView];
 			borderView.clipsToBounds = YES;
 		}];
+	} else if ([scrollView isKindOfClass:[UITableView class]]) {
+		_lastKnownOffset = scrollView.contentOffset.y;
 	}
+}
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView {
+	if ([scrollView isKindOfClass:[UITableView class]]) {
+		[self scrollToRightPosition:scrollView enforceToMiddle:NO animated:YES ];
+		FNLOG(@"%f, %f", scrollView.contentOffset.y, _lastKnownOffset);
+	}
+}
+
+- (void)scrollToRightPosition:(UIScrollView *)scrollView enforceToMiddle:(BOOL)enforceToMiddle animated:(BOOL)animated {
+	CGFloat middleTarget;
+	if (IS_IPHONE) {
+        CGRect screenBoudns = [self screenBoundsAdjustedWithOrientation];
+        if (screenBoudns.size.height == 480) {
+            middleTarget = 280;
+        } else {
+            middleTarget = 359;
+        }
+	} else {
+        if (IS_PORTRAIT) {
+            middleTarget = 815;
+        } else {
+            middleTarget = 559;
+        }
+	}
+
+	BOOL scrollToBottom = scrollView.contentOffset.y > _lastKnownOffset;
+	if (scrollView.decelerationRate == UIScrollViewDecelerationRateNormal) {
+		if (	enforceToMiddle ||
+				(scrollToBottom && (scrollView.contentOffset.y < middleTarget)) ||
+				(!scrollToBottom && (scrollView.contentOffset.y > middleTarget))	) {
+			[scrollView setContentOffset:CGPointMake(0, middleTarget) animated:animated];
+		}
+	}
+}
+
+- (void)setFocusToPage:(NSInteger)page {
+	UIView *borderView = _viewComponents[page][kHolidayViewComponentBorderView];
+	[_scrollView bringSubviewToFront:borderView];
+	borderView.clipsToBounds = NO;
+	[_pageControl setCurrentPage:page];
+
+	[self setPhotoLabelText];
+
+	UITableView *tableView = [self tableViewAtCurrentPage];
+	UILabel *yearLabel = (UILabel *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewYearLabel];
+	NSUInteger year = [yearLabel.text integerValue];
+	[self reloadDataForCurrentPageWithYear:year];
 }
 
 #pragma mark - Holidays data

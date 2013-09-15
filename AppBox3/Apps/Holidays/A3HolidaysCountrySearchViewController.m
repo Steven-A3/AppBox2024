@@ -10,14 +10,12 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 
+
 static NSString *const HolidayCountryCode = @"code";
 static NSString *const HolidayCountryDisplayName = @"name";
 static NSString *const CellIdentifier = @"Cell";
 
 @interface A3HolidaysCountrySearchViewController ()
-
-@property (nonatomic, strong) NSMutableArray *allCountries;
-@property (nonatomic, strong) NSArray *filteredResults;
 
 @end
 
@@ -30,9 +28,7 @@ static NSString *const CellIdentifier = @"Cell";
 	self.searchBar.placeholder = @"Search Country";
 	self.title = @"Select Country";
 
-	self.mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
-	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 
@@ -46,54 +42,44 @@ static NSString *const CellIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
-- (NSMutableArray *)allCountries {
-	if (!_allCountries) {
+- (NSMutableArray *)allData {
+    NSMutableArray *_allData = [super allData];
+    if (!_allData) {
+        _allData = [NSMutableArray new];
 		NSArray *countryCodes = [HolidayData supportedCountries];
-		_allCountries = [NSMutableArray new];
+		_allData = [NSMutableArray new];
 		[countryCodes enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-			[_allCountries addObject:@{
-					HolidayCountryCode:obj[kHolidayCountryCode],
-					HolidayCountryDisplayName:[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]]
-			}];
+			A3SearchTargetItem *object = [A3SearchTargetItem new];
+			object.code = obj[kHolidayCountryCode];
+			object.displayName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]];
+			[_allData addObject:object];
 		}];
-		[_allCountries sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-			return [obj1[HolidayCountryDisplayName] compare:obj2[HolidayCountryDisplayName] ];
-		}];
+//		[_allData sortUsingComparator:^NSComparisonResult(A3SearchTargetItem *obj1, A3SearchTargetItem *obj2) {
+//			return [obj1.displayName compare:obj2.displayName];
+//		}];
+        
+        [super setAllData:_allData];
 	}
-	return _allCountries;
-}
-
-- (void)filterContentForSearchText:(NSString*)searchText
-{
-	NSString *query = searchText;
-	if (query && query.length) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K contains[cd] %@", HolidayCountryDisplayName, query];
-		_filteredResults = [self.allCountries filteredArrayUsingPredicate:predicate];
-	} else {
-		_filteredResults = nil;
-	}
-	[self.tableView reloadData];
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [_filteredResults count];
+	return _allData;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
-	NSDictionary *data = _filteredResults[indexPath.row];
-	cell.textLabel.text = data[HolidayCountryDisplayName];
+	A3SearchTargetItem *data;
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		data = self.filteredResults[indexPath.row];
+	} else {
+		NSArray *countriesInSection = (self.sectionsArray)[indexPath.section];
+
+		// Configure the cell with the time zone's name.
+		data = countriesInSection[indexPath.row];
+	}
+	cell.textLabel.text = data.displayName;
 
 	NSArray *existingCountries = [HolidayData userSelectedCountries];
-	cell.textLabel.textColor = [existingCountries containsObject:data[HolidayCountryCode]] ? [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0] : [UIColor blackColor];
+	cell.textLabel.textColor = [existingCountries containsObject:data.code] ? [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0] : [UIColor blackColor];
 
 	return cell;
 }
@@ -102,15 +88,23 @@ static NSString *const CellIdentifier = @"Cell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	NSDictionary *data = _filteredResults[indexPath.row];
+	A3SearchTargetItem *data;
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		data = self.filteredResults[indexPath.row];
+	} else {
+		NSArray *countriesInSection = (self.sectionsArray)[indexPath.section];
+
+		// Configure the cell with the time zone's name.
+		data = countriesInSection[indexPath.row];
+	}
 	NSArray *currentDataArray = [HolidayData userSelectedCountries];
-	if ([currentDataArray containsObject:data[HolidayCountryCode] ]) {
+	if ([currentDataArray containsObject:data.code]) {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		return;
 	}
 
 	if ([self.delegate respondsToSelector:@selector(searchViewController:itemSelectedWithItem:)]) {
-		[self.delegate searchViewController:self itemSelectedWithItem:data[HolidayCountryCode]];
+		[self.delegate searchViewController:self itemSelectedWithItem:data.code];
 	}
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

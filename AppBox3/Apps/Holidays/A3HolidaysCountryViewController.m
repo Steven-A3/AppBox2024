@@ -206,6 +206,9 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 	if (proposedDestinationIndexPath.row == [self.userSelectedCountries count]) {
 		return [NSIndexPath indexPathForRow:proposedDestinationIndexPath.row - 1 inSection:0];
 	}
+	if (proposedDestinationIndexPath.row == 0) {
+		return [NSIndexPath indexPathForRow:1 inSection:0];
+	}
 	return proposedDestinationIndexPath;
 }
 
