@@ -21,6 +21,7 @@
 #import "A3TranslatorViewController.h"
 #import "A3HolidaysViewController.h"
 #import "UIViewController+MMDrawerController.h"
+#import "A3HolidaysPageViewController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -38,10 +39,6 @@
 		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 		self.tableView.allowsSelection = NO;
 		self.tableView.showsVerticalScrollIndicator = NO;
-
-//		self.tableView.layer.borderWidth = 1.0;
-//		self.tableView.layer.borderColor = [UIColor grayColor].CGColor;
-//		self.tableView.layer.cornerRadius = 4.0;
     }
     return self;
 }
@@ -408,7 +405,7 @@
 				break;
 			}
 			case 5: {
-				targetViewController = [[A3HolidaysViewController alloc] initWithNibName:nil bundle:nil];
+				targetViewController = [[A3HolidaysPageViewController alloc] initWithNibName:nil bundle:nil];
 				break;
 			}
 		}

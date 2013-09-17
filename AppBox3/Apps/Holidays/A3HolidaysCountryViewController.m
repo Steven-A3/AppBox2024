@@ -16,7 +16,7 @@
 #import "UIViewController+navigation.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
-#import "A3FlickrImageView.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 
 @interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3SearchViewControllerDelegate>
 
@@ -177,8 +177,7 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
         // Delete the row from the data source
 		_countryEdited = YES;
 
-		A3HolidaysCountryViewCell *cell = (A3HolidaysCountryViewCell *) [tableView cellForRowAtIndexPath:indexPath];
-		[cell.backgroundImageView deleteImage];
+		[[A3HolidaysFlickrDownloadManager sharedInstance] deleteImageForCountryCode:self.userSelectedCountries[indexPath.row]];
 
 		[self.userSelectedCountries removeObjectAtIndex:indexPath.row];
 		[HolidayData setUserSelectedCountries:_userSelectedCountries];

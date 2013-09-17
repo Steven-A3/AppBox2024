@@ -122,7 +122,9 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (BOOL)startUpdate {
+	FNLOG(@"************************** Flickr image update request received. ********************************");
 	if ([[self imagePath] isEqualToString:[self userSuppliedImageNameWithCountryCode]]) {
+		FNLOG(@"************************** Flickr image update request canceled. Because it has user supplied image.");
 		return NO;
 	}
 
@@ -137,6 +139,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 			return YES;
 		}
 	}
+	FNLOG(@"************************** Flickr image update request canceled. Because picture has been updated within 24 hours or wifi is not available.");
 	return NO;
 }
 
@@ -183,7 +186,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		if ([key isEqualToString:@"photos"]) {
 			_photoArray = [[obj valueForKeyPath:@"photo"] mutableCopy];
 
-            FNLOG(@"number of photos: %d", [_photoArray count]);
+			FNLOG(@"number of photos: %d", [_photoArray count]);
 
 			if ([_photoArray count]) {
 				[self photosGetInfo];
@@ -243,7 +246,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 }
 
 - (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didFailWithError:(NSError *)inError {
-    FNLOG(@"%@,%@,%@,%@", inError.localizedDescription, inError.localizedRecoveryOptions, inError.localizedRecoverySuggestion, inError.localizedFailureReason);
+	FNLOG(@"%@,%@,%@,%@", inError.localizedDescription, inError.localizedRecoveryOptions, inError.localizedRecoverySuggestion, inError.localizedFailureReason);
 }
 
 - (void)saveUserSuppliedImage:(UIImage *)image {

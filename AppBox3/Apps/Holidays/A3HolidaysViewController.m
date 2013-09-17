@@ -7,7 +7,6 @@
 //
 
 #import "A3HolidaysViewController.h"
-#import "A3FlickrImageView.h"
 #import "UIViewController+navigation.h"
 #import "SFKImage.h"
 #import "A3UIDevice.h"
@@ -38,9 +37,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewCountryLabel
 };
 
-@interface A3HolidaysViewController () <A3FlickrImageViewDelegate, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, CLLocationManagerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate, A3HolidaysEditViewControllerDelegate>
+@interface A3HolidaysViewController () <UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, CLLocationManagerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate, A3HolidaysEditViewControllerDelegate>
 
-@property (nonatomic, strong) A3FlickrImageView *backgroundImageView;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) NSMutableArray *viewComponents;
 @property (nonatomic, strong) UILabel *photoLabel1;
@@ -728,10 +726,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	A3GradientView *gradientView = [A3GradientView new];
 	gradientView.gradientColors = @[
 			(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-//			(id)[UIColor colorWithWhite:0.0 alpha:0.5].CGColor,
 			(id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor
 	];
-//	gradientView.locations = @[@0.0, @0.2, @1.0];
+
 	[borderView addSubview:gradientView];
 
 	[gradientView makeConstraints:^(MASConstraintMaker *make) {

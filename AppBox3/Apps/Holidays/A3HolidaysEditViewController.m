@@ -14,17 +14,14 @@
 #import "A3HolidaysEditCell.h"
 #import "A3UIDevice.h"
 #import "A3HolidaysAddToDaysCounterViewController.h"
-#import "A3FlickrImageView.h"
-#import "A3HolidaysViewController.h"
-#import "UIImage+Rotating.h"
 #import "common.h"
 #import "A3ImageCropperViewController.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
 
 @property (nonatomic, strong) NSArray *holidaysForCountry;
 @property (nonatomic, strong) NSMutableArray *excludedHolidays;
-@property (nonatomic, strong) A3FlickrImageView *imageView;
 @property (nonatomic, strong) UIPopoverController *imagePickerPopoverController;
 
 @end
@@ -103,7 +100,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	[_delegate viewController:self willDismissViewControllerWithDataUpdated:_dataUpdated];
+	[_delegate editViewController:self willDismissViewControllerWithDataUpdated:_dataUpdated];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -142,15 +139,6 @@ static NSString *CellIdentifier = @"Cell";
 	}
 	return _excludedHolidays;
 }
-
-- (A3FlickrImageView *)imageView {
-	if (!_imageView) {
-		_imageView = [A3FlickrImageView new];
-		_imageView.countryCode = _countryCode;
-	}
-	return _imageView;
-}
-
 
 #pragma mark - Table view data source
 
@@ -192,10 +180,11 @@ static NSString *CellIdentifier = @"Cell";
 				break;
 			case 2:
 			{
-				if ([self.imageView hasUserSuppliedImageForCountry:_countryCode]) {
+
+				if ([[A3HolidaysFlickrDownloadManager sharedInstance] hasUserSuppliedImageForCountry:_countryCode]) {
 					cell.textLabel.textColor = [UIColor colorWithRed:255.0/255.0 green:58.0/255.0 blue:48.0/255.0 alpha:1.0];
 					cell.textLabel.text = @"Delete Wallpaper";
-					UIImageView *imageView = [self.imageView thumbnailOfUserSuppliedImage];
+					UIImageView *imageView = [[A3HolidaysFlickrDownloadManager sharedInstance] thumbnailOfUserSuppliedImageForCountryCode:_countryCode];
 					imageView.layer.borderColor = [UIColor colorWithWhite:1.0 alpha:1.0].CGColor;
 					imageView.layer.borderWidth = 0.1;
 					imageView.layer.cornerRadius = 15;
@@ -267,8 +256,9 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)pickWallpaper {
-	if ([self.imageView hasUserSuppliedImageForCountry:_countryCode]) {
-		[self.imageView deleteImage];
+	A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+	if ([downloadManager hasUserSuppliedImageForCountry:_countryCode]) {
+		[downloadManager deleteImageForCountryCode:_countryCode];
 		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
 
 		_dataUpdated = YES;
@@ -306,7 +296,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-	[self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)restoreNavigationBarBackground {
@@ -315,8 +305,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)imageCropper:(A3ImageCropperViewController *)cropper didFinishCroppingWithImage:(UIImage *)image {
-
-	[self.imageView saveUserSuppliedImage:image];
+	[[A3HolidaysFlickrDownloadManager sharedInstance] saveUserSuppliedImage:image forCountryCode:_countryCode];
 	_dataUpdated = YES;
 
 	double delayInSeconds = 0.5;

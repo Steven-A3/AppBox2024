@@ -19,6 +19,6 @@
 
 @protocol A3HolidaysEditViewControllerDelegate <NSObject>
 
-- (void)viewController:(UIViewController *)viewController willDismissViewControllerWithDataUpdated:(BOOL)updated;
+- (void)editViewController:(UIViewController *)viewController willDismissViewControllerWithDataUpdated:(BOOL)updated;
 
 @end

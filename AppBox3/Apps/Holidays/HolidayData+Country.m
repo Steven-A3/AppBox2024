@@ -9,6 +9,7 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "NSMutableArray+IMSExtensions.h"
+#import "A3UIDevice.h"
 
 NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountriesForCurrentDevice";
 NSString *const kHolidayCountryExcludedHolidays = @"kHolidayCountryExcludedHolidays";
@@ -708,6 +709,46 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 		}
 	}
 	return nil;
+}
+
+- (NSUInteger)indexForUpcomingFirstHolidayInHolidays:(NSArray *)holidays {
+	NSUInteger upcomingHolidayIndex = [holidays indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+		return [[NSDate date] compare:obj[kHolidayDate]] == NSOrderedAscending;
+	}];
+	return upcomingHolidayIndex;
+}
+
+- (NSDictionary *)firstUpcomingHolidaysForCountry:(NSString *)countryCode {
+	NSInteger thisYear;
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	NSDateComponents *components = [gregorian components:NSYearCalendarUnit fromDate:[NSDate date]];
+	thisYear = [components year];
+	NSMutableArray *holidaysThisYear = [self holidaysForCountry:countryCode year:thisYear fullSet:NO ];
+
+	NSUInteger indexForFirstUpcomingHoliday = [self indexForUpcomingFirstHolidayInHolidays:holidaysThisYear];
+	if (indexForFirstUpcomingHoliday == NSNotFound) {
+		holidaysThisYear = [self holidaysForCountry:countryCode year:thisYear + 1 fullSet:NO];
+		indexForFirstUpcomingHoliday = [self indexForUpcomingFirstHolidayInHolidays:holidaysThisYear];
+	}
+	if (indexForFirstUpcomingHoliday != NSNotFound) {
+		return holidaysThisYear[indexForFirstUpcomingHoliday];
+	}
+	return nil;
+}
+
++ (NSDateFormatter *)dateFormatter {
+	NSDateFormatter *df = [NSDateFormatter new];
+	if (IS_IPHONE) {
+		[df setDateFormat:@"EEE, MMM d"];
+	} else {
+		[df setDateStyle:NSDateFormatterFullStyle];
+
+		NSString *formatString = [df dateFormat];
+		formatString = [formatString stringByReplacingOccurrencesOfString:@"y" withString:@""];
+		formatString = [formatString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
+		[df setDateFormat:formatString];
+	}
+	return df;
 }
 
 @end

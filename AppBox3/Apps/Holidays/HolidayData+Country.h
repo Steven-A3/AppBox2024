@@ -20,6 +20,10 @@ extern NSString *const kA3TimeZoneName;
 
 - (NSMutableArray *)holidaysForCountry:(NSString *)countryCode year:(NSUInteger)year fullSet:(BOOL)fullSet;
 
+- (NSDictionary *)firstUpcomingHolidaysForCountry:(NSString *)countryCode;
+
++ (NSDateFormatter *)dateFormatter;
+
 + (id)keyForExcludedHolidaysForCountry:(NSString *)countryCode;
 
 + (BOOL)needToShowLunarDatesForCountryCode:(NSString *)countryCode;

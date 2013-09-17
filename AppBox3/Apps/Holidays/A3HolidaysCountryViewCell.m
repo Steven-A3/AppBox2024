@@ -7,12 +7,12 @@
 //
 
 #import "A3HolidaysCountryViewCell.h"
-#import "A3FlickrImageView.h"
 #import "A3UIDevice.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "NSDate+daysleft.h"
 #import "FXLabel.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 
 @interface A3HolidaysCountryViewCell ()
 
@@ -39,8 +39,7 @@
 		_thisYear = [components year];
 
 		// Initialization code
-		_backgroundImageView = [A3FlickrImageView new];
-		_backgroundImageView.useForCountryList = YES;
+		_backgroundImageView = [UIImageView new];
 		[self.contentView addSubview:_backgroundImageView];
 
 		[_backgroundImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -133,18 +132,17 @@
 	_countryName.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode];
 
 	HolidayData *holidayData = [HolidayData new];
-	NSMutableArray *holidaysThisYear = [holidayData holidaysForCountry:_countryCode year:_thisYear fullSet:NO ];
-	NSUInteger upcomingHolidayIndex = [holidaysThisYear indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
-		return [[NSDate date] compare:obj[kHolidayDate]] == NSOrderedAscending;
-	}];
 
-	NSDictionary *upcomingHoliday = holidaysThisYear[upcomingHolidayIndex];
+	NSArray *holidays = [holidayData holidaysForCountry:_countryCode year:_thisYear fullSet:NO];
+	NSDictionary *upcomingHoliday = [holidayData firstUpcomingHolidaysForCountry:_countryCode];
 
-	_upcomingHoliday.text = upcomingHoliday[kHolidayName];
-	_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft] ];
-	_numberOfHolidays.text = [NSString stringWithFormat:@"%d", [holidaysThisYear count]];
+	if (upcomingHoliday) {
+		_upcomingHoliday.text = upcomingHoliday[kHolidayName];
+		_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft] ];
+		_numberOfHolidays.text = [NSString stringWithFormat:@"%d", [holidays count]];
+	}
 
-	[_backgroundImageView displayImageWithCountryCode:_countryCode orientation:CURRENT_ORIENTATION];
+	_backgroundImageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:YES];
 }
 
 - (void)prepareForMove {
