@@ -26,6 +26,18 @@
 		_switchControl = [UISwitch new];
 		self.accessoryView = _switchControl;
 
+		if (IS_IPAD) {
+			_dateLabel = [UILabel new];
+			_dateLabel.textAlignment = NSTextAlignmentRight;
+			_dateLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+			[self addSubview:_dateLabel];
+
+			[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.right.equalTo(self.right).with.offset(-76);
+				make.centerY.equalTo(self.centerY);
+			}];
+		}
+
 		_publicLabel = [UILabel new];
 		_publicLabel.textAlignment = NSTextAlignmentCenter;
 		_publicLabel.textColor = [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
@@ -106,6 +118,9 @@
 
 - (void)setupFont {
 	_nameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	if (IS_IPAD) {
+		_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	}
 }
 
 @end

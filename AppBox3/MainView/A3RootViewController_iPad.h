@@ -18,6 +18,8 @@
 @property(nonatomic) BOOL showLeftView;
 @property(nonatomic) BOOL showRightView;
 
+- (void)animateHideLeftViewForFullScreenCenterView:(BOOL)fullScreenCenterView;
+
 - (void)toggleLeftMenuViewOnOff;
 
 - (void)presentRightSideViewController:(UIViewController *)viewController;

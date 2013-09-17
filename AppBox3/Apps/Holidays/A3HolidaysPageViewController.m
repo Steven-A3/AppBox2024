@@ -22,8 +22,11 @@
 #import "UIView+Screenshot.h"
 #import "A3HolidaysCountryViewController.h"
 #import "NSDate-Utilities.h"
+#import "A3CenterView.h"
 
-@interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource, A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate, A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate>
+@interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
+		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
+		A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate, A3CenterView>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;
@@ -35,7 +38,7 @@
 @property (nonatomic, strong) NSTimer *dayChangedTimer;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
-@property (nonatomic, strong) NSMutableDictionary *viewControllerCache;
+@property (atomic, strong) NSMutableDictionary *viewControllerCache;
 
 @end
 
@@ -45,6 +48,8 @@
 {
     [super viewDidLoad];
 
+    FNLOG();
+    
     _viewControllerCache = [NSMutableDictionary new];
     
 	self.automaticallyAdjustsScrollViewInsets = NO;
@@ -60,6 +65,7 @@
 	[self setupFooterView];
 	[self topGradientView];
 
+    [self.view layoutIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -93,14 +99,7 @@
 
 		[self registerContentSizeCategoryDidChangeNotification];
 
-		dispatch_async(dispatch_get_main_queue(), ^{
-			if ([_countries count] > 1) {
-				A3HolidaysPageContentViewController *viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[1]];
-				viewController.pageViewController = self;
-                [viewController view];
-				[_viewControllerCache setObject:viewController forKey:_countries[1]];
-			}
-		});
+		[self prepareViewControllerAtPage:1];
 	}
 }
 
@@ -164,9 +163,7 @@
 
 				[HolidayData setUserSelectedCountries:_countries];
 
-				if (self.currentPage == 0) {
-					[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
-				}
+				[self jumpToPage:0 direction:UIPageViewControllerNavigationDirectionForward animated:NO];
 			}
 		}
 	}];
@@ -264,6 +261,17 @@
 	return [self.countries indexOfObject:contentViewController.countryCode];
 }
 
+- (void)prepareViewControllerAtPage:(NSUInteger)page {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if ([_countries count] > page) {
+			A3HolidaysPageContentViewController *viewController = [[A3HolidaysPageContentViewController alloc] initWithCountryCode:_countries[page]];
+			viewController.pageViewController = self;
+			[viewController view];
+			[_viewControllerCache setObject:viewController forKey:_countries[page]];
+		}
+	});
+}
+
 - (A3HolidaysPageContentViewController *)contentViewControllerAtPage:(NSUInteger)page {
 	A3HolidaysPageContentViewController *viewController;
 	viewController = _viewControllerCache[_countries[page]];
@@ -295,6 +303,8 @@
 	if (page == [_countries count] - 1) {
 		return nil;
 	}
+
+	[self prepareViewControllerAtPage:page + 2];
 	return [self contentViewControllerAtPage:page + 1];
 }
 
@@ -308,7 +318,11 @@
 	[self updatePhotoLabelText];
 }
 
-- (BOOL)useFullScreenInLandscape {
+- (BOOL)usesFullScreenInLandscape {
+	return YES;
+}
+
+- (BOOL)hidesNavigationBar {
 	return YES;
 }
 
@@ -524,6 +538,7 @@ extern NSString *const kA3HolidayScreenImageURL;			// USE key + country code
 - (void)viewController:(UIViewController *)viewController didFinishPickingCountry:(NSString *)countryCode dataChanged:(BOOL)dataChanged {
 	if (dataChanged) {
 		_countries = nil;
+        _pageControl.numberOfPages = [self.countries count];
 	}
     NSInteger page = [self.countries indexOfObject:countryCode];
     [self jumpToPage:page direction:UIPageViewControllerNavigationDirectionForward animated:NO ];

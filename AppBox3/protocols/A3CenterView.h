@@ -10,6 +10,7 @@
 
 @protocol A3CenterView <NSObject>
 
-- (BOOL)useFullScreenInLandscape;
+- (BOOL)usesFullScreenInLandscape;
+- (BOOL)hidesNavigationBar;
 
 @end

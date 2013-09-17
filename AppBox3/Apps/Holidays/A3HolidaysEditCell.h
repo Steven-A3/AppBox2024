@@ -13,6 +13,7 @@
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIView *publicMarkView;
 @property (nonatomic, strong) UILabel *publicLabel;
+@property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) UISwitch *switchControl;
 
 @end

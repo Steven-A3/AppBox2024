@@ -123,8 +123,8 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 - (BOOL)useFullScreenInLandscapeForCurrentTopViewController {
 	BOOL useFullScreenInLandscape = NO;
 	id<A3CenterView> centerViewController = (id <A3CenterView>) [_centerNavigationController topViewController];
-	if ([centerViewController respondsToSelector:@selector(useFullScreenInLandscape)]) {
-		useFullScreenInLandscape = [centerViewController useFullScreenInLandscape];
+	if ([centerViewController respondsToSelector:@selector(usesFullScreenInLandscape)]) {
+		useFullScreenInLandscape = [centerViewController usesFullScreenInLandscape];
 	}
 	return useFullScreenInLandscape;
 }
@@ -152,6 +152,39 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 	} completion:^(BOOL finished) {
 		[self layoutSubviews];
 	}];
+}
+
+- (void)animateHideLeftViewForFullScreenCenterView:(BOOL)fullScreenCenterView {
+	[UIView animateWithDuration:0.3 animations:^{
+		_showLeftView = NO;
+
+        CGRect bounds = [self screenBoundsAdjustedWithOrientation];
+        
+		CGRect frame = _leftNavigationController.view.frame;
+        if (IS_LANDSCAPE && fullScreenCenterView) {
+            frame.origin.x = -kSideViewWidth - 1;
+        } else {
+            frame.origin.x = 0;
+        }
+		_leftNavigationController.view.frame = frame;
+
+        CGFloat centerViewWidth;
+        CGFloat centerViewPosition;
+        if (IS_LANDSCAPE) {
+            centerViewWidth = fullScreenCenterView ? bounds.size.width : 704;
+            centerViewPosition = fullScreenCenterView ? 0.0 : kSideViewWidth + 1.0;
+        } else {
+            centerViewWidth = bounds.size.width;
+            centerViewPosition = 0.0;
+        }
+        
+        frame = CGRectMake(kSideViewWidth + 1.0, 0, centerViewWidth, bounds.size.height);
+        _centerNavigationController.view.frame = frame;
+        frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
+        _rightNavigationController.view.frame = frame;
+
+    } completion:^(BOOL finished) {
+    }];
 }
 
 - (void)toggleLeftMenuViewOnOff {

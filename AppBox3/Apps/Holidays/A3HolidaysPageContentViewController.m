@@ -99,6 +99,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)imageDownloaded:(NSNotification *)notification {
 	if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
 		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
+        [_pageViewController updatePhotoLabelText];
 	}
 }
 
@@ -601,18 +602,6 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			cellType = A3HolidayCellTypeSingleLine;
 		}
 		[holidayCell setCellType:cellType];
-
-		if ([self yearForTableView:tableView] == _thisYear) {
-			A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [tableView.tableHeaderView viewWithTag:HolidaysHeaderViewSegmentedControl];
-			if (!segmentedControl.selectedSegmentIndex && !indexPath.row) {
-				holidayCell.titleLabel.textColor = self.view.tintColor;
-				holidayCell.dateLabel.textColor = self.view.tintColor;
-				holidayCell.lunarImageView.tintColor = self.view.tintColor;
-				holidayCell.lunarDateLabel.textColor = self.view.tintColor;
-				holidayCell.publicMarkView.layer.borderColor = self.view.tintColor.CGColor;
-				holidayCell.publicLabel.textColor = self.view.tintColor;
-			}
-		}
 
 		NSDateFormatter *df = [HolidayData dateFormatter];
 		holidayCell.titleLabel.text = cellData[kHolidayName];

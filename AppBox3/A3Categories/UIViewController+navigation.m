@@ -14,12 +14,14 @@
 #import "UIView+Screenshot.h"
 #import "A3ActionMenuViewController_iPhone.h"
 #import "A3ActionMenuViewController_iPad.h"
+#import "A3CenterView.h"
 #import "UIViewController+A3AppCategory.h"
 #import <objc/runtime.h>
 #import "UIViewController+navigation.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
+#import "A3CenterView.h"
 
 #define A3_ACTION_MENU_COVER_VIEW_TAG		79325
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";
@@ -29,24 +31,48 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController;
+
+	UIViewController<A3CenterView> *targetViewController = (UIViewController <A3CenterView> *) viewController;
 	if (IS_IPHONE) {
 		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		[rootViewController setShowLeftView:NO];
 		navigationController = [rootViewController centerNavigationController];
 	}
 
-	[navigationController setNavigationBarHidden:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-
-	[navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
-	[navigationController.navigationBar setShadowImage:nil];
+	BOOL hidesNavigationBar = NO;
+	if ([viewController respondsToSelector:@selector(hidesNavigationBar)]) {
+		hidesNavigationBar = [targetViewController hidesNavigationBar];
+	}
+    if (hidesNavigationBar) {
+        [navigationController setNavigationBarHidden:YES animated:NO];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+        
+        UIImage *image = [UIImage new];
+        [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+        [navigationController.navigationBar setShadowImage:image];
+    } else {
+        [navigationController setNavigationBarHidden:NO animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        
+        [navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        [navigationController.navigationBar setShadowImage:nil];
+    }
 
 	[navigationController popToRootViewControllerAnimated:NO];
-	[navigationController setNavigationBarHidden:NO];
+
+	if (IS_IPAD) {
+		BOOL usesFullScreenInLandscape = NO;
+		if ([viewController respondsToSelector:@selector(usesFullScreenInLandscape)]) {
+			usesFullScreenInLandscape = [targetViewController usesFullScreenInLandscape];
+		}
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		[rootViewController animateHideLeftViewForFullScreenCenterView:usesFullScreenInLandscape];
+	}
+
 	[navigationController pushViewController:viewController animated:YES];
 }
 

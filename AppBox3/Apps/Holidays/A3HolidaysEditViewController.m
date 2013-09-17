@@ -165,6 +165,9 @@ static NSString *CellIdentifier = @"Cell";
 		BOOL isPublic = [holiday[kHolidayIsPublic] boolValue];
 		[cell.publicMarkView setHidden:!isPublic];
 		[cell.publicLabel setHidden:!isPublic];
+		if (IS_IPAD) {
+			cell.dateLabel.text = [[HolidayData dateFormatter] stringFromDate:holiday[kHolidayDate]];
+		}
 		cell.switchControl.tag = indexPath.row;
 		[cell.switchControl addTarget:self action:@selector(switchControlAction:) forControlEvents:UIControlEventValueChanged];
 
