@@ -7,16 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3SearchViewController.h"
 
-@class A3LanguagePickerController;
-@class A3TranslatorLanguage;
+@interface A3LanguagePickerController : A3SearchViewController
 
-@protocol A3LanguagePickerControllerDelegate <NSObject>
-- (void)languagePickerController:(A3LanguagePickerController *)controller didSelectLanguage:(A3TranslatorLanguage *)language;
-@end
+- (instancetype)initWithLanguages:(NSArray *)languages;
 
-@interface A3LanguagePickerController : UITableViewController
-@property (nonatomic, weak) id<A3LanguagePickerControllerDelegate> delegate;
-@property (nonatomic, strong) NSArray *languages;
 @end
 

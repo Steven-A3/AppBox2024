@@ -360,7 +360,7 @@
 					UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 					[navigationController popToRootViewControllerAnimated:YES];
 				} else {
-					[[[[A3AppDelegate instance] rootViewController] centerNavigationController] popToRootViewControllerAnimated:YES ];
+                    [self popToRootAndPushViewController:nil];
 				}
 				break;
 			}
@@ -374,43 +374,75 @@
 			case 0: {
 				UIViewController *viewController;
 				if (IS_IPAD) {
-					viewController = [[A3SalesCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
+					if (![self isActiveViewController:[A3SalesCalcQuickDialogViewController_iPad class]])
+						viewController = [[A3SalesCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
 				} else {
-					viewController = [[A3SalesCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+					if (![self isActiveViewController:[A3SalesCalcQuickDialogViewController_iPhone class]])
+						viewController = [[A3SalesCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
 				}
 				targetViewController = viewController;
 				break;
 			}
 			case 1: {
-				NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", IS_IPAD ? @"iPad" : @"iPhone"];
-				targetViewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
+				if (![self isActiveViewController:[A3ExpenseListViewController class]]) {
+					NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", IS_IPAD ? @"iPad" : @"iPhone"];
+					targetViewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
+				}
 				break;
 			}
 			case 2: {
-				NSString *nibName;
-				if (IS_IPAD) {
-					nibName = @"A3LoanCalcViewController_iPad";
-				} else {
-					nibName = @"A3LoanCalcViewController_iPhone";
+				if (![self isActiveViewController:[A3LoanCalcViewController class]]) {
+					NSString *nibName;
+					if (IS_IPAD) {
+						nibName = @"A3LoanCalcViewController_iPad";
+					} else {
+						nibName = @"A3LoanCalcViewController_iPhone";
+					}
+					targetViewController = [[A3LoanCalcViewController alloc] initWithNibName:nibName bundle:nil];
 				}
-				targetViewController = [[A3LoanCalcViewController alloc] initWithNibName:nibName bundle:nil];
 				break;
 			}
 			case 3: {
-				targetViewController = [[A3CurrencyViewController alloc] initWithStyle:UITableViewStylePlain];
+				if (![self isActiveViewController:[A3CurrencyViewController class]]) {
+					targetViewController = [[A3CurrencyViewController alloc] initWithStyle:UITableViewStylePlain];
+				}
 				break;
 			}
 			case 4: {
-				targetViewController = [[A3TranslatorViewController alloc] initWithNibName:nil bundle:nil];
+				if (![self isActiveViewController:[A3TranslatorViewController class]]) {
+					targetViewController = [[A3TranslatorViewController alloc] initWithNibName:nil bundle:nil];
+				}
 				break;
 			}
 			case 5: {
-				targetViewController = [[A3HolidaysPageViewController alloc] initWithNibName:nil bundle:nil];
+				if (![self isActiveViewController:[A3HolidaysPageViewController class]]) {
+					targetViewController = [[A3HolidaysPageViewController alloc] initWithNibName:nil bundle:nil];
+				}
 				break;
 			}
 		}
-		[self popToRootAndPushViewController:targetViewController];
+		if (targetViewController) {
+			[self popToRootAndPushViewController:targetViewController];
+		}
 	}
+}
+
+- (BOOL)isActiveViewController:(Class)aClass {
+	UINavigationController *navigationController;
+
+	if (IS_IPHONE) {
+		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+	} else {
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		navigationController = [rootViewController centerNavigationController];
+	}
+	for (UIViewController *viewController in navigationController.viewControllers) {
+		if ([viewController isMemberOfClass:aClass]) {
+			return YES;
+		}
+	}
+	return NO;
 }
 
 @end

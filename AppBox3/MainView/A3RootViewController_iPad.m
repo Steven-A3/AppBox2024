@@ -13,6 +13,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+navigation.h"
 #import "A3CenterView.h"
+#import "common.h"
 
 @interface A3RootViewController_iPad ()
 
@@ -67,6 +68,7 @@ static const CGFloat kLandscapeWidth_iPad = 1024.0;
 static const CGFloat kPortraitWidth_iPad = 768.0;
 
 - (void)layoutSubviews {
+    FNLOG();
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 
 	[_centerCoverView setHidden:YES];
@@ -86,9 +88,6 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 		}
 	} else {
 		CGFloat centerViewWidth = 704.0;
-		CGFloat width = bounds.size.height;
-		bounds.size.height = bounds.size.width;
-		bounds.size.width = width;
 
 		[_centerCoverView setHidden:YES];
 		if (self.showRightView) {
@@ -156,12 +155,14 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 
 - (void)animateHideLeftViewForFullScreenCenterView:(BOOL)fullScreenCenterView {
 	[UIView animateWithDuration:0.3 animations:^{
+        [_centerCoverView setHidden:YES];
+        
 		_showLeftView = NO;
 
         CGRect bounds = [self screenBoundsAdjustedWithOrientation];
         
 		CGRect frame = _leftNavigationController.view.frame;
-        if (IS_LANDSCAPE && fullScreenCenterView) {
+        if (IS_PORTRAIT || (IS_LANDSCAPE && fullScreenCenterView)) {
             frame.origin.x = -kSideViewWidth - 1;
         } else {
             frame.origin.x = 0;
@@ -178,7 +179,7 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
             centerViewPosition = 0.0;
         }
         
-        frame = CGRectMake(kSideViewWidth + 1.0, 0, centerViewWidth, bounds.size.height);
+        frame = CGRectMake(centerViewPosition, 0, centerViewWidth, bounds.size.height);
         _centerNavigationController.view.frame = frame;
         frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
         _rightNavigationController.view.frame = frame;
@@ -205,11 +206,13 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 }
 
 - (void)presentRightSideViewController:(UIViewController *)viewController {
-	self.showRightView = YES;
-
+	_showRightView = YES;
+    _showLeftView = NO;
+    
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	_rightNavigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 	CGRect frame = _centerNavigationController.view.frame;
-	frame.origin.x = frame.size.width;
+	frame.origin.x = screenBounds.size.width;
 	frame.size.width = kSideViewWidth;
 	_rightNavigationController.view.frame = frame;
 	[self addChildViewController:_rightNavigationController];
@@ -217,6 +220,12 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 
 	[UIView animateWithDuration:0.3 animations:^{
 		if (IS_LANDSCAPE) {
+			BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
+			if (!useFullScreenInLandscape) {
+                CGRect frame = _leftNavigationController.view.frame;
+                frame.origin.x -= kSideViewWidth;
+                _leftNavigationController.view.frame = frame;
+            }
 			CGRect centerViewFrame = _centerNavigationController.view.frame;
 			centerViewFrame.origin.x = 0;
 			_centerNavigationController.view.frame = centerViewFrame;
@@ -242,8 +251,12 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 }
 
 - (void)dismissRightSideViewController {
+    FNLOG();
+    
 	[UIView animateWithDuration:0.3 animations:^{
-		CGRect bounds = [[UIScreen mainScreen] bounds];
+        _showRightView = NO;
+        
+		CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 		if (IS_LANDSCAPE) {
 			BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
 			if (useFullScreenInLandscape) {
@@ -264,6 +277,10 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 				frame.origin.x = bounds.size.width;
 				_rightNavigationController.view.frame = frame;
 
+                frame = _centerNavigationController.view.frame;
+                frame.origin.x += kSideViewWidth + 1;
+                _centerNavigationController.view.frame = frame;
+                
 				frame = _leftNavigationController.view.frame;
 				frame.origin.x = 0;
 				_leftNavigationController.view.frame = frame;
@@ -275,8 +292,6 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 			_rightNavigationController.view.frame = frame;
 		}
 	} completion:^(BOOL finished) {
-		self.showRightView = NO;
-
         [_rightNavigationController.view removeFromSuperview];
 		[_rightNavigationController removeFromParentViewController];
 		_rightNavigationController = nil;

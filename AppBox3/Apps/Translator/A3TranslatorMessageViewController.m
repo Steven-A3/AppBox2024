@@ -26,7 +26,7 @@
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
-@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3LanguagePickerControllerDelegate>
+@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;
@@ -389,11 +389,36 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (A3LanguagePickerController *)presentLanguagePickerControllerWithDetectLanguage:(BOOL)detectLanguage {
-	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithStyle:UITableViewStylePlain];
+	A3LanguagePickerController *viewController = [[A3LanguagePickerController alloc] initWithLanguages:[A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage]];
 	viewController.delegate = self;
-	viewController.languages = [A3TranslatorLanguage findAllWithDetectLanguage:detectLanguage];
 	[self presentSubViewController:viewController];
 	return viewController;
+}
+
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	if (viewController == _sourceLanguagePicker) {
+		_originalTextLanguage = selectedItem;
+		_sourceLanguageSelectTextField.text = [A3TranslatorLanguage localizedNameForCode:selectedItem];
+		[_sourceLanguageSelectTextField becomeFirstResponder];
+	} else {
+		[self setTranslatedTextLanguage:selectedItem];
+		_targetLanguageSelectTextField.text = [A3TranslatorLanguage localizedNameForCode:selectedItem];
+		[_targetLanguageSelectTextField becomeFirstResponder];
+	}
+	[self layoutLanguageSelectView];
+}
+
+- (void)languagePickerController:(A3LanguagePickerController *)controller didSelectLanguage:(A3TranslatorLanguage *)language {
+	if (controller == _sourceLanguagePicker) {
+		_sourceLanguageSelectTextField.text = language.name;
+		_originalTextLanguage = language.code;
+		[_sourceLanguageSelectTextField becomeFirstResponder];
+	} else {
+		_targetLanguageSelectTextField.text = language.name;
+		[self setTranslatedTextLanguage:language.code];
+		[_targetLanguageSelectTextField becomeFirstResponder];
+	}
+	[self layoutLanguageSelectView];
 }
 
 - (void)emptySearchResultTableView{
@@ -411,18 +436,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_targetLanguagePicker = [self presentLanguagePickerControllerWithDetectLanguage:NO ];
 }
 
-- (void)languagePickerController:(A3LanguagePickerController *)controller didSelectLanguage:(A3TranslatorLanguage *)language {
-	if (controller == _sourceLanguagePicker) {
-		_sourceLanguageSelectTextField.text = language.name;
-		_originalTextLanguage = language.code;
-		[_sourceLanguageSelectTextField becomeFirstResponder];
-	} else {
-		_targetLanguageSelectTextField.text = language.name;
-		[self setTranslatedTextLanguage:language.code];
-		[_targetLanguageSelectTextField becomeFirstResponder];
-	}
-	[self layoutLanguageSelectView];
-}
 
 - (UIImage *)addButtonImage {
 	return [[UIImage imageNamed:@"add02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -846,7 +859,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		[self addTranslatedString:translatedString detectedSourceLanguage:detectedLanguage];
 	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
         
-		FNLOG(@"****************************************************\nFail to translation: %@\n**********************************************************", response.debugDescription);
+		FNLOG(@"****************************************************\nFail to translation: %@\n**********************************************************", response.description);
+        FNLOG(@"%@%@%@%@", [error localizedDescription], [error localizedFailureReason], [error localizedRecoveryOptions], [error localizedRecoverySuggestion]);
 	}];
 
 	[operation start];

@@ -11,11 +11,11 @@
 typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 	A3HolidayCellTypeSingleLine = 0,	// Name -P Date
 	A3HolidayCellTypeDoubleLine,		// Long Name
-										// 		 -P Date
-	A3HolidayCellTypeLunar1,			// Name	 -P Date
-										// 		 - Lunar
+										// P Date
+	A3HolidayCellTypeLunar1,			// Name	 - P Date
+										// 		 -  Lunar
 	A3HolidayCellTypeLunar2				// Name
-										// Date P - Lunar
+										// P Date - Lunar
 };
 
 @interface A3HolidaysCell : UITableViewCell
@@ -27,5 +27,6 @@ typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 @property (nonatomic, strong) UIImageView *lunarImageView;
 @property (nonatomic, strong) FXLabel *lunarDateLabel;
 @property (nonatomic) A3HolidayCellType	cellType;
+@property (nonatomic, strong) id<MASConstraint> dateLabelLeft;
 
 @end

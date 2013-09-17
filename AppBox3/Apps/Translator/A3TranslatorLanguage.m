@@ -97,7 +97,7 @@ static NSString *const kTranslatorLocalizedName = @"localizedName";
 }
 
 + (NSString *)localizedNameForCode:(NSString *)code {
-    if ([code isEqualToString:@"Detect"]) return @"";
+    if ([code isEqualToString:@"Detect"]) return @"Detect Language";
 	if ([code isEqualToString:@"zh-Hans"]) return @"Simplified Chinese";
 	if ([code isEqualToString:@"zh-Hant"]) return @"Traditional Chinese";
 	NSString *result = [[NSLocale currentLocale] displayNameForKey:NSLocaleLanguageCode value:code];

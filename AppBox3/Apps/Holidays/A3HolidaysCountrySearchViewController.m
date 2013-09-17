@@ -54,9 +54,6 @@ static NSString *const CellIdentifier = @"Cell";
 			object.displayName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:obj[kHolidayCountryCode]];
 			[_allData addObject:object];
 		}];
-//		[_allData sortUsingComparator:^NSComparisonResult(A3SearchTargetItem *obj1, A3SearchTargetItem *obj2) {
-//			return [obj1.displayName compare:obj2.displayName];
-//		}];
         
         [super setAllData:_allData];
 	}

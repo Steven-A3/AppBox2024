@@ -606,8 +606,22 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		NSDateFormatter *df = [HolidayData dateFormatter];
 		holidayCell.titleLabel.text = cellData[kHolidayName];
 		holidayCell.dateLabel.text = [df stringFromDate: cellData[kHolidayDate] ];
-		[holidayCell.publicMarkView setHidden:![cellData[kHolidayIsPublic] boolValue]];
-		[holidayCell.publicLabel setHidden:![cellData[kHolidayIsPublic] boolValue]];
+
+		BOOL showPublicMark = [cellData[kHolidayIsPublic] boolValue];
+		[holidayCell.publicMarkView setHidden:!showPublicMark];
+		[holidayCell.publicLabel setHidden:!showPublicMark];
+
+		if (!showPublicMark) {
+			switch (cellType) {
+				case A3HolidayCellTypeDoubleLine:
+				case A3HolidayCellTypeLunar2:
+					holidayCell.dateLabelLeft.offset(IS_IPHONE ? 15 : 28);
+					[holidayCell layoutIfNeeded];
+					break;
+				default:
+					break;
+			}
+		}
 
 		if (showLunar) {
 			BOOL isKorean = [self.countryCode isEqualToString:@"kr"];

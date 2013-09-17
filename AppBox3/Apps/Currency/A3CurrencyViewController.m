@@ -78,6 +78,21 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     return self;
 }
 
+- (void)cleanUp{
+	_favorites = nil;
+	_equalItem = nil;
+	_plusItem = nil;
+	_textFields = nil;
+	_history = nil;
+	_bottomView = nil;
+	_updateDateLabel = nil;
+	_updateButton = nil;
+	_yahooButton = nil;
+	_moreMenuButtons = nil;
+	_currencyHistory = nil;
+	_animationStarted = nil;
+}
+
 - (void)viewDidLoad 
 {
 	[self setupSwipeRecognizers];

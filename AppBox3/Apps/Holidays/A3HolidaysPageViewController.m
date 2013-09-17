@@ -44,6 +44,18 @@
 
 @implementation A3HolidaysPageViewController
 
+- (void)cleanUp {
+	_pageViewController = nil;
+	_countries = nil;
+	_pageControl = nil;
+	_photoLabel1 = nil;
+	_photoLabel2 = nil;
+	_footerView = nil;
+	_topGradientView = nil;
+	_dayChangedTimer = nil;
+	_viewControllerCache = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

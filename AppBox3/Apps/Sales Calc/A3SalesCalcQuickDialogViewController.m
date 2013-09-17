@@ -42,7 +42,7 @@
 		[self addTopGradientLayerToView:self.view position:1.0];
 
 		self.title = @"Sales Calc";
-
+        self.automaticallyAdjustsScrollViewInsets = NO;
 	}
 	return self;
 }
@@ -241,6 +241,7 @@
 	[super viewWillAppear:animated];
 
 	self.quickDialogTableView.tableHeaderView = self.tableHeaderView;
+    self.quickDialogTableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
 
 	[self calculateSalePrice];
 }

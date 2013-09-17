@@ -32,7 +32,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 - (void)popToRootAndPushViewController:(UIViewController *)viewController {
 	UINavigationController *navigationController;
 
-	UIViewController<A3CenterView> *targetViewController = (UIViewController <A3CenterView> *) viewController;
 	if (IS_IPHONE) {
 		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
 		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
@@ -42,6 +41,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	}
 
 	BOOL hidesNavigationBar = NO;
+	UIViewController<A3CenterView> *targetViewController = (UIViewController <A3CenterView> *) viewController;
 	if ([viewController respondsToSelector:@selector(hidesNavigationBar)]) {
 		hidesNavigationBar = [targetViewController hidesNavigationBar];
 	}
@@ -62,7 +62,12 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
         [navigationController.navigationBar setShadowImage:nil];
     }
 
-	[navigationController popToRootViewControllerAnimated:NO];
+	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
+	for (UIViewController<A3CenterView> *vc in poppedVCs) {
+		if ([vc respondsToSelector:@selector(cleanUp)]) {
+			[vc performSelector:@selector(cleanUp)];
+		}
+	}
 
 	if (IS_IPAD) {
 		BOOL usesFullScreenInLandscape = NO;
@@ -73,7 +78,9 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 		[rootViewController animateHideLeftViewForFullScreenCenterView:usesFullScreenInLandscape];
 	}
 
-	[navigationController pushViewController:viewController animated:YES];
+    if (viewController) {
+        [navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 - (void)showRightDrawerViewController:(UIViewController *)viewController {

@@ -12,5 +12,6 @@
 
 - (BOOL)usesFullScreenInLandscape;
 - (BOOL)hidesNavigationBar;
+- (void)cleanUp;
 
 @end

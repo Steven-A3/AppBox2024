@@ -25,10 +25,12 @@
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
-@property (nonatomic, strong) NSMutableArray *allData;
 @property (nonatomic, strong) NSArray *filteredResults;
 @property (nonatomic) NSMutableArray *sectionsArray;
 @property (nonatomic) UILocalizedIndexedCollation *collation;
+
+// Sub class should implement this member
+@property (nonatomic, strong) NSMutableArray *allData;
 
 - (void)callDelegate:(NSString *)selectedItem;
 - (void)filterContentForSearchText:(NSString *)searchText;
@@ -40,4 +42,3 @@
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *displayName;
 @end
-

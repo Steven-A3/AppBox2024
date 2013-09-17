@@ -147,14 +147,8 @@
 					}
 					break;
 				case A3HolidayCellTypeDoubleLine:
-					make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
-					if (IS_IPHONE) {
-						make.width.equalTo(@(78));
-					}
-					make.centerY.equalTo(self.centerY).with.offset(15);
-					break;
 				case A3HolidayCellTypeLunar2:
-					make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 + 18 + 5 : 28 + 18 + 5);
+					_dateLabelLeft = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 + 18 + 5 : 28 + 18 + 5);
 					make.centerY.equalTo(self.centerY).with.offset(15);
 					break;
 			}
@@ -173,10 +167,10 @@
 
 					switch (_cellType) {
 						case A3HolidayCellTypeSingleLine:
-						case A3HolidayCellTypeDoubleLine:
 						case A3HolidayCellTypeLunar1:
 							make.left.equalTo(self.right).with.offset(-113);
 							break;
+						case A3HolidayCellTypeDoubleLine:
 						case A3HolidayCellTypeLunar2:
 							make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 							break;

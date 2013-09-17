@@ -23,6 +23,7 @@
 #import "A3TickerControl.h"
 #import "UIViewController+navigation.h"
 #import "A3TranslatorListCell.h"
+#import "common.h"
 
 @interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -35,6 +36,15 @@
 @end
 
 @implementation A3TranslatorViewController
+
+- (void)cleanUp {
+	_fetchedResults = nil;
+	_fetchedResultsController = nil;
+	_segmentedControl = nil;
+	_tableView = nil;
+	_addButton = nil;
+	_favoriteDataSource = nil;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -110,6 +120,9 @@
 #pragma mark - Setup Subview
 
 - (void)setupSubviews {
+	FNLOGRECT(self.view.frame);
+	FNLOGRECT(self.navigationController.view.frame);
+
 	_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"All", @"Favorites"]];
 	_segmentedControl.selectedSegmentIndex = 0;
 	[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
