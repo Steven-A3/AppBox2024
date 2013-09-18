@@ -12,45 +12,57 @@
 @implementation NSUserDefaults (A3Defaults)
 
 - (BOOL)currencyAutoUpdate {
-	NSNumber *object;
-	object = [self objectForKey:A3CurrencyAutoUpdate];
-	if (object) {
-		return [object boolValue];
+	@autoreleasepool {
+		NSNumber *object;
+		object = [self objectForKey:A3CurrencyAutoUpdate];
+		if (object) {
+			return [object boolValue];
+		}
+		return YES;
 	}
-	return YES;
 }
 
 - (void)setCurrencyAutoUpdate:(BOOL)boolValue {
-	[self setBool:boolValue forKey:A3CurrencyAutoUpdate];
-	[self synchronize];
+	@autoreleasepool {
+		[self setBool:boolValue forKey:A3CurrencyAutoUpdate];
+		[self synchronize];
+	}
 }
 
 - (BOOL)currencyUseCellularData {
-	NSNumber *object;
-	object = [self objectForKey:A3CurrencyUseCellularData];
-	if (object) {
-		return [object boolValue];
+	@autoreleasepool {
+		NSNumber *object;
+		object = [self objectForKey:A3CurrencyUseCellularData];
+		if (object) {
+			return [object boolValue];
+		}
+		return NO;
 	}
-	return YES;
 }
 
 - (void)setCurrencyUseCellularData:(BOOL)boolValue {
-	[self setBool:boolValue forKey:A3CurrencyUseCellularData];
-	[self synchronize];
+	@autoreleasepool {
+		[self setBool:boolValue forKey:A3CurrencyUseCellularData];
+		[self synchronize];
+	}
 }
 
 - (BOOL)currencyShowNationalFlag {
-	NSNumber *object;
-	object = [self objectForKey:A3CurrencyShowNationalFlag];
-	if (object) {
-		return [object boolValue];
+	@autoreleasepool {
+		NSNumber *object;
+		object = [self objectForKey:A3CurrencyShowNationalFlag];
+		if (object) {
+			return [object boolValue];
+		}
+		return YES;
 	}
-	return YES;
 }
 
 - (void)setCurrencyShowNationalFlag:(BOOL)boolValue {
-	[self setBool:boolValue forKey:A3CurrencyShowNationalFlag];
-	[self synchronize];
+	@autoreleasepool {
+		[self setBool:boolValue forKey:A3CurrencyShowNationalFlag];
+		[self synchronize];
+	}
 }
 
 @end

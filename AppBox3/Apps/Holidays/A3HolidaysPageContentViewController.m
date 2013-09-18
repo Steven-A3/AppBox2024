@@ -106,11 +106,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if (self.isMovingFromParentViewController) {
-		[self.imageView setScrollView:nil];
-	} else {
-		_previousOrientation = CURRENT_ORIENTATION;
-	}
+	_previousOrientation = CURRENT_ORIENTATION;
 }
 
 - (void)dealloc {

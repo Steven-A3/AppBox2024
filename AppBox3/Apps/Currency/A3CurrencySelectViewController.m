@@ -10,6 +10,7 @@
 #import "CurrencyItem.h"
 #import "CurrencyItem+name.h"
 #import "CurrencyFavorite.h"
+#import "UIViewController+A3AppCategory.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
@@ -19,9 +20,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.searchBar.placeholder = @"Search Currency";
-    self.title = @"Select Currency";
+
+	@autoreleasepool {
+		self.searchBar.placeholder = @"Search Currency";
+		self.title = @"Select Currency";
+
+		[self registerContentSizeCategoryDidChangeNotification];
+	}
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -31,17 +40,20 @@
 }
 
 - (NSMutableArray *)allData {
-	NSMutableArray *allData = [super allData];
-	if (!allData) {
-		allData = [NSMutableArray new];
-		NSArray *allCurrencies = [CurrencyItem MR_findAll];
-		for (CurrencyItem *item in allCurrencies) {
-			A3SearchTargetItem *searchTargetItem = [A3SearchTargetItem new];
-			searchTargetItem.code = item.currencyCode;
-			searchTargetItem.name = item.localizedName;
-			// displayName will be used for search target.
-			searchTargetItem.displayName = [NSString stringWithFormat:@"%@ %@", searchTargetItem.code, searchTargetItem.name];
-			[allData addObject:searchTargetItem];
+	NSMutableArray *allData=nil;
+	@autoreleasepool {
+		allData = [super allData];
+		if (!allData) {
+			allData = [NSMutableArray new];
+			NSArray *allCurrencies = [CurrencyItem MR_findAll];
+			for (CurrencyItem *item in allCurrencies) {
+				A3SearchTargetItem *searchTargetItem = [A3SearchTargetItem new];
+				searchTargetItem.code = item.currencyCode;
+				searchTargetItem.name = item.localizedName;
+				// displayName will be used for search target.
+				searchTargetItem.displayName = [NSString stringWithFormat:@"%@ %@", searchTargetItem.code, searchTargetItem.name];
+				[allData addObject:searchTargetItem];
+			}
 		}
 	}
 	return allData;
@@ -51,43 +63,46 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	UITableViewCell *cell=nil;
+	@autoreleasepool {
+		static NSString *CellIdentifier = @"Cell";
+		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-	if (nil == cell) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-	}
+		if (nil == cell) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		}
 
-    // Configure the cell...
-	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		data = self.filteredResults[indexPath.row];
-	} else {
-		NSArray *dataInSection = (self.sectionsArray)[indexPath.section];
-
-		// Configure the cell with the time zone's name.
-		data = dataInSection[indexPath.row];
-	}
-
-	UIColor *textColor;
-	if (self.allowChooseFavorite) {
-		textColor = [UIColor blackColor];
-	} else {
-		if ([self isFavoriteItemForCurrencyItem:data.code]) {
-			textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+		// Configure the cell...
+		A3SearchTargetItem *data;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			data = self.filteredResults[indexPath.row];
 		} else {
-            textColor = [UIColor blackColor];
-        }
-	}
+			NSArray *dataInSection = (self.sectionsArray)[indexPath.section];
 
-	NSAttributedString *codeString = [[NSAttributedString alloc] initWithString:data.code
-																	 attributes:[self codeStringAttributeWithColor:textColor ]];
-	NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"   %@", data.name]
-																	 attributes:[self nameStringAttributeWithColor:textColor ]];
-	NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
-	[cellString appendAttributedString:codeString];
-	[cellString appendAttributedString:nameString];
-	cell.textLabel.attributedText = cellString;
+			// Configure the cell with the time zone's name.
+			data = dataInSection[indexPath.row];
+		}
+
+		UIColor *textColor;
+		if (self.allowChooseFavorite) {
+			textColor = [UIColor blackColor];
+		} else {
+			if ([self isFavoriteItemForCurrencyItem:data.code]) {
+				textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+			} else {
+				textColor = [UIColor blackColor];
+			}
+		}
+
+		NSAttributedString *codeString = [[NSAttributedString alloc] initWithString:data.code
+																		 attributes:[self codeStringAttributeWithColor:textColor ]];
+		NSAttributedString *nameString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"   %@", data.name]
+																		 attributes:[self nameStringAttributeWithColor:textColor ]];
+		NSMutableAttributedString *cellString = [[NSMutableAttributedString alloc] init];
+		[cellString appendAttributedString:codeString];
+		[cellString appendAttributedString:nameString];
+		cell.textLabel.attributedText = cellString;
+	}
     
     return cell;
 }
@@ -113,21 +128,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	A3SearchTargetItem *data;
-	if (tableView == self.searchDisplayController.searchResultsTableView) {
-		data = self.filteredResults[indexPath.row];
-	} else {
-		NSArray *dataInSection = (self.sectionsArray)[indexPath.section];
+	@autoreleasepool {
+		A3SearchTargetItem *data;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			data = self.filteredResults[indexPath.row];
+		} else {
+			NSArray *dataInSection = (self.sectionsArray)[indexPath.section];
 
-		// Configure the cell with the time zone's name.
-		data = dataInSection[indexPath.row];
-	}
-	if (!self.allowChooseFavorite && [self isFavoriteItemForCurrencyItem:data.code]) {
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
-		return;
-	}
+			// Configure the cell with the time zone's name.
+			data = dataInSection[indexPath.row];
+		}
+		if (!self.allowChooseFavorite && [self isFavoriteItemForCurrencyItem:data.code]) {
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			return;
+		}
 
-	[self callDelegate:data.code];
+		[self callDelegate:data.code];
+	}
 }
 
 @end

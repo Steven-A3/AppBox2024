@@ -554,6 +554,7 @@ extern NSString *const kA3HolidayScreenImageURL;			// USE key + country code
 	}
     NSInteger page = [self.countries indexOfObject:countryCode];
     [self jumpToPage:page direction:UIPageViewControllerNavigationDirectionForward animated:NO ];
+	_pageControl.currentPage = page;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         NSArray *allKeys = [_viewControllerCache allKeys];
@@ -563,7 +564,6 @@ extern NSString *const kA3HolidayScreenImageURL;			// USE key + country code
             }
         }
 	});
-
 }
 
 - (NSUInteger)pageViewControllerSupportedInterfaceOrientations:(UIPageViewController *)pageViewController {

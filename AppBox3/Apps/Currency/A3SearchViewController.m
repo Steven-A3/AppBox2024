@@ -87,6 +87,7 @@
 - (UISearchBar *)searchBar {
 	if (!_searchBar) {
 		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 64.0, self.view.bounds.size.width, kSearchBarHeight)];
+		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
 		_searchBar.delegate = self;
 	}

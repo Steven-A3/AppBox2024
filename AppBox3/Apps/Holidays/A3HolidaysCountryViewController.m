@@ -133,6 +133,9 @@ extern NSString *const A3CurrencyActionCellID;
 			NSString *countryCode = self.userSelectedCountries[indexPath.row];
 
 			normalCell.countryCode = countryCode;
+			if (indexPath.row == 0) {
+				[normalCell locationImageView];
+			}
 		}
 		cell = normalCell;
 	}
@@ -193,7 +196,7 @@ extern NSString *const kA3HolidayScreenImageDownloadDate;
 }
 
 - (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	if ([self.userSelectedCountries count] == 1) {
+	if ([self.userSelectedCountries count] == 1 || indexPath.row == 0) {
 		return NO;
 	}
 	// Return NO if you do not want the item to be re-orderable.

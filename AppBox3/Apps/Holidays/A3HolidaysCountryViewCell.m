@@ -13,6 +13,7 @@
 #import "NSDate+daysleft.h"
 #import "FXLabel.h"
 #import "A3HolidaysFlickrDownloadManager.h"
+#import "SFKImage.h"
 
 @interface A3HolidaysCountryViewCell ()
 
@@ -152,12 +153,30 @@
 	_upcomingHoliday.text = @"";
 	_daysLeft.text = @"";
 	_numberOfHolidays.text = @"";
+	[_locationImageView removeFromSuperview];
+	_locationImageView = nil;
 }
 
 - (void)setupShadow:(FXLabel *)label {
 	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.45];
 	label.shadowOffset = CGSizeMake(0, 2);
 	label.shadowBlur = 5;
+}
+
+- (UIImageView *)locationImageView {
+	if (!_locationImageView) {
+		_locationImageView = [UIImageView new];
+		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:12]];
+		[SFKImage setDefaultColor:[UIColor whiteColor]];
+		_locationImageView.image = [SFKImage imageNamed:@"p"];
+		[self.contentView addSubview:_locationImageView];
+
+		[_locationImageView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(_daysLeft.centerY);
+			make.left.equalTo(_daysLeft.right).with.offset(8);
+		}];
+	}
+	return _locationImageView;
 }
 
 @end

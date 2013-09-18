@@ -293,13 +293,26 @@ static NSString *CellIdentifier = @"Cell";
 	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
 	FNLOG(@"%d", image.imageOrientation);
 
-	A3ImageCropperViewController *cropper = [[A3ImageCropperViewController alloc] initWithImage:image withHudView:nil];
-	cropper.delegate = self;
-	[self.navigationController pushViewController:cropper animated:YES];
+	if (image) {
+		A3ImageCropperViewController *cropper = [[A3ImageCropperViewController alloc] initWithImage:image withHudView:nil];
+		cropper.delegate = self;
+		[self.navigationController pushViewController:cropper animated:YES];
+	} else {
+        [self dismissImagePickerController];
+	}
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [self dismissViewControllerAnimated:YES completion:NULL];
+    [self dismissImagePickerController];
+}
+
+- (void)dismissImagePickerController {
+    if (IS_IPAD) {
+        [_imagePickerPopoverController dismissPopoverAnimated:YES];
+        _imagePickerPopoverController = nil;
+    } else {
+        [self dismissViewControllerAnimated:YES completion:NULL];
+    }
 }
 
 - (void)restoreNavigationBarBackground {

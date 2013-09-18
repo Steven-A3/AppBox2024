@@ -14,4 +14,5 @@
 @property (nonatomic, copy) NSString *countryCode;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
+@property (nonatomic, strong) UIImageView *locationImageView;
 @end

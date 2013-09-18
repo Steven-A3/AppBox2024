@@ -40,6 +40,8 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 		navigationController = [rootViewController centerNavigationController];
 	}
 
+	[navigationController setToolbarHidden:YES];
+
 	BOOL hidesNavigationBar = NO;
 	UIViewController<A3CenterView> *targetViewController = (UIViewController <A3CenterView> *) viewController;
 	if ([viewController respondsToSelector:@selector(hidesNavigationBar)]) {
@@ -370,7 +372,9 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 }
 
 - (void)leftBarButtonAppsButton {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+	@autoreleasepool {
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+	}
 }
 
 - (void)appsButtonAction {

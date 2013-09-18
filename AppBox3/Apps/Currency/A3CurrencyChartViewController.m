@@ -22,6 +22,7 @@
 #import "NSString+conversion.h"
 #import "NSNumberExtensions.h"
 #import "UIViewController+navigation.h"
+#import "UIView+Screenshot.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 
@@ -158,15 +159,15 @@
 		if (IS_LANDSCAPE) {
 			segmentedControlWidth = @555.0;
 			chartWidth = @555.0;
-			chartHeight = @312.0;
+			chartHeight = @246.0;
 			space1 = @33.0;
-			space2 = @33.0;
+			space2 = @55.0;
 			space3 = @34.0;
-			space4 = @34.0;
+			space4 = @35.0;
 		} else {
 			segmentedControlWidth = @605.0;
 			chartWidth = @605.0;
-			chartHeight = @340.0;
+			chartHeight = @268.0;
 			space1 = @50.0;
 			space2 = @50.0;
 			space3 = @20.0;
@@ -183,7 +184,7 @@
 	[self constraintForHorizontalLayout:_segmentedControl width:segmentedControlWidth.cgFloatValue];
 	[self constraintForHorizontalLayout:_chartView width:chartWidth.cgFloatValue];
 
-	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(tableViewHeight)]-space1-[_line1(1)][_titleView(titleViewHeight)][_valueView(titleViewHeight)][_line2(1)]-space2-[_segmentedControl(28)]-space3-[_chartView(chartHeight)]-space4-|"
+	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(tableViewHeight)]-space1-[_line1(1)][_titleView(titleViewHeight)][_valueView(titleViewHeight)][_line2(1)]-space2-[_segmentedControl(28)]-(>=35,<=70)-[_chartView(chartHeight)]-(>=space4)-|"
 																	  options:0
 																	  metrics:NSDictionaryOfVariableBindings(tableViewHeight, titleViewHeight, space1, space2, space3, space4, chartHeight)
 																		views:NSDictionaryOfVariableBindings(_tableView, _line1, _titleView, _valueView, _line2, _segmentedControl, _chartView)]];
@@ -263,11 +264,13 @@
 }
 
 - (void)updateDisplay {
-	self.title = [NSString stringWithFormat:@"%@ to %@", self.sourceItem.currencyCode, self.targetItem.currencyCode];
+	@autoreleasepool {
+		self.title = [NSString stringWithFormat:@"%@ to %@", self.sourceItem.currencyCode, self.targetItem.currencyCode];
 
-	[self fillCurrencyTable];
-	self.segmentedControl.selectedSegmentIndex = 0;
-	[self.chartView setImageWithURL:IS_IPHONE ? self.urlForChartImage : self.urlForBigChartImage];
+		[self fillCurrencyTable];
+		self.segmentedControl.selectedSegmentIndex = 0;
+		[self.chartView setImageWithURL:self.urlForChartImage placeholderImage:[self chartNotAvailableImage]];
+	}
 }
 
 #pragma mark - CurrencyItem
@@ -476,7 +479,23 @@
 #pragma makr - UISegmentedControl event handler
 
 - (IBAction)segmentedControlValueChanged:(UISegmentedControl *)control {
-	[self.chartView setImageWithURL:IS_IPHONE ? self.urlForChartImage : self.urlForBigChartImage];
+	@autoreleasepool {
+		[self.chartView setImageWithURL:self.urlForChartImage placeholderImage:[self chartNotAvailableImage]];
+	}
+}
+
+- (UIImage *)chartNotAvailableImage {
+	UILabel *label = [UILabel new];
+	label.frame = _chartView.bounds;
+	label.numberOfLines = 2;
+	label.textAlignment = NSTextAlignmentCenter;
+	label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+	label.textColor = [UIColor colorWithRed:172.0/255.0 green:172.0/255.0 blue:172.0/255.0 alpha:1.0];
+	label.text = @"Chart not available.\nNo internet connection.";
+	label.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
+	label.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.2].CGColor;
+	label.opaque = NO;
+	return [label imageByRenderingView];
 }
 
 #pragma mark - currency table handler
@@ -504,22 +523,10 @@
 
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
-	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=m&region=%@&lang=%@",
-			self.sourceItem.currencyCode, self.targetItem.currencyCode,
-			types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],
-			[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
-			[[NSLocale preferredLanguages] objectAtIndex:0] ];
-
-	FNLOG(@"%@", string);
-
-	return [NSURL URLWithString:string];
-}
-
-- (NSURL *)urlForBigChartImage {
-	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];
-	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=l&region=%@&lang=%@",
+	NSString *string = [NSString stringWithFormat:@"http://chart.finance.yahoo.com/z?s=%@%@=x&t=%@&z=%@&region=%@&lang=%@",
 												  self.sourceItem.currencyCode, self.targetItem.currencyCode,
 												  types[(NSUInteger) self.segmentedControl.selectedSegmentIndex],
+												  IS_IPHONE || (IS_IPHONE && !IS_LANDSCAPE)  ? @"m" : @"l",
 												  [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],
 												  [[NSLocale preferredLanguages] objectAtIndex:0] ];
 
@@ -535,7 +542,7 @@
 - (UIImageView *)landscapeChartView {
 	if (!_landscapeChartView) {
 		_landscapeChartView = [[UIImageView alloc] init];
-		[_landscapeChartView setImageWithURL:self.urlForBigChartImage];
+		[_landscapeChartView setImageWithURL:self.urlForChartImage];
 	}
 	return _landscapeChartView;
 }

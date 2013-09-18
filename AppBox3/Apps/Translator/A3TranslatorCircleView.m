@@ -22,6 +22,7 @@
 
 - (void)initialize {
     self.backgroundColor = [UIColor clearColor];
+	self.opaque = NO;
 	CGRect frame = self.bounds;
 	frame.size.height -= 0.0;
 	frame.origin.x -= 1.0;

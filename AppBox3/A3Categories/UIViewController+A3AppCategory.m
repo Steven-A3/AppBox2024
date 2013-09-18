@@ -183,7 +183,9 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
  *  You must to override - (void)contentSizeDidChange:(NSNotification *)notification
  */
 - (void)registerContentSizeCategoryDidChangeNotification {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
+	@autoreleasepool {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentSizeDidChange:) name:UIContentSizeCategoryDidChangeNotification object:nil];
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
