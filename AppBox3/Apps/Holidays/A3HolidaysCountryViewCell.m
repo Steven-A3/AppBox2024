@@ -172,8 +172,8 @@
 		[self.contentView addSubview:_locationImageView];
 
 		[_locationImageView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_daysLeft.centerY);
-			make.left.equalTo(_daysLeft.right).with.offset(8);
+			make.baseline.equalTo(_countryName.baseline);
+			make.left.equalTo(_countryName.right).with.offset(8);
 		}];
 	}
 	return _locationImageView;

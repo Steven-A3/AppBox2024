@@ -23,6 +23,7 @@
 #import "NSNumberExtensions.h"
 #import "UIViewController+navigation.h"
 #import "UIView+Screenshot.h"
+#import "Reachability.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 
@@ -90,6 +91,9 @@
 	[self setupFont];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+
+	[[Reachability reachabilityWithHostname:@"finance.yahoo.com"] startNotifier];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -131,7 +135,13 @@
 	NSNumber *chartWidth;
 	NSNumber *segmentedControlWidth;
 
+	CGSize chartSize = [self chartSize];
+
 	if (IS_IPHONE) {
+		segmentedControlWidth = @300.0;
+		chartWidth = @(chartSize.width);
+		chartHeight = @(chartSize.height);
+
 		if (screenBounds.size.height == 480.0) {
 			tableViewHeight = @140.0;
 			titleViewHeight = @22.0;
@@ -139,8 +149,6 @@
 			space2 = @10.0;
 			space3 = @14.0;
 			space4 = @14.0;
-			chartHeight = @154.0;
-			chartWidth = @263.0;
 		} else {
 			tableViewHeight = @168.0;
 			titleViewHeight = @30.0;
@@ -148,26 +156,20 @@
 			space2 = @17.0;
 			space3 = @18.0;
 			space4 = @19.0;
-			chartHeight = @175.0;
-			chartWidth = @300.0;
 		}
-		segmentedControlWidth = @300.0;
 	} else {
 		tableViewHeight = @168.0;
 		titleViewHeight = @30.0;
 
+		segmentedControlWidth = @(chartSize.width);
+		chartWidth = @(chartSize.width);
+		chartHeight = @(chartSize.height);
 		if (IS_LANDSCAPE) {
-			segmentedControlWidth = @555.0;
-			chartWidth = @555.0;
-			chartHeight = @246.0;
 			space1 = @33.0;
 			space2 = @55.0;
 			space3 = @34.0;
 			space4 = @35.0;
 		} else {
-			segmentedControlWidth = @605.0;
-			chartWidth = @605.0;
-			chartHeight = @268.0;
 			space1 = @50.0;
 			space2 = @50.0;
 			space3 = @20.0;
@@ -227,6 +229,19 @@
 	[self setupFont];
 }
 
+- (CGSize)chartSize {
+	CGSize size;
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	if (IS_IPHONE) {
+		size.width = screenBounds.size.height == 480 ? 263 : 300;
+		size.height = screenBounds.size.height == 480 ? 154 : 175;
+	} else {
+		size.width = IS_PORTRAIT ?  605 : 555 ;
+		size.height = IS_PORTRAIT ? 268 : 246 ;
+	}
+	return size;
+}
+
 - (void)setupFont {
 	[_titleLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
 		label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -243,6 +258,7 @@
 }
 
 - (void)dealloc {
+	[[Reachability reachabilityWithHostname:@"finance.yahoo.com"] stopNotifier];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -476,7 +492,7 @@
 	[keyInputDelegate resignFirstResponder];
 }
 
-#pragma makr - UISegmentedControl event handler
+#pragma mark - UISegmentedControl event handler
 
 - (IBAction)segmentedControlValueChanged:(UISegmentedControl *)control {
 	@autoreleasepool {
@@ -485,13 +501,14 @@
 }
 
 - (UIImage *)chartNotAvailableImage {
+	CGSize chartSize = [self chartSize];
 	UILabel *label = [UILabel new];
-	label.frame = _chartView.bounds;
+	label.frame = CGRectMake(0,0,chartSize.width, chartSize.height);
 	label.numberOfLines = 2;
 	label.textAlignment = NSTextAlignmentCenter;
-	label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
-	label.textColor = [UIColor colorWithRed:172.0/255.0 green:172.0/255.0 blue:172.0/255.0 alpha:1.0];
-	label.text = @"Chart not available.\nNo internet connection.";
+	label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	label.textColor = [UIColor colorWithRed:172.0 / 255.0 green:172.0 / 255.0 blue:172.0 / 255.0 alpha:1.0];
+	label.text = @"Internet connection is not available.";
 	label.layer.borderWidth = IS_RETINA ? 0.25 : 0.5;
 	label.layer.borderColor = [UIColor colorWithWhite:0.0 alpha:0.2].CGColor;
 	label.opaque = NO;
@@ -536,7 +553,15 @@
 }
 
 - (NSUInteger)a3SupportedInterfaceOrientations {
-	return UIInterfaceOrientationMaskAllButUpsideDown;
+	if (IS_IPHONE) {
+		if ([[Reachability reachabilityWithHostname:@"finance.yahoo.com"] isReachable]) {
+			return UIInterfaceOrientationMaskAllButUpsideDown;
+		} else {
+			return UIInterfaceOrientationMaskPortrait;
+		}
+	} else {
+		return UIInterfaceOrientationMaskAll;
+	}
 }
 
 - (UIImageView *)landscapeChartView {
@@ -557,10 +582,6 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	if (IS_IPAD) {
-		return;
-	}
 
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 		if (!_landscapeView) {
@@ -586,6 +607,11 @@
 		_landscapeChartView = nil;
 		_landscapeView = nil;
 	}
+}
+
+- (void)reachabilityChanged {
+	if ([[Reachability reachabilityWithHostname:@"finance.yahoo.com"] isReachable]) {
+		[self.chartView setImageWithURL:self.urlForChartImage placeholderImage:[self chartNotAvailableImage]];	}
 }
 
 @end

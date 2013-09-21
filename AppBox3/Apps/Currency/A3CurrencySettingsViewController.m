@@ -68,8 +68,6 @@
 
 		self.quickDialogTableView.styleProvider = self;
 		self.quickDialogTableView.scrollEnabled = NO;
-
-		[self registerContentSizeCategoryDidChangeNotification];
 	}
 }
 
@@ -80,12 +78,6 @@
 		} else {
 			[self dismissViewControllerAnimated:YES completion:nil];
 		}
-	}
-}
-
-- (void)contentSizeDidChange:(NSNotification *)notification {
-	@autoreleasepool {
-		[self.quickDialogTableView reloadData];
 	}
 }
 
@@ -119,7 +111,7 @@
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
 	@autoreleasepool {
-		cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+		cell.textLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:18];
 	}
 }
 

@@ -275,6 +275,7 @@
 		6895348A178686AF007061CA /* NYXProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953471178686AF007061CA /* NYXProgressiveImageView.m */; };
 		6895348C178686AF007061CA /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 68953474178686AF007061CA /* NYXImagesHelper.m */; };
 		6895B17E170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */; };
+		689AE26D17EC69CB0097ABB5 /* FlickrRecommendation.json in Resources */ = {isa = PBXBuildFile; fileRef = 689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */; };
 		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
 		68ABEC4B1779BE76005AD85C /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = 68ABEC4A1779BE76005AD85C /* FontAwesome.otf */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
@@ -1088,6 +1089,7 @@
 		68953475178686AF007061CA /* NYXImagesKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesKit.h; sourceTree = "<group>"; };
 		6895B17C170E7B2600B15365 /* A3LoanCalcAmortizationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcAmortizationViewController.h; path = "Loan Calc/A3LoanCalcAmortizationViewController.h"; sourceTree = "<group>"; };
 		6895B17D170E7B2600B15365 /* A3LoanCalcAmortizationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LoanCalcAmortizationViewController.m; path = "Loan Calc/A3LoanCalcAmortizationViewController.m"; sourceTree = "<group>"; };
+		689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveMarkView.h; sourceTree = "<group>"; };
 		68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardMoveMarkView.m; sourceTree = "<group>"; };
 		68ABEC4A1779BE76005AD85C /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.otf; path = "External/FontAwesomeIconFactory/Font-Awesome/font/FontAwesome.otf"; sourceTree = "<group>"; };
@@ -2400,6 +2402,7 @@
 		6888091217C640BC008B2856 /* Holidays */ = {
 			isa = PBXGroup;
 			children = (
+				689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */,
 				688257B617D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.h */,
 				688257B717D3AFFB006429D3 /* A3HolidaysAddToDaysCounterViewController.m */,
 				683224BB17CE1B7800973F34 /* A3HolidaysCell.h */,
@@ -3133,6 +3136,7 @@
 				68B2CD8A165DD68E00BD998F /* A3WeatherStickerViewController.xib in Resources */,
 				6872076C167091EF00D56507 /* sample.jpg in Resources */,
 				68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */,
+				689AE26D17EC69CB0097ABB5 /* FlickrRecommendation.json in Resources */,
 				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
 				688F7E1616C1252C003687A7 /* A3ExpenseListViewController_iPad.xib in Resources */,
 				686FCFB51775D00E00F19332 /* cb_dark_on.png in Resources */,

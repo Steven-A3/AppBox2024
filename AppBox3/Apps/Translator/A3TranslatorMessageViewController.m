@@ -701,7 +701,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 /*! self.networkPrompter will connected to _textEntryBarView to determine its position
- * Network availability should be notified to self(viewcontroller) and it must remove from the superview
+ * Network availability should be notified to self(viewController) and it must remove from the superview
  * when network is being available.
  */
 - (UIView *)networkPrompter {
@@ -730,7 +730,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			messageLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
 		}
         messageLabel.textAlignment = NSTextAlignmentCenter;
-		messageLabel.text = @"Internet connection is not available";
+		messageLabel.text = @"Internet connection is not available.";
 		[messageLabel sizeToFit];
 		[_networkPrompter addSubview:messageLabel];
 

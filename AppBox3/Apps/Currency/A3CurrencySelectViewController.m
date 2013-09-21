@@ -63,8 +63,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell=nil;
 	@autoreleasepool {
+		UITableViewCell *cell=nil;
 		static NSString *CellIdentifier = @"Cell";
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
@@ -102,9 +102,8 @@
 		[cellString appendAttributedString:codeString];
 		[cellString appendAttributedString:nameString];
 		cell.textLabel.attributedText = cellString;
+		return cell;
 	}
-    
-    return cell;
 }
 
 - (NSDictionary *)codeStringAttributeWithColor:(UIColor *)color {
@@ -115,7 +114,7 @@
 
 - (NSDictionary *)nameStringAttributeWithColor:(UIColor *)color {
 	return @{
-			NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+			NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
 			NSForegroundColorAttributeName:color};
 }
 

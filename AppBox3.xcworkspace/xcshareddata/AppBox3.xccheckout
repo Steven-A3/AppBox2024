@@ -10,6 +10,8 @@
 	<string>AppBox3</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>086799AB-CCEC-4641-BCAC-D3FFC8271507</key>
+		<string>https://github.com/Steven-Gwug/MagicalRecord.git</string>
 		<key>24D96760-8FB5-4EE4-BA01-0F1AD5CA9830</key>
 		<string>https://github.com/Steven-Gwug/NSDate-Extensions.git</string>
 		<key>336075EE-AD81-4346-A73A-17CFD73E21CB</key>
@@ -22,6 +24,8 @@
 		<string>https://github.com/nschum/FontAwesomeIconFactory.git</string>
 		<key>7CFFA1A3-456E-4605-ADE9-092FDC61528C</key>
 		<string>https://github.com/Steven-Gwug/FXPageControl.git</string>
+		<key>899EBB66-F9D5-4AA7-8E55-4689C14730C5</key>
+		<string>https://github.com/Steven-Gwug/FMMoveTableView.git</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
 		<string>https://github.com/FortAwesome/Font-Awesome.git</string>
 		<key>A762705B-6A14-49B9-942B-2EF5E930D682</key>
@@ -38,11 +42,15 @@
 		<string>https://github.com/rentzsch/AutoLayoutShorthand.git</string>
 		<key>F5C4172A-7273-413E-9C92-88367A8B2689</key>
 		<string>https://github.com/Steven-Gwug/SMPageControl.git</string>
+		<key>FA90C09F-108E-4C87-8AEA-12E39954E223</key>
+		<string>https://github.com/Steven-Gwug/MMDrawerController.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>AppBox3.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
+		<key>086799AB-CCEC-4641-BCAC-D3FFC8271507</key>
+		<string>../External/MagicalRecord</string>
 		<key>24D96760-8FB5-4EE4-BA01-0F1AD5CA9830</key>
 		<string>../External/NSDate-Extensions</string>
 		<key>336075EE-AD81-4346-A73A-17CFD73E21CB</key>
@@ -55,6 +63,8 @@
 		<string>../External/FontAwesomeIconFactory</string>
 		<key>7CFFA1A3-456E-4605-ADE9-092FDC61528C</key>
 		<string>../External/FXPageControl</string>
+		<key>899EBB66-F9D5-4AA7-8E55-4689C14730C5</key>
+		<string>../External/FMMoveTableView</string>
 		<key>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</key>
 		<string>../External/FontAwesomeIconFactory/Font-Awesome</string>
 		<key>A762705B-6A14-49B9-942B-2EF5E930D682</key>
@@ -71,6 +81,8 @@
 		<string>../External/AutoLayoutShorthand</string>
 		<key>F5C4172A-7273-413E-9C92-88367A8B2689</key>
 		<string>../External/SMPageControl</string>
+		<key>FA90C09F-108E-4C87-8AEA-12E39954E223</key>
+		<string>../External/MMDrawerController</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>file://localhost/opt/git/AppBox3.git/</string>
@@ -108,6 +120,14 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>899EBB66-F9D5-4AA7-8E55-4689C14730C5</string>
+			<key>IDESourceControlWCCName</key>
+			<string>FMMoveTableView</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>8CC766DA-B04B-4F9F-8C74-88A4FB561C35</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Font-Awesome</string>
@@ -140,9 +160,25 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>086799AB-CCEC-4641-BCAC-D3FFC8271507</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MagicalRecord</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
 			<string>B98EB309-4297-4826-AB64-726DAAD1FFCE</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Masonry</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FA90C09F-108E-4C87-8AEA-12E39954E223</string>
+			<key>IDESourceControlWCCName</key>
+			<string>MMDrawerController</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

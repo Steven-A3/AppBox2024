@@ -20,12 +20,17 @@
 
 @implementation A3ImageCropperViewController
 
+- (BOOL)usesFullScreenInLandscape {
+	return YES;
+}
+
 - (instancetype)initWithImage:(UIImage *)image withHudView:(UIView *)hudView {
 	self = [super init];
 	if (self) {
         self.automaticallyAdjustsScrollViewInsets = NO;
         
 		_scrollView = [UIScrollView new];
+		_scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_scrollView.frame = self.view.bounds;
 		_scrollView.delegate = self;
 		_scrollView.showsVerticalScrollIndicator = NO;
