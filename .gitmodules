@@ -37,3 +37,6 @@
 [submodule "External/HTCopyableLabel"]
 	path = External/HTCopyableLabel
 	url = https://github.com/Steven-Gwug/HTCopyableLabel.git
+[submodule "External/DKLiveBlur"]
+	path = External/DKLiveBlur
+	url = https://github.com/Steven-Gwug/DKLiveBlur.git

@@ -125,7 +125,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 - (void)dealloc {
 	@autoreleasepool {
-		[_imageView setScrollView:nil];
+		[_imageView setTableView:nil];
 	}
 }
 
@@ -213,7 +213,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		[self updateTableHeaderView:_tableView.tableHeaderView];
 
-		[self.imageView setScrollView:_tableView];
+		[self.imageView setTableView:_tableView];
 	}
 }
 

@@ -71,7 +71,6 @@
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
 		68030B0117F1B9AB00B04487 /* A3ExpressionElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030B0017F1B9AB00B04487 /* A3ExpressionElement.m */; };
 		68030B0817F277E300B04487 /* A3Expression.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030B0717F277E300B04487 /* A3Expression.m */; };
-		68030B1317F52A7A00B04487 /* DKLiveBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030B1217F52A7A00B04487 /* DKLiveBlurView.m */; };
 		681097B417BC7CD50096B6CE /* A3TranslatorMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 681097B317BC7CD50096B6CE /* A3TranslatorMessageCell.m */; };
 		681378FF1703F8720003201F /* LoanCalcHistory+calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */; };
 		68137902170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 68137901170404340003201F /* A3LoanCalcComparisonTableViewDataSource.m */; };
@@ -395,6 +394,7 @@
 		68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */; };
 		68D292A516C20A5100F522BC /* A3ExpenseListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D292A416C20A5100F522BC /* A3ExpenseListTableViewCell.m */; };
 		68D48CEC17142B5200299354 /* A3NumberKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D48CEB17142B5200299354 /* A3NumberKeyboardViewController.m */; };
+		68D61BD517F53D9200EF4B5E /* DKLiveBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D61BD417F53D9200EF4B5E /* DKLiveBlurView.m */; };
 		68D7697817BA947F003ACF0F /* A3TranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */; };
 		68D7698417BA965B003ACF0F /* libMasonry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D7698017BA962C003ACF0F /* libMasonry.a */; };
 		68D858E1174E3D4400E19B83 /* A3LoanCalcComparisonTopLeftViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D858E0174E3D4400E19B83 /* A3LoanCalcComparisonTopLeftViewController_iPhone.xib */; };
@@ -649,8 +649,6 @@
 		68030B0017F1B9AB00B04487 /* A3ExpressionElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpressionElement.m; sourceTree = "<group>"; };
 		68030B0617F277E300B04487 /* A3Expression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Expression.h; sourceTree = "<group>"; };
 		68030B0717F277E300B04487 /* A3Expression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Expression.m; sourceTree = "<group>"; };
-		68030B1117F52A7A00B04487 /* DKLiveBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DKLiveBlurView.h; path = External/DKLiveBlur/DKLiveBlurView.h; sourceTree = "<group>"; };
-		68030B1217F52A7A00B04487 /* DKLiveBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DKLiveBlurView.m; path = External/DKLiveBlur/DKLiveBlurView.m; sourceTree = "<group>"; };
 		681097B217BC7CD50096B6CE /* A3TranslatorMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageCell.h; path = Translator/A3TranslatorMessageCell.h; sourceTree = "<group>"; };
 		681097B317BC7CD50096B6CE /* A3TranslatorMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageCell.m; path = Translator/A3TranslatorMessageCell.m; sourceTree = "<group>"; };
 		681378FD1703F8710003201F /* LoanCalcHistory+calculation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LoanCalcHistory+calculation.h"; sourceTree = "<group>"; };
@@ -1313,6 +1311,8 @@
 		68D292A416C20A5100F522BC /* A3ExpenseListTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ExpenseListTableViewCell.m; path = "Expense List/A3ExpenseListTableViewCell.m"; sourceTree = "<group>"; };
 		68D48CEA17142B5200299354 /* A3NumberKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController.h; sourceTree = "<group>"; };
 		68D48CEB17142B5200299354 /* A3NumberKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController.m; sourceTree = "<group>"; };
+		68D61BD317F53D9200EF4B5E /* DKLiveBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DKLiveBlurView.h; path = External/DKLiveBlur/LiveBlur/DKLiveBlur/DKLiveBlurView.h; sourceTree = "<group>"; };
+		68D61BD417F53D9200EF4B5E /* DKLiveBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DKLiveBlurView.m; path = External/DKLiveBlur/LiveBlur/DKLiveBlur/DKLiveBlurView.m; sourceTree = "<group>"; };
 		68D7697617BA947F003ACF0F /* A3TranslatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorViewController.h; path = Translator/A3TranslatorViewController.h; sourceTree = "<group>"; };
 		68D7697717BA947F003ACF0F /* A3TranslatorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorViewController.m; path = Translator/A3TranslatorViewController.m; sourceTree = "<group>"; };
 		68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = External/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
@@ -1704,8 +1704,8 @@
 		683224B717CE1AB900973F34 /* DKLiveBlur */ = {
 			isa = PBXGroup;
 			children = (
-				68030B1117F52A7A00B04487 /* DKLiveBlurView.h */,
-				68030B1217F52A7A00B04487 /* DKLiveBlurView.m */,
+				68D61BD317F53D9200EF4B5E /* DKLiveBlurView.h */,
+				68D61BD417F53D9200EF4B5E /* DKLiveBlurView.m */,
 			);
 			name = DKLiveBlur;
 			sourceTree = "<group>";
@@ -3077,7 +3077,7 @@
 						DevelopmentTeam = 84XB754BWU;
 					};
 					6876D6F917A75DAE00E16991 = {
-						TestTargetID = 682EA2D015EB10B000BD6AD4 /* AppBox3 */;
+						TestTargetID = 682EA2D015EB10B000BD6AD4;
 					};
 				};
 			};
@@ -3259,7 +3259,7 @@
 				683B956915EB233500575377 /* A3CalculatorButton.m in Sources */,
 				683B956A15EB233500575377 /* A3CalculatorButtonsViewController.m in Sources */,
 				683B956B15EB233500575377 /* A3CalculatorDisplayView.m in Sources */,
-				68030B1317F52A7A00B04487 /* DKLiveBlurView.m in Sources */,
+				68D61BD517F53D9200EF4B5E /* DKLiveBlurView.m in Sources */,
 				683B956C15EB233500575377 /* A3CalculatorViewController.m in Sources */,
 				68C26EE917C704FB00751BE3 /* NSData+LFHTTPFormExtensions.m in Sources */,
 				68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */,
