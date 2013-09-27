@@ -39,13 +39,12 @@
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 
     NSArray *allCountry = [HolidayData supportedCountries];
+    NSLog(@"%d", [allCountry count]);
 	[allCountry enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSString *keyPath = [NSString stringWithFormat:@"%@_HolidaysInYear", obj[kHolidayCountryCode]];
-        NSLog(@"%@", keyPath);
 		NSMutableArray *holidays = [_holidayData valueForKeyPath:keyPath];
 		expect([holidays isMemberOfClass:[NSMutableArray class]]).beTruthy;
 		[holidays enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSLog(@"%@", obj);
             NSString *name = [obj objectForKey:kHolidayName];
             expect([name isMemberOfClass:[NSString class]]).beTruthy;
             expect([name length]).beGreaterThan(1);

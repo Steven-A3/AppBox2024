@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern NSString *const kA3HolidayScreenImagePath;
+extern NSString *const kA3HolidayScreenImageLicense;
 extern NSString *const kA3HolidayScreenImageOwner;
 extern NSString *const kA3HolidayScreenImageURL;
 

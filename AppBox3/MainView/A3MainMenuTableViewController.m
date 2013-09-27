@@ -17,11 +17,11 @@
 #import "UIViewController+navigation.h"
 #import "A3CurrencyViewController.h"
 #import "A3AppDelegate.h"
-#import "A3RootViewController_iPad.h"
 #import "A3TranslatorViewController.h"
 #import "A3HolidaysViewController.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3HolidaysPageViewController.h"
+#import "A3CalculatorViewController_iPhone.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -352,6 +352,7 @@
 #pragma mark - GridViewControllerDelegate
 
 - (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
+	UIViewController *targetViewController = nil;
 	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_SHORTCUT) {
 		switch (selectedIndex) {
 			case 0:	// Home
@@ -364,12 +365,18 @@
 				}
 				break;
 			}
+			case 2:	// Calculator
+			{
+				if (IS_IPHONE) {
+					targetViewController = [[A3CalculatorViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+				}
+				break;
+			}
 			default:
 				break;
 		}
 	} else
 	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) {
-		UIViewController *targetViewController;
 		switch (selectedIndex) {
 			case 0: {
 				UIViewController *viewController;
@@ -421,9 +428,9 @@
 				break;
 			}
 		}
-		if (targetViewController) {
-			[self popToRootAndPushViewController:targetViewController];
-		}
+	}
+	if (targetViewController) {
+		[self popToRootAndPushViewController:targetViewController];
 	}
 }
 

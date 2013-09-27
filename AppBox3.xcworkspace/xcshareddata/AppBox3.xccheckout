@@ -14,6 +14,8 @@
 		<string>https://github.com/Steven-Gwug/MagicalRecord.git</string>
 		<key>24D96760-8FB5-4EE4-BA01-0F1AD5CA9830</key>
 		<string>https://github.com/Steven-Gwug/NSDate-Extensions.git</string>
+		<key>30CF64E4-53E0-40F8-AEFE-09618EADC6A9</key>
+		<string>https://github.com/Steven-Gwug/HTCopyableLabel.git</string>
 		<key>336075EE-AD81-4346-A73A-17CFD73E21CB</key>
 		<string>https://github.com/kevinlawler/NSDate-TimeAgo.git</string>
 		<key>3BDEBDC2-9521-4F61-B921-F23841D98635</key>
@@ -53,6 +55,8 @@
 		<string>../External/MagicalRecord</string>
 		<key>24D96760-8FB5-4EE4-BA01-0F1AD5CA9830</key>
 		<string>../External/NSDate-Extensions</string>
+		<key>30CF64E4-53E0-40F8-AEFE-09618EADC6A9</key>
+		<string>../External/HTCopyableLabel</string>
 		<key>336075EE-AD81-4346-A73A-17CFD73E21CB</key>
 		<string>../External/NSDate-TimeAgo</string>
 		<key>3BDEBDC2-9521-4F61-B921-F23841D98635</key>
@@ -155,6 +159,14 @@
 			<string>7CFFA1A3-456E-4605-ADE9-092FDC61528C</string>
 			<key>IDESourceControlWCCName</key>
 			<string>FXPageControl</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>30CF64E4-53E0-40F8-AEFE-09618EADC6A9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>HTCopyableLabel</string>
 		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>

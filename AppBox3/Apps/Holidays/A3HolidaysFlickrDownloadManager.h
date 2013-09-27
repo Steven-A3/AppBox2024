@@ -12,6 +12,8 @@ extern NSString *A3HolidaysFlickrDownloadManagerDownloadComplete;
 
 @interface A3HolidaysFlickrDownloadManager : NSObject
 
+@property (nonatomic) NSURLSessionDownloadTask *downloadTask;
+
 + (instancetype)sharedInstance;
 
 - (UIImage *)imageForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList;

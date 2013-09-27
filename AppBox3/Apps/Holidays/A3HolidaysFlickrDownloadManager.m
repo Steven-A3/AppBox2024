@@ -7,8 +7,6 @@
 //
 
 #import "A3HolidaysFlickrDownloadManager.h"
-#import "ObjectiveFlickr.h"
-#import "FlickrAPIKey.h"
 #import "A3UIDevice.h"
 #import "common.h"
 #import "UIImage+Resizing.h"
@@ -22,6 +20,8 @@ NSString *A3HolidaysFlickrDownloadManagerDownloadComplete = @"A3HolidaysFlickrDo
 NSString *const kA3HolidayScreenImagePath = @"kA3HolidayScreenImagePath";		// USE key + country code
 NSString *const kA3HolidayScreenImageOwner = @"kA3HolidayScreenImageOwner";		// USE key + country code
 NSString *const kA3HolidayScreenImageURL = @"kA3HolidayScreenImageURL";			// USE key + country code
+NSString *const kA3HolidayScreenImageID = @"kA3HolidayScreenImageID";			// USE key + country code
+NSString *const kA3HolidayScreenImageLicense = @"kA3HolidayScreenImageLicense";			// USE key + country code
 NSString *const kA3HolidayScreenImageDownloadDate = @"kA3HolidayScreenImageDownloadDate";			// USE key + country code
 
 NSString *const kA3HolidayImageiPadLandScape = @"ipadLandscape";
@@ -31,21 +31,17 @@ NSString *const kA3HolidayImageiPadLandScapeList = @"ipadLandscapeList";
 NSString *const kA3HolidayImageiPadPortraitList = @"ipadProtraitList";
 NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
-@interface A3HolidaysFlickrDownloadManager () <OFFlickrAPIRequestDelegate>
+@interface A3HolidaysFlickrDownloadManager () <NSURLSessionDelegate>
 
 @property (atomic, strong) NSMutableArray *downloadQueue;
 @property (atomic, strong) NSMutableArray *deleteQueue;
-@property (nonatomic, strong) OFFlickrAPIContext *flickrContext;
-@property (nonatomic, strong) OFFlickrAPIRequest *flickrRequest;
-@property (nonatomic, strong) NSArray *keywords;
-@property (nonatomic, strong) NSMutableArray *photoArray;
-@property (nonatomic, strong) NSURL *photoURL;
+@property (atomic, strong) NSDictionary *photoInfo;
+@property (nonatomic) NSURLSession *session;
+@property (atomic) BOOL downloadInProgress;
 
 @end
 
 @implementation A3HolidaysFlickrDownloadManager {
-	NSUInteger _keywordIndex;
-	BOOL _downloadInProgress;
 }
 
 + (instancetype)sharedInstance {
@@ -58,17 +54,27 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
     return _sharedInstance;
 }
 
+- (NSURLSession *)backgroundSession
+{
+/*
+ Using disptach_once here ensures that multiple background sessions with the same identifier are not created in this instance of the application. If you want to support multiple background sessions within a single process, you should create each session with its own identifier.
+ */
+	static NSURLSession *session = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration backgroundSessionConfiguration:@"net.allaboutapps.BackgroundTransfer.BackgroundSession"];
+		session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:nil];
+	});
+	return session;
+}
+
 - (id)init {
 	self = [super init];
 	if (self) {
-		_downloadQueue = [NSMutableArray new];
-		_deleteQueue = [NSMutableArray new];
-		_flickrContext = [[OFFlickrAPIContext alloc] initWithAPIKey:OBJECTIVE_FLICKR_API_KEY sharedSecret:OBJECTIVE_FLICKR_API_SHARED_SECRET];
-		_flickrRequest = [[OFFlickrAPIRequest alloc] initWithAPIContext:_flickrContext];
-		[_flickrRequest setDelegate:self];
-		_keywords = @[@"nature", @"bridge"];
-		_keywordIndex = arc4random_uniform([_keywords count] - 1);
-		_downloadInProgress = NO;
+		self.downloadQueue = [NSMutableArray new];
+		self.deleteQueue = [NSMutableArray new];
+		self.downloadInProgress = NO;
+		self.session = [self backgroundSession];
 	}
 
 	return self;
@@ -152,151 +158,95 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 			return;
 		}
 
-		if ([_downloadQueue containsObject:countryCode]) return;
+		if ([self.downloadQueue containsObject:countryCode]) return;
 
-		NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
-		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 60 * 60 * 24) {
-			[_downloadQueue addObject:countryCode];
-		}
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self startDownload];
-		});
+//		NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
+//		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 60 * 5) {
+			[self.downloadQueue addObject:countryCode];
+//		}
+        
+        [self startDownload];
 	}
 }
 
 - (void)startDownload {
 	@autoreleasepool {
-		if (_downloadInProgress || ![_downloadQueue count]) {
+		if (self.downloadInProgress || ![self.downloadQueue count]) {
 			return;
 		}
 		if ([[Reachability reachabilityWithHostname:@"www.flickr.com"] isReachableViaWiFi]) {
-			_downloadInProgress = YES;
-			[self photosSearch];
-		}
-	}
-}
+			self.downloadInProgress = YES;
 
-- (void)photosSearch {
-	@autoreleasepool {
-		FNLOG();
-		if ([_flickrRequest isRunning]) {
-			FNLOG(@"이 경우는 발생해서는 안됩니다. Flickr 리퀘스트가 진행중인데 또 요청이 들어오는 경우가 있으면 안됩니다. 원인을 찾아서 수정해야 합니다.");
-			return;
-		}
+			NSString *filePath = [[NSBundle mainBundle] pathForResource:@"FlickrRecommendation" ofType:@"json"];
+			NSError *error;
+			NSArray *candidates = [NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfFile:filePath] options:0 error:&error];
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"country == %@", self.downloadQueue[0]];
+			candidates = [candidates filteredArrayUsingPredicate:predicate];
+			if ([candidates count]) {
+				static NSUInteger photoIndex = 0;
 
-		NSString *countryCode = _downloadQueue[0];
-		NSString *countryName = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:countryCode];
-
-		NSDictionary *arguments = @{
-				@"text" : [NSString stringWithFormat:@"%@ %@", countryName, _keywords[_keywordIndex]],
-				@"sort" : @"interestingness-desc",
-				@"content_type" : @"1",		// Photos only
-				@"max_upload_date" : [NSString stringWithFormat:@"%.f", [[NSDate dateWithTimeInterval:-(60*60*24*365*2) sinceDate:[NSDate date]] timeIntervalSince1970] ],
-				@"per_page" : @"200",
-		};
-		FNLOG(@"%@", arguments);
-		[_flickrRequest callAPIMethodWithGET:@"flickr.photos.search" arguments:arguments];
-
-		_keywordIndex = (_keywordIndex + 1) % [_keywords count];
-	}
-}
-
-- (void)photosGetInfo {
-	@autoreleasepool {
-		NSUInteger index = arc4random_uniform([_photoArray count] - 1);
-		NSDictionary *photoDict = _photoArray[index];
-		_photoURL = [_flickrContext photoSourceURLFromDictionary:photoDict size:OFFlickrLargeSize];
-		[_flickrRequest callAPIMethodWithGET:@"flickr.photos.getInfo" arguments:@{@"photo_id":photoDict[@"id"], @"secret":photoDict[@"secret"]}];
-
-		[_photoArray removeObjectAtIndex:index];
-	}
-}
-
-- (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didCompleteWithResponse:(NSDictionary *)inResponseDictionary {
-	FNLOG();
-	@autoreleasepool {
-		NSString *countryCode = _downloadQueue[0];
-		if ([_deleteQueue containsObject:countryCode]) {
-			[_downloadQueue removeObject:countryCode];
-			[_deleteQueue removeObject:countryCode];
-
-			[self deleteImageForCountryCode:countryCode];
-
-			_downloadInProgress = NO;
-
-			[self startDownload];
-			return;
-		}
-
-		[inResponseDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, id obj, BOOL *stop) {
-			if ([key isEqualToString:@"photos"]) {
-				_photoArray = [[obj valueForKeyPath:@"photo"] mutableCopy];
-
-				FNLOG(@"number of photos: %d", [_photoArray count]);
-
-				if ([_photoArray count]) {
-					[self photosGetInfo];
-				} else {
-					[self photosSearch];
-				}
-			} else if ([key isEqualToString:@"photo"]) {
-				NSDate *postedDate = [NSDate dateWithTimeIntervalSince1970:[obj[@"dates"][@"posted"] doubleValue]];
-				FNLOG(@"%@", postedDate);
-				NSTimeInterval interval = [[NSDate date] timeIntervalSinceDate:postedDate];
-				if (interval >= 60 * 60 * 24 * 365 * 3) {
-					if ([_photoArray count]) {
-						[self photosGetInfo];
-					} else {
-						[self photosSearch];
-					}
-				} else {
-					FNLOG(@"%@", obj);
-					AFImageRequestOperation *operation = [AFImageRequestOperation imageRequestOperationWithRequest:[NSURLRequest requestWithURL:_photoURL] success:^(UIImage *image) {
-						NSString *countryCode = _downloadQueue[0];
-
-						NSString *name = obj[@"owner"][@"realname"];
-						if (![name length]) name = obj[@"owner"][@"username"];
-
-						NSString *photoURLString = nil;
-						if (obj[@"urls"] && obj[@"urls"][@"url"]) {
-							NSArray *array = obj[@"urls"][@"url"];
-							if ([array count]) {
-								photoURLString = array[0][@"_text"];
-							}
+				NSString *prevPhotoID = [self imageIDForCountryCode:self.downloadQueue[0]];
+				if (prevPhotoID) {
+					[candidates enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+						if ([prevPhotoID isEqualToString:obj[@"photo_id"]]) {
+							photoIndex = (idx + 1) % [candidates count];
+							*stop = YES;
 						}
-
-						NSString *imageName = [NSString stringWithFormat:@"Downloaded_%@", countryCode];
-						[self setImageName:imageName forCountryCode:countryCode];
-
-						[self setOwner:name forCountryCode:countryCode];
-
-						if (photoURLString) {
-							[self setURLString:photoURLString forCountryCode:countryCode];
-						}
-						[self setDownloadDateForCountryCode:countryCode];
-
-						[self cropSetOriginalImage:image name:imageName];
-
-						[[NSNotificationCenter defaultCenter] postNotificationName:A3HolidaysFlickrDownloadManagerDownloadComplete object:self userInfo:@{@"CountryCode" : countryCode}];
-
-						_downloadInProgress = NO;
-						[_downloadQueue removeObjectAtIndex:0];
-
-						[self startDownload];
 					}];
-
-					[operation start];
 				}
-			}
-		}];
+
+				self.photoInfo = candidates[photoIndex];
+				NSURL *photoURL = [NSURL URLWithString:self.photoInfo[@"url"]];
+
+				NSURLRequest *request = [NSURLRequest requestWithURL:photoURL];
+				self.downloadTask = [self.session downloadTaskWithRequest:request];
+                self.downloadTask.taskDescription = self.downloadQueue[0];
+				[self.downloadTask resume];
+			} else {
+                self.downloadInProgress = NO;
+                [self.downloadQueue removeObjectAtIndex:0];
+                
+                [self startDownload];
+            }
+		}
 	}
 }
 
-- (void)flickrAPIRequest:(OFFlickrAPIRequest *)inRequest didFailWithError:(NSError *)inError {
-	@autoreleasepool {
-		_downloadInProgress = NO;
-		FNLOG(@"%@,%@,%@,%@", inError.localizedDescription, inError.localizedRecoveryOptions, inError.localizedRecoverySuggestion, inError.localizedFailureReason);
-	}
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didFinishDownloadingToURL:(NSURL *)downloadURL {
+    FNLOG(@"$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    FNLOG(@"%d, %@", self.downloadInProgress, self.downloadQueue);
+    FNLOG(@"%@", downloadTask.taskDescription);
+    NSString *countryCode = downloadTask.taskDescription;
+    
+    NSString *imageName = [NSString stringWithFormat:@"Downloaded_%@", countryCode];
+    [self setImageName:imageName forCountryCode:countryCode];
+    
+    [self setImageID:self.photoInfo[@"photo_id"] forCountryCode:countryCode];
+    [self setOwner:self.photoInfo[@"owner"] forCountryCode:countryCode];
+    [self setURLString:self.photoInfo[@"flickr_url"] forCountryCode:countryCode];
+    [self setLicenseString:self.photoInfo[@"type"] forCountryCode:countryCode];
+    
+    [self setDownloadDateForCountryCode:countryCode];
+    
+    NSData *data = [NSData dataWithContentsOfURL:downloadURL];
+    UIImage *image = [UIImage imageWithData:data];
+    [self cropSetOriginalImage:image name:imageName];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:A3HolidaysFlickrDownloadManagerDownloadComplete object:self userInfo:@{@"CountryCode" : countryCode}];
+}
+
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didCompleteWithError:(NSError *)error {
+    FNLOG(@"*******************************************************************************************************************************************************");
+    FNLOG(@"%d, %@", self.downloadInProgress, self.downloadQueue);
+    self.downloadTask = nil;
+
+	self.downloadInProgress = NO;
+    if ([self.downloadQueue count]) {
+        [self.downloadQueue removeObjectAtIndex:0];
+    }
+
+    [self startDownload];
+
 }
 
 - (void)saveUserSuppliedImage:(UIImage *)image forCountryCode:(NSString *)countryCode {
@@ -356,6 +306,28 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	}
 }
 
+- (NSString *)licenseStringForCountryCode:(NSString *)countryCode {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:[self licenseKeyForCountryCode:countryCode]];
+}
+
+- (void)setLicenseString:(NSString *)urlString forCountryCode:(NSString *)countryCode {
+	@autoreleasepool {
+		[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self licenseKeyForCountryCode:countryCode]];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+}
+
+- (NSString *)imageIDForCountryCode:(NSString *)countryCode {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:[self idKeyForCountryCode:countryCode]];
+}
+
+- (void)setImageID:(NSString *)urlString forCountryCode:(NSString *)countryCode {
+	@autoreleasepool {
+		[[NSUserDefaults standardUserDefaults] setObject:urlString forKey:[self idKeyForCountryCode:countryCode]];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+}
+
 - (NSDate *)downloadDateForCountryCode:(NSString *)countryCode {
 	return [[NSUserDefaults standardUserDefaults] objectForKey:[self dateKeyForCountryCode:countryCode]];
 }
@@ -375,8 +347,16 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageURL, countryCode];
 }
 
+- (NSString *)licenseKeyForCountryCode:(NSString *)countryCode {
+	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageLicense, countryCode];
+}
+
 - (NSString *)dateKeyForCountryCode:(NSString *)countryCode {
 	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageDownloadDate, countryCode];
+}
+
+- (NSString *)idKeyForCountryCode:(NSString *)countryCode {
+	return [NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageID, countryCode];
 }
 
 - (UIImage *)rotateImage:(UIImage *)image {
@@ -561,13 +541,14 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 - (void)deleteImageForCountryCode:(NSString *)countryCode {
     FNLOG(@"Delete for %@, downloadQueue %@, deleteQueue %@", countryCode, _downloadQueue, _deleteQueue);
 	@autoreleasepool {
-
-		if ([_downloadQueue containsObject:countryCode]) {
-			if (_downloadInProgress && [_downloadQueue indexOfObject:countryCode] == 0) {
-				[_deleteQueue addObject:countryCode];
+		if ([self.downloadQueue containsObject:countryCode]) {
+			if (self.downloadInProgress && [self.downloadQueue indexOfObject:countryCode] == 0) {
+				[self.downloadTask cancel];
+                if (![self.deleteQueue containsObject:countryCode])
+                    [self.deleteQueue addObject:countryCode];
 				return;
 			} else {
-				[_downloadQueue removeObject:countryCode];
+				[self.downloadQueue removeObject:countryCode];
 			}
 		}
 		NSString *filename = [[NSUserDefaults standardUserDefaults] objectForKey:[self imageNameKeyForCountryCode:countryCode]];

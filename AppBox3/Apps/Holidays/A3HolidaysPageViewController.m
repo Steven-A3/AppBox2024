@@ -23,6 +23,7 @@
 #import "A3HolidaysCountryViewController.h"
 #import "NSDate-Utilities.h"
 #import "A3CenterView.h"
+#import "A3HolidaysFlickrDownloadManager.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
@@ -359,7 +360,8 @@
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray *)pendingViewControllers {
-
+//	[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask suspend];
+//	FNLOG(@"[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask suspend];");
 }
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed {
@@ -367,6 +369,8 @@
 	@autoreleasepool {
 		_pageControl.currentPage = [self currentPage];
 		[self updatePhotoLabelText];
+//		[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask resume];
+//		FNLOG(@"[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask resume];");
 	}
 }
 
@@ -462,7 +466,7 @@
 	@autoreleasepool {
 		if (!_photoLabel1) {
 			_photoLabel1 = [UILabel new];
-			_photoLabel1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+			_photoLabel1.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
 			_photoLabel1.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 			_photoLabel1.userInteractionEnabled = YES;
 			[_footerView addSubview:_photoLabel1];
@@ -479,7 +483,7 @@
 			[_photoLabel1 addGestureRecognizer:tapGestureRecognizer1];
 
 			_photoLabel2 = [UILabel new];
-			_photoLabel2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+			_photoLabel2.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
 			_photoLabel2.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 			_photoLabel2.text = @"on flickr";
 			_photoLabel2.userInteractionEnabled = YES;
@@ -558,21 +562,31 @@
 }
 
 extern NSString *const kA3HolidayScreenImageOwner;		// USE key + country code
-extern NSString *const kA3HolidayScreenImageURL;			// USE key + country code
+extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 
 - (void)updatePhotoLabelText {
 	@autoreleasepool {
+		NSString *license = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageLicense, self.countryCode]];
 		NSString *owner = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@%@", kA3HolidayScreenImageOwner, self.countryCode]];
 
 		if ([owner length]) {
+			NSMutableAttributedString *licenseString;
+			if ([license isEqualToString:@"cc"]) {
+				licenseString = [[NSMutableAttributedString alloc] initWithString:@"r" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"appbox" size:10],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+			} else {
+				licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+			}
+			NSAttributedString *text = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@" by %@", owner] attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11], NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+			[licenseString appendAttributedString:text];
+
 			[self.photoLabel1 setHidden:NO];
 			[self.photoLabel2 setHidden:NO];
-			self.photoLabel1.text = [NSString stringWithFormat:@"by %@", owner];
+			self.photoLabel1.attributedText = licenseString;
 			self.photoLabel2.text = @"on flickr";
 		} else {
 			[self.photoLabel1 setHidden:YES];
 			[self.photoLabel2 setHidden:YES];
-			self.photoLabel1.text = @"";
+			self.photoLabel1.attributedText = nil;
 			self.photoLabel2.text = @"";
 		}
 	}

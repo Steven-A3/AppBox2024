@@ -10,6 +10,7 @@
 
 @interface A3KeyboardButton_iOS7_iPhone : UIButton
 
-@property (nonatomic, strong)	NSString *markInsetsString;
+@property (nonatomic, strong) CALayer *highlightedMarkLayer;
+@property (nonatomic, strong) NSString *markInsetsString;
 
 @end

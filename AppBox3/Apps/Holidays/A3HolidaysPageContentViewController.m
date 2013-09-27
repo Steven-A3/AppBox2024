@@ -78,6 +78,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		[self setupTableView];
 
 		FNLOG();
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageDownloaded:) name:A3HolidaysFlickrDownloadManagerDownloadComplete object:[A3HolidaysFlickrDownloadManager sharedInstance]];
 	}
 }
 
@@ -89,7 +91,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 			if (_previousOrientation != CURRENT_ORIENTATION) {
 				UIInterfaceOrientation orientation = CURRENT_ORIENTATION;
 				self.tableView.tableHeaderView = [self tableHeaderViewForInterfaceOrientation:orientation];
-
 			}
 		}
 	}
@@ -100,16 +101,19 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 	@autoreleasepool {
 		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:_countryCode];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageDownloaded:) name:A3HolidaysFlickrDownloadManagerDownloadComplete object:[A3HolidaysFlickrDownloadManager sharedInstance]];
+        
 	}
 }
 
 - (void)imageDownloaded:(NSNotification *)notification {
 	@autoreleasepool {
-		if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
-			_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
-			[_pageViewController updatePhotoLabelText];
-		}
+		dispatch_sync(dispatch_get_main_queue(), ^{
+			if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
+				[_pageViewController updatePhotoLabelText];
+
+				_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
+			}
+		});
 	}
 }
 
@@ -169,15 +173,13 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	@autoreleasepool {
 		_imageView = [DKLiveBlurView new];
 		_imageView.userInteractionEnabled = NO;
-		[self.view addSubview:_imageView];
+		[self.view insertSubview:_imageView atIndex:0];
 
 		CGFloat interpolationFactor = 10;
 
 		[_imageView makeConstraints:^(MASConstraintMaker *make) {
 			make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(-interpolationFactor, -interpolationFactor, -interpolationFactor, -interpolationFactor));
 		}];
-
-		_imageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
 
 		UIInterpolatingMotionEffect *interpolationHorizontal = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
 		interpolationHorizontal.minimumRelativeValue = @(-interpolationFactor);
@@ -719,12 +721,16 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	FNLOG(@"%f", scrollView.contentOffset.y);
+//	[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask resume];
+//	FNLOG(@"[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask resume];");
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
 	@autoreleasepool {
 		[_pageViewController setNavigationBarHidden:YES];
 		_lastKnownOffset = scrollView.contentOffset.y;
+//		[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask suspend];
+//		FNLOG(@"[[A3HolidaysFlickrDownloadManager sharedInstance].downloadTask suspend];");
 	}
 }
 
