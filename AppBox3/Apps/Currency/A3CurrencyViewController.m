@@ -37,7 +37,7 @@
 #import "NSString+conversion.h"
 #import "UIViewController+navigation.h"
 
-@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate>
+@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem, *plusItem;
@@ -52,7 +52,7 @@
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) CurrencyHistory *currencyHistory;
 @property (nonatomic, strong) NSDate *animationStarted;
-@property (nonatomic, strong) UIView *draggableIndicatorView;
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 
 @end
 
@@ -141,11 +141,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
         if ([[NSUserDefaults standardUserDefaults] currencyAutoUpdate]) {
             if ([reachability isReachableViaWiFi] ||
 				([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-                double delayInSeconds = 1.0;
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [self updateCurrencyRates];
-                });
+				[self updateCurrencyRates];
             }
         }
         
@@ -264,11 +260,11 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	return nf;
 }
 
-- (void)shareButtonAction:(UIButton *)button {
+- (void)shareButtonAction:(id)sender {
 	@autoreleasepool {
 		[self clearEverything];
 
-		[self shareAll];
+		[self shareAll:sender];
 	}
 }
 
@@ -1059,14 +1055,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	[self.tableView reloadData];
 }
 
-- (void)shareActionForCell:(UITableViewCell *)cell {
+- (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {
 	@autoreleasepool {
-		[self unswipeAll];
-
 		NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 		NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
 		NSAssert(self.favorites[indexPath.row] != _equalItem && self.favorites[targetIdx] != _plusItem, @"Selected row must not the equal cell and/or plus cell");
-		[self shareActionForSourceIndex:0 targetIndex:targetIdx];
+		[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
 	}
 }
 
@@ -1114,7 +1108,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)shareAll {
+- (void)shareAll:(id)sender {
 	@autoreleasepool {
 		NSInteger index = 2;
 		NSMutableString *shareString = [[NSMutableString alloc] init];
@@ -1132,9 +1126,24 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			[shareString appendString:@"\n"];
 		}
 
-		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareString] applicationActivities:nil];
-		[self presentViewController:activityController animated:YES completion:nil];
+		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
+		if (IS_IPAD) {
+			_sharePopoverController.delegate = self;
+			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+				[buttonItem setEnabled:NO];
+			}];
+		}
 	}
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	// Popver controller, iPad only.
+	[self unswipeAll];
+
+	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+		[buttonItem setEnabled:YES];
+	}];
+	_sharePopoverController = nil;
 }
 
 - (NSString *)stringForSource:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {
@@ -1148,12 +1157,22 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 														rate];
 }
 
-- (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx {
+- (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
 	@autoreleasepool {
 		NSString *activityItem = [self stringForSource:sourceIdx targetIndex:targetIdx];
 
 		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem] applicationActivities:nil];
-		[self presentViewController:activityController animated:YES completion:nil];
+		if (IS_IPHONE) {
+			[self presentViewController:activityController animated:YES completion:nil];
+		} else {
+			_sharePopoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+			UIView *view = (UIView *)sender;
+			FNLOGRECT(view.frame);
+			CGRect rect = [view convertRect:view.frame toView:self.view];
+			rect.origin.x -= 144.0;
+			[_sharePopoverController presentPopoverFromRect:rect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+			_sharePopoverController.delegate = self;
+		}
 	}
 }
 

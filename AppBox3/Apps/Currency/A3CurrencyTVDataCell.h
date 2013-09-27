@@ -12,7 +12,7 @@
 - (void)menuAdded;
 - (void)swapActionForCell:(UITableViewCell *)cell;
 - (void)chartActionForCell:(UITableViewCell *)cell;
-- (void)shareActionForCell:(UITableViewCell *)cell;
+- (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender;
 - (void)deleteActionForCell:(UITableViewCell *)cell;
 @end
 

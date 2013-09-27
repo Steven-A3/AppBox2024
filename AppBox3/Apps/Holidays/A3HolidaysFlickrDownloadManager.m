@@ -160,10 +160,10 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 		if ([self.downloadQueue containsObject:countryCode]) return;
 
-//		NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
-//		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 60 * 5) {
+		NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
+		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 60 * 5) {
 			[self.downloadQueue addObject:countryCode];
-//		}
+		}
         
         [self startDownload];
 	}

@@ -536,7 +536,7 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return button;
 }
 
-- (void)shareButtonAction:(UIButton *)button {
+- (void)shareButtonAction:(id)sender {
 
 }
 
@@ -606,6 +606,18 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 		bounds.size.height = width;
 	}
 	return bounds;
+}
+
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		return popoverController;
+	}
+	return nil;
 }
 
 @end

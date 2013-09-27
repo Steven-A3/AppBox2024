@@ -23,10 +23,11 @@
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+navigation.h"
 #import "Reachability.h"
+#import "A3AppDelegate.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
-@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate>
+@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate, UIPopoverControllerDelegate>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;
@@ -58,6 +59,7 @@ static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 @property (nonatomic, strong) UIView *networkPrompter;
 @property (nonatomic, strong) NSLayoutConstraint *messageTableViewBottomConstraint;
 @property (nonatomic, strong) UIView *sameLanguagePrompter;
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 
 @end
 
@@ -1247,7 +1249,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 	_toolbarUnsetFavoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star01"] style:UIBarButtonItemStylePlain target:self action:@selector(unsetFavoriteActionFromToolbar)];
 
-	_toolbarShareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareActionFromToolbar)];
+	_toolbarShareButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareActionFromToolbar:)];
 
 	[self setEnabledForAllToolbarButtons:NO ];
 
@@ -1258,7 +1260,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 									   animated:YES];
 }
 
-- (void)shareActionFromToolbar {
+- (void)shareActionFromToolbar:(UIBarButtonItem *)barButtonItem {
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	NSMutableString *shareMessage = [NSMutableString new];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
@@ -1269,8 +1271,12 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		}
 	}
 
-	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareMessage] applicationActivities:nil];
-	[self presentViewController:activityController animated:YES completion:nil];
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareMessage] fromBarButtonItem:barButtonItem];
+	_sharePopoverController.delegate = self;
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	_sharePopoverController = nil;
 }
 
 - (void)setFavoriteActionFromToolbar {

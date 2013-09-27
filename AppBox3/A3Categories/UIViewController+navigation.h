@@ -51,7 +51,7 @@
 
 - (UIButton *)shareButton;
 
-- (void)shareButtonAction:(UIButton *)button;
+- (void)shareButtonAction:(id)sender;
 
 - (UIButton *)historyButton;
 
@@ -74,4 +74,6 @@
 - (void)makeBackButtonEmptyArrow;
 
 - (CGRect)screenBoundsAdjustedWithOrientation;
+
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
 @end

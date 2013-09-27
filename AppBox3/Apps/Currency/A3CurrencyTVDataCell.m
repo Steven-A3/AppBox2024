@@ -273,8 +273,8 @@
 			}
 			break;
 		case 2:
-			if ([_menuDelegate respondsToSelector:@selector(shareActionForCell:)]) {
-				[_menuDelegate shareActionForCell:self];
+			if ([_menuDelegate respondsToSelector:@selector(shareActionForCell:sender:)]) {
+				[_menuDelegate shareActionForCell:self sender:button];
 			}
 			break;
 		case 3:

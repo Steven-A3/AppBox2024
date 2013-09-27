@@ -304,5 +304,4 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 	_showLeftView = NO;
 }
 
-
 @end
