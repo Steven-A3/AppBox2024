@@ -8,18 +8,20 @@
 
 #import "A3CalculatorViewController_iPhone.h"
 #import "HTCopyableLabel.h"
-#import "UIViewController+navigation.h"
 #import "A3CalcKeyboardView_iPhone.h"
 #import "FXPageControl.h"
 #import "common.h"
+#import "A3Expression.h"
+#import "UIViewController+A3Addition.h"
 
-@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate>
+@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate>
 
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) FXPageControl *pageControl;
 @property (nonatomic, strong) A3CalcKeyboardView_iPhone *keyboardView;
+@property (nonatomic, strong) A3Expression *expression;
 
 @end
 
@@ -30,6 +32,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+		self.expression = [A3Expression new];
     }
     return self;
 }
@@ -71,6 +74,7 @@
 		make.bottom.equalTo(self.view.bottom).with.offset(-20);
 	}];
 	_keyboardView = [[A3CalcKeyboardView_iPhone alloc] initWithFrame:CGRectMake(0,0,640,324)];
+	_keyboardView.delegate = self;
 	[_scrollView addSubview:_keyboardView];
 
 	[self.view addSubview:self.pageControl];
@@ -166,6 +170,14 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
 	_pageControl.currentPage = (NSInteger) ceil(_scrollView.contentOffset.x / 320.0);
+}
+
+#pragma mark KeyboardButton handler
+
+- (void)keyboardButtonPressed:(NSUInteger)key {
+	[self.expression keyboardInput:(A3ExpressionKind)key];
+	_expressionLabel.attributedText = [self.expression mutableAttributedString];
+	FNLOG(@"%@", self.expression);
 }
 
 @end

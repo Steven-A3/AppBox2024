@@ -23,6 +23,7 @@
 #import "common.h"
 #import "UIViewController+navigation.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3LoanCalcViewController () <A3ActionMenuViewControllerDelegate>
 
@@ -150,12 +151,7 @@
 		viewController = aviewController;
 	}
 
-	if (IS_IPAD) {
-		[self showRightDrawerViewController:viewController];
-	} else {
-		UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:viewController];
-		[self presentViewController:navController animated:YES completion:nil];
-	}
+	[self presentSubViewController:viewController];
 
 	[self closeActionMenuViewWithAnimation:NO];
 }

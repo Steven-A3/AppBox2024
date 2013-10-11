@@ -21,9 +21,9 @@
 #import "A3TranslatorLanguage.h"
 #import "A3LanguagePickerController.h"
 #import "UIViewController+A3AppCategory.h"
-#import "UIViewController+navigation.h"
 #import "Reachability.h"
 #import "A3AppDelegate.h"
+#import "UIViewController+A3Addition.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 

@@ -24,6 +24,7 @@
 #import "NSManagedObjectContext+MagicalThreading.h"
 #import "UIViewController+navigation.h"
 #import "UIViewController+MMDrawerController.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3SalesCalcQuickDialogViewController () <A3SalesCalcQuickDialogDelegate, A3ActionMenuViewControllerDelegate, A3QuickDialogCellStyleDelegate>
 
@@ -296,11 +297,7 @@
 	A3SalesCalcHistoryViewController *historyViewController = [[A3SalesCalcHistoryViewController alloc] init];
 	historyViewController.delegate = self;
 
-	if (IS_IPAD) {
-		[self showRightDrawerViewController:historyViewController];
-	} else {
-		[self.navigationController pushViewController:historyViewController animated:YES];
-	}
+	[self presentSubViewController:historyViewController];
 }
 
 - (void)reloadContentsWithObject:(SalesCalcHistory *)history {

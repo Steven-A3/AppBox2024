@@ -67,6 +67,31 @@
 	}];
 }
 
+- (void)testLunar {
+	NSDateComponents *components = [[NSDateComponents alloc] init];
+	NSDate *resultDate;
+	
+	components.year = 2013;
+	components.month = 9;
+	components.day = 10;
+	
+	resultDate = [HolidayData lunarCalcWithComponents:components gregorianToLunar:NO leapMonth:YES korean:NO];
+	NSLog(@"%@", resultDate);
+
+	resultDate = [HolidayData lunarCalcWithComponents:components gregorianToLunar:NO leapMonth:NO korean:NO];
+	NSLog(@"%@", resultDate);
+
+	components.year = 2014;
+	components.month = 9;
+	components.day = 10;
+	
+	resultDate = [HolidayData lunarCalcWithComponents:components gregorianToLunar:NO leapMonth:YES korean:NO];
+	NSLog(@"%@", resultDate);
+	
+	resultDate = [HolidayData lunarCalcWithComponents:components gregorianToLunar:NO leapMonth:NO korean:NO];
+	NSLog(@"%@", resultDate);
+}
+
 - (void)testFonts {
     UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     NSLog(@"%@", [font description]);

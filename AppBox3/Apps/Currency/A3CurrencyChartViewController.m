@@ -21,9 +21,9 @@
 #import "A3UIDevice.h"
 #import "NSString+conversion.h"
 #import "NSNumberExtensions.h"
-#import "UIViewController+navigation.h"
 #import "UIView+Screenshot.h"
 #import "Reachability.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 

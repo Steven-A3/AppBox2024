@@ -16,7 +16,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3UIDevice.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3HomeViewController_iPad ()
 @property (nonatomic, strong) IBOutlet UIScrollView *mainScrollView;

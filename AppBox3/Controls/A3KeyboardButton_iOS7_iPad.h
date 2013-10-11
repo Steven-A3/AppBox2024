@@ -1,5 +1,5 @@
 //
-//  A3KeyboardButtonOS7.h
+//  A3KeyboardButton_iOS7_iPad.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/11/13.
@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3KeyboardButton_iOS7.h"
 
-@interface A3KeyboardButtonOS7 : UIButton
+@interface A3KeyboardButton_iOS7_iPad : A3KeyboardButton_iOS7
 
 @property (nonatomic, strong) UIColor *normalBackgroundColor, *highlightedBackgroundColor, *shadowColor;
 

@@ -1,20 +1,20 @@
 //
-//  A3ExpressionElement.m
+//  A3ExpressionComponent.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 9/24/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3ExpressionElement.h"
+#import "A3ExpressionComponent.h"
 
 NSString *kA3ExpressionKind = @"keyA3ExpressionKind";
 NSString *kA3ExpressionArguments = @"keyA3ExpressionArguments";
 
-@interface A3ExpressionElement () <NSCoding>
+@interface A3ExpressionComponent () <NSCoding>
 @end
 
-@implementation A3ExpressionElement
+@implementation A3ExpressionComponent
 
 - (id)initWithCoder:(NSCoder *)coder {
 	self = [super init];

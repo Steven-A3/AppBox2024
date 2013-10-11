@@ -9,7 +9,7 @@
 #import <CoreText/CoreText.h>
 #import "A3CalcKeyboardView_iPhone.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
-#import "A3ExpressionElement.h"
+#import "A3ExpressionComponent.h"
 
 @implementation A3CalcKeyboardView_iPhone
 
@@ -51,27 +51,27 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 			@{kA3CalcButtonTitle:[self stringX3], kA3CalcButtonID:@(A3E_CUBE)},
 			@{kA3CalcButtonTitle:[self stringXY], kA3CalcButtonID:@(A3E_POWER_XY)},
 			@{kA3CalcButtonTitle:[self string10X], kA3CalcButtonID:@(A3E_POWER_10)},
-			@{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_7)},
+			@{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_8)},
+			@{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_9)},
 			@{kA3CalcButtonTitle:@"−", kA3CalcButtonID:@(A3E_MINUS)},
 
 			@{kA3CalcButtonTitle:@"sqrt", kA3CalcButtonID:@(A3E_SQUAREROOT)},
 			@{kA3CalcButtonTitle:@"sqrt(3)", kA3CalcButtonID:@(A3E_CUBEROOT)},
 			@{kA3CalcButtonTitle:@"sqrt(y)", kA3CalcButtonID:@(A3E_NTHROOT)},
 			@{kA3CalcButtonTitle:@"ln", kA3CalcButtonID:@(A3E_LN)},
-			@{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_4)},
+			@{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_5)},
+			@{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_6)},
 			@{kA3CalcButtonTitle:@"+", kA3CalcButtonID:@(A3E_PLUS)},
 
 			@{kA3CalcButtonTitle:@"1/x", kA3CalcButtonID:@(A3E_DIVIDE_X)},
 			@{kA3CalcButtonTitle:@"x!", kA3CalcButtonID:@(A3E_FACTORIAL)},
 			@{kA3CalcButtonTitle:@"pi", kA3CalcButtonID:@(A3E_PI)},
 			@{kA3CalcButtonTitle:[self stringLog10], kA3CalcButtonID:@(A3E_LOG_10)},
-			@{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_1)},
+			@{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_2)},
+			@{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_3)},
 			@{kA3CalcButtonTitle:@"=", kA3CalcButtonID:@(A3E_CALCULATE)},
 
 			@{kA3CalcButtonTitle:@"e", kA3CalcButtonID:@(A3E_BASE_E)},
@@ -96,9 +96,9 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 			@{kA3CalcButtonTitle:@"%", kA3CalcButtonID:@(A3E_PERCENT)},
 			@{kA3CalcButtonTitle:@"÷", kA3CalcButtonID:@(A3E_DIVIDE)},
 
-			@{kA3CalcButtonTitle:[self stringArcSinh], kA3CalcButtonID:@(A3E_SINH)},
-			@{kA3CalcButtonTitle:[self stringArcCosh], kA3CalcButtonID:@(A3E_COSH)},
-			@{kA3CalcButtonTitle:[self stringArcTanh], kA3CalcButtonID:@(A3E_TANH)},
+			@{kA3CalcButtonTitle:[self stringArcSinh], kA3CalcButtonID:@(A3E_ASINH)},
+			@{kA3CalcButtonTitle:[self stringArcCosh], kA3CalcButtonID:@(A3E_ACOSH)},
+			@{kA3CalcButtonTitle:[self stringArcTanh], kA3CalcButtonID:@(A3E_ATANH)},
 			@{kA3CalcButtonTitle:[self stringYX], kA3CalcButtonID:@(A3E_POWER_YX)},
 			@{kA3CalcButtonTitle:[UIImage imageNamed:@"backspace"], kA3CalcButtonID:@(A3E_BACKSPACE)},
 			@{kA3CalcButtonTitle:@"(", kA3CalcButtonID:@(A3E_LEFT_PARENTHESIS)},
@@ -109,35 +109,35 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 			@{kA3CalcButtonTitle:[self stringX3], kA3CalcButtonID:@(A3E_CUBE)},
 			@{kA3CalcButtonTitle:[self stringXY], kA3CalcButtonID:@(A3E_POWER_XY)},
 			@{kA3CalcButtonTitle:[self string2X], kA3CalcButtonID:@(A3E_POWER_2)},
-			@{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_7)},
+			@{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_8)},
+			@{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_9)},
 			@{kA3CalcButtonTitle:@"−", kA3CalcButtonID:@(A3E_MINUS)},
 
 			@{kA3CalcButtonTitle:@"sqrt", kA3CalcButtonID:@(A3E_SQUAREROOT)},
 			@{kA3CalcButtonTitle:@"sqrt(3)", kA3CalcButtonID:@(A3E_CUBEROOT)},
 			@{kA3CalcButtonTitle:@"sqrt(y)", kA3CalcButtonID:@(A3E_NTHROOT)},
 			@{kA3CalcButtonTitle:[self stringLogy], kA3CalcButtonID:@(A3E_LOG_Y)},
-			@{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_4)},
+			@{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_5)},
+			@{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_6)},
 			@{kA3CalcButtonTitle:@"+", kA3CalcButtonID:@(A3E_PLUS)},
 
 			@{kA3CalcButtonTitle:@"1/x", kA3CalcButtonID:@(A3E_DIVIDE_X)},
 			@{kA3CalcButtonTitle:@"x!", kA3CalcButtonID:@(A3E_FACTORIAL)},
 			@{kA3CalcButtonTitle:@"pi", kA3CalcButtonID:@(A3E_PI)},
 			@{kA3CalcButtonTitle:[self stringLog2], kA3CalcButtonID:@(A3E_LOG_2)},
-			@{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_1)},
+			@{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_2)},
+			@{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_3)},
 			@{kA3CalcButtonTitle:@"=", kA3CalcButtonID:@(A3E_CALCULATE)},
 
 			@{kA3CalcButtonTitle:@"e", kA3CalcButtonID:@(A3E_BASE_E)},
 			@{kA3CalcButtonTitle:@"EE", kA3CalcButtonID:@(A3E_E_Number)},
 			@{kA3CalcButtonTitle:@"Rand", kA3CalcButtonID:@(A3E_RANDOM)},
 			@{kA3CalcButtonTitle:@"Rad", kA3CalcButtonID:@(A3E_RADIAN_DEGREE)},
-			@{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_Number)},
-			@{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_Number)},
+			@{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0)},
+			@{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00)},
 			@{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR)},
 			@{kA3CalcButtonTitle:@""},
 	];
@@ -180,20 +180,13 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 				[button setBackgroundColor:[UIColor colorWithRed:237.0 / 255.0 green:239.9 / 255.0 blue:242.0 / 255.0 alpha:1.0]];
 				[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             }
-
-			if (idx == 3) {
-				[button addTarget:self action:@selector(levelButton:) forControlEvents:UIControlEventTouchUpInside];
-			}
 		}
 	}
 }
 
-- (void)levelButton:(UIButton *)levelButton {
-	[self setLevel:!levelButton.selected ? 0 : 1];
-	levelButton.selected = !levelButton.selected;
-}
-
-- (void)setTitle:(id)title forButton:(A3KeyboardButton_iOS7_iPhone *)button {
+- (void)setTitle:(NSDictionary *)titleInfo forButton:(A3KeyboardButton_iOS7_iPhone *)button {
+	id title = titleInfo[kA3CalcButtonTitle];
+	button.identifier = (NSUInteger *)[titleInfo[kA3CalcButtonID] integerValue];
 	if ([title isKindOfClass:[NSString class]]) {
 		[button setAttributedTitle:nil forState:UIControlStateNormal];
 		[button setTitle:title forState:UIControlStateNormal];
@@ -207,26 +200,39 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 	}
 }
 
-- (void)setLevel:(NSUInteger)level {
-	[UIView animateWithDuration:0.3 animations:^{
+- (void)setLevel:(BOOL)level {
+	for (NSUInteger row = 0; row < 5; row++) {
+		for (NSUInteger column = 0; column < 4; column++) {
+			if (row < 2 || column == 3) {
+				NSUInteger idx = row * 8 + column;
+				A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
+				[button setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
+			}
+		}
+	}
+	[UIView animateWithDuration:0.4
+						  delay:0
+						options:UIViewAnimationOptionCurveLinear
+					 animations:^{
+		for (NSUInteger row = 0; row < 5; row++) {
+			for (NSUInteger column = 0; column < 4; column++) {
+				if (row < 2 || column == 3) {
+					NSUInteger idx = row * 8 + column;
+					A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
+					[button setBackgroundColor:[UIColor colorWithRed:237.0 / 255.0 green:239.9 / 255.0 blue:242.0 / 255.0 alpha:1.0]];
+				}
+			}
+		}
+	} completion:^(BOOL finished) {
 		NSArray *buttonTitles = level ? [self buttonTitlesLevel1] : [self buttonTitlesLevel2];
 		for (NSUInteger row = 0; row < 5; row++) {
 			for (NSUInteger column = 0; column < 4; column++) {
 				if (row < 2 || column == 3) {
 					NSUInteger idx = row * 8 + column;
 					A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
-                    id title = buttonTitles[idx];
-                    [self setTitle:title forButton:button];
-					button.highlightedMarkLayer.hidden = NO;
+					id title = buttonTitles[idx];
+					[self setTitle:title forButton:button];
 				}
-			}
-		}
-	} completion:^(BOOL finished) {
-		for (NSUInteger row = 0; row < 5; row++) {
-			for (NSUInteger column = 0; column < 4; column++) {
-				NSUInteger idx = row * 8 + column;
-				A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
-				button.highlightedMarkLayer.hidden = YES;
 			}
 		}
 	}];
@@ -311,8 +317,16 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 	return [self stringWithSuperscript:@"2nd" location:1 length:2];
 }
 
-- (void)buttonPressed:(UIButton *)button {
-
+- (void)buttonPressed:(A3KeyboardButton_iOS7_iPhone *)button {
+	A3ExpressionKind input = (A3ExpressionKind)button.identifier;
+	if (input == A3E_2ND) {
+		[self setLevel:!button.selected ? 0 : 1];
+		button.selected = !button.selected;
+	} else {
+		if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
+			[_delegate keyboardButtonPressed:input];
+		}
+	}
 }
 
 /*

@@ -9,11 +9,9 @@
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate+data.h"
-#import "A3RootViewController_iPad.h"
 #import "A3HomeViewController_iPhone.h"
 #import "A3MainMenuTableViewController.h"
-#import "A3MMDrawerController.h"
-#import "A3NavigationController.h"
+#import "MMDrawerController.h"
 
 @interface A3AppDelegate ()
 
@@ -49,7 +47,7 @@
 
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:centerViewController];
 
-		_drawerController = [[A3MMDrawerController alloc]
+		_drawerController = [[MMDrawerController alloc]
 				initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
 		[_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
 		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];

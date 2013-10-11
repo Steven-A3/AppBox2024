@@ -1,926 +1,197 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="8.00">
-	<data>
-		<int key="IBDocument.SystemTarget">1296</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
-		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
-		<string key="IBDocument.HIToolboxVersion">626.00</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-			<string key="NS.object.0">2083</string>
-		</object>
-		<array key="IBDocument.IntegratedClassDependencies">
-			<string>IBProxyObject</string>
-			<string>IBUIButton</string>
-			<string>IBUIView</string>
-		</array>
-		<array key="IBDocument.PluginDependencies">
-			<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-		</array>
-		<object class="NSMutableDictionary" key="IBDocument.Metadata">
-			<string key="NS.key.0">PluginDependencyRecalculationVersion</string>
-			<integer value="1" key="NS.object.0"/>
-		</object>
-		<array class="NSMutableArray" key="IBDocument.RootObjects" id="1000">
-			<object class="IBProxyObject" id="841351856">
-				<string key="IBProxiedObjectIdentifier">IBFilesOwner</string>
-				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-			</object>
-			<object class="IBProxyObject" id="606714003">
-				<string key="IBProxiedObjectIdentifier">IBFirstResponder</string>
-				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-			</object>
-			<object class="IBUIView" id="766721923">
-				<reference key="NSNextResponder"/>
-				<int key="NSvFlags">310</int>
-				<array class="NSMutableArray" key="NSSubviews">
-					<object class="IBUIView" id="650695902">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">310</int>
-						<array class="NSMutableArray" key="NSSubviews">
-							<object class="IBUIButton" id="143783650">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{335, 9}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="772127354"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">1</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Weekly</string>
-								<object class="NSColor" key="IBUIHighlightedTitleColor" id="918331530">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleColor" id="823968117">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MAA</bytes>
-								</object>
-								<object class="NSColor" key="IBUINormalTitleShadowColor" id="845316735">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MC41AA</bytes>
-								</object>
-								<object class="IBUIFontDescription" key="IBUIFontDescription" id="604294695">
-									<int key="type">2</int>
-									<double key="pointSize">20</double>
-								</object>
-								<object class="NSFont" key="IBUIFont" id="494717848">
-									<string key="NSName">Helvetica-Bold</string>
-									<double key="NSSize">20</double>
-									<int key="NSfFlags">16</int>
-								</object>
-							</object>
-							<object class="IBUIButton" id="772127354">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{519, 8}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="1037521968"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">2</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Fortnightly</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="206597650">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{335, 95}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="650028590"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">3</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Monthly</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="650028590">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{519, 95}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="535624531"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">4</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Bi-Monthly</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="337661026">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{335, 179}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="328823345"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">5</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Quarterly</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="328823345">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{519, 179}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="56361300"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">6</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Semi-Annually</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="56361300">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{735, 179}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="427382426"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">6</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Next</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="701710889">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{735, 263}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="677283644"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">6</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Done</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="535624531">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{735, 95}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="337661026"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">6</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Prev</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="427382426">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{335, 263}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="701710889"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<int key="IBUITag">7</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<string key="IBUINormalTitle">Annually</string>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIButton" id="1037521968">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{735, 8}, {170, 77}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="206597650"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<bool key="IBUIOpaque">NO</bool>
-								<int key="IBUIContentMode">3</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<bool key="IBUIEnabled">NO</bool>
-								<int key="IBUIContentHorizontalAlignment">0</int>
-								<int key="IBUIContentVerticalAlignment">0</int>
-								<int key="IBUIButtonType">1</int>
-								<reference key="IBUIHighlightedTitleColor" ref="918331530"/>
-								<reference key="IBUINormalTitleColor" ref="823968117"/>
-								<reference key="IBUINormalTitleShadowColor" ref="845316735"/>
-								<reference key="IBUIFontDescription" ref="604294695"/>
-								<reference key="IBUIFont" ref="494717848"/>
-							</object>
-							<object class="IBUIView" id="677283644">
-								<reference key="NSNextResponder" ref="650695902"/>
-								<int key="NSvFlags">292</int>
-								<string key="NSFrame">{{999, 282}, {10, 24}}</string>
-								<reference key="NSSuperview" ref="650695902"/>
-								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView"/>
-								<string key="NSReuseIdentifierKey">_NS:9</string>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-									<object class="NSColorSpace" key="NSCustomColorSpace" id="422108054">
-										<int key="NSID">2</int>
-									</object>
-								</object>
-								<int key="IBUIContentMode">3</int>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-							</object>
-						</array>
-						<string key="NSFrameSize">{1024, 350}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="143783650"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-							<reference key="NSCustomColorSpace" ref="422108054"/>
-						</object>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					</object>
-				</array>
-				<string key="NSFrameSize">{1024, 350}</string>
-				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="650695902"/>
-				<object class="NSColor" key="IBUIBackgroundColor">
-					<int key="NSColorSpace">3</int>
-					<bytes key="NSWhite">MQA</bytes>
-					<reference key="NSCustomColorSpace" ref="422108054"/>
-				</object>
-				<object class="IBUISimulatedOrientationMetrics" key="IBUISimulatedOrientationMetrics">
-					<int key="IBUIInterfaceOrientation">3</int>
-					<int key="interfaceOrientation">3</int>
-				</object>
-				<object class="IBUISimulatedSizeMetrics" key="IBUISimulatedDestinationMetrics">
-					<string key="IBUISimulatedSizeMetricsClass">IBUISimulatedFreeformSizeMetricsSentinel</string>
-					<string key="IBUIDisplayName">Freeform</string>
-				</object>
-				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-			</object>
-		</array>
-		<object class="IBObjectContainer" key="IBDocument.Objects">
-			<array class="NSMutableArray" key="connectionRecords">
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">weeklyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="143783650"/>
-					</object>
-					<int key="connectionID">975</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">view</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="766721923"/>
-					</object>
-					<int key="connectionID">976</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">semiAnnuallyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="328823345"/>
-					</object>
-					<int key="connectionID">977</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">quarterlyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="337661026"/>
-					</object>
-					<int key="connectionID">978</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">monthlyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="206597650"/>
-					</object>
-					<int key="connectionID">981</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">fortnightlyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="772127354"/>
-					</object>
-					<int key="connectionID">982</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">bimonthlyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="650028590"/>
-					</object>
-					<int key="connectionID">984</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">annuallyButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="427382426"/>
-					</object>
-					<int key="connectionID">985</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">blankButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="1037521968"/>
-					</object>
-					<int key="connectionID">1010</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">nextButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="56361300"/>
-					</object>
-					<int key="connectionID">1014</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">prevButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="535624531"/>
-					</object>
-					<int key="connectionID">1018</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">doneButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="701710889"/>
-					</object>
-					<int key="connectionID">1022</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="143783650"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1000</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="772127354"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1001</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="206597650"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1002</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="650028590"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1003</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="337661026"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1004</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="328823345"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1005</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">frequencyButtonTouchUpInside:</string>
-						<reference key="source" ref="427382426"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1009</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">nextButtonTouchUpInside:</string>
-						<reference key="source" ref="56361300"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1013</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">prevButtonTouchUpInside:</string>
-						<reference key="source" ref="535624531"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1017</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">doneButtonTouchUpInside:</string>
-						<reference key="source" ref="701710889"/>
-						<reference key="destination" ref="841351856"/>
-						<int key="IBEventType">7</int>
-					</object>
-					<int key="connectionID">1021</int>
-				</object>
-			</array>
-			<object class="IBMutableOrderedSet" key="objectRecords">
-				<array key="orderedObjects">
-					<object class="IBObjectRecord">
-						<int key="objectID">0</int>
-						<array key="object" id="0"/>
-						<reference key="children" ref="1000"/>
-						<nil key="parent"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">-1</int>
-						<reference key="object" ref="841351856"/>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">File's Owner</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">-2</int>
-						<reference key="object" ref="606714003"/>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">2</int>
-						<reference key="object" ref="766721923"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="650695902"/>
-						</array>
-						<reference key="parent" ref="0"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">596</int>
-						<reference key="object" ref="650695902"/>
-						<array class="NSMutableArray" key="children">
-							<reference ref="677283644"/>
-							<reference ref="206597650"/>
-							<reference ref="650028590"/>
-							<reference ref="337661026"/>
-							<reference ref="328823345"/>
-							<reference ref="772127354"/>
-							<reference ref="143783650"/>
-							<reference ref="1037521968"/>
-							<reference ref="56361300"/>
-							<reference ref="535624531"/>
-							<reference ref="701710889"/>
-							<reference ref="427382426"/>
-						</array>
-						<reference key="parent" ref="766721923"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">974</int>
-						<reference key="object" ref="427382426"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">972</int>
-						<reference key="object" ref="337661026"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">968</int>
-						<reference key="object" ref="143783650"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">971</int>
-						<reference key="object" ref="650028590"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">969</int>
-						<reference key="object" ref="772127354"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">899</int>
-						<reference key="object" ref="677283644"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">973</int>
-						<reference key="object" ref="328823345"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">970</int>
-						<reference key="object" ref="206597650"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">474</int>
-						<reference key="object" ref="1037521968"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">1011</int>
-						<reference key="object" ref="56361300"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">1015</int>
-						<reference key="object" ref="535624531"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">1019</int>
-						<reference key="object" ref="701710889"/>
-						<reference key="parent" ref="650695902"/>
-					</object>
-				</array>
-			</object>
-			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">A3FrequencyKeyboardViewController</string>
-				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="-2.CustomClassName">UIResponder</string>
-				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="1011.CustomClassName">A3KeyboardButton</string>
-				<string key="1011.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="1011.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="1015.CustomClassName">A3KeyboardButton</string>
-				<string key="1015.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="1015.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="1019.CustomClassName">A3KeyboardButton</string>
-				<string key="1019.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="1019.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="474.CustomClassName">A3KeyboardButton</string>
-				<string key="474.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="474.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="596.CustomClassName">A3KeyboardBackgroundView</string>
-				<string key="596.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="899.CustomClassName">A3KeyboardMoveMarkView</string>
-				<string key="899.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="968.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="968.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="143783650"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="968.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="969.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="969.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="772127354"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="969.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="969.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="970.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="970.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="206597650"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="970.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="971.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="971.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="650028590"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="971.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="971.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="972.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="972.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="337661026"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="972.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="973.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="973.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="328823345"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="973.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="1" key="973.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-				<string key="974.CustomClassName">A3KeyboardButton</string>
-				<object class="NSMutableDictionary" key="974.IBAttributePlaceholdersKey">
-					<string key="NS.key.0">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-					<object class="IBUIUserDefinedRuntimeAttributesPlaceholder" key="NS.object.0">
-						<string key="name">IBUserDefinedRuntimeAttributesPlaceholderName</string>
-						<reference key="object" ref="427382426"/>
-						<array key="userDefinedRuntimeAttributes">
-							<object class="IBUserDefinedRuntimeAttribute">
-								<string key="typeIdentifier">com.apple.InterfaceBuilder.userDefinedRuntimeAttributeType.boolean</string>
-								<string key="keyPath">blueColorOnHighlighted</string>
-								<boolean value="YES" key="value"/>
-							</object>
-						</array>
-					</object>
-				</object>
-				<string key="974.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<real value="0.0" key="974.IBUIButtonInspectorSelectedStateConfigurationMetadataKey"/>
-			</dictionary>
-			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
-			<nil key="activeLocalization"/>
-			<dictionary class="NSMutableDictionary" key="localizations"/>
-			<nil key="sourceID"/>
-			<int key="maxID">1022</int>
-		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">A3FrequencyKeyboardViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="doneButtonTouchUpInside">UIButton</string>
-						<string key="frequencyButtonTouchUpInside">UIButton</string>
-						<string key="nextButtonTouchUpInside">UIButton</string>
-						<string key="prevButtonTouchUpInside">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="doneButtonTouchUpInside">
-							<string key="name">doneButtonTouchUpInside:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="frequencyButtonTouchUpInside">
-							<string key="name">frequencyButtonTouchUpInside:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="nextButtonTouchUpInside">
-							<string key="name">nextButtonTouchUpInside:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="prevButtonTouchUpInside">
-							<string key="name">prevButtonTouchUpInside:</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="annuallyButton">UIButton</string>
-						<string key="bimonthlyButton">UIButton</string>
-						<string key="blankButton">UIButton</string>
-						<string key="doneButton">UIButton</string>
-						<string key="fortnightlyButton">UIButton</string>
-						<string key="monthlyButton">UIButton</string>
-						<string key="nextButton">UIButton</string>
-						<string key="prevButton">UIButton</string>
-						<string key="quarterlyButton">UIButton</string>
-						<string key="semiAnnuallyButton">UIButton</string>
-						<string key="weeklyButton">UIButton</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="annuallyButton">
-							<string key="name">annuallyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="bimonthlyButton">
-							<string key="name">bimonthlyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="blankButton">
-							<string key="name">blankButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="doneButton">
-							<string key="name">doneButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="fortnightlyButton">
-							<string key="name">fortnightlyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="monthlyButton">
-							<string key="name">monthlyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="nextButton">
-							<string key="name">nextButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="prevButton">
-							<string key="name">prevButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="quarterlyButton">
-							<string key="name">quarterlyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="semiAnnuallyButton">
-							<string key="name">semiAnnuallyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="weeklyButton">
-							<string key="name">weeklyButton</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3FrequencyKeyboardViewController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3KeyboardBackgroundView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3KeyboardBackgroundView.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3KeyboardButton</string>
-					<string key="superclassName">UIButton</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3KeyboardButton.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">A3KeyboardMoveMarkView</string>
-					<string key="superclassName">UIView</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/A3KeyboardMoveMarkView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
-		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.TargetRuntimeIdentifier">IBIPadFramework</string>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.iPhoneOS</string>
-			<real value="1296" key="NS.object.0"/>
-		</object>
-		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDevelopmentDependencies">
-			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaTouchPlugin.InterfaceBuilder3</string>
-			<real value="4600" key="NS.object.0"/>
-		</object>
-		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
-		<int key="IBDocument.defaultPropertyAccessControl">3</int>
-		<string key="IBCocoaTouchPluginVersion">2083</string>
-	</data>
-</archive>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="4510" systemVersion="12F45" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+    <dependencies>
+        <deployment version="1296" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3FrequencyKeyboardViewController">
+            <connections>
+                <outlet property="annuallyButton" destination="974" id="985"/>
+                <outlet property="bimonthlyButton" destination="971" id="984"/>
+                <outlet property="blankButton" destination="474" id="1010"/>
+                <outlet property="doneButton" destination="1019" id="1022"/>
+                <outlet property="fortnightlyButton" destination="969" id="982"/>
+                <outlet property="monthlyButton" destination="970" id="981"/>
+                <outlet property="nextButton" destination="1011" id="1014"/>
+                <outlet property="prevButton" destination="1015" id="1018"/>
+                <outlet property="quarterlyButton" destination="972" id="978"/>
+                <outlet property="semiAnnuallyButton" destination="973" id="977"/>
+                <outlet property="view" destination="2" id="976"/>
+                <outlet property="weeklyButton" destination="968" id="975"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="2">
+            <rect key="frame" x="0.0" y="0.0" width="1024" height="350"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="596" customClass="A3KeyboardBackgroundView">
+                    <rect key="frame" x="0.0" y="0.0" width="1024" height="350"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                    <subviews>
+                        <button opaque="NO" tag="1" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="968" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="335" y="9" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Weekly">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1000"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="2" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="969" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="519" y="8" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Fortnightly">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1001"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="3" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="970" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="335" y="95" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Monthly">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1002"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="4" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="971" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="519" y="95" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Bi-Monthly">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1003"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="5" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="972" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="335" y="179" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Quarterly">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1004"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="6" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="973" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="519" y="179" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Semi-Annually">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1005"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="6" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1011" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="735" y="179" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Next">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="nextButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1013"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="6" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1019" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="735" y="263" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Done">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="doneButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1021"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="6" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1015" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="735" y="95" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Prev">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="prevButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1017"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="7" contentMode="redraw" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="974" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="335" y="263" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal" title="Annually">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="blueColorOnHighlighted" value="YES"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="frequencyButtonTouchUpInside:" destination="-1" eventType="touchUpInside" id="1009"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="redraw" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="474" customClass="A3KeyboardButton_iOS7_iPad">
+                            <rect key="frame" x="735" y="8" width="170" height="77"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <state key="normal">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <view contentMode="redraw" id="899" customClass="A3KeyboardMoveMarkView">
+                            <rect key="frame" x="999" y="282" width="10" height="24"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

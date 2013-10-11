@@ -35,22 +35,24 @@
 - (void)configureLayer {
 	self.layer.borderColor = [UIColor colorWithRed:220.0 / 255.0 green:223.0 / 255.0 blue:227.0 / 255.0 alpha:1.0].CGColor;
 	self.layer.borderWidth = 1.0;
+	
 	[self.layer addSublayer:self.highlightedMarkLayer];
-    [self.layer addSublayer:self.selectedMarkLayer];
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
 	[super setHighlighted:highlighted];
-    
-	_highlightedMarkLayer.hidden = !highlighted;
+
+	if (!self.backgroundColorForHighlightedState) {
+		_highlightedMarkLayer.hidden = !highlighted;
+	}
 }
 
-- (void)setSelected:(BOOL)selected {
-	[super setSelected:selected];
-
-	_selectedMarkLayer.hidden = !selected;
-}
-
+//- (void)setSelected:(BOOL)selected {
+//	[super setSelected:selected];
+//
+//	_selectedMarkLayer.hidden = !selected;
+//}
+//
 - (CALayer *)highlightedMarkLayer {
 	if (!_highlightedMarkLayer) {
 		_highlightedMarkLayer = [CALayer layer];
@@ -66,22 +68,22 @@
 	}
 	return _highlightedMarkLayer;
 }
-
-- (CALayer *)selectedMarkLayer {
-	if (!_selectedMarkLayer) {
-		_selectedMarkLayer = [CALayer layer];
-		UIEdgeInsets edgeInsets = UIEdgeInsetsFromString(self.markInsetsString);
-		CGRect frame = self.layer.bounds;
-		frame.origin.x += edgeInsets.left;
-		frame.origin.y += edgeInsets.top;
-		frame.size.width -= edgeInsets.left + edgeInsets.right;
-		frame.size.height -= edgeInsets.top + edgeInsets.bottom;
-		_selectedMarkLayer.frame = frame;
-		_selectedMarkLayer.borderColor = [UIColor colorWithRed:220.0 / 255.0 green:223.0 / 255.0 blue:227.0 / 255.0 alpha:1.0].CGColor;
-		_selectedMarkLayer.borderWidth = 3.0;
-		_selectedMarkLayer.hidden = YES;
-	}
-	return _selectedMarkLayer;
-}
+//
+//- (CALayer *)selectedMarkLayer {
+//	if (!_selectedMarkLayer) {
+//		_selectedMarkLayer = [CALayer layer];
+//		UIEdgeInsets edgeInsets = UIEdgeInsetsFromString(self.markInsetsString);
+//		CGRect frame = self.layer.bounds;
+//		frame.origin.x += edgeInsets.left;
+//		frame.origin.y += edgeInsets.top;
+//		frame.size.width -= edgeInsets.left + edgeInsets.right;
+//		frame.size.height -= edgeInsets.top + edgeInsets.bottom;
+//		_selectedMarkLayer.frame = frame;
+//		_selectedMarkLayer.borderColor = [UIColor colorWithRed:220.0 / 255.0 green:223.0 / 255.0 blue:227.0 / 255.0 alpha:1.0].CGColor;
+//		_selectedMarkLayer.borderWidth = 3.0;
+//		_selectedMarkLayer.hidden = YES;
+//	}
+//	return _selectedMarkLayer;
+//}
 
 @end

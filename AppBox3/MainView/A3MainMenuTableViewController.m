@@ -14,14 +14,13 @@
 #import "A3UIDevice.h"
 #import "A3SalesCalcQuickDialogViewController_iPad.h"
 #import "A3SalesCalcQuickDialogViewController_iPhone.h"
-#import "UIViewController+navigation.h"
 #import "A3CurrencyViewController.h"
 #import "A3AppDelegate.h"
 #import "A3TranslatorViewController.h"
-#import "A3HolidaysViewController.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3HolidaysPageViewController.h"
 #import "A3CalculatorViewController_iPhone.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -411,7 +410,7 @@
 			}
 			case 3: {
 				if (![self isActiveViewController:[A3CurrencyViewController class]]) {
-					targetViewController = [[A3CurrencyViewController alloc] initWithStyle:UITableViewStylePlain];
+						targetViewController = [[A3CurrencyViewController alloc] initWithStyle:UITableViewStylePlain];
 				}
 				break;
 			}

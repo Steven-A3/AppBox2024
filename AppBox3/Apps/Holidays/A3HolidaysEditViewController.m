@@ -9,7 +9,6 @@
 #import "A3HolidaysEditViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "UIViewController+navigation.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3HolidaysEditCell.h"
 #import "A3UIDevice.h"
@@ -17,6 +16,7 @@
 #import "common.h"
 #import "A3ImageCropperViewController.h"
 #import "A3HolidaysFlickrDownloadManager.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
 

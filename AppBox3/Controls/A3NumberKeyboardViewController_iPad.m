@@ -11,6 +11,7 @@
 #import "A3KeyboardMoveMarkView.h"
 #import "A3UIKit.h"
 #import "A3UIDevice.h"
+#import "A3KeyboardButton_iOS7.h"
 
 @interface A3NumberKeyboardViewController_iPad ()
 
@@ -31,14 +32,12 @@
 
 - (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
 	super.keyboardType = keyboardType;
-	A3KeyboardButton *bigButton1 = (A3KeyboardButton *) self.bigButton1;
-	A3KeyboardButton *bigButton2 = (A3KeyboardButton *) self.bigButton2;
+	A3KeyboardButton_iOS7 *bigButton1 = (A3KeyboardButton_iOS7 *) self.bigButton1;
+	A3KeyboardButton_iOS7 *bigButton2 = (A3KeyboardButton_iOS7 *) self.bigButton2;
 
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
-			bigButton1.blueColorOnHighlighted = NO;
-			bigButton2.blueColorOnHighlighted = NO;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
@@ -46,8 +45,6 @@
 		}
 		case A3NumberKeyboardTypePercent: {
 			[self fillBigButtonTitleWith:@"%" bigButton2Title:@"$"];
-			bigButton1.blueColorOnHighlighted = NO;
-			bigButton2.blueColorOnHighlighted = NO;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 
@@ -61,8 +58,6 @@
 		}
 		case A3NumberKeyboardTypeMonthYear: {
 			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			bigButton1.blueColorOnHighlighted = YES;
-			bigButton2.blueColorOnHighlighted = YES;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];
@@ -72,8 +67,6 @@
 		}
 		case A3NumberKeyboardTypeInterestRate: {
 			[self fillBigButtonTitleWith:@"% /year" bigButton2Title:@"% /month"];
-			bigButton1.blueColorOnHighlighted = YES;
-			bigButton2.blueColorOnHighlighted = YES;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];

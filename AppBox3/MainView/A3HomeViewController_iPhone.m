@@ -16,7 +16,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+MMDrawerController.h"
 #import "common.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+A3Addition.h"
 
 enum {
 	A3PhoneHomeScreenSegmentSelectionStatistics = 0,

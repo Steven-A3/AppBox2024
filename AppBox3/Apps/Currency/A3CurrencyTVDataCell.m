@@ -10,6 +10,7 @@
 #import "A3UIDevice.h"
 #import "common.h"
 #import "NSNumberExtensions.h"
+//#import "NSNumberExtensions.h"
 
 @interface A3CurrencyTVDataCell ()
 @property (nonatomic, strong) UIView *menuView;
@@ -100,7 +101,7 @@
 																	   toItem:self.contentView
 																	attribute:NSLayoutAttributeLeft
 																   multiplier:1.0
-																	 constant:leftMargin.cgFloatValue]];
+																	 constant:[leftMargin cgFloatValue]]];
 
 	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
 																	attribute:NSLayoutAttributeWidth

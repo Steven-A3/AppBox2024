@@ -10,10 +10,9 @@
 #import "A3MainMenuTableViewController.h"
 #import "A3UIDevice.h"
 #import "A3HomeViewController_iPad.h"
-#import "UIViewController+A3AppCategory.h"
-#import "UIViewController+navigation.h"
-#import "A3CenterView.h"
+#import "A3CenterViewProtocol.h"
 #import "common.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3RootViewController_iPad ()
 
@@ -121,7 +120,7 @@ static const CGFloat kPortraitWidth_iPad = 768.0;
 
 - (BOOL)useFullScreenInLandscapeForCurrentTopViewController {
 	BOOL useFullScreenInLandscape = NO;
-	id<A3CenterView> centerViewController = (id <A3CenterView>) [_centerNavigationController topViewController];
+	id<A3CenterViewProtocol> centerViewController = (id <A3CenterViewProtocol>) [_centerNavigationController topViewController];
 	if ([centerViewController respondsToSelector:@selector(usesFullScreenInLandscape)]) {
 		useFullScreenInLandscape = [centerViewController usesFullScreenInLandscape];
 	}

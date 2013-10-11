@@ -16,10 +16,10 @@
 #import "A3FSegmentedControl.h"
 #import "common.h"
 #import "A3HolidaysCell.h"
-#import "UIViewController+navigation.h"
 #import "NSDate+daysleft.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "DKLiveBlurView.h"
+#import "UIViewController+A3Addition.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,

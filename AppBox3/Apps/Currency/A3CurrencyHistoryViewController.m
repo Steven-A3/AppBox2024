@@ -18,7 +18,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "NSDate+TimeAgo.h"
 #import "A3UIDevice.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3CurrencyHistoryViewController () <UIActionSheetDelegate>
 

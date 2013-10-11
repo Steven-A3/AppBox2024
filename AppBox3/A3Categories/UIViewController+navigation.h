@@ -13,10 +13,6 @@
 
 @property (nonatomic, strong) UIViewController *actionMenuViewController;
 
-- (void)popToRootAndPushViewController:(UIViewController *)viewController;
-
-- (void)showRightDrawerViewController:(UIViewController *)viewController;
-
 - (void)presentActionMenuWithDelegate:(id <A3ActionMenuViewControllerDelegate>)delegate;
 
 - (void)presentEmptyActionMenu;
@@ -39,41 +35,4 @@
 
 - (CGRect)boundsForRightSideView;
 
-- (void)leftBarButtonAppsButton;
-
-- (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
-
-- (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
-
-- (void)dismissMoreMenuView:(UIView *)moreMenuView tableView:(UITableView *)tableView;
-
-- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
-
-- (UIButton *)shareButton;
-
-- (void)shareButtonAction:(id)sender;
-
-- (UIButton *)historyButton;
-
-- (void)historyButtonAction:(UIButton *)button;
-
-- (UIButton *)settingsButton;
-
-- (void)settingsButtonAction:(UIButton *)button;
-
-- (void)presentSubViewController:(UIViewController *)viewController;
-
-- (void)rightBarButtonDoneButton;
-
-- (void)doneButtonAction:(UIBarButtonItem *)button;
-
-- (void)rightButtonMoreButton;
-
-- (void)moreButtonAction:(UIBarButtonItem *)button;
-
-- (void)makeBackButtonEmptyArrow;
-
-- (CGRect)screenBoundsAdjustedWithOrientation;
-
-- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
 @end

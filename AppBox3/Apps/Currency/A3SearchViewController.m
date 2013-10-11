@@ -6,7 +6,6 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UIViewController+navigation.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
 #import "CurrencyItem+name.h"
@@ -14,6 +13,8 @@
 #import "CommonUIDefinitions.h"
 #import "A3CurrencySelectViewController.h"
 #import "A3SearchViewController.h"
+#import "common.h"
+#import "UIViewController+A3Addition.h"
 
 @implementation A3SearchTargetItem
 @end
@@ -157,7 +158,6 @@
 	CGRect frame = _searchBar.frame;
 	frame.origin.y = 64.0;
 	_searchBar.frame = frame;
-
 }
 
 - (UILocalizedIndexedCollation *)collation {

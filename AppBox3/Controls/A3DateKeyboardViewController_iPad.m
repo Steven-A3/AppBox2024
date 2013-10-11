@@ -7,8 +7,8 @@
 //
 
 #import "A3DateKeyboardViewController_iPad.h"
-#import "A3KeyboardButton.h"
 #import "A3KeyboardMoveMarkView.h"
+#import "A3KeyboardButton_iOS7.h"
 
 @interface A3DateKeyboardViewController_iPad ()
 @property (nonatomic, strong)	IBOutlet A3KeyboardMoveMarkView *markView;
@@ -27,7 +27,7 @@
 }
 
 - (void)removeExtraLabelsForButton:(UIButton *)button {
-	A3KeyboardButton *aButton = (A3KeyboardButton *) button;
+	A3KeyboardButton_iOS7 *aButton = (A3KeyboardButton_iOS7 *) button;
 	if ([aButton respondsToSelector:@selector(removeExtraLabels)]) {
 		[aButton removeExtraLabels];
 	}
@@ -113,7 +113,7 @@
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray *monthSymbols = dateFormatter.shortMonthSymbols;
 	NSUInteger index = 0;
-	for (A3KeyboardButton *button in order) {
+	for (A3KeyboardButton_iOS7 *button in order) {
 		[button setTitle:@"" forState:UIControlStateNormal];
 		button.mainTitle.text = [monthSymbols objectAtIndex:index];
 		index++;

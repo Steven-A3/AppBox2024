@@ -16,10 +16,10 @@
 #import "NSDate+TimeAgo.h"
 #import "A3TranslatorCircleView.h"
 #import "A3TranslatorFavoriteDataSource.h"
-#import "UIViewController+navigation.h"
 #import "A3TranslatorListCell.h"
 #import "common.h"
 #import "UIView+Screenshot.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;

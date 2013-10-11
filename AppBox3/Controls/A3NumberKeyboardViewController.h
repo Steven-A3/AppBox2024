@@ -6,10 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "A3KeyboardProtocol.h"
-
-@class A3KeyboardButton;
 
 @interface A3NumberKeyboardViewController : UIViewController
 

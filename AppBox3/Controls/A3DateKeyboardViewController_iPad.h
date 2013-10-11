@@ -8,8 +8,6 @@
 
 #import "A3DateKeyboardViewController.h"
 
-@class A3KeyboardButton;
-
 @interface A3DateKeyboardViewController_iPad : A3DateKeyboardViewController
 
 @end

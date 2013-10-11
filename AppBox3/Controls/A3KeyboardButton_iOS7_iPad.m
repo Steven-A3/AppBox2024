@@ -1,20 +1,20 @@
 //
-//  A3KeyboardButtonOS7.m
+//  A3KeyboardButton_iOS7_iPad.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 8/11/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3KeyboardButtonOS7.h"
+#import "A3KeyboardButton_iOS7_iPad.h"
 
-@interface A3KeyboardButtonOS7 ()
+@interface A3KeyboardButton_iOS7_iPad ()
 
 @property (nonatomic, strong) CALayer *buttonLayer;
 
 @end
 
-@implementation A3KeyboardButtonOS7
+@implementation A3KeyboardButton_iOS7_iPad
 
 - (id)initWithFrame:(CGRect)frame
 {

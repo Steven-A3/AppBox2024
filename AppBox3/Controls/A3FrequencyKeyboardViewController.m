@@ -7,11 +7,9 @@
 //
 
 #import "A3FrequencyKeyboardViewController.h"
-#import "A3KeyboardButton.h"
 #import "A3LoanCalcString.h"
 #import "QEntryTableViewCell+Extension.h"
 #import "A3UIDevice.h"
-#import "common.h"
 #import "SFKImage.h"
 
 @interface A3FrequencyKeyboardViewController ()

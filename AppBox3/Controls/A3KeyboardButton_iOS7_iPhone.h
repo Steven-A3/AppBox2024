@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3KeyboardButton_iOS7.h"
 
-@interface A3KeyboardButton_iOS7_iPhone : UIButton
+@interface A3KeyboardButton_iOS7_iPhone : A3KeyboardButton_iOS7
 
 @property (nonatomic, strong) CALayer *highlightedMarkLayer;
 @property (nonatomic, strong) NSString *markInsetsString;
+@property (assign) NSUInteger *identifier;
 
 @end

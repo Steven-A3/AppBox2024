@@ -13,7 +13,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "common.h"
 #import "A3RootViewController_iPad.h"
-#import "UIViewController+navigation.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3CurrencySettingsViewController () <QuickDialogStyleProvider>
 

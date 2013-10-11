@@ -12,7 +12,6 @@
 #import "HolidayData+Country.h"
 #import "A3HolidaysPageContentViewController.h"
 #import "common.h"
-#import "UIViewController+navigation.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3HolidaysEditViewController.h"
 #import "FXPageControl.h"
@@ -22,12 +21,13 @@
 #import "UIView+Screenshot.h"
 #import "A3HolidaysCountryViewController.h"
 #import "NSDate-Utilities.h"
-#import "A3CenterView.h"
+#import "A3CenterViewProtocol.h"
 #import "A3HolidaysFlickrDownloadManager.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
-		A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate, A3CenterView>
+		A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate, A3CenterViewProtocol>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;

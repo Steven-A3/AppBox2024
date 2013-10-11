@@ -1,5 +1,5 @@
 //
-//  A3CenterView.h
+//  A3CenterViewProtocol.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 9/7/13.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol A3CenterView <NSObject>
+@protocol A3CenterViewProtocol <NSObject>
 
 - (BOOL)usesFullScreenInLandscape;
 - (BOOL)hidesNavigationBar;

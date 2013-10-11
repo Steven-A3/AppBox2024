@@ -6,15 +6,12 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "A3DateKeyboardViewController.h"
-#import "A3KeyboardButton.h"
-#import "A3KeyboardMoveMarkView.h"
-#import "common.h"
 #import "A3UIDevice.h"
 #import "QEntryTableViewCell+Extension.h"
 #import "A3Formatter.h"
 #import "SFKImage.h"
+#import "A3KeyboardButton_iOS7.h"
 
 @interface A3DateKeyboardViewController ()
 
@@ -43,7 +40,7 @@
 
 - (void)initSymbolFont {
 	[SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:30.0]];
-	[SFKImage setDefaultColor:[UIColor whiteColor]];
+	[SFKImage setDefaultColor:[UIColor blackColor]];
 }
 
 - (void)reloadPrevNextButtons {
@@ -123,7 +120,7 @@
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray *monthSymbols = dateFormatter.shortMonthSymbols;
 	NSUInteger index = 0;
-	for (A3KeyboardButton *button in order) {
+	for (A3KeyboardButton_iOS7 *button in order) {
 		[button setTitle:@"" forState:UIControlStateNormal];
 		button.mainTitle.text = [monthSymbols objectAtIndex:index];
 		index++;

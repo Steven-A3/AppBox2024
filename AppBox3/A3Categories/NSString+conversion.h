@@ -11,19 +11,13 @@
 @interface NSString (conversion)
 
 + (NSString *)combineString:(NSString *)string1 withString:(NSString *)string2;
-
 + (NSString *)orderStringWithOrder:(NSInteger)order;
-
 - (NSMutableString *)extendedSearchPatternForKoreanString;
-
 - (NSString *)componentsSeparatedByKorean;
-
 - (NSString *)pathInLibraryDirectory;
-
 - (NSString *)stringByPaddingZeroLength10;
-
 - (NSString *)stringGroupByFirstInitial;
 - (float)floatValueEx;
-
 - (NSString *)stringByDecimalConversion;
+
 @end
