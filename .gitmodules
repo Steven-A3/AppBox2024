@@ -1,6 +1,3 @@
-[submodule "External/QuickDialog"]
-	path = External/QuickDialog
-	url = https://github.com/Steven-Gwug/QuickDialog.git
 [submodule "External/FontAwesomeIconFactory"]
 	path = External/FontAwesomeIconFactory
 	url = https://github.com/nschum/FontAwesomeIconFactory.git
