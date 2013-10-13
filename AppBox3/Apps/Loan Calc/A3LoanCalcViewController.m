@@ -30,7 +30,6 @@
 @property (nonatomic, strong) IBOutlet UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) A3LoanCalcQuickDialogViewController *quickDialogViewController;
 @property (nonatomic, strong) A3LoanCalcComparisonMainViewController *comparisonViewController;
-@property (nonatomic, strong) CAGradientLayer *topGradientLayer;
 
 @end
 
@@ -64,8 +63,6 @@
 	_quickDialogViewController.view.frame = self.contentsViewFrame;
 	[self.view addSubview:_quickDialogViewController.view];
 
-	_topGradientLayer = [self addTopGradientLayerToView:self.view position:1.0];
-
 	_segmentedControl.selectedSegmentIndex = 0;
 }
 
@@ -76,8 +73,6 @@
 }
 
 - (IBAction)segmentedControlValueChagend:(UISegmentedControl *)segmentedControl {
-	[_topGradientLayer removeFromSuperlayer];
-
 	if (segmentedControl.selectedSegmentIndex == 1) {
 		[self.quickDialogViewController removeFromParentViewController];
 		[self.quickDialogViewController.view removeFromSuperview];
@@ -93,7 +88,6 @@
 		_quickDialogViewController.view.frame = self.contentsViewFrame;
 		[self.view addSubview:_quickDialogViewController.view];
 	}
-	_topGradientLayer = [self addTopGradientLayerToView:self.view position:1.0];
 }
 
 - (A3LoanCalcQuickDialogViewController *)quickDialogViewController {

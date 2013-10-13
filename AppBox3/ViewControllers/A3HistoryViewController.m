@@ -42,7 +42,7 @@
 	}
 
 	[self.view addSubview:self.myTableView];
-	[self addTopGradientLayerToWhiteView:self.view position:0];
+
 	[self setEditButton];
 	[self setCloseButton];
 }

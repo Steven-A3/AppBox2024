@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcKnownValue) {
 #define SC_KEY_SIMPLE_ADVANCED		@"SIMPLE_ADVANCED"
 
 @interface A3SalesCalcQuickDialogViewController : A3QuickDialogContainerController
-		<QuickDialogStyleProvider, QuickDialogEntryElementDelegate, A3KeyboardDelegate, A3SearchViewControllerDelegate>
+		<QuickDialogEntryElementDelegate, A3KeyboardDelegate, A3SearchViewControllerDelegate>
 
 @property (nonatomic, strong) A3HorizontalBarContainerView *tableHeaderView;
 

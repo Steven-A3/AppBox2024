@@ -77,7 +77,7 @@
 - (id)init;
 @end
 
-@interface A3QuickDialogContainerController : A3AppViewController <QuickDialogStyleProvider, QuickDialogEntryElementDelegate, A3KeyboardDelegate, A3DateKeyboardDelegate, A3FrequencyKeyboardDelegate>
+@interface A3QuickDialogContainerController : A3AppViewController <QuickDialogEntryElementDelegate, A3KeyboardDelegate, A3DateKeyboardDelegate, A3FrequencyKeyboardDelegate>
 
 @property (nonatomic, weak) QRootElement *root;
 @property (nonatomic, weak) QEntryElement *editingElement;

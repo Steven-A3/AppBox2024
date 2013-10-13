@@ -40,8 +40,6 @@
 {
     [super viewDidLoad];
 
-	[self addTopGradientLayerToView:self.view position:1.0];
-
 	_amortizationViewController = [[A3LoanCalcAmortizationViewController alloc] initWithNibName:nil bundle:nil];
 	_amortizationViewController.object = _object;
 	_amortizationViewController.view.frame = _amortizationView.bounds;

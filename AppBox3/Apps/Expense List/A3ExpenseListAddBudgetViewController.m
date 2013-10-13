@@ -54,7 +54,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 		self.title = @"Add Budget";
 		_expenseObject = expense;
 
-		[self addTopGradientLayerToWhiteView:self.view position:1.0];
 	}
 	return self;
 }

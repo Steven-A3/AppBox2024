@@ -96,6 +96,13 @@ typedef NS_ENUM(NSUInteger, A3ExpressionKind) {
 
 };
 
+#define IS_CONSTANT(x)			(x >= A3E_PI && x < A3E_CONSTANT_END)
+#define IS_OPERATOR(x)			(x >= A3E_PLUS && x < A3E_OPERATOR_END)
+#define IS_TRIGONOMETRIC(x)		(x >= A3E_SIN && x < A3E_TRIGONOMETRIC_END)
+#define HAS_ARGUMENTS(x)		(x >= A3E_SIN && x < A3E_DOUBLE_ARG_END)
+#define IS_FUNC_1_ARG(x)		(x >= A3E_SQUARE && x < A3E_SINGLE_ARG_END)
+#define IS_FUNC_2_ARG(x)		(x >= A3E_SQUARE && x < A3E_DOUBLE_ARG_END)
+#define IS_NUMBER(x)			(x >= A3E_DECIMAL_SEPARATOR && x < A3E_NUMBERS_END)
 
 @interface A3ExpressionComponent : NSObject
 

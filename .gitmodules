@@ -37,3 +37,6 @@
 [submodule "External/DKLiveBlur"]
 	path = External/DKLiveBlur
 	url = https://github.com/Steven-Gwug/DKLiveBlur.git
+[submodule "External/QuickDialog"]
+	path = External/QuickDialog
+	url = https://github.com/Steven-Gwug/QuickDialog.git

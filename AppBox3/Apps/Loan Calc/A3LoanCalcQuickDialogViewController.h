@@ -18,7 +18,7 @@
 #import "A3LoanCalcPreferences.h"
 #import "A3HistoryViewController.h"
 
-@interface A3LoanCalcQuickDialogViewController : A3QuickDialogContainerController <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, A3QuickDialogCellStyleDelegate, A3HistoryViewControllerDelegate>
+@interface A3LoanCalcQuickDialogViewController : A3QuickDialogContainerController <QuickDialogEntryElementDelegate, A3KeyboardDelegate, A3FrequencyKeyboardDelegate, A3DateKeyboardDelegate, UITextFieldDelegate, A3QuickDialogCellStyleDelegate, A3HistoryViewControllerDelegate>
 
 @property (nonatomic, strong)	A3LoanCalcPreferences *preferences;
 

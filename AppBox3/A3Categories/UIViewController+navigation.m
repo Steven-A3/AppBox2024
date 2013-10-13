@@ -203,19 +203,6 @@ static char const *const key_actionMenuAnimating				= "key_actionMenuAnimating";
 	return image;
 }
 
-- (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position {
-	CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-	gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);
-	gradientLayer.position = CGPointMake(0.0, position);
-	gradientLayer.startPoint = CGPointMake(0.5, 0.0);
-	gradientLayer.endPoint = CGPointMake(0.5, 1.0);
-	gradientLayer.bounds = CGRectMake(0.0, 0.0, view.bounds.size.width, 8.0);
-	gradientLayer.colors = @[(id)[UIColor colorWithWhite:0.0 alpha:0.3].CGColor, (id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
-	[view.layer addSublayer:gradientLayer];
-
-	return gradientLayer;
-}
-
 - (CAGradientLayer *)addTopGradientLayerToWhiteView:(UIView *)view position:(CGFloat)position {
 	CAGradientLayer *gradientLayer = [CAGradientLayer layer];
 	gradientLayer.anchorPoint = CGPointMake(0.0, 0.0);

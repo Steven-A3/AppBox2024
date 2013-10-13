@@ -102,7 +102,6 @@
 
 	[_myTableView addSubview:self.detailsViewController.view];
 
-	[self addTopGradientLayerToView:self.view position:1.0];
 	[self addToolsButtonWithAction:@selector(onActionButton:)];
 
 	[self.detailsViewController calculate];

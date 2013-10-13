@@ -40,10 +40,7 @@
 	// Custom initialization
 	self = [super initWithNibName:nil bundle:nil];
 	if (self) {
-		[self addTopGradientLayerToView:self.view position:1.0];
-
 		self.title = @"Sales Calc";
-        self.automaticallyAdjustsScrollViewInsets = NO;
 	}
 	return self;
 }
@@ -235,6 +232,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
+	[self leftBarButtonAppsButton];
 	[self addToolsButtonWithAction:@selector(onActionButton)];
 }
 

@@ -41,13 +41,6 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 	[coder encodeObject:self.components forKey:kA3ExpressionAttributeElements];
 }
 
-#define IS_CONSTANT(x)			(x >= A3E_PI && x < A3E_CONSTANT_END)
-#define IS_OPERATOR(x)			(x >= A3E_PLUS && x < A3E_OPERATOR_END)
-#define IS_TRIGONOMETRIC(x)		(x >= A3E_SIN && x < A3E_TRIGONOMETRIC_END)
-#define HAS_ARGUMENTS(x)		(x >= A3E_SIN && x < A3E_DOUBLE_ARG_END)
-#define IS_FUNC_1_ARG(x)		(x >= A3E_SQUARE && x < A3E_SINGLE_ARG_END)
-#define IS_FUNC_2_ARG(x)		(x >= A3E_SQUARE && x < A3E_DOUBLE_ARG_END)
-#define IS_NUMBER(x)			(x >= A3E_DECIMAL_SEPARATOR && x < A3E_NUMBERS_END)
 
 - (void)keyboardInput:(A3ExpressionKind)input {
 	switch (input) {
@@ -161,6 +154,21 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 			[targetExpression addNumberComponentWithValue:@(input - A3E_0)];
 		}
 	} else {
+		switch (input) {
+			case A3E_SIN: case A3E_COS:	case A3E_TAN:case A3E_SINH:case A3E_COSH:case A3E_TANH:case A3E_ASIN:
+			case A3E_ACOS: case A3E_ATAN: case A3E_ASINH: case A3E_ACOSH: case A3E_ATANH:
+			case A3E_SQUARE: case A3E_CUBE:	case A3E_SQUAREROOT: case A3E_CUBEROOT:	case A3E_FACTORIAL:
+			case A3E_LN: case A3E_LOG_10: case A3E_LOG_2: case A3E_LOG_Y: case A3E_SINGLE_ARG_END: case A3E_PERCENT:
+			case A3E_NTHROOT: case A3E_POWER_XY: case A3E_POWER_YX:
+				if (lastComponent.expressionKind == A3E_Number ||
+						lastComponent.expressionKind == A3E_E_Number) {
+					
+				}
+				break;
+			default:
+				break;
+		}
+
 		A3ExpressionComponent *element = [A3ExpressionComponent new];
 		element.expressionKind = input;
 		[targetExpression.components addObject:element];
@@ -340,7 +348,7 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 				break;
 			case A3E_POWER_XY:
 			{
-				if ([component.arguments count] >= 1) {
+				if ([component.arguments count] > 1) {
 					A3Expression *arg0 = component.arguments[0];
 					stringToAdd = [arg0 mutableAttributedString];
 
@@ -350,6 +358,8 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 						[self superscriptString:exponent Range:NSMakeRange(0, [exponent length]) value:@1];
 						[stringToAdd appendAttributedString:exponent];
 					}
+				} else {
+					stringToAdd = [self attributedStringForFunction:@"Power(" component:component];
 				}
 				break;
 			}
@@ -438,8 +448,10 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 //			case A3E_RADIAN_DEGREE:break;
 //			case A3E_SPECIAL_KEYS_END:break;
 		}
-		[out appendAttributedString:stringToAdd];
-		[out appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:[self expressionAttribute]]];
+		if (stringToAdd) {
+			[out appendAttributedString:stringToAdd];
+			[out appendAttributedString:[[NSAttributedString alloc] initWithString:@" " attributes:[self expressionAttribute]]];
+		}
 	}
 	return out;
 }
