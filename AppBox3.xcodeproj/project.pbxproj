@@ -1568,13 +1568,6 @@
 			name = HTCopyableLabel;
 			sourceTree = "<group>";
 		};
-		68214FDD180AFE0400C1EE53 /* Group In Develop */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = "Group In Develop";
-			sourceTree = "<group>";
-		};
 		68214FE4180AFE6300C1EE53 /* Group in Master */ = {
 			isa = PBXGroup;
 			children = (
@@ -1678,7 +1671,6 @@
 			isa = PBXGroup;
 			children = (
 				68214FE4180AFE6300C1EE53 /* Group in Master */,
-				68214FDD180AFE0400C1EE53 /* Group In Develop */,
 				684B8EA617DB195C007D9988 /* protocols */,
 				68C26F1117C71C7C00751BE3 /* UIImageView */,
 				17D427F3728DBA525AF95340 /* A3Categories */,
