@@ -1575,6 +1575,13 @@
 			name = "Group In Develop";
 			sourceTree = "<group>";
 		};
+		68214FE4180AFE6300C1EE53 /* Group in Master */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Group in Master";
+			sourceTree = "<group>";
+		};
 		682CA31B163F8AC90052A559 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1670,6 +1677,7 @@
 		682EA2DD15EB10B000BD6AD4 /* AppBox3 */ = {
 			isa = PBXGroup;
 			children = (
+				68214FE4180AFE6300C1EE53 /* Group in Master */,
 				68214FDD180AFE0400C1EE53 /* Group In Develop */,
 				684B8EA617DB195C007D9988 /* protocols */,
 				68C26F1117C71C7C00751BE3 /* UIImageView */,
