@@ -7,22 +7,16 @@
 //
 
 #import <MapKit/MapKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3AddLocationViewController.h"
 #import "FSVenue.h"
 #import "A3LocationPlacemarkView.h"
 #import "common.h"
-#import "CommonUIDefinitions.h"
 #import "UIViewController+A3AppCategory.h"
-#import "FSVenue.h"
 #import "A3PlacemarkBackgroundView.h"
 #import "Foursquare2.h"
 #import "FSConverter.h"
-#import "NIKFontAwesomeIconFactory.h"
-#import "NIKFontAwesomeIconFactory+iOS.h"
 #import "NSString+conversion.h"
-#import "UIViewController+navigation.h"
+#import "SFKImage.h"
 
 @interface A3AddLocationViewController () <MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) MKMapView *mapView;
@@ -66,18 +60,17 @@
 }
 
 - (void)barButtonBackEdit {
-	self.navigationItem.leftBarButtonItem = [self backbutton];
-	self.navigationItem.rightBarButtonItem = [self barButtonItemWithTitle:@"Edit" action:@selector(editButtonAction)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonAction)];
 }
 
 - (void)barButtonDone {
 	self.navigationItem.leftBarButtonItem = nil;
-	self.navigationItem.rightBarButtonItem = [self blackBarButtonItemWithTitle:@"Done" action:@selector(doneButtonAction)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction)];
 }
 
 - (void)barButtonCancelSave {
-	self.navigationItem.leftBarButtonItem = [self barButtonItemWithTitle:@"Cancel" action:@selector(editButtonAction)];
-	self.navigationItem.rightBarButtonItem = [self blackBarButtonItemWithTitle:@"Save" action:@selector(saveButtonAction)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(editButtonAction)];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonAction)];
 }
 
 - (void)editButtonAction {
@@ -237,17 +230,6 @@
 		FNLOGRECT(_placemarkView.frame);
 	}
 	return _placemarkView;
-}
-
-- (UIBarButtonItem *)backbutton {
-	NIKFontAwesomeIconFactory *factory = [NIKFontAwesomeIconFactory buttonIconFactory];
-
-	UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-	button.frame = CGRectMake(0.0, 0.0, 32.0, 32.0);
-	[button setImage:[factory createImageForIcon:NIKFontAwesomeIconArrowLeft] forState:UIControlStateNormal];
-	[button addTarget:self action:@selector(backButtonAction) forControlEvents:UIControlEventTouchUpInside];
-	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-	return barButtonItem;
 }
 
 #pragma mark -- CLLocation delegate

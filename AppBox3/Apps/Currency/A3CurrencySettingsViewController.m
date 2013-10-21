@@ -15,7 +15,7 @@
 #import "A3RootViewController_iPad.h"
 #import "UIViewController+A3Addition.h"
 
-@interface A3CurrencySettingsViewController () <QuickDialogStyleProvider>
+@interface A3CurrencySettingsViewController ()
 
 @end
 
@@ -66,7 +66,6 @@
 	@autoreleasepool {
 		[self rightBarButtonDoneButton];
 
-		self.quickDialogTableView.styleProvider = self;
 		self.quickDialogTableView.scrollEnabled = NO;
 	}
 }

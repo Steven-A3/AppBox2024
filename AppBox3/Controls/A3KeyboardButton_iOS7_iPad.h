@@ -11,6 +11,6 @@
 
 @interface A3KeyboardButton_iOS7_iPad : A3KeyboardButton_iOS7
 
-@property (nonatomic, strong) UIColor *normalBackgroundColor, *highlightedBackgroundColor, *shadowColor;
+@property (nonatomic, strong) UIColor *shadowColor;
 
 @end

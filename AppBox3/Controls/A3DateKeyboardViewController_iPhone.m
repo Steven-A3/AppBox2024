@@ -55,9 +55,9 @@
 	[self removeExtraLabelsForButton:self.num1_Jul_Button];
 	[self removeExtraLabelsForButton:self.num2_Aug_Button];
 	[self removeExtraLabelsForButton:self.num3_Sep_Button];
-	[self removeExtraLabelsForButton:self.clear_Oct_Button];
+	[self removeExtraLabelsForButton:self.clear_Dec_Button];
 	[self removeExtraLabelsForButton:self.num0_Nov_Button];
-	[self removeExtraLabelsForButton:self.today_Dec_Button];
+	[self removeExtraLabelsForButton:self.today_Oct_Button];
 }
 
 - (IBAction)switchToMonth {

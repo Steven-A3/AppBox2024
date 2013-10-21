@@ -44,8 +44,6 @@
 }
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	[super cell:cell willAppearForElement:element atIndexPath:indexPath];
-
 	if ([element.key isEqualToString:A3LC_KEY_CALCULATION_FOR]) {
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.textLabel.font = [UIFont boldSystemFontOfSize:18.0];

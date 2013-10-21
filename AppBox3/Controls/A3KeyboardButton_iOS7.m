@@ -70,21 +70,4 @@
 	_subTitle = nil;
 }
 
-- (void)setSelected:(BOOL)selected {
-	[super setSelected:selected];
-
-	if (_backgroundColorForSelectedState) {
-		self.backgroundColor = selected ? _backgroundColorForSelectedState : _backgroundColorForDefaultState;
-	}
-}
-
-- (void)setHighlighted:(BOOL)highlighted {
-	[super setHighlighted:highlighted];
-
-	if (_backgroundColorForHighlightedState) {
-		self.backgroundColor = highlighted ? _backgroundColorForHighlightedState : _backgroundColorForDefaultState;
-	}
-}
-
-
 @end

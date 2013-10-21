@@ -18,9 +18,9 @@
 	QEntryElement *element;
 
 	if (isNext) {
-		element = [self findNextElementToFocusOn];
+//		element = [self findNextElementToFocusOn];
 	} else {
-		element = [self findPreviousElementToFocusOn];
+//		element = [self findPreviousElementToFocusOn];
 	}
 
 	if (element != nil) {

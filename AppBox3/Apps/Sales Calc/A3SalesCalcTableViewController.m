@@ -62,8 +62,6 @@ NSString *CellIdentifier = @"CellIdentifier";
 	switch (section) {
 		case 2:
 			return 3;
-		case 0:
-		case 1:
 		default:
 			return 2;
 	}
@@ -147,7 +145,7 @@ NSString *CellIdentifier = @"CellIdentifier";
     // Pass the selected object to the new view controller.
 }
 
- */
+*/
 
 - (UIView *)advancedHeaderView {
 	if (_advancedHeaderView) {

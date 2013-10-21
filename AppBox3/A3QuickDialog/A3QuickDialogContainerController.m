@@ -67,7 +67,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	self.quickDialogController.quickDialogTableView.styleProvider = self;
 	self.quickDialogController.quickDialogTableView.backgroundView = nil;
 	self.quickDialogController.quickDialogTableView.backgroundColor = [self tableViewBackgroundColor];
 

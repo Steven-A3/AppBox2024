@@ -43,9 +43,9 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 @property (nonatomic, weak)	IBOutlet UIButton *num1_Jul_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *num2_Aug_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *num3_Sep_Button;
-@property (nonatomic, weak)	IBOutlet UIButton *clear_Oct_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *clear_Dec_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *num0_Nov_Button;
-@property (nonatomic, weak)	IBOutlet UIButton *today_Dec_Button;
+@property (nonatomic, weak)	IBOutlet UIButton *today_Oct_Button;
 @property (nonatomic, weak)	IBOutlet UIButton *blank2Button;
 @property (nonatomic, weak)	IBOutlet UIButton *prevButton;
 @property (nonatomic, weak)	IBOutlet UIButton *nextButton;

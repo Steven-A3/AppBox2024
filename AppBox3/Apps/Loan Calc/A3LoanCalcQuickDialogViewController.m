@@ -8,8 +8,6 @@
 
 #import "A3LoanCalcQuickDialogViewController.h"
 #import "A3UIKit.h"
-#import "CommonUIDefinitions.h"
-#import "A3AppDelegate.h"
 #import "A3LoanCalcString.h"
 #import "A3Formatter.h"
 #import "A3ButtonTextField.h"
@@ -20,7 +18,6 @@
 #import "A3UIDevice.h"
 #import "A3LoanCalcPieChartController.h"
 #import "NSManagedObject+Clone.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
 
 
 #define A3LC_CONTROLLER_NAME		@"A3LoanCalcQuickDialogViewController"
@@ -355,7 +352,6 @@
 #pragma mark - QuickDialogStyleProvider
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	[super cell:cell willAppearForElement:element atIndexPath:indexPath];
 
 	cell.accessoryView = nil;
 

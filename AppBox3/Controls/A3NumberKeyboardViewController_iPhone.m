@@ -8,25 +8,24 @@
 
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3KeyboardButton_iPhone.h"
-#import "QEntryTableViewCell+Extension.h"
-#import "A3UIKit.h"
 #import "SFKImage.h"
 #import "A3UIDevice.h"
+#import "A3KeyboardButton_iOS7_iPhone.h"
 
 @interface A3NumberKeyboardViewController_iPhone ()
 
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num1Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num2Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num3Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num4Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num5Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num6Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num7Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num8Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num9Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *num0Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *clearButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *doneButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num1Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num2Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num3Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num4Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num5Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num6Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num7Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num8Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num9Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num0Button;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *clearButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *doneButton;
 
 @end
 
@@ -49,8 +48,6 @@
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
-			bigButton1.blueColorOnSelectedState = NO;
-			bigButton2.blueColorOnSelectedState = NO;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 			[_dotButton setTitle:@"." forState:UIControlStateNormal];
@@ -58,8 +55,6 @@
 		}
 		case A3NumberKeyboardTypePercent: {
 			[self fillBigButtonTitleWith:@"%" bigButton2Title:@"$"];
-			bigButton1.blueColorOnSelectedState = NO;
-			bigButton2.blueColorOnSelectedState = NO;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 
@@ -73,8 +68,6 @@
 		}
 		case A3NumberKeyboardTypeMonthYear: {
 			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			bigButton1.blueColorOnSelectedState = YES;
-			bigButton2.blueColorOnSelectedState = YES;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];
@@ -84,8 +77,6 @@
 		}
 		case A3NumberKeyboardTypeInterestRate: {
 			[self fillBigButtonTitleWith:@"% /yr" bigButton2Title:@"% /mo"];
-			bigButton1.blueColorOnSelectedState = YES;
-			bigButton2.blueColorOnSelectedState = YES;
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];

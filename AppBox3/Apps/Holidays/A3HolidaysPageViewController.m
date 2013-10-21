@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "A3HolidaysPageViewController.h"
 #import "A3HolidaysViewController.h"
 #import "HolidayData.h"

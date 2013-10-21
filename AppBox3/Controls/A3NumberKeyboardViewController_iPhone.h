@@ -10,15 +10,15 @@
 #import "A3KeyboardProtocol.h"
 #import "A3NumberKeyboardViewController.h"
 
-@class A3KeyboardButton_iPhone;
+@class A3KeyboardButton_iOS7_iPhone;
 
 @interface A3NumberKeyboardViewController_iPhone : A3NumberKeyboardViewController
 
 @property (nonatomic, weak) IBOutlet UIButton *bigButton1;
 @property (nonatomic, weak) IBOutlet UIButton *bigButton2;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *dotButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *deleteButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *prevButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iPhone *nextButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *dotButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *deleteButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *prevButton;
+@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *nextButton;
 
 @end

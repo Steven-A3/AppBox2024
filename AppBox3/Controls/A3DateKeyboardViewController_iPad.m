@@ -20,10 +20,12 @@
 {
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
-	NSString *key = @"blueColorOnHighlighted";
-	[self.yearButton setValue:@YES forKey:key];
-	[self.monthButton setValue:@YES forKey:key];
-	[self.dayButton setValue:@YES forKey:key];
+    // 오영택 comment : 아래의 내용이 오류가 나서 주석 처리했습니다.
+    // *** Terminating app due to uncaught exception 'NSUnknownKeyException', reason: '[<A3KeyboardButton_iOS7_iPad 0xb3d15d0> setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key blueColorOnHighlighted.'
+//	NSString *key = @"blueColorOnHighlighted";
+//	[self.yearButton setValue:@YES forKey:key];
+//	[self.monthButton setValue:@YES forKey:key];
+//	[self.dayButton setValue:@YES forKey:key];
 }
 
 - (void)removeExtraLabelsForButton:(UIButton *)button {
@@ -43,9 +45,9 @@
 	[self removeExtraLabelsForButton:self.num1_Jul_Button];
 	[self removeExtraLabelsForButton:self.num2_Aug_Button];
 	[self removeExtraLabelsForButton:self.num3_Sep_Button];
-	[self removeExtraLabelsForButton:self.clear_Oct_Button];
+	[self removeExtraLabelsForButton:self.clear_Dec_Button];
 	[self removeExtraLabelsForButton:self.num0_Nov_Button];
-	[self removeExtraLabelsForButton:self.today_Dec_Button];
+	[self removeExtraLabelsForButton:self.today_Oct_Button];
 }
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -85,7 +87,7 @@
 	[self.num7_Jan_Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];
 	[self.num4_Apr_Button setFrame:CGRectMake(col_2, row_2, width_small, height_small)];
 	[self.num1_Jul_Button setFrame:CGRectMake(col_2, row_3, width_small, height_small)];
-	[self.clear_Oct_Button setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
+	[self.clear_Dec_Button setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
 
 	[self.num8_Feb_Button setFrame:CGRectMake(col_3, row_1, width_small, height_small)];
 	[self.num5_May_Button setFrame:CGRectMake(col_3, row_2, width_small, height_small)];
@@ -95,7 +97,7 @@
 	[self.num9_Mar_Button setFrame:CGRectMake(col_4, row_1, width_small, height_small)];
 	[self.num6_Jun_Button setFrame:CGRectMake(col_4, row_2, width_small, height_small)];
 	[self.num3_Sep_Button setFrame:CGRectMake(col_4, row_3, width_small, height_small)];
-	[self.today_Dec_Button setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
+	[self.today_Oct_Button setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
 
 	[self.blank2Button setFrame:CGRectMake(col_5, row_1, width_big, height_small)];
 	[self.prevButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];

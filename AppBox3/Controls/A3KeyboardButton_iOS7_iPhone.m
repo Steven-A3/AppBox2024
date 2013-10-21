@@ -45,6 +45,18 @@
 	if (!self.backgroundColorForHighlightedState) {
 		_highlightedMarkLayer.hidden = !highlighted;
 	}
+
+	if (self.backgroundColorForHighlightedState) {
+		self.backgroundColor = highlighted ? self.backgroundColorForHighlightedState : self.backgroundColorForDefaultState;
+	}
+}
+
+- (void)setSelected:(BOOL)selected {
+	[super setSelected:selected];
+	
+	if (self.backgroundColorForSelectedState) {
+		self.backgroundColor = selected ? self.backgroundColorForSelectedState : self.backgroundColorForDefaultState;
+	}
 }
 
 //- (void)setSelected:(BOOL)selected {

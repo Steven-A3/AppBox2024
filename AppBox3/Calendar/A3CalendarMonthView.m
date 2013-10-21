@@ -6,10 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3CalendarMonthView.h"
-#import "common.h"
 #import "A3Utilities.h"
 
 #define A3_CALENDAR_MONTH_VIEW_TEXT_RIGHT_MARGIN	4.0f

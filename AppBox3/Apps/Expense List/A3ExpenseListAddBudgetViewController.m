@@ -33,7 +33,7 @@ static NSString *A3ExpenseListAddBudgetKeyLocation = @"location";
 static NSString *A3ExpenseListAddBudgetKeyNotes = @"notes";
 static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced";
 
-@interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, QuickDialogStyleProvider, A3QuickDialogCellStyleDelegate, A3AddLocationViewControllerDelegate>
+@interface A3ExpenseListAddBudgetViewController () <QuickDialogEntryElementDelegate, A3QuickDialogCellStyleDelegate, A3AddLocationViewControllerDelegate>
 @property (nonatomic, strong) A3ExpenseListPreferences *pref;
 @property (nonatomic, strong) A3DatePickerView *datePickerView;
 @property (nonatomic, strong) UILabel *tempLabel;
@@ -272,8 +272,6 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 #pragma mark - QuickDialogTableViewStyleProvider
 
 - (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	[super cell:cell willAppearForElement:element atIndexPath:indexPath];
-
 	if ([element isKindOfClass:[A3SelectItemElement class]]) {
 		cell.backgroundColor = [UIColor colorWithRed:227.0 / 255.0 green:228.0 / 255.0 blue:230.0 / 255.0 alpha:1.0];
 	} else {

@@ -75,6 +75,7 @@
 	[super viewWillAppear:animated];
 
 	[self reloadPrevNextButtons];
+	[self switchToDay];
 }
 
 - (void)didReceiveMemoryWarning
@@ -97,8 +98,8 @@
 		[button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
 		index++;
 	}
-	[_clear_Oct_Button setTitle:@"Clear" forState:UIControlStateNormal];
-	[_today_Dec_Button setTitle:@"Today" forState:UIControlStateNormal];
+	[_clear_Dec_Button setTitle:@"Clear" forState:UIControlStateNormal];
+	[_today_Oct_Button setTitle:@"Today" forState:UIControlStateNormal];
 }
 
 - (IBAction)switchToYear {
@@ -142,7 +143,7 @@
 			_num7_Jan_Button, _num8_Feb_Button, _num9_Mar_Button,
 			_num4_Apr_Button, _num5_May_Button, _num6_Jun_Button,
 			_num1_Jul_Button, _num2_Aug_Button, _num3_Sep_Button,
-			_clear_Oct_Button, _num0_Nov_Button, _today_Dec_Button];
+			_clear_Dec_Button, _num0_Nov_Button, _today_Oct_Button];
 }
 
 - (NSArray *)numberOrder {
@@ -165,7 +166,7 @@
 }
 
 - (IBAction)numberButtonAction:(UIButton *)button {
-	if (!_monthButton.selected && (button == _clear_Oct_Button || button == _today_Dec_Button)) {
+	if (!_monthButton.selected && (button == _clear_Dec_Button || button == _today_Oct_Button)) {
 		return;
 	}
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

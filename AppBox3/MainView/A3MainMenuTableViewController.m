@@ -10,7 +10,6 @@
 #import "A3SectionHeaderViewInMenuTableView.h"
 #import "CommonUIDefinitions.h"
 #import "A3ExpenseListViewController.h"
-#import "A3LoanCalcViewController.h"
 #import "A3UIDevice.h"
 #import "A3SalesCalcQuickDialogViewController_iPad.h"
 #import "A3SalesCalcQuickDialogViewController_iPhone.h"
@@ -21,6 +20,7 @@
 #import "A3HolidaysPageViewController.h"
 #import "A3CalculatorViewController_iPhone.h"
 #import "UIViewController+A3Addition.h"
+#import "A3LoanCalc2QuckDiaglogController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -397,14 +397,8 @@
 				break;
 			}
 			case 2: {
-				if (![self isActiveViewController:[A3LoanCalcViewController class]]) {
-					NSString *nibName;
-					if (IS_IPAD) {
-						nibName = @"A3LoanCalcViewController_iPad";
-					} else {
-						nibName = @"A3LoanCalcViewController_iPhone";
-					}
-					targetViewController = [[A3LoanCalcViewController alloc] initWithNibName:nibName bundle:nil];
+				if (![self isActiveViewController:[A3LoanCalc2QuckDiaglogController class]]) {
+					targetViewController = [[A3LoanCalc2QuckDiaglogController alloc] initWithNibName:nil bundle:nil];
 				}
 				break;
 			}

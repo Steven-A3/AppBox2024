@@ -38,7 +38,7 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
-	_buttonLayer.backgroundColor = _normalBackgroundColor.CGColor;
+	_buttonLayer.backgroundColor = self.backgroundColorForDefaultState.CGColor;
 	self.layer.backgroundColor = _shadowColor.CGColor;
 
 	[self bringSubviewToFront:self.imageView];
@@ -46,8 +46,10 @@
 }
 
 - (void)setupLayer {
-	_normalBackgroundColor = [UIColor colorWithRed:250.0/255.0 green:251.0/255.0 blue:251.0/255.0 alpha:1.0];
-	_highlightedBackgroundColor = [UIColor colorWithRed:212.0/255.0 green:214.0/255.0 blue:216.0/255.0 alpha:1.0];
+	self.backgroundColorForDefaultState = [UIColor colorWithRed:250.0/255.0 green:251.0/255.0 blue:251.0/255.0 alpha:1.0];
+	self.backgroundColorForSelectedState = [UIColor colorWithRed:212.0/255.0 green:214.0/255.0 blue:216.0/255.0 alpha:1.0];
+	self.backgroundColorForHighlightedState = [UIColor colorWithRed:212.0/255.0 green:214.0/255.0 blue:216.0/255.0 alpha:1.0];
+	
 	_shadowColor = [UIColor colorWithRed:132.0/255.0 green:134.0/255.0 blue:136.0/255.0 alpha:1.0];
 
 	CALayer *layer = self.layer;
@@ -56,7 +58,7 @@
 
 	_buttonLayer = [CALayer layer];
 	_buttonLayer.anchorPoint = CGPointMake(0.0, 0.0);
-	_buttonLayer.backgroundColor = _normalBackgroundColor.CGColor;
+	_buttonLayer.backgroundColor = self.backgroundColorForDefaultState.CGColor;
 	CGRect bounds = layer.bounds;
 	bounds.size.height -= 1.0;
 	_buttonLayer.bounds = bounds;
@@ -67,9 +69,19 @@
 - (void)setHighlighted:(BOOL)highlighted {
 	[super setHighlighted:highlighted];
 
+	if (!self.selected) {
 	_buttonLayer.backgroundColor = highlighted ?
-			_highlightedBackgroundColor.CGColor :
-			_normalBackgroundColor.CGColor;
+			self.backgroundColorForHighlightedState.CGColor :
+			self.backgroundColorForDefaultState.CGColor;
+	}
+}
+
+- (void)setSelected:(BOOL)selected {
+	[super setSelected:selected];
+
+	_buttonLayer.backgroundColor = selected ?
+	self.backgroundColorForSelectedState.CGColor :
+	self.backgroundColorForDefaultState.CGColor;
 }
 
 - (void)setFrame:(CGRect)frame {
