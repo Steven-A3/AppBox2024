@@ -1,5 +1,5 @@
 //
-//  A3LoanCalc2QuckDiaglogController.h
+//  A3LoanCalc2QuickDialogController.h
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 10/19/13.
@@ -8,6 +8,6 @@
 
 #import "QuickDialogController.h"
 
-@interface A3LoanCalc2QuckDiaglogController : QuickDialogController
+@interface A3LoanCalc2QuickDialogController : QuickDialogController
 
 @end

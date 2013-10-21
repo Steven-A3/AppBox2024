@@ -1,18 +1,18 @@
 //
-//  A3LoanCalc2QuckDiaglogController.m
+//  A3LoanCalc2QuickDialogController.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 10/19/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3LoanCalc2QuckDiaglogController.h"
+#import "A3LoanCalc2QuickDialogController.h"
 
-@interface A3LoanCalc2QuckDiaglogController ()
+@interface A3LoanCalc2QuickDialogController ()
 
 @end
 
-@implementation A3LoanCalc2QuckDiaglogController
+@implementation A3LoanCalc2QuickDialogController
 
 /*! This will make root element inside, don't pass over rootElement
  * \param parameter will be ignored.
@@ -55,6 +55,7 @@
 
 - (UISegmentedControl *)titleView {
 	UISegmentedControl *titleView = [[UISegmentedControl alloc] initWithItems:@[@"Loan", @"Comparison"]];
+	titleView.selectedSegmentIndex = 0;
 	return titleView;
 }
 

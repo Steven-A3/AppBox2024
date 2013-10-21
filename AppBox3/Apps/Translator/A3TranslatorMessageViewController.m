@@ -12,8 +12,6 @@
 #import "NSManagedObject+MagicalRecord.h"
 #import "NSManagedObject+MagicalFinders.h"
 #import "A3TranslatorMessageCell.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
 #import "common.h"
 #import "AFHTTPRequestOperation.h"
 #import "AFJSONRequestOperation.h"
@@ -773,7 +771,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_translatingMessage.translatedLanguage = _translatedTextLanguage;
 		self.originalText = _textView.text; // Save to async operation
 		_translatingMessage.date = [NSDate date];
-		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+		[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 		_messages = nil;
 		[self messages];
@@ -877,7 +875,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	_translatingMessage.translatedText = translated;
 	_translatingMessage.originalLanguage = detectedLanguage;
 	_translatingMessage.translatedLanguage = _translatedTextLanguage;
-	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 	if ([detectedLanguage isEqualToString:_originalTextLanguage]) {
 		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
@@ -1288,7 +1286,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 }
 
 - (void)unsetFavoriteActionFromToolbar {
@@ -1300,7 +1298,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 }
 
 - (void)deleteActionFromToolbar {
@@ -1309,7 +1307,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		TranslatorHistory *itemToDelete = _messages[indexPath.row];
 		[itemToDelete MR_deleteEntity];
 	}
-	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 	// Reload messages
 	_messages = nil;

@@ -11,7 +11,6 @@
 #import "A3LoanCalcCompareHistoryCell.h"
 #import "LoanCalcHistory.h"
 #import "common.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
 
 
 @implementation A3LoanCalcCompareHistoryViewController {
@@ -33,7 +32,7 @@
 		return super.fetchedResultsController;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription
 			entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];

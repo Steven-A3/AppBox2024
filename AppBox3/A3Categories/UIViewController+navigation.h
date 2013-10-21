@@ -14,25 +14,13 @@
 @property (nonatomic, strong) UIViewController *actionMenuViewController;
 
 - (void)presentActionMenuWithDelegate:(id <A3ActionMenuViewControllerDelegate>)delegate;
-
 - (void)presentEmptyActionMenu;
-
 - (void)closeActionMenuViewWithAnimation:(BOOL)animate;
-
 - (void)addToolsButtonWithAction:(SEL)action;
-
-- (CAGradientLayer *)addTopGradientLayerToView:(UIView *)view position:(CGFloat)position;
-
-- (CAGradientLayer *)addTopGradientLayerToWhiteView:(UIView *)view position:(CGFloat)position;
-
 - (void)alertCheck;
-
 - (UIBarButtonItem *)barButtonItemWithTitle:(NSString *)title action:(SEL)selector;
-
 - (UIBarButtonItem *)blackBarButtonItemWithTitle:(NSString *)title action:(SEL)selector;
-
 - (void)addActionIcon:(NSString *)iconName title:(NSString *)title selector:(SEL)selector atIndex:(NSInteger)index1;
-
 - (CGRect)boundsForRightSideView;
 
 @end

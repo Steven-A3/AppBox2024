@@ -29,7 +29,7 @@
 {
 	// Override point for customization after application launch.
 
-	[MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"AppBox3.sqlite"];
+	[MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:@"AppBox3.sqlite"];
 
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self prepareDatabase];

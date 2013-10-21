@@ -53,7 +53,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 }
 
 - (void)didReceiveMemoryWarning
@@ -386,7 +386,7 @@
 		return _expenseObject;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"Expense" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
@@ -406,7 +406,7 @@
 }
 
 - (void)addNewList {
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_defaultContext];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	_expenseObject = [NSEntityDescription insertNewObjectForEntityForName:@"Expense" inManagedObjectContext:managedObjectContext];
 	_expenseObject.date = [NSDate date];
 

@@ -74,7 +74,7 @@ static NSString *A3ExpenseListAddBudgetKeyShowSimpleAdvanced = @"SimpleAdvanced"
 }
 
 - (void)doneButtonAction {
-	[[NSManagedObjectContext MR_defaultContext] MR_saveToPersistentStoreAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveToPersistentStoreAndWait];
 
 	if (IS_IPAD) {
 		MMDrawerController *mm_drawerController = [self mm_drawerController];

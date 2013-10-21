@@ -98,7 +98,7 @@
 
 		[self calculate];
 
-		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 		NSError *error;
 		[managedObjectContext save:&error];
 	}
@@ -298,7 +298,7 @@
 
 - (LoanCalcHistory *)editingObject {
 	if (nil == _editingObject) {
-		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 		[fetchRequest setEntity:entity];
@@ -911,7 +911,7 @@
 		return NO;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSError *error;
 
 	LoanCalcHistory *historyObject = (LoanCalcHistory *) [_editingObject cloneInContext:managedObjectContext];

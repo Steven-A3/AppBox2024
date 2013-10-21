@@ -14,7 +14,6 @@
 #import "common.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
 
 @interface A3ExpenseListHistoryViewController ()
 
@@ -27,7 +26,7 @@
 		return super.fetchedResultsController;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription
 			entityForName:@"Expense" inManagedObjectContext:managedObjectContext];

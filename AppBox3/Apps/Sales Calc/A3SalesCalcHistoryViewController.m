@@ -15,7 +15,6 @@
 #import "A3CalcExpressionView.h"
 #import "A3UIDevice.h"
 #import "NSString+conversion.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
 
 @interface A3SalesCalcHistoryViewController ()
 
@@ -42,7 +41,7 @@
 		return _fetchedResultsController;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription
 			entityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];

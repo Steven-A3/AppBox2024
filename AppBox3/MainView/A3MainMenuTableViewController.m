@@ -20,7 +20,7 @@
 #import "A3HolidaysPageViewController.h"
 #import "A3CalculatorViewController_iPhone.h"
 #import "UIViewController+A3Addition.h"
-#import "A3LoanCalc2QuckDiaglogController.h"
+#import "A3LoanCalc2QuickDialogController.h"
 
 @interface A3MainMenuTableViewController ()
 
@@ -397,8 +397,8 @@
 				break;
 			}
 			case 2: {
-				if (![self isActiveViewController:[A3LoanCalc2QuckDiaglogController class]]) {
-					targetViewController = [[A3LoanCalc2QuckDiaglogController alloc] initWithNibName:nil bundle:nil];
+				if (![self isActiveViewController:[A3LoanCalc2QuickDialogController class]]) {
+					targetViewController = [[A3LoanCalc2QuickDialogController alloc] initWithNibName:nil bundle:nil];
 				}
 				break;
 			}

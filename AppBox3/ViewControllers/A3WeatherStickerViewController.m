@@ -22,6 +22,7 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) A3Weather *currentWeather;
 @property (nonatomic, strong) NSDictionary *weatherCurrentCondition;
+@property (nonatomic, strong) NSDictionary *weatherAtmosphere;
 @property (nonatomic, strong) NSMutableArray *weatherForecast;
 
 @end
@@ -65,6 +66,7 @@
 #define YAHOO_APP_ID	@"YPTRvJjV34GJKXl3pY2LuRNpwY4w2Rv.GpYI9vbPWz_Yk0hgFZUrDIeibzpbg__AKg--"
 #define kA3YahooWeatherXMLKeyConditionTag   @"yweather:condition"
 #define kA3YahooWeatherXMLKeyForecastTag	@"yweather:forecast"
+#define kA3YahooWeatherXMLKeyAtmosphere		@"yweather:atmosphere"
 #define kA3YahooWeatherXMLKeyTemp           @"temp"
 #define kA3YahooWeatherXMLKeyText           @"text"
 #define kA3YahooWeatherXMLKeyCondition      @"code"
@@ -95,12 +97,16 @@
 		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
 		XMLParser.delegate = self;
 
-//		FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+		FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
 
 		if ([XMLParser parse]) {
+			FNLOG(@"%@", self.weatherCurrentCondition);
+			FNLOG(@"%@", self.weatherForecast);
+			FNLOG(@"%@", self.weatherAtmosphere);
+			
 			self.currentWeather.description = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
 			self.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
-			self.currentWeather.condition = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
+			self.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
 
 			if ([self.weatherForecast count]) {
 				NSDictionary *todayForecast = [self.weatherForecast objectAtIndex:0];
@@ -177,6 +183,8 @@
 		self.weatherCurrentCondition = attributeDict;
 	} else if ([elementName isEqualToString:kA3YahooWeatherXMLKeyForecastTag]) {
 		[self.weatherForecast addObject:attributeDict];
+	} else if ([elementName isEqualToString:kA3YahooWeatherXMLKeyAtmosphere]) {
+		self.weatherAtmosphere = attributeDict;
 	}
 }
 

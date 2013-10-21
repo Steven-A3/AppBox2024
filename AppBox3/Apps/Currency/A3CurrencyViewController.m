@@ -23,8 +23,6 @@
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencySelectViewController.h"
 #import "CurrencyItem+name.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
 #import "NSManagedObject+MagicalRecord.h"
 #import "Reachability.h"
 #import "A3CurrencySettingsViewController.h"
@@ -746,7 +744,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 				newFavorite.currencyItem = currencyItem;
 				NSInteger insertIdx = [self.favorites count] - 1;
 				[self.favorites insertObjectToSortedArray:newFavorite atIndex:insertIdx];
-				[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+				[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 				[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:insertIdx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
 			}
@@ -755,7 +753,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			NSArray *results = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:selectedItem];
 			if ([results count]) {
 				favorite.currencyItem = results[0];
-				[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+				[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
 
@@ -919,7 +917,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		textField.text = [self currencyFormattedStringForCurrency:currencyFavorite.currencyItem.currencyCode value:@(value)];
 		[self updateTextFieldsWithSourceTextField:textField];
 
-		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+		[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 	}
 }
 
@@ -1088,7 +1086,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			[self.textFields removeObjectForKey:favorite.currencyItem.currencyCode];
 
 			[favorite MR_deleteEntity];
-			[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+			[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 			[self.favorites removeObjectAtIndex:indexPath.row];
 
 			[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
@@ -1215,7 +1213,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		}
 		history.targets = targets;
 
-		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+		[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 		_currencyHistory = nil;
 	}

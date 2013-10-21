@@ -13,8 +13,6 @@
 #import "A3CurrencyHistory3RowCell.h"
 #import "CurrencyHistoryItem.h"
 #import "NSManagedObject+MagicalRecord.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
 #import "UIViewController+A3AppCategory.h"
 #import "NSDate+TimeAgo.h"
 #import "A3UIDevice.h"
@@ -101,7 +99,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		_fetchedResultsController = nil;
 		[CurrencyHistory MR_truncateAll];
 		[CurrencyHistoryItem MR_truncateAll];
-		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+		[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 		[self.tableView reloadData];
 	}
@@ -198,7 +196,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 		}];
 		history.targets = nil;
         [history MR_deleteEntity];
-		[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+		[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 		_fetchedResultsController = nil;
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

@@ -13,8 +13,6 @@
 #import "common.h"
 #import "NSDate+TimeAgo.h"
 #import "SFKImage.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
 
 @interface A3TranslatorMessageCell ()
 
@@ -319,7 +317,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (void)favoriteButtonAction {
 	_messageEntity.favorite = @(!_messageEntity.favorite.boolValue);
-	[[NSManagedObjectContext MR_contextForCurrentThread] MR_saveOnlySelfAndWait];
+	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
 
 	[self changeFavoriteButtonImage];
 }

@@ -21,7 +21,6 @@
 #import "NSManagedObject+Clone.h"
 #import "common.h"
 #import "A3ActionMenuViewController_iPad.h"
-#import "NSManagedObjectContext+MagicalThreading.h"
 #import "UIViewController+navigation.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
@@ -48,7 +47,7 @@
 - (SalesCalcHistory *)editingObject {
 	if (_editingObject) return _editingObject;
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 	NSEntityDescription *entity = [NSEntityDescription entityForName:@"SalesCalcHistory" inManagedObjectContext:managedObjectContext];
 	[fetchRequest setEntity:entity];
@@ -88,7 +87,7 @@
 		return NO;
 	}
 
-	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_contextForCurrentThread];
+	NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
 	NSError *error;
 
 	SalesCalcHistory *historyObject = (SalesCalcHistory *) [_editingObject cloneInContext:managedObjectContext];
