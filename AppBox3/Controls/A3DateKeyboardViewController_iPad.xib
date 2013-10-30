@@ -240,8 +240,8 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="clearButtonAction" destination="-1" eventType="touchUpInside" id="1019"/>
                                 <action selector="numberButtonAction:" destination="-1" eventType="touchUpInside" id="1011"/>
+                                <action selector="todayButtonAction" destination="-1" eventType="touchUpInside" id="5bh-ZW-eGu"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="186" customClass="A3KeyboardButton_iOS7_iPad">
@@ -265,8 +265,8 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
+                                <action selector="clearButtonAction" destination="-1" eventType="touchUpInside" id="1Gz-SG-MQ2"/>
                                 <action selector="numberButtonAction:" destination="-1" eventType="touchUpInside" id="1014"/>
-                                <action selector="todayButtonAction" destination="-1" eventType="touchUpInside" id="1018"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1022" customClass="A3KeyboardButton_iOS7_iPad">
