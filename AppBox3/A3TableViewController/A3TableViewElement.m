@@ -8,14 +8,15 @@
 
 #import "A3TableViewElement.h"
 #import "A3SelectTableViewController.h"
+#import "A3TableViewCell.h"
 
 @implementation A3TableViewElement
 
 - (UITableViewCell *)cellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
  	NSString *reuseIdentifier = @"A3TableViewElementCell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+	A3TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
 	if (!cell) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
+		cell = [[A3TableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
 	}
 	cell.textLabel.text = self.title;
 	cell.textLabel.textColor = [UIColor blackColor];

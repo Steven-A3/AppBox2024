@@ -8,8 +8,19 @@
 
 #import "A3TableViewElement.h"
 
+@protocol A3SelectTableViewControllerProtocol;
+
 @interface A3TableViewRootElement : A3TableViewElement
 
-@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) UIViewController <A3SelectTableViewControllerProtocol> *viewController;
+@property (nonatomic, strong) NSArray *sectionsArray;
+
+- (NSInteger)numberOfSections;
+- (NSInteger)numberOfRowsInSection:(NSInteger)section;
+- (A3TableViewElement *)elementForIndexPath:(NSIndexPath *)indexPath;
+- (void)didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
+- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (CGFloat)heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

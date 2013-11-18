@@ -127,4 +127,37 @@
 	}];
 }
 
+- (void)logDateFormatsForLocale:(NSString *)localeIdentifier {
+	NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeIdentifier];
+	NSLog(@"log for locale: %@", localeIdentifier);
+	
+	NSDate *date = [NSDate date];
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setLocale:locale];
+	
+	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	NSString *dateFormat = [dateFormatter dateFormat];
+	if (![[[dateFormatter locale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"]) {
+		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+	}
+	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+	[dateFormatter setDateFormat:dateFormat];
+	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	
+	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
+	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	
+	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
+	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+}
+
+- (void)testDateFormatter {
+	[self logDateFormatsForLocale:@"en_US"];
+	[self logDateFormatsForLocale:@"ko_KR"];
+}
+
 @end

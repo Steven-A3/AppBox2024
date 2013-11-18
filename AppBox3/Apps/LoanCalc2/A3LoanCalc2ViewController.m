@@ -15,22 +15,24 @@
 #import "A3TableViewMonthEntryElement.h"
 #import "A3SelectTableViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "A3TableViewSections.h"
 #import "A3TableViewExpandableElement.h"
 #import "A3UIDevice.h"
 #import "A3TripleCircleView.h"
 #import "A3RoundedSideButton.h"
+#import "A3TableViewEntryCell.h"
+#import "LoanCalcHistory.h"
+#import "LoanCalcHistory+calculation.h"
 
 typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 	A3LoanCalcRowIdCalculation = 1,
 	A3LoanCalcRowIdFrequency,
-
 };
 
 @interface A3LoanCalc2ViewController () <A3SelectTableViewControllerProtocol>
 
-@property (nonatomic, strong) A3TableViewSections *sections;
+@property (nonatomic, strong) A3TableViewRootElement *root;
 @property (nonatomic, strong) A3LoanCalcPreferences *preferences;
+@property (nonatomic, strong) LoanCalcHistory *editingObject;
 
 @end
 
@@ -49,6 +51,34 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 	}
 
 	return self;
+}
+
+- (LoanCalcHistory *)editingObject {
+	if (nil == _editingObject) {
+		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
+		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+		NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
+		[fetchRequest setEntity:entity];
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(editing == YES) and (location == 'S')"];
+		[fetchRequest setPredicate:predicate];
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"created" ascending:NO];
+		[fetchRequest setSortDescriptors:@[sortDescriptor]];
+		[fetchRequest setFetchLimit:1];
+		NSError *error;
+		NSArray *fetchedObjects = [managedObjectContext executeFetchRequest:fetchRequest error:&error];
+		if ([fetchedObjects count]) {
+			_editingObject = [fetchedObjects objectAtIndex:0];
+			[self.preferences setCalculationFor:(A3LoanCalcCalculationFor)[_editingObject.calculationFor unsignedIntegerValue]];
+			[_preferences setShowDownPayment:[_editingObject.showDownPayment boolValue]];
+			[_preferences setShowExtraPayment:[_editingObject.showExtraPayment boolValue]];
+			[_preferences setShowAdvanced:[_editingObject.showAdvanced boolValue]];
+			[_preferences setUseSimpleInterest:[_editingObject.useSimpleInterest boolValue]];
+		} else {
+			_editingObject = [NSEntityDescription insertNewObjectForEntityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
+			[_editingObject initializeValues];
+		}
+	}
+	return _editingObject;
 }
 
 - (void)viewDidLoad
@@ -106,13 +136,13 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 	return _preferences;
 }
 
-- (A3TableViewSections *)sections {
-	if (!_sections) {
-		_sections = [A3TableViewSections new];
-		_sections.tableView = self.tableView;
-		_sections.viewController = self;
+- (A3TableViewRootElement *)root {
+	if (!_root) {
+		_root = [A3TableViewRootElement new];
+		_root.tableView = self.tableView;
+		_root.viewController = self;
 	}
-	return _sections;
+	return _root;
 }
 
 
@@ -126,7 +156,7 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 		if (_preferences.showExtraPayment) {
 			[sectionsArray addObject:[self extraPaymentElements]];
 		}
-		[self.sections setSectionsArray:sectionsArray];
+		[self.root setSectionsArray:sectionsArray];
 	}
 }
 
@@ -159,7 +189,7 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 			[self extraPaymentAmountsElement],
 			[self extraPaymentOnetimeDateElement]
 	]];
-	element.sections = sectionsArray;
+	element.sectionsArray = sectionsArray;
 	return element;
 }
 
@@ -183,7 +213,7 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 			[self extraPaymentAmountsElement],
 			[self extraPaymentYearlyDateElement]
 	]];
-	element.sections = sectionsArray;
+	element.sectionsArray = sectionsArray;
 	return element;
 }
 
@@ -274,18 +304,24 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 - (id)termElement {
 	A3TableViewEntryElement *element = [A3TableViewEntryElement new];
 	element.title = @"Term";
+	element.inputType = A3TableViewEntryTypeYears;
 	return element;
 }
 
 - (id)downPaymentElement {
 	A3TableViewEntryElement *element = [A3TableViewEntryElement new];
 	element.title = @"Down payment";
+	element.inputType = A3TableViewEntryTypeCurrency;
 	return element;
 }
 
 - (id)principalElement {
 	A3TableViewEntryElement *element = [A3TableViewEntryElement new];
 	element.title = @"Principal";
+	element.inputType = A3TableViewEntryTypeCurrency;
+	element.onEditingValueChanged = ^(A3TableViewEntryElement *elementMe, UITextField *textField) {
+
+	};
 	return element;
 }
 
@@ -309,28 +345,34 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return [self.sections numberOfSections];
+    return [self.root numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.sections numberOfRowsInSection:section];
+    return [self.root numberOfRowsInSection:section];
 }
 
 static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return [self.sections cellForRowAtIndexPath:indexPath];
+	return [self.root cellForRowAtIndexPath:indexPath];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([cell isKindOfClass:[A3TableViewEntryCell class]]) {
+		[(A3TableViewEntryCell *) cell calculateTextFieldFrame];
+	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self.sections didSelectRowAtIndexPath:indexPath];
+	[self.root didSelectRowAtIndexPath:indexPath];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [self.sections heightForRowAtIndexPath:indexPath];
+	return [self.root heightForRowAtIndexPath:indexPath];
 }
 
 - (void)selectTableViewController:(A3SelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin {

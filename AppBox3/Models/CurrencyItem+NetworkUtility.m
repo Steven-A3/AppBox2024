@@ -101,7 +101,6 @@
 		return [obj1[NSLocaleCurrencyCode] compare:obj2[NSLocaleCurrencyCode]];
 	};
 	[validLocales sortUsingComparator:comparator];
-	NSLog(@"%@", validLocales);
 
 	NSDate *updated = nil;
 	NSArray *yahooArray = JSON[@"list"][@"resources"];
