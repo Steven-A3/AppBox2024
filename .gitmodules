@@ -1,9 +1,3 @@
-[submodule "External/FontAwesomeIconFactory"]
-	path = External/FontAwesomeIconFactory
-	url = https://github.com/nschum/FontAwesomeIconFactory.git
-[submodule "External/KBPopupBubble"]
-	path = External/KBPopupBubble
-	url = https://github.com/psholtz/KBPopupBubble.git
 [submodule "External/NSDate-TimeAgo"]
 	path = External/NSDate-TimeAgo
 	url = https://github.com/kevinlawler/NSDate-TimeAgo.git
@@ -37,9 +31,6 @@
 [submodule "External/DKLiveBlur"]
 	path = External/DKLiveBlur
 	url = https://github.com/Steven-Gwug/DKLiveBlur.git
-[submodule "External/QuickDialog"]
-	path = External/QuickDialog
-	url = https://github.com/Steven-Gwug/QuickDialog.git
 [submodule "External/AFNetworking"]
 	path = External/AFNetworking
 	url = https://github.com/Steven-Gwug/AFNetworking.git
