@@ -40,3 +40,6 @@
 [submodule "External/QuickDialog"]
 	path = External/QuickDialog
 	url = https://github.com/Steven-Gwug/QuickDialog.git
+[submodule "External/AFNetworking"]
+	path = External/AFNetworking
+	url = https://github.com/Steven-Gwug/AFNetworking.git
