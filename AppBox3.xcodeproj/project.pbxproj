@@ -2945,7 +2945,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/QuickDialog/** ${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/objectiveflickr/LFWebAPIKit ${PROJECT_DIR}/External/objectiveflickr/Source ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -2971,7 +2971,7 @@
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
-				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/QuickDialog/** ${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/objectiveflickr/LFWebAPIKit ${PROJECT_DIR}/External/objectiveflickr/Source ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
+				USER_HEADER_SEARCH_PATHS = "${PROJECT_DIR}/External/Masonry/Masonry/** ${PROJECT_DIR}/External/MagicalRecord/MagicalRecord/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
