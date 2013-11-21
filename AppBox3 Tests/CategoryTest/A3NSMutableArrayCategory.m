@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #define EXP_SHORTHAND
 #import "Expecta.h"
+#import "NSMutableArray+MoveObject.h"
 
 @interface A3NSMutableArrayCategoryTest : XCTestCase
 

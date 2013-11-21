@@ -39,7 +39,7 @@
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 
     NSArray *allCountry = [HolidayData supportedCountries];
-    NSLog(@"%d", [allCountry count]);
+    NSLog(@"%lu", (unsigned long)[allCountry count]);
 	[allCountry enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         NSString *keyPath = [NSString stringWithFormat:@"%@_HolidaysInYear", obj[kHolidayCountryCode]];
 		NSMutableArray *holidays = [_holidayData valueForKeyPath:keyPath];
@@ -115,7 +115,7 @@
 - (void)testTimeZone {
 	NSArray *allCountries = [HolidayData supportedCountries];
 	expect(@([allCountries count])).equal(@98);
-    NSLog(@"%d", [allCountries count]);
+    NSLog(@"%lu", (unsigned long)[allCountries count]);
 	[allCountries enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
 
 		expect(@([[obj allKeys] count])).equal(@2);
