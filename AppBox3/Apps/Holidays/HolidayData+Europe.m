@@ -1092,7 +1092,7 @@
 	date = [HolidayData dateWithDay:23 month:11 year:year withCalendar:gregorian option:0];
 	NSDateComponents *dc = [gregorian components:NSWeekdayCalendarUnit fromDate:date];
 	NSDateComponents *addDC = [[NSDateComponents alloc] init];
-    int diff;
+    NSInteger diff;
     if ([dc weekday] > 4) {
         diff = -([dc weekday] - 4);
     } else {

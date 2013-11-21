@@ -26,10 +26,9 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate;
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
 
-- (BOOL)prevAvailableForElement:(QEntryElement *)element;
-- (BOOL)nextAvailableForElement:(QEntryElement *)element;
-- (void)prevButtonPressedWithElement:(QEntryElement *)element;
-- (void)nextButtonPressedWithElement:(QEntryElement *)element;
-
+- (BOOL)isPreviousEntryExists;
+- (BOOL)isNextEntryExists;
+- (void)prevButtonPressed;
+- (void)nextButtonPressed;
 
 @end

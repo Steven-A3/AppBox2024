@@ -144,7 +144,7 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 		} else if (lastComponent.expressionKind == A3E_E_Number) {
 			if ([lastComponent.arguments count] == 2) {
 				NSInteger power = [lastComponent.arguments[1] integerValue];
-				power = [[NSString stringWithFormat:@"%d%d", power, input - A3E_0] integerValue];
+				power = [[NSString stringWithFormat:@"%ld%lu", (long)power, (unsigned long) (input - A3E_0)] integerValue];
 				lastComponent.arguments[1] = @(power);
 			}
 			else {
@@ -263,7 +263,7 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 					head = [nf stringFromNumber:component.arguments[0]];
 				}
 				if ([self.components count] >= 2) {
-					tail = [NSString stringWithFormat:@"%d", [component.arguments[1] integerValue] ];
+					tail = [NSString stringWithFormat:@"%ld", (long)[component.arguments[1] integerValue] ];
 				}
 				stringToAdd = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@E%@", head, tail] attributes:[self expressionAttribute]];
 				break;
@@ -530,7 +530,7 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 		number1 = [nf stringFromNumber:element.arguments[0]];
 	}
     if ([element.arguments count] >= 2) {
-        number2 = [NSString stringWithFormat:@"%d", [element.arguments[1] integerValue]];
+        number2 = [NSString stringWithFormat:@"%ld", (long)[element.arguments[1] integerValue]];
     }
 	return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:format, number1, number2] attributes:[self expressionAttribute]];
 }

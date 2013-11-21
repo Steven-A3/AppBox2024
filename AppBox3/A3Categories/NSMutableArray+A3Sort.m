@@ -7,6 +7,7 @@
 //
 
 #import "NSMutableArray+A3Sort.h"
+#import "NSMutableArray+MoveObject.h"
 #import "NSString+conversion.h"
 #import "common.h"
 

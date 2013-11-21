@@ -129,8 +129,8 @@ static NSString *CellIdentifier = @"Cell";
 	NSArray *excludedList = [[NSUserDefaults standardUserDefaults] objectForKey:[HolidayData keyForExcludedHolidaysForCountry:_countryCode]];
 	_excludedHolidays = [excludedList mutableCopy];
 
-	self.title = [NSString stringWithFormat:@"%@ (%d)",
-			[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode], [_holidaysForCountry count]];
+	self.title = [NSString stringWithFormat:@"%@ (%lu)",
+			[[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:_countryCode], (unsigned long)[_holidaysForCountry count]];
 }
 
 - (NSMutableArray *)excludedHolidays {
@@ -291,7 +291,7 @@ static NSString *CellIdentifier = @"Cell";
 	}
 
 	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-	FNLOG(@"%d", image.imageOrientation);
+	FNLOG(@"%lu", (unsigned long)image.imageOrientation);
 
 	if (image) {
 		A3ImageCropperViewController *cropper = [[A3ImageCropperViewController alloc] initWithImage:image withHudView:nil];

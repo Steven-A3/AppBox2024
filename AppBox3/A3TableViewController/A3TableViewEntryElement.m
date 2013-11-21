@@ -120,19 +120,19 @@
 
 }
 
-- (BOOL)prevAvailableForElement:(QEntryElement *)element {
+- (BOOL)isPreviousEntryExists {
 	return NO;
 }
 
-- (BOOL)nextAvailableForElement:(QEntryElement *)element {
+- (BOOL)isNextEntryExists {
 	return NO;
 }
 
-- (void)prevButtonPressedWithElement:(QEntryElement *)element {
+- (void)prevButtonPressed {
 
 }
 
-- (void)nextButtonPressedWithElement:(QEntryElement *)element {
+- (void)nextButtonPressed {
 
 }
 

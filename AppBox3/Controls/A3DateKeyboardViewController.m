@@ -8,7 +8,6 @@
 
 #import "A3DateKeyboardViewController.h"
 #import "A3UIDevice.h"
-#import "QEntryTableViewCell+Extension.h"
 #import "A3Formatter.h"
 #import "SFKImage.h"
 #import "A3KeyboardButton_iOS7.h"
@@ -47,8 +46,8 @@
 	[self initSymbolFont];
 
 	BOOL available = NO;
-	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
-		available = [self.delegate nextAvailableForElement:self.element];
+	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
+		available = [self.delegate isNextEntryExists];
 	}
 	if (IS_IPAD) {
 		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
@@ -59,8 +58,8 @@
 	[_nextButton setEnabled:available];
 
 	available = NO;
-	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
-		available = [self.delegate prevAvailableForElement:self.element];
+	if ([self.delegate respondsToSelector:@selector(isPrevEntryExists)]) {
+		available = [self.delegate isPrevEntryExists];
 	}
 	if (IS_IPAD) {
 		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
@@ -95,7 +94,7 @@
 	];
 	NSInteger index = 0;
 	for (UIButton *button in order) {
-		[button setTitle:[NSString stringWithFormat:@"%d", index] forState:UIControlStateNormal];
+		[button setTitle:[NSString stringWithFormat:@"%ld", (long)index] forState:UIControlStateNormal];
 		index++;
 	}
 	[_clear_Dec_Button setTitle:@"Clear" forState:UIControlStateNormal];
@@ -125,7 +124,7 @@
 		[button setTitle:@"" forState:UIControlStateNormal];
 		button.mainTitle.text = [monthSymbols objectAtIndex:index];
 		index++;
-		button.subTitle.text = [NSString stringWithFormat:@"%d", index];
+		button.subTitle.text = [NSString stringWithFormat:@"%lu", (unsigned long)index];
 	}
 }
 
@@ -198,32 +197,26 @@
 	_date = [gregorian dateFromComponents:dateComponents];
 	_displayLabel.text = [A3Formatter mediumStyleDateStringFromDate:_date];
 
-	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:element:)]) {
-		[_delegate dateKeyboardValueChangedDate:_date element:_element];
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
+		[_delegate dateKeyboardValueChangedDate:_date];
 	}
 }
 
 - (IBAction)prevButtonAction {
-	if ([_delegate respondsToSelector:@selector(prevButtonPressedWithElement:)]) {
-		[_delegate prevButtonPressedWithElement:_element];
-	} else {
-		[_entryTableViewCell handlePrevNextWithForNext:NO];
+	if ([_delegate respondsToSelector:@selector(prevButtonPressed)]) {
+		[_delegate prevButtonPressed];
 	}
 }
 
 - (IBAction)nextButtonAction {
-	if ([_delegate respondsToSelector:@selector(nextButtonPressedWithElement:)]) {
-		[_delegate nextButtonPressedWithElement:_element];
-	} else {
-		[_entryTableViewCell handlePrevNextWithForNext:YES];
+	if ([_delegate respondsToSelector:@selector(nextButtonPressed)]) {
+		[_delegate nextButtonPressed];
 	}
 }
 
 - (IBAction)doneButtonAction {
 	if ([_delegate respondsToSelector:@selector(A3KeyboardDoneButtonPressed)]) {
 		[_delegate A3KeyboardDoneButtonPressed];
-	} else {
-		[_entryTableViewCell handleActionBarDone:nil];
 	}
 }
 
@@ -234,8 +227,8 @@
 	_date = nil;
 	_displayLabel.text = @"";
 
-	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:element:)]) {
-		[_delegate dateKeyboardValueChangedDate:_date element:_element];
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
+		[_delegate dateKeyboardValueChangedDate:_date];
 	}
 }
 
@@ -246,8 +239,8 @@
 	_date = [NSDate date];
 	_displayLabel.text = [A3Formatter mediumStyleDateStringFromDate:_date];
 
-	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:element:)]) {
-		[_delegate dateKeyboardValueChangedDate:_date element:_element];
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
+		[_delegate dateKeyboardValueChangedDate:_date];
 	}
 }
 

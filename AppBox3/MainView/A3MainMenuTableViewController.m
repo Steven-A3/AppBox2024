@@ -2,30 +2,13 @@
 //  A3MainMenuTableViewController.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 10/23/12.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 11/20/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "A3MainMenuTableViewController.h"
-#import "A3SectionHeaderViewInMenuTableView.h"
-#import "CommonUIDefinitions.h"
-#import "A3ExpenseListViewController.h"
-#import "A3UIDevice.h"
-#import "A3SalesCalcQuickDialogViewController_iPad.h"
-#import "A3SalesCalcQuickDialogViewController_iPhone.h"
-#import "A3CurrencyViewController.h"
-#import "A3AppDelegate.h"
-#import "A3TranslatorViewController.h"
-#import "UIViewController+MMDrawerController.h"
-#import "A3HolidaysPageViewController.h"
-#import "A3CalculatorViewController_iPhone.h"
-#import "UIViewController+A3Addition.h"
-#import "A3LoanCalc2QuickDialogController.h"
-#import "A3LoanCalc2ViewController.h"
 
 @interface A3MainMenuTableViewController ()
-
-@property (nonatomic, retain)	NSMutableDictionary *gridStyleCells;
 
 @end
 
@@ -36,9 +19,6 @@
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
-		self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-		self.tableView.allowsSelection = NO;
-		self.tableView.showsVerticalScrollIndicator = NO;
     }
     return self;
 }
@@ -60,96 +40,28 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (NSMutableDictionary *)gridStyleCells {
-	if (nil == _gridStyleCells) {
-		_gridStyleCells = [[NSMutableDictionary alloc] initWithCapacity:3];
-	}
-	return _gridStyleCells;
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-	// 1. Shortcut
-	// 2. Favorite Apps
-	// 3. Apps
-	// 4. Settings
-	// 5. Information
-    return 5;
+    return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [self gridViewControllerAtSection:[indexPath section]].heightForContents;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-
-	return A3_MENU_TABLE_VIEW_SECTION_HEIGHT;
-}
-
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	// Return the number of rows in the section.
-	if (section >= 3) {
-		return 0;
-	}
-	return 1;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	A3SectionHeaderViewInMenuTableView *sectionHeaderView = [[A3SectionHeaderViewInMenuTableView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, A3_MENU_TABLE_VIEW_WIDTH, A3_MENU_TABLE_VIEW_SECTION_HEIGHT)];
-	UIImage *sectionImage = [UIImage imageNamed:@"weather_sun_32_on"];
-	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)section) {
-		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
-			sectionHeaderView.title = NSLocalizedString(@"Shortcut", nil);
-			sectionHeaderView.collapsed = NO;
-			sectionHeaderView.image = sectionImage;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_FAVORITES:
-			sectionHeaderView.title = NSLocalizedString(@"Favorite Apps", nil);
-			sectionHeaderView.collapsed = NO;
-			sectionHeaderView.image = sectionImage;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_APPS:
-			sectionHeaderView.title = NSLocalizedString(@"Apps", nil);
-			sectionHeaderView.collapsed = YES;
-			sectionHeaderView.image = sectionImage;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_SETTINGS:
-			sectionHeaderView.title = NSLocalizedString(@"Settings", nil);
-			sectionHeaderView.collapsed = YES;
-			sectionHeaderView.image = sectionImage;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_INFORMATION:
-			sectionHeaderView.title = NSLocalizedString(@"Information", nil);
-			sectionHeaderView.collapsed = YES;
-			sectionHeaderView.image = sectionImage;
-			break;
-	}
-	return sectionHeaderView;
-}
-
-- (A3GridStyleTableViewCell *)gridViewControllerAtSection:(NSInteger)section {
-	NSString *searchKey = [NSString stringWithFormat:@"grid%d", section];
-	A3GridStyleTableViewCell *cell = [self.gridStyleCells objectForKey:searchKey];
-	if (nil == cell) {
-		A3GridStyleTableViewCell *newCell = [[A3GridStyleTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-		newCell.tag = section;
-		newCell.dataSource = self;
-		newCell.delegate = self;
-		[newCell reload];
-
-		[self.gridStyleCells setObject:newCell forKey:searchKey];
-		return newCell;
-	}
-	return cell;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	return [self gridViewControllerAtSection:[indexPath section]];
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    // Configure the cell...
+    
+    return cell;
 }
 
 /*
@@ -191,259 +103,16 @@
 }
 */
 
-#pragma mark - Table view delegate
+/*
+#pragma mark - Navigation
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+// In a story board-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
 }
 
-#pragma mark - GridViewControllerDataSource
-
-- (NSUInteger)numberOfColumnsInGridViewController:(A3GridStyleTableViewCell *)controller {
-	return 3;
-}
-
-- (NSInteger)numberOfItemsInGridViewController:(A3GridStyleTableViewCell *)controller {
-	NSInteger numberOfItems = 0;
-	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)controller.tag) {
-		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
-			numberOfItems = 3;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_FAVORITES:
-			numberOfItems = 3;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_APPS:
-			numberOfItems = 6;
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_SETTINGS:
-		case A3_MENU_TABLE_VIEW_SECTION_INFORMATION:
-			numberOfItems = 0;
-			break;
-	}
-	return numberOfItems;
-}
-
-- (UIImage *)gridStyleTableViewCell:(A3GridStyleTableViewCell *)controller imageForIndex:(NSInteger)index {
-	UIImage *returningImage = nil;
-	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)controller.tag) {
-		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
-			switch (index) {
-				case 0:
-					returningImage = [UIImage imageNamed:@"icon_aqua"];
-					break;
-				case 1:
-					returningImage = [UIImage imageNamed:@"icon_blue"];
-					break;
-				case 2:
-					returningImage = [UIImage imageNamed:@"icon_green"];
-					break;
-			}
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_FAVORITES:
-			switch (index) {
-				case 0:
-					returningImage = [UIImage imageNamed:@"icon_purple"];
-					break;
-				case 1:
-					returningImage = [UIImage imageNamed:@"icon_red"];
-					break;
-				case 2:
-					returningImage = [UIImage imageNamed:@"icon_yellow"];
-					break;
-			}
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_APPS:
-			switch (index) {
-				case 0:
-					returningImage = [UIImage imageNamed:@"icon_aqua"];
-					break;
-				case 1:
-					returningImage = [UIImage imageNamed:@"icon_blue"];
-					break;
-				case 2:
-					returningImage = [UIImage imageNamed:@"icon_green"];
-					break;
-				case 3:
-					returningImage = [UIImage imageNamed:@"icon_purple"];
-					break;
-				case 4:
-					returningImage = [UIImage imageNamed:@"icon_red"];
-					break;
-				case 5:
-					returningImage = [UIImage imageNamed:@"icon_aqua"];
-					break;
-			}
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_SETTINGS:
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_INFORMATION:
-			break;
-	}
-	return returningImage;
-}
-
-- (NSString *)gridStyleTableViewCell:(A3GridStyleTableViewCell *)controller titleForIndex:(NSInteger)index {
-	NSString *title = nil;
-
-	switch ((A3_MENU_TABLE_VIEW_SECTION_TYPE)controller.tag) {
-		case A3_MENU_TABLE_VIEW_SECTION_SHORTCUT:
-			switch (index) {
-				case 0:
-					title = @"Home";
-					break;
-				case 1:
-					title = @"Calendar";
-					break;
-				case 2:
-					title = @"Calculator";
-					break;
-			}
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_FAVORITES:
-			switch (index) {
-				case 0:
-					title = @"Days Counter";
-					break;
-				case 1:
-					title = @"Notes";
-					break;
-				case 2:
-					title = @"Wallet";
-					break;
-			}
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_APPS:
-			switch (index) {
-				case 0:
-					title = @"Sales Calc";
-					break;
-				case 1:
-					title = @"Expense List";
-					break;
-				case 2:
-					title = @"Loan Calc";
-					break;
-				case 3:
-					title = @"Currency";
-					break;
-				case 4:
-					title = @"Translator";
-					break;
-				case 5:
-					title = @"Holidays";
-					break;
-			}
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_SETTINGS:
-			break;
-		case A3_MENU_TABLE_VIEW_SECTION_INFORMATION:
-			break;
-	}
-	return title;
-}
-
-#pragma mark - GridViewControllerDelegate
-
-- (void)gridStyleTableViewCell:(A3GridStyleTableViewCell *)cell didSelectItemAtIndex:(NSInteger)selectedIndex {
-	UIViewController *targetViewController = nil;
-	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_SHORTCUT) {
-		switch (selectedIndex) {
-			case 0:	// Home
-			{
-				if (IS_IPHONE) {
-					UINavigationController *navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
-					[navigationController popToRootViewControllerAnimated:YES];
-				} else {
-                    [self popToRootAndPushViewController:nil];
-				}
-				break;
-			}
-			case 2:	// Calculator
-			{
-				if (IS_IPHONE) {
-					targetViewController = [[A3CalculatorViewController_iPhone alloc] initWithNibName:nil bundle:nil];
-				}
-				break;
-			}
-			default:
-				break;
-		}
-	} else
-	if (cell.tag == A3_MENU_TABLE_VIEW_SECTION_APPS) {
-		switch (selectedIndex) {
-			case 0: {
-				UIViewController *viewController;
-				if (IS_IPAD) {
-					if (![self isActiveViewController:[A3SalesCalcQuickDialogViewController_iPad class]])
-						viewController = [[A3SalesCalcQuickDialogViewController_iPad alloc] initWithNibName:nil bundle:nil];
-				} else {
-					if (![self isActiveViewController:[A3SalesCalcQuickDialogViewController_iPhone class]])
-						viewController = [[A3SalesCalcQuickDialogViewController_iPhone alloc] initWithNibName:nil bundle:nil];
-				}
-				targetViewController = viewController;
-				break;
-			}
-			case 1: {
-				if (![self isActiveViewController:[A3ExpenseListViewController class]]) {
-					NSString *nibName = [NSString stringWithFormat:@"A3ExpenseListViewController_%@", IS_IPAD ? @"iPad" : @"iPhone"];
-					targetViewController = [[A3ExpenseListViewController alloc] initWithNibName:nibName bundle:nil];
-				}
-				break;
-			}
-			case 2: {
-				if (![self isActiveViewController:[A3LoanCalc2ViewController class]]) {
-					targetViewController = [[A3LoanCalc2ViewController alloc] init];
-				}
-				break;
-			}
-			case 3: {
-				if (![self isActiveViewController:[A3CurrencyViewController class]]) {
-						targetViewController = [[A3CurrencyViewController alloc] initWithStyle:UITableViewStylePlain];
-				}
-				break;
-			}
-			case 4: {
-				if (![self isActiveViewController:[A3TranslatorViewController class]]) {
-					targetViewController = [[A3TranslatorViewController alloc] initWithNibName:nil bundle:nil];
-				}
-				break;
-			}
-			case 5: {
-				if (![self isActiveViewController:[A3HolidaysPageViewController class]]) {
-					targetViewController = [[A3HolidaysPageViewController alloc] initWithNibName:nil bundle:nil];
-				}
-				break;
-			}
-		}
-	}
-	if (targetViewController) {
-		[self popToRootAndPushViewController:targetViewController];
-	}
-}
-
-- (BOOL)isActiveViewController:(Class)aClass {
-	UINavigationController *navigationController;
-
-	if (IS_IPHONE) {
-		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
-		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
-	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		navigationController = [rootViewController centerNavigationController];
-	}
-	for (UIViewController *viewController in navigationController.viewControllers) {
-		if ([viewController isMemberOfClass:aClass]) {
-			return YES;
-		}
-	}
-	return NO;
-}
+ */
 
 @end

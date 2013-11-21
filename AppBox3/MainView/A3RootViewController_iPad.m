@@ -9,7 +9,6 @@
 #import "A3RootViewController_iPad.h"
 #import "A3MainMenuTableViewController.h"
 #import "A3UIDevice.h"
-#import "A3HomeViewController_iPad.h"
 #import "A3CenterViewProtocol.h"
 #import "common.h"
 #import "UIViewController+A3Addition.h"
@@ -38,7 +37,7 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 
-	A3HomeViewController_iPad *viewController = [[A3HomeViewController_iPad alloc] initWithNibName:@"HomeView_iPad" bundle:nil];
+	UIViewController *viewController = [UIViewController new];
 
 	_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 	[self addChildViewController:_centerNavigationController];

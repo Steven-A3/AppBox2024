@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "QuickDialog.h"
 
 @class A3DateKeyboardViewController;
 
@@ -19,11 +18,12 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 
 @protocol A3DateKeyboardDelegate <NSObject>
 @optional
-- (void)dateKeyboardValueChangedDate:(NSDate *)date element:(QEntryElement *)element;
-- (BOOL)prevAvailableForElement:(QEntryElement *)element;
-- (BOOL)nextAvailableForElement:(QEntryElement *)element;
-- (void)prevButtonPressedWithElement:(QEntryElement *)element;
-- (void)nextButtonPressedWithElement:(QEntryElement *)element;
+- (void)dateKeyboardValueChangedDate:(NSDate *)date;
+
+- (BOOL)isPrevEntryExists;
+- (BOOL)isNextEntryExists;
+- (void)prevButtonPressed;
+- (void)nextButtonPressed;
 - (void)A3KeyboardDoneButtonPressed;
 
 @end
@@ -53,35 +53,23 @@ typedef NS_ENUM(NSUInteger, A3DateKeyboardWorkingMode) {
 
 @property (nonatomic)			A3DateKeyboardWorkingMode 	workingMode;
 @property (nonatomic, weak)		UILabel 					*displayLabel;
-@property (nonatomic, weak)		QEntryTableViewCell 		*entryTableViewCell;
-@property (nonatomic, weak) 	QEntryElement				*element;
 @property (nonatomic, weak) 	id<A3DateKeyboardDelegate> 	delegate;
 @property (nonatomic, strong)	NSDate 						*date;
 
 - (void)initExtraLabels;
-
 - (IBAction)switchToYear;
-
 - (void)reloadPrevNextButtons;
-
 - (NSArray *)monthOrder;
-
 - (NSArray *)numberOrder;
-
 - (IBAction)numberButtonAction:(UIButton *)button;
-
 - (IBAction)prevButtonAction;
-
 - (IBAction)nextButtonAction;
-
 - (IBAction)doneButtonAction;
-
 - (IBAction)clearButtonAction;
-
 - (IBAction)todayButtonAction;
 
 - (void)resetToDefaultState;
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-
 - (void)layoutForWorkingMode;
+
 @end

@@ -9,7 +9,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3TimeLineTableViewCell.h"
 #import "A3TimeLineEventItemView.h"
-#import "NYXImagesKit.h"
+#import "UIImage+Resizing.h"
 
 @interface A3TimeLineTableViewCell ()
 @property (nonatomic, strong) UIImageView *photoView;

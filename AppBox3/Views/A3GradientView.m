@@ -8,7 +8,6 @@
 
 #import "A3GradientView.h"
 #import "common.h"
-#import "NSNumberExtensions.h"
 
 @implementation A3GradientView
 
@@ -67,7 +66,7 @@
 	if (_locations) {
 		locations = malloc(sizeof(CGFloat) * [_locations count]);
 		[_locations enumerateObjectsUsingBlock:^(NSNumber *number, NSUInteger idx, BOOL *stop) {
-			locations[idx] = [number cgFloatValue];
+			locations[idx] = [number doubleValue];
 		}];
 	} else {
 		locations = malloc(sizeof(CGFloat) * 2);

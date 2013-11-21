@@ -6,15 +6,13 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#include "A3AppViewController.h"
-
 @class FSVenue;
 
 @protocol A3AddLocationViewControllerDelegate <NSObject>
 - (void)locationSelectedWithVenue:(FSVenue *)venue;
 @end
 
-@interface A3AddLocationViewController : A3AppViewController
+@interface A3AddLocationViewController : UIViewController
 @property (nonatomic, weak) id<A3AddLocationViewControllerDelegate> delegate;
 
 - (id)initWithVenue:(FSVenue *)venue;

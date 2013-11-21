@@ -412,7 +412,7 @@ static NSUInteger Eid_al_adha[][2] = {
 		resultArray = @[[dateFormatter dateFromString:[birthday objectForKey:@"2015-1"]],
 						[dateFormatter dateFromString:[birthday objectForKey:@"2015-2"]] ];
 	} else {
-		NSString *dateString = [birthday objectForKey:[NSString stringWithFormat:@"%d",year]];
+		NSString *dateString = [birthday objectForKey:[NSString stringWithFormat:@"%lu",(unsigned long)year]];
 		if (dateString) {
 			resultArray = @[[dateFormatter dateFromString:dateString]];
 		}
@@ -523,7 +523,7 @@ static NSUInteger Eid_al_adha[][2] = {
 
 	NSDictionary *myCountry = [vesak objectForKey:countryCode];
 	if (myCountry) {
-		NSString *myVesakDate = [myCountry objectForKey:[NSString stringWithFormat:@"%d",year]];
+		NSString *myVesakDate = [myCountry objectForKey:[NSString stringWithFormat:@"%lu",(unsigned long)year]];
 		if (myVesakDate) {
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 			[dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -535,7 +535,7 @@ static NSUInteger Eid_al_adha[][2] = {
 }
 
 + (NSDate *)getDate:(NSInteger)year dictionary:(NSDictionary *)dictionary {
-	NSString *deepavaliDateString = [dictionary objectForKey:[NSString stringWithFormat:@"%d", year]];
+	NSString *deepavaliDateString = [dictionary objectForKey:[NSString stringWithFormat:@"%ld", (long)year]];
 	NSDate *resultDate = nil;
 	if (deepavaliDateString) {
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

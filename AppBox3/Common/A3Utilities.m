@@ -38,7 +38,7 @@ NSString *const A3CurrencyAutoUpdate						= @"A3CurrencyAutoUpdate";
 NSString *const A3CurrencyUseCellularData 					= @"A3CurrencyUseCellularData";
 NSString *const A3CurrencyShowNationalFlag					= @"A3CurrencyShowNationalFlag";
 
-float dash_line_pattern[] = {2.0f, 2.0f};
+CGFloat dash_line_pattern[] = {2.0f, 2.0f};
 
 @implementation A3Utilities
 

@@ -119,7 +119,7 @@
 		[button setTitle:@"" forState:UIControlStateNormal];
 		button.mainTitle.text = [monthSymbols objectAtIndex:index];
 		index++;
-		button.subTitle.text = [NSString stringWithFormat:@"%d", index];
+		button.subTitle.text = [NSString stringWithFormat:@"%lu", (unsigned long)index];
 	}
 }
 

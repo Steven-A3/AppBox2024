@@ -97,7 +97,7 @@
 }
 
 - (void)addTwoButtons:(NSArray *)buttons toView:(UIView *)view {
-	NSAssert([buttons count] == 2, @"The number of buttons must 2 but it is %d", [buttons count]);
+	NSAssert([buttons count] == 2, @"The number of buttons must 2 but it is %lu", (unsigned long)[buttons count]);
 	UIButton *button1 = buttons[0];
 	UIButton *button2 = buttons[1];
 	for (UIButton *button in buttons) {
@@ -127,7 +127,7 @@
 }
 
 - (void)addThreeButtons:(NSArray *)buttons toView:(UIView *)view {
-	NSAssert([buttons count] == 3, @"The number of buttons must 3 but it is %d", [buttons count]);
+	NSAssert([buttons count] == 3, @"The number of buttons must 3 but it is %lu", (unsigned long)[buttons count]);
 	UIButton *button1 = buttons[0];
 	UIButton *button2 = buttons[1];
 	UIButton *button3 = buttons[2];

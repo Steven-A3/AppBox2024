@@ -12,7 +12,6 @@
 #import "UIImage+Resizing.h"
 #import "NSString+conversion.h"
 #import "Reachability.h"
-#import "AFImageRequestOperation.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 
@@ -111,7 +110,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 	[calendar setTimeZone:[HolidayData timeZoneForCountryCode:countryCode]];
 	NSDateComponents *dateComponents = [calendar components:NSHourCalendarUnit fromDate:[NSDate date]];
 	BOOL imageForDay = (dateComponents.hour >= 6 && dateComponents.hour < 18);
-	FNLOG(@"%@, %d", countryCode, dateComponents.hour);
+	FNLOG(@"%@, %ld", countryCode, (long)dateComponents.hour);
 
 	NSString *imageNameWithOption;
 	imageNameWithOption = [defaultImageFileName stringByAppendingString:imageForDay ? @"day" : @"night"];

@@ -6,19 +6,15 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3CurrencyViewController.h"
 #import <objc/runtime.h>
 #import "UIViewController+A3AppCategory.h"
 #import "A3UIDevice.h"
 #import "A3NumberKeyboardViewController.h"
-#import "A3FrequencyKeyboardViewController.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
-#import "A3FrequencyKeyboardViewController_iPhone.h"
 #import "A3DateKeyboardViewController_iPad.h"
 #import "A3DateKeyboardViewController_iPhone.h"
-#import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 
@@ -72,24 +68,6 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 
 - (void)setNumberKeyboardViewController:(A3NumberKeyboardViewController *)keyboardViewController {
 	objc_setAssociatedObject(self, key_numberKeyboardViewController, keyboardViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (A3FrequencyKeyboardViewController *)frequencyKeyboardViewController {
-	A3FrequencyKeyboardViewController *viewController = objc_getAssociatedObject(self, key_frequencyKeyboardViewController);
-	if (nil == viewController) {
-		if (IS_IPAD) {
-			viewController = [[A3FrequencyKeyboardViewController alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPad" bundle:nil];
-		} else {
-			viewController = [[A3FrequencyKeyboardViewController_iPhone alloc] initWithNibName:@"A3FrequencyKeyboardViewController_iPhone" bundle:nil];
-		}
-		viewController.delegate = (id <A3FrequencyKeyboardDelegate>) self;
-		objc_setAssociatedObject(self, key_frequencyKeyboardViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	}
-	return viewController;
-}
-
-- (void)setFrequencyKeyboardViewController:(A3FrequencyKeyboardViewController *)frequencyKeyboardViewController1 {
-	objc_setAssociatedObject(self, key_frequencyKeyboardViewController, frequencyKeyboardViewController1, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (A3DateKeyboardViewController *)dateKeyboardViewController {

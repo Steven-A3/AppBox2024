@@ -300,7 +300,7 @@
 
 			iPhone_cell.textLabel.text = sectionInfo.name;
 			A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-			circleView.textLabel.text = [NSString stringWithFormat:@"%d", [sectionInfo numberOfObjects]];
+			circleView.textLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[sectionInfo numberOfObjects]];
 			iPhone_cell.imageView.image = [circleView imageByRenderingView];
 
 			iPhone_cell.detailTextLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgo];
@@ -318,7 +318,7 @@
 
 			iPad_cell.textLabel.text = sectionInfo.name;
 			A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-			circleView.textLabel.text = [NSString stringWithFormat:@"%d", [sectionInfo numberOfObjects]];
+			circleView.textLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[sectionInfo numberOfObjects]];
 			iPad_cell.imageView.image = [circleView imageByRenderingView];
 
 			iPad_cell.dateLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgo];

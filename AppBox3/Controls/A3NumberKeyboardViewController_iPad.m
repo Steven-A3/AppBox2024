@@ -7,9 +7,7 @@
 //
 
 #import "A3NumberKeyboardViewController_iPad.h"
-#import "QEntryTableViewCell+Extension.h"
 #import "A3KeyboardMoveMarkView.h"
-#import "A3UIKit.h"
 #import "A3UIDevice.h"
 #import "A3KeyboardButton_iOS7.h"
 
@@ -139,26 +137,20 @@
 }
 
 - (IBAction)prevAction {
-	if ([self.delegate respondsToSelector:@selector(prevButtonPressedWithElement:)]) {
-		[self.delegate prevButtonPressedWithElement:self.element];
-	} else {
-		[self.entryTableViewCell handlePrevNextWithForNext:NO];
+	if ([self.delegate respondsToSelector:@selector(prevButtonPressed)]) {
+		[self.delegate prevButtonPressed];
 	}
 }
 
 - (IBAction)nextAction {
-	if ([self.delegate respondsToSelector:@selector(nextButtonPressedWithElement:)]) {
-		[self.delegate nextButtonPressedWithElement:self.element];
-	} else {
-		[self.entryTableViewCell handlePrevNextWithForNext:YES];
+	if ([self.delegate respondsToSelector:@selector(nextButtonPressed)]) {
+		[self.delegate nextButtonPressed];
 	}
 }
 
 - (IBAction)doneAction {
 	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:doneButtonPressedTo:)]) {
 		[self.delegate A3KeyboardController:self doneButtonPressedTo:self.keyInputDelegate ];
-	} else {
-		[self.entryTableViewCell handleActionBarDone:nil];
 	}
 }
 
@@ -183,16 +175,16 @@
 }
 
 - (void)reloadPrevNextButtons {
-	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
-		BOOL available = [self.delegate nextAvailableForElement:self.element];
+	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
+		BOOL available = [self.delegate isNextEntryExists];
 		[self.nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
 		[self.nextButton setEnabled:available];
 	} else {
 		[self.nextButton setTitle:@"Next" forState:UIControlStateNormal];
 		[self.nextButton setEnabled:YES];
 	}
-	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
-		BOOL available = [self.delegate prevAvailableForElement:self.element];
+	if ([self.delegate respondsToSelector:@selector(isPreviousEntryExists)]) {
+		BOOL available = [self.delegate isPreviousEntryExists];
 		[self.prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
 		[self.prevButton setEnabled:available];
 	} else {

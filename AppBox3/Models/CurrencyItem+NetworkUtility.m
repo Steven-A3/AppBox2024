@@ -8,15 +8,10 @@
 
 #import "CurrencyItem+NetworkUtility.h"
 #import "Reachability.h"
-#import "AFJSONRequestOperation.h"
-#import "NSManagedObject+MagicalFinders.h"
-#import "NSManagedObject+MagicalRecord.h"
 #import "A3YahooCurrency.h"
-#import "NSManagedObject+MagicalAggregation.h"
-#import "CPTPlatformSpecificCategories.h"
-#import "CurrencyFavorite.h"
 #import "common.h"
 #import "CurrencyItem+name.h"
+#import "AFHTTPRequestOperation.h"
 
 @implementation CurrencyItem (NetworkUtility)
 
@@ -37,7 +32,11 @@
 	if (![[self class] yahooNetworkAvailable]) return;
 
 	NSURLRequest *request = [[self class] yahooAllCurrenciesURLRequest];
-	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+
+	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+	operation.responseSerializer = [AFJSONResponseSerializer serializer];
+
+	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		NSDictionary *list = JSON[@"list"];
 		NSArray *yahooArray = list[@"resources"];
 		[yahooArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -59,7 +58,7 @@
 		}];
 		[[NSManagedObjectContext MR_mainQueueContext] MR_saveToPersistentStoreAndWait];
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
-	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		FNLOG(@"AFJSONRequestOperation failed getting Yahoo all currency list.");
 	}];
 
@@ -71,7 +70,7 @@
 + (void)resetCurrencyLists {
 	if (![[self class] yahooNetworkAvailable]) return;
 
-	if ([[CurrencyItem MR_numberOfEntities] isGreaterThan: @0 ]) {
+	if ([[CurrencyItem MR_numberOfEntities] integerValue] > 0) {
 		[CurrencyItem MR_truncateAll];
 	}
 

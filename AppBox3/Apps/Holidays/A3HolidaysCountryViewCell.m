@@ -140,7 +140,7 @@
 	if (upcomingHoliday) {
 		_upcomingHoliday.text = upcomingHoliday[kHolidayName];
 		_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft] ];
-		_numberOfHolidays.text = [NSString stringWithFormat:@"%d", [holidays count]];
+		_numberOfHolidays.text = [NSString stringWithFormat:@"%lu", (unsigned long)[holidays count]];
 	}
 
 	_backgroundImageView.image = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:YES];

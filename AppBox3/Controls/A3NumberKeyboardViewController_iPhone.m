@@ -127,8 +127,8 @@
 	[self initSymbolFont];
 
 	BOOL available = NO;
-	if ([self.delegate respondsToSelector:@selector(nextAvailableForElement:)]) {
-		available = [self.delegate nextAvailableForElement:self.element];
+	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
+		available = [self.delegate isNextEntryExists];
 	}
 	if (IS_IPAD) {
 		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
@@ -139,8 +139,8 @@
 	[_nextButton setEnabled:available];
 
 	available = NO;
-	if ([self.delegate respondsToSelector:@selector(prevAvailableForElement:)]) {
-		available = [self.delegate prevAvailableForElement:self.element];
+	if ([self.delegate respondsToSelector:@selector(isPreviousEntryExists)]) {
+		available = [self.delegate isPreviousEntryExists];
 	}
 	if (IS_IPAD) {
 		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];

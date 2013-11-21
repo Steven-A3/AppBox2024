@@ -14,7 +14,6 @@
 #import "A3TranslatorMessageCell.h"
 #import "common.h"
 #import "AFHTTPRequestOperation.h"
-#import "AFJSONRequestOperation.h"
 #import "A3TranslatorLanguageTVDelegate.h"
 #import "A3TranslatorLanguage.h"
 #import "A3LanguagePickerController.h"
@@ -840,8 +839,9 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	FNLOG(@"%@", urlString);
 
 	NSURLRequest *translateRequest = [NSURLRequest requestWithURL:url];
-
-	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:translateRequest success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:translateRequest];
+	operation.responseSerializer = [AFJSONResponseSerializer serializer];
+	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		NSArray *translations = [[JSON objectForKey:@"data"] objectForKey:@"translations"];
 
 		FNLOG(@"Detected Language: %@", [[translations lastObject] objectForKey:@"detectedSourceLanguage"]);
@@ -851,16 +851,15 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 			translatedString = @"?";
 		}
 
-        NSString *detectedLanguage = [A3TranslatorLanguage appleCodeFromGoogleCode:
-                                      [[translations lastObject] objectForKey:@"detectedSourceLanguage"] ] ;
-        if (![detectedLanguage length]) {
-            detectedLanguage = [_originalTextLanguage isEqualToString:kTranslatorDetectLanguageCode] ? @"en" : _originalTextLanguage;
-        }
+		NSString *detectedLanguage = [A3TranslatorLanguage appleCodeFromGoogleCode:
+				[[translations lastObject] objectForKey:@"detectedSourceLanguage"] ] ;
+		if (![detectedLanguage length]) {
+			detectedLanguage = [_originalTextLanguage isEqualToString:kTranslatorDetectLanguageCode] ? @"en" : _originalTextLanguage;
+		}
 		[self addTranslatedString:translatedString detectedSourceLanguage:detectedLanguage];
-	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        
-		FNLOG(@"****************************************************\nFail to translation: %@\n**********************************************************", response.description);
-        FNLOG(@"%@%@%@%@", [error localizedDescription], [error localizedFailureReason], [error localizedRecoveryOptions], [error localizedRecoverySuggestion]);
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		FNLOG(@"****************************************************\nFail to translation: %@\n**********************************************************", operation.response.description);
+		FNLOG(@"%@%@%@%@", [error localizedDescription], [error localizedFailureReason], [error localizedRecoveryOptions], [error localizedRecoverySuggestion]);
 	}];
 
 	[operation start];
@@ -1207,7 +1206,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 		NSUInteger positionIndex = MIN( MAX(ceil(cellPosition / canvasHeight / 2.0 / (1.0 / [bubbleColors count])), 0) , 11);
 
-		FNLOG(@"index = %f, %d", cellPosition / canvasHeight / 2.0, positionIndex);
+		FNLOG(@"index = %f, %lu", cellPosition / canvasHeight / 2.0, (unsigned long)positionIndex);
 
 //		FNLOG(@"ContentSize = %f, ContentOffset = %f, cell.frame.origin.y = %f",
 //		_messageTableView.contentSize.height, _messageTableView.contentOffset.y, cell.frame.origin.y);

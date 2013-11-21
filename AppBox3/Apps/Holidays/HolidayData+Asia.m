@@ -354,7 +354,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
-	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%d)", year - ((year > 2007)?578:579)];
+	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%lu)", (unsigned long) (year - ( (year > 2007) ? 578:579 ) ) ];
 	date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1468,7 +1468,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
 	}
 
-	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%d)", year - ((year > 2007)?578:579)];
+	holidayName = [@"Islamic New Year" stringByAppendingFormat:@"(%lu)", (unsigned long) (year - ( (year > 2007) ? 578 : 579 ) ) ];
 	date = [HolidayData getIslamicNewYear:year withCalendar:gregorian];
 	if (date != nil) {
 		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@NO, kHolidayDate:date, kHolidayDuration:@1}];
@@ -1498,7 +1498,7 @@ NSDate *qingmingForYear(NSInteger year, NSCalendar *calendar) {
 	NSString *filepath = [[NSBundle mainBundle] pathForResource:@"indian" ofType:@"plist"];
 	NSDictionary *indianBook = [NSDictionary dictionaryWithContentsOfFile:filepath];
 	if (indianBook) {
-		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%d", year]]];
+		NSMutableArray *book = [[NSMutableArray alloc] initWithArray:[indianBook objectForKey:[NSString stringWithFormat:@"%lu", (unsigned long)year]]];
 		NSInteger index, count = [book count];
 		NSDateComponents *offsetDC = [[NSDateComponents alloc] init];
 		NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];

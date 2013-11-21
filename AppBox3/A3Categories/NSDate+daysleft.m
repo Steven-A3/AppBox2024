@@ -15,7 +15,7 @@
 	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	NSDateComponents *components = [gregorian components:NSDayCalendarUnit fromDate:[HolidayData justDateWithDate:[NSDate date]] toDate:self options:NSWrapCalendarComponents];
 
-	return [NSString stringWithFormat:@"%d Days Left", components.day];
+	return [NSString stringWithFormat:@"%ld Days Left", (long)components.day];
 }
 
 @end

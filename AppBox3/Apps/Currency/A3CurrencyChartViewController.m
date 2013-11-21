@@ -20,7 +20,6 @@
 #import "CurrencyItem+name.h"
 #import "A3UIDevice.h"
 #import "NSString+conversion.h"
-#import "NSNumberExtensions.h"
 #import "UIView+Screenshot.h"
 #import "Reachability.h"
 #import "UIViewController+A3Addition.h"
@@ -183,8 +182,8 @@
 	[self constraintForHorizontalLayout:_valueView];
 	[self constraintForHorizontalLayout:_valueView];
 	[self constraintForHorizontalLayout:_line2];
-	[self constraintForHorizontalLayout:_segmentedControl width:segmentedControlWidth.cgFloatValue];
-	[self constraintForHorizontalLayout:_chartView width:chartWidth.cgFloatValue];
+	[self constraintForHorizontalLayout:_segmentedControl width:segmentedControlWidth.doubleValue];
+	[self constraintForHorizontalLayout:_chartView width:chartWidth.doubleValue];
 
 	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(tableViewHeight)]-space1-[_line1(1)][_titleView(titleViewHeight)][_valueView(titleViewHeight)][_line2(1)]-space2-[_segmentedControl(28)]-(>=35,<=70)-[_chartView(chartHeight)]-(>=space4)-|"
 																	  options:0

@@ -8,7 +8,6 @@
 
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "NSMutableArray+IMSExtensions.h"
 #import "A3UIDevice.h"
 
 NSString *const kHolidayCountriesForCurrentDevice = @"HolidayCountriesForCurrentDevice";

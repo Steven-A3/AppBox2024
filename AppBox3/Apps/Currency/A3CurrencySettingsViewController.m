@@ -2,18 +2,11 @@
 //  A3CurrencySettingsViewController.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/7/13.
+//  Created by A3 on 11/20/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "A3CurrencySettingsViewController.h"
-#import "Reachability.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UIDevice.h"
-#import "UIViewController+A3AppCategory.h"
-#import "common.h"
-#import "A3RootViewController_iPad.h"
-#import "UIViewController+A3Addition.h"
 
 @interface A3CurrencySettingsViewController ()
 
@@ -21,97 +14,30 @@
 
 @implementation A3CurrencySettingsViewController
 
-- (instancetype)initWithRoot:(QRootElement *)rootElement {
-	@autoreleasepool {
-		self = [super initWithRoot:rootElement];
-		if (self) {
-			QRootElement *root = [[QRootElement alloc] init];
-			root.title = @"Settings";
-			root.grouped = YES;
-			QSection *section1 = [[QSection alloc] init];
-
-			BOOL value = [[NSUserDefaults standardUserDefaults] currencyAutoUpdate];
-			QBooleanElement *autoUpdate;
-			autoUpdate = [[QBooleanElement alloc] initWithTitle:@"Auto Update" BoolValue:value];
-			autoUpdate.controllerAction = NSStringFromSelector(@selector(onAutoUpdate:));
-			[section1 addElement:autoUpdate];
-			[root addSection:section1];
-
-			if ([A3UIDevice hasCellularNetwork]) {
-				QSection *section2 = [[QSection alloc] init];
-				value = [[NSUserDefaults standardUserDefaults] currencyUseCellularData];
-				QBooleanElement *useCellular = [[QBooleanElement alloc] initWithTitle:@"Use Cellular Data" BoolValue:value];
-				useCellular.controllerAction = NSStringFromSelector(@selector(onUseCellular:));
-				[section2 addElement:useCellular];
-				[root addSection:section2];
-			}
-
-			QSection *section3 = [[QSection alloc] init];
-			value = [[NSUserDefaults standardUserDefaults] currencyShowNationalFlag];
-			QBooleanElement *flag = [[QBooleanElement alloc] initWithTitle:@"National Flag" BoolValue:value];
-			flag.controllerAction = NSStringFromSelector(@selector(onShowNationalFlag:));
-			[section3 addElement:flag];
-			[root addSection:section3];
-
-			self.root = root;
-		}
-	}
-
-	return self;
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
-	@autoreleasepool {
-		[self rightBarButtonDoneButton];
-
-		self.quickDialogTableView.scrollEnabled = NO;
-	}
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-- (void)doneButtonAction:(UIBarButtonItem *)button {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
-	}
-}
-
-- (void)callDelegate {
-	@autoreleasepool {
-		id <A3CurrencySettingsDelegate> o = self.delegate;
-		if ([o respondsToSelector:@selector(currencyConfigurationChanged)]) {
-			[o currencyConfigurationChanged];
-		}
-	}
-}
-
-- (void)onAutoUpdate:(QBooleanElement *)element {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setCurrencyAutoUpdate:element.boolValue];
-	}
-}
-
-- (void)onUseCellular:(QBooleanElement *)element {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setCurrencyUseCellularData:element.boolValue];
-	}
-}
-
-- (void)onShowNationalFlag:(QBooleanElement *)element {
-	@autoreleasepool {
-		[[NSUserDefaults standardUserDefaults] setCurrencyShowNationalFlag:element.boolValue];
-		[self callDelegate];
-	}
-}
-
-- (void)cell:(UITableViewCell *)cell willAppearForElement:(QElement *)element atIndexPath:(NSIndexPath *)indexPath {
-	@autoreleasepool {
-		cell.textLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:18];
-	}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
 
 @end

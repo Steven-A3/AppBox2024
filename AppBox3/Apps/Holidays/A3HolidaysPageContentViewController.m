@@ -252,7 +252,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		screenBounds.size.height -= 54.0 + 252.0 + (IS_IPAD ? 62 : 0);
 
 		CGFloat footerViewHeight = screenBounds.size.height - tableRowsHeight;
-		FNLOG(@"%d, %f, %f", _tableView.tag, footerViewHeight, screenBounds.size.height);
+		FNLOG(@"%ld, %f, %f", (long)_tableView.tag, footerViewHeight, screenBounds.size.height);
 		if (footerViewHeight > 0) {
 			UIView *tableFooterView = [UIView new];
 			tableFooterView.frame = CGRectMake(0, 0, _tableView.bounds.size.width, footerViewHeight);
@@ -442,7 +442,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 	@autoreleasepool {
 		UILabel *yearLabel = (UILabel *) [headerView viewWithTag:HolidaysHeaderViewYearLabel];
 		yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-		yearLabel.text = [NSString stringWithFormat:@"%d", _thisYear];
+		yearLabel.text = [NSString stringWithFormat:@"%ld", (long)_thisYear];
 
 		UILabel *countryNameLabel = (UILabel *) [headerView viewWithTag:HolidaysHeaderViewCountryLabel];
 		countryNameLabel.text = [[NSLocale currentLocale] displayNameForKey:NSLocaleCountryCode value:self.countryCode];
@@ -460,10 +460,10 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 			A3FSegmentedControl *segmentedControl = (A3FSegmentedControl *) [headerView viewWithTag:HolidaysHeaderViewSegmentedControl];
 			segmentedControl.items = @[
-					[NSString stringWithFormat:@"Upcoming %d", [holidaysInPage count] - myPosition],
-					[NSString stringWithFormat:@"Past %d", myPosition]
+					[NSString stringWithFormat:@"Upcoming %lu", (unsigned long)([holidaysInPage count] - myPosition)],
+					[NSString stringWithFormat:@"Past %lu", (unsigned long)myPosition]
 			];
-			FNLOG(@"%d + %d = %d : %d", [holidaysInPage count] - myPosition, myPosition, myPosition + [holidaysInPage count] - myPosition + 1, [holidaysInPage count]);
+			FNLOG(@"%lu + %lu = %lu : %lu",(unsigned long)([holidaysInPage count] - myPosition), (unsigned long)myPosition, (unsigned long)(myPosition + [holidaysInPage count] - myPosition + 1), (unsigned long)[holidaysInPage count]);
 		}
 	}
 }
@@ -502,8 +502,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			[segmentedControl setSelectedSegmentIndex:1];
 		}
 		segmentedControl.items = @[
-				[NSString stringWithFormat:@"Upcoming %d", upcoming],
-				[NSString stringWithFormat:@"Past %d", past]
+				[NSString stringWithFormat:@"Upcoming %ld", (long)upcoming],
+				[NSString stringWithFormat:@"Past %ld", (long)past]
 		];
 		self.tableView.tableFooterView = [self tableFooterView];
 		[self.tableView reloadData];
@@ -517,7 +517,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		HolidayData *data = [[HolidayData alloc] init];
 		NSArray *array = [data holidaysForCountry:self.countryCode year:year fullSet:YES];
 		if (array) {
-			yearLabel.text = [NSString stringWithFormat:@"%d", year];
+			yearLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)year];
 			[self reloadDataWithYear:year];
 			[self scrollToRightPosition:_tableView enforceToMiddle:YES animated:NO];
 		} else {
@@ -528,7 +528,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)alertNotAvailableYear:(NSUInteger)year {
 	@autoreleasepool {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Holidays for year %d is not available.", year] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:[NSString stringWithFormat:@"Holidays for year %lu is not available.", (unsigned long)year] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[alertView show];
 	}
 }
@@ -540,7 +540,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		HolidayData *data = [HolidayData new];
 		NSArray *array = [data holidaysForCountry:self.countryCode year:year fullSet:YES];
 		if (array) {
-			yearLabel.text = [NSString stringWithFormat:@"%d", year];
+			yearLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)year];
 			[self reloadDataWithYear:year];
 			[self scrollToRightPosition:self.tableView enforceToMiddle:YES animated:NO];
 		} else {

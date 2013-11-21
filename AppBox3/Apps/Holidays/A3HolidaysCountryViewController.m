@@ -13,10 +13,9 @@
 #import "A3CurrencyTVActionCell.h"
 #import "FMMoveTableView.h"
 #import "A3HolidaysCountrySearchViewController.h"
-#import "UIViewController+navigation.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3UIDevice.h"
 #import "A3HolidaysFlickrDownloadManager.h"
+#import "NSMutableArray+MoveObject.h"
 
 @interface A3HolidaysCountryViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3SearchViewControllerDelegate>
 
@@ -30,7 +29,6 @@
 }
 
 static NSString *const HolidayCellIdentifier = @"HolidayCountryViewCell";
-static NSString *const plusCellIdentifier = @"plusCellIdentifier";
 
 extern NSString *const A3CurrencyActionCellID;
 

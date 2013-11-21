@@ -7,7 +7,6 @@
 //
 
 #import "A3ComparisonView.h"
-#import "CPTPlatformSpecificCategories.h"
 
 @interface A3ComparisonView ()
 @end
@@ -37,7 +36,8 @@
 	} else {
 		UIBezierPath *leftPath, *rightPath;
 		UIColor *leftColor, *rightColor;
-		if ([self.leftValue isLessThan:self.rightValue]) {
+		NSComparisonResult result = [self.leftValue compare:self.rightValue];
+		if (result == NSOrderedSame || result == NSOrderedAscending) {
 			leftPath = [self leftSmallPathWithRect:rect];
 			rightPath = [self rightBigPathWithRect:rect];
 			leftColor = self.smallColor;

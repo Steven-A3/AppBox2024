@@ -11,8 +11,6 @@
 @interface A3NumberKeyboardViewController : UIViewController
 
 @property (nonatomic, weak) UIResponder<UIKeyInput> *keyInputDelegate;		// TextField, TextView, ... responder
-@property (nonatomic, weak) QEntryTableViewCell *entryTableViewCell;		// Handling Prev, Next button
-@property (nonatomic, weak) QEntryElement *element;
 @property (nonatomic) 		A3NumberKeyboardType keyboardType;
 @property (nonatomic, strong) NSString *currencySymbol;
 @property (nonatomic, strong) NSString *currencyCode;

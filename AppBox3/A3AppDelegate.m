@@ -9,7 +9,6 @@
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "A3AppDelegate+data.h"
-#import "A3HomeViewController_iPhone.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
 
@@ -43,8 +42,7 @@
 		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
 		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:leftMenuViewController];
 
-		A3HomeViewController_iPhone *centerViewController = [[A3HomeViewController_iPhone alloc] initWithNibName:@"HomeView_iPhone" bundle:nil];
-
+		UIViewController *centerViewController = [UIViewController new];
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:centerViewController];
 
 		_drawerController = [[MMDrawerController alloc]

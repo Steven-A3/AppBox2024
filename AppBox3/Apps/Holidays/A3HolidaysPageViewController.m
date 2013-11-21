@@ -329,7 +329,7 @@
 			viewController.pageViewController = self;
 			[_viewControllerCache setObject:viewController forKey:_countries[page]];
 		} else {
-			FNLOG(@"Cache hit for %@, %d", _countries[page], page);
+			FNLOG(@"Cache hit for %@, %lu", _countries[page], (unsigned long)page);
 		}
 
 		return viewController;

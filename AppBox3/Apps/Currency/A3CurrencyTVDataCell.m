@@ -9,7 +9,6 @@
 #import "A3CurrencyTVDataCell.h"
 #import "A3UIDevice.h"
 #import "common.h"
-#import "NSNumberExtensions.h"
 //#import "NSNumberExtensions.h"
 
 @interface A3CurrencyTVDataCell ()
@@ -101,7 +100,7 @@
 																	   toItem:self.contentView
 																	attribute:NSLayoutAttributeLeft
 																   multiplier:1.0
-																	 constant:[leftMargin cgFloatValue]]];
+																	 constant:[leftMargin doubleValue]]];
 
 	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
 																	attribute:NSLayoutAttributeWidth
@@ -109,7 +108,7 @@
 																	   toItem:self.contentView
 																	attribute:NSLayoutAttributeWidth
 																   multiplier:IS_IPAD ? 0.8 : 0.6
-																	 constant:-leftMargin.cgFloatValue]];
+																	 constant:-leftMargin.doubleValue]];
 
 	// Flag image View
 	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_flagImageView
@@ -261,7 +260,7 @@
 }
 
 - (void)buttonPressed:(UIButton *)button {
-	FNLOG(@"%d", button.tag);
+	FNLOG(@"%ld", (long)button.tag);
 	switch (button.tag) {
 		case 0:
 			if ([_menuDelegate respondsToSelector:@selector(swapActionForCell:)]) {

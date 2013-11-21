@@ -97,7 +97,7 @@
 }
 
 + (NSString *)orderStringWithOrder:(NSInteger)order {
-	NSString *string = [NSString stringWithFormat:@"%d", order];
+	NSString *string = [NSString stringWithFormat:@"%ld", (long)order];
 	return [string stringByPaddingZeroLength10];
 }
 

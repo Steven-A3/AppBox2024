@@ -281,7 +281,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	@autoreleasepool {
 		[self clearEverything];
 
-		A3CurrencySettingsViewController *viewController = [[A3CurrencySettingsViewController alloc] initWithRoot:nil];
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3CurrencySettings" bundle:nil];
+		A3CurrencySettingsViewController *viewController = [storyboard instantiateInitialViewController];
 		viewController.delegate = self;
 		[self presentSubViewController:viewController];
 	}
@@ -971,7 +972,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		equalIndex = [self.favorites indexOfObject:self.equalItem];
 
 		if (equalIndex != 1) {
-			FNLOG(@"equal index %d is not 1.", equalIndex);
+			FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
 			[self.favorites moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
 			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
 			if (equalIndex == 0) {
@@ -982,7 +983,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		plusIndex = [self.favorites indexOfObject:self.plusItem];
 
 		if (plusIndex != (count - 1)) {
-			FNLOG(@"plusIndex %d is not %d.", plusIndex, count - 1);
+			FNLOG(@"plusIndex %ld is not %ld.", (long)plusIndex, (long)count - 1);
 			[self.favorites moveItemInSortedArrayFromIndex:plusIndex toIndex:count - 1];
 			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:plusIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:count - 1 inSection:0]];
 		}

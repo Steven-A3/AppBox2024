@@ -12,13 +12,11 @@
 #import "A3RootViewController_iPad.h"
 
 @class A3NumberKeyboardViewController;
-@class A3FrequencyKeyboardViewController;
 @class A3DateKeyboardViewController;
 
 @interface UIViewController (A3AppCategory) <A3KeyboardDelegate>
 
 @property (nonatomic, strong) A3NumberKeyboardViewController *numberKeyboardViewController;
-@property (nonatomic, strong) A3FrequencyKeyboardViewController *frequencyKeyboardViewController;
 @property (nonatomic, strong) A3DateKeyboardViewController *dateKeyboardViewController;
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
