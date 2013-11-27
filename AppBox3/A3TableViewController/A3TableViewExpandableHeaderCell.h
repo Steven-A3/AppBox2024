@@ -7,15 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3TableViewExpandableCell.h"
 
-@protocol A3TableViewExpandableHeaderCellProtocol <NSObject>
-- (void)expandButtonPressed:(UIButton *)expandButton;
-@end
-
-@interface A3TableViewExpandableHeaderCell : UITableViewCell
+@interface A3TableViewExpandableHeaderCell : A3TableViewExpandableCell
 
 @property (nonatomic, strong) UILabel *titleLabel;
-@property (nonatomic, strong) UIButton *expandButton;
-@property (nonatomic, weak) id<A3TableViewExpandableHeaderCellProtocol> delegate;
 
 @end

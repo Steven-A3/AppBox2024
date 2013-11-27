@@ -10,4 +10,14 @@
 
 @interface A3TableViewCell : UITableViewCell
 
+@property (nonatomic, strong) UIView *customTopSeparator;
+@property (nonatomic, strong) UIView *customSeparator;
+
+- (void)showTopSeparator;
+
+- (void)setBottomSeparatorForBottomRow;
+
+- (void)setBottomSeparatorForMiddleRow;
+
+- (void)setBottomSeparatorForExpandableBottom;
 @end

@@ -7,7 +7,9 @@
 //
 
 
+#import "A3TableViewController.h"
+#import "A3SelectTableViewController.h"
 
-@interface A3MainMenuTableViewController : UITableViewController
+@interface A3MainMenuTableViewController : A3TableViewController
 
 @end

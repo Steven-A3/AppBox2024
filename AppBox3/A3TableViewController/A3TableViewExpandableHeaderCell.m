@@ -40,33 +40,12 @@
 }
 
 - (void)addExpandButton {
-	if (!_expandButton) {
-		_expandButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_expandButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:23];
-		[_expandButton setTitle:@"n" forState:UIControlStateNormal];
-		[_expandButton setTitleColor:[UIColor colorWithRed:199.0 / 255.0 green:199.0 / 255.0 blue:204.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
-		[_expandButton addTarget:self action:@selector(expandButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	[self addSubview:self.expandButton];
 
-		[self addSubview:_expandButton];
-
-		[_expandButton makeConstraints:^(MASConstraintMaker *make) {
-			make.right.equalTo(self.right).with.offset(-6);
-			make.bottom.equalTo(self.bottom).with.offset(0);
-		}];
-	}
-}
-
-- (void)expandButtonAction:(UIButton *)expandButton {
-	if ([_delegate respondsToSelector:@selector(expandButtonPressed:)]) {
-		[_delegate expandButtonPressed:expandButton];
-	}
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+	[self.expandButton makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(self.right).with.offset(-6);
+		make.bottom.equalTo(self.bottom).with.offset(0);
+	}];
 }
 
 @end

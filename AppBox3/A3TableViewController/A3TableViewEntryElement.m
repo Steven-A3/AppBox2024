@@ -40,6 +40,10 @@
 
 	[cell calculateTextFieldFrame];
 
+	if ([self.imageName length]) {
+		cell.imageView.image = [UIImage imageNamed:self.imageName];
+	}
+
 	return cell;
 }
 

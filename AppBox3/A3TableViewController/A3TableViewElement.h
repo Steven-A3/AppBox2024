@@ -8,15 +8,24 @@
 
 
 @protocol A3SelectTableViewControllerProtocol;
+@class A3TableViewExpandableElement;
+@class A3TableViewSection;
 
 @interface A3TableViewElement : NSObject
 
 @property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *imageName;
 @property (nonatomic, strong) id coreDataObject;
 @property (nonatomic, copy) NSString *coreDataKey;
 @property (nonatomic, copy) id value;
 @property (nonatomic) NSInteger identifier;
+@property (nonatomic, strong) NSString *className;
 @property (nonatomic, copy) void (^onSelected)(A3TableViewElement *);
+@property (nonatomic, strong) UIColor *backgroundColor;
+@property (nonatomic, strong) NSNumber *cellHeight;
+@property (nonatomic, weak) A3TableViewExpandableElement *expandableElement;
+
+@property (nonatomic, weak) A3TableViewSection *section;
 
 - (UITableViewCell *)cellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 - (void)didSelectCellInViewController:(UIViewController<A3SelectTableViewControllerProtocol> *)viewController tableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;

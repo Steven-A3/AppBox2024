@@ -26,6 +26,10 @@
 		cell.detailTextLabel.text = self.items[self.selectedIndex];
 	}
 
+	if ([self.imageName length]) {
+		cell.imageView.image = [UIImage imageNamed:self.imageName];
+	}
+
 	return cell;
 }
 

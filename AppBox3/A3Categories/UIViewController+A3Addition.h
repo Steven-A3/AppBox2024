@@ -13,6 +13,9 @@
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)popToRootAndPushViewController:(UIViewController *)viewController;
 - (void)leftBarButtonAppsButton;
+
+- (void)appsButtonAction;
+
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
 - (void)dismissMoreMenuView:(UIView *)moreMenuView tableView:(UITableView *)tableView;

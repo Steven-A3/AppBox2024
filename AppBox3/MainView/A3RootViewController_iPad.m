@@ -12,6 +12,7 @@
 #import "A3CenterViewProtocol.h"
 #import "common.h"
 #import "UIViewController+A3Addition.h"
+#import "A3MainViewController.h"
 
 @interface A3RootViewController_iPad ()
 
@@ -37,13 +38,12 @@
 
 	self.view.backgroundColor = [UIColor whiteColor];
 
-	UIViewController *viewController = [UIViewController new];
-
-	_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+	A3MainViewController *mainViewController = [[A3MainViewController alloc] initWithNibName:nil bundle:nil];
+	_centerNavigationController = [[A3NavigationController alloc] initWithRootViewController:mainViewController];
 	[self addChildViewController:_centerNavigationController];
 	[self.view addSubview:_centerNavigationController.view];
 
-	_leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	_leftMenuViewController = [[A3MainMenuTableViewController alloc] init];
 	_leftNavigationController = [[A3NavigationController alloc] initWithRootViewController:_leftMenuViewController];
 	[self addChildViewController:_leftNavigationController];
 	[self.view addSubview:_leftNavigationController.view];

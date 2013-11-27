@@ -11,6 +11,7 @@
 #import "A3AppDelegate+data.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
+#import "A3MainViewController.h"
 
 @interface A3AppDelegate ()
 
@@ -39,10 +40,10 @@
 		_rootViewController = [[A3RootViewController_iPad alloc] initWithNibName:nil bundle:nil];
 		rootViewController = _rootViewController;
 	} else {
-		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] initWithStyle:UITableViewStylePlain];
+		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] init];
 		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:leftMenuViewController];
 
-		UIViewController *centerViewController = [UIViewController new];
+		A3MainViewController *centerViewController = [[A3MainViewController alloc] initWithNibName:nil bundle:nil];
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:centerViewController];
 
 		_drawerController = [[MMDrawerController alloc]
@@ -51,9 +52,8 @@
 		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 		[_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
 		[_drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
-		[_drawerController setShowsShadow:NO];
 
-		[_drawerController setMaximumLeftDrawerWidth:320.0];
+		[_drawerController setMaximumLeftDrawerWidth:266.0];
 
 		_drawerController.view.frame = [[UIScreen mainScreen] bounds];
 
