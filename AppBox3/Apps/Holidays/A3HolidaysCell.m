@@ -125,7 +125,7 @@
 	[_lunarDateLabel setHidden:YES];
 }
 
-- (FXLabel *)dateLabel {
+- (UILabel *)dateLabel {
 	if (!_dateLabel) {
 		_dateLabel = [FXLabel new];
 		_dateLabel.textColor = [UIColor whiteColor];

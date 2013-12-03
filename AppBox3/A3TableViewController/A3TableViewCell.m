@@ -47,6 +47,10 @@
 	CGRect frame = self.textLabel.frame;
 	frame.origin.x = self.contentInset;
 	self.textLabel.frame = frame;
+	
+	frame = self.imageView.frame;
+	frame.origin.x = IS_IPHONE ? 15 : 28;
+	self.imageView.frame = frame;
 }
 
 - (void)prepareForReuse {

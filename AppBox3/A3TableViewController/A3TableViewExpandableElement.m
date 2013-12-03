@@ -116,4 +116,10 @@
 	}];
 }
 
+- (void)didSelectCellInViewController:(UIViewController <A3SelectTableViewControllerProtocol> *)viewController tableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+	[super didSelectCellInViewController:viewController tableView:tableView atIndexPath:indexPath];
+
+	[self expandButtonPressed:self.cell.expandButton];
+}
+
 @end

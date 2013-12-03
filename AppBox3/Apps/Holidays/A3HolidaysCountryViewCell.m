@@ -11,9 +11,9 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "NSDate+daysleft.h"
-#import "FXLabel.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "SFKImage.h"
+#import "FXLabel.h"
 
 @interface A3HolidaysCountryViewCell ()
 
@@ -168,7 +168,7 @@
 		_locationImageView = [UIImageView new];
 		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:12]];
 		[SFKImage setDefaultColor:[UIColor whiteColor]];
-		_locationImageView.image = [SFKImage imageNamed:@"p"];
+		_locationImageView.image = [SFKImage imageNamed:@"k"];
 		[self.contentView addSubview:_locationImageView];
 
 		[_locationImageView makeConstraints:^(MASConstraintMaker *make) {

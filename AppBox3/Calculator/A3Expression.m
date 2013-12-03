@@ -7,7 +7,6 @@
 //
 
 #import "A3Expression.h"
-#import "A3ExpressionComponent.h"
 #import "CoreText/CoreText.h"
 #import "common.h"
 

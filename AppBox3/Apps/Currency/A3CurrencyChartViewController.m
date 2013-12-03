@@ -6,11 +6,9 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencyTVDataCell.h"
 #import "CurrencyItem.h"
-#import "NSManagedObject+MagicalFinders.h"
 #import "common.h"
 #import "UIImageView+AFNetworking.h"
 #import "A3CurrencyViewController.h"

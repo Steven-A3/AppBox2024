@@ -70,7 +70,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     self = [super initWithStyle:style];
     if (self) {
 		// Custom initialization
-		self.title = @"Currency";
+		self.title = NSLocalizedString(@"Currency", @"Currency");
 		self.dragDelegate = self;
 	}
     return self;

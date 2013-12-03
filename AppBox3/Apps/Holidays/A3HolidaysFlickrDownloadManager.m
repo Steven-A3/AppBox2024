@@ -81,7 +81,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 
 - (UIImage *)imageForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList {
 	NSString *imagePath = [self holidayImagePathForCountryCode:countryCode orientation:orientation forList:forList];
-	return [UIImage imageWithContentsOfFile:imagePath];
+	return [imagePath length] ? [UIImage imageWithContentsOfFile:imagePath] : nil;
 }
 
 - (NSString *)holidayImagePathForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList {
@@ -97,40 +97,17 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		}
 		NSString *filePath = [savedImageFilename pathInLibraryDirectory];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-			FNLOG(@"%@", filePath);
 			return filePath;
 		}
 	}
-	return [self defaultImagePathForCountryCode:countryCode orientation:orientation forList:forList];
+	return nil;
 }
 
-- (NSString *)defaultImagePathForCountryCode:(NSString *)countryCode orientation:(UIInterfaceOrientation)orientation forList:(BOOL)forList {
-	NSString *defaultImageFileName = @"default";
+- (BOOL)isDayForCountryCode:(NSString *)countryCode {
 	NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
 	[calendar setTimeZone:[HolidayData timeZoneForCountryCode:countryCode]];
 	NSDateComponents *dateComponents = [calendar components:NSHourCalendarUnit fromDate:[NSDate date]];
-	BOOL imageForDay = (dateComponents.hour >= 6 && dateComponents.hour < 18);
-	FNLOG(@"%@, %ld", countryCode, (long)dateComponents.hour);
-
-	NSString *imageNameWithOption;
-	imageNameWithOption = [defaultImageFileName stringByAppendingString:imageForDay ? @"day" : @"night"];
-	if (IS_IPHONE) {
-		imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, kA3HolidayImageiPhone];
-	} else {
-		imageNameWithOption = [NSString stringWithFormat:@"%@%@", imageNameWithOption, UIInterfaceOrientationIsLandscape(orientation) ? kA3HolidayImageiPadLandScape : kA3HolidayImageiPadPortrait];
-	}
-	if (forList) {
-		imageNameWithOption = [imageNameWithOption stringByAppendingString:@"List"];
-	}
-
-	NSString *filePath = [imageNameWithOption pathInLibraryDirectory];
-	if (![[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
-		NSString *defaultOriginalImagePath = [[NSBundle mainBundle] pathForResource:@"day" ofType:@"jpg"];
-		[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultOriginalImagePath] name:[defaultImageFileName stringByAppendingString:@"day"]];
-		defaultOriginalImagePath = [[NSBundle mainBundle] pathForResource:@"night" ofType:@"jpg"];
-		[self cropSetOriginalImage:[UIImage imageWithContentsOfFile:defaultOriginalImagePath] name:[defaultImageFileName stringByAppendingString:@"night"]];
-	}
-	return filePath;
+	return (dateComponents.hour >= 6 && dateComponents.hour < 18);
 }
 
 - (BOOL)hasUserSuppliedImageForCountry:(NSString *)code {
@@ -160,7 +137,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 		if ([self.downloadQueue containsObject:countryCode]) return;
 
 		NSDate *downloadDate = [self downloadDateForCountryCode:countryCode];
-		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 60 * 5) {
+		if (!downloadDate || [[NSDate date] timeIntervalSinceDate:downloadDate] > 5) {
 			[self.downloadQueue addObject:countryCode];
 		}
         
@@ -223,7 +200,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
     [self setImageID:self.photoInfo[@"photo_id"] forCountryCode:countryCode];
     [self setOwner:self.photoInfo[@"owner"] forCountryCode:countryCode];
     [self setURLString:self.photoInfo[@"flickr_url"] forCountryCode:countryCode];
-    [self setLicenseString:self.photoInfo[@"type"] forCountryCode:countryCode];
+    [self setLicenseString:@"cc" forCountryCode:countryCode];
     
     [self setDownloadDateForCountryCode:countryCode];
     

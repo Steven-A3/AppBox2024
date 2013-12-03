@@ -8,7 +8,6 @@
 
 #import "A3ImageCropperViewController.h"
 #import "common.h"
-#import "FXLabel.h"
 #import "UIView+Screenshot.h"
 
 @interface A3ImageCropperViewController () <UIScrollViewDelegate>

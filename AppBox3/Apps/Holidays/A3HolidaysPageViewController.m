@@ -251,14 +251,14 @@
 	@autoreleasepool {
 		if (!_topGradientView) {
 			_topGradientView = [A3GradientView new];
-			_topGradientView.gradientColors = @[(id) [UIColor colorWithWhite:0.0 alpha:0.5].CGColor, (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
+			_topGradientView.gradientColors = @[(id) [UIColor colorWithWhite:0.0 alpha:0.15].CGColor, (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor];
 			[self.view addSubview:_topGradientView];
 
 			[_topGradientView makeConstraints:^(MASConstraintMaker *make) {
 				make.top.equalTo(self.view.top);
 				make.left.equalTo(self.view.left);
 				make.right.equalTo(self.view.right);
-				make.height.equalTo(@64);
+				make.height.equalTo(@80);
 			}];
 
 			[_topGradientView setHidden:YES];
@@ -532,7 +532,7 @@
 		if (index1 == 0) {
 			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:10]];
 			[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.2]];
-			return [SFKImage imageNamed:@"p"];
+			return [SFKImage imageNamed:@"k"];
 		} else {
 			UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,6,6)];
 			view.layer.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.2].CGColor;
@@ -550,7 +550,7 @@
 			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:10]];
 			[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.6]];
 
-			return [SFKImage imageNamed:@"p"];
+			return [SFKImage imageNamed:@"k"];
 		} else {
 			UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,0,6,6)];
 			view.layer.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6].CGColor;
@@ -573,7 +573,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 		if ([owner length]) {
 			NSMutableAttributedString *licenseString;
 			if ([license isEqualToString:@"cc"]) {
-				licenseString = [[NSMutableAttributedString alloc] initWithString:@"r" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"appbox" size:10],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
+				licenseString = [[NSMutableAttributedString alloc] initWithString:@"a" attributes:@{NSFontAttributeName:[UIFont fontWithName:@"appbox" size:10],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 			} else {
 				licenseString = [[NSMutableAttributedString alloc] initWithString:@"©" attributes:@{NSFontAttributeName:[UIFont fontWithName:@".HelveticaNeueInterface-M3" size:12],NSForegroundColorAttributeName:[UIColor colorWithWhite:1.0 alpha:0.6]}];
 			}

@@ -11,7 +11,6 @@
 #import "HolidayData+Country.h"
 #import "A3UIDevice.h"
 #import "A3GradientView.h"
-#import "FXLabel.h"
 #import "SFKImage.h"
 #import "A3FSegmentedControl.h"
 #import "common.h"
@@ -20,6 +19,8 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "DKLiveBlurView.h"
 #import "UIViewController+A3Addition.h"
+#import "A3BackgroundWithPatternView.h"
+#import "FXLabel.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,
@@ -35,6 +36,9 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 @property (nonatomic, strong) NSArray *holidays;
 @property (nonatomic, strong) DKLiveBlurView *imageView;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) A3BackgroundWithPatternView *backgroundView;
+@property (nonatomic, strong) A3GradientView *bottomGradientView;
+
 @end
 
 @implementation A3HolidaysPageContentViewController {
@@ -71,10 +75,11 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 	@autoreleasepool {
 		self.view.clipsToBounds = YES;
+		self.view.backgroundColor = [UIColor whiteColor];
 		self.automaticallyAdjustsScrollViewInsets = NO;
 
+		[self setupBackgroundView];
 		[self setupImageView];
-		[self setupBottomGradientView];
 		[self setupTableView];
 
 		FNLOG();
@@ -109,8 +114,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	@autoreleasepool {
 		dispatch_sync(dispatch_get_main_queue(), ^{
 			if ([notification.userInfo[@"CountryCode"] isEqualToString:_countryCode]) {
+				[self setupBottomGradientView];
 				[_pageViewController updatePhotoLabelText];
-
 				_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
 			}
 		});
@@ -150,22 +155,35 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	}
 }
 
+- (void)setupBackgroundView {
+	A3BackgroundPatternStyle style = [[A3HolidaysFlickrDownloadManager sharedInstance] isDayForCountryCode:self.countryCode] ? A3BackgroundPatternStyleLight : A3BackgroundPatternStyleDark;
+	_backgroundView = [[A3BackgroundWithPatternView alloc] initWithStyle:style];
+	_backgroundView.frame = self.view.bounds;
+	[self.view insertSubview:_backgroundView atIndex:0];
+
+	[_backgroundView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+}
+
 - (void)setupBottomGradientView {
 	@autoreleasepool {
-		A3GradientView *gradientView = [A3GradientView new];
-		gradientView.gradientColors = @[
-				(id)[UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-				(id)[UIColor colorWithWhite:0.0 alpha:1.0].CGColor
-		];
+		if (!_bottomGradientView) {
+			_bottomGradientView = [A3GradientView new];
+			_bottomGradientView.gradientColors = @[
+					(id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
+					(id) [UIColor colorWithWhite:0.0 alpha:1.0].CGColor
+			];
 
-		[self.view addSubview:gradientView];
+			[self.view insertSubview:_bottomGradientView belowSubview:self.tableView];
 
-		[gradientView makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.bottom).with.offset(-150);
-			make.left.equalTo(self.view.left);
-			make.right.equalTo(self.view.right);
-			make.bottom.equalTo(self.view.bottom);
-		}];
+			[_bottomGradientView makeConstraints:^(MASConstraintMaker *make) {
+				make.top.equalTo(self.view.bottom).with.offset(-150);
+				make.left.equalTo(self.view.left);
+				make.right.equalTo(self.view.right);
+				make.bottom.equalTo(self.view.bottom);
+			}];
+		}
 	}
 }
 
@@ -173,7 +191,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	@autoreleasepool {
 		_imageView = [DKLiveBlurView new];
 		_imageView.userInteractionEnabled = NO;
-		[self.view insertSubview:_imageView atIndex:0];
+		[self.view insertSubview:_imageView aboveSubview:_backgroundView];
 
 		CGFloat interpolationFactor = 10;
 
@@ -191,7 +209,13 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 
 		[_imageView addMotionEffect:interpolationHorizontal];
 		[_imageView addMotionEffect:interpolationVertical];
-		_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
+
+		A3HolidaysFlickrDownloadManager *downloadManager = [A3HolidaysFlickrDownloadManager sharedInstance];
+		UIImage *image = [downloadManager imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
+		if (image) {
+			_imageView.originalImage = image;
+			[self setupBottomGradientView];
+		}
 	}
 }
 
@@ -335,7 +359,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		prevYearButton.frame = CGRectMake(0,0,40,40);
 		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:22]];
 		[SFKImage setDefaultColor:[UIColor whiteColor]];
-		UIImage *image = [SFKImage imageNamed:@"e"];
+		UIImage *image = [SFKImage imageNamed:@"g"];
 		[prevYearButton setImage:image forState:UIControlStateNormal];
 		[prevYearButton addTarget:self action:@selector(prevYearButtonAction) forControlEvents:UIControlEventTouchUpInside];
 		[headerView addSubview:prevYearButton];
@@ -348,7 +372,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		}];
 
 		UIButton *nextYearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		image = [SFKImage imageNamed:@"f"];
+		image = [SFKImage imageNamed:@"h"];
 		[nextYearButton setImage:image forState:UIControlStateNormal];
 		[nextYearButton addTarget:self action:@selector(nextYearButtonAction) forControlEvents:UIControlEventTouchUpInside];
 		[headerView addSubview:nextYearButton];
