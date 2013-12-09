@@ -61,7 +61,6 @@
 
 	_mySearchDisplayController.searchBar.barTintColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:248.0/255.0 alpha:1.0];
 
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,6 +82,8 @@ NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
 NSString *const kA3AppsMenuImageName = @"kA3AppsMenuImageName";
 NSString *const kA3AppsExpandableChildren = @"kA3AppsExpandableChildren";
 NSString *const kA3AppsClassName = @"kA3AppsClassName";
+NSString *const kA3AppsNibName = @"kA3AppsNibName";
+NSString *const kA3AppsStoryboardName = @"kA3AppsStoryboardName";
 NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 
 - (void)setupData {
@@ -138,7 +139,7 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 					kA3AppsExpandableChildren : @[
 							@{kA3AppsMenuName : @"Currency", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
 							@{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"LunarConverter"},
-							@{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Translator"},
+							@{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
 							@{kA3AppsMenuName : @"Unit Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitConverter"},
 			]
 			},
@@ -176,7 +177,7 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 
 - (id)bottomSection {
 	NSArray *bottomSection = @[
-			@{kA3AppsMenuName : @"Settings", kA3AppsClassName : @""},
+			@{kA3AppsMenuName : @"Settings", kA3AppsClassName : @"", kA3AppsStoryboardName : @"A3SettingsStoryboard"},
 			@{kA3AppsMenuName : @"About", kA3AppsClassName : @""},
 			@{kA3AppsMenuName : @"Help", kA3AppsClassName : @""},
 	];
@@ -187,22 +188,7 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 - (id)sectionWithData:(NSArray *)data {
 	A3TableViewSection *section = [A3TableViewSection new];
 
-	NSMutableArray *elementsInSection = [NSMutableArray new];
-	for (NSDictionary *description in data) {
-		if ([description[kA3AppsMenuExpandable] boolValue] && description[kA3AppsExpandableChildren]) {
-			A3TableViewExpandableElement *expandableElement = [A3TableViewExpandableElement new];
-			expandableElement.title = description[kA3AppsMenuName];
-			expandableElement.elements = [self elementsWithData:description[kA3AppsExpandableChildren]];
-			[elementsInSection addObject:expandableElement];
-		} else {
-			A3TableViewElement *element = [A3TableViewElement new];
-			element.title = description[kA3AppsMenuName];
-			element.imageName = description[kA3AppsMenuImageName];
-			element.className = description[kA3AppsClassName];
-			[elementsInSection addObject:element];
-		}
-	}
-	section.elements = elementsInSection;
+	section.elements = [self elementsWithData:data];
 
 	return section;
 }
@@ -220,9 +206,10 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 			element.title = elementDescription[kA3AppsMenuName];
 			element.imageName = elementDescription[kA3AppsMenuImageName];
 			element.className = elementDescription[kA3AppsClassName];
+			element.storyboardName = elementDescription[kA3AppsStoryboardName];
+			element.nibName = elementDescription[kA3AppsNibName];
 
-			if ([elementDescription[kA3AppsClassName] length]) {
-				element.className = elementDescription[kA3AppsClassName];
+			if ([element.className length] || [element.storyboardName length]) {
 
 				__typeof(self) __weak weakSelf = self;
 
@@ -232,9 +219,13 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 						class = NSClassFromString(elementObject.className);
 
 						if (![weakSelf isActiveViewController:class]) {
-							UIViewController *viewController = [class new];
+							UIViewController *viewController = [[class alloc] initWithNibName:elementObject.nibName bundle:nil];
 							[weakSelf popToRootAndPushViewController:viewController];
 						}
+					} else if ([elementObject.storyboardName length]) {
+						UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3Settings" bundle:nil];
+						UIViewController *viewController = [storyboard instantiateInitialViewController];
+						[weakSelf popToRootAndPushViewController:viewController];
 					}
 				};
 			}

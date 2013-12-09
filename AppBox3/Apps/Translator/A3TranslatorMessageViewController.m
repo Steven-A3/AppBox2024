@@ -770,7 +770,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		_translatingMessage.translatedLanguage = _translatedTextLanguage;
 		self.originalText = _textView.text; // Save to async operation
 		_translatingMessage.date = [NSDate date];
-		[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 		_messages = nil;
 		[self messages];
@@ -874,7 +874,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	_translatingMessage.translatedText = translated;
 	_translatingMessage.originalLanguage = detectedLanguage;
 	_translatingMessage.translatedLanguage = _translatedTextLanguage;
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	if ([detectedLanguage isEqualToString:_originalTextLanguage]) {
 		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
@@ -1285,7 +1286,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)unsetFavoriteActionFromToolbar {
@@ -1297,7 +1298,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
 	}
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)deleteActionFromToolbar {
@@ -1306,7 +1307,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 		TranslatorHistory *itemToDelete = _messages[indexPath.row];
 		[itemToDelete MR_deleteEntity];
 	}
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	// Reload messages
 	_messages = nil;

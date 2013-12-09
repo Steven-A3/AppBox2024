@@ -20,10 +20,10 @@
     <entity name="CurrencyItem" representedClassName="CurrencyItem" syncable="YES">
         <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="currencySymbol" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="flagImageName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="flagImageName" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="rateToUSD" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="updated" attributeType="Date" syncable="YES"/>
+        <attribute name="rateToUSD" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="updated" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="favorite" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="CurrencyFavorite" inverseName="currencyItem" inverseEntity="CurrencyFavorite" syncable="YES"/>
     </entity>
     <entity name="Expense" representedClassName="Expense" syncable="YES">

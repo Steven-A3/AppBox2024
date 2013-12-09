@@ -12,6 +12,8 @@
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
 #import "A3MainViewController.h"
+#import "NSFileManager+A3Addtion.h"
+#import "A3AppDelegate+iCloud.h"
 
 @interface A3AppDelegate ()
 
@@ -28,12 +30,11 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// Override point for customization after application launch.
+	[self setupiCloud];
 
-	[MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:@"AppBox3.sqlite"];
-
-	dispatch_async(dispatch_get_main_queue(), ^{
-		[self prepareDatabase];
-	});
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	[fileManager setupStoreFile];
+	[MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:fileManager.storeName];
 
 	UIViewController *rootViewController;
 	if (IS_IPAD) {

@@ -8,6 +8,7 @@
 
 #import "CurrencyItem+name.h"
 #import "NSManagedObject+MagicalFinders.h"
+#import "NSManagedObjectContext+MagicalRecord.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 
@@ -34,7 +35,7 @@ NSString *const A3KeyCurrencyCode = @"currencyCode";
 	[allItems enumerateObjectsUsingBlock:^(CurrencyItem *obj, NSUInteger idx, BOOL *stop) {
 		obj.name = [obj localizedName];
 	}];
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveToPersistentStoreAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 @end

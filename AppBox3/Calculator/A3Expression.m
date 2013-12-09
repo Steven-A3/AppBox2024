@@ -143,7 +143,7 @@ NSString *kA3ExpressionAttributeElements = @"keyA3ExpressionAttributeElements";
 		} else if (lastComponent.expressionKind == A3E_E_Number) {
 			if ([lastComponent.arguments count] == 2) {
 				NSInteger power = [lastComponent.arguments[1] integerValue];
-				power = [[NSString stringWithFormat:@"%ld%lu", (long)power, (unsigned long) (input - A3E_0)] integerValue];
+				power = [[NSString stringWithFormat:@"%lu%lu", (unsigned long)power, (unsigned long)(input - A3E_0)] integerValue];
 				lastComponent.arguments[1] = @(power);
 			}
 			else {

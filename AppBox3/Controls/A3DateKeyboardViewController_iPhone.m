@@ -69,12 +69,12 @@
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray *monthSymbols = dateFormatter.shortMonthSymbols;
-	NSUInteger index = 0;
+	NSUInteger idx = 0;
 	for (A3KeyboardButton_iPhone *button in order) {
 		[button setTitle:nil forState:UIControlStateNormal];
-		button.mainTitle.text = [monthSymbols objectAtIndex:index];
-		index++;
-		button.subTitle.text = [NSString stringWithFormat:@"%lu", (unsigned long)index];
+		button.mainTitle.text = [monthSymbols objectAtIndex:idx];
+		idx++;
+		button.subTitle.text = [NSString stringWithFormat:@"%lu", (unsigned long)idx];
 	}
 }
 

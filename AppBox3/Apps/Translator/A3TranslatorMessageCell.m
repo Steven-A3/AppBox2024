@@ -317,7 +317,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (void)favoriteButtonAction {
 	_messageEntity.favorite = @(!_messageEntity.favorite.boolValue);
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	[self changeFavoriteButtonImage];
 }

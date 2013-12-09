@@ -17,3 +17,22 @@
 "Yearly" = "Yearly";
 "One-Time" = "One-Time";
 "Currency" = "Currency";
+
+"iCloud" = "iCloud";
+"None" = "None";
+
+"On" = "On";
+"Off" = "Off";
+
+"Most Recent" = "Most Recent";
+"Last %d" = "Last %d";
+
+"Korean" = "Korean";
+"Chinese" = "Chinese";
+
+"Settings" = "Settings";
+"Sync" = "Sync";
+
+"Passcode Lock" = "Passcode Lock";
+
+"Lunar Calendar" = "Lunar Calendar";

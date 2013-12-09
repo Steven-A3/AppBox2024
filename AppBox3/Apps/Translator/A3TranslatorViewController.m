@@ -341,7 +341,7 @@
 			id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
 			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"originalLanguage == %@ AND translatedLanguage == %@", [sectionInfo.objects[0] valueForKeyPath:@"originalLanguage"],  [sectionInfo.objects[0] valueForKeyPath:@"translatedLanguage"]];
 			[TranslatorHistory MR_deleteAllMatchingPredicate:predicate];
-			[[NSManagedObjectContext MR_mainQueueContext] MR_saveOnlySelfAndWait];
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 			[self.fetchedResults removeObjectAtIndex:indexPath.row];
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];

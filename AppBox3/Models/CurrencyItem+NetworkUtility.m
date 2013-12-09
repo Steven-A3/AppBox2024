@@ -56,15 +56,15 @@
 			entity.rateToUSD = yahoo.rateToUSD;
 			entity.updated = yahoo.updated;
 		}];
-		[[NSManagedObjectContext MR_mainQueueContext] MR_saveToPersistentStoreAndWait];
+
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCurrencyRatesUpdated object:nil];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		FNLOG(@"AFJSONRequestOperation failed getting Yahoo all currency list.");
 	}];
 
 	[operation start];
-	do { sleep(1); }
-	while (![operation isFinished]);
 }
 
 + (void)resetCurrencyLists {
@@ -150,7 +150,7 @@
 		}
 	}];
 
-	[[NSManagedObjectContext MR_mainQueueContext] MR_saveToPersistentStoreAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 @end

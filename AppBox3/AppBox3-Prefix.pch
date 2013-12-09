@@ -14,8 +14,13 @@
     #import <CoreData/CoreData.h>
     #import <SystemConfiguration/SystemConfiguration.h>
 	#import <MobileCoreServices/MobileCoreServices.h>
+
+	#import "common.h"
+
 #define MR_LOGGING_ENABLED 1
 	#import "CoreData+MagicalRecord.h"
+
 #define MAS_SHORTHAND
     #import <Masonry.h>
+
 #endif

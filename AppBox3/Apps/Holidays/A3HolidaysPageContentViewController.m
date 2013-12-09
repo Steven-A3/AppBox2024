@@ -487,7 +487,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 					[NSString stringWithFormat:@"Upcoming %lu", (unsigned long)([holidaysInPage count] - myPosition)],
 					[NSString stringWithFormat:@"Past %lu", (unsigned long)myPosition]
 			];
-			FNLOG(@"%lu + %lu = %lu : %lu",(unsigned long)([holidaysInPage count] - myPosition), (unsigned long)myPosition, (unsigned long)(myPosition + [holidaysInPage count] - myPosition + 1), (unsigned long)[holidaysInPage count]);
+			FNLOG(@"%lu + %lu = %lu : %lu", (unsigned long)([holidaysInPage count] - myPosition), (unsigned long)myPosition, (unsigned long)(myPosition + [holidaysInPage count] - myPosition + 1), (unsigned long)[holidaysInPage count]);
 		}
 	}
 }

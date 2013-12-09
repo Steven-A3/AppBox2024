@@ -31,6 +31,7 @@
 
 		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
 		favorite.currencyItem = array[0];
+		NSLog(@"%@", favorite.currencyItem.flagImageName);
 		favorite.order = [NSString orderStringWithOrder:(idx + 1) * 1000000];
 	}];
 }

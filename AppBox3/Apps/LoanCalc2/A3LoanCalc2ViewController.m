@@ -55,7 +55,8 @@ typedef NS_ENUM(NSInteger, A3LoanCalcRowIdentifier) {
 
 - (LoanCalcHistory *)editingObject {
 	if (nil == _editingObject) {
-		NSManagedObjectContext *managedObjectContext = [NSManagedObjectContext MR_mainQueueContext];
+		NSManagedObjectContext *managedObjectContext = [[MagicalRecordStack defaultStack] context];
+
 		NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
 		NSEntityDescription *entity = [NSEntityDescription entityForName:@"LoanCalcHistory" inManagedObjectContext:managedObjectContext];
 		[fetchRequest setEntity:entity];

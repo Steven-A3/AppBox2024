@@ -195,7 +195,8 @@
 
 - (UIImageView *)flagImageView {
 	if (!_flagImageView) {
-		_flagImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"flag_us"]];
+		// TODO: Flag image names
+		_flagImageView = [UIImageView new];
 		_flagImageView.frame = CGRectMake(225.0, 54.0, 24.0, 24.0);
 		_flagImageView.translatesAutoresizingMaskIntoConstraints = NO;
 	}
