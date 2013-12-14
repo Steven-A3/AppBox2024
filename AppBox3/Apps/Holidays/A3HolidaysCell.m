@@ -78,9 +78,9 @@
 }
 
 - (void)setShadowToLabel:(FXLabel *)label {
-	label.shadowOffset = CGSizeMake(0, 2);
-	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.24];
-	label.shadowBlur = 4;
+	label.shadowOffset = CGSizeMake(0, 1);
+	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.45];
+	label.shadowBlur = 2;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

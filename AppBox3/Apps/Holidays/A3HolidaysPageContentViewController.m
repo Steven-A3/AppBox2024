@@ -450,9 +450,9 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 - (void)setupShadow:(FXLabel *)label {
 	@autoreleasepool {
-		label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.25];
-		label.shadowOffset = CGSizeMake(0, 2);
-		label.shadowBlur = 5;
+		label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+		label.shadowOffset = CGSizeMake(0, 1);
+		label.shadowBlur = 2;
 	}
 }
 
