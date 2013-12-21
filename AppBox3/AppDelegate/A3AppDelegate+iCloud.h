@@ -8,7 +8,9 @@
 
 #import "A3AppDelegate.h"
 
-@interface A3AppDelegate (iCloud)
+@interface A3AppDelegate (iCloud) <UbiquityStoreManagerDelegate>
 
-- (void)setupiCloud;
+- (void)setupCloud;
+
+- (void)setCloudEnabled:(BOOL)enable;
 @end

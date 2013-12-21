@@ -8,7 +8,6 @@
 
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
-#import "A3AppDelegate+data.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
 #import "A3MainViewController.h"
@@ -30,11 +29,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 	// Override point for customization after application launch.
-	[self setupiCloud];
-
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	[fileManager setupStoreFile];
-	[MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:fileManager.storeName];
+	[fileManager setupCacheStoreFile];
+	[self setupCloud];
 
 	UIViewController *rootViewController;
 	if (IS_IPAD) {

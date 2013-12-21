@@ -8,12 +8,8 @@
 
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
-#import "CurrencyItem+name.h"
-#import "CurrencyItem.h"
 #import "CommonUIDefinitions.h"
 #import "A3CurrencySelectViewController.h"
-#import "A3SearchViewController.h"
-#import "common.h"
 #import "UIViewController+A3Addition.h"
 
 @implementation A3SearchTargetItem

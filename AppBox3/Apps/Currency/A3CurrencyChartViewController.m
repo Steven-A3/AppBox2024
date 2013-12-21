@@ -8,19 +8,21 @@
 
 #import "A3CurrencyChartViewController.h"
 #import "A3CurrencyTVDataCell.h"
-#import "CurrencyItem.h"
 #import "common.h"
 #import "UIImageView+AFNetworking.h"
 #import "A3CurrencyViewController.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3CurrencySelectViewController.h"
-#import "CurrencyItem+name.h"
 #import "A3UIDevice.h"
 #import "NSString+conversion.h"
 #import "UIView+Screenshot.h"
 #import "Reachability.h"
 #import "UIViewController+A3Addition.h"
+#import "CurrencyFavorite.h"
+#import "A3CurrencyDataManager.h"
+#import "A3CacheStoreManager.h"
+#import "A3CacheStoreManager.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 
@@ -33,7 +35,7 @@
 @property (nonatomic, weak) IBOutlet UIImageView *chartView;
 @property (nonatomic, strong) NSMutableArray *titleLabels;
 @property (nonatomic, strong) NSMutableArray *valueLabels;
-@property (nonatomic, strong) CurrencyItem *sourceItem, *targetItem;
+@property (nonatomic, strong) CurrencyFavorite *sourceItem, *targetItem;
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
 @property (nonatomic, strong) UIImageView *landscapeChartView;
 @property (nonatomic, strong) UIScrollView *landscapeView;
@@ -287,18 +289,18 @@
 }
 
 #pragma mark - CurrencyItem
-- (CurrencyItem *)sourceItem {
+- (CurrencyFavorite *)sourceItem {
 	if (!_sourceItem) {
-		NSArray *fetchedResult = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode];
+		NSArray *fetchedResult = [CurrencyFavorite MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode];
 		NSAssert([fetchedResult count], @"%s, %s, CurrencyItem is empty or source currency code is not valid.", __FUNCTION__, __PRETTY_FUNCTION__);
 		_sourceItem = fetchedResult[0];
 	}
 	return _sourceItem;
 }
 
-- (CurrencyItem *)targetItem {
+- (CurrencyFavorite *)targetItem {
 	if (!_targetItem) {
-		NSArray *fetchedResult = [CurrencyItem MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode];
+		NSArray *fetchedResult = [CurrencyFavorite MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode];
 		NSAssert([fetchedResult count], @"%s, CurrencyItem is empty or target currency code is not valid.", __PRETTY_FUNCTION__);
         _targetItem = fetchedResult[0];
 	}
@@ -306,7 +308,7 @@
 }
 
 - (float)conversionRate {
-	return self.targetItem.rateToUSD.floatValue / self.sourceItem.rateToUSD.floatValue;
+	return [self.cacheStoreManager rateForCurrencyCode:_targetItem.currencyCode] / [self.cacheStoreManager rateForCurrencyCode:_sourceItem.currencyCode];
 }
 
 #pragma mark - UITableViewDataSourceDelegate
@@ -374,6 +376,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	_selectionInSource = indexPath.row == 0;
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.cacheStoreManager = self.cacheStoreManager;
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = YES;
 	[self presentSubViewController:viewController];
@@ -533,7 +536,7 @@
 	}
 }
 
-#pragma makr - UIImageView Yahoo Chart
+#pragma mark - UIImageView Yahoo Chart
 
 - (NSURL *)urlForChartImage {
 	NSArray *types = @[@"1d", @"5d", @"1m", @"5m", @"1y"];

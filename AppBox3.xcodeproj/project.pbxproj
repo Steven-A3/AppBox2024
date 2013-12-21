@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		17D4200D46C80DD4C809B154 /* A3AppDelegate+data.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42846D96F29D58DF1D41D /* A3AppDelegate+data.m */; };
 		17D420ACC4165E93909BD1F5 /* A3LoanCalc2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4279C89F0319C05461EBA /* A3LoanCalc2ViewController.m */; };
 		17D4211E8BD7D7B7D8112049 /* A3OnOffLeftRightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B75C71DE69EE18900CC /* A3OnOffLeftRightButton.m */; };
 		17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */; };
@@ -21,13 +20,11 @@
 		17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */; };
 		17D4237C3A92FEFF61E78393 /* A3BlackBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D420717A6638959975A60E /* A3BlackBarButton.m */; };
 		17D423E2BAAA75166600694A /* A3NumberKeyboardSimpleVC_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426904883F7E9B5AA523B /* A3NumberKeyboardSimpleVC_iPad.m */; };
-		17D423FF2C3E1A994364FE6A /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D424004D798071B159E3DF /* CurrencyHistory+handler.m */; };
 		17D4241221D304C6701E36DB /* A3LoanCalcString.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42086FA5910EFB7DB239C /* A3LoanCalcString.m */; };
 		17D4242B1CA511FEB92F1279 /* A3EmptyActionMenuViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B99C4A9C4610048D792 /* A3EmptyActionMenuViewController_iPad.m */; };
 		17D4246179DFD23680382F4E /* NSString+conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42BBA3D7D0326968A2FB2 /* NSString+conversion.m */; };
 		17D42461C66EA03739D41FA8 /* A3CurrencyTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42ECA7D456D1062B38A3B /* A3CurrencyTableViewCell.m */; };
 		17D42478AEA4CF71673C8AE0 /* A3DateKeyboardViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C4414660AA0E5EDFD11 /* A3DateKeyboardViewController_iPad.m */; };
-		17D4253F0DFFF532C77A0772 /* CurrencyFavorite+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42D6E3628DDD9D885562D /* CurrencyFavorite+initialize.m */; };
 		17D42564DA81AFE9484B0D58 /* A3TranslatorMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */; };
 		17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */; };
 		17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D425363271B74082FD8477 /* A3LanguagePickerController.m */; };
@@ -56,7 +53,6 @@
 		17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F17E6A37A2E93CD352 /* A3BarButton.m */; };
 		17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */; };
 		17D42E31C048D60A8E5AC993 /* A3TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4210E51A8ABE762D414F5 /* A3TableViewController.m */; };
-		17D42E6AC287CEB0BE8039D0 /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42F722CDE5DE955D1E3EE /* A3YahooCurrency.m */; };
 		17D42F37E672CCF7D71978C9 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DA2DACEFCA29645708D /* NSManagedObject+Clone.m */; };
 		17D42F5E206BDDF86D880CC5 /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421752A4D7403CF3080DD /* FSVenue.m */; };
 		17D42F5FD45C92F0F9F5D7D4 /* FSWebLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D423FB47020C540F70AA8F /* FSWebLogin.m */; };
@@ -74,12 +70,31 @@
 		6804FCE91821EFDE00C79FE2 /* A3TableViewEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6804FCE81821EFDE00C79FE2 /* A3TableViewEntryCell.m */; };
 		681378FF1703F8720003201F /* LoanCalcHistory+calculation.m in Sources */ = {isa = PBXBuildFile; fileRef = 681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */; };
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
-		6815871816A7A621006DC8D7 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6815871716A7A621006DC8D7 /* CurrencyFavorite.m */; };
 		681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 681614031709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m */; };
 		681614061709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 681614041709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib */; };
 		6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 6817825216253640008A6E4B /* A3SegmentedControl.m */; };
 		6818E036179D3EE30061A70B /* UITableViewController+swipeMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 6818E035179D3EE30061A70B /* UITableViewController+swipeMenu.m */; };
 		682126861843902A009A7964 /* NSNumberExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 682126851843902A009A7964 /* NSNumberExtensions.m */; };
+		6823F6EB1863287B00E6E90D /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */; };
+		6823F6EE1863287B00E6E90D /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6ED1863287B00E6E90D /* CurrencyHistoryItem.m */; };
+		6823F6F3186328AF00E6E90D /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */; };
+		6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
+		6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */; };
+		6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */; };
+		6823F7061863579500E6E90D /* A3CurrencyDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */; };
+		6823F70A1863582B00E6E90D /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6F51863294700E6E90D /* A3YahooCurrency.m */; };
+		6823F70B186358A200E6E90D /* A3CacheStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC151862055000BAF15B /* A3CacheStoreManager.m */; };
+		6823F70D186358CC00E6E90D /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 686FCF441775CD1300F19332 /* Reachability.m */; };
+		6823F70E186358F500E6E90D /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */; };
+		6823F70F186358F500E6E90D /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2A1839CD7F007C97EE /* AFHTTPRequestOperationManager.m */; };
+		6823F710186358F500E6E90D /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2C1839CD7F007C97EE /* AFHTTPSessionManager.m */; };
+		6823F711186358F500E6E90D /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2F1839CD7F007C97EE /* AFNetworkReachabilityManager.m */; };
+		6823F712186358F500E6E90D /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A311839CD7F007C97EE /* AFSecurityPolicy.m */; };
+		6823F713186358F500E6E90D /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A331839CD7F007C97EE /* AFURLConnectionOperation.m */; };
+		6823F714186358F500E6E90D /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A351839CD7F007C97EE /* AFURLRequestSerialization.m */; };
+		6823F715186358F500E6E90D /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A371839CD7F007C97EE /* AFURLResponseSerialization.m */; };
+		6823F716186358F500E6E90D /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A391839CD7F007C97EE /* AFURLSessionManager.m */; };
+		6823F7171863595E00E6E90D /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
 		6824E8F5184D8085007E26F3 /* A3Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6824E8F4184D8085007E26F3 /* A3Settings.storyboard */; };
 		682796FB16DF6CFD00BC68F3 /* A3DateKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682796F916DF6CFD00BC68F3 /* A3DateKeyboardViewController.m */; };
 		682796FC16DF6CFD00BC68F3 /* A3DateKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682796FA16DF6CFD00BC68F3 /* A3DateKeyboardViewController_iPad.xib */; };
@@ -183,13 +198,7 @@
 		6829691818505E9C00B70E13 /* ManuallyMigratingMagicalRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 682967F918503B2100B70E13 /* ManuallyMigratingMagicalRecordStack.m */; };
 		6829691A18505E9C00B70E13 /* SQLiteMagicalRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 682967FB18503B2100B70E13 /* SQLiteMagicalRecordStack.m */; };
 		6829691C18505E9C00B70E13 /* SQLiteWithSavingContextMagicalRecordStack.m in Sources */ = {isa = PBXBuildFile; fileRef = 682967FD18503B2100B70E13 /* SQLiteWithSavingContextMagicalRecordStack.m */; };
-		68296924185073AF00B70E13 /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */; };
 		682969251850746900B70E13 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682EA2DB15EB10B000BD6AD4 /* CoreData.framework */; };
-		682969271850759600B70E13 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6815871716A7A621006DC8D7 /* CurrencyFavorite.m */; };
-		682969291850759600B70E13 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854F0BA17ACF95900E882B8 /* CurrencyItem.m */; };
-		6829692B1850769100B70E13 /* CurrencyItem+name.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE10716AA7E80008D371E /* CurrencyItem+name.m */; };
-		682969321850A0F000B70E13 /* AppBox3.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 682969301850A0F000B70E13 /* AppBox3.sqlite-shm */; };
-		682969331850A0F000B70E13 /* AppBox3.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 682969311850A0F000B70E13 /* AppBox3.sqlite-wal */; };
 		682B18AE171647A700C1C0FD /* A3HorizontalBarContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 682B18AD171647A700C1C0FD /* A3HorizontalBarContainerView.m */; };
 		682E07DE17191D65007112B9 /* A3ActionMenuViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 682E07DC17191D65007112B9 /* A3ActionMenuViewController_iPhone.m */; };
 		682E07DF17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 682E07DD17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib */; };
@@ -205,6 +214,16 @@
 		6830C7871851A26E0075010F /* NSUserDefaults+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */; };
 		6830C78A1851BD480075010F /* A3SettingsSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7891851BD480075010F /* A3SettingsSyncViewController.m */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
+		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addtion.m */; };
+		6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
+		6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */; };
+		6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */; };
+		6831EBFE18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal in Resources */ = {isa = PBXBuildFile; fileRef = 6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */; };
+		6831EC041861C5F600BAF15B /* NSError+UbiquityStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC011861C5F600BAF15B /* NSError+UbiquityStoreManager.m */; };
+		6831EC051861C5F600BAF15B /* UbiquityStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC031861C5F600BAF15B /* UbiquityStoreManager.m */; };
+		6831EC0B1861C61E00BAF15B /* JRSwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC0A1861C61E00BAF15B /* JRSwizzle.m */; };
+		6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC121861EB7C00BAF15B /* MBProgressHUD.m */; };
+		6831EC161862055000BAF15B /* A3CacheStoreManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831EC151862055000BAF15B /* A3CacheStoreManager.m */; };
 		683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 683224BC17CE1B7800973F34 /* A3HolidaysCell.m */; };
 		6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6832ADE116A8D38500BEEEE6 /* A3CurrencySelectViewController.m */; };
 		683386CA1713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 683386C91713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib */; };
@@ -212,7 +231,6 @@
 		6834C5C91825180800189777 /* A3TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6834C5C81825180800189777 /* A3TableViewCell.m */; };
 		683B956515EB233500575377 /* A3iPadBatteryLifeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B950F15EB233500575377 /* A3iPadBatteryLifeViewController.m */; };
 		683B957E15EB233500575377 /* CoolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B954215EB233500575377 /* CoolButton.m */; };
-		683B958115EB233500575377 /* AppBox3.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 683B954815EB233500575377 /* AppBox3.sqlite */; };
 		683B958615EB233500575377 /* A3DatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B955415EB233500575377 /* A3DatePickerViewController.m */; };
 		683B958715EB233500575377 /* A3SearchIPADViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B955715EB233500575377 /* A3SearchIPADViewController.m */; };
 		683B958815EB233500575377 /* SearchViewiPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 683B955815EB233500575377 /* SearchViewiPad.xib */; };
@@ -220,9 +238,6 @@
 		683B958C15EB233500575377 /* A3GrayAppHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956215EB233500575377 /* A3GrayAppHeaderView.m */; };
 		683B958D15EB233500575377 /* A3RowSeparatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683B956415EB233500575377 /* A3RowSeparatorView.m */; };
 		683B959315EB252400575377 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 683B959215EB252400575377 /* QuartzCore.framework */; };
-		6840099A16B7726800D7E078 /* MenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840099916B7726800D7E078 /* MenuItem.m */; };
-		6840099E16B7726800D7E078 /* MenuGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 6840099D16B7726800D7E078 /* MenuGroup.m */; };
-		68428A3A178EDD8D0085D89F /* CurrencyItem+NetworkUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 68428A39178EDD8D0085D89F /* CurrencyItem+NetworkUtility.m */; };
 		68436AC0163E9DF5005E7A77 /* A3UIKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 68436ABF163E9DF5005E7A77 /* A3UIKit.m */; };
 		68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68461013164E0B7F005BD9FC /* A3StrokedTextButton.m */; };
 		68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68476948177D309800EBE7CF /* WeatherIcons.xcassets */; };
@@ -239,7 +254,6 @@
 		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
 		6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */; };
-		6854F0BB17ACF95900E882B8 /* CurrencyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854F0BA17ACF95900E882B8 /* CurrencyItem.m */; };
 		68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */; };
 		68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68555FF01670409F00F200B7 /* A3TimeLineTableViewCell.m */; };
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
@@ -251,7 +265,6 @@
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
 		685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723B16A64ADD004C7222 /* SystemConfiguration.framework */; };
 		685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723D16A64C91004C7222 /* MobileCoreServices.framework */; };
-		685F72BB16A6DF7C004C7222 /* MenuFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 685F72BA16A6DF7C004C7222 /* MenuFavorite.m */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6864D60117BBBA6300A215D7 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FF17BBBA6300A215D7 /* Media.xcassets */; };
 		686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */; };
@@ -279,7 +292,6 @@
 		6876D71217A75E5A00E16991 /* A3CurrencyItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */; };
 		6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */; };
 		6876D78417A760BF00E16991 /* libExpecta-ios-universal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */; };
-		687C194F1783E08100415FCE /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */; };
 		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
 		687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
 		687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
@@ -314,6 +326,9 @@
 		68953484178686AF007061CA /* UIImage+Saving.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346A178686AF007061CA /* UIImage+Saving.m */; };
 		68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346C178686AF007061CA /* UIScrollView+Screenshot.m */; };
 		68953488178686AF007061CA /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346E178686AF007061CA /* UIView+Screenshot.m */; };
+		6897918E1865C57600F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
+		689791911865C68200F74826 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689791901865C68200F74826 /* CurrencyHistory.m */; };
+		689791921865C75100F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
 		689AE26D17EC69CB0097ABB5 /* FlickrRecommendation.json in Resources */ = {isa = PBXBuildFile; fileRef = 689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */; };
 		689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */; };
 		689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2A1839CD7F007C97EE /* AFHTTPRequestOperationManager.m */; };
@@ -331,7 +346,6 @@
 		689C9A571839CD7F007C97EE /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A441839CD7F007C97EE /* UIImageView+AFNetworking.m */; };
 		689C9A581839CD7F007C97EE /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A471839CD7F007C97EE /* UIProgressView+AFNetworking.m */; };
 		689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A491839CD7F007C97EE /* UIWebView+AFNetworking.m */; };
-		68A12D391850DE7E002A8AF0 /* A3YahooCurrency.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42F722CDE5DE955D1E3EE /* A3YahooCurrency.m */; };
 		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
@@ -395,12 +409,9 @@
 		68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */; };
 		68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */; };
 		68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68E6F35517B27B8300F10ED9 /* CoreTelephony.framework */; };
-		68E6F36317B28B4F00F10ED9 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F36217B28B4F00F10ED9 /* CurrencyHistory.m */; };
 		68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */; };
 		68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */; };
 		68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */; };
-		68E6F37E17B2B48300F10ED9 /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37D17B2B48300F10ED9 /* CurrencyHistoryItem.m */; };
-		68EBE10816AA7E80008D371E /* CurrencyItem+name.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EBE10716AA7E80008D371E /* CurrencyItem+name.m */; };
 		68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EC80D516E1ADF800CF672E /* A3Formatter.m */; };
 		68F3A9E61677320100DFCAB7 /* A3YellowXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F3A9E51677320100DFCAB7 /* A3YellowXButton.m */; };
 		68F4EE8117E461A0009BDE05 /* A3ImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8017E461A0009BDE05 /* A3ImageCropperViewController.m */; };
@@ -469,7 +480,6 @@
 		17D4212186C952FA6368C647 /* A3CurrencyTVDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVDataCell.h; path = Apps/Currency/A3CurrencyTVDataCell.h; sourceTree = "<group>"; };
 		17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+accessory.m"; sourceTree = "<group>"; };
 		17D421752A4D7403CF3080DD /* FSVenue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSVenue.m; sourceTree = "<group>"; };
-		17D421945D9C51403C1B2E10 /* CurrencyHistory+handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrencyHistory+handler.h"; sourceTree = "<group>"; };
 		17D421954D4279983A5B5E90 /* FSTargetCallback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTargetCallback.h; sourceTree = "<group>"; };
 		17D421A21CDA99AB58E8DDAD /* A3TranslatorCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorCircleView.h; path = Translator/A3TranslatorCircleView.h; sourceTree = "<group>"; };
 		17D421D1608B4DF3D09EDD6D /* A3LoanCalcString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LoanCalcString.h; path = "Loan Calc/A3LoanCalcString.h"; sourceTree = "<group>"; };
@@ -488,12 +498,10 @@
 		17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTargetCallback.m; sourceTree = "<group>"; };
 		17D423EF9F1ACCB93C71C1A4 /* A3NumberKeyboardSimpleVC_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardSimpleVC_iPad.h; sourceTree = "<group>"; };
 		17D423FB47020C540F70AA8F /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWebLogin.m; sourceTree = "<group>"; };
-		17D424004D798071B159E3DF /* CurrencyHistory+handler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CurrencyHistory+handler.m"; sourceTree = "<group>"; };
 		17D424036409E445A42632B0 /* FSConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSConverter.h; sourceTree = "<group>"; };
 		17D4242940ABB0528E72D74A /* A3ComparisonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ComparisonView.m; sourceTree = "<group>"; };
 		17D4244AFCF614150C7BFB2F /* A3TranslatorLanguage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorLanguage.h; path = Translator/A3TranslatorLanguage.h; sourceTree = "<group>"; };
 		17D42454AED31A0E0852E350 /* A3OnOffLeftRightButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3OnOffLeftRightButton.h; sourceTree = "<group>"; };
-		17D424AD332111701DBCAC0D /* A3AppDelegate+data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "A3AppDelegate+data.h"; sourceTree = "<group>"; };
 		17D424B361556658F3728E3C /* NSMutableArray+MoveObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+MoveObject.h"; sourceTree = "<group>"; };
 		17D424F615E2893830803825 /* A3CurrencyHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistoryCell.m; path = Apps/Currency/A3CurrencyHistoryCell.m; sourceTree = "<group>"; };
 		17D42505EF075896601D91B4 /* A3TranslatorLanguageTVDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorLanguageTVDelegate.m; path = Translator/A3TranslatorLanguageTVDelegate.m; sourceTree = "<group>"; };
@@ -510,7 +518,6 @@
 		17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SearchViewController.m; path = Apps/Currency/A3SearchViewController.m; sourceTree = "<group>"; };
 		17D426503D335516CC3EFD93 /* A3TranslatorFavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteCell.m; path = Translator/A3TranslatorFavoriteCell.m; sourceTree = "<group>"; };
 		17D426630AB9804BD87B1DD5 /* A3_30x30Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3_30x30Button.h; sourceTree = "<group>"; };
-		17D4266E047FBF02000FA3A1 /* A3YahooCurrency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3YahooCurrency.h; sourceTree = "<group>"; };
 		17D426904883F7E9B5AA523B /* A3NumberKeyboardSimpleVC_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardSimpleVC_iPad.m; sourceTree = "<group>"; };
 		17D426B199FD2AC623B42755 /* UITableViewCell+accessory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+accessory.h"; sourceTree = "<group>"; };
 		17D426DEC2D6FD7E280056BD /* UIView+A3Drawing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+A3Drawing.m"; sourceTree = "<group>"; };
@@ -525,7 +532,6 @@
 		17D428133FDEC757E3C375DE /* A3DatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DatePickerView.h; sourceTree = "<group>"; };
 		17D42835AF604EA6A37B16D4 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		17D4283B29E7CACCE273EF77 /* NSMutableArray+MoveObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+MoveObject.m"; sourceTree = "<group>"; };
-		17D42846D96F29D58DF1D41D /* A3AppDelegate+data.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "A3AppDelegate+data.m"; sourceTree = "<group>"; };
 		17D42872DF9E5E4972080653 /* Foursquare2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Foursquare2.h; sourceTree = "<group>"; };
 		17D428A5D07C3D7181154ED3 /* A3TranslatorFavoriteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorFavoriteCell.h; path = Translator/A3TranslatorFavoriteCell.h; sourceTree = "<group>"; };
 		17D428AB1CD232306110EBB3 /* UIView+A3Drawing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+A3Drawing.h"; sourceTree = "<group>"; };
@@ -533,7 +539,6 @@
 		17D4292480B4F2F878AD138E /* A3TranslatorMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageCell.m; path = Translator/A3TranslatorMessageCell.m; sourceTree = "<group>"; };
 		17D42943209504ED58B4EADB /* A3TranslatorMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageCell.h; path = Translator/A3TranslatorMessageCell.h; sourceTree = "<group>"; };
 		17D429779D86BF82D8EB2269 /* A3DateKeyboardViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController_iPad.h; sourceTree = "<group>"; };
-		17D429F4D40788470D334A31 /* CurrencyFavorite+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrencyFavorite+initialize.h"; sourceTree = "<group>"; };
 		17D429F751726E40952CD34C /* A3TableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewSection.h; path = A3TableViewController/A3TableViewSection.h; sourceTree = "<group>"; };
 		17D42B3BE8DDD4EBEBCA10BE /* A3BackgroundWithPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BackgroundWithPatternView.h; sourceTree = "<group>"; };
 		17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LocationPlacemarkView.m; sourceTree = "<group>"; };
@@ -555,7 +560,6 @@
 		17D42C97A50D5039256BA161 /* UIViewController+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+A3Addition.m"; sourceTree = "<group>"; };
 		17D42CADABECAF1980C2B1DE /* FSRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSRequester.h; sourceTree = "<group>"; };
 		17D42CAFDD0B11EF0C713D0E /* A3TranslatorListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorListCell.m; path = Translator/A3TranslatorListCell.m; sourceTree = "<group>"; };
-		17D42D6E3628DDD9D885562D /* CurrencyFavorite+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CurrencyFavorite+initialize.m"; sourceTree = "<group>"; };
 		17D42D75EFD621691D62C345 /* A3TableViewSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TableViewSection.m; path = A3TableViewController/A3TableViewSection.m; sourceTree = "<group>"; };
 		17D42DA2DACEFCA29645708D /* NSManagedObject+Clone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Clone.m"; sourceTree = "<group>"; };
 		17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorCircleView.m; path = Translator/A3TranslatorCircleView.m; sourceTree = "<group>"; };
@@ -566,7 +570,6 @@
 		17D42F0BDA7A76B8845AB764 /* HolidayData+Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Country.h"; path = "Holidays/HolidayData+Country.h"; sourceTree = "<group>"; };
 		17D42F2D21661E9AC41AA934 /* A3TableViewExpandableDefaultCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TableViewExpandableDefaultCell.m; path = A3TableViewController/A3TableViewExpandableDefaultCell.m; sourceTree = "<group>"; };
 		17D42F64418FD4FA28719114 /* A3BarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BarButton.h; sourceTree = "<group>"; };
-		17D42F722CDE5DE955D1E3EE /* A3YahooCurrency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3YahooCurrency.m; sourceTree = "<group>"; };
 		17D42F881F8676137DFCC56A /* FSWebLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		17D42FE2C4AD09E611D37298 /* A3TranslatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageViewController.h; path = Translator/A3TranslatorMessageViewController.h; sourceTree = "<group>"; };
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; };
@@ -591,8 +594,6 @@
 		681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LoanCalcHistory+calculation.m"; sourceTree = "<group>"; };
 		68144BC41743381600FD22CF /* A3PlacemarkBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PlacemarkBackgroundView.h; sourceTree = "<group>"; };
 		68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PlacemarkBackgroundView.m; sourceTree = "<group>"; };
-		6815871616A7A621006DC8D7 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyFavorite.h; sourceTree = "<group>"; };
-		6815871716A7A621006DC8D7 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyFavorite.m; sourceTree = "<group>"; };
 		681614021709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ActionMenuViewController_iPad.h; path = ViewControllers/A3ActionMenuViewController_iPad.h; sourceTree = "<group>"; };
 		681614031709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ActionMenuViewController_iPad.m; path = ViewControllers/A3ActionMenuViewController_iPad.m; sourceTree = "<group>"; };
 		681614041709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3ActionMenuViewController_iPad.xib; path = ViewControllers/A3ActionMenuViewController_iPad.xib; sourceTree = "<group>"; };
@@ -602,6 +603,16 @@
 		6818E035179D3EE30061A70B /* UITableViewController+swipeMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+swipeMenu.m"; sourceTree = "<group>"; };
 		682126841843902A009A7964 /* NSNumberExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSNumberExtensions.h; sourceTree = "<group>"; };
 		682126851843902A009A7964 /* NSNumberExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSNumberExtensions.m; sourceTree = "<group>"; };
+		6823F6E91863287B00E6E90D /* CurrencyRateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyRateItem.h; path = Apps/Currency/Model/CurrencyRateItem.h; sourceTree = "<group>"; };
+		6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyRateItem.m; path = Apps/Currency/Model/CurrencyRateItem.m; sourceTree = "<group>"; };
+		6823F6EC1863287B00E6E90D /* CurrencyHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistoryItem.h; path = Apps/Currency/Model/CurrencyHistoryItem.h; sourceTree = "<group>"; };
+		6823F6ED1863287B00E6E90D /* CurrencyHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyHistoryItem.m; path = Apps/Currency/Model/CurrencyHistoryItem.m; sourceTree = "<group>"; };
+		6823F6F41863294700E6E90D /* A3YahooCurrency.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3YahooCurrency.h; path = Apps/Currency/Model/A3YahooCurrency.h; sourceTree = "<group>"; };
+		6823F6F51863294700E6E90D /* A3YahooCurrency.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3YahooCurrency.m; path = Apps/Currency/Model/A3YahooCurrency.m; sourceTree = "<group>"; };
+		6823F6F81863294700E6E90D /* CurrencyHistory+handler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CurrencyHistory+handler.h"; path = "Apps/Currency/Model/CurrencyHistory+handler.h"; sourceTree = "<group>"; };
+		6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CurrencyHistory+handler.m"; path = "Apps/Currency/Model/CurrencyHistory+handler.m"; sourceTree = "<group>"; };
+		6823F700186329DC00E6E90D /* A3CurrencyDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyDataManager.h; path = Apps/Currency/Model/A3CurrencyDataManager.h; sourceTree = "<group>"; };
+		6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyDataManager.m; path = Apps/Currency/Model/A3CurrencyDataManager.m; sourceTree = "<group>"; };
 		6824E8F4184D8085007E26F3 /* A3Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = A3Settings.storyboard; sourceTree = "<group>"; };
 		682796F816DF6CFD00BC68F3 /* A3DateKeyboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController.h; sourceTree = "<group>"; };
 		682796F916DF6CFD00BC68F3 /* A3DateKeyboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateKeyboardViewController.m; sourceTree = "<group>"; };
@@ -717,8 +728,6 @@
 		682968A418505E3900B70E13 /* A3ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3ViewController.h; sourceTree = "<group>"; };
 		682968A518505E3900B70E13 /* A3ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = A3ViewController.m; sourceTree = "<group>"; };
 		682968A718505E3900B70E13 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		682969301850A0F000B70E13 /* AppBox3.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AppBox3.sqlite-shm"; sourceTree = "<group>"; };
-		682969311850A0F000B70E13 /* AppBox3.sqlite-wal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "AppBox3.sqlite-wal"; sourceTree = "<group>"; };
 		682B18AC171647A700C1C0FD /* A3HorizontalBarContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HorizontalBarContainerView.h; sourceTree = "<group>"; };
 		682B18AD171647A700C1C0FD /* A3HorizontalBarContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HorizontalBarContainerView.m; sourceTree = "<group>"; };
 		682E07DB17191D65007112B9 /* A3ActionMenuViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ActionMenuViewController_iPhone.h; path = ViewControllers/A3ActionMenuViewController_iPhone.h; sourceTree = "<group>"; };
@@ -747,6 +756,20 @@
 		6830C7891851BD480075010F /* A3SettingsSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsSyncViewController.m; path = Settings/A3SettingsSyncViewController.m; sourceTree = "<group>"; };
 		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
+		6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
+		6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppBoxCacheStore.sqlite; sourceTree = "<group>"; };
+		6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AppBoxCacheStore.sqlite-shm"; sourceTree = "<group>"; };
+		6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AppBoxCacheStore.sqlite-wal"; sourceTree = "<group>"; };
+		6831EC001861C5F600BAF15B /* NSError+UbiquityStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+UbiquityStoreManager.h"; sourceTree = "<group>"; };
+		6831EC011861C5F600BAF15B /* NSError+UbiquityStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+UbiquityStoreManager.m"; sourceTree = "<group>"; };
+		6831EC021861C5F600BAF15B /* UbiquityStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UbiquityStoreManager.h; sourceTree = "<group>"; };
+		6831EC031861C5F600BAF15B /* UbiquityStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UbiquityStoreManager.m; sourceTree = "<group>"; };
+		6831EC091861C61E00BAF15B /* JRSwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JRSwizzle.h; path = External/UbiquityStoreManager/jrswizzle/JRSwizzle.h; sourceTree = SOURCE_ROOT; };
+		6831EC0A1861C61E00BAF15B /* JRSwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JRSwizzle.m; path = External/UbiquityStoreManager/jrswizzle/JRSwizzle.m; sourceTree = SOURCE_ROOT; };
+		6831EC111861EB7C00BAF15B /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = External/MBProgressHUD/MBProgressHUD.h; sourceTree = "<group>"; };
+		6831EC121861EB7C00BAF15B /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = External/MBProgressHUD/MBProgressHUD.m; sourceTree = "<group>"; };
+		6831EC141862055000BAF15B /* A3CacheStoreManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CacheStoreManager.h; sourceTree = "<group>"; };
+		6831EC151862055000BAF15B /* A3CacheStoreManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CacheStoreManager.m; sourceTree = "<group>"; };
 		683224BB17CE1B7800973F34 /* A3HolidaysCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCell.h; path = Holidays/A3HolidaysCell.h; sourceTree = "<group>"; };
 		683224BC17CE1B7800973F34 /* A3HolidaysCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCell.m; path = Holidays/A3HolidaysCell.m; sourceTree = "<group>"; };
 		6832ADE016A8D38500BEEEE6 /* A3CurrencySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencySelectViewController.h; path = Apps/Currency/A3CurrencySelectViewController.h; sourceTree = "<group>"; };
@@ -762,7 +785,6 @@
 		683B953F15EB233500575377 /* CommonUIDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CommonUIDefinitions.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B954115EB233500575377 /* CoolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoolButton.h; sourceTree = "<group>"; };
 		683B954215EB233500575377 /* CoolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoolButton.m; sourceTree = "<group>"; };
-		683B954815EB233500575377 /* AppBox3.sqlite */ = {isa = PBXFileReference; lastKnownFileType = file; path = AppBox3.sqlite; sourceTree = "<group>"; };
 		683B955315EB233500575377 /* A3DatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3DatePickerViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B955415EB233500575377 /* A3DatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3DatePickerViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		683B955615EB233500575377 /* A3SearchIPADViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3SearchIPADViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -775,12 +797,6 @@
 		683B956315EB233500575377 /* A3RowSeparatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = A3RowSeparatorView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		683B956415EB233500575377 /* A3RowSeparatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3RowSeparatorView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		683B959215EB252400575377 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		6840099816B7726800D7E078 /* MenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItem.h; sourceTree = "<group>"; };
-		6840099916B7726800D7E078 /* MenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItem.m; sourceTree = "<group>"; };
-		6840099C16B7726800D7E078 /* MenuGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuGroup.h; sourceTree = "<group>"; };
-		6840099D16B7726800D7E078 /* MenuGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuGroup.m; sourceTree = "<group>"; };
-		68428A38178EDD8D0085D89F /* CurrencyItem+NetworkUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrencyItem+NetworkUtility.h"; sourceTree = "<group>"; };
-		68428A39178EDD8D0085D89F /* CurrencyItem+NetworkUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CurrencyItem+NetworkUtility.m"; sourceTree = "<group>"; };
 		68436ABE163E9DF5005E7A77 /* A3UIKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIKit.h; sourceTree = "<group>"; };
 		68436ABF163E9DF5005E7A77 /* A3UIKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UIKit.m; sourceTree = "<group>"; };
 		68461012164E0B7F005BD9FC /* A3StrokedTextButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StrokedTextButton.h; sourceTree = "<group>"; };
@@ -808,8 +824,6 @@
 		68521A4517E1FF2E00E08FB1 /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXLabel.m; path = External/FXLabel/FXLabel/FXLabel.m; sourceTree = "<group>"; };
 		6854E91C166F3E8D00497126 /* A3TimeLineEventItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TimeLineEventItemView.h; sourceTree = "<group>"; };
 		6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TimeLineEventItemView.m; sourceTree = "<group>"; };
-		6854F0B917ACF95900E882B8 /* CurrencyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyItem.h; sourceTree = "<group>"; };
-		6854F0BA17ACF95900E882B8 /* CurrencyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyItem.m; sourceTree = "<group>"; };
 		68555FEB167032B000F200B7 /* A3TimeLineTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TimeLineTableViewController.h; path = ViewControllers/A3TimeLineTableViewController.h; sourceTree = "<group>"; };
 		68555FEC167032B000F200B7 /* A3TimeLineTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TimeLineTableViewController.m; path = ViewControllers/A3TimeLineTableViewController.m; sourceTree = "<group>"; };
 		68555FEF1670409F00F200B7 /* A3TimeLineTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TimeLineTableViewCell.h; sourceTree = "<group>"; };
@@ -828,8 +842,6 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		685F72B916A6DF7C004C7222 /* MenuFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuFavorite.h; sourceTree = "<group>"; };
-		685F72BA16A6DF7C004C7222 /* MenuFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuFavorite.m; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		6864D5FF17BBBA6300A215D7 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = "AppBox3/Asset Catalogs/Media.xcassets"; sourceTree = "<group>"; };
 		686BC1D91846343900FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencySettings.storyboard; sourceTree = "<group>"; };
@@ -865,7 +877,6 @@
 		6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyItemTest.m; sourceTree = "<group>"; };
 		6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyViewControllerTest.m; sourceTree = "<group>"; };
 		687C193B1783DF0F00415FCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		687C194E1783E07500415FCE /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
 		687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Africa.h"; path = "Holidays/HolidayData+Africa.h"; sourceTree = "<group>"; };
 		687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Africa.m"; path = "Holidays/HolidayData+Africa.m"; sourceTree = "<group>"; };
 		687D0CFE17CAE519005AB571 /* HolidayData+America.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+America.h"; path = "Holidays/HolidayData+America.h"; sourceTree = "<group>"; };
@@ -966,6 +977,10 @@
 		6895346C178686AF007061CA /* UIScrollView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Screenshot.m"; sourceTree = "<group>"; };
 		6895346D178686AF007061CA /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		6895346E178686AF007061CA /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
+		6897918C1865C57600F74826 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyFavorite.h; path = Apps/Currency/Model/CurrencyFavorite.h; sourceTree = "<group>"; };
+		6897918D1865C57600F74826 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
+		6897918F1865C68200F74826 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistory.h; path = Apps/Currency/Model/CurrencyHistory.h; sourceTree = "<group>"; };
+		689791901865C68200F74826 /* CurrencyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyHistory.m; path = Apps/Currency/Model/CurrencyHistory.m; sourceTree = "<group>"; };
 		689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		689C9A271839CD7F007C97EE /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
@@ -1100,18 +1115,12 @@
 		68E6F35017B2722000F10ED9 /* NSUserDefaults+A3Defaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+A3Defaults.h"; sourceTree = "<group>"; };
 		68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+A3Defaults.m"; sourceTree = "<group>"; };
 		68E6F35517B27B8300F10ED9 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
-		68E6F36117B28B4F00F10ED9 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyHistory.h; sourceTree = "<group>"; };
-		68E6F36217B28B4F00F10ED9 /* CurrencyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyHistory.m; sourceTree = "<group>"; };
 		68E6F37017B2A06600F10ED9 /* A3CurrencyHistory2RowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistory2RowCell.h; path = Apps/Currency/A3CurrencyHistory2RowCell.h; sourceTree = "<group>"; };
 		68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistory2RowCell.m; path = Apps/Currency/A3CurrencyHistory2RowCell.m; sourceTree = "<group>"; };
 		68E6F37317B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistory3RowCell.h; path = Apps/Currency/A3CurrencyHistory3RowCell.h; sourceTree = "<group>"; };
 		68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistory3RowCell.m; path = Apps/Currency/A3CurrencyHistory3RowCell.m; sourceTree = "<group>"; };
 		68E6F37717B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistoryViewController.h; path = Apps/Currency/A3CurrencyHistoryViewController.h; sourceTree = "<group>"; };
 		68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistoryViewController.m; path = Apps/Currency/A3CurrencyHistoryViewController.m; sourceTree = "<group>"; };
-		68E6F37C17B2B48300F10ED9 /* CurrencyHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CurrencyHistoryItem.h; sourceTree = "<group>"; };
-		68E6F37D17B2B48300F10ED9 /* CurrencyHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CurrencyHistoryItem.m; sourceTree = "<group>"; };
-		68EBE10616AA7E80008D371E /* CurrencyItem+name.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CurrencyItem+name.h"; sourceTree = "<group>"; };
-		68EBE10716AA7E80008D371E /* CurrencyItem+name.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CurrencyItem+name.m"; sourceTree = "<group>"; };
 		68EC80D416E1ADF800CF672E /* A3Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Formatter.h; sourceTree = "<group>"; };
 		68EC80D516E1ADF800CF672E /* A3Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Formatter.m; sourceTree = "<group>"; };
 		68F3A9E41677320100DFCAB7 /* A3YellowXButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3YellowXButton.h; sourceTree = "<group>"; };
@@ -1266,6 +1275,8 @@
 				68F967BE1818D74300D64A0A /* NSArray+validation.m */,
 				68B9B16E17D04152003ACAD0 /* NSDate+daysleft.h */,
 				68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */,
+				682968831850401200B70E13 /* NSFileManager+A3Addtion.h */,
+				682968841850401200B70E13 /* NSFileManager+A3Addtion.m */,
 				17D427C9CA2A92CC4C1A522C /* NSManagedObject+Clone.h */,
 				17D42DA2DACEFCA29645708D /* NSManagedObject+Clone.m */,
 				6848FB8B17A39C1100EBDBED /* NSMutableArray+A3Sort.h */,
@@ -1276,8 +1287,12 @@
 				682126851843902A009A7964 /* NSNumberExtensions.m */,
 				17D426E84D1FF67C4C0146D3 /* NSString+conversion.h */,
 				17D42BBA3D7D0326968A2FB2 /* NSString+conversion.m */,
+				6830C7851851A26E0075010F /* NSUserDefaults+A3Addition.h */,
+				6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */,
 				68E6F35017B2722000F10ED9 /* NSUserDefaults+A3Defaults.h */,
 				68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */,
+				68D356181845CF94008409B4 /* UIImage+extension.h */,
+				68D356191845CF94008409B4 /* UIImage+extension.m */,
 				17D426B199FD2AC623B42755 /* UITableViewCell+accessory.h */,
 				17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */,
 				6818E034179D3EE30061A70B /* UITableViewController+swipeMenu.h */,
@@ -1288,12 +1303,6 @@
 				17D425563CA46F7545F2564A /* UIViewController+A3AppCategory.m */,
 				68B21A2C177AEAAA006FCC5F /* UIViewController+navigation.h */,
 				68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */,
-				68D356181845CF94008409B4 /* UIImage+extension.h */,
-				68D356191845CF94008409B4 /* UIImage+extension.m */,
-				682968831850401200B70E13 /* NSFileManager+A3Addtion.h */,
-				682968841850401200B70E13 /* NSFileManager+A3Addtion.m */,
-				6830C7851851A26E0075010F /* NSUserDefaults+A3Addition.h */,
-				6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */,
 			);
 			path = A3Categories;
 			sourceTree = "<group>";
@@ -1305,6 +1314,27 @@
 				68030ABB17F063D100B04487 /* HTCopyableLabel.m */,
 			);
 			name = HTCopyableLabel;
+			sourceTree = "<group>";
+		};
+		6823F6F21863288D00E6E90D /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6897918F1865C68200F74826 /* CurrencyHistory.h */,
+				689791901865C68200F74826 /* CurrencyHistory.m */,
+				6897918C1865C57600F74826 /* CurrencyFavorite.h */,
+				6897918D1865C57600F74826 /* CurrencyFavorite.m */,
+				6823F700186329DC00E6E90D /* A3CurrencyDataManager.h */,
+				6823F701186329DC00E6E90D /* A3CurrencyDataManager.m */,
+				6823F6F41863294700E6E90D /* A3YahooCurrency.h */,
+				6823F6F51863294700E6E90D /* A3YahooCurrency.m */,
+				6823F6F81863294700E6E90D /* CurrencyHistory+handler.h */,
+				6823F6F91863294700E6E90D /* CurrencyHistory+handler.m */,
+				6823F6EC1863287B00E6E90D /* CurrencyHistoryItem.h */,
+				6823F6ED1863287B00E6E90D /* CurrencyHistoryItem.m */,
+				6823F6E91863287B00E6E90D /* CurrencyRateItem.h */,
+				6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		6829679618503B2100B70E13 /* MagicalRecord */ = {
@@ -1546,8 +1576,6 @@
 		682CA31C163F8B0E0052A559 /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
-				17D424AD332111701DBCAC0D /* A3AppDelegate+data.h */,
-				17D42846D96F29D58DF1D41D /* A3AppDelegate+data.m */,
 				682EA2E615EB10B000BD6AD4 /* A3AppDelegate.h */,
 				682EA2E715EB10B000BD6AD4 /* A3AppDelegate.m */,
 				684A71C0185346490004A9FE /* A3AppDelegate+iCloud.h */,
@@ -1659,6 +1687,29 @@
 				684A71B5185223130004A9FE /* A3SettingsLunarViewController.m */,
 			);
 			name = Settings;
+			sourceTree = "<group>";
+		};
+		6831EBFF1861C5F600BAF15B /* UbiquityStoreManager */ = {
+			isa = PBXGroup;
+			children = (
+				6831EC091861C61E00BAF15B /* JRSwizzle.h */,
+				6831EC0A1861C61E00BAF15B /* JRSwizzle.m */,
+				6831EC001861C5F600BAF15B /* NSError+UbiquityStoreManager.h */,
+				6831EC011861C5F600BAF15B /* NSError+UbiquityStoreManager.m */,
+				6831EC021861C5F600BAF15B /* UbiquityStoreManager.h */,
+				6831EC031861C5F600BAF15B /* UbiquityStoreManager.m */,
+			);
+			name = UbiquityStoreManager;
+			path = External/UbiquityStoreManager/UbiquityStoreManager;
+			sourceTree = "<group>";
+		};
+		6831EC101861EB6900BAF15B /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				6831EC111861EB7C00BAF15B /* MBProgressHUD.h */,
+				6831EC121861EB7C00BAF15B /* MBProgressHUD.m */,
+			);
+			name = MBProgressHUD;
 			sourceTree = "<group>";
 		};
 		683224B717CE1AB900973F34 /* DKLiveBlur */ = {
@@ -1816,10 +1867,12 @@
 		683B954515EB233500575377 /* Data Management */ = {
 			isa = PBXGroup;
 			children = (
-				687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */,
-				683B954815EB233500575377 /* AppBox3.sqlite */,
-				682969301850A0F000B70E13 /* AppBox3.sqlite-shm */,
-				682969311850A0F000B70E13 /* AppBox3.sqlite-wal */,
+				6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */,
+				6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */,
+				6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */,
+				6831EBFA18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal */,
+				6831EC141862055000BAF15B /* A3CacheStoreManager.h */,
+				6831EC151862055000BAF15B /* A3CacheStoreManager.m */,
 			);
 			path = "Data Management";
 			sourceTree = "<group>";
@@ -1844,24 +1897,6 @@
 			children = (
 				687FB836162D5871004FB719 /* A3Weather.h */,
 				687FB837162D5871004FB719 /* A3Weather.m */,
-				17D4266E047FBF02000FA3A1 /* A3YahooCurrency.h */,
-				17D42F722CDE5DE955D1E3EE /* A3YahooCurrency.m */,
-				17D429F4D40788470D334A31 /* CurrencyFavorite+initialize.h */,
-				17D42D6E3628DDD9D885562D /* CurrencyFavorite+initialize.m */,
-				6815871616A7A621006DC8D7 /* CurrencyFavorite.h */,
-				6815871716A7A621006DC8D7 /* CurrencyFavorite.m */,
-				17D421945D9C51403C1B2E10 /* CurrencyHistory+handler.h */,
-				17D424004D798071B159E3DF /* CurrencyHistory+handler.m */,
-				68E6F36117B28B4F00F10ED9 /* CurrencyHistory.h */,
-				68E6F36217B28B4F00F10ED9 /* CurrencyHistory.m */,
-				68E6F37C17B2B48300F10ED9 /* CurrencyHistoryItem.h */,
-				68E6F37D17B2B48300F10ED9 /* CurrencyHistoryItem.m */,
-				68EBE10616AA7E80008D371E /* CurrencyItem+name.h */,
-				68EBE10716AA7E80008D371E /* CurrencyItem+name.m */,
-				68428A38178EDD8D0085D89F /* CurrencyItem+NetworkUtility.h */,
-				68428A39178EDD8D0085D89F /* CurrencyItem+NetworkUtility.m */,
-				6854F0B917ACF95900E882B8 /* CurrencyItem.h */,
-				6854F0BA17ACF95900E882B8 /* CurrencyItem.m */,
 				6801AB251749203C00B162DB /* Expense.h */,
 				6801AB261749203C00B162DB /* Expense.m */,
 				68822D3D1718020900127344 /* ExpenseDetail.h */,
@@ -1870,20 +1905,14 @@
 				681378FE1703F8710003201F /* LoanCalcHistory+calculation.m */,
 				6859C58817532E6800DE1C4A /* LoanCalcHistory.h */,
 				6859C58917532E6800DE1C4A /* LoanCalcHistory.m */,
-				685F72B916A6DF7C004C7222 /* MenuFavorite.h */,
-				685F72BA16A6DF7C004C7222 /* MenuFavorite.m */,
-				6840099C16B7726800D7E078 /* MenuGroup.h */,
-				6840099D16B7726800D7E078 /* MenuGroup.m */,
-				6840099816B7726800D7E078 /* MenuItem.h */,
-				6840099916B7726800D7E078 /* MenuItem.m */,
 				17D4258A50FF2A7B06B41FF2 /* SalesCalcHistory+controller.h */,
 				17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */,
 				68004B8C172FEB290005BFF2 /* SalesCalcHistory.h */,
 				68004B8D172FEB290005BFF2 /* SalesCalcHistory.m */,
-				684E943517C1C3D00081A8B5 /* TranslatorHistory.h */,
-				684E943617C1C3D00081A8B5 /* TranslatorHistory.m */,
 				684E943A17C1C6260081A8B5 /* TranslatorHistory+addition.h */,
 				684E943B17C1C6260081A8B5 /* TranslatorHistory+addition.m */,
+				684E943517C1C3D00081A8B5 /* TranslatorHistory.h */,
+				684E943617C1C3D00081A8B5 /* TranslatorHistory.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2270,6 +2299,7 @@
 		68AA75EB16A53B43005742D8 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
+				6823F6F21863288D00E6E90D /* Model */,
 				68E6F34A17B25F5F00F10ED9 /* A3CurrencyChartViewController.h */,
 				68E6F34B17B25F5F00F10ED9 /* A3CurrencyChartViewController.m */,
 				686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */,
@@ -2337,6 +2367,8 @@
 		68CC1594174F764C0000870F /* External */ = {
 			isa = PBXGroup;
 			children = (
+				6831EC101861EB6900BAF15B /* MBProgressHUD */,
+				6831EBFF1861C5F600BAF15B /* UbiquityStoreManager */,
 				6829679618503B2100B70E13 /* MagicalRecord */,
 				689C9A261839CD7F007C97EE /* AFNetworking */,
 				689C9A3A1839CD7F007C97EE /* UIKit+AFNetworking */,
@@ -2613,8 +2645,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				682EA2E215EB10B000BD6AD4 /* InfoPlist.strings in Resources */,
-				683B958115EB233500575377 /* AppBox3.sqlite in Resources */,
 				683B958815EB233500575377 /* SearchViewiPad.xib in Resources */,
+				6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */,
 				685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */,
 				68C460F21627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib in Resources */,
 				6829685E18503B2100B70E13 /* InfoPlist.strings in Resources */,
@@ -2623,6 +2655,7 @@
 				6872076C167091EF00D56507 /* sample.jpg in Resources */,
 				6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */,
 				68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */,
+				6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */,
 				689AE26D17EC69CB0097ABB5 /* FlickrRecommendation.json in Resources */,
 				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
 				6864D60117BBBA6300A215D7 /* Media.xcassets in Resources */,
@@ -2632,13 +2665,13 @@
 				681614061709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib in Resources */,
 				683386CA1713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib in Resources */,
 				682E07DF17191D65007112B9 /* A3ActionMenuViewController_iPhone.xib in Resources */,
-				682969331850A0F000B70E13 /* AppBox3.sqlite-wal in Resources */,
 				6850050717C30B500081FC1D /* appbox.ttf in Resources */,
 				6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */,
 				17D429978AEAACFC04352242 /* FSWebLogin.xib in Resources */,
 				684E944217C22E760081A8B5 /* Images.xcassets in Resources */,
 				68B142ED17B7C6D300D815D2 /* A3NumberKeyboardSimpleVC_iPad.xib in Resources */,
 				6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */,
+				6831EBFE18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal in Resources */,
 				68476949177D309800EBE7CF /* WeatherIcons.xcassets in Resources */,
 				68C4EAB8179F885400ABB06E /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */,
 				68B6A18B17CC398A008E0296 /* indian.plist in Resources */,
@@ -2646,7 +2679,6 @@
 				68FEE389174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,
-				682969321850A0F000B70E13 /* AppBox3.sqlite-shm in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2667,18 +2699,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				682969271850759600B70E13 /* CurrencyFavorite.m in Sources */,
-				682969291850759600B70E13 /* CurrencyItem.m in Sources */,
+				6823F70E186358F500E6E90D /* AFHTTPRequestOperation.m in Sources */,
 				682968C518505E9B00B70E13 /* MagicalImportFunctions.m in Sources */,
 				682968C718505E9B00B70E13 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				682968C918505E9B00B70E13 /* NSEntityDescription+MagicalDataImport.m in Sources */,
 				682968CB18505E9B00B70E13 /* NSNumber+MagicalDataImport.m in Sources */,
-				68A12D391850DE7E002A8AF0 /* A3YahooCurrency.m in Sources */,
 				682968CD18505E9B00B70E13 /* NSObject+MagicalDataImport.m in Sources */,
 				682968CF18505E9B00B70E13 /* NSRelationshipDescription+MagicalDataImport.m in Sources */,
+				6823F715186358F500E6E90D /* AFURLResponseSerialization.m in Sources */,
 				682968D118505E9B00B70E13 /* NSString+MagicalDataImport.m in Sources */,
+				6823F7061863579500E6E90D /* A3CurrencyDataManager.m in Sources */,
 				682968D318505E9B00B70E13 /* NSFetchedResultsController+MagicalFetching.m in Sources */,
 				682968D518505E9B00B70E13 /* NSManagedObject+MagicalAggregation.m in Sources */,
+				6823F713186358F500E6E90D /* AFURLConnectionOperation.m in Sources */,
+				6823F716186358F500E6E90D /* AFURLSessionManager.m in Sources */,
 				682968D718505E9B00B70E13 /* NSManagedObject+MagicalDataImport.m in Sources */,
 				682968D918505E9B00B70E13 /* NSManagedObject+MagicalFetching.m in Sources */,
 				682968DB18505E9B00B70E13 /* NSManagedObject+MagicalFinders.m in Sources */,
@@ -2690,32 +2724,42 @@
 				682968E718505E9B00B70E13 /* NSManagedObjectModel+MagicalRecord.m in Sources */,
 				682968E918505E9B00B70E13 /* NSPersistentStore+MagicalRecord.m in Sources */,
 				682968EB18505E9B00B70E13 /* NSPersistentStoreCoordinator+MagicalAutoMigrations.m in Sources */,
-				68296924185073AF00B70E13 /* AppBox3.xcdatamodeld in Sources */,
 				682968ED18505E9B00B70E13 /* NSPersistentStoreCoordinator+MagicaliCloudAdditions.m in Sources */,
 				682968EF18505E9B00B70E13 /* NSPersistentStoreCoordinator+MagicalInMemoryStoreAdditions.m in Sources */,
 				682968F118505E9C00B70E13 /* NSPersistentStoreCoordinator+MagicalManualMigrations.m in Sources */,
 				682968F318505E9C00B70E13 /* NSPersistentStoreCoordinator+MagicalRecord.m in Sources */,
+				6823F714186358F500E6E90D /* AFURLRequestSerialization.m in Sources */,
 				682968F518505E9C00B70E13 /* NSDictionary+MagicalRecordAdditions.m in Sources */,
+				6823F70F186358F500E6E90D /* AFHTTPRequestOperationManager.m in Sources */,
 				682968F718505E9C00B70E13 /* NSError+MagicalRecordErrorHandling.m in Sources */,
 				682968FA18505E9C00B70E13 /* MagicalMigrationManager.m in Sources */,
 				682968FC18505E9C00B70E13 /* MagicalRecord+Actions.m in Sources */,
+				6823F70B186358A200E6E90D /* A3CacheStoreManager.m in Sources */,
+				6823F6F3186328AF00E6E90D /* CurrencyRateItem.m in Sources */,
 				682968FE18505E9C00B70E13 /* MagicalRecord+Options.m in Sources */,
-				6829692B1850769100B70E13 /* CurrencyItem+name.m in Sources */,
 				6829690018505E9C00B70E13 /* MagicalRecord+Setup.m in Sources */,
 				6829690218505E9C00B70E13 /* MagicalRecord+ShorthandSupport.m in Sources */,
+				6823F70A1863582B00E6E90D /* A3YahooCurrency.m in Sources */,
 				6829690418505E9C00B70E13 /* MagicalRecord.m in Sources */,
 				6829690718505E9C00B70E13 /* AutoMigratingMagicalRecordStack.m in Sources */,
+				6831EBF518617CCF00BAF15B /* NSFileManager+A3Addtion.m in Sources */,
 				6829690918505E9C00B70E13 /* AutoMigratingWithSourceAndTargetModelMagicalRecordStack.m in Sources */,
 				6829690B18505E9C00B70E13 /* ClassicSQLiteMagicalRecordStack.m in Sources */,
 				6829690D18505E9C00B70E13 /* ClassicWithBackgroundCoordinatorSQLiteMagicalRecordStack.m in Sources */,
+				6823F711186358F500E6E90D /* AFNetworkReachabilityManager.m in Sources */,
 				6829690F18505E9C00B70E13 /* iCloudMagicalRecordStack.m in Sources */,
 				6829691118505E9C00B70E13 /* InMemoryMagicalRecordStack.m in Sources */,
 				6829691318505E9C00B70E13 /* MagicalRecordStack+Actions.m in Sources */,
 				6829691618505E9C00B70E13 /* MagicalRecordStack.m in Sources */,
+				6823F710186358F500E6E90D /* AFHTTPSessionManager.m in Sources */,
 				6829691818505E9C00B70E13 /* ManuallyMigratingMagicalRecordStack.m in Sources */,
+				6823F712186358F500E6E90D /* AFSecurityPolicy.m in Sources */,
 				6829691A18505E9C00B70E13 /* SQLiteMagicalRecordStack.m in Sources */,
 				6829691C18505E9C00B70E13 /* SQLiteWithSavingContextMagicalRecordStack.m in Sources */,
+				6823F70D186358CC00E6E90D /* Reachability.m in Sources */,
+				6823F7171863595E00E6E90D /* AppBox3.xcdatamodeld in Sources */,
 				6829689D18505E3900B70E13 /* A3AppDelegate.m in Sources */,
+				689791921865C75100F74826 /* CurrencyFavorite.m in Sources */,
 				6829689918505E3900B70E13 /* main.m in Sources */,
 				682968A618505E3900B70E13 /* A3ViewController.m in Sources */,
 			);
@@ -2729,6 +2773,7 @@
 				682EA2E815EB10B000BD6AD4 /* A3AppDelegate.m in Sources */,
 				683B956515EB233500575377 /* A3iPadBatteryLifeViewController.m in Sources */,
 				689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */,
+				6823F6EB1863287B00E6E90D /* CurrencyRateItem.m in Sources */,
 				68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */,
 				68D61BD817F53FB400EF4B5E /* DKLiveBlurView.m in Sources */,
 				68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */,
@@ -2736,6 +2781,7 @@
 				683B957E15EB233500575377 /* CoolButton.m in Sources */,
 				6829684E18503B2100B70E13 /* ClassicWithBackgroundCoordinatorSQLiteMagicalRecordStack.m in Sources */,
 				68030AB217F0589600B04487 /* A3CalculatorViewController_iPhone.m in Sources */,
+				6831EC161862055000BAF15B /* A3CacheStoreManager.m in Sources */,
 				683B958615EB233500575377 /* A3DatePickerViewController.m in Sources */,
 				68F4EE8817E4B0E1009BDE05 /* A3FixedHeightSegmentedControl.m in Sources */,
 				683B958715EB233500575377 /* A3SearchIPADViewController.m in Sources */,
@@ -2754,19 +2800,19 @@
 				68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */,
 				68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */,
 				6830C7871851A26E0075010F /* NSUserDefaults+A3Addition.m in Sources */,
-				68428A3A178EDD8D0085D89F /* CurrencyItem+NetworkUtility.m in Sources */,
 				6829687A18503C3300B70E13 /* NSString+MagicalDataImport.m in Sources */,
 				68BDC58317A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m in Sources */,
 				6829684218503B2100B70E13 /* MagicalRecord+Setup.m in Sources */,
 				6829683C18503B2100B70E13 /* MagicalMigrationManager.m in Sources */,
 				68C26F1617C71CF400751BE3 /* A3ImageView.m in Sources */,
 				684E943C17C1C6260081A8B5 /* TranslatorHistory+addition.m in Sources */,
-				68E6F36317B28B4F00F10ED9 /* CurrencyHistory.m in Sources */,
 				689C9A4F1839CD7F007C97EE /* AFURLConnectionOperation.m in Sources */,
 				68948B5017D9760A00BF4BE9 /* A3NavigationController.m in Sources */,
 				687FB838162D5871004FB719 /* A3Weather.m in Sources */,
 				68D178A3162FEC4500F71732 /* A3TickerScrollView.m in Sources */,
+				6823F6FC1863294700E6E90D /* A3YahooCurrency.m in Sources */,
 				68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */,
+				689791911865C68200F74826 /* CurrencyHistory.m in Sources */,
 				6830C78A1851BD480075010F /* A3SettingsSyncViewController.m in Sources */,
 				68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */,
 				68FEC64D1630D8CC004F4A9E /* A3RoundedCornerView.m in Sources */,
@@ -2788,6 +2834,7 @@
 				6829682C18503B2100B70E13 /* NSPersistentStoreCoordinator+MagicaliCloudAdditions.m in Sources */,
 				6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */,
 				6829681E18503B2100B70E13 /* NSManagedObject+MagicalRequests.m in Sources */,
+				6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */,
 				68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */,
 				68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */,
 				685560061670448D00F200B7 /* A3Utilities.m in Sources */,
@@ -2813,17 +2860,13 @@
 				68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */,
 				6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */,
 				689C9A511839CD7F007C97EE /* AFURLResponseSerialization.m in Sources */,
-				685F72BB16A6DF7C004C7222 /* MenuFavorite.m in Sources */,
 				68B21A2E177AEAAA006FCC5F /* UIViewController+navigation.m in Sources */,
-				6815871816A7A621006DC8D7 /* CurrencyFavorite.m in Sources */,
 				68CB7982183DB8A800255AE3 /* NYXImagesHelper.m in Sources */,
 				689C9A4C1839CD7F007C97EE /* AFHTTPSessionManager.m in Sources */,
 				6832ADE216A8D38500BEEEE6 /* A3CurrencySelectViewController.m in Sources */,
 				6830C78418519C540075010F /* A3SettingsViewController.m in Sources */,
 				6829685418503B2100B70E13 /* MagicalRecordStack+Actions.m in Sources */,
-				68EBE10816AA7E80008D371E /* CurrencyItem+name.m in Sources */,
-				6840099A16B7726800D7E078 /* MenuItem.m in Sources */,
-				6840099E16B7726800D7E078 /* MenuGroup.m in Sources */,
+				6831EC041861C5F600BAF15B /* NSError+UbiquityStoreManager.m in Sources */,
 				6829685818503B2100B70E13 /* ManuallyMigratingMagicalRecordStack.m in Sources */,
 				6829683418503B2100B70E13 /* NSDictionary+MagicalRecordAdditions.m in Sources */,
 				688F7E1916C12D1E003687A7 /* A3VerticalLinesView.m in Sources */,
@@ -2842,7 +2885,6 @@
 				6829681218503B2100B70E13 /* NSFetchedResultsController+MagicalFetching.m in Sources */,
 				68C5097516E70DD500CC61FF /* A3ButtonTextField.m in Sources */,
 				684A71B6185223130004A9FE /* A3SettingsLunarViewController.m in Sources */,
-				68E6F37E17B2B48300F10ED9 /* CurrencyHistoryItem.m in Sources */,
 				689C9A561839CD7F007C97EE /* UIButton+AFNetworking.m in Sources */,
 				689C9A551839CD7F007C97EE /* UIAlertView+AFNetworking.m in Sources */,
 				6829686E18503C3300B70E13 /* MagicalImportFunctions.m in Sources */,
@@ -2873,9 +2915,9 @@
 				682B18AE171647A700C1C0FD /* A3HorizontalBarContainerView.m in Sources */,
 				68C6779F179E23E300D17B4A /* A3SwipeMenuTableViewController.m in Sources */,
 				68822D3F1718020900127344 /* ExpenseDetail.m in Sources */,
+				6823F6EE1863287B00E6E90D /* CurrencyHistoryItem.m in Sources */,
 				682E07DE17191D65007112B9 /* A3ActionMenuViewController_iPhone.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
-				6854F0BB17ACF95900E882B8 /* CurrencyItem.m in Sources */,
 				68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */,
 				68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */,
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
@@ -2883,9 +2925,11 @@
 				689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */,
 				68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */,
 				17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */,
+				6831EC051861C5F600BAF15B /* UbiquityStoreManager.m in Sources */,
 				6829684618503B2100B70E13 /* MagicalRecord.m in Sources */,
 				17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */,
 				17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */,
+				6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */,
 				6804FCE91821EFDE00C79FE2 /* A3TableViewEntryCell.m in Sources */,
 				68004B8E172FEB290005BFF2 /* SalesCalcHistory.m in Sources */,
 				17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */,
@@ -2925,13 +2969,16 @@
 				6829685018503B2100B70E13 /* iCloudMagicalRecordStack.m in Sources */,
 				68953488178686AF007061CA /* UIView+Screenshot.m in Sources */,
 				68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */,
+				6831EC0B1861C61E00BAF15B /* JRSwizzle.m in Sources */,
 				68DB84BC17508CC1004521E0 /* A3HistoryViewController.m in Sources */,
 				6859C58A17532E6800DE1C4A /* LoanCalcHistory.m in Sources */,
 				6829681A18503B2100B70E13 /* NSManagedObject+MagicalFinders.m in Sources */,
 				17D4242B1CA511FEB92F1279 /* A3EmptyActionMenuViewController_iPad.m in Sources */,
+				6897918E1865C57600F74826 /* CurrencyFavorite.m in Sources */,
 				68030B0817F277E300B04487 /* A3Expression.m in Sources */,
 				68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */,
 				685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */,
+				6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
 				17D428F2DE50ECD3104CF823 /* UIViewController+A3AppCategory.m in Sources */,
 				68D1AC9917977F960047D4BF /* A3CurrencyTVEqualCell.m in Sources */,
@@ -2939,10 +2986,8 @@
 				17D4246179DFD23680382F4E /* NSString+conversion.m in Sources */,
 				6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */,
 				6829681C18503B2100B70E13 /* NSManagedObject+MagicalRecord.m in Sources */,
-				687C194F1783E08100415FCE /* AppBox3.xcdatamodeld in Sources */,
 				17D42F37E672CCF7D71978C9 /* NSManagedObject+Clone.m in Sources */,
 				6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */,
-				17D42E6AC287CEB0BE8039D0 /* A3YahooCurrency.m in Sources */,
 				68F4EE8F17E4C0F9009BDE05 /* A3FSegmentedControl.m in Sources */,
 				68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */,
 				68030B0117F1B9AB00B04487 /* A3ExpressionComponent.m in Sources */,
@@ -2953,11 +2998,9 @@
 				6829687018503C3300B70E13 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				6829684A18503B2100B70E13 /* AutoMigratingWithSourceAndTargetModelMagicalRecordStack.m in Sources */,
 				688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */,
-				17D4253F0DFFF532C77A0772 /* CurrencyFavorite+initialize.m in Sources */,
-				17D4200D46C80DD4C809B154 /* A3AppDelegate+data.m in Sources */,
 				17D42461C66EA03739D41FA8 /* A3CurrencyTableViewCell.m in Sources */,
-				17D423FF2C3E1A994364FE6A /* CurrencyHistory+handler.m in Sources */,
 				17D42B8113D2415FDF33A0DB /* A3CurrencyTVDataCell.m in Sources */,
+				6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */,
 				6829685618503B2100B70E13 /* MagicalRecordStack.m in Sources */,
 				17D42AE1F680213C832FB44C /* A3CurrencyHistoryCell.m in Sources */,
 				17D423E2BAAA75166600694A /* A3NumberKeyboardSimpleVC_iPad.m in Sources */,
@@ -3408,12 +3451,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		687C194D1783E07500415FCE /* AppBox3.xcdatamodeld */ = {
+		6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				687C194E1783E07500415FCE /* AppBox3.xcdatamodel */,
+				6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */,
 			);
-			currentVersion = 687C194E1783E07500415FCE /* AppBox3.xcdatamodel */;
+			currentVersion = 6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */;
 			path = AppBox3.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

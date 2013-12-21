@@ -11,7 +11,8 @@
 #import "NSString+conversion.h"
 #import "common.h"
 
-static NSString *const A3CommonPropertyOrder = @"order";
+
+NSString *const A3CommonPropertyOrder = @"order";
 
 #define	A3_ORDER_NUMBER_START	1000000
 #define A3_ORDER_NUMBER_SPACE	1000000
@@ -28,12 +29,21 @@ static NSString *const A3CommonPropertyOrder = @"order";
 }
 
 - (void)moveItemInSortedArrayFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
+	FNLOG(@"%ld, %ld", fromIndex, toIndex);
 	if (fromIndex == toIndex) {
 		return;
 	}
 	id fromObject = self[fromIndex];
 	id toObject = self[toIndex];
 
+	NSString *toOrder = [toObject valueForKey:A3CommonPropertyOrder];
+	[toObject setValue:[fromObject valueForKey:A3CommonPropertyOrder] forKey:A3CommonPropertyOrder];
+	[fromObject setValue:toOrder forKey:A3CommonPropertyOrder];
+
+	[self moveObjectFromIndex:fromIndex toIndex:toIndex];
+
+	return;
+	
 	void (^resetOrder)() = ^() {
 		[self moveObjectFromIndex:fromIndex toIndex:toIndex];
 		[self resetAllOrderValue];
@@ -66,12 +76,13 @@ static NSString *const A3CommonPropertyOrder = @"order";
 		resetOrder();
 		return;
 	}
-	[fromObject setValue:[NSString orderStringWithOrder:newOrder] forKey:A3CommonPropertyOrder];
+	[fromObject setValue:[NSString orderStringWithOrder:newOrder] forKey:A3CommonPropertyOrder];	
 
 	[self moveObjectFromIndex:fromIndex toIndex:toIndex];
 }
 
 - (void)insertObjectToSortedArray:(id)object atIndex:(NSInteger)index {
+	FNLOG(@"%ld", index);
 	NSInteger prevOrder, nextOrder, myOrder;
 	if (index == 0) {
 		prevOrder = 0;

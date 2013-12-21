@@ -31,3 +31,9 @@
 [submodule "External/AFNetworking"]
 	path = External/AFNetworking
 	url = https://github.com/Steven-Gwug/AFNetworking.git
+[submodule "External/UbiquityStoreManager"]
+	path = External/UbiquityStoreManager
+	url = https://github.com/lhunath/UbiquityStoreManager.git
+[submodule "External/MBProgressHUD"]
+	path = External/MBProgressHUD
+	url = https://github.com/jdg/MBProgressHUD.git

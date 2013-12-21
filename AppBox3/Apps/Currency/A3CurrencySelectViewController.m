@@ -7,10 +7,11 @@
 //
 
 #import "A3CurrencySelectViewController.h"
-#import "CurrencyItem.h"
-#import "CurrencyItem+name.h"
 #import "CurrencyFavorite.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3CacheStoreManager.h"
+#import "CurrencyRateItem.h"
+#import "A3CurrencyDataManager.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
@@ -40,20 +41,21 @@
 }
 
 - (NSMutableArray *)allData {
-	NSMutableArray *allData=nil;
+	NSMutableArray *allData = [super allData];
 	@autoreleasepool {
-		allData = [super allData];
 		if (!allData) {
 			allData = [NSMutableArray new];
-			NSArray *allCurrencies = [CurrencyItem MR_findAll];
-			for (CurrencyItem *item in allCurrencies) {
+			A3CurrencyDataManager *currencyDataManager = [A3CurrencyDataManager new];
+			NSArray *allCurrencies = [CurrencyRateItem MR_findAllInContext:self.cacheStoreManager.context];
+			for (CurrencyRateItem *item in allCurrencies) {
 				A3SearchTargetItem *searchTargetItem = [A3SearchTargetItem new];
 				searchTargetItem.code = item.currencyCode;
-				searchTargetItem.name = item.localizedName;
+				searchTargetItem.name = [currencyDataManager localizedNameForCode:item.currencyCode];
 				// displayName will be used for search target.
 				searchTargetItem.displayName = [NSString stringWithFormat:@"%@ %@", searchTargetItem.code, searchTargetItem.name];
 				[allData addObject:searchTargetItem];
 			}
+			[super setAllData:allData];
 		}
 	}
 	return allData;

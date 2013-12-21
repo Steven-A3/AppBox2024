@@ -7,10 +7,10 @@
 //
 
 #import "A3AppDelegate.h"
-#import "CurrencyItem.h"
-#import "CurrencyFavorite+initialize.h"
-#import "CurrencyItem+name.h"
 #import "A3YahooCurrency.h"
+#import "NSFileManager+A3Addtion.h"
+#import "CurrencyRateItem.h"
+#import "A3CurrencyDataManager.h"
 
 @implementation A3AppDelegate
 
@@ -18,20 +18,24 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+	NSError *error = nil;
+	@try {
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		NSString *storePath = [fileManager cacheStorePath];
+		NSURL *storeURL = [NSURL fileURLWithPath:storePath];
 
-	[MagicalRecord setupAutoMigratingStackWithSQLiteStoreNamed:@"AppBox3.sqlite"];
-	
-	{
-//		NSArray *fetchedObjects = [CurrencyItem MR_findAll];
-//		NSLog(@"%@", fetchedObjects);
+		if ([fileManager fileExistsAtPath:storePath]) {
+			[fileManager removeItemAtPath:storePath error:&error];
+		}
+		[MagicalRecord setupAutoMigratingStackWithSQLiteStoreAtURL:storeURL];
 
-		[CurrencyItem MR_truncateAll];
-		[CurrencyFavorite MR_truncateAll];
+		[self initCurrencyData];
+
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	}
-
-	[self initCurrencyData];
-
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	@catch (id exception) {
+		NSLog(@"%@", [(id <NSObject>)exception description]);
+	}
 
 //	NSArray *fetchedObjects = [CurrencyItem MR_findAll];
 //	NSLog(@"%@", fetchedObjects);
@@ -97,19 +101,19 @@
 
 #pragma mark Make Yahoo Currency Initial Data
 
-- (void)addFavoritesForCurrencyItem {
-	NSArray *favorites = @[@"USD", @"EUR", @"GBP", @"CAD", @"JPY", @"HKD", @"CNY", @"CHF", @"KRW"];
-
-	[favorites enumerateObjectsUsingBlock:^(NSString *code, NSUInteger idx, BOOL *stop) {
-		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
-		favorite.order = [NSString stringWithFormat:@"0%lu0000000", (unsigned long)idx];
-		favorite.currencyItem = [CurrencyItem MR_findFirstByAttribute:@"currencyCode" withValue:code];
-		if ([code isEqualToString:@"USD"]) {
-			favorite.currencyItem.rateToUSD = @1;
-		}
-		NSLog(@"%@, %@", favorite.currencyItem.currencyCode, favorite.order);
-	}];
-}
+//- (void)addFavoritesForCurrencyItem {
+//	NSArray *favorites = @[@"USD", @"EUR", @"GBP", @"CAD", @"JPY", @"HKD", @"CNY", @"CHF", @"KRW"];
+//
+//	[favorites enumerateObjectsUsingBlock:^(NSString *code, NSUInteger idx, BOOL *stop) {
+//		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
+//		favorite.order = [NSString stringWithFormat:@"0%lu0000000", (unsigned long)idx];
+//		favorite.currencyItem = [CurrencyItem MR_findFirstByAttribute:@"currencyCode" withValue:code];
+//		if ([code isEqualToString:@"USD"]) {
+//			favorite.currencyItem.rateToUSD = @1;
+//		}
+//		NSLog(@"%@, %@", favorite.currencyItem.currencyCode, favorite.order);
+//	}];
+//}
 
 - (void)initCurrencyData {
 	NSArray *yahooArray = [self yahooCurrencyArray];
@@ -125,7 +129,7 @@
 		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 		[numberFormatter setCurrencyCode:currencyItem.currencyCode];
-		NSLog(@"%@ = %@, %@", currencyItem.currencyCode, [numberFormatter stringFromNumber:@0], [currencyItem localizedName]);
+		NSLog(@"%@ = %@, %@", currencyItem.currencyCode, [numberFormatter stringFromNumber:@0], [currencyItem localizedNameForCode:]);
 		
 		currencyItem.rateToUSD = @([yahooItem[@"resource"][@"fields"][@"price"] floatValue]);
 		currencyItem.updated = [NSDate dateWithTimeIntervalSince1970:[yahooItem[@"resource"][@"fields"][@"ts"] integerValue]];
@@ -135,6 +139,7 @@
 		[self addFavoritesForCurrencyItem:currencyItem];
 	}
 */
+
 	NSArray *localesArray = [NSLocale availableLocaleIdentifiers];
 	NSMutableArray *validLocales = [[NSMutableArray alloc] initWithCapacity:[localesArray count]];
 	for (id localeid in localesArray) {
@@ -151,13 +156,15 @@
 		return [obj1[NSLocaleCurrencyCode] compare:obj2[NSLocaleCurrencyCode]];
 	};
 	[validLocales sortUsingComparator:comparator];
-	
+
+	A3CurrencyDataManager *dataManager = [A3CurrencyDataManager new];
+
 	NSDate *updated = nil;
 	for (id obj in yahooArray) {
 		A3YahooCurrency *yahooCurrency = [[A3YahooCurrency alloc] initWithObject:obj];
-		CurrencyItem *entity = [CurrencyItem MR_createEntity];
+		CurrencyRateItem *entity = [CurrencyRateItem MR_createEntity];
 		entity.currencyCode = yahooCurrency.currencyCode;
-		entity.name = entity.localizedName;
+		entity.name = [dataManager localizedNameForCode:yahooCurrency.currencyCode];
 		entity.flagImageName = [self countryNameForCurrencyCode:entity.currencyCode];
 		entity.rateToUSD = yahooCurrency.rateToUSD;
 		entity.updated = yahooCurrency.updated;
@@ -219,19 +226,18 @@
 	];
 
 	[exceptionList enumerateObjectsUsingBlock:^(NSDictionary *object, NSUInteger idx, BOOL *stop) {
-		NSArray *fetched = [CurrencyItem MR_findByAttribute:@"currencyCode" withValue:object[NSLocaleCurrencyCode]];
+		NSArray *fetched = [CurrencyRateItem MR_findByAttribute:@"currencyCode" withValue:object[NSLocaleCurrencyCode]];
 		if ([fetched count]) {
-			CurrencyItem *item = fetched[0];
+			CurrencyRateItem *item = fetched[0];
 			item.currencySymbol = object[NSLocaleCurrencySymbol];
 		}
 	}];
 
-	NSArray *results = [CurrencyItem MR_findAll];
-	for (CurrencyItem *entity in results) {
+	NSArray *results = [CurrencyRateItem MR_findAll];
+	for (CurrencyRateItem *entity in results) {
 		NSLog(@"Code: %@, Country name %@, symbol = %@, name = %@", entity.currencyCode, entity.flagImageName, entity.currencySymbol, entity.name);
 	}
 
-	[self addFavoritesForCurrencyItem];
 }
 
 - (NSString *)countryNameForCurrencyCode:(NSString *)code {

@@ -7,13 +7,6 @@
 //
 
 #import "CurrencyHistory+handler.h"
-#import "NSManagedObject+MagicalFinders.h"
-#import "NSManagedObject+MagicalRecord.h"
-#import "CurrencyFavorite.h"
-#import "NSManagedObject+MagicalAggregation.h"
-#import "CurrencyFavorite+initialize.h"
-#import "CurrencyItem.h"
-
 
 @implementation CurrencyHistory (handler)
 

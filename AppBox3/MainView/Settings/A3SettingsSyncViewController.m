@@ -8,6 +8,8 @@
 
 #import "A3SettingsSyncViewController.h"
 #import "NSUserDefaults+A3Addition.h"
+#import "A3AppDelegate.h"
+#import "A3AppDelegate+iCloud.h"
 
 @interface A3SettingsSyncViewController ()
 
@@ -49,16 +51,15 @@
 	if (cell.tag == 1100) {
 		if (!_iCloudSwitch) {
 			_iCloudSwitch = [UISwitch new];
-			_iCloudSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseiCloudSync];
-			[_iCloudSwitch addTarget:self action:@selector(toggleiCloud:) forControlEvents:UIControlEventValueChanged];
+			_iCloudSwitch.on = [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled];
+			[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
 		}
 		cell.accessoryView = _iCloudSwitch;
 	}
 }
 
-- (void)toggleiCloud:(UISwitch *) switchControl {
-	[[NSUserDefaults standardUserDefaults] setBool:switchControl.on forKey:A3SettingsUseiCloudSync];
-	[[NSUserDefaults standardUserDefaults] synchronize];
+- (void)toggleCloud:(UISwitch *)switchControl {
+	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
 }
 
 @end

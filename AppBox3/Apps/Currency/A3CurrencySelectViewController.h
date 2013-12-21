@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "A3SearchViewController.h"
 
+@class A3CacheStoreManager;
+
 @interface A3CurrencySelectViewController : A3SearchViewController
+
+@property (weak, nonatomic) A3CacheStoreManager *cacheStoreManager;
 
 @end

@@ -7,11 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "ObjectiveFlickr.h"
 
-#import "FlickrAPIKey.h"
-
-@interface A3FlickrTest : XCTestCase <OFFlickrAPIRequestDelegate>
+@interface A3FlickrTest : XCTestCase
 
 @end
 

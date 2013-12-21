@@ -14,7 +14,8 @@
 	#import <UIKit/UIKit.h>
 	#import <Foundation/Foundation.h>
 
-#define MR_LOGGING_ENABLED 1
-#import "CoreData+MagicalRecord.h"
+	#define MR_LOGGING_ENABLED 1
+	#import "CoreData+MagicalRecord.h"
+	#import "common.h"
 
 #endif

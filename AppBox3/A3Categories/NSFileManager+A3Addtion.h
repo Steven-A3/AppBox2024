@@ -14,6 +14,7 @@
 
 - (NSString *)storeName;
 
-- (void)setupStoreFile;
+- (void)setupCacheStoreFile;
 
+- (NSString *)cacheStorePath;
 @end

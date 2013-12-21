@@ -1,4 +1,4 @@
-    //
+//
 //  ElanceWebLogin.m
 //  elance
 //
@@ -40,7 +40,7 @@
     self.title = NSLocalizedString(@"Login", nil);
     self.navigationItem.leftBarButtonItem =
     [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
-                                     style:UIBarButtonSystemItemCancel
+                                     style:UIBarButtonItemStylePlain
                                     target:self
                                     action:@selector(cancel)];
 	

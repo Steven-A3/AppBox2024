@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NSString *const A3CommonPropertyOrder;
+
 @interface NSMutableArray (A3Sort)
 
 - (void)moveItemInSortedArrayFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex;

@@ -1,0 +1,27 @@
+//
+//  A3CurrencyDataManager.h
+//  AppBox3
+//
+//  Created by A3 on 12/19/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class CurrencyFavorite;
+@class CurrencyRateItem;
+@class A3CacheStoreManager;
+
+extern NSString *const A3NotificationCurrencyRatesUpdated;
+extern NSString *const A3KeyCurrencyCode;
+
+@interface A3CurrencyDataManager : NSObject
+
++ (void)copyCurrencyFrom:(CurrencyRateItem *)item to:(CurrencyFavorite *)favorite;
++ (void)setupFavorites;
+
++ (void)updateCurrencyRatesInContext:(NSManagedObjectContext *)context;
+
+- (NSString *)localizedNameForCode:(NSString *)currencyCode;
+
+@end

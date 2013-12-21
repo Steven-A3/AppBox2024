@@ -1289,7 +1289,7 @@
 	holidayName = @"Prophet's Birthday";
 	NSArray *mohamedBirthday = [HolidayData getMohamedBirthday:year];
 	for (NSDate *birthday in mohamedBirthday) {
-		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+		[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:birthday, kHolidayDuration:@1}];
 	}
 
 	holidayName = @"Victory at Adwa Day";

@@ -114,7 +114,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-			_fetchedResultsController = [CurrencyHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
+			_fetchedResultsController = [CurrencyHistory MR_fetchAllSortedBy:@"updateDate" ascending:NO withPredicate:nil groupBy:nil delegate:nil];
 		if (![_fetchedResultsController.fetchedObjects count]) {
 			self.navigationItem.leftBarButtonItem = nil;
 		}
@@ -163,7 +163,7 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 	[cell setNumberOfLines:@(numberOfLines)];
 
 	((UILabel *) cell.leftLabels[0]).text = [nf stringFromNumber:currencyHistory.value];
-	((UILabel *) cell.rightLabels[0]).text = [currencyHistory.date timeAgo];
+	((UILabel *) cell.rightLabels[0]).text = [currencyHistory.updateDate timeAgo];
 
 	for (NSInteger index = 1; index < numberOfLines; index++) {
 		CurrencyHistoryItem *item = items[index - 1];

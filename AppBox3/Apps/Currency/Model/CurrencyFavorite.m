@@ -2,17 +2,19 @@
 //  CurrencyFavorite.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 1/17/13.
+//  Created by A3 on 12/21/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "CurrencyFavorite.h"
-#import "CurrencyItem.h"
 
 
 @implementation CurrencyFavorite
 
+@dynamic currencyCode;
+@dynamic currencySymbol;
+@dynamic flagImageName;
+@dynamic name;
 @dynamic order;
-@dynamic currencyItem;
 
 @end

@@ -2,7 +2,7 @@
 //  CurrencyHistoryItem.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/8/13.
+//  Created by A3 on 12/19/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,8 +13,8 @@
 @implementation CurrencyHistoryItem
 
 @dynamic currencyCode;
-@dynamic rate;
 @dynamic order;
+@dynamic rate;
 @dynamic history;
 
 @end

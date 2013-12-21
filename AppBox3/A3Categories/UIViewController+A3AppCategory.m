@@ -19,7 +19,6 @@
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
-static char const *const key_frequencyKeyboardViewController 	= "key_frequencyKeyboardViewController";
 static char const *const key_dateKeyboardViewController 		= "key_dateKeyboardViewController";
 static char const *const key_currencyFormatter					= "key_currencyFormatter";
 static char const *const key_decimalFormatter 					= "key_decimalFormatter";
