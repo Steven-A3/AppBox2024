@@ -51,11 +51,21 @@
 	if (cell.tag == 1100) {
 		if (!_iCloudSwitch) {
 			_iCloudSwitch = [UISwitch new];
+			[_iCloudSwitch setEnabled:[[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]];
 			_iCloudSwitch.on = [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled];
 			[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
 		}
 		cell.accessoryView = _iCloudSwitch;
 	}
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 0) {
+		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
+			return @"Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
+		}
+	}
+	return nil;
 }
 
 - (void)toggleCloud:(UISwitch *)switchControl {

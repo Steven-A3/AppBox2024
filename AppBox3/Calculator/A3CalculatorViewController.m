@@ -9,7 +9,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "A3CalculatorViewController.h"
 #import "common.h"
-#import "CommonUIDefinitions.h"
 #import "DDPageControl.h"
 #import "A3CalculatorButtonsViewController.h"
 #import "A3GrayAppHeaderView.h"

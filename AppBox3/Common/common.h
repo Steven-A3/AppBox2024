@@ -18,7 +18,7 @@
 #define FNLOGRECT(rect)
 #endif
 
-#define DegreesToRadians(degrees)	(degrees * M_PI / 180.0)
-#define RadiansToDegrees(radians)	(radians * 180.0/M_PI)
+#define DegreesToRadians(degrees)	((degrees) * M_PI / 180.0)
+#define RadiansToDegrees(radians)	((radians) * 180.0/M_PI)
 
 #endif

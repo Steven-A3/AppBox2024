@@ -11,7 +11,6 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import "A3UIDevice.h"
-#import "CommonUIDefinitions.h"
 #import "common.h"
 
 @implementation A3UIDevice

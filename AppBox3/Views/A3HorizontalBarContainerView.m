@@ -6,11 +6,9 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreGraphics/CoreGraphics.h>
 #import "A3HorizontalBarContainerView.h"
 #import "A3HorizontalBarChartView.h"
 #import "A3UIDevice.h"
-#import "CommonUIDefinitions.h"
 
 @implementation A3HorizontalBarContainerView {
 	CGFloat rightMargin;

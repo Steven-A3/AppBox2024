@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>After %ld hours</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_hours@</string>
+		<key>num_hours</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Immediately</string>
+			<key>one</key>
+			<string>After 1 hour</string>
+			<key>few</key>
+			<string>After %ld hours</string>
+			<key>many</key>
+			<string>After %ld hours</string>
+			<key>other</key>
+			<string>After %ld hours</string>
+		</dict>
+	</dict>
+	<key>After %ld minutes</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_minutes@</string>
+		<key>num_minutes</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>Immediately</string>
+			<key>one</key>
+			<string>After 1 minute</string>
+			<key>few</key>
+			<string>After %ld minutes</string>
+			<key>many</key>
+			<string>After %ld minutes</string>
+			<key>other</key>
+			<string>After %ld minutes</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

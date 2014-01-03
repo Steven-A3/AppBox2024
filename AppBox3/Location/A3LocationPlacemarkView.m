@@ -8,7 +8,7 @@
 
 #import "A3LocationPlacemarkView.h"
 #import "A3PlacemarkBackgroundView.h"
-#import "CommonUIDefinitions.h"
+#import "A3UIDevice.h"
 
 #define	A3LocationPlacemarkViewMargin	10.0
 

@@ -30,7 +30,7 @@
 - (UIButton *)expandButton {
 	if (!_expandButton) {
 		_expandButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		_expandButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:18];
+		_expandButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:17];
 		[_expandButton setTitle:@"j" forState:UIControlStateNormal];
 		[_expandButton setTitleColor:[UIColor colorWithRed:199.0 / 255.0 green:199.0 / 255.0 blue:204.0 / 255.0 alpha:1.0] forState:UIControlStateNormal];
 		[_expandButton addTarget:self action:@selector(expandButtonAction:) forControlEvents:UIControlEventTouchUpInside];

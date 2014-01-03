@@ -9,9 +9,11 @@
 
 
 @class A3TableViewRootElement;
+@class A3TableViewElement;
 
 @interface A3TableViewController : UITableViewController
 
 @property (nonatomic, strong) A3TableViewRootElement *rootElement;
 
+- (A3TableViewElement *)elementAtIndexPath:(NSIndexPath *)indexPath;
 @end

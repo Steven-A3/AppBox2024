@@ -8,7 +8,6 @@
 
 #import "A3LoanCalcQuickDialogViewController_iPhone.h"
 #import "A3LoanCalcString.h"
-#import "CommonUIDefinitions.h"
 #import "DDPageControl.h"
 #import "A3OnOffLeftRightButton.h"
 #import "A3LoanCalcPieChartController.h"

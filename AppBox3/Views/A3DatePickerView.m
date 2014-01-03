@@ -7,8 +7,8 @@
 //
 
 #import "A3DatePickerView.h"
-#import "CommonUIDefinitions.h"
 #import "A3_30x30Button.h"
+#import "A3UIDevice.h"
 
 @interface A3DatePickerView ()
 

@@ -15,11 +15,18 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "UIViewController+A3Addition.h"
+#import "CurrencyFavorite.h"
+#import "JNJProgressButton.h"
+
+@protocol JNJProgressButtonExtension <NSObject>
+- (void)startProgress;
+@end
 
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate>
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) id usmStoreDidImportChangesObserver;
 
 @end
 
@@ -34,6 +41,12 @@
 	return self;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self.tableView reloadData];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -44,7 +57,12 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
-
+	__typeof(self) __weak weakSelf = self;
+	self.usmStoreDidImportChangesObserver =
+	[[NSNotificationCenter defaultCenter] addObserverForName:USMStoreDidImportChangesNotification object:nil queue:nil usingBlock:^(NSNotification *note) {
+		[weakSelf.tableView reloadData];
+	}];
+	
 	UISearchBar *searchBar = [UISearchBar new];
 	searchBar.placeholder = @"Search by App or Contents";
 	searchBar.frame = self.navigationController.navigationBar.bounds;
@@ -61,6 +79,12 @@
 
 	_mySearchDisplayController.searchBar.barTintColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:248.0/255.0 alpha:1.0];
 
+}
+
+
+- (void)dealloc {
+	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+	[center removeObserver:_usmStoreDidImportChangesObserver];
 }
 
 - (void)didReceiveMemoryWarning
@@ -256,6 +280,51 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar {
 	[_mySearchDisplayController setActive:YES];
 	return YES;
+}
+
+- (BOOL)isAppAvailableForElement:(A3TableViewElement *)element {
+	if ([element.className isEqualToString:@"A3CurrencyViewController"]) {
+		NSUInteger count = [CurrencyFavorite MR_countOfEntities];
+		FNLOG(@"%lu", (unsigned long)count);
+		return count > 0;
+	}
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	A3TableViewElement *element = [self elementAtIndexPath:indexPath];
+
+	if ([self isAppAvailableForElement:element]) {
+		cell.textLabel.textColor = [UIColor blackColor];
+		cell.accessoryView = nil;
+		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+		if ([element.imageName length]) {
+			cell.imageView.image= [UIImage imageNamed:element.imageName];
+			cell.imageView.tintColor = nil;
+		}
+	} else {
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.textLabel.textColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
+
+		UIImage *image = [[UIImage imageNamed:element.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		cell.imageView.image = image;
+		cell.imageView.tintColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
+
+		JNJProgressButton *progressButton = [[JNJProgressButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+		progressButton.needsProgress = YES;
+		progressButton.userInteractionEnabled = NO;
+		cell.accessoryView = progressButton;
+		[(id<JNJProgressButtonExtension>)progressButton startProgress];
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	A3TableViewElement *element = [self elementAtIndexPath:indexPath];
+	if ([self isAppAvailableForElement:element]) {
+		[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
+	} else {
+		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	}
 }
 
 @end

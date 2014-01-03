@@ -37,3 +37,6 @@
 [submodule "External/MBProgressHUD"]
 	path = External/MBProgressHUD
 	url = https://github.com/jdg/MBProgressHUD.git
+[submodule "External/JNJProgressButton"]
+	path = External/JNJProgressButton
+	url = https://github.com/jnjosh/JNJProgressButton.git

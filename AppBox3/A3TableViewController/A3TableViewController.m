@@ -9,6 +9,7 @@
 #import "A3TableViewController.h"
 #import "A3TableViewRootElement.h"
 #import "A3TableViewSection.h"
+#import "A3TableViewElement.h"
 
 @interface A3TableViewController ()
 
@@ -68,9 +69,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	A3TableViewSection *section = self.rootElement.sectionsArray[(NSUInteger) indexPath.section];
-	A3TableViewElement *element = section.elementsMatchingTableView[(NSUInteger) indexPath.row];
+	A3TableViewElement *element= [self elementAtIndexPath:indexPath];
 	[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
 }
+
+- (A3TableViewElement *)elementAtIndexPath:(NSIndexPath *)indexPath {
+	A3TableViewSection *section = self.rootElement.sectionsArray[(NSUInteger) indexPath.section];
+	A3TableViewElement *element = section.elementsMatchingTableView[(NSUInteger) indexPath.row];
+	return element;
+}
+
 
 @end

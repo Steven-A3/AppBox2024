@@ -8,7 +8,6 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 #import "A3LoanCalcQuickDialogViewController_iPad.h"
-#import "CommonUIDefinitions.h"
 #import "A3LoanCalcAmortizationViewController.h"
 #import "A3LoanCalcString.h"
 #import "common.h"

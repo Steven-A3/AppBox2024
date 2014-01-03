@@ -22,7 +22,6 @@
 	UIAlertView *_cloudContentHealingAlert;
 	UIAlertView *_handleCloudContentWarningAlert;
 	UIAlertView *_handleLocalStoreAlert;
-	MBProgressHUD *_hud;
 	BOOL _needMigrateLocalDataToCloud;
 }
 
@@ -31,7 +30,12 @@
 @property (strong, nonatomic) A3RootViewController_iPad *rootViewController;
 @property (strong, nonatomic) UbiquityStoreManager *ubiquityStoreManager;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSDate *wakeUpTime;
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 + (A3AppDelegate *)instance;
 
+- (UINavigationController *)navigationController;
+
+- (UIViewController *)visibleViewController;
 @end

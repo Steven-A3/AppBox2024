@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "CommonUIDefinitions.h"
 #import "A3EmptyActionMenuViewController_iPad.h"
 #import "A3BlackBarButton.h"
 #import "A3BarButton.h"
@@ -17,7 +16,6 @@
 #import <objc/runtime.h>
 #import "UIViewController+navigation.h"
 #import "A3UIDevice.h"
-#import "A3CenterViewProtocol.h"
 
 #define A3_ACTION_MENU_COVER_VIEW_TAG		79325
 static char const *const key_actionMenuViewController 			= "key_actionMenuViewController";

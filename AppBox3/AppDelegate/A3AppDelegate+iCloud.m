@@ -9,8 +9,12 @@
 #import "A3AppDelegate+iCloud.h"
 #import "A3CurrencyDataManager.h"
 #import "CurrencyFavorite.h"
+#import "A3UIDevice.h"
+#import "MMDrawerController.h"
+#import "SFKImage.h"
 
-NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
+NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
+NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 
 @protocol UbiquityStoreManagerInternal <NSObject>
 
@@ -28,10 +32,8 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 @implementation A3AppDelegate (iCloud)
 
 - (void)setupCloud {
-	
-	self.ubiquityStoreManager = [[UbiquityStoreManager alloc] initStoreNamed:nil withManagedObjectModel:nil
-														   localStoreURL:nil containerIdentifier:nil additionalStoreOptions:nil
-																delegate:self];
+
+	self.ubiquityStoreManager = [[UbiquityStoreManager alloc] initWithDelegate:self];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
 }
@@ -40,6 +42,16 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 	_needMigrateLocalDataToCloud = YES;
 
 	[self.ubiquityStoreManager setCloudEnabled:enable];
+
+	UIView *targetViewForHud = [[self visibleViewController] view];
+	self.hud = [MBProgressHUD showHUDAddedTo:targetViewForHud animated:YES];
+	self.hud.labelText = enable ? @"Enabling iCloud" : @"Disableing iCloud";
+	self.hud.minShowTime = 2;
+	self.hud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.hud.completionBlock = ^{
+		weakSelf.hud = nil;
+	};
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
@@ -50,6 +62,7 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 
 	FNLOG(@"\n-----------------------------------------\n%@\n%@\n%@\n-----------------------------------------", insertedObjects, updatedObjects, deletedObjects);
 #endif
+	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
 }
 
 - (NSManagedObjectContext *)ubiquityStoreManager:(UbiquityStoreManager *)manager
@@ -78,6 +91,8 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager didLoadStoreForCoordinator:(NSPersistentStoreCoordinator *)coordinator
 					 isCloud:(BOOL)isCloudStore {
 
+	FNLOG();
+	
 	SQLiteMagicalRecordStack *magicalRecordStack = [SQLiteMagicalRecordStack new];
 	magicalRecordStack.coordinator = coordinator;
 	magicalRecordStack.store = coordinator.persistentStores[0];
@@ -99,8 +114,38 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 	} else {
 		[A3CurrencyDataManager setupFavorites];
 	}
-//	[_hud hide:YES];
-//	_hud = nil;
+	__typeof(self) __weak weakSelf = self;
+	dispatch_async(dispatch_get_main_queue(), ^{
+		if (weakSelf.hud) {
+			UIImageView *imageView = [UIImageView new];
+			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:37]];
+			[SFKImage setDefaultColor:[UIColor whiteColor]];
+			imageView.image = [SFKImage imageNamed:@"u"];
+			[imageView sizeToFit];
+			weakSelf.hud.mode = MBProgressHUDModeCustomView;
+			weakSelf.hud.customView = imageView;
+			if (isCloudStore) {
+				weakSelf.hud.labelText = @"iCloud Enabled";
+				weakSelf.hud.detailsLabelText = @"Synging in backgorund";
+			} else {
+				weakSelf.hud.labelText = @"iCloud Disabled";
+			}
+			
+			double delayInSeconds = 2.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[weakSelf.hud hide:YES];
+            });
+		}
+	});
+
+	double delayInSeconds = 30;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		if ([CurrencyFavorite MR_countOfEntities] == 0) {
+			[weakSelf.ubiquityStoreManager deleteCloudStoreLocalOnly:YES];
+		}
+	});
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager failedLoadingStoreWithCause:(UbiquityStoreErrorCause)cause context:(id)context
@@ -269,7 +314,7 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 		[countExprDesc setExpression:countExpr];
 		[countExprDesc setExpressionResultType:NSInteger64AttributeType];
 
-		NSAttributeDescription *uniqueIdentifierAttr = [[[NSEntityDescription entityForName:entityName inManagedObjectContext:moc] propertiesByName] objectForKey:kA3UniqueIdentifier];
+		NSAttributeDescription *uniqueIdentifierAttr = [[[NSEntityDescription entityForName:entityName inManagedObjectContext:moc] propertiesByName] objectForKey:A3UniqueIdentifier];
 		[fr setPropertiesToFetch:[NSArray arrayWithObjects:uniqueIdentifierAttr, countExprDesc, nil]];
 		[fr setPropertiesToGroupBy:[NSArray arrayWithObject:uniqueIdentifierAttr]];
 
@@ -280,7 +325,7 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 		for (NSDictionary *dict in countDictionaries) {
 			NSNumber *count = [dict objectForKey:@"count"];
 			if ([count integerValue] > 1) {
-				[uidWithDupes addObject:[dict objectForKey:kA3UniqueIdentifier]];
+				[uidWithDupes addObject:[dict objectForKey:A3UniqueIdentifier]];
 			}
 		}
 
@@ -293,10 +338,10 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 		fr = [NSFetchRequest fetchRequestWithEntityName:entityName];
 		[fr setIncludesPendingChanges:NO];
 
-		NSPredicate *p = [NSPredicate predicateWithFormat:@"%K IN (%@)", kA3UniqueIdentifier, uidWithDupes];
+		NSPredicate *p = [NSPredicate predicateWithFormat:@"%K IN (%@)", A3UniqueIdentifier, uidWithDupes];
 		[fr setPredicate:p];
 
-		NSSortDescriptor *uniqueIdentifierSort = [NSSortDescriptor sortDescriptorWithKey:kA3UniqueIdentifier ascending:YES];
+		NSSortDescriptor *uniqueIdentifierSort = [NSSortDescriptor sortDescriptorWithKey:A3UniqueIdentifier ascending:YES];
 		[fr setSortDescriptors:[NSArray arrayWithObject:uniqueIdentifierSort]];
 
 		NSUInteger batchSize = 500; //can be set 100-10000 objects depending on individual object size and available device memory
@@ -340,6 +385,77 @@ NSString *const kA3UniqueIdentifier = @"uniqueIdentifier";
 			NSLog(@"Error saving unique results: %@", error);
 		}
 	}
+}
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	// required or the app defaults to no background fetching
+	[[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+	return YES;
+}
+
+- (void) application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+	// set the time of wake up to use for returning if we updated
+	self.wakeUpTime = [NSDate date];
+	NSLog(@"%s %@", __PRETTY_FUNCTION__, self.wakeUpTime);
+		
+	// pass on the completion handler to another method with delay to allow any imports to occur
+	// the API Allows 30 seconds so I only delay for 28 seconds just to be safe
+	[self performSelector:@selector(sendBGFetchCompletionHandler:) withObject:completionHandler afterDelay:28];
+}
+
+- (void) sendBGFetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
+	NSLog(@"%s", __PRETTY_FUNCTION__);
+	NSUserDefaults *userDefaults=[NSUserDefaults standardUserDefaults];
+	
+	// get the time we were woke up to fetch
+	NSDate *wakeUpCall = self.wakeUpTime;
+	
+	// the core data singleton saves the time of the last iCloud import into user defaults
+	NSDate *iCloudImport = [userDefaults objectForKey:A3iCloudLastDBImportKey];
+	
+	// a bool to determine if changes were imported or not
+	BOOL importedUpdates = NO;
+	
+	// compare the last import time against the wake up time to determine if we imported changes
+	if (([wakeUpCall compare:iCloudImport] == NSOrderedAscending)) {
+		//          NSLog(@"We have New Changes");
+		importedUpdates = YES;
+		completionHandler(UIBackgroundFetchResultNewData);
+	} else {
+		//          NSLog(@"We have NO New Changes");
+		completionHandler(UIBackgroundFetchResultNoData);
+	}
+	
+	// comment all the rest of this out for production builds
+	
+	// update the app icon badge & save results of fetch
+	NSLog(@"Saving Update Results");
+	
+	// Saving the results into an array in user defaults for a tableview
+	// that is only visible in debug builds to show these results
+	
+	// format the fetch timestamp
+	NSString *fetchTime = [NSDateFormatter localizedStringFromDate:wakeUpCall dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
+	
+	// determine if changes were brought in
+	NSString *resultString = importedUpdates ? @"YES" : @"NO";
+	
+	// build the string
+	NSString *newString = [NSString stringWithFormat:@"%@ - Updates Imported: %@", fetchTime, resultString];
+	
+	// get or create the array from user defaults
+	NSMutableArray *fetchDates = [NSMutableArray arrayWithArray:[userDefaults objectForKey:@"BackgroundFetchUpDates"]];
+	if (!fetchDates) {
+		fetchDates = [NSMutableArray arrayWithArray:@[newString]];
+	}else{
+		[fetchDates insertObject:newString atIndex:0];
+	}
+	
+	// save the array back to user defaults
+	[userDefaults setObject:fetchDates forKey:@"BackgroundFetchUpDates"];
+	[userDefaults synchronize];
+	
+	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);
 }
 
 @end

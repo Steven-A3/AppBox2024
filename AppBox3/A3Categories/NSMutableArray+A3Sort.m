@@ -29,7 +29,7 @@ NSString *const A3CommonPropertyOrder = @"order";
 }
 
 - (void)moveItemInSortedArrayFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
-	FNLOG(@"%ld, %ld", fromIndex, toIndex);
+	FNLOG(@"%ld, %ld", (long)fromIndex, (long)toIndex);
 	if (fromIndex == toIndex) {
 		return;
 	}
@@ -82,7 +82,7 @@ NSString *const A3CommonPropertyOrder = @"order";
 }
 
 - (void)insertObjectToSortedArray:(id)object atIndex:(NSInteger)index {
-	FNLOG(@"%ld", index);
+	FNLOG(@"%ld", (long)index);
 	NSInteger prevOrder, nextOrder, myOrder;
 	if (index == 0) {
 		prevOrder = 0;

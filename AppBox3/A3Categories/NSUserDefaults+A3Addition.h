@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const A3SettingsUseiCloudSync;
 extern NSString *const A3SettingsUsePasscodeLock;
 extern NSString *const A3SettingsNumberOfItemsRecentToKeep;
 extern NSString *const A3SettingsUseLunarCalendar;

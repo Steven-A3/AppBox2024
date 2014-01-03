@@ -8,7 +8,6 @@
 
 #import <CoreGraphics/CoreGraphics.h>
 #import "A3LoanCalcComparisonTableViewDataSource.h"
-#import "CommonUIDefinitions.h"
 #import "A3ButtonTextField.h"
 #import "A3Formatter.h"
 #import "A3NumberKeyboardViewController_iPad.h"

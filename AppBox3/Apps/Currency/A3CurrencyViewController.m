@@ -581,7 +581,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 {
 	@autoreleasepool {
 		[self.favorites moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-		FNLOG(@"from: %ld, to: %ld", fromIndexPath.row, toIndexPath.row);
+		FNLOG(@"from: %ld, to: %ld", (long)fromIndexPath.row, (long)toIndexPath.row);
 	}
 }
 
