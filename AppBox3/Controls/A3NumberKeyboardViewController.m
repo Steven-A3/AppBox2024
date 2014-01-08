@@ -40,20 +40,47 @@
 }
 
 - (IBAction)keyboardInputAction:(UIButton *)button {
-	if ([_keyInputDelegate respondsToSelector:@selector(insertText:)]) {
-		[_keyInputDelegate insertText:[button titleForState:UIControlStateNormal]];
+	NSString *pressedString = [button titleForState:UIControlStateNormal];
+	BOOL allowedToChange = YES;
+
+	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
+		UITextField *textField = (UITextField *) _textInputTarget;
+		UITextRange *selectedRange = textField.selectedTextRange;
+		NSUInteger location = (NSUInteger) [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
+		NSUInteger length = (NSUInteger) [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
+		NSRange range = NSMakeRange(location, length);
+		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
+		allowedToChange = [textField.delegate textField:textField shouldChangeCharactersInRange:range replacementString:pressedString];
+	}
+	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(insertText:)]) {
+		[_textInputTarget insertText:pressedString];
 	}
 }
 
 - (IBAction)clearButtonAction {
 	if ([_delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
-		[_delegate A3KeyboardController:(id)self clearButtonPressedTo:_keyInputDelegate];
+		[_delegate A3KeyboardController:(id) self clearButtonPressedTo:_textInputTarget];
 	}
 }
 
 - (IBAction)backspaceAction:(UIButton *)button {
-	if ([_keyInputDelegate respondsToSelector:@selector(deleteBackward)]) {
-		[_keyInputDelegate deleteBackward];
+	BOOL allowedToChange = YES;
+
+	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
+		UITextField *textField = (UITextField *) _textInputTarget;
+		UITextRange *selectedRange = textField.selectedTextRange;
+		NSUInteger location = (NSUInteger) [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
+		NSUInteger length = (NSUInteger) [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
+		if (length == 0) {
+			location = MAX(location - 1, 0);
+			length = 1;
+		}
+		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
+		NSRange range = NSMakeRange(location, length);
+		allowedToChange = [textField.delegate textField:textField shouldChangeCharactersInRange:range replacementString:@""];
+	}
+	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(deleteBackward)]) {
+		[_textInputTarget deleteBackward];
 	}
 }
 
@@ -71,7 +98,7 @@
 
 - (IBAction)doneAction {
 	if ([_delegate respondsToSelector:@selector(A3KeyboardController:doneButtonPressedTo:)]) {
-		[_delegate A3KeyboardController:self doneButtonPressedTo:_keyInputDelegate ];
+		[_delegate A3KeyboardController:self doneButtonPressedTo:_textInputTarget];
 	}
 }
 

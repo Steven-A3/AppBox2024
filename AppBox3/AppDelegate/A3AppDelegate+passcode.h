@@ -8,22 +8,24 @@
 
 #import "A3AppDelegate.h"
 
-@interface A3AppDelegate (passcode)
+@interface A3AppDelegate (passcode) <A3PasscodeViewControllerDelegate>
 
 - (BOOL)didPasscodeTimerEnd;
 - (void)saveTimerStartTime;
 - (BOOL)isSimplePasscode;
+
+- (void)showLockScreen;
+
 - (void)applicationDidEnterBackground_passcode;
 - (void)applicationDidBecomeActive_passcode;
 - (void)applicationWillEnterForeground_passcode;
 - (void)applicationWillResignActive_passcode;
-- (CGFloat)timerDuration;
+- (double)timerDuration;
 
 @end
 
 extern NSString *const kUserDefaultTimerStart;
-extern NSString *const kUserDefaultsKeyForTimerDuration;
-extern NSString *const kUserDefaultsKeyForPasscodeTime;
+extern NSString *const kUserDefaultsKeyForPasscodeTimerDuration;
 extern NSString *const kUserDefaultsKeyForUseSimplePasscode;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForStarting;
 extern NSString *const kUserDefaultsKeyForAskPasscodeForSettings;

@@ -118,42 +118,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)keyboardInputAction:(UIButton *)button {
-	if ([self.keyInputDelegate respondsToSelector:@selector(insertText:)]) {
-		[self.keyInputDelegate insertText:[button titleForState:UIControlStateNormal]];
-	}
-}
-
-- (IBAction)clearButtonAction {
-	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
-		[self.delegate A3KeyboardController:self clearButtonPressedTo:self.keyInputDelegate ];
-	}
-}
-
-- (IBAction)backspaceAction:(UIButton *)button {
-	if ([self.keyInputDelegate respondsToSelector:@selector(deleteBackward)]) {
-		[self.keyInputDelegate deleteBackward];
-	}
-}
-
-- (IBAction)prevAction {
-	if ([self.delegate respondsToSelector:@selector(prevButtonPressed)]) {
-		[self.delegate prevButtonPressed];
-	}
-}
-
-- (IBAction)nextAction {
-	if ([self.delegate respondsToSelector:@selector(nextButtonPressed)]) {
-		[self.delegate nextButtonPressed];
-	}
-}
-
-- (IBAction)doneAction {
-	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:doneButtonPressedTo:)]) {
-		[self.delegate A3KeyboardController:self doneButtonPressedTo:self.keyInputDelegate ];
-	}
-}
-
 - (IBAction)bigButton1Action {
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
 		[self.bigButton1 setSelected:YES];

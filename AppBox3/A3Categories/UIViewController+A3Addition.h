@@ -7,6 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "A3AppDelegate+passcode.h"
+#import "A3PasscodeViewController.h"
+#import "A3PasswordViewController.h"
 
 @interface UIViewController (A3Addition)
 
@@ -34,4 +37,7 @@
 - (void)makeBackButtonEmptyArrow;
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
 
++ (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
+
+- (BOOL)checkPasscode;
 @end

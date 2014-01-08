@@ -6,12 +6,22 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "A3RootViewController_iPad.h"
 #import "UbiquityStoreManager.h"
 #import "MBProgressHUD.h"
+#import "A3PasscodeViewControllerProtocol.h"
 
 @class MMDrawerController;
+@protocol A3PasscodeViewControllerProtocol;
+
+extern NSString *const kA3AppsMenuName;
+extern NSString *const kA3AppsMenuImageName;
+extern NSString *const kA3AppsExpandableChildren;
+extern NSString *const kA3AppsClassName;
+extern NSString *const kA3AppsNibName;
+extern NSString *const kA3AppsStoryboardName;
+extern NSString *const kA3AppsMenuExpandable;
+extern NSString *const kA3AppsMenuNeedSecurityCheck;
 
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
@@ -32,10 +42,13 @@
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
+@property (strong, nonatomic) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
 + (A3AppDelegate *)instance;
 
 - (UINavigationController *)navigationController;
 
 - (UIViewController *)visibleViewController;
+
+- (NSArray *)allMenu;
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "A3KeychainUtils.h"
+#import "A3AppDelegate+passcode.h"
 #import <Security/Security.h>
 
 static NSString *kA3KeychainServiceName = @"A3PasscodeService";
@@ -87,6 +88,23 @@ static NSString *kA3KeychainAccountName = @"A3AppBox3Passcode";
 	if (status != noErr) {
 		FNLOG(@"Error deleting password.");
 	}
+}
+
++ (double)passcodeTime {
+	return [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
+}
+
++ (NSString *)passcodeTimeString {
+	double passcodeTime = [A3KeychainUtils passcodeTime];
+	NSString *string;
+	if (passcodeTime == 0.0) {
+		string = @"Immediately";
+	} else if (passcodeTime / 60 > 60) {
+		string = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"After %ld hours", @"StringsDict", @"Require Passcode after n hours"), (long)passcodeTime / 60 / 60 ];
+	} else {
+		string = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"After %ld minutes", @"StringsDict", @"Require Passcode after n minutes"), (long)passcodeTime / 60];
+	}
+	return string;
 }
 
 @end

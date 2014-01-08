@@ -9,6 +9,7 @@
 #import "A3SettingsViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "NSUserDefaults+A3Addition.h"
+#import "A3KeychainUtils.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowSync = 1100,
@@ -20,7 +21,9 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	sA3SettingsRowLunarCalendar = 4200,
 };
 
-@interface A3SettingsViewController ()
+@interface A3SettingsViewController () <A3PasscodeViewControllerDelegate>
+
+@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
 @end
 
@@ -73,7 +76,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForSyncMethod];
 			break;
 		case A3SettingsRowPasscodeLock:
-			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForPasscodeLock];
+			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Off", nil);
 			break;
 		case A3SettingsRowWalletSecurity:
 			break;
@@ -87,6 +90,23 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case sA3SettingsRowLunarCalendar:
 			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForLunarCalendarCountry];
 			break;
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 0 && indexPath.section == 1) {
+		if ([self checkPasscode]) {
+			_passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+			[_passcodeViewController showLockscreenInViewController:self];
+		} else {
+			[self performSegueWithIdentifier:@"passcode" sender:nil];
+		}
+	}
+}
+
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+	if (success) {
+		[self performSegueWithIdentifier:@"passcode" sender:nil];
 	}
 }
 

@@ -778,7 +778,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
 			self.numberKeyboardViewController = keyboardVC;
 			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
-			keyboardVC.keyInputDelegate = textField;
+			keyboardVC.textInputTarget = textField;
 			keyboardVC.delegate = self;
 			self.numberKeyboardViewController = keyboardVC;
 			textField.inputView = [keyboardVC view];
@@ -811,14 +811,14 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
-	UITextField *textField = (UITextField *) self.numberKeyboardViewController.keyInputDelegate;
+	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
 	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[self.numberKeyboardViewController.keyInputDelegate resignFirstResponder];
+	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {

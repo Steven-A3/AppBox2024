@@ -10,7 +10,7 @@
 
 @interface A3NumberKeyboardViewController : UIViewController
 
-@property (nonatomic, weak) UIResponder<UIKeyInput> *keyInputDelegate;		// TextField, TextView, ... responder
+@property (nonatomic, weak) UIResponder<UITextInput> *textInputTarget;		// TextField, TextView, ... responder
 @property (nonatomic) 		A3NumberKeyboardType keyboardType;
 @property (nonatomic, strong) NSString *currencySymbol;
 @property (nonatomic, strong) NSString *currencyCode;
@@ -21,4 +21,5 @@
 - (void)reloadPrevNextButtons;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+
 @end

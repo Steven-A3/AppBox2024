@@ -17,6 +17,7 @@
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
+#import "A3PasscodeKeyboard_iPad.h"
 
 static char const *const key_numberKeyboardViewController 		= "key_numberKeyboardViewController";
 static char const *const key_dateKeyboardViewController 		= "key_dateKeyboardViewController";
@@ -48,11 +49,21 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	A3NumberKeyboardViewController *viewController;
 	if (IS_IPAD) {
 		viewController = [self iPadNumberKeyboard];
-		viewController.delegate = self;
 	} else {
 		viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
-		viewController.delegate = self;
 	}
+	viewController.delegate = self;
+	return viewController;
+}
+
+- (A3NumberKeyboardViewController *)passcodeKeyboard {
+	A3NumberKeyboardViewController *viewController;
+	if (IS_IPHONE) {
+		viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3PasscodeKeyboard_iPhone" bundle:nil];
+	} else {
+		viewController = [[A3PasscodeKeyboard_iPad alloc] initWithNibName:@"A3PasscodeKeyboard_iPad" bundle:nil];
+	}
+	viewController.delegate = self;
 	return viewController;
 }
 

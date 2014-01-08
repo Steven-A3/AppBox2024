@@ -1,22 +1,22 @@
 //
-//  A3NumberKeyboardSimpleVC_iPad
+//  A3PasscodeKeyboard_iPad.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 8/12/13 12:52 AM.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 1/7/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3NumberKeyboardSimpleVC_iPad.h"
+#import "A3PasscodeKeyboard_iPad.h"
 #import "A3UIDevice.h"
 
-
-@implementation A3NumberKeyboardSimpleVC_iPad
+@implementation A3PasscodeKeyboard_iPad
 
 - (void)viewWillLayoutSubviews {
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat width_extra;
+	
 	if (IS_PORTRAIT) {
 		CGFloat space1 = 16.0, space2 = 30.0;
 		width_big = 124.0, height_big = 118.0;
@@ -38,26 +38,21 @@
 		row_1 = 10.0; row_2 = 98.0; row_3 = 182.0; row_4 = 268.0;
 		width_extra = 308.0;
 	}
-
+	
 	[self.num7Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];
 	[self.num8Button setFrame:CGRectMake(col_3, row_1, width_small, height_small)];
 	[self.num9Button setFrame:CGRectMake(col_4, row_1, width_small, height_small)];
-
+	
 	[self.num4Button setFrame:CGRectMake(col_2, row_2, width_small, height_small)];
 	[self.num5Button setFrame:CGRectMake(col_3, row_2, width_small, height_small)];
 	[self.num6Button setFrame:CGRectMake(col_4, row_2, width_small, height_small)];
-
+	
 	[self.num1Button setFrame:CGRectMake(col_2, row_3, width_small, height_small)];
 	[self.num2Button setFrame:CGRectMake(col_3, row_3, width_small, height_small)];
 	[self.num3Button setFrame:CGRectMake(col_4, row_3, width_small, height_small)];
-
+	
 	[self.num0Button setFrame:CGRectMake(col_2, row_4, width_extra, height_small)];
-	[self.dotButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
-
-	[self.deleteButton setFrame:CGRectMake(col_5, row_1, width_small, height_small)];
-	[self.clearButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
-	[self.calculatorButton setFrame:CGRectMake(col_5, row_3, width_small, height_small)];
-	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_small, height_small)];
+	[self.deleteButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
 }
 
 @end

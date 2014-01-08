@@ -23,4 +23,6 @@ typedef NS_ENUM(NSInteger, A3TableViewEntryInputType) {
 @property (nonatomic, copy) void (^onEditingFinished)(A3TableViewEntryElement *, UITextField *);
 @property (nonatomic, copy) void (^onEditingValueChanged)(A3TableViewEntryElement *, UITextField *);
 
+@property (nonatomic, strong) id coreDataObject;
+@property (nonatomic, copy) NSString *coreDataKey;
 @end

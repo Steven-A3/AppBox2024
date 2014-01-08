@@ -10,7 +10,6 @@
 #import "A3AppDelegate+iCloud.h"
 
 NSString *const A3SettingsUseiCloudSync = @"A3SettingsUseiCloudSync";
-NSString *const A3SettingsUsePasscodeLock = @"A3SettingsUsePasscodeLock";
 NSString *const A3SettingsNumberOfItemsRecentToKeep = @"A3SettingsNumberOfItemsRecentToKeep";
 NSString *const A3SettingsUseLunarCalendar = @"A3SettingsUseLunarCalendar";
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
@@ -20,11 +19,6 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 - (NSString *)stringForSyncMethod {
 	return [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled] ?
 			NSLocalizedString(@"iCloud", @"Setgings > Sync, enable disable iCloud sync") : NSLocalizedString(@"None", @"Settings, not use iCloud sync");
-}
-
-- (NSString *)stringForPasscodeLock {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUsePasscodeLock] ?
-			NSLocalizedString(@"On", @"Settings, Passcode Lock On") : NSLocalizedString(@"Off", @"Settings, Passcode Lock Off");
 }
 
 - (NSString *)stringForRecentToKeep {

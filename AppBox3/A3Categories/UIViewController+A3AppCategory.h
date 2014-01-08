@@ -28,6 +28,8 @@
 
 - (A3NumberKeyboardViewController *)normalNumberKeyboard;
 
+- (A3NumberKeyboardViewController *)passcodeKeyboard;
+
 - (NSString *)zeroCurrency;
 
 - (NSString *)currencyFormattedString:(NSString *)source;

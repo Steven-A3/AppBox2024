@@ -6,12 +6,13 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "common.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3CenterViewProtocol.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3Addition.h"
+#import "A3PasscodeViewController.h"
+#import "A3KeychainUtils.h"
 
 
 @implementation UIViewController (A3Addition)
@@ -314,6 +315,21 @@
 		return popoverController;
 	}
 	return nil;
+}
+
++ (UIViewController<A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
+	UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
+
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForUseSimplePasscode]) {
+		passcodeViewController = [[A3PasscodeViewController alloc] initWithDelegate:delegate];
+	} else {
+		passcodeViewController = [[A3PasswordViewController alloc] initWithDelegate:delegate];
+	}
+	return passcodeViewController;
+}
+
+- (BOOL)checkPasscode {
+	return ([[A3KeychainUtils getPassword] length] && [[A3AppDelegate instance] didPasscodeTimerEnd]);
 }
 
 @end

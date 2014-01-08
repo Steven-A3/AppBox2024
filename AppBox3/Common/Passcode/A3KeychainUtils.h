@@ -15,4 +15,7 @@
 + (NSString *)getHint;
 + (void)removePassword;
 
++ (double)passcodeTime;
+
++ (NSString *)passcodeTimeString;
 @end

@@ -403,7 +403,7 @@
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
 	self.numberKeyboardViewController = keyboardVC;
-	keyboardVC.keyInputDelegate = textField;
+	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
 	textField.inputView = [keyboardVC view];
 	textField.text = @"";

@@ -38,6 +38,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	BOOL _beingDisplayedAsLockscreen;
 	BOOL _showCancelButton;
 	NSInteger _failedAttempts;
+	BOOL _passcodeValid;
+	BOOL _beingPresentedInViewController;
 }
 
 - (id)initWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
@@ -54,7 +56,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
     [super viewDidLoad];
 
 	FNLOG();
-	
+
 	[self.tableView reloadData];
 	
     // Uncomment the following line to preserve selection between presentations.
@@ -85,8 +87,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
-	if ([_delegate respondsToSelector:@selector(passcodeViewDidDisappear)]) {
-		[_delegate passcodeViewDidDisappear];
+	if ([_delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+		[_delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
 	}
 }
 
@@ -143,6 +145,13 @@ static CGFloat const kFontSizeModifier = 1.5f;
 }
 
 - (void)cancelAndDismissMe {
+	_passcodeValid = NO;
+
+	[_passwordField resignFirstResponder];
+	[_aNewPasswordField resignFirstResponder];
+	[_confirmPasswordField resignFirstResponder];
+	[_passwordHintField resignFirstResponder];
+
 	if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
 		[_delegate passcodeViewControllerWasDismissedWithSuccess:NO];
 	}
@@ -152,10 +161,12 @@ static CGFloat const kFontSizeModifier = 1.5f;
 - (void)showLockscreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
 	FNLOG();
 	_showCancelButton = showCancelButton;
+	_beingPresentedInViewController = NO;
+
 	[self prepareAsLockscreen];
 
 	UIWindow *mainWindow = [UIApplication sharedApplication].keyWindow;
-//		UIWindow *mainWindow = [UIApplication sharedApplication].windows[0];
+
 	[mainWindow addSubview: self.view];
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(statusBarFrameOrOrientationChanged:)
@@ -170,34 +181,34 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	// and if we would have added the view anywhere else, it wouldn't display properly
 	// (having a modal on screen when the user leaves the app, for example).
 
-	CGPoint newCenter;
-	if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
-		self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
-		newCenter = CGPointMake(mainWindow.center.x - self.navigationController.navigationBar.frame.size.height / 2,
-				mainWindow.center.y);
-	}
-	else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
-		self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
-		newCenter = CGPointMake(mainWindow.center.x + self.navigationController.navigationBar.frame.size.height / 2,
-				mainWindow.center.y);
-	}
-	else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-		self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
-		newCenter = CGPointMake(mainWindow.center.x,
-				mainWindow.center.y - self.navigationController.navigationBar.frame.size.height / 2);
-	}
-	else {
-		self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
-		newCenter = CGPointMake(mainWindow.center.x,
-				mainWindow.center.y + self.navigationController.navigationBar.frame.size.height / 2);
-	}
-	if (animated) {
-		[UIView animateWithDuration: 0.15 animations: ^{
-			self.view.center = newCenter;
-		}];
-	} else {
-		self.view.center = newCenter;
-	}
+//	CGPoint newCenter;
+//	if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeLeft) {
+//		self.view.center = CGPointMake(self.view.center.x * -1.f, self.view.center.y);
+//		newCenter = CGPointMake(mainWindow.center.x - self.navigationController.navigationBar.frame.size.height / 2,
+//				mainWindow.center.y);
+//	}
+//	else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationLandscapeRight) {
+//		self.view.center = CGPointMake(self.view.center.x * 2.f, self.view.center.y);
+//		newCenter = CGPointMake(mainWindow.center.x + self.navigationController.navigationBar.frame.size.height / 2,
+//				mainWindow.center.y);
+//	}
+//	else if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
+//		self.view.center = CGPointMake(self.view.center.x, self.view.center.y * -1.f);
+//		newCenter = CGPointMake(mainWindow.center.x,
+//				mainWindow.center.y - self.navigationController.navigationBar.frame.size.height / 2);
+//	}
+//	else {
+//		self.view.center = CGPointMake(self.view.center.x, self.view.center.y * 2.f);
+//		newCenter = CGPointMake(mainWindow.center.x,
+//				mainWindow.center.y + self.navigationController.navigationBar.frame.size.height / 2);
+//	}
+//	if (animated) {
+//		[UIView animateWithDuration: 0.15 animations: ^{
+//			self.view.center = newCenter;
+//		}];
+//	} else {
+//		self.view.center = newCenter;
+//	}
 
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
@@ -208,6 +219,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 - (void)showLockscreenInViewController:(UIViewController *)viewController {
 	_showCancelButton = YES;
+	_beingPresentedInViewController = YES;
+
 	[self prepareAsLockscreen];
 	[self prepareNavigationControllerWithController:viewController];
 	self.title = NSLocalizedString(@"Passcode", @"View title while confirm passcode");
@@ -281,7 +294,9 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	NSInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:section];
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	return (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + 44.0 + 20.0 )) / 2.0;
+	CGFloat navigationBarHeight = _beingPresentedInViewController ? 44.0 : 0.0;
+	FNLOG(@"%f", (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0);
+	return (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -471,7 +486,17 @@ static CGFloat const kFontSizeModifier = 1.5f;
 }
 
 - (void)dismissMe {
-	[self dismissViewControllerAnimated:YES completion:nil];
+
+	if ([self navigationController]) {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	} else {
+		[self.view removeFromSuperview];
+		[self removeFromParentViewController];
+	}
+
+	if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
+		[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
+	}
 }
 
 - (void)denyAccess {
@@ -520,10 +545,9 @@ static CGFloat const kFontSizeModifier = 1.5f;
 			if (_isUserTurningPasscodeOff) {
 				[A3KeychainUtils removePassword];
 			}
-			if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-				[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
-				[self dismissMe];
-			}
+			_passcodeValid = YES;
+
+			[self dismissMe];
 		} else {
 			[self denyAccess];
 		}
@@ -537,10 +561,9 @@ static CGFloat const kFontSizeModifier = 1.5f;
 				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];
-				
-				if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-					[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
-				}
+
+				_passcodeValid = YES;
+
 				[self dismissMe];
 				return YES;
 			}
@@ -561,10 +584,9 @@ static CGFloat const kFontSizeModifier = 1.5f;
 				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];
-				
-				if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-					[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
-				}
+
+				_passcodeValid = YES;
+
 				[self dismissMe];
 			}
 		}

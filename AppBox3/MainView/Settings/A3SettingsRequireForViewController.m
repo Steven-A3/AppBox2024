@@ -42,13 +42,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	double seconds = [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTime];
+	double seconds = [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 
 	cell.accessoryType = seconds == [self.durations[indexPath.row] doubleValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[[NSUserDefaults standardUserDefaults] setObject:self.durations[indexPath.row] forKey:kUserDefaultsKeyForPasscodeTime];
+	[[NSUserDefaults standardUserDefaults] setObject:self.durations[indexPath.row] forKey:kUserDefaultsKeyForPasscodeTimerDuration];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	[self.tableView reloadData];

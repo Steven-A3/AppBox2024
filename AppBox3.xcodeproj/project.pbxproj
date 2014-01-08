@@ -289,6 +289,7 @@
 		6876D71217A75E5A00E16991 /* A3CurrencyItemTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */; };
 		6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */; };
 		6876D78417A760BF00E16991 /* libExpecta-ios-universal.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6890AB2A1786B800004FECE4 /* libExpecta-ios-universal.a */; };
+		687A9C231879228300F17BC8 /* A3TableViewMenuElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 687A9C221879228300F17BC8 /* A3TableViewMenuElement.m */; };
 		687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
 		687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFF17CAE519005AB571 /* HolidayData+America.m */; };
 		687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0117CAE519005AB571 /* HolidayData+Asia.m */; };
@@ -343,6 +344,9 @@
 		689C9A571839CD7F007C97EE /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A441839CD7F007C97EE /* UIImageView+AFNetworking.m */; };
 		689C9A581839CD7F007C97EE /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A471839CD7F007C97EE /* UIProgressView+AFNetworking.m */; };
 		689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A491839CD7F007C97EE /* UIWebView+AFNetworking.m */; };
+		689FEF71187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689FEF6F187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib */; };
+		689FEF72187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689FEF70187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib */; };
+		689FEF78187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FEF77187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m */; };
 		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
@@ -870,6 +874,8 @@
 		6876D70D17A75E5A00E16991 /* A3NSMutableArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NSMutableArrayCategory.m; sourceTree = "<group>"; };
 		6876D70F17A75E5A00E16991 /* A3CurrencyItemTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyItemTest.m; sourceTree = "<group>"; };
 		6876D71017A75E5A00E16991 /* A3CurrencyViewControllerTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CurrencyViewControllerTest.m; sourceTree = "<group>"; };
+		687A9C211879228300F17BC8 /* A3TableViewMenuElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewMenuElement.h; path = A3TableViewController/A3TableViewMenuElement.h; sourceTree = "<group>"; };
+		687A9C221879228300F17BC8 /* A3TableViewMenuElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TableViewMenuElement.m; path = A3TableViewController/A3TableViewMenuElement.m; sourceTree = "<group>"; };
 		687C193B1783DF0F00415FCE /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		687D0CFC17CAE519005AB571 /* HolidayData+Africa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Africa.h"; path = "Holidays/HolidayData+Africa.h"; sourceTree = "<group>"; };
 		687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Africa.m"; path = "Holidays/HolidayData+Africa.m"; sourceTree = "<group>"; };
@@ -1010,6 +1016,10 @@
 		689C9A471839CD7F007C97EE /* UIProgressView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIProgressView+AFNetworking.m"; sourceTree = "<group>"; };
 		689C9A481839CD7F007C97EE /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		689C9A491839CD7F007C97EE /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		689FEF6F187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3PasscodeKeyboard_iPad.xib; sourceTree = "<group>"; };
+		689FEF70187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3PasscodeKeyboard_iPhone.xib; sourceTree = "<group>"; };
+		689FEF76187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PasscodeKeyboard_iPad.h; sourceTree = "<group>"; };
+		689FEF77187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PasscodeKeyboard_iPad.m; sourceTree = "<group>"; };
 		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveMarkView.h; sourceTree = "<group>"; };
 		68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardMoveMarkView.m; sourceTree = "<group>"; };
 		68ADE13E17D83D28009618A7 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
@@ -1852,6 +1862,10 @@
 				683386C91713D976007BC868 /* A3NumberKeyboardViewController_iPhone.xib */,
 				17D42454AED31A0E0852E350 /* A3OnOffLeftRightButton.h */,
 				17D42B75C71DE69EE18900CC /* A3OnOffLeftRightButton.m */,
+				689FEF76187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.h */,
+				689FEF77187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m */,
+				689FEF6F187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib */,
+				689FEF70187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib */,
 				68D0731E18210B5100D34870 /* A3RoundedSideButton.h */,
 				68D0731F18210B5100D34870 /* A3RoundedSideButton.m */,
 				6817825116253640008A6E4B /* A3SegmentedControl.h */,
@@ -2013,6 +2027,8 @@
 				6858C361181F61EE00CEB06C /* A3TableViewExpandableElement.m */,
 				6858C373181F77CF00CEB06C /* A3TableViewExpandableHeaderCell.h */,
 				6858C374181F77CF00CEB06C /* A3TableViewExpandableHeaderCell.m */,
+				687A9C211879228300F17BC8 /* A3TableViewMenuElement.h */,
+				687A9C221879228300F17BC8 /* A3TableViewMenuElement.m */,
 				68D626611816AED8009C47C0 /* A3TableViewMonthEntryElement.h */,
 				68D626621816AED8009C47C0 /* A3TableViewMonthEntryElement.m */,
 				68D6265C1816AB5E009C47C0 /* A3TableViewRootElement.h */,
@@ -2664,8 +2680,10 @@
 				68B6A18B17CC398A008E0296 /* indian.plist in Resources */,
 				6872DD3317B3D56600C1BF44 /* NSDateTimeAgo.bundle in Resources */,
 				68FEE389174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
+				689FEF71187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib in Resources */,
 				68236CE0186C22E5006F442B /* StringsDict.strings in Resources */,
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
+				689FEF72187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
 			);
@@ -2893,6 +2911,7 @@
 				689C9A541839CD7F007C97EE /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				68D48CEC17142B5200299354 /* A3NumberKeyboardViewController.m in Sources */,
 				68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */,
+				689FEF78187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m in Sources */,
 				682968851850401200B70E13 /* NSFileManager+A3Addtion.m in Sources */,
 				6882802617E5ECED000D8069 /* A3HolidaysPageContentViewController.m in Sources */,
 				6829681618503B2100B70E13 /* NSManagedObject+MagicalDataImport.m in Sources */,
@@ -2994,6 +3013,7 @@
 				6829684418503B2100B70E13 /* MagicalRecord+ShorthandSupport.m in Sources */,
 				68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */,
 				683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */,
+				687A9C231879228300F17BC8 /* A3TableViewMenuElement.m in Sources */,
 				17D42CEB95809CCFCB72DCB2 /* UITableViewCell+accessory.m in Sources */,
 				68C219FA18683CEF0092F571 /* JNJProgressButton.m in Sources */,
 				17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */,

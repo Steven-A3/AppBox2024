@@ -143,16 +143,16 @@
 //	}
 //	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
 //	[dateFormatter setDateFormat:dateFormat];
-	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	NSLog(@"FULL: %@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
 	
 	[dateFormatter setDateStyle:NSDateFormatterLongStyle];
-	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	NSLog(@"LONG: %@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
 	
 	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	NSLog(@"MEDIUM: %@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
 	
 	[dateFormatter setDateStyle:NSDateFormatterShortStyle];
-	NSLog(@"%@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
+	NSLog(@"SHORT: %@, %@", [dateFormatter dateFormat], [dateFormatter stringFromDate:date]);
 }
 
 - (void)testDateFormatter {

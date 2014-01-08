@@ -29,7 +29,6 @@
 	BOOL _timerStartInSeconds;
 }
 
-@property (nonatomic, strong) UIView *coverView;
 @property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> delegate;
 @property (assign) BOOL isCurrentlyOnScreen;
 

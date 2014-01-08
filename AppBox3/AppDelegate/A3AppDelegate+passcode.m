@@ -9,10 +9,12 @@
 #import "A3AppDelegate+passcode.h"
 #import "A3PasscodeViewController.h"
 #import "A3KeychainUtils.h"
+#import "UIViewController+A3Addition.h"
+#import "A3UIDevice.h"
+#import "UIViewController+MMDrawerController.h"
 
 NSString *const kUserDefaultTimerStart = @"AppBoxPasscodeTimerStart";
-NSString *const kUserDefaultsKeyForTimerDuration = @"passcodeTimerDuration";
-NSString *const kUserDefaultsKeyForPasscodeTime = @"passcodeRequirePasscodeFor";
+NSString *const kUserDefaultsKeyForPasscodeTimerDuration = @"passcodeTimerDuration";
 NSString *const kUserDefaultsKeyForUseSimplePasscode = @"passcodeUseSimplePasscode";
 NSString *const kUserDefaultsKeyForAskPasscodeForStarting = @"passcodeAskPasscodeForStarting";
 NSString *const kUserDefaultsKeyForAskPasscodeForSettings = @"passcodeAskPasscodeForSettings";
@@ -22,8 +24,8 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 
 @implementation A3AppDelegate (passcode)
 
-- (CGFloat)timerDuration {
-	return [[NSUserDefaults standardUserDefaults] floatForKey: kUserDefaultsKeyForTimerDuration];
+- (double)timerDuration {
+	return [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTimerDuration];
 }
 
 
@@ -55,33 +57,65 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 	return YES;
 }
 
+- (void)showLockScreen {
+	NSNumber *flag = [[NSUserDefaults standardUserDefaults] objectForKey:kUserDefaultsKeyForAskPasscodeForStarting];
+
+	if ((!flag || [flag boolValue]) && [A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
+		if (!self.passcodeViewController) {
+			self.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+			[self.passcodeViewController showLockscreenWithAnimation:NO showCacelButton:NO];
+		}
+	}
+}
+
 #pragma mark - Notification Observers
 
 - (void)applicationDidEnterBackground_passcode {
-
+	if (IS_IPHONE) {
+		[self.drawerController closeDrawerAnimated:NO completion:nil];
+	} else {
+		if (IS_PORTRAIT && self.rootViewController.showLeftView) {
+			[self.rootViewController toggleLeftMenuViewOnOff];
+		}
+	}
 }
 
 
 - (void)applicationDidBecomeActive_passcode {
-
+	if ([A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
+		UIViewController *topViewController = [[self navigationController] topViewController];
+		UIView *coverView = [topViewController.view viewWithTag:8080];
+		[coverView removeFromSuperview];
+	}
 }
 
 - (void)applicationWillEnterForeground_passcode {
-	if ([A3KeychainUtils getPassword] && [self didPasscodeTimerEnd]) {
-		UIViewController *visibleViewController = [self visibleViewController];
-		if ([visibleViewController isKindOfClass:[A3PasscodeViewController class]]) {
-			[(A3PasscodeViewController *) visibleViewController showLockscreenWithAnimation:YES showCacelButton:NO ];
-		} else {
-			A3PasscodeViewController *passcodeViewController = [[A3PasscodeViewController alloc] init];
-			[passcodeViewController showLockscreenWithAnimation:YES showCacelButton:NO ];
-		}
-	}
+	[self showLockScreen];
 }
 
 - (void)applicationWillResignActive_passcode {
 	if ([A3KeychainUtils getPassword]) {
 		[self saveTimerStartTime];
+
+		if (!self.passcodeViewController) {
+			UIViewController *topViewController = [[self navigationController] topViewController];
+			UIView *coverView = [UIView new];
+			coverView.tag = 8080;
+			coverView.backgroundColor = [UIColor whiteColor];
+			coverView.frame = [topViewController.view bounds];
+			FNLOGRECT(coverView.frame);
+			coverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			[topViewController.view addSubview:coverView];
+		}
 	}
+}
+
+- (void)passcodeViewControllerWasDismissedWithSuccess:(BOOL)success {
+	self.passcodeViewController = nil;
+}
+
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+	self.passcodeViewController = nil;
 }
 
 @end

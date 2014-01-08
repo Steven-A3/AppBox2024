@@ -58,4 +58,23 @@
 	return [percentFormatter stringFromNumber:number];
 }
 
+/*! Returns custom style with date
+ * \param NSDate *date
+ * \returns
+ * en_US: Sat, Jan 4, 2014
+ * ko_KR: 2014년 1월 4일 토
+ */
++ (NSString *)fullStyleStringFromDate:(NSDate *)date {
+	@autoreleasepool {
+		NSDateFormatter *df = [NSDateFormatter new];
+		[df setDateStyle:NSDateFormatterFullStyle];
+		NSString *format = [df dateFormat];
+		format = [format stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+		format = [format stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+		[df setDateFormat:format];
+		
+		return [df stringFromDate:date];
+	}
+}
+
 @end

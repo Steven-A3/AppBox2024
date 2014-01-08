@@ -103,14 +103,7 @@
 		case 0: {
 			cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
 			cell.detailTextLabel.minimumScaleFactor = 0.5;
-			double passcodeTime = [[NSUserDefaults standardUserDefaults] doubleForKey:kUserDefaultsKeyForPasscodeTime];
-			if (passcodeTime == 0.0) {
-				cell.detailTextLabel.text = @"Immediately";
-			} else if (passcodeTime / 60 > 60) {
-				cell.detailTextLabel.text = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"After %ld hours", @"StringsDict", @"Require Passcode after n hours"), (long)passcodeTime / 60 / 60 ];
-			} else {
-				cell.detailTextLabel.text = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"After %ld minutes", @"StringsDict", @"Require Passcode after n minutes"), (long)passcodeTime / 60];
-			}
+			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Off", nil);
 			break;
 		}
 		case 1: {
@@ -290,7 +283,7 @@
 	}
 }
 
-- (void)passcodeViewDidDisappear {
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
 	if (_changingPasscodeType) {
 		if (_passwordConfirmedWhileSwitchingSimplePasscodeUse) {
 			if ([_useSimpleCodeSwitch isOn]) {

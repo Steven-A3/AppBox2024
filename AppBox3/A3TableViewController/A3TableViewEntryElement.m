@@ -71,7 +71,7 @@
 	} else {
 		keyboardViewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
 	}
-	keyboardViewController.keyInputDelegate = textField;
+	keyboardViewController.textInputTarget = textField;
 	keyboardViewController.delegate = self;
 	keyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 	textField.inputView = keyboardViewController.view;
@@ -80,7 +80,7 @@
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
 	if (self.coreDataObject && self.coreDataKey) {
-		[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
+		[self.coreDataObject setValue:textField.text forKey:self.coreDataKey];
 	}
 }
 

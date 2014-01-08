@@ -15,13 +15,8 @@
 
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *imageName;
-@property (nonatomic, strong) id coreDataObject;
-@property (nonatomic, copy) NSString *coreDataKey;
 @property (nonatomic, copy) id value;
 @property (nonatomic) NSInteger identifier;
-@property (nonatomic, copy) NSString *className;
-@property (nonatomic, copy) NSString *storyboardName;
-@property (nonatomic, copy) NSString *nibName;
 @property (nonatomic, copy) void (^onSelected)(A3TableViewElement *);
 @property (nonatomic, strong) UIColor *backgroundColor;
 @property (nonatomic, strong) NSNumber *cellHeight;

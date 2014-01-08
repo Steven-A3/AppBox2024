@@ -13,7 +13,8 @@
 @optional
 - (void)passcodeViewControllerWasDismissedWithSuccess:(BOOL)success;
 - (void)maxNumberOfFailedAttemptsReached;
-- (void)passcodeViewDidDisappear;
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success;
+
 @end
 
 @protocol A3PasscodeViewControllerProtocol <NSObject>
@@ -24,6 +25,7 @@
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController;
 - (void)showForTurningOffPasscodeInViewController:(UIViewController *)viewController;
+- (void)cancelAndDismissMe;
 
 @end
 

@@ -9,6 +9,8 @@
 #import "A3PasscodeViewController.h"
 #import "A3AppDelegate+passcode.h"
 #import "A3KeychainUtils.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3NumberKeyboardViewController.h"
 
 static NSString *const kPasscodeCharacter = @"\u2014"; // A longer "-"
 static CGFloat const kLabelFontSize = 15.0f;
@@ -56,9 +58,13 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 @interface A3PasscodeViewController () <UITextFieldDelegate>
 
+@property (nonatomic, strong) A3NumberKeyboardViewController *passcodeKeyboardViewController;
+
 @end
 
-@implementation A3PasscodeViewController
+@implementation A3PasscodeViewController {
+	BOOL _passcodeValid;
+}
 
 - (void)viewDidLoad
 {
@@ -280,8 +286,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
-	if ([_delegate respondsToSelector:@selector(passcodeViewDidDisappear)]) {
-		[_delegate passcodeViewDidDisappear];
+	if ([_delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+		[_delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
 	}
 }
 
@@ -295,6 +301,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_isUserEnablingPasscode = NO;
 	_isUserTurningPasscodeOff = NO;
 	[self resetUI];
+
+	_passcodeValid = NO;
 
 	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
 		[_delegate passcodeViewControllerWasDismissedWithSuccess:NO];
@@ -348,6 +356,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		else {
 			[self dismissViewControllerAnimated: YES completion: nil];
 		}
+
+		_passcodeValid = YES;
 
 		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
 			[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
@@ -437,7 +447,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)prepareNavigationControllerWithController:(UIViewController *)viewController {
 	UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController: self];
 	[viewController presentViewController: navController animated: YES completion: nil];
-	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
+//	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
 																						   target: self
 																						   action: @selector(cancelAndDismissMe)];
@@ -516,6 +526,15 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 
 #pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	_passcodeKeyboardViewController = [self passcodeKeyboard];
+	_passcodeKeyboardViewController.textInputTarget = textField;
+	textField.inputView = _passcodeKeyboardViewController.view;
+	return YES;
+}
+
+
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
 	return !_isCurrentlyOnScreen;
 }
@@ -537,6 +556,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 	if (typedString.length == 4) {
 		NSString *savedPasscode = [A3KeychainUtils getPassword];
+		FNLOG(@"%@", savedPasscode);
 
 		// Entering from Settings. If savedPasscode is empty, it means
 		// the user is setting a new Passcode now, or is changing his current Passcode.
@@ -707,20 +727,20 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 #pragma mark - Notification Observers
 
-- (void)applicationDidEnterBackground {
-	if ([_passcodeTextField isFirstResponder]) [_passcodeTextField resignFirstResponder];
-	// Without animation because otherwise it won't come down fast enough,
-	// so inside iOS' multitasking view the app won't be covered by anything.
-	if ([[A3AppDelegate instance] timerDuration] == 0) [self showLockscreenWithAnimation:NO showCacelButton:NO ];
-	else {
-		_coverView.hidden = NO;
-		if (![[UIApplication sharedApplication].keyWindow viewWithTag: 99]) [[UIApplication sharedApplication].keyWindow addSubview: _coverView];
-	}
-}
-
-- (void)applicationDidBecomeActive {
-	_coverView.hidden = YES;
-}
+//- (void)applicationDidEnterBackground {
+//	if ([_passcodeTextField isFirstResponder]) [_passcodeTextField resignFirstResponder];
+//	// Without animation because otherwise it won't come down fast enough,
+//	// so inside iOS' multitasking view the app won't be covered by anything.
+//	if ([[A3AppDelegate instance] timerDuration] == 0) [self showLockscreenWithAnimation:NO showCacelButton:NO ];
+//	else {
+//		_coverView.hidden = NO;
+//		if (![[UIApplication sharedApplication].keyWindow viewWithTag: 99]) [[UIApplication sharedApplication].keyWindow addSubview: _coverView];
+//	}
+//}
+//
+//- (void)applicationDidBecomeActive {
+//	_coverView.hidden = YES;
+//}
 
 #pragma mark - Init
 
@@ -728,22 +748,22 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	self = [super init];
 	if (self) {
 		_delegate = delegate;
-		[[NSNotificationCenter defaultCenter] addObserver: self
-												 selector: @selector(applicationDidEnterBackground)
-													 name: UIApplicationDidEnterBackgroundNotification
-												   object: nil];
-		[[NSNotificationCenter defaultCenter] addObserver: self
-												 selector: @selector(applicationDidBecomeActive)
-													 name: UIApplicationDidBecomeActiveNotification
-												   object: nil];
+//		[[NSNotificationCenter defaultCenter] addObserver: self
+//												 selector: @selector(applicationDidEnterBackground)
+//													 name: UIApplicationDidEnterBackgroundNotification
+//												   object: nil];
+//		[[NSNotificationCenter defaultCenter] addObserver: self
+//												 selector: @selector(applicationDidBecomeActive)
+//													 name: UIApplicationDidBecomeActiveNotification
+//												   object: nil];
 
-		_coverView = [[UIView alloc] initWithFrame: CGRectZero];
-		_coverView.backgroundColor = kCoverViewBackgroundColor;
-		_coverView.frame = self.view.frame;
-		_coverView.userInteractionEnabled = NO;
-		_coverView.tag = 99;
-		_coverView.hidden = YES;
-		[[UIApplication sharedApplication].keyWindow addSubview: _coverView];
+//		_coverView = [[UIView alloc] initWithFrame: CGRectZero];
+//		_coverView.backgroundColor = kCoverViewBackgroundColor;
+//		_coverView.frame = self.view.frame;
+//		_coverView.userInteractionEnabled = NO;
+//		_coverView.tag = 99;
+//		_coverView.hidden = YES;
+//		[[UIApplication sharedApplication].keyWindow addSubview: _coverView];
 	}
 	return self;
 }

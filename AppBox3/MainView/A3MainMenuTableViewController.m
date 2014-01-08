@@ -17,16 +17,23 @@
 #import "UIViewController+A3Addition.h"
 #import "CurrencyFavorite.h"
 #import "JNJProgressButton.h"
+#import "A3TableViewMenuElement.h"
+#import "A3KeychainUtils.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
 @end
 
-@interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate>
+NSString *const A3MainMenuFavorites = @"A3MainMenuFavorites";
+NSString *const A3MainMenuRecentlyUsed = @"A3MainMenuRecents";
+
+@interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate>
 
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) id usmStoreDidImportChangesObserver;
+@property (nonatomic, weak) A3TableViewElement *selectedElement;
+@property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
 @end
 
@@ -36,6 +43,8 @@
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
 		[self setupData];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	}
 
 	return self;
@@ -85,6 +94,7 @@
 - (void)dealloc {
 	NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 	[center removeObserver:_usmStoreDidImportChangesObserver];
+	[center removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -102,106 +112,61 @@
 	[_mySearchDisplayController.searchBar resignFirstResponder];
 }
 
-NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
-NSString *const kA3AppsMenuImageName = @"kA3AppsMenuImageName";
-NSString *const kA3AppsExpandableChildren = @"kA3AppsExpandableChildren";
-NSString *const kA3AppsClassName = @"kA3AppsClassName";
-NSString *const kA3AppsNibName = @"kA3AppsNibName";
-NSString *const kA3AppsStoryboardName = @"kA3AppsStoryboardName";
-NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
+#pragma mark - Data Handler
+
+- (NSArray *)favoriteMenuItems {
+	NSArray *storedFavorites = [[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuFavorites];
+	if (!storedFavorites) {
+		storedFavorites = @[
+				@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DateCalculator"},
+				@{kA3AppsMenuName : @"Loan Calculator", kA3AppsClassName : @"A3LoanCalc2ViewController", kA3AppsMenuImageName : @"LoanCalculator"},
+				@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
+				@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
+				@{kA3AppsMenuName : @"Unit Price", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitPrice"},
+				@{kA3AppsMenuName : @"Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Calculator"},
+				@{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"PercentCalculator"}
+		];
+		[[NSUserDefaults standardUserDefaults] setObject:storedFavorites forKey:A3MainMenuFavorites];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+	return storedFavorites;
+}
+
+- (NSArray *)recentlyUsedMenuItems {
+	return [[NSUserDefaults standardUserDefaults] objectForKey:A3MainMenuRecentlyUsed];
+}
 
 - (void)setupData {
 	self.rootElement = [A3TableViewRootElement new];
 	self.rootElement.tableView = self.tableView;
 
-	NSArray *section0 = @[
+	NSMutableArray *section0 = [@[
 			@{
 					kA3AppsMenuExpandable : @YES,
 					kA3AppsMenuName : @"Favorites",
-					kA3AppsExpandableChildren :	@[
-							@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DateCalculator"},
-							@{kA3AppsMenuName : @"Loan Calculator", kA3AppsClassName : @"A3LoanCalc2ViewController", kA3AppsMenuImageName : @"LoanCalculator"},
-							@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
-							@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
-							@{kA3AppsMenuName : @"Unit Price", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitPrice"},
-							@{kA3AppsMenuName : @"Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Calculator"},
-							@{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"PercentCalculator"}
-			]
-			},
-			@{
-					kA3AppsMenuExpandable : @YES,
-					kA3AppsMenuName : @"Recent",
-					kA3AppsExpandableChildren : @[
-							@{kA3AppsMenuName : @"Currency", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-							@{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"LunarConverter"},
-							@{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Translator"},
-							@{kA3AppsMenuName : @"Unit Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitConverter"},
-			]}
-			];
+					kA3AppsExpandableChildren :	[self favoriteMenuItems]
+			}] mutableCopy];
+
+	NSArray *recentlyUsedMenuItems = [self recentlyUsedMenuItems];
+	if ([recentlyUsedMenuItems count]) {
+		NSDictionary *element = @{
+				kA3AppsMenuExpandable : @YES,
+				kA3AppsMenuName : @"Recent",
+				kA3AppsExpandableChildren : recentlyUsedMenuItems
+		};
+		[section0 addObject:element];
+	}
 
 	self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
 }
 
 - (id)appSection {
-	NSArray *appSection = @[
-			@{
-					kA3AppsMenuExpandable : @YES,
-					kA3AppsMenuName : @"Calculator",
-					kA3AppsExpandableChildren :	@[
-							@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DateCalculator"},
-							@{kA3AppsMenuName : @"Loan Calculator", kA3AppsClassName : @"A3LoanCalc2ViewController", kA3AppsMenuImageName : @"LoanCalculator"},
-							@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
-							@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
-							@{kA3AppsMenuName : @"Unit Price", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitPrice"},
-							@{kA3AppsMenuName : @"Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Calculator"},
-							@{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"PercentCalculator"}
-					]
-			},
-			@{
-					kA3AppsMenuExpandable : @YES,
-					kA3AppsMenuName : @"Converter",
-					kA3AppsExpandableChildren : @[
-							@{kA3AppsMenuName : @"Currency", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-							@{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"LunarConverter"},
-							@{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
-							@{kA3AppsMenuName : @"Unit Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitConverter"},
-			]
-			},
-			@{
-					kA3AppsMenuExpandable : @YES,
-					kA3AppsMenuName : @"Productivity",
-					kA3AppsExpandableChildren : @[
-							@{kA3AppsMenuName : @"Days Counter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DaysCounter"},
-							@{kA3AppsMenuName : @"Lady Calendar", kA3AppsClassName : @"", kA3AppsMenuImageName : @"LadyCalendar"},
-							@{kA3AppsMenuName : @"Wallet", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Wallet"},
-							@{kA3AppsMenuName : @"Expense List", kA3AppsClassName : @"", kA3AppsMenuImageName : @"ExpenseList"},
-			]
-			},
-			@{
-					kA3AppsMenuExpandable : @YES,
-					kA3AppsMenuName : @"Reference",
-					kA3AppsExpandableChildren : @[
-							@{kA3AppsMenuName : @"Holidays", kA3AppsClassName : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
-			]
-			},
-			@{
-					kA3AppsMenuExpandable : @YES,
-					kA3AppsMenuName : @"Utility",
-					kA3AppsExpandableChildren : @[
-							@{kA3AppsMenuName : @"Clock", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Clock"},
-							@{kA3AppsMenuName : @"Battery Status", kA3AppsClassName : @"", kA3AppsMenuImageName : @"BatteryStatus"},
-							@{kA3AppsMenuName : @"Mirror", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Mirror"},
-							@{kA3AppsMenuName : @"Magnifier", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Magnifier"},
-			]
-			},
-	];
-
-	return [self sectionWithData:appSection];
+	return [self sectionWithData:[[A3AppDelegate instance] allMenu]];
 }
 
 - (id)bottomSection {
 	NSArray *bottomSection = @[
-			@{kA3AppsMenuName : @"Settings", kA3AppsClassName : @"", kA3AppsStoryboardName : @"A3SettingsStoryboard"},
+			@{kA3AppsMenuName : @"Settings", kA3AppsClassName : @"", kA3AppsStoryboardName : @"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES},
 			@{kA3AppsMenuName : @"About", kA3AppsClassName : @""},
 			@{kA3AppsMenuName : @"Help", kA3AppsClassName : @""},
 	];
@@ -226,31 +191,59 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 			expandableElement.elements = [self elementsWithData:elementDescription[kA3AppsExpandableChildren]];
 			[elementsArray addObject:expandableElement];
 		} else {
-			A3TableViewElement *element = [A3TableViewElement new];
+			A3TableViewMenuElement *element = [A3TableViewMenuElement new];
 			element.title = elementDescription[kA3AppsMenuName];
 			element.imageName = elementDescription[kA3AppsMenuImageName];
 			element.className = elementDescription[kA3AppsClassName];
 			element.storyboardName = elementDescription[kA3AppsStoryboardName];
 			element.nibName = elementDescription[kA3AppsNibName];
+			element.needSecurityCheck = [elementDescription[kA3AppsMenuNeedSecurityCheck] boolValue];
 
 			if ([element.className length] || [element.storyboardName length]) {
 
 				__typeof(self) __weak weakSelf = self;
 
 				element.onSelected = ^(A3TableViewElement *elementObject) {
-					if ([elementObject.className length]) {
-						Class class;
-						class = NSClassFromString(elementObject.className);
+					@autoreleasepool {
+						A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
+						UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
 
-						if (![weakSelf isActiveViewController:class]) {
-							UIViewController *viewController = [[class alloc] initWithNibName:elementObject.nibName bundle:nil];
-							[weakSelf popToRootAndPushViewController:viewController];
+						BOOL proceedPasscodeCheck = NO;
+						// Check active view controller
+						if (![weakSelf isActiveViewController:[targetViewController class]]) {
+							if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
+								proceedPasscodeCheck = YES;
+
+								if ([menuElement.storyboardName isEqualToString:@"A3Settings"]) {
+									proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
+								}
+							}
+							if (proceedPasscodeCheck) {
+								weakSelf.selectedElement = menuElement;
+								weakSelf.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+								UIViewController *passcodeTargetViewController;
+								if (IS_IPHONE) {
+									passcodeTargetViewController = [self mm_drawerController];
+								} else {
+									passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
+								}
+								[_passcodeViewController showLockscreenInViewController:passcodeTargetViewController];
+							} else {
+								[weakSelf popToRootAndPushViewController:targetViewController];
+
+								if (IS_IPHONE) {
+									[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+								}
+							}
+						} else {
+							if (IS_IPHONE) {
+								[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+							} else if (IS_PORTRAIT) {
+								[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+							}
 						}
-					} else if ([elementObject.storyboardName length]) {
-						UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"A3Settings" bundle:nil];
-						UIViewController *viewController = [storyboard instantiateInitialViewController];
-						[weakSelf popToRootAndPushViewController:viewController];
 					}
+
 				};
 			}
 			[elementsArray addObject:element];
@@ -259,12 +252,25 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 	return elementsArray;
 }
 
+- (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
+	UIViewController *targetViewController;
+	if ([menuElement.className length]) {
+							Class class;
+							class = NSClassFromString(menuElement.className);
+
+							targetViewController = [[class alloc] initWithNibName:menuElement.nibName bundle:nil];
+						} else if ([menuElement.storyboardName length]) {
+							UIStoryboard *storyboard = [UIStoryboard storyboardWithName:menuElement.storyboardName bundle:nil];
+							targetViewController = [storyboard instantiateInitialViewController];
+						}
+	return targetViewController;
+}
+
 - (BOOL)isActiveViewController:(Class)aClass {
 	UINavigationController *navigationController;
 
 	if (IS_IPHONE) {
 		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
-		[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
 		navigationController = [rootViewController centerNavigationController];
@@ -282,7 +288,7 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 	return YES;
 }
 
-- (BOOL)isAppAvailableForElement:(A3TableViewElement *)element {
+- (BOOL)isAppAvailableForElement:(A3TableViewMenuElement *)element {
 	if ([element.className isEqualToString:@"A3CurrencyViewController"]) {
 		NSUInteger count = [CurrencyFavorite MR_countOfEntities];
 		FNLOG(@"%lu", (unsigned long)count);
@@ -292,7 +298,7 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	A3TableViewElement *element = [self elementAtIndexPath:indexPath];
+	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 
 	if ([self isAppAvailableForElement:element]) {
 		cell.textLabel.textColor = [UIColor blackColor];
@@ -319,12 +325,31 @@ NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	A3TableViewElement *element = [self elementAtIndexPath:indexPath];
+	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 	if ([self isAppAvailableForElement:element]) {
 		[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
-	} else {
-		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 	}
+}
+
+- (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {
+	if (success && _selectedElement) {
+		UIViewController *viewController = [self getViewControllerForElement:(A3TableViewMenuElement *) _selectedElement];
+		[self popToRootAndPushViewController:viewController];
+		
+		if (IS_IPHONE) {
+			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+		}
+	}
+	_selectedElement = nil;
+	_passcodeViewController = nil;
+}
+
+- (void)applicationWillResignActive {
+	_selectedElement = nil;
+	if (_passcodeViewController) {
+		[_passcodeViewController cancelAndDismissMe];
+	}
+	_passcodeViewController = nil;
 }
 
 @end
