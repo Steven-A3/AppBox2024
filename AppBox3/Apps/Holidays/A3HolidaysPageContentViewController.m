@@ -287,9 +287,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 }
 
 - (UIView *)tableHeaderViewForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-	UIView *headerView=nil;
 	@autoreleasepool {
-		headerView = [UIView new];
+		UIView *headerView = [UIView new];
 
 		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 
@@ -341,7 +340,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		yearBorderView.layer.cornerRadius = 4;
 		[headerView addSubview:yearBorderView];
 
-		[yearBorderView makeConstraints:^(MASConstraintMaker *make) {
+			[yearBorderView makeConstraints:^(MASConstraintMaker *make) {
 			if (IS_IPHONE) {
 				make.width.equalTo(@108);
 				make.height.equalTo(@30);
@@ -406,8 +405,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[headerView addSubview:nameLabel];
 
 		[nameLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(headerView.left).with.offset(IS_IPHONE ? 10 : 28);
-			make.right.equalTo(headerView.right).with.offset(IS_IPHONE ? -10 : -28);
+			make.centerX.equalTo(headerView.centerX);
+			make.width.lessThanOrEqualTo(headerView.width).with.offset(IS_IPHONE ? -20 : -28 * 2);
 			make.bottom.equalTo(yearBorderView.top).with.offset(IS_IPHONE ? -62 : -124);
 		}];
 
@@ -420,8 +419,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[headerView addSubview:daysLeftLabel];
 
 		[daysLeftLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(headerView.left).with.offset(IS_IPHONE ? 10 : 28);
-			make.right.equalTo(headerView.right).with.offset(IS_IPHONE ? -10 : -28);
+			make.centerX.equalTo(headerView.centerX);
+			make.width.lessThanOrEqualTo(headerView.width).with.offset(IS_IPHONE ? -20 : -28 * 2);
 			make.bottom.equalTo(nameLabel.top).with.offset(4);
 		}];
 
@@ -436,16 +435,16 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[headerView addSubview:countryNameLabel];
 
 		[countryNameLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(headerView.left).with.offset(IS_IPHONE ? 10 : 28);
-			make.right.equalTo(headerView.right).with.offset(IS_IPHONE ? -10 : -28);
+			make.centerX.equalTo(headerView.centerX);
+			make.width.lessThanOrEqualTo(headerView.width).with.offset(IS_IPHONE ? -20 : -28 * 2);
 			make.bottom.equalTo(daysLeftLabel.top).with.offset(-9);
 		}];
 
 		[self updateTableHeaderView:headerView];
 		[headerView layoutIfNeeded];
-	}
 
-	return headerView;
+		return headerView;
+	}
 }
 
 - (void)setupShadow:(FXLabel *)label {

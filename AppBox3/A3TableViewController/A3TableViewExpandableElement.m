@@ -106,6 +106,10 @@
 		} else {
 			[self.cell setBottomSeparatorForMiddleRow];
 		}
+
+		if ([_delegate respondsToSelector:@selector(element:cellStateChangedAtIndexPath:)]) {
+			[_delegate element:self cellStateChangedAtIndexPath:indexPath];
+		}
 	}
 }
 

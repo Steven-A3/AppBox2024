@@ -295,7 +295,6 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat navigationBarHeight = _beingPresentedInViewController ? 44.0 : 0.0;
-	FNLOG(@"%f", (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0);
 	return (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0;
 }
 

@@ -14,5 +14,6 @@
 @property (nonatomic, copy) NSString *storyboardName;
 @property (nonatomic, copy) NSString *nibName;
 @property (nonatomic, assign) BOOL needSecurityCheck;
+@property (nonatomic, assign) BOOL doNotKeepAsRecent;
 
 @end

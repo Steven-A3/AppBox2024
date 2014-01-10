@@ -62,12 +62,14 @@
         [navigationController.navigationBar setShadowImage:nil];
     }
 
-	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
-	for (UIViewController<A3CenterViewProtocol> *vc in poppedVCs) {
-		if ([vc respondsToSelector:@selector(cleanUp)]) {
-			[vc performSelector:@selector(cleanUp)];
-		}
-	}
+	[navigationController popToRootViewControllerAnimated:NO];
+
+//	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
+//	for (UIViewController<A3CenterViewProtocol> *vc in poppedVCs) {
+//		if ([vc respondsToSelector:@selector(cleanUp)]) {
+//			[vc performSelector:@selector(cleanUp)];
+//		}
+//	}
 
 	if (IS_IPAD) {
 		BOOL usesFullScreenInLandscape = NO;

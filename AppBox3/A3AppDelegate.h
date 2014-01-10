@@ -2,8 +2,8 @@
 //  A3AppDelegate.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 4/25/12.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 4/25/11.
+//  Copyright (c) 2011 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "A3RootViewController_iPad.h"
@@ -15,6 +15,7 @@
 @protocol A3PasscodeViewControllerProtocol;
 
 extern NSString *const kA3AppsMenuName;
+extern NSString *const kA3AppsMenuCollapsed;
 extern NSString *const kA3AppsMenuImageName;
 extern NSString *const kA3AppsExpandableChildren;
 extern NSString *const kA3AppsClassName;
@@ -43,12 +44,12 @@ extern NSString *const kA3AppsMenuNeedSecurityCheck;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
+@property (nonatomic, assign) BOOL coreDataReadyToUse;
 
 + (A3AppDelegate *)instance;
 
 - (UINavigationController *)navigationController;
-
 - (UIViewController *)visibleViewController;
-
 - (NSArray *)allMenu;
+
 @end

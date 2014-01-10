@@ -2,8 +2,8 @@
 //  A3AppDelegate.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 4/25/12.
-//  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
+//  Created by Byeong Kwon Kwak on 4/25/11.
+//  Copyright (c) 2011 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "A3AppDelegate.h"

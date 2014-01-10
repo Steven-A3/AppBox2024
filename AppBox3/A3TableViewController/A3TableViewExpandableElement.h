@@ -15,6 +15,7 @@ typedef NS_ENUM(NSUInteger, A3TableViewExpandableElementCellType) {
 
 @class A3TableViewSection;
 @class A3TableViewExpandableCell;
+@protocol A3TableViewExpandableElementDelegate;
 
 @interface A3TableViewExpandableElement : A3TableViewElement
 
@@ -24,5 +25,10 @@ typedef NS_ENUM(NSUInteger, A3TableViewExpandableElementCellType) {
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) A3TableViewExpandableCell *cell;
 @property (nonatomic, weak) UILabel *titleLabel;
+@property (nonatomic, weak) id<A3TableViewExpandableElementDelegate> delegate;
 
+@end
+
+@protocol A3TableViewExpandableElementDelegate <NSObject>
+- (void)element:(A3TableViewExpandableElement *)element cellStateChangedAtIndexPath:(NSIndexPath *)indexPath;
 @end

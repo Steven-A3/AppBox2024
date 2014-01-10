@@ -587,7 +587,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 		} else {
 			[self.photoLabel1 setHidden:YES];
 			[self.photoLabel2 setHidden:YES];
-			self.photoLabel1.attributedText = nil;
+			self.photoLabel1.text = @"";
 			self.photoLabel2.text = @"";
 		}
 	}

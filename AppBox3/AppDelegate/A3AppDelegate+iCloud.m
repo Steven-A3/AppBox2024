@@ -15,6 +15,7 @@
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
+NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 
 @protocol UbiquityStoreManagerInternal <NSObject>
 
@@ -85,6 +86,8 @@ NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 		self.managedObjectContext = nil;
 		
 		[[MagicalRecordStack defaultStack] reset];
+
+		self.coreDataReadyToUse = NO;
 	}
 }
 
@@ -104,6 +107,8 @@ NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 
 	[MagicalRecordStack setDefaultStack:magicalRecordStack];
 
+	self.coreDataReadyToUse = YES;
+
 	if (isCloudStore) {
 		if (_needMigrateLocalDataToCloud) {
 			// Cloud data exist and we need to migrate.
@@ -114,6 +119,9 @@ NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 	} else {
 		[A3CurrencyDataManager setupFavorites];
 	}
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3CoreDataReadyNotification object:nil];
+
 	__typeof(self) __weak weakSelf = self;
 	dispatch_async(dispatch_get_main_queue(), ^{
 		if (weakSelf.hud) {
@@ -146,6 +154,7 @@ NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
 			[weakSelf.ubiquityStoreManager deleteCloudStoreLocalOnly:YES];
 		}
 	});
+
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager failedLoadingStoreWithCause:(UbiquityStoreErrorCause)cause context:(id)context

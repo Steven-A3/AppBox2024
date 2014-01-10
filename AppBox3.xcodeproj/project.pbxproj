@@ -249,6 +249,7 @@
 		684E943C17C1C6260081A8B5 /* TranslatorHistory+addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E943B17C1C6260081A8B5 /* TranslatorHistory+addition.m */; };
 		684E944217C22E760081A8B5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684E944117C22E760081A8B5 /* Images.xcassets */; };
 		6850050717C30B500081FC1D /* appbox.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6850050617C30B500081FC1D /* appbox.ttf */; };
+		68515229187FF97800092C0F /* A3SettingsEditFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68515228187FF97800092C0F /* A3SettingsEditFavoritesViewController.m */; };
 		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
 		6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6854E91D166F3E8D00497126 /* A3TimeLineEventItemView.m */; };
@@ -817,6 +818,8 @@
 		684E943B17C1C6260081A8B5 /* TranslatorHistory+addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TranslatorHistory+addition.m"; sourceTree = "<group>"; };
 		684E944117C22E760081A8B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "AppBox3/Asset Catalogs/Images.xcassets"; sourceTree = "<group>"; };
 		6850050617C30B500081FC1D /* appbox.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = appbox.ttf; path = AppBox3/appbox.ttf; sourceTree = "<group>"; };
+		68515227187FF97800092C0F /* A3SettingsEditFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsEditFavoritesViewController.h; path = Settings/A3SettingsEditFavoritesViewController.h; sourceTree = "<group>"; };
+		68515228187FF97800092C0F /* A3SettingsEditFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsEditFavoritesViewController.m; path = Settings/A3SettingsEditFavoritesViewController.m; sourceTree = "<group>"; };
 		68521A3917E1EBB200E08FB1 /* NSDate-Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate-Utilities.h"; path = "External/NSDate-Extensions/NSDate-Utilities.h"; sourceTree = "<group>"; };
 		68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate-Utilities.m"; path = "External/NSDate-Extensions/NSDate-Utilities.m"; sourceTree = "<group>"; };
 		68521A4417E1FF2E00E08FB1 /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXLabel.h; path = External/FXLabel/FXLabel/FXLabel.h; sourceTree = "<group>"; };
@@ -1713,6 +1716,8 @@
 				68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */,
 				68E39FF7186D845300D8482E /* A3SettingsRequireForViewController.h */,
 				68E39FF8186D845300D8482E /* A3SettingsRequireForViewController.m */,
+				68515227187FF97800092C0F /* A3SettingsEditFavoritesViewController.h */,
+				68515228187FF97800092C0F /* A3SettingsEditFavoritesViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -2934,6 +2939,7 @@
 				17D42B063642DF6B78A72E01 /* A3TopGradientBackgroundView.m in Sources */,
 				17D421477993890ECAF0FFB3 /* SalesCalcHistory+controller.m in Sources */,
 				6831EC131861EB7C00BAF15B /* MBProgressHUD.m in Sources */,
+				68515229187FF97800092C0F /* A3SettingsEditFavoritesViewController.m in Sources */,
 				6804FCE91821EFDE00C79FE2 /* A3TableViewEntryCell.m in Sources */,
 				68004B8E172FEB290005BFF2 /* SalesCalcHistory.m in Sources */,
 				17D426E6A287F21883014D53 /* A3DatePickerView.m in Sources */,
