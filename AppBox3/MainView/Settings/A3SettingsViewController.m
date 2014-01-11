@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Settings", @"Settings view title");
+//	self.title = NSLocalizedString(@"Settings", @"Settings view title");
 	
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
@@ -67,6 +67,15 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 0) return 35;
+	return 17;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return 18;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

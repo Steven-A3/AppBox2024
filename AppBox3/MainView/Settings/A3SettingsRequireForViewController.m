@@ -28,7 +28,6 @@
 {
     [super viewDidLoad];
 
-	self.title = @"Require Passcode";
 }
 
 - (void)didReceiveMemoryWarning

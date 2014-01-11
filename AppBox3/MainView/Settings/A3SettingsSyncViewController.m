@@ -32,13 +32,6 @@
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Sync", @"It is a title for a view configuring Syncing through iCloud.");
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning

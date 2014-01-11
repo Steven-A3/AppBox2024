@@ -27,13 +27,24 @@
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Wallet", @"Title for Wallet section in Settings");
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 0) return 35;
+	if (section == 1) return UITableViewAutomaticDimension;
+	return 17;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (section == 0) return UITableViewAutomaticDimension;
+	if (section == 2) return 35;
+	return 18;
 }
 
 @end

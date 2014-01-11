@@ -1,5 +1,5 @@
 //
-//  A3SettingsEditFavoritesViewController.h
+//  A3SettingsFavoritesViewController.h
 //  AppBox3
 //
 //  Created by A3 on 1/10/14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3SettingsEditFavoritesViewController : UITableViewController
+@interface A3SettingsFavoritesViewController : UITableViewController
 
 @end

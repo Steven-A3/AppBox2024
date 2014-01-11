@@ -9,7 +9,7 @@
             <objects>
                 <tableViewController title="Settings" id="go4-fr-Ah2" customClass="A3SettingsViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ouj-Na-Nrs">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -108,7 +108,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Edit Favorites" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="m3s-eA-4WD">
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Favorites" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="m3s-eA-4WD">
                                                     <rect key="frame" x="15" y="0.0" width="270" height="43"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -207,7 +207,8 @@
                             <outlet property="delegate" destination="go4-fr-Ah2" id="uhz-FW-JDy"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="oSP-yD-m2L"/>
+                    <navigationItem key="navigationItem" title="Settings" id="oSP-yD-m2L"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <segue destination="KML-Ub-d8M" kind="push" identifier="passcode" id="bec-R4-ywE"/>
                     </connections>
@@ -221,7 +222,7 @@
             <objects>
                 <tableViewController title="Sync" id="o9N-EA-Uky" customClass="A3SettingsSyncViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="4br-Ha-8bd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -290,7 +291,7 @@
                             <outlet property="delegate" destination="o9N-EA-Uky" id="bTH-no-e7n"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="oxS-sd-8U7"/>
+                    <navigationItem key="navigationItem" title="Sync" id="oxS-sd-8U7"/>
                     <connections>
                         <segue destination="5tS-iN-3NI" kind="push" identifier="openDropboxFiles" id="XJI-WU-nNn"/>
                     </connections>
@@ -304,7 +305,7 @@
             <objects>
                 <tableViewController title="Dropbox Files" id="5tS-iN-3NI" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="4XX-O0-ehC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -333,7 +334,7 @@
             <objects>
                 <tableViewController title="Wallet Security" id="ZWR-Kw-5bK" customClass="A3SettingsWalletViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Ne5-G4-Kvs">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -423,7 +424,7 @@
                             <outlet property="delegate" destination="ZWR-Kw-5bK" id="SmC-PT-mjg"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="dfE-0P-Ql0"/>
+                    <navigationItem key="navigationItem" title="Wallet Security" id="dfE-0P-Ql0"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nx-O7-Mjd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -434,7 +435,7 @@
             <objects>
                 <tableViewController title="Passcode Lock" id="KML-Ub-d8M" customClass="A3SettingsPasscodeViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="hFx-GW-XMv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -619,7 +620,7 @@
                             <outlet property="delegate" destination="KML-Ub-d8M" id="i4T-cP-FEw"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="Lbr-p8-awt"/>
+                    <navigationItem key="navigationItem" title="Passcode Lock" id="Lbr-p8-awt"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bUg-dd-zte" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -630,7 +631,7 @@
             <objects>
                 <tableViewController title="Require Passcode" id="Xb7-yr-Jd6" customClass="A3SettingsRequireForViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="N3a-ed-EvJ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -746,23 +747,23 @@
                             <outlet property="delegate" destination="Xb7-yr-Jd6" id="jDS-n4-5pc"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="qcD-FX-Y5d"/>
+                    <navigationItem key="navigationItem" title="Require Passcode" id="qcD-FX-Y5d"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c88-Zr-Hf2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1045" y="787"/>
         </scene>
-        <!--Table View Controller - Edit Favorites-->
+        <!--Settings Favorites View Controller - Edit Favorites-->
         <scene sceneID="JoA-kY-rVI">
             <objects>
-                <tableViewController title="Edit Favorites" id="vRR-Rd-eut" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="NMR-oB-k3I">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <tableViewController title="Edit Favorites" id="vRR-Rd-eut" customClass="A3SettingsFavoritesViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="NMR-oB-k3I">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellReuseIdentifier" id="Ini-Dg-o4P">
-                                <rect key="frame" x="0.0" y="55" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ini-Dg-o4P" id="Y08-ql-Bll">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
@@ -775,7 +776,13 @@
                             <outlet property="delegate" destination="vRR-Rd-eut" id="qCS-3E-Hof"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="fqW-Vk-vP5"/>
+                    <navigationItem key="navigationItem" title="Favorites" id="fqW-Vk-vP5">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="KB2-9m-B96">
+                            <connections>
+                                <action selector="addFavoritesAction:" destination="vRR-Rd-eut" id="kfZ-ik-a85"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zG8-VR-Hek" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -786,7 +793,7 @@
             <objects>
                 <tableViewController title="Recent To Keep" id="srb-MD-eSG" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="kIV-KX-LJx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -889,7 +896,7 @@
                             <outlet property="delegate" destination="srb-MD-eSG" id="9cM-Yl-oFZ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="5pd-cg-py2"/>
+                    <navigationItem key="navigationItem" title="Recent to Keep" id="5pd-cg-py2"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="odb-53-1ah" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -900,7 +907,7 @@
             <objects>
                 <tableViewController title="Theme Color" id="RpU-td-Vej" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="ITD-Hu-VaX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -1017,7 +1024,7 @@
                             <outlet property="delegate" destination="RpU-td-Vej" id="2sF-mU-hoD"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="eqe-ec-kWO"/>
+                    <navigationItem key="navigationItem" title="Theme Color" id="eqe-ec-kWO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EFp-N7-5wf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1028,7 +1035,7 @@
             <objects>
                 <tableViewController title="Lunar Calendar" id="7oW-es-0Zb" customClass="A3SettingsLunarViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="lEt-bu-MCq">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <sections>
@@ -1093,7 +1100,7 @@
                             <outlet property="delegate" destination="7oW-es-0Zb" id="9mp-IV-a3M"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="CDn-14-haS"/>
+                    <navigationItem key="navigationItem" title="Lunar Calendar" id="CDn-14-haS"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZC0-D8-eaa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

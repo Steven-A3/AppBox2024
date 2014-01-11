@@ -1,18 +1,22 @@
 //
-//  A3SettingsEditFavoritesViewController.m
+//  A3SettingsFavoritesViewController.m
 //  AppBox3
 //
 //  Created by A3 on 1/10/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3SettingsEditFavoritesViewController.h"
+#import "A3SettingsFavoritesViewController.h"
+#import "A3AppDelegate.h"
+#import "A3MainMenuTableViewController.h"
 
-@interface A3SettingsEditFavoritesViewController ()
+@interface A3SettingsFavoritesViewController ()
+
+@property(nonatomic, strong) NSMutableArray *favorites;
 
 @end
 
-@implementation A3SettingsEditFavoritesViewController
+@implementation A3SettingsFavoritesViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -27,8 +31,17 @@
 {
     [super viewDidLoad];
 
-	self.title = @"Edit Favorites";
+	[self.tableView setEditing:YES];
 }
+
+- (NSMutableArray *)favorites {
+	if (!_favorites) {
+		NSDictionary *favoriteObject = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuFavorites];
+		_favorites = favoriteObject[kA3AppsExpandableChildren];
+	}
+	return _favorites;
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -36,16 +49,20 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)addFavoritesAction:(id)sender {
+	
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [self.favorites count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -54,6 +71,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+
     
     return cell;
 }

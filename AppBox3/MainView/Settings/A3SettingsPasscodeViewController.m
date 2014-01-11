@@ -46,7 +46,6 @@
 
 	[self makeBackButtonEmptyArrow];
 
-	self.title = NSLocalizedString(@"Passcode Lock", @"View title in Settings");
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,6 +65,7 @@
     // Dispose of any resources that can be recreated.
 }
 
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (indexPath.section) {
 		case 0:
@@ -78,6 +78,16 @@
 			[self willDisplaySection2Cell:cell forRow:indexPath.row];
 			break;
 	}
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 1) return 18;
+	return UITableViewAutomaticDimension;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (section == 0) return 17;
+	return UITableViewAutomaticDimension;
 }
 
 - (BOOL)passcodeEnabled {

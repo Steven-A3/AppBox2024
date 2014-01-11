@@ -28,7 +28,6 @@
 {
     [super viewDidLoad];
 
-	self.title = NSLocalizedString(@"Lunar Calendar", @"Title in Settings for Lunar Calendar");
 }
 
 - (void)didReceiveMemoryWarning
