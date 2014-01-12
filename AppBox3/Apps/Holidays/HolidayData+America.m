@@ -2569,6 +2569,12 @@ static NSUInteger jewishTable[][14][2] = {
 	holidayName = @"New Year's Day";
 	date = [HolidayData dateWithDay:1 month:1 year:year withCalendar:gregorian option:0];
 	[holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+
+	if (year >= 2014) {
+        holidayName = @"Majority Rule Day";
+        date = [HolidayData dateWithDay:10 month:1 year:year withCalendar:gregorian option:0];
+        [holidays addObject:@{kHolidayName:holidayName, kHolidayIsPublic:@YES, kHolidayDate:date, kHolidayDuration:@1}];
+    }
 	
 	holidayName = @"Good Friday";
 	date = [HolidayData getGoodFriday:year western:YES withCalendar:gregorian];
