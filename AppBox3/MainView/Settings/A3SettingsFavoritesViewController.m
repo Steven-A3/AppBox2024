@@ -7,10 +7,13 @@
 //
 
 #import "A3SettingsFavoritesViewController.h"
-#import "A3AppDelegate.h"
 #import "A3MainMenuTableViewController.h"
+#import "NSMutableArray+MoveObject.h"
+#import "A3AppDelegate+mainMenu.h"
+#import "A3SettingsAddFavoritesViewController.h"
+#import "A3CenterViewProtocol.h"
 
-@interface A3SettingsFavoritesViewController ()
+@interface A3SettingsFavoritesViewController () <A3ChildViewControllerDelegate>
 
 @property(nonatomic, strong) NSMutableArray *favorites;
 
@@ -32,25 +35,38 @@
     [super viewDidLoad];
 
 	[self.tableView setEditing:YES];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentChanged:) name:kA3AppsMainMenuContentsChangedNotification object:nil];
+}
+
+- (void)menuContentChanged:(NSNotification *)notification {
+	if (notification.object != self) {
+		_favorites = nil;
+		[self.tableView reloadData];
+	}
+#ifdef DEBUG
+	else
+	{
+		FNLOG(@"Notification received from self");
+	}
+#endif
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSMutableArray *)favorites {
 	if (!_favorites) {
-		NSDictionary *favoriteObject = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuFavorites];
-		_favorites = favoriteObject[kA3AppsExpandableChildren];
+		_favorites = [[[A3AppDelegate instance] favoriteItems] mutableCopy];
 	}
 	return _favorites;
 }
-
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)addFavoritesAction:(id)sender {
-	
 }
 
 #pragma mark - Table view data source
@@ -71,7 +87,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
-
+	NSDictionary *menu = self.favorites[indexPath.row];
+	cell.textLabel.text = menu[kA3AppsMenuName];
     
     return cell;
 }
@@ -85,46 +102,49 @@
 }
 */
 
-/*
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+		[self.favorites removeObjectAtIndex:indexPath.row];
+		[[A3AppDelegate instance] storeFavorites:self.favorites];
+		
+		[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
 
-/*
+	}
+}
+
 // Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	[self.favorites moveObjectFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[[A3AppDelegate instance] storeFavorites:self.favorites];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
 }
-*/
 
-/*
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
-*/
 
-/*
 #pragma mark - Navigation
 
 // In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	// Get the new view controller using [segue destinationViewController].
+	// Pass the selected object to the new view controller.
+	if ([[segue destinationViewController] isKindOfClass:[A3SettingsAddFavoritesViewController class]]) {
+		A3SettingsAddFavoritesViewController *viewController = [segue destinationViewController];
+		viewController.delegate = self;
+	}
 }
 
- */
+- (void)childViewControllerWillDismiss {
+	[self.tableView reloadData];
+}
 
 @end

@@ -266,6 +266,7 @@
 		685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723D16A64C91004C7222 /* MobileCoreServices.framework */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6864D60117BBBA6300A215D7 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FF17BBBA6300A215D7 /* Media.xcassets */; };
+		6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */; };
 		686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */; };
 		686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */; };
 		686E31051713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 686E31041713F125004A4BF2 /* A3NumberKeyboardViewController_iPhone.m */; };
@@ -360,6 +361,7 @@
 		68B21A2E177AEAAA006FCC5F /* UIViewController+navigation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B21A2D177AEAAA006FCC5F /* UIViewController+navigation.m */; };
 		68B42B3F16FAA44800A73061 /* A3CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B42B3E16FAA44800A73061 /* A3CircleView.m */; };
 		68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */; };
+		68B6701318858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6701218858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m */; };
 		68B6A18B17CC398A008E0296 /* indian.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A18A17CC398A008E0296 /* indian.plist */; };
 		68B6A18C17CC398A008E0296 /* indian.plist in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A18A17CC398A008E0296 /* indian.plist */; };
 		68B886DE16787BC8004E5F68 /* A3HouseArrowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B886DD16787BC8004E5F68 /* A3HouseArrowView.m */; };
@@ -379,6 +381,8 @@
 		68C4EAB8179F885400ABB06E /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C4EAB7179F885400ABB06E /* A3NumberKeyboardSimpleVC_iPhone.xib */; };
 		68C5097516E70DD500CC61FF /* A3ButtonTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C5097416E70DD500CC61FF /* A3ButtonTextField.m */; };
 		68C6779F179E23E300D17B4A /* A3SwipeMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6779E179E23E300D17B4A /* A3SwipeMenuTableViewController.m */; };
+		68C9E3F81882EC4C007E4697 /* A3SettingsAddFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3F71882EC4C007E4697 /* A3SettingsAddFavoritesViewController.m */; };
+		68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */; };
 		68CB7982183DB8A800255AE3 /* NYXImagesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CB7980183DB8A800255AE3 /* NYXImagesHelper.m */; };
 		68CC1593174F763E0000870F /* SFKImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 68CC1592174F763E0000870F /* SFKImage.m */; };
 		68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68CC1598174F76930000870F /* LigatureSymbols.ttf */; };
@@ -846,6 +850,8 @@
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		6864D5FF17BBBA6300A215D7 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = "AppBox3/Asset Catalogs/Media.xcassets"; sourceTree = "<group>"; };
+		6866956418839B8C00BABFA5 /* A3AppDelegate+keyValueStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+keyValueStore.h"; path = "AppDelegate/A3AppDelegate+keyValueStore.h"; sourceTree = "<group>"; };
+		6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+keyValueStore.m"; path = "AppDelegate/A3AppDelegate+keyValueStore.m"; sourceTree = "<group>"; };
 		686BC1D91846343900FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencySettings.storyboard; sourceTree = "<group>"; };
 		686BC1DC184639CA00FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/A3CurrencyChartViewController.xib; sourceTree = "<group>"; };
 		686BC1E61846F8E200FA5C94 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
@@ -1046,6 +1052,8 @@
 		68B42B3E16FAA44800A73061 /* A3CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CircleView.m; sourceTree = "<group>"; };
 		68B635BD17B504C100570B09 /* A3RootViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3RootViewController_iPad.h; sourceTree = "<group>"; };
 		68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3RootViewController_iPad.m; sourceTree = "<group>"; };
+		68B6701118858C3C004BCE05 /* A3SettingsRecentToKeepViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsRecentToKeepViewController.h; path = Settings/A3SettingsRecentToKeepViewController.h; sourceTree = "<group>"; };
+		68B6701218858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsRecentToKeepViewController.m; path = Settings/A3SettingsRecentToKeepViewController.m; sourceTree = "<group>"; };
 		68B6A18A17CC398A008E0296 /* indian.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = indian.plist; path = Holidays/indian.plist; sourceTree = "<group>"; };
 		68B886DC16787BC8004E5F68 /* A3HouseArrowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3HouseArrowView.h; sourceTree = "<group>"; };
 		68B886DD16787BC8004E5F68 /* A3HouseArrowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3HouseArrowView.m; sourceTree = "<group>"; };
@@ -1078,6 +1086,10 @@
 		68C6779D179E23E300D17B4A /* A3SwipeMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SwipeMenuTableViewController.h; path = ViewControllers/A3SwipeMenuTableViewController.h; sourceTree = "<group>"; };
 		68C6779E179E23E300D17B4A /* A3SwipeMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SwipeMenuTableViewController.m; path = ViewControllers/A3SwipeMenuTableViewController.m; sourceTree = "<group>"; };
 		68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = A3UserDefaults.h; sourceTree = "<group>"; };
+		68C9E3F61882EC4C007E4697 /* A3SettingsAddFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsAddFavoritesViewController.h; path = Settings/A3SettingsAddFavoritesViewController.h; sourceTree = "<group>"; };
+		68C9E3F71882EC4C007E4697 /* A3SettingsAddFavoritesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsAddFavoritesViewController.m; path = Settings/A3SettingsAddFavoritesViewController.m; sourceTree = "<group>"; };
+		68C9E3FC1882EF1B007E4697 /* A3AppDelegate+mainMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+mainMenu.h"; path = "AppDelegate/A3AppDelegate+mainMenu.h"; sourceTree = "<group>"; };
+		68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+mainMenu.m"; path = "AppDelegate/A3AppDelegate+mainMenu.m"; sourceTree = "<group>"; };
 		68CB797F183DB8A800255AE3 /* NYXImagesHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesHelper.h; sourceTree = "<group>"; };
 		68CB7980183DB8A800255AE3 /* NYXImagesHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXImagesHelper.m; sourceTree = "<group>"; };
 		68CC1591174F763E0000870F /* SFKImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFKImage.h; path = External/SymbolFontKit/SymbolFontKit/SFKImage.h; sourceTree = "<group>"; };
@@ -1609,6 +1621,10 @@
 				684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */,
 				68236CDB186AA7B4006F442B /* A3AppDelegate+passcode.h */,
 				68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */,
+				68C9E3FC1882EF1B007E4697 /* A3AppDelegate+mainMenu.h */,
+				68C9E3FD1882EF1B007E4697 /* A3AppDelegate+mainMenu.m */,
+				6866956418839B8C00BABFA5 /* A3AppDelegate+keyValueStore.h */,
+				6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -1704,20 +1720,24 @@
 		6830C77E18519BF90075010F /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				6830C78218519C540075010F /* A3SettingsViewController.h */,
-				6830C78318519C540075010F /* A3SettingsViewController.m */,
-				6830C7881851BD480075010F /* A3SettingsSyncViewController.h */,
-				6830C7891851BD480075010F /* A3SettingsSyncViewController.m */,
-				68295B151851FE5300C34552 /* A3SettingsPasscodeViewController.h */,
-				68295B161851FE5300C34552 /* A3SettingsPasscodeViewController.m */,
-				684A71B4185223130004A9FE /* A3SettingsLunarViewController.h */,
-				684A71B5185223130004A9FE /* A3SettingsLunarViewController.m */,
-				68BA81D01866B9ED000E01F5 /* A3SettingsWalletViewController.h */,
-				68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */,
-				68E39FF7186D845300D8482E /* A3SettingsRequireForViewController.h */,
-				68E39FF8186D845300D8482E /* A3SettingsRequireForViewController.m */,
+				68C9E3F61882EC4C007E4697 /* A3SettingsAddFavoritesViewController.h */,
+				68C9E3F71882EC4C007E4697 /* A3SettingsAddFavoritesViewController.m */,
 				68515227187FF97800092C0F /* A3SettingsFavoritesViewController.h */,
 				68515228187FF97800092C0F /* A3SettingsFavoritesViewController.m */,
+				684A71B4185223130004A9FE /* A3SettingsLunarViewController.h */,
+				684A71B5185223130004A9FE /* A3SettingsLunarViewController.m */,
+				68295B151851FE5300C34552 /* A3SettingsPasscodeViewController.h */,
+				68295B161851FE5300C34552 /* A3SettingsPasscodeViewController.m */,
+				68E39FF7186D845300D8482E /* A3SettingsRequireForViewController.h */,
+				68E39FF8186D845300D8482E /* A3SettingsRequireForViewController.m */,
+				6830C7881851BD480075010F /* A3SettingsSyncViewController.h */,
+				6830C7891851BD480075010F /* A3SettingsSyncViewController.m */,
+				6830C78218519C540075010F /* A3SettingsViewController.h */,
+				6830C78318519C540075010F /* A3SettingsViewController.m */,
+				68BA81D01866B9ED000E01F5 /* A3SettingsWalletViewController.h */,
+				68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */,
+				68B6701118858C3C004BCE05 /* A3SettingsRecentToKeepViewController.h */,
+				68B6701218858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -2882,6 +2902,7 @@
 				688545E917EF276F00320F95 /* A3CalcKeyboardView_iPhone.m in Sources */,
 				68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */,
 				68D88F9D1817F06D002F20F8 /* A3SelectTableViewController.m in Sources */,
+				68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */,
 				6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */,
 				68D6265118169E33009C47C0 /* A3TableViewElement.m in Sources */,
 				688D74CC16C5219D00DBF033 /* A3ToolbarBackgroundView.m in Sources */,
@@ -2902,9 +2923,11 @@
 				684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */,
 				68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */,
 				681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */,
+				68B6701318858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m in Sources */,
 				68C11CBC1808025F00F05F77 /* A3KeyboardButton_iOS7.m in Sources */,
 				689C9A4E1839CD7F007C97EE /* AFSecurityPolicy.m in Sources */,
 				687D0D0A17CAE519005AB571 /* HolidayData+Africa.m in Sources */,
+				68C9E3F81882EC4C007E4697 /* A3SettingsAddFavoritesViewController.m in Sources */,
 				68953482178686AF007061CA /* UIImage+Rotating.m in Sources */,
 				6895347C178686AF007061CA /* UIImage+Masking.m in Sources */,
 				687F45D417E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m in Sources */,
@@ -2928,6 +2951,7 @@
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
 				68B635BF17B504C100570B09 /* A3RootViewController_iPad.m in Sources */,
 				68E6F35217B2722000F10ED9 /* NSUserDefaults+A3Defaults.m in Sources */,
+				6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */,
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
 				6858C362181F61EE00CEB06C /* A3TableViewExpandableElement.m in Sources */,
 				689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */,

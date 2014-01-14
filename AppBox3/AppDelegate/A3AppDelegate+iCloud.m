@@ -53,6 +53,8 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 	self.hud.completionBlock = ^{
 		weakSelf.hud = nil;
 	};
+
+
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
@@ -64,6 +66,7 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 	FNLOG(@"\n-----------------------------------------\n%@\n%@\n%@\n-----------------------------------------", insertedObjects, updatedObjects, deletedObjects);
 #endif
 	[[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:A3iCloudLastDBImportKey];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSManagedObjectContext *)ubiquityStoreManager:(UbiquityStoreManager *)manager

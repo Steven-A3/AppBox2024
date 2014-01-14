@@ -15,3 +15,9 @@
 - (void)cleanUp;
 
 @end
+
+@protocol A3ChildViewControllerDelegate <NSObject>
+
+- (void)childViewControllerWillDismiss;
+
+@end

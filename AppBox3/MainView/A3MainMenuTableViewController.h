@@ -10,10 +10,6 @@
 #import "A3TableViewController.h"
 #import "A3SelectTableViewController.h"
 
-extern NSString *const kA3MainMenuFavorites;			// Store NSDictionary
-extern NSString *const kA3MainMenuAllMenu;				// Store NSArray
-extern NSString *const kA3MainMenuMaxRecentlyUsed;		// Store NSNumber
-
 @interface A3MainMenuTableViewController : A3TableViewController
 
 @end

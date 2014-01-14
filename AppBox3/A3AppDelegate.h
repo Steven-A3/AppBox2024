@@ -24,6 +24,18 @@ extern NSString *const kA3AppsStoryboardName;
 extern NSString *const kA3AppsMenuExpandable;
 extern NSString *const kA3AppsMenuNeedSecurityCheck;
 
+extern NSString *const kA3AppsMenuArray;
+extern NSString *const kA3AppsDataUpdateDate;
+
+/* Key for User Defaults */
+extern NSString *const kA3MainMenuFavorites;			// Store NSDictionary
+extern NSString *const kA3MainMenuAllMenu;				// Store NSArray
+extern NSString *const kA3MainMenuMaxRecentlyUsed;		// Store NSNumber
+extern NSString *const kA3MainMenuRecentlyUsed;
+
+/* Notifications */
+extern NSString *const kA3AppsMainMenuContentsChangedNotification;
+
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end
@@ -50,6 +62,5 @@ extern NSString *const kA3AppsMenuNeedSecurityCheck;
 
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;
-- (NSArray *)allMenu;
 
 @end

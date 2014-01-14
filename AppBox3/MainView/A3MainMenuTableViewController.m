@@ -21,6 +21,7 @@
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+iCloud.h"
 #import "NSMutableArray+MoveObject.h"
+#import "A3AppDelegate+mainMenu.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
@@ -30,6 +31,8 @@ NSString *const kA3MainMenuFavorites = @"kA3MainMenuFavorites";				// Store NSDi
 NSString *const kA3MainMenuRecentlyUsed = @"kA3MainMenuRecentlyUsed";		// Store NSDictionary
 NSString *const kA3MainMenuAllMenu = @"kA3MainMenuAllMenu";					// Store NSArray
 NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// Store NSNumber
+
+NSString *const kA3AppsMainMenuContentsChangedNotification = @"kA3AppsMainMenuContentsChangedNotification";
 
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
 
@@ -56,7 +59,9 @@ NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// S
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self.tableView reloadData];
+	if (![self isMovingToParentViewController]) {
+		[self.tableView reloadData];
+	}
 }
 
 - (void)viewDidLoad
@@ -87,10 +92,21 @@ NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// S
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataAvailable) name:A3CoreDataReadyNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:kA3AppsMainMenuContentsChangedNotification object:nil];
+}
+
+- (void)menuContentsChanged {
+	@autoreleasepool {
+		[self setupData];
+		[self.tableView reloadData];
+	}
 }
 
 - (void)coreDataAvailable {
-	[self.tableView reloadData];
+	@autoreleasepool {
+		[self setupData];
+		[self.tableView reloadData];
+	}
 }
 
 - (void)dealloc {
@@ -116,29 +132,6 @@ NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// S
 
 #pragma mark - Data Handler
 
-- (NSDictionary *)favoriteMenuItems {
-	NSDictionary *storedFavorites = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuFavorites];
-	if (!storedFavorites) {
-		storedFavorites = @{
-				kA3AppsMenuName : @"Farovirtes",
-				kA3AppsMenuCollapsed : @YES,
-				kA3AppsMenuExpandable : @YES,
-				kA3AppsExpandableChildren :
-				@[
-						@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DateCalculator"},
-						@{kA3AppsMenuName : @"Loan Calculator", kA3AppsClassName : @"A3LoanCalc2ViewController", kA3AppsMenuImageName : @"LoanCalculator"},
-						@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
-						@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
-						@{kA3AppsMenuName : @"Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Calculator"},
-						@{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"PercentCalculator"}
-				]
-		};
-		[[NSUserDefaults standardUserDefaults] setObject:storedFavorites forKey:kA3MainMenuFavorites];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-	return storedFavorites;
-}
-
 - (NSDictionary *)recentlyUsedMenuItems {
 	return [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
 }
@@ -147,7 +140,7 @@ NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// S
 	self.rootElement = [A3TableViewRootElement new];
 	self.rootElement.tableView = self.tableView;
 
-	NSDictionary *favoritesDict = [self favoriteMenuItems];
+	NSDictionary *favoritesDict = [[A3AppDelegate instance] favoriteMenuDictionary];
 	NSMutableArray *section0 = [NSMutableArray new];
 	[section0 addObject:favoritesDict];
 
@@ -160,14 +153,7 @@ NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// S
 }
 
 - (id)appSection {
-	NSArray *allMenus = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
-	if (!allMenus) {
-		allMenus = [[A3AppDelegate instance] allMenu];
-		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-		[userDefaults setObject:allMenus forKey:kA3MainMenuAllMenu];
-		[userDefaults synchronize];
-	}
-	return [self sectionWithData:allMenus];
+	return [self sectionWithData:[[A3AppDelegate instance] allMenuArrayFromUserDefaults]];
 }
 
 NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
@@ -293,15 +279,15 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
 	UIViewController *targetViewController;
 	if ([menuElement.className length]) {
-							Class class;
-							class = NSClassFromString(menuElement.className);
-
-							targetViewController = [[class alloc] initWithNibName:menuElement.nibName bundle:nil];
-						} else if ([menuElement.storyboardName length]) {
-							UIStoryboard *storyboard = [UIStoryboard storyboardWithName:menuElement.storyboardName bundle:nil];
-							targetViewController = [storyboard instantiateInitialViewController];
-						}
-	return targetViewController;
+		Class class;
+		class = NSClassFromString(menuElement.className);
+		
+		targetViewController = [[class alloc] initWithNibName:menuElement.nibName bundle:nil];
+	} else if ([menuElement.storyboardName length]) {
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:menuElement.storyboardName bundle:nil];
+		targetViewController = [storyboard instantiateInitialViewController];
+	}
+		return targetViewController;
 }
 
 - (BOOL)isActiveViewController:(Class)aClass {
@@ -398,79 +384,77 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 #pragma mark - A3ExpandableElement delegate
 
 - (void)element:(A3TableViewExpandableElement *)element cellStateChangedAtIndexPath:(NSIndexPath *)indexPath {
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
-			NSMutableDictionary *favoriteDictionary = [[userDefaults objectForKey:kA3MainMenuFavorites] mutableCopy];
+			NSMutableDictionary *favoriteDictionary = [[[A3AppDelegate instance] favoriteMenuDictionary] mutableCopy];
 			favoriteDictionary[kA3AppsMenuCollapsed] = @(element.collapsed);
-			[userDefaults setObject:favoriteDictionary forKey:kA3MainMenuFavorites];
+			[[A3AppDelegate instance] storeFavoriteMenuDictionary:favoriteDictionary withDate:[NSDate date]];
 		} else {
-			NSMutableDictionary *recentDictionary = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
+			NSMutableDictionary *recentDictionary = [[[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
 			recentDictionary[kA3AppsMenuCollapsed] = @(element.collapsed);
-			[userDefaults setObject:recentDictionary forKey:kA3MainMenuRecentlyUsed];
+			[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentDictionary withDate:[NSDate date]];
 		}
 	} else if (indexPath.section == 1) {
-		NSMutableArray *allMenus = [[userDefaults objectForKey:kA3MainMenuAllMenu] mutableCopy];
+		NSMutableArray *allMenus = [[[A3AppDelegate instance] allMenuArrayFromUserDefaults]	mutableCopy];
 		NSMutableDictionary *sectionDictionary = [allMenus[(NSUInteger) indexPath.section] mutableCopy];
 		sectionDictionary[kA3AppsMenuCollapsed] = @(element.collapsed);
 		[allMenus replaceObjectAtIndex:indexPath.section withObject:sectionDictionary];
-		[userDefaults setObject:allMenus forKey:kA3MainMenuAllMenu];
+		[[A3AppDelegate instance] storeAllMenu:allMenus withDate:[NSDate date]];
 	}
-	[userDefaults synchronize];
 }
 
 - (void)updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *)element {
-	if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
-		return;
-	}
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
-	if (!recentlyUsed) {
-		recentlyUsed = [NSMutableDictionary new];
-		recentlyUsed[kA3AppsMenuName] = @"Recent";
-		recentlyUsed[kA3AppsMenuCollapsed] = @YES;
-		recentlyUsed[kA3AppsMenuExpandable] = @YES;
-	}
-	NSMutableArray *appsList = [recentlyUsed[kA3AppsExpandableChildren] mutableCopy];
-	if (!appsList) {
-		appsList = [NSMutableArray new];
-	}
-
-	NSUInteger idx = [appsList indexOfObjectPassingTest:^BOOL(NSDictionary *menuDictionary, NSUInteger idx, BOOL *stop) {
-		if ([element.title isEqualToString:menuDictionary[kA3AppsMenuName]]) {
-			*stop = YES;
-			return YES;
+	@autoreleasepool {
+		if (![element isKindOfClass:[A3TableViewMenuElement class]] || element.doNotKeepAsRecent) {
+			return;
 		}
-		return NO;
-	}];
-	if (idx != NSNotFound) {
-		if (idx > 0) {
-			[appsList moveObjectFromIndex:idx toIndex:0];
-			recentlyUsed[kA3AppsExpandableChildren] = appsList;
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		NSMutableDictionary *recentlyUsed = [[userDefaults objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
+		if (!recentlyUsed) {
+			recentlyUsed = [NSMutableDictionary new];
+			recentlyUsed[kA3AppsMenuName] = @"Recent";
+			recentlyUsed[kA3AppsMenuCollapsed] = @YES;
+			recentlyUsed[kA3AppsMenuExpandable] = @YES;
 		}
-	} else {
-		NSInteger maxRecent = [userDefaults integerForKey:kA3MainMenuMaxRecentlyUsed];
-		if (!maxRecent) maxRecent = 3;    // Default value == 3
+		NSMutableArray *appsList = [recentlyUsed[kA3AppsExpandableChildren] mutableCopy];
+		if (!appsList) {
+			appsList = [NSMutableArray new];
+		}
 
-		if (maxRecent == 1) {
-			recentlyUsed[kA3AppsExpandableChildren] = [self dataFromElements:@[element]];
-		} else {
-			NSArray *newDataArray = [self dataFromElements:@[element]];
-			[appsList insertObject:newDataArray[0] atIndex:0];
-
-
-			if ([appsList count] > maxRecent) {
-				[appsList removeLastObject];
+		NSUInteger idx = [appsList indexOfObjectPassingTest:^BOOL(NSDictionary *menuDictionary, NSUInteger idx, BOOL *stop) {
+			if ([element.title isEqualToString:menuDictionary[kA3AppsMenuName]]) {
+				*stop = YES;
+				return YES;
 			}
-			recentlyUsed[kA3AppsExpandableChildren] = appsList;
+			return NO;
+		}];
+		if (idx != NSNotFound) {
+			if (idx > 0) {
+				[appsList moveObjectFromIndex:idx toIndex:0];
+				recentlyUsed[kA3AppsExpandableChildren] = appsList;
+			}
+		} else {
+			NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+
+			if (maxRecent == 1) {
+				recentlyUsed[kA3AppsExpandableChildren] = [self dataFromElements:@[element]];
+			} else {
+				NSArray *newDataArray = [self dataFromElements:@[element]];
+				[appsList insertObject:newDataArray[0] atIndex:0];
+
+
+				if ([appsList count] > maxRecent) {
+					[appsList removeLastObject];
+				}
+				recentlyUsed[kA3AppsExpandableChildren] = appsList;
+			}
 		}
+
+		[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentlyUsed withDate:[NSDate date]];
+
+		[self setupData];
+		[self.tableView reloadData];
 	}
-
-	[userDefaults setObject:recentlyUsed forKey:kA3MainMenuRecentlyUsed];
-	[userDefaults synchronize];
-
-	[self setupData];
-	[self.tableView reloadData];
 }
 
 @end
