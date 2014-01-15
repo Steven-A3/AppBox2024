@@ -16,6 +16,7 @@
 #import "A3AppDelegate+passcode.h"
 #import "A3AppDelegate+keyValueStore.h"
 #import "A3PasscodeViewControllerProtocol.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3AppDelegate ()
 
@@ -65,6 +66,12 @@
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = rootViewController;
+
+	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+	if (selectedColor) {
+		self.window.tintColor = self.themeColors[[selectedColor unsignedIntegerValue]];
+	}
+
 	[self.window makeKeyAndVisible];
     return YES;
 }

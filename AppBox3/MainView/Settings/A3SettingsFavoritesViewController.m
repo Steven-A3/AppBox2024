@@ -107,9 +107,10 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		[self.favorites removeObjectAtIndex:indexPath.row];
 		[[A3AppDelegate instance] storeFavorites:self.favorites];
+		
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		
 		[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
 

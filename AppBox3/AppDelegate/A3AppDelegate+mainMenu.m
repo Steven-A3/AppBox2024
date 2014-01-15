@@ -22,6 +22,8 @@ NSString *const kA3AppsStoryboardName = @"kA3AppsStoryboardName";
 NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
 NSString *const kA3AppsMenuNeedSecurityCheck = @"kA3AppsMenuNeedSecurityCheck";
 
+NSString *const kA3ThemeColorIndex = @"kA3ThemeColorIndex";
+
 NSString *const kA3AppsMenuArray = @"kA3AppsMenuArray";
 NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 
@@ -175,5 +177,22 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	return maximum;
 }
 
+- (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber {
+	[[NSUserDefaults standardUserDefaults] setInteger:maxNumber forKey:kA3MainMenuMaxRecentlyUsed];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+	
+	if ([self.ubiquityStoreManager cloudEnabled]) {
+		[[NSUbiquitousKeyValueStore defaultStore] setObject:@(maxNumber) forKey:kA3MainMenuMaxRecentlyUsed];
+	}
+}
+
+- (void)clearRecentlyUsedMenus {
+	[[NSUserDefaults standardUserDefaults] removeObjectForKey:kA3MainMenuRecentlyUsed];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	if ([self.ubiquityStoreManager cloudEnabled]) {
+		[[NSUbiquitousKeyValueStore defaultStore] removeObjectForKey:kA3MainMenuRecentlyUsed];
+	}
+}
 
 @end

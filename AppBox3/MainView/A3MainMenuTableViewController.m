@@ -104,8 +104,10 @@ NSString *const kA3AppsMainMenuContentsChangedNotification = @"kA3AppsMainMenuCo
 
 - (void)coreDataAvailable {
 	@autoreleasepool {
-		[self setupData];
-		[self.tableView reloadData];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self setupData];
+			[self.tableView reloadData];
+		});
 	}
 }
 
@@ -144,9 +146,18 @@ NSString *const kA3AppsMainMenuContentsChangedNotification = @"kA3AppsMainMenuCo
 	NSMutableArray *section0 = [NSMutableArray new];
 	[section0 addObject:favoritesDict];
 
-	NSDictionary *recentlyUsedMenuItems = [self recentlyUsedMenuItems];
-	if (recentlyUsedMenuItems) {
-		[section0 addObject:recentlyUsedMenuItems];
+	NSDictionary *recentlyUsedMenuDictionary = [self recentlyUsedMenuItems];
+	NSArray *recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
+	if ([recentMenuItems count]) {
+		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+		if ([recentMenuItems count] > maxRecent) {
+			recentMenuItems = [recentMenuItems subarrayWithRange:NSMakeRange(0, maxRecent)];
+			NSMutableDictionary *mutableDictionary = [recentlyUsedMenuDictionary mutableCopy];
+			mutableDictionary[kA3AppsExpandableChildren] = recentMenuItems;
+			[section0 addObject:mutableDictionary];
+		} else {
+			[section0 addObject:recentlyUsedMenuDictionary];
+		}
 	}
 
 	self.rootElement.sectionsArray = @[[self sectionWithData:section0], self.appSection, self.bottomSection];
@@ -442,9 +453,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 				NSArray *newDataArray = [self dataFromElements:@[element]];
 				[appsList insertObject:newDataArray[0] atIndex:0];
 
-
 				if ([appsList count] > maxRecent) {
-					[appsList removeLastObject];
+					[appsList removeObjectsInRange:NSMakeRange(maxRecent, [appsList count] - maxRecent)];
 				}
 				recentlyUsed[kA3AppsExpandableChildren] = appsList;
 			}

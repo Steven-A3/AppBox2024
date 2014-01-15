@@ -29,4 +29,8 @@
 - (void)storeRecentlyUsedMenuDictionary:(NSMutableDictionary *)mutableDictionary withDate:(NSDate *)updateDate;
 
 - (NSUInteger)maximumRecentlyUsedMenus;
+
+- (void)storeMaximumNumberRecentlyUsedMenus:(NSUInteger)maxNumber;
+
+- (void)clearRecentlyUsedMenus;
 @end

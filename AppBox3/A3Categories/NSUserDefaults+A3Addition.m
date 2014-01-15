@@ -8,9 +8,8 @@
 
 #import "NSUserDefaults+A3Addition.h"
 #import "A3AppDelegate+iCloud.h"
+#import "A3AppDelegate+mainMenu.h"
 
-NSString *const A3SettingsUseiCloudSync = @"A3SettingsUseiCloudSync";
-NSString *const A3SettingsNumberOfItemsRecentToKeep = @"A3SettingsNumberOfItemsRecentToKeep";
 NSString *const A3SettingsUseLunarCalendar = @"A3SettingsUseLunarCalendar";
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
 
@@ -22,11 +21,8 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 }
 
 - (NSString *)stringForRecentToKeep {
-	NSInteger numberOfItemsToKeep = [[NSUserDefaults standardUserDefaults] integerForKey:A3SettingsNumberOfItemsRecentToKeep];
+	NSInteger numberOfItemsToKeep = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
 
-	if (numberOfItemsToKeep == 0) {
-		numberOfItemsToKeep = 3;
-	}
 	if (numberOfItemsToKeep > 1) {
 		return [NSString stringWithFormat:NSLocalizedString(@"Last %d", @"Settings for main menu, in setting the number of items to show in recent list."), numberOfItemsToKeep];
 	} else {

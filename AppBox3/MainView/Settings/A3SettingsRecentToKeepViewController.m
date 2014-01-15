@@ -7,6 +7,8 @@
 //
 
 #import "A3SettingsRecentToKeepViewController.h"
+#import "A3AppDelegate.h"
+#import "A3AppDelegate+mainMenu.h"
 
 @interface A3SettingsRecentToKeepViewController ()
 
@@ -49,55 +51,63 @@
 	return 18;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	@autoreleasepool {
+		NSDictionary *recentMenus = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed];
+		return recentMenus ? 2 : 1;
+	}
 }
 
- */
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	NSUInteger maxMenus = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
+	if (indexPath.section == 0) {
+		switch (indexPath.row) {
+			case 0:
+				cell.accessoryType = maxMenus == 1 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				cell.tag = 1;
+				break;
+			case 1:
+				cell.accessoryType = maxMenus == 2 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				cell.tag = 2;
+				break;
+			case 2:
+				cell.accessoryType = maxMenus == 3 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				cell.tag = 3;
+				break;
+			case 3:
+				cell.accessoryType = maxMenus == 5 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+				cell.tag = 5;
+				break;
+		}
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 0) {
+		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+		[[A3AppDelegate instance] storeMaximumNumberRecentlyUsedMenus:(NSUInteger) cell.tag];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
+		
+		[tableView reloadData];
+	}
+	else if (indexPath.section == 1)
+	{
+		[[A3AppDelegate instance] clearRecentlyUsedMenus];
+		[self.tableView reloadData];
+
+		MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+
+		// Configure for text only and offset down
+		hud.mode = MBProgressHUDModeText;
+		hud.labelText = @"Recently used records are cleared.";
+		hud.margin = 10.f;
+		hud.yOffset = 150.f;
+		hud.removeFromSuperViewOnHide = YES;
+
+		[hud hide:YES afterDelay:3];
+
+	}
+}
 
 @end

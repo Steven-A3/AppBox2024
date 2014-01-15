@@ -36,6 +36,9 @@ extern NSString *const kA3MainMenuRecentlyUsed;
 /* Notifications */
 extern NSString *const kA3AppsMainMenuContentsChangedNotification;
 
+/* Global Settings */
+extern NSString *const kA3ThemeColorIndex;
+
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end
