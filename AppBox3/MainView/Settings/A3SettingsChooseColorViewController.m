@@ -73,7 +73,6 @@ NSString *kCellID = @"Cell";                          // UICollectionViewCell st
 	return IS_IPAD ? 160*3 + 40 + 40 + 30 * 2 : 346;
 }
 
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	[cell addSubview:self.collectionViewInCell];
 

@@ -7,17 +7,24 @@
 //
 
 #import "A3SettingsSyncViewController.h"
-#import "NSUserDefaults+A3Addition.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+iCloud.h"
+#import "A3SettingsDropboxSelectBakcupViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
-@interface A3SettingsSyncViewController ()
+@interface A3SettingsSyncViewController () <DBSessionDelegate, DBRestClientDelegate>
 
 @property (nonatomic, strong) UISwitch *iCloudSwitch;
+@property (nonatomic, strong) DBRestClient *restClient;
+@property (nonatomic, strong) DBAccountInfo *dropboxAccountInfo;
+@property (nonatomic, strong) DBMetadata *dropboxMetadata;
 
 @end
 
-@implementation A3SettingsSyncViewController
+@implementation A3SettingsSyncViewController {
+	BOOL _dropboxLoginInProgress;
+	BOOL _selectBackupInProgress;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -32,6 +39,48 @@
 {
     [super viewDidLoad];
 
+	NSString* appKey = @"ody0cjvmnaxvob4";
+	NSString* appSecret = @"4hbzpvkrlwhs9qh";
+	NSString *root = kDBRootDropbox; // Should be set to either kDBRootAppFolder or kDBRootDropbox
+
+	DBSession* session =
+			[[DBSession alloc] initWithAppKey:appKey appSecret:appSecret root:root];
+	session.delegate = self; // DBSessionDelegate methods allow you to handle re-authenticating
+	[DBSession setSharedSession:session];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive)
+												 name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+}
+
+#define kDropboxDir                 @"/AllAboutApps/AppBox Pro"
+
+- (void)applicationDidBecomeActive {
+	if (_dropboxLoginInProgress) {
+		_dropboxLoginInProgress = NO;
+		
+		[self.restClient loadAccountInfo];
+		[self.restClient loadMetadata:kDropboxDir];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		if ([[DBSession sharedSession] isLinked]) {
+			[self.restClient loadAccountInfo];
+			[self.restClient loadMetadata:kDropboxDir];
+		}
+	} else if (_dropboxLoginInProgress) {
+		_dropboxLoginInProgress = NO;
+
+		if ([[DBSession sharedSession] isLinked]) {
+			[self.restClient loadAccountInfo];
+			[self.restClient loadMetadata:kDropboxDir];
+		}
+	} else if (_selectBackupInProgress) {
+		_selectBackupInProgress = NO;
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -39,6 +88,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (cell.tag == 1100) {
@@ -49,7 +100,30 @@
 			[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
 		}
 		cell.accessoryView = _iCloudSwitch;
+	} else if (indexPath.section == 1) {
+		if ([[DBSession sharedSession] isLinked]) {
+			switch (indexPath.row) {
+				case 0:
+					cell.textLabel.text = @"Backup";
+					break;
+				case 1:
+					cell.textLabel.text = @"Restore";
+					break;
+				case 2:
+					cell.textLabel.text = @"Unlink Account";
+					break;
+			}
+		} else {
+			cell.textLabel.text = @"Link Account";
+		}
 	}
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (section == 1) {
+		return [[DBSession sharedSession] isLinked] ? 3 : 1;
+	}
+	return [super tableView:tableView numberOfRowsInSection:section];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
@@ -57,12 +131,95 @@
 		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
 			return @"Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
 		}
+	} else if (section == 1) {
+		if ([[DBSession sharedSession] isLinked] && self.dropboxAccountInfo) {
+			return [NSString stringWithFormat:@"AppBox Pro™ is linked to [%@] Dropbox accont.", self.dropboxAccountInfo.displayName];
+		}
 	}
 	return nil;
 }
 
 - (void)toggleCloud:(UISwitch *)switchControl {
 	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 1) {
+		switch (indexPath.row) {
+			case 0:
+				if ([[DBSession sharedSession] isLinked]) {
+					// Do backup
+				} else {
+					_dropboxLoginInProgress = YES;
+					[[DBSession sharedSession] linkFromController:self];
+				}
+				break;
+			case 1:
+				// Restore from backup
+				_selectBackupInProgress = YES;
+				[self.restClient loadMetadata:kDropboxDir];
+				break;
+			case 2:
+				// Unlink
+				[[DBSession sharedSession] unlinkAll];
+				
+				self.dropboxAccountInfo = Nil;
+				[self.tableView reloadData];
+				break;
+		}
+	}
+}
+
+#pragma mark - Dropbox Client
+
+- (DBRestClient *)restClient {
+	if (!_restClient) {
+		_restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+		_restClient.delegate = self;
+	}
+	return _restClient;
+}
+
+
+#pragma mark - Dropbox DBSessionDelegate
+
+- (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId {
+
+}
+
+#pragma mark - DBRestClientDelegate
+
+- (void)restClient:(DBRestClient *)client loadedAccountInfo:(DBAccountInfo *)info {
+	self.dropboxAccountInfo = info;
+
+	[self.tableView reloadData];
+}
+
+- (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
+	DBMetadata *metaDataOfLastObject = [metadata.contents lastObject];
+	FNLOG(@"%@, %@, %@, %@", metaDataOfLastObject.path, metaDataOfLastObject.filename, metaDataOfLastObject.humanReadableSize, [metaDataOfLastObject.lastModifiedDate description]);
+	if (_selectBackupInProgress) {
+		if (![metadata.contents count]) {
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox" message:@"You have no backup files stored in Dropbox." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+			[alertView show];
+		} else {
+			self.dropboxMetadata = metadata;
+			[self performSegueWithIdentifier:@"dropboxSelectBackup" sender:nil];
+		}
+	}
+}
+
+#pragma mark - segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	[super prepareForSegue:segue sender:sender];
+
+	if ([segue.identifier isEqualToString:@"dropboxSelectBackup"]) {
+		UINavigationController *navigationController = segue.destinationViewController;
+		
+		A3SettingsDropboxSelectBakcupViewController *viewController = navigationController.viewControllers[0];
+		viewController.dropboxMetadata = self.dropboxMetadata;
+	}
 }
 
 @end

@@ -243,7 +243,6 @@
 		684A71B6185223130004A9FE /* A3SettingsLunarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A71B5185223130004A9FE /* A3SettingsLunarViewController.m */; };
 		684A71BB1852E0100004A9FE /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BA1852E0100004A9FE /* Security.framework */; };
 		684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BC1852E0250004A9FE /* libc++.dylib */; };
-		684A71BF1852E07D0004A9FE /* Dropbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 684A71BE1852E07D0004A9FE /* Dropbox.framework */; };
 		684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */ = {isa = PBXBuildFile; fileRef = 684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */; };
 		684E943717C1C3D00081A8B5 /* TranslatorHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E943617C1C3D00081A8B5 /* TranslatorHistory.m */; };
 		684E943C17C1C6260081A8B5 /* TranslatorHistory+addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E943B17C1C6260081A8B5 /* TranslatorHistory+addition.m */; };
@@ -405,6 +404,8 @@
 		68D626631816AED8009C47C0 /* A3TableViewMonthEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D626621816AED8009C47C0 /* A3TableViewMonthEntryElement.m */; };
 		68D7698417BA965B003ACF0F /* libMasonry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D7698017BA962C003ACF0F /* libMasonry.a */; };
 		68D88F9D1817F06D002F20F8 /* A3SelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D88F9C1817F06D002F20F8 /* A3SelectTableViewController.m */; };
+		68D8F4FC1887F0AC008617C6 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
+		68D8F4FF1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D8F4FE1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.m */; };
 		68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68DAF6EF16BFE3B000775372 /* Localizable.strings */; };
 		68DB84BC17508CC1004521E0 /* A3HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */; };
 		68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */; };
@@ -814,7 +815,6 @@
 		684A71B5185223130004A9FE /* A3SettingsLunarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsLunarViewController.m; path = Settings/A3SettingsLunarViewController.m; sourceTree = "<group>"; };
 		684A71BA1852E0100004A9FE /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		684A71BC1852E0250004A9FE /* libc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libc++.dylib"; path = "usr/lib/libc++.dylib"; sourceTree = SDKROOT; };
-		684A71BE1852E07D0004A9FE /* Dropbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Dropbox.framework; path = "External/dropbox-ios-sync-sdk-2.0.3/Dropbox.framework"; sourceTree = "<group>"; };
 		684A71C0185346490004A9FE /* A3AppDelegate+iCloud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+iCloud.h"; path = "AppDelegate/A3AppDelegate+iCloud.h"; sourceTree = "<group>"; };
 		684A71C11853464A0004A9FE /* A3AppDelegate+iCloud.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+iCloud.m"; path = "AppDelegate/A3AppDelegate+iCloud.m"; sourceTree = "<group>"; };
 		684B8EAB17DB1AC9007D9988 /* A3CenterViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = A3CenterViewProtocol.h; path = protocols/A3CenterViewProtocol.h; sourceTree = "<group>"; };
@@ -1133,6 +1133,9 @@
 		68D7697A17BA962C003ACF0F /* Masonry.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Masonry.xcodeproj; path = External/Masonry/Masonry.xcodeproj; sourceTree = "<group>"; };
 		68D88F9B1817F06D002F20F8 /* A3SelectTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SelectTableViewController.h; path = A3TableViewController/A3SelectTableViewController.h; sourceTree = "<group>"; };
 		68D88F9C1817F06D002F20F8 /* A3SelectTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SelectTableViewController.m; path = A3TableViewController/A3SelectTableViewController.m; sourceTree = "<group>"; };
+		68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "External/dropbox-ios-sdk-1.3.9/DropboxSDK.framework"; sourceTree = "<group>"; };
+		68D8F4FD1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsDropboxSelectBakcupViewController.h; path = Settings/A3SettingsDropboxSelectBakcupViewController.h; sourceTree = "<group>"; };
+		68D8F4FE1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsDropboxSelectBakcupViewController.m; path = Settings/A3SettingsDropboxSelectBakcupViewController.m; sourceTree = "<group>"; };
 		68DAF6F016BFE3B000775372 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68DB84BA17508CC1004521E0 /* A3HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HistoryViewController.h; path = ViewControllers/A3HistoryViewController.h; sourceTree = "<group>"; };
 		68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HistoryViewController.m; path = ViewControllers/A3HistoryViewController.m; sourceTree = "<group>"; };
@@ -1193,6 +1196,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68D8F4FC1887F0AC008617C6 /* DropboxSDK.framework in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
 				684A71BB1852E0100004A9FE /* Security.framework in Frameworks */,
 				6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */,
@@ -1200,7 +1204,6 @@
 				68E6F35617B27B8300F10ED9 /* CoreTelephony.framework in Frameworks */,
 				686FCF721775CF9D00F19332 /* Accelerate.framework in Frameworks */,
 				686FCF731775CF9D00F19332 /* AssetsLibrary.framework in Frameworks */,
-				684A71BF1852E07D0004A9FE /* Dropbox.framework in Frameworks */,
 				686FCF6F1775CF9100F19332 /* ImageIO.framework in Frameworks */,
 				686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */,
 				682961D2174267C6008D025E /* MapKit.framework in Frameworks */,
@@ -1662,7 +1665,7 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				684A71BE1852E07D0004A9FE /* Dropbox.framework */,
+				68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */,
 				684A71BC1852E0250004A9FE /* libc++.dylib */,
 				684A71BA1852E0100004A9FE /* Security.framework */,
 				6829687D18503D0E00B70E13 /* AppKit.framework */,
@@ -1730,12 +1733,18 @@
 			children = (
 				68C9E3F61882EC4C007E4697 /* A3SettingsAddFavoritesViewController.h */,
 				68C9E3F71882EC4C007E4697 /* A3SettingsAddFavoritesViewController.m */,
+				68D4558D1886C374004F3877 /* A3SettingsChooseColorViewController.h */,
+				68D4558E1886C374004F3877 /* A3SettingsChooseColorViewController.m */,
+				68D8F4FD1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.h */,
+				68D8F4FE1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.m */,
 				68515227187FF97800092C0F /* A3SettingsFavoritesViewController.h */,
 				68515228187FF97800092C0F /* A3SettingsFavoritesViewController.m */,
 				684A71B4185223130004A9FE /* A3SettingsLunarViewController.h */,
 				684A71B5185223130004A9FE /* A3SettingsLunarViewController.m */,
 				68295B151851FE5300C34552 /* A3SettingsPasscodeViewController.h */,
 				68295B161851FE5300C34552 /* A3SettingsPasscodeViewController.m */,
+				68B6701118858C3C004BCE05 /* A3SettingsRecentToKeepViewController.h */,
+				68B6701218858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m */,
 				68E39FF7186D845300D8482E /* A3SettingsRequireForViewController.h */,
 				68E39FF8186D845300D8482E /* A3SettingsRequireForViewController.m */,
 				6830C7881851BD480075010F /* A3SettingsSyncViewController.h */,
@@ -1744,10 +1753,6 @@
 				6830C78318519C540075010F /* A3SettingsViewController.m */,
 				68BA81D01866B9ED000E01F5 /* A3SettingsWalletViewController.h */,
 				68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */,
-				68B6701118858C3C004BCE05 /* A3SettingsRecentToKeepViewController.h */,
-				68B6701218858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m */,
-				68D4558D1886C374004F3877 /* A3SettingsChooseColorViewController.h */,
-				68D4558E1886C374004F3877 /* A3SettingsChooseColorViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -2874,6 +2879,7 @@
 				6829681E18503B2100B70E13 /* NSManagedObject+MagicalRequests.m in Sources */,
 				6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */,
 				68555FED167032B000F200B7 /* A3TimeLineTableViewController.m in Sources */,
+				68D8F4FF1888345F008617C6 /* A3SettingsDropboxSelectBakcupViewController.m in Sources */,
 				68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */,
 				685560061670448D00F200B7 /* A3Utilities.m in Sources */,
 				6872077B1670CC6A00D56507 /* A3SectionHeaderView.m in Sources */,
@@ -3342,7 +3348,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/bkk/projects/AppBox3/External/dropbox-ios-sync-sdk-2.0.3",
+					"/Users/bkk/projects/AppBox3/External/dropbox-ios-sdk-1.3.9",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -3374,7 +3380,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/bkk/projects/AppBox3/External/dropbox-ios-sync-sdk-2.0.3",
+					"/Users/bkk/projects/AppBox3/External/dropbox-ios-sdk-1.3.9",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";

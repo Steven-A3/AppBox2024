@@ -6,6 +6,7 @@
 //  Copyright (c) 2011 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <DropboxSDK/DropboxSDK.h>
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "A3MainMenuTableViewController.h"
@@ -127,6 +128,19 @@
 
 	return orientations;
 }
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+	if ([[DBSession sharedSession] handleOpenURL:url]) {
+		if ([[DBSession sharedSession] isLinked]) {
+			NSLog(@"App linked successfully!");
+			// At this point you can start making API calls
+		}
+		return YES;
+	}
+	// Add whatever other url handling code your app requires here
+	return NO;
+}
+
 
 - (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
 	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
