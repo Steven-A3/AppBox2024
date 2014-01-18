@@ -172,8 +172,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (id)bottomSection {
 	NSArray *bottomSection = @[
 			@{kA3AppsMenuName : @"Settings", kA3AppsClassName : @"", kA3AppsStoryboardName : @"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
-			@{kA3AppsMenuName : @"About", kA3AppsClassName : @"", kA3AppsDoNotKeepAsRecent:@YES},
-			@{kA3AppsMenuName : @"Help", kA3AppsClassName : @"", kA3AppsDoNotKeepAsRecent:@YES},
+			@{kA3AppsMenuName : @"About", kA3AppsClassName : @"", kA3AppsStoryboardName : @"about", kA3AppsDoNotKeepAsRecent:@YES},
+			@{kA3AppsMenuName : @"Help", kA3AppsClassName : @"A3HelpViewController", kA3AppsDoNotKeepAsRecent:@YES},
 	];
 
 	return [self sectionWithData:bottomSection];

@@ -9,15 +9,18 @@
 #import "A3SettingsSyncViewController.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+iCloud.h"
-#import "A3SettingsDropboxSelectBakcupViewController.h"
+#import "A3SettingsDropboxSelectBackupViewController.h"
 #import <DropboxSDK/DropboxSDK.h>
 
-@interface A3SettingsSyncViewController () <DBSessionDelegate, DBRestClientDelegate>
+NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
+
+@interface A3SettingsSyncViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate>
 
 @property (nonatomic, strong) UISwitch *iCloudSwitch;
 @property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) DBAccountInfo *dropboxAccountInfo;
 @property (nonatomic, strong) DBMetadata *dropboxMetadata;
+@property (nonatomic, strong) MBProgressHUD *HUD;
 
 @end
 
@@ -51,8 +54,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive)
 												 name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
 }
-
-#define kDropboxDir                 @"/AllAboutApps/AppBox Pro"
 
 - (void)applicationDidBecomeActive {
 	if (_dropboxLoginInProgress) {
@@ -144,6 +145,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
 	if (indexPath.section == 1) {
 		switch (indexPath.row) {
 			case 0:
@@ -209,6 +212,21 @@
 	}
 }
 
+- (void)restClient:(DBRestClient *)client loadedFile:(NSString *)destPath {
+	[_HUD hide:YES];
+	_HUD = nil;
+}
+
+- (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath {
+	_HUD.progress = progress;
+}
+
+- (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error {
+	[_HUD hide:YES];
+	_HUD = nil;
+}
+
+
 #pragma mark - segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -217,9 +235,40 @@
 	if ([segue.identifier isEqualToString:@"dropboxSelectBackup"]) {
 		UINavigationController *navigationController = segue.destinationViewController;
 		
-		A3SettingsDropboxSelectBakcupViewController *viewController = navigationController.viewControllers[0];
+		A3SettingsDropboxSelectBackupViewController *viewController = navigationController.viewControllers[0];
+		viewController.delegate = self;
 		viewController.dropboxMetadata = self.dropboxMetadata;
 	}
 }
+
+#pragma mark - A3DropboxSelectBackupDelegate
+
+- (void)dropboxSelectBackupViewController:(UIViewController *)vc backupFileSelected:(DBMetadata *)metadata {
+	[vc dismissViewControllerAnimated:YES completion:nil];
+
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	NSString *downloadFilePath = [NSString stringWithFormat:@"%@/%@", paths[0], metadata.filename];
+
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	if ([fileManager fileExistsAtPath:downloadFilePath]) {
+		[fileManager removeItemAtPath:downloadFilePath error:nil];
+	}
+
+	[self.restClient loadFile:metadata.path intoPath:downloadFilePath];
+
+	self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	[self.navigationController.view addSubview:_HUD];
+
+	// Set determinate mode
+	_HUD.mode = MBProgressHUDModeDeterminate;
+	_HUD.removeFromSuperViewOnHide = YES;
+
+	_HUD.labelText = @"Downloading";
+
+	[_HUD show:YES];
+
+}
+
+
 
 @end

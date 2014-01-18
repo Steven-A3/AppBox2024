@@ -10,6 +10,7 @@
 #import "UIViewController+A3Addition.h"
 #import "NSUserDefaults+A3Addition.h"
 #import "A3KeychainUtils.h"
+#import "A3AppDelegate+appearance.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowSync = 1100,
@@ -24,6 +25,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 @interface A3SettingsViewController () <A3PasscodeViewControllerDelegate>
 
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
+@property (nonatomic, strong) UIButton *colorButton;
 
 @end
 
@@ -94,8 +96,27 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 		case A3SettingsRowRecentToKeep:
 			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForRecentToKeep];
 			break;
-		case A3SettingsRowThemeColor:
+		case A3SettingsRowThemeColor: {
+			if (!_colorButton) {
+				_colorButton = [UIButton buttonWithType:UIButtonTypeSystem];
+				_colorButton.bounds = CGRectMake(0, 0, 30, 30);
+
+				UIGraphicsBeginImageContextWithOptions(CGSizeMake(30, 30), YES, 0.0);
+				UIImage *blank = UIGraphicsGetImageFromCurrentImageContext();
+				UIGraphicsEndImageContext();
+				[_colorButton setImage:blank forState:UIControlStateNormal];
+				[_colorButton addTarget:self action:@selector(themeColor) forControlEvents:UIControlEventTouchUpInside];
+
+				[cell addSubview:_colorButton];
+				[_colorButton makeConstraints:^(MASConstraintMaker *make) {
+					make.centerY.equalTo(cell.centerY);
+					make.right.equalTo(cell.right).with.offset(-35);
+					make.width.equalTo(@30);
+					make.height.equalTo(@30);
+				}];
+			}
 			break;
+		}
 		case sA3SettingsRowLunarCalendar:
 			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForLunarCalendarCountry];
 			break;
@@ -111,6 +132,10 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			[self performSegueWithIdentifier:@"passcode" sender:nil];
 		}
 	}
+}
+
+- (void)themeColor {
+	[self performSegueWithIdentifier:@"themeColor" sender:nil];
 }
 
 - (void)passcodeViewDidDisappearWithSuccess:(BOOL)success {

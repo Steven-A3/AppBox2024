@@ -1,50 +1,36 @@
 //
-//  A3SettingsDropboxSelectBakcupViewController.m
+//  A3HelpViewController.m
 //  AppBox3
 //
-//  Created by A3 on 1/17/14.
+//  Created by A3 on 1/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <DropboxSDK/DropboxSDK.h>
-#import "A3SettingsDropboxSelectBakcupViewController.h"
-#import "NSDate+TimeAgo.h"
+#import "A3HelpViewController.h"
+#import "UIViewController+A3Addition.h"
 
-@interface A3SettingsDropboxSelectBakcupViewController ()
+@interface A3HelpViewController ()
 
 @end
 
-@implementation A3SettingsDropboxSelectBakcupViewController
+@implementation A3HelpViewController
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStylePlain];
+	if (self) {
+
+	}
+
+	return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)viewDidLoad {
+	[super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.title = @"Help";
+	[self leftBarButtonAppsButton];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)cancelButtonAction:(id)sender {
-	[self dismissViewControllerAnimated:YES completion:nil];
-}
 
 #pragma mark - Table view data source
 
@@ -55,19 +41,38 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.dropboxMetadata.contents count];
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 65;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"dropboxFilesCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-	DBMetadata *rowData = self.dropboxMetadata.contents[indexPath.row];
-    cell.textLabel.text = rowData.filename;
-	cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@", [rowData.lastModifiedDate timeAgo], rowData.humanReadableSize];
+	if (!cell) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+	}
 
-	return cell;
+	switch (indexPath.row) {
+		case 0:
+			cell.textLabel.text = @"When will I get my items?";
+			break;
+		case 1:
+			cell.textLabel.text = @"How can I rearrange currencies list on Currency";
+			cell.textLabel.numberOfLines = 2;
+			break;
+	}
+
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /*

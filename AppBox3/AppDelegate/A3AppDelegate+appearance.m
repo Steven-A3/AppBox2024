@@ -23,4 +23,12 @@
 	];
 }
 
+- (UIColor *)themeColor {
+	NSNumber *selectedIndex = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+	if (selectedIndex) {
+		return self.themeColors[[selectedIndex unsignedIntegerValue]];
+	}
+	return self.themeColors[4];
+}
+
 @end
