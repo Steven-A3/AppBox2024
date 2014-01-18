@@ -9,6 +9,7 @@
 #import "A3SettingsRecentToKeepViewController.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+mainMenu.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsRecentToKeepViewController ()
 
@@ -43,12 +44,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 0) return 35;
-	return 17;
+	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 18;
+	return [self standardHeightForFooterInSection:section];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

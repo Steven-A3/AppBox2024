@@ -11,6 +11,8 @@
 #import "NSUserDefaults+A3Addition.h"
 #import "A3KeychainUtils.h"
 #import "A3AppDelegate+appearance.h"
+#import "A3UIDevice.h"
+#import "UITableViewController+standardDimension.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	A3SettingsRowSync = 1100,
@@ -72,12 +74,11 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 0) return 35;
-	return 17;
+	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 18;
+	return [self standardHeightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

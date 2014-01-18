@@ -199,8 +199,6 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
-	DBMetadata *metaDataOfLastObject = [metadata.contents lastObject];
-	FNLOG(@"%@, %@, %@, %@", metaDataOfLastObject.path, metaDataOfLastObject.filename, metaDataOfLastObject.humanReadableSize, [metaDataOfLastObject.lastModifiedDate description]);
 	if (_selectBackupInProgress) {
 		if (![metadata.contents count]) {
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Dropbox" message:@"You have no backup files stored in Dropbox." delegate:nil cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];

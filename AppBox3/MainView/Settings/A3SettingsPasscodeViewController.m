@@ -13,6 +13,7 @@
 #import "A3PasswordViewController.h"
 #import "A3KeychainUtils.h"
 #import "A3UIDevice.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate>
 
@@ -81,13 +82,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 1) return 18;
-	return UITableViewAutomaticDimension;
+	if (section == 2) return UITableViewAutomaticDimension;
+	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	if (section == 0) return 17;
-	return UITableViewAutomaticDimension;
+	if (section == 1) return UITableViewAutomaticDimension;
+	return [self standardHeightForFooterInSection:section];
 }
 
 - (BOOL)passcodeEnabled {

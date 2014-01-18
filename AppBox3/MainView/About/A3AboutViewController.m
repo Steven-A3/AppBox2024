@@ -9,6 +9,7 @@
 #import "A3AboutViewController.h"
 #import "A3BasicWebViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "UITableViewController+standardDimension.h"
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
 
@@ -26,13 +27,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 0) return 35;
-	return 17;
+	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 2) return UITableViewAutomaticDimension;
-	return 18;
+	return [self standardHeightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -91,14 +91,14 @@
 		}
 		case 5:
 		{
-			NSString *review_url = @"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=318404385";
+			NSString *review_url = @"itms-apps://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=318404385";
 			NSURL *url = [[NSURL alloc] initWithString:review_url];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}
 		case 6:
 		{
-			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.com/apps/allaboutapps"];
+			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.apple.com/artist/allaboutapps/id307094026"];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}

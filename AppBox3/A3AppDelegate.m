@@ -178,8 +178,6 @@
 
 - (UIViewController *)visibleViewController {
 	UINavigationController *navigationController = [self navigationController];
-	UIViewController *topViewController = [navigationController topViewController];
-	FNLOG(@"%@,%@", topViewController, [navigationController visibleViewController]);
 	return [navigationController visibleViewController];
 }
 
