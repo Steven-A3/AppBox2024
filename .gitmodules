@@ -4,9 +4,6 @@
 [submodule "External/Masonry"]
 	path = External/Masonry
 	url = https://github.com/Steven-Gwug/Masonry.git
-[submodule "External/MagicalRecord"]
-	path = External/MagicalRecord
-	url = https://github.com/Steven-Gwug/MagicalRecord.git
 [submodule "External/FXPageControl"]
 	path = External/FXPageControl
 	url = https://github.com/Steven-Gwug/FXPageControl.git
