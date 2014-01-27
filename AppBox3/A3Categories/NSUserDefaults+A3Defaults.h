@@ -21,4 +21,40 @@
 - (BOOL)currencyShowNationalFlag;
 
 - (void)setCurrencyShowNationalFlag:(BOOL)boolValue;
+
+
+- (BOOL)tipCalcTax;
+- (void)setTipCalcTax:(BOOL)boolValue;
+
+- (BOOL)tipCalcSplit;
+- (void)setTipCalcSplit:(BOOL)boolValue;
+
+- (BOOL)tipCalcRoundingMethod;
+- (void)setTipCalcRoundingMethod:(BOOL)boolValue;
+
+
+- (BOOL)clockTheTimeWithSeconds;
+- (void)setClockTheTimeWithSeconds:(BOOL)boolValue;
+
+- (BOOL)clockFlashTheTimeSeparators;
+- (void)setClockFlashTheTimeSeparators:(BOOL)boolValue;
+
+- (BOOL)clockUse24hourClock;
+- (void)setClockUse24hourClock:(BOOL)boolValue;
+
+- (BOOL)clockShowAMPM;
+- (void)setClockShowAMPM:(BOOL)boolValue;
+
+- (BOOL)clockShowTheDayOfTheWeek;
+- (void)setClockShowTheDayOfTheWeek:(BOOL)boolValue;
+
+- (BOOL)clockShowDate;
+- (void)setClockShowDate:(BOOL)boolValue;
+
+- (BOOL)clockShowWeather;
+- (void)setClockShowWeather:(BOOL)boolValue;
+
+- (BOOL)clockFahrenheit;
+- (void)setClockFahrenheit:(BOOL)boolValue;
+
 @end

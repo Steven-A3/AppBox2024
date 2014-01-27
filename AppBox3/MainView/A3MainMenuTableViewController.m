@@ -398,18 +398,18 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NSMutableDictionary *favoriteDictionary = [[[A3AppDelegate instance] favoriteMenuDictionary] mutableCopy];
-			favoriteDictionary[kA3AppsMenuCollapsed] = @(element.collapsed);
+			favoriteDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[[A3AppDelegate instance] storeFavoriteMenuDictionary:favoriteDictionary withDate:[NSDate date]];
 		} else {
 			NSMutableDictionary *recentDictionary = [[[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuRecentlyUsed] mutableCopy];
-			recentDictionary[kA3AppsMenuCollapsed] = @(element.collapsed);
+			recentDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
 			[[A3AppDelegate instance] storeRecentlyUsedMenuDictionary:recentDictionary withDate:[NSDate date]];
 		}
 	} else if (indexPath.section == 1) {
 		NSMutableArray *allMenus = [[[A3AppDelegate instance] allMenuArrayFromUserDefaults]	mutableCopy];
-		NSMutableDictionary *sectionDictionary = [allMenus[(NSUInteger) indexPath.section] mutableCopy];
-		sectionDictionary[kA3AppsMenuCollapsed] = @(element.collapsed);
-		[allMenus replaceObjectAtIndex:indexPath.section withObject:sectionDictionary];
+		NSMutableDictionary *expandableMenuDictionary = [allMenus[(NSUInteger) indexPath.row] mutableCopy];
+		expandableMenuDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
+		[allMenus replaceObjectAtIndex:indexPath.row withObject:expandableMenuDictionary];
 		[[A3AppDelegate instance] storeAllMenu:allMenus withDate:[NSDate date]];
 	}
 }

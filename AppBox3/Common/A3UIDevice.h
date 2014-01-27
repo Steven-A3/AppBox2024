@@ -47,6 +47,8 @@
 
 @interface A3UIDevice : NSObject
 
++ (CGRect)screenBoundsAdjustedWithOrientation;
+
 + (double)memoryUsage;
 + (double)storageUsage;
 + (UIInterfaceOrientation)deviceOrientation;

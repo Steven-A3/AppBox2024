@@ -15,6 +15,16 @@
 
 @implementation A3UIDevice
 
++ (CGRect)screenBoundsAdjustedWithOrientation {
+	CGRect bounds = [[UIScreen mainScreen] bounds];
+	if (IS_LANDSCAPE) {
+		CGFloat width = bounds.size.width;
+		bounds.size.width = bounds.size.height;
+		bounds.size.height = width;
+	}
+	return bounds;
+}
+
 + (double)memoryUsage {
 	vm_statistics_data_t	vm_stat;
 	mach_msg_type_number_t	count;

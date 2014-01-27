@@ -79,7 +79,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Utility",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : @"Clock", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Clock"},
+						 @{kA3AppsMenuName : @"Clock", kA3AppsClassName : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
 						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName : @"", kA3AppsMenuImageName : @"BatteryStatus"},
 						 @{kA3AppsMenuName : @"Mirror", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Mirror"},
 						 @{kA3AppsMenuName : @"Magnifier", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Magnifier"},

@@ -38,6 +38,23 @@ NSString *const A3CurrencyAutoUpdate						= @"A3CurrencyAutoUpdate";
 NSString *const A3CurrencyUseCellularData 					= @"A3CurrencyUseCellularData";
 NSString *const A3CurrencyShowNationalFlag					= @"A3CurrencyShowNationalFlag";
 
+#pragma mark ------ Tip Calc
+NSString *const A3TipCalcTax                                = @"A3TipCalcTax";
+NSString *const A3TipCalcSplit                              = @"A3TipCalcSplit";
+NSString *const A3TipCalcRoundingMethod                     = @"A3TipCalcRoundingMethod";
+
+#pragma mark ------ Clock
+NSString *const A3ClockTheTimeWithSeconds                   = @"A3ClockTheTimeWithSeconds";
+NSString *const A3ClockFlashTheTimeSeparators               = @"A3ClockFlashTheTimeSeparators";
+NSString *const A3ClockUse24hourClock                       = @"A3ClockUse24hourClock";
+NSString *const A3ClockShowAMPM                             = @"A3ClockShowAMPM";
+NSString *const A3ClockShowTheDayOfTheWeek                  = @"A3ClockShowTheDayOfTheWeek";
+NSString *const A3ClockShowDate                             = @"A3ClockShowDate";
+NSString *const A3ClockShowWeather                          = @"A3ClockShowWeather";
+NSString *const A3ClockFahrenheit                           = @"A3ClockFahrenheit";
+NSString *const A3ClockWaveClockColor						= @"A3ClockWaveClockColor";
+NSString *const A3ClockWaveCircleLayout						= @"A3ClockWaveCircleLayout";	// Array of circle type
+
 CGFloat dash_line_pattern[] = {2.0f, 2.0f};
 
 @implementation A3Utilities

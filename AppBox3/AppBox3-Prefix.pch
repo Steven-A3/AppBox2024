@@ -16,6 +16,7 @@
 	#import <MobileCoreServices/MobileCoreServices.h>
 
 	#import "common.h"
+	#import "A3UIDevice.h"
 
 #define MR_LOGGING_ENABLED 1
 	#import "CoreData+MagicalRecord.h"

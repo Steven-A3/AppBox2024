@@ -39,6 +39,11 @@
 		[_borderLayer removeFromSuperlayer];
 		_borderLayer = nil;
 	} else {
+        // added by elfnamm 중복 그리기 예외처리(select를 여러번 할 경우 지워지지 않고 라운드가 덧칠해 진다.)
+        if(_borderLayer != nil)
+            return;
+        // end
+        
 		_borderLayer = [CALayer layer];
 		_borderLayer.frame = self.bounds;
 		_borderLayer.borderColor = self.tintColor.CGColor;

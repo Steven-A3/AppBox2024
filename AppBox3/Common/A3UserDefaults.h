@@ -38,6 +38,21 @@ extern NSString *const A3CurrencyAutoUpdate;
 extern NSString *const A3CurrencyUseCellularData;
 extern NSString *const A3CurrencyShowNationalFlag;
 
+#pragma mark ------ Tip Calc
+extern NSString *const A3TipCalcTax;
+extern NSString *const A3TipCalcSplit;
+extern NSString *const A3TipCalcRoundingMethod;
 
+#pragma mark ------ clock
+extern NSString *const A3ClockTheTimeWithSeconds;
+extern NSString *const A3ClockFlashTheTimeSeparators;
+extern NSString *const A3ClockUse24hourClock;
+extern NSString *const A3ClockShowAMPM;
+extern NSString *const A3ClockShowTheDayOfTheWeek;
+extern NSString *const A3ClockShowDate;
+extern NSString *const A3ClockShowWeather;
+extern NSString *const A3ClockFahrenheit;
+extern NSString *const A3ClockWaveClockColor;
+extern NSString *const A3ClockWaveCircleLayout;
 
 #endif

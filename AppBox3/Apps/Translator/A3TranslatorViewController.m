@@ -311,7 +311,7 @@
 			A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
 			if(iPad_cell == nil) {
-				iPad_cell = [[A3TranslatorListCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+				iPad_cell = [[A3TranslatorListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 			}
 
 			id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];

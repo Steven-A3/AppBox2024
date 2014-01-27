@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.allaboutapps.appbox3</string>
+	<string>net.allaboutapps.appbox3</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -20,15 +20,31 @@
 	<string>1.0.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.appboxpro</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>open</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>db-ody0cjvmnaxvob4</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>LigatureSymbols.ttf</string>
-		<string>FontAwesome.otf</string>
 		<string>appbox.ttf</string>
+		<string>Digit.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -55,22 +71,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>com.appboxpro</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>open</string>
-			</array>
-		</dict>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>db-ody0cjvmnaxvob4</string>
-			</array>
-		</dict>
-	</array>
 </dict>
 </plist>

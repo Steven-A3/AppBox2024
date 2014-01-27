@@ -514,7 +514,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	if (_failedAttempts == 1) {
 		[self setMessage:NSLocalizedString(@"1 Passcode Failed Attempt", @"")];
 	} else {
-		[self setMessage:[NSString stringWithFormat: NSLocalizedString(@"%i Passcode Failed Attempts", @""), _failedAttempts]];
+		[self setMessage:[NSString stringWithFormat: NSLocalizedString(@"%li Passcode Failed Attempts", @""), (long)_failedAttempts]];
 	}
 }
 
