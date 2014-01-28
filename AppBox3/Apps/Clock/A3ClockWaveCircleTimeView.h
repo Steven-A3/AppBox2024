@@ -10,6 +10,4 @@
 
 @interface A3ClockWaveCircleTimeView : A3ClockWaveCircleView
 
-- (void)setTime:(NSString*)aTime;
-
 @end

@@ -12,8 +12,6 @@
 
 @interface A3ClockWaveCircleView () <UIGestureRecognizerDelegate>
 
-@property (nonatomic, strong) id<MASConstraint> textLabelCenterY;
-
 @end
 
 @implementation A3ClockWaveCircleView
@@ -47,30 +45,6 @@
 	}
     
     return self;
-}
-
-- (void)setBounds:(CGRect)bounds {
-	[super setBounds:bounds];
-
-	self.layer.cornerRadius = bounds.size.width * 0.5f;
-
-	if(_position == ClockWaveLocationBig)
-	{
-		[self.textLabel setFont:self.bigFont];
-	}
-	else
-	{
-		[self.textLabel setFont:self.smallFont];
-	}
-
-	if (_isShowWave) {
-		[self setFillPercent:_fillPercent];
-	} else {
-		_textLabelCenterY.offset(bounds.size.height / 2);
-		[self.textLabel setTextColor:self.superview.backgroundColor];
-	}
-
-	[self layoutIfNeeded];
 }
 
 - (void)drawRect:(CGRect)rect
@@ -149,8 +123,10 @@
 
 	if (_fillPercent <= 0.5) {
 		[self.textLabel setTextColor:self.superview.backgroundColor];
+		[self setColonColor:self.superview.backgroundColor];
 	} else {
 		[self.textLabel setTextColor:[UIColor whiteColor]];
+		[self setColonColor:[UIColor whiteColor]];
 	}
 	[self layoutIfNeeded];
 }
@@ -176,16 +152,25 @@
 
 - (UIFont *)smallFont {
 	if (!_smallFont) {
-		_smallFont = [UIFont fontWithName:kClockFontNameLight size:20];
+		_smallFont = [UIFont systemFontOfSize:20];
 	}
 	return _smallFont;
 }
 
 - (UIFont *)bigFont {
 	if (!_bigFont) {
-		_bigFont = [UIFont fontWithName:kClockFontNameUltraLight size:64];
+		_bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88];
 	}
 	return _bigFont;
 }
+
+- (void)addColonView {
+
+}
+
+- (void)setColonColor:(UIColor *)color {
+
+}
+
 
 @end

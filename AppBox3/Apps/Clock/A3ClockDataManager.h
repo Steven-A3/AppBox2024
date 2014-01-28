@@ -10,15 +10,17 @@
 #import "A3Weather.h"
 
 #define kClockFontNameRegular       @"HelveticaNeue"
-#define kClockFontNameLight         @"HelveticaNeue-Light"
 #define kClockFontNameMedium        @"HelveticaNeue-Medium"
 #define kClockFontNameUltraLight    @"HelveticaNeue-UltraLight"
-#define kClockFontNameTimesNewRoman @"Times New Roman"
 #define kClockFontNameDigit         @"01 Digit"
 #define kClockSecondOfDay           86400.0
 
-//#define kClockLEDfontwidthChracter  41.736000f
-//#define kClockLEDfontwidthSpace     20.572001f
+typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
+	A3ClockWaveCircleTypeTime = 1,
+	A3ClockWaveCircleTypeWeather,
+	A3ClockWaveCircleTypeDate,
+	A3ClockWaveCircleTypeWeekday,
+};
 
 @class A3ClockInfo;
 @class A3ClockDataManager;
@@ -31,17 +33,22 @@
 
 @end
 
-//하나:41.736000, 둘:83.472000, 스페이스:20.572001, 1:26.048000
-
 @class A3ClockWaveCircleView;
 
 @interface A3ClockDataManager : NSObject
 
-@property (nonatomic, weak) A3ClockWaveCircleView * bigCircle;
 @property (nonatomic, strong) id<A3ClockDataManagerDelegate> delegate;
 @property (nonatomic, strong) NSDictionary* weatherAtmosphere;//"for humidity"
 
 @property (nonatomic, strong) A3ClockInfo *clockInfo;
+
+- (void)enableWeatherCircle:(BOOL)enable;
+
+- (void)enableDateCircle:(BOOL)enable;
+
+- (void)enableWeekdayCircle:(BOOL)enable;
+
+- (NSMutableArray *)waveCirclesArray;
 
 - (void)startTimer;
 - (void)stopTimer;

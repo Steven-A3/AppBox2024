@@ -24,13 +24,13 @@
 }
 
 
-+ (A3ChooseColor *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors {
++ (A3ChooseColor *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex {
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGRect frame = screenBounds;
 	frame.origin.y = screenBounds.size.height;
 	frame.size.height = 172;
 
-	A3ChooseColorPhone *view = [[A3ChooseColorPhone alloc] initWithFrame:frame colors:colors];
+	A3ChooseColorPhone *view = [[A3ChooseColorPhone alloc] initWithFrame:frame colors:colors selectedIndex:selectedIndex];
     view.delegate = targetViewController;
 
 	[targetViewController.view addSubview:view];
@@ -41,7 +41,7 @@
 		view.frame = frame;
 	} completion:^(BOOL finished) {
 		[view makeConstraints:^(MASConstraintMaker *make) {
-			make.bottom.equalTo(targetViewController.view.bottom).with.offset(0);
+			make.bottom.equalTo(targetViewController.view.bottom);
 			make.width.equalTo(targetViewController.view.width);
 			make.height.equalTo(@172.f);
 		}];
@@ -75,12 +75,11 @@
 }
 
 
-- (void)colorButtonAction:(id)aSender
+- (void)colorButtonAction:(UIButton *)colorButton
 {
-	UIButton* btnClr = (UIButton*)aSender;
 	id <A3ChooseColorDelegate> o = self.delegate;
-	if ([o respondsToSelector:@selector(chooseColorDidSelect:)]) {
-		[o chooseColorDidSelect:btnClr.backgroundColor];
+	if ([o respondsToSelector:@selector(chooseColorDidSelect:selectedIndex:)]) {
+		[o chooseColorDidSelect:colorButton.backgroundColor selectedIndex:(NSUInteger) colorButton.tag];
 	}
 }
 

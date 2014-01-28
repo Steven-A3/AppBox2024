@@ -10,5 +10,5 @@
 
 @interface A3ChooseColorPhone : A3ChooseColor
 
-- (id)initWithFrame:(CGRect)frame colors:(NSArray *)colors;
+- (id)initWithFrame:(CGRect)frame colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex;
 @end

@@ -48,13 +48,6 @@
 
 @end
 
-typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
-	A3ClockWaveCircleTypeTime = 1,
-	A3ClockWaveCircleTypeWeather,
-	A3ClockWaveCircleTypeDate,
-	A3ClockWaveCircleTypeWeekday,
-};
-
 
 @implementation A3ClockWaveViewController {
 	BOOL _showTimeSeparator;
@@ -75,17 +68,19 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	}
 
 	[self addTimeView];
-
-	[self prepareOptionalSubviews];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	FNLOG();
+
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
+	[self prepareOptionalSubviews];
 	[self layoutSubviews];
+
+	[self refreshWholeClock:self.clockDataManager.clockInfo];
 }
 
 - (void)layoutSubviews
@@ -238,8 +233,6 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 				_clockIconRight = make.right.equalTo(self.timeCircle.left).with.offset(-22);
 				_clockIconCenterY = make.centerY.equalTo(self.view.centerY);
 			}];
-
-			FNLOG(@"%@", self.clockIcon.constraints);
 		}
 	}
 
@@ -260,7 +253,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 	if (IS_IPHONE && screenBounds.size.height == 480) {
 		if (IS_PORTRAIT) {
-			A3ClockWaveCircleTypes type = [_circleArray[0] unsignedIntegerValue];
+			A3ClockWaveCircleTypes type = (A3ClockWaveCircleTypes) [_circleArray[0] unsignedIntegerValue];
 			if (type == A3ClockWaveCircleTypeDate) {
 				[_dateTopLabel setHidden:YES];
 				[_dateBottomLabelY uninstall];
@@ -288,6 +281,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 			}];
 		}
 	}
+	[self refreshSecond:self.clockDataManager.clockInfo];
 }
 
 - (void)removeClockIconConstraints {
@@ -298,13 +292,17 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 }
 
 - (void)prepareOptionalSubviews {
+	FNLOG();
+
 	[self removeTemperatureView];
 	[self removeWeatherView];
 	[self removeDateView];
 	[self removeWeekdayView];
 
-	_circleArray = [[[NSUserDefaults standardUserDefaults] objectForKey:A3ClockWaveCircleLayout] mutableCopy];
-	if (!_circleArray) [self initCircleArray];
+	// It will remove existing one if it exists and add new colon view conditionally based on settings.
+	[self.timeCircle addColonView];
+
+	_circleArray = [self.clockDataManager waveCirclesArray];
 
 	NSUInteger idx = 0;
 	for (NSNumber *type in _circleArray) {
@@ -333,24 +331,6 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	if (_needToShowWeatherView && !_weatherInfoAvailable) {
 		[_circleArray removeObjectAtIndex:_weatherCircleIndex];
 	}
-	self.clockDataManager.bigCircle = self.timeCircle;
-}
-
-- (void)initCircleArray {
-	_circleArray = [NSMutableArray new];
-	[_circleArray addObject:@(A3ClockWaveCircleTypeTime)];
-
-	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-	_needToShowWeatherView = [userDefaults clockShowWeather];
-	if (_needToShowWeatherView) {
-		[_circleArray addObject:@(A3ClockWaveCircleTypeWeather)];
-	}
-	if ([userDefaults clockShowDate]) {
-		[_circleArray addObject:@(A3ClockWaveCircleTypeDate)];
-	}
-	if ([userDefaults clockShowTheDayOfTheWeek]) {
-		[_circleArray addObject:@(A3ClockWaveCircleTypeWeekday)];
-	}
 }
 
 - (void)addTimeView {
@@ -362,29 +342,27 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	[self.view addSubview:self.clockIcon];
 
 	self.am_pm24Label = [[UILabel alloc] init];
-	[self.am_pm24Label setFont:[UIFont fontWithName:kClockFontNameRegular size:14]];
+	[self.am_pm24Label setFont:[UIFont systemFontOfSize:14]];
 	[self.am_pm24Label setTextAlignment:NSTextAlignmentCenter];
 	[self.am_pm24Label setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.am_pm24Label];
 
 	self.timeCircle = [[A3ClockWaveCircleTimeView alloc] initWithFrame:CGRectMake(0.f, 0.f, 270.f, 270.f)];
 	self.timeCircle.delegate = self;
-	self.timeCircle.smallFont = [UIFont fontWithName:kClockFontNameLight size:13];
+	self.timeCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:15];
 	self.timeCircle.isShowWave = YES;
 
-	self.clockDataManager.bigCircle = self.timeCircle;
 	[self.view addSubview:self.timeCircle];
 
 	[self.am_pm24Label makeConstraints:^(MASConstraintMaker *make) {
 		make.bottom.equalTo(self.timeCircle.top).with.offset(-4);
 		make.centerX.equalTo(self.timeCircle.centerX).with.offset(0);
 	}];
-
 }
 
 - (void)addDateView {
 	self.dateTopLabel = [[UILabel alloc] init];
-	[self.dateTopLabel setFont:[UIFont fontWithName:kClockFontNameRegular size:14]];
+	[self.dateTopLabel setFont:[UIFont systemFontOfSize:14]];
 	[self.dateTopLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.dateTopLabel];
 
@@ -394,7 +372,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	[self.view addSubview:self.dateCircle];
 
 	self.dateBottomLabel = [[UILabel alloc] init];
-	[self.dateBottomLabel setFont:[UIFont fontWithName:kClockFontNameLight size:14]];
+	[self.dateBottomLabel setFont:[UIFont systemFontOfSize:14]];
 	[self.dateBottomLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.dateBottomLabel];
 
@@ -406,7 +384,6 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 		_dateBottomLabelX = make.centerX.equalTo(self.dateCircle.centerX).with.offset(0);
 		_dateBottomLabelY = make.top.equalTo(self.dateCircle.bottom).with.offset(5);
 	}];
-
 }
 
 - (void)removeDateView {
@@ -422,7 +399,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	NSArray *shortWeekdaySymbols = [self.clockDataManager.clockInfo.dateFormatter shortWeekdaySymbols];
 
 	self.weekTopLabel = [[UILabel alloc] init];
-	[self.weekTopLabel setFont:[UIFont fontWithName:kClockFontNameLight size:14]];
+	[self.weekTopLabel setFont:[UIFont systemFontOfSize:14]];
 	[self.weekTopLabel setTextColor:[UIColor whiteColor]];
 	self.weekTopLabel.text = [shortWeekdaySymbols lastObject];
 	[self.view addSubview:self.weekTopLabel];
@@ -433,7 +410,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	[self.view addSubview:self.weekCircle];
 
 	self.weekBottomLabel = [[UILabel alloc] init];
-	[self.weekBottomLabel setFont:[UIFont fontWithName:kClockFontNameLight size:14]];
+	[self.weekBottomLabel setFont:[UIFont systemFontOfSize:14]];
 	[self.weekBottomLabel setTextColor:[UIColor whiteColor]];
 	self.weekBottomLabel.text = [shortWeekdaySymbols firstObject];
 	[self.view addSubview:self.weekBottomLabel];
@@ -459,7 +436,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 - (void)addTemperatureView {
 	self.temperatureTopLabel = [[UILabel alloc] init];
-	[self.temperatureTopLabel setFont:[UIFont fontWithName:kClockFontNameRegular size:14]];
+	[self.temperatureTopLabel setFont:[UIFont systemFontOfSize:14]];
 	[self.temperatureTopLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.temperatureTopLabel];
 
@@ -469,7 +446,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	[self.view addSubview:self.temperatureCircle];
 
 	self.temperatureBottomLabel = [[UILabel alloc] init];
-	[self.temperatureBottomLabel setFont:[UIFont fontWithName:kClockFontNameRegular size:14]];
+	[self.temperatureBottomLabel setFont:[UIFont systemFontOfSize:14]];
 	[self.temperatureBottomLabel setTextColor:[UIColor whiteColor]];
 	[self.view addSubview:self.temperatureBottomLabel];
 
@@ -499,7 +476,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	self.weatherLabel = [UILabel new];
 	[self.weatherLabel setTextColor:[UIColor whiteColor]];
 	self.weatherLabel.textAlignment = NSTextAlignmentLeft;
-	self.weatherLabel.font = [UIFont fontWithName:kClockFontNameRegular size:13.f];
+	self.weatherLabel.font = [UIFont systemFontOfSize:13];
 	[self.view addSubview:self.weatherLabel];
 
 	[self.weatherImageView makeConstraints:^(MASConstraintMaker *make) {
@@ -593,6 +570,13 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
 	[self.clockDataManager stopTimer];
+
+	if (circleView == self.timeCircle || bigCircle == self.timeCircle) {
+		self.timeCircle.position = (bigCircle == self.timeCircle) ? ClockWaveLocationSmall : ClockWaveLocationBig;
+		[self.timeCircle setNeedsUpdateConstraints];
+		[self.timeCircle updateConstraintsIfNeeded];
+		[self.timeCircle layoutIfNeeded];
+	}
 	[self layoutSubviews];
 
 	double delayInSeconds = 0.3;
@@ -603,33 +587,38 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
+	NSString *hourFormat = [[NSUserDefaults standardUserDefaults] clockUse24hourClock] ? @"HH" : @"hh";
+	UIFont *letterFont;
+	NSString *letterFontName = @".HelveticaNeueInterface-UltraLightP2";
+	NSString *smallFontName = @".HelveticaNeueInterface-Light";
 	if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
-		if ([[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
-			if (_showTimeSeparator) {
-				[clockInfo.dateFormatter setDateFormat:@"hh:mm:ss"];
-			} else {
-				[clockInfo.dateFormatter setDateFormat:@"hh mm ss"];
-			}
-			_showTimeSeparator = !_showTimeSeparator;
+		if ([self.circleArray[0] unsignedIntegerValue] == A3ClockWaveCircleTypeTime) {
+			// Big Circle and big font
+			letterFont = [UIFont fontWithName:letterFontName size:64];
 		} else {
-			[clockInfo.dateFormatter setDateFormat:@"hh:mm:ss"];
+			letterFont = [UIFont fontWithName:smallFontName size:13];
 		}
-		[self.timeCircle setTime:[clockInfo.dateFormatter stringFromDate:clockInfo.date]];
+		[clockInfo.dateFormatter setDateFormat:[NSString stringWithFormat:@"%@ mm ss", hourFormat]];
 	}
 	else
 	{
-		if ([[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
-			if (_showTimeSeparator) {
-				[clockInfo.dateFormatter setDateFormat:@"hh:mm"];
-			} else {
-				[clockInfo.dateFormatter setDateFormat:@"hh mm"];
-			}
-			_showTimeSeparator = !_showTimeSeparator;
+		if ([self.circleArray[0] unsignedIntegerValue] == A3ClockWaveCircleTypeTime) {
+			// Big Circle and big font
+			letterFont = [UIFont fontWithName:letterFontName size:88];
 		} else {
-			[clockInfo.dateFormatter setDateFormat:@"hh:mm"];
+			letterFont = [UIFont fontWithName:smallFontName size:20];
 		}
-		[self.timeCircle setTime:[clockInfo.dateFormatter stringFromDate:clockInfo.date]];
+		[clockInfo.dateFormatter setDateFormat:[NSString stringWithFormat:@"%@ mm", hourFormat]];
 	}
+	if ([[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
+		[self.timeCircle.colonView setHidden:_showTimeSeparator];
+		_showTimeSeparator = !_showTimeSeparator;
+	} else {
+		[self.timeCircle.colonView setHidden:NO];
+	}
+
+	self.timeCircle.textLabel.font = letterFont;
+	self.timeCircle.textLabel.text = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
@@ -657,12 +646,11 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 	[self.weekCircle setWeek:[clockInfo.strWeekShort uppercaseString]];
 	self.weekCircle.fillPercent = (float)clockInfo.dateComponents.weekday / 7.0;
 	[self.weekCircle setNeedsDisplay];
+
+	[self refreshWeather:clockInfo];
 }
 
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
-	if (![[NSUserDefaults standardUserDefaults] clockShowWeather]) {
-		return;
-	}
 	if (!_weatherInfoAvailable) {
 		_weatherInfoAvailable = YES;
 
@@ -670,6 +658,8 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 		[self addTemperatureView];
 		[self addWeatherView];
+
+		[self layoutSubviews];
 	}
 
 	self.temperatureTopLabel.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.highTemperature];
@@ -682,8 +672,6 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 	[self.weatherImageView setImage:[self.clockDataManager imageForWeatherCondition:clockInfo.currentWeather.condition]];
 	self.weatherLabel.text = clockInfo.currentWeather.description;
-
-	[self layoutSubviews];
 }
 
 - (void)changeColor:(UIColor *)color {

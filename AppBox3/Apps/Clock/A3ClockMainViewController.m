@@ -116,14 +116,14 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[_clockWaveViewController setupSubviews];
-	[_clockFlipBrightViewController setupSubviews];
-	[_clockFlipDarkViewController setupSubviews];
-	[_clockLEDViewController setupSubviews];
-
-	[self.clockDataManager startTimer];
-
+	if ([self isMovingToParentViewController]) {
+		[_clockWaveViewController setupSubviews];
+		[_clockFlipBrightViewController setupSubviews];
+		[_clockFlipDarkViewController setupSubviews];
+		[_clockLEDViewController setupSubviews];
+	}
 	[self layoutSubview];
+	[self.clockDataManager startTimer];
 }
 
 - (void)addChooseColorButton {
@@ -241,15 +241,16 @@
 
 #pragma mark - A3ChooseColorDelegate
 
-- (void)chooseColorDidSelect:(UIColor*)aColor
-{
+- (void)chooseColorDidSelect:(UIColor *)aColor selectedIndex:(NSUInteger)selectedIndex {
 	[_currentClockViewController changeColor:aColor];
 
 	switch (self.pageControl.currentPage) {
 		case 0:{
 			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
-			[[NSUserDefaults standardUserDefaults] setObject:colorData forKey:A3ClockWaveClockColor];
-			[[NSUserDefaults standardUserDefaults] synchronize];
+			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			[userDefaults setObject:colorData forKey:A3ClockWaveClockColor];
+			[userDefaults setObject:@(selectedIndex) forKey:A3ClockWaveClockColorIndex];
+			[userDefaults synchronize];
 			break;
 		}
 	}
@@ -284,7 +285,9 @@
 	switch (_pageControl.currentPage) {
 		case 0:
 			colors = [self.clockDataManager waveColors];
-			_chooseColorView = [A3ChooseColor chooseColorWaveInViewController:self colors:colors ];
+			_chooseColorView = [A3ChooseColor chooseColorWaveInViewController:self
+																	   colors:colors
+																selectedIndex:(NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockWaveClockColorIndex]];
 			break;
 		case 1:
 		case 2:
@@ -302,6 +305,7 @@
 {
     @autoreleasepool {
 		A3ClockSettingsViewController *viewController = [[A3ClockSettingsViewController alloc] init];
+		viewController.clockDataManager = self.clockDataManager;
 		[self presentSubViewController:viewController];
 	}
 }

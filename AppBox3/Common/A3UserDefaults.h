@@ -51,8 +51,9 @@ extern NSString *const A3ClockShowAMPM;
 extern NSString *const A3ClockShowTheDayOfTheWeek;
 extern NSString *const A3ClockShowDate;
 extern NSString *const A3ClockShowWeather;
-extern NSString *const A3ClockFahrenheit;
+extern NSString *const A3ClockUsesFahrenheit;
 extern NSString *const A3ClockWaveClockColor;
+extern NSString *const A3ClockWaveClockColorIndex;
 extern NSString *const A3ClockWaveCircleLayout;
 
 #endif

@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3ClockDataManager;
+
 @interface A3ClockSettingsViewController : UIViewController
+
+@property (nonatomic, weak) A3ClockDataManager *clockDataManager;
 
 @end

@@ -6,11 +6,12 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <CoreLocation/CoreLocation.h>
 #import "A3ClockDataManager.h"
+#import <CoreLocation/CoreLocation.h>
 #import "A3ClockInfo.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "AFHTTPRequestOperation.h"
+#import "A3UserDefaults.h"
 
 @interface A3ClockDataManager () <CLLocationManagerDelegate>
 
@@ -41,7 +42,58 @@
     return self;
 }
 
+- (void)enableWeatherCircle:(BOOL)enable {
+	[self enableWaveCircleType:A3ClockWaveCircleTypeWeather enable:enable];
+}
+
+- (void)enableDateCircle:(BOOL)enable {
+	[self enableWaveCircleType:A3ClockWaveCircleTypeDate enable:enable];
+}
+
+- (void)enableWeekdayCircle:(BOOL)enable {
+	[self enableWaveCircleType:A3ClockWaveCircleTypeWeekday enable:enable];
+}
+
+- (void)enableWaveCircleType:(A3ClockWaveCircleTypes)type enable:(BOOL)enable {
+	NSMutableArray *waveCirclesArray = [self waveCirclesArray];
+	if (enable) {
+		NSUInteger idx = [waveCirclesArray indexOfObject:@(type)];
+		if (idx == NSNotFound) {
+			[waveCirclesArray addObject:@(type)];
+		}
+	} else {
+		[waveCirclesArray removeObject:@(type)];
+	}
+	FNLOG(@"%@", waveCirclesArray);
+	[[NSUserDefaults standardUserDefaults] setObject:waveCirclesArray forKey:A3ClockWaveCircleLayout];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (NSMutableArray *)waveCirclesArray {
+	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+	NSMutableArray *circleArray = [[userDefaults objectForKey:A3ClockWaveCircleLayout] mutableCopy];
+	if (circleArray) return circleArray;
+
+	circleArray = [NSMutableArray new];
+	[circleArray addObject:@(A3ClockWaveCircleTypeTime)];
+
+	if ([userDefaults clockShowWeather]) {
+		[circleArray addObject:@(A3ClockWaveCircleTypeWeather)];
+	}
+	if ([userDefaults clockShowDate]) {
+		[circleArray addObject:@(A3ClockWaveCircleTypeDate)];
+	}
+	if ([userDefaults clockShowTheDayOfTheWeek]) {
+		[circleArray addObject:@(A3ClockWaveCircleTypeWeekday)];
+	}
+	[userDefaults setObject:circleArray forKey:A3ClockWaveCircleLayout];
+	[userDefaults synchronize];
+	return circleArray;
+}
+
 - (void)startTimer {
+	[_timer invalidate];
+
 	_refreshWholeClock = YES;
 	_timer = [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(onTimerDateTimeTick) userInfo:nil repeats:YES];
 	[_timer fire];

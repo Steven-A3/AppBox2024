@@ -265,21 +265,21 @@
 	}
 }
 
-- (BOOL)clockFahrenheit
+- (BOOL)clockUsesFahrenheit
 {
     @autoreleasepool {
 		NSNumber *object;
-		object = [self objectForKey:A3ClockFahrenheit];
+		object = [self objectForKey:A3ClockUsesFahrenheit];
 		if (object) {
 			return [object boolValue];
 		}
-		return YES;
+		return (![[[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem] boolValue]);
     }
 }
-- (void)setClockFahrenheit:(BOOL)boolValue
+- (void)setClockUsesFahrenheit:(BOOL)boolValue
 {
     @autoreleasepool {
-		[self setBool:boolValue forKey:A3ClockFahrenheit];
+		[self setBool:boolValue forKey:A3ClockUsesFahrenheit];
 		[self synchronize];
 	}
 }

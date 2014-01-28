@@ -18,13 +18,14 @@
 
 @implementation A3ChooseColorPhone {
 	CGSize _contentSize;
+	NSUInteger _selectedIndex;
 }
 
-- (id)initWithFrame:(CGRect)frame colors:(NSArray *)colors
-{
+- (id)initWithFrame:(CGRect)frame colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex {
     self = [super initWithFrame:frame];
     if (self) {
 		_colors = colors;
+		_selectedIndex = selectedIndex;
 
         UIView* viewCaption = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 44.f)];
         [viewCaption setBackgroundColor:[UIColor whiteColor]];
@@ -73,29 +74,44 @@
 	NSUInteger numberOfColors = [_colors count];
     UIButton* viewPre = nil;
     
-    for(int i = 0; i < numberOfColors; i++)
+    for(NSUInteger idx = 0; idx < numberOfColors; idx++)
     {
-        UIColor* clr = [_colors objectAtIndex:i];
+        UIColor*color = [_colors objectAtIndex:idx];
         
-        UIButton* btnClr = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btnClr setBackgroundColor:clr];
-		[btnClr addTarget:self action:@selector(colorButtonAction:) forControlEvents:UIControlEventTouchDown];
+        UIButton *colorButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		colorButton.tag = idx;
+		if (idx == _selectedIndex) {
+			colorButton.layer.borderColor = color.CGColor;
+			colorButton.layer.borderWidth = 1;
+			UIImageView *selectedImageView = [UIImageView new];
+			[selectedImageView setImage:[UIImage imageNamed:@"check"]];
+			[selectedImageView sizeToFit];
+			[colorButton addSubview:selectedImageView];
 
-        [_scrollView addSubview:btnClr];
+			[selectedImageView makeConstraints:^(MASConstraintMaker *make) {
+				make.centerX.equalTo(colorButton.centerX);
+				make.bottom.equalTo(colorButton.bottom).with.offset(-10);
+			}];
+		} else {
+			[colorButton setBackgroundColor:color];
+		}
+		[colorButton addTarget:self action:@selector(colorButtonAction:) forControlEvents:UIControlEventTouchDown];
+
+		[_scrollView addSubview:colorButton];
         
-        [btnClr makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(_scrollView.top).with.offset(20);
-            
-            if(viewPre == nil)
-                make.left.equalTo(_scrollView.left).with.offset(15);
-            else
-                make.left.equalTo(viewPre.right).with.offset(10);
-            
-            make.width.equalTo(@44);
-            make.height.equalTo(@88);
-        }];
+        [colorButton makeConstraints:^(MASConstraintMaker *make) {
+			make.top.equalTo(_scrollView.top).with.offset(20);
+
+			if (viewPre == nil)
+				make.left.equalTo(_scrollView.left).with.offset(15);
+			else
+				make.left.equalTo(viewPre.right).with.offset(10);
+
+			make.width.equalTo(@44);
+			make.height.equalTo(@88);
+		}];
         
-        viewPre = btnClr;
+        viewPre = colorButton;
     }
 	_contentSize = CGSizeMake(44 * numberOfColors + 10 * (numberOfColors - 1) + 30, _scrollView.bounds.size.height);
 	_scrollView.contentSize = _contentSize;

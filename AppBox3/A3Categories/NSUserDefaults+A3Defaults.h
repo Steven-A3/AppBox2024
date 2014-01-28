@@ -54,7 +54,7 @@
 - (BOOL)clockShowWeather;
 - (void)setClockShowWeather:(BOOL)boolValue;
 
-- (BOOL)clockFahrenheit;
-- (void)setClockFahrenheit:(BOOL)boolValue;
+- (BOOL)clockUsesFahrenheit;
+- (void)setClockUsesFahrenheit:(BOOL)boolValue;
 
 @end

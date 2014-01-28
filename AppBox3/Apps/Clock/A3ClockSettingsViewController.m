@@ -9,17 +9,20 @@
 #import "A3ClockSettingsViewController.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "UIViewController+A3Addition.h"
+#import "A3ClockDataManager.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3ClockDataManager.h"
+#import "A3UserDefaults.h"
 
-#define kTagSwitchWithSecond   1000
-#define kTagSwitchFlash         1001
-#define kTagSwitch24Hour        1002
-#define kTagSwitchAMPM          1003
-
-#define kTagSwitchWeek          1010
-#define kTagSwitchDate          1011
-
-#define kTagSwitchWeather        1020
+typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
+	kTagSwitchWithSecond = 1000,
+	kTagSwitchFlash = 1001,
+	kTagSwitch24Hour = 1002,
+	kTagSwitchAMPM = 1003,
+	kTagSwitchWeek = 1010,
+	kTagSwitchDate = 1011,
+	kTagSwitchWeather = 1020
+};
 
 @interface A3ClockSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -111,11 +114,11 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"A3ClockSettingTableViewCell";
-	UITableViewCell *cell=nil;
-    
 	@autoreleasepool {
-        
+		static NSString *CellWithSwitch = @"A3ClockSettingsCellWithSwitch";
+		static NSString *CellWithSegmentedControl = @"A3ClockSettingsWithSegmentedControl";
+		UITableViewCell *cell = nil;
+
         NSArray* arrTitles = nil;
         switch (indexPath.section) {
             case 0:
@@ -133,79 +136,113 @@
         
         NSString* strCellText = arrTitles[indexPath.row];
 
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if(cell == nil)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-            
-            if(indexPath.section == 0 || indexPath.section == 1 || (indexPath.section == 2 && indexPath.row == 0))
-            {
-                UISwitch *switchControl = [[UISwitch alloc] initWithFrame:CGRectZero];
-                switchControl.tag = [[NSString stringWithFormat:@"%lu%lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row] integerValue] + 1000;
-                cell.accessoryView = switchControl;
-                [switchControl addTarget:self action:@selector(onSwitchChange:) forControlEvents:UIControlEventTouchUpInside];
-            }
-        }
-        
+		BOOL useSegmentedControl = indexPath.section == 2 && indexPath.row == 1;
+		if (useSegmentedControl) {
+			cell = [tableView dequeueReusableCellWithIdentifier:CellWithSegmentedControl];
+		} else {
+			cell = [tableView dequeueReusableCellWithIdentifier:CellWithSwitch];
+		}
+
+        if(cell == nil) {
+			if (useSegmentedControl) {
+				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithSegmentedControl];
+
+				UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"°F", @"°C"]];
+				[segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+				[segmentedControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? 0 : 1];
+				[cell addSubview:segmentedControl];
+				[segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+					make.centerX.equalTo(cell.centerX);
+					make.centerY.equalTo(cell.centerY);
+					make.width.equalTo(@290);
+					make.height.equalTo(@29);
+				}];
+			} else {
+				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithSwitch];
+
+				UISwitch *switchControl = [[UISwitch alloc] initWithFrame:CGRectZero];
+				switchControl.tag = [[NSString stringWithFormat:@"%lu%lu", (unsigned long) indexPath.section, (unsigned long) indexPath.row] integerValue] + 1000;
+				cell.accessoryView = switchControl;
+				[switchControl addTarget:self action:@selector(onSwitchChange:) forControlEvents:UIControlEventValueChanged];
+			}
+		}
+
+		UISwitch *switchControl = (UISwitch *) cell.accessoryView;
+
+		NSInteger tag = [[NSString stringWithFormat:@"%lu%lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row] integerValue] + 1000;
+		FNLOG(@"Cell.tag = %i, tag = %i", switchControl.tag, tag);
         cell.textLabel.text = strCellText;
-        
-        UISwitch*switchControl = (UISwitch*)cell.accessoryView;
-        if(switchControl.tag == kTagSwitchWithSecond)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
-        
-        if(switchControl.tag == kTagSwitchFlash)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
-        
-        if(switchControl.tag == kTagSwitch24Hour)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
-        
-        if(switchControl.tag == kTagSwitchAMPM)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
-        
-        if(switchControl.tag == kTagSwitchWeek)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
-        
-        if(switchControl.tag == kTagSwitchDate)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowDate];
-        
-        if(switchControl.tag == kTagSwitchWeather)
-            switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowWeather];
-        
+
+		switch((A3ClockSettingsTypes)switchControl.tag) {
+			case kTagSwitchWithSecond:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+				break;
+			case kTagSwitchFlash:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
+				break;
+			case kTagSwitch24Hour:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
+				break;
+			case kTagSwitchAMPM:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
+				break;
+			case kTagSwitchWeek:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
+				break;
+			case kTagSwitchDate:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowDate];
+				break;
+			case kTagSwitchWeather:
+				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowWeather];
+				break;
+		}
+		return cell;
 	}
-    
-    return cell;
 }
 
+- (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
+	[[NSUserDefaults standardUserDefaults] setClockUsesFahrenheit:segmentedControl.selectedSegmentIndex == 0];
+}
 
-
-#pragma mark - tableview delegate
+#pragma mark - UITableViewDelegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - switch event
+#pragma mark - Switch event
+
 - (void)onSwitchChange:(id)aSender
 {
     UISwitch*switchControl = (UISwitch*)aSender;
-    
-    if(switchControl.tag == kTagSwitchWithSecond)
-        [[NSUserDefaults standardUserDefaults] setClockTheTimeWithSeconds:switchControl.on];
-    else if(switchControl.tag == kTagSwitchFlash)
-        [[NSUserDefaults standardUserDefaults] setClockFlashTheTimeSeparators:switchControl.on];
-    else if(switchControl.tag == kTagSwitch24Hour)
-        [[NSUserDefaults standardUserDefaults] setClockUse24hourClock:switchControl.on];
-    else if(switchControl.tag == kTagSwitchAMPM)
-        [[NSUserDefaults standardUserDefaults] setClockShowAMPM:switchControl.on];
-    else if(switchControl.tag == kTagSwitchWeek)
-        [[NSUserDefaults standardUserDefaults] setClockShowTheDayOfTheWeek:switchControl.on];
-    else if(switchControl.tag == kTagSwitchDate)
-        [[NSUserDefaults standardUserDefaults] setClockShowDate:switchControl.on];
-    else if(switchControl.tag == kTagSwitchWeather)
-        [[NSUserDefaults standardUserDefaults] setClockShowWeather:switchControl.on];
+
+	switch ((A3ClockSettingsTypes)switchControl.tag) {
+		case kTagSwitchWithSecond:
+			[[NSUserDefaults standardUserDefaults] setClockTheTimeWithSeconds:switchControl.on];
+			break;
+		case kTagSwitchFlash:
+			[[NSUserDefaults standardUserDefaults] setClockFlashTheTimeSeparators:switchControl.on];
+			break;
+		case kTagSwitch24Hour:
+			[[NSUserDefaults standardUserDefaults] setClockUse24hourClock:switchControl.on];
+			break;
+		case kTagSwitchAMPM:
+			[[NSUserDefaults standardUserDefaults] setClockShowAMPM:switchControl.on];
+			break;
+		case kTagSwitchWeek:
+			[[NSUserDefaults standardUserDefaults] setClockShowTheDayOfTheWeek:switchControl.on];
+			[self.clockDataManager enableWeekdayCircle:switchControl.on];
+			break;
+		case kTagSwitchDate:
+			[[NSUserDefaults standardUserDefaults] setClockShowDate:switchControl.on];
+			[self.clockDataManager enableDateCircle:switchControl.on];
+			break;
+		case kTagSwitchWeather:
+			[[NSUserDefaults standardUserDefaults] setClockShowWeather:switchControl.on];
+			[self.clockDataManager enableWeatherCircle:switchControl.on];
+			break;
+	}
 }
 
 - (void)didReceiveMemoryWarning
