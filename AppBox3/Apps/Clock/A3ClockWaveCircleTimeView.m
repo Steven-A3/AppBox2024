@@ -30,21 +30,6 @@
     return self;
 }
 
-- (void)setBounds:(CGRect)bounds {
-	[super setBounds:bounds];
-
-	self.layer.cornerRadius = bounds.size.width * 0.5f;
-
-	if (self.isShowWave) {
-		[self setFillPercent:self.fillPercent];
-	} else {
-		self.textLabelCenterY.offset(bounds.size.height / 2);
-		[self.textLabel setTextColor:self.superview.backgroundColor];
-	}
-
-	[self layoutIfNeeded];
-}
-
 - (void)addColonView {
 	[_upperLeftCircle removeFromSuperview]; _upperLeftCircle = nil;
 	[_lowerLeftCircle removeFromSuperview]; _lowerLeftCircle = nil;
@@ -91,10 +76,10 @@
 	CGFloat cornerRadius;
 	CGFloat width;
 	if (bigCircle) {
-		width = 3;
+		width = IS_IPHONE ? 3 : 7;
 		cornerRadius = width / 2;
 	} else {
-		width = 1;
+		width = IS_IPHONE ? 1 : 2;
 		cornerRadius = width / 2;
 	}
 
@@ -164,11 +149,11 @@
 		make.centerX.equalTo(self.textLabel.centerX).with.offset(-1);
 		make.centerY.equalTo(self.textLabel.centerY).with.offset(bigCircle ? 3 : 0);
 		if (self.position == ClockWaveLocationBig) {
-			make.width.equalTo(showSeconds ? @94 : @(width));
-			make.height.equalTo(showSeconds ? @35 : @49);
+			make.width.equalTo(showSeconds ? (IS_IPHONE ? @94 : @187) : @(width));
+			make.height.equalTo(showSeconds ? (IS_IPHONE ? @35 : @78) : (IS_IPHONE ? @49: @110));
 		} else {
-			make.width.equalTo(showSeconds ? @19 : @(width));
-			make.height.equalTo(showSeconds ? @7 : @10);
+			make.width.equalTo(showSeconds ? (IS_IPHONE ? @19 : @35) : @(width));
+			make.height.equalTo(showSeconds ? (IS_IPHONE ? @7 : @13) : (IS_IPHONE ? @10 : @17));
 		}
 	}];
 }

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import "A3ClockWaveCircleMiddleView.h"
 #import "A3ClockWaveCircleView.h"
 #import "A3ClockWaveCircleTimeView.h"
 #import "A3ClockDataManager.h"
@@ -61,10 +62,7 @@
                                                      rect.origin.y + (self.nLineWidth*0.5f),
                                                      rect.size.width - self.nLineWidth,
                                                      rect.size.height - self.nLineWidth));
-    // start 0.65
-    // middle 0.5f
-    // end   3.65
-//    self.fillPercent = 0.7f;
+
     float fHeightTemp = self.frame.size.height - (self.frame.size.height * self.fillPercent);
 
     if(_isShowWave)
@@ -103,22 +101,42 @@
 
 #pragma mark - properties
 
+- (void)setBounds:(CGRect)bounds {
+	[super setBounds:bounds];
+
+	self.layer.cornerRadius = bounds.size.width * 0.5f;
+
+	self.textLabel.font = self.position == ClockWaveLocationBig ? self.bigFont : self.smallFont;
+
+	if (self.isShowWave) {
+		[self setFillPercent:self.fillPercent];
+	} else {
+		self.textLabelCenterY.offset(bounds.size.height / 2);
+		[self.textLabel setTextColor:self.superview.backgroundColor];
+	}
+
+	[self layoutIfNeeded];
+}
+
 - (void)setFillPercent:(float)fillPercent
 {
     _fillPercent = fillPercent;
 
 	CGSize textSize = [[self.textLabel text] sizeWithAttributes:@{NSFontAttributeName:[self.textLabel font]}];
+//	FNLOG(@"%@, %f, %@", self.textLabel.font, textSize.height, self.textLabel.text);
 
+	CGFloat rate = textSize.height > 200.0 ? 0.4 : 0.6;
+	CGFloat offset = self.position == ClockWaveLocationBig ? textSize.height * rate : textSize.height / 2 + (IS_IPHONE ? 5 : 10);
 	if(self.fillPercent < 0.35f || self.fillPercent > 0.65f) {
 		_textLabelCenterY.offset(self.frame.size.height * 0.5);
 	}
 	else if(self.fillPercent <= 0.5f)
 	{
-		_textLabelCenterY.offset(self.frame.size.height * (1 - self.fillPercent) - (textSize.height * 0.5f));
+		_textLabelCenterY.offset(self.frame.size.height * (1 - self.fillPercent) - offset);
 	}
 	else
 	{
-		_textLabelCenterY.offset(self.frame.size.height * (1.f - self.fillPercent) + (textSize.height * 0.5f));
+		_textLabelCenterY.offset(self.frame.size.height * (1.f - self.fillPercent) + offset);
 	}
 
 	if (_fillPercent <= 0.5) {
@@ -152,14 +170,14 @@
 
 - (UIFont *)smallFont {
 	if (!_smallFont) {
-		_smallFont = [UIFont systemFontOfSize:20];
+		_smallFont = [UIFont systemFontOfSize:IS_IPHONE ? 20 : 36];
 	}
 	return _smallFont;
 }
 
 - (UIFont *)bigFont {
 	if (!_bigFont) {
-		_bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88];
+		_bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 88 : 176];
 	}
 	return _bigFont;
 }
@@ -168,9 +186,9 @@
 
 }
 
+
 - (void)setColonColor:(UIColor *)color {
 
 }
-
 
 @end

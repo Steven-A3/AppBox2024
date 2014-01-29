@@ -24,12 +24,15 @@ typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchWeather = 1020
 };
 
+NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettingsChanged";
+
 @interface A3ClockSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray* arrSection;
 @property (nonatomic, strong) NSArray* arrTimeSection;
 @property (nonatomic, strong) NSArray* arrDateSection;
 @property (nonatomic, strong) NSArray* arrWeatherSection;
+@property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @end
 
@@ -89,6 +92,16 @@ typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
     return _arrSection[section];
 }
 
+- (UISegmentedControl *)segmentedControl {
+	if (!_segmentedControl) {
+		_segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"°F", @"°C"]];
+		[_segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
+		[_segmentedControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? 0 : 1];
+		[_segmentedControl setEnabled:[[NSUserDefaults standardUserDefaults] clockShowWeather]];
+	}
+	return _segmentedControl;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSUInteger nRst = 0;
@@ -111,90 +124,84 @@ typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 }
 
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	@autoreleasepool {
-		static NSString *CellWithSwitch = @"A3ClockSettingsCellWithSwitch";
-		static NSString *CellWithSegmentedControl = @"A3ClockSettingsWithSegmentedControl";
 		UITableViewCell *cell = nil;
 
-        NSArray* arrTitles = nil;
-        switch (indexPath.section) {
-            case 0:
-                arrTitles = _arrTimeSection;
-                break;
-            case 1:
-                arrTitles = _arrDateSection;
-                break;
-            case 2:
-                arrTitles = _arrWeatherSection;
-                break;
-            default:
-                break;
-        }
-        
-        NSString* strCellText = arrTitles[indexPath.row];
+		if (indexPath.section == 2 && indexPath.row == 1) {
+			static NSString *CellWithSegmentedControl = @"A3ClockSettingsWithSegmentedControl";
 
-		BOOL useSegmentedControl = indexPath.section == 2 && indexPath.row == 1;
-		if (useSegmentedControl) {
 			cell = [tableView dequeueReusableCellWithIdentifier:CellWithSegmentedControl];
-		} else {
-			cell = [tableView dequeueReusableCellWithIdentifier:CellWithSwitch];
-		}
-
-        if(cell == nil) {
-			if (useSegmentedControl) {
+			if (cell == nil) {
 				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithSegmentedControl];
+			}
 
-				UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"°F", @"°C"]];
-				[segmentedControl addTarget:self action:@selector(segmentedControlValueChanged:) forControlEvents:UIControlEventValueChanged];
-				[segmentedControl setSelectedSegmentIndex:[[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? 0 : 1];
-				[cell addSubview:segmentedControl];
-				[segmentedControl makeConstraints:^(MASConstraintMaker *make) {
-					make.centerX.equalTo(cell.centerX);
-					make.centerY.equalTo(cell.centerY);
-					make.width.equalTo(@290);
-					make.height.equalTo(@29);
-				}];
-			} else {
+			[cell addSubview:self.segmentedControl];
+
+			[_segmentedControl removeConstraints:_segmentedControl.constraints];
+			[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+				make.centerX.equalTo(cell.centerX);
+				make.centerY.equalTo(cell.centerY);
+				make.width.equalTo(@290);
+				make.height.equalTo(@29);
+			}];
+		} else {
+			static NSString *CellWithSwitch = @"A3ClockSettingsCellWithSwitch";
+
+			cell = [tableView dequeueReusableCellWithIdentifier:CellWithSwitch];
+			if (cell == nil) {
 				cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellWithSwitch];
 
 				UISwitch *switchControl = [[UISwitch alloc] initWithFrame:CGRectZero];
-				switchControl.tag = [[NSString stringWithFormat:@"%lu%lu", (unsigned long) indexPath.section, (unsigned long) indexPath.row] integerValue] + 1000;
 				cell.accessoryView = switchControl;
 				[switchControl addTarget:self action:@selector(onSwitchChange:) forControlEvents:UIControlEventValueChanged];
 			}
-		}
 
-		UISwitch *switchControl = (UISwitch *) cell.accessoryView;
+			UISwitch *switchControl = (UISwitch *) cell.accessoryView;
 
-		NSInteger tag = [[NSString stringWithFormat:@"%lu%lu", (unsigned long)indexPath.section, (unsigned long)indexPath.row] integerValue] + 1000;
-		FNLOG(@"Cell.tag = %i, tag = %i", switchControl.tag, tag);
-        cell.textLabel.text = strCellText;
+			switchControl.tag = [[NSString stringWithFormat:@"%lu%lu", (unsigned long) indexPath.section, (unsigned long) indexPath.row] integerValue] + 1000;
 
-		switch((A3ClockSettingsTypes)switchControl.tag) {
-			case kTagSwitchWithSecond:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
-				break;
-			case kTagSwitchFlash:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
-				break;
-			case kTagSwitch24Hour:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
-				break;
-			case kTagSwitchAMPM:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
-				break;
-			case kTagSwitchWeek:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
-				break;
-			case kTagSwitchDate:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowDate];
-				break;
-			case kTagSwitchWeather:
-				switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowWeather];
-				break;
+			NSArray *titlesArray = nil;
+			switch (indexPath.section) {
+				case 0:
+					titlesArray = _arrTimeSection;
+					break;
+				case 1:
+					titlesArray = _arrDateSection;
+					break;
+				case 2:
+					titlesArray = _arrWeatherSection;
+					break;
+				default:
+					break;
+			}
+
+			cell.textLabel.text = titlesArray[indexPath.row];
+
+			switch((A3ClockSettingsTypes)switchControl.tag) {
+				case kTagSwitchWithSecond:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+					break;
+				case kTagSwitchFlash:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
+					break;
+				case kTagSwitch24Hour:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
+					break;
+				case kTagSwitchAMPM:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
+					break;
+				case kTagSwitchWeek:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
+					break;
+				case kTagSwitchDate:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowDate];
+					break;
+				case kTagSwitchWeather:
+					switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowWeather];
+					break;
+			}
 		}
 		return cell;
 	}
@@ -202,6 +209,8 @@ typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 
 - (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
 	[[NSUserDefaults standardUserDefaults] setClockUsesFahrenheit:segmentedControl.selectedSegmentIndex == 0];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationClockSettingsChanged object:nil];
 }
 
 #pragma mark - UITableViewDelegate
@@ -241,8 +250,14 @@ typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 		case kTagSwitchWeather:
 			[[NSUserDefaults standardUserDefaults] setClockShowWeather:switchControl.on];
 			[self.clockDataManager enableWeatherCircle:switchControl.on];
+			[self.segmentedControl setEnabled:switchControl.on];
 			break;
 	}
+	double delayInSeconds = 0.1;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationClockSettingsChanged object:nil];
+	});
 }
 
 - (void)didReceiveMemoryWarning

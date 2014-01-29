@@ -332,35 +332,35 @@
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	if([clockInfo.strTimeHour intValue] < 10)
+	if([clockInfo.hour intValue] < 10)
 		self.lbHour1.text = @"";
 	else
-		self.lbHour1.text = [clockInfo.strTimeHour substringToIndex:1];
+		self.lbHour1.text = [clockInfo.hour substringToIndex:1];
 
-	self.lbHour2.text = [clockInfo.strTimeHour substringFromIndex:1];
+	self.lbHour2.text = [clockInfo.hour substringFromIndex:1];
 
-	self.lbMinute1.text = [clockInfo.strTimeMinute substringToIndex:1];
-	self.lbMinute2.text = [clockInfo.strTimeMinute substringFromIndex:1];
+	self.lbMinute1.text = [clockInfo.minute substringToIndex:1];
+	self.lbMinute2.text = [clockInfo.minute substringFromIndex:1];
 
-	self.lbSecond1.text = [clockInfo.strTimeSecond substringToIndex:1];
-	self.lbSecond2.text = [clockInfo.strTimeSecond substringFromIndex:1];
+	self.lbSecond1.text = [clockInfo.second substringToIndex:1];
+	self.lbSecond2.text = [clockInfo.second substringFromIndex:1];
 
 	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
-		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@ %@ %@", [clockInfo.strWeekShort uppercaseString], clockInfo.strDateDay, [clockInfo.strDateMonthShort uppercaseString]];
+		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@ %@ %@", [clockInfo.shortWeekday uppercaseString], clockInfo.day, [clockInfo.shortMonth uppercaseString]];
 	}
 	else if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
 	{
-		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@", clockInfo.strWeek];
+		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@", clockInfo.weekday];
 	}
 	else if([[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
-		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@ %@", clockInfo.strDateMonth, clockInfo.strDateDay];
+		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@ %@", clockInfo.month, clockInfo.day];
 	}
 	else
 		_lbWeekDayMonth.text = @"";
 
-	_lbAMPM.text = clockInfo.strTimeAMPM;
+	_lbAMPM.text = clockInfo.AMPM;
 
 
 	[self setupSubviews];

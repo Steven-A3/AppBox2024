@@ -257,6 +257,7 @@
 		return YES;
     }
 }
+
 - (void)setClockShowWeather:(BOOL)boolValue
 {
     @autoreleasepool {

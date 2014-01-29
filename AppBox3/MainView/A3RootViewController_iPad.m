@@ -72,8 +72,8 @@ static const CGFloat kSideViewWidth = 319.0;
 //static const CGFloat kPortraitWidth_iPad = 768.0;
 
 - (void)layoutSubviews {
-    FNLOG();
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
+	FNLOGRECT(bounds);
 
 	[_centerCoverView setHidden:YES];
 	if (IS_PORTRAIT || [self useFullScreenInLandscapeForCurrentTopViewController]) {

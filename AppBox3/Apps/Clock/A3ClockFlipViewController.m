@@ -286,27 +286,27 @@
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	[_foldHour foldingWithText:clockInfo.strTimeHour];
-	[_foldMinute foldingWithText:clockInfo.strTimeMinute];
-	[_foldSecond foldingWithText:clockInfo.strTimeSecond];
+	[_foldHour foldingWithText:clockInfo.hour];
+	[_foldMinute foldingWithText:clockInfo.minute];
+	[_foldSecond foldingWithText:clockInfo.second];
 
 	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
-		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@, %@ %@", clockInfo.strWeek, clockInfo.strDateMonth, clockInfo.strDateDay];
+		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@, %@ %@", clockInfo.weekday, clockInfo.month, clockInfo.day];
 	}
 	else if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
 	{
 
-		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@", clockInfo.strWeek];
+		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@", clockInfo.weekday];
 	}
 	else if([[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
-		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@ %@", clockInfo.strDateMonth, clockInfo.strDateDay];
+		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@ %@", clockInfo.month, clockInfo.day];
 	}
 	else
 		_lbWeekMonthDay.text = @"";
 
-	_lbAMPM.text = clockInfo.strTimeAMPM;
+	_lbAMPM.text = clockInfo.AMPM;
 	_lbWeather.text = clockInfo.currentWeather.description;
 	_lbTemperature.text = [NSString stringWithFormat:@"%dº", clockInfo.currentWeather.currentTemperature];
 

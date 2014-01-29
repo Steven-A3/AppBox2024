@@ -13,4 +13,5 @@
 
 @interface A3ClockWaveViewController : A3ClockViewController
 
+- (void)updateLayout;
 @end

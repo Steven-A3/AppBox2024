@@ -60,10 +60,6 @@
     
     [self.view addSubview:self.scrollView];
 
-	[_scrollView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(self.view);
-	}];
-
 	_appsButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[_appsButton setTitle:@"Apps" forState:UIControlStateNormal];
 	FNLOG(@"%0.f", _appsButton.titleLabel.font.pointSize);
@@ -116,14 +112,34 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	[self layoutSubview];
+
 	if ([self isMovingToParentViewController]) {
 		[_clockWaveViewController setupSubviews];
 		[_clockFlipBrightViewController setupSubviews];
 		[_clockFlipDarkViewController setupSubviews];
 		[_clockLEDViewController setupSubviews];
 	}
-	[self layoutSubview];
+
 	[self.clockDataManager startTimer];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
+	}
+
+	FNLOGRECT(self.view.frame);
+}
+
+- (void)settingsChanged {
+	switch (_pageControl.currentPage) {
+		case 0:
+			[_clockWaveViewController updateLayout];
+			break;
+	}
 }
 
 - (void)addChooseColorButton {
@@ -143,7 +159,8 @@
 - (UIScrollView *)scrollView {
 	if (!_scrollView) {
 		_scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-		[_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*kCntPage, 1)];
+		_scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+		[_scrollView setContentSize:CGSizeMake(_scrollView.bounds.size.width*kCntPage, self.view.bounds.size.height)];
 		_scrollView.pagingEnabled=YES;
 		_scrollView.delegate = self;
 		_scrollView.showsHorizontalScrollIndicator = NO;
@@ -378,11 +395,12 @@
 }
 
 - (void)layoutSubview {
-	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
-	_scrollView.contentSize = CGSizeMake(screenBounds.size.width * 4, screenBounds.size.height);
+	CGRect bounds = self.view.bounds;
+	FNLOGRECT(bounds);
 
+	_scrollView.contentSize = CGSizeMake(bounds.size.width * 4, bounds.size.height);
 	[self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
-		CGRect frame = CGRectMake(screenBounds.size.width * idx, 0, screenBounds.size.width, screenBounds.size.height);
+		CGRect frame = CGRectMake(bounds.size.width * idx, 0, bounds.size.width, bounds.size.height);
 		viewController.view.frame = frame;
 	}];
 	if (IS_IPHONE && IS_LANDSCAPE) {
@@ -393,6 +411,10 @@
 		[[UIApplication sharedApplication] setStatusBarHidden:_appsButton.isHidden withAnimation:UIStatusBarAnimationNone];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	}
+}
+
+- (BOOL)usesFullScreenInLandscape {
+	return YES;
 }
 
 @end

@@ -142,39 +142,39 @@
 	else
 		[formatter setDateFormat:@"hh"];
 
-	self.clockInfo.strTimeHour = [formatter stringFromDate:currentTime];
+	self.clockInfo.hour = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"mm"];
-	_clockInfo.strTimeMinute = [formatter stringFromDate:currentTime];
+	_clockInfo.minute = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"ss"];
-	_clockInfo.strTimeSecond = [formatter stringFromDate:currentTime];
+	_clockInfo.second = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"a"];
 	if(![[NSUserDefaults standardUserDefaults] clockUse24hourClock])
-		_clockInfo.strTimeAMPM = [formatter stringFromDate:currentTime];
+		_clockInfo.AMPM = [formatter stringFromDate:currentTime];
 	else
-		_clockInfo.strTimeAMPM = @"";
+		_clockInfo.AMPM = @"";
 
 	[formatter setDateFormat:@"dd"];
-	_clockInfo.strDateDay = [formatter stringFromDate:currentTime];
+	_clockInfo.day = [formatter stringFromDate:currentTime];
 
 	NSRange days = [self.clockInfo.calendar rangeOfUnit:NSDayCalendarUnit
 									   inUnit:NSMonthCalendarUnit
 									  forDate:currentTime];
-	_clockInfo.strDateMaxDay = [NSString stringWithFormat:@"%lu", (unsigned long)days.length];
+	_clockInfo.maxDay = [NSString stringWithFormat:@"%lu", (unsigned long)days.length];
 
 	[formatter setDateFormat:@"MMMM"];
-	_clockInfo.strDateMonth = [formatter stringFromDate:currentTime];
+	_clockInfo.month = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"MMM"];
-	_clockInfo.strDateMonthShort = [formatter stringFromDate:currentTime];
+	_clockInfo.shortMonth = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"EEEE"];
-	_clockInfo.strWeek = [formatter stringFromDate:currentTime];
+	_clockInfo.weekday = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"EEE"];
-	_clockInfo.strWeekShort = [formatter stringFromDate:currentTime];
+	_clockInfo.shortWeekday = [formatter stringFromDate:currentTime];
 
 	_clockInfo.currentWeather = self.currentWeather;
 }
@@ -263,9 +263,9 @@
     switch (aCon) {
         case SCWeatherConditionTornado: nRst = 21; break;
         case SCWeatherConditionThunderstorms: nRst = 1; break;
-        case SCWeatherConditionMixedRaindAndSnow: nRst = 2; break;
+        case SCWeatherConditionMixedRainAndSnow: nRst = 2; break;
         case SCWeatherConditionFreezingRain: nRst = 2; break;
-        case SCWeatherConditionFexxingDrizzle: nRst = 4; break;
+        case SCWeatherConditionFixingDrizzle: nRst = 4; break;
         case SCWeatherConditionDrizzle: nRst = 4; break;
         case SCWeatherConditionShowers: nRst = 5; break;
         case SCWeatherConditionShowers2: nRst = 5; break;
@@ -299,9 +299,9 @@
         case SCWeatherConditionScatteredThunderstorms2: nRst = 1; break;
         case SCWeatherConditionHeavySnow: nRst = 2; break;
         case SCWeatherConditionHeavySnow2: nRst = 2; break;
-        case SCWeatherConditionTropicalStrom: nRst = 22; break;
+        case SCWeatherConditionTropicalStorm: nRst = 22; break;
         case SCWeatherConditionHurricane: nRst = 23; break;
-        case SCWeatherConditionSevereThunderstroms: nRst = 1; break;
+        case SCWeatherConditionSevereThunderstorms: nRst = 1; break;
         case SCWeatherConditionMixedRainAndSleet: nRst = 2; break;
         case SCWeatherConditionHail: nRst = 26; break;
         case SCWeatherConditionSleet: nRst = 2; break;
@@ -335,7 +335,8 @@
 
 - (void)getWeatherInfoWithWOEID:(NSString *)WOEID {
 
-	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=c", WOEID]];
+	NSString *weatherUnit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
+	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@", WOEID, weatherUnit]];
     
 	NSURLRequest *weatherRequest = [NSURLRequest requestWithURL:weatherURL];
 	AFHTTPRequestOperation *weatherOperation = [[AFHTTPRequestOperation alloc] initWithRequest:weatherRequest];
@@ -343,7 +344,7 @@
 	[weatherOperation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSData *response) {
         response = operation.responseData;
         
-        FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
+//        FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
 		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
 		XMLParser.delegate = (id)self;
 
@@ -351,6 +352,7 @@
 
 		if ([XMLParser parse]) {
 			self.currentWeather = [A3Weather new];
+			self.currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
 			self.currentWeather.description = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
 			self.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
 			self.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
@@ -367,12 +369,12 @@
 				[_delegate refreshWeather:self.clockInfo];
 			}
 
-			FNLOG(@"%@,%d,%d,%d", self.currentWeather.description, self.currentWeather.currentTemperature, self.currentWeather.highTemperature, self.currentWeather.lowTemperature);
+//			FNLOG(@"%@,%d,%d,%d", self.currentWeather.description, self.currentWeather.currentTemperature, self.currentWeather.highTemperature, self.currentWeather.lowTemperature);
 		}
 
-		FNLOG(@"self.weatherCurrentCondition:\r\n%@", self.weatherCurrentCondition);
-		FNLOG(@"self.weatherForecast:\r\n%@", self.weatherForecast);
-		FNLOG(@"self.weatherAtmosphere:\r\n%@", self.weatherAtmosphere);
+//		FNLOG(@"self.weatherCurrentCondition:\r\n%@", self.weatherCurrentCondition);
+//		FNLOG(@"self.weatherForecast:\r\n%@", self.weatherForecast);
+//		FNLOG(@"self.weatherAtmosphere:\r\n%@", self.weatherAtmosphere);
 
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 	}];

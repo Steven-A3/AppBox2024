@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const A3NotificationClockSettingsChanged;
+
 @class A3ClockDataManager;
 
 @interface A3ClockSettingsViewController : UIViewController

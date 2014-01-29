@@ -16,18 +16,16 @@
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSDateComponents *dateComponents;
 
-@property (nonatomic, strong) NSString* strTimeHour;
-@property (nonatomic, strong) NSString* strTimeMinute;
-@property (nonatomic, strong) NSString* strTimeSecond;
-@property (nonatomic, strong) NSString* strTimeAMPM;
-@property (nonatomic, strong) NSString* strDateDay;
-@property (nonatomic, strong) NSString* strDateMaxDay;
-@property (nonatomic, strong) NSString* strDateMonth;
-@property (nonatomic, strong) NSString* strDateMonthShort;
-@property (nonatomic, strong) NSString* strWeek;
-@property (nonatomic, strong) NSString* strWeekShort;
-@property (nonatomic, strong) NSString* strWeekStartShort;
-@property (nonatomic, strong) NSString* strWeekEndShort;
+@property (nonatomic, strong) NSString *hour;
+@property (nonatomic, strong) NSString *minute;
+@property (nonatomic, strong) NSString *second;
+@property (nonatomic, strong) NSString *AMPM;
+@property (nonatomic, strong) NSString *day;
+@property (nonatomic, strong) NSString *maxDay;
+@property (nonatomic, strong) NSString *month;
+@property (nonatomic, strong) NSString *shortMonth;
+@property (nonatomic, strong) NSString *weekday;
+@property (nonatomic, strong) NSString *shortWeekday;
 @property (nonatomic, strong) A3Weather *currentWeather;
 
 @end

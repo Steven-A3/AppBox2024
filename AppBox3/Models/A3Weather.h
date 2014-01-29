@@ -9,20 +9,20 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-	SCWeatherUnitCelcius = 0,
+	SCWeatherUnitCelsius = 0,
 	SCWeatherUnitFahrenheit,
 } A3WeatherUnit;
 
 typedef enum {
 	SCWeatherConditionTornado = 0,
-	SCWeatherConditionTropicalStrom,
+	SCWeatherConditionTropicalStorm,
 	SCWeatherConditionHurricane,
-	SCWeatherConditionSevereThunderstroms,
+	SCWeatherConditionSevereThunderstorms,
 	SCWeatherConditionThunderstorms,
-	SCWeatherConditionMixedRaindAndSnow,
+	SCWeatherConditionMixedRainAndSnow,
 	SCWeatherConditionMixedRainAndSleet,
 	SCWeatherConditionMixedSnowAndSleet,
-	SCWeatherConditionFexxingDrizzle,
+	SCWeatherConditionFixingDrizzle,
 	SCWeatherConditionDrizzle,
 	SCWeatherConditionFreezingRain,
 	SCWeatherConditionShowers,
@@ -70,9 +70,9 @@ typedef enum {
 @property (nonatomic, strong)	NSString *WOEID;
 @property (nonatomic, assign)	A3WeatherUnit unit;
 @property (nonatomic, assign)	A3WeatherCondition condition;
-@property (nonatomic, assign)	int currentTemperature;
-@property (nonatomic, assign)	int highTemperature;
-@property (nonatomic, assign)	int lowTemperature;
+@property (nonatomic, assign)	NSInteger currentTemperature;
+@property (nonatomic, assign)	NSInteger highTemperature;
+@property (nonatomic, assign)	NSInteger lowTemperature;
 @property (nonatomic, strong)	NSString *description;
 
 @end

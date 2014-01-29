@@ -24,30 +24,6 @@
     return self;
 }
 
-- (void)setBounds:(CGRect)bounds {
-	[super setBounds:bounds];
-
-	self.layer.cornerRadius = bounds.size.width * 0.5f;
-
-	if(self.position == ClockWaveLocationBig)
-	{
-		[self.textLabel setFont:self.bigFont];
-	}
-	else
-	{
-		[self.textLabel setFont:self.smallFont];
-	}
-
-	if (self.isShowWave) {
-		[self setFillPercent:self.fillPercent];
-	} else {
-		self.textLabelCenterY.offset(bounds.size.height / 2);
-		[self.textLabel setTextColor:self.superview.backgroundColor];
-	}
-
-	[self layoutIfNeeded];
-}
-
 - (void)setTemperature:(int)aTemperature
 {
 	self.textLabel.text = [NSString stringWithFormat:@"%dº", aTemperature];

@@ -17,6 +17,7 @@
 
 + (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
+	FNLOGRECT(bounds);
 	if (IS_LANDSCAPE) {
 		CGFloat width = bounds.size.width;
 		bounds.size.width = bounds.size.height;
