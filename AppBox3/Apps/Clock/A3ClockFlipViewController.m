@@ -387,7 +387,7 @@
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
-	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:NO ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
