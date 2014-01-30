@@ -23,7 +23,7 @@
 	NSUInteger _selectedColorIndex;
 }
 
-NSString *kCellID = @"Cell";                          // UICollectionViewCell storyboard id
+NSString *const kCellID = @"Cell";                          // UICollectionViewCell
 
 - (void)awakeFromNib {
 	[super awakeFromNib];

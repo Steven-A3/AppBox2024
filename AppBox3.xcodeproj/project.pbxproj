@@ -72,7 +72,7 @@
 		680886D31891751B0093FD97 /* A3ChooseColorPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AA1891751B0093FD97 /* A3ChooseColorPhone.m */; };
 		680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AC1891751B0093FD97 /* A3ClockDataManager.m */; };
 		680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */; };
-		680886D61891751B0093FD97 /* A3ClockFoldingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B01891751B0093FD97 /* A3ClockFoldingView.m */; };
+		680886D61891751B0093FD97 /* A3SBTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B01891751B0093FD97 /* A3SBTickerView.m */; };
 		680886D71891751B0093FD97 /* A3ClockFoldPaperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B21891751B0093FD97 /* A3ClockFoldPaperView.m */; };
 		680886D81891751B0093FD97 /* A3ClockInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B41891751B0093FD97 /* A3ClockInfo.m */; };
 		680886D91891751B0093FD97 /* A3ClockLEDBGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B61891751B0093FD97 /* A3ClockLEDBGLayer.m */; };
@@ -643,8 +643,8 @@
 		680886AC1891751B0093FD97 /* A3ClockDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockDataManager.m; sourceTree = "<group>"; };
 		680886AD1891751B0093FD97 /* A3ClockFlipViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockFlipViewController.h; sourceTree = "<group>"; };
 		680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockFlipViewController.m; sourceTree = "<group>"; };
-		680886AF1891751B0093FD97 /* A3ClockFoldingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockFoldingView.h; sourceTree = "<group>"; };
-		680886B01891751B0093FD97 /* A3ClockFoldingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockFoldingView.m; sourceTree = "<group>"; };
+		680886AF1891751B0093FD97 /* A3SBTickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SBTickerView.h; sourceTree = "<group>"; };
+		680886B01891751B0093FD97 /* A3SBTickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SBTickerView.m; sourceTree = "<group>"; };
 		680886B11891751B0093FD97 /* A3ClockFoldPaperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockFoldPaperView.h; sourceTree = "<group>"; };
 		680886B21891751B0093FD97 /* A3ClockFoldPaperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockFoldPaperView.m; sourceTree = "<group>"; };
 		680886B31891751B0093FD97 /* A3ClockInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockInfo.h; sourceTree = "<group>"; };
@@ -1459,8 +1459,8 @@
 				680886AC1891751B0093FD97 /* A3ClockDataManager.m */,
 				680886AD1891751B0093FD97 /* A3ClockFlipViewController.h */,
 				680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */,
-				680886AF1891751B0093FD97 /* A3ClockFoldingView.h */,
-				680886B01891751B0093FD97 /* A3ClockFoldingView.m */,
+				680886AF1891751B0093FD97 /* A3SBTickerView.h */,
+				680886B01891751B0093FD97 /* A3SBTickerView.m */,
 				680886B11891751B0093FD97 /* A3ClockFoldPaperView.h */,
 				680886B21891751B0093FD97 /* A3ClockFoldPaperView.m */,
 				680886B31891751B0093FD97 /* A3ClockInfo.h */,
@@ -3229,7 +3229,7 @@
 				687D0D0B17CAE519005AB571 /* HolidayData+America.m in Sources */,
 				6882801F17E5E8DB000D8069 /* A3HolidaysPageViewController.m in Sources */,
 				17D42AB37E797611D81FEC25 /* A3ComparisonView.m in Sources */,
-				680886D61891751B0093FD97 /* A3ClockFoldingView.m in Sources */,
+				680886D61891751B0093FD97 /* A3SBTickerView.m in Sources */,
 				6829685018503B2100B70E13 /* iCloudMagicalRecordStack.m in Sources */,
 				68953488178686AF007061CA /* UIView+Screenshot.m in Sources */,
 				68E6F34D17B25F5F00F10ED9 /* A3CurrencyChartViewController.m in Sources */,

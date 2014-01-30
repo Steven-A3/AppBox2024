@@ -15,7 +15,7 @@
 @property(nonatomic, strong) UIColor* clrSelected;
 @property(nonatomic, weak) id<A3ChooseColorDelegate> delegate;
 
-+ (A3ChooseColor *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colos selectedIndex:(NSUInteger)selectedIndex;
++ (A3ChooseColor *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController inView:(UIView *)view colors:(NSArray *)colos selectedIndex:(NSUInteger)selectedIndex;
 + (A3ChooseColor *)chooseColorFlipInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors;
 + (A3ChooseColor *)chooseColorLED:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors;
 

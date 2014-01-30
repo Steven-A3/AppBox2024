@@ -51,10 +51,14 @@ NSString *const A3ClockShowAMPM                             = @"A3ClockShowAMPM"
 NSString *const A3ClockShowTheDayOfTheWeek                  = @"A3ClockShowTheDayOfTheWeek";
 NSString *const A3ClockShowDate                             = @"A3ClockShowDate";
 NSString *const A3ClockShowWeather                          = @"A3ClockShowWeather";
-NSString *const A3ClockUsesFahrenheit = @"A3ClockUsesFahrenheit";
+NSString *const A3ClockUsesFahrenheit 						= @"A3ClockUsesFahrenheit";
 NSString *const A3ClockWaveClockColor						= @"A3ClockWaveClockColor";
 NSString *const A3ClockWaveClockColorIndex					= @"A3ClockWaveClockColorIndex";
 NSString *const A3ClockWaveCircleLayout						= @"A3ClockWaveCircleLayout";	// Array of circle type
+NSString *const A3ClockFlipDarkColor						= @"A3ClockFlipDarkColor";
+NSString *const A3ClockFlipDarkColorIndex					= @"A3ClockFlipDarkColorIndex";
+NSString *const A3ClockFlipLightColor						= @"A3ClockFlipLightColor";
+NSString *const A3ClockFlipLightColorIndex					= @"A3ClockFlipLightColorIndex";
 
 CGFloat dash_line_pattern[] = {2.0f, 2.0f};
 

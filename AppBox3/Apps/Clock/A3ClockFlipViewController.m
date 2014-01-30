@@ -11,49 +11,58 @@
 #import "A3ClockFlipViewController.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UIDevice.h"
+#import "A3ClockFoldPaperView.h"
 
 #define kColorClockFlipLabel [UIColor colorWithRed:142.f/255.f green:142.f/255.f blue:147.f/255.f alpha:1.f]
 
 @interface A3ClockFlipViewController ()
-@property (nonatomic, strong) A3ClockFoldingView * foldHour;
-@property (nonatomic, strong) A3ClockFoldingView * foldMinute;
-@property (nonatomic, strong) A3ClockFoldingView * foldSecond;
+
+@property (nonatomic, strong) A3SBTickerView *hourView;
+@property (nonatomic, strong) A3SBTickerView *minuteView;
+@property (nonatomic, strong) A3SBTickerView *secondView;
+
 @property (nonatomic, strong) UILabel* lbAMPM;
 
-@property (nonatomic, strong) 	UILabel* lbWeekMonthDay;
-@property (nonatomic, strong) 	UILabel* lbWeather;
-@property (nonatomic, strong) 	UILabel* lbTemperature;
+@property (nonatomic, strong) UILabel* lbWeekMonthDay;
+@property (nonatomic, strong) UILabel* lbWeather;
+@property (nonatomic, strong) UILabel* lbTemperature;
 
-@property (nonatomic, strong) 	UILabel* lbWeatherRainRst;
-@property (nonatomic, strong) 	UILabel* lbWeatherHumidityRst;
-@property (nonatomic, strong) 	UILabel* lbWeatherHighRst;
-@property (nonatomic, strong) 	UILabel* lbWeatherLowRst;
+@property (nonatomic, strong) UILabel* lbWeatherRainRst;
+@property (nonatomic, strong) UILabel* lbWeatherHumidityRst;
+@property (nonatomic, strong) UILabel* lbWeatherHighRst;
+@property (nonatomic, strong) UILabel* lbWeatherLowRst;
 
-@property (nonatomic, strong) 	UILabel* lbWeatherRain;
-@property (nonatomic, strong) 	UILabel* lbWeatherHumidity;
-@property (nonatomic, strong) 	UILabel* lbWeatherHigh;
-@property (nonatomic, strong) 	UILabel* lbWeatherLow;
+@property (nonatomic, strong) UILabel* lbWeatherRain;
+@property (nonatomic, strong) UILabel* lbWeatherHumidity;
+@property (nonatomic, strong) UILabel* lbWeatherHigh;
+@property (nonatomic, strong) UILabel* lbWeatherLow;
 
 @end
 
 @implementation A3ClockFlipViewController
 
+- (instancetype)initWithClockDataManager:(A3ClockDataManager *)clockDataManager style:(A3ClockFlipViewStyle) style {
+	self = [super initWithClockDataManager:clockDataManager];
+	if (self) {
+		[self setStyle:style];
+	}
+
+	return self;
+}
+
+- (void)setStyle:(A3ClockFlipViewStyle)style {
+	_style = style;
+	if (style == A3ClockFlipViewStyleDark) {
+		[self.view setBackgroundColor:[UIColor colorWithRed:23.f / 255.f green:23.f / 255.f blue:24.f / 255.f alpha:1.f]];
+	} else {
+		[self.view setBackgroundColor:[UIColor colorWithRed:239.f / 255.f green:239.f / 255.f blue:244.f / 255.f alpha:1.f]];
+	}
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	_foldHour = [[A3ClockFoldingView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
-	[self.view addSubview:_foldHour];
-	[_foldHour setCenter:self.view.center];
-
-	_foldMinute = [[A3ClockFoldingView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
-	[self.view addSubview:_foldMinute];
-	[_foldMinute setCenter:self.view.center];
-
-	_foldSecond = [[A3ClockFoldingView alloc] initWithFrame:CGRectMake(0, 0, 90, 90)];
-	[self.view addSubview:_foldSecond];
-	[_foldSecond setCenter:self.view.center];
 
 	_lbAMPM = [[UILabel alloc] init];
-	_lbAMPM.text = @"다다다";
 	_lbAMPM.textAlignment = NSTextAlignmentLeft;
 	[_lbAMPM setFont:[UIFont fontWithName:kClockFontNameRegular size:14]];
 	[_lbAMPM setTextColor:kColorClockFlipLabel];
@@ -169,11 +178,16 @@
 		make.bottom.equalTo(self.view.bottom).with.offset(-14);
 	}];
 
-	[self setupSubviews];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self layoutSubviews];
 }
 
 #pragma mark public
-- (void)setupSubviews {
+- (void)layoutSubviews {
     if([[NSUserDefaults standardUserDefaults] clockShowWeather])
     {
         _lbWeather.hidden = NO;
@@ -202,93 +216,184 @@
         _lbWeatherHigh.hidden = YES;
         _lbWeatherLow.hidden = YES;
     }
-    
-    
-//    CGRect rctPre = self.frame;
-    [_foldHour removeConstraints:_foldHour.constraints];
-    [_foldMinute removeConstraints:_foldMinute.constraints];
-    [_foldSecond removeConstraints:_foldSecond.constraints];
-    
-    [_foldHour removeFromSuperview];
-    [_foldMinute removeFromSuperview];
-    [_foldSecond removeFromSuperview];
-    [self.view addSubview:_foldHour];
-    [self.view addSubview:_foldMinute];
-    [self.view addSubview:_foldSecond];
-    
-    if(IS_IPHONE)
-    {
-        if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds])
-        {
-            [_foldHour setFrame:CGRectMake(0, 0, 90, 90)];
-            [_foldMinute setFrame:CGRectMake(0, 0, 90, 90)];
-            [_foldHour setFrame:CGRectMake(0, 0, 90, 90)];
-            
-            [_foldMinute makeConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(self.view.centerX).with.offset(0);
-                make.centerY.equalTo(self.view.centerY).with.offset(0);
-                make.width.equalTo(@90);
-                make.height.equalTo(@90);
-            }];
-            
-            [_foldHour makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(_foldMinute.centerY).with.offset(0);
-                make.right.equalTo(_foldMinute.left).with.offset(-10);
-                make.width.equalTo(@90);
-                make.height.equalTo(@90);
-            }];
-            
-            [_foldSecond makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(_foldMinute.centerY).with.offset(0);
-                make.left.equalTo(_foldMinute.right).with.offset(10);
-                make.width.equalTo(@90);
-                make.height.equalTo(@90);
-            }];
-        }
-        else
-        {// 크기가 안변한다.... 변한다.
-            [_foldHour setFrame:CGRectMake(0, 0, 140, 140)];
-            [_foldMinute setFrame:CGRectMake(0, 0, 140, 140)];
-            
-            [_foldHour makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(self.view.centerY).with.offset(0);
-                make.left.equalTo(self.view.left).with.offset(16);
-                make.width.equalTo(@140);
-                make.height.equalTo(@140);
-            }];
-            
-            [_foldMinute makeConstraints:^(MASConstraintMaker *make) {
-                make.centerY.equalTo(self.view.centerY).with.offset(0);
-                make.right.equalTo(self.view.right).with.offset(-16);
-                make.width.equalTo(@140);
-                make.height.equalTo(@140);
-            }];
-        }
-        
-        [_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_foldHour.left).with.offset(10);
-            make.bottom.equalTo(_foldHour.top).with.offset(-8);
-        }];
-    }
-    
-    if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds])
-    {
-        [_foldSecond setHidden:NO];
-    }
-    else
-    {
-        [_foldSecond setHidden:YES];
-    }
+
+    [self.view addSubview:self.hourView];
+    [self.view addSubview:self.minuteView];
+	if ([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
+		[self.view addSubview:self.secondView];
+	} else if (_secondView) {
+		[_secondView removeFromSuperview];
+		_secondView = nil;
+	}
+	[_hourView removeConstraints:_hourView.constraints];
+	[_minuteView removeConstraints:_minuteView.constraints];
+	[_secondView removeConstraints:_secondView.constraints];
+
+	CGFloat boxSize, interimSpace;
+	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	if (IS_IPHONE) {
+		if (IS_PORTRAIT) {
+			boxSize = showSeconds ? 90 : 140;
+		} else {
+			boxSize = showSeconds ? 140 : 195;
+		}
+		interimSpace = 10;
+	} else {
+		if (IS_PORTRAIT) {
+			boxSize = showSeconds ? 200 : 284;
+			interimSpace = 20;
+		} else {
+			boxSize = showSeconds ? 284 : 360;
+			interimSpace = showSeconds ? 20 : 30;
+		}
+	}
+
+	if(showSeconds)
+	{
+		[_minuteView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.centerX);
+			make.centerY.equalTo(self.view.centerY);
+			make.width.equalTo(@(boxSize));
+			make.height.equalTo(@(boxSize));
+		}];
+
+		[_hourView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(_minuteView.centerY);
+			make.right.equalTo(_minuteView.left).with.offset(-1 * interimSpace);
+			make.width.equalTo(@(boxSize));
+			make.height.equalTo(@(boxSize));
+		}];
+
+		[_secondView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(_minuteView.centerY);
+			make.left.equalTo(_minuteView.right).with.offset(interimSpace);
+			make.width.equalTo(@(boxSize));
+			make.height.equalTo(@(boxSize));
+		}];
+		[self setTimeFont:_hourView isForSecond:NO];
+		[self setTimeFont:_minuteView isForSecond:NO];
+		[self setTimeFont:_secondView isForSecond:YES];
+	}
+	else
+	{
+		[_hourView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(self.view.centerY);
+			make.centerX.equalTo(self.view.centerX).with.offset(-1 * (boxSize + interimSpace / 2));
+			make.width.equalTo(@(boxSize));
+			make.height.equalTo(@(boxSize));
+		}];
+
+		[_minuteView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(self.view.centerY);
+			make.centerX.equalTo(self.view.centerX).with.offset(boxSize + interimSpace / 2);
+			make.width.equalTo(@(boxSize));
+			make.height.equalTo(@(boxSize));
+		}];
+		[self setTimeFont:_hourView isForSecond:NO];
+		[self setTimeFont:_minuteView isForSecond:NO];
+	}
+
+	[_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_hourView.left).with.offset(10);
+		make.bottom.equalTo(_hourView.top).with.offset(-8);
+	}];
+
+	[self.view layoutIfNeeded];
+}
+
+- (void)setTimeFont:(SBTickerView *)tickerView isForSecond:(BOOL)isForSecond {
+	A3ClockFoldPaperView *frontView = (A3ClockFoldPaperView *)tickerView.frontView;
+	A3ClockFoldPaperView *backView = (A3ClockFoldPaperView *)tickerView.backView;
+	CGFloat fontSize;
+	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+	if (IS_IPHONE) {
+		if (IS_PORTRAIT) {
+			fontSize = showSeconds ? 64 : 112;
+			frontView.layer.cornerRadius = 5;
+		} else {
+			fontSize = showSeconds ? 112 : 156;
+			frontView.layer.cornerRadius = showSeconds ? 5 : 8;
+		}
+	} else {
+		if (IS_PORTRAIT) {
+			fontSize = showSeconds ? 64 : 112;
+			frontView.layer.cornerRadius = showSeconds ? 11 : 16;
+		} else {
+			fontSize = showSeconds ? 150 : 214;
+			frontView.layer.cornerRadius = showSeconds ? 16 : 20;
+		}
+	}
+	UIFont *font = isForSecond ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:fontSize] : [UIFont boldSystemFontOfSize:fontSize];
+	frontView.textLabel.font = font;
+	backView.textLabel.font = font;
+
+	if (self.style == A3ClockFlipViewStyleDark) {
+		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : [UIColor whiteColor];
+		frontView.textLabel.textColor = color;
+		backView.textLabel.textColor = color;
+		UIColor *backgroundColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColor];
+		frontView.backgroundColor = backgroundColor;
+		backView.backgroundColor = backgroundColor;
+	} else {
+		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : [UIColor blackColor];
+		frontView.textLabel.textColor = color;
+		backView.textLabel.textColor = color;
+		UIColor *backgroundColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColor];
+		frontView.backgroundColor = backgroundColor;
+		backView.backgroundColor = backgroundColor;
+	}
+}
+
+- (A3ClockFoldPaperView *)foldingLabel {
+	A3ClockFoldPaperView *foldingLabel = [A3ClockFoldPaperView new];
+	foldingLabel.viewCenter.backgroundColor = self.view.backgroundColor;
+	return foldingLabel;
+}
+
+- (A3SBTickerView *)tickerView {
+	A3SBTickerView *tickerView = [A3SBTickerView new];
+	[tickerView setDuration:0.4];
+	[tickerView setFrontView:[self foldingLabel]];
+	[tickerView setBackView:[self foldingLabel]];
+
+	return tickerView;
+}
+
+- (SBTickerView *)hourView {
+	if (!_hourView) {
+		_hourView = [self tickerView];
+	}
+	return _hourView;
+}
+
+- (SBTickerView *)minuteView {
+	if (!_minuteView) {
+		_minuteView = [self tickerView];
+	}
+	return _minuteView;
+}
+
+- (SBTickerView *)secondView {
+	if (!_secondView) {
+		_secondView = [self tickerView];
+	}
+	return _secondView;
+}
+
+- (void)tickTime:(SBTickerView *)tickerView withText:(NSString *)text animated:(BOOL)animated {
+	A3ClockFoldPaperView *backView = (A3ClockFoldPaperView *) tickerView.backView;
+	backView.textLabel.text = text;
+	[tickerView tick:SBTickerViewTickDirectionDown animated:animated completion:nil];
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
-
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:NO ];
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	[_foldHour foldingWithText:clockInfo.hour];
-	[_foldMinute foldingWithText:clockInfo.minute];
-	[_foldSecond foldingWithText:clockInfo.second];
+	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.hour] animated:YES ];
+	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.minute] animated:YES ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
 
 	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
@@ -310,7 +415,6 @@
 	_lbWeather.text = clockInfo.currentWeather.description;
 	_lbTemperature.text = [NSString stringWithFormat:@"%dº", clockInfo.currentWeather.currentTemperature];
 
-
 	_lbWeatherRainRst.text = @"12%";
 	_lbWeatherRain.text = @"Chance of rain";
 
@@ -322,6 +426,31 @@
 
 	_lbWeatherLowRst.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.lowTemperature];
 	_lbWeatherLow.text = @"Low";
+}
+
+- (void)setTime:(SBTickerView *)tickerView withText:(NSString *)text {
+	A3ClockFoldPaperView *frontView = (A3ClockFoldPaperView *) tickerView.frontView;
+	frontView.textLabel.text = text;
+	A3ClockFoldPaperView *backView = (A3ClockFoldPaperView *) tickerView.backView;
+	backView.textLabel.text = text;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	[self.clockDataManager stopTimer];
+
+	[self setTime:_hourView withText:@""];
+	[self setTime:_minuteView withText:@""];
+	[self setTime:_secondView withText:@""];
+
+	[self layoutSubviews];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+	[super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+	[self.clockDataManager startTimer];
 }
 
 

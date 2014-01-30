@@ -285,4 +285,20 @@
 	}
 }
 
+- (UIColor *)clockFlipDarkColor {
+	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipDarkColor];
+	if (data) {
+		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
+	return [UIColor blackColor];
+}
+
+- (UIColor *)clockFlipLightColor {
+	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipLightColor];
+	if (data) {
+		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
+	return [UIColor whiteColor];
+}
+
 @end

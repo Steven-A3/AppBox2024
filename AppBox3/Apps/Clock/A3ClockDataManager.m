@@ -151,10 +151,7 @@
 	_clockInfo.second = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"a"];
-	if(![[NSUserDefaults standardUserDefaults] clockUse24hourClock])
-		_clockInfo.AMPM = [formatter stringFromDate:currentTime];
-	else
-		_clockInfo.AMPM = @"";
+	_clockInfo.AMPM = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"dd"];
 	_clockInfo.day = [formatter stringFromDate:currentTime];

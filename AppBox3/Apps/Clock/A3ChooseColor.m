@@ -19,35 +19,37 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+
     }
     return self;
 }
 
 
-+ (A3ChooseColor *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex {
++ (A3ChooseColor *)chooseColorWaveInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController inView:(UIView *)view colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex {
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	CGRect frame = screenBounds;
 	frame.origin.y = screenBounds.size.height;
-	frame.size.height = 172;
+	frame.size.height = IS_IPHONE ? 172 : 280;
 
-	A3ChooseColorPhone *view = [[A3ChooseColorPhone alloc] initWithFrame:frame colors:colors selectedIndex:selectedIndex];
-    view.delegate = targetViewController;
+	A3ChooseColorPhone *chooseColorView = [[A3ChooseColorPhone alloc] initWithFrame:frame colors:colors selectedIndex:selectedIndex];
+    chooseColorView.delegate = targetViewController;
 
-	[targetViewController.view addSubview:view];
+	[view addSubview:chooseColorView];
 
 	[UIView animateWithDuration:0.3 animations:^{
-		CGRect frame = view.frame;
+		CGRect frame = chooseColorView.frame;
 		frame.origin.y -= frame.size.height;
-		view.frame = frame;
+		chooseColorView.frame = frame;
 	} completion:^(BOOL finished) {
-		[view makeConstraints:^(MASConstraintMaker *make) {
-			make.bottom.equalTo(targetViewController.view.bottom);
-			make.width.equalTo(targetViewController.view.width);
-			make.height.equalTo(@172.f);
+		[chooseColorView makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(view.left);
+			make.right.equalTo(view.right);
+			make.bottom.equalTo(view.bottom);
+			make.height.equalTo(@(frame.size.height));
 		}];
 	}];
 
-    return view;
+    return chooseColorView;
 }
 
 + (A3ChooseColor *)chooseColorFlipInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors {

@@ -10,7 +10,8 @@
 
 @interface A3ClockFoldPaperView : UIView
 
-@property(nonatomic, strong) UILabel* lbTime;
+@property(nonatomic, strong) UILabel *textLabel;
 
+@property (nonatomic, strong) UIView* viewCenter;
 
 @end

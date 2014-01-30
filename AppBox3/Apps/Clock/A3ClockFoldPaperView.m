@@ -12,8 +12,6 @@
 
 @interface A3ClockFoldPaperView ()
 
-@property (nonatomic, strong) UIView* viewCenter;
-
 @end
 
 @implementation A3ClockFoldPaperView
@@ -22,54 +20,32 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.lbTime = [[UILabel alloc] initWithFrame:self.bounds];
-        [self.lbTime setBackgroundColor:[UIColor clearColor]];
-        [self.lbTime setTextColor:[UIColor blackColor]];
-        [self.lbTime setTextAlignment:NSTextAlignmentCenter];
+        self.textLabel = [[UILabel alloc] initWithFrame:self.bounds];
+        [self.textLabel setTextColor:[UIColor whiteColor]];
+        [self.textLabel setTextAlignment:NSTextAlignmentCenter];
         
-        if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds])
-            [self.lbTime setFont:[UIFont fontWithName:kClockFontNameMedium size:64.f]];
-        else
-            [self.lbTime setFont:[UIFont fontWithName:kClockFontNameMedium size:112.f]];
-        [self addSubview:self.lbTime];
-        [self.lbTime makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.centerX);
-            make.centerY.equalTo(self.centerY);
-            make.width.equalTo(self.width);
-            make.height.equalTo(self.height);
-        }];
-        
-        
-        _viewCenter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 2)];
-        [_viewCenter setBackgroundColor:[UIColor whiteColor]];
+		[self addSubview:self.textLabel];
+
+        [self.textLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.centerX);
+			make.centerY.equalTo(self.centerY);
+		}];
+
+        _viewCenter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 1)];
         [self addSubview:_viewCenter];
-        [_viewCenter setCenter:CGPointMake(self.frame.size.width*0.5, self.frame.size.height* 0.5)];
+
         [_viewCenter makeConstraints:^(MASConstraintMaker *make) {
             make.centerX.equalTo(self.centerX);
             make.centerY.equalTo(self.centerY);
             make.width.equalTo(self.width);
             make.height.equalTo(@2);
         }];
-        
-        
+
         self.layer.cornerRadius = 5;
         self.layer.masksToBounds = YES;
-        
-        [self setBackgroundColor:[UIColor blueColor]];
     }
     return self;
     
-}
-
-- (void)setFrame:(CGRect)frame
-{
-    [super setFrame:frame];
-    
-    if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
-		[self.lbTime setFont:[UIFont fontWithName:kClockFontNameMedium size:64]];
-	} else {
-		[self.lbTime setFont:[UIFont fontWithName:kClockFontNameMedium size:112]];
-	}
 }
 
 @end

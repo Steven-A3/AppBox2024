@@ -55,5 +55,9 @@ extern NSString *const A3ClockUsesFahrenheit;
 extern NSString *const A3ClockWaveClockColor;
 extern NSString *const A3ClockWaveClockColorIndex;
 extern NSString *const A3ClockWaveCircleLayout;
+extern NSString *const A3ClockFlipDarkColor;
+extern NSString *const A3ClockFlipDarkColorIndex;
+extern NSString *const A3ClockFlipLightColor;
+extern NSString *const A3ClockFlipLightColorIndex;
 
 #endif

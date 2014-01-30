@@ -20,7 +20,7 @@
 
 #define kCntPage 4.0
 
-@interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, UIScrollViewDelegate>
+@interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIButton *appsButton;
@@ -62,7 +62,6 @@
 
 	_appsButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[_appsButton setTitle:@"Apps" forState:UIControlStateNormal];
-	FNLOG(@"%0.f", _appsButton.titleLabel.font.pointSize);
 	_appsButton.titleLabel.font = [UIFont systemFontOfSize:17];
 	[_appsButton sizeToFit];
 	[_appsButton addTarget:self action:@selector(appsButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -106,7 +105,7 @@
     [self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapMainView)];
-	[self.view addGestureRecognizer:tapGestureRecognizer];
+	[self.scrollView addGestureRecognizer:tapGestureRecognizer];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -130,8 +129,6 @@
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
 	}
-
-	FNLOGRECT(self.view.frame);
 }
 
 - (void)settingsChanged {
@@ -199,25 +196,20 @@
 	if (!_clockWaveViewController) {
 		_clockWaveViewController = [[A3ClockWaveViewController alloc] initWithClockDataManager:self.clockDataManager];
 		_clockWaveViewController.clockDataManager = self.clockDataManager;
-		_clockWaveViewController.view.frame = _scrollView.bounds;
 	}
 	return _clockWaveViewController;
 }
 
 - (A3ClockFlipViewController *)clockFlipDarkViewController {
 	if (!_clockFlipDarkViewController) {
-		_clockFlipDarkViewController = [[A3ClockFlipViewController alloc] initWithClockDataManager:self.clockDataManager];
-		[_clockFlipDarkViewController.view setCenter:CGPointMake(self.clockWaveViewController.view.center.x + self.scrollView.frame.size.width, self.clockWaveViewController.view.center.y)];
-		[_clockFlipDarkViewController.view setBackgroundColor:[UIColor colorWithRed:23.f / 255.f green:23.f / 255.f blue:24.f / 255.f alpha:1.f]];
+		_clockFlipDarkViewController = [[A3ClockFlipViewController alloc] initWithClockDataManager:self.clockDataManager style:A3ClockFlipViewStyleDark];
 	}
 	return _clockFlipDarkViewController;
 }
 
 - (A3ClockFlipViewController *)clockFlipBrightViewController {
 	if (!_clockFlipBrightViewController) {
-		_clockFlipBrightViewController = [[A3ClockFlipViewController alloc] initWithClockDataManager:self.clockDataManager];
-		[_clockFlipBrightViewController.view setCenter:CGPointMake(self.clockFlipDarkViewController.view.center.x + self.scrollView.frame.size.width, self.clockWaveViewController.view.center.y)];
-		[_clockFlipBrightViewController.view setBackgroundColor:[UIColor colorWithRed:239.f / 255.f green:239.f / 255.f blue:244.f / 255.f alpha:1.f]];
+		_clockFlipBrightViewController = [[A3ClockFlipViewController alloc] initWithClockDataManager:self.clockDataManager style:A3ClockFlipViewStyleLight];
 	}
 	return _clockFlipBrightViewController;
 }
@@ -225,7 +217,6 @@
 - (A3ClockLEDViewController *)clockLEDViewController {
 	if (!_clockLEDViewController) {
 		_clockLEDViewController = [[A3ClockLEDViewController alloc] initWithClockDataManager:self.clockDataManager];
-		[_clockLEDViewController.view setCenter:CGPointMake(self.clockFlipBrightViewController.view.center.x + self.scrollView.frame.size.width, self.clockWaveViewController.view.center.y)];
 	}
 	return _clockLEDViewController;
 }
@@ -272,17 +263,14 @@
 		}
 	}
 
-	[UIView animateWithDuration:0.3 animations:^{
-		CGRect frame = _chooseColorView.frame;
-		frame.origin.y += frame.size.height;
-		_chooseColorView.frame = frame;
-	} completion:^(BOOL finished) {
-		[_chooseColorView removeFromSuperview];
-		_chooseColorView = nil;
-	}];
+	[self hideChooseColorView];
 }
 
 - (void)chooseColorDidCancel {
+	[self hideChooseColorView];
+}
+
+- (void)hideChooseColorView {
 	[UIView animateWithDuration:0.3
 					 animations:^{
 						 CGRect frame = _chooseColorView.frame;
@@ -303,6 +291,7 @@
 		case 0:
 			colors = [self.clockDataManager waveColors];
 			_chooseColorView = [A3ChooseColor chooseColorWaveInViewController:self
+																	   inView:self.view
 																	   colors:colors
 																selectedIndex:(NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockWaveClockColorIndex]];
 			break;
@@ -364,8 +353,10 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender {
-    CGFloat pageWidth = _scrollView.frame.size.width;
-    _pageControl.currentPage = (NSInteger) (((_scrollView.contentOffset.x - pageWidth / kCntPage) / pageWidth) + 1);
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGFloat pageWidth = screenBounds.size.width;
+
+    _pageControl.currentPage = (NSInteger) floorf(_scrollView.contentOffset.x / pageWidth);
     
     [self showMenus:NO];
 }
@@ -388,6 +379,11 @@
 	return UIInterfaceOrientationMaskAll;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+}
+
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
@@ -396,13 +392,14 @@
 
 - (void)layoutSubview {
 	CGRect bounds = self.view.bounds;
-	FNLOGRECT(bounds);
 
-	_scrollView.contentSize = CGSizeMake(bounds.size.width * 4, bounds.size.height);
 	[self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
 		CGRect frame = CGRectMake(bounds.size.width * idx, 0, bounds.size.width, bounds.size.height);
 		viewController.view.frame = frame;
 	}];
+	_scrollView.contentOffset = CGPointMake(bounds.size.width * _pageControl.currentPage, 0);
+	_scrollView.contentSize = CGSizeMake(bounds.size.width * 4, bounds.size.height);
+
 	if (IS_IPHONE && IS_LANDSCAPE) {
 		_appsButtonTop.with.offset(5);
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];

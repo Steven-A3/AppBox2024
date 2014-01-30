@@ -687,7 +687,7 @@
 
 	[_circleArray exchangeObjectAtIndex:(NSUInteger) circleView.tag withObjectAtIndex:0];
 
-	NSMutableArray *circleArrayToSave = [_circleArray copy];
+	NSMutableArray *circleArrayToSave = [_circleArray mutableCopy];
 	if (_needToShowWeatherView && !_weatherInfoAvailable) {
 		NSUInteger idx = [circleArrayToSave indexOfObjectIdenticalTo:@(A3ClockWaveCircleTypeWeather) inRange:NSMakeRange(0, [circleArrayToSave count])];
 		if (idx == NSNotFound) {

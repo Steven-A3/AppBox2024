@@ -1,5 +1,5 @@
 //
-//  A3ClockFoldingView.h
+//  A3SBTickerView.h
 //  A3TeamWork
 //
 //  Created by Sanghyun Yu on 2013. 11. 27..
@@ -9,10 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "SBTickerView.h"
 
-@class A3ClockInfo;
-
-@interface A3ClockFoldingView : SBTickerView
-
-- (void)foldingWithText:(NSString*)aText;
+@interface A3SBTickerView : SBTickerView
 
 @end
