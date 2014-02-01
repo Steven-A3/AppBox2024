@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
-typedef enum {
-	SCWeatherUnitCelsius = 0,
+typedef NS_ENUM(NSUInteger, A3WeatherUnit) {
+	SCWeatherUnitNone = 0,
+	SCWeatherUnitCelsius = 1,
 	SCWeatherUnitFahrenheit,
-} A3WeatherUnit;
+};
 
 typedef enum {
 	SCWeatherConditionTornado = 0,

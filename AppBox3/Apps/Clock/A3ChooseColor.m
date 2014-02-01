@@ -52,39 +52,6 @@
     return chooseColorView;
 }
 
-+ (A3ChooseColor *)chooseColorFlipInViewController:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors {
-    A3ChooseColorPhone* choClr = [[A3ChooseColorPhone alloc] initWithFrame:CGRectMake(0, 0, 320.f, 172.f)];
-    [targetViewController.view addSubview:choClr];
-    [choClr makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(targetViewController.view.bottom).with.offset(0);
-        make.left.equalTo(targetViewController.view.left).with.offset(0);
-        make.right.equalTo(targetViewController.view.right).with.offset(0);
-    }];
-    
-    return choClr;
-}
-
-+ (A3ChooseColor *)chooseColorLED:(UIViewController <A3ChooseColorDelegate> *)targetViewController colors:(NSArray *)colors {
-    A3ChooseColorPhone* choClr = [[A3ChooseColorPhone alloc] initWithFrame:CGRectMake(0, 0, 320.f, 172.f)];
-    [targetViewController.view addSubview:choClr];
-    [choClr makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(targetViewController.view.bottom).with.offset(0);
-		make.left.equalTo(targetViewController.view.left).with.offset(0);
-        make.right.equalTo(targetViewController.view.right).with.offset(0);
-    }];
-    
-    return choClr;
-}
-
-
-- (void)colorButtonAction:(UIButton *)colorButton
-{
-	id <A3ChooseColorDelegate> o = self.delegate;
-	if ([o respondsToSelector:@selector(chooseColorDidSelect:selectedIndex:)]) {
-		[o chooseColorDidSelect:colorButton.backgroundColor selectedIndex:(NSUInteger) colorButton.tag];
-	}
-}
-
 - (void)closeButtonAction
 {
 	id <A3ChooseColorDelegate> o = self.delegate;

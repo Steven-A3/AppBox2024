@@ -52,7 +52,6 @@
 @implementation A3ClockWaveViewController {
 	BOOL _showTimeSeparator;
 	BOOL _needToShowWeatherView;
-	BOOL _weatherInfoAvailable;
 	NSUInteger _weatherCircleIndex;
 }
 
@@ -807,14 +806,6 @@
 	}
 }
 
-NSInteger fahrenheitToCelsius(NSInteger celsius) {
-	return (NSInteger) roundf((celsius - 32) * 5.0 / 9.0);
-}
-
-NSInteger celsiusToFahrenheit(NSInteger fahrenheit) {
-	return (NSInteger) roundf((fahrenheit * 9.0 / 5.0) + 32);
-}
-
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
 	if (!_weatherInfoAvailable) {
 		_weatherInfoAvailable = YES;
@@ -830,15 +821,9 @@ NSInteger celsiusToFahrenheit(NSInteger fahrenheit) {
 	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
 		// convert fahrenheit to celsius
 		clockInfo.currentWeather.unit = SCWeatherUnitCelsius;
-		clockInfo.currentWeather.highTemperature = fahrenheitToCelsius(clockInfo.currentWeather.highTemperature);
-		clockInfo.currentWeather.currentTemperature = fahrenheitToCelsius(clockInfo.currentWeather.currentTemperature);
-		clockInfo.currentWeather.lowTemperature = fahrenheitToCelsius(clockInfo.currentWeather.lowTemperature);
 	} else if (clockInfo.currentWeather.unit == SCWeatherUnitCelsius && [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
 		// convert celsius to fahrenheit
 		clockInfo.currentWeather.unit = SCWeatherUnitFahrenheit;
-		clockInfo.currentWeather.highTemperature = celsiusToFahrenheit(clockInfo.currentWeather.highTemperature);
-		clockInfo.currentWeather.currentTemperature = celsiusToFahrenheit(clockInfo.currentWeather.currentTemperature);
-		clockInfo.currentWeather.lowTemperature = celsiusToFahrenheit(clockInfo.currentWeather.lowTemperature);
 	}
 
 	self.temperatureTopLabel.text = [NSString stringWithFormat:@"%d°", clockInfo.currentWeather.highTemperature];

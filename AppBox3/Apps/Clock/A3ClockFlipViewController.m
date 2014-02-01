@@ -23,23 +23,30 @@
 
 @property (nonatomic, strong) UILabel* lbAMPM;
 
-@property (nonatomic, strong) UILabel* lbWeekMonthDay;
-@property (nonatomic, strong) UILabel* lbWeather;
-@property (nonatomic, strong) UILabel* lbTemperature;
+@property (nonatomic, strong) UILabel*weekdayMonthDay;
+@property (nonatomic, strong) UILabel*weatherCondition;
+@property (nonatomic, strong) UILabel*temperature;
 
-@property (nonatomic, strong) UILabel* lbWeatherRainRst;
-@property (nonatomic, strong) UILabel* lbWeatherHumidityRst;
-@property (nonatomic, strong) UILabel* lbWeatherHighRst;
-@property (nonatomic, strong) UILabel* lbWeatherLowRst;
+@property (nonatomic, strong) UILabel*weatherHumidity;
+@property (nonatomic, strong) UILabel*weatherTemperatureHigh;
+@property (nonatomic, strong) UILabel*weatherTemperatureLow;
 
-@property (nonatomic, strong) UILabel* lbWeatherRain;
-@property (nonatomic, strong) UILabel* lbWeatherHumidity;
-@property (nonatomic, strong) UILabel* lbWeatherHigh;
-@property (nonatomic, strong) UILabel* lbWeatherLow;
+@property (nonatomic, strong) UILabel*weatherHumidityTitle;
+@property (nonatomic, strong) UILabel*weatherTemperatureHighTitle;
+@property (nonatomic, strong) UILabel*weatherTemperatureLowTitle;
+
+@property (nonatomic, strong) NSMutableArray *weatherConstraints;
+@property (nonatomic, strong) id<MASConstraint> weekdayMonthDayBaseline;
+
+@property (nonatomic, strong) NSMutableArray *timeViewConstraints;
+
+@property (nonatomic, strong) UIView *centerLineView;
 
 @end
 
-@implementation A3ClockFlipViewController
+@implementation A3ClockFlipViewController {
+	BOOL _iPADLayoutInitialized;
+}
 
 - (instancetype)initWithClockDataManager:(A3ClockDataManager *)clockDataManager style:(A3ClockFlipViewStyle) style {
 	self = [super initWithClockDataManager:clockDataManager];
@@ -64,120 +71,76 @@
 
 	_lbAMPM = [[UILabel alloc] init];
 	_lbAMPM.textAlignment = NSTextAlignmentLeft;
-	[_lbAMPM setFont:[UIFont fontWithName:kClockFontNameRegular size:14]];
+	[_lbAMPM setFont:[UIFont systemFontOfSize:IS_IPHONE ? 14 : 18]];
 	[_lbAMPM setTextColor:kColorClockFlipLabel];
 	[self.view addSubview:_lbAMPM];
 
-
-	_lbWeekMonthDay = [[UILabel alloc] init];
-	[_lbWeekMonthDay setFont:[UIFont fontWithName:kClockFontNameRegular size:18]];
-	[_lbWeekMonthDay setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeekMonthDay];
-	[_lbWeekMonthDay makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX).with.offset(0);
-		make.top.equalTo(self.view.top).with.offset(36);
+	_weekdayMonthDay = [[UILabel alloc] init];
+	[_weekdayMonthDay setFont:[UIFont systemFontOfSize:18]];
+	[_weekdayMonthDay setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weekdayMonthDay];
+	[_weekdayMonthDay makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		_weekdayMonthDayBaseline = make.baseline.equalTo(self.view.top).with.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50);
 	}];
 
-	_lbWeather = [[UILabel alloc] init];
+	_weatherCondition = [[UILabel alloc] init];
+	[_weatherCondition setFont:[UIFont systemFontOfSize:16]];
+	[_weatherCondition setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherCondition];
 
-	[_lbWeather setFont:[UIFont fontWithName:kClockFontNameRegular size:16]];
-	[_lbWeather setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeather];
-	[_lbWeather makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX).with.offset(0);
-		make.top.equalTo(self.view.top).with.offset(64);
+	_temperature = [[UILabel alloc] init];
+	[_temperature setFont:[UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 64 : 88]];
+	[_temperature setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_temperature];
+
+	_weatherHumidity = [[UILabel alloc] init];
+	_weatherHumidity.textAlignment = NSTextAlignmentLeft;
+	[_weatherHumidity setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
+	[_weatherHumidity setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherHumidity];
+
+	_weatherTemperatureHigh = [[UILabel alloc] init];
+	_weatherTemperatureHigh.textAlignment = NSTextAlignmentLeft;
+	[_weatherTemperatureHigh setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
+	[_weatherTemperatureHigh setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherTemperatureHigh];
+
+	_weatherTemperatureLow = [[UILabel alloc] init];
+	_weatherTemperatureLow.textAlignment = NSTextAlignmentLeft;
+	[_weatherTemperatureLow setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
+	[_weatherTemperatureLow setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherTemperatureLow];
+
+	_weatherHumidityTitle = [[UILabel alloc] init];
+	_weatherHumidityTitle.text = @"Humidity";
+	_weatherHumidityTitle.textAlignment = NSTextAlignmentLeft;
+	[_weatherHumidityTitle setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
+	[_weatherHumidityTitle setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherHumidityTitle];
+
+	_weatherTemperatureHighTitle = [[UILabel alloc] init];
+	_weatherTemperatureHighTitle.text = @"High";
+	_weatherTemperatureHighTitle.textAlignment = NSTextAlignmentLeft;
+	[_weatherTemperatureHighTitle setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
+	[_weatherTemperatureHighTitle setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherTemperatureHighTitle];
+
+	_weatherTemperatureLowTitle = [[UILabel alloc] init];
+	_weatherTemperatureLowTitle.text = @"Low";
+	_weatherTemperatureLowTitle.textAlignment = NSTextAlignmentLeft;
+	[_weatherTemperatureLowTitle setFont:[UIFont systemFontOfSize:IS_IPHONE ? 12 : 15]];
+	[_weatherTemperatureLowTitle setTextColor:kColorClockFlipLabel];
+	[self.view addSubview:_weatherTemperatureLowTitle];
+
+	_centerLineView = [UIView new];
+	[self.view addSubview:_centerLineView];
+	[_centerLineView makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.view.left);
+		make.right.equalTo(self.view.right);
+		make.centerY.equalTo(self.view.centerY);
+		make.height.equalTo(IS_IPHONE ? @2 : @4);
 	}];
-
-	_lbTemperature = [[UILabel alloc] init];
-	[_lbTemperature setFont:[UIFont fontWithName:kClockFontNameUltraLight size:64]];
-	[_lbTemperature setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbTemperature];
-	[_lbTemperature makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX).with.offset(0);
-		make.top.equalTo(self.view.top).with.offset(86);
-	}];
-
-
-	_lbWeatherRainRst = [[UILabel alloc] init];
-	_lbWeatherRainRst.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherRainRst setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherRainRst setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherRainRst];
-	[_lbWeatherRainRst makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(16);
-		make.bottom.equalTo(self.view.bottom).with.offset(-66);
-	}];
-
-	_lbWeatherHumidityRst = [[UILabel alloc] init];
-	_lbWeatherHumidityRst.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherHumidityRst setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherHumidityRst setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherHumidityRst];
-	[_lbWeatherHumidityRst makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(16);
-		make.bottom.equalTo(self.view.bottom).with.offset(-48);
-	}];
-
-	_lbWeatherHighRst= [[UILabel alloc] init];
-	_lbWeatherHighRst.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherHighRst setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherHighRst setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherHighRst];
-	[_lbWeatherHighRst makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(16);
-		make.bottom.equalTo(self.view.bottom).with.offset(-32);
-	}];
-
-	_lbWeatherLowRst= [[UILabel alloc] init];
-	_lbWeatherLowRst.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherLowRst setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherLowRst setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherLowRst];
-	[_lbWeatherLowRst makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(16);
-		make.bottom.equalTo(self.view.bottom).with.offset(-14);
-	}];
-
-	_lbWeatherRain= [[UILabel alloc] init];
-	_lbWeatherRain.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherRain setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherRain setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherRain];
-	[_lbWeatherRain makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(52);
-		make.bottom.equalTo(self.view.bottom).with.offset(-66);
-	}];
-
-	_lbWeatherHumidity= [[UILabel alloc] init];
-	_lbWeatherHumidity.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherHumidity setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherHumidity setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherHumidity];
-	[_lbWeatherHumidity makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(52);
-		make.bottom.equalTo(self.view.bottom).with.offset(-48);
-	}];
-
-	_lbWeatherHigh= [[UILabel alloc] init];
-	_lbWeatherHigh.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherHigh setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherHigh setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherHigh];
-	[_lbWeatherHigh makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(52);
-		make.bottom.equalTo(self.view.bottom).with.offset(-32);
-	}];
-
-	_lbWeatherLow = [[UILabel alloc] init];
-	_lbWeatherLow.textAlignment = NSTextAlignmentLeft;
-	[_lbWeatherLow setFont:[UIFont fontWithName:kClockFontNameRegular size:12]];
-	[_lbWeatherLow setTextColor:kColorClockFlipLabel];
-	[self.view addSubview:_lbWeatherLow];
-	[_lbWeatherLow makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(52);
-		make.bottom.equalTo(self.view.bottom).with.offset(-14);
-	}];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -186,36 +149,21 @@
 	[self layoutSubviews];
 }
 
-#pragma mark public
 - (void)layoutSubviews {
-    if([[NSUserDefaults standardUserDefaults] clockShowWeather])
-    {
-        _lbWeather.hidden = NO;
-        _lbTemperature.hidden = NO;
-        
-        _lbWeatherRainRst.hidden = NO;
-        _lbWeatherHumidityRst.hidden = NO;
-        _lbWeatherHighRst.hidden = NO;
-        _lbWeatherLowRst.hidden = NO;
-        _lbWeatherRain.hidden = NO;
-        _lbWeatherHumidity.hidden = NO;
-        _lbWeatherHigh.hidden = NO;
-        _lbWeatherLow.hidden = NO;
-    }
-    else
-    {
-        _lbWeather.hidden = YES;
-        _lbTemperature.hidden = YES;
-        
-        _lbWeatherRainRst.hidden = YES;
-        _lbWeatherHumidityRst.hidden = YES;
-        _lbWeatherHighRst.hidden = YES;
-        _lbWeatherLowRst.hidden = YES;
-        _lbWeatherRain.hidden = YES;
-        _lbWeatherHumidity.hidden = YES;
-        _lbWeatherHigh.hidden = YES;
-        _lbWeatherLow.hidden = YES;
-    }
+
+	_weekdayMonthDayBaseline.offset(IS_IPHONE && IS_LANDSCAPE ? 27 : 50);
+
+	[self setWeatherHidden:![[NSUserDefaults standardUserDefaults] clockShowWeather] ];
+	[self layoutWeather];
+
+	if (!_timeViewConstraints) {
+		_timeViewConstraints = [NSMutableArray new];
+	} else {
+		for (id <MASConstraint> constraint in _timeViewConstraints) {
+			[constraint uninstall];
+		}
+		[_timeViewConstraints removeAllObjects];
+	}
 
     [self.view addSubview:self.hourView];
     [self.view addSubview:self.minuteView];
@@ -225,9 +173,6 @@
 		[_secondView removeFromSuperview];
 		_secondView = nil;
 	}
-	[_hourView removeConstraints:_hourView.constraints];
-	[_minuteView removeConstraints:_minuteView.constraints];
-	[_secondView removeConstraints:_secondView.constraints];
 
 	CGFloat boxSize, interimSpace;
 	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
@@ -251,24 +196,24 @@
 	if(showSeconds)
 	{
 		[_minuteView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.view.centerX);
-			make.centerY.equalTo(self.view.centerY);
-			make.width.equalTo(@(boxSize));
-			make.height.equalTo(@(boxSize));
+			[_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX)];
+			[_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
+			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 
 		[_hourView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_minuteView.centerY);
-			make.right.equalTo(_minuteView.left).with.offset(-1 * interimSpace);
-			make.width.equalTo(@(boxSize));
-			make.height.equalTo(@(boxSize));
+			[_timeViewConstraints addObject:make.centerY.equalTo(_minuteView.centerY)];
+			[_timeViewConstraints addObject:make.right.equalTo(_minuteView.left).with.offset(-1 * interimSpace)];
+			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 
 		[_secondView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(_minuteView.centerY);
-			make.left.equalTo(_minuteView.right).with.offset(interimSpace);
-			make.width.equalTo(@(boxSize));
-			make.height.equalTo(@(boxSize));
+			[_timeViewConstraints addObject:make.centerY.equalTo(_minuteView.centerY)];
+			[_timeViewConstraints addObject:make.left.equalTo(_minuteView.right).with.offset(interimSpace)];
+			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 		[self setTimeFont:_hourView isForSecond:NO];
 		[self setTimeFont:_minuteView isForSecond:NO];
@@ -277,28 +222,151 @@
 	else
 	{
 		[_hourView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(self.view.centerY);
-			make.centerX.equalTo(self.view.centerX).with.offset(-1 * (boxSize + interimSpace / 2));
-			make.width.equalTo(@(boxSize));
-			make.height.equalTo(@(boxSize));
+			[_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
+			[_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-1 * (boxSize/2 + interimSpace / 2))];
+			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 
 		[_minuteView makeConstraints:^(MASConstraintMaker *make) {
-			make.centerY.equalTo(self.view.centerY);
-			make.centerX.equalTo(self.view.centerX).with.offset(boxSize + interimSpace / 2);
-			make.width.equalTo(@(boxSize));
-			make.height.equalTo(@(boxSize));
+			[_timeViewConstraints addObject:make.centerY.equalTo(self.view.centerY)];
+			[_timeViewConstraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(boxSize/2 + interimSpace / 2)];
+			[_timeViewConstraints addObject:make.width.equalTo(@(boxSize))];
+			[_timeViewConstraints addObject:make.height.equalTo(@(boxSize))];
 		}];
 		[self setTimeFont:_hourView isForSecond:NO];
 		[self setTimeFont:_minuteView isForSecond:NO];
 	}
 
 	[_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_hourView.left).with.offset(10);
-		make.bottom.equalTo(_hourView.top).with.offset(-8);
+		[_timeViewConstraints addObject:make.left.equalTo(_hourView.left).with.offset(10)];
+		[_timeViewConstraints addObject:make.bottom.equalTo(_hourView.top).with.offset(-8)];
 	}];
 
+	[_lbAMPM setHidden:![[NSUserDefaults standardUserDefaults] clockShowAMPM]];
+
+	_centerLineView.backgroundColor = self.view.backgroundColor;
+	[self.view bringSubviewToFront:_centerLineView];
 	[self.view layoutIfNeeded];
+}
+
+- (void)updateLayout {
+	[self layoutSubviews];
+	[self refreshWholeClock:self.clockDataManager.clockInfo animated:NO];
+}
+
+- (void)layoutWeather {
+	BOOL isPortrait = IS_PORTRAIT;
+
+	if (IS_IPHONE) {
+		for (id<MASConstraint> constraint in _weatherConstraints) {
+			[constraint uninstall];
+		}
+		[_weatherConstraints removeAllObjects];
+
+		if (!_weatherConstraints) {
+			_weatherConstraints = [NSMutableArray new];
+		}
+
+		CGFloat offsetValue = isPortrait ? 15 : 125;
+		CGFloat offsetTitle = isPortrait ? 52 : 161;
+
+		if (isPortrait) {
+			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
+				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
+				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(76)];
+			}];
+			[_temperature makeConstraints:^(MASConstraintMaker *make) {
+				[_weatherConstraints addObject:make.centerX.equalTo(self.view.centerX)];
+				[_weatherConstraints addObject:make.baseline.equalTo(self.view.top).with.offset(132)];
+			}];
+		} else {
+			[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
+				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
+				[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-67)];
+			}];
+			[_temperature makeConstraints:^(MASConstraintMaker *make) {
+				[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(15)];
+				[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(-11)];
+			}];
+		}
+
+		[_weatherHumidity makeConstraints:^(MASConstraintMaker *make) {
+			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
+			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -50 : -45)];
+		}];
+		[_weatherHumidityTitle makeConstraints:^(MASConstraintMaker *make) {
+			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
+			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -50 : -45)];
+		}];
+		[_weatherTemperatureHigh makeConstraints:^(MASConstraintMaker *make) {
+			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
+			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -32 : -28)];
+		}];
+		[_weatherTemperatureHighTitle makeConstraints:^(MASConstraintMaker *make) {
+			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
+			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -32 : -28)];
+		}];
+		[_weatherTemperatureLow makeConstraints:^(MASConstraintMaker *make) {
+			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetValue)];
+			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -14 : -11)];
+		}];
+		[_weatherTemperatureLowTitle makeConstraints:^(MASConstraintMaker *make) {
+			[_weatherConstraints addObject:make.left.equalTo(self.view.left).with.offset(offsetTitle)];
+			[_weatherConstraints addObject:make.baseline.equalTo(self.view.bottom).with.offset(isPortrait ? -14 : -11)];
+		}];
+	} else if (!_iPADLayoutInitialized) {
+		_iPADLayoutInitialized = YES;
+
+		CGFloat offsetValue = 28;
+		CGFloat offsetTitle = 72;
+
+		[_weatherCondition makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.centerX);
+			make.baseline.equalTo(self.view.top).with.offset(76);
+		}];
+		[_temperature makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.centerX);
+			make.baseline.equalTo(self.view.top).with.offset(151);
+		}];
+
+		[_weatherHumidity makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(offsetValue);
+			make.baseline.equalTo(self.view.bottom).with.offset(-64);
+		}];
+		[_weatherHumidityTitle makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(offsetTitle);
+			make.baseline.equalTo(self.view.bottom).with.offset(-64);
+		}];
+		[_weatherTemperatureHigh makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(offsetValue);
+			make.baseline.equalTo(self.view.bottom).with.offset(-46);
+		}];
+		[_weatherTemperatureHighTitle makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(offsetTitle);
+			make.baseline.equalTo(self.view.bottom).with.offset(-46);
+		}];
+		[_weatherTemperatureLow makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(offsetValue);
+			make.baseline.equalTo(self.view.bottom).with.offset(-28);
+		}];
+		[_weatherTemperatureLowTitle makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.view.left).with.offset(offsetTitle);
+			make.baseline.equalTo(self.view.bottom).with.offset(-28);
+		}];
+	}
+}
+
+- (void)setWeatherHidden:(BOOL)hidden {
+	_weatherCondition.hidden = hidden;
+	_temperature.hidden = hidden;
+
+	_weatherHumidity.hidden = hidden;
+	_weatherTemperatureHigh.hidden = hidden;
+	_weatherTemperatureLow.hidden = hidden;
+	_weatherHumidityTitle.hidden = hidden;
+	_weatherTemperatureHighTitle.hidden = hidden;
+	_weatherTemperatureLowTitle.hidden = hidden;
 }
 
 - (void)setTimeFont:(SBTickerView *)tickerView isForSecond:(BOOL)isForSecond {
@@ -310,17 +378,21 @@
 		if (IS_PORTRAIT) {
 			fontSize = showSeconds ? 64 : 112;
 			frontView.layer.cornerRadius = 5;
+			backView.layer.cornerRadius = 5;
 		} else {
 			fontSize = showSeconds ? 112 : 156;
 			frontView.layer.cornerRadius = showSeconds ? 5 : 8;
+			backView.layer.cornerRadius = showSeconds ? 5 : 8;
 		}
 	} else {
 		if (IS_PORTRAIT) {
-			fontSize = showSeconds ? 64 : 112;
-			frontView.layer.cornerRadius = showSeconds ? 11 : 16;
-		} else {
 			fontSize = showSeconds ? 150 : 214;
+			frontView.layer.cornerRadius = showSeconds ? 11 : 16;
+			backView.layer.cornerRadius = showSeconds ? 11 : 16;
+		} else {
+			fontSize = showSeconds ? 214 : 284;
 			frontView.layer.cornerRadius = showSeconds ? 16 : 20;
+			backView.layer.cornerRadius = showSeconds ? 16 : 20;
 		}
 	}
 	UIFont *font = isForSecond ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:fontSize] : [UIFont boldSystemFontOfSize:fontSize];
@@ -390,43 +462,70 @@
 	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
 }
 
-- (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.hour] animated:YES ];
-	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.minute] animated:YES ];
-	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
+- (void)refreshWholeClock:(A3ClockInfo *)clockInfo animated:(BOOL)animated {
+	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.hour] animated:animated ];
+	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.minute] animated:animated ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:animated ];
 
 	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
-		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@, %@ %@", clockInfo.weekday, clockInfo.month, clockInfo.day];
+		[clockInfo.dateFormatter setDateStyle:NSDateFormatterFullStyle];
+		NSString *dateFormat = clockInfo.dateFormatter.dateFormat;
+		FNLOG(@"%@", dateFormat);
+		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"y" withString:@""];
+		dateFormat = [dateFormat stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
+		[clockInfo.dateFormatter setDateFormat:dateFormat];
+		_weekdayMonthDay.text = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
 	}
 	else if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
 	{
-
-		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@", clockInfo.weekday];
+		_weekdayMonthDay.text = [NSString stringWithFormat:@"%@", clockInfo.weekday];
 	}
 	else if([[NSUserDefaults standardUserDefaults] clockShowDate])
 	{
-		_lbWeekMonthDay.text = [NSString stringWithFormat:@"%@ %@", clockInfo.month, clockInfo.day];
+		_weekdayMonthDay.text = [NSString stringWithFormat:@"%@ %@", clockInfo.month, clockInfo.day];
 	}
 	else
-		_lbWeekMonthDay.text = @"";
+		_weekdayMonthDay.text = @"";
 
 	_lbAMPM.text = clockInfo.AMPM;
-	_lbWeather.text = clockInfo.currentWeather.description;
-	_lbTemperature.text = [NSString stringWithFormat:@"%dº", clockInfo.currentWeather.currentTemperature];
+	FNLOG(@"%@", _lbAMPM);
 
-	_lbWeatherRainRst.text = @"12%";
-	_lbWeatherRain.text = @"Chance of rain";
-
-	_lbWeatherHumidityRst.text = [self.clockDataManager.weatherAtmosphere objectForKey:@"humidity"];
-	_lbWeatherHumidity.text = @"Humidity";
-
-	_lbWeatherHighRst.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.highTemperature];
-	_lbWeatherHigh.text = @"High";
-
-	_lbWeatherLowRst.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.lowTemperature];
-	_lbWeatherLow.text = @"Low";
+	if (_weatherInfoAvailable) {
+		[self refreshWeather:clockInfo];
+	} else {
+		[self setWeatherHidden:YES];
+	}
 }
+
+- (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
+	[self refreshWholeClock:clockInfo animated:YES];
+}
+
+- (void)refreshWeather:(A3ClockInfo *)clockInfo {
+	if (![[NSUserDefaults standardUserDefaults] clockShowWeather]) {
+		[self setWeatherHidden:YES];
+		return;
+	}
+	_weatherInfoAvailable = YES;
+	[self setWeatherHidden:NO];
+
+	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
+		// convert fahrenheit to celsius
+		clockInfo.currentWeather.unit = SCWeatherUnitCelsius;
+	} else if (clockInfo.currentWeather.unit == SCWeatherUnitCelsius && [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
+		// convert celsius to fahrenheit
+		clockInfo.currentWeather.unit = SCWeatherUnitFahrenheit;
+	}
+
+	_weatherCondition.text = clockInfo.currentWeather.description;
+	_temperature.text = [NSString stringWithFormat:@"%d°", clockInfo.currentWeather.currentTemperature];
+
+	_weatherHumidity.text = [NSString stringWithFormat:@"%@%%", [self.clockDataManager.weatherAtmosphere objectForKey:@"humidity"]];
+	_weatherTemperatureHigh.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.highTemperature];
+	_weatherTemperatureLow.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.lowTemperature];
+}
+
 
 - (void)setTime:(SBTickerView *)tickerView withText:(NSString *)text {
 	A3ClockFoldPaperView *frontView = (A3ClockFoldPaperView *) tickerView.frontView;
@@ -453,5 +552,15 @@
 	[self.clockDataManager startTimer];
 }
 
+- (void)changeColor:(UIColor *)color {
+	[self changeColorForTimeView:self.hourView color:color];
+	[self changeColorForTimeView:self.minuteView color:color];
+	[self changeColorForTimeView:self.secondView color:color];
+}
+
+- (void)changeColorForTimeView:(SBTickerView *)view color:(UIColor *)color {
+	view.frontView.backgroundColor = color;
+	view.backView.backgroundColor = color;
+}
 
 @end

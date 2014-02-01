@@ -210,19 +210,19 @@
     
     if(arrColor == nil)
     {
-        arrColor = @[[self colorWidth255RGB:253 g:158 b:26],
+        arrColor = @[[self colorWidth255RGB:253 g:158 b:27],
                      [self colorWidth255RGB:250 g:207 b:37],
-                     [self colorWidth255RGB:164 g:222 b:55],
-                     [self colorWidth255RGB:76 g:217 b:76],
+                     [self colorWidth255RGB:164 g:222 b:54],
+                     [self colorWidth255RGB:76 g:217 b:75],
                      [self colorWidth255RGB:32 g:214 b:120],
                      [self colorWidth255RGB:64 g:224 b:208],
                      [self colorWidth255RGB:90 g:200 b:250],
-                     [self colorWidth255RGB:63 g:156 b:250],
+                     [self colorWidth255RGB:63 g:155 b:250],
                      [self colorWidth255RGB:107 g:105 b:223],
                      [self colorWidth255RGB:204 g:115 b:225],
                      [self colorWidth255RGB:246 g:104 b:202],
                      [self colorWidth255RGB:198 g:156 b:109],
-                     [self colorWidth255RGB:23 g:23 b:24],
+                     [self colorWidth255RGB:0 g:0 b:0],
                      [self colorWidth255RGB:255 g:255 b:255]];
     }
     
@@ -440,9 +440,5 @@
         self.weatherAtmosphere = attributeDict;
     }
 }
-
-//- (void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName {
-//
-//}
 
 @end

@@ -203,6 +203,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 					break;
 			}
 		}
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		return cell;
 	}
 }

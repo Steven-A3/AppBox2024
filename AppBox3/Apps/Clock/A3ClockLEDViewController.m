@@ -193,6 +193,12 @@
 	[self.view.layer insertSublayer:bgLayer atIndex:1];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	[self layoutSubviews];
+}
+
 #pragma mark - private
 
 - (float)fontSizeTime
@@ -226,9 +232,7 @@
 }
 
 #pragma mark - public
-- (void)setupSubviews{
-	[super setupSubviews];
-
+- (void)layoutSubviews {
     if([[NSUserDefaults standardUserDefaults] clockShowAMPM])
         _lbAMPM.hidden = YES;
     else
@@ -363,7 +367,7 @@
 	_lbAMPM.text = clockInfo.AMPM;
 
 
-	[self setupSubviews];
+	[self layoutSubviews];
 }
 
 

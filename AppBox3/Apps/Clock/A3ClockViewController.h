@@ -12,15 +12,17 @@
 @class A3ClockDataManager;
 @protocol A3ClockDataManagerDelegate;
 
-@interface A3ClockViewController : UIViewController <A3ClockDataManagerDelegate>
+@interface A3ClockViewController : UIViewController <A3ClockDataManagerDelegate> {
+	BOOL _weatherInfoAvailable;
+}
 
-@property (nonatomic, strong) A3ClockInfo *clockInfo;
-@property (nonatomic, strong) UIColor* clrCurrent;
 @property (nonatomic, weak) A3ClockDataManager *clockDataManager;
 
 - (instancetype)initWithClockDataManager:(A3ClockDataManager *)clockDataManager;
+- (void)layoutSubviews;
 
-- (void)setupSubviews;
+- (void)updateLayout;
 
 - (void)changeColor:(UIColor *)color;
+
 @end

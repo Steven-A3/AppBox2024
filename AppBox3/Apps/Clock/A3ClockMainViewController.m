@@ -111,14 +111,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self layoutSubview];
-
-	if ([self isMovingToParentViewController]) {
-		[_clockWaveViewController setupSubviews];
-		[_clockFlipBrightViewController setupSubviews];
-		[_clockFlipDarkViewController setupSubviews];
-		[_clockLEDViewController setupSubviews];
-	}
+	[self layoutSubviews];
 
 	[self.clockDataManager startTimer];
 }
@@ -132,11 +125,7 @@
 }
 
 - (void)settingsChanged {
-	switch (_pageControl.currentPage) {
-		case 0:
-			[_clockWaveViewController updateLayout];
-			break;
-	}
+	[_currentClockViewController updateLayout];
 }
 
 - (void)addChooseColorButton {
@@ -261,6 +250,13 @@
 			[userDefaults synchronize];
 			break;
 		}
+		case 1: {
+			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
+			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			[userDefaults setObject:colorData forKey:A3ClockFlipDarkColor];
+			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipDarkColorIndex];
+			[userDefaults synchronize];
+		}
 	}
 
 	[self hideChooseColorView];
@@ -287,24 +283,32 @@
 - (void)chooseColorButtonAction
 {
 	NSArray *colors = nil;
+	NSUInteger selectedColorIndex = 0;
 	switch (_pageControl.currentPage) {
 		case 0:
 			colors = [self.clockDataManager waveColors];
-			_chooseColorView = [A3ChooseColor chooseColorWaveInViewController:self
-																	   inView:self.view
-																	   colors:colors
-																selectedIndex:(NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockWaveClockColorIndex]];
+			selectedColorIndex = (NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockWaveClockColorIndex];
 			break;
-		case 1:
-		case 2:
+		case 1:{
+			NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipDarkColorIndex];
+			selectedColorIndex = number ? number.unsignedIntegerValue : 12;
 			colors = [self.clockDataManager flipColors];
-			[A3ChooseColor chooseColorFlipInViewController:self colors:colors];
 			break;
+		}
+		case 2:{
+			NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipDarkColorIndex];
+			selectedColorIndex = number ? number.unsignedIntegerValue : 13;
+			colors = [self.clockDataManager flipColors];
+			break;
+		}
 		case 3:
 			colors = [self.clockDataManager ledColors];
-			[A3ChooseColor chooseColorLED:self colors:colors];
 			break;
 	}
+	_chooseColorView = [A3ChooseColor chooseColorWaveInViewController:self
+															   inView:self.view
+															   colors:colors
+														selectedIndex:selectedColorIndex];
 }
 
 - (void)settingsButtonAction:(id)aSender
@@ -333,9 +337,10 @@
 }
 
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
-	UIViewController<A3ClockDataManagerDelegate> *targetViewController = self.viewControllers[(NSUInteger) self.pageControl.currentPage];
-	if ([targetViewController respondsToSelector:@selector(refreshWeather:)]) {
-		[targetViewController refreshWeather:clockInfo];
+	for (id<A3ClockDataManagerDelegate> viewController in self.viewControllers) {
+		if ([viewController respondsToSelector:@selector(refreshWeather:)]) {
+			[viewController refreshWeather:clockInfo];
+		}
 	}
 }
 
@@ -347,31 +352,25 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-	for (UIViewController <A3ClockDataManagerDelegate> *viewController in self.viewControllers) {
-		[viewController refreshWholeClock:self.clockDataManager.clockInfo];
-	}
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)sender {
-	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	CGFloat pageWidth = screenBounds.size.width;
-
-    _pageControl.currentPage = (NSInteger) floorf(_scrollView.contentOffset.x / pageWidth);
-    
-    [self showMenus:NO];
+	double delayInSeconds = 0.5;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		for (UIViewController <A3ClockDataManagerDelegate> *viewController in self.viewControllers) {
+			[viewController refreshWholeClock:self.clockDataManager.clockInfo];
+		}
+	});
+	[self showMenus:NO];
+	[self hideChooseColorView];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    float offsetDV = _scrollView.contentOffset.x / 320.f;
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	CGFloat pageWidth = screenBounds.size.width;
+
+	_pageControl.currentPage = (NSInteger) floorf(_scrollView.contentOffset.x / pageWidth);
     
-    if(offsetDV == 0)
-        _currentClockViewController = _clockWaveViewController;
-    else
-    {
-        _currentClockViewController = _clockFlipDarkViewController;
-    }
-    
+    _currentClockViewController = self.viewControllers[(NSUInteger) _pageControl.currentPage];
     [self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
 }
 
@@ -379,18 +378,13 @@
 	return UIInterfaceOrientationMaskAll;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-}
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-	[self layoutSubview];
+	[self layoutSubviews];
 }
 
-- (void)layoutSubview {
+- (void)layoutSubviews {
 	CGRect bounds = self.view.bounds;
 
 	[self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {

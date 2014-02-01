@@ -7,8 +7,7 @@
 //
 
 #import "A3ClockDataManager.h"
-#import "A3ClockViewController.h"
-#import "A3ClockDataManager.h"
+#import "A3ClockWaveViewController.h"
 
 @implementation A3ClockViewController
 
@@ -22,13 +21,15 @@
 
 #pragma mark - Public
 
-- (void)setupSubviews
-{
-    
-}
-
 - (void)changeColor:(UIColor *)color {
 
+}
+
+- (void)layoutSubviews {
+
+}
+
+- (void)updateLayout {
 }
 
 @end

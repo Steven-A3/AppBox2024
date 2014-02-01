@@ -93,6 +93,7 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 			make.right.equalTo(self.right);
 			make.height.equalTo(IS_IPHONE ? @128 : @236);
 		}];
+		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     }
     return self;
 }
