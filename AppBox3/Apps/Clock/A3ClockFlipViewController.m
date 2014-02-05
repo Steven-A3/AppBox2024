@@ -539,10 +539,6 @@
 
 	[self.clockDataManager stopTimer];
 
-	[self setTime:_hourView withText:@""];
-	[self setTime:_minuteView withText:@""];
-	[self setTime:_secondView withText:@""];
-
 	[self layoutSubviews];
 }
 

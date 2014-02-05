@@ -452,6 +452,8 @@
 		68E6F37217B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37117B2A06600F10ED9 /* A3CurrencyHistory2RowCell.m */; };
 		68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */; };
 		68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */; };
+		68E8EF6C18A278A6009AAEC7 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 68E8EF6A18A278A6009AAEC7 /* Digit.ttf */; };
+		68E8EF6D18A278A6009AAEC7 /* REGISTER.TTF in Resources */ = {isa = PBXBuildFile; fileRef = 68E8EF6B18A278A6009AAEC7 /* REGISTER.TTF */; };
 		68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68EC80D516E1ADF800CF672E /* A3Formatter.m */; };
 		68F32E51188AC3C600248F16 /* UITableViewController+standardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UITableViewController+standardDimension.m */; };
 		68F3A9E61677320100DFCAB7 /* A3YellowXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F3A9E51677320100DFCAB7 /* A3YellowXButton.m */; };
@@ -1238,6 +1240,8 @@
 		68E6F37417B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistory3RowCell.m; path = Apps/Currency/A3CurrencyHistory3RowCell.m; sourceTree = "<group>"; };
 		68E6F37717B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistoryViewController.h; path = Apps/Currency/A3CurrencyHistoryViewController.h; sourceTree = "<group>"; };
 		68E6F37817B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyHistoryViewController.m; path = Apps/Currency/A3CurrencyHistoryViewController.m; sourceTree = "<group>"; };
+		68E8EF6A18A278A6009AAEC7 /* Digit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Digit.ttf; path = AppBox3/Digit.ttf; sourceTree = "<group>"; };
+		68E8EF6B18A278A6009AAEC7 /* REGISTER.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; name = REGISTER.TTF; path = AppBox3/REGISTER.TTF; sourceTree = "<group>"; };
 		68EC80D416E1ADF800CF672E /* A3Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Formatter.h; sourceTree = "<group>"; };
 		68EC80D516E1ADF800CF672E /* A3Formatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Formatter.m; sourceTree = "<group>"; };
 		68F32E4F188AC3C600248F16 /* UITableViewController+standardDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+standardDimension.h"; sourceTree = "<group>"; };
@@ -1931,6 +1935,8 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
+				68E8EF6A18A278A6009AAEC7 /* Digit.ttf */,
+				68E8EF6B18A278A6009AAEC7 /* REGISTER.TTF */,
 				68236CDE186C22E5006F442B /* StringsDict.strings */,
 				68236CDF186C22E5006F442B /* StringsDict.stringsdict */,
 				6850050617C30B500081FC1D /* appbox.ttf */,
@@ -2877,6 +2883,7 @@
 				6831EBFD18619CC800BAF15B /* AppBoxCacheStore.sqlite-shm in Resources */,
 				689AE26D17EC69CB0097ABB5 /* FlickrRecommendation.json in Resources */,
 				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
+				68E8EF6D18A278A6009AAEC7 /* REGISTER.TTF in Resources */,
 				6864D60117BBBA6300A215D7 /* Media.xcassets in Resources */,
 				682796FC16DF6CFD00BC68F3 /* A3DateKeyboardViewController_iPad.xib in Resources */,
 				686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */,
@@ -2901,6 +2908,7 @@
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
 				689FEF72187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,
+				68E8EF6C18A278A6009AAEC7 /* Digit.ttf in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
