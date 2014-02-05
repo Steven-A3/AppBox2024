@@ -36,7 +36,7 @@
 
 	[self.tableView setEditing:YES];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentChanged:) name:kA3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentChanged:) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
 - (void)menuContentChanged:(NSNotification *)notification {
@@ -111,8 +111,8 @@
 		[[A3AppDelegate instance] storeFavorites:self.favorites];
 		
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-		
-		[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
 
 	}
 }
@@ -121,8 +121,8 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	[self.favorites moveObjectFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 	[[A3AppDelegate instance] storeFavorites:self.favorites];
-	
-	[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
 }
 
 // Override to support conditional rearranging of the table view.

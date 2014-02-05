@@ -19,6 +19,8 @@
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3AppDelegate+appearance.h"
 
+NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
+
 @interface A3AppDelegate ()
 
 @end
@@ -55,7 +57,9 @@
 		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 		[_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
 		[_drawerController setCenterHiddenInteractionMode:MMDrawerOpenCenterInteractionModeFull];
-
+		[_drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+		}];
 		[_drawerController setMaximumLeftDrawerWidth:266.0];
 
 		_drawerController.view.frame = [[UIScreen mainScreen] bounds];

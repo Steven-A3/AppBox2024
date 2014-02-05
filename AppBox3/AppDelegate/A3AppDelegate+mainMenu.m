@@ -159,7 +159,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 	mutableDictionary[kA3AppsDataUpdateDate] = updateDate;
 	[self storeMenuDictionary:mutableDictionary forKey:kA3MainMenuRecentlyUsed];
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
 - (void)storeMenuDictionary:(NSMutableDictionary *)mutableDictionary forKey:(NSString *)key {

@@ -19,7 +19,8 @@
 @property (nonatomic, strong) A3Weather *currentWeather;
 @property (nonatomic, strong) NSDictionary *weatherCurrentCondition;
 @property (nonatomic, strong) NSMutableArray *weatherForecast;
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *clockTickTimer;
+@property (nonatomic, strong) NSTimer *weatherTimer;
 
 @end
 
@@ -28,18 +29,28 @@
 	BOOL _refreshWholeClock;
 }
 
-- (id)init
-{
-    self = [super init];
-    if(self)
-    {
-        self.locationManager = [[CLLocationManager alloc] init];
-		[self.locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
-		[self.locationManager setDelegate:self];
-        [self.locationManager startUpdatingLocation];
-    }
-    
-    return self;
+- (id)init {
+	self = [super init];
+	if (self) {
+		[self.locationManager startUpdatingLocation];
+	}
+
+	return self;
+}
+
+
+- (void)dealloc {
+	[_clockTickTimer invalidate];
+	_clockTickTimer = nil;
+}
+
+- (CLLocationManager *)locationManager {
+	if (!_locationManager) {
+		_locationManager = [[CLLocationManager alloc] init];
+		[_locationManager setDesiredAccuracy:kCLLocationAccuracyKilometer];
+		[_locationManager setDelegate:self];
+	}
+	return _locationManager;
 }
 
 - (void)enableWeatherCircle:(BOOL)enable {
@@ -92,16 +103,16 @@
 }
 
 - (void)startTimer {
-	[_timer invalidate];
+	[_clockTickTimer invalidate];
 
 	_refreshWholeClock = YES;
-	_timer = [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(onTimerDateTimeTick) userInfo:nil repeats:YES];
-	[_timer fire];
+	_clockTickTimer = [NSTimer scheduledTimerWithTimeInterval:1.f target:self selector:@selector(onTimerDateTimeTick) userInfo:nil repeats:YES];
+	[_clockTickTimer fire];
 }
 
 - (void)stopTimer {
-	[_timer invalidate];
-	_timer = nil;
+	[_clockTickTimer invalidate];
+	_clockTickTimer = nil;
 }
 
 - (A3ClockInfo *)clockInfo {
@@ -229,28 +240,43 @@
     return arrColor;
 }
 
-- (NSArray*)ledColors
+- (NSArray*)ledColorComponents
 {
     static NSArray* arrColor = nil;
     
     if(arrColor == nil)
     {
-        arrColor = @[[self colorWidth255RGB:253 g:158 b:26],
-                     [self colorWidth255RGB:250 g:207 b:37],
-                     [self colorWidth255RGB:164 g:222 b:55],
-                     [self colorWidth255RGB:76 g:217 b:76],
-                     [self colorWidth255RGB:32 g:214 b:120],
-                     [self colorWidth255RGB:64 g:224 b:208],
-                     [self colorWidth255RGB:90 g:200 b:250],
-                     [self colorWidth255RGB:63 g:156 b:250],
-                     [self colorWidth255RGB:107 g:105 b:223],
-                     [self colorWidth255RGB:204 g:115 b:225],
-                     [self colorWidth255RGB:246 g:104 b:202],
-                     [self colorWidth255RGB:198 g:156 b:109],
-                     [self colorWidth255RGB:255 g:255 b:255]];
+        arrColor = @[@[@253, @158, @26],
+                     @[@250, @207, @37],
+                     @[@164, @222, @55],
+                     @[@76, @217, @76],
+                     @[@32, @214, @120],
+                     @[@64, @224, @208],
+                     @[@90, @200, @250],
+                     @[@63, @156, @250],
+                     @[@107, @105, @223],
+                     @[@204, @115, @225],
+                     @[@246, @104, @202],
+                     @[@198, @156, @109],
+                     @[@255, @255, @255]
+		];
     }
     
     return arrColor;
+}
+
+- (NSArray *)ledColors {
+	NSArray *colorComponents = self.ledColorComponents;
+	NSMutableArray *colors = [NSMutableArray new];
+	for (NSArray *components in colorComponents) {
+		[colors addObject:[UIColor colorWithRed:[components[0] floatValue] / 255.0 green:[components[1] floatValue] / 255.0 blue:[components[2] floatValue] / 255.0 alpha:1.0]];
+	}
+	return colors;
+}
+
+- (UIColor *)LEDColorAtIndex:(NSUInteger)idx alpha:(CGFloat)alpha {
+	NSArray *components = self.ledColorComponents[idx];
+	return [UIColor colorWithRed:[components[0] floatValue] / 255.0 green:[components[1] floatValue] / 255.0 blue:[components[2] floatValue] / 255.0 alpha:alpha];
 }
 
 - (UIImage*)imageForWeatherCondition:(A3WeatherCondition)aCon
@@ -372,13 +398,15 @@
 //		FNLOG(@"self.weatherCurrentCondition:\r\n%@", self.weatherCurrentCondition);
 //		FNLOG(@"self.weatherForecast:\r\n%@", self.weatherForecast);
 //		FNLOG(@"self.weatherAtmosphere:\r\n%@", self.weatherAtmosphere);
-
+		_locationManager = nil;
+		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		[self.locationManager startUpdatingLocation];
 	}];
 	[weatherOperation start];
 }
 
-- (void)getWOEIDWithCityName:(NSString *)theCityName {      // 문제되는곳
+- (void)getWOEIDWithCityName:(NSString *)theCityName {
 	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://where.yahooapis.com/v1/places.q(%@)?appid=%@&format=json", theCityName, YAHOO_APP_ID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -388,11 +416,18 @@
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
 		NSString *WOEID = [ [ [ [ [ JSON objectForKey:@"places" ] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
 		[self getWeatherInfoWithWOEID:WOEID ];
-	} failure:NULL];
+
+	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		[self.locationManager startUpdatingLocation];
+	}];
 	
 	[operation start];
     
 	return;
+}
+
+- (void)updateWeather {
+	[self.locationManager startUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {

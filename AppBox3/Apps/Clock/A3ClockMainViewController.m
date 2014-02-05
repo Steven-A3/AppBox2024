@@ -17,13 +17,15 @@
 #import "A3ClockSettingsViewController.h"
 #import "A3UserDefaults.h"
 #import "A3ClockInfo.h"
+#import "NSUserDefaults+A3Defaults.h"
+#import "UIViewController+MMDrawerController.h"
 
 #define kCntPage 4.0
 
 @interface A3ClockMainViewController () <A3ClockDataManagerDelegate, A3ChooseColorDelegate, UIScrollViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIButton *appsButton;
+@property (nonatomic, strong) UIButton *clockAppsButton;
 @property (nonatomic, strong) UIButton *settingsButton;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) A3ClockWaveViewController *clockWaveViewController;
@@ -36,6 +38,7 @@
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) UIView *chooseColorView;
 @property (nonatomic, strong) id<MASConstraint> appsButtonTop;
+@property (nonatomic, strong) NSTimer *buttonsTimer;
 
 @end
 
@@ -49,6 +52,12 @@
 	return _clockDataManager;
 }
 
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[_buttonsTimer invalidate];
+	_buttonsTimer = nil;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -57,20 +66,20 @@
 
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-    
+
     [self.view addSubview:self.scrollView];
 
-	_appsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[_appsButton setTitle:@"Apps" forState:UIControlStateNormal];
-	_appsButton.titleLabel.font = [UIFont systemFontOfSize:17];
-	[_appsButton sizeToFit];
-	[_appsButton addTarget:self action:@selector(appsButtonAction) forControlEvents:UIControlEventTouchUpInside];
-	[_appsButton setHidden:YES];
-	[self.view addSubview:_appsButton];
+	_clockAppsButton = [UIButton buttonWithType:UIButtonTypeSystem];
+	[_clockAppsButton setTitle:@"Apps" forState:UIControlStateNormal];
+	_clockAppsButton.titleLabel.font = [UIFont systemFontOfSize:17];
+	[_clockAppsButton sizeToFit];
+	[_clockAppsButton addTarget:self action:@selector(appsButtonAction) forControlEvents:UIControlEventTouchUpInside];
+	[_clockAppsButton setHidden:YES];
+	[self.view addSubview:_clockAppsButton];
 
-	[_appsButton makeConstraints:^(MASConstraintMaker *make) {
+	[_clockAppsButton makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view).with.offset(8);
-		_appsButtonTop = make.top.equalTo(self.view).with.offset(35);
+		_appsButtonTop = make.top.equalTo(self.view.top).with.offset(26);
 	}];
 
 	_settingsButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -82,11 +91,15 @@
 	[self.view addSubview:_settingsButton];
 
 	[_settingsButton makeConstraints:^(MASConstraintMaker *make) {
-		make.right.equalTo(self.view.right).with.offset(-15);
-		make.centerY.equalTo(_appsButton.centerY);
+		make.centerX.equalTo(self.view.right).with.offset(-28);
+		make.centerY.equalTo(_clockAppsButton.centerY);
+		make.width.equalTo(@40);
+		make.height.equalTo(@40);
 	}];
 
 	[self.view addSubview:self.pageControl];
+
+	[self setButtonTintColor];
 
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
     [_pageControl makeConstraints:^(MASConstraintMaker *make) {
@@ -97,15 +110,21 @@
 			make.bottom.equalTo(self.view.bottom).with.offset(0);
 		}
 	}];
-    
+
 	[self addChooseColorButton];
 
 	_currentClockViewController = _clockWaveViewController;
-    
+
     [self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
 
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTapMainView)];
 	[self.scrollView addGestureRecognizer:tapGestureRecognizer];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
+}
+
+- (void)drawerStateChanged {
+	[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -130,15 +149,17 @@
 
 - (void)addChooseColorButton {
 	_chooseColorButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[_chooseColorButton setBackgroundImage:[UIImage imageNamed:@"m_color_on"] forState:UIControlStateNormal];
+	[_chooseColorButton setImage:[UIImage imageNamed:@"m_color_on"] forState:UIControlStateNormal];
+	[_chooseColorButton sizeToFit];
 	[_chooseColorButton addTarget:self action:@selector(chooseColorButtonAction) forControlEvents:UIControlEventTouchUpInside];
 	[_chooseColorButton setHidden:YES];
-	[_chooseColorButton sizeToFit];
 	[self.view addSubview:_chooseColorButton];
 
 	[_chooseColorButton makeConstraints:^(MASConstraintMaker *make) {
-		make.right.equalTo(self.view.right).offset(-15);
-		make.bottom.equalTo(self.view.bottom).offset(-15);
+		make.centerX.equalTo(self.view.right).offset(-28);
+		make.centerY.equalTo(self.view.bottom).offset(-28);
+		make.width.equalTo(@40);
+		make.height.equalTo(@40);
 	}];
 }
 
@@ -210,26 +231,51 @@
 	return _clockLEDViewController;
 }
 
+- (void)appsButtonAction {
+	if (IS_IPHONE) {
+		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
+			[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];
+		}];
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+	}
+}
+
 - (void)onTapMainView {
 	if (_chooseColorView) {
 		[self chooseColorDidCancel];
 	}
-	[self showMenus:_appsButton.isHidden];
+	[self showMenus:_clockAppsButton.isHidden];
 }
 
-#pragma mark - private
-
-- (void)showMenus:(BOOL)show
-{
-	_appsButton.hidden = !show;
+- (void)showMenus:(BOOL)show {
+	if (_buttonsTimer) {
+		[_buttonsTimer invalidate];
+		_buttonsTimer = nil;
+	}
+	_clockAppsButton.hidden = !show;
 	_settingsButton.hidden = !show;
-    _pageControl.hidden = !show;
-    _chooseColorButton.hidden = !show;
+	_pageControl.hidden = !show;
+	_chooseColorButton.hidden = !show;
 
 	if (!(show && IS_IPHONE && IS_LANDSCAPE)) {
 		[[UIApplication sharedApplication] setStatusBarHidden:!show withAnimation:UIStatusBarAnimationNone];
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		if (_pageControl.currentPage == 2) {
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+		} else {
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		}
 	}
+
+	if (show) {
+		NSTimeInterval timeInterval = 10;
+		_buttonsTimer = [NSTimer scheduledTimerWithTimeInterval:timeInterval target:self selector:@selector(hideButtons) userInfo:nil repeats:NO];
+	}
+}
+
+- (void)hideButtons {
+	[self showMenus:NO];
+	_buttonsTimer = nil;
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -239,8 +285,6 @@
 #pragma mark - A3ChooseColorDelegate
 
 - (void)chooseColorDidSelect:(UIColor *)aColor selectedIndex:(NSUInteger)selectedIndex {
-	[_currentClockViewController changeColor:aColor];
-
 	switch (self.pageControl.currentPage) {
 		case 0:{
 			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
@@ -256,8 +300,28 @@
 			[userDefaults setObject:colorData forKey:A3ClockFlipDarkColor];
 			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipDarkColorIndex];
 			[userDefaults synchronize];
+			break;
+		}
+		case 2: {
+			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
+			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			[userDefaults setObject:colorData forKey:A3ClockFlipLightColor];
+			[userDefaults setObject:@(selectedIndex) forKey:A3ClockFlipLightColorIndex];
+			[userDefaults synchronize];
+			break;
+		}
+		case 3: {
+			NSData *colorData = [NSKeyedArchiver archivedDataWithRootObject:aColor];
+			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			[userDefaults setObject:colorData forKey:A3ClockLEDColor];
+			[userDefaults setObject:@(selectedIndex) forKey:A3ClockLEDColorIndex];
+			[userDefaults synchronize];
+			break;
 		}
 	}
+
+	[_currentClockViewController changeColor:aColor];
+	[self setButtonTintColor];
 
 	[self hideChooseColorView];
 }
@@ -279,29 +343,31 @@
 					 }];
 }
 
-#pragma mark - btn event
+#pragma mark - Button Action
+
 - (void)chooseColorButtonAction
 {
+	[self showMenus:NO];
+
 	NSArray *colors = nil;
 	NSUInteger selectedColorIndex = 0;
 	switch (_pageControl.currentPage) {
 		case 0:
+			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockWaveColorIndex];
 			colors = [self.clockDataManager waveColors];
-			selectedColorIndex = (NSUInteger) [[NSUserDefaults standardUserDefaults] integerForKey:A3ClockWaveClockColorIndex];
 			break;
 		case 1:{
-			NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipDarkColorIndex];
-			selectedColorIndex = number ? number.unsignedIntegerValue : 12;
+			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockFlipDarkColorIndex];
 			colors = [self.clockDataManager flipColors];
 			break;
 		}
 		case 2:{
-			NSNumber *number = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipDarkColorIndex];
-			selectedColorIndex = number ? number.unsignedIntegerValue : 13;
+			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockFlipLightColorIndex];
 			colors = [self.clockDataManager flipColors];
 			break;
 		}
 		case 3:
+			selectedColorIndex = [[NSUserDefaults standardUserDefaults] clockLEDColorIndex];
 			colors = [self.clockDataManager ledColors];
 			break;
 	}
@@ -313,11 +379,11 @@
 
 - (void)settingsButtonAction:(id)aSender
 {
-    @autoreleasepool {
-		A3ClockSettingsViewController *viewController = [[A3ClockSettingsViewController alloc] init];
-		viewController.clockDataManager = self.clockDataManager;
-		[self presentSubViewController:viewController];
-	}
+	[self showMenus:NO];
+
+	A3ClockSettingsViewController *viewController = [[A3ClockSettingsViewController alloc] init];
+	viewController.clockDataManager = self.clockDataManager;
+	[self presentSubViewController:viewController];
 }
 
 #pragma mark - datetime event
@@ -330,10 +396,18 @@
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	UIViewController<A3ClockDataManagerDelegate> *targetViewController = self.viewControllers[(NSUInteger) self.pageControl.currentPage];
-	if ([targetViewController respondsToSelector:@selector(refreshWholeClock:)]) {
-		[targetViewController refreshWholeClock:clockInfo];
+	if ([_currentClockViewController respondsToSelector:@selector(refreshWholeClock:)]) {
+		[_currentClockViewController refreshWholeClock:clockInfo];
 	}
+	double delayInSeconds = 0.4;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		for (id <A3ClockDataManagerDelegate> viewController in _viewControllers) {
+			if (viewController != _currentClockViewController && [viewController respondsToSelector:@selector(refreshWholeClock:)]) {
+				[viewController refreshWholeClock:clockInfo];
+			}
+		}
+	});
 }
 
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
@@ -346,19 +420,12 @@
 
 #pragma mark - scrollView & pageControl event
 
-- (void) pageChangeValue:(id)sender {
+- (void)pageChangeValue:(id)sender {
     UIPageControl *pControl = (UIPageControl *) sender;
     [_scrollView setContentOffset:CGPointMake(pControl.currentPage*self.view.bounds.size.width, 0) animated:YES];
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-	double delayInSeconds = 0.5;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		for (UIViewController <A3ClockDataManagerDelegate> *viewController in self.viewControllers) {
-			[viewController refreshWholeClock:self.clockDataManager.clockInfo];
-		}
-	});
 	[self showMenus:NO];
 	[self hideChooseColorView];
 }
@@ -372,6 +439,39 @@
     
     _currentClockViewController = self.viewControllers[(NSUInteger) _pageControl.currentPage];
     [self.view setBackgroundColor:_currentClockViewController.view.backgroundColor];
+
+	[_currentClockViewController updateLayout];
+
+	[self setButtonTintColor];
+}
+
+- (void)setButtonTintColor {
+	UIColor *tintColor;
+	switch (_pageControl.currentPage) {
+		case 0:
+			tintColor = [UIColor whiteColor];
+			break;
+		case 1:
+			if ([[NSUserDefaults standardUserDefaults] clockFlipDarkColorIndex] == 12) {
+				tintColor = [UIColor whiteColor];
+			} else {
+				tintColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColor];
+			}
+			break;
+		case 2:
+			if ([[NSUserDefaults standardUserDefaults] clockFlipLightColorIndex] == 13) {
+				tintColor = [UIColor blackColor];
+			} else {
+				tintColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColor];
+			}
+			break;
+		case 3:
+			tintColor = [[NSUserDefaults standardUserDefaults] clockLEDColor];
+			break;
+	}
+	_clockAppsButton.tintColor = tintColor;
+	_settingsButton.tintColor = tintColor;
+	_pageControl.tintColor = tintColor;
 }
 
 - (NSUInteger)a3SupportedInterfaceOrientations {
@@ -398,8 +498,8 @@
 		_appsButtonTop.with.offset(5);
 		[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
 	} else {
-		_appsButtonTop.with.offset(35);
-		[[UIApplication sharedApplication] setStatusBarHidden:_appsButton.isHidden withAnimation:UIStatusBarAnimationNone];
+		_appsButtonTop.with.offset(26);
+		[[UIApplication sharedApplication] setStatusBarHidden:_clockAppsButton.isHidden withAnimation:UIStatusBarAnimationNone];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 	}
 }

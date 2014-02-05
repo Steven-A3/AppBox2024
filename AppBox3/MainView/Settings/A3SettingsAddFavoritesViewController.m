@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentsDidChange:) name:kA3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentsDidChange:) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
 - (IBAction)doneButtonAction:(id)sender {
@@ -153,7 +153,7 @@
 			[self.favoritesMenuItems removeObjectAtIndex:idxFavorite];
 			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
 
-			[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
 			
 			[button setSelected:NO];
 		} else {
@@ -163,8 +163,8 @@
 		if (idxFavorite == NSNotFound) {
 			[self.favoritesMenuItems addObject:menuItem];
 			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
-			
-			[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
+
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
 			
 			[button setSelected:YES];
 		} else {

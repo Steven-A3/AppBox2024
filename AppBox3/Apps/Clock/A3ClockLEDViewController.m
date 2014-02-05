@@ -6,369 +6,514 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreText/CoreText.h>
 #import "A3ClockInfo.h"
 #import "A3ClockDataManager.h"
 #import "A3ClockLEDViewController.h"
 #import "NSUserDefaults+A3Defaults.h"
-#import "A3ClockLEDBGLayer.h"
 
 @interface A3ClockLEDViewController ()
 
-@property (nonatomic, strong) UILabel *lbAMPM;
-@property (nonatomic, strong) UILabel *lbTemperatureWeather;
-@property (nonatomic, strong) UILabel *lbWeekDayMonth;
-@property (nonatomic, strong) UILabel* lb0;
-@property (nonatomic, strong) UIView* viewPanel;
-@property (nonatomic, strong) UILabel* lbHour1;
-@property (nonatomic, strong) UILabel* lbHour2;
-@property (nonatomic, strong) UILabel* lbMinute1;
-@property (nonatomic, strong) UILabel* lbMinute2;
-@property (nonatomic, strong) UILabel* lbSecond1;
-@property (nonatomic, strong) UILabel* lbSecond2;
-@property (nonatomic, strong) UILabel* lbColon1;
-@property (nonatomic, strong) UILabel* lbColon2;
+@property (nonatomic, strong) UILabel *AMPM;
+@property (nonatomic, strong) UILabel *weather;
+@property (nonatomic, strong) UILabel *date;
+@property (nonatomic, strong) UILabel *zeroLabel;
+@property (nonatomic, strong) UILabel *hour1;
+@property (nonatomic, strong) UILabel *hour2;
+@property (nonatomic, strong) UILabel *minute1;
+@property (nonatomic, strong) UILabel *minute2;
+@property (nonatomic, strong) UILabel *second1;
+@property (nonatomic, strong) UILabel *second2;
+@property (nonatomic, strong) UILabel *colon1;
+@property (nonatomic, strong) UILabel *colon2;
+@property (nonatomic, strong) NSMutableArray *constraints;
+@property (nonatomic, strong) UIView *gradientView;
+@property (nonatomic, strong) CAGradientLayer *gradientLayer;
 
 @end
 
-@implementation A3ClockLEDViewController
+@implementation A3ClockLEDViewController {
+	BOOL _colonHidden;
+}
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 
-	self.lb0 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lb0 setTextAlignment:NSTextAlignmentCenter];
-	[self.lb0 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lb0 setTextColor:[UIColor whiteColor]];
-	[self.lb0 setAlpha:0.05f];
-	[self.lb0 setText:@"00 00 00"];
-	[self.view addSubview:self.lb0];
+	[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:IS_IPHONE ? @"LED_bg" : @"LED_bg_p"]]];
 
-	self.viewPanel = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-			[self.lb0.text sizeWithAttributes:@{NSFontAttributeName:[self.lb0 font]}].width,
-			self.view.bounds.size.height)];
-
-
-//        self.viewPanel = [[UIView alloc] init];
-	[self.view addSubview:self.viewPanel];
-//        self.viewPanel.backgroundColor = [UIColor greenColor];
-//        [self.viewPanel makeConstraints:^(MASConstraintMaker *make) {
-//            make.centerY.equalTo(self.centerY).with.offset(0);
-//            make.centerX.equalTo(self.centerX).with.offset(0);
-//            make.width.equalTo(self.width).with.offset(0);
-//        }];
-
-
-	_lbAMPM = [[UILabel alloc] init];
-	_lbAMPM.textAlignment = NSTextAlignmentLeft;
-	[_lbAMPM setFont:[UIFont fontWithName:kClockFontNameDigit size:12]];
-	[_lbAMPM setTextColor:[UIColor whiteColor]];
-	[self.viewPanel addSubview:_lbAMPM];
-
-	_lbTemperatureWeather = [[UILabel alloc] init];
-	_lbTemperatureWeather.textAlignment = NSTextAlignmentLeft;
-	[_lbTemperatureWeather setFont:[UIFont fontWithName:kClockFontNameDigit size:12]];
-	[_lbTemperatureWeather setTextColor:[UIColor whiteColor]];
-	[self.viewPanel addSubview:_lbTemperatureWeather];
-
-	_lbWeekDayMonth = [[UILabel alloc] init];
-	_lbWeekDayMonth.textAlignment = NSTextAlignmentLeft;
-	[_lbWeekDayMonth setFont:[UIFont fontWithName:kClockFontNameDigit size:12]];
-	[_lbWeekDayMonth setTextColor:[UIColor whiteColor]];
-	[self.viewPanel addSubview:_lbWeekDayMonth];
-
-
-	float fWidthCharacter = [@"0" sizeWithAttributes:@{NSFontAttributeName:[self.lb0 font]}].width;
-	float fWidthSpace = [@" " sizeWithAttributes:@{NSFontAttributeName:[self.lb0 font]}].width;
-
-
-	self.lbHour1 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbHour1 setFrame:CGRectMake(self.lbHour1.frame.origin.x, self.lbHour1.frame.origin.y, fWidthCharacter, self.lbHour1.frame.size.height)];
-	[self.lbHour1 setTextAlignment:NSTextAlignmentRight];
-	[self.lbHour1 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lbHour1 setTextColor:[UIColor whiteColor]];
-	[self.lbHour1 setText:@"0"];
-	[self.viewPanel addSubview:self.lbHour1];
-
-	self.lbHour2 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbHour2 setFrame:CGRectMake(self.lbHour1.frame.origin.x + fWidthCharacter, self.lbHour2.frame.origin.y, fWidthCharacter, self.lbHour2.frame.size.height)];
-	[self.lbHour2 setTextAlignment:NSTextAlignmentRight];
-	[self.lbHour2 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lbHour2 setTextColor:[UIColor whiteColor]];
-	[self.lbHour2 setText:@"1"];
-	[self.viewPanel addSubview:self.lbHour2];
-
-	self.lbColon1 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbColon1 setCenter:CGPointMake(self.lbHour2.frame.origin.x + fWidthCharacter + (fWidthSpace*0.5f), self.lbColon1.center.y - 6)];
-	[self.lbColon1 setTextAlignment:NSTextAlignmentCenter];
-	[self.lbColon1 setFont:[UIFont fontWithName:kClockFontNameRegular size:[self fontSizeColon]]];
-	[self.lbColon1 setTextColor:[UIColor whiteColor]];
-	[self.lbColon1 setAlpha:0.5f];
-	[self.lbColon1 setText:@":"];
-	[self.viewPanel addSubview:self.lbColon1];
-
-	self.lbMinute1 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbMinute1 setFrame:CGRectMake(self.lbHour2.frame.origin.x + fWidthCharacter + fWidthSpace, self.lbMinute1.frame.origin.y, fWidthCharacter, self.lbMinute1.frame.size.height)];
-	[self.lbMinute1 setTextAlignment:NSTextAlignmentRight];
-	[self.lbMinute1 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lbMinute1 setTextColor:[UIColor whiteColor]];
-	[self.lbMinute1 setText:@"0"];
-	[self.viewPanel addSubview:self.lbMinute1];
-
-	self.lbMinute2 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbMinute2 setFrame:CGRectMake(self.lbMinute1.frame.origin.x + fWidthCharacter, self.lbMinute2.frame.origin.y, fWidthCharacter, self.lbMinute2.frame.size.height)];
-	[self.lbMinute2 setTextAlignment:NSTextAlignmentRight];
-	[self.lbMinute2 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lbMinute2 setTextColor:[UIColor whiteColor]];
-	[self.lbMinute2 setText:@"1"];
-	[self.viewPanel addSubview:self.lbMinute2];
-
-	self.lbColon2 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbColon2 setCenter:CGPointMake(self.lbMinute2.frame.origin.x + fWidthCharacter + (fWidthSpace*0.5f), self.lbColon2.center.y - 6)];
-	[self.lbColon2 setTextAlignment:NSTextAlignmentCenter];
-	[self.lbColon2 setFont:[UIFont fontWithName:kClockFontNameRegular size:[self fontSizeColon]]];
-	[self.lbColon2 setTextColor:[UIColor whiteColor]];
-	[self.lbColon2 setAlpha:0.5f];
-	[self.lbColon2 setText:@":"];
-	[self.viewPanel addSubview:self.lbColon2];
-
-	self.lbSecond1 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbSecond1 setFrame:CGRectMake(self.lbMinute2.frame.origin.x + fWidthCharacter + fWidthSpace, self.lbSecond1.frame.origin.y, fWidthCharacter, self.lbSecond1.frame.size.height)];
-	[self.lbSecond1 setTextAlignment:NSTextAlignmentRight];
-	[self.lbSecond1 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lbSecond1 setTextColor:[UIColor whiteColor]];
-	[self.lbSecond1 setText:@"0"];
-	[self.viewPanel addSubview:self.lbSecond1];
-
-	self.lbSecond2 = [[UILabel alloc] initWithFrame:self.view.bounds];
-	[self.lbSecond2 setFrame:CGRectMake(self.lbSecond1.frame.origin.x + fWidthCharacter, self.lbSecond2.frame.origin.y, fWidthCharacter, self.lbSecond2.frame.size.height)];
-	[self.lbSecond2 setTextAlignment:NSTextAlignmentRight];
-	[self.lbSecond2 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-	[self.lbSecond2 setTextColor:[UIColor whiteColor]];
-	[self.lbSecond2 setText:@"1"];
-	[self.viewPanel addSubview:self.lbSecond2];
-
-
-
-//        CGSize textSize = [@"0" sizeWithAttributes:@{NSFontAttributeName:[self.lbHour1 font]}];
-//        CGFloat fWidth1 = textSize.width;
-//        textSize = [@"00" sizeWithAttributes:@{NSFontAttributeName:[self.lbHour1 font]}];
-//        CGFloat fWidth2 = textSize.width;
-//        textSize = [@" " sizeWithAttributes:@{NSFontAttributeName:[self.lbHour1 font]}];
-//        CGFloat fWidth3 = textSize.width;
-//        textSize = [@"1" sizeWithAttributes:@{NSFontAttributeName:[self.lbHour1 font]}];
-//        CGFloat fWidth4 = textSize.width;
-//
-//
-//        NSLog(@"%f,%f,%f,%f", fWidth1, fWidth2, fWidth3, fWidth4);
-//        self.lbColon1 = [[UILabel alloc] initWithFrame:self.bounds];
-//        [self.lbColon1 setTextAlignment:NSTextAlignmentCenter];
-//        [self.lbColon1 setFont:[UIFont fontWithName:kClockFontNameRegular size:70]];
-//        [self.lbColon1 setTextColor:[UIColor whiteColor]];
-//        [self.lbColon1 setAlpha:0.5f];
-//        [self.lbColon1 setText:@":"];
-//        [self addSubview:self.lbColon1];// 왼쪽51
-//
-//        self.lbColon2 = [[UILabel alloc] initWithFrame:self.bounds];
-//        [self.lbColon2 setTextAlignment:NSTextAlignmentCenter];
-//        [self.lbColon2 setFont:[UIFont fontWithName:kClockFontNameRegular size:70]];
-//        [self.lbColon2 setTextColor:[UIColor whiteColor]];
-//        [self.lbColon2 setAlpha:0.5f];
-//        [self.lbColon2 setText:@":"];
-//        [self addSubview:self.lbColon2];// 오른쪽53
-
-
-//        [UIButton buttonWithType:UIButtonTypeSystem]
-
-
-
-	if(IS_IPHONE)
-		[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"LED_bg.png"]]];
-	else
-		[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"LED_bg_p.png"]]];
-
-//        [self setupSubviews];
-
-	CAGradientLayer *bgLayer = [A3ClockLEDBGLayer whiteGradient];
-	bgLayer.frame = self.view.bounds;
-	[self.view.layer insertSublayer:bgLayer atIndex:1];
+	[self prepareSubviews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	[self layoutSubviews];
+
+	[self refreshWholeClock:self.clockDataManager.clockInfo];
 }
 
-#pragma mark - private
-
-- (float)fontSizeTime
-{
-    float fRst = 0.f;
-    
-    if(IS_IPHONE)
-    {
-        if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds])
-            fRst = 74.f;
-        else
-            fRst = 116.f;
-    }
-    
-    return fRst;
+- (void)updateLayout {
+	[self layoutSubviews];
+	[self refreshWholeClock:self.clockDataManager.clockInfo];
 }
 
-- (float)fontSizeColon
-{
-    float fRst = 0.f;
-    
-    if(IS_IPHONE)
-    {
-        if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds])
-            fRst = 70.f;
-        else
-            fRst = 90.f;
-    }
-    
-    return fRst;
+- (void)changeColor:(UIColor *)color {
+	[self setupTextColor];
+	[self setGradientColor];
 }
 
-#pragma mark - public
 - (void)layoutSubviews {
-    if([[NSUserDefaults standardUserDefaults] clockShowAMPM])
-        _lbAMPM.hidden = YES;
-    else
-        _lbAMPM.hidden = NO;
-    
-    if([[NSUserDefaults standardUserDefaults] clockShowWeather])
-        _lbTemperatureWeather.hidden = YES;
-    else
-        _lbTemperatureWeather.hidden = NO;
+	[self removeConstraints];
 
-    if(IS_IPHONE)
-    {
-        if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds])
-        {
-            self.lbColon2.hidden = NO;
-            self.lbSecond2.hidden = NO;
-            
-            [self.lb0 setText:@"00 00 00"];
-            
-            [_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.viewPanel.left).with.offset(0);
-                //            make.bottom.equalTo(self.lbHour1.top).with.offset(-16);
-                make.top.equalTo(self.view.top).with.offset(230);
-            }];
-            
-            [_lbTemperatureWeather makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.viewPanel.right).with.offset(0);
-                make.top.equalTo(self.view.top).with.offset(230);
-            }];
-            
-            [_lbWeekDayMonth makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.viewPanel.right).with.offset(0);
-                make.top.equalTo(self.view.top).with.offset(322);
-            }];
-        }
-        else
-        {
-            self.lbColon2.hidden = YES;
-            self.lbSecond2.hidden = YES;
-            
-            [self.lb0 setText:@"00 00"];
-            
-            [_lbAMPM makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.viewPanel.left).with.offset(8);
-                //            make.bottom.equalTo(self.lbHour1.top).with.offset(-16);
-                make.top.equalTo(self.view.top).with.offset(230);
-            }];
-            
-            [_lbTemperatureWeather makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.viewPanel.right).with.offset(-8);
-                make.top.equalTo(self.view.top).with.offset(230);
-            }];
-            
-            [_lbWeekDayMonth makeConstraints:^(MASConstraintMaker *make) {
-                make.right.equalTo(self.viewPanel.right).with.offset(-8);
-                make.top.equalTo(self.view.top).with.offset(322);
-            }];
-        }
-        
-        [self.lb0 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-        [self.lb0 setFrame:self.view.bounds];
-            
-        [self.viewPanel setFrame:CGRectMake(0, 0,
-                                            [self.lb0.text sizeWithAttributes:@{NSFontAttributeName:[self.lb0 font]}].width,
-                                            self.view.bounds.size.height)];
-        [self.viewPanel setCenter:CGPointMake(self.view.frame.size.width*0.5f, self.view.frame.size.height*0.5f)];
-        
-        
-        float fWidthCharacter = [@"0" sizeWithAttributes:@{NSFontAttributeName:[self.lb0 font]}].width;
-        float fWidthSpace = [@" " sizeWithAttributes:@{NSFontAttributeName:[self.lb0 font]}].width;
-        
-        
-        [self.lbHour1 setFrame:CGRectMake(self.lbHour1.frame.origin.x, self.lbHour1.frame.origin.y, fWidthCharacter, self.lbHour1.frame.size.height)];
-        [self.lbHour1 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
+	[self setupSecondsLabel];
+	[self setupAMPM];
+	[self setupWeatherLabel];
+	[self setupDateLabel];
+	[self setupColon2];
 
-        [self.lbHour2 setFrame:CGRectMake(self.lbHour1.frame.origin.x + fWidthCharacter, self.lbHour2.frame.origin.y, fWidthCharacter, self.lbHour2.frame.size.height)];
-        [self.lbHour2 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-        
-        [self.lbColon1 setCenter:CGPointMake(self.lbHour2.frame.origin.x + fWidthCharacter + (fWidthSpace*0.5f), self.lbHour2.center.y - 6)];
-        [self.lbColon1 setFont:[UIFont fontWithName:kClockFontNameRegular size:[self fontSizeColon]]];
-        
-        [self.lbMinute1 setFrame:CGRectMake(self.lbHour2.frame.origin.x + fWidthCharacter + fWidthSpace, self.lbMinute1.frame.origin.y, fWidthCharacter, self.lbMinute1.frame.size.height)];
-        [self.lbMinute1 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-        
-        [self.lbMinute2 setFrame:CGRectMake(self.lbMinute1.frame.origin.x + fWidthCharacter, self.lbMinute2.frame.origin.y, fWidthCharacter, self.lbMinute2.frame.size.height)];
-        [self.lbMinute2 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-        
-        [self.lbColon2 setCenter:CGPointMake(self.lbMinute2.frame.origin.x + fWidthCharacter + (fWidthSpace*0.5f), self.lbMinute1.center.y - 6)];
-        [self.lbColon2 setFont:[UIFont fontWithName:kClockFontNameRegular size:[self fontSizeColon]]];
-        
-        [self.lbSecond1 setFrame:CGRectMake(self.lbMinute2.frame.origin.x + fWidthCharacter + fWidthSpace, self.lbSecond1.frame.origin.y, fWidthCharacter, self.lbSecond1.frame.size.height)];
-        [self.lbSecond1 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-        
-        [self.lbSecond2 setFrame:CGRectMake(self.lbSecond1.frame.origin.x + fWidthCharacter, self.lbSecond2.frame.origin.y, fWidthCharacter, self.lbSecond2.frame.size.height)];
-        [self.lbSecond2 setFont:[UIFont fontWithName:kClockFontNameDigit size:[self fontSizeTime]]];
-    }
+	[self setupTextColor];
+
+	CGFloat timeFontSize;
+	if (IS_IPHONE) {
+		if (self.showSeconds) {
+			timeFontSize = IS_PORTRAIT ? 74 : 116;
+		} else {
+			timeFontSize = IS_PORTRAIT ? 116 : 162;
+		}
+	} else {
+		if (self.showSeconds) {
+			timeFontSize = IS_PORTRAIT ? 165 : 231;
+		} else {
+			timeFontSize = IS_PORTRAIT ? 231 : 304;
+		}
+	}
+
+	CGFloat otherFontSize;
+	if (IS_IPHONE) {
+		otherFontSize = IS_PORTRAIT ? 15 : 20.5;
+	} else {
+		otherFontSize = 26;
+	}
+	UIFont *otherFont = [UIFont fontWithName:@"Register" size:otherFontSize];
+
+	_zeroLabel.text = self.showSeconds ? @"00 00 00" : @"00 00";
+	_zeroLabel.font = [UIFont fontWithName:@"01 Digit" size:timeFontSize];
+	_hour1.font = _zeroLabel.font; _hour2.font = _zeroLabel.font;
+	_minute1.font = _zeroLabel.font; _minute2.font = _zeroLabel.font;
+
+	CGSize zeroSize = [@"0" sizeWithAttributes:@{NSFontAttributeName : _zeroLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
+	CGSize spaceSize = [@" " sizeWithAttributes:@{NSFontAttributeName : _zeroLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
+
+	CGFloat timeVerticalOffset = [self timeVerticalOffset];
+	CGFloat colonOffset;
+
+	if (self.showSeconds) {
+		CGFloat colonSize;
+		if (IS_IPHONE) {
+			colonSize = IS_PORTRAIT ? 70 : 90;
+			colonOffset = IS_PORTRAIT ? -7 : -7;
+		} else {
+			colonSize = IS_PORTRAIT ? 140 : 180;
+			colonOffset = IS_PORTRAIT ? -7 : -7;
+		}
+		CGFloat timeHalfHeightUp;
+		CGFloat timeHalfHeightDown;
+		if (IS_IPHONE) {
+			timeHalfHeightUp = IS_PORTRAIT ? 80 / 2 : 108 / 2;
+			timeHalfHeightDown = IS_PORTRAIT ? 80 / 2 : 108 / 2;
+		} else {
+			timeHalfHeightUp = IS_PORTRAIT ? 142 / 2: 182 / 2;
+			timeHalfHeightDown = IS_PORTRAIT ? 142 / 2: 182 / 2;
+		}
+		_second1.font = _zeroLabel.font; _second2.font = _zeroLabel.font;
+
+		[self setGradientColor];
+		CGRect frame = self.view.bounds;
+		frame.origin.y = self.view.center.y - timeHalfHeightUp - 30;
+		frame.size.height = timeHalfHeightUp * 2 + 60;
+		_gradientView.frame = frame;
+		_gradientLayer.frame = _gradientView.bounds;
+		FNLOGRECT(frame);
+
+		[_hour1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-(zeroSize.width * 2 + spaceSize.width + zeroSize.width / 2))];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+		[_hour2 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-(zeroSize.width + spaceSize.width + zeroSize.width / 2))];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+
+		[_minute1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-zeroSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+		[_minute2 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(zeroSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+
+		[_second1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(spaceSize.width + zeroSize.width + zeroSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+		[_second2 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(spaceSize.width + zeroSize.width * 2 + zeroSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+
+		[_colon1 setFont:[UIFont fontWithName:@"Helvetica" size:colonSize]];
+		[_colon2 setFont:[UIFont fontWithName:@"Helvetica" size:colonSize]];
+		[_colon1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-(zeroSize.width + spaceSize.width / 2))];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(colonOffset)];
+		}];
+		[_colon2 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(zeroSize.width + spaceSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(colonOffset)];
+		}];
+
+		if (self.showAMPM) {
+			[_AMPM setFont:otherFont];
+			[_AMPM makeConstraints:^(MASConstraintMaker *make) {
+				[self.constraints addObject:make.left.equalTo(self.view.centerX).with.offset(-(zeroSize.width * 3 + spaceSize.width) + 8)];
+				[self.constraints addObject:make.bottom.equalTo(self.view.centerY).with.offset(-timeHalfHeightUp)];
+			}];
+		}
+		if (self.showWeather) {
+			[_weather setFont:otherFont];
+			[_weather makeConstraints:^(MASConstraintMaker *make) {
+				[self.constraints addObject:make.right.equalTo(self.view.centerX).with.offset(zeroSize.width * 3 + spaceSize.width - 8)];
+				[self.constraints addObject:make.bottom.equalTo(self.view.centerY).with.offset(-timeHalfHeightUp)];
+			}];
+		}
+		if (self.showDate) {
+			[_date setFont:otherFont];
+			[_date makeConstraints:^(MASConstraintMaker *make) {
+				[self.constraints addObject:make.right.equalTo(self.view.centerX).with.offset(zeroSize.width * 3 + spaceSize.width - 8)];
+				[self.constraints addObject:make.top.equalTo(self.view.centerY).with.offset(timeHalfHeightDown)];
+			}];
+		}
+	} else {
+		CGFloat colonSize;
+		if (IS_IPHONE) {
+			colonSize = IS_PORTRAIT ? 90 : 126;
+			colonOffset = IS_PORTRAIT ? -7 : -7;
+		} else {
+			colonSize = IS_PORTRAIT ? 180 : 234;
+			colonOffset = IS_PORTRAIT ? -7 : -7;
+		}
+		CGFloat timeHalfHeightUp;
+		CGFloat timeHalfHeightDown;
+		if (IS_IPHONE) {
+			timeHalfHeightUp = IS_PORTRAIT ? 108 / 2 : 140 / 2;
+			timeHalfHeightDown = IS_PORTRAIT ? 108 / 2 : 140 / 2;
+		} else { // iPAD
+			timeHalfHeightUp = IS_PORTRAIT ? 188 / 2 - 2: 236 / 2 - 1;
+			timeHalfHeightDown = IS_PORTRAIT ? 188 / 2 - 2: 236 / 2 - 3;
+		}
+
+		[self setGradientColor];
+		CGRect frame = self.view.bounds;
+		frame.origin.y = self.view.center.y - timeHalfHeightUp - 30;
+		frame.size.height = timeHalfHeightUp * 2 + 60;
+		_gradientView.frame = frame;
+		_gradientLayer.frame = _gradientView.bounds;
+
+		_second1.font = _zeroLabel.font; _second2.font = _zeroLabel.font;
+
+		[_hour1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-(zeroSize.width + spaceSize.width / 2 + zeroSize.width / 2))];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+		[_hour2 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(-(spaceSize.width / 2 + zeroSize.width / 2))];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+
+		[_minute1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(spaceSize.width / 2 + zeroSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+		[_minute2 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX).with.offset(spaceSize.width / 2 + zeroSize.width + zeroSize.width / 2)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(timeVerticalOffset)];
+		}];
+
+		[_colon1 setFont:[UIFont fontWithName:@"Helvetica" size:colonSize]];
+		[_colon1 makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.view.centerX)];
+			[self.constraints addObject:make.centerY.equalTo(self.view.centerY).with.offset(colonOffset)];
+		}];
+
+		if (self.showAMPM) {
+			[_AMPM setFont:otherFont];
+			[_AMPM makeConstraints:^(MASConstraintMaker *make) {
+				[self.constraints addObject:make.left.equalTo(self.view.centerX).with.offset(-(zeroSize.width * 2 + spaceSize.width / 2) + 8)];
+				[self.constraints addObject:make.bottom.equalTo(self.view.centerY).with.offset(-(timeHalfHeightUp))];
+			}];
+		}
+		if (self.showWeather) {
+			[_weather setFont:otherFont];
+			[_weather makeConstraints:^(MASConstraintMaker *make) {
+				[self.constraints addObject:make.right.equalTo(self.view.centerX).with.offset(zeroSize.width * 2 + spaceSize.width / 2 - 8)];
+				[self.constraints addObject:make.bottom.equalTo(self.view.centerY).with.offset(-(timeHalfHeightUp))];
+			}];
+		}
+		if (self.showDate) {
+			[_date setFont:otherFont];
+			[_date makeConstraints:^(MASConstraintMaker *make) {
+				[self.constraints addObject:make.right.equalTo(self.view.centerX).with.offset(zeroSize.width * 2 + spaceSize.width / 2 - 8)];
+				[self.constraints addObject:make.top.equalTo(self.view.centerY).with.offset(timeHalfHeightDown)];
+			}];
+		}
+	}
+	_colonHidden = NO;
+	[_colon1 setHidden:NO];
+	[_colon2 setHidden:NO];
+
+	[self.view layoutIfNeeded];
+
+
+}
+
+- (void)setupTextColor {
+	UIColor *textColor = [[NSUserDefaults standardUserDefaults] clockLEDColor];
+	for (UILabel *label in self.view.subviews) {
+		if ([label isKindOfClass:[UILabel class]]) {
+			label.textColor = textColor;
+		}
+	}
+	_zeroLabel.alpha = 0.05;
+	_colon1.alpha = 0.5;
+	_colon2.alpha = 0.5;
+}
+
+- (NSMutableArray *)constraints {
+	if (!_constraints) {
+		_constraints = [NSMutableArray new];
+	}
+	return _constraints;
+}
+
+- (void)removeConstraints {
+	for (id <MASConstraint> constraint in _constraints) {
+		[constraint uninstall];
+	}
+}
+
+- (void)setupColon2 {
+	if (self.showSeconds) {
+		if (!_colon2) {
+			_colon2 = [self makeLabel];
+			_colon2.text = @":";
+		}
+		[self.view addSubview:_colon2];
+	} else {
+		[_colon2 removeFromSuperview];
+		_colon2 = nil;
+	}
+}
+
+- (void)prepareSubviews {
+	[self addZeroTimeLabel];
+	[self addGradientView];
+	[self addTimeLabels];
+	[self addColon1];
+}
+
+- (void)setGradientColor {
+	NSUInteger colorIndex = [[NSUserDefaults standardUserDefaults] clockLEDColorIndex];
+	_gradientLayer.colors = @[
+			(id)[UIColor clearColor].CGColor,
+			(id) [self.clockDataManager LEDColorAtIndex:colorIndex alpha:0.05].CGColor,
+			(id)[UIColor clearColor].CGColor
+	];
+}
+
+- (void)addGradientView {
+	_gradientView = [UIView new];
+	_gradientLayer = [CAGradientLayer layer];
+	_gradientLayer.position = CGPointMake(0,0);
+	_gradientLayer.anchorPoint = CGPointMake(0,0);
+	_gradientLayer.locations = @[@0, @0.5, @1];
+	[self setGradientColor];
+	[_gradientView.layer addSublayer:_gradientLayer];
+
+	[self.view addSubview:_gradientView];
+}
+
+- (void)addColon1 {
+	_colon1 = [self makeLabel];
+	_colon1.text = @":";
+	[self.view addSubview:_colon1];
+}
+
+- (void)setupAMPM {
+	if (self.showAMPM) {
+		if (!_AMPM) {
+			_AMPM = [self makeLabel];
+		}
+		[self.view addSubview:_AMPM];
+	} else {
+		[_AMPM removeFromSuperview];
+		_AMPM = nil;
+	}
+}
+
+- (CGFloat)timeVerticalOffset {
+	CGFloat verticalOffset;
+	if (self.showSeconds) {
+		if (IS_IPHONE) {
+			verticalOffset = IS_PORTRAIT ? 0 : 0;
+		} else {
+			verticalOffset = IS_PORTRAIT ? 0 : -6;
+		}
+	} else {
+		if (IS_IPHONE) {
+			verticalOffset = IS_PORTRAIT ? 0 : 0;
+		} else {
+			verticalOffset = IS_PORTRAIT ? -4 : -9;
+		}
+	}
+	return verticalOffset;
+}
+
+- (void)addZeroTimeLabel {
+	_zeroLabel = [self makeLabel];
+	_zeroLabel.alpha = 0.05;
+	[self.view addSubview:_zeroLabel];
+
+	CGFloat verticalOffset = [self timeVerticalOffset];
+
+	[_zeroLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.centerY.equalTo(self.view.centerY).with.offset(verticalOffset);
+	}];
+}
+
+
+- (void)addTimeLabels {
+	_hour1 = [self makeLabel];
+	[self.view addSubview:_hour1];
+	_hour2 = [self makeLabel];
+	[self.view addSubview:_hour2];
+
+	_minute1 = [self makeLabel];
+	[self.view addSubview:_minute1];
+	_minute2 = [self makeLabel];
+	[self.view addSubview:_minute2];
+
+	// Seconds labels depends on settings
+}
+
+- (void)setupSecondsLabel {
+	if (self.showSeconds) {
+		if (!_second1) {
+			_second1 = [self makeLabel];
+		}
+		if (!_second2) {
+			_second2 = [self makeLabel];
+		}
+		[self.view addSubview:_second1];
+		[self.view addSubview:_second2];
+	} else {
+		[_second1 removeFromSuperview];
+		_second1 = nil;
+		[_second2 removeFromSuperview];
+		_second2 = nil;
+	}
+}
+
+- (void)setupWeatherLabel {
+	if (self.showWeather) {
+		if (!_weather) {
+			_weather = [self makeLabel];
+		}
+		[self.view addSubview:_weather];
+	} else {
+		[_weather removeFromSuperview];
+		_weather = nil;
+	}
+}
+
+- (void)setupDateLabel {
+	if (self.showDate) {
+		if (!_date) {
+			_date = [self makeLabel];
+			[self.view addSubview:_date];
+		}
+	} else {
+		[_date removeFromSuperview];
+		_date = nil;
+	}
+}
+
+- (UILabel *)makeLabel {
+	UILabel *label = [UILabel new];
+	label.textAlignment = NSTextAlignmentCenter;
+	label.textColor = [[NSUserDefaults standardUserDefaults] clockLEDColor];
+	return label;
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
+	if ([self use24hourClock]) {
+		[clockInfo.dateFormatter setDateFormat:@"HHmmss"];
+	} else {
+		[clockInfo.dateFormatter setDateFormat:@"hhmmss"];
+	}
+	NSString *timeString = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
 
+	_hour1.text = [timeString substringWithRange:NSMakeRange(0, 1)];
+	_hour2.text = [timeString substringWithRange:NSMakeRange(1, 1)];
+	_minute1.text = [timeString substringWithRange:NSMakeRange(2, 1)];
+	_minute2.text = [timeString substringWithRange:NSMakeRange(3, 1)];
+	_second1.text = [timeString substringWithRange:NSMakeRange(4, 1)];
+	_second2.text = [timeString substringWithRange:NSMakeRange(5, 1)];
+
+	if (self.flashSeparator) {
+		_colonHidden = !_colonHidden;
+		[_colon1 setHidden:_colonHidden];
+		[_colon2 setHidden:_colonHidden];
+	}
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {
-	if([clockInfo.hour intValue] < 10)
-		self.lbHour1.text = @"";
-	else
-		self.lbHour1.text = [clockInfo.hour substringToIndex:1];
+	[self refreshSecond:clockInfo];
 
-	self.lbHour2.text = [clockInfo.hour substringFromIndex:1];
-
-	self.lbMinute1.text = [clockInfo.minute substringToIndex:1];
-	self.lbMinute2.text = [clockInfo.minute substringFromIndex:1];
-
-	self.lbSecond1.text = [clockInfo.second substringToIndex:1];
-	self.lbSecond2.text = [clockInfo.second substringFromIndex:1];
-
-	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
-	{
-		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@ %@ %@", [clockInfo.shortWeekday uppercaseString], clockInfo.day, [clockInfo.shortMonth uppercaseString]];
+	if (self.showAMPM) {
+		_AMPM.text = clockInfo.AMPM;
 	}
-	else if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
-	{
-		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@", clockInfo.weekday];
+	if (self.showDate) {
+		[clockInfo.dateFormatter setDateStyle:NSDateFormatterFullStyle];
+		NSString *dateFormat = clockInfo.dateFormatter.dateFormat;
+		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"y" withString:@""];
+		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+		dateFormat = [dateFormat stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
+		[clockInfo.dateFormatter setDateFormat:dateFormat];
+		_date.text = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
 	}
-	else if([[NSUserDefaults standardUserDefaults] clockShowDate])
-	{
-		_lbWeekDayMonth.text = [NSString stringWithFormat:@"%@ %@", clockInfo.month, clockInfo.day];
+
+	if (_weatherInfoAvailable && self.showWeather) {
+		[self refreshWeather:clockInfo];
 	}
-	else
-		_lbWeekDayMonth.text = @"";
+	return;
+}
 
-	_lbAMPM.text = clockInfo.AMPM;
+- (void)refreshWeather:(A3ClockInfo *)clockInfo {
+	if (!self.showWeather) return;
 
+	if (!_weatherInfoAvailable) {
+		_weatherInfoAvailable = YES;
+	}
+	_weather.text = [NSString stringWithFormat:@"%d° %@", clockInfo.currentWeather.currentTemperature, clockInfo.currentWeather.description];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
 	[self layoutSubviews];
 }
-
 
 @end

@@ -57,7 +57,18 @@
 - (BOOL)clockUsesFahrenheit;
 - (void)setClockUsesFahrenheit:(BOOL)boolValue;
 
+- (UIColor *)clockWaveColor;
+- (NSUInteger)clockWaveColorIndex;
+
 - (UIColor *)clockFlipDarkColor;
 
+- (NSUInteger)clockFlipDarkColorIndex;
+
 - (UIColor *)clockFlipLightColor;
+
+- (NSUInteger)clockFlipLightColorIndex;
+
+- (UIColor *)clockLEDColor;
+- (NSUInteger)clockLEDColorIndex;
+
 @end

@@ -47,6 +47,7 @@
 			make.bottom.equalTo(view.bottom);
 			make.height.equalTo(@(frame.size.height));
 		}];
+		[chooseColorView.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
 	}];
 
     return chooseColorView;

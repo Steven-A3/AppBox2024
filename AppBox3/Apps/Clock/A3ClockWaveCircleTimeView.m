@@ -23,7 +23,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.nLineWidth = 2;
+        self.lineWidth = 2;
 
 
     }

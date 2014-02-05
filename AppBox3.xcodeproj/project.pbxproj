@@ -73,9 +73,7 @@
 		680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AC1891751B0093FD97 /* A3ClockDataManager.m */; };
 		680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */; };
 		680886D61891751B0093FD97 /* A3SBTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B01891751B0093FD97 /* A3SBTickerView.m */; };
-		680886D71891751B0093FD97 /* A3ClockFoldPaperView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B21891751B0093FD97 /* A3ClockFoldPaperView.m */; };
 		680886D81891751B0093FD97 /* A3ClockInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B41891751B0093FD97 /* A3ClockInfo.m */; };
-		680886D91891751B0093FD97 /* A3ClockLEDBGLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B61891751B0093FD97 /* A3ClockLEDBGLayer.m */; };
 		680886DA1891751B0093FD97 /* A3ClockLEDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886B81891751B0093FD97 /* A3ClockLEDViewController.m */; };
 		680886DB1891751B0093FD97 /* A3ClockMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886BA1891751B0093FD97 /* A3ClockMainViewController.m */; };
 		680886DC1891751B0093FD97 /* A3ClockSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680886BC1891751B0093FD97 /* A3ClockSettingsViewController.m */; };
@@ -344,7 +342,6 @@
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		688D74CC16C5219D00DBF033 /* A3ToolbarBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D74CB16C5219D00DBF033 /* A3ToolbarBackgroundView.m */; };
 		688F7E1916C12D1E003687A7 /* A3VerticalLinesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688F7E1816C12D1E003687A7 /* A3VerticalLinesView.m */; };
-		6890852C18921C4100E16724 /* Digit.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6890852B18921C4100E16724 /* Digit.ttf */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */; };
 		6891D7FD183C5EDD0060B677 /* A3CurrencySettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6891D7FB183C5EDD0060B677 /* A3CurrencySettingsViewController.m */; };
 		689307B7168C1B220085F508 /* A3KeyboardBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 689307B6168C1B220085F508 /* A3KeyboardBackgroundView.m */; };
@@ -645,12 +642,8 @@
 		680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockFlipViewController.m; sourceTree = "<group>"; };
 		680886AF1891751B0093FD97 /* A3SBTickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3SBTickerView.h; sourceTree = "<group>"; };
 		680886B01891751B0093FD97 /* A3SBTickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SBTickerView.m; sourceTree = "<group>"; };
-		680886B11891751B0093FD97 /* A3ClockFoldPaperView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockFoldPaperView.h; sourceTree = "<group>"; };
-		680886B21891751B0093FD97 /* A3ClockFoldPaperView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockFoldPaperView.m; sourceTree = "<group>"; };
 		680886B31891751B0093FD97 /* A3ClockInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockInfo.h; sourceTree = "<group>"; };
 		680886B41891751B0093FD97 /* A3ClockInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockInfo.m; sourceTree = "<group>"; };
-		680886B51891751B0093FD97 /* A3ClockLEDBGLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockLEDBGLayer.h; sourceTree = "<group>"; };
-		680886B61891751B0093FD97 /* A3ClockLEDBGLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockLEDBGLayer.m; sourceTree = "<group>"; };
 		680886B71891751B0093FD97 /* A3ClockLEDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockLEDViewController.h; sourceTree = "<group>"; };
 		680886B81891751B0093FD97 /* A3ClockLEDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ClockLEDViewController.m; sourceTree = "<group>"; };
 		680886B91891751B0093FD97 /* A3ClockMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ClockMainViewController.h; sourceTree = "<group>"; };
@@ -1023,7 +1016,6 @@
 		688D74CB16C5219D00DBF033 /* A3ToolbarBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ToolbarBackgroundView.m; sourceTree = "<group>"; };
 		688F7E1716C12D1E003687A7 /* A3VerticalLinesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3VerticalLinesView.h; sourceTree = "<group>"; };
 		688F7E1816C12D1E003687A7 /* A3VerticalLinesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3VerticalLinesView.m; sourceTree = "<group>"; };
-		6890852B18921C4100E16724 /* Digit.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Digit.ttf; path = AppBox3/Digit.ttf; sourceTree = "<group>"; };
 		6890AB0C1786B800004FECE4 /* EXPBackwardCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPBackwardCompatibility.h; sourceTree = "<group>"; };
 		6890AB0D1786B800004FECE4 /* EXPBlockDefinedMatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPBlockDefinedMatcher.h; sourceTree = "<group>"; };
 		6890AB0E1786B800004FECE4 /* EXPDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPDefines.h; sourceTree = "<group>"; };
@@ -1461,12 +1453,8 @@
 				680886AE1891751B0093FD97 /* A3ClockFlipViewController.m */,
 				680886AF1891751B0093FD97 /* A3SBTickerView.h */,
 				680886B01891751B0093FD97 /* A3SBTickerView.m */,
-				680886B11891751B0093FD97 /* A3ClockFoldPaperView.h */,
-				680886B21891751B0093FD97 /* A3ClockFoldPaperView.m */,
 				680886B31891751B0093FD97 /* A3ClockInfo.h */,
 				680886B41891751B0093FD97 /* A3ClockInfo.m */,
-				680886B51891751B0093FD97 /* A3ClockLEDBGLayer.h */,
-				680886B61891751B0093FD97 /* A3ClockLEDBGLayer.m */,
 				680886B71891751B0093FD97 /* A3ClockLEDViewController.h */,
 				680886B81891751B0093FD97 /* A3ClockLEDViewController.m */,
 				680886B91891751B0093FD97 /* A3ClockMainViewController.h */,
@@ -1943,7 +1931,6 @@
 		683B94BE15EB230000575377 /* {Resources} */ = {
 			isa = PBXGroup;
 			children = (
-				6890852B18921C4100E16724 /* Digit.ttf */,
 				68236CDE186C22E5006F442B /* StringsDict.strings */,
 				68236CDF186C22E5006F442B /* StringsDict.stringsdict */,
 				6850050617C30B500081FC1D /* appbox.ttf */,
@@ -2914,7 +2901,6 @@
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
 				689FEF72187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,
-				6890852C18921C4100E16724 /* Digit.ttf in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3080,7 +3066,6 @@
 				68555FF11670409F00F200B7 /* A3TimeLineTableViewCell.m in Sources */,
 				685560061670448D00F200B7 /* A3Utilities.m in Sources */,
 				6872077B1670CC6A00D56507 /* A3SectionHeaderView.m in Sources */,
-				680886D91891751B0093FD97 /* A3ClockLEDBGLayer.m in Sources */,
 				6883AAF716719D45004DEEE6 /* A3NotificationTableViewController.m in Sources */,
 				6829682218503B2100B70E13 /* NSManagedObjectContext+MagicalRecord.m in Sources */,
 				680886E61891751B0093FD97 /* UIView+SBExtras.m in Sources */,
@@ -3198,7 +3183,6 @@
 				684E943717C1C3D00081A8B5 /* TranslatorHistory.m in Sources */,
 				6818E036179D3EE30061A70B /* UITableViewController+swipeMenu.m in Sources */,
 				17D42C1D1934D1D8D770DE4A /* A3AddLocationViewController.m in Sources */,
-				680886D71891751B0093FD97 /* A3ClockFoldPaperView.m in Sources */,
 				17D42F5FD45C92F0F9F5D7D4 /* FSWebLogin.m in Sources */,
 				17D42A703C7FED539C1C2F2F /* Foursquare2.m in Sources */,
 				17D42FA1520333EF8598AEE9 /* FSRequester.m in Sources */,

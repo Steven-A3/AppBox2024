@@ -63,7 +63,7 @@
 		UIColor *color = [NSKeyedUnarchiver unarchiveObjectWithData:backgroundColorData];
 		[self.view setBackgroundColor:color];
 	} else {
-		[self.view setBackgroundColor:self.clockDataManager.waveColors[0]];
+		[self.view setBackgroundColor:self.clockDataManager.waveColors[7]];
 	}
 
 	[self addTimeView];
@@ -262,7 +262,7 @@
 		A3ClockWaveCircleView *circleView = [self circleViewForType:type];
 		circleView.tag = idx;
 		circleView.position = (idx == 0) ? ClockWaveLocationBig : ClockWaveLocationSmall;
-		circleView.nLineWidth = (idx == 0) ? 2 : 1;
+		circleView.lineWidth = (idx == 0) ? 2 : 1;
 		[self animateMove:circleView
 				   bounds:[boundsArray[idx] CGRectValue]
 				   center:[centerArray[idx] CGPointValue]];
@@ -402,7 +402,7 @@
 		A3ClockWaveCircleView *circleView = [self circleViewForType:type];
 		circleView.tag = idx;
 		circleView.position = (idx == 0) ? ClockWaveLocationBig : ClockWaveLocationSmall;
-		circleView.nLineWidth = IS_IPHONE ? ( idx == 0 ? 2 : 1 ) : ( idx == 0 ? 4 : 2);
+		circleView.lineWidth = IS_IPHONE ? ( idx == 0 ? 2 : 1 ) : ( idx == 0 ? 4 : 2);
 		[self animateMove:circleView
 				   bounds:[boundsArray[idx] CGRectValue]
 				   center:[centerArray[idx] CGPointValue]];
@@ -439,8 +439,8 @@
 				break;
 			case A3ClockWaveCircleTypeWeather:
 				_needToShowWeatherView = YES;
+				[self addTemperatureView];
 				if (_weatherInfoAvailable) {
-					[self addTemperatureView];
 					[self addWeatherView];
 				} else {
 					_weatherCircleIndex = idx;
@@ -454,10 +454,6 @@
 				break;
 		}
 		idx++;
-	}
-
-	if (_needToShowWeatherView && !_weatherInfoAvailable) {
-		[_circleArray removeObjectAtIndex:_weatherCircleIndex];
 	}
 }
 
@@ -570,6 +566,7 @@
 	self.temperatureCircle = [[A3ClockWaveCircleMiddleView alloc] initWithFrame:CGRectMake(0.f, 0.f, 62.f, 62.f)];
 	self.temperatureCircle.delegate = self;
 	self.temperatureCircle.isShowWave = YES;
+	self.temperatureCircle.fillPercent = 1.0;
 	[self.view addSubview:self.temperatureCircle];
 
 	self.temperatureBottomLabel = [[UILabel alloc] init];
@@ -648,7 +645,6 @@
 							 circleView.center = center;
 						 }
 						 completion:^(BOOL finished) {
-							 [circleView setNeedsDisplay];
 							 [circleView.textLabel setHidden:NO];
 							 [self removeCircleAnimation:circleView.layer];
 						 }];
@@ -748,24 +744,24 @@
 	UIFont *timeFont;
 	NSString *letterFontName = @".HelveticaNeueInterface-UltraLightP2";
 	NSString *smallFontName = @".HelveticaNeueInterface-Light";
-	if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
-		if ([self.circleArray[0] unsignedIntegerValue] == A3ClockWaveCircleTypeTime) {
+	if(self.showSeconds) {
+		if (self.timeCircle.position == ClockWaveLocationBig) {
 			// Big Circle and big font
 			timeFont = [UIFont fontWithName:letterFontName size:IS_IPHONE ? 64 : 128];
 			self.timeCircle.bigFont = timeFont;
 		} else {
-			timeFont = [UIFont fontWithName:smallFontName size:24];
+			timeFont = [UIFont fontWithName:smallFontName size:IS_IPHONE ? 13 : 24];
 			self.timeCircle.smallFont = timeFont;
 		}
 	}
 	else
 	{
-		if ([self.circleArray[0] unsignedIntegerValue] == A3ClockWaveCircleTypeTime) {
+		if (self.timeCircle.position == ClockWaveLocationBig) {
 			// Big Circle and big font
 			timeFont = [UIFont fontWithName:letterFontName size:IS_IPHONE ? 88 : 176];
 			self.timeCircle.bigFont = timeFont;
 		} else {
-			timeFont = [UIFont fontWithName:smallFontName size:30];
+			timeFont = [UIFont fontWithName:smallFontName size:IS_IPHONE ? 20 : 30];
 			self.timeCircle.smallFont = timeFont;
 		}
 	}
@@ -780,13 +776,11 @@
 	[self refreshSecond:clockInfo];
 
 	self.timeCircle.fillPercent = ((clockInfo.dateComponents.hour * 60 * 60) + (clockInfo.dateComponents.minute * 60) + 60) / kClockSecondOfDay;
-	[self.timeCircle setNeedsDisplay];
 
 	self.dateTopLabel.text = clockInfo.maxDay;
 	[self.dateCircle setDate:[clockInfo.day intValue]];
 	self.dateBottomLabel.text = IS_IPHONE ? [clockInfo.shortMonth uppercaseString] : [clockInfo.month uppercaseString];
 	self.dateCircle.fillPercent = clockInfo.dateComponents.day / [clockInfo.maxDay floatValue];
-	[self.dateCircle setNeedsDisplay];
 
 	NSArray *weekdaySymbols;
 	if (IS_IPHONE) {
@@ -799,7 +793,6 @@
 	self.weekBottomLabel.text = [[weekdaySymbols firstObject] uppercaseString];
 	self.weekCircle.textLabel.text = IS_IPHONE ? [clockInfo.shortWeekday uppercaseString] : [clockInfo.weekday uppercaseString];
 	self.weekCircle.fillPercent = (float) clockInfo.dateComponents.weekday / 7.0;
-	[self.weekCircle setNeedsDisplay];
 
 	if (_weatherInfoAvailable) {
 		[self refreshWeather:clockInfo];
@@ -810,9 +803,6 @@
 	if (!_weatherInfoAvailable) {
 		_weatherInfoAvailable = YES;
 
-		[_circleArray insertObject:@(A3ClockWaveCircleTypeWeather) atIndex:_weatherCircleIndex];
-
-		[self addTemperatureView];
 		[self addWeatherView];
 
 		[self layoutSubviews];
@@ -831,7 +821,6 @@
 	self.temperatureBottomLabel.text = [NSString stringWithFormat:@"%d°", clockInfo.currentWeather.lowTemperature];
 	if (clockInfo.currentWeather.highTemperature - clockInfo.currentWeather.lowTemperature > 0) {
 		self.temperatureCircle.fillPercent = (float)(clockInfo.currentWeather.currentTemperature - clockInfo.currentWeather.lowTemperature) / (float)(clockInfo.currentWeather.highTemperature - clockInfo.currentWeather.lowTemperature);
-		[self.temperatureCircle setNeedsDisplay];
 	}
 
 	[self.weatherImageView setImage:[self.clockDataManager imageForWeatherCondition:clockInfo.currentWeather.condition]];
@@ -843,7 +832,6 @@
 	for (NSNumber *typeObject in _circleArray) {
 		A3ClockWaveCircleView *view = [self circleViewForType:(A3ClockWaveCircleTypes) typeObject.unsignedIntegerValue];
 		[view setFillPercent:view.fillPercent];
-		[view setNeedsDisplay];
 	}
 }
 

@@ -59,6 +59,8 @@ NSString *const A3ClockFlipDarkColor						= @"A3ClockFlipDarkColor";
 NSString *const A3ClockFlipDarkColorIndex					= @"A3ClockFlipDarkColorIndex";
 NSString *const A3ClockFlipLightColor						= @"A3ClockFlipLightColor";
 NSString *const A3ClockFlipLightColorIndex					= @"A3ClockFlipLightColorIndex";
+NSString *const A3ClockLEDColor								= @"A3ClockLEDColor";
+NSString *const A3ClockLEDColorIndex						= @"A3ClockLEDColorIndex";
 
 CGFloat dash_line_pattern[] = {2.0f, 2.0f};
 

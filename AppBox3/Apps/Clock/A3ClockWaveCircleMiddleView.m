@@ -19,7 +19,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.nLineWidth = 1;
+        self.lineWidth = 1;
     }
     return self;
 }

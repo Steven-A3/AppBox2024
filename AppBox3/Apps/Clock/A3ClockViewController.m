@@ -7,7 +7,14 @@
 //
 
 #import "A3ClockDataManager.h"
+#import "A3ClockLEDViewController.h"
+#import "A3ClockDataManager.h"
 #import "A3ClockWaveViewController.h"
+#import "NSUserDefaults+A3Defaults.h"
+
+@interface A3ClockViewController ()
+
+@end
 
 @implementation A3ClockViewController
 
@@ -30,6 +37,34 @@
 }
 
 - (void)updateLayout {
+}
+
+- (BOOL)showSeconds {
+	return [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
+}
+
+- (BOOL)showWeather {
+	return [[NSUserDefaults standardUserDefaults] clockShowWeather];
+}
+
+- (BOOL)flashSeparator {
+	return [[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators];
+}
+
+- (BOOL)use24hourClock {
+	return [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
+}
+
+- (BOOL)showAMPM {
+	return [[NSUserDefaults standardUserDefaults] clockShowAMPM];
+}
+
+- (BOOL)showDate {
+	return [[NSUserDefaults standardUserDefaults] clockShowDate];
+}
+
+- (BOOL)showTheDayOfTheWeek {
+	return [[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek];
 }
 
 @end

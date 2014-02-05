@@ -192,6 +192,8 @@
 - (BOOL)clockShowAMPM
 {
     @autoreleasepool {
+		if (![self clockUse24hourClock]) return NO;
+
 		NSNumber *object;
 		object = [self objectForKey:A3ClockShowAMPM];
 		if (object) {
@@ -200,6 +202,7 @@
 		return NO;
     }
 }
+
 - (void)setClockShowAMPM:(BOOL)boolValue
 {
     @autoreleasepool {
@@ -219,6 +222,7 @@
 		return YES;
     }
 }
+
 - (void)setClockShowTheDayOfTheWeek:(BOOL)boolValue
 {
     @autoreleasepool {
@@ -238,6 +242,7 @@
 		return YES;
     }
 }
+
 - (void)setClockShowDate:(BOOL)boolValue
 {
     @autoreleasepool {
@@ -285,20 +290,69 @@
 	}
 }
 
+- (UIColor *)clockWaveColor {
+	NSData *data = [self objectForKey:A3ClockWaveClockColor];
+	if (data) {
+		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
+	return [UIColor colorWithRed:63.0/255.0 green:156.0/255.0 blue:250.0/255.0 alpha:1.0];
+}
+
+- (NSUInteger)clockWaveColorIndex {
+	NSNumber *number = [self objectForKey:A3ClockWaveClockColorIndex];
+	if (number) {
+		return [number unsignedIntegerValue];
+	}
+	return 7;
+}
+
 - (UIColor *)clockFlipDarkColor {
-	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipDarkColor];
+	NSData *data = [self objectForKey:A3ClockFlipDarkColor];
 	if (data) {
 		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	}
 	return [UIColor blackColor];
 }
 
+- (NSUInteger)clockFlipDarkColorIndex {
+	NSNumber *number = [self objectForKey:A3ClockFlipDarkColorIndex];
+	if (number) {
+		return [number unsignedIntegerValue];
+	}
+	return 12;
+}
+
 - (UIColor *)clockFlipLightColor {
-	NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:A3ClockFlipLightColor];
+	NSData *data = [self objectForKey:A3ClockFlipLightColor];
 	if (data) {
 		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	}
 	return [UIColor whiteColor];
 }
+
+- (NSUInteger)clockFlipLightColorIndex {
+	NSNumber *number = [self objectForKey:A3ClockFlipLightColorIndex];
+	if (number) {
+		return [number unsignedIntegerValue];
+	}
+	return 13;
+}
+
+- (UIColor *)clockLEDColor {
+	NSData *data = [self objectForKey:A3ClockLEDColor];
+	if (data) {
+		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
+	return [UIColor whiteColor];
+}
+
+- (NSUInteger)clockLEDColorIndex {
+	NSNumber *number = [self objectForKey:A3ClockLEDColorIndex];
+	if (number) {
+		return [number unsignedIntegerValue];
+	}
+	return 12;
+}
+
 
 @end

@@ -10,5 +10,7 @@
 
 @interface A3ChooseColorPhone : A3ChooseColor
 
+@property (nonatomic, strong) UICollectionView *collectionView;
+
 - (id)initWithFrame:(CGRect)frame colors:(NSArray *)colors selectedIndex:(NSUInteger)selectedIndex;
 @end

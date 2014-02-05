@@ -32,7 +32,7 @@ NSString *const kA3MainMenuRecentlyUsed = @"kA3MainMenuRecentlyUsed";		// Store 
 NSString *const kA3MainMenuAllMenu = @"kA3MainMenuAllMenu";					// Store NSArray
 NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// Store NSNumber
 
-NSString *const kA3AppsMainMenuContentsChangedNotification = @"kA3AppsMainMenuContentsChangedNotification";
+NSString *const A3AppsMainMenuContentsChangedNotification = @"A3AppsMainMenuContentsChangedNotification";
 
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
 
@@ -92,7 +92,7 @@ NSString *const kA3AppsMainMenuContentsChangedNotification = @"kA3AppsMainMenuCo
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataAvailable) name:A3CoreDataReadyNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:kA3AppsMainMenuContentsChangedNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }
 
 - (void)menuContentsChanged {
@@ -150,7 +150,7 @@ NSString *const kA3AppsMainMenuContentsChangedNotification = @"kA3AppsMainMenuCo
 	NSArray *recentMenuItems = recentlyUsedMenuDictionary[kA3AppsExpandableChildren];
 	if ([recentMenuItems count]) {
 		NSInteger maxRecent = [[A3AppDelegate instance] maximumRecentlyUsedMenus];
-		if ([recentMenuItems count] > maxRecent) {
+		  if ([recentMenuItems count] > maxRecent) {
 			recentMenuItems = [recentMenuItems subarrayWithRange:NSMakeRange(0, maxRecent)];
 			NSMutableDictionary *mutableDictionary = [recentlyUsedMenuDictionary mutableCopy];
 			mutableDictionary[kA3AppsExpandableChildren] = recentMenuItems;
@@ -241,12 +241,16 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 								[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
 
 								if (IS_IPHONE) {
-									[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+									[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+										[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+									}];
 								}
 							}
 						} else {
 							if (IS_IPHONE) {
-								[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+								[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+									[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+								}];
 							} else if (IS_PORTRAIT) {
 								[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 							}
@@ -377,7 +381,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		[self updateRecentlyUsedAppsWithElement:(A3TableViewMenuElement *) _selectedElement];
 		
 		if (IS_IPHONE) {
-			[self.mm_drawerController closeDrawerAnimated:YES completion:nil];
+			[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+				[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+			}];
 		}
 	}
 	_selectedElement = nil;

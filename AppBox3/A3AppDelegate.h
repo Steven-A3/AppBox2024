@@ -34,7 +34,8 @@ extern NSString *const kA3MainMenuMaxRecentlyUsed;		// Store NSNumber
 extern NSString *const kA3MainMenuRecentlyUsed;
 
 /* Notifications */
-extern NSString *const kA3AppsMainMenuContentsChangedNotification;
+extern NSString *const A3AppsMainMenuContentsChangedNotification;
+extern NSString *const A3DrawerStateChanged;
 
 /* Global Settings */
 extern NSString *const kA3ThemeColorIndex;

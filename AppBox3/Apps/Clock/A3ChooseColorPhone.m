@@ -12,7 +12,6 @@
 @interface A3ChooseColorPhone () <UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (nonatomic, strong) NSArray *colorsArray;
-@property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UIImageView *selectedMarkView;
 
 @end
@@ -93,7 +92,6 @@ NSString *const ClockColorChooseCell = @"ClockColorCell";
 			make.right.equalTo(self.right);
 			make.height.equalTo(IS_IPHONE ? @128 : @236);
 		}];
-		[_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:_selectedIndex inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     }
     return self;
 }

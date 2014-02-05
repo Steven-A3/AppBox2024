@@ -10,8 +10,6 @@
 #import "A3ClockDataManager.h"
 #import "A3ClockFlipViewController.h"
 #import "NSUserDefaults+A3Defaults.h"
-#import "A3UIDevice.h"
-#import "A3ClockFoldPaperView.h"
 
 #define kColorClockFlipLabel [UIColor colorWithRed:142.f/255.f green:142.f/255.f blue:147.f/255.f alpha:1.f]
 
@@ -180,7 +178,7 @@
 		if (IS_PORTRAIT) {
 			boxSize = showSeconds ? 90 : 140;
 		} else {
-			boxSize = showSeconds ? 140 : 195;
+			boxSize = showSeconds ? 140 : [self showWeather] ? 171 : 195;
 		}
 		interimSpace = 10;
 	} else {
@@ -370,8 +368,8 @@
 }
 
 - (void)setTimeFont:(SBTickerView *)tickerView isForSecond:(BOOL)isForSecond {
-	A3ClockFoldPaperView *frontView = (A3ClockFoldPaperView *)tickerView.frontView;
-	A3ClockFoldPaperView *backView = (A3ClockFoldPaperView *)tickerView.backView;
+	UILabel *frontView = (UILabel *)tickerView.frontView;
+	UILabel *backView = (UILabel *)tickerView.backView;
 	CGFloat fontSize;
 	BOOL showSeconds = [[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds];
 	if (IS_IPHONE) {
@@ -380,7 +378,7 @@
 			frontView.layer.cornerRadius = 5;
 			backView.layer.cornerRadius = 5;
 		} else {
-			fontSize = showSeconds ? 112 : 156;
+			fontSize = showSeconds ? 112 : [self showWeather] ? 133 : 156;
 			frontView.layer.cornerRadius = showSeconds ? 5 : 8;
 			backView.layer.cornerRadius = showSeconds ? 5 : 8;
 		}
@@ -396,29 +394,31 @@
 		}
 	}
 	UIFont *font = isForSecond ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:fontSize] : [UIFont boldSystemFontOfSize:fontSize];
-	frontView.textLabel.font = font;
-	backView.textLabel.font = font;
+	frontView.font = font;
+	backView.font = font;
 
 	if (self.style == A3ClockFlipViewStyleDark) {
-		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : [UIColor whiteColor];
-		frontView.textLabel.textColor = color;
-		backView.textLabel.textColor = color;
+		UIColor *textColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColorIndex] == 13 ? [UIColor blackColor] : [UIColor whiteColor];
+		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : textColor;
+		frontView.textColor = color;
+		backView.textColor = color;
 		UIColor *backgroundColor = [[NSUserDefaults standardUserDefaults] clockFlipDarkColor];
 		frontView.backgroundColor = backgroundColor;
 		backView.backgroundColor = backgroundColor;
 	} else {
-		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : [UIColor blackColor];
-		frontView.textLabel.textColor = color;
-		backView.textLabel.textColor = color;
+		UIColor *textColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColorIndex] == 12 ? [UIColor whiteColor] : [UIColor blackColor];
+		UIColor *color = isForSecond ? [UIColor colorWithRed:255.0/255.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0] : textColor;
+		frontView.textColor = color;
+		backView.textColor = color;
 		UIColor *backgroundColor = [[NSUserDefaults standardUserDefaults] clockFlipLightColor];
 		frontView.backgroundColor = backgroundColor;
 		backView.backgroundColor = backgroundColor;
 	}
 }
 
-- (A3ClockFoldPaperView *)foldingLabel {
-	A3ClockFoldPaperView *foldingLabel = [A3ClockFoldPaperView new];
-	foldingLabel.viewCenter.backgroundColor = self.view.backgroundColor;
+- (UILabel *)foldingLabel {
+	UILabel *foldingLabel = [UILabel new];
+	foldingLabel.textAlignment = NSTextAlignmentCenter;
 	return foldingLabel;
 }
 
@@ -431,21 +431,21 @@
 	return tickerView;
 }
 
-- (SBTickerView *)hourView {
+- (A3SBTickerView *)hourView {
 	if (!_hourView) {
 		_hourView = [self tickerView];
 	}
 	return _hourView;
 }
 
-- (SBTickerView *)minuteView {
+- (A3SBTickerView *)minuteView {
 	if (!_minuteView) {
 		_minuteView = [self tickerView];
 	}
 	return _minuteView;
 }
 
-- (SBTickerView *)secondView {
+- (A3SBTickerView *)secondView {
 	if (!_secondView) {
 		_secondView = [self tickerView];
 	}
@@ -453,8 +453,8 @@
 }
 
 - (void)tickTime:(SBTickerView *)tickerView withText:(NSString *)text animated:(BOOL)animated {
-	A3ClockFoldPaperView *backView = (A3ClockFoldPaperView *) tickerView.backView;
-	backView.textLabel.text = text;
+	UILabel *backView = (UILabel *) tickerView.backView;
+	backView.text = text;
 	[tickerView tick:SBTickerViewTickDirectionDown animated:animated completion:nil];
 }
 
@@ -528,10 +528,10 @@
 
 
 - (void)setTime:(SBTickerView *)tickerView withText:(NSString *)text {
-	A3ClockFoldPaperView *frontView = (A3ClockFoldPaperView *) tickerView.frontView;
-	frontView.textLabel.text = text;
-	A3ClockFoldPaperView *backView = (A3ClockFoldPaperView *) tickerView.backView;
-	backView.textLabel.text = text;
+	UILabel *frontView = (UILabel *) tickerView.frontView;
+	frontView.text = text;
+	UILabel *backView = (UILabel *) tickerView.backView;
+	backView.text = text;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -553,14 +553,11 @@
 }
 
 - (void)changeColor:(UIColor *)color {
-	[self changeColorForTimeView:self.hourView color:color];
-	[self changeColorForTimeView:self.minuteView color:color];
-	[self changeColorForTimeView:self.secondView color:color];
-}
-
-- (void)changeColorForTimeView:(SBTickerView *)view color:(UIColor *)color {
-	view.frontView.backgroundColor = color;
-	view.backView.backgroundColor = color;
+	[self setTimeFont:_hourView isForSecond:NO];
+	[self setTimeFont:_minuteView isForSecond:NO];
+	if (_secondView) {
+		[self setTimeFont:_secondView isForSecond:YES];
+	}
 }
 
 @end

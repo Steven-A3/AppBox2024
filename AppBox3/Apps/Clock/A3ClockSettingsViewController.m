@@ -33,6 +33,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 @property (nonatomic, strong) NSArray* arrDateSection;
 @property (nonatomic, strong) NSArray* arrWeatherSection;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
+@property (nonatomic, strong) UITableView *myTableView;
 
 @end
 
@@ -55,19 +56,20 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 	[self.view setBackgroundColor:[UIColor whiteColor]];
 
-	UITableView *tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    tableView.dataSource = self;
-    tableView.delegate = self;
-	[self.view addSubview:tableView];
+	_myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    _myTableView.dataSource = self;
+    _myTableView.delegate = self;
+	[self.view addSubview:_myTableView];
 
-	[tableView makeConstraints:^(MASConstraintMaker *make) {
+	[_myTableView makeConstraints:^(MASConstraintMaker *make) {
 		make.edges.equalTo(self.view);
 	}];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
 
+	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
@@ -190,6 +192,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 					switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
 					break;
 				case kTagSwitchAMPM:
+					[switchControl setEnabled:[[NSUserDefaults standardUserDefaults] clockUse24hourClock]];
 					switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
 					break;
 				case kTagSwitchWeek:
@@ -223,10 +226,8 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 #pragma mark - Switch event
 
-- (void)onSwitchChange:(id)aSender
+- (void)onSwitchChange:(UISwitch *)switchControl
 {
-    UISwitch*switchControl = (UISwitch*)aSender;
-
 	switch ((A3ClockSettingsTypes)switchControl.tag) {
 		case kTagSwitchWithSecond:
 			[[NSUserDefaults standardUserDefaults] setClockTheTimeWithSeconds:switchControl.on];
@@ -234,9 +235,17 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 		case kTagSwitchFlash:
 			[[NSUserDefaults standardUserDefaults] setClockFlashTheTimeSeparators:switchControl.on];
 			break;
-		case kTagSwitch24Hour:
+		case kTagSwitch24Hour:{
 			[[NSUserDefaults standardUserDefaults] setClockUse24hourClock:switchControl.on];
+
+			UISwitch *AMPMSwitchControl = (UISwitch *) [_myTableView viewWithTag:kTagSwitchAMPM];
+			[AMPMSwitchControl setEnabled:switchControl.on];
+			if (!switchControl.on) {
+				[AMPMSwitchControl setOn:NO];
+				[[NSUserDefaults standardUserDefaults] setClockShowAMPM:NO];
+			}
 			break;
+		}
 		case kTagSwitchAMPM:
 			[[NSUserDefaults standardUserDefaults] setClockShowAMPM:switchControl.on];
 			break;

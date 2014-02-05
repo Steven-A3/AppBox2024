@@ -32,6 +32,8 @@
 	// Do any additional setup after loading the view.
 
 	[self leftBarButtonAppsButton];
+
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

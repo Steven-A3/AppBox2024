@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveLocation) {
 
 @interface A3ClockWaveCircleView : UIView
 
-@property (nonatomic) int nLineWidth;
+@property (nonatomic) int lineWidth;
 @property (nonatomic) float fillPercent;       // 0.f:none, 1.f:fill
 @property (nonatomic) UILabel *textLabel;
 @property (nonatomic) BOOL isShowWave;

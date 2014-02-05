@@ -45,6 +45,7 @@
 	<array>
 		<string>appbox.ttf</string>
 		<string>Digit.ttf</string>
+		<string>REGISTER.TTF</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

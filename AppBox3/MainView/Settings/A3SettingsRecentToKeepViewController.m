@@ -87,7 +87,7 @@
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 		[[A3AppDelegate instance] storeMaximumNumberRecentlyUsedMenus:(NSUInteger) cell.tag];
 
-		[[NSNotificationCenter defaultCenter] postNotificationName:kA3AppsMainMenuContentsChangedNotification object:self];
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
 		
 		[tableView reloadData];
 	}
