@@ -413,10 +413,15 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		}
 	} else if (indexPath.section == 1) {
 		NSMutableArray *allMenus = [[[A3AppDelegate instance] allMenuArrayFromUserDefaults]	mutableCopy];
-		NSMutableDictionary *expandableMenuDictionary = [allMenus[(NSUInteger) indexPath.row] mutableCopy];
-		expandableMenuDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
-		[allMenus replaceObjectAtIndex:indexPath.row withObject:expandableMenuDictionary];
-		[[A3AppDelegate instance] storeAllMenu:allMenus withDate:[NSDate date]];
+		NSUInteger idx = [allMenus indexOfObjectPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
+			return [obj[kA3AppsMenuName]  isEqualToString:element.title];
+		}];
+		if (idx != NSNotFound) {
+			NSMutableDictionary *expandableMenuDictionary = [allMenus[idx] mutableCopy];
+			expandableMenuDictionary[kA3AppsMenuCollapsed] = @(element.isCollapsed);
+			[allMenus replaceObjectAtIndex:idx withObject:expandableMenuDictionary];
+			[[A3AppDelegate instance] storeAllMenu:allMenus withDate:[NSDate date]];
+		}
 	}
 }
 

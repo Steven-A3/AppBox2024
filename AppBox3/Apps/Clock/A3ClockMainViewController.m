@@ -138,13 +138,15 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
 }
 
 - (void)settingsChanged {
 	[_currentClockViewController updateLayout];
+
+	if ([[NSUserDefaults standardUserDefaults] clockShowWeather]) {
+		[_clockDataManager updateWeather];
+	}
 }
 
 - (void)addChooseColorButton {

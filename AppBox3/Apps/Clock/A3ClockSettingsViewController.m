@@ -6,6 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <CoreLocation/CoreLocation.h>
 #import "A3ClockSettingsViewController.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "UIViewController+A3Addition.h"
@@ -258,9 +259,12 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			[self.clockDataManager enableDateCircle:switchControl.on];
 			break;
 		case kTagSwitchWeather:
-			[[NSUserDefaults standardUserDefaults] setClockShowWeather:switchControl.on];
-			[self.clockDataManager enableWeatherCircle:switchControl.on];
-			[self.segmentedControl setEnabled:switchControl.on];
+			if ([switchControl isOn] && (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized)) {
+				[self alertLocationDisabled];
+				[switchControl setOn:NO];
+			} else {
+				[self setWeatherStatus:[switchControl isOn]];
+			}
 			break;
 	}
 	double delayInSeconds = 0.1;
@@ -268,6 +272,19 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationClockSettingsChanged object:nil];
 	});
+}
+
+- (void)alertLocationDisabled {
+	NSString *message = ![CLLocationManager locationServicesEnabled] ? @"Location Services not enabled. Go to Settings > Privacy > Location Services. Location services must enabled and AppBox Pro authorized to show weather." :
+			@"Location services enabled, but AppBox Pro is not authorized to access location services. Go to Settings > Privacy > Location Services and authorize it to show weather.";
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alertView show];
+}
+
+- (void)setWeatherStatus:(BOOL)on {
+	[[NSUserDefaults standardUserDefaults] setClockShowWeather:on];
+	[self.clockDataManager enableWeatherCircle:on];
+	[self.segmentedControl setEnabled:on];
 }
 
 - (void)didReceiveMemoryWarning

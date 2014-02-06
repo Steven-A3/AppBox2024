@@ -7,6 +7,7 @@
 //
 
 #import <DropboxSDK/DropboxSDK.h>
+#import <CoreLocation/CoreLocation.h>
 #import "A3AppDelegate.h"
 #import "A3UIDevice.h"
 #import "A3MainMenuTableViewController.h"
@@ -21,7 +22,9 @@
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 
-@interface A3AppDelegate ()
+@interface A3AppDelegate () <CLLocationManagerDelegate>
+
+@property (nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
@@ -33,8 +36,15 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	return (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	FNLOG(@"Location available: %@", [CLLocationManager locationServicesEnabled] ? @"YES" : @"NO");
+	FNLOG(@"Location kCLAuthorizationStatusAuthorized: %@", [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ? @"YES" : @"NO");
+
+	_locationManager = [CLLocationManager new];
+	_locationManager.delegate = self;
+	_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+	[_locationManager startMonitoringSignificantLocationChanges];
+
 	// Override point for customization after application launch.
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	[fileManager setupCacheStoreFile];
@@ -78,7 +88,7 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	}
 
 	[self.window makeKeyAndVisible];
-    return YES;
+	return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -145,7 +155,6 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	return NO;
 }
 
-
 - (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
 	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
 			^(MMDrawerController * drawerController, MMDrawerSide drawerSide, CGFloat percentVisible){
@@ -183,6 +192,11 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 - (UIViewController *)visibleViewController {
 	UINavigationController *navigationController = [self navigationController];
 	return [navigationController visibleViewController];
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+	[_locationManager stopMonitoringSignificantLocationChanges];
+	_locationManager = nil;
 }
 
 @end

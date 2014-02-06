@@ -67,34 +67,21 @@
 	}
 
 	[self addTimeView];
-	FNLOGRECT(self.view.frame);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	FNLOG();
-
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
 	[self updateLayout];
-	FNLOGRECT(self.view.frame);
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	FNLOGRECT(self.view.frame);
 }
 
 - (void)updateLayout {
 	[self prepareOptionalSubviews];
-	FNLOGRECT(self.view.frame);
 	[self layoutSubviews];
-	FNLOGRECT(self.view.frame);
 
 	[self refreshWholeClock:self.clockDataManager.clockInfo];
-	FNLOGRECT(self.view.frame);
 }
 
 - (void)layoutSubviews
@@ -195,7 +182,6 @@
 			_clockIconBottom = make.bottom.equalTo(self.timeCircle.top).with.offset(-22);
 			_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
 		}];
-		FNLOG(@"%@", self.clockIcon.constraints);
 	} else {
 		if (screenBounds.size.height == 568) {
 			switch (numberOfViews) {
@@ -567,6 +553,7 @@
 	self.temperatureCircle.delegate = self;
 	self.temperatureCircle.isShowWave = YES;
 	self.temperatureCircle.fillPercent = 1.0;
+	self.temperatureCircle.textLabel.text = @"Weather";
 	[self.view addSubview:self.temperatureCircle];
 
 	self.temperatureBottomLabel = [[UILabel alloc] init];
@@ -796,6 +783,10 @@
 
 	if (_weatherInfoAvailable) {
 		[self refreshWeather:clockInfo];
+	} else {
+		if (_temperatureCircle.position != ClockWaveLocationBig) {
+			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 14 : 18];
+		}
 	}
 }
 

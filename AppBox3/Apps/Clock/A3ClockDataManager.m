@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSMutableArray *weatherForecast;
 @property (nonatomic, strong) NSTimer *clockTickTimer;
 @property (nonatomic, strong) NSTimer *weatherTimer;
+@property (nonatomic, strong) NSMutableArray *addressCandidates;
 
 @end
 
@@ -32,16 +33,21 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		[self.locationManager startUpdatingLocation];
+		if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+			[self.locationManager startMonitoringSignificantLocationChanges];
+		} else {
+			[[NSUserDefaults standardUserDefaults] setClockShowWeather:NO];
+		}
 	}
 
 	return self;
 }
 
-
 - (void)dealloc {
 	[_clockTickTimer invalidate];
 	_clockTickTimer = nil;
+	[_weatherTimer invalidate];
+	_weatherTimer = nil;
 }
 
 - (CLLocationManager *)locationManager {
@@ -83,7 +89,22 @@
 - (NSMutableArray *)waveCirclesArray {
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	NSMutableArray *circleArray = [[userDefaults objectForKey:A3ClockWaveCircleLayout] mutableCopy];
+
+	NSUInteger weatherIndexToDelete = [circleArray indexOfObjectPassingTest:^BOOL(NSNumber *typeObj, NSUInteger idx, BOOL *stop) {
+		if (typeObj.unsignedIntegerValue == A3ClockWaveCircleTypeWeather) {
+			return (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized);
+		}
+		return NO;
+	}];
+	if (weatherIndexToDelete != NSNotFound) {
+		[circleArray removeObjectAtIndex:weatherIndexToDelete];
+	}
+
 	if (circleArray) return circleArray;
+
+	if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
+		[userDefaults setClockShowWeather:NO];
+	}
 
 	circleArray = [NSMutableArray new];
 	[circleArray addObject:@(A3ClockWaveCircleTypeTime)];
@@ -367,7 +388,6 @@
 	[weatherOperation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSData *response) {
         response = operation.responseData;
         
-//        FNLOG(@"%@", [[NSString alloc] initWithData:response encoding:NSUTF8StringEncoding]);
 		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
 		XMLParser.delegate = (id)self;
 
@@ -401,63 +421,81 @@
 		_locationManager = nil;
 		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[self.locationManager startUpdatingLocation];
+		[self.locationManager startMonitoringSignificantLocationChanges];
 	}];
 	[weatherOperation start];
 }
 
-- (void)getWOEIDWithCityName:(NSString *)theCityName {
-	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://where.yahooapis.com/v1/places.q(%@)?appid=%@&format=json", theCityName, YAHOO_APP_ID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+- (void)getWOEIDWithCandidates {
+	if (![_addressCandidates count]) {
+		[_locationManager startMonitoringSignificantLocationChanges];
+		return;
+	}
+
+	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://where.yahooapis.com/v1/places.q(%@)?appid=%@&format=json", [_addressCandidates lastObject], YAHOO_APP_ID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+	FNLOG(@"%@", url.absoluteString);
+	[_addressCandidates removeLastObject];
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
+
 	AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 	operation.responseSerializer = [AFJSONResponseSerializer serializer];
 	[operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id JSON) {
-		NSString *WOEID = [ [ [ [ [ JSON objectForKey:@"places" ] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
-		[self getWeatherInfoWithWOEID:WOEID ];
-
+		NSString *WOEID = [[[[[JSON objectForKey:@"places"] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
+		if (WOEID) {
+			[self getWeatherInfoWithWOEID:WOEID];
+			_addressCandidates = nil;
+			_locationManager = nil;
+		} else {
+			[self getWOEIDWithCandidates];
+		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-		[self.locationManager startUpdatingLocation];
+		[self getWOEIDWithCandidates];
 	}];
-	
+
 	[operation start];
-    
+
 	return;
 }
 
 - (void)updateWeather {
-	[self.locationManager startUpdatingLocation];
+	[self.locationManager startMonitoringSignificantLocationChanges];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	[manager stopUpdatingLocation];
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+	[manager stopMonitoringSignificantLocationChanges];
 
 	self.currentWeather = nil;
 	self.weatherCurrentCondition = nil;
 	self.weatherForecast = nil;
-    
-	// Update weather information
+
 	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
-	[geoCoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placeMarks, NSError *error) {
-		NSString *theCityName = nil;
+	[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
 		for (CLPlacemark *placeMark in placeMarks) {
-			/*
-             FNLOG(@"%@", [placeMarks description]);
-             FNLOG(@"address Dictionary: %@", placeMark.addressDictionary);
-             FNLOG(@"Administrative Area: %@", placeMark.administrativeArea);
-             FNLOG(@"areas of Interest: %@", placeMark.areasOfInterest);
-             FNLOG(@"locality: %@", placeMark.locality);
-             FNLOG(@"name: %@", placeMark.name);
-             FNLOG(@"subLocality: %@", placeMark.subLocality);
-             */
-            
-			theCityName = placeMark.locality;
+/*
+			NSMutableString *log = [NSMutableString new];
+			[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
+			[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
+			[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
+			[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
+			[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
+			[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
+			[log appendString:[NSString stringWithFormat:@"sublocality:%@\n", placeMark.subLocality]];
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alertView show];
+*/
+			if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
+			if ([placeMark.country length]) [_addressCandidates addObject:placeMark.country];
+			if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
+			if ([placeMark.subAdministrativeArea length]) [_addressCandidates addObject:placeMark.subAdministrativeArea];
+			if ([placeMark.thoroughfare length]) [_addressCandidates addObject:placeMark.thoroughfare];
+			if ([placeMark.subThoroughfare length]) [_addressCandidates addObject:placeMark.subThoroughfare];
+			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
+			if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
+			if ([placeMark.name length]) [_addressCandidates addObject:placeMark.name];
 		}
-        
-		if (theCityName) {
-			[self getWOEIDWithCityName:theCityName];
-		}
+
+		[self getWOEIDWithCandidates];
 	}];
 }
 

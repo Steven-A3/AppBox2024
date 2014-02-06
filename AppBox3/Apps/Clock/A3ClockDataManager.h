@@ -64,4 +64,5 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 - (UIImage*)imageForWeatherCondition:(A3WeatherCondition)aCon;
 
+- (void)updateWeather;
 @end
