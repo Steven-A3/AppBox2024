@@ -121,7 +121,7 @@
 }
 
 - (BOOL)isFavoriteItemForCurrencyItem:(id)object {
-	NSArray *result = [CurrencyFavorite MR_findByAttribute:@"currencyItem.currencyCode" withValue:object];
+	NSArray *result = [CurrencyFavorite MR_findByAttribute:@"currencyCode" withValue:object];
 	return [result count] > 0;
 }
 

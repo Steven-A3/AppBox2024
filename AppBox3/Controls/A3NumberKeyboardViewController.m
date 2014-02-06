@@ -50,7 +50,10 @@
 		NSUInteger length = (NSUInteger) [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
 		NSRange range = NSMakeRange(location, length);
 		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
-		allowedToChange = [textField.delegate textField:textField shouldChangeCharactersInRange:range replacementString:pressedString];
+		id <UITextFieldDelegate> o = textField.delegate;
+		if ([o respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
+			allowedToChange = [o textField:textField shouldChangeCharactersInRange:range replacementString:pressedString];
+		}
 	}
 	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(insertText:)]) {
 		[_textInputTarget insertText:pressedString];

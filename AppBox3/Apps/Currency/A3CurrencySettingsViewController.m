@@ -7,12 +7,22 @@
 //
 
 #import "A3CurrencySettingsViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "UITableViewController+standardDimension.h"
+#import "NSUserDefaults+A3Defaults.h"
+#import "A3CurrencyViewController.h"
 
 @interface A3CurrencySettingsViewController ()
 
+@property (nonatomic, strong) UISwitch *autoUpdateSwitch, *useCellularDataSwitch, *showFlagSwitch;
+
 @end
 
-@implementation A3CurrencySettingsViewController
+NSString *const CellIdentifier = @"Cell";
+
+@implementation A3CurrencySettingsViewController {
+	BOOL _hasCellularNetwork;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -27,17 +37,115 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	_hasCellularNetwork = [A3UIDevice hasCellularNetwork];
+
+	[self rightBarButtonDoneButton];
+	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	if (IS_IPAD) {
+		A3AppDelegate *appDelegate = (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
+		[appDelegate.rootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return _hasCellularNetwork ? 3 : 2;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return [self standardHeightForFooterInSection:section];
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	switch (indexPath.section) {
+		case 0:
+			cell.textLabel.text = @"Auto Update";
+			cell.accessoryView = self.autoUpdateSwitch;
+			break;
+		case 1:
+			if (_hasCellularNetwork) {
+				[self setAsCellularCell:cell];
+			} else {
+				[self setAsShowFlagCell:cell];
+			}
+			break;
+		case 2:
+			[self setAsShowFlagCell:cell];
+			break;
+	}
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+	return cell;
+}
+
+- (void)setAsShowFlagCell:(UITableViewCell *)cell {
+	cell.textLabel.text = @"Show Natiional Flag";
+	cell.accessoryView = self.showFlagSwitch;
+}
+
+- (void)setAsCellularCell:(UITableViewCell *)cell {
+	cell.textLabel.text = @"Use Cellular Data";
+	cell.accessoryView = self.useCellularDataSwitch;
+}
+
+- (UISwitch *)autoUpdateSwitch {
+	if (!_autoUpdateSwitch) {
+		_autoUpdateSwitch = [UISwitch new];
+		[_autoUpdateSwitch setOn:[[NSUserDefaults standardUserDefaults] currencyAutoUpdate]];
+		[_autoUpdateSwitch addTarget:self action:@selector(autoUpdateValueChanged:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _autoUpdateSwitch;
+}
+
+- (void)autoUpdateValueChanged:(UISwitch *)control {
+	[[NSUserDefaults standardUserDefaults] setCurrencyAutoUpdate:control.isOn];
+}
+
+- (UISwitch *)useCellularDataSwitch {
+	if (!_useCellularDataSwitch) {
+		_useCellularDataSwitch = [UISwitch new];
+		[_useCellularDataSwitch setOn:[[NSUserDefaults standardUserDefaults] currencyUseCellularData]];
+		[_useCellularDataSwitch addTarget:self action:@selector(useCellularDataValueChanged:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _useCellularDataSwitch;
+}
+
+- (void)useCellularDataValueChanged:(UISwitch *)control {
+	[[NSUserDefaults standardUserDefaults] setCurrencyUseCellularData:control.isOn];
+}
+
+- (UISwitch *)showFlagSwitch {
+	if (!_showFlagSwitch) {
+		_showFlagSwitch = [UISwitch new];
+		[_showFlagSwitch setOn:[[NSUserDefaults standardUserDefaults] currencyShowNationalFlag]];
+		[_showFlagSwitch addTarget:self action:@selector(showFlagValueChanged:) forControlEvents:UIControlEventValueChanged];
+	}
+	return _showFlagSwitch;
+}
+
+- (void)showFlagValueChanged:(UISwitch *)control {
+	[[NSUserDefaults standardUserDefaults] setCurrencyShowNationalFlag:control.isOn];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3CurrencySettingsChangedNotification object:nil];
 }
 
 @end

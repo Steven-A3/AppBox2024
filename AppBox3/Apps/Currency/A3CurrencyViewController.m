@@ -31,6 +31,8 @@
 #import "A3CurrencyDataManager.h"
 #import "CurrencyRateItem.h"
 
+NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
+
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *favorites;
@@ -84,7 +86,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	_animationStarted = nil;
 }
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
 
@@ -94,39 +96,63 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 		self.refreshControl = [UIRefreshControl new];
 		[self.refreshControl addTarget:self action:@selector(refreshRates) forControlEvents:UIControlEventValueChanged];
-		
+
         [self setupSwipeRecognizers];
-        
+
         [self makeBackButtonEmptyArrow];
         [self leftBarButtonAppsButton];
-        
+
         if (IS_IPHONE) {
             [self rightButtonMoreButton];
         } else {
             self.navigationItem.hidesBackButton = YES;
-            
+
             UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
             UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
             UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
             UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
             space.width = 24.0;
-            
+
             self.navigationItem.rightBarButtonItems = @[settings, space, history, space, share];
         }
-        
+
         [self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
         [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyActionCellID];
         [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3CurrencyEqualCellID];
-        
+
         self.tableView.rowHeight = 84.0;
         self.tableView.separatorColor = [UIColor colorWithRed:200.0 / 255.0 green:200.0 / 255.0 blue:200.0 / 255.0 alpha:1.0];
         self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, -1.0, 0.0);
         self.tableView.showsVerticalScrollIndicator = NO;
-        
+
         self.tableView.tableFooterView = self.bottomView;
 
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cloudDidImportChanges:) name:USMStoreDidImportChangesNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3CurrencySettingsChangedNotification object:nil];
     };
+}
+
+- (void)settingsChanged {
+	[self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		Reachability *reachability = [Reachability reachabilityForInternetConnection];
+		NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+		if ([[NSUserDefaults standardUserDefaults] currencyAutoUpdate]) {
+			if ([reachability isReachableViaWiFi] ||
+					([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
+				[self updateCurrencyRates];
+			}
+		}
+
+		[self registerContentSizeCategoryDidChangeNotification];
+
+		[self reloadUpdateDateLabel];
+	}
 }
 
 - (void)viewWillLayoutSubviews {
@@ -166,25 +192,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			self.updateDateLabel.text = [NSString stringWithFormat:@"Updated %@", [df stringFromDate:latterDate]];
 		});
     };
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-	[super viewDidAppear:animated];
-
-	if ([self isMovingToParentViewController]) {
-        Reachability *reachability = [Reachability reachabilityForInternetConnection];
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        if ([[NSUserDefaults standardUserDefaults] currencyAutoUpdate]) {
-            if ([reachability isReachableViaWiFi] ||
-				([userDefaults currencyUseCellularData] && [A3UIDevice hasCellularNetwork])) {
-				[self updateCurrencyRates];
-            }
-        }
-        
-        [self registerContentSizeCategoryDidChangeNotification];
-		
-		[self reloadUpdateDateLabel];
-	}
 }
 
 - (void)clearEverything {
@@ -795,7 +802,11 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			if (![swipped count]) {
 				id cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
 
-				[self shiftLeft:cell];
+				if (cell) {
+					[self shiftLeft:cell];
+				} else {
+					FNLOG(@"Attention : Cell is nil");
+				}
 			} else {
 				[self unswipeAll];
 			}

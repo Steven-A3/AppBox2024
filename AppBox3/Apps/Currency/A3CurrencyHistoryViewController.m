@@ -71,7 +71,8 @@ NSString *const A3CurrencyHistory3RowCellID = @"cell3Row";
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
 	if (IS_IPAD) {
-		[self.A3RootViewController dismissRightSideViewController];
+		A3AppDelegate *appDelegate = (A3AppDelegate *) [[UIApplication sharedApplication] delegate];
+		[appDelegate.rootViewController dismissRightSideViewController];
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
