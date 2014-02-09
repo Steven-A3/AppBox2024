@@ -10,6 +10,7 @@
 #import "A3ClockDataManager.h"
 #import "A3ClockFlipViewController.h"
 #import "NSUserDefaults+A3Defaults.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #define kColorClockFlipLabel [UIColor colorWithRed:142.f/255.f green:142.f/255.f blue:147.f/255.f alpha:1.f]
 
@@ -39,6 +40,7 @@
 @property (nonatomic, strong) NSMutableArray *timeViewConstraints;
 
 @property (nonatomic, strong) UIView *centerLineView;
+@property (nonatomic, strong) NSString *dateFormat;
 
 @end
 
@@ -50,6 +52,8 @@
 	self = [super initWithClockDataManager:clockDataManager];
 	if (self) {
 		[self setStyle:style];
+		[clockDataManager.clockInfo.dateFormatter setDateStyle:NSDateFormatterFullStyle];
+		_dateFormat = [clockDataManager.clockInfo.dateFormatter formatStringByRemovingYearComponent:clockDataManager.clockInfo.dateFormatter.dateFormat];
 	}
 
 	return self;
@@ -467,29 +471,9 @@
 	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.minute] animated:animated ];
 	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:animated ];
 
-	if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek] && [[NSUserDefaults standardUserDefaults] clockShowDate])
-	{
-		[clockInfo.dateFormatter setDateStyle:NSDateFormatterFullStyle];
-		NSString *dateFormat = clockInfo.dateFormatter.dateFormat;
-		FNLOG(@"%@", dateFormat);
-		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"y" withString:@""];
-		dateFormat = [dateFormat stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
-		[clockInfo.dateFormatter setDateFormat:dateFormat];
-		_weekdayMonthDay.text = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
-	}
-	else if([[NSUserDefaults standardUserDefaults] clockShowTheDayOfTheWeek])
-	{
-		_weekdayMonthDay.text = [NSString stringWithFormat:@"%@", clockInfo.weekday];
-	}
-	else if([[NSUserDefaults standardUserDefaults] clockShowDate])
-	{
-		_weekdayMonthDay.text = [NSString stringWithFormat:@"%@ %@", clockInfo.month, clockInfo.day];
-	}
-	else
-		_weekdayMonthDay.text = @"";
+	_weekdayMonthDay.text = clockInfo.dateStringConsideringOptions;
 
 	_lbAMPM.text = clockInfo.AMPM;
-	FNLOG(@"%@", _lbAMPM);
 
 	if (_weatherInfoAvailable) {
 		[self refreshWeather:clockInfo];

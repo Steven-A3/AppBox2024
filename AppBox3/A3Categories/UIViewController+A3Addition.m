@@ -8,7 +8,7 @@
 
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3CenterViewProtocol.h"
+#import "A3CenterViewDelegate.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3Addition.h"
 #import "A3PasscodeViewController.h"
@@ -41,7 +41,7 @@
 	[navigationController setToolbarHidden:YES];
 
 	BOOL hidesNavigationBar = NO;
-	UIViewController<A3CenterViewProtocol> *targetViewController = (UIViewController <A3CenterViewProtocol> *) viewController;
+	UIViewController<A3CenterViewDelegate> *targetViewController = (UIViewController <A3CenterViewDelegate> *) viewController;
 	if ([viewController respondsToSelector:@selector(hidesNavigationBar)]) {
 		hidesNavigationBar = [targetViewController hidesNavigationBar];
 	}
@@ -62,14 +62,12 @@
         [navigationController.navigationBar setShadowImage:nil];
     }
 
-	[navigationController popToRootViewControllerAnimated:NO];
-
-//	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
-//	for (UIViewController<A3CenterViewProtocol> *vc in poppedVCs) {
-//		if ([vc respondsToSelector:@selector(cleanUp)]) {
-//			[vc performSelector:@selector(cleanUp)];
-//		}
-//	}
+	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
+	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
+		if ([vc respondsToSelector:@selector(cleanUp)]) {
+			[vc performSelector:@selector(cleanUp)];
+		}
+	}
 
 	if (IS_IPAD) {
 		BOOL usesFullScreenInLandscape = NO;

@@ -10,7 +10,7 @@
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+mainMenu.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3CenterViewProtocol.h"
+#import "A3CenterViewDelegate.h"
 
 @interface A3SettingsAddFavoritesViewController ()
 

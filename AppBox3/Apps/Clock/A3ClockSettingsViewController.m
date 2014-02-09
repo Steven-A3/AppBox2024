@@ -60,6 +60,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	_myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     _myTableView.dataSource = self;
     _myTableView.delegate = self;
+	_myTableView.separatorColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 	[self.view addSubview:_myTableView];
 
 	[_myTableView makeConstraints:^(MASConstraintMaker *make) {
@@ -72,6 +73,12 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 	[[UIApplication sharedApplication] setStatusBarHidden:NO];
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 - (void)doneButtonAction:(id)button {
@@ -126,14 +133,13 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
     return nRst;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	@autoreleasepool {
 		UITableViewCell *cell = nil;
 
 		if (indexPath.section == 2 && indexPath.row == 1) {
-			static NSString *CellWithSegmentedControl = @"A3ClockSettingsWithSegmentedControl";
+			static NSString *CellWithSegmentedControl = @"A3	ClockSettingsWithSegmentedControl";
 
 			cell = [tableView dequeueReusableCellWithIdentifier:CellWithSegmentedControl];
 			if (cell == nil) {
@@ -141,6 +147,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			}
 
 			[cell addSubview:self.segmentedControl];
+			[self setSegmentedControlEnabled:[[NSUserDefaults standardUserDefaults] clockShowWeather]];
 
 			[_segmentedControl removeConstraints:_segmentedControl.constraints];
 			[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
@@ -193,7 +200,7 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 					switchControl.on = [[NSUserDefaults standardUserDefaults] clockUse24hourClock];
 					break;
 				case kTagSwitchAMPM:
-					[switchControl setEnabled:[[NSUserDefaults standardUserDefaults] clockUse24hourClock]];
+					[switchControl setEnabled:![[NSUserDefaults standardUserDefaults] clockUse24hourClock]];
 					switchControl.on = [[NSUserDefaults standardUserDefaults] clockShowAMPM];
 					break;
 				case kTagSwitchWeek:
@@ -240,10 +247,11 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			[[NSUserDefaults standardUserDefaults] setClockUse24hourClock:switchControl.on];
 
 			UISwitch *AMPMSwitchControl = (UISwitch *) [_myTableView viewWithTag:kTagSwitchAMPM];
-			[AMPMSwitchControl setEnabled:switchControl.on];
-			if (!switchControl.on) {
+			[AMPMSwitchControl setEnabled:!switchControl.on];
+			if (switchControl.on) {
 				[AMPMSwitchControl setOn:NO];
-				[[NSUserDefaults standardUserDefaults] setClockShowAMPM:NO];
+			} else {
+				[AMPMSwitchControl setOn:[[NSUserDefaults standardUserDefaults] clockShowAMPM]];
 			}
 			break;
 		}
@@ -284,7 +292,16 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 - (void)setWeatherStatus:(BOOL)on {
 	[[NSUserDefaults standardUserDefaults] setClockShowWeather:on];
 	[self.clockDataManager enableWeatherCircle:on];
-	[self.segmentedControl setEnabled:on];
+	[self setSegmentedControlEnabled:on];
+}
+
+- (void)setSegmentedControlEnabled:(BOOL)enabled {
+	if (enabled) {
+		[self.segmentedControl setTintColor:nil];
+	} else {
+		[self.segmentedControl setTintColor:[UIColor colorWithRed:138.0/255.0 green:138.0/255.0 blue:138.0/255.0 alpha:1.0]];
+	}
+	[self.segmentedControl setEnabled:enabled];
 }
 
 - (void)didReceiveMemoryWarning

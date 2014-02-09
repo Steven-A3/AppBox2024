@@ -128,6 +128,10 @@
 		if (screenBounds.size.height == 568) {
 			switch (numberOfViews) {
 				case 1:
+					centerArray = @[
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height / 2)],
+					];
+					break;
 				case 2:
 					centerArray = @[
 							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 110 + 270 / 2)],
@@ -154,6 +158,10 @@
 			// Portrait 480 (3.5")
 			switch (numberOfViews) {
 				case 1:
+					centerArray = @[
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height / 2)],
+					];
+					break;
 				case 2:
 					centerArray = @[
 							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 214)],
@@ -186,6 +194,10 @@
 		if (screenBounds.size.height == 568) {
 			switch (numberOfViews) {
 				case 1:
+					centerArray = @[
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height / 2)],
+					];
+					break;
 				case 2:
 					centerArray = @[
 							[NSValue valueWithCGPoint:CGPointMake(250, bounds.size.height / 2)],
@@ -212,6 +224,10 @@
 			// Landscape 480 (3.5")
 			switch (numberOfViews) {
 				case 1:
+					centerArray = @[
+							[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height / 2)],
+					];
+					break;
 				case 2:
 					centerArray = @[
 							[NSValue valueWithCGPoint:CGPointMake(206, bounds.size.height / 2)],
@@ -322,6 +338,10 @@
 	if (IS_PORTRAIT) {
 		switch (numberOfViews) {
 			case 1:
+				centerArray = @[
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height / 2)],
+				];
+				break;
 			case 2:
 				centerArray = @[
 						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, 159 + 540 / 2)],
@@ -353,6 +373,10 @@
 	} else {
 		switch (numberOfViews) {
 			case 1:
+				centerArray = @[
+						[NSValue valueWithCGPoint:CGPointMake(bounds.size.width / 2, bounds.size.height / 2)],
+				];
+				break;
 			case 2:
 				centerArray = @[
 						[NSValue valueWithCGPoint:CGPointMake(172 + 540 / 2, bounds.size.height / 2)],
@@ -517,6 +541,7 @@
 	self.weekCircle.delegate = self;
 	self.weekCircle.isShowWave = YES;
 	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 88 : 88];
+	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:IS_IPHONE ? 18 : 24];
 	[self.view addSubview:self.weekCircle];
 
 	self.weekBottomLabel = [[UILabel alloc] init];

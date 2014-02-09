@@ -81,7 +81,6 @@
 	} else {
 		[waveCirclesArray removeObject:@(type)];
 	}
-	FNLOG(@"%@", waveCirclesArray);
 	[[NSUserDefaults standardUserDefaults] setObject:waveCirclesArray forKey:A3ClockWaveCircleLayout];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -300,71 +299,71 @@
 	return [UIColor colorWithRed:[components[0] floatValue] / 255.0 green:[components[1] floatValue] / 255.0 blue:[components[2] floatValue] / 255.0 alpha:alpha];
 }
 
-- (UIImage*)imageForWeatherCondition:(A3WeatherCondition)aCon
+- (UIImage*)imageForWeatherCondition:(A3WeatherCondition)condition
 {
-    int nRst = 0;
+    NSInteger idx = 0;
 
-    switch (aCon) {
-        case SCWeatherConditionTornado: nRst = 21; break;
-        case SCWeatherConditionThunderstorms: nRst = 1; break;
-        case SCWeatherConditionMixedRainAndSnow: nRst = 2; break;
-        case SCWeatherConditionFreezingRain: nRst = 2; break;
-        case SCWeatherConditionFixingDrizzle: nRst = 4; break;
-        case SCWeatherConditionDrizzle: nRst = 4; break;
-        case SCWeatherConditionShowers: nRst = 5; break;
-        case SCWeatherConditionShowers2: nRst = 5; break;
-        case SCWeatherConditionScatteredShowers: nRst = 5; break;
-        case SCWeatherConditionMixedSnowAndSleet: nRst = 6; break;
-        case SCWeatherConditionSnowFlurries: nRst = 6; break;
-        case SCWeatherConditionLightSnowShowers: nRst = 6; break;
-        case SCWeatherConditionSnow: nRst = 6; break;
-        case SCWeatherConditionCold: nRst = 6; break;
-        case SCWeatherConditionScatteredSnowShowers: nRst = 6; break;
-        case SCWeatherConditionSnowShowers: nRst = 6; break;
-        case SCWeatherConditionBlowingSnow: nRst = 7; break;
-        case SCWeatherConditionFoggy: nRst = 8; break;
-        case SCWeatherConditionHaze: nRst = 9; break;
-        case SCWeatherConditionSmoky: nRst = 10; break;
-        case SCWeatherConditionBlustery: nRst = 11; break;
-        case SCWeatherConditionWindy: nRst = 11; break;
-        case SCWeatherConditionCloudy: nRst = 12; break;
-        case SCWeatherConditionPartlyCloudy: nRst = 12; break;
-        case SCWeatherConditionMostlyCloudyNight: nRst = 13; break;
-        case SCWeatherConditionClearNight: nRst = 13; break;
-        case SCWeatherConditionMostlyCloudyDay: nRst = 14; break;
-        case SCWeatherConditionSunny: nRst = 14; break;
-        case SCWeatherConditionHot: nRst = 14; break;
-        case SCWeatherConditionPartlyCloudyNight: nRst = 15; break;
-        case SCWeatherConditionPartlyCloudyDay: nRst = 16; break;
-        case SCWeatherConditionFairNight: nRst = 13; break;
-        case SCWeatherConditionFairDay: nRst = 14; break;
-        case SCWeatherConditionIsolatedThunderstorms: nRst = 1; break;
-        case SCWeatherConditionScatteredThunderstorms: nRst = 1; break;
-        case SCWeatherConditionScatteredThunderstorms2: nRst = 1; break;
-        case SCWeatherConditionHeavySnow: nRst = 2; break;
-        case SCWeatherConditionHeavySnow2: nRst = 2; break;
-        case SCWeatherConditionTropicalStorm: nRst = 22; break;
-        case SCWeatherConditionHurricane: nRst = 23; break;
-        case SCWeatherConditionSevereThunderstorms: nRst = 1; break;
-        case SCWeatherConditionMixedRainAndSleet: nRst = 2; break;
-        case SCWeatherConditionHail: nRst = 26; break;
-        case SCWeatherConditionSleet: nRst = 2; break;
-        case SCWeatherConditionDust: nRst = 28; break;
-        case SCWeatherConditionMixedRainAndHail: nRst = 29; break;
-        case SCWeatherConditionThundershowers: nRst = 30; break;
-        case SCWeatherConditionIsolatedThundershowers: nRst = 30; break;
+    switch (condition) {
+        case SCWeatherConditionTornado: idx = 21; break;
+        case SCWeatherConditionThunderstorms: idx = 1; break;
+        case SCWeatherConditionMixedRainAndSnow: idx = 2; break;
+        case SCWeatherConditionFreezingRain: idx = 2; break;
+        case SCWeatherConditionFixingDrizzle: idx = 4; break;
+        case SCWeatherConditionDrizzle: idx = 4; break;
+        case SCWeatherConditionShowers: idx = 5; break;
+        case SCWeatherConditionShowers2: idx = 5; break;
+        case SCWeatherConditionScatteredShowers: idx = 5; break;
+        case SCWeatherConditionMixedSnowAndSleet: idx = 6; break;
+        case SCWeatherConditionSnowFlurries: idx = 6; break;
+        case SCWeatherConditionLightSnowShowers: idx = 6; break;
+        case SCWeatherConditionSnow: idx = 6; break;
+        case SCWeatherConditionCold: idx = 6; break;
+        case SCWeatherConditionScatteredSnowShowers: idx = 6; break;
+        case SCWeatherConditionSnowShowers: idx = 6; break;
+        case SCWeatherConditionBlowingSnow: idx = 7; break;
+        case SCWeatherConditionFoggy: idx = 8; break;
+        case SCWeatherConditionHaze: idx = 9; break;
+        case SCWeatherConditionSmoky: idx = 10; break;
+        case SCWeatherConditionBlustery: idx = 11; break;
+        case SCWeatherConditionWindy: idx = 11; break;
+        case SCWeatherConditionCloudy: idx = 12; break;
+        case SCWeatherConditionPartlyCloudy: idx = 12; break;
+        case SCWeatherConditionMostlyCloudyNight: idx = 13; break;
+        case SCWeatherConditionClearNight: idx = 13; break;
+        case SCWeatherConditionMostlyCloudyDay: idx = 14; break;
+        case SCWeatherConditionSunny: idx = 14; break;
+        case SCWeatherConditionHot: idx = 14; break;
+        case SCWeatherConditionPartlyCloudyNight: idx = 15; break;
+        case SCWeatherConditionPartlyCloudyDay: idx = 16; break;
+        case SCWeatherConditionFairNight: idx = 13; break;
+        case SCWeatherConditionFairDay: idx = 14; break;
+        case SCWeatherConditionIsolatedThunderstorms: idx = 1; break;
+        case SCWeatherConditionScatteredThunderstorms: idx = 1; break;
+        case SCWeatherConditionScatteredThunderstorms2: idx = 1; break;
+        case SCWeatherConditionHeavySnow: idx = 2; break;
+        case SCWeatherConditionHeavySnow2: idx = 2; break;
+        case SCWeatherConditionTropicalStorm: idx = 22; break;
+        case SCWeatherConditionHurricane: idx = 23; break;
+        case SCWeatherConditionSevereThunderstorms: idx = 1; break;
+        case SCWeatherConditionMixedRainAndSleet: idx = 2; break;
+        case SCWeatherConditionHail: idx = 26; break;
+        case SCWeatherConditionSleet: idx = 2; break;
+        case SCWeatherConditionDust: idx = 28; break;
+        case SCWeatherConditionMixedRainAndHail: idx = 29; break;
+        case SCWeatherConditionThundershowers: idx = 30; break;
+        case SCWeatherConditionIsolatedThundershowers: idx = 30; break;
         default:
-            nRst = -1;
+            idx = -1;
             break;
     }
     
-    if(nRst == -1)
+    if(idx == -1)
         return [UIImage imageNamed:nil];
     else
-        return [UIImage imageNamed:[NSString stringWithFormat:@"weather_%02d", nRst]];
+        return [UIImage imageNamed:[NSString stringWithFormat:@"weather_%02d", idx]];
 }
 
-#pragma mark - weather stuff
+#pragma mark - weather
 
 #define YAHOO_APP_ID	@"YPTRvJjV34GJKXl3pY2LuRNpwY4w2Rv.GpYI9vbPWz_Yk0hgFZUrDIeibzpbg__AKg--"
 #define kA3YahooWeatherXMLKeyConditionTag   @"yweather:condition"
@@ -492,7 +491,6 @@
 			if ([placeMark.subThoroughfare length]) [_addressCandidates addObject:placeMark.subThoroughfare];
 			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
 			if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
-			if ([placeMark.name length]) [_addressCandidates addObject:placeMark.name];
 		}
 
 		[self getWOEIDWithCandidates];

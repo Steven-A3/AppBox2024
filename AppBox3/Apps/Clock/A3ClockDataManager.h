@@ -62,7 +62,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 - (UIColor *)LEDColorAtIndex:(NSUInteger)idx alpha:(CGFloat)alpha;
 
-- (UIImage*)imageForWeatherCondition:(A3WeatherCondition)aCon;
+- (UIImage*)imageForWeatherCondition:(A3WeatherCondition)condition;
 
 - (void)updateWeather;
 @end

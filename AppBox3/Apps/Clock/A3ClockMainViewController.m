@@ -53,6 +53,10 @@
 }
 
 - (void)dealloc {
+	[self cleanUp];
+}
+
+- (void)cleanUp {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_buttonsTimer invalidate];
 	_buttonsTimer = nil;

@@ -27,5 +27,12 @@
 @property (nonatomic, strong) NSString *weekday;
 @property (nonatomic, strong) NSString *shortWeekday;
 @property (nonatomic, strong) A3Weather *currentWeather;
+@property (nonatomic, strong) NSString *fullStyleFormatWithoutYear;
+@property (nonatomic, strong) NSString *mediumStyleFormatWithoutYear;
 
+- (NSString *)fullStyleDateStringWithoutYear;
+
+- (NSString *)mediumStyleDateStringWithoutYear;
+
+- (NSString *)dateStringConsideringOptions;
 @end

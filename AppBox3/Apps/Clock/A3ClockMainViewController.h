@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3CenterViewDelegate.h"
 
-@interface A3ClockMainViewController : UIViewController
+@interface A3ClockMainViewController : UIViewController <A3CenterViewDelegate>
 
 @end

@@ -11,7 +11,7 @@
 #import "NSMutableArray+MoveObject.h"
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SettingsAddFavoritesViewController.h"
-#import "A3CenterViewProtocol.h"
+#import "A3CenterViewDelegate.h"
 
 @interface A3SettingsFavoritesViewController () <A3ChildViewControllerDelegate>
 

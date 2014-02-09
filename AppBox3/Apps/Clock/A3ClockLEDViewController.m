@@ -485,14 +485,7 @@
 		_AMPM.text = clockInfo.AMPM;
 	}
 	if (self.showDate) {
-		[clockInfo.dateFormatter setDateStyle:NSDateFormatterFullStyle];
-		NSString *dateFormat = clockInfo.dateFormatter.dateFormat;
-		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"y" withString:@""];
-		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
-		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
-		dateFormat = [dateFormat stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
-		[clockInfo.dateFormatter setDateFormat:dateFormat];
-		_date.text = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
+		_date.text = clockInfo.dateStringConsideringOptions;
 	}
 
 	if (_weatherInfoAvailable && self.showWeather) {

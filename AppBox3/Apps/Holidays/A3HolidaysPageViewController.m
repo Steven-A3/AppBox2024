@@ -22,13 +22,13 @@
 #import "UIView+Screenshot.h"
 #import "A3HolidaysCountryViewController.h"
 #import "NSDate-Utilities.h"
-#import "A3CenterViewProtocol.h"
+#import "A3CenterViewDelegate.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "UIViewController+A3Addition.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
-		A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate, A3CenterViewProtocol>
+		A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate, A3CenterViewDelegate>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;
