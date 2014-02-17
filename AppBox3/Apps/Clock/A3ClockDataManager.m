@@ -12,6 +12,8 @@
 #import "NSUserDefaults+A3Defaults.h"
 #import "AFHTTPRequestOperation.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate.h"
+#import "Reachability.h"
 
 @interface A3ClockDataManager () <CLLocationManagerDelegate>
 
@@ -26,6 +28,7 @@
 @end
 
 
+
 @implementation A3ClockDataManager {
 	BOOL _refreshWholeClock;
 }
@@ -34,7 +37,9 @@
 	self = [super init];
 	if (self) {
 		if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
-			[self.locationManager startMonitoringSignificantLocationChanges];
+			if ([[A3AppDelegate instance].reachability isReachable]) {
+				[self.locationManager startMonitoringSignificantLocationChanges];
+			}
 		} else {
 			[[NSUserDefaults standardUserDefaults] setClockShowWeather:NO];
 		}
@@ -360,7 +365,7 @@
     if(idx == -1)
         return [UIImage imageNamed:nil];
     else
-        return [UIImage imageNamed:[NSString stringWithFormat:@"weather_%02d", idx]];
+        return [UIImage imageNamed:[NSString stringWithFormat:@"weather_%02ld", (long)idx]];
 }
 
 #pragma mark - weather
@@ -380,22 +385,28 @@
 
 	NSString *weatherUnit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? @"f" : @"c";
 	NSURL *weatherURL = [NSURL URLWithString:[NSString stringWithFormat:@"http://weather.yahooapis.com/forecastrss?w=%@&u=%@", WOEID, weatherUnit]];
-    
+
 	NSURLRequest *weatherRequest = [NSURLRequest requestWithURL:weatherURL];
 	AFHTTPRequestOperation *weatherOperation = [[AFHTTPRequestOperation alloc] initWithRequest:weatherRequest];
     
 	[weatherOperation  setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSData *response) {
-        response = operation.responseData;
-        
 		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
-		XMLParser.delegate = (id)self;
+		XMLParser.delegate = self;
 
-		self.weatherForecast = [NSMutableArray new];
+		self.weatherForecast = nil;
+		self.weatherCurrentCondition = nil;
+		self.weatherAtmosphere = nil;
 
 		if ([XMLParser parse]) {
+			if (!_weatherForecast || !_weatherCurrentCondition || !_weatherAtmosphere) {
+				FNLOG(@"Failed to load weather with :%@", [_addressCandidates lastObject]);
+				[_addressCandidates removeLastObject];
+				[self getWOEIDWithCandidates];
+				return;
+			}
 			self.currentWeather = [A3Weather new];
 			self.currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
-			self.currentWeather.description = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
+			self.currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
 			self.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
 			self.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
 
@@ -410,13 +421,9 @@
 			if ([_delegate respondsToSelector:@selector(refreshWeather:)]) {
 				[_delegate refreshWeather:self.clockInfo];
 			}
-
-//			FNLOG(@"%@,%d,%d,%d", self.currentWeather.description, self.currentWeather.currentTemperature, self.currentWeather.highTemperature, self.currentWeather.lowTemperature);
 		}
 
-//		FNLOG(@"self.weatherCurrentCondition:\r\n%@", self.weatherCurrentCondition);
-//		FNLOG(@"self.weatherForecast:\r\n%@", self.weatherForecast);
-//		FNLOG(@"self.weatherAtmosphere:\r\n%@", self.weatherAtmosphere);
+		_addressCandidates = nil;
 		_locationManager = nil;
 		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -430,10 +437,9 @@
 		[_locationManager startMonitoringSignificantLocationChanges];
 		return;
 	}
+	FNLOG(@"%@", [_addressCandidates lastObject]);
 
 	NSURL *url = [NSURL URLWithString:[[NSString stringWithFormat:@"http://where.yahooapis.com/v1/places.q(%@)?appid=%@&format=json", [_addressCandidates lastObject], YAHOO_APP_ID] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-	FNLOG(@"%@", url.absoluteString);
-	[_addressCandidates removeLastObject];
 
 	NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
@@ -443,12 +449,12 @@
 		NSString *WOEID = [[[[[JSON objectForKey:@"places"] objectForKey:@"place"] objectAtIndex:0] objectForKey:@"locality1 attrs"] objectForKey:@"woeid"];
 		if (WOEID) {
 			[self getWeatherInfoWithWOEID:WOEID];
-			_addressCandidates = nil;
-			_locationManager = nil;
 		} else {
+			[_addressCandidates removeLastObject];
 			[self getWOEIDWithCandidates];
 		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+		[_addressCandidates removeLastObject];
 		[self getWOEIDWithCandidates];
 	}];
 
@@ -469,31 +475,53 @@
 	self.weatherForecast = nil;
 
 	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+
+#ifdef  ALERT_LOCATION
+		CLLocation *location = locations[0];
+		NSString *log = [NSString stringWithFormat:@"latitude = %f, longitude = %f", location.coordinate.latitude, location.coordinate.longitude];
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alertView show];
+#endif
+
 	[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
+		if (error) {
+#ifdef        ALERT_LOCATION
+			CLLocation *location = locations[0];
+			NSString *log = [NSString stringWithFormat:@"%@\n%f, %f", error.localizedDescription, location.coordinate.latitude, location.coordinate.longitude];
+			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alertView show];
+#endif
+			return;
+		}
 		for (CLPlacemark *placeMark in placeMarks) {
-/*
+
 			NSMutableString *log = [NSMutableString new];
+
 			[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
 			[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
 			[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
 			[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
 			[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
 			[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
-			[log appendString:[NSString stringWithFormat:@"sublocality:%@\n", placeMark.subLocality]];
+			[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
+			FNLOG(@"%@", log);
+
+#ifdef  ALERT_LOCATION
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alertView show];
-*/
+#endif
+
 			if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
-			if ([placeMark.country length]) [_addressCandidates addObject:placeMark.country];
-			if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
-			if ([placeMark.subAdministrativeArea length]) [_addressCandidates addObject:placeMark.subAdministrativeArea];
-			if ([placeMark.thoroughfare length]) [_addressCandidates addObject:placeMark.thoroughfare];
-			if ([placeMark.subThoroughfare length]) [_addressCandidates addObject:placeMark.subThoroughfare];
-			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
 			if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
+			if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
+			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
 		}
 
-		[self getWOEIDWithCandidates];
+		if ([_addressCandidates count]) {
+			[self getWOEIDWithCandidates];
+		} else {
+			[manager startMonitoringSignificantLocationChanges];
+		}
 	}];
 }
 
@@ -502,13 +530,16 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
 	if([elementName isEqualToString:kA3YahooWeatherXMLKeyConditionTag]) {
-		self.weatherCurrentCondition = attributeDict;
+		_weatherCurrentCondition = attributeDict;
 	} else if ([elementName isEqualToString:kA3YahooWeatherXMLKeyForecastTag]) {
-		[self.weatherForecast addObject:attributeDict];
+		if (!_weatherForecast) {
+			_weatherForecast = [NSMutableArray new];
+		}
+		[_weatherForecast addObject:attributeDict];
 	}
     else if([elementName isEqualToString:kA3YahooWeatherXMLKeyAtmosphere])
     {
-        self.weatherAtmosphere = attributeDict;
+        _weatherAtmosphere = attributeDict;
     }
 }
 

@@ -58,6 +58,36 @@
 	return [percentFormatter stringFromNumber:number];
 }
 
+// 오영택 add
++ (NSString *)stringFromDate:(NSDate*)date format:(NSString*)format
+{
+    if( nil == date ){
+        return @"";
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateFormat:format];
+    
+    return [dateFormatter stringFromDate:date];
+}
+
++ (NSString *)customFullStyleStringFromDate:(NSDate *)date {
+	NSDateFormatter *df = [NSDateFormatter new];
+	[df setDateStyle:NSDateFormatterFullStyle];
+	NSString *dateFormat = [df dateFormat];
+	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"E" options:0 range:NSMakeRange(0, [dateFormat length])];
+	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+	[df setDateFormat:dateFormat];
+	return [df stringFromDate:date];
+}
+
++ (NSString *)fullStyleDateStringFromDate:(NSDate *)date {
+	NSDateFormatter *df = [NSDateFormatter new];
+	[df setDateStyle:NSDateFormatterFullStyle];
+	NSString *dateFormat = [df dateFormat];
+	[df setDateFormat:dateFormat];
+	return [df stringFromDate:date];
+}
+
 /*! Returns custom style with date
  * \param NSDate *date
  * \returns

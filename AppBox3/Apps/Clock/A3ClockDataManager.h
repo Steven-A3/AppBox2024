@@ -35,7 +35,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 
 @class A3ClockWaveCircleView;
 
-@interface A3ClockDataManager : NSObject
+@interface A3ClockDataManager : NSObject <NSXMLParserDelegate>
 
 @property (nonatomic, strong) id<A3ClockDataManagerDelegate> delegate;
 @property (nonatomic, strong) NSDictionary* weatherAtmosphere;//"for humidity"

@@ -10,7 +10,7 @@
 #import "A3UIDevice.h"
 
 @interface A3TableViewCell ()
-@property (nonatomic, strong) id<MASConstraint> separatorLeft;
+@property (nonatomic, strong) MASConstraint *separatorLeft;
 @end
 
 @implementation A3TableViewCell

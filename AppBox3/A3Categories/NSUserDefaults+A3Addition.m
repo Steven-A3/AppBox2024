@@ -38,4 +38,18 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 		NSLocalizedString(@"Korean", @"In Settings, selected lunar calendar name for Korean Lunar Calendar") : NSLocalizedString(@"Chinese", @"In Settings, selected lunar calendar name for Chinese Lunar Calendar");
 }
 
+- (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key {
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject:dateComponents];
+	[self setObject:data forKey:key];
+	[self synchronize];
+}
+
+- (NSDateComponents *)dateComponentsForKey:(NSString *)key {
+	NSData *data = [self objectForKey:key];
+	if (data) {
+		return [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	}
+	return nil;
+}
+
 @end

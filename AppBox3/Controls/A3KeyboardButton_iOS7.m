@@ -8,6 +8,12 @@
 
 #import "A3KeyboardButton_iOS7.h"
 
+@interface A3KeyboardButton_iOS7 ()
+
+@property(nonatomic, strong) NSMutableArray *constraints;
+
+@end
+
 @implementation A3KeyboardButton_iOS7
 
 - (id)initWithFrame:(CGRect)frame
@@ -17,6 +23,13 @@
         // Initialization code
     }
     return self;
+}
+
+- (NSMutableArray *)constraints {
+	if (!_constraints) {
+		_constraints = [NSMutableArray new];
+	}
+	return _constraints;
 }
 
 /*
@@ -42,6 +55,11 @@
 		_mainTitle.textColor = [super titleColorForState:UIControlStateNormal];
 		_mainTitle.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_mainTitle];
+
+		[_mainTitle makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.centerX)];
+			[self.constraints addObject:make.baseline.equalTo(self.centerY).with.offset(2)];
+		}];
 	}
 	return _mainTitle;
 }
@@ -59,11 +77,21 @@
 		_subTitle.shadowOffset = CGSizeMake(0.0, 1.0);
 		_subTitle.shadowColor = [UIColor whiteColor];
 		[self addSubview:_subTitle];
+
+		[_subTitle makeConstraints:^(MASConstraintMaker *make) {
+			[self.constraints addObject:make.centerX.equalTo(self.centerX)];
+			[self.constraints addObject:make.top.equalTo(_mainTitle.bottom).with.offset(-4)];
+		}];
 	}
 	return _subTitle;
 }
 
 - (void)removeExtraLabels {
+	for (MASConstraint *constraint in _constraints) {
+		[constraint uninstall];
+	}
+	[_constraints removeAllObjects];
+
 	[_mainTitle removeFromSuperview];
 	_mainTitle = nil;
 	[_subTitle removeFromSuperview];

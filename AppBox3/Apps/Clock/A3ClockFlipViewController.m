@@ -35,7 +35,7 @@
 @property (nonatomic, strong) UILabel*weatherTemperatureLowTitle;
 
 @property (nonatomic, strong) NSMutableArray *weatherConstraints;
-@property (nonatomic, strong) id<MASConstraint> weekdayMonthDayBaseline;
+@property (nonatomic, strong) MASConstraint *weekdayMonthDayBaseline;
 
 @property (nonatomic, strong) NSMutableArray *timeViewConstraints;
 
@@ -161,7 +161,7 @@
 	if (!_timeViewConstraints) {
 		_timeViewConstraints = [NSMutableArray new];
 	} else {
-		for (id <MASConstraint> constraint in _timeViewConstraints) {
+		for (MASConstraint *constraint in _timeViewConstraints) {
 			[constraint uninstall];
 		}
 		[_timeViewConstraints removeAllObjects];
@@ -261,7 +261,7 @@
 	BOOL isPortrait = IS_PORTRAIT;
 
 	if (IS_IPHONE) {
-		for (id<MASConstraint> constraint in _weatherConstraints) {
+		for (MASConstraint *constraint in _weatherConstraints) {
 			[constraint uninstall];
 		}
 		[_weatherConstraints removeAllObjects];
@@ -463,13 +463,13 @@
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
-	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo animated:(BOOL)animated {
-	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.hour] animated:animated ];
-	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.minute] animated:animated ];
-	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02d", self.clockDataManager.clockInfo.dateComponents.second] animated:animated ];
+	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.hour] animated:animated ];
+	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.minute] animated:animated ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.second] animated:animated ];
 
 	_weekdayMonthDay.text = clockInfo.dateStringConsideringOptions;
 
@@ -487,11 +487,12 @@
 }
 
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
-	if (![[NSUserDefaults standardUserDefaults] clockShowWeather]) {
+	_weatherInfoAvailable = YES;
+
+	if (![self showWeather]) {
 		[self setWeatherHidden:YES];
 		return;
 	}
-	_weatherInfoAvailable = YES;
 	[self setWeatherHidden:NO];
 
 	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
@@ -502,12 +503,12 @@
 		clockInfo.currentWeather.unit = SCWeatherUnitFahrenheit;
 	}
 
-	_weatherCondition.text = clockInfo.currentWeather.description;
-	_temperature.text = [NSString stringWithFormat:@"%d°", clockInfo.currentWeather.currentTemperature];
+	_weatherCondition.text = clockInfo.currentWeather.representation;
+	_temperature.text = [NSString stringWithFormat:@"%ld°", (long)clockInfo.currentWeather.currentTemperature];
 
 	_weatherHumidity.text = [NSString stringWithFormat:@"%@%%", [self.clockDataManager.weatherAtmosphere objectForKey:@"humidity"]];
-	_weatherTemperatureHigh.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.highTemperature];
-	_weatherTemperatureLow.text = [NSString stringWithFormat:@"%d", clockInfo.currentWeather.lowTemperature];
+	_weatherTemperatureHigh.text = [NSString stringWithFormat:@"%ld", (long)clockInfo.currentWeather.highTemperature];
+	_weatherTemperatureLow.text = [NSString stringWithFormat:@"%ld", (long)clockInfo.currentWeather.lowTemperature];
 }
 
 

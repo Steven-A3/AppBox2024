@@ -24,14 +24,14 @@
     return self;
 }
 
-- (void)setTemperature:(int)aTemperature
+- (void)setTemperature:(NSInteger)temperature
 {
-	self.textLabel.text = [NSString stringWithFormat:@"%dº", aTemperature];
+	self.textLabel.text = [NSString stringWithFormat:@"%ldº", (long)temperature];
 }
 
-- (void)setDate:(int)aDay
+- (void)setDay:(NSInteger)day
 {
-    self.textLabel.text = [NSString stringWithFormat:@"%d", aDay];
+    self.textLabel.text = [NSString stringWithFormat:@"%ld", (long)day];
 }
 
 - (void)setWeek:(NSString*)aWeek

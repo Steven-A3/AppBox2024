@@ -22,17 +22,6 @@
 
 - (void)setCurrencyShowNationalFlag:(BOOL)boolValue;
 
-
-- (BOOL)tipCalcTax;
-- (void)setTipCalcTax:(BOOL)boolValue;
-
-- (BOOL)tipCalcSplit;
-- (void)setTipCalcSplit:(BOOL)boolValue;
-
-- (BOOL)tipCalcRoundingMethod;
-- (void)setTipCalcRoundingMethod:(BOOL)boolValue;
-
-
 - (BOOL)clockTheTimeWithSeconds;
 - (void)setClockTheTimeWithSeconds:(BOOL)boolValue;
 

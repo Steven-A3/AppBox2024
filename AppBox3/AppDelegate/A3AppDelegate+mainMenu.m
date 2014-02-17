@@ -50,7 +50,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuName : @"Converter",
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : @"Currency", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-						 @{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"LunarConverter"},
+						 @{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"A3LunarConverterViewController", kA3AppsNibName: @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
 						 @{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
 						 @{kA3AppsMenuName : @"Unit Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitConverter"},
 						 ]

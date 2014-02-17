@@ -28,6 +28,6 @@ typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 @property (nonatomic, strong) UILabel *publicLabel;
 @property (nonatomic, strong) UIImageView *lunarImageView;
 @property (nonatomic) A3HolidayCellType	cellType;
-@property (nonatomic, strong) id<MASConstraint> dateLabelLeft;
+@property (nonatomic, strong) MASConstraint *dateLabelLeft;
 
 @end

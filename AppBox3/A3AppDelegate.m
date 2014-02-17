@@ -19,6 +19,7 @@
 #import "A3AppDelegate+keyValueStore.h"
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3AppDelegate+appearance.h"
+#import "Reachability.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 
@@ -44,6 +45,9 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	_locationManager.delegate = self;
 	_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
 	[_locationManager startMonitoringSignificantLocationChanges];
+
+	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
+	[self.reachability startNotifier];
 
 	// Override point for customization after application launch.
 	NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -197,6 +201,13 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 	[_locationManager stopMonitoringSignificantLocationChanges];
 	_locationManager = nil;
+}
+
+- (NSCalendar *)calendar {
+	if (!_calendar) {
+		_calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	}
+	return _calendar;
 }
 
 @end

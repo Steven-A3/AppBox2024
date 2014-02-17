@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
 #import "A3HolidaysEditViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
@@ -291,8 +292,6 @@ static NSString *CellIdentifier = @"Cell";
 	}
 
 	UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
-	FNLOG(@"%lu", (unsigned long)image.imageOrientation);
-
 	if (image) {
 		A3ImageCropperViewController *cropper = [[A3ImageCropperViewController alloc] initWithImage:image withHudView:nil];
 		cropper.delegate = self;

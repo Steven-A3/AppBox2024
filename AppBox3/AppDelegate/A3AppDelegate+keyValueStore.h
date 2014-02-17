@@ -11,4 +11,5 @@
 @interface A3AppDelegate (keyValueStore)
 
 - (void)keyValueStoreDidChangeExternally:(NSNotification *)notification;
+
 @end

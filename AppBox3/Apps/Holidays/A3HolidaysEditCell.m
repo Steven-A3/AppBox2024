@@ -10,8 +10,8 @@
 #import "A3UIDevice.h"
 
 @interface A3HolidaysEditCell ()
-@property (nonatomic, strong) id<MASConstraint> publicMarkWidth;
-@property (nonatomic, strong) id<MASConstraint> publicMarkHeight;
+@property (nonatomic, strong) MASConstraint *publicMarkWidth;
+@property (nonatomic, strong) MASConstraint *publicMarkHeight;
 @end
 
 @implementation A3HolidaysEditCell

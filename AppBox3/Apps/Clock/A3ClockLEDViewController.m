@@ -297,7 +297,7 @@
 }
 
 - (void)removeConstraints {
-	for (id <MASConstraint> constraint in _constraints) {
+	for (MASConstraint *constraint in _constraints) {
 		[constraint uninstall];
 	}
 }
@@ -495,12 +495,13 @@
 }
 
 - (void)refreshWeather:(A3ClockInfo *)clockInfo {
-	if (!self.showWeather) return;
-
 	if (!_weatherInfoAvailable) {
 		_weatherInfoAvailable = YES;
 	}
-	_weather.text = [NSString stringWithFormat:@"%d° %@", clockInfo.currentWeather.currentTemperature, clockInfo.currentWeather.description];
+
+	if (![self showWeather]) return;
+
+	_weather.text = [NSString stringWithFormat:@"%ld° %@", (long) clockInfo.currentWeather.currentTemperature, clockInfo.currentWeather.representation];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

@@ -32,7 +32,7 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveLocation) {
 @property (nonatomic, strong) UIFont *smallFont;
 @property (nonatomic, strong) UIFont *bigFont;
 
-@property (nonatomic, strong) id<MASConstraint> textLabelCenterY;
+@property (nonatomic, strong) MASConstraint *textLabelCenterY;
 @property (nonatomic, strong) UIView *colonView;
 
 - (void)addColonView;

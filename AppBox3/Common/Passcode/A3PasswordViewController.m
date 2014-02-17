@@ -25,8 +25,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 @property (nonatomic, strong) UITextField *passwordHintField;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UILabel *failedAttemptLabel;
-@property (nonatomic, strong) id<MASConstraint> labelWidth;
-@property (nonatomic, strong) id<MASConstraint> labelHeight;
+@property (nonatomic, strong) MASConstraint *labelWidth;
+@property (nonatomic, strong) MASConstraint *labelHeight;
 
 @end
 

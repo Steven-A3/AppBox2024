@@ -38,10 +38,12 @@ NSString *const A3CurrencyAutoUpdate						= @"A3CurrencyAutoUpdate";
 NSString *const A3CurrencyUseCellularData 					= @"A3CurrencyUseCellularData";
 NSString *const A3CurrencyShowNationalFlag					= @"A3CurrencyShowNationalFlag";
 
-#pragma mark ------ Tip Calc
-NSString *const A3TipCalcTax                                = @"A3TipCalcTax";
-NSString *const A3TipCalcSplit                              = @"A3TipCalcSplit";
-NSString *const A3TipCalcRoundingMethod                     = @"A3TipCalcRoundingMethod";
+#pragma mark ------ Lunar Converter
+NSString *const A3LunarConverterLastInputDateComponents = @"A3LunarConverterLastInputDateComponents";
+NSString *const A3LunarConverterLastInputDateIsLunar        = @"A3LunarConverterLastInputDateIsLunar";
+
+#pragma mark ------ Days Counter
+NSString *const A3DaysCounterSlideshowOption                = @"A3DaysCounterSlideshowOption";
 
 #pragma mark ------ Clock
 NSString *const A3ClockTheTimeWithSeconds                   = @"A3ClockTheTimeWithSeconds";

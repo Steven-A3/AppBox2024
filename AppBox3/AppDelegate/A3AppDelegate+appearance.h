@@ -11,6 +11,6 @@
 @interface A3AppDelegate (appearance)
 
 - (NSArray *)themeColors;
-
 - (UIColor *)themeColor;
+
 @end

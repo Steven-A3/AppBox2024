@@ -35,7 +35,7 @@
 @property (nonatomic, strong) UILabel *photoLabel1;
 @property (nonatomic, strong) UILabel *photoLabel2;
 @property (nonatomic, strong) UIView *footerView;
-@property (nonatomic, strong) id<MASConstraint> pageControlWidth;
+@property (nonatomic, strong) MASConstraint *pageControlWidth;
 @property (nonatomic, strong) A3GradientView *topGradientView;
 @property (nonatomic, strong) NSTimer *dayChangedTimer;
 @property (nonatomic, strong) CLLocationManager *locationManager;

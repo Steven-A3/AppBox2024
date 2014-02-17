@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, A3WeatherUnit) {
 	SCWeatherUnitFahrenheit,
 };
 
-typedef enum {
+typedef NS_ENUM(NSUInteger, A3WeatherCondition) {
 	SCWeatherConditionTornado = 0,
 	SCWeatherConditionTropicalStorm,
 	SCWeatherConditionHurricane,
@@ -64,9 +64,9 @@ typedef enum {
 	SCWeatherConditionSnowShowers,
 	SCWeatherConditionIsolatedThundershowers,
 	SCWeatherConditionNotAvailable,
-} A3WeatherCondition;
+};
 
-@interface A3Weather : NSObject
+@interface A3Weather : NSObject <NSCoding>
 
 @property (nonatomic, strong)	NSString *WOEID;
 @property (nonatomic, assign)	A3WeatherUnit unit;
@@ -74,6 +74,6 @@ typedef enum {
 @property (nonatomic, assign)	NSInteger currentTemperature;
 @property (nonatomic, assign)	NSInteger highTemperature;
 @property (nonatomic, assign)	NSInteger lowTemperature;
-@property (nonatomic, strong)	NSString *description;
+@property (nonatomic, strong)	NSString *representation;
 
 @end

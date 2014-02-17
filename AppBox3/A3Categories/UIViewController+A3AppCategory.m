@@ -89,7 +89,6 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 			viewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
 		}
 		viewController.delegate = (id <A3DateKeyboardDelegate>) self;
-		viewController.workingMode = A3DateKeyboardWorkingModeYearMonthDay;
 		objc_setAssociatedObject(self, key_dateKeyboardViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	return viewController;

@@ -13,7 +13,7 @@
 
 @interface A3HolidaysCell ()
 
-@property (nonatomic, strong) id<MASConstraint> titleCenterY;
+@property (nonatomic, strong) MASConstraint *titleCenterY;
 
 @end
 

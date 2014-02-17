@@ -105,9 +105,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 	[self.view layoutIfNeeded];
 
-	[self startNetworkMonitor];
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
@@ -116,34 +115,26 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}
 }
 
-- (void)startNetworkMonitor {
-	// Allocate a reachability object
-	Reachability* reach = [Reachability reachabilityWithHostname:@"www.google.com"];
+- (void)reachabilityDidChange:(NSNotification *)notification {
+	Reachability *reachability = (Reachability *)[notification object];
 
-// Set the blocks
-	reach.reachableBlock = ^(Reachability *reach)
-	{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self setTranslateButtonEnabled];
+	if (reachability.isReachable) {
+		[self setTranslateButtonEnabled];
 
-			[self messageTableViewBottomToTextEntryView];
-			[_networkPrompter removeFromSuperview];
-			_networkPrompter = nil;
+		[self messageTableViewBottomToTextEntryView];
+		[self.networkPrompter removeFromSuperview];
+		self.networkPrompter = nil;
 
-			[self.view layoutIfNeeded];
-		});
-	};
+		[self.view layoutIfNeeded];
+	} else {
+		[self setTranslateButtonEnabled];
+		[self networkPrompter];
+	}
+}
 
-	reach.unreachableBlock = ^(Reachability*reach)
-	{
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self setTranslateButtonEnabled];
-			[self networkPrompter];
-		});
-	};
-
-// Start the notifier, which will cause the reachability object to retain itself!
-	[reach startNotifier];
+- (void)cleanUp {
+	FNLOG();
+	[self removeObserver];
 }
 
 - (void)rightBarButtonEditButton {
@@ -154,10 +145,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_messageTableView reloadData];
 	[_searchResultsTableView reloadData];
 	[self layoutTextEntryBarViewAnimated:NO];
-}
-
-- (void)dealloc {
-	[self removeObserver];
 }
 
 - (void)setTitleWithSelectedLanguage {
@@ -224,18 +211,18 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 
-	if (self.isMovingFromParentViewController) {
-		UIView *view = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
-        [self.view addSubview:view];
-	}
-
 	[self.navigationController setToolbarHidden:YES animated:NO];
 
 	if ([_delegate respondsToSelector:@selector(translatorMessageViewControllerWillDismiss:)]) {
 		[_delegate translatorMessageViewControllerWillDismiss:self];
 	}
-}
 
+	if (self.isMovingFromParentViewController) {
+		UIView *view = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
+		[self.view addSubview:view];
+		[self cleanUp];
+	}
+}
 
 - (void)addTapGestureRecognizer {
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureHandler)];

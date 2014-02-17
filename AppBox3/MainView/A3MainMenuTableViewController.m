@@ -33,6 +33,8 @@ NSString *const kA3MainMenuAllMenu = @"kA3MainMenuAllMenu";					// Store NSArray
 NSString *const kA3MainMenuMaxRecentlyUsed = @"kA3MainMenuMaxRecentlyUsed";	// Store NSNumber
 
 NSString *const A3AppsMainMenuContentsChangedNotification = @"A3AppsMainMenuContentsChangedNotification";
+NSString *const A3MainMenuBecameFirstResponder = @"A3MainMenuBecameFirstResponder";
+NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponder";
 
 @interface A3MainMenuTableViewController () <UISearchDisplayDelegate, UISearchBarDelegate, A3PasscodeViewControllerDelegate, A3TableViewExpandableElementDelegate>
 
@@ -475,6 +477,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 		[self setupData];
 		[self.tableView reloadData];
+	}
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3MainMenuBecameFirstResponder object:self];
 	}
 }
 

@@ -1,36 +1,14 @@
 {
   "images" : [
     {
-      "resizing" : {
-        "mode" : "3-part-vertical",
-        "center" : {
-          "mode" : "fill",
-          "height" : 1
-        },
-        "capInsets" : {
-          "top" : 5,
-          "bottom" : 1
-        }
-      },
       "idiom" : "universal",
-      "filename" : "wave.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "wave.png"
     },
     {
-      "resizing" : {
-        "mode" : "3-part-vertical",
-        "center" : {
-          "mode" : "fill",
-          "height" : 1
-        },
-        "capInsets" : {
-          "top" : 10,
-          "bottom" : 1
-        }
-      },
       "idiom" : "universal",
-      "filename" : "wave@2x.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "wave@2x.png"
     }
   ],
   "info" : {

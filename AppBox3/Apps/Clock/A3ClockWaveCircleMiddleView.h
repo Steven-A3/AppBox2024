@@ -10,9 +10,8 @@
 
 @interface A3ClockWaveCircleMiddleView : A3ClockWaveCircleView
 
-- (void)setTemperature:(int)aTemperature;
-- (void)setDate:(int)aDay;
+- (void)setTemperature:(NSInteger)temperature;
+- (void)setDay:(NSInteger)day;
 - (void)setWeek:(NSString*)aWeek;
 
 @end
-

@@ -10,7 +10,7 @@
 
 @interface A3SBTickerView ()
 
-@property (nonatomic, strong) id<MASConstraint> constraint1, constraint2;
+@property (nonatomic, strong) MASConstraint *constraint1, *constraint2;
 
 @end
 

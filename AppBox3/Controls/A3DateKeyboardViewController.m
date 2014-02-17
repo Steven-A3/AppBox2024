@@ -7,14 +7,12 @@
 //
 
 #import "A3DateKeyboardViewController.h"
-#import "A3UIDevice.h"
 #import "A3Formatter.h"
-#import "SFKImage.h"
 #import "A3KeyboardButton_iOS7.h"
+#import "NSDateFormatter+LunarDate.h"
 
 @interface A3DateKeyboardViewController ()
-
-
+@property (nonatomic, strong) NSCalendar *gregorian;
 @end
 
 @implementation A3DateKeyboardViewController
@@ -24,7 +22,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-		_workingMode = A3DateKeyboardWorkingModeYearMonthDay;
     }
     return self;
 }
@@ -34,47 +31,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	[self layoutForWorkingMode];
-}
-
-- (void)initSymbolFont {
-	[SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:30.0]];
-	[SFKImage setDefaultColor:[UIColor blackColor]];
-}
-
-- (void)reloadPrevNextButtons {
-	[self initSymbolFont];
-
-	BOOL available = NO;
-	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
-		available = [self.delegate isNextEntryExists];
-	}
-	if (IS_IPAD) {
-		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
-	} else {
-		UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
-		[_nextButton setImage:image forState:UIControlStateNormal];
-	}
-	[_nextButton setEnabled:available];
-
-	available = NO;
-	if ([self.delegate respondsToSelector:@selector(isPrevEntryExists)]) {
-		available = [self.delegate isPrevEntryExists];
-	}
-	if (IS_IPAD) {
-		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
-	} else {
-		UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;
-		[_prevButton setImage:image forState:UIControlStateNormal];
-	}
-	[_prevButton setEnabled:available];
+	[self switchToYear];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self reloadPrevNextButtons];
-	[self switchToDay];
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,7 +49,7 @@
 }
 
 - (void)resetNumberButtons {
-	NSArray *order = @[_num0_Nov_Button,
+	NSArray *order = @[_num0_Oct_Button,
 			_num1_Jul_Button, _num2_Aug_Button, _num3_Sep_Button,
 			_num4_Apr_Button, _num5_May_Button, _num6_Jun_Button,
 			_num7_Jan_Button, _num8_Feb_Button, _num9_Mar_Button
@@ -97,8 +59,18 @@
 		[button setTitle:[NSString stringWithFormat:@"%ld", (long)index] forState:UIControlStateNormal];
 		index++;
 	}
-	[_clear_Dec_Button setTitle:@"Clear" forState:UIControlStateNormal];
-	[_today_Oct_Button setTitle:@"Today" forState:UIControlStateNormal];
+
+	[CATransaction begin];
+	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
+
+	[_Nov_Button setHidden:YES];
+	[_today_Dec_Button setTitle:@"Today" forState:UIControlStateNormal];
+
+	CGRect frame = _num0_Oct_Button.frame;
+	frame.size.width = CGRectGetMaxX(_num2_Aug_Button.frame) - CGRectGetMinX(_num1_Jul_Button.frame);
+	_num0_Oct_Button.frame = frame;
+
+	[CATransaction commit];
 }
 
 - (IBAction)switchToYear {
@@ -126,6 +98,17 @@
 		idx++;
 		button.subTitle.text = [NSString stringWithFormat:@"%lu", (unsigned long)idx];
 	}
+
+	[CATransaction begin];
+	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
+
+	CGRect frame = _num0_Oct_Button.frame;
+	frame.size.width = CGRectGetWidth(_num1_Jul_Button.frame);
+	_num0_Oct_Button.frame = frame;
+
+	[_Nov_Button setHidden:NO];
+
+	[CATransaction commit];
 }
 
 - (IBAction)switchToDay {
@@ -142,11 +125,11 @@
 			_num7_Jan_Button, _num8_Feb_Button, _num9_Mar_Button,
 			_num4_Apr_Button, _num5_May_Button, _num6_Jun_Button,
 			_num1_Jul_Button, _num2_Aug_Button, _num3_Sep_Button,
-			_clear_Dec_Button, _num0_Nov_Button, _today_Oct_Button];
+			_num0_Oct_Button, _Nov_Button, _today_Dec_Button];
 }
 
 - (NSArray *)numberOrder {
-	return @[_num0_Nov_Button, _num1_Jul_Button, _num2_Aug_Button,
+	return @[_num0_Oct_Button, _num1_Jul_Button, _num2_Aug_Button,
 			_num3_Sep_Button, _num4_Apr_Button, _num5_May_Button,
 			_num6_Jun_Button, _num7_Jan_Button, _num8_Feb_Button,
 			_num9_Mar_Button
@@ -164,53 +147,60 @@
 	return index != NSNotFound ? (index + 1) : NSNotFound;
 }
 
+- (NSCalendar *)gregorian {
+	if (!_gregorian) {
+		_gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+	}
+	return _gregorian;
+}
+
 - (IBAction)numberButtonAction:(UIButton *)button {
-	if (!_monthButton.selected && (button == _clear_Dec_Button || button == _today_Oct_Button)) {
+	if (!_monthButton.selected && button == _today_Dec_Button) {
 		return;
 	}
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-	NSDateComponents *dateComponents = [gregorian components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:self.date];
 	if (_monthButton.selected) {
-		dateComponents.month = [self monthNumberOfButton:button];
+		self.dateComponents.month = [self monthNumberOfButton:button];
 	} else if (_yearButton.selected) {
-		NSInteger year = dateComponents.year;
-		year -= year / 1000 * 1000;
+		NSInteger year = self.dateComponents.year;
 		year *= 10;
+		if (year >= 10000) year = 0;
 		year += [self numberOfButton:button];
-		dateComponents.year = year;
+		self.dateComponents.year = year;
 	} else {
-		NSInteger day = dateComponents.day, entered = [self numberOfButton:button];
+		NSInteger day = self.dateComponents.day, entered = [self numberOfButton:button];
 		day *= 10;
+		if (day >= 100) day = 0;
 		day += entered;
 
-		NSRange range = [gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:_date];
-		if (day > range.length) {
-			NSInteger temp = day - day / 100 * 100;
-			if (temp <= range.length) {
-				day = temp;
-			} else {
-				day = entered == 0 ? dateComponents.day : entered;
-			}
+		NSRange range;
+		if (_isLunarDate) {
+			range = NSMakeRange(0, 30);
+		} else {
+			NSDateComponents *verifyingComponents = [self.dateComponents copy];
+			verifyingComponents.day = 1;
+			NSDate *verifyingDate = [self.gregorian dateFromComponents:verifyingComponents];
+			range = [self.gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
 		}
-		dateComponents.day = MAX(MIN(day, range.length), 1);
+		if (day > range.length) {
+			day = entered;
+		}
+		self.dateComponents.day = MAX(MIN(day, range.length), 1);
 	}
-	_date = [gregorian dateFromComponents:dateComponents];
-	_displayLabel.text = [A3Formatter mediumStyleDateStringFromDate:_date];
+
+	[self updateResult];
+}
+
+- (void)updateResult {
+	self.dateComponents.weekday = NSUndefinedDateComponent;
+	NSDate *displayDate = [self.gregorian dateFromComponents:self.dateComponents];
+	_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:displayDate];
+	_displayLabel.text = [self.dateFormatter stringFromDateComponents:self.dateComponents];
 
 	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
-		[_delegate dateKeyboardValueChangedDate:_date];
+		[_delegate dateKeyboardValueChangedDate:displayDate];
 	}
-}
-
-- (IBAction)prevButtonAction {
-	if ([_delegate respondsToSelector:@selector(prevButtonPressed)]) {
-		[_delegate prevButtonPressed];
-	}
-}
-
-- (IBAction)nextButtonAction {
-	if ([_delegate respondsToSelector:@selector(nextButtonPressed)]) {
-		[_delegate nextButtonPressed];
+	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDateComponents:)]) {
+		[_delegate dateKeyboardValueChangedDateComponents:self.dateComponents];
 	}
 }
 
@@ -220,75 +210,35 @@
 	}
 }
 
-- (IBAction)clearButtonAction {
-	if (_monthButton.selected) {
-		return;
-	}
-	_date = nil;
-	_displayLabel.text = @"";
-
-	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
-		[_delegate dateKeyboardValueChangedDate:_date];
-	}
-}
-
 - (IBAction)todayButtonAction {
 	if (_monthButton.selected) {
 		return;
 	}
-	_date = [NSDate date];
-	_displayLabel.text = [A3Formatter mediumStyleDateStringFromDate:_date];
+	_dateComponents = nil;
 
-	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
-		[_delegate dateKeyboardValueChangedDate:_date];
-	}
+	[self updateResult];
 }
 
-- (NSDate *)date {
-	if (nil == _date) {
-		_date = [NSDate date];
-	}
-	return _date;
-}
-
-- (void)resetToDefaultState {
-	[self switchToMonth];
-}
-
+/*! Virtual method implementation to override.
+ *  Subclasses will implement this for iPhone or iPad
+ */
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 }
 
-- (void)setWorkingMode:(A3DateKeyboardWorkingMode)workingMode {
-	_workingMode = workingMode;
-	[self layoutForWorkingMode];
-}
-
-
-- (void)layoutForWorkingMode {
-	[self rotateToInterfaceOrientation:[A3UIDevice deviceOrientation]];
-
-	switch (_workingMode) {
-		case A3DateKeyboardWorkingModeYearMonthDay:
-			[_blankButton setHidden:NO];
-			[_yearButton setHidden:NO];
-			[_monthButton setHidden:NO];
-			[_dayButton setHidden:NO];
-			break;
-		case A3DateKeyboardWorkingModeYearMonth:
-			[_blankButton setHidden:YES];
-			[_yearButton setHidden:NO];
-			[_monthButton setHidden:NO];
-			[_dayButton setHidden:YES];
-			[self switchToYear];
-			break;
-		case A3DateKeyboardWorkingModeMonth:
-			[_blankButton setHidden:YES];
-			[_yearButton setHidden:YES];
-			[_monthButton setHidden:YES];
-			[_dayButton setHidden:YES];
-			[self switchToMonth];
-			break;
+- (NSDateComponents *)dateComponents {
+	if (!_dateComponents) {
+		_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];
 	}
+	return _dateComponents;
 }
+
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+		[_dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	}
+	return _dateFormatter;
+}
+
 
 @end

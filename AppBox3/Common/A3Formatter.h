@@ -6,7 +6,6 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 
 @interface A3Formatter : NSObject
 
@@ -18,4 +17,9 @@
 + (NSString *)stringWithCurrencyFormatFromNumber:(NSNumber *)number;
 
 + (NSString *)stringWithPercentFormatFromNumber:(NSNumber *)number;
+// 오영택 add
++ (NSString *)stringFromDate:(NSDate*)date format:(NSString*)format;
++ (NSString *)fullStyleDateStringFromDate:(NSDate *)date;
++ (NSString *)customFullStyleStringFromDate:(NSDate *)date;
+
 @end

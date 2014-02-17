@@ -11,6 +11,7 @@
 #import "NSFileManager+A3Addtion.h"
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
+#import "Reachability.h"
 
 @implementation A3AppDelegate
 

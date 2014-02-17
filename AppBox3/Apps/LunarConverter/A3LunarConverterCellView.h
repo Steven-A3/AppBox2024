@@ -8,18 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3LunarConverterCellView : UIView{
-    BOOL _isPadStyle;
-    
-    UILabel *_dateLabel;
-    UILabel *_descriptionLabel;
-}
+@interface A3LunarConverterCellView : UIView
 
 @property (readonly, nonatomic) UILabel *dateLabel;
 @property (readonly, nonatomic) UILabel *descriptionLabel;
 @property (strong, nonatomic) UIButton *actionButton;
 
-- (void)setPadStyle:(BOOL)isPadStyle;
-- (BOOL)isPadStyle;
-- (void)setActionButton:(UIButton *)actionButton;
 @end

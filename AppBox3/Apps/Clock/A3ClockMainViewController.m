@@ -37,7 +37,7 @@
 @property (nonatomic, strong) UIButton *chooseColorButton;
 @property (nonatomic, strong) NSArray *viewControllers;
 @property (nonatomic, strong) UIView *chooseColorView;
-@property (nonatomic, strong) id<MASConstraint> appsButtonTop;
+@property (nonatomic, strong) MASConstraint *appsButtonTop;
 @property (nonatomic, strong) NSTimer *buttonsTimer;
 
 @end

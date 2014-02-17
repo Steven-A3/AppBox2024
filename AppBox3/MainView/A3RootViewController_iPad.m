@@ -66,14 +66,9 @@
 }
 
 static const CGFloat kSideViewWidth = 319.0;
-//static const CGFloat kLandscapeHeight_iPad = 768.0;
-//static const CGFloat kPortraitHeight_iPad = 1024.0;
-//static const CGFloat kLandscapeWidth_iPad = 1024.0;
-//static const CGFloat kPortraitWidth_iPad = 768.0;
 
 - (void)layoutSubviews {
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
-	FNLOGRECT(bounds);
 
 	[_centerCoverView setHidden:YES];
 	if (IS_PORTRAIT || [self useFullScreenInLandscapeForCurrentTopViewController]) {
@@ -154,6 +149,9 @@ static const CGFloat kSideViewWidth = 319.0;
 
 	} completion:^(BOOL finished) {
 		[self layoutSubviews];
+		if (!self.showLeftView) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3MainMenuResignFirstResponder object:_leftMenuViewController];
+		}
 	}];
 }
 

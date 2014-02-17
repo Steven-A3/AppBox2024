@@ -13,6 +13,7 @@
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
+@class Reachability;
 
 extern NSString *const kA3AppsMenuName;
 extern NSString *const kA3AppsMenuCollapsed;
@@ -36,6 +37,8 @@ extern NSString *const kA3MainMenuRecentlyUsed;
 /* Notifications */
 extern NSString *const A3AppsMainMenuContentsChangedNotification;
 extern NSString *const A3DrawerStateChanged;
+extern NSString *const A3MainMenuBecameFirstResponder;
+extern NSString *const A3MainMenuResignFirstResponder;
 
 /* Global Settings */
 extern NSString *const kA3ThemeColorIndex;
@@ -60,7 +63,9 @@ extern NSString *const kA3ThemeColorIndex;
 @property (strong, nonatomic) NSDate *wakeUpTime;
 @property (strong, nonatomic) MBProgressHUD *hud;
 @property (strong, nonatomic) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
-@property (nonatomic, assign) BOOL coreDataReadyToUse;
+@property (assign, nonatomic) BOOL coreDataReadyToUse;
+@property (strong, nonatomic) Reachability *reachability;
+@property (strong, nonatomic) NSCalendar *calendar;
 
 + (A3AppDelegate *)instance;
 

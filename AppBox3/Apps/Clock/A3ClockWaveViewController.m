@@ -37,14 +37,14 @@
 @property (nonatomic, strong) NSMutableArray *circleArray;
 
 // clockIcon constraints
-@property (nonatomic, strong) id<MASConstraint> clockIconBottom;
-@property (nonatomic, strong) id<MASConstraint> clockIconCenterX;
-@property (nonatomic, strong) id<MASConstraint> clockIconRight;
-@property (nonatomic, strong) id<MASConstraint> clockIconCenterY;
+@property (nonatomic, strong) MASConstraint *clockIconBottom;
+@property (nonatomic, strong) MASConstraint *clockIconCenterX;
+@property (nonatomic, strong) MASConstraint *clockIconRight;
+@property (nonatomic, strong) MASConstraint *clockIconCenterY;
 
 // Date Circle Label constraints
-@property (nonatomic, strong) id<MASConstraint> dateBottomLabelX;
-@property (nonatomic, strong) id<MASConstraint> dateBottomLabelY;
+@property (nonatomic, strong) MASConstraint *dateBottomLabelX;
+@property (nonatomic, strong) MASConstraint *dateBottomLabelY;
 
 @end
 
@@ -91,6 +91,7 @@
 	} else {
 		[self layoutSubviewIPAD];
 	}
+	[self adjustFontWhenWeatherIsNotAvailable];
 }
 
 - (void)layoutSubViewsIPHONE {
@@ -369,7 +370,6 @@
 			_clockIconBottom = make.bottom.equalTo(self.timeCircle.top).with.offset(-47);
 			_clockIconCenterX =  make.centerX.equalTo(self.view.centerX);
 		}];
-		FNLOG(@"%@", self.clockIcon.constraints);
 	} else {
 		switch (numberOfViews) {
 			case 1:
@@ -541,7 +541,7 @@
 	self.weekCircle.delegate = self;
 	self.weekCircle.isShowWave = YES;
 	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 88 : 88];
-	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:IS_IPHONE ? 18 : 24];
+	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:IS_IPHONE ? 18 : 22];
 	[self.view addSubview:self.weekCircle];
 
 	self.weekBottomLabel = [[UILabel alloc] init];
@@ -790,7 +790,7 @@
 	self.timeCircle.fillPercent = ((clockInfo.dateComponents.hour * 60 * 60) + (clockInfo.dateComponents.minute * 60) + 60) / kClockSecondOfDay;
 
 	self.dateTopLabel.text = clockInfo.maxDay;
-	[self.dateCircle setDate:[clockInfo.day intValue]];
+	[self.dateCircle setDay:[clockInfo.day intValue]];
 	self.dateBottomLabel.text = IS_IPHONE ? [clockInfo.shortMonth uppercaseString] : [clockInfo.month uppercaseString];
 	self.dateCircle.fillPercent = clockInfo.dateComponents.day / [clockInfo.maxDay floatValue];
 
@@ -808,8 +808,15 @@
 
 	if (_weatherInfoAvailable) {
 		[self refreshWeather:clockInfo];
-	} else {
-		if (_temperatureCircle.position != ClockWaveLocationBig) {
+	}
+	[self adjustFontWhenWeatherIsNotAvailable];
+}
+
+- (void)adjustFontWhenWeatherIsNotAvailable {
+	if (!_weatherInfoAvailable) {
+		if (ClockWaveLocationBig == _temperatureCircle.position) {
+			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 60 : 110];
+		} else {
 			_temperatureCircle.textLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 14 : 18];
 		}
 	}
@@ -819,9 +826,13 @@
 	if (!_weatherInfoAvailable) {
 		_weatherInfoAvailable = YES;
 
-		[self addWeatherView];
-
-		[self layoutSubviews];
+		if ([self showWeather]) {
+			[self addWeatherView];
+			[self layoutSubviews];
+		}
+	}
+	if (![self showWeather]) {
+		return;
 	}
 
 	if (clockInfo.currentWeather.unit == SCWeatherUnitFahrenheit && ![[NSUserDefaults standardUserDefaults] clockUsesFahrenheit]) {
@@ -832,15 +843,15 @@
 		clockInfo.currentWeather.unit = SCWeatherUnitFahrenheit;
 	}
 
-	self.temperatureTopLabel.text = [NSString stringWithFormat:@"%d°", clockInfo.currentWeather.highTemperature];
+	self.temperatureTopLabel.text = [NSString stringWithFormat:@"%ld°", (long)clockInfo.currentWeather.highTemperature];
 	[self.temperatureCircle setTemperature:clockInfo.currentWeather.currentTemperature];
-	self.temperatureBottomLabel.text = [NSString stringWithFormat:@"%d°", clockInfo.currentWeather.lowTemperature];
+	self.temperatureBottomLabel.text = [NSString stringWithFormat:@"%ld°", (long)clockInfo.currentWeather.lowTemperature];
 	if (clockInfo.currentWeather.highTemperature - clockInfo.currentWeather.lowTemperature > 0) {
 		self.temperatureCircle.fillPercent = (float)(clockInfo.currentWeather.currentTemperature - clockInfo.currentWeather.lowTemperature) / (float)(clockInfo.currentWeather.highTemperature - clockInfo.currentWeather.lowTemperature);
 	}
 
 	[self.weatherImageView setImage:[self.clockDataManager imageForWeatherCondition:clockInfo.currentWeather.condition]];
-	self.weatherLabel.text = clockInfo.currentWeather.description;
+	self.weatherLabel.text = clockInfo.currentWeather.representation;
 }
 
 - (void)changeColor:(UIColor *)color {
