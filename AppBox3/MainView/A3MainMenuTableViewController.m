@@ -348,7 +348,9 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if ([self isAppAvailableForElement:element]) {
 		cell.textLabel.textColor = [UIColor blackColor];
 		cell.accessoryView = nil;
-		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+		if (![element isKindOfClass:[A3TableViewExpandableElement class]]) {
+			cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+		}
 		if ([element.imageName length]) {
 			cell.imageView.image= [UIImage imageNamed:element.imageName];
 			cell.imageView.tintColor = nil;

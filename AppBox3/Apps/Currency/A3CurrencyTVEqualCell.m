@@ -15,7 +15,6 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
-		self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -31,6 +30,12 @@
 		make.centerX.equalTo(self.contentView.centerX);
 		make.centerY.equalTo(self.contentView.centerY);
 	}];
+
+	[_yahooButton addTarget:self action:@selector(yahooButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)yahooButtonAction:(id)yahooButtonAction {
+	[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://finance.yahoo.com"]];
 }
 
 @end

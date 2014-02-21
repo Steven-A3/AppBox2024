@@ -44,21 +44,21 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 }
 
 + (void)setupFavorites {
-	NSArray *currencyFavorites = [CurrencyFavorite MR_findAll];
-	if ([currencyFavorites count]) {
-		return;
-	}
-
 	@autoreleasepool {
-		NSMutableArray *favorites = [@[@"USD", @"EUR", @"GBP", @"AUD", @"CAD", @"JPY", @"HKD", @"CNY", @"CHF", @"KRW"] mutableCopy];
+		NSArray *currencyFavorites = [CurrencyFavorite MR_findAll];
+		if ([currencyFavorites count]) {
+			return;
+		}
+
+		NSMutableArray *favorites = [@[@"USD", @"EUR", @"GBP", @"JPY"] mutableCopy];
 		
 		NSString *userCurrencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 		NSInteger idx = [favorites indexOfObject:userCurrencyCode];
 		if (idx == NSNotFound) {
 			[favorites insertObject:userCurrencyCode atIndex:1];
+			[favorites removeLastObject];
 		} else {
 			if (   [userCurrencyCode isEqualToString:@"EUR"]
-				|| [userCurrencyCode isEqualToString:@"AUD"]
 				|| [userCurrencyCode isEqualToString:@"GBP"])
 			{
 				[favorites moveObjectFromIndex:idx toIndex:0];
@@ -73,6 +73,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 			CurrencyRateItem *item = [CurrencyRateItem MR_findFirstByAttribute:A3KeyCurrencyCode withValue:code inContext:cacheStoreManager.context];
 				favorite.order = [NSString stringWithFormat:@"0%lu00000000", (unsigned long)idx];
 			[A3CurrencyDataManager copyCurrencyFrom:item to:favorite];
+			FNLOG(@"%@, %@", item, favorite);
 		}];
 		
 		[[NSManagedObjectContext MR_mainQueueContext] MR_saveToPersistentStoreAndWait];

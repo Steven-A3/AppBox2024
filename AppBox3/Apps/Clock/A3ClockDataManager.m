@@ -28,7 +28,6 @@
 @end
 
 
-
 @implementation A3ClockDataManager {
 	BOOL _refreshWholeClock;
 }
@@ -43,12 +42,23 @@
 		} else {
 			[[NSUserDefaults standardUserDefaults] setClockShowWeather:NO];
 		}
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 	}
 
 	return self;
 }
 
+- (void)applicationDidBecomeActive {
+}
+
+- (void)applicationWillEnterForeground {
+	FNLOG();
+	[self refreshClock:YES];
+}
+
 - (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+
 	[_clockTickTimer invalidate];
 	_clockTickTimer = nil;
 	[_weatherTimer invalidate];
@@ -151,11 +161,15 @@
 
 - (void)onTimerDateTimeTick
 {
-    NSDate *currentTime = [NSDate date];
-    
-    self.clockInfo.date = currentTime;
+	[self refreshClock:NO ];
+}
+
+- (void)refreshClock:(BOOL)forceRefreshAll {
+	NSDate *currentTime = [NSDate date];
+
+	self.clockInfo.date = currentTime;
 	_clockInfo.dateComponents = [self.clockInfo.calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSWeekdayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:currentTime];
-	if (_clockInfo.dateComponents.second == 0) _refreshWholeClock = YES;
+	if (_clockInfo.dateComponents.second == 0 || forceRefreshAll) _refreshWholeClock = YES;
 
 	if (_refreshWholeClock) {
 		_refreshWholeClock = NO;
@@ -172,19 +186,6 @@
 
 - (void)refreshWholeClockInfo:(NSDate *)currentTime {
 	__weak NSDateFormatter *formatter = self.clockInfo.dateFormatter;
-
-	if([[NSUserDefaults standardUserDefaults] clockUse24hourClock])
-		[formatter setDateFormat:@"HH"];
-	else
-		[formatter setDateFormat:@"hh"];
-
-	self.clockInfo.hour = [formatter stringFromDate:currentTime];
-
-	[formatter setDateFormat:@"mm"];
-	_clockInfo.minute = [formatter stringFromDate:currentTime];
-
-	[formatter setDateFormat:@"ss"];
-	_clockInfo.second = [formatter stringFromDate:currentTime];
 
 	[formatter setDateFormat:@"a"];
 	_clockInfo.AMPM = [formatter stringFromDate:currentTime];
@@ -393,9 +394,10 @@
 		NSXMLParser *XMLParser = [[NSXMLParser alloc] initWithData:response];
 		XMLParser.delegate = self;
 
-		self.weatherForecast = nil;
-		self.weatherCurrentCondition = nil;
-		self.weatherAtmosphere = nil;
+		_weatherForecast = nil;
+		_weatherCurrentCondition = nil;
+		_weatherAtmosphere = nil;
+		_currentWeather = nil;
 
 		if ([XMLParser parse]) {
 			if (!_weatherForecast || !_weatherCurrentCondition || !_weatherAtmosphere) {
@@ -404,19 +406,33 @@
 				[self getWOEIDWithCandidates];
 				return;
 			}
-			self.currentWeather = [A3Weather new];
-			self.currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
-			self.currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
-			self.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
-			self.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
 
-			if ([self.weatherForecast count]) {
+#define LOG_WEATHER	1
+#ifdef LOG_WEATHER
+			NSMutableString *log = [NSMutableString new];
+			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherForecast]];
+			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherCurrentCondition]];
+			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherAtmosphere]];
+			NSLog(@"%@", log);
+#endif
+
+			_currentWeather = [A3Weather new];
+			_currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
+			_currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
+			_currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
+			_currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
+
+			if ([_weatherForecast count]) {
 				NSDictionary *todayForecast = [self.weatherForecast objectAtIndex:0];
-				self.currentWeather.highTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyHigh] intValue];
-				self.currentWeather.lowTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyLow] intValue];
+				_currentWeather.highTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyHigh] intValue];
+				_currentWeather.lowTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyLow] intValue];
 			}
 
-			self.clockInfo.currentWeather = self.currentWeather;
+			self.clockInfo.currentWeather = _currentWeather;
+
+			NSAssert(!(_currentWeather.currentTemperature == 0 &&
+					_currentWeather.lowTemperature == 0 &&
+					_currentWeather.highTemperature == 0), @"Weather current,low,high must not be all ZERO");
 
 			if ([_delegate respondsToSelector:@selector(refreshWeather:)]) {
 				[_delegate refreshWeather:self.clockInfo];
@@ -425,6 +441,8 @@
 
 		_addressCandidates = nil;
 		_locationManager = nil;
+		// TODO: 날씨 업데이트 시점 최종 조정 필요. 디버깅 위해서 10초로 설정
+//		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.locationManager startMonitoringSignificantLocationChanges];
@@ -468,13 +486,15 @@
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	[manager stopMonitoringSignificantLocationChanges];
+	@autoreleasepool {
 
-	self.currentWeather = nil;
-	self.weatherCurrentCondition = nil;
-	self.weatherForecast = nil;
+		[manager stopMonitoringSignificantLocationChanges];
 
-	CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
+		self.currentWeather = nil;
+		self.weatherCurrentCondition = nil;
+		self.weatherForecast = nil;
+
+		CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
 
 #ifdef  ALERT_LOCATION
 		CLLocation *location = locations[0];
@@ -483,46 +503,48 @@
 		[alertView show];
 #endif
 
-	[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
-		if (error) {
+		[geoCoder reverseGeocodeLocation:locations[0] completionHandler:^(NSArray *placeMarks, NSError *error) {
+			if (error) {
 #ifdef        ALERT_LOCATION
 			CLLocation *location = locations[0];
 			NSString *log = [NSString stringWithFormat:@"%@\n%f, %f", error.localizedDescription, location.coordinate.latitude, location.coordinate.longitude];
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alertView show];
 #endif
-			return;
-		}
-		for (CLPlacemark *placeMark in placeMarks) {
+				return;
+			}
+			for (CLPlacemark *placeMark in placeMarks) {
 
-			NSMutableString *log = [NSMutableString new];
+				NSMutableString *log = [NSMutableString new];
 
-			[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
-			[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
-			[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
-			[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
-			[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
-			[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
-			[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
-			FNLOG(@"%@", log);
+				[log appendString:[NSString stringWithFormat:@"Description:%@\n", [placeMarks description]]];
+				[log appendString:[NSString stringWithFormat:@"addressDictionary:%@\n", placeMark.addressDictionary]];
+				[log appendString:[NSString stringWithFormat:@"administrativeArea:%@\n", placeMark.administrativeArea]];
+				[log appendString:[NSString stringWithFormat:@"areaOfInterest:%@\n", placeMark.areasOfInterest]];
+				[log appendString:[NSString stringWithFormat:@"locality:%@\n", placeMark.locality]];
+				[log appendString:[NSString stringWithFormat:@"name:%@\n", placeMark.name]];
+				[log appendString:[NSString stringWithFormat:@"subLocality:%@\n", placeMark.subLocality]];
+				FNLOG(@"%@", log);
 
 #ifdef  ALERT_LOCATION
 			UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Location" message:log delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 			[alertView show];
 #endif
 
-			if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
-			if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
-			if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
-			if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
-		}
+				if (!_addressCandidates) _addressCandidates = [NSMutableArray new];
+				if ([placeMark.subLocality length]) [_addressCandidates addObject:placeMark.subLocality];
+				if ([placeMark.administrativeArea length]) [_addressCandidates addObject:placeMark.administrativeArea];
+				if ([placeMark.locality length]) [_addressCandidates addObject:placeMark.locality];
+			}
 
-		if ([_addressCandidates count]) {
-			[self getWOEIDWithCandidates];
-		} else {
-			[manager startMonitoringSignificantLocationChanges];
-		}
-	}];
+			if ([_addressCandidates count]) {
+				[self getWOEIDWithCandidates];
+			} else {
+				[manager startMonitoringSignificantLocationChanges];
+			}
+		}];
+	}
+
 }
 
 #pragma mark -
@@ -530,7 +552,7 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributeDict {
 	if([elementName isEqualToString:kA3YahooWeatherXMLKeyConditionTag]) {
-		_weatherCurrentCondition = attributeDict;
+		_weatherCurrentCondition = [attributeDict copy];
 	} else if ([elementName isEqualToString:kA3YahooWeatherXMLKeyForecastTag]) {
 		if (!_weatherForecast) {
 			_weatherForecast = [NSMutableArray new];
@@ -539,7 +561,7 @@
 	}
     else if([elementName isEqualToString:kA3YahooWeatherXMLKeyAtmosphere])
     {
-        _weatherAtmosphere = attributeDict;
+        _weatherAtmosphere = [attributeDict copy];
     }
 }
 

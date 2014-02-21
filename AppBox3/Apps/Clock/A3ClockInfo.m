@@ -60,4 +60,14 @@
 	return dateString;
 }
 
+- (long)hour {
+	long hour = self.dateComponents.hour;
+	if (![[NSUserDefaults standardUserDefaults] clockUse24hourClock]) {
+		hour %= 12;
+	} else if (hour == 0) {
+		hour = 12;
+	}
+	return hour;
+}
+
 @end

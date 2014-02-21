@@ -42,16 +42,22 @@ const CGFloat kVisibleWidth = 100.0;
 		NSIndexPath* indexPath = [self.tableView indexPathForRowAtPoint:location];
 		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
 
-		CGFloat shiftLenth = kVisibleWidth;
-		if ([swipedCell respondsToSelector:@selector(menuWidth)]) {
-			shiftLenth = [swipedCell menuWidth];
+		BOOL shouldShowMenu = NO;
+		if ([swipedCell respondsToSelector:@selector(cellShouldShowMenu)]) {
+			shouldShowMenu = [swipedCell cellShouldShowMenu];
+		}
+		if (!shouldShowMenu) return;
+
+		CGFloat shiftLength = kVisibleWidth;
+		if ([swipedCell respondsToSelector:@selector(menuWidth:)]) {
+			shiftLength = [swipedCell menuWidth:[self.tableView numberOfRowsInSection:0] > 3 ];
 		}
 		if ((recognizer.direction==UISwipeGestureRecognizerDirectionLeft) && (swipedCell.frame.origin.x==0) )
 		{
 			[self shiftRight:self.swipedCells];  // animate all cells left
 			[self shiftLeft:swipedCell];       // animate swiped cell right
 		}
-		else if ((recognizer.direction == UISwipeGestureRecognizerDirectionRight) && (swipedCell.frame.origin.x == -shiftLenth))
+		else if ((recognizer.direction == UISwipeGestureRecognizerDirectionRight) && (swipedCell.frame.origin.x == -shiftLength))
 		{
 			[self shiftRight:[NSMutableSet setWithObject:swipedCell]]; // animate current cell left
 		}
@@ -92,12 +98,12 @@ const CGFloat kVisibleWidth = 100.0;
 	bool cellAlreadySwiped = [self.swipedCells containsObject:cell];
 	if (!cellAlreadySwiped) {
 		// add the cell menu view and shift the cell to the right
-		if ([cell respondsToSelector:@selector(addMenuView)]) {
-			[cell addMenuView];
+		if ([cell respondsToSelector:@selector(addMenuView:)]) {
+			[cell addMenuView:[self.tableView numberOfRowsInSection:0] > 3 ];
 		}
 		CGFloat shiftLength = kVisibleWidth;
-		if ([cell respondsToSelector:@selector(menuWidth)]) {
-			shiftLength = [cell menuWidth];
+		if ([cell respondsToSelector:@selector(menuWidth:)]) {
+			shiftLength = [cell menuWidth:[self.tableView numberOfRowsInSection:0] > 3 ];
 		}
 		CGRect newFrame;
 		newFrame = CGRectOffset(cell.frame, -shiftLength, 0.0);
@@ -115,10 +121,10 @@ const CGFloat kVisibleWidth = 100.0;
 
 // un-swipe everything when the user scrolls
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-//	[self unswipeAll];
+//	[self unSwipeAll];
 }
 
-- (void)unswipeAll {
+- (void)unSwipeAll {
     FNLOG();
 	[self shiftRight:self.swipedCells];
 }

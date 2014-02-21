@@ -16,9 +16,6 @@
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSDateComponents *dateComponents;
 
-@property (nonatomic, strong) NSString *hour;
-@property (nonatomic, strong) NSString *minute;
-@property (nonatomic, strong) NSString *second;
 @property (nonatomic, strong) NSString *AMPM;
 @property (nonatomic, strong) NSString *day;
 @property (nonatomic, strong) NSString *maxDay;
@@ -35,4 +32,6 @@
 - (NSString *)mediumStyleDateStringWithoutYear;
 
 - (NSString *)dateStringConsideringOptions;
+
+- (long)hour;
 @end

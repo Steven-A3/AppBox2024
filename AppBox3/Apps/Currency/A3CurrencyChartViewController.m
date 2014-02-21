@@ -23,6 +23,7 @@
 #import "A3CurrencyDataManager.h"
 #import "A3CacheStoreManager.h"
 #import "A3CacheStoreManager.h"
+#import "CurrencyRateItem.h"
 
 @interface A3CurrencyChartViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, A3SearchViewControllerDelegate>
 
@@ -35,11 +36,12 @@
 @property (nonatomic, weak) IBOutlet UIImageView *chartView;
 @property (nonatomic, strong) NSMutableArray *titleLabels;
 @property (nonatomic, strong) NSMutableArray *valueLabels;
-@property (nonatomic, strong) CurrencyFavorite *sourceItem, *targetItem;
+@property (nonatomic, strong) CurrencyRateItem *sourceItem, *targetItem;
 @property (nonatomic, weak) UITextField *sourceTextField, *targetTextField;
 @property (nonatomic, strong) UIImageView *landscapeChartView;
 @property (nonatomic, strong) UIScrollView *landscapeView;
 @property (nonatomic, strong) NSNumber *sourceValue;
+@property (nonatomic, copy) NSString *previousValue;
 
 @end
 
@@ -95,10 +97,22 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	[self notifyDelegateValueChanged];
+}
+
+- (void)notifyDelegateValueChanged {
+	NSNumber *number = @([_sourceTextField.text floatValueEx]);
+	if ([_delegate respondsToSelector:@selector(chartViewControllerValueChangedChartViewController:valueChanged:newCodes:)]) {
+		[_delegate chartViewControllerValueChangedChartViewController:self valueChanged:number newCodes:@[self.sourceItem, self.targetItem] ];
+	}
+}
+
 - (void)viewWillLayoutSubviews {
 	[self setupConstraints];
 }
-
 
 - (void)viewDidLayoutSubviews{
 	CGFloat width = CGRectGetWidth(self.titleView.bounds)/5.0;
@@ -242,11 +256,12 @@
 }
 
 - (void)setupFont {
+	UIFont *font = [UIFont preferredFontForTextStyle:IS_IPHONE ? UIFontTextStyleCaption1 : UIFontTextStyleFootnote];
 	[_titleLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
-		label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+		label.font = font;
 	}];
 	[_valueLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
-		label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+		label.font = font;
 	}];
 }
 
@@ -289,18 +304,19 @@
 }
 
 #pragma mark - CurrencyItem
-- (CurrencyFavorite *)sourceItem {
+
+- (CurrencyRateItem *)sourceItem {
 	if (!_sourceItem) {
-		NSArray *fetchedResult = [CurrencyFavorite MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode];
+		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode inContext:self.cacheStoreManager.context];
 		NSAssert([fetchedResult count], @"%s, %s, CurrencyItem is empty or source currency code is not valid.", __FUNCTION__, __PRETTY_FUNCTION__);
 		_sourceItem = fetchedResult[0];
 	}
 	return _sourceItem;
 }
 
-- (CurrencyFavorite *)targetItem {
+- (CurrencyRateItem *)targetItem {
 	if (!_targetItem) {
-		NSArray *fetchedResult = [CurrencyFavorite MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode];
+		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode inContext:self.cacheStoreManager.context];
 		NSAssert([fetchedResult count], @"%s, CurrencyItem is empty or target currency code is not valid.", __PRETTY_FUNCTION__);
         _targetItem = fetchedResult[0];
 	}
@@ -308,7 +324,7 @@
 }
 
 - (float)conversionRate {
-	return [self.cacheStoreManager rateForCurrencyCode:_targetItem.currencyCode] / [self.cacheStoreManager rateForCurrencyCode:_sourceItem.currencyCode];
+	return [self.cacheStoreManager rateForCurrencyCode:self.targetItem.currencyCode] / [self.cacheStoreManager rateForCurrencyCode:self.sourceItem.currencyCode];
 }
 
 #pragma mark - UITableViewDataSourceDelegate
@@ -326,7 +342,7 @@
 		cell.valueField.delegate = self;
 		cell.valueField.textColor = self.tableView.tintColor;
 
-		cell.rateLabel.text = @"";
+		cell.rateLabel.text = self.sourceItem.currencySymbol;
 		cell.codeLabel.text = self.sourceItem.currencyCode;
 		_sourceTextField = cell.valueField;
 
@@ -335,7 +351,7 @@
 	} else {
 		cell.valueField.delegate = self;
 		cell.valueField.text = self.targetValueString;
-		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %0.4f", _targetItem.currencySymbol, self.conversionRate];
+		cell.rateLabel.text = [NSString stringWithFormat:@"%@, Rate = %0.4f", self.targetItem.currencySymbol, self.conversionRate];
 		cell.codeLabel.text = _targetItem.currencyCode;
 		_targetTextField = cell.valueField;
 	}
@@ -401,6 +417,8 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	self.previousValue = textField.text;
+
 	A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
 	self.numberKeyboardViewController = keyboardVC;
 	keyboardVC.textInputTarget = textField;
@@ -434,8 +452,9 @@
 	self.numberKeyboardViewController = nil;
 
     FNLOG(@"%@, %@", textField.text, textField);
-    if (![textField.text length])
-        return;
+	if (![textField.text length]) {
+		textField.text = self.previousValue;
+	}
     
 	float value = [textField.text floatValue];
 	if (value < 1.0) {
@@ -446,25 +465,10 @@
 	if (textField == _sourceTextField) {
 		_sourceValue = @(value);
 		nf = [self currencyFormatterWithCurrencyCode:_sourceItem.currencyCode];
-        if (value > 0.0) {
-            [self notifyDelegateValueChangedWithValue:_sourceValue];
-        }
 	} else if (textField == _targetTextField) {
-		nf = [self currencyFormatterWithCurrencyCode:_targetItem.currencyCode];
-        if (value > 0.0) {
-            [self notifyDelegateValueChangedWithValue:@(self.sourceValueConvertedFromTarget)];
-        }
+		nf = [self currencyFormatterWithCurrencyCode:self.targetItem.currencyCode];
 	}
 	textField.text = [nf stringFromNumber:@(value)];
-}
-
-- (void)notifyDelegateValueChangedWithValue:(NSNumber *)newNumber {
-	if ([_delegate respondsToSelector:@selector(chartViewControllerValueChanged:)]) {
-		if (![_initialValue isEqualToNumber:newNumber]) {
-			[_delegate chartViewControllerValueChanged:newNumber];
-			_initialValue = newNumber;		// Update _initialValue too.
-		}
-	}
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -528,7 +532,7 @@
 		titleLabel.text = [nf stringFromNumber:titles[index]];
 		index++;
 	}
-	[nf setCurrencyCode:_targetItem.currencyCode];
+	[nf setCurrencyCode:self.targetItem.currencyCode];
 	index = 0;
 	for (UILabel *valueLabel in _valueLabels) {
 		valueLabel.text = [nf stringFromNumber:@([titles[index] floatValue] * rate)];

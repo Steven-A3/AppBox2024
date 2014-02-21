@@ -348,6 +348,8 @@
 {
 	FNLOG();
 
+	self.dateKeyboardVC.isLunarDate = _isLunarInput;
+
 	_isShowKeyboard = YES;
 
 	if (IS_IPHONE35) {
@@ -764,6 +766,23 @@
             
             [topLabel removeFromSuperview];
             [bottomLabel removeFromSuperview];
+
+			if (_isLunarInput) {
+				BOOL isKorean = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion];
+				NSInteger maxDay = [NSDate lastMonthDayForLunarYear:_inputDateComponents.year month:_inputDateComponents.month isKorean:isKorean];
+				if (_inputDateComponents.day > maxDay) {
+					_inputDateComponents.day = maxDay;
+				}
+			} else {
+				NSDateComponents *verifyingComponents = [_inputDateComponents copy];
+				verifyingComponents.day = 1;
+				NSDate *verifyingDate = [self.calendar dateFromComponents:verifyingComponents];
+				NSRange range = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+				if (_inputDateComponents.day > range.length) {
+					_inputDateComponents.day = range.length;
+				}
+			}
+
             [self calculateDate];
 			self.dateKeyboardVC.isLunarDate = _isLunarInput;
         }];

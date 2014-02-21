@@ -73,6 +73,7 @@
 		[cell setBottomSeparatorForMiddleRow];
 	}
 
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	self.tableView = tableView;
 	self.cell = cell;
 

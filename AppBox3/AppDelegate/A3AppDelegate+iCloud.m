@@ -53,8 +53,6 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 	self.hud.completionBlock = ^{
 		weakSelf.hud = nil;
 	};
-
-
 }
 
 - (void)cloudDidImportChanges:(NSNotification *)note {
@@ -125,9 +123,9 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3CoreDataReadyNotification object:nil];
 
-	__typeof(self) __weak weakSelf = self;
-	dispatch_async(dispatch_get_main_queue(), ^{
-		if (weakSelf.hud) {
+	if (self.hud) {
+		__typeof(self) __weak weakSelf = self;
+		dispatch_async(dispatch_get_main_queue(), ^{
 			UIImageView *imageView = [UIImageView new];
 			[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:37]];
 			[SFKImage setDefaultColor:[UIColor whiteColor]];
@@ -141,23 +139,23 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 			} else {
 				weakSelf.hud.labelText = @"iCloud Disabled";
 			}
-			
+
 			double delayInSeconds = 2.0;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[weakSelf.hud hide:YES];
-            });
-		}
-	});
+			});
+		});
+	}
 
-	double delayInSeconds = 30;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		if ([CurrencyFavorite MR_countOfEntities] == 0) {
-			[weakSelf.ubiquityStoreManager deleteCloudStoreLocalOnly:YES];
-		}
-	});
-
+//	double delayInSeconds = 30;
+//	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+//	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+//		if ([CurrencyFavorite MR_countOfEntities] == 0) {
+//			[weakSelf.ubiquityStoreManager deleteCloudStoreLocalOnly:YES];
+//		}
+//	});
+//
 }
 
 - (void)ubiquityStoreManager:(UbiquityStoreManager *)manager failedLoadingStoreWithCause:(UbiquityStoreErrorCause)cause context:(id)context

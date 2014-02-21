@@ -11,5 +11,6 @@
 @interface A3CurrencyTVEqualCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *centerLabel;
+@property (nonatomic, weak) IBOutlet UIButton *yahooButton;
 
 @end

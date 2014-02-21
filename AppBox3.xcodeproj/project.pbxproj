@@ -48,6 +48,7 @@
 		17D42CB5264D70E079FC6EFF /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4209966A3C234828C4038 /* FSConverter.m */; };
 		17D42CD07704EE2EF58EB82A /* UIViewController+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C97A50D5039256BA161 /* UIViewController+A3Addition.m */; };
 		17D42CEB95809CCFCB72DCB2 /* UITableViewCell+accessory.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */; };
+		17D42D3AD62EA698BD5E6A9B /* JNJProgressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4278F4890744C41FE7D19 /* JNJProgressButton.m */; };
 		17D42D573FAB2BFE604A808F /* A3TranslatorFavoriteDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DF75A3EA2B85378A368 /* A3TranslatorFavoriteDataSource.m */; };
 		17D42DDB19963EC340C1CA17 /* A3BackgroundWithPatternView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C6AA73D83BD4BCE4868 /* A3BackgroundWithPatternView.m */; };
 		17D42E0B81E96493926E8C02 /* A3BarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D422F17E6A37A2E93CD352 /* A3BarButton.m */; };
@@ -375,6 +376,7 @@
 		68953484178686AF007061CA /* UIImage+Saving.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346A178686AF007061CA /* UIImage+Saving.m */; };
 		68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346C178686AF007061CA /* UIScrollView+Screenshot.m */; };
 		68953488178686AF007061CA /* UIView+Screenshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 6895346E178686AF007061CA /* UIView+Screenshot.m */; };
+		68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68961FE118B311D100C89F16 /* Mirror.xcassets */; };
 		6897918E1865C57600F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
 		689791911865C68200F74826 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689791901865C68200F74826 /* CurrencyHistory.m */; };
 		689791921865C75100F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
@@ -424,7 +426,6 @@
 		68BDC58317A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BDC58217A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m */; };
 		68C11CBC1808025F00F05F77 /* A3KeyboardButton_iOS7.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C11CBB1808025F00F05F77 /* A3KeyboardButton_iOS7.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
-		68C219FA18683CEF0092F571 /* JNJProgressButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C219F918683CEF0092F571 /* JNJProgressButton.m */; };
 		68C26F1617C71CF400751BE3 /* A3ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C26F1517C71CF400751BE3 /* A3ImageView.m */; };
 		68C460F21627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C460EF1627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib */; };
 		68C460F31627CFF900555C91 /* A3CalculatorButtonsInSecondPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68C460F01627CFF900555C91 /* A3CalculatorButtonsInSecondPage.xib */; };
@@ -555,6 +556,7 @@
 		17D426E84D1FF67C4C0146D3 /* NSString+conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+conversion.h"; sourceTree = "<group>"; };
 		17D426EC699433D4B659CF5B /* HolidayData+Country.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "HolidayData+Country.m"; path = "Holidays/HolidayData+Country.m"; sourceTree = "<group>"; };
 		17D426F3FC27CB1F2D0568A5 /* A3ComparisonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ComparisonView.h; sourceTree = "<group>"; };
+		17D4278F4890744C41FE7D19 /* JNJProgressButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNJProgressButton.m; sourceTree = "<group>"; };
 		17D42799E8962A8DADD73994 /* SalesCalcHistory+controller.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SalesCalcHistory+controller.m"; sourceTree = "<group>"; };
 		17D427C9CA2A92CC4C1A522C /* NSManagedObject+Clone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Clone.h"; sourceTree = "<group>"; };
 		17D427DBB6EAAE740BD75F4B /* A3LanguagePickerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3LanguagePickerController.h; path = Translator/A3LanguagePickerController.h; sourceTree = "<group>"; };
@@ -571,6 +573,7 @@
 		17D42943209504ED58B4EADB /* A3TranslatorMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageCell.h; path = Translator/A3TranslatorMessageCell.h; sourceTree = "<group>"; };
 		17D429779D86BF82D8EB2269 /* A3DateKeyboardViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController_iPad.h; sourceTree = "<group>"; };
 		17D429F751726E40952CD34C /* A3TableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewSection.h; path = A3TableViewController/A3TableViewSection.h; sourceTree = "<group>"; };
+		17D42B28914A1D7FD233EC49 /* JNJProgressButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNJProgressButton.h; sourceTree = "<group>"; };
 		17D42B3BE8DDD4EBEBCA10BE /* A3BackgroundWithPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BackgroundWithPatternView.h; sourceTree = "<group>"; };
 		17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LocationPlacemarkView.m; sourceTree = "<group>"; };
 		17D42B75C71DE69EE18900CC /* A3OnOffLeftRightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3OnOffLeftRightButton.m; sourceTree = "<group>"; };
@@ -1101,6 +1104,7 @@
 		6895346C178686AF007061CA /* UIScrollView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Screenshot.m"; sourceTree = "<group>"; };
 		6895346D178686AF007061CA /* UIView+Screenshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Screenshot.h"; sourceTree = "<group>"; };
 		6895346E178686AF007061CA /* UIView+Screenshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Screenshot.m"; sourceTree = "<group>"; };
+		68961FE118B311D100C89F16 /* Mirror.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Mirror.xcassets; path = "AppBox3/Asset Catalogs/Mirror.xcassets"; sourceTree = "<group>"; };
 		6897918C1865C57600F74826 /* CurrencyFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyFavorite.h; path = Apps/Currency/Model/CurrencyFavorite.h; sourceTree = "<group>"; };
 		6897918D1865C57600F74826 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
 		6897918F1865C68200F74826 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistory.h; path = Apps/Currency/Model/CurrencyHistory.h; sourceTree = "<group>"; };
@@ -1191,8 +1195,6 @@
 		68C11CBB1808025F00F05F77 /* A3KeyboardButton_iOS7.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardButton_iOS7.m; sourceTree = "<group>"; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
 		68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+LunarDate.m"; sourceTree = "<group>"; };
-		68C219F818683CEF0092F571 /* JNJProgressButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNJProgressButton.h; sourceTree = "<group>"; };
-		68C219F918683CEF0092F571 /* JNJProgressButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNJProgressButton.m; sourceTree = "<group>"; };
 		68C26F1417C71CF400751BE3 /* A3ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ImageView.h; path = UIImageView/A3ImageView.h; sourceTree = "<group>"; };
 		68C26F1517C71CF400751BE3 /* A3ImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ImageView.m; path = UIImageView/A3ImageView.m; sourceTree = "<group>"; };
 		68C460EF1627CFF900555C91 /* A3CalculatorButtonsInFirstPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInFirstPage.xib; sourceTree = "<group>"; };
@@ -1467,6 +1469,16 @@
 				68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */,
 			);
 			path = A3Categories;
+			sourceTree = "<group>";
+		};
+		17D42AF11799F890C4C2FE35 /* JNJProgressButton */ = {
+			isa = PBXGroup;
+			children = (
+				17D42B28914A1D7FD233EC49 /* JNJProgressButton.h */,
+				17D4278F4890744C41FE7D19 /* JNJProgressButton.m */,
+			);
+			name = JNJProgressButton;
+			path = External/JNJProgressButton/JNJProgressButton;
 			sourceTree = "<group>";
 		};
 		68030AB717F063B400B04487 /* HTCopyableLabel */ = {
@@ -2042,6 +2054,7 @@
 				682B37C218AB365D00C6BD66 /* Calculator.xcassets */,
 				682B37C418AB369500C6BD66 /* Unit.xcassets */,
 				682B37C618AB36B600C6BD66 /* Wallet.xcassets */,
+				68961FE118B311D100C89F16 /* Mirror.xcassets */,
 			);
 			name = "{Resources}";
 			path = ..;
@@ -2664,16 +2677,6 @@
 			name = FXPageControl;
 			sourceTree = "<group>";
 		};
-		68C219F718683CEF0092F571 /* JNJProgressButton */ = {
-			isa = PBXGroup;
-			children = (
-				68C219F818683CEF0092F571 /* JNJProgressButton.h */,
-				68C219F918683CEF0092F571 /* JNJProgressButton.m */,
-			);
-			name = JNJProgressButton;
-			path = External/JNJProgressButton/JNJProgressButton;
-			sourceTree = "<group>";
-		};
 		68C26F1117C71C7C00751BE3 /* UIImageView */ = {
 			isa = PBXGroup;
 			children = (
@@ -2704,7 +2707,6 @@
 				68521A4317E1FF1C00E08FB1 /* FXLabel */,
 				68B9B15217CF4D6B003ACAD0 /* FXPageControl */,
 				68030AB717F063B400B04487 /* HTCopyableLabel */,
-				68C219F718683CEF0092F571 /* JNJProgressButton */,
 				6829679618503B2100B70E13 /* MagicalRecord */,
 				6825363818A7AA4C00EAFB84 /* Masonry */,
 				6831EC101861EB6900BAF15B /* MBProgressHUD */,
@@ -2717,6 +2719,7 @@
 				68CC1595174F76530000870F /* SymbolFontKit */,
 				6831EBFF1861C5F600BAF15B /* UbiquityStoreManager */,
 				689C9A3A1839CD7F007C97EE /* UIKit+AFNetworking */,
+				17D42AF11799F890C4C2FE35 /* JNJProgressButton */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -2957,6 +2960,7 @@
 				68FEE389174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib in Resources */,
 				689FEF71187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib in Resources */,
 				68236CE0186C22E5006F442B /* StringsDict.strings in Resources */,
+				68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */,
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
 				689FEF72187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib in Resources */,
 				6825367118A7B89F00EAFB84 /* A3LunarConverterViewController.xib in Resources */,
@@ -3336,7 +3340,6 @@
 				683224BD17CE1B7800973F34 /* A3HolidaysCell.m in Sources */,
 				687A9C231879228300F17BC8 /* A3TableViewMenuElement.m in Sources */,
 				17D42CEB95809CCFCB72DCB2 /* UITableViewCell+accessory.m in Sources */,
-				68C219FA18683CEF0092F571 /* JNJProgressButton.m in Sources */,
 				17D425D8B8511A61A52DBE3E /* A3SearchViewController.m in Sources */,
 				17D42CD07704EE2EF58EB82A /* UIViewController+A3Addition.m in Sources */,
 				6829682018503B2100B70E13 /* NSManagedObjectContext+MagicalObserving.m in Sources */,
@@ -3375,6 +3378,7 @@
 				17D42DDB19963EC340C1CA17 /* A3BackgroundWithPatternView.m in Sources */,
 				17D4263785F661F55F888132 /* NSDateFormatter+A3Addition.m in Sources */,
 				17D42522378AC9FE782E35CC /* A3AppDelegate+property.m in Sources */,
+				17D42D3AD62EA698BD5E6A9B /* JNJProgressButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

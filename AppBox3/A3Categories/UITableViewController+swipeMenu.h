@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @protocol A3TableViewSwipeCellDelegate <NSObject>
-- (void)addMenuView;
+- (BOOL)cellShouldShowMenu;
+- (void)addMenuView:(BOOL)showDelete;
 - (void)removeMenuView;
-- (CGFloat)menuWidth;
+- (CGFloat)menuWidth:(BOOL)showDelete;
 @end
 
 @interface UITableViewController (swipeMenu)
@@ -22,7 +23,9 @@
 
 - (void)shiftLeft:(UITableViewCell <A3TableViewSwipeCellDelegate> *)cell;
 
-- (void)unswipeAll;
+- (void)unSwipeAll;
 
 - (NSMutableSet *)swipedCells;
+
+- (void)setSwipedCells:(NSMutableSet *)swipedCells;
 @end

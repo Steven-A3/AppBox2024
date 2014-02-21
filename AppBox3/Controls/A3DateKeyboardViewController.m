@@ -10,6 +10,9 @@
 #import "A3Formatter.h"
 #import "A3KeyboardButton_iOS7.h"
 #import "NSDateFormatter+LunarDate.h"
+#import "NSDate+LunarConverter.h"
+#import "NSUserDefaults+A3Addition.h"
+#import "MBProgressHUD.h"
 
 @interface A3DateKeyboardViewController ()
 @property (nonatomic, strong) NSCalendar *gregorian;
@@ -169,17 +172,21 @@
 	} else {
 		NSInteger day = self.dateComponents.day, entered = [self numberOfButton:button];
 		day *= 10;
-		if (day >= 100) day = 0;
 		day += entered;
 
 		NSRange range;
 		if (_isLunarDate) {
-			range = NSMakeRange(0, 30);
+			BOOL useKorean = [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion];
+			NSInteger maxDayForMonth = [NSDate lastMonthDayForLunarYear:self.dateComponents.year month:self.dateComponents.month isKorean:useKorean];
+			range = NSMakeRange(0, maxDayForMonth);
 		} else {
 			NSDateComponents *verifyingComponents = [self.dateComponents copy];
 			verifyingComponents.day = 1;
 			NSDate *verifyingDate = [self.gregorian dateFromComponents:verifyingComponents];
 			range = [self.gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
+		}
+		if (day > range.length) {
+			day %= 100;
 		}
 		if (day > range.length) {
 			day = entered;
@@ -193,8 +200,11 @@
 - (void)updateResult {
 	self.dateComponents.weekday = NSUndefinedDateComponent;
 	NSDate *displayDate = [self.gregorian dateFromComponents:self.dateComponents];
-	_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:displayDate];
-	_displayLabel.text = [self.dateFormatter stringFromDateComponents:self.dateComponents];
+	NSDateComponents *temporary = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:displayDate];
+	self.dateComponents.weekday = temporary.weekday;
+	if (!_isLunarDate) {
+		_displayLabel.text = [self.dateFormatter stringFromDateComponents:self.dateComponents];
+	}
 
 	if ([_delegate respondsToSelector:@selector(dateKeyboardValueChangedDate:)]) {
 		[_delegate dateKeyboardValueChangedDate:displayDate];

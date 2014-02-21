@@ -540,8 +540,8 @@
 	}
 	self.weekCircle.delegate = self;
 	self.weekCircle.isShowWave = YES;
-	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:IS_IPHONE ? 88 : 88];
-	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:IS_IPHONE ? 18 : 22];
+	self.weekCircle.bigFont = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88];
+	self.weekCircle.smallFont = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:18];
 	[self.view addSubview:self.weekCircle];
 
 	self.weekBottomLabel = [[UILabel alloc] init];
@@ -724,13 +724,11 @@
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
-	NSString *hourFormat = [[NSUserDefaults standardUserDefaults] clockUse24hourClock] ? @"HH" : @"hh";
-	if([[NSUserDefaults standardUserDefaults] clockTheTimeWithSeconds]) {
-		[clockInfo.dateFormatter setDateFormat:[NSString stringWithFormat:@"%@ mm ss", hourFormat]];
-	}
-	else
-	{
-		[clockInfo.dateFormatter setDateFormat:[NSString stringWithFormat:@"%@ mm", hourFormat]];
+	NSString *timeString;
+	if ([self showSeconds]) {
+		timeString = [NSString stringWithFormat:@"%02ld %02ld %02ld", clockInfo.hour, (long) clockInfo.dateComponents.minute, (long) clockInfo.dateComponents.second];
+	} else {
+		timeString = [NSString stringWithFormat:@"%02ld %02ld", clockInfo.hour, (long) clockInfo.dateComponents.minute];
 	}
 	if ([[NSUserDefaults standardUserDefaults] clockFlashTheTimeSeparators]) {
 		[self.timeCircle.colonView setHidden:_showTimeSeparator];
@@ -739,7 +737,7 @@
 		[self.timeCircle.colonView setHidden:NO];
 	}
 
-	self.timeCircle.textLabel.text = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
+	self.timeCircle.textLabel.text = timeString;
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo {

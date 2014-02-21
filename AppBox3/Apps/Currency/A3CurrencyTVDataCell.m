@@ -29,7 +29,7 @@
 		[self.contentView addSubview:self.codeLabel];
 		[self.contentView addSubview:self.rateLabel];
 		[self.contentView addSubview:self.flagImageView];
-		[self addSubview:self.separatorLineView];
+//		[self addSubview:self.separatorLineView];
 		[self useDynamicType];
 		[self addConstraints];
     }
@@ -80,95 +80,26 @@
 
 - (void)addConstraints {
     
-	NSDictionary *views = NSDictionaryOfVariableBindings(_valueField, _codeLabel, _rateLabel, _flagImageView, _separatorLineView);
-	NSNumber *leftMargin = @(IS_IPHONE ? 15.0 : 28.0);
-	NSNumber *marginBetweenFlagCode = @(IS_IPHONE ? 2.0 : 10.0);
-	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 4.0 : 4.0);
+	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+		make.centerY.equalTo(self.centerY);
+		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.width.equalTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.8 : 0.78).with.offset(IS_IPHONE ? -15 : -28);
+	}];
 
-	// Value Field
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-																	attribute:NSLayoutAttributeCenterY
-																	relatedBy:NSLayoutRelationEqual
-																	   toItem:self.contentView
-																	attribute:NSLayoutAttributeCenterY
-																   multiplier:1.0
-																	 constant:0.0]];
+	[_flagImageView makeConstraints:^(MASConstraintMaker *make) {
+		make.centerY.equalTo(self.centerY);
+		make.right.equalTo(_codeLabel.left).with.offset(IS_IPHONE ? -2.0 : -10.0);
+	}];
 
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-																	attribute:NSLayoutAttributeLeft
-																	relatedBy:NSLayoutRelationEqual
-																	   toItem:self.contentView
-																	attribute:NSLayoutAttributeLeft
-																   multiplier:1.0
-																	 constant:[leftMargin doubleValue]]];
+	[_codeLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.centerY.equalTo(self.centerY);
+		make.right.equalTo(self.contentView.right);
+	}];
 
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-																	attribute:NSLayoutAttributeWidth
-																	relatedBy:NSLayoutRelationEqual
-																	   toItem:self.contentView
-																	attribute:NSLayoutAttributeWidth
-																   multiplier:IS_IPAD ? 0.8 : 0.6
-																	 constant:-leftMargin.doubleValue]];
-
-	// Flag image View
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_flagImageView
-																	attribute:NSLayoutAttributeCenterY
-																	relatedBy:NSLayoutRelationEqual
-																	   toItem:self.contentView
-																	attribute:NSLayoutAttributeCenterY
-																   multiplier:1.0  constant:0.0]];
-
-	// Code Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel
-																 attribute:NSLayoutAttributeCenterY
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:self.contentView
-																 attribute:NSLayoutAttributeCenterY
-																multiplier:1.0 constant:0.0]];
-
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-marginBetweenFlagCode-[_codeLabel]|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(marginBetweenFlagCode)
-																			   views:views]];
-
-	// Rate Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel
-																 attribute:NSLayoutAttributeRight
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:_codeLabel
-																 attribute:NSLayoutAttributeRight
-																multiplier:1.0 constant:0.0]];
-
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-VmarginBetweenCodeRate-[_rateLabel]-8-|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(VmarginBetweenCodeRate)
-																			   views:views]];
-
-	// Separator Line
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeWidth
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeWidth
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													 relatedBy:NSLayoutRelationEqual
-														toItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeBottom
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeBottom
-													multiplier:1.0 constant:-1.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeHeight
-													 relatedBy:NSLayoutRelationEqual
-														toItem:nil
-													 attribute:NSLayoutAttributeNotAnAttribute
-													multiplier:0.0 constant:1.0]];
+	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(_codeLabel.right);
+		make.baseline.equalTo(self.bottom).with.offset(-6);
+	}];
 }
 
 - (UILabel *)codeLabel {
@@ -214,34 +145,40 @@
 
 #pragma mark - A3TableViewSwipeCellDelegate
 
-- (void)addMenuView {
-	[self.superview insertSubview:self.menuView belowSubview:self];
+- (BOOL)cellShouldShowMenu {
+	return YES;
+}
+
+- (void)addMenuView:(BOOL)showDelete {
+	[self.superview insertSubview:[self menuView:showDelete ] belowSubview:self];
 	if ([_menuDelegate respondsToSelector:@selector(menuAdded)]) {
 		[_menuDelegate menuAdded];
 	}
 }
 
 - (void)removeMenuView {
-	[self.menuView removeFromSuperview];
+	[[self menuView:NO ] removeFromSuperview];
 	_menuView = nil;
 }
 
-- (CGFloat)menuWidth {
-	return 288.0;
+- (CGFloat)menuWidth:(BOOL)showDelete {
+	return showDelete ? 80.0 * 4 : 80.0 * 3;
 }
 
-- (UIView *)menuView {
+- (UIView *)menuView:(BOOL)showDelete {
 	if (_menuView) {
 		return _menuView;
 	}
 	CGRect frame = self.frame;
-	frame.origin.x = frame.size.width - self.menuWidth;
-	frame.size.width = self.menuWidth;
+	frame.origin.x = frame.size.width - [self menuWidth:showDelete ];
+	frame.size.width = [self menuWidth:showDelete ];
 	_menuView = [[UIView alloc] initWithFrame:frame];
 
 	NSArray *menuTitles = @[@"Swap", @"Chart", @"Share", @"Delete"];
 
 	[menuTitles enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+		if (!showDelete && idx == 3) return;
+
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[button setTitle:title forState:UIControlStateNormal];
 		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -250,7 +187,7 @@
 		} else {
 			[button setBackgroundColor:[UIColor colorWithRed:204.0/255.0 green:204.0/255.0 blue:204.0/255.0 alpha:1.0]];
 		}
-		button.frame = CGRectMake(idx * 72.0, 0.0, 72.0, 84.0);
+		button.frame = CGRectMake(idx * 80.0, 0.0, 80.0, 84.0);
 		button.tag = idx;
         [button addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
         

@@ -288,7 +288,7 @@
 }
 
 - (void)rightButtonMoreButton {
-	UIImage *image = [UIImage imageNamed:@"more_stroke"];
+	UIImage *image = [UIImage imageNamed:@"more"];
 	UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
 
 	self.navigationItem.rightBarButtonItem = moreButtonItem;

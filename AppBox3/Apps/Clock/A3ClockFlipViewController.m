@@ -463,13 +463,13 @@
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
-	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.second] animated:YES ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)clockInfo.dateComponents.second] animated:YES ];
 }
 
 - (void)refreshWholeClock:(A3ClockInfo *)clockInfo animated:(BOOL)animated {
-	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.hour] animated:animated ];
-	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.minute] animated:animated ];
-	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)self.clockDataManager.clockInfo.dateComponents.second] animated:animated ];
+	[self tickTime:_hourView withText:[NSString stringWithFormat:@"%02ld", clockInfo.hour] animated:animated ];
+	[self tickTime:_minuteView withText:[NSString stringWithFormat:@"%02ld", (long)clockInfo.dateComponents.minute] animated:animated ];
+	[self tickTime:_secondView withText:[NSString stringWithFormat:@"%02ld", (long)clockInfo.dateComponents.second] animated:animated ];
 
 	_weekdayMonthDay.text = clockInfo.dateStringConsideringOptions;
 
