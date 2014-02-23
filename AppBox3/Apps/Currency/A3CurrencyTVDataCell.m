@@ -29,7 +29,6 @@
 		[self.contentView addSubview:self.codeLabel];
 		[self.contentView addSubview:self.rateLabel];
 		[self.contentView addSubview:self.flagImageView];
-//		[self addSubview:self.separatorLineView];
 		[self useDynamicType];
 		[self addConstraints];
     }
@@ -98,7 +97,7 @@
 
 	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.right.equalTo(_codeLabel.right);
-		make.baseline.equalTo(self.bottom).with.offset(-6);
+		make.baseline.equalTo(self.bottom).with.offset(IS_IPHONE ? -6 : -10);
 	}];
 }
 

@@ -37,7 +37,6 @@
 	[self.view addSubview:_tableView];
 
 	[self.view addSubview:self.searchBar];
-	[self rightBarButtonDoneButton];
 	[self mySearchDisplayController];
 }
 

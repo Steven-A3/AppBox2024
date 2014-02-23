@@ -42,6 +42,7 @@
 @property (nonatomic, strong) UIScrollView *landscapeView;
 @property (nonatomic, strong) NSNumber *sourceValue;
 @property (nonatomic, copy) NSString *previousValue;
+@property (nonatomic, strong) NSMutableArray *constraints;
 
 @end
 
@@ -67,6 +68,8 @@
 
 	[self makeBackButtonEmptyArrow];
 
+	[self makeFixedConstraint];
+
 	self.automaticallyAdjustsScrollViewInsets = NO;
 	[self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
     self.tableView.rowHeight = [[UIScreen mainScreen] bounds].size.height == 480.0 ? 70.0 : 84.0;
@@ -74,8 +77,8 @@
 	self.tableView.delegate = self;
 	self.tableView.scrollEnabled = NO;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
-
-	[self setupConstraints];
+	self.tableView.separatorColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+	self.tableView.showsVerticalScrollIndicator = NO;
 
 	NSInteger idx = 0;
 	_titleLabels = [[NSMutableArray alloc] initWithCapacity:5];
@@ -111,7 +114,7 @@
 }
 
 - (void)viewWillLayoutSubviews {
-	[self setupConstraints];
+	[self makeConstraints];
 }
 
 - (void)viewDidLayoutSubviews{
@@ -130,116 +133,75 @@
 	}
 }
 
-- (void)setupConstraints {
-	[self.view removeConstraints:[self.view constraints]];
-
-	FNLOGRECT([[UIScreen mainScreen] bounds]);
-	FNLOGRECT(self.view.frame);
-	FNLOGRECT(self.view.bounds);
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-
-	NSNumber *tableViewHeight;
-	NSNumber *titleViewHeight;
-	NSNumber *space1;
-	NSNumber *space2;
-	NSNumber *space3;
-	NSNumber *space4;
-	NSNumber *chartHeight;
-	NSNumber *chartWidth;
-	NSNumber *segmentedControlWidth;
-
-	CGSize chartSize = [self chartSize];
-
-	if (IS_IPHONE) {
-		segmentedControlWidth = @300.0;
-		chartWidth = @(chartSize.width);
-		chartHeight = @(chartSize.height);
-
-		if (screenBounds.size.height == 480.0) {
-			tableViewHeight = @140.0;
-			titleViewHeight = @22.0;
-			space1 = @10.0;
-			space2 = @10.0;
-			space3 = @14.0;
-			space4 = @14.0;
-		} else {
-			tableViewHeight = @168.0;
-			titleViewHeight = @30.0;
-			space1 = @17.0;
-			space2 = @17.0;
-			space3 = @18.0;
-			space4 = @19.0;
-		}
-	} else {
-		tableViewHeight = @168.0;
-		titleViewHeight = @30.0;
-
-		segmentedControlWidth = @(chartSize.width);
-		chartWidth = @(chartSize.width);
-		chartHeight = @(chartSize.height);
-		if (IS_LANDSCAPE) {
-			space1 = @33.0;
-			space2 = @55.0;
-			space3 = @34.0;
-			space4 = @35.0;
-		} else {
-			space1 = @50.0;
-			space2 = @50.0;
-			space3 = @20.0;
-			space4 = @242.0;
-		}
-	}
-
-	[self constraintForHorizontalLayout:_tableView];
-	[self constraintForHorizontalLayout:_line1];
-	[self constraintForHorizontalLayout:_titleView];
-	[self constraintForHorizontalLayout:_valueView];
-	[self constraintForHorizontalLayout:_valueView];
-	[self constraintForHorizontalLayout:_line2];
-	[self constraintForHorizontalLayout:_segmentedControl width:segmentedControlWidth.doubleValue];
-	[self constraintForHorizontalLayout:_chartView width:chartWidth.doubleValue];
-
-	[self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_tableView(tableViewHeight)]-space1-[_line1(1)][_titleView(titleViewHeight)][_valueView(titleViewHeight)][_line2(1)]-space2-[_segmentedControl(28)]-(>=35,<=70)-[_chartView(chartHeight)]-(>=space4)-|"
-																	  options:0
-																	  metrics:NSDictionaryOfVariableBindings(tableViewHeight, titleViewHeight, space1, space2, space3, space4, chartHeight)
-																		views:NSDictionaryOfVariableBindings(_tableView, _line1, _titleView, _valueView, _line2, _segmentedControl, _chartView)]];
-}
-
-- (void)constraintForHorizontalLayout:(UIView *)view {
-	view.translatesAutoresizingMaskIntoConstraints = NO;
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
-														  attribute:NSLayoutAttributeCenterX
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeCenterX
-														 multiplier:1.0 constant:0.0]];
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
-														  attribute:NSLayoutAttributeWidth
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeWidth
-														 multiplier:1.0 constant:0.0]];
-}
-
-- (void)constraintForHorizontalLayout:(UIView *)view width:(CGFloat)width {
-	view.translatesAutoresizingMaskIntoConstraints = NO;
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
-														  attribute:NSLayoutAttributeCenterX
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeCenterX
-														 multiplier:1.0 constant:0.0]];
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:view
-														  attribute:NSLayoutAttributeWidth
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:nil
-														  attribute:NSLayoutAttributeNotAnAttribute
-														 multiplier:0.0 constant:width]];
-}
-
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	[self.tableView reloadData];
 	[self setupFont];
+}
+
+- (void)makeFixedConstraint {
+	BOOL isIPHONE35 = IS_IPHONE35;
+
+	UIView *superview = _tableView.superview;
+	[_tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(superview.top).with.offset(64);
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.height.equalTo(isIPHONE35 ? @140 : @168 );
+	}];
+	[_line1 makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.height.equalTo(@1);
+	}];
+	[_titleView makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(_line1.bottom);
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.height.equalTo(isIPHONE35 ? @22 : @30);
+	}];
+	[_valueView makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(_titleView.bottom);
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.height.equalTo(isIPHONE35 ? @22 : @30);
+	}];
+	[_line2 makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(_valueView.bottom);
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		make.height.equalTo(@1);
+	}];
+	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(superview.centerX);
+		make.height.equalTo(@28);
+	}];
+	[_chartView makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(superview.centerX);
+	}];
+}
+
+- (void)makeConstraints {
+	if (!_constraints) {
+		_constraints = [NSMutableArray new];
+	} else {
+		for (MASConstraint *constraint in _constraints) {
+			[constraint uninstall];
+		}
+	}
+	BOOL isIPHONE35 = IS_IPHONE35, isIPHONE = IS_IPHONE, isPORTRAIT = IS_PORTRAIT;
+	[_line1 makeConstraints:^(MASConstraintMaker *make) {
+		[_constraints addObject:make.top.equalTo(_tableView.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 33))];
+	}];
+	CGSize chartSize = [self chartSize];
+	[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
+		[_constraints addObject:make.top.equalTo(_line2.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 10 : 17) : (isPORTRAIT ? 50 : 40))];
+		[_constraints addObject:make.width.equalTo(@(chartSize.width))];
+	}];
+	[_chartView makeConstraints:^(MASConstraintMaker *make) {
+		[_constraints addObject:make.top.equalTo(_segmentedControl.bottom).with.offset(isIPHONE ? (isIPHONE35 ? 14 : 18) : (isPORTRAIT ? 20 : 35))];
+		[_constraints addObject:make.width.equalTo(@(chartSize.width))];
+		[_constraints addObject:make.height.equalTo(@(chartSize.height))];
+	}];
 }
 
 - (CGSize)chartSize {
@@ -587,6 +549,9 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
+	if (IS_IPAD) {
+		return;
+	}
 	if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation)) {
 		if (!_landscapeView) {
 			[[UIApplication sharedApplication] setStatusBarHidden:YES];

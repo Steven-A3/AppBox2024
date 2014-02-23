@@ -14,5 +14,6 @@
 @interface A3CurrencySelectViewController : A3SearchViewController
 
 @property (weak, nonatomic) A3CacheStoreManager *cacheStoreManager;
+@property (assign, nonatomic) BOOL showCancelButton;
 
 @end

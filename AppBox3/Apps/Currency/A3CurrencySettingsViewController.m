@@ -37,7 +37,8 @@ NSString *const CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-	_hasCellularNetwork = [A3UIDevice hasCellularNetwork];
+//	_hasCellularNetwork = [A3UIDevice hasCellularNetwork];
+	_hasCellularNetwork = NO;
 
 	[self rightBarButtonDoneButton];
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];

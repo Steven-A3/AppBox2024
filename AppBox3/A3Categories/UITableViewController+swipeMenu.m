@@ -82,6 +82,13 @@ const CGFloat kVisibleWidth = 100.0;
 					if (cell.frame.origin.x == 0.0)
 						[cell removeMenuView];
 				}
+
+				NSMutableArray *reloadRows = [NSMutableArray new];
+				NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+				if (indexPath) {
+					[reloadRows addObject:indexPath];
+				}
+				[self.tableView reloadRowsAtIndexPaths:reloadRows withRowAnimation:UITableViewRowAnimationNone];
 			}];
 		}
 

@@ -38,31 +38,20 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 @interface A3ClockDataManager : NSObject <NSXMLParserDelegate>
 
 @property (nonatomic, strong) id<A3ClockDataManagerDelegate> delegate;
-@property (nonatomic, strong) NSDictionary* weatherAtmosphere;//"for humidity"
-
 @property (nonatomic, strong) A3ClockInfo *clockInfo;
 
 - (void)enableWeatherCircle:(BOOL)enable;
-
 - (void)enableDateCircle:(BOOL)enable;
-
 - (void)enableWeekdayCircle:(BOOL)enable;
-
 - (NSMutableArray *)waveCirclesArray;
-
 - (void)startTimer;
 - (void)stopTimer;
-
 - (void)onTimerDateTimeTick;
-
 - (NSArray *)waveColors;
-
 - (NSArray*)flipColors;
 - (NSArray*)ledColors;
-
 - (UIColor *)LEDColorAtIndex:(NSUInteger)idx alpha:(CGFloat)alpha;
-
 - (UIImage*)imageForWeatherCondition:(A3WeatherCondition)condition;
-
 - (void)updateWeather;
+
 @end

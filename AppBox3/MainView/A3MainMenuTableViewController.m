@@ -52,18 +52,10 @@ NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponde
 	self = [super initWithStyle:UITableViewStyleGrouped];
 	if (self) {
 		[self setupData];
-
+		self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 
 	return self;
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
-	if (![self isMovingToParentViewController]) {
-		[self.tableView reloadData];
-	}
 }
 
 - (void)viewDidLoad
@@ -95,6 +87,14 @@ NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponde
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataAvailable) name:A3CoreDataReadyNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3AppsMainMenuContentsChangedNotification object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if (![self isMovingToParentViewController]) {
+		[self.tableView reloadData];
+	}
 }
 
 - (void)menuContentsChanged {
@@ -333,7 +333,6 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if ([element.className isEqualToString:@"A3CurrencyViewController"]) {
 		if ([[A3AppDelegate instance] coreDataReadyToUse]) {
 			NSUInteger count = [CurrencyFavorite MR_countOfEntities];
-			FNLOG(@"%lu", (unsigned long) count);
 			return count > 0;
 		} else {
 			return NO;

@@ -12,6 +12,8 @@
 #import "NSUserDefaults+A3Defaults.h"
 #import "A3UserDefaults.h"
 #import "A3UIDevice.h"
+#import "A3AppDelegate.h"
+#import "Reachability.h"
 
 @interface A3ClockWaveViewController () <A3ClockWaveCircleDelegate>
 
@@ -830,6 +832,12 @@
 		}
 	}
 	if (![self showWeather]) {
+		return;
+	}
+
+	FNLOG(@"%@", clockInfo.currentWeather);
+	if (!clockInfo.currentWeather) {
+		_weatherInfoAvailable = NO;
 		return;
 	}
 

@@ -80,7 +80,10 @@
 		}
 		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
 		NSRange range = NSMakeRange(location, length);
-		allowedToChange = [textField.delegate textField:textField shouldChangeCharactersInRange:range replacementString:@""];
+		id <UITextFieldDelegate> o = textField.delegate;
+		if ([o respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
+			allowedToChange = [o textField:textField shouldChangeCharactersInRange:range replacementString:@""];
+		}
 	}
 	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(deleteBackward)]) {
 		[_textInputTarget deleteBackward];

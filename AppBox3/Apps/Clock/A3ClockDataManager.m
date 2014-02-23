@@ -18,7 +18,6 @@
 @interface A3ClockDataManager () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) A3Weather *currentWeather;
 @property (nonatomic, strong) NSDictionary *weatherCurrentCondition;
 @property (nonatomic, strong) NSMutableArray *weatherForecast;
 @property (nonatomic, strong) NSTimer *clockTickTimer;
@@ -43,9 +42,17 @@
 			[[NSUserDefaults standardUserDefaults] setClockShowWeather:NO];
 		}
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 	}
 
 	return self;
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification {
+	Reachability *reachability = notification.object;
+	if (reachability.isReachable) {
+		[self updateWeather];
+	}
 }
 
 - (void)applicationDidBecomeActive {
@@ -209,8 +216,6 @@
 
 	[formatter setDateFormat:@"EEE"];
 	_clockInfo.shortWeekday = [formatter stringFromDate:currentTime];
-
-	_clockInfo.currentWeather = self.currentWeather;
 }
 
 - (UIColor*)colorWidth255RGB:(float)aR g:(float)aG b:(float)aB
@@ -396,11 +401,11 @@
 
 		_weatherForecast = nil;
 		_weatherCurrentCondition = nil;
-		_weatherAtmosphere = nil;
-		_currentWeather = nil;
 
+		self.clockInfo.currentWeather = [A3Weather new];
 		if ([XMLParser parse]) {
-			if (!_weatherForecast || !_weatherCurrentCondition || !_weatherAtmosphere) {
+			if (!_weatherForecast || !_weatherCurrentCondition || !self.clockInfo.weatherAtmosphere) {
+				self.clockInfo = nil;
 				FNLOG(@"Failed to load weather with :%@", [_addressCandidates lastObject]);
 				[_addressCandidates removeLastObject];
 				[self getWOEIDWithCandidates];
@@ -412,38 +417,39 @@
 			NSMutableString *log = [NSMutableString new];
 			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherForecast]];
 			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherCurrentCondition]];
-			[log appendString:[NSString stringWithFormat:@"%@\n", _weatherAtmosphere]];
+			[log appendString:[NSString stringWithFormat:@"%@\n", self.clockInfo.weatherAtmosphere]];
 			NSLog(@"%@", log);
 #endif
 
-			_currentWeather = [A3Weather new];
-			_currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
-			_currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
-			_currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
-			_currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
+			self.clockInfo.currentWeather.unit = [[NSUserDefaults standardUserDefaults] clockUsesFahrenheit] ? SCWeatherUnitFahrenheit : SCWeatherUnitCelsius;
+			self.clockInfo.currentWeather.representation = [self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyText];
+			self.clockInfo.currentWeather.currentTemperature = [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyTemp] intValue];
+			self.clockInfo.currentWeather.condition = (A3WeatherCondition) [[self.weatherCurrentCondition objectForKey:kA3YahooWeatherXMLKeyCondition] intValue];
 
 			if ([_weatherForecast count]) {
 				NSDictionary *todayForecast = [self.weatherForecast objectAtIndex:0];
-				_currentWeather.highTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyHigh] intValue];
-				_currentWeather.lowTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyLow] intValue];
+				self.clockInfo.currentWeather.highTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyHigh] intValue];
+				self.clockInfo.currentWeather.lowTemperature = [[todayForecast objectForKey:kA3YahooWeatherXMLKeyLow] intValue];
 			}
 
-			self.clockInfo.currentWeather = _currentWeather;
-
-			NSAssert(!(_currentWeather.currentTemperature == 0 &&
-					_currentWeather.lowTemperature == 0 &&
-					_currentWeather.highTemperature == 0), @"Weather current,low,high must not be all ZERO");
+			NSAssert(!(self.clockInfo.currentWeather.currentTemperature == 0 &&
+					self.clockInfo.currentWeather.lowTemperature == 0 &&
+					self.clockInfo.currentWeather.highTemperature == 0), @"Weather current,low,high must not be all ZERO");
 
 			if ([_delegate respondsToSelector:@selector(refreshWeather:)]) {
 				[_delegate refreshWeather:self.clockInfo];
 			}
 		}
 
+		_weatherForecast = nil;
+		_weatherCurrentCondition = nil;
+
 		_addressCandidates = nil;
 		_locationManager = nil;
+
 		// TODO: 날씨 업데이트 시점 최종 조정 필요. 디버깅 위해서 10초로 설정
 //		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
-		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
+		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.locationManager startMonitoringSignificantLocationChanges];
 	}];
@@ -482,17 +488,17 @@
 }
 
 - (void)updateWeather {
-	[self.locationManager startMonitoringSignificantLocationChanges];
+	if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
+		if ([[A3AppDelegate instance].reachability isReachable]) {
+			[self.locationManager startMonitoringSignificantLocationChanges];
+		}
+	}
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
 	@autoreleasepool {
 
 		[manager stopMonitoringSignificantLocationChanges];
-
-		self.currentWeather = nil;
-		self.weatherCurrentCondition = nil;
-		self.weatherForecast = nil;
 
 		CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
 
@@ -561,7 +567,7 @@
 	}
     else if([elementName isEqualToString:kA3YahooWeatherXMLKeyAtmosphere])
     {
-        _weatherAtmosphere = [attributeDict copy];
+        self.clockInfo.weatherAtmosphere = [attributeDict copy];
     }
 }
 

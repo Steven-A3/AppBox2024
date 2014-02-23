@@ -84,9 +84,7 @@
 }
 
 - (void)leftBarButtonAppsButton {
-	@autoreleasepool {
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
-	}
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
 }
 
 - (void)appsButtonAction {
@@ -95,6 +93,14 @@
 	} else {
 		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
+}
+
+- (void)leftBarButtonCancelButton {
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction)];
+}
+
+- (void)cancelButtonAction {
+
 }
 
 - (void)addTwoButtons:(NSArray *)buttons toView:(UIView *)view {
@@ -209,6 +215,8 @@
 	UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moreMenuDismissAction:)];
 	[self.view addGestureRecognizer:gestureRecognizer];
 
+	[self.navigationItem.leftBarButtonItem setEnabled:NO];
+
 	return clippingView;
 }
 
@@ -229,6 +237,7 @@
 		}
 	} completion:^(BOOL finished) {
 		[moreMenuView removeFromSuperview];
+		[self.navigationItem.leftBarButtonItem setEnabled:YES];
 	}];
 }
 

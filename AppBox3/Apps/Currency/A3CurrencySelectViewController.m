@@ -12,6 +12,7 @@
 #import "A3CacheStoreManager.h"
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
@@ -23,10 +24,20 @@
     [super viewDidLoad];
 
 	@autoreleasepool {
-		self.searchBar.placeholder = @"Search Currency";
+		self.searchBar.placeholder = @"Search";
 		self.title = @"Select Currency";
 
 		[self registerContentSizeCategoryDidChangeNotification];
+	}
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		if (self.showCancelButton) {
+			[self leftBarButtonCancelButton];
+		}
 	}
 }
 
@@ -38,6 +49,10 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)cancelButtonAction {
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (NSMutableArray *)allData {

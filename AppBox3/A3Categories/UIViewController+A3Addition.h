@@ -19,6 +19,10 @@
 
 - (void)appsButtonAction;
 
+- (void)leftBarButtonCancelButton;
+
+- (void)cancelButtonAction;
+
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
 - (void)dismissMoreMenuView:(UIView *)moreMenuView tableView:(UITableView *)tableView;
