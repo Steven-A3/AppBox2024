@@ -762,9 +762,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 			textField.text = @"";
 
-			A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
+			A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
 			self.numberKeyboardViewController = keyboardVC;
-			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
+			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 			keyboardVC.textInputTarget = textField;
 			keyboardVC.delegate = self;
 			self.numberKeyboardViewController = keyboardVC;

@@ -8,6 +8,7 @@
 
 #import <XCTest/XCTest.h>
 #import "NSDateFormatter+A3Addition.h"
+#import "NSDateFormatter+LunarDate.h"
 
 @interface A3FormatterTest : XCTestCase
 
@@ -77,5 +78,41 @@
 	NSLog(@"\n%@\n", log);
 }
 
+- (void)testStringFromDateComponents {
+	NSDateFormatter *df = [NSDateFormatter new];
+	NSDate *today = [NSDate date];
+	NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:today];
+	
+	NSMutableString *log = [NSMutableString new];
+	NSArray *localeIdentifiers = [[NSLocale availableLocaleIdentifiers] sortedArrayUsingSelector:@selector(compare:)];
+	for (NSString *localeID in localeIdentifiers) {
+		NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeID];
+		[df setLocale:locale];
+		[df setDateStyle:NSDateFormatterLongStyle];
+		NSString *originalFormat = df.dateFormat;
+		[log appendFormat:@"%@\t[ %@ ]\t[ %@ ]\n", localeID,  originalFormat, [df stringFromDateComponents:dateComponents]];
+		
+		NSString *convertedFormat = [df formatStringByRemovingYearComponent:originalFormat];
+		[df setDateFormat:convertedFormat];
+		[log appendFormat:@"%@\t[ %@ ]\t[ %@ ]\n", localeID,  convertedFormat, [df stringFromDateComponents:dateComponents]];
+		
+		convertedFormat = [df formatStringByRemovingDayComponent:originalFormat];
+		[df setDateFormat:convertedFormat];
+		[log appendFormat:@"%@\t[ %@ ]\t[ %@ ]\n", localeID,  convertedFormat, [df stringFromDateComponents:dateComponents]];
+		
+		[log appendFormat:@"%@\n", [df localizedLongStyleYearMonthFromDate:today]];
+		[log appendFormat:@"%@\n", [df localizedMediumStyleYearMonthFromDate:today]];
+	}
+	
+	NSLog(@"\n%@\n", log);
+
+	NSString *localeID = @"ca";
+	NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeID];
+	[df setLocale:locale];
+	[df setDateStyle:NSDateFormatterLongStyle];
+	NSString *originalFormat = df.dateFormat;
+	[log appendFormat:@"%@\t[ %@ ]\t[ %@ ]\n", localeID,  originalFormat, [df stringFromDateComponents:dateComponents]];
+
+}
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "A3NumberKeyboardViewController.h"
-#import "common.h"
 
 @interface A3NumberKeyboardViewController ()
 

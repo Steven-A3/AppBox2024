@@ -457,19 +457,22 @@
 }
 
 - (void)refreshSecond:(A3ClockInfo *)clockInfo {
-	if ([self use24hourClock]) {
-		[clockInfo.dateFormatter setDateFormat:@"HHmmss"];
+	NSString *timeString;
+	if ([self showSeconds]) {
+		timeString = [NSString stringWithFormat:@"%02ld%02ld%02ld", clockInfo.hour, (long) clockInfo.dateComponents.minute, (long) clockInfo.dateComponents.second];
 	} else {
-		[clockInfo.dateFormatter setDateFormat:@"hhmmss"];
+		timeString = [NSString stringWithFormat:@"%02ld%02ld", clockInfo.hour, (long) clockInfo.dateComponents.minute];
 	}
-	NSString *timeString = [clockInfo.dateFormatter stringFromDate:clockInfo.date];
 
 	_hour1.text = [timeString substringWithRange:NSMakeRange(0, 1)];
 	_hour2.text = [timeString substringWithRange:NSMakeRange(1, 1)];
 	_minute1.text = [timeString substringWithRange:NSMakeRange(2, 1)];
 	_minute2.text = [timeString substringWithRange:NSMakeRange(3, 1)];
-	_second1.text = [timeString substringWithRange:NSMakeRange(4, 1)];
-	_second2.text = [timeString substringWithRange:NSMakeRange(5, 1)];
+
+	if ([self showSeconds]) {
+		_second1.text = [timeString substringWithRange:NSMakeRange(4, 1)];
+		_second2.text = [timeString substringWithRange:NSMakeRange(5, 1)];
+	}
 
 	if (self.flashSeparator) {
 		_colonHidden = !_colonHidden;
