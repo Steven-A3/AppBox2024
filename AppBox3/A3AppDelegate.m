@@ -20,6 +20,7 @@
 #import "A3PasscodeViewControllerProtocol.h"
 #import "A3AppDelegate+appearance.h"
 #import "Reachability.h"
+#import "A3CacheStoreManager.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 
@@ -214,5 +215,13 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	}
 	return _calendar;
 }
+
+- (A3CacheStoreManager *)cacheStoreManager {
+	if (!_cacheStoreManager) {
+		_cacheStoreManager = [A3CacheStoreManager new];
+	}
+	return _cacheStoreManager;
+}
+
 
 @end

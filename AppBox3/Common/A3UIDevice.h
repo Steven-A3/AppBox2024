@@ -62,4 +62,11 @@
 
 + (BOOL)hasCellularNetwork;
 
+// KJH
++ (NSString *)platform;
++ (NSString *)platformString;
+#pragma mark - Methods
++ (NSString *)totalDiskSpace;
++ (NSString *)freeDiskSpace;
++ (NSString *)usedDiskSpace;
 @end

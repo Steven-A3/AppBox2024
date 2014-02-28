@@ -12,6 +12,7 @@
 #import "CurrencyRateItem.h"
 #import "A3CurrencyDataManager.h"
 #import "Reachability.h"
+#import "A3CacheStoreManager.h"
 
 @implementation A3AppDelegate
 

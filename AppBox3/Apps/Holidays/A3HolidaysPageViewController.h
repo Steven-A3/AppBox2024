@@ -8,9 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol A3HolidaysPageViewControllerDelegate <NSObject>
+@protocol A3HolidaysPageViewControllerProtocol <NSObject>
 - (void)setNavigationBarHidden:(BOOL)hidden;
 - (void)updatePhotoLabelText;
+- (NSString *)stringFromDate:(NSDate *)date;
+- (NSString *)lunarStringFromDate:(NSDate *)date;
+
 @end
 
 @interface A3HolidaysPageViewController : UIViewController

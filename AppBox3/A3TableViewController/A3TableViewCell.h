@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) UIView *customTopSeparator;
 @property (nonatomic, strong) UIView *customSeparator;
+@property (assign) CGFloat leftSeparatorInset; // KJH, separatorInset 이 특수한 경우를 위하여 추가하였습니다.
 
 - (void)showTopSeparator;
 

@@ -735,19 +735,4 @@ NSString *const kA3TimeZoneName = @"kA3TimeZoneName";
 	return nil;
 }
 
-+ (NSDateFormatter *)dateFormatter {
-	NSDateFormatter *df = [NSDateFormatter new];
-	if (IS_IPHONE) {
-		[df setDateFormat:@"EEE, MMM d"];
-	} else {
-		[df setDateStyle:NSDateFormatterFullStyle];
-
-		NSString *formatString = [df dateFormat];
-		formatString = [formatString stringByReplacingOccurrencesOfString:@"y" withString:@""];
-		formatString = [formatString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@", "]];
-		[df setDateFormat:formatString];
-	}
-	return df;
-}
-
 @end

@@ -19,7 +19,7 @@
 - (CGFloat)standardHeightForFooterInSection:(NSInteger)section {
 	NSInteger numberOfSection = [self.tableView numberOfSections];
 	if (section == numberOfSection - 1) return 35;
-	return IS_RETINA ? 17.5 : 18;
+	return 17;
 }
 
 @end

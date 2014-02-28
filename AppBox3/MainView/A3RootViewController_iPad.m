@@ -70,9 +70,14 @@ static const CGFloat kSideViewWidth = 319.0;
 - (void)layoutSubviews {
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 
-	[_centerCoverView setHidden:YES];
 	if (IS_PORTRAIT || [self useFullScreenInLandscapeForCurrentTopViewController]) {
 		self.centerNavigationController.view.frame = bounds;
+        // KJH
+        A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+        if (presentedViewController) {
+            presentedViewController.view.frame = bounds;
+        }
+
 		if (self.showLeftView) {
 			_leftNavigationController.view.frame = CGRectMake(0,0,kSideViewWidth, bounds.size.height);
 			_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
@@ -84,16 +89,28 @@ static const CGFloat kSideViewWidth = 319.0;
 		} else {
 			_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
 			_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
+			[_centerCoverView setHidden:YES];
 		}
 	} else {
 		CGFloat centerViewWidth = 704.0;
 
-		[_centerCoverView setHidden:YES];
+		if (![self useFullScreenInLandscapeForCurrentTopViewController]) {
+			[_centerCoverView setHidden:YES];
+			_showLeftView = NO;
+		} else {
+			[_centerCoverView setHidden:!_showLeftView];
+		}
 		if (self.showRightView) {
 			CGRect frame = CGRectMake(-kSideViewWidth - 1, 0, kSideViewWidth, bounds.size.height);
 			_leftNavigationController.view.frame = frame;
 			frame = CGRectMake(0, 0, centerViewWidth, bounds.size.height);
 			_centerNavigationController.view.frame = frame;
+            // KJH
+            A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+            if (presentedViewController) {
+                presentedViewController.view.frame = frame;
+            }
+            
 			frame = CGRectMake(centerViewWidth + 1.0, 0, kSideViewWidth, bounds.size.height);
 			_rightNavigationController.view.frame = frame;
 			[self bringUpCenterCoverView];
@@ -102,6 +119,11 @@ static const CGFloat kSideViewWidth = 319.0;
 			_leftNavigationController.view.frame = frame;
 			frame = CGRectMake(kSideViewWidth + 1.0, 0, centerViewWidth, bounds.size.height);
 			_centerNavigationController.view.frame = frame;
+            // KJH
+            for (A3NavigationController *presentedViewController in _presentViewControllers) {
+                presentedViewController.view.frame = frame;
+            }
+            
 			frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
 			_rightNavigationController.view.frame = frame;
 		}
@@ -111,7 +133,22 @@ static const CGFloat kSideViewWidth = 319.0;
 - (void)bringUpCenterCoverView {
 	[_centerCoverView setHidden:NO];
 	_centerCoverView.frame = _centerNavigationController.view.bounds;
-	[_centerNavigationController.view bringSubviewToFront:_centerCoverView];
+//    [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
+
+    // KJH
+    A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+    if (presentedViewController) {
+        if (![_centerCoverView.superview isEqual:presentedViewController.view]) {
+            [presentedViewController.view addSubview:_centerCoverView];
+        }
+        [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
+        
+    } else {
+        if (![_centerCoverView.superview isEqual:_centerNavigationController.view]) {
+            [_centerNavigationController.view addSubview:_centerCoverView];
+        }
+        [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -199,12 +236,36 @@ static const CGFloat kSideViewWidth = 319.0;
 - (UIView *)centerCoverView {
 	if (!_centerCoverView) {
 		_centerCoverView = [UIView new];
+		_centerCoverView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		_centerCoverView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 		UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCoverViewHandler:)];
 		[_centerCoverView addGestureRecognizer:gestureRecognizer];
 		[self.centerNavigationController.view addSubview:_centerCoverView];
 	}
 	return _centerCoverView;
+}
+
+// KJH
+- (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController {
+    viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [sourceViewController presentViewController:viewController animated:YES completion:^{
+        if (!_presentViewControllers) {
+            _presentViewControllers = [NSMutableArray new];
+        }
+        [_presentViewControllers addObject:viewController];
+    }];
+}
+
+// KJH
+- (void)dismissCenterViewController {
+    if (!_presentViewControllers || [_presentViewControllers count] == 0) {
+        return;
+    }
+    
+    [[[[_presentViewControllers lastObject] childViewControllers] lastObject] dismissViewControllerAnimated:YES completion:^{
+        [_presentViewControllers removeLastObject];
+    }];
+
 }
 
 - (void)presentRightSideViewController:(UIViewController *)viewController {
@@ -231,9 +292,54 @@ static const CGFloat kSideViewWidth = 319.0;
 			CGRect centerViewFrame = _centerNavigationController.view.frame;
 			centerViewFrame.origin.x = 0;
 			_centerNavigationController.view.frame = centerViewFrame;
+            // KJH
+            A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+            if (presentedViewController) {
+                presentedViewController.view.frame = centerViewFrame;
+            }
 		}
 		CGRect sideViewFrame = _rightNavigationController.view.frame;
 		sideViewFrame.origin.x -= kSideViewWidth;
+		_rightNavigationController.view.frame = sideViewFrame;
+	} completion:^(BOOL finished) {
+	}];
+}
+
+- (void)presentDownSideViewController:(UIViewController *)viewController {
+	_showRightView = YES;
+    _showLeftView = NO;
+    
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	_rightNavigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+	CGRect frame = _centerNavigationController.view.frame;
+	//frame.origin.x = screenBounds.size.width;
+    //frame.origin.x = screenBounds.size.width;
+    frame.origin.y = screenBounds.size.height;
+	frame.size.width = kSideViewWidth;
+	_rightNavigationController.view.frame = frame;
+	[self addChildViewController:_rightNavigationController];
+	[self.view addSubview:_rightNavigationController.view];
+    
+	[UIView animateWithDuration:0.3 animations:^{
+		if (IS_LANDSCAPE) {
+			BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
+			if (!useFullScreenInLandscape) {
+                CGRect frame = _leftNavigationController.view.frame;
+                frame.origin.x -= kSideViewWidth;
+                _leftNavigationController.view.frame = frame;
+            }
+			CGRect centerViewFrame = _centerNavigationController.view.frame;
+			centerViewFrame.origin.x = 0;
+			_centerNavigationController.view.frame = centerViewFrame;
+            // KJH
+            A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+            if (presentedViewController) {
+                presentedViewController.view.frame = centerViewFrame;
+            }
+		}
+		CGRect sideViewFrame = _rightNavigationController.view.frame;
+		//sideViewFrame.origin.x -= kSideViewWidth;
+        sideViewFrame.origin.y = 0;
 		_rightNavigationController.view.frame = sideViewFrame;
 	} completion:^(BOOL finished) {
 	}];
@@ -272,6 +378,11 @@ static const CGFloat kSideViewWidth = 319.0;
 				frame = _centerNavigationController.view.frame;
 				frame.size.width = bounds.size.width;
 				_centerNavigationController.view.frame = frame;
+                // KJH
+                A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+                if (presentedViewController) {
+                    presentedViewController.view.frame = frame;
+                }
 			} else {
 				// C-R >> L-C
 				// In landscape, leftSideView will always appear unless centerView does not show full screen
@@ -282,6 +393,11 @@ static const CGFloat kSideViewWidth = 319.0;
                 frame = _centerNavigationController.view.frame;
                 frame.origin.x += kSideViewWidth + 1;
                 _centerNavigationController.view.frame = frame;
+                // KJH
+                A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+                if (presentedViewController) {
+                    presentedViewController.view.frame = frame;
+                }
                 
 				frame = _leftNavigationController.view.frame;
 				frame.origin.x = 0;
@@ -298,12 +414,6 @@ static const CGFloat kSideViewWidth = 319.0;
 		[_rightNavigationController removeFromParentViewController];
 		_rightNavigationController = nil;
 	}];
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	_showLeftView = NO;
 }
 
 @end

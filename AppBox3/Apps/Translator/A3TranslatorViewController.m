@@ -20,13 +20,17 @@
 #import "common.h"
 #import "UIView+Screenshot.h"
 #import "UIViewController+A3Addition.h"
+#import "TranslatorGroup.h"
+#import "A3TranslatorLanguage.h"
+#import "TranslatorFavorite.h"
+#import "FMMoveTableView.h"
+#import "NSMutableArray+A3Sort.h"
 
-@interface A3TranslatorViewController () <UITableViewDataSource, UITableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
+@interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
-@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic, strong) NSMutableArray *fetchedResults;
 @property (nonatomic, strong) A3TranslatorFavoriteDataSource *favoriteDataSource;
 
 @end
@@ -34,7 +38,8 @@
 @implementation A3TranslatorViewController
 
 - (void)cleanUp {
-	_fetchedResults = nil;
+	[self removeObserver];
+
 	_fetchedResultsController = nil;
 	_segmentedControl = nil;
 	_tableView = nil;
@@ -48,7 +53,6 @@
     if (self) {
 		// Custom initialization
 		self.title = @"Translator";
-		[self fetchedResults];
 	}
     return self;
 }
@@ -67,7 +71,6 @@
 			[self leftBarButtonAppsButton];
 		}
 
-		[self setupRightBarButton];
 		[self setupSubviews];
 
 		[self registerContentSizeCategoryDidChangeNotification];
@@ -76,50 +79,17 @@
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
-	@autoreleasepool {
-		if ([self.tableView isEditing]) {
-			[self editButtonAction:self.navigationItem.rightBarButtonItem];
-		}
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self setupRightBarButton];
-}
-
-- (void)setupRightBarButton {
-	@autoreleasepool {
-		if (_segmentedControl.selectedSegmentIndex == 0) {
-			if (![_fetchedResults count]) {
-				[_tableView setEditing:NO];
-				self.navigationItem.rightBarButtonItem = nil;
-				[self leftBarButtonAppsButton];
-			} else
-			if ([_tableView isEditing]) {
-				self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonAction:)];
-				self.navigationItem.leftBarButtonItem = nil;
-			} else {
-				self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit	target:self action:@selector(editButtonAction:)];
-				[self leftBarButtonAppsButton];
-			}
-		} else {
-			self.navigationItem.rightBarButtonItem = nil;
-			[self leftBarButtonAppsButton];
-		}
-	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
 	@autoreleasepool {
 		[self.tableView reloadData];
 	}
-}
-
-- (void)dealloc {
-	[self removeObserver];
-    FNLOG();
 }
 
 #pragma mark - Setup Subview
@@ -152,7 +122,7 @@
 			make.height.equalTo(@1.0);
 		}];
 
-		_tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+		_tableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		_tableView.dataSource = self;
 		_tableView.delegate = self;
 		[self.view addSubview:_tableView];
@@ -171,7 +141,9 @@
 
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.centerX);
-			make.bottom.equalTo(self.view.bottom).with.offset(-15.0);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
+			make.bottom.equalTo(self.view.bottom).with.offset(-10.5);
 		}];
 	}
 }
@@ -179,14 +151,10 @@
 - (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
 	@autoreleasepool {
 		if (segmentedControl.selectedSegmentIndex == 0) {
-			[self setupRightBarButton];
-
 			self.tableView.dataSource = self;
 			self.tableView.delegate = self;
 			[self.tableView reloadData];
 		} else {
-			[self.tableView setEditing:NO];
-
 			self.navigationItem.rightBarButtonItem = nil;
 
 			[self.favoriteDataSource resetData];
@@ -205,16 +173,14 @@
 	return _favoriteDataSource;
 }
 
-- (void)translatorFavoriteItemSelected:(TranslatorHistory *)item {
-	@autoreleasepool {
-		A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+- (void)translatorFavoriteItemSelected:(TranslatorFavorite *)item {
+	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
 
-		viewController.originalTextLanguage = item.originalLanguage;
-		viewController.translatedTextLanguage = item.translatedLanguage;
-		viewController.delegate = self;
-		viewController.selectItem = item;
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
+	viewController.originalTextLanguage = item.text.group.sourceLanguage;
+	viewController.translatedTextLanguage = item.text.group.targetLanguage;
+	viewController.delegate = self;
+	viewController.selectItem = item.text;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -230,17 +196,9 @@
 }
 
 - (void)addButtonAction {
-	@autoreleasepool {
-		A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
-		viewController.delegate = self;
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
-}
-
-- (void)editButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self.tableView setEditing:!self.tableView.isEditing];
-
-	[self setupRightBarButton];
+	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+	viewController.delegate = self;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -252,32 +210,15 @@
 #pragma mark - UITableView Data Source
 
 - (NSFetchedResultsController *)fetchedResultsController {
-	@autoreleasepool {
-		if (!_fetchedResultsController) {
-			_fetchedResultsController = [TranslatorHistory MR_fetchAllSortedBy:@"originalLanguage,translatedLanguage" ascending:YES withPredicate:nil groupBy:@"languageGroup" delegate:nil];
-		}
+	if (!_fetchedResultsController) {
+		_fetchedResultsController = [TranslatorGroup MR_fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
 	}
 
 	return _fetchedResultsController;
 }
 
-- (NSMutableArray *)fetchedResults {
-	@autoreleasepool {
-		if (!_fetchedResults) {
-			NSMutableArray *sortedByDateArray = [NSMutableArray arrayWithArray:[self.fetchedResultsController sections]];
-
-			[sortedByDateArray sortUsingComparator:^NSComparisonResult(id <NSFetchedResultsSectionInfo> obj1, id <NSFetchedResultsSectionInfo> obj2) {
-				return [[obj2.objects valueForKeyPath:@"@max.date"] compare:[obj1.objects valueForKeyPath:@"@max.date"]];
-			}];
-			_fetchedResults = sortedByDateArray;
-		}
-	}
-
-	return _fetchedResults;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [self.fetchedResults count];
+	return [self.fetchedResultsController.fetchedObjects count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -296,16 +237,6 @@
 			iPhone_cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 			iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
 
-			id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
-
-			iPhone_cell.textLabel.text = sectionInfo.name;
-			A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-			circleView.textLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[sectionInfo numberOfObjects]];
-			iPhone_cell.imageView.image = [circleView imageByRenderingView];
-
-			iPhone_cell.detailTextLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgo];
-			iPhone_cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
 			cell = iPhone_cell;
 		} else {
 			A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
@@ -314,18 +245,20 @@
 				iPad_cell = [[A3TranslatorListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
 			}
 
-			id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
-
-			iPad_cell.textLabel.text = sectionInfo.name;
-			A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-			circleView.textLabel.text = [NSString stringWithFormat:@"%lu", (unsigned long)[sectionInfo numberOfObjects]];
-			iPad_cell.imageView.image = [circleView imageByRenderingView];
-
-			iPad_cell.dateLabel.text = [[sectionInfo.objects valueForKeyPath:@"@max.date"] timeAgo];
-			iPad_cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
 			cell = iPad_cell;
 		}
+		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+
+		cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@",
+														 [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
+														 [A3TranslatorLanguage localizedNameForCode:group.targetLanguage]];
+
+		A3TranslatorCircleView *circleView = [[A3TranslatorCircleView alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+		circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[group.texts count]];
+		cell.imageView.image = [circleView imageByRenderingView];
+
+		cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
+		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 
 	return cell;
@@ -336,17 +269,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-	@autoreleasepool {
-		if (editingStyle == UITableViewCellEditingStyleDelete) {
-			id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"originalLanguage == %@ AND translatedLanguage == %@", [sectionInfo.objects[0] valueForKeyPath:@"originalLanguage"],  [sectionInfo.objects[0] valueForKeyPath:@"translatedLanguage"]];
-			[TranslatorHistory MR_deleteAllMatchingPredicate:predicate];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+		[group MR_deleteEntity];
 
-			[self.fetchedResults removeObjectAtIndex:indexPath.row];
-			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-		}
-		[self setupRightBarButton];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		[self.fetchedResultsController performFetch:nil];
+
+		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 	}
 }
 
@@ -357,30 +288,34 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	@autoreleasepool {
-		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-		A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
-		id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResults[indexPath.row];
-		viewController.originalTextLanguage = [sectionInfo.objects[0] valueForKeyPath:@"originalLanguage"];
-		viewController.translatedTextLanguage = [sectionInfo.objects[0] valueForKeyPath:@"translatedLanguage"];
-		viewController.delegate = self;
-		[self.navigationController pushViewController:viewController animated:YES];
-	}
+	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
+	TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+
+	viewController.originalTextLanguage = group.sourceLanguage;
+	viewController.translatedTextLanguage = group.targetLanguage;
+	viewController.delegate = self;
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)translatorMessageViewControllerWillDismiss:(id)viewController {
-	@autoreleasepool {
-		if (_segmentedControl.selectedSegmentIndex == 0) {
-			_fetchedResults = nil;
-			_fetchedResultsController = nil;
-		} else {
-			[_favoriteDataSource resetData];
-		}
-		[self.tableView reloadData];
-
-		[self setupRightBarButton];
+	if (_segmentedControl.selectedSegmentIndex == 0) {
+		[self.fetchedResultsController performFetch:nil];
+	} else {
+		[_favoriteDataSource resetData];
 	}
+	[self.tableView reloadData];
+}
+
+#pragma mark --- FMMoveTableVeiwDelegate
+
+- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
+	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	_fetchedResultsController = nil;
 }
 
 @end

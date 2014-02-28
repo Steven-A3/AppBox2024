@@ -13,6 +13,9 @@
 #import "common.h"
 #import "NSDate+TimeAgo.h"
 #import "SFKImage.h"
+#import "TranslatorFavorite.h"
+#import "NSString+conversion.h"
+#import "TranslatorHistory+manager.h"
 
 @interface A3TranslatorMessageCell ()
 
@@ -307,8 +310,8 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (void)changeFavoriteButtonImage {
 	UIImage *image;
-	if (_messageEntity.favorite.boolValue) {
-		image = [UIImage imageNamed:@"star02_full"];
+	if (_messageEntity.favorite) {
+		image = [UIImage imageNamed:@"star02_on"];
 	} else {
 		image = [UIImage imageNamed:@"star02"];
 	}
@@ -316,8 +319,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 }
 
 - (void)favoriteButtonAction {
-	_messageEntity.favorite = @(!_messageEntity.favorite.boolValue);
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	[_messageEntity setAsFavoriteMember:_messageEntity.favorite == nil];
 
 	[self changeFavoriteButtonImage];
 }

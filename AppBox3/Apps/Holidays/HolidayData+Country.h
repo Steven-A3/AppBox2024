@@ -22,8 +22,6 @@ extern NSString *const kA3TimeZoneName;
 
 - (NSDictionary *)firstUpcomingHolidaysForCountry:(NSString *)countryCode;
 
-+ (NSDateFormatter *)dateFormatter;
-
 + (id)keyForExcludedHolidaysForCountry:(NSString *)countryCode;
 
 + (BOOL)needToShowLunarDatesForCountryCode:(NSString *)countryCode;

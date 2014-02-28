@@ -235,6 +235,16 @@
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 }
 
+- (void)setDate:(NSDate *)date {
+	_date = date;
+	if (date) {
+		_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
+	} else {
+		_dateComponents = nil;
+	}
+}
+
+
 - (NSDateComponents *)dateComponents {
 	if (!_dateComponents) {
 		_dateComponents = [self.gregorian components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:[NSDate date]];

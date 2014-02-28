@@ -25,7 +25,7 @@
 
 - (UIImage *)activityImage
 {
-    return [UIImage imageNamed:@"general"];
+    return [UIImage imageNamed: IS_IPAD ? @"share_safari_iPad" : @"share_safari"];
 }
 
 - (BOOL)canPerformWithActivityItems:(NSArray *)activityItems

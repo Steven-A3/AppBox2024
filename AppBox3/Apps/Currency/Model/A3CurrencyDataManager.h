@@ -10,7 +10,6 @@
 
 @class CurrencyFavorite;
 @class CurrencyRateItem;
-@class A3CacheStoreManager;
 
 extern NSString *const A3NotificationCurrencyRatesUpdated;
 extern NSString *const A3KeyCurrencyCode;

@@ -12,7 +12,7 @@
 @interface A3HolidaysPageContentViewController : UIViewController
 
 @property (nonatomic, copy) NSString *countryCode;
-@property (nonatomic, weak) id<A3HolidaysPageViewControllerDelegate> pageViewController;
+@property (nonatomic, weak) id<A3HolidaysPageViewControllerProtocol> pageViewController;
 
 - (instancetype)initWithCountryCode:(NSString *)countryCode;
 

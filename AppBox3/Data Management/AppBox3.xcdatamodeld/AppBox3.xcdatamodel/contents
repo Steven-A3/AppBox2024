@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13B42" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="currencySymbol" optional="YES" attributeType="String" syncable="YES"/>
@@ -93,14 +93,27 @@
         <attribute name="salePrice" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tax" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="TranslatorFavorite" representedClassName="TranslatorFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="text" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TranslatorHistory" inverseName="favorite" inverseEntity="TranslatorHistory" syncable="YES"/>
+    </entity>
+    <entity name="TranslatorGroup" representedClassName="TranslatorGroup" syncable="YES">
+        <attribute name="order" attributeType="String" syncable="YES"/>
+        <attribute name="sourceLanguage" attributeType="String" syncable="YES"/>
+        <attribute name="targetLanguage" attributeType="String" syncable="YES"/>
+        <relationship name="texts" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="TranslatorHistory" inverseName="group" inverseEntity="TranslatorHistory" syncable="YES"/>
+    </entity>
     <entity name="TranslatorHistory" representedClassName="TranslatorHistory" syncable="YES">
-        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="favorite" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="languageGroup" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalLanguage" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalText" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="translatedLanguage" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="date" attributeType="Date" syncable="YES"/>
+        <attribute name="originalText" attributeType="String" syncable="YES"/>
         <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TranslatorFavorite" inverseName="text" inverseEntity="TranslatorFavorite" syncable="YES"/>
+        <relationship name="group" maxCount="1" deletionRule="Nullify" destinationEntity="TranslatorGroup" inverseName="texts" inverseEntity="TranslatorGroup" syncable="YES"/>
+        <compoundIndexes>
+            <compoundIndex>
+                <index value="date"/>
+            </compoundIndex>
+        </compoundIndexes>
     </entity>
     <elements>
         <element name="CurrencyFavorite" positionX="0" positionY="0" width="0" height="0"/>
@@ -111,6 +124,8 @@
         <element name="ExpenseDetail" positionX="0" positionY="0" width="0" height="0"/>
         <element name="LoanCalcHistory" positionX="0" positionY="0" width="0" height="0"/>
         <element name="SalesCalcHistory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TranslatorFavorite" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="TranslatorGroup" positionX="0" positionY="0" width="0" height="0"/>
         <element name="TranslatorHistory" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

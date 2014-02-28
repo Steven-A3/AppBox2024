@@ -12,7 +12,6 @@
 #import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 #import "A3ActivitySafari.h"
-#import "A3UIDevice.h"
 
 @interface A3BasicWebViewController () <UIWebViewDelegate, NJKWebViewProgressDelegate, UIPopoverControllerDelegate>
 @property (nonatomic, strong) UIWebView * webView;
@@ -37,13 +36,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
+	self.view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+
 	// Do any additional setup after loading the view.
     //[self makeBackButtonEmptyArrow];
     [self makeBackButtonEmptyArrow];
     self.title = @"Information";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
-    
+
+	if (IS_IPAD) {
+		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction)];
+	}
+
     // WebView & Progress
     _progressProxy = [[NJKWebViewProgress alloc] init];
     _progressProxy.webViewProxyDelegate = self;
@@ -53,25 +58,33 @@
     _webView.delegate = self;
     _webView.delegate = _progressProxy;
     _webView.scalesPageToFit =  YES; // 100% 이상의 스케일에 대하여, http://stackoverflow.com/questions/16418645/uiwebview-pinch-zoom-not-working-beyond-a-certain-limit
+	_webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     [self.view addSubview:_webView];
     
-    CGFloat progressBarHeight = 2.5f;
-    CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
-    CGRect barFrame = CGRectMake(0, navigaitonBarBounds.size.height - progressBarHeight, navigaitonBarBounds.size.width, progressBarHeight);
-    _progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
-    
-    // 페이지 로드
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:self.url];
     [_webView loadRequest:request];
+}
+
+- (void)doneAction {
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
+	FNLOG();
+
     _webView.frame = self.view.frame;
-    [self.navigationController.navigationBar addSubview:_progressView];
+
+	if ([self isMovingToParentViewController]) {
+		CGFloat progressBarHeight = 2.5f;
+		CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
+		CGRect barFrame = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight);
+		_progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
+		[self.navigationController.navigationBar addSubview:_progressView];
+	}
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -80,7 +93,17 @@
     
     // Remove progress view
     // because UINavigationBar is shared with other ViewControllers
+    self.popoverVC.delegate = nil;
+    [self.popoverVC dismissPopoverAnimated:YES];
+
     [_progressView removeFromSuperview];
+}
+
+- (void)viewDidLayoutSubviews {
+	CGFloat progressBarHeight = 2.5f;
+	CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
+	CGRect barFrame = CGRectMake(0, navigationBarBounds.size.height - progressBarHeight, navigationBarBounds.size.width, progressBarHeight);
+	_progressView.frame = barFrame;
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,18 +112,34 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Actions
+
 - (void)shareAction
 {
     NSArray *items = [NSArray arrayWithObjects:_url, nil];
     NSArray *activities = @[[[A3ActivitySafari alloc] init]];
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items
                                                                                      applicationActivities:activities];
-    
 	if (IS_IPHONE) {
-		[self presentViewController:activityController animated:YES completion:NULL];
+		[self.navigationItem.rightBarButtonItem setEnabled:NO];
+		UIView *emptyView = [UIView new];
+		UIBarButtonItem *emptyButton = [[UIBarButtonItem alloc] initWithCustomView:emptyView];
+		self.navigationItem.leftBarButtonItem = emptyButton;
+
+		[self.navigationController presentViewController:activityController animated:YES completion:NULL];
+        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed){
+			self.navigationItem.leftBarButtonItem = nil;
+			[self.navigationItem.rightBarButtonItem setEnabled:YES];
+        }];
 	} else {
+		[self.navigationItem.leftBarButtonItem setEnabled:NO];
+		[self.navigationItem.rightBarButtonItem setEnabled:NO];
+		activityController.completionHandler = ^(NSString *activityType, BOOL completed) {
+			[self.navigationItem.leftBarButtonItem setEnabled:YES];
+			[self.navigationItem.rightBarButtonItem setEnabled:YES];
+		};
+
 		self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:activityController];
-        self.popoverVC.delegate = self;
 		[self.popoverVC presentPopoverFromBarButtonItem:self.navigationItem.rightBarButtonItem
                                permittedArrowDirections:UIPopoverArrowDirectionAny
                                                animated:YES];
@@ -124,6 +163,9 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     FNLOG(@"%@", error);
+//    [_progressView setProgress:0.0 animated:YES];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"Internet Connection is not avaiable" delegate:self cancelButtonTitle:@"dismiss" otherButtonTitles:nil, nil];
+//    [alert show];
 }
 
 

@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @protocol A3HolidaysEditViewControllerDelegate;
+@protocol A3HolidaysPageViewControllerProtocol;
 
 @interface A3HolidaysEditViewController : UITableViewController
 
 @property (nonatomic, weak) id<A3HolidaysEditViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<A3HolidaysPageViewControllerProtocol> pageViewController;
 @property (nonatomic, copy) NSString *countryCode;
 
 @end

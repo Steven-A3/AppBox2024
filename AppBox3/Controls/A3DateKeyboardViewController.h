@@ -39,11 +39,17 @@
 @property (nonatomic, weak)	UILabel	*displayLabel;
 @property (nonatomic, weak) id<A3DateKeyboardDelegate> delegate;
 @property (nonatomic, strong) NSDateComponents *dateComponents;
+@property (nonatomic, strong) NSDate *date;
 @property (nonatomic, assign) BOOL isLunarDate;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
 - (void)initExtraLabels;
 - (IBAction)switchToYear;
+
+- (IBAction)switchToMonth;
+
+- (IBAction)switchToDay;
+
 - (NSArray *)monthOrder;
 - (NSArray *)numberOrder;
 - (IBAction)numberButtonAction:(UIButton *)button;

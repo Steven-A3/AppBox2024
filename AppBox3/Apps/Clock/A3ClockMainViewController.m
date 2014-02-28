@@ -77,7 +77,7 @@
 	[_clockAppsButton setTitle:@"Apps" forState:UIControlStateNormal];
 	_clockAppsButton.titleLabel.font = [UIFont systemFontOfSize:17];
 	[_clockAppsButton sizeToFit];
-	[_clockAppsButton addTarget:self action:@selector(appsButtonAction) forControlEvents:UIControlEventTouchUpInside];
+	[_clockAppsButton addTarget:self action:@selector(appsButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 	[_clockAppsButton setHidden:YES];
 	[self.view addSubview:_clockAppsButton];
 
@@ -237,7 +237,7 @@
 	return _clockLEDViewController;
 }
 
-- (void)appsButtonAction {
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:^(BOOL finished) {
 			[self.scrollView setScrollEnabled:self.mm_drawerController.openSide == MMDrawerSideNone];

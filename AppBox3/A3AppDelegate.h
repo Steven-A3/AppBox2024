@@ -14,6 +14,7 @@
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
+@class A3CacheStoreManager;
 
 extern NSString *const kA3AppsMenuName;
 extern NSString *const kA3AppsMenuCollapsed;
@@ -66,6 +67,7 @@ extern NSString *const kA3ThemeColorIndex;
 @property (assign, nonatomic) BOOL coreDataReadyToUse;
 @property (strong, nonatomic) Reachability *reachability;
 @property (strong, nonatomic) NSCalendar *calendar;
+@property (strong, nonatomic) A3CacheStoreManager *cacheStoreManager;
 
 + (A3AppDelegate *)instance;
 

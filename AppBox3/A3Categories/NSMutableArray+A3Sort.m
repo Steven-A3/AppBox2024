@@ -30,20 +30,24 @@ NSString *const A3CommonPropertyOrder = @"order";
 
 - (void)moveItemInSortedArrayFromIndex:(NSInteger)fromIndex toIndex:(NSInteger)toIndex {
 	FNLOG(@"%ld, %ld", (long)fromIndex, (long)toIndex);
+
 	if (fromIndex == toIndex) {
 		return;
 	}
 	id fromObject = self[fromIndex];
 	id toObject = self[toIndex];
 
-	NSString *toOrder = [toObject valueForKey:A3CommonPropertyOrder];
-	[toObject setValue:[fromObject valueForKey:A3CommonPropertyOrder] forKey:A3CommonPropertyOrder];
-	[fromObject setValue:toOrder forKey:A3CommonPropertyOrder];
+	if (abs(fromIndex - toIndex) == 1) {
 
-	[self moveObjectFromIndex:fromIndex toIndex:toIndex];
+		NSString *toOrder = [toObject valueForKey:A3CommonPropertyOrder];
+		[toObject setValue:[fromObject valueForKey:A3CommonPropertyOrder] forKey:A3CommonPropertyOrder];
+		[fromObject setValue:toOrder forKey:A3CommonPropertyOrder];
 
-	return;
-	
+		[self moveObjectFromIndex:fromIndex toIndex:toIndex];
+
+		return;
+	}
+
 	void (^resetOrder)() = ^() {
 		[self moveObjectFromIndex:fromIndex toIndex:toIndex];
 		[self resetAllOrderValue];

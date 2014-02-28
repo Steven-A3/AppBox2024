@@ -21,10 +21,13 @@
 #import "Reachability.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
+#import "TranslatorGroup.h"
+#import "NSString+conversion.h"
+#import "TranslatorHistory+manager.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
-@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate, UIPopoverControllerDelegate>
+@interface A3TranslatorMessageViewController () <UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, A3TranslatorMessageCellDelegate, UIKeyInput, A3TranslatorLanguageTVDelegateDelegate, A3SearchViewControllerDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate>
 
 // Language Select
 @property (nonatomic, strong) UIView *languageSelectView;
@@ -48,7 +51,10 @@ static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 @property (nonatomic, strong) UIButton *setSourceLanguageButton;
 @property (nonatomic, strong) UIButton *setTargetLanguageButton;
 @property (nonatomic, strong) NSLayoutConstraint *setTargetLanguageButtonConstraint;
+
+@property (nonatomic, strong) TranslatorGroup *group;
 @property (nonatomic, strong) TranslatorHistory *translatingMessage;
+
 @property (nonatomic, strong) UIBarButtonItem *toolbarDeleteButton;
 @property (nonatomic, strong) UIBarButtonItem *toolbarSetFavoriteButton;
 @property (nonatomic, strong) UIBarButtonItem *toolbarUnsetFavoriteButton;
@@ -89,7 +95,6 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if ([_translatedTextLanguage length]) {
 		[self setTitleWithSelectedLanguage];
 		[self setupMessageTableView];
-		[self rightBarButtonEditButton];
 	} else {
 		self.title = @"New Translator";
 
@@ -107,6 +112,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityDidChange:) name:kReachabilityChangedNotification object:nil];
+
+	[self setupBarButtons];
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
@@ -239,13 +246,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 
 - (void)editButtonAction {
 	[_messageTableView setEditing:!_messageTableView.isEditing animated:YES];
-	if ([_messageTableView isEditing]) {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonAction)];
-		self.navigationItem.hidesBackButton = YES;
-	} else {
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonAction)];
-		self.navigationItem.hidesBackButton = NO;
-	}
+	[self setupBarButtons];
 
 	if (_messageTableView.isEditing) {
 		[_textEntryBarView setHidden:YES];
@@ -260,6 +261,18 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}
 	[self resignFirstResponder];
 	[_textView resignFirstResponder];
+}
+
+- (void)deleteAllAction:(UIBarButtonItem *)barButtonItem {
+	UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Translations" otherButtonTitles:nil];
+	askDeleteAll.tag = 192874;
+	[askDeleteAll showInView:self.view];
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (actionSheet.tag == 192874 && buttonIndex == actionSheet.destructiveButtonIndex) {
+		[self deleteAllMessages];
+	}
 }
 
 #pragma mark - Language Select View
@@ -592,7 +605,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 		[_sameLanguagePrompter makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.view.left);
 			make.right.equalTo(self.view.right);
-			make.top.equalTo(_languageSelectView.bottom);
+			make.top.equalTo(_languageSelectView ? _languageSelectView.bottom : self.view.bottom);
 			make.height.equalTo(@30);
 		}];
 
@@ -751,12 +764,38 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if ([_textView.text length]) {
 		_translateButton.enabled = NO;
 
+		if (_group && (![_group.sourceLanguage isEqualToString:_originalTextLanguage] || ![_group.targetLanguage isEqualToString:_translatedTextLanguage])) {
+			_group = nil;
+		}
+
+		if (!_group) {
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceLanguage == %@ AND targetLanguage == %@", _originalTextLanguage, _translatedTextLanguage];
+			NSArray *groupCandidates = [TranslatorGroup MR_findAllWithPredicate:predicate];
+			if ([groupCandidates count] == 1) {
+				_group = groupCandidates[0];
+			} else if (![groupCandidates count]) {
+				_group = [TranslatorGroup MR_createEntity];
+				_group.sourceLanguage = _originalTextLanguage;
+				_group.targetLanguage = _translatedTextLanguage;
+
+				NSString *largestInOrder = [TranslatorGroup MR_findLargestValueForAttribute:@"order"];
+				NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
+				FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);
+
+				_group.order = nextLargestInOrder;
+
+			} else {
+				FNLOG(@"Group exists more than 1.");
+				return;
+			}
+		}
+
 		_translatingMessage = [TranslatorHistory MR_createEntity];
+		_translatingMessage.group = _group;
 		_translatingMessage.originalText = _textView.text;
-		_translatingMessage.originalLanguage = _originalTextLanguage;
-		_translatingMessage.translatedLanguage = _translatedTextLanguage;
 		self.originalText = _textView.text; // Save to async operation
 		_translatingMessage.date = [NSDate date];
+
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 		_messages = nil;
@@ -779,6 +818,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 			[self layoutTextEntryBarViewAnimated:YES ];
 		}
 		_textView.text = @"";
+
+		[self setupBarButtons];
 	}
 }
 
@@ -859,8 +900,8 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	[translated replaceOccurrencesOfString:@"&#39;" withString:@"'" options:0 range:NSMakeRange(0, [translated length])];
 
 	_translatingMessage.translatedText = translated;
-	_translatingMessage.originalLanguage = detectedLanguage;
-	_translatingMessage.translatedLanguage = _translatedTextLanguage;
+	_translatingMessage.group.sourceLanguage = detectedLanguage;
+	_translatingMessage.group.targetLanguage = _translatedTextLanguage;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
@@ -944,11 +985,13 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 					_originalTextLanguage != nil &&
 					!sameLanguageSelected ];
 
-	if (sameLanguageSelected) {
-		[self sameLanguagePrompter];
-	} else if (_sameLanguagePrompter) {
-		[_sameLanguagePrompter removeFromSuperview];
-		_sameLanguagePrompter = nil;
+	if (_languageSelectView) {
+		if (sameLanguageSelected) {
+			[self sameLanguagePrompter];
+		} else if (_sameLanguagePrompter) {
+			[_sameLanguagePrompter removeFromSuperview];
+			_sameLanguagePrompter = nil;
+		}
 	}
 }
 
@@ -968,16 +1011,6 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 			[self scrollToBottomAnimated:animated];
 		}
 	});
-}
-
-#pragma mark - messages
-
-- (NSArray *)messages {
-	if (!_messages) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"originalLanguage == %@ AND translatedLanguage == %@", _originalTextLanguage, _translatedTextLanguage];
-		_messages = [TranslatorHistory MR_findAllSortedBy:@"date" ascending:YES withPredicate:predicate];
-	}
-	return _messages;
 }
 
 #pragma mark - UITableViewDataSource
@@ -1250,7 +1283,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	NSMutableString *shareMessage = [NSMutableString new];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
-		NSString *translatedLanguage = [A3TranslatorLanguage localizedNameForCode:item.translatedLanguage];
+		NSString *translatedLanguage = [A3TranslatorLanguage localizedNameForCode:item.group.targetLanguage];
 		if ([item.originalText length] && [item.translatedText length] && [translatedLanguage length]) {
 			[shareMessage appendString:[NSString stringWithFormat:@"\"%@\" is\n\"%@\"\nin %@", item.originalText, item.translatedText, translatedLanguage]];
 		}
@@ -1268,7 +1301,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
-		[item setFavorite:@YES];
+		[item setAsFavoriteMember:YES];
 
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
@@ -1280,7 +1313,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	NSArray *selectedIndexPaths = [_messageTableView indexPathsForSelectedRows];
 	for (NSIndexPath *indexPath in selectedIndexPaths) {
 		TranslatorHistory *item = _messages[indexPath.row];
-		[item setFavorite:@NO];
+		[item setAsFavoriteMember:NO];
 
 		A3TranslatorMessageCell *cell = (A3TranslatorMessageCell *) [_messageTableView cellForRowAtIndexPath:indexPath];
 		[cell changeFavoriteButtonImage];
@@ -1304,11 +1337,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 	[self setEnabledForAllToolbarButtons:NO];
 
-	if (![_messages count]) {
-		self.navigationItem.rightBarButtonItem = nil;
-		[_messageTableView setEditing:NO];
-		self.navigationItem.hidesBackButton = NO;
-	}
+	[self setupBarButtons];
 }
 
 - (void)setEnabledForAllToolbarButtons:(BOOL)enabled {
@@ -1316,6 +1345,63 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	[_toolbarSetFavoriteButton setEnabled:enabled];
 	[_toolbarUnsetFavoriteButton setEnabled:enabled];
 	[_toolbarShareButton setEnabled:enabled];
+}
+
+#pragma mark - messages
+
+- (NSPredicate *)predicateForMessages {
+	return [NSPredicate predicateWithFormat:@"group.sourceLanguage == %@ AND group.targetLanguage == %@", _originalTextLanguage, _translatedTextLanguage];
+}
+
+- (NSArray *)messages {
+	if (!_messages) {
+		_messages = [TranslatorHistory MR_findAllSortedBy:@"date" ascending:YES withPredicate:[self predicateForMessages]];
+	}
+	return _messages;
+}
+
+- (void)deleteAllMessages {
+	[TranslatorHistory MR_deleteAllMatchingPredicate:[self predicateForMessages]];
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+	_messages = nil;
+	[self messages];
+
+	[self.messageTableView reloadData];
+
+	[self.messageTableView setEditing:NO];
+	[self setupBarButtons];
+}
+
+- (void)setupBarButtons {
+	if (self.messageTableView.isEditing) {
+		if ([self.messages count]) {
+			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
+		} else {
+			self.navigationItem.leftBarButtonItem = nil;
+			self.navigationItem.hidesBackButton = YES;
+		}
+		[self rightBarButtonDoneButton];
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		self.navigationItem.hidesBackButton = NO;
+	}
+	if ([_messageTableView isEditing]) {
+		if ([self.messages count]) {
+			self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
+		}
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(editButtonAction)];
+		self.navigationItem.hidesBackButton = YES;
+	} else {
+		self.navigationItem.leftBarButtonItem = nil;
+		[self rightBarButtonEditButton];
+		self.navigationItem.hidesBackButton = NO;
+	}
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self editButtonAction];
 }
 
 @end

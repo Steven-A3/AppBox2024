@@ -12,23 +12,24 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "A3HolidaysPageContentViewController.h"
-#import "common.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3HolidaysEditViewController.h"
 #import "FXPageControl.h"
-#import "A3UIDevice.h"
 #import "A3GradientView.h"
 #import "SFKImage.h"
 #import "UIView+Screenshot.h"
 #import "A3HolidaysCountryViewController.h"
 #import "NSDate-Utilities.h"
 #import "A3CenterViewDelegate.h"
-#import "A3HolidaysFlickrDownloadManager.h"
 #import "UIViewController+A3Addition.h"
+#import "NSDateFormatter+A3Addition.h"
+#import "NSDate+LunarConverter.h"
+#import "NSUserDefaults+A3Addition.h"
+#import "NSDateFormatter+LunarDate.h"
 
 @interface A3HolidaysPageViewController () <UIPageViewControllerDelegate, UIPageViewControllerDataSource,
 		A3HolidaysEditViewControllerDelegate, FXPageControlDelegate, A3HolidaysCountryViewControllerDelegate,
-		A3HolidaysPageViewControllerDelegate, CLLocationManagerDelegate, A3CenterViewDelegate>
+		A3HolidaysPageViewControllerProtocol, CLLocationManagerDelegate, A3CenterViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSArray *countries;
 @property (nonatomic, strong) FXPageControl *pageControl;
@@ -41,12 +42,21 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) UIPageViewController *pageViewController;
 @property (atomic, strong) NSMutableDictionary *viewControllerCache;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSString *dateFormat;
 
 @end
 
 @implementation A3HolidaysPageViewController
 
 - (void)cleanUp {
+	[self removeObserver];
+
+	[_pageViewController.viewControllers enumerateObjectsUsingBlock:^(id<A3CenterViewDelegate> obj, NSUInteger idx, BOOL *stop) {
+		if ([obj respondsToSelector:@selector(cleanUp)]) {
+			[obj cleanUp];
+		}
+	}];
 	_pageViewController = nil;
 	_countries = nil;
 	_pageControl = nil;
@@ -64,6 +74,7 @@
 		[super viewDidLoad];
 
 		FNLOG();
+		[self prepareDateFormat];
 
 		_viewControllerCache = [NSMutableDictionary new];
 
@@ -119,7 +130,24 @@
 			[self registerContentSizeCategoryDidChangeNotification];
 
 			[self prepareViewControllerAtPage:1];
+
+			[self alertDisclaimer];
 		}
+	}
+}
+
+- (void)alertDisclaimer {
+	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowDisclaimer]) {
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Discalimer" message:NSLocalizedString(@"DISCLAIMER_MESSAGE", @"DISCLAIMER_MESSAGE") delegate:self cancelButtonTitle:@"I Agree" otherButtonTitles:nil];
+		alertView.tag = 82093;
+		[alertView show];
+	}
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (alertView.tag == 82093) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowDisclaimer];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 }
 
@@ -280,6 +308,7 @@
 	@autoreleasepool {
 		A3HolidaysEditViewController *viewController = [[A3HolidaysEditViewController alloc] initWithStyle:UITableViewStyleGrouped];
 		viewController.delegate = self;
+		viewController.pageViewController = self;
 		viewController.countryCode = _countries[_pageControl.currentPage];
 
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -650,6 +679,38 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 		return UIInterfaceOrientationMaskPortrait;
 	}
 	return UIInterfaceOrientationMaskAll;
+}
+
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [[NSDateFormatter alloc] init];
+	}
+	return _dateFormatter;
+}
+
+- (void)prepareDateFormat {
+	[self.dateFormatter setDateStyle:NSDateFormatterFullStyle];
+	_dateFormat = [self.dateFormatter formatStringByRemovingYearComponent:_dateFormatter.dateFormat];
+	if (IS_IPHONE) {
+		_dateFormat = [_dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+		_dateFormat = [_dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+	}
+}
+
+- (NSString *)stringFromDate:(NSDate *)date {
+	[self.dateFormatter setDateFormat:_dateFormat];
+	return [_dateFormatter stringFromDate:date];
+}
+
+- (NSString *)lunarStringFromDate:(NSDate *)date {
+	NSDateComponents *dateComponents = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
+	NSDateComponents *lunarComponents = [NSDate lunarCalcWithComponents:dateComponents
+													   gregorianToLunar:YES
+															  leapMonth:NO
+																 korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]
+														resultLeapMonth:NULL];
+	[self.dateFormatter setDateFormat:_dateFormat];
+	return [_dateFormatter stringFromDateComponents:lunarComponents];
 }
 
 @end

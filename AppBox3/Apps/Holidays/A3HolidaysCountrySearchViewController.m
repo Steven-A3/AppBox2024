@@ -9,6 +9,7 @@
 #import "A3HolidaysCountrySearchViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
+#import "UIViewController+A3Addition.h"
 
 
 static NSString *const HolidayCountryCode = @"code";
@@ -25,14 +26,16 @@ static NSString *const CellIdentifier = @"Cell";
 {
     [super viewDidLoad];
 
-	self.searchBar.placeholder = @"Search Country";
+	self.searchBar.placeholder = @"Search";
 	self.title = @"Select Country";
 
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+
+	[self leftBarButtonCancelButton];
 }
 
-- (void)doneButtonAction:(UIBarButtonItem *)button {
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 

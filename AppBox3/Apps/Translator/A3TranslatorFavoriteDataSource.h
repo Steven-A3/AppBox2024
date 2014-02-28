@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FMMoveTableView.h"
 
-@class TranslatorHistory;
+@class TranslatorFavorite;
 
 @protocol A3TranslatorFavoriteDelegate <NSObject>
-- (void)translatorFavoriteItemSelected:(TranslatorHistory *)item;
+- (void)translatorFavoriteItemSelected:(TranslatorFavorite *)item;
 @end
 
-@interface A3TranslatorFavoriteDataSource : NSObject<UITableViewDelegate, UITableViewDataSource>
+@interface A3TranslatorFavoriteDataSource : NSObject<FMMoveTableViewDelegate, FMMoveTableViewDataSource>
 
 @property (nonatomic, weak) id<A3TranslatorFavoriteDelegate> delegate;
 

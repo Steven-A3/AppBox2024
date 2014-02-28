@@ -61,7 +61,7 @@
 		if (!allData) {
 			allData = [NSMutableArray new];
 			A3CurrencyDataManager *currencyDataManager = [A3CurrencyDataManager new];
-			NSArray *allCurrencies = [CurrencyRateItem MR_findAllInContext:self.cacheStoreManager.context];
+			NSArray *allCurrencies = [CurrencyRateItem MR_findAllInContext:[A3AppDelegate instance].cacheStoreManager.context];
 			for (CurrencyRateItem *item in allCurrencies) {
 				A3SearchTargetItem *searchTargetItem = [A3SearchTargetItem new];
 				searchTargetItem.code = item.currencyCode;

@@ -17,11 +17,11 @@
 - (void)popToRootAndPushViewController:(UIViewController *)viewController;
 - (void)leftBarButtonAppsButton;
 
-- (void)appsButtonAction;
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
 
 - (void)leftBarButtonCancelButton;
 
-- (void)cancelButtonAction;
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem;
 
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
@@ -40,6 +40,8 @@
 - (void)moreButtonAction:(UIBarButtonItem *)button;
 - (void)makeBackButtonEmptyArrow;
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem;
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items subject:(NSString *)subject fromBarButtonItem:(UIBarButtonItem *)barButtonItem; // kjh
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items activities:(id)activities excludedType:(NSArray *)excludedActivityTypes fromBarButtonItem:(UIBarButtonItem *)barButtonItem; // kjh
 
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 

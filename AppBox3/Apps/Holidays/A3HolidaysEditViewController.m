@@ -6,18 +6,16 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <AssetsLibrary/AssetsLibrary.h>
 #import "A3HolidaysEditViewController.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3HolidaysEditCell.h"
-#import "A3UIDevice.h"
 #import "A3HolidaysAddToDaysCounterViewController.h"
-#import "common.h"
 #import "A3ImageCropperViewController.h"
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "UIViewController+A3Addition.h"
+#import "A3HolidaysPageViewController.h"
 
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
 
@@ -167,7 +165,7 @@ static NSString *CellIdentifier = @"Cell";
 		[cell.publicMarkView setHidden:!isPublic];
 		[cell.publicLabel setHidden:!isPublic];
 		if (IS_IPAD) {
-			cell.dateLabel.text = [[HolidayData dateFormatter] stringFromDate:holiday[kHolidayDate]];
+			cell.dateLabel.text = [_pageViewController stringFromDate:holiday[kHolidayDate]];
 		}
 		cell.switchControl.tag = indexPath.row;
 		[cell.switchControl addTarget:self action:@selector(switchControlAction:) forControlEvents:UIControlEventValueChanged];

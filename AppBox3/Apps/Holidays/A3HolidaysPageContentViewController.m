@@ -21,6 +21,7 @@
 #import "UIViewController+A3Addition.h"
 #import "A3BackgroundWithPatternView.h"
 #import "FXLabel.h"
+#import "UIViewController+A3AppCategory.h"
 
 typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewSegmentedControl = 1000,
@@ -31,7 +32,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 };
 
 
-@interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSArray *holidays;
 @property (nonatomic, strong) DKLiveBlurView *imageView;
@@ -55,6 +56,10 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 		[self setupThisYear];
 	}
 	return self;
+}
+
+- (void)cleanUp {
+	[self removeObserver];
 }
 
 - (void)setupThisYear {
@@ -117,8 +122,28 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 				[self setupBottomGradientView];
 				[_pageViewController updatePhotoLabelText];
 				_imageView.originalImage = [[A3HolidaysFlickrDownloadManager sharedInstance] imageForCountryCode:_countryCode orientation:CURRENT_ORIENTATION forList:NO];
+
+				[self alertAcknowledgment];
 			}
 		});
+	}
+}
+
+- (void)alertAcknowledgment {
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		if (![[NSUserDefaults standardUserDefaults] boolForKey:A3HolidaysDoesNotNeedsShowAcknowledgement]) {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Acknowledgement" message:NSLocalizedString(@"HOLIDAYS_ACKNOWLEDGEMENT", @"HOLIDAYS_ACKNOWLEDGEMENT") delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			alert.tag = 894234;
+			[alert show];
+		}
+	});
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+	if (alertView.tag == 894234) {
+		[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3HolidaysDoesNotNeedsShowAcknowledgement];
+		[[NSUserDefaults standardUserDefaults] synchronize];
 	}
 }
 
@@ -159,11 +184,8 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	A3BackgroundPatternStyle style = [[A3HolidaysFlickrDownloadManager sharedInstance] isDayForCountryCode:self.countryCode] ? A3BackgroundPatternStyleLight : A3BackgroundPatternStyleDark;
 	_backgroundView = [[A3BackgroundWithPatternView alloc] initWithStyle:style];
 	_backgroundView.frame = self.view.bounds;
+	_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	[self.view insertSubview:_backgroundView atIndex:0];
-
-	[_backgroundView makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(self.view);
-	}];
 }
 
 - (void)setupBottomGradientView {
@@ -289,10 +311,13 @@ static NSString *const CellIdentifier = @"holidaysCell";
 - (UIView *)tableHeaderViewForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
 	@autoreleasepool {
 		UIView *headerView = [UIView new];
+		headerView.autoresizingMask = UIViewAutoresizingNone;
 
 		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+		FNLOGRECT(screenBounds);
 
 		CGFloat viewHeight = screenBounds.size.height;
+		CGFloat viewWidth = screenBounds.size.width;
 		viewHeight += 97.0;
 		viewHeight -= 54.0;
 		if (IS_IPAD) {
@@ -322,12 +347,12 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		[segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 			if (IS_IPHONE) {
-				make.left.equalTo(headerView.left).with.offset(5);
+				make.left.equalTo(headerView.left).with.offset(15);
 				make.bottom.equalTo(headerView.bottom).with.offset(-6);
-				make.width.equalTo(@192);
+				make.width.equalTo(@171);
 				make.height.equalTo(@30);
 			} else {
-				make.width.equalTo(@300);
+				make.width.equalTo(@301);
 				make.left.equalTo(headerView.left).with.offset(28);
 				make.bottom.equalTo(headerView.bottom).with.offset(-6);
 				make.height.equalTo(@30);
@@ -342,12 +367,12 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 			[yearBorderView makeConstraints:^(MASConstraintMaker *make) {
 			if (IS_IPHONE) {
-				make.width.equalTo(@108);
+				make.width.equalTo(@86);
 				make.height.equalTo(@30);
-				make.right.equalTo(headerView.right).with.offset(-5);
+				make.right.equalTo(headerView.right).with.offset(-15);
 				make.bottom.equalTo(headerView.bottom).with.offset(-6);
 			} else {
-				make.width.equalTo(@150);
+				make.width.equalTo(@151);
 				make.height.equalTo(@30);
 				make.right.equalTo(headerView.right).with.offset(-28);
 				make.bottom.equalTo(headerView.bottom).with.offset(-6);
@@ -367,7 +392,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			make.width.equalTo(@40);
 			make.height.equalTo(@40);
 			make.centerY.equalTo(yearBorderView.centerY);
-			make.centerX.equalTo(yearBorderView.centerX).with.offset(IS_IPHONE ? -33 : -45);
+			make.centerX.equalTo(yearBorderView.centerX).with.offset(IS_IPHONE ? -27 : -45);
 		}];
 
 		UIButton *nextYearButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -379,7 +404,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		[nextYearButton makeConstraints:^(MASConstraintMaker *make) {
 			make.width.equalTo(@40);
 			make.height.equalTo(@40);
-			make.centerX.equalTo(yearBorderView.centerX).with.offset(IS_IPHONE ? 33 : 45);
+			make.centerX.equalTo(yearBorderView.centerX).with.offset(IS_IPHONE ? 27 : 45);
 			make.centerY.equalTo(yearBorderView.centerY);
 		}];
 
@@ -399,6 +424,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		nameLabel.textColor = [UIColor whiteColor];
 		nameLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:26];
 		nameLabel.textAlignment = NSTextAlignmentCenter;
+		nameLabel.lineBreakMode = NSLineBreakByClipping;
 		nameLabel.adjustsFontSizeToFitWidth = YES;
 		nameLabel.minimumScaleFactor = 0.5;
 		[self setupShadow:nameLabel];
@@ -406,7 +432,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		[nameLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(headerView.centerX);
-			make.width.lessThanOrEqualTo(headerView.width).with.offset(IS_IPHONE ? -20 : -28 * 2);
+			make.width.equalTo(@(viewWidth - (IS_IPHONE ? 20 : 28 * 2)));
 			make.bottom.equalTo(yearBorderView.top).with.offset(IS_IPHONE ? -62 : -124);
 		}];
 
@@ -415,12 +441,13 @@ static NSString *const CellIdentifier = @"holidaysCell";
 		daysLeftLabel.tag = HolidaysHeaderViewDaysLeftLabel;
 		daysLeftLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
 		daysLeftLabel.textAlignment = NSTextAlignmentCenter;
+		daysLeftLabel.lineBreakMode = NSLineBreakByClipping;
 		[self setupShadow:daysLeftLabel];
 		[headerView addSubview:daysLeftLabel];
 
 		[daysLeftLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(headerView.centerX);
-			make.width.lessThanOrEqualTo(headerView.width).with.offset(IS_IPHONE ? -20 : -28 * 2);
+			make.width.equalTo(@(viewWidth - (IS_IPHONE ? 20 : 28 * 2)));
 			make.bottom.equalTo(nameLabel.top).with.offset(4);
 		}];
 
@@ -436,7 +463,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 		[countryNameLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(headerView.centerX);
-			make.width.lessThanOrEqualTo(headerView.width).with.offset(IS_IPHONE ? -20 : -28 * 2);
+			make.width.equalTo(@(viewWidth - (IS_IPHONE ? 20 : 28 * 2)));
 			make.bottom.equalTo(daysLeftLabel.top).with.offset(-9);
 		}];
 
@@ -477,6 +504,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			NSDictionary *upcomingHoliday = holidaysInPage[myPosition];
 			UILabel *nameLabel = (UILabel *)[headerView viewWithTag:HolidaysHeaderViewNameLabel];
 			nameLabel.text = upcomingHoliday[kHolidayName];
+			FNLOG(@"%@", nameLabel.text);
 
 			UILabel *daysLeftLabel = (UILabel *)[headerView viewWithTag:HolidaysHeaderViewDaysLeftLabel];
 			daysLeftLabel.text = [upcomingHoliday[kHolidayDate] daysLeft];
@@ -680,9 +708,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			}
 			[holidayCell setCellType:cellType];
 
-			NSDateFormatter *df = [HolidayData dateFormatter];
 			holidayCell.titleLabel.text = cellData[kHolidayName];
-			holidayCell.dateLabel.text = [df stringFromDate: cellData[kHolidayDate] ];
+			holidayCell.dateLabel.text = [self.pageViewController stringFromDate: cellData[kHolidayDate] ];
 
 			BOOL showPublicMark = [cellData[kHolidayIsPublic] boolValue];
 			[holidayCell.publicMarkView setHidden:!showPublicMark];
@@ -701,14 +728,7 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			}
 
 			if (showLunar) {
-				BOOL isKorean = [self.countryCode isEqualToString:@"kr"];
-				NSDate *lunarDate;
-				if (isKorean) {
-					lunarDate = [HolidayData koreaLunarDateWithGregorianDate:cellData[kHolidayDate]];
-				} else {
-					lunarDate = [HolidayData lunarDateWithGregorianDate:cellData[kHolidayDate]];
-				}
-				holidayCell.lunarDateLabel.text = [df stringFromDate:lunarDate];
+				holidayCell.lunarDateLabel.text = [self.pageViewController lunarStringFromDate:cellData[kHolidayDate]];
 
 				[holidayCell.lunarImageView setHidden:NO];
 				[holidayCell.lunarDateLabel setHidden:NO];

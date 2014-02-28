@@ -9,15 +9,13 @@
 #import "HolidayData.h"
 #import "A3UIDevice.h"
 
+NSString *const A3HolidaysDoesNotNeedsShowDisclaimer = @"AHolidaysDoesNotNeedsShowDisclaimer";
+NSString *const A3HolidaysDoesNotNeedsShowAcknowledgement = @"A3HolidaysDoesNotNeedsShowAcknowledgement";
+
 NSString *const kHolidayName = @"name";
 NSString *const kHolidayIsPublic = @"public";
 NSString *const kHolidayDate = @"date";
 NSString *const kHolidayDuration = @"duration";
-//NSString *const kHolidayType = @"type";
-//NSString *const kHolidayMonth = @"month";
-//NSString *const kHolidayDay = @"day";
-//NSString *const kHolidayWeekday = @"weekday";
-//NSString *const kHolidayOrdinal = @"ordinal";
 
 @implementation HolidayData
 

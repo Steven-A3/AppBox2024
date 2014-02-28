@@ -141,11 +141,22 @@ extern NSString *const A3CurrencyActionCellID;
 }
 
 - (void)plusButtonAction {
+	if ([self.userSelectedCountries count] >= 10) {
+		NSString *msg = @"To add a new country, remove one first.";
+		if (IS_IPHONE) {
+			UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:msg delegate:nil cancelButtonTitle:@"OK" destructiveButtonTitle:nil	otherButtonTitles:nil];
+			[sheet showInView:self.view];
+		} else {
+			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:msg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alert show];
+		}
+		return;
+	}
 	A3HolidaysCountrySearchViewController *viewController = [[A3HolidaysCountrySearchViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    [self presentViewController:navigationController animated:YES completion:nil];
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {

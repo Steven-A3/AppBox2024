@@ -298,8 +298,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	if ([menuElement.className length]) {
 		Class class;
 		class = NSClassFromString(menuElement.className);
-		
-		targetViewController = [[class alloc] initWithNibName:menuElement.nibName bundle:nil];
+
+		if (menuElement.nibName) {
+			targetViewController = [[class alloc] initWithNibName:menuElement.nibName bundle:nil];
+		} else {
+			targetViewController = [[class alloc] init];
+		}
 	} else if ([menuElement.storyboardName length]) {
 		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:menuElement.storyboardName bundle:nil];
 		targetViewController = [storyboard instantiateInitialViewController];

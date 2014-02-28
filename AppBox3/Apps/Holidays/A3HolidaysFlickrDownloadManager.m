@@ -56,7 +56,7 @@ NSString *const kA3HolidayImageiPhoneList = @"iPhoneList";
 - (NSURLSession *)backgroundSession
 {
 /*
- Using disptach_once here ensures that multiple background sessions with the same identifier are not created in this instance of the application. If you want to support multiple background sessions within a single process, you should create each session with its own identifier.
+ Using dispatch_once here ensures that multiple background sessions with the same identifier are not created in this instance of the application. If you want to support multiple background sessions within a single process, you should create each session with its own identifier.
  */
 	static NSURLSession *session = nil;
 	static dispatch_once_t onceToken;

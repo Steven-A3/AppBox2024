@@ -1,0 +1,282 @@
+{
+    "devicesInfo": {
+        "iPhone 5s": {
+            "Chips": "A7 with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.3 GHz dual-core\nApple-designed ARMv8-A",
+            "GPU": "PowerVR G6430 (Four cluster)",
+            "Memory": "1GB LPDDR3 DRAM"
+        },
+        "iPhone 5c": {
+            "Chips": "A6 chip",
+            "CPU": "1.3 GHz dual-core\nApple-designed ARMv7s",
+            "GPU": "PowerVR SGX543MP3\n(Tri-core, 266 MHz)",
+            "Memory": "1GB LPDDR2 DRAM"
+        },
+        "iPhone 5": {
+            "Chips": "A6 chip",
+            "CPU": "1.3 GHz dual-core\nApple-designed ARMv7s",
+            "GPU": "PowerVR SGX543MP3\n(Tri-core, 266 MHz)",
+            "Memory": "1GB LPDDR2"
+        },
+        "iPhone 4s": {
+            "Chips": "A5 Chip",
+            "CPU": "1 GHz (underclocked to 800 MHz)\nDual-core ARM Cortex-A9",
+            "GPU": "PowerVR SGX543MP2\n(Dual-core, 200 MHz)",
+            "Memory": "512 MB LPDDR2 DRAM"
+        },
+        "iPhone 4": {
+            "Chips": "A5 Chip",
+            "CPU": "1 GHz (underclocked to 800 MHz)\nARM Cortex-A8",
+            "GPU": "PowerVR SGX535 GPU (200 MHz)",
+            "Memory": "512 MB LPDDR2 DRAM"
+        },
+        "iPod Touch (5th generation)": {
+            "Chips": "A5 Chip",
+            "CPU": "1 GHz (underclocked to 800 MHz)\nDual-core ARM Cortex-A9",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB LPDDR2 DRAM"
+        },
+        "iPad 2": {
+            "Chips": "Dual-core A5 chip",
+            "CPU": "1 GHz dual-core ARM Cortex-A9",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB Dual-Channel LPDDR2 DRAM"
+        },
+        "iPad 2 (Wi-Fi)": {
+            "Chips": "Dual-core A5 chip",
+            "CPU": "1 GHz dual-core ARM Cortex-A9",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB Dual-Channel LPDDR2 DRAM"
+        },
+        "iPad (3rd generation)": {
+            "Chips": "Dual-core A5X",
+            "CPU": "1 GHz dual-core",
+            "GPU": "PowerVR SGX543MP4 (4-core)",
+            "Memory": "1 GB LPDDR2 DRAM"
+        },
+        "iPad (3rd generation, Wi-Fi)": {
+            "Chips": "Dual-core A5X",
+            "CPU": "1 GHz dual-core",
+            "GPU": "PowerVR SGX543MP4 (4-core)",
+            "Memory": "1 GB LPDDR2 DRAM"
+        },
+        "iPad (4th generation)": {
+            "Chips": "Dual-core A6X",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR SGX554MP4 (4-core)",
+            "Memory": "1 GB LPDDR2 DRAM"
+        },
+        "iPad (4th generation, Wi-Fi)": {
+            "Chips": "Dual-core A6X",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR SGX554MP4 (4-core)",
+            "Memory": "1 GB LPDDR2 DRAM"
+        },
+        "iPad Air": {
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM"
+        },
+        "iPad Air (Wi-Fi)": {
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM"
+        },
+        "iPad mini": {
+            "Chips": "Dual-core A5 chip",
+            "CPU": "1 GHz",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB DDR2 DRAM"
+        },
+        "iPad mini (Wi-Fi)": {
+            "Chips": "Dual-core A5 chip",
+            "CPU": "1 GHz",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB DDR2 DRAM"
+        },
+        "iPad mini with Retina display": {
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.3 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM"
+        },
+        "iPad mini with Retina display (Wi-Fi)": {
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.3 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM"
+        },
+        "iPhone Simulator": {
+            "Chips": "A7 with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.3 GHz dual-core Apple-designed ARMv8-A",
+            "GPU": "PowerVR G6430 (four cluster)",
+            "Memory": "1GB LPDDR3 DRAM"
+        },
+        "iPhone (Latest)": {
+            "Chips": "A7 with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.3 GHz dual-core Apple-designed ARMv8-A",
+            "GPU": "PowerVR G6430 (four cluster)",
+            "Memory": "1GB LPDDR3 DRAM"
+        },
+        "iPad (Latest)": {
+            "Chips": "A7 chip with 64-bit architecture\nM7 motion coprocessor",
+            "CPU": "1.4 GHz dual-core",
+            "GPU": "PowerVR G6430 (4-core)",
+            "Memory": "1 GB LPDDR3 DRAM"
+        },
+        "iPod (Latest)": {
+            "Chips": "A5 Chip",
+            "CPU": "1 GHz (underclocked to 800 MHz)\nDual-core ARM Cortex-A9",
+            "GPU": "PowerVR SGX543MP2 (2-core)",
+            "Memory": "512 MB LPDDR2 DRAM"
+        }
+    },
+    "remainingTimeInfo": {
+        "iPhone 5s": {
+            "Talk Time on 3G": 10,
+            "Internet on 3G": 8,
+            "Internet on LTE": 10,
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 40,
+            "Standby": 250
+        },
+        "iPhone 5c": {
+            "Talk Time on 3G": 10,
+            "Internet on 3G": 8,
+            "Internet on LTE": 10,
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 40,
+            "Standby": 250
+        },
+        "iPhone 5": {
+            "Talk Time on 3G": 8,
+            "Internet on 3G": 8,
+            "Internet on LTE": 8,
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 40,
+            "Standby": 225
+        },
+        "iPhone 4s": {
+            "Talk Time on 3G": 8,
+            "Internet on 3G": 6,
+            "Internet on Wi-Fi": 9,
+            "Video playback": 10,
+            "Audio playback": 40,
+            "Standby": 200
+        },
+        "iPhone 4": {
+            "Talk Time on 2G": 14,
+            "Talk Time on 3G": 7,
+            "Internet on 3G": 6,
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 40,
+            "Standby": 300
+        },
+        "iPod Touch (5th generation)": {
+            "Video playback": 8,
+            "Audio playback": 40,
+            "Charging times": 4,
+            "Fast charge": 2
+        },
+        "iPad 2": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad 2 (Wi-Fi)": {
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad (3rd generation)": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad (3rd generation, Wi-Fi)": {
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad (4th generation)": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad (4th generation, Wi-Fi)": {
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad Air (Wi-Fi)": {
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini (Wi-Fi)": {
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini with Retina display": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPad mini with Retina display (Wi-Fi)": {
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        },
+        "iPhone Simulator": {
+            "Internet on Wi-Fi": 10,
+            "Internet on Cellular": 9,
+            "Video playback": 8,
+            "Audio playback": 40,
+            "Standby": 250
+        },
+        "iPhone (Latest)": {
+            "Talk Time on 3G": 10,
+            "Internet on 3G": 8,
+            "Internet on LTE": 10,
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 40,
+            "Standby": 250
+        },
+        "iPod (Latest)": {
+            "Video playback": 10,
+            "Audio playback": 40
+        },
+        "iPad (Latest)": {
+            "Talk Time on 3G": 10,
+            "Internet on 3G": 9,
+            "Internet on LTE": 10,
+            "Internet on Wi-Fi": 10,
+            "Video playback": 10,
+            "Audio playback": 10
+        }
+    }
+}

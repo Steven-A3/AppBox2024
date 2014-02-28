@@ -1,0 +1,177 @@
+//
+//  A3DateCalcExcludeViewController.m
+//  A3TeamWork
+//
+//  Created by jeonghwan kim on 13. 10. 14..
+//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3DateCalcExcludeViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3DateCalcStateManager.h"
+#import "A3DateCalcTableviewCell.h"
+#import "A3DefaultColorDefines.h"
+
+static NSString *CellIdentifier = @"Cell";
+
+@interface A3DateCalcExcludeViewController ()
+
+@property (nonatomic, strong) NSArray *sectionTitles;
+@property (nonatomic, strong) NSArray *sections;
+
+@end
+
+@implementation A3DateCalcExcludeViewController
+{
+    UIImage *_blankImage;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    self.title = @"Exclude";
+
+    if (IS_IPAD) {
+        [self rightBarButtonDoneButton];
+    } else {
+        [self makeBackButtonEmptyArrow];        
+    }
+    
+    self.sectionTitles = @[@"", @""];
+    self.sections = @[
+                  @[@"None"],
+                  @[@"Saturday", @"Sunday", @"Public Holidays"]
+                  ];
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0);
+    _blankImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	[self.tableView setShowsHorizontalScrollIndicator:NO];
+	[self.tableView setShowsVerticalScrollIndicator:NO];
+    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	@autoreleasepool {
+		if (IS_IPAD) {
+			[self.A3RootViewController dismissRightSideViewController];
+            if ([_delegate respondsToSelector:@selector(dismissExcludeSettingViewController)]) {
+                [_delegate performSelector:@selector(dismissExcludeSettingViewController)];
+            }
+
+		} else {
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
+	}
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.sectionTitles.count;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.sections[section] count];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return self.sectionTitles[section];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    cell.textLabel.text = self.sections[indexPath.section][indexPath.row];;
+    //cell.textLabel.font = FONT_TABLE_TEXTLABEL_DEFAULT_SIZE(17);
+    cell.textLabel.font = [UIFont systemFontOfSize:17];
+    
+    switch (indexPath.section) {
+        case 0: {
+            cell.imageView.image = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? [UIImage imageNamed:@"check_02"] : _blankImage;
+        }
+            break;
+            
+        case 1:
+        {
+            ExcludeOptions options = [A3DateCalcStateManager excludeOptions];
+            switch (indexPath.row) {
+                case 0:
+                {
+                    cell.imageView.image = options & ExcludeOptions_Saturday ? [UIImage imageNamed:@"check_02"] : _blankImage;
+                }
+                    break;
+                case 1:
+                {
+                    cell.imageView.image = options & ExcludeOptions_Sunday ? [UIImage imageNamed:@"check_02"] : _blankImage;
+                }
+                    break;
+                case 2:
+                {
+                    cell.imageView.image = options & ExcludeOptions_PublicHoliday ? [UIImage imageNamed:@"check_02"] : _blankImage;
+                }
+                    break;
+            }
+        }
+            break;
+    }
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section==0 && indexPath.row==0) {
+        [A3DateCalcStateManager setExcludeOptions:ExcludeOptions_None];
+        
+    } else if (indexPath.section==1) {
+        switch (indexPath.row) {
+            case 0:
+            {
+                [A3DateCalcStateManager setExcludeOptions:ExcludeOptions_Saturday];
+            }
+                break;
+            case 1:
+            {
+                [A3DateCalcStateManager setExcludeOptions:ExcludeOptions_Sunday];
+            }
+                break;
+            case 2:
+            {
+                [A3DateCalcStateManager setExcludeOptions:ExcludeOptions_PublicHoliday];
+            }
+                break;
+        }
+    }
+    
+    [tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    if ([self.delegate respondsToSelector:@selector(excludeSettingDelegate)]) {
+        [self.delegate excludeSettingDelegate];
+    }
+}
+
+
+@end

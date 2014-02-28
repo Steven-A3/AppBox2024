@@ -9,9 +9,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+MMDrawerController.h"
 #import "A3CenterViewDelegate.h"
-#import "A3UIDevice.h"
 #import "UIViewController+A3Addition.h"
-#import "A3PasscodeViewController.h"
 #import "A3KeychainUtils.h"
 
 
@@ -36,6 +34,10 @@
 	} else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
 		navigationController = [rootViewController centerNavigationController];
+        // KJH
+        if (rootViewController.presentViewControllers && [rootViewController.presentViewControllers count] > 0) {
+            [rootViewController dismissCenterViewController];
+        }
 	}
 
 	[navigationController setToolbarHidden:YES];
@@ -83,11 +85,72 @@
     }
 }
 
-- (void)leftBarButtonAppsButton {
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+- (void)popToRootAndPushViewController:(UIViewController *)viewController animate:(BOOL)animate
+{
+    UINavigationController *navigationController;
+    
+	if (IS_IPHONE) {
+		navigationController = (UINavigationController *) self.mm_drawerController.centerViewController;
+		[self.mm_drawerController closeDrawerAnimated:animate completion:nil];
+	} else {
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+		navigationController = [rootViewController centerNavigationController];
+        // KJH
+        if (rootViewController.presentViewControllers && [rootViewController.presentViewControllers count] > 0) {
+            [rootViewController dismissCenterViewController];
+        }
+	}
+    
+	[navigationController setToolbarHidden:YES];
+    
+	BOOL hidesNavigationBar = NO;
+	UIViewController<A3CenterViewDelegate> *targetViewController = (UIViewController <A3CenterViewDelegate> *) viewController;
+	if ([viewController respondsToSelector:@selector(hidesNavigationBar)]) {
+		hidesNavigationBar = [targetViewController hidesNavigationBar];
+	}
+    if (hidesNavigationBar) {
+        [navigationController setNavigationBarHidden:YES animated:NO];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+        
+        UIImage *image = [UIImage new];
+        [navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+        [navigationController.navigationBar setShadowImage:image];
+    } else {
+        [navigationController setNavigationBarHidden:NO animated:animate];
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:(animate ? UIStatusBarAnimationSlide : UIStatusBarAnimationNone)];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:animate];
+        
+        [navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        [navigationController.navigationBar setShadowImage:nil];
+    }
+    
+	NSArray *poppedVCs = [navigationController popToRootViewControllerAnimated:NO];
+	for (UIViewController<A3CenterViewDelegate> *vc in poppedVCs) {
+		if ([vc respondsToSelector:@selector(cleanUp)]) {
+			[vc performSelector:@selector(cleanUp)];
+		}
+	}
+    
+	if (IS_IPAD) {
+		BOOL usesFullScreenInLandscape = NO;
+		if ([viewController respondsToSelector:@selector(usesFullScreenInLandscape)]) {
+			usesFullScreenInLandscape = [targetViewController usesFullScreenInLandscape];
+		}
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        [rootViewController animateHideLeftViewForFullScreenCenterView:usesFullScreenInLandscape];
+	}
+    
+    if (viewController) {
+        [navigationController pushViewController:viewController animated:animate];
+    }
 }
 
-- (void)appsButtonAction {
+- (void)leftBarButtonAppsButton {
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
+}
+
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
 	if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 	} else {
@@ -96,10 +159,10 @@
 }
 
 - (void)leftBarButtonCancelButton {
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction)];
+	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonAction:)];
 }
 
-- (void)cancelButtonAction {
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
 
 }
 
@@ -163,8 +226,9 @@
 	frame.origin.y = -1.0;
 	UIView *moreMenuView = [[UIView alloc] initWithFrame:frame];
 	moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
-	frame.origin.y += 44.0;
-	frame.size.height = 1.0;
+    //frame.origin.y += 44.0;
+	frame.origin.y += 45.0; // kjh
+	frame.size.height = 0.5;    // kjh
 	UIView *bottomLineView = [[UIView alloc] initWithFrame:frame];
 	bottomLineView.backgroundColor = [UIColor colorWithRed:178.0 / 255.0 green:178.0 / 255.0 blue:178.0 / 255.0 alpha:1.0];
 	[moreMenuView addSubview:bottomLineView];
@@ -182,6 +246,7 @@
 	UIView *moreMenuView = [self moreMenuViewWithButtons:buttons];
 	CGRect clippingViewFrame = moreMenuView.frame;
 	clippingViewFrame.origin.y = 20.0 + 44.0 - 1.0;
+    clippingViewFrame.size.height = clippingViewFrame.size.height + 0.5;//kjh
 	UIView *clippingView = [[UIView alloc] initWithFrame:clippingViewFrame];
 	clippingView.clipsToBounds = YES;
 	CGRect frame = clippingView.bounds;
@@ -316,6 +381,34 @@
 
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
 	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		return popoverController;
+	}
+	return nil;
+}
+
+// kjh
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items subject:(NSString *)subject fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    [activityController setValue:subject forKey:@"subject"]; // is it documented? http://stackoverflow.com/questions/12623260/how-do-i-set-recipients-for-uiactivityviewcontroller-in-ios-6
+
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		[popoverController presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		return popoverController;
+	}
+	return nil;
+}
+
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items activities:(id)activities excludedType:(NSArray *)excludedActivityTypes fromBarButtonItem:(UIBarButtonItem *)barButtonItem {
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:activities];
+    activityController.excludedActivityTypes = excludedActivityTypes;
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
 	} else {

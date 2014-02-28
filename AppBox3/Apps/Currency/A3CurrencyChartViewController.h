@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class A3CacheStoreManager;
 @class A3CurrencyChartViewController;
 
 @protocol A3CurrencyChartViewDelegate <NSObject>
@@ -22,6 +21,5 @@
 @property (nonatomic, copy) NSString *originalSourceCode, *originalTargetCode;
 @property (nonatomic, strong) NSNumber *initialValue;			// Assigned by caller, will not change, compare with textField
 @property (nonatomic, weak) id<A3CurrencyChartViewDelegate> delegate;
-@property (nonatomic, weak) A3CacheStoreManager *cacheStoreManager;
 
 @end

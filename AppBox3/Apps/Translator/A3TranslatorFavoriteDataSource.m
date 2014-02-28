@@ -8,12 +8,12 @@
 
 #import "A3TranslatorFavoriteDataSource.h"
 #import "TranslatorHistory.h"
-#import "NSManagedObject+MagicalFinders.h"
 #import "A3TranslatorLanguage.h"
 #import "NSDate+TimeAgo.h"
 #import "A3TranslatorFavoriteCell.h"
-#import "SFKImage.h"
-#import "A3UIDevice.h"
+#import "TranslatorFavorite.h"
+#import "TranslatorGroup.h"
+#import "NSMutableArray+A3Sort.h"
 
 @interface A3TranslatorFavoriteDataSource ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -27,8 +27,7 @@
 
 - (NSFetchedResultsController *)fetchedResultsController {
 	if (!_fetchedResultsController) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"favorite == YES"];
-		_fetchedResultsController = [TranslatorHistory MR_fetchAllSortedBy:@"date" ascending:NO withPredicate:predicate groupBy:nil delegate:nil];
+		_fetchedResultsController = [TranslatorFavorite MR_fetchAllSortedBy:@"order" ascending:YES withPredicate:nil groupBy:nil delegate:nil];
 	}
 	return _fetchedResultsController;
 }
@@ -50,13 +49,13 @@
 //	UIImage *image = [UIImage imageNamed:@"star02_full"];
 //	cell.imageView.image = image;
 
-	TranslatorHistory *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@", [A3TranslatorLanguage localizedNameForCode:item.originalLanguage],
-														  [A3TranslatorLanguage localizedNameForCode:item.translatedLanguage]];
-	cell.detailTextLabel.text = item.originalText;
+	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@", [A3TranslatorLanguage localizedNameForCode:item.text.group.sourceLanguage],
+														  [A3TranslatorLanguage localizedNameForCode:item.text.group.targetLanguage]];
+	cell.detailTextLabel.text = item.text.originalText;
 	if (IS_IPAD) {
-		cell.dateLabel.text = [item.date timeAgo];
+		cell.dateLabel.text = [item.text.date timeAgo];
 	} else {
 		cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 	}
@@ -71,11 +70,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	TranslatorHistory *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
+	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	[_delegate translatorFavoriteItemSelected:item];
 
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
+	FNLOG(@"%@", mutableArray);
+	[mutableArray moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	FNLOG(@"%@", mutableArray);
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	_fetchedResultsController = nil;
 }
 
 @end

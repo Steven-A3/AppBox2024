@@ -269,7 +269,7 @@
 
 - (CurrencyRateItem *)sourceItem {
 	if (!_sourceItem) {
-		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode inContext:self.cacheStoreManager.context];
+		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_sourceCurrencyCode inContext:[A3AppDelegate instance].cacheStoreManager.context];
 		NSAssert([fetchedResult count], @"%s, %s, CurrencyItem is empty or source currency code is not valid.", __FUNCTION__, __PRETTY_FUNCTION__);
 		_sourceItem = fetchedResult[0];
 	}
@@ -278,7 +278,7 @@
 
 - (CurrencyRateItem *)targetItem {
 	if (!_targetItem) {
-		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode inContext:self.cacheStoreManager.context];
+		NSArray *fetchedResult = [CurrencyRateItem MR_findByAttribute:A3KeyCurrencyCode withValue:_targetCurrencyCode inContext:[A3AppDelegate instance].cacheStoreManager.context];
 		NSAssert([fetchedResult count], @"%s, CurrencyItem is empty or target currency code is not valid.", __PRETTY_FUNCTION__);
         _targetItem = fetchedResult[0];
 	}
@@ -286,7 +286,7 @@
 }
 
 - (float)conversionRate {
-	return [self.cacheStoreManager rateForCurrencyCode:self.targetItem.currencyCode] / [self.cacheStoreManager rateForCurrencyCode:self.sourceItem.currencyCode];
+	return [[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:self.targetItem.currencyCode] / [[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:self.sourceItem.currencyCode];
 }
 
 #pragma mark - UITableViewDataSourceDelegate
@@ -354,7 +354,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	_selectionInSource = indexPath.row == 0;
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
-	viewController.cacheStoreManager = self.cacheStoreManager;
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = YES;
 	[self presentSubViewController:viewController];

@@ -40,7 +40,6 @@
 		@catch (id exception) {
 			NSLog(@"%@", [(id<NSObject>)exception description]);
 		}
-
 	}
 
 	return self;

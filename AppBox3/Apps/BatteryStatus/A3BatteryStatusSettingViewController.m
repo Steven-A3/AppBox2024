@@ -1,0 +1,307 @@
+//
+//  A3BatteryStatusSettingViewController.m
+//  A3TeamWork
+//
+//  Created by jeonghwan kim on 12/4/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3BatteryStatusSettingViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3BatteryStatusManager.h"
+#import "A3BatterStatusChooseColorViewController.h"
+#import "A3BasicWebViewController.h"
+#import "Reachability.h"
+#import "A3AppDelegate.h"
+
+@interface A3BatteryStatusSettingViewController ()
+@end
+
+@implementation A3BatteryStatusSettingViewController
+{
+    NSArray * _tableDataSourceArray;
+    UIColor * _chosenTheme;
+    NSMutableArray * _adjustedIndex;
+    //NSMutableArray * _showIndex;
+    UIImage * _blankImage;
+    NSMutableArray * _presentViews;
+}
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    _tableDataSourceArray = [A3BatteryStatusManager remainTimeDataArray];
+    
+    [self makeBackButtonEmptyArrow];
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
+
+    self.title = @"Settings";
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
+    [self.tableView setEditing:YES];
+    
+    _chosenTheme = [A3BatteryStatusManager chosenTheme];
+    _adjustedIndex = [[A3BatteryStatusManager adjustedIndex] mutableCopy];
+
+    if (!_adjustedIndex) {
+        _adjustedIndex = [NSMutableArray arrayWithCapacity:_tableDataSourceArray.count];
+
+        for (int i=0; i<_tableDataSourceArray.count; i++) {
+            [_adjustedIndex addObject:@{ @"index" : @(i), @"checked" : @1 }];
+        }
+    }
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0);
+    _blankImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSLog(@"viewController nav: %@", self.navigationController);
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
+}
+
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Actions
+
+-(void)doneButtonAction:(id)sender {
+	if (IS_IPAD) {
+		[[A3AppDelegate instance].rootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 4;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section==1) {
+        return _tableDataSourceArray.count;
+    } else {
+        return 1;
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if (section==1) {
+        return @"STATUS";
+    } else {
+        return nil;
+    }
+}
+
+static NSString *CellIdentifier1 = @"Cell1";
+static NSString *CellIdentifier2 = @"Cell2";
+static NSString *CellIdentifier3 = @"Cell3";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Configure the cell...
+    if (indexPath.section==0) {
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1];
+            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
+            cell.textLabel.font = [UIFont systemFontOfSize:17.0];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+            UIView *themeColorView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 30.0, 30.0)];
+            themeColorView.backgroundColor = [UIColor redColor];
+            themeColorView.tag = 121;
+
+            [cell.contentView addSubview:themeColorView];
+
+            [themeColorView makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(cell.contentView.centerY);
+                make.trailing.equalTo(cell.contentView.right).with.offset(-27.5);
+                make.width.equalTo(@30);
+                make.height.equalTo(@30);
+            }];
+
+			UIImageView *disclosureIndicator = [UIImageView new];
+			disclosureIndicator.image = [UIImage imageNamed:@"arrow"];
+			[cell addSubview:disclosureIndicator];
+
+			[disclosureIndicator makeConstraints:^(MASConstraintMaker *make) {
+				make.centerY.equalTo(cell.centerY);
+				make.right.equalTo(cell.right).with.offset(-15);
+			}];
+        }
+
+        cell.textLabel.text = @"Theme Color";
+        UIView *themeColorView = [cell.contentView viewWithTag:121];
+        themeColorView.backgroundColor = [[A3BatteryStatusManager themeColorArray] objectAtIndex:[A3BatteryStatusManager chosenThemeIndex]];
+        
+        return cell;
+        
+    } else if (indexPath.section==1) {
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
+            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
+            cell.textLabel.font = [UIFont systemFontOfSize:17];
+        }
+        
+        NSDictionary *adjustedRow = [_adjustedIndex objectAtIndex:indexPath.row];
+        NSNumber * index = [adjustedRow objectForKey:@"index"];
+        NSNumber * checked = [adjustedRow objectForKey:@"checked"];
+        
+        NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:index.integerValue];
+        cell.textLabel.text = [rowData objectForKey:@"title"];
+        cell.imageView.image = [UIImage imageNamed:@"check_02"];
+        cell.imageView.image = checked.integerValue==1 ? [UIImage imageNamed:@"check_02"] : _blankImage;
+        
+        return cell;
+    } else if (indexPath.section==2) {
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3];
+            //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
+            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
+            cell.textLabel.font = [UIFont systemFontOfSize:17];
+            
+            UIImageView * info = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
+            [cell.contentView addSubview:info];
+            [info makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(cell.centerY);
+                make.trailing.equalTo(cell.contentView.right).with.offset(-15);
+            }];
+        }
+        
+        cell.textLabel.text = @"How to Maximize Power Use";
+        return cell;
+    } else {
+        UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3];
+            //cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
+            //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
+            cell.textLabel.font = [UIFont systemFontOfSize:17];
+            
+            UIImageView * info = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
+            [cell.contentView addSubview:info];
+            [info makeConstraints:^(MASConstraintMaker *make) {
+                make.centerY.equalTo(cell.centerY);
+                make.trailing.equalTo(cell.contentView.right).with.offset(-15);
+            }];
+        }
+        
+        cell.textLabel.text = @"More Information about Batteries";
+        return cell;
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 0) {
+        A3BatterStatusChooseColorViewController * viewController = [[A3BatterStatusChooseColorViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        [self.navigationController pushViewController:viewController animated:YES];
+        
+    } else if (indexPath.section == 1) {
+        NSDictionary * row = _adjustedIndex[indexPath.row];
+        NSNumber * index = [row objectForKey:@"index"];
+        NSNumber * checked = [row objectForKey:@"checked"];
+
+        [_adjustedIndex removeObjectAtIndex:indexPath.row];
+        if ([checked isEqualToNumber:@0]) {
+            [_adjustedIndex insertObject:@{ @"index" : index, @"checked" : @1 } atIndex:indexPath.row];
+        } else {
+            [_adjustedIndex insertObject:@{ @"index" : index, @"checked" : @0 } atIndex:indexPath.row];
+        }
+
+        [tableView reloadData];
+        [A3BatteryStatusManager setAdjustedIndex:_adjustedIndex];
+
+
+    } else if (indexPath.section == 2) {
+        // Battery How to Maximize
+		[self presentWebViewControllerURL:[A3BatteryStatusManager howToMaximizePowerUse]];
+	} else if (indexPath.section == 3) {
+        // More Info About Battery
+		[self presentWebViewControllerURL:[A3BatteryStatusManager moreInformationAboutBatteries]];
+    }
+}
+
+- (void)presentWebViewControllerURL:(NSURL *)url {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
+														message:@"Internet Connection is not avaiable"
+													   delegate:self
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:nil, nil];
+		[alert show];
+		return;
+	}
+	A3BasicWebViewController *viewController = [[A3BasicWebViewController alloc] init];
+	viewController.url = [A3BatteryStatusManager howToMaximizePowerUse];
+	if (IS_IPHONE) {
+		[self.navigationController pushViewController:viewController animated:YES];
+	} else {
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+		[self.A3RootViewController presentViewController:navigationController animated:YES completion:NULL];
+	}
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return indexPath.section == 1 ? YES : NO;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+    NSDictionary *from = [_adjustedIndex objectAtIndex:fromIndexPath.row];
+    [_adjustedIndex removeObjectAtIndex:fromIndexPath.row];
+    [_adjustedIndex insertObject:from atIndex:toIndexPath.row];
+    
+    [A3BatteryStatusManager setAdjustedIndex:_adjustedIndex];
+
+    [self.tableView reloadData];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
+@end
+

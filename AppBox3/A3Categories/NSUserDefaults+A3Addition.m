@@ -30,6 +30,14 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 	}
 }
 
+- (BOOL)useKoreanLunarCalendar {
+	NSNumber *obj = [self objectForKey:A3SettingsUseKoreanCalendarForLunarConversion];
+	if (obj) {
+		return [obj boolValue];
+	}
+	return [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
+}
+
 - (NSString *)stringForLunarCalendarCountry {
 	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseLunarCalendar]) {
 		return NSLocalizedString(@"Off", @"Value for Use Lunar Calendar");

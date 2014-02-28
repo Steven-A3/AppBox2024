@@ -805,8 +805,8 @@
 	return [super resignFirstResponder];
 }
 
-- (void)appsButtonAction {
-	[super appsButtonAction];
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
 
 	if (IS_IPAD) {
 		[self A3KeyboardDoneButtonPressed];

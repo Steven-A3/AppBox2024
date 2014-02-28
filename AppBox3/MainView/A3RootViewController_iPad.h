@@ -14,6 +14,7 @@
 @property (nonatomic, strong)	A3NavigationController *leftNavigationController;
 @property (nonatomic, strong)	A3NavigationController *centerNavigationController;
 @property (nonatomic, strong)	A3NavigationController *rightNavigationController;
+@property (nonatomic, strong)   NSMutableArray *presentViewControllers;
 
 @property(nonatomic) BOOL showLeftView;
 @property(nonatomic) BOOL showRightView;
@@ -22,7 +23,11 @@
 
 - (void)toggleLeftMenuViewOnOff;
 
+//- (void)presentCenterViewController:(UIViewController *)viewController;
+- (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController;
+- (void)dismissCenterViewController;
 - (void)presentRightSideViewController:(UIViewController *)viewController;
 - (void)dismissRightSideViewController;
+- (void)presentDownSideViewController:(UIViewController *)viewController;
 
 @end

@@ -35,13 +35,13 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Calculator",
 				 kA3AppsExpandableChildren :	@[
-						 @{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DateCalculator"},
+						 @{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"A3DateCalcMainViewController", kA3AppsMenuImageName : @"DateCalculator"},
 						 @{kA3AppsMenuName : @"Loan Calculator", kA3AppsClassName : @"A3LoanCalc2ViewController", kA3AppsMenuImageName : @"LoanCalculator"},
 						 @{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
 						 @{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
 						 @{kA3AppsMenuName : @"Unit Price", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitPrice"},
 						 @{kA3AppsMenuName : @"Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Calculator"},
-						 @{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"PercentCalculator"}
+						 @{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"}
 						 ]
 				 },
 			 @{
@@ -80,7 +80,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuName : @"Utility",
 				 kA3AppsExpandableChildren : @[
 						 @{kA3AppsMenuName : @"Clock", kA3AppsClassName : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
-						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName : @"", kA3AppsMenuImageName : @"BatteryStatus"},
+						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
 						 @{kA3AppsMenuName : @"Mirror", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Mirror"},
 						 @{kA3AppsMenuName : @"Magnifier", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Magnifier"},
 						 ]
