@@ -108,7 +108,7 @@
         <attribute name="originalText" attributeType="String" syncable="YES"/>
         <attribute name="translatedText" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="TranslatorFavorite" inverseName="text" inverseEntity="TranslatorFavorite" syncable="YES"/>
-        <relationship name="group" maxCount="1" deletionRule="Nullify" destinationEntity="TranslatorGroup" inverseName="texts" inverseEntity="TranslatorGroup" syncable="YES"/>
+        <relationship name="group" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TranslatorGroup" inverseName="texts" inverseEntity="TranslatorGroup" syncable="YES"/>
         <compoundIndexes>
             <compoundIndex>
                 <index value="date"/>

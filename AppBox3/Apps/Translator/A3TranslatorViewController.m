@@ -25,6 +25,7 @@
 #import "TranslatorFavorite.h"
 #import "FMMoveTableView.h"
 #import "NSMutableArray+A3Sort.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
@@ -78,6 +79,12 @@
 	}
 }
 
+- (void)didReceiveMemoryWarning
+{
+	[super didReceiveMemoryWarning];
+	// Dispose of any resources that can be recreated.
+}
+
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
 }
 
@@ -107,7 +114,7 @@
 		[_segmentedControl makeConstraints:^(MASConstraintMaker *make) {
 			make.top.equalTo(self.view.top).with.offset(64.0 + 10.0);
 			make.centerX.equalTo(self.view.centerX);
-			make.width.equalTo(@(IS_IPHONE ? 206.0 : 300.0));
+			make.width.equalTo(@(IS_IPHONE ? 170.0 : 300.0));
 			make.height.equalTo(@28);
 		}];
 
@@ -116,22 +123,25 @@
 		[self.view addSubview:line];
 
 		[line makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.top).with.offset(64.0 + 47.0);
+			make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 48.0));
 			make.centerX.equalTo(self.view.centerX);
 			make.width.equalTo(self.view.width);
-			make.height.equalTo(@1.0);
+			make.height.equalTo(IS_RETINA ? @0.5 : @1);
 		}];
 
 		_tableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 		_tableView.dataSource = self;
 		_tableView.delegate = self;
+		if (IS_IPAD) self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
+		_tableView.separatorColor = A3UITableViewSeparatorColor;
+		_tableView.rowHeight = 48.0;
 		[self.view addSubview:_tableView];
 
 		[_tableView makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.top).with.offset(64.0 + 48.0);
+			make.top.equalTo(line.bottom);
 			make.bottom.equalTo(self.view.bottom);
-			make.width.equalTo(self.view.width);
-			make.centerX.equalTo(self.view.centerX);
+			make.left.equalTo(self.view.left);
+			make.right.equalTo(self.view.right);
 		}];
 
 		_addButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -148,20 +158,36 @@
 	}
 }
 
-- (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
-	@autoreleasepool {
-		if (segmentedControl.selectedSegmentIndex == 0) {
-			self.tableView.dataSource = self;
-			self.tableView.delegate = self;
-			[self.tableView reloadData];
-		} else {
-			self.navigationItem.rightBarButtonItem = nil;
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
 
-			[self.favoriteDataSource resetData];
-			self.tableView.dataSource = self.favoriteDataSource;
-			self.tableView.delegate = self.favoriteDataSource;
-			[self.tableView reloadData];
+	if (IS_IPAD) {
+		if (IS_LANDSCAPE) {
+			self.navigationItem.leftBarButtonItem = nil;
+		} else {
+			[self leftBarButtonAppsButton];
 		}
+	}
+}
+
+#pragma mark -------------- SegmentedControl
+
+- (void)segmentedControlValueChanged:(UISegmentedControl *)segmentedControl {
+	if (segmentedControl.selectedSegmentIndex == 0) {
+		self.tableView.dataSource = self;
+		self.tableView.delegate = self;
+		[self.tableView reloadData];
+
+		[self.addButton setHidden:NO];
+	} else {
+		self.navigationItem.rightBarButtonItem = nil;
+
+		[self.favoriteDataSource resetData];
+		self.tableView.dataSource = self.favoriteDataSource;
+		self.tableView.delegate = self.favoriteDataSource;
+		[self.tableView reloadData];
+
+		[self.addButton setHidden:YES];
 	}
 }
 
@@ -183,28 +209,10 @@
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
-
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 - (void)addButtonAction {
 	A3TranslatorMessageViewController *viewController = [[A3TranslatorMessageViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
 	[self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - UITableView Data Source
@@ -226,6 +234,8 @@
 	@autoreleasepool {
 		static NSString *cellIdentifier = @"TranslatorListCell";
 
+		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
+
 		if (IS_IPHONE) {
 			UITableViewCell *iPhone_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
@@ -233,11 +243,12 @@
 				iPhone_cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 			}
 
-			iPhone_cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-			iPhone_cell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+			iPhone_cell.textLabel.font = [UIFont systemFontOfSize:15];
+			iPhone_cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
 			iPhone_cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:142.0/255.0 alpha:1.0];
 
 			cell = iPhone_cell;
+			cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
 		} else {
 			A3TranslatorListCell *iPad_cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
@@ -246,8 +257,8 @@
 			}
 
 			cell = iPad_cell;
+			iPad_cell.dateLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
 		}
-		TranslatorGroup *group = self.fetchedResultsController.fetchedObjects[indexPath.row];
 
 		cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@",
 														 [A3TranslatorLanguage localizedNameForCode:group.sourceLanguage],
@@ -257,7 +268,6 @@
 		circleView.textLabel.text = [NSString stringWithFormat:@"%ld", (long)[group.texts count]];
 		cell.imageView.image = [circleView imageByRenderingView];
 
-		cell.detailTextLabel.text = [[group.texts valueForKeyPath:@"@max.date"] timeAgo];
 		cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	}
 

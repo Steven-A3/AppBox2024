@@ -24,6 +24,7 @@
 #import "TranslatorGroup.h"
 #import "NSString+conversion.h"
 #import "TranslatorHistory+manager.h"
+#import "UITableViewController+standardDimension.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
@@ -318,14 +319,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[contentsView addSubview:_sourceLanguageSelectTextField];
 
 	UIView *line1 = [UIView new];
-    line1.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:200.0/255.0];
+    line1.backgroundColor = A3UITableViewSeparatorColor;
 	[contentsView addSubview:line1];
 
 	[line1 makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(contentsView.top).with.offset(37.0);
 		make.left.equalTo(contentsView.left).with.offset(IS_IPHONE ? 15.0 : 28.0);
 		make.right.equalTo(contentsView.right);
-		make.height.equalTo( @1.0 );
+		make.height.equalTo( IS_RETINA ? @0.5 : @1.0 );
 	}];
 
 	_targetLanguageSelectTextField = [self textFieldForLanguageSelect];
@@ -343,14 +344,14 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	}];
 
 	UIView *line2 = [UIView new];
-    line2.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:200.0/255.0];
+    line2.backgroundColor = A3UITableViewSeparatorColor;
 	[contentsView addSubview:line2];
 
 	[line2 makeConstraints:^(MASConstraintMaker *make) {
 		make.bottom.equalTo(contentsView.bottom);
 		make.left.equalTo(contentsView.left).with.offset(IS_IPHONE ? 15.0 : 28.0);
 		make.right.equalTo(contentsView.right);
-		make.height.equalTo(@1.0);
+		make.height.equalTo( IS_RETINA ? @0.5 : @1.0 );
 	}];
 
 	_setSourceLanguageButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -764,34 +765,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	if ([_textView.text length]) {
 		_translateButton.enabled = NO;
 
-		if (_group && (![_group.sourceLanguage isEqualToString:_originalTextLanguage] || ![_group.targetLanguage isEqualToString:_translatedTextLanguage])) {
-			_group = nil;
-		}
-
-		if (!_group) {
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceLanguage == %@ AND targetLanguage == %@", _originalTextLanguage, _translatedTextLanguage];
-			NSArray *groupCandidates = [TranslatorGroup MR_findAllWithPredicate:predicate];
-			if ([groupCandidates count] == 1) {
-				_group = groupCandidates[0];
-			} else if (![groupCandidates count]) {
-				_group = [TranslatorGroup MR_createEntity];
-				_group.sourceLanguage = _originalTextLanguage;
-				_group.targetLanguage = _translatedTextLanguage;
-
-				NSString *largestInOrder = [TranslatorGroup MR_findLargestValueForAttribute:@"order"];
-				NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
-				FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);
-
-				_group.order = nextLargestInOrder;
-
-			} else {
-				FNLOG(@"Group exists more than 1.");
-				return;
-			}
-		}
-
 		_translatingMessage = [TranslatorHistory MR_createEntity];
-		_translatingMessage.group = _group;
 		_translatingMessage.originalText = _textView.text;
 		self.originalText = _textView.text; // Save to async operation
 		_translatingMessage.date = [NSDate date];
@@ -894,14 +868,36 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 - (void)addTranslatedString:(NSString *)translatedString detectedSourceLanguage:(NSString *)detectedLanguage {
+	if (_group && (![_group.sourceLanguage isEqualToString:detectedLanguage] || ![_group.targetLanguage isEqualToString:_translatedTextLanguage])) {
+		_group = nil;
+	}
+
+	if (!_group) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceLanguage == %@ AND targetLanguage == %@", detectedLanguage, _translatedTextLanguage];
+		NSArray *groupCandidates = [TranslatorGroup MR_findAllWithPredicate:predicate];
+		if ([groupCandidates count]) {
+			_group = groupCandidates[0];
+		} else if (![groupCandidates count]) {
+			_group = [TranslatorGroup MR_createEntity];
+			_group.sourceLanguage = detectedLanguage;
+			_group.targetLanguage = _translatedTextLanguage;
+
+			NSString *largestInOrder = [TranslatorGroup MR_findLargestValueForAttribute:@"order"];
+			NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
+			FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);
+
+			_group.order = nextLargestInOrder;
+
+		}
+	}
+
 	NSMutableString *translated = [NSMutableString stringWithCapacity:400];
 	[translated setString:translatedString];
 
 	[translated replaceOccurrencesOfString:@"&#39;" withString:@"'" options:0 range:NSMakeRange(0, [translated length])];
 
 	_translatingMessage.translatedText = translated;
-	_translatingMessage.group.sourceLanguage = detectedLanguage;
-	_translatingMessage.group.targetLanguage = _translatedTextLanguage;
+	_translatingMessage.group = _group;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 

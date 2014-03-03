@@ -8,6 +8,7 @@
 
 #import "A3TranslatorListCell.h"
 #import "A3UIDevice.h"
+#import "UITableViewController+standardDimension.h"
 
 @implementation A3TranslatorListCell
 
@@ -22,12 +23,26 @@
 		[self.contentView addSubview:_dateLabel];
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.right.equalTo(self.contentView.right).with.offset(-32);
+			make.right.equalTo(self.contentView.right);
 			make.centerY.equalTo(self.contentView.centerY).with.offset(1.5);
 		}];
 		[self setupFont];
     }
     return self;
+}
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
+
+	if (IS_IPAD) {
+		CGRect frame = self.imageView.frame;
+		frame.origin.x = A3UITableViewCellLeftOffset_iPAD_28;
+		self.imageView.frame = frame;
+
+		frame = self.textLabel.frame;
+		frame.origin.x += 10;
+		self.textLabel.frame = frame;
+	}
 }
 
 - (void)setupFont {

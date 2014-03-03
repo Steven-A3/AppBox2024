@@ -8,6 +8,7 @@
 
 #import "A3TranslatorFavoriteCell.h"
 #import "A3UIDevice.h"
+#import "UITableViewController+standardDimension.h"
 
 @implementation A3TranslatorFavoriteCell
 
@@ -24,7 +25,7 @@
 		[self.contentView addSubview:_dateLabel];
 
 		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.right.equalTo(self.right).with.offset(-32);
+			make.right.equalTo(self.contentView.right);
 			if (IS_IPAD) {
 				make.centerY.equalTo(self.contentView.centerY).with.offset(1.5);
 			} else {
@@ -34,6 +35,20 @@
 		[self setupFont];
 	}
     return self;
+}
+
+- (void)layoutSubviews {
+	[super layoutSubviews];
+
+	if (IS_IPAD) {
+		CGRect frame = self.textLabel.frame;
+		frame.origin.x = A3UITableViewCellLeftOffset_iPAD_28;
+		self.textLabel.frame = frame;
+
+		frame = self.detailTextLabel.frame;
+		frame.origin.x = A3UITableViewCellLeftOffset_iPAD_28;
+		self.detailTextLabel.frame = frame;
+	}
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

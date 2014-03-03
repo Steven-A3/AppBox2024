@@ -10,6 +10,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3CurrencySelectViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "UITableViewController+standardDimension.h"
 
 @implementation A3SearchTargetItem
 @end
@@ -33,6 +34,7 @@
 	_tableView.dataSource = self;
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
+	_tableView.separatorColor = A3UITableViewSeparatorColor;
 	_tableView.contentInset = UIEdgeInsetsMake(kSearchBarHeight + 4, 0, 0, 0);
 	[self.view addSubview:_tableView];
 

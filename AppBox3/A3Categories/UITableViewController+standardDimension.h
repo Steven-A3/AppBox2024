@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#define A3UITableViewCellLeftOffset_iPHONE		15
+#define A3UITableViewCellLeftOffset_iPAD_28     28
+#define A3UITableViewSeparatorColor				[UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0]
+#define A3UITableViewTextLabelFont				[UIFont systemFontOfSize:17]
+
 @interface UITableViewController (standardDimension)
 
 - (CGFloat)standardHeightForHeaderInSection:(NSInteger)section;

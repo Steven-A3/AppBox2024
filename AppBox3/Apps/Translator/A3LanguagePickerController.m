@@ -10,6 +10,8 @@
 #import "A3TranslatorLanguage.h"
 #import "A3UIDevice.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+A3Addition.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 
@@ -43,7 +45,14 @@ static NSString *CellIdentifier = @"Cell";
 	self.title = @"Select Language";
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+
+	[self leftBarButtonCancelButton];
+
 	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -75,6 +84,7 @@ static NSString *CellIdentifier = @"Cell";
 		// Configure the cell with the time zone's name.
 		data = rowsInSection[indexPath.row];
 	}
+	cell.textLabel.font = A3UITableViewTextLabelFont;
 	cell.textLabel.text = data.displayName;
 
 	return cell;

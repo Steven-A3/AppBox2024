@@ -261,6 +261,7 @@
 		6830C78418519C540075010F /* A3SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C78318519C540075010F /* A3SettingsViewController.m */; };
 		6830C7871851A26E0075010F /* NSUserDefaults+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */; };
 		6830C78A1851BD480075010F /* A3SettingsSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7891851BD480075010F /* A3SettingsSyncViewController.m */; };
+		6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6831407E18C20C9700896819 /* AVFoundation.framework */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addtion.m */; };
 		6831EBFB18619CC800BAF15B /* AppBox3.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */; };
@@ -356,6 +357,7 @@
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
 		6858C362181F61EE00CEB06C /* A3TableViewExpandableElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 6858C361181F61EE00CEB06C /* A3TableViewExpandableElement.m */; };
 		6858C375181F77CF00CEB06C /* A3TableViewExpandableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6858C374181F77CF00CEB06C /* A3TableViewExpandableHeaderCell.m */; };
+		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
 		6859C58A17532E6800DE1C4A /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6859C58917532E6800DE1C4A /* LoanCalcHistory.m */; };
 		685A0A3D1624376F00E94B6B /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 685A0A3C1624376F00E94B6B /* Storyboard.storyboard */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
@@ -505,6 +507,7 @@
 		68D8F4FF1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D8F4FE1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.m */; };
 		68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68DAF6EF16BFE3B000775372 /* Localizable.strings */; };
 		68DB84BC17508CC1004521E0 /* A3HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */; };
+		68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */; };
 		68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */; };
 		68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0917CAE519005AB571 /* HolidayData.m */; };
 		68DBF05217CB8AAB009CAC33 /* HolidayData+Africa.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0CFD17CAE519005AB571 /* HolidayData+Africa.m */; };
@@ -921,6 +924,7 @@
 		6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+A3Addition.m"; sourceTree = "<group>"; };
 		6830C7881851BD480075010F /* A3SettingsSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsSyncViewController.h; path = Settings/A3SettingsSyncViewController.h; sourceTree = "<group>"; };
 		6830C7891851BD480075010F /* A3SettingsSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsSyncViewController.m; path = Settings/A3SettingsSyncViewController.m; sourceTree = "<group>"; };
+		6831407E18C20C9700896819 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
 		6831EBF718619CC800BAF15B /* AppBox3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AppBox3.xcdatamodel; sourceTree = "<group>"; };
@@ -1093,6 +1097,7 @@
 		6858C361181F61EE00CEB06C /* A3TableViewExpandableElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TableViewExpandableElement.m; path = A3TableViewController/A3TableViewExpandableElement.m; sourceTree = "<group>"; };
 		6858C373181F77CF00CEB06C /* A3TableViewExpandableHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewExpandableHeaderCell.h; path = A3TableViewController/A3TableViewExpandableHeaderCell.h; sourceTree = "<group>"; };
 		6858C374181F77CF00CEB06C /* A3TableViewExpandableHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TableViewExpandableHeaderCell.m; path = A3TableViewController/A3TableViewExpandableHeaderCell.m; sourceTree = "<group>"; };
+		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
 		6859C58817532E6800DE1C4A /* LoanCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcHistory.h; sourceTree = "<group>"; };
 		6859C58917532E6800DE1C4A /* LoanCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcHistory.m; sourceTree = "<group>"; };
 		685A0A3C1624376F00E94B6B /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = AppBox3/Storyboard.storyboard; sourceTree = "<group>"; };
@@ -1387,6 +1392,7 @@
 		68DAF6F016BFE3B000775372 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		68DB84BA17508CC1004521E0 /* A3HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HistoryViewController.h; path = ViewControllers/A3HistoryViewController.h; sourceTree = "<group>"; };
 		68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HistoryViewController.m; path = ViewControllers/A3HistoryViewController.m; sourceTree = "<group>"; };
+		68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysTest.m; path = Holidays/A3HolidaysTest.m; sourceTree = "<group>"; };
 		68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KeychainUtils.h; path = Passcode/A3KeychainUtils.h; sourceTree = "<group>"; };
 		68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KeychainUtils.m; path = Passcode/A3KeychainUtils.m; sourceTree = "<group>"; };
@@ -1449,6 +1455,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */,
+				6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */,
 				68D8F4FC1887F0AC008617C6 /* DropboxSDK.framework in Frameworks */,
@@ -2045,6 +2053,8 @@
 		682EA2D415EB10B000BD6AD4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */,
+				6831407E18C20C9700896819 /* AVFoundation.framework */,
 				6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */,
 				684E9F0D188A4BB100FAA48E /* Social.framework */,
 				68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */,
@@ -2429,12 +2439,12 @@
 			children = (
 				6833090018C06D740082524E /* TranslatorFavorite.h */,
 				6833090118C06D740082524E /* TranslatorFavorite.m */,
-				683308FD18C06D740082524E /* TranslatorHistory.h */,
-				683308FE18C06D740082524E /* TranslatorHistory.m */,
 				683308FA18C06D730082524E /* TranslatorGroup.h */,
 				683308FB18C06D730082524E /* TranslatorGroup.m */,
-				17D421064EA823E51FA60A9B /* TranslatorHistory+manager.m */,
 				17D42C0234DBB50B50761CE0 /* TranslatorHistory+manager.h */,
+				17D421064EA823E51FA60A9B /* TranslatorHistory+manager.m */,
+				683308FD18C06D740082524E /* TranslatorHistory.h */,
+				683308FE18C06D740082524E /* TranslatorHistory.m */,
 			);
 			name = Model;
 			path = Translator/Model;
@@ -2686,6 +2696,7 @@
 				6876D70C17A75E5A00E16991 /* CategoryTest */,
 				6876D70E17A75E5A00E16991 /* Currency */,
 				6876D6FF17A75DAE00E16991 /* Supporting Files */,
+				685946D018C371C800528190 /* A3SpeechTest.m */,
 			);
 			path = "AppBox3 Tests";
 			sourceTree = "<group>";
@@ -3119,6 +3130,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = ALLABOUTAPPS;
 				TargetAttributes = {
+					6829688D18505E3800B70E13 = {
+						DevelopmentTeam = 84XB754BWU;
+					};
 					682EA2D015EB10B000BD6AD4 = {
 						DevelopmentTeam = 84XB754BWU;
 						SystemCapabilities = {
@@ -3696,6 +3710,7 @@
 				68DBF05217CB8AAB009CAC33 /* HolidayData+Africa.m in Sources */,
 				6876D71117A75E5A00E16991 /* A3NSMutableArrayCategory.m in Sources */,
 				68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */,
+				685946D118C371C800528190 /* A3SpeechTest.m in Sources */,
 				68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */,
 				68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */,
 				68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */,
@@ -3806,6 +3821,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "A3SetupDefaultData/A3SetupDefaultData-Prefix.pch";
@@ -3816,6 +3832,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				INFOPLIST_FILE = "A3SetupDefaultData/A3SetupDefaultData-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3829,6 +3846,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -3836,6 +3854,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				INFOPLIST_FILE = "A3SetupDefaultData/A3SetupDefaultData-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

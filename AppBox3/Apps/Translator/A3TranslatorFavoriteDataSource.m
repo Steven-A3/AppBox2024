@@ -14,6 +14,7 @@
 #import "TranslatorFavorite.h"
 #import "TranslatorGroup.h"
 #import "NSMutableArray+A3Sort.h"
+#import "TranslatorHistory+manager.h"
 
 @interface A3TranslatorFavoriteDataSource ()
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
@@ -77,6 +78,22 @@
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		TranslatorFavorite *favorite = [self.fetchedResultsController objectAtIndexPath:indexPath];
+		[favorite MR_deleteEntity];
+		[favorite.managedObjectContext MR_saveToPersistentStoreAndWait];
+
+		[self.fetchedResultsController performFetch:nil];
+
+		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
+}
+
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	NSMutableArray *mutableArray = [self.fetchedResultsController.fetchedObjects mutableCopy];
 	FNLOG(@"%@", mutableArray);
@@ -84,7 +101,8 @@
 	FNLOG(@"%@", mutableArray);
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-	_fetchedResultsController = nil;
+
+	[self.fetchedResultsController performFetch:nil];
 }
 
 @end

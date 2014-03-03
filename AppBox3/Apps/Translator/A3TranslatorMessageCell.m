@@ -7,6 +7,7 @@
 //
 
 #import <CoreText/CoreText.h>
+#import <AVFoundation/AVFoundation.h>
 #import "A3TranslatorMessageCell.h"
 #import "TranslatorHistory.h"
 #import "A3Formatter.h"
@@ -16,8 +17,13 @@
 #import "TranslatorFavorite.h"
 #import "NSString+conversion.h"
 #import "TranslatorHistory+manager.h"
+#import "TranslatorGroup.h"
+#import "A3AppDelegate.h"
+#import "Reachability.h"
+#import "A3TranslatorLanguage.h"
+#import <MediaPlayer/MediaPlayer.h>
 
-@interface A3TranslatorMessageCell ()
+@interface A3TranslatorMessageCell () <AVSpeechSynthesizerDelegate>
 
 @property (nonatomic, strong) UILabel *dateLabel;
 @property (nonatomic, strong) NSLayoutConstraint *rightMessageWidth;
@@ -27,10 +33,15 @@
 @property (nonatomic, strong) UILabel *rightMessageLabel;
 @property (nonatomic, strong) UILabel *leftMessageLabel;
 @property (nonatomic, strong) UIButton *favoriteButton;
+@property (nonatomic, strong) UIButton *speakButton;
+@property (nonatomic, strong) AVSpeechSynthesizer *speechSynthesizer;
+@property (nonatomic, strong) MPMoviePlayerController *googleSpeechPlayer;
 
 @end
 
-@implementation A3TranslatorMessageCell
+@implementation A3TranslatorMessageCell {
+	BOOL _speakWithApple;
+}
 
 static const CGFloat kTranslatorCellTopPadding = 35.0;
 static const CGFloat kTranslatorCellBottomPadding = 10.0;
@@ -49,8 +60,13 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
     if (self) {
         // Initialization code
 		self.selectionStyle = UITableViewCellSelectionStyleDefault;
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(speakGoogleFinished) name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)prepareForReuse {
@@ -158,6 +174,8 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		_leftMessageHeight.constant = MAX(boundingRect.size.height, 35);
 
 		_leftMessageLabel.text = [_messageEntity.translatedText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+		[self speakButton];
 	}
 	[self invalidateIntrinsicContentSize];
 	[self layoutIfNeeded];
@@ -303,9 +321,101 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerY.equalTo(_rightMessageView.centerY);
 			make.right.equalTo(_rightMessageView.left).with.offset(-15);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
 		}];
 	}
 	return _favoriteButton;
+}
+
+- (UIButton *)speakButton {
+	if ([self speechAvailableForLanguage:_messageEntity.group.targetLanguage]) {
+		_speakWithApple = YES;
+	} else if ([self googleSpeechAvailableForLanguage:_messageEntity.group.targetLanguage]) {
+		_speakWithApple = NO;
+	} else {
+		return nil;
+	}
+
+	if (!_speakButton) {
+		_speakButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		_speakButton.titleLabel.font = [UIFont fontWithName:@"appbox" size:30];
+		[_speakButton setTitle:@"b" forState:UIControlStateNormal];
+		[_speakButton addTarget:self action:@selector(speakButtonAction) forControlEvents:UIControlEventTouchUpInside];
+
+		[self addSubview:_speakButton];
+
+		[_speakButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerY.equalTo(_leftMessageView.centerY);
+			make.left.equalTo(_leftMessageView.right);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
+		}];
+	}
+	return _speakButton;
+}
+
+- (AVSpeechSynthesizer *)speechSynthesizer {
+	if (!_speechSynthesizer) {
+		_speechSynthesizer = [AVSpeechSynthesizer new];
+		_speechSynthesizer.delegate = self;
+	}
+	return _speechSynthesizer;
+}
+
+- (void)setSpeakButtonDefault {
+	[_speakButton setTitle:@"b" forState:UIControlStateNormal];
+}
+
+- (void)setSpeakButtonPause {
+	[_speakButton setTitle:@"l" forState:UIControlStateNormal];
+}
+
+- (void)setSpeakButtonContinue {
+	[_speakButton setTitle:@"m" forState:UIControlStateNormal];
+}
+
+- (void)setSpeakButtonStop {
+	[_speakButton setTitle:@"p" forState:UIControlStateNormal];
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didStartSpeechUtterance:(AVSpeechUtterance *)utterance {
+	[self setSpeakButtonPause];
+	FNLOG();
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didFinishSpeechUtterance:(AVSpeechUtterance *)utterance {
+	[self setSpeakButtonDefault];
+	FNLOG();
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didPauseSpeechUtterance:(AVSpeechUtterance *)utterance {
+	[self setSpeakButtonContinue];
+	FNLOG();
+}
+
+- (void)speechSynthesizer:(AVSpeechSynthesizer *)synthesizer didContinueSpeechUtterance:(AVSpeechUtterance *)utterance {
+	[self setSpeakButtonPause];
+	FNLOG();
+}
+
+- (void)speakButtonAction {
+	if (_speakWithApple) {
+		if ([self.speechSynthesizer isPaused]) {
+			[self.speechSynthesizer continueSpeaking];
+			return;
+		}
+		if ([self.speechSynthesizer isSpeaking]) {
+			[self.speechSynthesizer pauseSpeakingAtBoundary:AVSpeechBoundaryImmediate];
+			return;
+		}
+		AVSpeechSynthesisVoice *voice = [AVSpeechSynthesisVoice voiceWithLanguage:[self speechLanguageForLanguage:_messageEntity.group.targetLanguage]];
+		AVSpeechUtterance *utterance = [[AVSpeechUtterance alloc] initWithString:_messageEntity.translatedText];
+		utterance.voice = voice;
+		[self.speechSynthesizer speakUtterance:utterance];
+	} else {
+		[self speakGoogleSpeechWithLanguage];
+	}
 }
 
 - (void)changeFavoriteButtonImage {
@@ -322,6 +432,96 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 	[_messageEntity setAsFavoriteMember:_messageEntity.favorite == nil];
 
 	[self changeFavoriteButtonImage];
+}
+
+- (BOOL)speechAvailableForLanguage:(NSString *)language {
+	NSArray *voices = [AVSpeechSynthesisVoice speechVoices];
+	return [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		BOOL result = [[[obj valueForKeyPath:@"language"] substringToIndex:2] isEqualToString:language];
+		if (result) *stop = YES;
+		return result;
+	}] != NSNotFound;
+}
+
+- (NSString *)speechLanguageForLanguage:(NSString *)language {
+	NSArray *voices = [AVSpeechSynthesisVoice speechVoices];
+	if ([language isEqualToString:@"en"]) {
+		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"en-US" inArray:voices];
+	} else if ([language isEqualToString:@"es"]) {
+		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"es-ES" inArray:voices];
+	} else if ([language isEqualToString:@"fr"]) {
+		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"fr-FR" inArray:voices];
+	} else if ([language isEqualToString:@"nl"]) {
+		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"nl-NL" inArray:voices];
+	} else if ([language isEqualToString:@"pt"]) {
+		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"pt-PT" inArray:voices];
+	} else if ([[language substringToIndex:2] isEqualToString:@"zh"]) {
+		return [self supportedVoiceLanguageForLanguage:language defaultCode:@"zh-CN" inArray:voices];
+	} else {
+		NSInteger idx = [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+			BOOL result = [[[obj valueForKeyPath:@"language"] substringToIndex:2] isEqualToString:language];
+			if (result) *stop = YES;
+			return result;
+		}];
+		if (idx != NSNotFound) return [voices[idx] valueForKeyPath:@"language"];
+	}
+	return nil;
+}
+
+- (NSString *)supportedVoiceLanguageForLanguage:(NSString *)language defaultCode:(NSString *)defaultCode inArray:(NSArray *)voices {
+	NSString *languageCode = [NSString stringWithFormat:@"en-%@", [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]];
+	NSInteger idx = [voices indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		BOOL result = [[obj valueForKeyPath:@"language"] isEqualToString:languageCode];
+		if (result) *stop = YES;
+		return result;
+	}];
+	if (idx != NSNotFound) {
+		return languageCode;
+	} else {
+		return defaultCode;
+	}
+}
+
+/*! Apple Language Code and Google language code is different in few languages like
+ * he(Hebrew in Apple) is iw(Hebrew in Google), fil(Filipino in Apple) is tl(Google)
+ * zh-Hans(Apple) is zh-CN(Google), zh-Hant(Apple) is zh-TW(Google)
+ * \param language code must be Apple language code rather than Google language code
+ * \param
+ * \returns
+ */
+- (BOOL)googleSpeechAvailableForLanguage:(NSString *)language {
+	if (![[A3AppDelegate instance].reachability isReachable]) return NO;
+	NSSet *googleSpeeches = [NSSet setWithArray:@[@"mk", @"hr", @"sr", @"ht", @"is", @"ca", @"sw", @"af", @"lv", @"vi", @"cy", @"sq"]];
+	return [googleSpeeches member:language] != nil;
+}
+
+#define GOOGLE_LISTEN_URL	@"http://translate.google.com/translate_tts?ie=UTF-8&tl="
+
+- (void)speakGoogleSpeechWithLanguage {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		return;
+	}
+
+	NSMutableString *urlString = [NSMutableString stringWithCapacity:300];
+	[urlString appendString:GOOGLE_LISTEN_URL];
+	[urlString appendString:[A3TranslatorLanguage googleCodeFromAppleCode:_messageEntity.group.targetLanguage]];
+	[urlString appendString:@"&q="];
+	[urlString appendString:[_messageEntity.translatedText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+	FNLOG(@"%@", urlString);
+
+	_googleSpeechPlayer = [[MPMoviePlayerController alloc] initWithContentURL:[NSURL URLWithString:urlString]];
+	_googleSpeechPlayer.movieSourceType = MPMovieSourceTypeStreaming;
+	[_googleSpeechPlayer prepareToPlay];
+	[_googleSpeechPlayer play];
+
+	[self.speakButton setHidden:YES];
+}
+
+- (void)speakGoogleFinished {
+	FNLOG();
+	_googleSpeechPlayer = nil;
+	[self.speakButton setHidden:NO];
 }
 
 @end
