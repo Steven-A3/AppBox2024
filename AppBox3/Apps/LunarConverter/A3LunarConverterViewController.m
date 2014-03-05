@@ -228,7 +228,7 @@
 	CGFloat scale = [[UIScreen mainScreen] scale];
 
 	BOOL isIPHONE35 = IS_IPHONE35;
-	CGFloat topCellHeight = isIPHONE35 ? 64 : 82;
+	CGFloat topCellHeight = isIPHONE35 ? 64 : (IS_RETINA ? 83 : 82);
 	CGFloat middleHeight = isIPHONE35 ? 47 : (IS_RETINA ? 83.5 : 83);
 	CGFloat bottomCellHeight = isIPHONE35 ? 64.5 : (IS_RETINA ? 83.5 : 83);
 	CGFloat lineWidth = 1.0 / scale;
@@ -425,7 +425,7 @@
 		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 			[self.cellHeightConstraints addObject:make.top.equalTo(@310)];
 		}];
-		CGFloat topCellHeight = 82;
+		CGFloat topCellHeight = IS_RETINA ? 83 : 82;
 		CGFloat middleHeight = 83.5;
 		CGFloat bottomCellHeight = 83.5;
 
