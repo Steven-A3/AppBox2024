@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @protocol A3HolidaysCountryViewControllerDelegate;
+@protocol A3HolidaysPageViewControllerProtocol;
 
 @interface A3HolidaysCountryViewController : UIViewController
 
+@property (nonatomic, weak) id<A3HolidaysPageViewControllerProtocol> pageViewController;
 @property (nonatomic, weak) id<A3HolidaysCountryViewControllerDelegate> delegate;
 
 @end

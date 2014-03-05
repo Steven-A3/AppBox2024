@@ -14,6 +14,7 @@
 @interface A3HolidaysCell ()
 
 @property (nonatomic, strong) MASConstraint *titleCenterY;
+@property (nonatomic, strong) NSMutableArray *mutableConstraints;
 
 @end
 
@@ -68,6 +69,8 @@
 			}
 		}];
 
+		[self dateLabel];
+
 		self.backgroundColor = [UIColor clearColor];
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 		self.textLabel.textColor = [UIColor whiteColor];
@@ -83,32 +86,6 @@
 	label.shadowBlur = 2;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-- (void)prepareForReuse {
-	[super prepareForReuse];
-
-	_cellType = A3HolidayCellTypeSingleLine;
-
-	[_dateLabel removeFromSuperview];
-	_dateLabel = nil;
-
-	[_publicLabel removeFromSuperview];
-	_publicLabel = nil;
-	[_publicMarkView removeFromSuperview];
-	_publicMarkView = nil;
-
-	[self assignFontsToLabels];
-
-	_titleCenterY.offset(0);
-	[self layoutIfNeeded];
-}
-
 - (void)assignFontsToLabels {
 	_titleLabel.textColor = [UIColor whiteColor];
 	_dateLabel.textColor = [UIColor whiteColor];
@@ -117,9 +94,9 @@
 	_publicMarkView.layer.borderColor = [UIColor whiteColor].CGColor;
 	_publicLabel.textColor = [UIColor whiteColor];
 
-	_titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	_lunarDateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	_titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	_dateLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	_lunarDateLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
 
 	[_lunarImageView setHidden:YES];
 	[_lunarDateLabel setHidden:YES];
@@ -129,30 +106,11 @@
 	if (!_dateLabel) {
 		_dateLabel = [FXLabel new];
 		_dateLabel.textColor = [UIColor whiteColor];
-		_dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 		_dateLabel.adjustsFontSizeToFitWidth = YES;
 		_dateLabel.minimumScaleFactor = 0.5;
 		_dateLabel.textAlignment = NSTextAlignmentRight;
 		[self setShadowToLabel:_dateLabel];
 		[self addSubview:_dateLabel];
-
-		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-			switch (_cellType) {
-				case A3HolidayCellTypeSingleLine:
-				case A3HolidayCellTypeLunar1:
-					make.baseline.equalTo(_titleLabel.baseline);
-					make.right.equalTo(self.right).offset(IS_IPHONE ? -15 : -28);
-					if (IS_IPHONE) {
-						make.width.equalTo(@(78));
-					}
-					break;
-				case A3HolidayCellTypeDoubleLine:
-				case A3HolidayCellTypeLunar2:
-					_dateLabelLeft = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 + 18 + 5 : 28 + 18 + 5);
-					make.centerY.equalTo(self.centerY).with.offset(15);
-					break;
-			}
-		}];
 
 		if (IS_IPHONE) {
 			_publicMarkView = [self createAddPublicMarkToSelf];
@@ -160,33 +118,14 @@
 
 			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
 				make.centerY.equalTo(_dateLabel.centerY);
-
-				if (IS_IPHONE) {
-					make.width.equalTo(@18);
-					make.height.equalTo(@18);
-
-					switch (_cellType) {
-						case A3HolidayCellTypeSingleLine:
-						case A3HolidayCellTypeLunar1:
-							make.left.equalTo(self.right).with.offset(-113);
-							break;
-						case A3HolidayCellTypeDoubleLine:
-						case A3HolidayCellTypeLunar2:
-							make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-							break;
-					}
-				} else {
-					CGSize size = [@"Public" sizeWithAttributes:@{NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue-Light" size:10]}];
-					make.width.equalTo(@(size.width + 8));
-					make.height.equalTo(@18);
-					make.centerX.equalTo(self.centerX);
-				}
+				make.width.equalTo(@18);
+				make.height.equalTo(@18);
 			}];
 		} else {
 			_publicLabel = [UILabel new];
 			_publicLabel.textAlignment = NSTextAlignmentCenter;
 			_publicLabel.textColor = [UIColor whiteColor];
-			_publicLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:13];
+			_publicLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 11 : 13];
 			_publicLabel.text = @"Public";
 			[self addSubview:_publicLabel];
 
@@ -212,7 +151,6 @@
 				make.centerX.equalTo(self.centerX);
 			}];
 		}
-
 	}
 	return _dateLabel;
 }
@@ -229,7 +167,54 @@
 			_titleCenterY.offset(-14);
 			break;
 	}
+
+	for (MASConstraint *constraint in self.mutableConstraints) {
+		[constraint uninstall];
+	}
+	[self.mutableConstraints removeAllObjects];
+
+	[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
+		switch (_cellType) {
+			case A3HolidayCellTypeSingleLine:
+			case A3HolidayCellTypeLunar1:
+				[self.mutableConstraints addObject:make.baseline.equalTo(_titleLabel.baseline)];
+				[self.mutableConstraints addObject:make.right.equalTo(self.right).offset(IS_IPHONE ? -15 : -28)];
+				if (IS_IPHONE) {
+					[self.mutableConstraints addObject:make.width.equalTo(@(78))];
+				}
+				break;
+			case A3HolidayCellTypeDoubleLine:
+			case A3HolidayCellTypeLunar2:
+				_dateLabelLeft = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 + 18 + 5 : 28 + 18 + 5);
+				[self.mutableConstraints addObject:make.centerY.equalTo(self.centerY).with.offset(15)];
+				break;
+		}
+	}];
+
+	if (IS_IPHONE) {
+		[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
+			switch (_cellType) {
+				case A3HolidayCellTypeSingleLine:
+				case A3HolidayCellTypeLunar1:
+					[self.mutableConstraints addObject:make.left.equalTo(self.right).with.offset(-113)];
+					break;
+				case A3HolidayCellTypeDoubleLine:
+				case A3HolidayCellTypeLunar2:
+					[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28)];
+					break;
+			}
+		}];
+	}
+
 	[self layoutIfNeeded];
 }
+
+- (NSMutableArray *)mutableConstraints {
+	if (!_mutableConstraints) {
+		_mutableConstraints = [NSMutableArray new];
+	}
+	return _mutableConstraints;
+}
+
 
 @end

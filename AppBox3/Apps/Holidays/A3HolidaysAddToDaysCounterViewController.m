@@ -11,6 +11,8 @@
 #import "UIViewController+A3AppCategory.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
+#import "UITableViewController+standardDimension.h"
+#import "A3StandardTableViewCell.h"
 
 @interface A3HolidaysAddToDaysCounterViewController ()
 
@@ -37,7 +39,7 @@ static NSString *CellIdentifier = @"Cell";
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
- 
+
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
@@ -49,7 +51,9 @@ static NSString *CellIdentifier = @"Cell";
 
 	self.title = @"Holidays";
 
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
+	[self.tableView registerClass:[A3StandardTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }
@@ -96,12 +100,12 @@ static NSString *CellIdentifier = @"Cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    A3StandardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
 	NSDictionary *holiday = self.holidaysForCountry[indexPath.row];
 
     // Configure the cell...
-	cell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	cell.textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont systemFontOfSize:17];
 	cell.textLabel.text = holiday[kHolidayName];
 	cell.accessoryView = [self plusButton];
     

@@ -95,11 +95,20 @@
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray *monthSymbols = dateFormatter.shortMonthSymbols;
 	NSUInteger idx = 0;
+
+	NSString *january = monthSymbols[0];
+
+	BOOL showNumber = [january rangeOfString:@"1"].location == NSNotFound;
 	for (A3KeyboardButton_iOS7 *button in order) {
-		[button setTitle:@"" forState:UIControlStateNormal];
-		button.mainTitle.text = [monthSymbols objectAtIndex:idx];
+		if (showNumber) {
+			[button setTitle:@"" forState:UIControlStateNormal];
+			button.mainTitle.text = [monthSymbols objectAtIndex:idx];
+			button.subTitle.text = [NSString stringWithFormat:@"%ld", (long)idx + 1];
+		} else {
+			[button setTitle:monthSymbols[idx] forState:UIControlStateNormal];
+		}
+
 		idx++;
-		button.subTitle.text = [NSString stringWithFormat:@"%lu", (unsigned long)idx];
 	}
 
 	[CATransaction begin];
@@ -185,7 +194,7 @@
 			NSDate *verifyingDate = [self.gregorian dateFromComponents:verifyingComponents];
 			range = [self.gregorian rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:verifyingDate];
 		}
-		if (day > range.length) {
+		if ((entered == 0 || entered > 2) && day > range.length) {
 			day %= 100;
 		}
 		if (day > range.length) {

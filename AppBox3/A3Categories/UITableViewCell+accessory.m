@@ -20,7 +20,7 @@
 
 	UILabel *publicString;
 	publicString = [UILabel new];
-	publicString.font = IS_IPHONE ? [UIFont fontWithName:@"HelveticaNeue-Light" size:10] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	publicString.font = [UIFont systemFontOfSize:11];
 	publicString.text = IS_IPHONE ? @"P" : @"Public";
 	publicString.textColor = [UIColor whiteColor];
 	publicString.textAlignment = NSTextAlignmentCenter;

@@ -118,6 +118,7 @@ extern NSString *const A3CurrencyActionCellID;
 		cell = plusCell;
 	} else {
 		A3HolidaysCountryViewCell *normalCell = [tableView dequeueReusableCellWithIdentifier:HolidayCellIdentifier forIndexPath:indexPath];
+		normalCell.pageViewController = _pageViewController;
 
 		if ([tableView indexPathIsMovingIndexPath:indexPath])
 		{

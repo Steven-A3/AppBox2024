@@ -94,6 +94,8 @@ NSString *const kUserDefaultsKeyForAskPasscodeForWallet = @"passcodeAskPasscodeF
 }
 
 - (void)applicationWillResignActive_passcode {
+	return;
+
 	if ([A3KeychainUtils getPassword]) {
 		[self saveTimerStartTime];
 

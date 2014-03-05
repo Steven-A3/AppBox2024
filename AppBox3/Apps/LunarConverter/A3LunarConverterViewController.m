@@ -18,6 +18,7 @@
 #import "NSDateFormatter+LunarDate.h"
 #import "NSUserDefaults+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "UIViewController+A3AppCategory.h"
 
 
 @interface A3LunarConverterViewController ()
@@ -48,7 +49,8 @@
 
 - (void)cleanUp
 {
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self removeObserver];
+
 	[self.dateKeyboardVC.view removeFromSuperview];
 	_dbManager = nil;
 }
@@ -65,21 +67,22 @@
 	_pageControl.hidden = YES;
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
+		[self.cellHeightConstraints addObject:make.top.equalTo(self.view.top).with.offset(IS_IPHONE35 ? 310 : 315)];
 	}];
 
 	_dbManager = [[SQLiteWrapper alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"LunarConverter" ofType:@"sqlite"]];
 	[self setAutomaticallyAdjustsScrollViewInsets:NO];
 
 	CGFloat viewHeight = 84 * 3 + 1;
-	if(IS_IPHONE35) {
-		viewHeight = 180;
-	}
+//	if(IS_IPHONE35) {
+//		viewHeight = 176;
+//	}
 
 	[_mainScrollView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);
 		make.right.equalTo(self.view.right);
 		make.top.equalTo(self.view.top).with.offset(64);
-		[self.cellHeightConstraints addObject:make.height.equalTo(@(viewHeight))];
+		make.height.equalTo(@(viewHeight));
 	}];
 
 	[_mainScrollView addSubview:_firstPageView];
@@ -132,6 +135,12 @@
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuResignFirstResponder) name:A3MainMenuResignFirstResponder object:nil];
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self calculateDate];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -219,8 +228,9 @@
 	CGFloat scale = [[UIScreen mainScreen] scale];
 
 	BOOL isIPHONE35 = IS_IPHONE35;
-	CGFloat cellHeight = isIPHONE35 ? 66 : 84;
-	CGFloat middleHeight = isIPHONE35 ? 48 : 84;
+	CGFloat topCellHeight = isIPHONE35 ? 64 : 82;
+	CGFloat middleHeight = isIPHONE35 ? 47 : (IS_RETINA ? 83.5 : 83);
+	CGFloat bottomCellHeight = isIPHONE35 ? 64.5 : (IS_RETINA ? 83.5 : 83);
 	CGFloat lineWidth = 1.0 / scale;
 
 	[line1 makeConstraints:^(MASConstraintMaker *make) {
@@ -233,7 +243,7 @@
 		make.left.equalTo(pageView.left);
 		make.right.equalTo(pageView.right);
 		make.top.equalTo(line1.bottom);
-		[_cellHeightConstraints addObject:make.height.equalTo(@(cellHeight))];
+		[_cellHeightConstraints addObject:make.height.equalTo(@(topCellHeight))];
 	}];
 	[line2 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(pageView.left);
@@ -257,12 +267,12 @@
 		make.left.equalTo(pageView.left);
 		make.right.equalTo(pageView.right);
 		make.top.equalTo(line3.bottom);
-		[_cellHeightConstraints addObject:make.height.equalTo(@(cellHeight))];
+		[_cellHeightConstraints addObject:make.height.equalTo( @(bottomCellHeight) )];
 	}];
 	[line4 makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(pageView.left);
 		make.right.equalTo(pageView.right);
-		make.bottom.equalTo(pageView.bottom);
+		make.top.equalTo(bottomCell.bottom);
 		make.height.equalTo(@(lineWidth));
 	}];
 }
@@ -351,29 +361,34 @@
 	self.dateKeyboardVC.isLunarDate = _isLunarInput;
 
 	_isShowKeyboard = YES;
+	// pageControl.top = 234.5 (iphone 35)
+	// pageControl.top = 315.0
+
+	NSTimeInterval duration = (animated ? 0.3 : 0.0);
 
 	if (IS_IPHONE35) {
 		[self uninstallCellHeightConstraints];
 
-		[self.mainScrollView updateConstraints:^(MASConstraintMaker *make) {
-			[_cellHeightConstraints addObject:make.height.equalTo(@(180))];
+		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+			[self.cellHeightConstraints addObject:make.top.equalTo(@234.5)];
 		}];
 		for (UIView *pageView in @[_firstPageView, _secondPageView]) {
 			UIView *topCell = [pageView viewWithTag:100];
 			[topCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@66)];
-			}];
-
-			UIView *bottomCell = [pageView viewWithTag:101];
-			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@66)];
+				[_cellHeightConstraints addObject:make.height.equalTo(@64)];
 			}];
 
 			UIView *middleCell = [pageView viewWithTag:102];
 			[middleCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@48)];
+				[_cellHeightConstraints addObject:make.height.equalTo(@47.0)];
+			}];
+
+			UIView *bottomCell = [pageView viewWithTag:101];
+			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
+				[_cellHeightConstraints addObject:make.height.equalTo(@64.5)];
 			}];
 		}
+		if (_pageControl.currentPage != 0) duration = 0;
 	}
 
 	[_keyboardTopConstraint uninstall];
@@ -382,54 +397,80 @@
 		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(-self.dateKeyboardVC.view.frame.size.height);
 	}];
 
-	[UIView animateWithDuration:(animated ? 0.3 : 0.0) animations:^{
+	NSInteger currentPage = _pageControl.currentPage;
+	if (IS_IPHONE35 && _pageControl.currentPage != 0) {
 		[self.view layoutIfNeeded];
 		[self.dateKeyboardVC.view.superview layoutIfNeeded];
-	}];
+		[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+	} else {
+		[UIView animateWithDuration:(duration) animations:^{
+			[self.view layoutIfNeeded];
+			[self.dateKeyboardVC.view.superview layoutIfNeeded];
+			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+		}];
+	}
 }
 
 - (void)hideKeyboardAnimate:(BOOL)animated
 {
+	FNLOG();
 	_isShowKeyboard = NO;
 
+	// pageControl.top = 310.0 (iphone 35)
+
+	NSTimeInterval duration = (animated ? 0.3 : 0.0);
 	if (IS_IPHONE35) {
 		[self uninstallCellHeightConstraints];
 
-		[self.mainScrollView makeConstraints:^(MASConstraintMaker *make) {
-			[_cellHeightConstraints addObject:make.height.equalTo(@(84 * 3 + 1))];
+		[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+			[self.cellHeightConstraints addObject:make.top.equalTo(@310)];
 		}];
+		CGFloat topCellHeight = 82;
+		CGFloat middleHeight = 83.5;
+		CGFloat bottomCellHeight = 83.5;
+
 		for (UIView *pageView in @[_firstPageView, _secondPageView]) {
 			UIView *topCell = [pageView viewWithTag:100];
 			[topCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@84)];
+				[_cellHeightConstraints addObject:make.height.equalTo(@(topCellHeight))];
 			}];
 
 			UIView *bottomCell = [pageView viewWithTag:101];
 			[bottomCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@84)];
+				[_cellHeightConstraints addObject:make.height.equalTo(@(bottomCellHeight))];
 			}];
 
 			UIView *middleCell = [pageView viewWithTag:102];
 			[middleCell makeConstraints:^(MASConstraintMaker *make) {
-				[_cellHeightConstraints addObject:make.height.equalTo(@84)];
+				[_cellHeightConstraints addObject:make.height.equalTo(@(middleHeight))];
 			}];
 		}
+		if (_pageControl.currentPage != 0) duration = 0;
 	}
 	[_keyboardTopConstraint uninstall];
 	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
 		_keyboardTopConstraint =  make.top.equalTo(self.view.bottom);
 	}];
 
-	[UIView animateWithDuration:(animated ? 0.3 : 0.0) animations:^{
+	NSInteger currentPage = _pageControl.currentPage;
+	if (IS_IPHONE35 && _pageControl.currentPage != 0) {
 		[self.view layoutIfNeeded];
 		[self.dateKeyboardVC.view.superview layoutIfNeeded];
-    }];
+		[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+	} else {
+		[UIView animateWithDuration:(duration) animations:^{
+			[self.view layoutIfNeeded];
+			[self.dateKeyboardVC.view.superview layoutIfNeeded];
+			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+		}];
+	}
 }
 
 #pragma mark ---- Page Handling
 
 - (void)moveToPage:(NSInteger)page
 {
+	FNLOG();
 	[_mainScrollView scrollRectToVisible:CGRectMake(page * _mainScrollView.frame.size.width, 0, _mainScrollView.frame.size.width, _mainScrollView.frame.size.height) animated:YES];
 }
 
@@ -442,6 +483,7 @@
 
 - (void)hideSecondPage
 {
+	FNLOG();
 	_pageControl.currentPage = 0;
 	_pageControl.hidden = YES;
 	[_mainScrollView scrollsToTop];
@@ -516,7 +558,9 @@
     if( isLunar ){
         NSInteger startIndex = [typeStr length];
         if( [leapMonthStr length] > 0 ){
-            [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] range:NSMakeRange([typeStr length]+2, [leapMonthStr length])];
+			NSRange range = NSMakeRange([typeStr length]+2, [leapMonthStr length]);
+            [attrStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] range:range];
+			[attrStr addAttribute:NSFontAttributeName value:IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] range:range];
             startIndex = startIndex + 2 + [leapMonthStr length];
         }
 
@@ -634,7 +678,7 @@
 		}
         
         // 두번째 페이지뷰를 만든다.
-        if( _isLunarInput && isInputLeapMonth ){
+        if( _isLunarInput && isInputLeapMonth ) {
             [self showSecondPage];
             
             self.secondPageResultDateComponents = [NSDate lunarCalcWithComponents:self.inputDateComponents gregorianToLunar:NO leapMonth:YES korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
@@ -665,14 +709,10 @@
 }
 
 #pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
-{
-    _pageControl.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
-}
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    _pageControl.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	_pageControl.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
+	FNLOG();
 }
 
 #pragma mark - UIPopoverControllerDelegate

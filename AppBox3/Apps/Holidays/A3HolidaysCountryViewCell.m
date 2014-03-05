@@ -14,6 +14,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "SFKImage.h"
 #import "FXLabel.h"
+#import "A3HolidaysPageViewController.h"
 
 @interface A3HolidaysCountryViewCell ()
 
@@ -124,8 +125,8 @@
 }
 
 - (void)setFontsForLabels {
-	_upcomingHoliday.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	_daysLeft.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+	_upcomingHoliday.font = IS_IPHONE? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	_daysLeft.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 - (void)setCountryCode:(NSString *)countryCode {
@@ -139,7 +140,7 @@
 
 	if (upcomingHoliday) {
 		_upcomingHoliday.text = upcomingHoliday[kHolidayName];
-		_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft] ];
+		_daysLeft.text = [NSString stringWithFormat:@", %@", IS_IPHONE ? [upcomingHoliday[kHolidayDate] daysLeft] : [_pageViewController stringFromDate:upcomingHoliday[kHolidayDate] ] ];
 		_numberOfHolidays.text = [NSString stringWithFormat:@"%lu", (unsigned long)[holidays count]];
 	}
 

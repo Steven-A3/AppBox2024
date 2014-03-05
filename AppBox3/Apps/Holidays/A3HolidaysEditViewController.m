@@ -16,6 +16,7 @@
 #import "A3HolidaysFlickrDownloadManager.h"
 #import "UIViewController+A3Addition.h"
 #import "A3HolidaysPageViewController.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3HolidaysEditViewController () <UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPopoverControllerDelegate, A3ImageCropperDelegate>
 
@@ -57,6 +58,8 @@ static NSString *CellIdentifier = @"Cell";
     self.navigationItem.rightBarButtonItem = doneButton;
 
 	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 	[self.tableView registerClass:[A3HolidaysEditCell class] forCellReuseIdentifier:CellIdentifier];
 
 	[self registerContentSizeCategoryDidChangeNotification];
@@ -175,6 +178,7 @@ static NSString *CellIdentifier = @"Cell";
 		return cell;
 	} else {
 		UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+		cell.textLabel.font = [UIFont systemFontOfSize:17];
 		switch (indexPath.section) {
 			case 1:
 				cell.textLabel.text = @"Reset Show/Hide Settings";

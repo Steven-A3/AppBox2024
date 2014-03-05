@@ -646,6 +646,7 @@ extern NSString *const kA3HolidayScreenImageURL;		// USE key + country code
 - (void)listButtonAction {
 	@autoreleasepool {
 		A3HolidaysCountryViewController *viewController = [[A3HolidaysCountryViewController alloc] initWithNibName:nil bundle:nil];
+		viewController.pageViewController = self;
 		viewController.delegate = self;
 
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];

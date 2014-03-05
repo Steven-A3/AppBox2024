@@ -35,6 +35,7 @@
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.separatorColor = A3UITableViewSeparatorColor;
+	_tableView.separatorInset = A3UITableViewSeparatorInset;
 	_tableView.contentInset = UIEdgeInsetsMake(kSearchBarHeight + 4, 0, 0, 0);
 	[self.view addSubview:_tableView];
 

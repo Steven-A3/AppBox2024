@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "FMMoveTableViewCell.h"
 
+@protocol A3HolidaysPageViewControllerProtocol;
+
 @interface A3HolidaysCountryViewCell : FMMoveTableViewCell
 
 @property (nonatomic, copy) NSString *countryCode;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
-
 @property (nonatomic, strong) UIImageView *locationImageView;
+@property (nonatomic, weak) id<A3HolidaysPageViewControllerProtocol> pageViewController;
+
 @end

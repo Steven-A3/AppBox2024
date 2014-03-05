@@ -449,6 +449,7 @@
 		689FEF72187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 689FEF70187BA3B70070F7E9 /* A3PasscodeKeyboard_iPhone.xib */; };
 		689FEF78187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 689FEF77187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m */; };
 		68A9C2D3168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */; };
+		68AC53B018C623FA00D99FE5 /* A3StandardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68AC53AF18C623FA00D99FE5 /* A3StandardTableViewCell.m */; };
 		68ADE14717D83D28009618A7 /* MMDrawerBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */; };
 		68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14117D83D28009618A7 /* MMDrawerController.m */; };
 		68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */ = {isa = PBXBuildFile; fileRef = 68ADE14417D83D28009618A7 /* MMDrawerVisualState.m */; };
@@ -1287,6 +1288,8 @@
 		689FEF77187BA8140070F7E9 /* A3PasscodeKeyboard_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3PasscodeKeyboard_iPad.m; sourceTree = "<group>"; };
 		68A9C2D1168AF56500AEFDC2 /* A3KeyboardMoveMarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardMoveMarkView.h; sourceTree = "<group>"; };
 		68A9C2D2168AF56600AEFDC2 /* A3KeyboardMoveMarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardMoveMarkView.m; sourceTree = "<group>"; };
+		68AC53AE18C623FA00D99FE5 /* A3StandardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StandardTableViewCell.h; sourceTree = "<group>"; };
+		68AC53AF18C623FA00D99FE5 /* A3StandardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardTableViewCell.m; sourceTree = "<group>"; };
 		68ADE13E17D83D28009618A7 /* MMDrawerBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerBarButtonItem.h; path = MMDrawerController/MMDrawerBarButtonItem.h; sourceTree = "<group>"; };
 		68ADE13F17D83D28009618A7 /* MMDrawerBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MMDrawerBarButtonItem.m; path = MMDrawerController/MMDrawerBarButtonItem.m; sourceTree = "<group>"; };
 		68ADE14017D83D28009618A7 /* MMDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MMDrawerController.h; path = MMDrawerController/MMDrawerController.h; sourceTree = "<group>"; };
@@ -1389,7 +1392,7 @@
 		68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DropboxSDK.framework; path = "External/dropbox-ios-sdk-1.3.9/DropboxSDK.framework"; sourceTree = "<group>"; };
 		68D8F4FD1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsDropboxSelectBackupViewController.h; path = Settings/A3SettingsDropboxSelectBackupViewController.h; sourceTree = "<group>"; };
 		68D8F4FE1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsDropboxSelectBackupViewController.m; path = Settings/A3SettingsDropboxSelectBackupViewController.m; sourceTree = "<group>"; };
-		68DAF6F016BFE3B000775372 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		68DAF6F016BFE3B000775372 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AppBox3/en.lproj/Localizable.strings; sourceTree = "<group>"; wrapsLines = 1; };
 		68DB84BA17508CC1004521E0 /* A3HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HistoryViewController.h; path = ViewControllers/A3HistoryViewController.h; sourceTree = "<group>"; };
 		68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HistoryViewController.m; path = ViewControllers/A3HistoryViewController.m; sourceTree = "<group>"; };
 		68DBAB6C18C4C2B2003A67E5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -2254,6 +2257,8 @@
 				68C9DBDC16AE329500F34A54 /* A3UserDefaults.h */,
 				68EC80D416E1ADF800CF672E /* A3Formatter.h */,
 				68EC80D516E1ADF800CF672E /* A3Formatter.m */,
+				68AC53AE18C623FA00D99FE5 /* A3StandardTableViewCell.h */,
+				68AC53AF18C623FA00D99FE5 /* A3StandardTableViewCell.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3665,6 +3670,7 @@
 				6829685A18503B2100B70E13 /* SQLiteMagicalRecordStack.m in Sources */,
 				17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */,
 				17D4262AB96A4454B8EF3B49 /* A3LanguagePickerController.m in Sources */,
+				68AC53B018C623FA00D99FE5 /* A3StandardTableViewCell.m in Sources */,
 				17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */,
 				6829684818503B2100B70E13 /* AutoMigratingMagicalRecordStack.m in Sources */,
 				68067C8C186E867C00D1A1D1 /* A3PasswordViewController.m in Sources */,

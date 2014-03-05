@@ -10,6 +10,7 @@
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
 #import "UIViewController+A3Addition.h"
+#import "A3StandardTableViewCell.h"
 
 
 static NSString *const HolidayCountryCode = @"code";
@@ -30,7 +31,7 @@ static NSString *const CellIdentifier = @"Cell";
 	self.title = @"Select Country";
 
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	[self.tableView registerClass:[A3StandardTableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
 	[self leftBarButtonCancelButton];
 }
@@ -65,7 +66,7 @@ static NSString *const CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    A3StandardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
 
 	A3SearchTargetItem *data;
 	if (tableView == self.searchDisplayController.searchResultsTableView) {
@@ -76,6 +77,7 @@ static NSString *const CellIdentifier = @"Cell";
 		// Configure the cell with the time zone's name.
 		data = countriesInSection[indexPath.row];
 	}
+	cell.textLabel.font = [UIFont systemFontOfSize:17];
 	cell.textLabel.text = data.displayName;
 
 	NSArray *existingCountries = [HolidayData userSelectedCountries];

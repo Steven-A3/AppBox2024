@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 	HolidaysHeaderViewCountryLabel
 };
 
-
 @interface A3HolidaysPageContentViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSArray *holidays;
@@ -154,9 +153,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 }
 
 - (void)dealloc {
-	@autoreleasepool {
-		[_imageView setScrollView:nil];
-	}
+	[_imageView setScrollView:nil];
 }
 
 - (void)reloadDataRedrawImage:(BOOL)redrawImage {
@@ -419,15 +416,17 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			make.centerY.equalTo(yearBorderView.centerY);
 		}];
 
-		FXLabel *nameLabel = [FXLabel new];
+		UILabel *nameLabel = [UILabel new];
 		nameLabel.tag = HolidaysHeaderViewNameLabel;
 		nameLabel.textColor = [UIColor whiteColor];
 		nameLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Light" size:26];
 		nameLabel.textAlignment = NSTextAlignmentCenter;
 		nameLabel.lineBreakMode = NSLineBreakByClipping;
 		nameLabel.adjustsFontSizeToFitWidth = YES;
-		nameLabel.minimumScaleFactor = 0.5;
-		[self setupShadow:nameLabel];
+		nameLabel.minimumScaleFactor = 0.1;
+		nameLabel.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+		nameLabel.shadowOffset = CGSizeMake(0, 1);
+//		[self setupShadow:nameLabel];
 		[headerView addSubview:nameLabel];
 
 		[nameLabel makeConstraints:^(MASConstraintMaker *make) {
@@ -475,11 +474,9 @@ static NSString *const CellIdentifier = @"holidaysCell";
 }
 
 - (void)setupShadow:(FXLabel *)label {
-	@autoreleasepool {
-		label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.35];
-		label.shadowOffset = CGSizeMake(0, 1);
-		label.shadowBlur = 2;
-	}
+	label.shadowColor = [UIColor colorWithWhite:0.0 alpha:0.35];
+	label.shadowOffset = CGSizeMake(0, 1);
+	label.shadowBlur = 2;
 }
 
 - (void)updateTableHeaderView {
