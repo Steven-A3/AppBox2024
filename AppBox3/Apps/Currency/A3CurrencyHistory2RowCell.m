@@ -45,10 +45,10 @@
 }
 
 - (void)useDynamicType {
-	self.L1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	self.L2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-	self.R1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-	self.R2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	self.L1.font = [UIFont systemFontOfSize:15];
+	self.L2.font = [UIFont systemFontOfSize:13];
+	self.R1.font = [UIFont systemFontOfSize:12];
+	self.R2.font = [UIFont systemFontOfSize:13];
 }
 
 @end

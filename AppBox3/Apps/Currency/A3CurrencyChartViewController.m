@@ -96,7 +96,6 @@
 
 	[self registerContentSizeCategoryDidChangeNotification];
 
-	[[Reachability reachabilityWithHostname:@"finance.yahoo.com"] startNotifier];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged) name:kReachabilityChangedNotification object:nil];
 }
 
@@ -108,6 +107,10 @@
 
 - (void)notifyDelegateValueChanged {
 	NSNumber *number = @([_sourceTextField.text floatValueEx]);
+	if ([number isEqualToNumber:self.initialValue] && [_originalSourceCode isEqualToString:self.sourceItem.currencyCode]  && [_originalTargetCode isEqualToString:self.targetItem.currencyCode]) {
+		// Nothing changed
+		return;
+	}
 	if ([_delegate respondsToSelector:@selector(chartViewControllerValueChangedChartViewController:valueChanged:newCodes:)]) {
 		[_delegate chartViewControllerValueChangedChartViewController:self valueChanged:number newCodes:@[self.sourceItem, self.targetItem] ];
 	}
@@ -218,7 +221,7 @@
 }
 
 - (void)setupFont {
-	UIFont *font = [UIFont preferredFontForTextStyle:IS_IPHONE ? UIFontTextStyleCaption1 : UIFontTextStyleFootnote];
+	UIFont *font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	[_titleLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
 		label.font = font;
 	}];
@@ -231,11 +234,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc {
-	[[Reachability reachabilityWithHostname:@"finance.yahoo.com"] stopNotifier];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (UILabel *)labelWithFrame:(CGRect)frame {
@@ -261,7 +259,7 @@
 
 		[self fillCurrencyTable];
 		self.segmentedControl.selectedSegmentIndex = 0;
-		[self.chartView setImageWithURL:self.urlForChartImage placeholderImage:[self chartNotAvailableImage]];
+		[self reloadChartImage];
 	}
 }
 
@@ -356,7 +354,10 @@
 	A3CurrencySelectViewController *viewController = [[A3CurrencySelectViewController alloc] initWithNibName:nil bundle:nil];
 	viewController.delegate = self;
 	viewController.allowChooseFavorite = YES;
+	if (IS_IPHONE) viewController.showCancelButton = YES;
 	[self presentSubViewController:viewController];
+
+	[tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
@@ -386,11 +387,6 @@
 	keyboardVC.delegate = self;
 	textField.inputView = [keyboardVC view];
 	textField.text = @"";
-	if (textField == _sourceTextField) {
-		_targetTextField.text = [self targetValueString];
-	} else {
-		_sourceTextField.text = [self sourceValueString];
-	}
 	return YES;
 }
 
@@ -415,9 +411,15 @@
     FNLOG(@"%@, %@", textField.text, textField);
 	if (![textField.text length]) {
 		textField.text = self.previousValue;
+
+		if (textField == _sourceTextField) {
+			_targetTextField.text = self.targetValueString;
+		} else {
+			_sourceTextField.text = self.sourceValueString;
+		}
 	}
     
-	float value = [textField.text floatValue];
+	float value = [textField.text floatValueEx];
 	if (value < 1.0) {
 		value = 1.0;
 	}
@@ -460,9 +462,17 @@
 #pragma mark - UISegmentedControl event handler
 
 - (IBAction)segmentedControlValueChanged:(UISegmentedControl *)control {
-	@autoreleasepool {
-		[self.chartView setImageWithURL:self.urlForChartImage placeholderImage:[self chartNotAvailableImage]];
-	}
+	[self reloadChartImage];
+}
+
+- (void)reloadChartImage {
+	NSURLRequest *request = [NSURLRequest requestWithURL:self.urlForChartImage];
+	[self.chartView setImageWithURLRequest:request
+						  placeholderImage:nil
+								   success:nil
+								   failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+									   [self.chartView setImage:[self chartNotAvailableImage]];
+								   } ];
 }
 
 - (UIImage *)chartNotAvailableImage {
@@ -578,8 +588,13 @@
 }
 
 - (void)reachabilityChanged {
-	if ([[Reachability reachabilityWithHostname:@"finance.yahoo.com"] isReachable]) {
-		[self.chartView setImageWithURL:self.urlForChartImage placeholderImage:[self chartNotAvailableImage]];	}
+	if ([[A3AppDelegate instance].reachability isReachable]) {
+		[self reloadChartImage];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 @end

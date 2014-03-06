@@ -16,6 +16,7 @@
 @class Reachability;
 @class A3CacheStoreManager;
 
+extern NSString *const kA3ApplicationVersion;
 extern NSString *const kA3AppsMenuName;
 extern NSString *const kA3AppsMenuCollapsed;
 extern NSString *const kA3AppsMenuImageName;

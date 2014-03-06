@@ -21,12 +21,14 @@
 #import "A3AppDelegate+appearance.h"
 #import "Reachability.h"
 #import "A3CacheStoreManager.h"
+#import "A3KeychainUtils.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 
 @interface A3AppDelegate () <CLLocationManagerDelegate>
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSString *previousVersion;
 
 @end
 
@@ -39,6 +41,11 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationVersion];
+	if (!_previousVersion) {
+		[A3KeychainUtils removePassword];
+	}
+
 	FNLOG(@"Location available: %@", [CLLocationManager locationServicesEnabled] ? @"YES" : @"NO");
 	FNLOG(@"Location kCLAuthorizationStatusAuthorized: %@", [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ? @"YES" : @"NO");
 
@@ -93,6 +100,10 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	}
 
 	[self.window makeKeyAndVisible];
+
+	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationVersion];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 	return YES;
 }
 

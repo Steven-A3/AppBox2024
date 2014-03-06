@@ -40,7 +40,9 @@ NSString *const CellIdentifier = @"Cell";
 //	_hasCellularNetwork = [A3UIDevice hasCellularNetwork];
 	_hasCellularNetwork = NO;
 
-	[self rightBarButtonDoneButton];
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 }
 

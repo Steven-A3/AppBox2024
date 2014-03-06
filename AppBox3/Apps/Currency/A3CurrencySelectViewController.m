@@ -51,7 +51,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)cancelButtonAction {
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
 	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -125,13 +125,13 @@
 
 - (NSDictionary *)codeStringAttributeWithColor:(UIColor *)color {
 	return @{
-			NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline],
+			NSFontAttributeName : [UIFont boldSystemFontOfSize:17],
 			NSForegroundColorAttributeName:color};
 }
 
 - (NSDictionary *)nameStringAttributeWithColor:(UIColor *)color {
 	return @{
-			NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
+			NSFontAttributeName : [UIFont systemFontOfSize:15],
 			NSForegroundColorAttributeName:color};
 }
 

@@ -12,7 +12,6 @@
 #import "UIViewController+A3Addition.h"
 #import "A3KeychainUtils.h"
 
-
 @implementation UIViewController (A3Addition)
 
 - (CGRect)screenBoundsAdjustedWithOrientation {
@@ -321,11 +320,18 @@
 
 }
 
-- (UIButton *)historyButton {
+- (UIButton *)historyButton:(Class)managedObjectClass {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
 	[button setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(historyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+	[button setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[[MagicalRecordStack defaultStack] context] ] > 0 ];
 	return button;
+}
+
+- (UIBarButtonItem *)historyBarButton:(Class)managedObjectClass {
+	UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+	[barButtonItem setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[[MagicalRecordStack defaultStack] context] ] > 0 ];
+	return barButtonItem;
 }
 
 - (void)historyButtonAction:(UIButton *)button {

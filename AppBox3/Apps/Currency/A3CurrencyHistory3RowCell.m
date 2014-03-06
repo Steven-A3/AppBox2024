@@ -23,7 +23,7 @@
 - (void)setNumberOfLines:(NSNumber *)numberOfLines {
 	_numberOfLines = numberOfLines;
 
-	[self removeAllLables];
+	[self removeAllLabels];
 
 	NSMutableArray *mLeftLabels = [[NSMutableArray alloc] initWithCapacity:_numberOfLines.integerValue];
 	NSMutableArray *mRightLabels = [[NSMutableArray alloc] initWithCapacity:_numberOfLines.integerValue];
@@ -56,7 +56,7 @@
     // Configure the view for the selected state
 }
 
-- (void)removeAllLables {
+- (void)removeAllLabels {
 	[self.contentView removeConstraints:[self.contentView constraints]];
 
 	for (UILabel *label in _leftLabels) {
@@ -72,16 +72,16 @@
 - (void)prepareForReuse {
 	[super prepareForReuse];
 
-	[self removeAllLables];
+	[self removeAllLabels];
 }
 
 - (void)useDynamicType {
-	((UILabel *)_leftLabels[0]).font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	((UILabel *)_rightLabels[0]).font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+	((UILabel *)_leftLabels[0]).font = [UIFont systemFontOfSize:15];
+	((UILabel *)_rightLabels[0]).font = [UIFont systemFontOfSize:12];
 
 	for (NSInteger index = 1; index < [_leftLabels count]; index++) {
-		((UILabel *)_leftLabels[index]).font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-		((UILabel *)_rightLabels[index]).font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+		((UILabel *)_leftLabels[index]).font = [UIFont systemFontOfSize:13];
+		((UILabel *)_rightLabels[index]).font = [UIFont systemFontOfSize:12];
 	}
 }
 

@@ -265,7 +265,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 }
 
 - (void)deleteAllAction:(UIBarButtonItem *)barButtonItem {
-	UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All Translations" otherButtonTitles:nil];
+	UIActionSheet *askDeleteAll = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete All" otherButtonTitles:nil];
 	askDeleteAll.tag = 192874;
 	[askDeleteAll showInView:self.view];
 }

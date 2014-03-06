@@ -34,7 +34,10 @@ NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
 NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
-@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate, UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate>
+@interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
+		A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
+		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource>
+
 
 @property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -49,6 +52,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, copy) NSString *previousValue;
 @property (nonatomic, strong) NSDate *updateStartDate;
+@property (nonatomic, strong) UIBarButtonItem *historyBarButton;
 
 @end
 
@@ -58,6 +62,9 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 	BOOL		_isAddingCurrency;
 	BOOL		_isShowMoreMenu;
 	BOOL		_isUpdating;
+	BOOL		_currentValueIsNotFromUser;
+	NSUInteger	_shareSourceIndex, _shareTargetIndex;
+	BOOL		_shareAll;
 }
 
 NSString *const A3CurrencyDataCellID = @"A3CurrencyDataCell";
@@ -95,7 +102,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		self.dragDelegate = self;
 
 		self.refreshControl = [UIRefreshControl new];
-		[self.refreshControl addTarget:self action:@selector(refreshRates) forControlEvents:UIControlEventValueChanged];
+		[self.refreshControl addTarget:self action:@selector(refreshControlValueChanged) forControlEvents:UIControlEventValueChanged];
 
         [self setupSwipeRecognizers];
 
@@ -108,12 +115,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
             self.navigationItem.hidesBackButton = YES;
 
             UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-            UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
             UIBarButtonItem *settings = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"general"] style:UIBarButtonItemStylePlain target:self action:@selector(settingsButtonAction:)];
             UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+			self.historyBarButton = [self historyBarButton:[CurrencyHistory class]];
             space.width = 24.0;
 
-            self.navigationItem.rightBarButtonItems = @[settings, space, history, space, share];
+            self.navigationItem.rightBarButtonItems = @[settings, space, self.historyBarButton, space, share];
         }
 
         [self.tableView registerClass:[A3CurrencyTVDataCell class] forCellReuseIdentifier:A3CurrencyDataCellID];
@@ -160,6 +167,17 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[self registerContentSizeCategoryDidChangeNotification];
 
 		[self reloadUpdateDateLabel];
+
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(coreDataChanged:)
+													 name:NSManagedObjectContextObjectsDidChangeNotification
+												   object:[[MagicalRecordStack defaultStack] context]];
+	}
+}
+
+- (void)coreDataChanged:(NSNotification *)notification {
+	if (IS_IPAD) {
+		[self.historyBarButton setEnabled:[CurrencyHistory MR_countOfEntities] > 0];
 	}
 }
 
@@ -235,14 +253,14 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)moreButtonAction:(UIButton *)button {
+- (void)moreButtonAction:(UIBarButtonItem *)button {
     @autoreleasepool {
 		[_firstResponder resignFirstResponder];
 		_firstResponder = nil;
 
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 
-		_moreMenuButtons = @[self.shareButton, self.historyButton, self.settingsButton];
+		_moreMenuButtons = @[self.shareButton, [self historyButton:[CurrencyHistory class] ], self.settingsButton];
 		_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
 		_isShowMoreMenu = YES;
 	};
@@ -319,7 +337,14 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)refreshRates {
+- (void)refreshControlValueChanged {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		[self.refreshControl endRefreshing];
+
+		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Cannot Update Currency Rates" message:@"Internet Connection is not available." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alertView show];
+		return;
+	}
 	if (_firstResponder) {
 		[self.refreshControl endRefreshing];
 		return;
@@ -531,7 +556,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		if (dataIndex == 0) {
 			dataCell.valueField.textColor = APP_THEME_COLOR;
 			[dataCell.valueField setEnabled:YES];
-			dataCell.rateLabel.text = favorite.currencySymbol;
+			dataCell.rateLabel.text = IS_IPHONE ? favorite.currencySymbol : @"";
 		} else {
 			CurrencyFavorite *favoriteZero = nil;
 			for (id object in self.favorites) {
@@ -712,10 +737,11 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[self clearEverything];
 
 		_isAddingCurrency = YES;
+
 		A3CurrencySelectViewController *viewController = [self currencySelectViewControllerWithSelectedCurrency:-1];
-		viewController.showCancelButton = YES;
 		if (IS_IPHONE) {
 			viewController.shouldPopViewController = NO;
+			viewController.showCancelButton = YES;
 		}
 		[self presentSubViewController:viewController];
 	}
@@ -816,10 +842,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 
 - (void)textFieldDidChange:(NSNotification *)notification {
-	@autoreleasepool {
-		UITextField *textField = [notification object];
-		[self updateTextFieldsWithSourceTextField:textField];
-	}
+	FNLOG();
+	UITextField *textField = [notification object];
+	[self updateTextFieldsWithSourceTextField:textField];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -833,13 +858,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		if (![textField.text length]) {
 			textField.text = self.previousValue;
 		} else {
-			[self putHistoryWithValue:@([self.previousValue floatValueEx])];
-
 			CurrencyFavorite *currencyFavorite = self.favorites[0];
-			float value = [textField.text floatValue];
-			if (value < 1.0) {
-				value = 1.0;
-			}
+			double value = [textField.text doubleValue];
 			textField.text = [self currencyFormattedStringForCurrency:currencyFavorite.currencyCode value:@(value)];
 			if (![textField.text isEqualToString:self.previousValue]) {
 				valueChanged = YES;
@@ -848,6 +868,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[self updateTextFieldsWithSourceTextField:textField];
 
 		if (valueChanged) {
+			[self putHistoryWithValue:@([self.previousValue floatValueEx])];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 		}
 	}
@@ -1028,7 +1049,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)chartViewControllerValueChangedChartViewController:(A3CurrencyChartViewController *)chartViewController valueChanged:(NSNumber *)newValue newCodes:(NSArray *)newCodesArray {
 	@autoreleasepool {
-		[self putHistoryWithValue:newValue];
+
+		if ([newValue doubleValue] != [self.previousValue doubleValue]) {
+			[[NSUserDefaults standardUserDefaults] setObject:newValue forKey:A3CurrencyLastInputValue];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+			[self putHistoryWithValue:newValue];
+		}
 
 		NSMutableArray *reloadingRows = [NSMutableArray new];
 		[reloadingRows addObject:[NSIndexPath indexPathForRow:0 inSection:0]];
@@ -1124,34 +1150,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)shareAll:(id)sender {
-	@autoreleasepool {
-		NSInteger index = 2;
-		NSMutableString *shareString = [[NSMutableString alloc] init];
-		CurrencyFavorite *source = self.favorites[0], *target;
-		NSNumberFormatter *sourceNF = [self currencyFormatterWithCode:source.currencyCode];
-		[shareString appendString:[NSString stringWithFormat:@"%@ %@ equals\n", source.currencyCode, [sourceNF stringFromNumber:[self lastInputValue] ] ] ];
-		for (; index < [self.favorites count] - 1; index++) {
-			target = self.favorites[index];
-			NSNumberFormatter *targetNF = [self currencyFormatterWithCode:target.currencyCode];
-			float rate = [self rateForSource:source target:target];
-			[shareString appendString: [NSString stringWithFormat:@"%@ with rate %0.4f",
-																  [targetNF stringFromNumber:@([self lastInputValue].floatValue * rate)],
-																  rate] ];
-
-			[shareString appendString:@"\n"];
-		}
-
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
-		if (IS_IPAD) {
-			_sharePopoverController.delegate = self;
-			[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
-				[buttonItem setEnabled:NO];
-			}];
-		}
-	}
-}
-
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
 	// Popover controller, iPad only.
 	[self unSwipeAll];
@@ -1173,11 +1171,23 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 														rate];
 }
 
+- (void)shareAll:(id)sender {
+	_shareAll = YES;
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+	if (IS_IPAD) {
+		_sharePopoverController.delegate = self;
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+			[buttonItem setEnabled:NO];
+		}];
+	}
+}
+// http://itunes.apple.com/us/app/appbox-pro-alarm-clock-wallet/id318404385?mt=8
 - (void)shareActionForSourceIndex:(NSUInteger)sourceIdx targetIndex:(NSUInteger)targetIdx sender:(id)sender {
 	@autoreleasepool {
-		NSString *activityItem = [self stringForSource:sourceIdx targetIndex:targetIdx];
-
-		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem] applicationActivities:nil];
+		_shareSourceIndex = sourceIdx;
+		_shareTargetIndex = targetIdx;
+		_shareAll = NO;
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
 		if (IS_IPHONE) {
 			[self presentViewController:activityController animated:YES completion:nil];
 		} else {
@@ -1192,23 +1202,86 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+		return @"Currency Converter in the AppBox Pro";
+	}
+
+	return @"";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+
+		NSMutableString *txt = [NSMutableString new];
+		[txt appendString:@"<html><body>I'd like to share a currency conversion with you.<br/><br/>"];
+
+		[txt appendString:[self stringForShare]];
+
+		[txt appendString:@"<br/><br/>You can convert more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon76.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
+
+		return txt;
+	}
+	else {
+		return [self stringForSource:_shareSourceIndex targetIndex:_shareTargetIndex];
+	}
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return @"Share Currency Converter Data";
+}
+
+- (NSString *)stringForShare {
+	if (_shareAll) {
+		NSUInteger idx = 2;
+		NSMutableString *resultString = [NSMutableString new];
+		for (; idx < [self.favorites count]; idx++) {
+			[resultString appendString:[self stringForShareOfSource:0 target:idx]];
+		}
+		return resultString;
+	} else {
+		return [self stringForShareOfSource:_shareSourceIndex target:_shareTargetIndex];
+	}
+}
+
+- (NSString *)stringForShareOfSource:(NSUInteger)sourceIdx target:(NSUInteger)targetIdx {
+	@autoreleasepool {
+		CurrencyFavorite *source = self.favorites[sourceIdx], *target = self.favorites[targetIdx];
+		NSNumberFormatter *sourceNF = [self currencyFormatterWithCode:source.currencyCode];
+		NSNumberFormatter *targetNF = [self currencyFormatterWithCode:target.currencyCode];
+		float rate = [self rateForSource:source target:target];
+		return [NSString stringWithFormat:@"%@ %@ = %@<br/>",
+										  source.currencyCode,
+										  [sourceNF stringFromNumber:self.lastInputValue],
+										  [targetNF stringFromNumber:@(self.lastInputValue.floatValue * rate)]];
+	}
+}
+
 #pragma mark - History
 
 - (NSNumber *)lastInputValue {
 	NSNumber *lastInput = [[NSUserDefaults standardUserDefaults] objectForKey:A3CurrencyLastInputValue];
+	_currentValueIsNotFromUser = lastInput == nil;
 	return lastInput ? lastInput : @1;
 }
 
 - (void)putHistoryWithValue:(NSNumber *)value {
 	@autoreleasepool {
+		if ([value doubleValue] == 1.0 && _currentValueIsNotFromUser) {
+			return;
+		}
+		_currentValueIsNotFromUser = NO;
+
 		CurrencyFavorite *baseCurrency = self.favorites[0];
 		CurrencyHistory *latestHistory = [CurrencyHistory MR_findFirstOrderedByAttribute:@"updateDate" ascending:NO];
 
 		// Compare code and value.
 		if (latestHistory) {
 			if ([latestHistory.currencyCode isEqualToString:baseCurrency.currencyCode] &&
-					[value isEqualToNumber:latestHistory.value])
-			{
+					[value isEqualToNumber:latestHistory.value]) {
 
 				FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
 				return;
@@ -1222,7 +1295,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		history.rate = @([[A3AppDelegate instance].cacheStoreManager rateForCurrencyCode:baseCurrency.currencyCode]);
 		history.value = value;
 
-		NSInteger historyItemCount = MIN([self.favorites count] - 3, 4);
+		NSInteger historyItemCount = MIN([self.favorites count] - 2, 4);
 		NSInteger idx = 0;
 		NSMutableSet *targets = [[NSMutableSet alloc] init];
 		for (; idx < historyItemCount; idx++) {
@@ -1236,6 +1309,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		history.targets = targets;
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		[self.historyBarButton setEnabled:YES];
 	}
 }
 

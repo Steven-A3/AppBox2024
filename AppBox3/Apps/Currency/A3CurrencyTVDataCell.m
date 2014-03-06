@@ -104,7 +104,7 @@
 - (UILabel *)codeLabel {
 	if (!_codeLabel) {
 		_codeLabel = [[UILabel alloc] initWithFrame:CGRectMake(257.0, 52.0, 30.0, 20.0)];
-		_codeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+		_codeLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 		_codeLabel.textColor = [UIColor colorWithRed:159.0 / 255.0 green:159.0 / 255.0 blue:159.0 / 255.0 alpha:1.0];
 		_codeLabel.textAlignment = NSTextAlignmentRight;
 		_codeLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,7 +115,7 @@
 - (UILabel *)rateLabel {
 	if (!_rateLabel) {
 		_rateLabel = [[UILabel alloc] initWithFrame:CGRectMake(163.0, 75.0, 124.0, 21.0)];
-		_rateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+		_rateLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 		_rateLabel.textColor = [UIColor colorWithRed:142.0 / 255.0 green:142.0 / 255.0 blue:147.0 / 255.0 alpha:1.0];
 		_rateLabel.textAlignment = NSTextAlignmentRight;
 		_rateLabel.translatesAutoresizingMaskIntoConstraints = NO;

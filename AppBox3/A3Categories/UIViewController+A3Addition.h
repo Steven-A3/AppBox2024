@@ -29,7 +29,9 @@
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
 - (UIButton *)shareButton;
 - (void)shareButtonAction:(id)sender;
-- (UIButton *)historyButton;
+
+- (UIButton *)historyButton:(Class)managedObject;
+- (UIBarButtonItem *)historyBarButton:(Class)managedObject;
 - (void)historyButtonAction:(UIButton *)button;
 - (UIButton *)settingsButton;
 - (void)settingsButtonAction:(UIButton *)button;
