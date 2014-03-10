@@ -12,8 +12,6 @@
 #import "UIViewController+A3Addition.h"
 #import "A3ClockDataManager.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3ClockDataManager.h"
-#import "A3UserDefaults.h"
 
 typedef NS_ENUM(NSUInteger, A3ClockSettingsTypes) {
 	kTagSwitchWithSecond = 1000,
@@ -29,10 +27,10 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 
 @interface A3ClockSettingsViewController () <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSArray* arrSection;
-@property (nonatomic, strong) NSArray* arrTimeSection;
-@property (nonatomic, strong) NSArray* arrDateSection;
-@property (nonatomic, strong) NSArray* arrWeatherSection;
+@property (nonatomic, strong) NSArray *sections;
+@property (nonatomic, strong) NSArray *timeSection;
+@property (nonatomic, strong) NSArray *dateSection;
+@property (nonatomic, strong) NSArray *weatherSection;
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 @property (nonatomic, strong) UITableView *myTableView;
 
@@ -45,15 +43,18 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
     [super viewDidLoad];
 
     [self makeBackButtonEmptyArrow];
-    [self rightBarButtonDoneButton];
+
+	if (IS_IPHONE) {
+		[self rightBarButtonDoneButton];
+	}
     
     self.title = @"Setting";
     
-    _arrSection = @[@"TIME", @"DATE", @"WEATHER"];
+    _sections = @[@"TIME", @"DATE", @"WEATHER"];
     
-    _arrTimeSection = @[@"The time with seconds", @"Flash the time separators", @"Use a 24-hour clock", @"Show AM/PM"];
-    _arrDateSection = @[@"Show the day of the week", @"Show date"];
-    _arrWeatherSection = @[@"Show Weather", @""];
+    _timeSection = @[@"The time with seconds", @"Flash the time separators", @"Use a 24-hour clock", @"Show AM/PM"];
+    _dateSection = @[@"Show the day of the week", @"Show date"];
+    _weatherSection = @[@"Show Weather", @""];
 
 	[self.view setBackgroundColor:[UIColor whiteColor]];
 
@@ -75,31 +76,28 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-	[super viewWillDisappear:animated];
-
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
 	[[UIApplication sharedApplication] setStatusBarHidden:YES];
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		if (IS_IPAD) {
-			[self.A3RootViewController dismissRightSideViewController];
-		} else {
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissRightSideViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
 	}
 }
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return _arrSection.count;
+    return _sections.count;
 }
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return _arrSection[section];
+    return _sections[section];
 }
 
 - (UISegmentedControl *)segmentedControl {
@@ -118,13 +116,13 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
     
     switch (section) {
         case 0:
-            nRst = _arrTimeSection.count;
+            nRst = _timeSection.count;
             break;
         case 1:
-            nRst = _arrDateSection.count;
+            nRst = _dateSection.count;
             break;
         case 2:
-            nRst = _arrWeatherSection.count;
+            nRst = _weatherSection.count;
             break;
         default:
             break;
@@ -175,13 +173,13 @@ NSString *const A3NotificationClockSettingsChanged = @"A3NotificationClockSettin
 			NSArray *titlesArray = nil;
 			switch (indexPath.section) {
 				case 0:
-					titlesArray = _arrTimeSection;
+					titlesArray = _timeSection;
 					break;
 				case 1:
-					titlesArray = _arrDateSection;
+					titlesArray = _dateSection;
 					break;
 				case 2:
-					titlesArray = _arrWeatherSection;
+					titlesArray = _weatherSection;
 					break;
 				default:
 					break;

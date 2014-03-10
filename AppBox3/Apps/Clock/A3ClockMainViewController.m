@@ -68,8 +68,14 @@
 
 	self.automaticallyAdjustsScrollViewInsets = NO;
 
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+	UIImage *image = [[UIImage alloc] init];
+	[self.navigationController.navigationBar setBackgroundImage:image forBarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+	[self.navigationController.navigationBar setShadowImage:image];
+	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor clearColor]}];
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+	[self.navigationController setNavigationBarHidden:YES];
 
     [self.view addSubview:self.scrollView];
 
@@ -134,15 +140,18 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self layoutSubviews];
+	if ([self isMovingToParentViewController]) {
+		[self layoutSubviews];
+		[self.clockDataManager startTimer];
 
-	[self.clockDataManager startTimer];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
+	}
 }
 
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:A3NotificationClockSettingsChanged object:nil];
+	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
 }
 
 - (void)settingsChanged {

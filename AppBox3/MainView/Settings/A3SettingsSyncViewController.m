@@ -10,6 +10,7 @@
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+iCloud.h"
 #import "A3SettingsDropboxSelectBackupViewController.h"
+#import "UITableViewController+standardDimension.h"
 #import <DropboxSDK/DropboxSDK.h>
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
@@ -41,6 +42,9 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
 	NSString* appKey = @"ody0cjvmnaxvob4";
 	NSString* appSecret = @"4hbzpvkrlwhs9qh";
@@ -91,6 +95,16 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 }
 
 #pragma mark - UITableViewDelegate, UITableViewDataSource
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 1) return UITableViewAutomaticDimension;
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (section == 0) return UITableViewAutomaticDimension;
+	return [self standardHeightForFooterInSection:section];
+}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (cell.tag == 1100) {

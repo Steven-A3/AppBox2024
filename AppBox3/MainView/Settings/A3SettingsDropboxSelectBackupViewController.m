@@ -10,6 +10,7 @@
 #import "A3SettingsDropboxSelectBackupViewController.h"
 #import "NSDate+TimeAgo.h"
 #import "MBProgressHUD.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsDropboxSelectBackupViewController () <UIActionSheetDelegate, DBRestClientDelegate, MBProgressHUDDelegate>
 
@@ -34,6 +35,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -61,6 +65,14 @@
 }
 
 #pragma mark - Table view data source
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return [self standardHeightForFooterInSection:section];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

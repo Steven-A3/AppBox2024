@@ -53,7 +53,6 @@ static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 @property (nonatomic, strong) UIButton *setTargetLanguageButton;
 @property (nonatomic, strong) NSLayoutConstraint *setTargetLanguageButtonConstraint;
 
-@property (nonatomic, strong) TranslatorGroup *group;
 @property (nonatomic, strong) TranslatorHistory *translatingMessage;
 
 @property (nonatomic, strong) UIBarButtonItem *toolbarDeleteButton;
@@ -73,6 +72,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	CGFloat _keyboardHeight;
     BOOL    _copyOriginalText;
 	BOOL 	_holdFirstResponder;
+	NSUInteger _numberOfMessagesBeforeTranslation;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -214,6 +214,9 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
         _sourceLanguagePicker = nil;
         _targetLanguagePicker = nil;
     }
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		[self networkPrompter];
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -426,12 +429,20 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_searchResultsTableView reloadData];
 }
 
+- (void)hideKeyboard {
+	[_sourceLanguageSelectTextField resignFirstResponder];
+	[_targetLanguageSelectTextField resignFirstResponder];
+	[_textView resignFirstResponder];
+}
+
 - (void)selectSourceLanguageButtonAction {
+	[self hideKeyboard];
 	[self emptySearchResultTableView];
 	_sourceLanguagePicker = [self presentLanguagePickerControllerWithDetectLanguage:YES ];
 }
 
 - (void)selectTranslatedLanguageButtonAction {
+	[self hideKeyboard];
 	[self emptySearchResultTableView];
 	_targetLanguagePicker = [self presentLanguagePickerControllerWithDetectLanguage:NO ];
 }
@@ -518,7 +529,8 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	[_searchResultsTableView reloadData];
 	[_searchResultsTableView setHidden:![_searchResultsDelegate.languages count]];
 
-	A3TranslatorLanguage *match = [A3TranslatorLanguage findLanguageInArray:_languages searchString:textField.text];
+	NSString *enteredText = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@" "]];
+	A3TranslatorLanguage *match = [A3TranslatorLanguage findLanguageInArray:_languages searchString:enteredText];
 	if (textField == _sourceLanguageSelectTextField) {
 		if (match) {
 			_sourceLanguageSelectTextField.text = match.name;
@@ -686,7 +698,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_translateButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	[_translateButton setTitle:@"Translate" forState:UIControlStateNormal];
 	_translateButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
-	[_translateButton setTitleColor:self.view.tintColor forState:UIControlStateNormal];
+	[_translateButton setTitleColor:APP_THEME_COLOR forState:UIControlStateNormal];
 	[_translateButton setTitleColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
 	[_translateButton addTarget:self action:@selector(translateAction) forControlEvents:UIControlEventTouchUpInside];
 	[_translateButton setEnabled:NO];
@@ -758,50 +770,60 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
     return animation;
 }
 
-#pragma mark - Translate Action
+#pragma mark ---------------------------------------
+#pragma mark --- Translate Action
+#pragma mark ---------------------------------------
 
 - (void)translateAction {
 	_textView.text = [_textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	if ([_textView.text length]) {
+
 		_translateButton.enabled = NO;
 
+		TranslatorHistory *firstObject = nil;
+		if ([_messages count]) {
+			firstObject = [_messages firstObject];
+		}
 		_translatingMessage = [TranslatorHistory MR_createEntity];
+		if (firstObject) {
+			_translatingMessage.group = firstObject.group;
+		}
 		_translatingMessage.originalText = _textView.text;
 		self.originalText = _textView.text; // Save to async operation
 		_translatingMessage.date = [NSDate date];
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-		_messages = nil;
-		[self messages];
-
 		if ([_languageSelectView superview]) {
 			[self switchToMessageView];
-
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self askTranslateWithText:_originalText];
-			});
-		} else {
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[self askTranslateWithText:_originalText];
-			});
-
-			NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
-			[_messageTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-
-			[self layoutTextEntryBarViewAnimated:YES ];
 		}
+
+		if (firstObject) {
+			_messages = nil;
+			[self messages];
+		} else {
+			_messages = @[_translatingMessage];
+		}
+		_numberOfMessagesBeforeTranslation = [_messages count];
+
+		NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
+		[_messageTableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+		[self layoutTextEntryBarViewAnimated:YES ];
+
 		_textView.text = @"";
 
 		[self setupBarButtons];
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self askTranslateWithText:_originalText];
+		});
 	}
 }
 
 - (void)switchToMessageView {
 	[self setupMessageTableView];
 	[self rightBarButtonEditButton];
-
-	[_messageTableView reloadData];
 
 	[UIView animateWithDuration:0.3 animations:^{
 		UIView *contentsView = [_languageSelectView subviews][0];
@@ -868,26 +890,26 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 - (void)addTranslatedString:(NSString *)translatedString detectedSourceLanguage:(NSString *)detectedLanguage {
-	if (_group && (![_group.sourceLanguage isEqualToString:detectedLanguage] || ![_group.targetLanguage isEqualToString:_translatedTextLanguage])) {
-		_group = nil;
+	if (_translatingMessage.group && (![_translatingMessage.group.sourceLanguage isEqualToString:detectedLanguage] || ![_translatingMessage.group.targetLanguage isEqualToString:_translatedTextLanguage])) {
+		_translatingMessage.group = nil;
 	}
 
-	if (!_group) {
+	if (!_translatingMessage.group) {
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"sourceLanguage == %@ AND targetLanguage == %@", detectedLanguage, _translatedTextLanguage];
 		NSArray *groupCandidates = [TranslatorGroup MR_findAllWithPredicate:predicate];
 		if ([groupCandidates count]) {
-			_group = groupCandidates[0];
+			_translatingMessage.group = groupCandidates[0];
 		} else if (![groupCandidates count]) {
-			_group = [TranslatorGroup MR_createEntity];
-			_group.sourceLanguage = detectedLanguage;
-			_group.targetLanguage = _translatedTextLanguage;
+			TranslatorGroup *newGroup = [TranslatorGroup MR_createEntity];
+			newGroup.sourceLanguage = detectedLanguage;
+			newGroup.targetLanguage = _translatedTextLanguage;
 
 			NSString *largestInOrder = [TranslatorGroup MR_findLargestValueForAttribute:@"order"];
 			NSString *nextLargestInOrder = [NSString orderStringWithOrder:[largestInOrder integerValue] + 100000];
 			FNLOG(@"nextLargestInOrder = %@", nextLargestInOrder);
 
-			_group.order = nextLargestInOrder;
-
+			newGroup.order = nextLargestInOrder;
+			_translatingMessage.group = newGroup;
 		}
 	}
 
@@ -897,25 +919,24 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 	[translated replaceOccurrencesOfString:@"&#39;" withString:@"'" options:0 range:NSMakeRange(0, [translated length])];
 
 	_translatingMessage.translatedText = translated;
-	_translatingMessage.group = _group;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-	if ([detectedLanguage isEqualToString:_originalTextLanguage]) {
+	_originalTextLanguage = detectedLanguage;
+
+	// Reload data from persistent store
+	_messages = nil;
+	[_messageTableView reloadData];
+
+	FNLOG(@"Before %ld : After %ld", (long)_numberOfMessagesBeforeTranslation, (long)[_messages count]);
+	if (_numberOfMessagesBeforeTranslation != [_messages count]) {
+		[self.messageTableView reloadData];
+    } else {
 		NSIndexPath *lastIndexPath = [NSIndexPath indexPathForRow:[self.messages count] - 1 inSection:0];
-		[_messageTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[_messageTableView reloadRowsAtIndexPaths:@[lastIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+	}
 
-		[self scrollToBottomAnimated:YES];
-	} else {
-        _originalTextLanguage = detectedLanguage;
-        
-		_messages = nil;
-		// Reload messages
-		[_messageTableView reloadData];
-
-		// Scroll to Bottom
-		[self scrollToBottomAnimated:NO];
-    }
+	[self scrollToBottomAnimated:NO];
 	[self setTitleWithSelectedLanguage];
 }
 
@@ -1195,43 +1216,25 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 }
 
 - (void)setupTintColorForMessageView {
-	static NSArray *bubbleColors = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        bubbleColors = @[
-                         [UIColor colorWithRed:81.0/255.0 green:192.0/255.0 blue:250.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:74.0/255.0 green:186.0/255.0 blue:251.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:68.0/255.0 green:181.0/255.0 blue:252.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:60.0/255.0 green:174.0/255.0 blue:252.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:52.0/255.0 green:168.0/255.0 blue:252.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:46.0/255.0 green:162.0/255.0 blue:252.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:40.0/255.0 green:157.0/255.0 blue:253.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:32.0/255.0 green:150.0/255.0 blue:252.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:26.0/255.0 green:144.0/255.0 blue:254.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:17.0/255.0 green:138.0/255.0 blue:254.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:12.0/255.0 green:132.0/255.0 blue:255.0/255.0 alpha:1.0],
-                         [UIColor colorWithRed:11.0/255.0 green:126.0/255.0 blue:254.0/255.0 alpha:1.0],
-                         ];
-    });
+	CGFloat red, green, blue, alpha;
+	[[A3AppDelegate instance].window.tintColor getRed:&red green:&green blue:&blue alpha:&alpha];
 
 	NSArray *visibleCells = [_messageTableView visibleCells];
+	CGFloat canvasHeight = _messageTableView.bounds.size.height;
+
+	FNLOG(@"contentSize.height %f", _messageTableView.contentSize.height);
+	FNLOG(@"contentOffset.y %f", _messageTableView.contentOffset.y);
+	FNLOG(@"contentInset.top %f", _messageTableView.contentInset.top);
+	FNLOG(@"contentInset.bottom %f", _messageTableView.contentInset.bottom);
+	FNLOG(@"bounds.size.height %f", _messageTableView.bounds.size.height);
+
 	for (A3TranslatorMessageCell *cell in visibleCells) {
-		CGFloat cellPosition = cell.frame.origin.y + cell.frame.size.height;
-		cellPosition = cellPosition - _messageTableView.contentOffset.y + MIN(0, _messageTableView.contentOffset.y - cellPosition) * -1;
-		CGFloat canvasHeight = MIN(_messageTableView.contentSize.height - _messageTableView.contentOffset.y, _messageTableView.bounds.size.height);
+		CGFloat cellPosition = cell.frame.origin.y + cell.frame.size.height - _messageTableView.contentOffset.y;
 
-		NSUInteger positionIndex = MIN( MAX(ceil(cellPosition / canvasHeight / 2.0 / (1.0 / [bubbleColors count])), 0) , 11);
+		alpha = MIN((cellPosition / (canvasHeight * 2.0)) + 0.5, 1.0);
+		FNLOG(@"Position %f, Height %f, result %f", cellPosition, canvasHeight, alpha);
 
-		FNLOG(@"index = %f, %lu", cellPosition / canvasHeight / 2.0, (unsigned long)positionIndex);
-
-//		FNLOG(@"ContentSize = %f, ContentOffset = %f, cell.frame.origin.y = %f",
-//		_messageTableView.contentSize.height, _messageTableView.contentOffset.y, cell.frame.origin.y);
-//		FNLOG(@"distant %f", cell.frame.origin.y - _messageTableView.contentOffset.y);
-//		FNLOG(@"table bounds = %f", _messageTableView.bounds.size.height);
-//		FNLOG(@"contentInset = %f, %f", _messageTableView.contentInset.top, _messageTableView.contentInset.bottom);
-
-		cell.rightMessageView.tintColor = bubbleColors[positionIndex];
+		cell.rightMessageView.tintColor = [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 	}
 }
 

@@ -8,6 +8,7 @@
 
 #import "A3SettingsRequireForViewController.h"
 #import "A3AppDelegate+passcode.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsRequireForViewController ()
 
@@ -28,6 +29,8 @@
 {
     [super viewDidLoad];
 
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,6 +41,14 @@
 
 - (NSArray *)durations {
 	return @[@(0.0), @(60.0), @(60.0 * 5.0), @(60.0 * 15.0), @(60.0 * 60.0), @(60.0 * 60.0 * 4.0)];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return [self standardHeightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -209,12 +209,12 @@
 
 	A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
 	topCell = cellView;
-	cellView.dateLabel.textColor = [UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:1.0];
+	cellView.dateLabel.textColor = [A3AppDelegate instance].window.tintColor;
 	cellView.descriptionLabel.text = @"Solar";
 
 	cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
 	bottomCell = cellView;
-	UIButton *addToDaysCounterButton = [UIButton buttonWithType:UIButtonTypeCustom];
+	UIButton *addToDaysCounterButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	addToDaysCounterButton.bounds = CGRectMake(0, 0, 44, 44);
 	UIImage *buttonImage = [UIImage imageNamed:@"addToDaysCounter"];
 	[addToDaysCounterButton setImage:buttonImage forState:UIControlStateNormal];

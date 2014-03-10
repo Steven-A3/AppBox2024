@@ -55,6 +55,7 @@
 	BOOL _showTimeSeparator;
 	BOOL _needToShowWeatherView;
 	NSUInteger _weatherCircleIndex;
+	BOOL _layoutInitialized;
 }
 
 - (void)viewDidLoad {
@@ -74,9 +75,11 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	if (!_layoutInitialized) {
+		_layoutInitialized = YES;
+		[self updateLayout];
+	}
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
-	[self updateLayout];
 }
 
 - (void)updateLayout {

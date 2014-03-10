@@ -46,16 +46,12 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 {
     [super viewDidLoad];
 
-//	self.title = NSLocalizedString(@"Settings", @"Settings view title");
-	
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
+	self.navigationItem.hidesBackButton = YES;
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,6 +62,15 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	}
 }
 
+- (void)viewDidLayoutSubviews {
+	if (IS_IPAD) {
+		if (IS_LANDSCAPE) {
+			self.navigationItem.leftBarButtonItem = nil;
+		} else {
+			[self leftBarButtonAppsButton];
+		}
+	}
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -119,7 +124,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			break;
 		}
 		case sA3SettingsRowLunarCalendar:
-			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForLunarCalendarCountry];
 			break;
 	}
 }

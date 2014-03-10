@@ -24,7 +24,22 @@
 
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
+	self.navigationItem.hidesBackButton = YES;
 }
+
+#pragma mark -- Layout
+
+- (void)viewDidLayoutSubviews {
+	if (IS_IPAD) {
+		if (IS_LANDSCAPE) {
+			self.navigationItem.leftBarButtonItem = nil;
+		} else {
+			[self leftBarButtonAppsButton];
+		}
+	}
+}
+
+#pragma mark -- UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 	return [self standardHeightForHeaderInSection:section];
@@ -34,6 +49,7 @@
 	if (section == 2) return UITableViewAutomaticDimension;
 	return [self standardHeightForFooterInSection:section];
 }
+#pragma mark -- UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];

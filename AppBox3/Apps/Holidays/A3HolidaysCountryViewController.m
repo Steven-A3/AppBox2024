@@ -131,7 +131,8 @@ extern NSString *const A3CurrencyActionCellID;
 
 			NSString *countryCode = self.userSelectedCountries[indexPath.row];
 
-			normalCell.countryCode = countryCode;
+			[normalCell setCountryCode:countryCode];
+
 			if (indexPath.row == 0) {
 				[normalCell locationImageView];
 			}

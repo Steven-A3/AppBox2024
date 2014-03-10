@@ -86,7 +86,10 @@ static const CGFloat kTranslatorCellGapBetweenMessage = 15.0;
 	_leftMessageHeight = nil;
 	_leftMessageWidth = nil;
 	_leftMessageLabel = nil;
-    
+
+	[_speakButton removeFromSuperview];
+	_speakButton = nil;
+
     self.selectionStyle = UITableViewCellSelectionStyleDefault;
 }
 
@@ -188,7 +191,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		_rightMessageView = [UIImageView new];
 		UIImage *originalTextImage = [[UIImage imageNamed:@"ballon_right"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 		_rightMessageView.image = originalTextImage;
-		_rightMessageView.tintColor = [UIColor colorWithRed:12.0/255.0 green:132.0/255.0 blue:255.0/255.0 alpha:1.0];
+		_rightMessageView.tintColor = APP_THEME_COLOR;
 		[self.contentView addSubview:_rightMessageView];
 
 		[_rightMessageView makeConstraints:^(MASConstraintMaker *make) {
@@ -312,7 +315,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 
 - (UIButton *)favoriteButton {
 	if (!_favoriteButton) {
-		_favoriteButton = [UIButton buttonWithType:UIButtonTypeCustom];
+		_favoriteButton = [UIButton buttonWithType:UIButtonTypeSystem];
 		[self changeFavoriteButtonImage];
 		[_favoriteButton addTarget:self action:@selector(favoriteButtonAction) forControlEvents:UIControlEventTouchUpInside];
 

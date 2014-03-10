@@ -10,6 +10,7 @@
 #import "UITableViewCell+accessory.h"
 #import "A3UIDevice.h"
 #import "FXLabel.h"
+#import "SFKImage.h"
 
 @interface A3HolidaysCell ()
 
@@ -49,24 +50,18 @@
 
 		[_lunarDateLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
-			make.centerY.equalTo(self.centerY).offset(15);
-			if (IS_IPHONE) {
-				make.width.equalTo(@78);
-			}
+			make.top.equalTo(_titleLabel.bottom).offset(10);
 		}];
 
 		_lunarImageView = [UIImageView new];
-		_lunarImageView.image = [[UIImage imageNamed:@"lunar_stroke"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		_lunarImageView.tintColor = [UIColor colorWithWhite:1.0 alpha:0.7];
+		[SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:35]];
+		[SFKImage setDefaultColor:[UIColor colorWithWhite:1.0 alpha:0.5]];
+		_lunarImageView.image = [SFKImage imageNamed:@"f"];
 		[self addSubview:_lunarImageView];
 
 		[_lunarImageView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerY.equalTo(_lunarDateLabel.centerY);
-			if (IS_IPHONE) {
-				make.left.equalTo(self.right).with.offset(-113);
-			} else {
-				make.right.equalTo(_lunarDateLabel.left).with.offset(-10);
-			}
+			make.right.equalTo(_lunarDateLabel.left).with.offset(6);
 		}];
 
 		[self dateLabel];
@@ -122,6 +117,12 @@
 				make.height.equalTo(@18);
 			}];
 		} else {
+			// IPAD의 경우, 항상 같은 위치에 표시
+			[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
+				make.baseline.equalTo(_titleLabel.baseline);
+				make.right.equalTo(self.right).with.offset(-28);
+			}];
+
 			_publicLabel = [UILabel new];
 			_publicLabel.textAlignment = NSTextAlignmentCenter;
 			_publicLabel.textColor = [UIColor whiteColor];
@@ -133,8 +134,8 @@
 			[_publicLabel makeConstraints:^(MASConstraintMaker *make) {
 				make.width.equalTo(@(size.width + 2));
 				make.height.equalTo(@(size.height));
-				make.centerY.equalTo(self.centerY);
 				make.centerX.equalTo(self.centerX);
+				make.centerY.equalTo(_titleLabel.centerY);
 			}];
 			[_publicLabel setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
 
@@ -145,65 +146,88 @@
 			[self insertSubview:_publicMarkView belowSubview:_publicLabel];
 
 			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
-				make.centerY.equalTo(self.centerY);
 				make.width.equalTo(@(size.width + 9));
 				make.height.equalTo(@(size.height + 4));
-				make.centerX.equalTo(self.centerX);
+				make.centerX.equalTo(_publicLabel.centerX);
+				make.centerY.equalTo(_publicLabel.centerY);
 			}];
 		}
 	}
 	return _dateLabel;
 }
 
+/*! cellType을 변경하면 레이아웃을 조정한다.
+ *  showPublic은 호출전에 설정해두어야 한다.
+ * \param
+ * \returns
+ */
 - (void)setCellType:(A3HolidayCellType)cellType {
 	_cellType = cellType;
 	switch (_cellType) {
 		case A3HolidayCellTypeSingleLine:
 			_titleCenterY.offset(0);
+			[_lunarImageView setHidden:YES];
+			[_lunarDateLabel setHidden:YES];
 			break;
 		case A3HolidayCellTypeDoubleLine:
+			_titleCenterY.offset(-14);
+			[_lunarImageView setHidden:YES];
+			[_lunarDateLabel setHidden:YES];
+			break;
 		case A3HolidayCellTypeLunar1:
 		case A3HolidayCellTypeLunar2:
 			_titleCenterY.offset(-14);
+			[_lunarImageView setHidden:NO];
+			[_lunarDateLabel setHidden:NO];
 			break;
 	}
+
+	[self.publicLabel setHidden:!_showPublic];
+	[self.publicMarkView setHidden:!_showPublic];
 
 	for (MASConstraint *constraint in self.mutableConstraints) {
 		[constraint uninstall];
 	}
 	[self.mutableConstraints removeAllObjects];
 
-	[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
-		switch (_cellType) {
-			case A3HolidayCellTypeSingleLine:
-			case A3HolidayCellTypeLunar1:
-				[self.mutableConstraints addObject:make.baseline.equalTo(_titleLabel.baseline)];
-				[self.mutableConstraints addObject:make.right.equalTo(self.right).offset(IS_IPHONE ? -15 : -28)];
-				if (IS_IPHONE) {
-					[self.mutableConstraints addObject:make.width.equalTo(@(78))];
-				}
-				break;
-			case A3HolidayCellTypeDoubleLine:
-			case A3HolidayCellTypeLunar2:
-				_dateLabelLeft = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 + 18 + 5 : 28 + 18 + 5);
-				[self.mutableConstraints addObject:make.centerY.equalTo(self.centerY).with.offset(15)];
-				break;
-		}
-	}];
-
 	if (IS_IPHONE) {
-		[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
+		[_dateLabel sizeToFit];
+		[_dateLabel makeConstraints:^(MASConstraintMaker *make) {
 			switch (_cellType) {
 				case A3HolidayCellTypeSingleLine:
 				case A3HolidayCellTypeLunar1:
-					[self.mutableConstraints addObject:make.left.equalTo(self.right).with.offset(-113)];
+					[self.mutableConstraints addObject:make.baseline.equalTo(_titleLabel.baseline)];
+					[self.mutableConstraints addObject:make.right.equalTo(self.right).offset(-15)];
+					[self.mutableConstraints addObject:make.width.equalTo(@(78))];
+					_dateLabel.textAlignment = NSTextAlignmentRight;
 					break;
 				case A3HolidayCellTypeDoubleLine:
 				case A3HolidayCellTypeLunar2:
-					[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28)];
+					if (_showPublic) {
+						[self.mutableConstraints addObject:make.left.equalTo(_publicMarkView.right).with.offset(5)];
+					} else {
+						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(15)];
+					}
+					[self.mutableConstraints addObject:make.right.equalTo(self.right)];
+					[self.mutableConstraints addObject:make.centerY.equalTo(self.centerY).with.offset(15)];
+					_dateLabel.textAlignment = NSTextAlignmentLeft;
 					break;
 			}
 		}];
+		if (_showPublic) {
+			[_publicMarkView makeConstraints:^(MASConstraintMaker *make) {
+				switch (_cellType) {
+					case A3HolidayCellTypeSingleLine:
+					case A3HolidayCellTypeLunar1:
+						[self.mutableConstraints addObject:make.left.equalTo(self.right).with.offset(-113)];
+						break;
+					case A3HolidayCellTypeDoubleLine:
+					case A3HolidayCellTypeLunar2:
+						[self.mutableConstraints addObject:make.left.equalTo(self.left).with.offset(15)];
+						break;
+				}
+			}];
+		}
 	}
 
 	[self layoutIfNeeded];

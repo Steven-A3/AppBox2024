@@ -410,6 +410,7 @@
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
 		6884DFC3167AC5C400A8FFA7 /* A3NotificationStockCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */; };
 		688545E917EF276F00320F95 /* A3CalcKeyboardView_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 688545E817EF276F00320F95 /* A3CalcKeyboardView_iPhone.m */; };
+		6887446C18CB801000CC66AC /* A3StandardLeft15Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6887446B18CB801000CC66AC /* A3StandardLeft15Cell.m */; };
 		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		688D74CC16C5219D00DBF033 /* A3ToolbarBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 688D74CB16C5219D00DBF033 /* A3ToolbarBackgroundView.m */; };
@@ -1182,6 +1183,8 @@
 		6884DFC2167AC5C400A8FFA7 /* A3NotificationStockCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NotificationStockCell.m; sourceTree = "<group>"; };
 		688545E717EF276F00320F95 /* A3CalcKeyboardView_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalcKeyboardView_iPhone.h; sourceTree = "<group>"; };
 		688545E817EF276F00320F95 /* A3CalcKeyboardView_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalcKeyboardView_iPhone.m; sourceTree = "<group>"; };
+		6887446A18CB801000CC66AC /* A3StandardLeft15Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3StandardLeft15Cell.h; sourceTree = "<group>"; };
+		6887446B18CB801000CC66AC /* A3StandardLeft15Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3StandardLeft15Cell.m; sourceTree = "<group>"; };
 		6888090917C63DBB008B2856 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		6888090D17C63F57008B2856 /* A3FlickrTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FlickrTest.m; path = FlickrTest/A3FlickrTest.m; sourceTree = "<group>"; };
 		6888091617C640F7008B2856 /* FlickrAPIKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlickrAPIKey.h; path = Flickr/FlickrAPIKey.h; sourceTree = "<group>"; };
@@ -2259,6 +2262,8 @@
 				68EC80D516E1ADF800CF672E /* A3Formatter.m */,
 				68AC53AE18C623FA00D99FE5 /* A3StandardTableViewCell.h */,
 				68AC53AF18C623FA00D99FE5 /* A3StandardTableViewCell.m */,
+				6887446A18CB801000CC66AC /* A3StandardLeft15Cell.h */,
+				6887446B18CB801000CC66AC /* A3StandardLeft15Cell.m */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3416,6 +3421,7 @@
 				68461014164E0B7F005BD9FC /* A3StrokedTextButton.m in Sources */,
 				68D6265418169E7C009C47C0 /* A3TableViewSelectElement.m in Sources */,
 				68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */,
+				6887446C18CB801000CC66AC /* A3StandardLeft15Cell.m in Sources */,
 				6834C5C91825180800189777 /* A3TableViewCell.m in Sources */,
 				6829682C18503B2100B70E13 /* NSPersistentStoreCoordinator+MagicaliCloudAdditions.m in Sources */,
 				6854E91E166F3E8D00497126 /* A3TimeLineEventItemView.m in Sources */,

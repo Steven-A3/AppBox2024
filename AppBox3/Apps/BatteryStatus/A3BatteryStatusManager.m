@@ -137,8 +137,8 @@ NSString *const A3BatteryStatusThemeColorChanged = @"A3BatteryStatusThemeColorCh
         [array addObject:@{@"title" : @"Memory", @"value" : Memory}];
     }
     // Storage.
-    NSString * storage = [NSString stringWithFormat:@"%@ (%@ available)", [A3UIDevice totalDiskSpace], [A3UIDevice freeDiskSpace]];
-    [array addObject:@{@"title" : @"Storage", @"value" : storage}];
+    NSString * storage = [A3UIDevice capacity];
+    [array addObject:@{@"title" : @"Capacity", @"value" : storage}];
     
     return array;
 }

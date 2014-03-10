@@ -7,6 +7,7 @@
 //
 
 #import "A3SettingsWalletViewController.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsWalletViewController ()
 
@@ -27,6 +28,8 @@
 {
     [super viewDidLoad];
 
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,7 +46,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 0) return UITableViewAutomaticDimension;
-	if (section == 2) return 35;
+	if (section == 2) return 38;
 	return 18;
 }
 

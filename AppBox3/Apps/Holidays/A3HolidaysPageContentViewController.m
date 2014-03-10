@@ -108,10 +108,13 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	@autoreleasepool {
-		[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:_countryCode];
-        
-	}
+	[self registerContentSizeCategoryDidChangeNotification];
+	[[A3HolidaysFlickrDownloadManager sharedInstance] addDownloadTaskForCountryCode:_countryCode];
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self updateTableHeaderView:_tableView.tableHeaderView];
+	[self.tableView reloadData];
 }
 
 - (void)imageDownloaded:(NSNotification *)notification {
@@ -686,13 +689,16 @@ static NSString *const CellIdentifier = @"holidaysCell";
 
 			if (!holidayCell) {
 				holidayCell = [[A3HolidaysCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+				FNLOG(@"Cell Not found?");
 			}
+			[holidayCell assignFontsToLabels];
 
 			NSDictionary *cellData = [self holidayDataForTableView:tableView row:indexPath.row];
 
 			BOOL longName = [self needDoubleLineCellWithData:cellData];
 			BOOL showLunar = [HolidayData needToShowLunarDatesForCountryCode:self.countryCode];
 
+			holidayCell.showPublic = [cellData[kHolidayIsPublic] boolValue];
 			A3HolidayCellType cellType;
 			if (longName && showLunar) {
 				cellType = A3HolidayCellTypeLunar2;
@@ -708,27 +714,8 @@ static NSString *const CellIdentifier = @"holidaysCell";
 			holidayCell.titleLabel.text = cellData[kHolidayName];
 			holidayCell.dateLabel.text = [self.pageViewController stringFromDate: cellData[kHolidayDate] ];
 
-			BOOL showPublicMark = [cellData[kHolidayIsPublic] boolValue];
-			[holidayCell.publicMarkView setHidden:!showPublicMark];
-			[holidayCell.publicLabel setHidden:!showPublicMark];
-
-			if (!showPublicMark) {
-				switch (cellType) {
-					case A3HolidayCellTypeDoubleLine:
-					case A3HolidayCellTypeLunar2:
-						holidayCell.dateLabelLeft.offset(IS_IPHONE ? 15 : 28);
-						[holidayCell layoutIfNeeded];
-						break;
-					default:
-						break;
-				}
-			}
-
 			if (showLunar) {
 				holidayCell.lunarDateLabel.text = [self.pageViewController lunarStringFromDate:cellData[kHolidayDate]];
-
-				[holidayCell.lunarImageView setHidden:NO];
-				[holidayCell.lunarDateLabel setHidden:NO];
 			}
 
 			cell = holidayCell;

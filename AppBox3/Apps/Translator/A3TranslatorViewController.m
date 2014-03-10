@@ -123,7 +123,7 @@
 		[self.view addSubview:line];
 
 		[line makeConstraints:^(MASConstraintMaker *make) {
-			make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 48.0));
+			make.top.equalTo(self.view.top).with.offset(64.0 + (IS_RETINA ? 47.5 : 47.0));
 			make.centerX.equalTo(self.view.centerX);
 			make.width.equalTo(self.view.width);
 			make.height.equalTo(IS_RETINA ? @0.5 : @1);
@@ -153,7 +153,7 @@
 			make.centerX.equalTo(self.view.centerX);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
-			make.bottom.equalTo(self.view.bottom).with.offset(-10.5);
+			make.bottom.equalTo(self.view.bottom).with.offset(IS_RETINA ? -10.5 : -10);
 		}];
 	}
 }

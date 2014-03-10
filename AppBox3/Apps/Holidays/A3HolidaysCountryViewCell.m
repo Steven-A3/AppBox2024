@@ -140,7 +140,11 @@
 
 	if (upcomingHoliday) {
 		_upcomingHoliday.text = upcomingHoliday[kHolidayName];
-		_daysLeft.text = [NSString stringWithFormat:@", %@", IS_IPHONE ? [upcomingHoliday[kHolidayDate] daysLeft] : [_pageViewController stringFromDate:upcomingHoliday[kHolidayDate] ] ];
+		if (IS_IPHONE) {
+			_daysLeft.text = [NSString stringWithFormat:@", %@", [upcomingHoliday[kHolidayDate] daysLeft]];
+		} else {
+			_daysLeft.text = [NSString stringWithFormat:@", %@, %@", [upcomingHoliday[kHolidayDate] daysLeft], [_pageViewController stringFromDate:upcomingHoliday[kHolidayDate] ] ];
+		}
 		_numberOfHolidays.text = [NSString stringWithFormat:@"%lu", (unsigned long)[holidays count]];
 	}
 

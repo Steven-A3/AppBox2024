@@ -34,7 +34,7 @@
 
 - (void)configureLayer {
 	self.layer.borderColor = [UIColor colorWithRed:220.0 / 255.0 green:223.0 / 255.0 blue:227.0 / 255.0 alpha:1.0].CGColor;
-	self.layer.borderWidth = 1.0;
+	self.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
 	
 	[self.layer addSublayer:self.highlightedMarkLayer];
 }
@@ -51,20 +51,6 @@
 	}
 }
 
-- (void)setSelected:(BOOL)selected {
-	[super setSelected:selected];
-	
-	if (self.backgroundColorForSelectedState) {
-		self.backgroundColor = selected ? self.backgroundColorForSelectedState : self.backgroundColorForDefaultState;
-	}
-}
-
-//- (void)setSelected:(BOOL)selected {
-//	[super setSelected:selected];
-//
-//	_selectedMarkLayer.hidden = !selected;
-//}
-//
 - (CALayer *)highlightedMarkLayer {
 	if (!_highlightedMarkLayer) {
 		_highlightedMarkLayer = [CALayer layer];

@@ -271,8 +271,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_sectionHeaderView.tableSegmentButton.selectedSegmentIndex==0 && indexPath.row==2) {
-        NSString *chips = [_tableDataSourceArray[2] objectForKey:@"value"];
+    if (_sectionHeaderView.tableSegmentButton.selectedSegmentIndex==0) {
+        NSString *chips = [_tableDataSourceArray[indexPath.row] objectForKey:@"value"];
         if ([chips rangeOfString:@"\n"].location==NSNotFound) {
             return 44.0;
         } else {

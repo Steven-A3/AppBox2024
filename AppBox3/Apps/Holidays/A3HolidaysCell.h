@@ -28,6 +28,7 @@ typedef NS_ENUM(NSUInteger, A3HolidayCellType) {
 @property (nonatomic, strong) UILabel *publicLabel;
 @property (nonatomic, strong) UIImageView *lunarImageView;
 @property (nonatomic) A3HolidayCellType	cellType;
-@property (nonatomic, strong) MASConstraint *dateLabelLeft;
+@property (nonatomic, assign) BOOL showPublic;
 
+- (void)assignFontsToLabels;
 @end

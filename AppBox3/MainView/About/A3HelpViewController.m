@@ -29,8 +29,20 @@
 
 	self.title = @"Help";
 	[self leftBarButtonAppsButton];
+	self.navigationItem.hidesBackButton = YES;
 }
 
+#pragma mark -- Layout
+
+- (void)viewDidLayoutSubviews {
+	if (IS_IPAD) {
+		if (IS_LANDSCAPE) {
+			self.navigationItem.leftBarButtonItem = nil;
+		} else {
+			[self leftBarButtonAppsButton];
+		}
+	}
+}
 
 #pragma mark - Table view data source
 

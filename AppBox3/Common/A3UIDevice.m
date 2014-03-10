@@ -216,4 +216,18 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
     return usedSpace;
 }
 
++ (NSString *)capacity {
+	double space = [[[[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:nil] objectForKey:NSFileSystemSize] doubleValue];
+	if (space > 64.0 * 1024 * 1024 * 1024) {
+		return @"128GB";
+	} else if (space > 32.0 * 1024 * 1024 * 1024) {
+		return @"64GB";
+	} else if (space > 16.0 * 1024 * 1024 * 1024) {
+		return @"32GB";
+	} else if (space > 8.0 * 1024 * 1024 * 1024) {
+		return @"16GB";
+	}
+	return @"8GB";
+}
+
 @end

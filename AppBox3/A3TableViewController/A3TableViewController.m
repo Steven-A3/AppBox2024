@@ -10,6 +10,7 @@
 #import "A3TableViewRootElement.h"
 #import "A3TableViewSection.h"
 #import "A3TableViewElement.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3TableViewController ()
 
@@ -46,6 +47,14 @@
 }
 
 #pragma mark - Table view data source
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return [self standardHeightForFooterInSection:section];
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

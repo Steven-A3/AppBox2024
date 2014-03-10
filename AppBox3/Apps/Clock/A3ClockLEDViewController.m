@@ -34,6 +34,7 @@
 
 @implementation A3ClockLEDViewController {
 	BOOL _colonHidden;
+	BOOL _layoutInitialized;
 }
 
 - (void)viewDidLoad {
@@ -42,13 +43,16 @@
 	[self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:IS_IPHONE ? @"LED_bg" : @"LED_bg_p"]]];
 
 	[self prepareSubviews];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self layoutSubviews];
-
+	if (!_layoutInitialized) {
+		_layoutInitialized = YES;
+		[self layoutSubviews];
+	}
 	[self refreshWholeClock:self.clockDataManager.clockInfo];
 }
 

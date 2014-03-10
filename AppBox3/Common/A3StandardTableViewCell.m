@@ -30,9 +30,19 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
-	CGRect frame = self.textLabel.frame;
-	frame.origin.x = IS_IPHONE ? 15 : 28;
-	self.textLabel.frame = frame;
+	if (![self isEditing]) {
+		CGRect frame = self.textLabel.frame;
+		frame.origin.x = IS_IPHONE ? 15 : 28;
+		if (self.imageView) {
+			frame.origin.x += self.imageView.bounds.size.width;
+			if (IS_IPHONE) frame.origin.x += 13.0;
+		}
+		self.textLabel.frame = frame;
+	} else {
+		CGRect frame = self.textLabel.frame;
+		frame.origin.x = 15;
+		self.textLabel.frame = frame;
+	}
 }
 
 @end

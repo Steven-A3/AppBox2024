@@ -10,6 +10,7 @@
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsChooseColorViewController ()
 
@@ -32,6 +33,9 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 
 	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
 	_selectedColorIndex = selectedColor ? [selectedColor unsignedIntegerValue] : 4;
+
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (UIImageView *)selectedMarkView {
@@ -68,6 +72,14 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 }
 
 #pragma mark - UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return [self standardHeightForFooterInSection:section];
+}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 	return IS_IPAD ? 160*3 + 40 + 40 + 30 * 2 : 346;

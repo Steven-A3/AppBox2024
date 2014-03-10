@@ -113,7 +113,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (UIButton *)plusButton {
-	UIButton *plusButton = [UIButton buttonWithType:UIButtonTypeSystem];
+	UIButton *plusButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	[plusButton setImage:[UIImage imageNamed:@"add04"] forState:UIControlStateNormal];
 	[plusButton setImage:[UIImage imageNamed:@"add05"] forState:UIControlStateDisabled];
 	[plusButton addTarget:self action:@selector(addButtonAction:) forControlEvents:UIControlEventTouchUpInside];

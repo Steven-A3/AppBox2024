@@ -8,6 +8,7 @@
 
 #import "A3SettingsLunarViewController.h"
 #import "NSUserDefaults+A3Addition.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsLunarViewController ()
 
@@ -28,12 +29,22 @@
 {
     [super viewDidLoad];
 
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return [self standardHeightForHeaderInSection:section];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return [self standardHeightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

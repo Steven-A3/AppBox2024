@@ -11,6 +11,7 @@
 #import "SFKImage.h"
 #import "A3UIDevice.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
+#import "A3AppDelegate.h"
 
 @interface A3NumberKeyboardViewController_iPhone ()
 
@@ -116,6 +117,7 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
+	[self.doneButton setBackgroundColor:[A3AppDelegate instance].window.tintColor];
 }
 
 - (void)initSymbolFont {

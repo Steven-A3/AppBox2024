@@ -12,6 +12,7 @@
 #import "A3AppDelegate+mainMenu.h"
 #import "A3SettingsAddFavoritesViewController.h"
 #import "A3CenterViewDelegate.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3SettingsFavoritesViewController () <A3ChildViewControllerDelegate>
 
@@ -35,6 +36,8 @@
     [super viewDidLoad];
 
 	[self.tableView setEditing:YES];
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, 53, 0, 0);
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentChanged:) name:A3AppsMainMenuContentsChangedNotification object:nil];
 }

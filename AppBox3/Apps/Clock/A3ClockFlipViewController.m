@@ -46,6 +46,7 @@
 
 @implementation A3ClockFlipViewController {
 	BOOL _iPADLayoutInitialized;
+	BOOL _layoutInitialized;
 }
 
 - (instancetype)initWithClockDataManager:(A3ClockDataManager *)clockDataManager style:(A3ClockFlipViewStyle) style {
@@ -143,12 +144,16 @@
 		make.centerY.equalTo(self.view.centerY);
 		make.height.equalTo(IS_IPHONE ? @2 : @4);
 	}];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self layoutSubviews];
+	if (!_layoutInitialized) {
+		_layoutInitialized = YES;
+		[self layoutSubviews];
+	}
 }
 
 - (void)layoutSubviews {

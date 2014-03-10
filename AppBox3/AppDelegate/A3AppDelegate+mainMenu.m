@@ -50,7 +50,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Converter",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : @"Currency", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
+						 @{kA3AppsMenuName : @"Currency Converter", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
 						 @{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"A3LunarConverterViewController", kA3AppsNibName: @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
 						 @{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
 						 @{kA3AppsMenuName : @"Unit Converter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"UnitConverter"},
@@ -99,15 +99,33 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (NSArray *)allMenuArrayFromUserDefaults {
-	NSMutableDictionary *allMenusDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
+	@autoreleasepool {
+		NSMutableDictionary *allMenusDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:kA3MainMenuAllMenu];
 
-	NSArray *allMenuArray;
-	if (allMenusDictionary) {
-		allMenuArray = allMenusDictionary[kA3AppsMenuArray];
-	} else {
-		allMenuArray = [self allMenu];
+		NSArray *allMenuArray;
+		if (allMenusDictionary) {
+			allMenuArray = allMenusDictionary[kA3AppsMenuArray];
+		} else {
+			allMenuArray = [self allMenu];
+		}
+		NSMutableArray *sortedMenuArray = [NSMutableArray new];
+		for (NSDictionary *section in allMenuArray) {
+			NSMutableDictionary *modifiedSection = 	[section mutableCopy];
+			NSMutableArray *originalMenus = [modifiedSection[kA3AppsExpandableChildren] mutableCopy];
+			NSMutableArray *localizedMenus = [NSMutableArray new];
+			for (NSDictionary *menuItem in originalMenus) {
+				NSMutableDictionary *localizedItem = [menuItem mutableCopy];
+				localizedItem[kA3AppsMenuName] = NSLocalizedString(menuItem[kA3AppsMenuName], nil);
+				[localizedMenus addObject:localizedItem];
+			}
+			[localizedMenus sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+				return [obj1[kA3AppsMenuName] compare:obj2[kA3AppsMenuName]];
+			}];
+			modifiedSection[kA3AppsExpandableChildren] = localizedMenus;
+			[sortedMenuArray addObject:modifiedSection];
+		}
+		return sortedMenuArray;
 	}
-	return allMenuArray;
 }
 
 - (void)storeAllMenu:(NSArray *)menuArray withDate:(NSDate *)date {

@@ -375,6 +375,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self.mySearchDisplayController.searchBar resignFirstResponder];
+
 	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 	if ([self isAppAvailableForElement:element]) {
 		[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];
@@ -408,6 +410,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 #pragma mark - A3ExpandableElement delegate
 
 - (void)element:(A3TableViewExpandableElement *)element cellStateChangedAtIndexPath:(NSIndexPath *)indexPath {
+	[self.mySearchDisplayController.searchBar resignFirstResponder];
+
 	if (indexPath.section == 0) {
 		if (indexPath.row == 0) {
 			NSMutableDictionary *favoriteDictionary = [[[A3AppDelegate instance] favoriteMenuDictionary] mutableCopy];

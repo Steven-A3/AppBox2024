@@ -449,7 +449,9 @@
 
 		// TODO: 날씨 업데이트 시점 최종 조정 필요. 디버깅 위해서 10초로 설정
 //		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 15 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
-		_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
+		if (!_weatherTimer) {
+			_weatherTimer = [NSTimer scheduledTimerWithTimeInterval:60 * 60 target:self selector:@selector(updateWeather) userInfo:nil repeats:NO];
+		}
 	} failure:^(AFHTTPRequestOperation *operation, NSError *error) {
 		[self.locationManager startMonitoringSignificantLocationChanges];
 	}];
@@ -488,6 +490,7 @@
 }
 
 - (void)updateWeather {
+	_weatherTimer = nil;
 	if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
 		if ([[A3AppDelegate instance].reachability isReachable]) {
 			[self.locationManager startMonitoringSignificantLocationChanges];

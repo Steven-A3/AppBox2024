@@ -46,7 +46,8 @@
     [super viewDidLoad];
 
 	[self makeBackButtonEmptyArrow];
-
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -114,7 +115,7 @@
 		case 0: {
 			cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;
 			cell.detailTextLabel.minimumScaleFactor = 0.5;
-			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Off", nil);
+			cell.detailTextLabel.text = [A3KeychainUtils passcodeTimeString];
 			break;
 		}
 		case 1: {

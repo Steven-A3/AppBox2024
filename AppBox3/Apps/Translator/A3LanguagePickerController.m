@@ -12,6 +12,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
 #import "UITableViewController+standardDimension.h"
+#import "A3StandardLeft15Cell.h"
 
 @interface A3LanguagePickerController () <UISearchBarDelegate>
 
@@ -43,10 +44,13 @@ static NSString *CellIdentifier = @"Cell";
 	// Do any additional setup after loading the view.
 
 	self.title = @"Select Language";
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
+	[self.tableView registerClass:[A3StandardLeft15Cell class] forCellReuseIdentifier:CellIdentifier];
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 	[self.mySearchDisplayController.searchResultsTableView registerClass:[UITableViewCell class] forCellReuseIdentifier:CellIdentifier];
 
-	[self leftBarButtonCancelButton];
+	if (IS_IPHONE) {
+		[self leftBarButtonCancelButton];
+	}
 
 	[self registerContentSizeCategoryDidChangeNotification];
 }

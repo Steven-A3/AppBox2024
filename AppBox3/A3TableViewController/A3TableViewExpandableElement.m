@@ -91,11 +91,11 @@
 			[indexPaths addObject:[NSIndexPath indexPathForRow:idx + indexPath.row + 1 inSection:indexPath.section]];
 		}
 		if (_collapsed) {
-			[_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+			[_tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 			[expandButton setTitle:@"j" forState:UIControlStateNormal];
 			self.titleLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
 		} else {
-			[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+			[_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 			[_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 			[expandButton setTitle:@"i" forState:UIControlStateNormal];
 			self.titleLabel.textColor = _tableView.tintColor;

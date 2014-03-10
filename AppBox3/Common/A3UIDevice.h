@@ -69,4 +69,6 @@
 + (NSString *)totalDiskSpace;
 + (NSString *)freeDiskSpace;
 + (NSString *)usedDiskSpace;
+
++ (NSString *)capacity;
 @end

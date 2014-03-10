@@ -21,7 +21,7 @@
     if (self) {
 		// Initialization code
 		_customSeparator = [UIView new];
-		_customSeparator.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+		_customSeparator.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 		[self addSubview:_customSeparator];
 
 		[_customSeparator makeConstraints:^(MASConstraintMaker *make) {
@@ -30,6 +30,7 @@
 			make.bottom.equalTo(self.bottom);
 			make.height.equalTo(@0.5);
 		}];
+		self.textLabel.font = [UIFont systemFontOfSize:17];
 	}
     return self;
 }

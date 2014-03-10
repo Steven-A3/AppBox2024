@@ -194,7 +194,7 @@ static NSString *CellIdentifier3 = @"Cell3";
             //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             
-            UIImageView * info = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
+            UIImageView * info = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"information"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
             [cell.contentView addSubview:info];
             [info makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.centerY);
@@ -212,7 +212,7 @@ static NSString *CellIdentifier3 = @"Cell3";
             //cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             
-            UIImageView * info = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"information"]];
+            UIImageView * info = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"information"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
             [cell.contentView addSubview:info];
             [info makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.centerY);

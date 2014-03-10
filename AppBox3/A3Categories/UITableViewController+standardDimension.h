@@ -17,6 +17,6 @@
 @interface UITableViewController (standardDimension)
 
 - (CGFloat)standardHeightForHeaderInSection:(NSInteger)section;
-
 - (CGFloat)standardHeightForFooterInSection:(NSInteger)section;
+
 @end

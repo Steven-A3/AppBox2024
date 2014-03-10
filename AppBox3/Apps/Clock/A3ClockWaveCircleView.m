@@ -105,7 +105,6 @@
 	if (IS_IPHONE) {
 		imageName = _position == ClockWaveLocationBig ? @"wave" : @"wave_small";
 		waveHeight = _position == ClockWaveLocationBig ? 6 : 4;
-		slicingEdge = _position == ClockWaveLocationBig ? UIEdgeInsetsMake(6, 0, 1, 0) : UIEdgeInsetsMake(4, 0, 1, 0);
 	} else {
 		imageName = _position == ClockWaveLocationBig ? @"wave_large" : @"wave";
 		waveHeight = _position == ClockWaveLocationBig ? 11 : 6;

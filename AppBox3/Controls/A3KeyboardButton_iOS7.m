@@ -7,6 +7,7 @@
 //
 
 #import "A3KeyboardButton_iOS7.h"
+#import "A3AppDelegate.h"
 
 @interface A3KeyboardButton_iOS7 ()
 
@@ -21,6 +22,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
+		[self setTitleColor:[A3AppDelegate instance].window.tintColor forState:UIControlStateHighlighted];
     }
     return self;
 }
@@ -96,6 +98,12 @@
 	_mainTitle = nil;
 	[_subTitle removeFromSuperview];
 	_subTitle = nil;
+}
+
+- (void)setSelected:(BOOL)selected {
+	[super setSelected:selected];
+
+	self.backgroundColor = selected ? [A3AppDelegate instance].window.tintColor : [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
 }
 
 @end
