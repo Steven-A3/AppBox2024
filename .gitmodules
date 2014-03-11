@@ -45,7 +45,7 @@
 	url = https://github.com/Steven-Gwug/JVFloatLabeledTextField.git
 [submodule "External/MWPhotoBrowser"]
 	path = External/MWPhotoBrowser
-	url = https://github.com/mwaterfall/MWPhotoBrowser.git
+	url = https://github.com/Steven-Gwug/MWPhotoBrowser.git
 [submodule "External/TSMiniWebBrowser"]
 	path = External/TSMiniWebBrowser
-	url = https://github.com/tonisalae/TSMiniWebBrowser.git
+	url = https://github.com/Steven-Gwug/TSMiniWebBrowser.git
