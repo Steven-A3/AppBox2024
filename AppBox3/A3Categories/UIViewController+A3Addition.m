@@ -324,7 +324,9 @@
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
 	[button setImage:[UIImage imageNamed:@"history"] forState:UIControlStateNormal];
 	[button addTarget:self action:@selector(historyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-	[button setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[[MagicalRecordStack defaultStack] context] ] > 0 ];
+	if (managedObjectClass) {
+		[button setEnabled:[managedObjectClass MR_countOfEntitiesWithContext:[[MagicalRecordStack defaultStack] context] ] > 0 ];
+	}
 	return button;
 }
 
@@ -425,6 +427,24 @@
 	return nil;
 }
 
+- (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView {
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil];
+    [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+        NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+    }];
+    
+    [activityController setValue:@"My Subject Text" forKey:@"subject"];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+        CGRect viewRect = [subView convertRect:subView.bounds toView:self.view];
+        [popoverController presentPopoverFromRect:viewRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		return popoverController;
+	}
+	return nil;
+}
+
 + (UIViewController<A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
 	UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 
@@ -438,6 +458,11 @@
 
 - (BOOL)checkPasscode {
 	return ([[A3KeychainUtils getPassword] length] && [[A3AppDelegate instance] didPasscodeTimerEnd]);
+}
+
+- (UIColor *)tableViewSeperatorColor
+{
+    return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 }
 
 @end

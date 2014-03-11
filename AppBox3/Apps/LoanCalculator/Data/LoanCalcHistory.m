@@ -2,11 +2,12 @@
 //  LoanCalcHistory.m
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 5/27/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 3/11/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "LoanCalcHistory.h"
+#import "LoanCalcComparisonHistory.h"
 #import "LoanCalcHistory.h"
 
 
@@ -35,6 +36,8 @@
 @dynamic term;
 @dynamic termTypeMonth;
 @dynamic useSimpleInterest;
+@dynamic orderInComparison;
 @dynamic compareWith;
+@dynamic comparisonHistory;
 
 @end

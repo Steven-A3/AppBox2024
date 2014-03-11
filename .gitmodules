@@ -40,3 +40,12 @@
 [submodule "External/MagicalRecord"]
 	path = External/MagicalRecord
 	url = https://github.com/magicalpanda/MagicalRecord.git
+[submodule "External/JVFloatLabeledTextField"]
+	path = External/JVFloatLabeledTextField
+	url = https://github.com/Steven-Gwug/JVFloatLabeledTextField.git
+[submodule "External/MWPhotoBrowser"]
+	path = External/MWPhotoBrowser
+	url = https://github.com/mwaterfall/MWPhotoBrowser.git
+[submodule "External/TSMiniWebBrowser"]
+	path = External/TSMiniWebBrowser
+	url = https://github.com/tonisalae/TSMiniWebBrowser.git

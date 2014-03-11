@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="3401" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="currencySymbol" optional="YES" attributeType="String" syncable="YES"/>
@@ -54,6 +54,14 @@
         <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="expense" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Expense" inverseName="details" inverseEntity="Expense" syncable="YES"/>
     </entity>
+    <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
+        <attribute name="calculateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="totalAmountA" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalAmountB" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalInterestA" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="totalInterestB" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LoanCalcHistory" inverseName="comparisonHistory" inverseEntity="LoanCalcHistory" syncable="YES"/>
+    </entity>
     <entity name="LoanCalcHistory" representedClassName="LoanCalcHistory" syncable="YES">
         <attribute name="calculationFor" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
@@ -70,6 +78,7 @@
         <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="monthlyPayment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderInComparison" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="principal" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="showAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="showDownPayment" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -79,6 +88,7 @@
         <attribute name="termTypeMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="compareWith" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LoanCalcHistory" inverseName="compareWith" inverseEntity="LoanCalcHistory" syncable="YES"/>
+        <relationship name="comparisonHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LoanCalcComparisonHistory" inverseName="details" inverseEntity="LoanCalcComparisonHistory" syncable="YES"/>
     </entity>
     <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
         <attribute name="additionalOff" optional="YES" attributeType="String" syncable="YES"/>
@@ -115,17 +125,135 @@
             </compoundIndex>
         </compoundIndexes>
     </entity>
+    <entity name="UnitConvertItem" representedClassName="UnitConvertItem" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitConvertItem" inverseEntity="UnitItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitFavorite" representedClassName="UnitFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="favorite" inverseEntity="UnitItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitHistory" representedClassName="UnitHistory" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="source" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistory" inverseEntity="UnitItem" syncable="YES"/>
+        <relationship name="targets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitHistoryItem" inverseName="history" inverseEntity="UnitHistoryItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitHistoryItem" representedClassName="UnitHistoryItem" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistory" inverseName="targets" inverseEntity="UnitHistory" syncable="YES"/>
+        <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistoryItem" inverseEntity="UnitItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitItem" representedClassName="UnitItem" syncable="YES">
+        <attribute name="conversionRate" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="unitName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="unitShortName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitFavorite" inverseName="item" inverseEntity="UnitFavorite" syncable="YES"/>
+        <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitType" inverseName="items" inverseEntity="UnitType" syncable="YES"/>
+        <relationship name="unitConvertItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitConvertItem" inverseName="item" inverseEntity="UnitConvertItem" syncable="YES"/>
+        <relationship name="unitHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistory" inverseName="source" inverseEntity="UnitHistory" syncable="YES"/>
+        <relationship name="unitHistoryItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistoryItem" inverseName="unit" inverseEntity="UnitHistoryItem" syncable="YES"/>
+        <relationship name="unitPriceFavorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitPriceFavorite" inverseName="item" inverseEntity="UnitPriceFavorite" syncable="YES"/>
+        <relationship name="unitPriceHistories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitPriceHistoryItem" inverseName="unit" inverseEntity="UnitPriceHistoryItem" syncable="YES"/>
+        <relationship name="unitPriceInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitPriceInfo" inverseName="unit" inverseEntity="UnitPriceInfo" syncable="YES"/>
+    </entity>
+    <entity name="UnitPriceFavorite" representedClassName="UnitPriceFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitPriceFavorite" inverseEntity="UnitItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitPriceHistory" representedClassName="UnitPriceHistory" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="unitPrices" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnitPriceHistoryItem" inverseName="unitPriceHistory" inverseEntity="UnitPriceHistoryItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitPriceHistoryItem" representedClassName="UnitPriceHistoryItem" syncable="YES">
+        <attribute name="discountPercent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discountPrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="orderInComparison" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitPriceHistories" inverseEntity="UnitItem" syncable="YES"/>
+        <relationship name="unitPriceHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitPriceHistory" inverseName="unitPrices" inverseEntity="UnitPriceHistory" syncable="YES"/>
+    </entity>
+    <entity name="UnitPriceInfo" representedClassName="UnitPriceInfo" syncable="YES">
+        <attribute name="discountPercent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discountPrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="priceName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitPriceInfos" inverseEntity="UnitItem" syncable="YES"/>
+    </entity>
+    <entity name="UnitType" representedClassName="UnitType" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="unitTypeName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="type" inverseEntity="UnitItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletCategory" representedClassName="WalletCategory" syncable="YES">
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="fields" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletField" inverseName="category" inverseEntity="WalletField" syncable="YES"/>
+        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="category" inverseEntity="WalletItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletFavorite" representedClassName="WalletFavorite" syncable="YES">
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="favorite" inverseEntity="WalletItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletField" representedClassName="WalletField" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletCategory" inverseName="fields" inverseEntity="WalletCategory" syncable="YES"/>
+        <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="field" inverseEntity="WalletFieldItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletFieldItem" representedClassName="WalletFieldItem" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletField" inverseName="fieldItem" inverseEntity="WalletField" syncable="YES"/>
+        <relationship name="walletItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="fieldItems" inverseEntity="WalletItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletItem" representedClassName="WalletItem" syncable="YES">
+        <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletCategory" inverseName="items" inverseEntity="WalletCategory" syncable="YES"/>
+        <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFavorite" inverseName="item" inverseEntity="WalletFavorite" syncable="YES"/>
+        <relationship name="fieldItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="walletItem" inverseEntity="WalletFieldItem" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="CurrencyFavorite" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="CurrencyHistory" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="CurrencyHistoryItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="CurrencyRateItem" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="Expense" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="ExpenseDetail" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="LoanCalcHistory" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="SalesCalcHistory" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="TranslatorFavorite" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="TranslatorGroup" positionX="0" positionY="0" width="0" height="0"/>
-        <element name="TranslatorHistory" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="CurrencyFavorite" positionX="351" positionY="-549" width="128" height="120"/>
+        <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
+        <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
+        <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
+        <element name="Expense" positionX="-414" positionY="-558" width="128" height="285"/>
+        <element name="ExpenseDetail" positionX="-261" positionY="-540" width="128" height="120"/>
+        <element name="LoanCalcComparisonHistory" positionX="115" positionY="593" width="128" height="135"/>
+        <element name="LoanCalcHistory" positionX="313" positionY="536" width="128" height="433"/>
+        <element name="SalesCalcHistory" positionX="439" positionY="-423" width="128" height="210"/>
+        <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="75"/>
+        <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="105"/>
+        <element name="TranslatorHistory" positionX="-207" positionY="-189" width="128" height="120"/>
+        <element name="UnitConvertItem" positionX="378" positionY="99" width="128" height="73"/>
+        <element name="UnitFavorite" positionX="-153" positionY="-36" width="128" height="73"/>
+        <element name="UnitHistory" positionX="531" positionY="149" width="128" height="103"/>
+        <element name="UnitHistoryItem" positionX="-792" positionY="9" width="128" height="88"/>
+        <element name="UnitItem" positionX="279" positionY="279" width="128" height="208"/>
+        <element name="UnitPriceFavorite" positionX="-369" positionY="92" width="128" height="73"/>
+        <element name="UnitPriceHistory" positionX="-551" positionY="137" width="128" height="73"/>
+        <element name="UnitPriceHistoryItem" positionX="-765" positionY="324" width="128" height="178"/>
+        <element name="UnitPriceInfo" positionX="-756" positionY="125" width="128" height="163"/>
+        <element name="UnitType" positionX="-596" positionY="348" width="128" height="88"/>
+        <element name="WalletCategory" positionX="-740" positionY="539" width="128" height="133"/>
+        <element name="WalletFavorite" positionX="-578" positionY="675" width="128" height="73"/>
+        <element name="WalletField" positionX="-576" positionY="539" width="128" height="133"/>
+        <element name="WalletFieldItem" positionX="-324" positionY="513" width="128" height="118"/>
+        <element name="WalletItem" positionX="-585" positionY="776" width="128" height="148"/>
     </elements>
 </model>

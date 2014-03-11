@@ -173,8 +173,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (id)bottomSection {
 	NSArray *bottomSection = @[
-			@{kA3AppsMenuName : @"Settings", kA3AppsClassName : @"", kA3AppsStoryboardName : @"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
-			@{kA3AppsMenuName : @"About", kA3AppsClassName : @"", kA3AppsStoryboardName : @"about", kA3AppsDoNotKeepAsRecent:@YES},
+			@{kA3AppsMenuName : @"Settings", kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
+			@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
 			@{kA3AppsMenuName : @"Help", kA3AppsClassName : @"A3HelpViewController", kA3AppsDoNotKeepAsRecent:@YES},
 	];
 
@@ -204,12 +204,13 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			element.title = elementDescription[kA3AppsMenuName];
 			element.imageName = elementDescription[kA3AppsMenuImageName];
 			element.className = elementDescription[kA3AppsClassName];
-			element.storyboardName = elementDescription[kA3AppsStoryboardName];
+			element.storyboardName_iPhone = elementDescription[kA3AppsStoryboard_iPhone];
+			element.storyboardName_iPad = elementDescription[kA3AppsStoryboard_iPad];
 			element.nibName = elementDescription[kA3AppsNibName];
 			element.needSecurityCheck = [elementDescription[kA3AppsMenuNeedSecurityCheck] boolValue];
 			element.doNotKeepAsRecent = [elementDescription[kA3AppsDoNotKeepAsRecent] boolValue];
 
-			if ([element.className length] || [element.storyboardName length]) {
+			if ([element.className length] || [element.storyboardName_iPhone length]) {
 
 				__typeof(self) __weak weakSelf = self;
 
@@ -224,7 +225,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 							if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
 								proceedPasscodeCheck = YES;
 
-								if ([menuElement.storyboardName isEqualToString:@"A3Settings"]) {
+								if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
 									proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 								}
 							}
@@ -283,7 +284,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			if (menuElement.title) newDescription[kA3AppsMenuName] = menuElement.title;
 			if (menuElement.imageName) newDescription[kA3AppsMenuImageName] = menuElement.imageName;
 			if (menuElement.className) newDescription[kA3AppsClassName] = menuElement.className;
-			if (menuElement.storyboardName) newDescription[kA3AppsStoryboardName] = menuElement.storyboardName;
+			if (menuElement.storyboardName_iPhone) newDescription[kA3AppsStoryboard_iPhone] = menuElement.storyboardName_iPhone;
+			if (menuElement.storyboardName_iPad) newDescription[kA3AppsStoryboard_iPad] = menuElement.storyboardName_iPad;
 			if (menuElement.nibName) newDescription[kA3AppsNibName] = menuElement.nibName;
 			if (menuElement.needSecurityCheck) newDescription[kA3AppsMenuNeedSecurityCheck] = @YES;
 			if (menuElement.doNotKeepAsRecent) newDescription[kA3AppsDoNotKeepAsRecent] = @YES;
@@ -304,11 +306,11 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		} else {
 			targetViewController = [[class alloc] init];
 		}
-	} else if ([menuElement.storyboardName length]) {
-		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:menuElement.storyboardName bundle:nil];
+	} else if ([menuElement.storyboardName_iPhone length]) {
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPHONE ? menuElement.storyboardName_iPhone : menuElement.storyboardName_iPad bundle:nil];
 		targetViewController = [storyboard instantiateInitialViewController];
 	}
-		return targetViewController;
+	return targetViewController;
 }
 
 - (BOOL)isActiveViewController:(Class)aClass {

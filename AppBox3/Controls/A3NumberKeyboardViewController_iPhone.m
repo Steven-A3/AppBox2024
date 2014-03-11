@@ -85,6 +85,13 @@
 			[_dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
+        case A3NumberKeyboardTypeFraction: {
+			[self fillBigButtonTitleWith:@"x/y" bigButton2Title:@"Cal"];
+			bigButton1.selected = NO;
+			bigButton2.selected = YES;
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			break;
+		}
 	}
 }
 

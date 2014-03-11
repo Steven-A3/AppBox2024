@@ -72,6 +72,8 @@
 			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
+		case A3NumberKeyboardTypeFraction:
+			break;
 	}
 }
 

@@ -23,7 +23,8 @@ extern NSString *const kA3AppsMenuImageName;
 extern NSString *const kA3AppsExpandableChildren;
 extern NSString *const kA3AppsClassName;
 extern NSString *const kA3AppsNibName;
-extern NSString *const kA3AppsStoryboardName;
+extern NSString *const kA3AppsStoryboard_iPhone;
+extern NSString *const kA3AppsStoryboard_iPad;
 extern NSString *const kA3AppsMenuExpandable;
 extern NSString *const kA3AppsMenuNeedSecurityCheck;
 

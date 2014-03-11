@@ -162,7 +162,7 @@
         [self adjustMeterViews];
     }
     
-    NSLog(@"headerView: %d", _calcType);
+    NSLog(@"headerView: %ld", (long)_calcType);
     NSLog(@"h1");
     [self setupLayoutForPercentCalcType:_calcType];
     NSLog(@"h2");
@@ -1228,7 +1228,7 @@
                 _slider1MeterLeadingConstArray = meterLeadings;
                 
                 UILabel *meterLabel = _slider1MeterLabelViews[idx];
-                meterLabel.text = [NSString stringWithFormat:@"%d%%", 20 * (idx+1)];
+                meterLabel.text = [NSString stringWithFormat:@"%ld%%", (long)20 * (idx+1)];
                 meterLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
                 meterLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
                 [meterLabel sizeToFit];
@@ -1253,7 +1253,7 @@
                 _slider2MeterLeadingConstArray = meterLeadings;
                 
                 UILabel *meterLabel = _slider2MeterLabelViews[idx];
-                meterLabel.text = [NSString stringWithFormat:@"%d%%", 20 * (idx+1)];
+                meterLabel.text = [NSString stringWithFormat:@"%ld%%", (long)20 * (idx+1)];
                 meterLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
                 meterLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
                 [meterLabel sizeToFit];

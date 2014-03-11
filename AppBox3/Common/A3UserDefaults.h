@@ -61,4 +61,7 @@ extern NSString *const A3ClockFlipLightColorIndex;
 extern NSString *const A3ClockLEDColor;
 extern NSString *const A3ClockLEDColorIndex;
 
+#pragma mark ------ Unit Converter
+extern NSString *const A3UnitConverterDefaultCurrentUnitTap;
+
 #endif

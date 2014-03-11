@@ -60,4 +60,9 @@
 - (UIColor *)clockLEDColor;
 - (NSUInteger)clockLEDColorIndex;
 
+#pragma mark - UnitConverter
+
+- (void)setUnitConverterCurrentUnitTap:(NSUInteger)tapIndex;
+- (NSUInteger)unitConverterCurrentUnitTap;
+
 @end

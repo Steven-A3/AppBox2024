@@ -12,7 +12,8 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 	A3NumberKeyboardTypeCurrency = 0,
 	A3NumberKeyboardTypePercent,
 	A3NumberKeyboardTypeMonthYear,
-	A3NumberKeyboardTypeInterestRate
+	A3NumberKeyboardTypeInterestRate,
+    A3NumberKeyboardTypeFraction,
 };
 
 @protocol A3KeyboardDelegate <NSObject>

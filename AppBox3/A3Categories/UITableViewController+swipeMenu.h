@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol A3TableViewSwipeCellDelegate <NSObject>
+@optional
 - (BOOL)cellShouldShowMenu;
 - (void)addMenuView:(BOOL)showDelete;
 - (void)removeMenuView;

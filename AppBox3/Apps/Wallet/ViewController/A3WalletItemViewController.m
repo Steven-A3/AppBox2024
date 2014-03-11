@@ -1,0 +1,758 @@
+    //
+//  A3WalletItemViewController.m
+//  A3TeamWork
+//
+//  Created by kihyunkim on 2013. 11. 22..
+//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//
+
+#import <MediaPlayer/MediaPlayer.h>
+#import "A3WalletItemViewController.h"
+#import "A3WalletItemEditViewController.h"
+#import "A3WalletItemTitleView.h"
+#import "A3WalletItemFieldCell.h"
+#import "A3WalletItemFieldActionCell.h"
+#import "A3WalletItemPhotoFieldCell.h"
+#import "A3WalletNoteCell.h"
+#import "WalletData.h"
+#import "WalletItem.h"
+#import "WalletItem+Favorite.h"
+#import "WalletFieldItem.h"
+#import "WalletCategory.h"
+#import "NSDate+TimeAgo.h"
+#import "A3AppDelegate.h"
+#import "UIViewController+A3Addition.h"
+#import "MWPhotoBrowser.h"
+#import "TSMiniWebBrowser.h"
+#import "UIViewController+A3AppCategory.h"
+#import "WalletField.h"
+#import "UIImage+Extension2.h"
+
+
+	@interface A3WalletItemViewController () <UITextFieldDelegate, A3TbvCellTextInputDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, TSMiniWebBrowserDelegate>
+
+@property (nonatomic, strong) A3WalletItemTitleView *headerView;
+@property (nonatomic, strong) NSMutableArray *fieldItems;
+@property (nonatomic, strong) NSMutableDictionary *noteItem;
+@property (nonatomic, strong) NSMutableDictionary *categoryItem;
+@property (nonatomic, strong) NSMutableArray *alBumPhotos;
+
+@end
+
+@implementation A3WalletItemViewController
+{
+    NSIndexPath *currentIndexPath;
+    UITextField *firstResponder;
+}
+
+NSString *const A3WalletItemFieldCellID = @"A3WalletItemFieldCell";
+NSString *const A3WalletItemPhotoFieldCellID = @"A3WalletItemPhotoFieldCell";
+NSString *const A3WalletItemFieldActionCellID = @"A3WalletItemFieldActionCell";
+NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    
+    [self makeBackButtonEmptyArrow];
+    self.navigationItem.title = self.item.category.name;
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
+    
+    self.tableView.tableHeaderView = self.headerView;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
+    self.tableView.rowHeight = 74.0;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    
+    [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)contentSizeDidChange:(NSNotification *) notification
+{
+    [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self updateTopInfo];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    if (IS_IPAD) {
+        // 아이패드의 경우 화면 넓이가 변하므로, titleView의 텍스트필드 크기를 재설정하기 위해서 호출한다.
+        [self updateTopInfo];
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (A3WalletItemTitleView *)headerView
+{
+    if (!_headerView) {
+        NSString *nibName = IS_IPAD ? @"A3WalletItemTitleView_iPad":@"A3WalletItemTitleView";
+        _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
+        
+        _headerView.isEditMode = NO;
+        _headerView.titleTextField.delegate = self;
+        [_headerView.favorButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    return _headerView;
+}
+
+- (void)updateTopInfo
+{
+    _headerView.titleTextField.text = _item.name;
+    CGSize textSize = [_item.name sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
+    CGRect frame = _headerView.titleTextField.frame;
+    frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
+    _headerView.titleTextField.frame = frame;
+    
+    _headerView.favorButton.selected = [self.item isFavored];
+    _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+}
+
+- (NSMutableArray *)fieldItems
+{
+    if (!_fieldItems) {
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+        _fieldItems = [[NSMutableArray alloc] initWithArray:[_item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]]];
+        
+        // 데이타 없는 item은 표시하지 않는다.
+        NSMutableArray *deleteTmp = [NSMutableArray new];
+        for (WalletFieldItem *fieldItem in _fieldItems) {
+            if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+                if (fieldItem.date == nil) {
+                    [deleteTmp addObject:fieldItem];
+                }
+            }
+            else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+                if (fieldItem.filePath.length == 0) {
+                    [deleteTmp addObject:fieldItem];
+                }
+            }
+            else {
+                if (fieldItem.value == 0) {
+                    [deleteTmp addObject:fieldItem];
+                }
+            }
+        }
+        [_fieldItems removeObjectsInArray:deleteTmp];
+        
+        if (_showCategory) {
+            [_fieldItems insertObject:self.categoryItem atIndex:0];
+        }
+        
+        // note가 있을때만 표시한다.
+        if (_item.note.length > 0) {
+            [_fieldItems addObject:self.noteItem];
+        }
+    }
+    
+    return _fieldItems;
+}
+
+- (NSMutableDictionary *)noteItem
+{
+    if (!_noteItem) {
+        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
+    }
+    
+    return _noteItem;
+}
+
+- (NSMutableDictionary *)categoryItem
+{
+    if (!_categoryItem) {
+        _categoryItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Category", @"order":@""}];
+    }
+    
+    return _categoryItem;
+}
+
+- (NSMutableArray *)alBumPhotos
+{
+    if (!_alBumPhotos) {
+        _alBumPhotos = [[NSMutableArray alloc] init];
+        
+        for (int i=0; i<self.fieldItems.count; i++) {
+            if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
+                WalletFieldItem *fieldItem = _fieldItems[i];
+                if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length>0)) {
+                    MWPhoto *photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+                    [_alBumPhotos addObject:photo];
+                }
+            }
+        }
+    }
+    
+    return _alBumPhotos;
+}
+
+- (void)favorButtonAction:(UIButton *)favorButton
+{
+    [_item setFavor:![_item isFavored]];
+    _headerView.favorButton.selected = [_item isFavored];
+}
+
+- (void)photoButtonAction:(UIButton *)sender
+{
+    WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+    
+    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+        if (fieldItem.filePath.length > 0) {
+            MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+            [self presentViewController:pvc animated:YES completion:^{
+                [pvc.moviePlayer play];
+            }];
+        }
+    }
+    else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+        // Create browser
+        MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+        browser.displayActionButton = YES;
+        browser.displayNavArrows = NO;
+        browser.zoomPhotosToFill = YES;
+        [browser setCurrentPhotoIndex:sender.tag];
+        
+        UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+        
+        [self.navigationController presentViewController:nc animated:YES completion:NULL];
+    }
+}
+
+- (void)editButtonAction:(id)sender
+{
+    NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+    A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
+    viewController.delegate = self;
+    viewController.item = self.item;
+    viewController.hidesBottomBarWhenPushed = YES;
+    
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+    nav.modalPresentationStyle = UIModalPresentationCurrentContext;
+    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:nav animated:YES completion:NULL];
+}
+
+
+- (void)configureFloatingTextField:(JVFloatLabeledTextField *)txtFd
+{
+    txtFd.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+    txtFd.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
+    txtFd.font = [UIFont systemFontOfSize:17.0];
+    txtFd.floatingLabelFont = [UIFont systemFontOfSize:14];
+    txtFd.floatingLabelYPadding = @(-6);
+    txtFd.delegate = self;
+}
+
+- (BOOL)detectDataText:(NSString *) text
+{
+    BOOL hasTextAction = NO;
+    if (text) {
+        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink | NSTextCheckingTypePhoneNumber error:nil];
+        NSUInteger numberOfMatch = [detector numberOfMatchesInString:text options:0 range:NSMakeRange(0, text.length)];
+        if (numberOfMatch > 0) {
+            hasTextAction = YES;
+        }
+    }
+    
+    return hasTextAction;
+}
+
+- (BOOL)shouldCheckTextDataOfItem:(WalletFieldItem *) fieldItem
+{
+    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+        return NO;
+    }
+    else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+        return NO;
+    }
+    else {
+        return YES;
+    }
+}
+
+- (void)doActionForTextData:(WalletFieldItem *)fieldItem andActionIndex:(NSUInteger)actionIdx
+{
+    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress|NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
+    NSTextCheckingResult *result = [detector firstMatchInString:fieldItem.value options:0 range:NSMakeRange(0, fieldItem.value.length)];
+    
+    if (result.resultType == NSTextCheckingTypeLink) {
+        NSString *urlString = result.URL.absoluteString;
+        
+        NSString *myRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+        NSRange range = [urlString rangeOfString:myRegex options:NSRegularExpressionSearch];
+        
+        if (range.location != NSNotFound) {
+            // email
+            switch (actionIdx) {
+                case 0:
+                {
+                    // mail
+                    if ([MFMailComposeViewController canSendMail])
+                    {
+                        NSString *mailAddress = [urlString substringWithRange:range];
+                        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc]init];
+                        picker.mailComposeDelegate = self;
+                        [picker setToRecipients:@[mailAddress]];  //받는 사람(배열의 형태로 넣어도 됩니다. )
+                        [picker setSubject:nil];  //제목
+                        [picker setMessageBody:nil isHTML:NO];     //내용
+                        [self presentViewController:picker animated:YES completion:NULL];
+                    }
+                    
+                    break;
+                }
+                case 1:
+                {
+                    // i message
+                    NSString *mailAddress = [urlString substringWithRange:range];
+                    NSString *urlString = [NSString stringWithFormat:@"sms:%@", mailAddress];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+        else {
+            // just web address
+            if (actionIdx == 0) {
+                // open in-browser
+                
+                TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:result.URL];
+                webBrowser.delegate = self;
+                [webBrowser setFixedTitleBarText:@""];
+                webBrowser.modalDismissButtonTitle = @"Done";
+                //    webBrowser.showURLStringOnActionSheetTitle = YES;
+                //    webBrowser.showPageTitleOnTitleBar = YES;
+                //    webBrowser.showActionButton = YES;
+                //    webBrowser.showReloadButton = YES;
+                //    [webBrowser setFixedTitleBarText:@"Test Title Text"]; // This has priority over "showPageTitleOnTitleBar".
+                webBrowser.mode = TSMiniWebBrowserModeModal;
+                
+                webBrowser.barStyle = UIBarStyleDefault;
+                
+                if (webBrowser.mode == TSMiniWebBrowserModeModal) {
+                    webBrowser.modalDismissButtonTitle = @"Home";
+                    [self presentViewController:webBrowser animated:YES completion:NULL];
+                } else if(webBrowser.mode == TSMiniWebBrowserModeNavigation) {
+                    [self.navigationController pushViewController:webBrowser animated:YES];
+                }
+            }
+        }
+    }
+    else if (result.resultType == NSTextCheckingTypePhoneNumber) {
+        // phone
+        switch (actionIdx) {
+            case 0:
+            {
+                // call
+                NSString *urlString = [NSString stringWithFormat:@"tel:%@", result.phoneNumber];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+                break;
+            }
+            case 1:
+            {
+                // message
+                NSString *urlString = [NSString stringWithFormat:@"sms:%@", result.phoneNumber];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+
+- (void)actionCellContentButtonAction:(UIButton *)sender
+{
+    if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
+        WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+        
+        if ([self shouldCheckTextDataOfItem:fieldItem]) {
+            // 텍스트 액션 여부 확인
+            BOOL hasTextAction = [self detectDataText:fieldItem.value];
+            if (hasTextAction) {
+                [self doActionForTextData:fieldItem andActionIndex:0];
+            }
+        }
+    }
+}
+
+- (void)actionCellRight1ButtonAction:(UIButton *)sender
+{
+    if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
+        WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+        
+        if ([self shouldCheckTextDataOfItem:fieldItem]) {
+            // 텍스트 액션 여부 확인
+            BOOL hasTextAction = [self detectDataText:fieldItem.value];
+            if (hasTextAction) {
+                [self doActionForTextData:fieldItem andActionIndex:0];
+            }
+        }
+    }
+}
+
+- (void)actionCellRight2ButtonAction:(UIButton *)sender
+{
+    if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
+        WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+        
+        if ([self shouldCheckTextDataOfItem:fieldItem]) {
+            // 텍스트 액션 여부 확인
+            BOOL hasTextAction = [self detectDataText:fieldItem.value];
+            if (hasTextAction) {
+                [self doActionForTextData:fieldItem andActionIndex:1];
+            }
+        }
+    }
+}
+
+#pragma mark - MailComposerDelegate
+
+-(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    //상태 결과 값에 따라 처리
+    switch (result) {
+        case MFMailComposeResultCancelled:  // 취소.
+        {
+            break;
+        }
+        case MFMailComposeResultFailed: // 실패.
+        {
+            break;
+        }
+        case MFMailComposeResultSent:   //성공.
+        {
+            break;
+        }
+        default:
+            break;
+    }
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+#pragma mark - MWPhotoBrowserDelegate
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return self.alBumPhotos.count;
+}
+
+- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
+    if (index < _alBumPhotos.count)
+        return [_alBumPhotos objectAtIndex:index];
+    return nil;
+}
+
+#pragma mark - WalletItemEditDelegate
+
+-(void)walletItemEdited:(WalletItem *)item
+{
+    _fieldItems = nil;
+    [self.tableView reloadData];
+    [self updateTopInfo];
+}
+
+- (void)WalletItemDeleted
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - A3TbvCellTextInputDelegate
+- (void)didTextFieldBeActive:(UITextField *)textField inTableViewCell:(UITableViewCell *)cell
+{
+    currentIndexPath = [self.tableView indexPathForCell:cell];
+    FNLOG(@"current text field indexpath : %@", [currentIndexPath description]);
+}
+
+#pragma mark - textView delegate
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    return self.editing;
+}
+
+#pragma mark - textField delegate
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    firstResponder = textField;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    return self.editing;
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Return the number of sections.
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return self.fieldItems.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = nil;
+    
+    if (_fieldItems[indexPath.row] == self.noteItem) {
+        
+        // note
+        A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
+        
+        noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        noteCell.textView.delegate = self;
+        noteCell.textView.bounces = NO;
+        noteCell.textView.placeholder = @"Notes";
+        noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+        noteCell.textView.font = [UIFont systemFontOfSize:17];
+
+        noteCell.textView.text = _item.note;
+        
+        cell = noteCell;
+    }
+    else if (_fieldItems[indexPath.row] == self.categoryItem) {
+        
+        A3WalletItemFieldCell *textCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
+        
+        textCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        textCell.delegate = self;
+        [self configureFloatingTextField:textCell.valueTextField];
+        
+        textCell.valueTextField.floatingLabelFont = [UIFont systemFontOfSize:14];
+        textCell.valueTextField.font = [UIFont systemFontOfSize:17];
+        textCell.valueTextField.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+        textCell.valueTextField.placeholder = @"Category";
+        textCell.valueTextField.text = _item.category.name;
+        
+        cell = textCell;
+    }
+    else if ([_fieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+        WalletFieldItem *fieldItem = _fieldItems[indexPath.row];
+        
+        if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+            
+            A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID forIndexPath:indexPath];
+            
+            photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [self configureFloatingTextField:photoCell.valueTxtFd];
+            
+            photoCell.valueTxtFd.placeholder = fieldItem.field.name;
+            
+            if (fieldItem.filePath.length > 0) {
+                photoCell.valueTxtFd.text = @" ";
+                photoCell.photoButton.hidden = NO;
+                
+                NSString *thumbFilePath = @"";
+                if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+                    thumbFilePath = [WalletData thumbImgPathOfImgPath:fieldItem.filePath];
+                }
+                else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+                    thumbFilePath = [WalletData thumbImgPathOfVideoPath:fieldItem.filePath];
+                }
+                NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
+                UIImage *photo = [UIImage imageWithData:img];
+                photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
+                [photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
+                [photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                photoCell.photoButton.tag = indexPath.row;
+                
+            }
+            else {
+                photoCell.valueTxtFd.text = @"None";
+                photoCell.photoButton.hidden = YES;
+            }
+            
+            cell = photoCell;
+        }
+        else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+            
+            A3WalletItemFieldCell *dateCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
+            
+            dateCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            dateCell.delegate = self;
+            [self configureFloatingTextField:dateCell.valueTextField];
+            
+            dateCell.valueTextField.placeholder = fieldItem.field.name;
+            if (fieldItem.date) {
+                
+                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+                [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+                dateCell.valueTextField.text = [df stringFromDate:fieldItem.date];
+            }
+            else {
+                dateCell.valueTextField.text = @"";
+            }
+            
+            cell = dateCell;
+        }
+        else {
+            
+            // 텍스트 액션 여부 확인
+            BOOL hasTextAction = [self detectDataText:fieldItem.value];
+            
+            if (hasTextAction) {
+                A3WalletItemFieldActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldActionCellID forIndexPath:indexPath];
+                
+                actionCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                actionCell.delegate = self;
+                [self configureFloatingTextField:actionCell.valueTextField];
+
+                actionCell.valueTextField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1];
+                
+                actionCell.valueTextField.placeholder = fieldItem.field.name;
+                actionCell.valueTextField.text = fieldItem.value;
+                actionCell.valueTextField.enabled = NO;
+                
+                actionCell.contentBtn.tag = indexPath.row;
+                actionCell.rightBtn1.tag = indexPath.row;
+                actionCell.rightBtn2.tag = indexPath.row;
+                
+                [actionCell.contentBtn addTarget:self action:@selector(actionCellContentButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                [actionCell.rightBtn1 addTarget:self action:@selector(actionCellRight1ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                [actionCell.rightBtn2 addTarget:self action:@selector(actionCellRight2ButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                
+                NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress|NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
+                NSTextCheckingResult *result = [detector firstMatchInString:fieldItem.value options:0 range:NSMakeRange(0, fieldItem.value.length)];
+                
+                if (result.resultType == NSTextCheckingTypeLink) {
+                    NSString *urlString = result.URL.absoluteString;
+                    
+                    NSString *myRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+                    NSRange range = [urlString rangeOfString:myRegex options:NSRegularExpressionSearch];
+                    
+                    if (range.location != NSNotFound) {
+                        // email
+                        actionCell.rightBtn1.hidden = NO;
+                        actionCell.rightBtn2.hidden = NO;
+                        [actionCell.rightBtn1 setImage:[UIImage imageNamed:@"mail"] forState:UIControlStateNormal];
+                        [actionCell.rightBtn2 setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+                    }
+                    else {
+                        // just web address
+                        actionCell.rightBtn1.hidden = YES;
+                        actionCell.rightBtn2.hidden = YES;
+                    }
+                }
+                else if (result.resultType == NSTextCheckingTypePhoneNumber) {
+                    actionCell.rightBtn1.hidden = ![[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel:"]];
+                    actionCell.rightBtn2.hidden = NO;
+                    [actionCell.rightBtn1 setImage:[UIImage imageNamed:@"call"] forState:UIControlStateNormal];
+                    [actionCell.rightBtn2 setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+                }
+                
+                cell = actionCell;
+            }
+            else {
+                A3WalletItemFieldCell *textCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
+                
+                textCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                textCell.delegate = self;
+                [self configureFloatingTextField:textCell.valueTextField];
+                
+                textCell.valueTextField.placeholder = fieldItem.field.name;
+                textCell.valueTextField.text = fieldItem.value;
+                
+                cell = textCell;
+            }
+        }
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.fieldItems objectAtIndex:indexPath.row] == self.noteItem) {
+        
+        NSDictionary *textAttributes = @{
+                                         NSFontAttributeName : [UIFont systemFontOfSize:17]
+                                         };
+        
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_item.note attributes:textAttributes];
+        UITextView *txtView = [[UITextView alloc] init];
+        [txtView setAttributedText:attributedString];
+        float margin = IS_IPAD ? 49:31;
+        CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
+        float cellHeight = txtViewSize.height + 20;
+        
+        float defaultCellHeight = 180.0;
+        
+        if (cellHeight < defaultCellHeight) {
+            return defaultCellHeight;
+        }
+        else {
+            return cellHeight;
+        }
+    }
+    else if (indexPath.row == 0) {
+        
+        return IS_RETINA ? 74.5 : 75.0;
+    }
+    
+    return 74.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 20;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *foot = [[UIView alloc] initWithFrame:CGRectZero];
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, IS_RETINA?0.5:1.0)];
+    line.backgroundColor = [self tableViewSeperatorColor];
+    [foot addSubview:line];
+    
+    return foot;
+}
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return NO;
+}
+
+@end

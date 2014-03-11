@@ -37,7 +37,7 @@ NSString *const A3CommonPropertyOrder = @"order";
 	id fromObject = self[fromIndex];
 	id toObject = self[toIndex];
 
-	if (abs(fromIndex - toIndex) == 1) {
+	if (labs(fromIndex - toIndex) == 1) {
 
 		NSString *toOrder = [toObject valueForKey:A3CommonPropertyOrder];
 		[toObject setValue:[fromObject valueForKey:A3CommonPropertyOrder] forKey:A3CommonPropertyOrder];

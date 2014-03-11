@@ -1,5 +1,5 @@
 //
-//  A3SegmentedControl.m
+//  A3WalletSegmentedControl.m
 //  AppBox3
 //
 //  Created by Byeong Kwon Kwak on 10/10/12.

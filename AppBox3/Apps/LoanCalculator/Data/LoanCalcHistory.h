@@ -2,14 +2,14 @@
 //  LoanCalcHistory.h
 //  AppBox3
 //
-//  Created by Byeong Kwon Kwak on 5/27/13.
-//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 3/11/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class LoanCalcHistory;
+@class LoanCalcComparisonHistory, LoanCalcHistory;
 
 @interface LoanCalcHistory : NSManagedObject
 
@@ -36,6 +36,8 @@
 @property (nonatomic, retain) NSString * term;
 @property (nonatomic, retain) NSNumber * termTypeMonth;
 @property (nonatomic, retain) NSNumber * useSimpleInterest;
+@property (nonatomic, retain) NSString * orderInComparison;
 @property (nonatomic, retain) LoanCalcHistory *compareWith;
+@property (nonatomic, retain) LoanCalcComparisonHistory *comparisonHistory;
 
 @end

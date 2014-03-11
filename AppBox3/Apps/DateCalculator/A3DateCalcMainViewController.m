@@ -387,13 +387,13 @@ NSString *kCalculationString;
                 
                 NSMutableString *intervals = [[NSMutableString alloc] init];
                 if (self.offsetComp.year!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %d years", self.offsetComp.year]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld years", (long)self.offsetComp.year]];
                 }
                 if (self.offsetComp.month!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %d months", self.offsetComp.month]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld months", (long)self.offsetComp.month]];
                 }
                 if (self.offsetComp.day!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %d days", self.offsetComp.day]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld days", (long)self.offsetComp.day]];
                 }
                 
                 if (intervals.length <= 0) {
@@ -419,13 +419,13 @@ NSString *kCalculationString;
                 
                 NSMutableString *intervals = [[NSMutableString alloc] init];
                 if (self.offsetComp.year!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %d years", self.offsetComp.year]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld years", (long)self.offsetComp.year]];
                 }
                 if (self.offsetComp.month!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %d months", self.offsetComp.month]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld months", (long)self.offsetComp.month]];
                 }
                 if (self.offsetComp.day!=0) {
-                    [intervals appendString:[NSString stringWithFormat:@" %d days", self.offsetComp.day]];
+                    [intervals appendString:[NSString stringWithFormat:@" %ld days", (long)self.offsetComp.day]];
                 }
 
                 if (intervals.length <= 0) {
@@ -456,19 +456,19 @@ NSString *kCalculationString;
             NSMutableString *intervals = [[NSMutableString alloc] init];
             
             if ( (durationType & DurationType_Year) && intervalComp.year!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %d years", intervalComp.year]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld years", (long)intervalComp.year]];
             }
             
             if ( (durationType & DurationType_Month) && intervalComp.month!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %d months", intervalComp.month]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld months", (long)intervalComp.month]];
             }
             
             if ( (durationType & DurationType_Week) && intervalComp.week!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %d weeks", intervalComp.week]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld weeks", (long)intervalComp.week]];
             }
             
             if ( (durationType & DurationType_Day) && intervalComp.day!=0 ) {
-                [intervals appendString:[NSString stringWithFormat:@" %d days", intervalComp.day]];
+                [intervals appendString:[NSString stringWithFormat:@" %ld days", (long)intervalComp.day]];
             }
             
             [shareString appendString:[NSString stringWithFormat:@"Result: %@", intervals]];
@@ -1081,17 +1081,17 @@ NSString *kCalculationString;
         }
     } else {
         if (_selectedTextField==_footerCell.dayTextField) {
-            _footerCell.dayTextField.text = [NSString stringWithFormat:@"%d", self.offsetComp.day];
+            _footerCell.dayTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.day];
             _selectedTextField = _footerCell.monthTextField;
             [_footerCell.monthTextField becomeFirstResponder];
             
         } else if (_selectedTextField==_footerCell.monthTextField) {
-            _footerCell.monthTextField.text = [NSString stringWithFormat:@"%d", self.offsetComp.month];
+            _footerCell.monthTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.month];
             _selectedTextField = _footerCell.yearTextField;
             [_footerCell.yearTextField becomeFirstResponder];
             
         } else if (_selectedTextField==_footerCell.yearTextField) {
-            _footerCell.yearTextField.text = [NSString stringWithFormat:@"%d", self.offsetComp.year];
+            _footerCell.yearTextField.text = [NSString stringWithFormat:@"%ld", (long)self.offsetComp.year];
             _selectedTextField = self.fromToTextField;
             [self.fromToTextField becomeFirstResponder];
             [self moveToFromDateCell];

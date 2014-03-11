@@ -64,6 +64,9 @@ NSString *const A3ClockFlipLightColorIndex					= @"A3ClockFlipLightColorIndex";
 NSString *const A3ClockLEDColor								= @"A3ClockLEDColor";
 NSString *const A3ClockLEDColorIndex						= @"A3ClockLEDColorIndex";
 
+#pragma mark ------ Unit Converter
+NSString *const A3UnitConverterDefaultCurrentUnitTap		= @"A3UnitConverterDefaultCurrentUnitTap";
+
 CGFloat dash_line_pattern[] = {2.0f, 2.0f};
 
 @implementation A3Utilities
