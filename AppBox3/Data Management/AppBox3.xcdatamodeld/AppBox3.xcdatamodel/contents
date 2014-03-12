@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Calculation" representedClassName="Calculation" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="result" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="CurrencyFavorite" representedClassName="CurrencyFavorite" syncable="YES">
         <attribute name="currencyCode" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="currencySymbol" optional="YES" attributeType="String" syncable="YES"/>
@@ -89,6 +94,10 @@
         <attribute name="useSimpleInterest" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="compareWith" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="LoanCalcHistory" inverseName="compareWith" inverseEntity="LoanCalcHistory" syncable="YES"/>
         <relationship name="comparisonHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LoanCalcComparisonHistory" inverseName="details" inverseEntity="LoanCalcComparisonHistory" syncable="YES"/>
+    </entity>
+    <entity name="PercentCalcHistory" representedClassName="PercentCalcHistory" syncable="YES">
+        <attribute name="historyDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="historyItem" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
         <attribute name="additionalOff" optional="YES" attributeType="String" syncable="YES"/>
@@ -255,5 +264,7 @@
         <element name="WalletField" positionX="-576" positionY="539" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-324" positionY="513" width="128" height="118"/>
         <element name="WalletItem" positionX="-585" positionY="776" width="128" height="148"/>
+        <element name="Calculation" positionX="-585" positionY="-405" width="128" height="90"/>
+        <element name="PercentCalcHistory" positionX="-576" positionY="-396" width="128" height="75"/>
     </elements>
 </model>

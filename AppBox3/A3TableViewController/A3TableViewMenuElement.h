@@ -10,10 +10,12 @@
 
 @interface A3TableViewMenuElement : A3TableViewElement
 
-@property (nonatomic, copy) NSString *className;
+@property (nonatomic, copy) NSString *className_iPhone;
+@property (nonatomic, copy) NSString *className_iPad;
 @property (nonatomic, copy) NSString *storyboardName_iPhone;
 @property (nonatomic, copy) NSString *storyboardName_iPad;
-@property (nonatomic, copy) NSString *nibName;
+@property (nonatomic, copy) NSString *nibName_iPhone;
+@property (nonatomic, copy) NSString *nibName_iPad;
 @property (nonatomic, assign) BOOL needSecurityCheck;
 @property (nonatomic, assign) BOOL doNotKeepAsRecent;
 

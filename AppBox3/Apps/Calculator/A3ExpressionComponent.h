@@ -44,6 +44,8 @@ typedef NS_ENUM(NSUInteger, A3ExpressionKind) {
 	A3E_ASINH,
 	A3E_ACOSH,
 	A3E_ATANH,	// Argument, 0: A3NumberType, 1:value
+    A3E_COT,
+    A3E_ACOT,
 	A3E_TRIGONOMETRIC_END,
 
 	// Single argument functions
@@ -54,24 +56,24 @@ typedef NS_ENUM(NSUInteger, A3ExpressionKind) {
 	A3E_CUBEROOT,
 	A3E_FACTORIAL,
 	A3E_RANDOM,		// 0 argument or if it has one, max
-	A3E_POWER_E,
+	//A3E_POWER_E,
 	A3E_POWER_10,
 	A3E_LN,
 	A3E_LOG_10,
 	A3E_LOG_2,
 	A3E_LOG_Y,
+    A3E_PERCENT,
 	A3E_SINGLE_ARG_END,
-	A3E_PERCENT,
+	
 
 	// Double argument functions
 	A3E_NTHROOT = 4000,	// 0:Value, 1:N
 	A3E_POWER_XY,	// 0:X, 1:Y
-	A3E_POWER_YX,	// 0:Y, 1:X
+	//A3E_POWER_YX,	// 0:Y, 1:X
 	A3E_DOUBLE_ARG_END,
 
 	// Numbers
-	A3E_DECIMAL_SEPARATOR = 5000,
-	A3E_0,
+	A3E_0 = 5000,
 	A3E_1,
 	A3E_2,
 	A3E_3,
@@ -81,7 +83,7 @@ typedef NS_ENUM(NSUInteger, A3ExpressionKind) {
 	A3E_7,
 	A3E_8,
 	A3E_9,
-	A3E_00,
+	//A3E_00,
 	A3E_NUMBERS_END,
 
 	// Special keys
@@ -92,22 +94,8 @@ typedef NS_ENUM(NSUInteger, A3ExpressionKind) {
 	A3E_DIVIDE_X,
 	A3E_CALCULATE,
 	A3E_RADIAN_DEGREE,
+    A3E_00,
+    A3E_DECIMAL_SEPARATOR,
 	A3E_SPECIAL_KEYS_END,
 
 };
-
-#define IS_CONSTANT(x)			(x >= A3E_PI && x < A3E_CONSTANT_END)
-#define IS_OPERATOR(x)			(x >= A3E_PLUS && x < A3E_OPERATOR_END)
-#define IS_TRIGONOMETRIC(x)		(x >= A3E_SIN && x < A3E_TRIGONOMETRIC_END)
-#define HAS_ARGUMENTS(x)		(x >= A3E_SIN && x < A3E_DOUBLE_ARG_END)
-#define IS_FUNC_1_ARG(x)		(x >= A3E_SQUARE && x < A3E_SINGLE_ARG_END)
-#define IS_FUNC_2_ARG(x)		(x >= A3E_SQUARE && x < A3E_DOUBLE_ARG_END)
-#define IS_NUMBER(x)			(x >= A3E_DECIMAL_SEPARATOR && x < A3E_NUMBERS_END)
-
-@interface A3ExpressionComponent : NSObject
-
-@property (assign)	A3ExpressionKind	expressionKind;
-@property (nonatomic, strong) NSMutableArray *arguments;
-@property (assign, getter = isClosed)	BOOL closed;
-
-@end

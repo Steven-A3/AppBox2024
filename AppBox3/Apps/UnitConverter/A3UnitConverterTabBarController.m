@@ -95,6 +95,24 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController]) {
+		[self.navigationController setNavigationBarHidden:NO animated:NO];
+	}
+}
+
+
 - (NSMutableArray *)unitTypes {
 	if (nil == _unitTypes) {
         if ([[UnitType MR_numberOfEntities] isEqualToNumber:@0 ]) {

@@ -6,15 +6,14 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3AppDelegate.h"
+#import "A3SetupAppDelegate.h"
 #import "A3YahooCurrency.h"
 #import "NSFileManager+A3Addtion.h"
 #import "CurrencyRateItem.h"
-#import "A3CurrencyDataManager.h"
 #import "Reachability.h"
 #import "A3CacheStoreManager.h"
 
-@implementation A3AppDelegate
+@implementation A3SetupAppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -159,14 +158,11 @@
 	};
 	[validLocales sortUsingComparator:comparator];
 
-	A3CurrencyDataManager *dataManager = [A3CurrencyDataManager new];
-
 	NSDate *updated = nil;
 	for (id obj in yahooArray) {
 		A3YahooCurrency *yahooCurrency = [[A3YahooCurrency alloc] initWithObject:obj];
 		CurrencyRateItem *entity = [CurrencyRateItem MR_createEntity];
 		entity.currencyCode = yahooCurrency.currencyCode;
-		entity.name = [dataManager localizedNameForCode:yahooCurrency.currencyCode];
 		entity.flagImageName = [self countryNameForCurrencyCode:entity.currencyCode];
 		entity.rateToUSD = yahooCurrency.rateToUSD;
 		entity.updated = yahooCurrency.updated;

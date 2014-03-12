@@ -1,0 +1,556 @@
+//
+//  A3CalculatorViewController_iPhone.m
+//  AppBox3
+//
+//  Created by Byeong Kwon Kwak on 9/23/13.
+//  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3CalculatorViewController_iPhone.h"
+#import "HTCopyableLabel.h"
+#import "A3CalcKeyboardView_iPhone.h"
+#import "FXPageControl.h"
+#import "common.h"
+#import "A3ExpressionComponent.h"
+#import "UIViewController+A3Addition.h"
+#import "A3Calculator.h"
+#import "Calculation.h"
+#import "A3CalculatorHistoryViewController.h"
+#import "MBProgressHUD.h"
+
+@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate>
+
+@property (nonatomic, strong) HTCopyableLabel *expressionLabel;
+@property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
+@property (nonatomic, strong) UILabel *degreeandradianLabel;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) FXPageControl *pageControl;
+@property (nonatomic, strong) A3CalcKeyboardView_iPhone *keyboardView;
+@property (nonatomic, strong) A3Calculator *calculator;
+@property (nonatomic, strong) NSArray *moreMenuButtons;
+@property (nonatomic, strong) UIView *moreMenuView;
+@property (nonatomic, strong) MASConstraint *svbottomconstraint;
+@property (nonatomic, strong) MASConstraint *expressionTopconstraint;
+@property (nonatomic, strong) MASConstraint *resultLabelHeightconstraint;
+@property (nonatomic, strong) MASConstraint *resultLabelBottomconstraint;
+@property (nonatomic, strong) MASConstraint *degreeLabelBottomConstraint;
+@property (nonatomic, strong) MASConstraint *expressionLabelRightConstraint;
+@property (nonatomic, strong) MASConstraint *svheightconstraint;
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
+//@property (nonatomic, strong) A3Expression *expression;
+
+@end
+
+@implementation A3CalculatorViewController_iPhone {
+    //BOOL _isShowMoreMenu;
+    BOOL radian;
+    UITapGestureRecognizer *navGestureRecognizer;
+    UIBarButtonItem *share;
+    UIBarButtonItem *history;
+}
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+//		self.expression = [A3Expression new];
+//        maximumFractionDigits = 3;
+//		minimumFractionDigits = 0;
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[super didReceiveMemoryWarning];
+	// Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.automaticallyAdjustsScrollViewInsets = NO;
+	self.title = @"Calculator"; // TODO localization
+	[self leftBarButtonAppsButton];
+	//[self rightButtonMoreButton];
+    [self rightBarButtons];
+    radian = YES;
+	[self setupSubviews];
+    
+    [self setupGestureRecognizer];
+    
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	_scrollView.contentOffset = CGPointMake(320, 0);
+}
+
+- (void)setupGestureRecognizer {
+	@autoreleasepool {
+		navGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnScrollView)];
+		[self.view addGestureRecognizer:navGestureRecognizer];
+        if ([self hidesNavigationBar] == NO) {
+            navGestureRecognizer.enabled = NO;
+        }
+	}
+}
+
+- (void)tapOnScrollView {
+	@autoreleasepool {
+		BOOL navigationBarHidden = self.navigationController.navigationBarHidden;
+		[self setNavigationBarHidden:!navigationBarHidden];
+	}
+}
+
+- (void)setNavigationBarHidden:(BOOL)hidden {
+	@autoreleasepool {
+        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar setShadowImage:nil];
+		
+		[self.navigationController setNavigationBarHidden:hidden];
+	}
+}
+
+- (BOOL)hidesNavigationBar {
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    // in case of iphone 3.5, auto hide enabled.
+    return (screenBounds.size.height == 480 ||
+            screenBounds.size.height == 320);
+}
+
+-(void) radiandegreeChange {
+    if(radian == YES) {
+        [_calculator setRadian:FALSE];
+        radian = NO;
+        _degreeandradianLabel.text = @"Deg";
+    } else {
+        [_calculator setRadian:TRUE];
+        radian = YES;
+        _degreeandradianLabel.text = @"Rad";
+    }
+}
+
+- (CGFloat) getSVbottomOffSet:(CGRect) screenBounds {
+    return screenBounds.size.height == 320? 0: -20;
+}
+
+- (id) getResultLabelHight:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@60;
+}
+
+- (CGFloat) getExpressionLabelTopOffSet:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 25.5:80): 5.5;
+}
+
+- (CGFloat) getExpressionLabelRightOffSet:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-21):-17.5;
+}
+
+- (CGFloat) getResultLabelBottomOffSet:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-2;
+}
+
+-(CGFloat) getDegreeLabelBottomOffset:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15.5:-15.5):-8.0;
+}
+
+-(id) getSVHeight:(CGRect) screenBounds {
+    return screenBounds.size.height == 320? @240: @324;
+}
+
+- (void)setupSubviews {
+	self.view.backgroundColor = [UIColor whiteColor];
+
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+
+	[self.view addSubview:self.scrollView];
+	[_scrollView makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.view.left);
+		make.right.equalTo(self.view.right);
+		self.svheightconstraint = make.height.equalTo([self getSVHeight:screenBounds]);
+		self.svbottomconstraint = make.bottom.equalTo(self.view.bottom).with.offset([self getSVbottomOffSet:screenBounds]);
+	}];
+    
+	_keyboardView = [[A3CalcKeyboardView_iPhone alloc] initWithFrame:CGRectMake(0,0,640,324)];
+	_keyboardView.delegate = self;
+	[_scrollView addSubview:_keyboardView];
+    
+	[self.view addSubview:self.pageControl];
+	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.view.left);
+		make.right.equalTo(self.view.right);
+		make.bottom.equalTo(self.view.bottom);
+		make.height.equalTo(@20);
+	}];
+
+	[self.view addSubview:self.evaluatedResultLabel];
+	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.view.left).with.offset(67);
+		make.right.equalTo(self.view.right).with.offset(-15);
+		self.resultLabelBottomconstraint = make.bottom.equalTo(_keyboardView.top).with.offset([self getResultLabelBottomOffSet:screenBounds]);
+		self.resultLabelHeightconstraint = make.height.equalTo([self getResultLabelHight:screenBounds]);
+	}];
+
+    [self.view addSubview:self.expressionLabel];
+    [_expressionLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.left).with.offset(15);
+        self.expressionLabelRightConstraint =  make.right.equalTo(self.view.right).with.offset([self getExpressionLabelRightOffSet:screenBounds]);
+        make.height.equalTo(@20);
+        self.expressionTopconstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
+    }];
+    
+    [self.view addSubview:self.degreeandradianLabel];
+    [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.left).with.offset(7);
+        self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
+    }];
+
+    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:_evaluatedResultLabel];
+    _calculator.delegate = self;
+	[self.view layoutIfNeeded];
+
+}
+
+- (HTCopyableLabel *)expressionLabel {
+	if (!_expressionLabel) {
+		_expressionLabel = [HTCopyableLabel new];
+		_expressionLabel.backgroundColor = [UIColor whiteColor];
+		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:15];
+		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+		_expressionLabel.textAlignment = NSTextAlignmentRight;
+		_expressionLabel.text = @"";
+	}
+	return _expressionLabel;
+}
+
+- (HTCopyableLabel *)evaluatedResultLabel {
+	if (!_evaluatedResultLabel) {
+		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+		_evaluatedResultLabel = [HTCopyableLabel new];
+		_evaluatedResultLabel.backgroundColor = [UIColor whiteColor];
+		_evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 480 ? 60 : 83];
+		_evaluatedResultLabel.textColor = [UIColor blackColor];
+		_evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
+		_evaluatedResultLabel.text = @"0";
+		_evaluatedResultLabel.adjustsFontSizeToFitWidth = YES;
+		_evaluatedResultLabel.minimumScaleFactor = 0.2;
+	}
+	return _evaluatedResultLabel;
+}
+
+- (UILabel *)degreeandradianLabel {
+    if(!_degreeandradianLabel) {
+        _degreeandradianLabel = [UILabel new];
+        _degreeandradianLabel.backgroundColor= [UIColor whiteColor];
+        _degreeandradianLabel.font = [UIFont systemFontOfSize:15];
+        _degreeandradianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+        _degreeandradianLabel.textAlignment = NSTextAlignmentLeft;
+//        _degreeandradianLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
+        _degreeandradianLabel.text = @"Rad";
+    }
+    
+    return _degreeandradianLabel;
+}
+
+- (UIScrollView *)scrollView {
+	if (!_scrollView) {
+		_scrollView = [UIScrollView new];
+		_scrollView.showsVerticalScrollIndicator = NO;
+		_scrollView.showsHorizontalScrollIndicator = NO;
+		_scrollView.pagingEnabled = YES;
+		_scrollView.directionalLockEnabled = YES;
+        _scrollView.bounces = NO;
+		_scrollView.contentSize = CGSizeMake(640, 324);
+		_scrollView.delegate = self;
+	}
+	return _scrollView;
+}
+
+- (FXPageControl *)pageControl {
+	if (!_pageControl) {
+		_pageControl = [[FXPageControl alloc] init];
+		_pageControl.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
+		_pageControl.numberOfPages = 2;
+		_pageControl.dotColor = [UIColor colorWithRed:128.0 / 255.0 green:128.0 / 255.0 blue:128.0 / 255.0 alpha:1.0];
+		_pageControl.selectedDotColor = [UIColor blackColor];
+		_pageControl.dotSpacing = 9;
+		_pageControl.currentPage = 1;
+		[_pageControl addTarget:self action:@selector(pageControlValueChanged) forControlEvents:UIControlEventValueChanged];
+	}
+	return _pageControl;
+}
+
+- (void)pageControlValueChanged {
+	[_scrollView setContentOffset:CGPointMake(_pageControl.currentPage * 320, 0) animated:YES];
+    if([self hidesNavigationBar]) {
+        [self setNavigationBarHidden:NO];
+    }
+}
+
+- (NSUInteger)a3SupportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+
+- (void)viewWillLayoutSubviews {
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    
+    if (IS_PORTRAIT) {
+        CGRect frame = _keyboardView.frame;
+        frame.origin.x = 0.0;
+        frame.origin.y = 0.0;
+        frame.size.width = 640;
+        frame.size.height = 324.0;
+        _keyboardView.frame = frame;
+        _scrollView.contentSize = CGSizeMake(640, 324);
+        _scrollView.scrollEnabled = YES;
+        [self pageControlValueChanged]; // to move the previsous page of keyboard before rotating.
+        if ([self hidesNavigationBar]) {
+            navGestureRecognizer.enabled = YES;
+            [self setNavigationBarHidden:YES];
+        } else {
+            navGestureRecognizer.enabled = NO;
+            [self setNavigationBarHidden:NO];
+        }
+        
+        self.pageControl.hidden = NO;
+        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+        
+        self.calculator.isLandScape = NO;
+    } else {
+        CGRect frame = _keyboardView.frame;
+        frame.origin.x = 0.0;
+        frame.size.width = screenBounds.size.width;
+        frame.size.height = 240.0;
+        frame.origin.y = 0.0;
+        _keyboardView.frame = frame;
+        
+        self.pageControl.hidden = YES;
+        
+        _scrollView.contentSize = CGSizeMake(screenBounds.size.width, 240.0);
+        _scrollView.scrollEnabled = NO;
+        //if ([self hidesNavigationBar]) {
+            navGestureRecognizer.enabled = YES;
+        //}
+        
+        [self setNavigationBarHidden:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        self.calculator.isLandScape = YES;
+    }
+    
+    self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
+    self.expressionTopconstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
+    self.resultLabelHeightconstraint.equalTo([self getResultLabelHight:screenBounds]);
+    self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
+    self.resultLabelBottomconstraint.offset([self getResultLabelBottomOffSet:screenBounds]);
+    self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
+    self.svheightconstraint.equalTo([self getSVHeight:screenBounds]);
+    
+    self.evaluatedResultLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 60 : 83):55];
+    [self.calculator evaluateAndSet];
+    [_keyboardView layoutIfNeeded];
+    
+    [self checkRightButtonDisable];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+	_pageControl.currentPage = (NSInteger) ceil(_scrollView.contentOffset.x / 320.0);
+}
+
+- (void)keyboardButtonPressed:(NSUInteger)key {
+    NSString *expression;
+    //FNLOG("text = %@ attributedText = %@", _expressionLabel.text, [_expressionLabel.attributedText string]);
+    if([self hidesNavigationBar]) {
+        [self setNavigationBarHidden:YES];
+    }
+    if(key == A3E_CALCULATE){
+        expression =_expressionLabel.text;
+    }
+
+    if(key == A3E_RADIAN_DEGREE)
+    {
+        [self radiandegreeChange];
+    }
+    else {
+        [self.calculator keyboardButtonPressed:key];
+        if(key == A3E_CALCULATE) {
+            [self putCalculationHistoryWithExpression:expression];
+        }
+    }
+    [self checkRightButtonDisable];
+}
+
+#pragma mark - Right Button more
+-(void) rightBarButtons {
+    @autoreleasepool {
+        share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+        history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+        //UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        //space.width = 4.0;
+        self.navigationItem.rightBarButtonItems = @[history, share];
+        [self checkRightButtonDisable];
+    }
+}
+
+- (BOOL) isCalculationHistoryEmpty {
+    Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+    if (lastcalculation != nil ) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (void) checkRightButtonDisable {
+    if ([self isCalculationHistoryEmpty]) {
+        history.enabled = NO;
+    } else {
+        history.enabled = YES;
+    }
+    
+    if([self.expressionLabel.text length] > 0) {
+        share.enabled = YES;
+    } else {
+        share.enabled = NO;
+    }
+}
+/*
+- (void)moreButtonAction:(UIButton *)button {
+    @autoreleasepool {
+       // [_firstResponder resignFirstResponder];
+        
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+        
+        _moreMenuButtons = @[self.shareButton, self.historyButton];
+        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
+        _isShowMoreMenu = YES;
+    };
+}
+
+
+
+- (void)doneButtonAction:(id)button {
+	@autoreleasepool {
+		[self dismissMoreMenu];
+	}
+}
+
+
+- (void)dismissMoreMenu {
+	@autoreleasepool {
+		if ( !_isShowMoreMenu) return;
+        
+		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
+	}
+}
+
+- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
+	@autoreleasepool {
+		if (!_isShowMoreMenu) return;
+        
+		_isShowMoreMenu = NO;
+        
+		[self rightButtonMoreButton];
+		[self dismissMoreMenuView:_moreMenuView tableView:nil];
+		[self.view removeGestureRecognizer:gestureRecognizer];
+	}
+}
+
+- (NSNumberFormatter *)currencyFormatterWithCode:(NSString *)currencyCode {
+	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
+	[nf setCurrencyCode:currencyCode];
+	return nf;
+}
+
+- (void)clearEverything {
+	@autoreleasepool {
+		[self dismissMoreMenu];
+	}
+}
+*/
+- (void)shareAll:(id)sender {
+	@autoreleasepool {
+		NSMutableString *shareString = [[NSMutableString alloc] init];
+		[shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
+        
+		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
+	}
+}
+
+
+- (void)shareButtonAction:(id)sender {
+	@autoreleasepool {
+		//[self clearEverything];
+        
+		[self shareAll:sender];
+	}
+}
+
+
+
+#pragma mark - History
+- (void)historyButtonAction:(UIButton *)button {
+	@autoreleasepool {
+    //[self clearEverything];
+        
+	A3CalculatorHistoryViewController *viewController = [[A3CalculatorHistoryViewController alloc] initWithNibName:nil bundle:nil];
+        viewController.calculator = self.calculator;
+	[self presentSubViewController:viewController];
+        
+	//	_currencyHistory = nil;
+	}
+}
+
+- (void)putCalculationHistoryWithExpression:(NSString *)expression{
+	@autoreleasepool {
+        NSString *mathExpression = [self.calculator getMathExpression];
+		Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+        
+		// Compare code and value.
+		if (lastcalculation) {
+			if ([lastcalculation.expression isEqualToString:mathExpression]) {
+				return;
+			}
+		}
+        
+        
+		Calculation *calculation = [Calculation MR_createEntity];
+		NSDate *keyDate = [NSDate date];
+        calculation.expression = mathExpression;
+        calculation.result = _evaluatedResultLabel.text;
+        calculation.date = keyDate;
+        
+		[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
+	}
+}
+- (void) ShowMessage:(NSString *)message {
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.navigationController.view addSubview:HUD];
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    // The sample image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+    // Make the customViews 37 by 37 pixels for best results (those are the bounds of the build-in progress indicators)
+    //HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] //autorelease];
+    
+    // Set custom view mode
+    HUD.mode = MBProgressHUDModeCustomView;
+    HUD.yOffset = -(screenBounds.size.height/4.0);
+    
+    HUD.delegate = self;
+    HUD.labelText = message;
+    
+    [HUD show:YES];
+    [HUD hide:YES afterDelay:3];
+}
+#pragma mark -- THE END
+@end

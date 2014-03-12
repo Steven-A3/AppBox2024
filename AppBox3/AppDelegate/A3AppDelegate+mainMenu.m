@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3MainMenuTableViewController.h"
-#import "A3SettingsFavoritesViewController.h"
 #import "A3AppDelegate+mainMenu.h"
 
 @implementation A3AppDelegate (mainMenu)
@@ -17,8 +15,10 @@ NSString *const kA3AppsMenuName = @"kA3AppsMenuName";
 NSString *const kA3AppsMenuCollapsed = @"kA3AppsMenuCollapsed";
 NSString *const kA3AppsMenuImageName = @"kA3AppsMenuImageName";
 NSString *const kA3AppsExpandableChildren = @"kA3AppsExpandableChildren";
-NSString *const kA3AppsClassName = @"kA3AppsClassName";
-NSString *const kA3AppsNibName = @"kA3AppsNibName";
+NSString *const kA3AppsClassName_iPhone = @"kA3AppsClassName_iPhone";
+NSString *const kA3AppsClassName_iPad = @"kA3AppsClassName_iPad";
+NSString *const kA3AppsNibName_iPhone = @"kA3AppsNibName_iPhone";
+NSString *const kA3AppsNibName_iPad = @"kA3AppsNibName_iPad";
 NSString *const kA3AppsStoryboard_iPhone = @"kA3AppsStoryboard_iPhone";
 NSString *const kA3AppsStoryboard_iPad = @"kA3AppsStoryboard_iPad";
 NSString *const kA3AppsMenuExpandable = @"kA3AppsMenuExpandable";
@@ -37,13 +37,13 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Calculator",
 				 kA3AppsExpandableChildren :	@[
-						 @{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"A3DateCalcMainViewController", kA3AppsMenuImageName : @"DateCalculator"},
+						 @{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName_iPhone : @"A3DateCalcMainViewController", kA3AppsMenuImageName : @"DateCalculator"},
 						 @{kA3AppsMenuName : @"Loan Calculator", kA3AppsStoryboard_iPhone:@"LoanCalculatorPhoneStoryBoard", kA3AppsStoryboard_iPad:@"LoanCalculatorPadStoryBoard",kA3AppsMenuImageName : @"LoanCalculator"},
-						 @{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
-						 @{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
+						 @{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"SalesCalculator"},
+						 @{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"TipCalculator"},
 						 @{kA3AppsMenuName : @"Unit Price", kA3AppsStoryboard_iPhone:@"UnitPriceStoryboard", kA3AppsStoryboard_iPad:@"UnitPriceStoryboard_iPad", kA3AppsMenuImageName : @"UnitPrice"},
-						 @{kA3AppsMenuName : @"Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Calculator"},
-						 @{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"}
+						 @{kA3AppsMenuName : @"Calculator", kA3AppsClassName_iPhone : @"A3CalculatorViewController_iPhone", kA3AppsClassName_iPad:@"A3CalculatorViewController_iPad",  kA3AppsMenuImageName : @"Calculator"},
+						 @{kA3AppsMenuName : @"Percent Calculator", kA3AppsClassName_iPhone : @"A3PercentCalcMainViewController", kA3AppsMenuImageName : @"PercentCalculator"}
 						 ]
 				 },
 			 @{
@@ -51,9 +51,9 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Converter",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : @"Currency Converter", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-						 @{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName : @"A3LunarConverterViewController", kA3AppsNibName: @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
-						 @{kA3AppsMenuName : @"Translator", kA3AppsClassName : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
+						 @{kA3AppsMenuName : @"Currency Converter", kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
+						 @{kA3AppsMenuName : @"Lunar Converter", kA3AppsClassName_iPhone : @"A3LunarConverterViewController", kA3AppsNibName_iPhone : @"A3LunarConverterViewController", kA3AppsMenuImageName : @"LunarConverter"},
+						 @{kA3AppsMenuName : @"Translator", kA3AppsClassName_iPhone : @"A3TranslatorViewController", kA3AppsMenuImageName : @"Translator"},
 						 @{kA3AppsMenuName : @"Unit Converter", kA3AppsStoryboard_iPhone:@"UnitConverterPhoneStoryboard", kA3AppsStoryboard_iPad:@"UnitConverterPhoneStoryboard", kA3AppsMenuImageName : @"UnitConverter"},
 						 ]
 				 },
@@ -62,10 +62,10 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Productivity",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : @"Days Counter", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : @"Lady Calendar", kA3AppsClassName : @"", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : @"Wallet", kA3AppsClassName : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
-						 @{kA3AppsMenuName : @"Expense List", kA3AppsClassName : @"", kA3AppsMenuImageName : @"ExpenseList"},
+						 @{kA3AppsMenuName : @"Days Counter", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DaysCounter", kA3AppsMenuNeedSecurityCheck : @YES},
+						 @{kA3AppsMenuName : @"Lady Calendar", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"LadyCalendar", kA3AppsMenuNeedSecurityCheck : @YES},
+						 @{kA3AppsMenuName : @"Wallet", kA3AppsClassName_iPhone : @"A3WalletMainTabBarController", kA3AppsMenuImageName : @"Wallet", kA3AppsMenuNeedSecurityCheck : @YES},
+						 @{kA3AppsMenuName : @"Expense List", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"ExpenseList"},
 						 ]
 				 },
 			 @{
@@ -73,7 +73,7 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Reference",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : @"Holidays", kA3AppsClassName : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
+						 @{kA3AppsMenuName : @"Holidays", kA3AppsClassName_iPhone : @"A3HolidaysPageViewController", kA3AppsMenuImageName : @"Holidays"},
 						 ]
 				 },
 			 @{
@@ -81,10 +81,10 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				 kA3AppsMenuCollapsed : @YES,
 				 kA3AppsMenuName : @"Utility",
 				 kA3AppsExpandableChildren : @[
-						 @{kA3AppsMenuName : @"Clock", kA3AppsClassName : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
-						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
-						 @{kA3AppsMenuName : @"Mirror", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Mirror"},
-						 @{kA3AppsMenuName : @"Magnifier", kA3AppsClassName : @"", kA3AppsMenuImageName : @"Magnifier"},
+						 @{kA3AppsMenuName : @"Clock", kA3AppsClassName_iPhone : @"A3ClockMainViewController", kA3AppsMenuImageName : @"Clock"},
+						 @{kA3AppsMenuName : @"Battery Status", kA3AppsClassName_iPhone : @"A3BatteryStatusMainViewController", kA3AppsMenuImageName : @"BatteryStatus"},
+						 @{kA3AppsMenuName : @"Mirror", kA3AppsClassName_iPhone : @"A3MirrorViewController", kA3AppsNibName_iPhone :@"A3MirrorViewController", kA3AppsMenuImageName : @"Mirror"},
+						 	@{kA3AppsMenuName : @"Magnifier", kA3AppsClassName_iPhone : @"A3MagnifierViewController", kA3AppsNibName_iPhone:@"A3MagnifierViewController", kA3AppsMenuImageName : @"Magnifier"},
 						 ]
 				 },
 			 ];
@@ -145,10 +145,10 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				kA3AppsMenuExpandable : @YES,
 				kA3AppsExpandableChildren :
 				@[
-						@{kA3AppsMenuName : @"Currency", kA3AppsClassName : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-						@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"DateCalculator"},
-						@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"SalesCalculator"},
-						@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName : @"", kA3AppsMenuImageName : @"TipCalculator"},
+						@{kA3AppsMenuName : @"Currency", kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
+						@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DateCalculator"},
+						@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"SalesCalculator"},
+						@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"TipCalculator"},
 				]
 		};
 		[self storeFavoriteMenuDictionary:[dictionary mutableCopy] withDate:[NSDate distantPast]];

@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, A3TableViewExpandableElementCellType) {
 @property (nonatomic, weak) UILabel *titleLabel;
 @property (nonatomic, weak) id<A3TableViewExpandableElementDelegate> delegate;
 
+- (void)expandButtonPressed:(UIButton *)expandButton;
 @end
 
 @protocol A3TableViewExpandableElementDelegate <NSObject>

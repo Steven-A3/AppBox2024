@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface A3CalculatorViewController_iPhone : UIViewController
+{
+}
 
 @end

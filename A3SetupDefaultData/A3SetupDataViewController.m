@@ -1,18 +1,18 @@
 //
-//  A3ViewController.m
+//  A3SetupDataViewController.m
 //  A3SetupDefaultData
 //
 //  Created by A3 on 12/5/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3ViewController.h"
+#import "A3SetupDataViewController.h"
 
-@interface A3ViewController ()
+@interface A3SetupDataViewController ()
 
 @end
 
-@implementation A3ViewController
+@implementation A3SetupDataViewController
 
 - (void)viewDidLoad
 {

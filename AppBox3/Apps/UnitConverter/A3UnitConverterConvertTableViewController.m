@@ -145,11 +145,14 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         [self.decimalFormatter setLocale:[NSLocale currentLocale]];
         
         [self.view addSubview:self.addButton];
+
+		[self.addButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.centerX);
+			make.bottom.equalTo(self.view.bottom).with.offset(-20);
+		}];
         self.addButton.center = CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height-120);
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
-
-        
     };
 }
 

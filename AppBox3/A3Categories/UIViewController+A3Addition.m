@@ -40,6 +40,7 @@
 	}
 
 	[navigationController setToolbarHidden:YES];
+	[navigationController setNavigationBarHidden:NO animated:NO];
 
 	BOOL hidesNavigationBar = NO;
 	UIViewController<A3CenterViewDelegate> *targetViewController = (UIViewController <A3CenterViewDelegate> *) viewController;

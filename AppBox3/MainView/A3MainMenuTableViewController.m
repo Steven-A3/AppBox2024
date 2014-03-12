@@ -22,6 +22,7 @@
 #import "A3AppDelegate+iCloud.h"
 #import "NSMutableArray+MoveObject.h"
 #import "A3AppDelegate+mainMenu.h"
+#import "A3TableViewExpandableCell.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
@@ -175,7 +176,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 	NSArray *bottomSection = @[
 			@{kA3AppsMenuName : @"Settings", kA3AppsStoryboard_iPhone : @"A3Settings", kA3AppsStoryboard_iPad:@"A3Settings", kA3AppsMenuNeedSecurityCheck : @YES, kA3AppsDoNotKeepAsRecent : @YES},
 			@{kA3AppsMenuName : @"About", kA3AppsStoryboard_iPhone : @"about", kA3AppsStoryboard_iPad:@"about", kA3AppsDoNotKeepAsRecent:@YES},
-			@{kA3AppsMenuName : @"Help", kA3AppsClassName : @"A3HelpViewController", kA3AppsDoNotKeepAsRecent:@YES},
+			@{kA3AppsMenuName : @"Help", kA3AppsClassName_iPhone : @"A3HelpViewController", kA3AppsDoNotKeepAsRecent:@YES},
 	];
 
 	return [self sectionWithData:bottomSection];
@@ -203,14 +204,16 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			A3TableViewMenuElement *element = [A3TableViewMenuElement new];
 			element.title = elementDescription[kA3AppsMenuName];
 			element.imageName = elementDescription[kA3AppsMenuImageName];
-			element.className = elementDescription[kA3AppsClassName];
+			element.className_iPhone = elementDescription[kA3AppsClassName_iPhone];
+			element.className_iPad = elementDescription[kA3AppsClassName_iPad];
 			element.storyboardName_iPhone = elementDescription[kA3AppsStoryboard_iPhone];
 			element.storyboardName_iPad = elementDescription[kA3AppsStoryboard_iPad];
-			element.nibName = elementDescription[kA3AppsNibName];
+			element.nibName_iPhone = elementDescription[kA3AppsNibName_iPhone];
+			element.nibName_iPad = elementDescription[kA3AppsNibName_iPad];
 			element.needSecurityCheck = [elementDescription[kA3AppsMenuNeedSecurityCheck] boolValue];
 			element.doNotKeepAsRecent = [elementDescription[kA3AppsDoNotKeepAsRecent] boolValue];
 
-			if ([element.className length] || [element.storyboardName_iPhone length]) {
+			if ([element.className_iPhone length] || [element.storyboardName_iPhone length]) {
 
 				__typeof(self) __weak weakSelf = self;
 
@@ -283,10 +286,12 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			NSMutableDictionary *newDescription = [NSMutableDictionary new];
 			if (menuElement.title) newDescription[kA3AppsMenuName] = menuElement.title;
 			if (menuElement.imageName) newDescription[kA3AppsMenuImageName] = menuElement.imageName;
-			if (menuElement.className) newDescription[kA3AppsClassName] = menuElement.className;
+			if (menuElement.className_iPhone) newDescription[kA3AppsClassName_iPhone] = menuElement.className_iPhone;
+			if (menuElement.className_iPad) newDescription[kA3AppsClassName_iPad] = menuElement.className_iPad;
 			if (menuElement.storyboardName_iPhone) newDescription[kA3AppsStoryboard_iPhone] = menuElement.storyboardName_iPhone;
 			if (menuElement.storyboardName_iPad) newDescription[kA3AppsStoryboard_iPad] = menuElement.storyboardName_iPad;
-			if (menuElement.nibName) newDescription[kA3AppsNibName] = menuElement.nibName;
+			if (menuElement.nibName_iPhone) newDescription[kA3AppsNibName_iPhone] = menuElement.nibName_iPhone;
+			if (menuElement.nibName_iPad) newDescription[kA3AppsNibName_iPad] = menuElement.nibName_iPad;
 			if (menuElement.needSecurityCheck) newDescription[kA3AppsMenuNeedSecurityCheck] = @YES;
 			if (menuElement.doNotKeepAsRecent) newDescription[kA3AppsDoNotKeepAsRecent] = @YES;
 			[descriptionsArray addObject:newDescription];
@@ -297,17 +302,30 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
 	UIViewController *targetViewController;
-	if ([menuElement.className length]) {
+	if ([menuElement.className_iPhone length]) {
 		Class class;
-		class = NSClassFromString(menuElement.className);
+		NSString *nibName;
+		if (IS_IPAD) {
+			class = NSClassFromString(menuElement.className_iPad ? menuElement.className_iPad : menuElement.className_iPhone);
+			nibName = menuElement.nibName_iPad ? menuElement.nibName_iPad : menuElement.nibName_iPhone;
+		} else {
+			class = NSClassFromString(menuElement.className_iPhone);
+			nibName = menuElement.nibName_iPhone;
+		}
 
-		if (menuElement.nibName) {
-			targetViewController = [[class alloc] initWithNibName:menuElement.nibName bundle:nil];
+		if (nibName) {
+			targetViewController = [[class alloc] initWithNibName:nibName bundle:nil];
 		} else {
 			targetViewController = [[class alloc] init];
 		}
 	} else if ([menuElement.storyboardName_iPhone length]) {
-		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPHONE ? menuElement.storyboardName_iPhone : menuElement.storyboardName_iPad bundle:nil];
+		NSString *storyboardName;
+		if (IS_IPAD) {
+			storyboardName = menuElement.storyboardName_iPad ? menuElement.storyboardName_iPad : menuElement.storyboardName_iPhone;
+		} else {
+			storyboardName = menuElement.storyboardName_iPhone;
+		}
+		UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle:nil];
 		targetViewController = [storyboard instantiateInitialViewController];
 	}
 	return targetViewController;
@@ -336,7 +354,8 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 }
 
 - (BOOL)isAppAvailableForElement:(A3TableViewMenuElement *)element {
-	if ([element.className isEqualToString:@"A3CurrencyViewController"]) {
+	if (![element isKindOfClass:[A3TableViewMenuElement class]]) return NO;
+	if ([element.className_iPhone isEqualToString:@"A3CurrencyViewController"]) {
 		if ([[A3AppDelegate instance] coreDataReadyToUse]) {
 			NSUInteger count = [CurrencyFavorite MR_countOfEntities];
 			return count > 0;
@@ -350,35 +369,43 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 
-	if ([self isAppAvailableForElement:element]) {
-		cell.textLabel.textColor = [UIColor blackColor];
-		cell.accessoryView = nil;
-		if (![element isKindOfClass:[A3TableViewExpandableElement class]]) {
-			cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-		}
-		if ([element.imageName length]) {
-			cell.imageView.image= [UIImage imageNamed:element.imageName];
-			cell.imageView.tintColor = nil;
-		}
-	} else {
-		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		cell.textLabel.textColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
+	if ([element isKindOfClass:[A3TableViewMenuElement class]]) {
+		if ([self isAppAvailableForElement:element]) {
+			cell.textLabel.textColor = [UIColor blackColor];
+			cell.accessoryView = nil;
+			if (![element isKindOfClass:[A3TableViewExpandableElement class]]) {
+				cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+			}
+			if ([element.imageName length]) {
+				cell.imageView.image= [UIImage imageNamed:element.imageName];
+				cell.imageView.tintColor = nil;
+			}
+		} else {
+			cell.selectionStyle = UITableViewCellSelectionStyleNone;
+			cell.textLabel.textColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
 
-		UIImage *image = [[UIImage imageNamed:element.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		cell.imageView.image = image;
-		cell.imageView.tintColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
+			UIImage *image = [[UIImage imageNamed:element.imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			cell.imageView.image = image;
+			cell.imageView.tintColor = [UIColor colorWithRed:194.0/255.0 green:194.0/255.0 blue:194.0/255.0 alpha:1.0];
 
-		JNJProgressButton *progressButton = [[JNJProgressButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
-		progressButton.needsProgress = YES;
-		progressButton.userInteractionEnabled = NO;
-		cell.accessoryView = progressButton;
-		[(id<JNJProgressButtonExtension>)progressButton startProgress];
+			JNJProgressButton *progressButton = [[JNJProgressButton alloc] initWithFrame:CGRectMake(0, 0, 28, 28)];
+			progressButton.needsProgress = YES;
+			progressButton.userInteractionEnabled = NO;
+			cell.accessoryView = progressButton;
+			[(id<JNJProgressButtonExtension>)progressButton startProgress];
+		}
 	}
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self.mySearchDisplayController.searchBar resignFirstResponder];
 
+	A3TableViewExpandableElement *expandableElement = (A3TableViewExpandableElement *) [self elementAtIndexPath:indexPath];
+	if ([expandableElement isKindOfClass:[A3TableViewExpandableElement class]]) {
+		A3TableViewExpandableCell *cell = (A3TableViewExpandableCell *) [tableView cellForRowAtIndexPath:indexPath];
+		[expandableElement expandButtonPressed:cell.expandButton];
+		return;
+	}
 	A3TableViewMenuElement *element = (A3TableViewMenuElement *) [self elementAtIndexPath:indexPath];
 	if ([self isAppAvailableForElement:element]) {
 		[element didSelectCellInViewController:(id) self tableView:self.tableView atIndexPath:indexPath];

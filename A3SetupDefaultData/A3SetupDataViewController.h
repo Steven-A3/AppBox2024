@@ -1,5 +1,5 @@
 //
-//  A3ViewController.h
+//  A3SetupDataViewController.h
 //  A3SetupDefaultData
 //
 //  Created by A3 on 12/5/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3ViewController : UIViewController
+@interface A3SetupDataViewController : UIViewController
 
 @end

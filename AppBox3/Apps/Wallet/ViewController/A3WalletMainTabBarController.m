@@ -117,6 +117,15 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+
+	if ([self isMovingToParentViewController]) {
+		[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	}
+}
+
 - (NSMutableArray *)categories {
     
 	if (nil == _categories) {
