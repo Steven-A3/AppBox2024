@@ -645,7 +645,11 @@
 
 #pragma mark - A3TableViewSwipeCellDelegate
 
-- (void)addMenuView {
+- (BOOL)cellShouldShowMenu {
+	return YES;
+}
+
+- (void)addMenuView:(BOOL)showDelete {
 	[self.superview insertSubview:self.menuView belowSubview:self];
 	if ([_menuDelegate respondsToSelector:@selector(menuAdded)]) {
 		[_menuDelegate menuAdded];
@@ -657,7 +661,7 @@
 	_menuView = nil;
 }
 
-- (CGFloat)menuWidth {
+- (CGFloat)menuWidth:(BOOL)showDelete {
 	return 72.0 * 3;
 }
 
@@ -666,8 +670,8 @@
 		return _menuView;
 	}
 	CGRect frame = self.frame;
-	frame.origin.x = frame.size.width - self.menuWidth;
-	frame.size.width = self.menuWidth;
+	frame.origin.x = frame.size.width - [self menuWidth:YES];
+	frame.size.width = [self menuWidth:YES];
 	_menuView = [[UIView alloc] initWithFrame:frame];
     
 	NSArray *menuTitles = @[@"Swap", @"Share", @"Delete"];

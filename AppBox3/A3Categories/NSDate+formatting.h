@@ -10,6 +10,7 @@
 
 @interface NSDate (formatting)
 - (NSString *)a3FullStyleString;
+- (NSString *)a3LongStyleString;   // kjh
 - (NSString *)a3ShortStyleString;   // kjh
 
 // KJH - SalesCalc, ExpenseList

@@ -165,7 +165,7 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
     for (int i=0; i<self.unitTypes.count; i++) {
         UnitType *utype = _unitTypes[i];
         
-        A3UnitConverterConvertTableViewController *vc = [[A3UnitConverterConvertTableViewController alloc] initWithStyle:UITableViewStylePlain];
+        A3UnitConverterConvertTableViewController *vc = [[A3UnitConverterConvertTableViewController alloc] init];
         vc.unitType = utype;
         vc.title = utype.unitTypeName;
         

@@ -12,7 +12,7 @@
 
 extern NSString *const A3UnitConverterDataCellID;
 
-@interface A3UnitConverterConvertTableViewController : ATSDragToReorderTableViewController <UIActivityItemSource>
+@interface A3UnitConverterConvertTableViewController : UIViewController <UIActivityItemSource>
 
 @property (nonatomic, strong) UnitType *unitType;
 

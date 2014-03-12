@@ -29,11 +29,16 @@
 #import "UnitHistoryItem.h"
 #import "A3FractionInputView.h"
 #import "TemperatureConveter.h"
+#import "FMMoveTableView.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
-@interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate, A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate, UIPopoverControllerDelegate, UIActivityItemSource>
+@interface A3UnitConverterConvertTableViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
+		A3UnitSelectViewControllerDelegate, A3UnitConverterFavoriteEditDelegate, A3UnitConverterMenuDelegate,
+		UIPopoverControllerDelegate, UIActivityItemSource, FMMoveTableViewDelegate, FMMoveTableViewDataSource>
 
+@property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
+@property (nonatomic, strong) NSMutableSet *swipedCells;
 @property (nonatomic, strong) NSMutableArray *convertItems;
 //@property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
@@ -71,15 +76,6 @@ NSString *const A3UnitConverterDataCellID = @"A3UnitConverterDataCell";
 NSString *const A3UnitConverterActionCellID = @"A3UnitConverterActionCell";
 NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)cleanUp{
     _convertItems = nil;
     _equalItem = nil;
@@ -93,67 +89,65 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    @autoreleasepool {
 
-        self.vcTitle = self.title;
-        
-        [self setupSwipeRecognizers];
-        
-        [self makeBackButtonEmptyArrow];
-        
-        self.dragDelegate = self;
-        
-        // Uncomment the following line to preserve selection between presentations.
-        // self.clearsSelectionOnViewWillAppear = NO;
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-        
-        if (IS_IPHONE) {
+	_fmMoveTableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+	_fmMoveTableView.delegate = self;
+	_fmMoveTableView.dataSource = self;
+
+	[self.view addSubview:_fmMoveTableView];
+	[_fmMoveTableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+
+	self.vcTitle = self.title;
+
+	[self setupSwipeRecognizers];
+
+	[self makeBackButtonEmptyArrow];
+
+	// Uncomment the following line to preserve selection between presentations.
+	// self.clearsSelectionOnViewWillAppear = NO;
+
+	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+	// self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+	if (IS_IPHONE) {
 //            [self rightButtonMoreButton];
-            UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-            UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-            
-            self.navigationItem.rightBarButtonItems = @[history, share];
-        } else {
-            UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-            UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-            UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-            space.width = 24.0;
-            
-            self.navigationItem.rightBarButtonItems = @[history, space, share];
-        }
-        
-        [self.tableView registerClass:[A3UnitConverterTVDataCell class] forCellReuseIdentifier:A3UnitConverterDataCellID];
-        [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID];
-        [self.tableView registerNib:[UINib nibWithNibName:@"A3CurrencyTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterEqualCellID];
-        
-        self.tableView.rowHeight = 84.0;
-        self.tableView.separatorColor = [self tableViewSeperatorColor];
-        self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, -1.0, 0.0);
-        self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 70.0, 0);
-        self.tableView.showsVerticalScrollIndicator = NO;
-        
-        FNLOG(@"%d", self.tableView.directionalLockEnabled);
-        self.tableView.directionalLockEnabled = YES;
-        
-        [self registerContentSizeCategoryDidChangeNotification];
-        
-        _isTemperatureMode = [_unitType.unitTypeName isEqualToString:@"Temperature"];
-        
-        [self.decimalFormatter setLocale:[NSLocale currentLocale]];
-        
-        [self.view addSubview:self.addButton];
+		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
 
-		[self.addButton makeConstraints:^(MASConstraintMaker *make) {
-			make.centerX.equalTo(self.view.centerX);
-			make.bottom.equalTo(self.view.bottom).with.offset(-20);
-		}];
-        self.addButton.center = CGPointMake(self.view.frame.size.width/2.0, self.view.frame.size.height-120);
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
-    };
+		self.navigationItem.rightBarButtonItems = @[history, share];
+	} else {
+		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+		UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+		space.width = 24.0;
+
+		self.navigationItem.rightBarButtonItems = @[history, space, share];
+	}
+
+	[_fmMoveTableView registerClass:[A3UnitConverterTVDataCell class] forCellReuseIdentifier:A3UnitConverterDataCellID];
+	[_fmMoveTableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID];
+	[_fmMoveTableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterEqualCellID];
+
+	_fmMoveTableView.rowHeight = 84.0;
+	_fmMoveTableView.separatorColor = [self tableViewSeperatorColor];
+	_fmMoveTableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, -1.0, 0.0);
+	_fmMoveTableView.contentInset = UIEdgeInsetsMake(0, 0, 70.0, 0);
+	_fmMoveTableView.showsVerticalScrollIndicator = NO;
+
+	_isTemperatureMode = [_unitType.unitTypeName isEqualToString:@"Temperature"];
+
+	[self.decimalFormatter setLocale:[NSLocale currentLocale]];
+
+	[self.view addSubview:self.addButton];
+
+	[self.addButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.bottom.equalTo(self.view.bottom).with.offset(-20);
+	}];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
 }
 
 - (void)rightSubViewDismissed:(NSNotification *)noti
@@ -189,12 +183,15 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
-    if ([tabBar.unitTypes containsObject:self.unitType]) {
-        NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
-        [[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
-    }
+
+	if ([self isMovingToParentViewController]) {
+		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
+		if ([tabBar.unitTypes containsObject:self.unitType]) {
+			NSUInteger vcIdx = [tabBar.unitTypes indexOfObject:self.unitType];
+			[[NSUserDefaults standardUserDefaults] setUnitConverterCurrentUnitTap:vcIdx];
+		}
+		[self registerContentSizeCategoryDidChangeNotification];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -208,7 +205,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     
     [self refreshRightBarItems];
     
-    [self.tableView reloadData];
+    [_fmMoveTableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -227,7 +224,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
-	[self.tableView reloadData];
+	[_fmMoveTableView reloadData];
 }
 
 - (void)dealloc {
@@ -324,7 +321,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
         
         _moreMenuButtons = @[self.shareButton, [self historyButton:NULL]];
-        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:self.tableView];
+        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:_fmMoveTableView];
         _isShowMoreMenu = YES;
     };
 }
@@ -350,7 +347,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		_isShowMoreMenu = NO;
         
 		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView tableView:self.tableView];
+		[self dismissMoreMenuView:_moreMenuView tableView:_fmMoveTableView];
 		[self.view removeGestureRecognizer:gestureRecognizer];
 	}
 }
@@ -555,15 +552,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     }
 }
 
-#pragma mark - ScrollView delegate
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    CGPoint center = self.addButton.center;
-    center.y = self.tableView.contentOffset.y+(self.tableView.frame.size.height-33);
-    self.addButton.center = center;
-}
-
 #pragma mark - Action
 
 - (void)shareAll:(id)sender {
@@ -715,26 +703,23 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
 	@autoreleasepool {
-		cell = nil;
-        
+		UITableViewCell *cell=nil;
+
+		if ([_fmMoveTableView movingIndexPath]) {
+			FNLOG(@"%@", indexPath);
+			indexPath = [_fmMoveTableView adaptedIndexPathForRowAtIndexPath:indexPath];
+			FNLOG(@"FMMoveTableView adaptedIndexPath : %@", indexPath);
+		}
+
 		if ([self.convertItems objectAtIndex:indexPath.row] == self.equalItem) {
 			A3UnitConverterTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
-            
 			cell = equalCell;
 		}
-        /*
-        else if ([self.convertItems objectAtIndex:indexPath.row] == self.plusItem) {
-			// Bottom row is reserved for "plus" action.
-			A3UnitConverterTVActionCell *actionCell = [self reusableActionCellForTableView:tableView];
-			[self configurePlusCell:actionCell];
-			cell = actionCell;
-		}
-         */
         else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class] ]) {
 			A3UnitConverterTVDataCell *dataCell;
 			dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
+
 			if (nil == dataCell) {
 				dataCell = [[A3UnitConverterTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterDataCellID];
 				dataCell.menuDelegate = self;
@@ -744,9 +729,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             
 			cell = dataCell;
 		}
+
+		return cell;
 	}
-    
-    return cell;
 }
 
 - (void)configureDataCell:(A3UnitConverterTVDataCell *)dataCell atIndexPath:(NSIndexPath *)indexPath {
@@ -802,10 +787,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		value = self.unitValue;
         
 		if (dataIndex == 0) {
-			dataCell.valueField.textColor = self.tableView.tintColor;
-            dataCell.value2Field.textColor = self.tableView.tintColor;
-            dataCell.valueLabel.textColor = self.tableView.tintColor;
-            dataCell.value2Label.textColor = self.tableView.tintColor;
+			dataCell.valueField.textColor = _fmMoveTableView.tintColor;
+            dataCell.value2Field.textColor = _fmMoveTableView.tintColor;
+            dataCell.valueLabel.textColor = _fmMoveTableView.tintColor;
+            dataCell.value2Label.textColor = _fmMoveTableView.tintColor;
 			dataCell.rateLabel.text = @"";
             
             if (!value) {
@@ -885,6 +870,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	cell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterEqualCellID];
 	if (nil == cell) {
 		cell = [[A3UnitConverterTVEqualCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterEqualCellID];
+
 	}
 	return cell;
 }
@@ -894,71 +880,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     //	[actionCell.centerButton setTitleColor:nil forState:UIControlStateNormal];
 	[actionCell.centerButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
 }
-
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [[self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class]];
-}
-
-// Override to support rearranging the table view.
-// Assumption : self.favorites is a sorted list.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-	@autoreleasepool {
-		[self.convertItems moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	}
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 #pragma mark - UITableViewDelegate
 
@@ -1003,89 +924,66 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}
 }
 
-#pragma mark - ATSDragToReorderTableViewControllerDraggableIndicators
+#pragma mark - FMMoveTableView
 
-- (UITableViewCell *)cellIdenticalToCellAtIndexPath:(NSIndexPath *)indexPath forDragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController {
-	FNLOG();
-	UITableViewCell *cell = nil;
-	if ([self.convertItems objectAtIndex:indexPath.row] == self.equalItem) {
-		A3UnitConverterTVEqualCell *equalCell = [[A3UnitConverterTVEqualCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        
-		cell = equalCell;
-	} else if ([[self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class]]) {
-		A3UnitConverterTVDataCell *dataCell = [[A3UnitConverterTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-        
-		[self configureDataCell:dataCell atIndexPath:indexPath];
-		cell = dataCell;
-	}
-	return cell;
-}
-
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didBeginDraggingAtRow:(NSIndexPath *)dragRow {
-    [self unSwipeAll];
-    _draggingFirstRow = (dragRow.row == 0);
-	FNLOG();
-}
-
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController willEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	FNLOG();
-}
-
-- (void)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController didEndDraggingToRow:(NSIndexPath *)destinationIndexPath {
+- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	@autoreleasepool {
 		NSInteger equalIndex;
-        
+
 		equalIndex = [self.convertItems indexOfObject:self.equalItem];
-        
+
 		if (equalIndex != 1) {
 			FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
 			[self.convertItems moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
-			[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+			[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
 			if (equalIndex == 0) {
-				[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
+				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
 			}
 		}
-        
-		if ((_draggingFirstRow && (destinationIndexPath.row != 0)) || (destinationIndexPath.row == 0)) {
+
+		if ((_draggingFirstRow && (toIndexPath.row != 0)) || (toIndexPath.row == 0)) {
 			double delayInSeconds = 0.3;
 			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-				[self.tableView reloadData];
-                
-                // khkim_131217 : 드래그를 통해서 값이 업데이트 될때도 history에 추가한다.
-                A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                UITextField *textField;
-                float fromValue;
-                if (cell.inputType == UnitInput_Normal) {
-                    textField = cell.valueField;
-                    fromValue = [textField.text floatValueEx];
-                }
-                else if (cell.inputType == UnitInput_Fraction) {
-                    float num = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
-                    float denum = [cell.value2Field.text floatValueEx] > 1 ? [cell.value2Field.text floatValueEx]:1;
-                    fromValue = num / denum;
-                }
-                else if (cell.inputType == UnitInput_FeetInch) {
-                    // 0.3048, 0.0254
-                    // feet inch 값을 inch값으로 변화시킨다.
-                    float feet = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
-                    float inch = [cell.value2Field.text floatValueEx];
-                    fromValue = feet + inch/kInchesPerFeet;
-                    NSLog(@"Feet : %f / Inch : %f", feet, inch);
-                    NSLog(@"Calculated : %f", fromValue);
-                }
-                else {
-                    fromValue = 1;
-                }
-                [self putHistoryWithValue:@(fromValue)];
+				[_fmMoveTableView reloadData];
+
+				// khkim_131217 : 드래그를 통해서 값이 업데이트 될때도 history에 추가한다.
+				A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+				UITextField *textField;
+				float fromValue;
+				if (cell.inputType == UnitInput_Normal) {
+					textField = cell.valueField;
+					fromValue = [textField.text floatValueEx];
+				}
+				else if (cell.inputType == UnitInput_Fraction) {
+					float num = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
+					float denum = [cell.value2Field.text floatValueEx] > 1 ? [cell.value2Field.text floatValueEx]:1;
+					fromValue = num / denum;
+				}
+				else if (cell.inputType == UnitInput_FeetInch) {
+					// 0.3048, 0.0254
+					// feet inch 값을 inch값으로 변화시킨다.
+					float feet = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
+					float inch = [cell.value2Field.text floatValueEx];
+					fromValue = feet + inch/kInchesPerFeet;
+					NSLog(@"Feet : %f / Inch : %f", feet, inch);
+					NSLog(@"Calculated : %f", fromValue);
+				}
+				else {
+					fromValue = 1;
+				}
+				[self putHistoryWithValue:@(fromValue)];
 			});
 		}
 	}
 }
 
-- (BOOL)dragTableViewController:(ATSDragToReorderTableViewController *)dragTableViewController shouldHideDraggableIndicatorForDraggingToRow:(NSIndexPath *)destinationIndexPath {
-	FNLOG();
-	return NO;
+- (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return [[self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class]];
+}
+
+- (NSIndexPath *)moveTableView:(FMMoveTableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	return proposedDestinationIndexPath;
 }
 
 #pragma mark - A3UnitSelectViewControllerDelegate
@@ -1126,12 +1024,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                 [self.convertItems insertObjectToSortedArray:convertItem atIndex:idx];
 				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
                 
-                [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
+                [_fmMoveTableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:idx inSection:0]] withRowAnimation:UITableViewRowAnimationRight];
                 
                 double delayInSeconds = 0.3;
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [self.tableView reloadData];
+                    [_fmMoveTableView reloadData];
                 });
             }
         }
@@ -1186,12 +1084,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                     replacedItem.item = selectedItem;
 					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
                     
-                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
+                    [_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_selectedRow inSection:0]] withRowAnimation:UITableViewRowAnimationLeft];
                     
                     double delayInSeconds = 0.3;
                     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
                     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        [self.tableView reloadData];
+                        [_fmMoveTableView reloadData];
                     });
                 }
             }
@@ -1252,7 +1150,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			self.numberKeyboardViewController = keyboardVC;
 			textField.inputView = [keyboardVC view];
             self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeFraction;
-            A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             if (cell.inputType == UnitInput_Fraction) {
                 self.numberKeyboardViewController.bigButton1.selected = YES;
                 self.numberKeyboardViewController.bigButton2.selected = NO;
@@ -1275,7 +1173,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                 // khkim_131217 : requirement 수정사항
                 // 셀을 탭할때 more mene 보이지 않는다
                 /*
-				id cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+				id cell = [_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
                 
 				[self shiftLeft:cell];
                  */
@@ -1323,7 +1221,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
         // 숫자 입력 보정여부
         double value = [textField.text doubleValue];
-        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         
         if ((cell.inputType == UnitInput_FeetInch) && (textField.tag == 2)) {
             // UnitInput_FeetInch 에서 두번째 textField를 입력 보정을 하지 않는다.
@@ -1358,7 +1256,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	@autoreleasepool {
         
-        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
         
         if (cell.inputType == UnitInput_FeetInch || cell.inputType == UnitInput_Fraction) {
             // khkim_131217 : requirement 수정
@@ -1458,12 +1356,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     
     [self.convertItems exchangeObjectInSortedArrayAtIndex:fromIp.row withObjectAtIndex:toIp.row];
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    [self.tableView reloadRowsAtIndexPaths:@[fromIp, toIp] withRowAnimation:UITableViewRowAnimationMiddle];
+    [_fmMoveTableView reloadRowsAtIndexPaths:@[fromIp, toIp] withRowAnimation:UITableViewRowAnimationMiddle];
     
     double delayInSeconds = 0.3;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self.tableView reloadData];
+        [_fmMoveTableView reloadData];
     });
 }
 
@@ -1474,7 +1372,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) cell;
 		[swipedCell removeMenuView];
         
-		NSIndexPath *sourceIndexPath = [self.tableView indexPathForCell:cell];
+		NSIndexPath *sourceIndexPath = [_fmMoveTableView indexPathForCell:cell];
 		NSIndexPath *targetIndexPath;
 		if (sourceIndexPath.row == 0) {
 			targetIndexPath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -1488,7 +1386,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)shareActionForCell:(UITableViewCell *)cell sender:(id)sender {
 	@autoreleasepool {
-		NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+		NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
 		NSInteger targetIdx = indexPath.row == 0 ? 2 : indexPath.row;
 		NSAssert(self.convertItems[indexPath.row] != _equalItem, @"Selected row must not the equal cell");
 		[self shareActionForSourceIndex:0 targetIndex:targetIdx sender:sender ];
@@ -1515,7 +1413,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			return;
 		}
         
-		NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+		NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
 		UnitConvertItem *convertItem = self.convertItems[indexPath.row];
 		if ([convertItem isKindOfClass:[UnitConvertItem class]]) {
 			[self.text1Fields removeObjectForKey:convertItem.item.unitName];
@@ -1525,22 +1423,20 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 			[self.convertItems removeObjectAtIndex:indexPath.row];
             
-			[self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+			[_fmMoveTableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
             
 			if (indexPath.row == 0) {
 				_convertItems = nil;
 				[self convertItems];
                 
-				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+				[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] toIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
                 
 				double delayInSeconds = 0.3;
 				dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 				dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-					[self.tableView reloadRowsAtIndexPaths:[self.tableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
+					[_fmMoveTableView reloadRowsAtIndexPaths:[_fmMoveTableView indexPathsForVisibleRows] withRowAnimation:UITableViewRowAnimationMiddle];
 				});
 			}
-            
-            [self.view bringSubviewToFront:self.addButton];
 		}
 	}
 }
@@ -1548,7 +1444,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 #pragma mark - A3KeyboardDelegate
 
 - (BOOL)isPreviousEntryExists{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 2)) {
         return YES;
     }
@@ -1561,7 +1457,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (BOOL)isNextEntryExists{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 1)) {
         return YES;
     }
@@ -1584,7 +1480,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)prevButtonPressed{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 2)) {
         [cell.valueField becomeFirstResponder];
     }
@@ -1594,7 +1490,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)nextButtonPressed{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 1)) {
         [cell.value2Field becomeFirstResponder];
     }
@@ -1605,7 +1501,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)handleBigButton1
 {
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell* )[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell* )[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     
     // feet inch에서는 모드 변경없이 UnitInput_FeetInch으로 고정한다.
     if (cell.inputType == UnitInput_FeetInch) {
@@ -1620,7 +1516,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)handleBigButton2
 {
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell* )[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell* )[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     
     // feet inch에서는 모드 변경없이 UnitInput_FeetInch으로 고정한다.
     if (cell.inputType == UnitInput_FeetInch) {
@@ -1642,7 +1538,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
 	
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     if (cell.inputType == UnitInput_Fraction) {
         float num = cell.valueField.text.floatValue > 1 ? cell.valueField.text.floatValue:1;
         float denum = cell.value2Field.text.floatValue > 1 ? cell.value2Field.text.floatValue:1;
@@ -1703,6 +1599,126 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
         [self refreshRightBarItems];
 	}
+}
+
+#pragma mark -- Swipe Gesture
+
+const CGFloat kUnitCellVisibleWidth = 100.0;
+
+// Setup a left and right swipe recognizer.
+-(void)setupSwipeRecognizers
+{
+	UISwipeGestureRecognizer* leftSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+	leftSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+	[_fmMoveTableView addGestureRecognizer:leftSwipeRecognizer];
+
+	UISwipeGestureRecognizer* rightSwipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipe:)];
+	rightSwipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+	[_fmMoveTableView addGestureRecognizer:rightSwipeRecognizer];
+
+	[self setSwipedCells:[NSMutableSet set]];
+}
+
+// Called when a swipe is performed.
+- (void)swipe:(UISwipeGestureRecognizer *)recognizer
+{
+	FNLOG();
+	bool doneSwiping = recognizer && (recognizer.state == UIGestureRecognizerStateEnded);
+
+	if (doneSwiping)
+	{
+		// find the swiped cell
+		CGPoint location = [recognizer locationInView:_fmMoveTableView];
+		NSIndexPath* indexPath = [_fmMoveTableView indexPathForRowAtPoint:location];
+		UITableViewCell<A3TableViewSwipeCellDelegate> *swipedCell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [_fmMoveTableView cellForRowAtIndexPath:indexPath];
+
+		BOOL shouldShowMenu = NO;
+		if ([swipedCell respondsToSelector:@selector(cellShouldShowMenu)]) {
+			shouldShowMenu = [swipedCell cellShouldShowMenu];
+		}
+		if (!shouldShowMenu) return;
+
+		CGFloat shiftLength = kUnitCellVisibleWidth;
+		if ([swipedCell respondsToSelector:@selector(menuWidth:)]) {
+			shiftLength = [swipedCell menuWidth:[_fmMoveTableView numberOfRowsInSection:0] > 3 ];
+		}
+		if ((recognizer.direction==UISwipeGestureRecognizerDirectionLeft) && (swipedCell.frame.origin.x==0) )
+		{
+			[self shiftRight:self.swipedCells];  // animate all cells left
+			[self shiftLeft:swipedCell];       // animate swiped cell right
+		}
+		else if ((recognizer.direction == UISwipeGestureRecognizerDirectionRight) && (swipedCell.frame.origin.x == -shiftLength))
+		{
+			[self shiftRight:[NSMutableSet setWithObject:swipedCell]]; // animate current cell left
+		}
+
+	}
+}
+
+// Animates the cells to the right.
+-(void)shiftRight:(NSMutableSet*)cells
+{
+	if ([cells count]>0)
+	{
+		for (UITableViewCell<A3TableViewSwipeCellDelegate>* cell in  cells)
+		{
+			// shift the cell left and remove its menu view
+			CGRect newFrame;
+			newFrame = CGRectOffset(cell.frame, -cell.frame.origin.x, 0.0);
+			[UIView animateWithDuration:0.2 animations:^{
+				cell.frame = newFrame;
+			} completion:^(BOOL finished) {
+				if ([cell respondsToSelector:@selector(removeMenuView)]) {
+					if (cell.frame.origin.x == 0.0)
+						[cell removeMenuView];
+				}
+
+				NSMutableArray *reloadRows = [NSMutableArray new];
+				NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+				if (indexPath) {
+					[reloadRows addObject:indexPath];
+				}
+				[_fmMoveTableView reloadRowsAtIndexPaths:reloadRows withRowAnimation:UITableViewRowAnimationNone];
+			}];
+		}
+
+		// update the set of swiped cells
+		[self.swipedCells minusSet:cells];
+	}
+}
+
+
+// Animates the cells to the left offset with kUnitCellVisibleWidth
+-(void)shiftLeft:(UITableViewCell<A3TableViewSwipeCellDelegate> *)cell {
+	FNLOG();
+
+	bool cellAlreadySwiped = [self.swipedCells containsObject:cell];
+	if (!cellAlreadySwiped) {
+		// add the cell menu view and shift the cell to the right
+		if ([cell respondsToSelector:@selector(addMenuView:)]) {
+			[cell addMenuView:[_fmMoveTableView numberOfRowsInSection:0] > 3 ];
+		}
+		CGFloat shiftLength = kUnitCellVisibleWidth;
+		if ([cell respondsToSelector:@selector(menuWidth:)]) {
+			shiftLength = [cell menuWidth:[_fmMoveTableView numberOfRowsInSection:0] > 3 ];
+		}
+		CGRect newFrame;
+		newFrame = CGRectOffset(cell.frame, -shiftLength, 0.0);
+		[UIView animateWithDuration:0.2 animations:^{
+			cell.frame = newFrame;
+		}];
+
+		// update the set of swiped cells
+		[self.swipedCells addObject:cell];
+	}
+}
+
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)unSwipeAll {
+	FNLOG();
+	[self shiftRight:self.swipedCells];
 }
 
 #pragma mark -- THE END

@@ -14,6 +14,11 @@
 @implementation A3AppDelegate (keyValueStore)
 
 - (void)keyValueStoreDidChangeExternally:(NSNotification *)notification {
+	FNLOG(@"keyValueStoreDidChangeExternally");
+	if (![self .ubiquityStoreManager cloudEnabled]) return;
+
+	FNLOG(@"keyValueStoreDidChangeExternally, data download and merged.");
+
 	// Get the list of keys that changed.
 	NSDictionary* userInfo = [notification userInfo];
 	NSNumber* reasonForChange = [userInfo objectForKey:NSUbiquitousKeyValueStoreChangeReasonKey];
