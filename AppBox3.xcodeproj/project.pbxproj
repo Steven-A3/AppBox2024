@@ -108,6 +108,7 @@
 		680D639F18CFF9D400938AD0 /* A3MirrorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D638A18CFF9D400938AD0 /* A3MirrorViewController.m */; };
 		680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D638B18CFF9D400938AD0 /* A3MirrorViewController.xib */; };
 		680D63A318CFFC2500938AD0 /* VerticalSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D63A218CFFC2500938AD0 /* VerticalSlider.m */; };
+		680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
 		681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 681614031709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m */; };
 		681614061709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 681614041709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib */; };
@@ -734,7 +735,6 @@
 		68D6265E1816AB5E009C47C0 /* A3TableViewRootElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D6265D1816AB5E009C47C0 /* A3TableViewRootElement.m */; };
 		68D626631816AED8009C47C0 /* A3TableViewMonthEntryElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D626621816AED8009C47C0 /* A3TableViewMonthEntryElement.m */; };
 		68D88F9D1817F06D002F20F8 /* A3SelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D88F9C1817F06D002F20F8 /* A3SelectTableViewController.m */; };
-		68D8F4FC1887F0AC008617C6 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68D8F4FB1887F0AC008617C6 /* DropboxSDK.framework */; };
 		68D8F4FF1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D8F4FE1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.m */; };
 		68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68DAF6EF16BFE3B000775372 /* Localizable.strings */; };
 		68DB84BC17508CC1004521E0 /* A3HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DB84BB17508CC1004521E0 /* A3HistoryViewController.m */; };
@@ -2122,11 +2122,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				680D63A418D06B3F00938AD0 /* DropboxSDK.framework in Frameworks */,
 				68DBAB6D18C4C2B2003A67E5 /* MediaPlayer.framework in Frameworks */,
 				6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */,
 				6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */,
 				6819C7B2188A4D64007E0E1B /* Social.framework in Frameworks */,
-				68D8F4FC1887F0AC008617C6 /* DropboxSDK.framework in Frameworks */,
 				684A71BD1852E0250004A9FE /* libc++.dylib in Frameworks */,
 				684A71BB1852E0100004A9FE /* Security.framework in Frameworks */,
 				6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */,
@@ -5473,7 +5473,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/bkk/projects/AppBox3/External/dropbox-ios-sdk-1.3.9",
+					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
@@ -5505,7 +5505,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"/Users/bkk/projects/AppBox3/External/dropbox-ios-sdk-1.3.9",
+					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AppBox3/AppBox3-Prefix.pch";
