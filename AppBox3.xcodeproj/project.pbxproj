@@ -92,10 +92,8 @@
 		680D638D18CFF9D400938AD0 /* A3Calculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636818CFF9D400938AD0 /* A3Calculator.m */; };
 		680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636A18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m */; };
 		680D638F18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D636B18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib */; };
-		680D639018CFF9D400938AD0 /* A3CalculatorButtonsInFirstPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D636C18CFF9D400938AD0 /* A3CalculatorButtonsInFirstPage.xib */; };
 		680D639118CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D636E18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m */; };
 		680D639218CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D636F18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.xib */; };
-		680D639318CFF9D400938AD0 /* A3CalculatorButtonsInSecondPage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680D637018CFF9D400938AD0 /* A3CalculatorButtonsInSecondPage.xib */; };
 		680D639418CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D637218CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m */; };
 		680D639518CFF9D400938AD0 /* A3CalculatorHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D637418CFF9D400938AD0 /* A3CalculatorHistoryCell.m */; };
 		680D639618CFF9D400938AD0 /* A3CalculatorHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680D637618CFF9D400938AD0 /* A3CalculatorHistoryViewController.m */; };
@@ -953,11 +951,9 @@
 		680D636918CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButtonsInBasicViewController_iPad.h; sourceTree = "<group>"; };
 		680D636A18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButtonsInBasicViewController_iPad.m; sourceTree = "<group>"; };
 		680D636B18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInBasicViewController_iPad.xib; sourceTree = "<group>"; };
-		680D636C18CFF9D400938AD0 /* A3CalculatorButtonsInFirstPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInFirstPage.xib; sourceTree = "<group>"; };
 		680D636D18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButtonsInScientificViewController_iPad.h; sourceTree = "<group>"; };
 		680D636E18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButtonsInScientificViewController_iPad.m; sourceTree = "<group>"; };
 		680D636F18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInScientificViewController_iPad.xib; sourceTree = "<group>"; };
-		680D637018CFF9D400938AD0 /* A3CalculatorButtonsInSecondPage.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3CalculatorButtonsInSecondPage.xib; sourceTree = "<group>"; };
 		680D637118CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorButtonsViewController_iPad.h; sourceTree = "<group>"; };
 		680D637218CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalculatorButtonsViewController_iPad.m; sourceTree = "<group>"; };
 		680D637318CFF9D400938AD0 /* A3CalculatorHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorHistoryCell.h; sourceTree = "<group>"; };
@@ -2361,11 +2357,9 @@
 				680D636918CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.h */,
 				680D636A18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m */,
 				680D636B18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib */,
-				680D636C18CFF9D400938AD0 /* A3CalculatorButtonsInFirstPage.xib */,
 				680D636D18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.h */,
 				680D636E18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m */,
 				680D636F18CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.xib */,
-				680D637018CFF9D400938AD0 /* A3CalculatorButtonsInSecondPage.xib */,
 				680D637118CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.h */,
 				680D637218CFF9D400938AD0 /* A3CalculatorButtonsViewController_iPad.m */,
 				680D637318CFF9D400938AD0 /* A3CalculatorHistoryCell.h */,
@@ -4566,7 +4560,6 @@
 				684D92F618BC1FBC005016F7 /* A3DateCalcFooterView.xib in Resources */,
 				68B6A2F218CEC76D004084EF /* A3UnitPriceInputView.xib in Resources */,
 				689FEF71187BA3B70070F7E9 /* A3PasscodeKeyboard_iPad.xib in Resources */,
-				680D639018CFF9D400938AD0 /* A3CalculatorButtonsInFirstPage.xib in Resources */,
 				68B6A33B18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib in Resources */,
 				68B6A47918CEE938004084EF /* reload_icon@2x.png in Resources */,
 				68236CE0186C22E5006F442B /* StringsDict.strings in Resources */,
@@ -4578,7 +4571,6 @@
 				684D932118BC2074005016F7 /* A3PercentCalcFactorCell.xib in Resources */,
 				68B6A30618CEC76D004084EF /* UnitPriceStoryboard_iPad.storyboard in Resources */,
 				6825367118A7B89F00EAFB84 /* A3LunarConverterViewController.xib in Resources */,
-				680D639318CFF9D400938AD0 /* A3CalculatorButtonsInSecondPage.xib in Resources */,
 				68B6A47718CEE938004084EF /* forward_icon@2x.png in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,
 				680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */,
