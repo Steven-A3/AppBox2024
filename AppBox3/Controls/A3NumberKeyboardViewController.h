@@ -18,6 +18,9 @@
 @property (nonatomic, weak) IBOutlet UIButton *bigButton1;
 @property (nonatomic, weak) IBOutlet UIButton *bigButton2;
 
+@property (nonatomic, strong) NSString * prevBtnTitleText;
+@property (nonatomic, strong) NSString * nextBtnTitleText;
+
 - (void)reloadPrevNextButtons;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;

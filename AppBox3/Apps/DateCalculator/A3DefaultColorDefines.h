@@ -48,6 +48,7 @@
 #define COLOR_BATTERY_BACKGROUND    [UIColor colorWithRed:220.0/255.0 green:223.0/255.0 blue:226.0/255.0 alpha:1.0]
 
 // PopOver Disable
-#define COLOR_DISABLE_POPOVER       [UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]
+//#define COLOR_DISABLE_POPOVER       [UIColor colorWithRed:219.0/255.0 green:219.0/255.0 blue:219.0/255.0 alpha:1.0]
+#define COLOR_DISABLE_POPOVER       [UIColor colorWithRed:196/255.0 green:196/255.0 blue:196/255.0 alpha:1.0]
 
 #endif

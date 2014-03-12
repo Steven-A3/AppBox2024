@@ -105,6 +105,36 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    if (self.prevBtnTitleText) {        // KJH
+//        [self.prevButton setTitle:self.prevBtnTitleText forState:UIControlStateNormal];
+//        self.prevButton.titleLabel.text = self.prevBtnTitleText;
+        [self.prevButton setTitle:@"" forState:UIControlStateNormal];
+        [self.prevButton setTitle:@"" forState:UIControlStateHighlighted];
+        [self.prevButton setTitle:@"" forState:UIControlStateDisabled];
+        [self.prevButton setTitle:@"" forState:UIControlStateSelected];
+        self.prevButton.titleLabel.text = @"";
+        
+//        [self.bigButton1 setTitle:@"" forState:UIControlStateNormal];
+//        [self.bigButton1 setTitle:@"" forState:UIControlStateHighlighted];
+//        [self.bigButton1 setTitle:@"" forState:UIControlStateDisabled];
+//        [self.bigButton1 setTitle:@"" forState:UIControlStateSelected];
+//        self.bigButton1.titleLabel.text = @"";
+//        
+//        [self.bigButton2 setTitle:@"" forState:UIControlStateNormal];
+//        [self.bigButton2 setTitle:@"" forState:UIControlStateHighlighted];
+//        [self.bigButton2 setTitle:@"" forState:UIControlStateDisabled];
+//        [self.bigButton2 setTitle:@"" forState:UIControlStateSelected];
+//        self.bigButton2.titleLabel.text = @"";
+    }
+    if (self.nextBtnTitleText) {
+//        [self.nextButton setTitle:self.nextBtnTitleText forState:UIControlStateNormal];
+//        self.nextButton.titleLabel.text = self.nextBtnTitleText;
+        [self.nextButton setTitle:@"" forState:UIControlStateNormal];
+        [self.nextButton setTitle:@"" forState:UIControlStateHighlighted];
+        [self.nextButton setTitle:@"" forState:UIControlStateDisabled];
+        [self.nextButton setTitle:@"" forState:UIControlStateSelected];
+        self.nextButton.titleLabel.text = @"";
+    }
 
 }
 
@@ -118,6 +148,42 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)keyboardInputAction:(UIButton *)button {
+	if ([self.textInputTarget respondsToSelector:@selector(insertText:)]) {
+		[self.textInputTarget insertText:[button titleForState:UIControlStateNormal]];
+	}
+}
+
+- (IBAction)clearButtonAction {
+	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
+		[self.delegate A3KeyboardController:self clearButtonPressedTo:self.textInputTarget ];
+	}
+}
+
+- (IBAction)backspaceAction:(UIButton *)button {
+	if ([self.textInputTarget respondsToSelector:@selector(deleteBackward)]) {
+		[self.textInputTarget deleteBackward];
+	}
+}
+
+- (IBAction)prevAction {
+	if ([self.delegate respondsToSelector:@selector(prevButtonPressed)]) {
+		[self.delegate prevButtonPressed];
+	}
+}
+
+- (IBAction)nextAction {
+	if ([self.delegate respondsToSelector:@selector(nextButtonPressed)]) {
+		[self.delegate nextButtonPressed];
+	}
+}
+
+- (IBAction)doneAction {
+	if ([self.delegate respondsToSelector:@selector(A3KeyboardController:doneButtonPressedTo:)]) {
+		[self.delegate A3KeyboardController:self doneButtonPressedTo:self.textInputTarget ];
+	}
 }
 
 - (IBAction)bigButton1Action {
@@ -141,9 +207,20 @@
 }
 
 - (void)reloadPrevNextButtons {
+    
+    // KJH - Keyboard Prev/Next 텍스트 변경을 위하여 추가했습니다.
+    if ([self.delegate respondsToSelector:@selector(stringForPrevButton:)]) {
+        self.prevBtnTitleText = [self.delegate stringForPrevButton:self.prevBtnTitleText];
+    }
+    if ([self.delegate respondsToSelector:@selector(stringForNextButton:)]) {
+        self.nextBtnTitleText = [self.delegate stringForNextButton:self.nextBtnTitleText];
+    }
+    
 	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
+
 		BOOL available = [self.delegate isNextEntryExists];
-		[self.nextButton setTitle:available ? @"Next" : @"" forState:UIControlStateNormal];
+        [self.nextButton setTitle:available ? self.nextBtnTitleText : @"" forState:UIControlStateNormal];
+		[self.nextButton setImage:nil forState:UIControlStateNormal];
 		[self.nextButton setEnabled:available];
 	} else {
 		[self.nextButton setTitle:@"Next" forState:UIControlStateNormal];
@@ -153,6 +230,7 @@
 		BOOL available = [self.delegate isPreviousEntryExists];
 		[self.prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
 		[self.prevButton setEnabled:available];
+		[self.prevButton setImage:nil forState:UIControlStateNormal];
 	} else {
 		[self.prevButton setTitle:@"Prev" forState:UIControlStateNormal];
 		[self.prevButton setEnabled:YES];

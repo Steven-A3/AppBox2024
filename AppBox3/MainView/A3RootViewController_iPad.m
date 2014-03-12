@@ -247,12 +247,20 @@ static const CGFloat kSideViewWidth = 319.0;
 
 // KJH
 - (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController {
+    [self presentCenterViewController:viewController fromViewController:sourceViewController withCompletion:nil];
+}
+
+- (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController withCompletion:(void (^)(void))completion {
     viewController.modalPresentationStyle = UIModalPresentationCurrentContext;
     [sourceViewController presentViewController:viewController animated:YES completion:^{
         if (!_presentViewControllers) {
             _presentViewControllers = [NSMutableArray new];
         }
         [_presentViewControllers addObject:viewController];
+        
+        if (completion) {
+            completion();
+        }
     }];
 }
 
@@ -414,6 +422,12 @@ static const CGFloat kSideViewWidth = 319.0;
 		[_rightNavigationController removeFromParentViewController];
 		_rightNavigationController = nil;
 	}];
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+	_showLeftView = NO;
 }
 
 @end

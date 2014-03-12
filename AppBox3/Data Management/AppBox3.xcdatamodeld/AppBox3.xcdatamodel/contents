@@ -34,30 +34,49 @@
         <attribute name="rateToUSD" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="updated" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
-    <entity name="Expense" representedClassName="Expense" syncable="YES">
-        <attribute name="budget" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="ExpenseListBudget" representedClassName="ExpenseListBudget" syncable="YES">
+        <attribute name="budgetId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="left" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location_address1" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location_address2" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location_address3" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location_latitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="location_longitude" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="locatoin_contact" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="location" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="paymentType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="total" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExpenseDetail" inverseName="expense" inverseEntity="ExpenseDetail" syncable="YES"/>
+        <attribute name="totalAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="usedAmount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="expenseHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListHistory" inverseName="budgetData" inverseEntity="ExpenseListHistory" syncable="YES"/>
+        <relationship name="expenseItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExpenseListItem" inverseName="budget" inverseEntity="ExpenseListItem" syncable="YES"/>
+        <relationship name="expenseLocation" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListBudgetLocation" inverseName="budget" inverseEntity="ExpenseListBudgetLocation" syncable="YES"/>
     </entity>
-    <entity name="ExpenseDetail" representedClassName="ExpenseDetail" syncable="YES">
-        <attribute name="item" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="expense" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Expense" inverseName="details" inverseEntity="Expense" syncable="YES"/>
+    <entity name="ExpenseListBudgetLocation" representedClassName="ExpenseListBudgetLocation" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="budgetId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contact" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="budget" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListBudget" inverseName="expenseLocation" inverseEntity="ExpenseListBudget" syncable="YES"/>
+    </entity>
+    <entity name="ExpenseListCategories" representedClassName="ExpenseListCategories" syncable="YES">
+        <attribute name="categoryId" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="ExpenseListHistory" representedClassName="ExpenseListHistory" syncable="YES">
+        <attribute name="updateDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="budgetData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListBudget" inverseName="expenseHistory" inverseEntity="ExpenseListBudget" syncable="YES"/>
+    </entity>
+    <entity name="ExpenseListItem" representedClassName="ExpenseListItem" syncable="YES">
+        <attribute name="hasData" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="itemDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="itemName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="num" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="budget" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListBudget" inverseName="expenseItems" inverseEntity="ExpenseListBudget" syncable="YES"/>
     </entity>
     <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
         <attribute name="calculateDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -100,17 +119,50 @@
         <attribute name="historyItem" optional="YES" attributeType="Binary" syncable="YES"/>
     </entity>
     <entity name="SalesCalcHistory" representedClassName="SalesCalcHistory" syncable="YES">
-        <attribute name="additionalOff" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="amountSaved" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="created" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="discount" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="editing" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isAdvanced" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isKnownValueOriginalPrice" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="additionalOff" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="additionalOffType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="discount" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="discountType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="historyDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="originalPrice" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="salePrice" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="tax" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="priceType" optional="YES" attributeType="Integer 16" syncable="YES"/>
+        <attribute name="shownPriceType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="tax" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="taxType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
+    <entity name="TipCalcHistory" representedClassName="TipCalcHistory" syncable="YES">
+        <attribute name="dateTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="labelTip" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="labelTotal" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="rRecently" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRecently" inverseName="history" inverseEntity="TipCalcRecently" syncable="YES"/>
+    </entity>
+    <entity name="TipCalcRecently" representedClassName="TipCalcRecently" syncable="YES">
+        <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="currenyCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currenySymbol" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isMain" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isPercentTax" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="isPercentTip" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="knownValue" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="showRounding" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="showSplit" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="showTax" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="split" optional="YES" attributeType="Double" defaultValueString="1" syncable="YES"/>
+        <attribute name="tax" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="tip" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcHistory" inverseName="rRecently" inverseEntity="TipCalcHistory" syncable="YES"/>
+        <relationship name="rRoundMethod" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRoundMethod" inverseName="rRecently" inverseEntity="TipCalcRoundMethod" syncable="YES"/>
+    </entity>
+    <entity name="TipCalcRoundMethod" representedClassName="TipCalcRoundMethod" syncable="YES">
+        <attribute name="optionType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="tip" optional="YES" attributeType="Integer 32" defaultValueString="20" syncable="YES"/>
+        <attribute name="tipPerPerson" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="total" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="totalPerPerson" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="valueType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="rRecently" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TipCalcRecently" inverseName="rRoundMethod" inverseEntity="TipCalcRecently" syncable="YES"/>
     </entity>
     <entity name="TranslatorFavorite" representedClassName="TranslatorFavorite" syncable="YES">
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
@@ -237,15 +289,13 @@
         <relationship name="fieldItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="walletItem" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
     <elements>
+        <element name="Calculation" positionX="-585" positionY="-405" width="128" height="90"/>
         <element name="CurrencyFavorite" positionX="351" positionY="-549" width="128" height="120"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
-        <element name="Expense" positionX="-414" positionY="-558" width="128" height="285"/>
-        <element name="ExpenseDetail" positionX="-261" positionY="-540" width="128" height="120"/>
         <element name="LoanCalcComparisonHistory" positionX="115" positionY="593" width="128" height="135"/>
         <element name="LoanCalcHistory" positionX="313" positionY="536" width="128" height="433"/>
-        <element name="SalesCalcHistory" positionX="439" positionY="-423" width="128" height="210"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="75"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="105"/>
         <element name="TranslatorHistory" positionX="-207" positionY="-189" width="128" height="120"/>
@@ -264,7 +314,15 @@
         <element name="WalletField" positionX="-576" positionY="539" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-324" positionY="513" width="128" height="118"/>
         <element name="WalletItem" positionX="-585" positionY="776" width="128" height="148"/>
-        <element name="Calculation" positionX="-585" positionY="-405" width="128" height="90"/>
-        <element name="PercentCalcHistory" positionX="-576" positionY="-396" width="128" height="75"/>
+        <element name="ExpenseListBudgetLocation" positionX="-585" positionY="-396" width="128" height="178"/>
+        <element name="SalesCalcHistory" positionX="-576" positionY="-387" width="128" height="210"/>
+        <element name="PercentCalcHistory" positionX="-567" positionY="-378" width="128" height="75"/>
+        <element name="TipCalcRecently" positionX="-558" positionY="-369" width="128" height="283"/>
+        <element name="ExpenseListCategories" positionX="-549" positionY="-360" width="128" height="75"/>
+        <element name="TipCalcHistory" positionX="-540" positionY="-351" width="128" height="103"/>
+        <element name="ExpenseListBudget" positionX="-531" positionY="-342" width="128" height="238"/>
+        <element name="ExpenseListHistory" positionX="-585" positionY="-396" width="128" height="73"/>
+        <element name="TipCalcRoundMethod" positionX="-576" positionY="-387" width="128" height="148"/>
+        <element name="ExpenseListItem" positionX="-567" positionY="-378" width="128" height="163"/>
     </elements>
 </model>

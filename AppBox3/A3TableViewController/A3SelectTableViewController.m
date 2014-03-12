@@ -60,6 +60,7 @@ NSString *selectTableViewCellIdentifier = @"SelectTableViewCell";
     
     // Configure the cell...
 	cell.textLabel.text = _root.items[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:17.0];       // KJH
 	if (indexPath.row == self.root.selectedIndex) {
 		cell.accessoryType = UITableViewCellAccessoryCheckmark;
 	}

@@ -42,10 +42,13 @@ static NSString *CellIdentifier = @"Cell";
     
     self.title = @"Exclude";
 
-    if (IS_IPAD) {
-        [self rightBarButtonDoneButton];
-    } else {
-        [self makeBackButtonEmptyArrow];        
+//    if (IS_IPAD) {
+//        [self rightBarButtonDoneButton];
+//    } else {
+//        [self makeBackButtonEmptyArrow];        
+//    }
+    if (IS_IPHONE) {
+        [self makeBackButtonEmptyArrow];
     }
     
     self.sectionTitles = @[@"", @""];

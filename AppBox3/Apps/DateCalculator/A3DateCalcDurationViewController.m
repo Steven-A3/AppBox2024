@@ -106,21 +106,25 @@ static NSString *CellIdentifier = @"Cell";
         case 0:
         {
             cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Year? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 1:
         {
             cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Month? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 2:
         {
             cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Week? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleGray;
         }
             break;
         case 3:
         {
             cell.accessoryType = [A3DateCalcStateManager durationType] & DurationType_Day? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;
     }
@@ -146,10 +150,10 @@ static NSString *CellIdentifier = @"Cell";
             [A3DateCalcStateManager setDurationType:DurationType_Week];
         }
             break;
-        case 3:
-        {
-            [A3DateCalcStateManager setDurationType:DurationType_Day];
-        }
+//        case 3:
+//        {
+//            [A3DateCalcStateManager setDurationType:DurationType_Day];
+//        }
             break;
     }
     

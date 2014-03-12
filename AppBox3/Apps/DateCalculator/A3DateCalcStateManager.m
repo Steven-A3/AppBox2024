@@ -16,7 +16,8 @@ static DurationType g_currentDurationType;
 #pragma mark -
 +(void)setDurationType:(DurationType)options
 {
-    DurationType result = DurationType_Year;
+//    DurationType result = DurationType_Year;
+    DurationType result = DurationType_Day;
     DurationType oldOptions = [[NSUserDefaults standardUserDefaults] integerForKey:@"durationType"];
     
     if (oldOptions == options) {
@@ -31,9 +32,10 @@ static DurationType g_currentDurationType;
     }
     
     if (options == DurationType_None) {
-        result = DurationType_Year;
-        
-    } else {
+        //result = DurationType_Year;
+        result = DurationType_Day;
+    }
+    else {
         if (oldOptions & options) {
             result = oldOptions & ~options;
         } else {
@@ -42,7 +44,8 @@ static DurationType g_currentDurationType;
     }
     
     if (result==DurationType_None) {
-        result = DurationType_Year;
+        //result = DurationType_Year;
+        result = DurationType_Day;
     }
     
     [[NSUserDefaults standardUserDefaults] setInteger:result forKey:@"durationType"];
@@ -338,7 +341,7 @@ static DurationType g_currentDurationType;
         return @"Today  ";
     }
     
-    return [date a3FullStyleString];
+    return IS_IPAD ? [date a3LongStyleString] : [date a3FullStyleString];
 }
 
 +(NSString *)formattedShortStringDate:(NSDate *)date

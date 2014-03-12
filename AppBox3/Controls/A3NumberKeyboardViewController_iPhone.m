@@ -37,6 +37,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _needButtonsReload = YES;
     }
     return self;
 }
@@ -134,6 +135,13 @@
 
 - (void)reloadPrevNextButtons {
 	[self initSymbolFont];
+    
+    if ([self.delegate respondsToSelector:@selector(stringForPrevButton:)]) {
+        self.prevBtnTitleText = [self.delegate stringForPrevButton:self.prevBtnTitleText];
+    }
+    if ([self.delegate respondsToSelector:@selector(stringForNextButton:)]) {
+        self.nextBtnTitleText = [self.delegate stringForNextButton:self.nextBtnTitleText];
+    }
 
 	BOOL available = NO;
 	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
@@ -142,8 +150,15 @@
 	if (IS_IPAD) {
 		[_nextButton setTitle:available ? @"Next" : nil forState:UIControlStateNormal];
 	} else {
-		UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
-		[_nextButton setImage:image forState:UIControlStateNormal];
+        if (self.nextBtnTitleText) {
+            [_nextButton setImage:nil forState:UIControlStateNormal];
+            [_nextButton setTitle:available ? self.nextBtnTitleText : nil forState:UIControlStateNormal];
+            _nextButton.titleLabel.font = _doneButton.titleLabel.font;
+        } else {
+            UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
+            [_nextButton setImage:image forState:UIControlStateNormal];
+            [_nextButton setTitle:nil forState:UIControlStateNormal];
+        }
 	}
 	[_nextButton setEnabled:available];
 
@@ -154,8 +169,15 @@
 	if (IS_IPAD) {
 		[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
 	} else {
-		UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;
-		[_prevButton setImage:image forState:UIControlStateNormal];
+        if (self.prevBtnTitleText) {
+            [_prevButton setImage:nil forState:UIControlStateNormal];
+            [_prevButton setTitle:available ? self.prevBtnTitleText : nil forState:UIControlStateNormal];
+            _prevButton.titleLabel.font = _doneButton.titleLabel.font;
+        } else {
+            UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;
+            [_prevButton setImage:image forState:UIControlStateNormal];
+            [_prevButton setTitle:nil forState:UIControlStateNormal];
+        }
 	}
 	[_prevButton setEnabled:available];
 }
@@ -163,7 +185,9 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self reloadPrevNextButtons];
+    
+    if (_needButtonsReload)
+        [self reloadPrevNextButtons];
 }
 
 - (void)didReceiveMemoryWarning
@@ -173,7 +197,8 @@
 }
 
 - (IBAction)bigButton1Action {
-	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
+	//if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
+	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate) || (self.keyboardType == A3NumberKeyboardTypeCurrency)) {   // KJH
 		[self.bigButton1 setSelected:YES];
 		[self.bigButton2 setSelected:NO];
 	}
@@ -183,10 +208,12 @@
 }
 
 - (IBAction)bigButton2Action {
-	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
+	//if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
+    if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate) || (self.keyboardType == A3NumberKeyboardTypeCurrency)) {
 		[self.bigButton1 setSelected:NO];
 		[self.bigButton2 setSelected:YES];
 	}
+    
 	if ([self.delegate respondsToSelector:@selector(handleBigButton2)]) {
 		[self.delegate handleBigButton2];
 	}

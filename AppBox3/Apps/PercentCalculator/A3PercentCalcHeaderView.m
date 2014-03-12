@@ -39,20 +39,10 @@
     NSArray *_slider2MeterLabelViews;
     NSArray *_slider2MeterLeadingConstArray;
     
-	MASConstraint *_sliderThumb1LeadingCenter;
+    MASConstraint *_sliderThumb1LeadingCenter;
     MASConstraint *_sliderThumb2LeadingCenter;
-//    id<MASConstraint> _thumb1LabelLeadingConst;
-//    id<MASConstraint> _thumb2LaeblLeadingConst;
-    
     MASConstraint *_sliderLine1TopConst;
     MASConstraint *_sliderLine2TopCont;
-    
-//    id<MASConstraint> _result1WidthConst;
-//    id<MASConstraint> _values1WidthConst;
-//    id<MASConstraint> _values1_1WidthConst;
-//    id<MASConstraint> _result2WidthConst;
-//    id<MASConstraint> _values2WidthConst;
-//    id<MASConstraint> _values2_1WidthConst;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -170,7 +160,7 @@
 
     [super layoutSubviews];
     
-    [self adjustSliderThumbLimitedPosition];
+//    [self adjustSliderThumbLimitedPosition];
     [self adjustSliderThumbLabelLimitedPosition];
 
     [super layoutSubviews];
@@ -474,14 +464,13 @@
                     }
                     
                     if (fabsl(rNumber.doubleValue) > 100.0) {
-                        _sliderThumb1LeadingCenter.equalTo(@(self.frame.size.width-22));
+                        _sliderThumb1LeadingCenter.equalTo(@(self.frame.size.width - 22.0));
                         [self showMeterViews:NO lineIndex:1];
                     } else {
                         CGFloat leading = (self.frame.size.width / 100.0) * fabsl(rNumber.doubleValue);
                         _sliderThumb1LeadingCenter.equalTo(@(leading-22));
                         [self showMeterViews:YES lineIndex:1];
                     }
-
 
                     [_sliderLine1Thumb setNeedsUpdateConstraints];
                     [_sliderThumb1Label setNeedsUpdateConstraints];
@@ -720,7 +709,7 @@
                 [self showMeterViews:NO lineIndex:1];
             } else {
                 CGFloat leading = (self.frame.size.width / 100.0) * fabsl(rNumber.doubleValue);
-                _sliderThumb1LeadingCenter.equalTo(@(leading - 22));
+                _sliderThumb1LeadingCenter.equalTo(@(leading - 22.0));
                 //_sliderThumb1LeadingCenter.equalTo(@(leading < 22 ? leading : (leading - 22)));
                 [self showMeterViews:YES lineIndex:1];
             }
@@ -793,21 +782,11 @@
                         make.height.greaterThanOrEqualTo(@25);
                         make.right.equalTo(self.right).with.offset(-_padding);
                         make.centerY.equalTo(nextView.centerY);
-//                        if (IS_IPHONE) {
-//                            make.baseline.equalTo(self.top).with.offset(centerY);
-//                        } else {
-//                            make.centerY.equalTo(self.top).with.offset(centerY);
-//                        }
                     }];
                 } else {
                     [aView makeConstraints:^(MASConstraintMaker *make) {
                         make.width.lessThanOrEqualTo(@(rect.size.width));
                         make.right.equalTo(self.right).with.offset(-_padding);
-//                        if (IS_IPHONE) {
-//                            make.baseline.equalTo(self.top).with.offset(centerY);
-//                        } else {
-//                            make.centerY.equalTo(self.top).with.offset(centerY);
-//                        }
                         make.baseline.equalTo(self.top).with.offset(centerY);
                     }];
                 }
@@ -820,21 +799,11 @@
                         make.height.greaterThanOrEqualTo(@25);
                         make.trailing.equalTo(preView.leading).with.offset(0);
                         make.centerY.equalTo(preView.centerY);
-//                        if (IS_IPHONE) {
-//                            make.baseline.equalTo(self.top).with.offset(centerY);
-//                        } else {
-//                            make.centerY.equalTo(self.top).with.offset(centerY);
-//                        }
                     }];
                 } else {
                     [aView makeConstraints:^(MASConstraintMaker *make) {
                         make.width.lessThanOrEqualTo(@(rect.size.width));
                         make.trailing.equalTo(preView.leading).with.offset(0);
-//                        if (IS_IPHONE) {
-//                            make.baseline.equalTo(self.top).with.offset(centerY);
-//                        } else {
-//                            make.centerY.equalTo(self.top).with.offset(centerY);
-//                        }
                         make.baseline.equalTo(self.top).with.offset(centerY);
                     }];
                 }
@@ -934,9 +903,20 @@
     }];
     
     [_slider2MeterLeadingConstArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		MASConstraint *leading = obj;
+        MASConstraint *leading = obj;
         leading.equalTo(@((self.sliderLine1View.frame.size.width / 5.0)  * (idx+1)));
     }];
+    
+    
+    [_slider1MeterLabelViews enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+        label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+    }];
+    
+    [_slider2MeterLabelViews enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+        label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+    }];
+    
+
 }
 
 - (void)adjustOperatorsFontSize {
@@ -960,22 +940,22 @@
     [_sliderThumb2Label sizeToFit];
 }
 
--(void)adjustSliderThumbLimitedPosition
-{
-    CGFloat sliderWidth = self.frame.size.width - (_sliderLine1Thumb.bounds.size.width / 2.0);
-    
-    if (_sliderLine1Thumb.frame.origin.x > sliderWidth) {
-        _sliderThumb1LeadingCenter.equalTo(@(sliderWidth));
-    } else if (_sliderLine1Thumb.frame.origin.x < 0.0 || _sliderLine1Thumb.hidden == YES) {
-        _sliderThumb1LeadingCenter.equalTo(@(-22.0));
-    }
-    
-    if (_sliderLine2Thumb.frame.origin.x > sliderWidth) {
-        _sliderThumb2LeadingCenter.equalTo(@(sliderWidth));
-    } else if (_sliderLine2Thumb.frame.origin.x < 0.0 || _sliderLine2Thumb.hidden == YES) {
-        _sliderThumb2LeadingCenter.equalTo(@(-22.0));
-    }
-}
+//-(void)adjustSliderThumbLimitedPosition
+//{
+//    CGFloat sliderWidth = self.frame.size.width - (_sliderLine1Thumb.bounds.size.width / 2.0);
+//    
+//    if (_sliderLine1Thumb.frame.origin.x > sliderWidth) {
+//        _sliderThumb1LeadingCenter.equalTo(@(sliderWidth));
+//    } else if (_sliderLine1Thumb.frame.origin.x < 0.0 || _sliderLine1Thumb.hidden == YES) {
+//        _sliderThumb1LeadingCenter.equalTo(@(-22.0));
+//    }
+//    
+//    if (_sliderLine2Thumb.frame.origin.x > sliderWidth) {
+//        _sliderThumb2LeadingCenter.equalTo(@(sliderWidth));
+//    } else if (_sliderLine2Thumb.frame.origin.x < 0.0 || _sliderLine2Thumb.hidden == YES) {
+//        _sliderThumb2LeadingCenter.equalTo(@(-22.0));
+//    }
+//}
 
 -(void)adjustSliderThumbLabelLimitedPosition
 {
@@ -1078,13 +1058,14 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
         make.centerY.equalTo(_sliderLine1View.centerY);
-        _sliderThumb1LeadingCenter = make.leading.equalTo(@0);
+        //_sliderThumb1LeadingCenter = make.leading.equalTo(@0);
+        _sliderThumb1LeadingCenter = make.leading.equalTo(self.left);
     }];
     [_sliderLine1GaugeView makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(_sliderLine1View.height);
-        make.leading.equalTo(@0);
-        make.trailing.equalTo(_sliderLine1Thumb.centerX);
+        make.leading.equalTo(self.left);
+        make.trailing.equalTo(_sliderLine1Thumb.left).with.offset(22.0);
         make.centerY.equalTo(_sliderLine1View.centerY);
+        make.height.equalTo(_sliderLine1View.height);
     }];
     [_slider1AMarkLabel makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(@20);
@@ -1222,7 +1203,7 @@
                     make.width.equalTo(IS_RETINA? @0.5 : @1.0);
                     make.height.equalTo(@18);
                     make.top.equalTo(_sliderLine1View.bottom);
-					MASConstraint *leading = make.leading.equalTo(@((self.sliderLine1View.frame.size.width / 5.0)  * (idx+1)));
+                    MASConstraint *leading = make.leading.equalTo(@((self.sliderLine1View.frame.size.width / 5.0)  * (idx+1)));
                     [meterLeadings addObject:leading];
                 }];
                 _slider1MeterLeadingConstArray = meterLeadings;
@@ -1233,11 +1214,9 @@
                 meterLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
                 [meterLabel sizeToFit];
                 [meterLabel makeConstraints:^(MASConstraintMaker *make) {
-                    //make.top.equalTo(_sliderLine1View.bottom).with.offset(3.0);
                     make.baseline.equalTo(_sliderLine1View.bottom).with.offset(13);
-                    make.trailing.equalTo(meterView.leading).with.offset(IS_RETINA ? -4.5 : -5.0);
+                    make.trailing.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
                 }];
-
             }];
             
             meterLeadings = [NSMutableArray new];
@@ -1247,7 +1226,7 @@
                     make.width.equalTo(IS_RETINA? @0.5 : @1.0);
                     make.height.equalTo(@18);
                     make.top.equalTo(_sliderLine2View.bottom);
-					MASConstraint *leading = make.leading.equalTo(@((self.sliderLine2View.frame.size.width / 5.0)  * (idx+1)));
+                    MASConstraint *leading = make.leading.equalTo(@((self.sliderLine2View.frame.size.width / 5.0)  * (idx+1)));
                     [meterLeadings addObject:leading];
                 }];
                 _slider2MeterLeadingConstArray = meterLeadings;
@@ -1258,10 +1237,8 @@
                 meterLabel.textColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
                 [meterLabel sizeToFit];
                 [meterLabel makeConstraints:^(MASConstraintMaker *make) {
-                    //make.top.equalTo(_sliderLine2View.bottom).with.offset(3.0);
-                    //make.baseline.equalTo(_sliderLine2View.bottom).with.offset(IS_RETINA ? 6.5 : 7);
                     make.baseline.equalTo(_sliderLine2View.bottom).with.offset(13);
-                    make.trailing.equalTo(meterView.leading).with.offset(IS_RETINA ? -4.5 : -5.0);
+                    make.trailing.equalTo(meterView.left).with.offset(IS_RETINA ? -4.5 : -5);
                 }];
 
                 if (self.calcType != PercentCalcType_5) {

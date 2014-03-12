@@ -17,7 +17,7 @@
 #import "A3PercentCalcHistoryViewController.h"
 #import "PercentCalcHistory.h"
 #import "A3DefaultColorDefines.h"
-#import "A3TableViewEntryCell.h"
+#import "A3JHTableViewEntryCell.h"
 #import "NSNumberFormatter+Extention.h"
 
 
@@ -42,21 +42,22 @@
     A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
     UITextField *_firstResponder;
     NSIndexPath *_selectedIndexPath;
+    NSIndexPath *_selectedOptionIndexPath;
     
     UILabel *_sectionALabel, *_sectionBLabel;
     UIImage *_blankImage;
     BOOL _prevShow, _nextShow;
     BOOL _isKeyboardShown;
-    BOOL _needToClearDetail;
+//    BOOL _needToClearDetail;
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
+- (id)init {
+	self = [super initWithStyle:UITableViewStyleGrouped];
+	if (self) {
+		
+	}
+	
+	return self;
 }
 
 - (void)viewDidLoad
@@ -184,6 +185,7 @@
         }
         
         self.calcType = savedInputData.dataType;
+        _selectedOptionIndexPath = [NSIndexPath indexPathForRow:self.calcType inSection:1];
         self.headerView.calcType = self.calcType;
         self.headerView.factorValues.values = savedInputData.values;
         _formattedFactorValues = [savedInputData formattedStringValuesByCalcType];
@@ -228,11 +230,11 @@
     self.navigationItem.rightBarButtonItems = @[buttonItem, saveItem];
 }
 
-- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+- (void)appsButtonAction {
 	@autoreleasepool {
         [_firstResponder resignFirstResponder];
         
-        [super appsButtonAction:barButtonItem];
+        [super appsButtonAction:nil];
 	}
 }
 
@@ -465,7 +467,7 @@
     static NSString *CellIdentifier = @"Cell";
     static NSString *CellIdentifier2 = @"Cell2";
     UITableViewCell *cell;
-    A3TableViewEntryCell * cell2;
+    A3JHTableViewEntryCell * cell2;
     @try {
 
         switch (indexPath.section) {
@@ -486,7 +488,7 @@
             {
                 cell2 = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
                 if (!cell2) {
-                    cell2 = [[A3TableViewEntryCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier2];
+                    cell2 = [[A3JHTableViewEntryCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier2];
                     cell2.textField.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
                     cell2.textField.clearButtonMode = UITextFieldViewModeNever;
                     cell2.textField.font = [UIFont systemFontOfSize:17.0];
@@ -546,7 +548,7 @@
     return cell;
 }
 
--(A3TableViewEntryCell *)updateSection2EntryCell:(A3TableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+-(A3JHTableViewEntryCell *)updateSection2EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     if (indexPath.row==0) {
@@ -597,7 +599,7 @@
    return cell;
 }
 
--(A3TableViewEntryCell *)updateSection3EntryCell:(A3TableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
+-(A3JHTableViewEntryCell *)updateSection3EntryCell:(A3JHTableViewEntryCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView {
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     if (indexPath.row==0) {
@@ -654,7 +656,17 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([indexPath section]==1) {
+        UITableViewCell *oldOptionCell = [self.tableView cellForRowAtIndexPath:_selectedOptionIndexPath];
+        if ([indexPath row] != [_selectedOptionIndexPath row] || [indexPath section] != [_selectedOptionIndexPath section]) {
+            oldOptionCell.accessoryType = UITableViewCellAccessoryNone;
+        }
+        
+        _selectedOptionIndexPath = indexPath;
+    }
+    
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     
     if (indexPath.section == 1) {
         
@@ -662,9 +674,7 @@
             // 같은 옵션 선택시, 반환.
             return;
         }
-        
-//        [_firstResponder resignFirstResponder];
-        
+
         switch (indexPath.row) {
             case 0:
             case 1:
@@ -691,20 +701,41 @@
                     _formattedFactorValues = [factorData formattedStringValuesByCalcType];
                     self.headerView.factorValues = factorData;
                     [self reloadTableDataSource];
-                    [UIView animateWithDuration:0.3
-                                          delay:0
-                         usingSpringWithDamping:500.0f
-                          initialSpringVelocity:0.0f
-                                        options:UIViewAnimationOptionCurveLinear
-                                     animations:^{
-                                         //[self reloadTableDataSource];
-                                         [self reloadTableHeaderView];
-                                     } completion:^(BOOL finished) {
-                                         // 옵션 선택시 무조건 키보드 올라오도록.
-                                         //[self reloadTableDataSource];
-                                         [self.tableView reloadData];
-                                         [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
-                                     }];
+                    
+                    if (IS_IPHONE) {
+                        [self reloadTableHeaderView];
+                        [self.tableView reloadData];
+                    }
+                    else {
+                        [UIView animateWithDuration:0.3 animations:^{
+                            [self reloadTableHeaderView];
+                        } completion:^(BOOL finished) {
+                            [self.tableView reloadData];
+                        }];
+                    }
+                    
+//                    [UIView animateWithDuration:0.3
+//                                          delay:0
+//                         usingSpringWithDamping:500.0f
+//                          initialSpringVelocity:0.0f
+//                                        options:UIViewAnimationOptionCurveLinear
+//                                     animations:^{
+//                                         //[self reloadTableDataSource];
+//                                         [self reloadTableHeaderView];
+//                                     } completion:^(BOOL finished) {
+//                                         // 옵션 선택시 무조건 키보드 올라오도록.
+//                                         [self reloadTableDataSource];
+//                                         [self.tableView reloadData];
+//                                         [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
+//                                     }];
+                    
+//                    [_firstResponder resignFirstResponder];
+//                    [self.tableView beginUpdates];
+//                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationMiddle];
+//                    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationMiddle];
+//                    [self.tableView endUpdates];
+//                    [self reloadTableHeaderView];
+                    
                 } else {
                     self.calcType = PercentCalcType_1 + indexPath.row;
                     A3PercentCalcData *factorData = [A3PercentCalcData new];
@@ -713,17 +744,44 @@
                     _formattedFactorValues = [factorData formattedStringValuesByCalcType];
                     self.headerView.factorValues = factorData;
                     
-                    [CATransaction begin];
-                    [CATransaction setCompletionBlock:^{
-                        // 옵션 선택시 무조건 키보드 올라오도록.
-                        [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
-                    }];
-                    [self.tableView beginUpdates];
-                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(indexPath.section, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
-                    [self.tableView endUpdates];
-
+//                    [self.tableView reloadData];
+//                    [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
                     [self.tableView.tableHeaderView setNeedsLayout];
-                    [CATransaction commit];
+                    switch ([_selectedIndexPath row]) {
+                        case 0:
+                        {
+                            A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2]];
+                            cell.textField.text = [_formattedFactorValues objectAtIndex:ValueIdx_Y1];
+                        }
+                            break;
+
+                        case 1:
+                        {
+                            A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+                            cell.textField.text = [_formattedFactorValues objectAtIndex:ValueIdx_X1];
+                        }
+                            break;
+                            
+                        default:
+                            break;
+                    }
+                    
+                    if (!_firstResponder) {
+                        [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
+                    }
+                
+                    
+//                    [CATransaction begin];
+//                    [CATransaction setCompletionBlock:^{
+//                        // 옵션 선택시 무조건 키보드 올라오도록.
+//                        [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
+//                    }];
+//                    [self.tableView beginUpdates];
+//                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(indexPath.section, 2)] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                    [self.tableView endUpdates];
+//
+//                    [self.tableView.tableHeaderView setNeedsLayout];
+//                    [CATransaction commit];
                 }
             }
                 break;
@@ -747,22 +805,49 @@
                 
                 self.headerView.factorValues = factorData;
                 
-                [UIView animateWithDuration:0.3
-                                      delay:0
-                     usingSpringWithDamping:500.0f
-                      initialSpringVelocity:0.0f
-                                    options:UIViewAnimationOptionCurveLinear
-                                 animations:^{
-                                     [self reloadTableDataSource];
-                                     [self reloadTableHeaderView];
-                                 } completion:^(BOOL finished) {
-                                     //[self reloadTableDataSource];
-                                     [self.tableView reloadData];
-
-                                     // 옵션 선택시 무조건 키보드 올라오도록.
-                                     [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
-                                 }];
+//                [UIView animateWithDuration:0.3
+//                                      delay:0
+//                     usingSpringWithDamping:500.0f
+//                      initialSpringVelocity:0.0f
+//                                    options:UIViewAnimationOptionCurveLinear
+//                                 animations:^{
+//                                     [self reloadTableDataSource];
+//                                     [self reloadTableHeaderView];
+//                                 } completion:^(BOOL finished) {
+//                                     //[self reloadTableDataSource];
+//                                     [self.tableView reloadData];
+//
+//                                     // 옵션 선택시 무조건 키보드 올라오도록.
+//                                     [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
+//                                 }];
+                [self reloadTableDataSource];
+//                [self reloadTableHeaderView];
+//                [self.tableView reloadData];
+//                [CATransaction begin];
+//                [CATransaction setCompletionBlock:^{
+//                    [self reloadTableHeaderView];
+//                }];
+//                [self.tableView beginUpdates];
+//                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2], [NSIndexPath indexPathForRow:1 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+//                [self.tableView insertSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+//                [self.tableView endUpdates];
+//                [CATransaction commit];
                 
+//                [UIView animateWithDuration:0.3 animations:^{
+//                    [self reloadTableHeaderView];
+//                    [self.tableView beginUpdates];
+//                    [self.tableView insertSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationFade];
+//                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:2], [NSIndexPath indexPathForRow:1 inSection:2]] withRowAnimation:UITableViewRowAnimationNone];
+//                    [self.tableView endUpdates];
+//                }];
+                A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self reloadTableHeaderView];
+                    
+                } completion:^(BOOL finished) {
+                    [self.tableView reloadData];
+                }];
             }
                 break;
                 
@@ -773,27 +858,27 @@
     } else {
         _selectedIndexPath = [indexPath copy];
         
-        A3TableViewEntryCell * cell = (A3TableViewEntryCell *)[tableView cellForRowAtIndexPath:_selectedIndexPath];
+        A3JHTableViewEntryCell * cell = (A3JHTableViewEntryCell *)[tableView cellForRowAtIndexPath:_selectedIndexPath];
         [cell.textField becomeFirstResponder];
         
-        if (_selectedIndexPath.section==2) {
-            if (_selectedIndexPath.row==0) {
-                cell.textField.text = _factorX1.stringValue;
-                _currentFactor = _factorX1;
-            } else if (_selectedIndexPath.row==1) {
-                cell.textField.text = _factorY1.stringValue;
-            }
-        } else if (_selectedIndexPath.section==3) {
-            if (_selectedIndexPath.row==0) {
-                cell.textField.text = _factorX2.stringValue;
-            } else if (_selectedIndexPath.row==1) {
-                cell.textField.text = _factorY2.stringValue;
-            }
-        }
+//        if (_selectedIndexPath.section==2) {
+//            if (_selectedIndexPath.row==0) {
+//                cell.textField.text = _factorX1.stringValue;
+//                _currentFactor = _factorX1;
+//            } else if (_selectedIndexPath.row==1) {
+//                cell.textField.text = _factorY1.stringValue;
+//            }
+//        } else if (_selectedIndexPath.section==3) {
+//            if (_selectedIndexPath.row==0) {
+//                cell.textField.text = _factorX2.stringValue;
+//            } else if (_selectedIndexPath.row==1) {
+//                cell.textField.text = _factorY2.stringValue;
+//            }
+//        }
         
-        _needToClearDetail = [self checkNeedToClearDetail];
+//        _needToClearDetail = [self checkNeedToClearDetail];
 
-        [self reloadPrevNextButtonStatus];
+//        [self reloadPrevNextButtonStatus];
     }
     
 }
@@ -898,10 +983,10 @@
     if ([_factorX1 isEqualToNumber:@0] && [_factorY1 isEqualToNumber:@0]) {
         _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
         _currentFactor = _factorX1;
-        A3TableViewEntryCell * cell = (A3TableViewEntryCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+        A3JHTableViewEntryCell * cell = (A3JHTableViewEntryCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
         [cell.textField becomeFirstResponder];
         
-        _needToClearDetail = [self checkNeedToClearDetail];
+//        _needToClearDetail = [self checkNeedToClearDetail];
         
     } else {
         [self scrollToTableViewTop];
@@ -933,7 +1018,7 @@
 {
     _isKeyboardShown = YES;
     _firstResponder = textField;
-    textField.textColor = COLOR_TABLE_TEXT_TYPING;
+    //textField.textColor = COLOR_TABLE_TEXT_TYPING;
     
     // 입력하려는 Cell에 이미 데이터가 있는 경우, 지우고 시작하기 위하여.
     switch (textField.tag) {
@@ -957,7 +1042,7 @@
             break;
     }
 
-    _needToClearDetail = [self checkNeedToClearDetail];
+//    _needToClearDetail = [self checkNeedToClearDetail];
     
     if (_simpleNormalNumberKeyboard == nil) {
         _simpleNormalNumberKeyboard = [self simpleNumberKeyboard];
@@ -969,43 +1054,18 @@
     
     [self reloadPrevNextButtonStatus];
 
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-    [formatter setRoundingMode:NSNumberFormatterRoundDown];
-    [formatter stringFromNumber:_currentFactor];
     //textField.text = _currentFactor.stringValue;
-    textField.text = [formatter stringFromNumber:_currentFactor];
-    textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+    
+//    NSNumberFormatter *formatter = [NSNumberFormatter new];
+//    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//    [formatter setRoundingMode:NSNumberFormatterRoundDown];
+//    [formatter stringFromNumber:_currentFactor];
+//    textField.text = [formatter stringFromNumber:_currentFactor];
+//    textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+
+    textField.text = @"";
     
     return YES;
-}
-
--(void)reloadPrevNextButtonStatus {
-    if (_selectedIndexPath.section==2&&_selectedIndexPath.row==0) {
-        _prevShow = NO;
-        _nextShow = YES;
-
-    } else if (_selectedIndexPath.section==2&&_selectedIndexPath.row==1) {
-        if (self.calcType==PercentCalcType_5) {
-            _prevShow = YES;
-            _nextShow = YES;
-        } else {
-            _prevShow = YES;
-            _nextShow = NO;
-        }
-        
-    } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==0) {
-        _prevShow = YES;
-        _nextShow = YES;
-
-    } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==1) {
-        if (self.calcType==PercentCalcType_5) {
-            _prevShow = YES;
-            _nextShow = NO;
-        }
-    }
-    
-    [_simpleNormalNumberKeyboard reloadPrevNextButtons];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
@@ -1019,6 +1079,10 @@
 - (void)textFieldDidChange:(NSNotification *)notification {
 	UITextField *textField = notification.object;
     
+    if ([textField.text length] == 0) {
+        return;
+    }
+    
     // 소수점 체크.
     NSArray *decimalCheck = [textField.text componentsSeparatedByString:@"."];
     if (decimalCheck.count>2) {
@@ -1028,6 +1092,20 @@
     }
     if (decimalCheck.count==2 && [decimalCheck[1] length]==0) {
         // 소수점이 2개이상 입력될 수 없음.
+        return;
+    }
+
+    if (decimalCheck.count == 2 && ((NSString *)decimalCheck[1]).length > 3) {
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        [formatter setRoundingMode:NSNumberFormatterRoundDown];
+        if ([textField.text rangeOfString:@".000"].location==NSNotFound) {
+            textField.text = [NSString stringWithFormat:@"%@", [formatter stringFromNumber:@([textField.text doubleValue])]];
+        }
+        else {
+            textField.text = [NSString stringWithFormat:@"%@.000", [formatter stringFromNumber:@([textField.text doubleValue])]];
+        }
+        
         return;
     }
     
@@ -1045,29 +1123,115 @@
     }
     
     
-    if (_needToClearDetail && textField.text.length > _currentFactor.stringValue.length) {
-        
-        _needToClearDetail = NO;
-        
-        if (textField.text.length > _currentFactor.stringValue.length) {
-            textField.text = [textField.text substringWithRange:NSMakeRange(_currentFactor.stringValue.length, 1)];
-            if (textField.text.doubleValue==0) {
-                textField.text = @"";
-            }
-        } else if (textField.text.length < _currentFactor.stringValue.length) {
-            return;
-        }
-    }
+//    if (_needToClearDetail && textField.text.length > _currentFactor.stringValue.length) {
+//        
+//        _needToClearDetail = NO;
+//        
+//        if (textField.text.length > _currentFactor.stringValue.length) {
+//            textField.text = [textField.text substringWithRange:NSMakeRange(_currentFactor.stringValue.length, 1)];
+//            if (textField.text.doubleValue==0) {
+//                textField.text = @"";
+//            }
+//        } else if (textField.text.length < _currentFactor.stringValue.length) {
+//            return;
+//        }
+//    }
     
-    if (textField.text.length==0) {
-        textField.text = @"0";
-    }
+//    if (textField.text.length==0) {
+//        textField.text = @"0";
+//    }
+    
+//    
+//    if ([textField.text rangeOfString:@".0"].location==NSNotFound) {
+//        NSNumberFormatter *formatter = [NSNumberFormatter new];
+//        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+//        [formatter setRoundingMode:NSNumberFormatterRoundDown];
+//
+//        switch (textField.tag) {
+//            case 0:
+//            {
+//                //_factorX1 = @(textField.text.doubleValue);
+//                //textField.text = [NSString stringWithFormat:@"%.03f", textField.text.doubleValue];
+//                
+//                _factorX1 = [formatter numberFromString:textField.text];
+//                //textField.text = [formatter stringFromNumber:_factorX1];
+//                //textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//                
+//                //            textField.text = _factorX1.stringValue;
+//                //            [formatter stringFromNumber:_factorX1];
+//                //            textField.text = [formatter stringFromNumber:_factorX1];
+//                //            textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//            }
+//                break;
+//            case 1:
+//            {
+//                //            _factorY1 = @(textField.text.doubleValue);
+//                
+//                _factorY1 = [formatter numberFromString:textField.text];
+//                //                textField.text = [formatter stringFromNumber:_factorY1];
+//                //                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//                //            textField.text = [NSString stringWithFormat:@"%@", _factorY1];
+//                //            textField.text = _factorY1.stringValue;
+//                //            [formatter stringFromNumber:_factorX1];
+//                //            textField.text = [formatter stringFromNumber:_factorY1];
+//                //            textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//            }
+//                break;
+//            case 2:
+//            {
+//                //            _factorX2 = @(textField.text.doubleValue);
+//                
+//                _factorX2 = [formatter numberFromString:textField.text];
+//                //                textField.text = [formatter stringFromNumber:_factorX2];
+//                //                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//                //            textField.text = [_factorX2 stringValue];
+//                //            [formatter stringFromNumber:_factorX1];
+//                //            textField.text = [formatter stringFromNumber:_factorX2];
+//                //            textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//            }
+//                break;
+//            case 3:
+//            {
+//                //            _factorY2 = @(textField.text.doubleValue);
+//                
+//                _factorY2 = [formatter numberFromString:textField.text];
+//                //                textField.text = [formatter stringFromNumber:_factorY2];
+//                //                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//                //            textField.text = [_factorY2 stringValue];
+//                //            [formatter stringFromNumber:_factorX1];
+//                //            textField.text = [formatter stringFromNumber:_factorY2];
+//                //            textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+//            }
+//                break;
+//            default:
+//                break;
+//        }
+//    } else {
+//        NSString * str = [textField.text substringFromIndex:[textField.text rangeOfString:@".0"].location];
+//        NSLog(@"%@", str);
+//        //textField.text = textField.text substringWithRange:NSMakeRange(0, )
+//    }
+    
+    //    A3PercentCalcData *formattedData = [A3PercentCalcData new];
+    //    formattedData.dataType = self.calcType;
+    //    formattedData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
+    //    [self saveInputTextData:formattedData calculated:YES];
+    //
+    //    _formattedFactorValues = [formattedData formattedStringValuesByCalcType];
 
-    
-    if ([textField.text rangeOfString:@".0"].location==NSNotFound) {
+}
+
+-(void)textFieldDidEndEditing:(UITextField *)textField {
+    _isKeyboardShown = NO;
+    _firstResponder = nil;
+
+    if ([textField.text length] > 0) {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        [formatter setRoundingMode:NSNumberFormatterRoundDown];
+        //    [formatter setRoundingMode:NSNumberFormatterRoundDown];
+        NSString *value;
+        value = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+        value = [textField.text stringByReplacingOccurrencesOfString:@"%" withString:@""];
         
         switch (textField.tag) {
             case 0:
@@ -1075,7 +1239,7 @@
                 //_factorX1 = @(textField.text.doubleValue);
                 //textField.text = [NSString stringWithFormat:@"%.03f", textField.text.doubleValue];
                 
-                _factorX1 = [formatter numberFromString:textField.text];
+                _factorX1 = [formatter numberFromString:value];
                 //textField.text = [formatter stringFromNumber:_factorX1];
                 //textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
                 
@@ -1089,9 +1253,9 @@
             {
                 //            _factorY1 = @(textField.text.doubleValue);
                 
-                _factorY1 = [formatter numberFromString:textField.text];
-//                textField.text = [formatter stringFromNumber:_factorY1];
-//                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+                _factorY1 = [formatter numberFromString:value];
+                //                textField.text = [formatter stringFromNumber:_factorY1];
+                //                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
                 //            textField.text = [NSString stringWithFormat:@"%@", _factorY1];
                 //            textField.text = _factorY1.stringValue;
                 //            [formatter stringFromNumber:_factorX1];
@@ -1103,9 +1267,9 @@
             {
                 //            _factorX2 = @(textField.text.doubleValue);
                 
-                _factorX2 = [formatter numberFromString:textField.text];
-//                textField.text = [formatter stringFromNumber:_factorX2];
-//                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+                _factorX2 = [formatter numberFromString:value];
+                //                textField.text = [formatter stringFromNumber:_factorX2];
+                //                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
                 //            textField.text = [_factorX2 stringValue];
                 //            [formatter stringFromNumber:_factorX1];
                 //            textField.text = [formatter stringFromNumber:_factorX2];
@@ -1116,9 +1280,9 @@
             {
                 //            _factorY2 = @(textField.text.doubleValue);
                 
-                _factorY2 = [formatter numberFromString:textField.text];
-//                textField.text = [formatter stringFromNumber:_factorY2];
-//                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+                _factorY2 = [formatter numberFromString:value];
+                //                textField.text = [formatter stringFromNumber:_factorY2];
+                //                textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
                 //            textField.text = [_factorY2 stringValue];
                 //            [formatter stringFromNumber:_factorX1];
                 //            textField.text = [formatter stringFromNumber:_factorY2];
@@ -1128,23 +1292,7 @@
             default:
                 break;
         }
-    } else {
-        NSString * str = [textField.text substringFromIndex:[textField.text rangeOfString:@".0"].location];
-        NSLog(@"%@", str);
-        //textField.text = textField.text substringWithRange:NSMakeRange(0, )
     }
-    
-//    A3PercentCalcData *formattedData = [A3PercentCalcData new];
-//    formattedData.dataType = self.calcType;
-//    formattedData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
-//    [self saveInputTextData:formattedData calculated:YES];
-//    
-//    _formattedFactorValues = [formattedData formattedStringValuesByCalcType];
-    NSLog(@"here???");
-}
-
--(void)textFieldDidEndEditing:(UITextField *)textField {
-    _isKeyboardShown = NO;
     
     if (self.calcType==PercentCalcType_5) {
         
@@ -1187,17 +1335,47 @@
     
     [self setBarButtonEnable:YES];
     
-    if (_formattedFactorValues.count >= textField.tag) {
+    if (_formattedFactorValues.count > textField.tag) {
         textField.text = _formattedFactorValues[textField.tag];
-        textField.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
+//        textField.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     }
-
+    
     
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
     
     if (![textField.text length])
         return;
+}
+
+#pragma mark
+
+-(void)reloadPrevNextButtonStatus {
+    if (_selectedIndexPath.section==2&&_selectedIndexPath.row==0) {
+        _prevShow = NO;
+        _nextShow = YES;
+
+    } else if (_selectedIndexPath.section==2&&_selectedIndexPath.row==1) {
+        if (self.calcType==PercentCalcType_5) {
+            _prevShow = YES;
+            _nextShow = YES;
+        } else {
+            _prevShow = YES;
+            _nextShow = NO;
+        }
+        
+    } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==0) {
+        _prevShow = YES;
+        _nextShow = YES;
+
+    } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==1) {
+        if (self.calcType==PercentCalcType_5) {
+            _prevShow = YES;
+            _nextShow = NO;
+        }
+    }
+    
+    [_simpleNormalNumberKeyboard reloadPrevNextButtons];
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
@@ -1277,8 +1455,7 @@
 
 #pragma mark - NumberKeyabord
 
--(BOOL)isPreviousEntryExists
-{
+-(BOOL)isPreviousEntryExists{
     return _prevShow;
 }
 
@@ -1302,67 +1479,66 @@
     return @"Down";
 }
 
--(void)prevButtonPressed
-{
-    A3TableViewEntryCell *cell = (A3TableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+-(void)prevButtonPressed{
+    A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
     
-    A3PercentCalcData *factorData = [A3PercentCalcData new];
-    factorData.dataType = self.calcType;
-    factorData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
-    _formattedFactorValues = [factorData formattedStringValuesByCalcType];
+//    A3PercentCalcData *factorData = [A3PercentCalcData new];
+//    factorData.dataType = self.calcType;
+//    factorData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
+//    _formattedFactorValues = [factorData formattedStringValuesByCalcType];
     
-    if (_selectedIndexPath.section==2&&_selectedIndexPath.row==0) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_X1];
+    if ([_selectedIndexPath section] == 2 && [_selectedIndexPath row] == 0) {
+//        cell.textField.text = _formattedFactorValues[ValueIdx_X1];
         _prevShow = NO;
         _nextShow = YES;
         
     } else if (_selectedIndexPath.section==2&&_selectedIndexPath.row==1) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_Y1];
+//        cell.textField.text = _formattedFactorValues[ValueIdx_Y1];
         _prevShow = NO;
         _nextShow = YES;
         _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:2];
         
     } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==0) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_X2];
+//        cell.textField.text = _formattedFactorValues[ValueIdx_X2];
         _prevShow = YES;
         _nextShow = YES;
         _selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:2];
 
     } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==1) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_Y2];
+//        cell.textField.text = _formattedFactorValues[ValueIdx_Y2];
         _prevShow = YES;
         _nextShow = YES;
         _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:3];
     }
     
-    _needToClearDetail = [self checkNeedToClearDetail];
+//    _needToClearDetail = [self checkNeedToClearDetail];
 
-    cell = (A3TableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
-    [cell.textField becomeFirstResponder];
+//    cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+//    [cell.textField becomeFirstResponder];
+    
     [UIView beginAnimations:@"scroll" context:nil];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationCurve:7];
     [UIView setAnimationDuration:0.25];
     [self scrollTableViewToIndexPath:_selectedIndexPath];
-    cell = (A3TableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+    cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
     [cell.textField becomeFirstResponder];
     [UIView commitAnimations];
     
     [_simpleNormalNumberKeyboard reloadPrevNextButtons];
 }
 
--(void)nextButtonPressed
-{
-    A3TableViewEntryCell *cell = (A3TableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+-(void)nextButtonPressed{
+    A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
 
-    A3PercentCalcData *factorData = [A3PercentCalcData new];
-    factorData.dataType = self.calcType;
-    factorData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
-    _formattedFactorValues = [factorData formattedStringValuesByCalcType];
-    NSLog(@"here?????");
+//    A3PercentCalcData *factorData = [A3PercentCalcData new];
+//    factorData.dataType = self.calcType;
+//    factorData.values = @[_factorX1, _factorY1, _factorX2, _factorY2];
+//    _formattedFactorValues = [factorData formattedStringValuesByCalcType];
+//    NSLog(@"here?????");
     
-    if (_selectedIndexPath.section==2&&_selectedIndexPath.row==0) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_X1];
+    if (_selectedIndexPath.section == 2 && _selectedIndexPath.row == 0) {
+//        cell.textField.text = _formattedFactorValues[ValueIdx_X1];
         _selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:2];
         
         if (self.calcType==PercentCalcType_5) {
@@ -1372,9 +1548,8 @@
             _prevShow = YES;
             _nextShow = NO;
         }
-        
-    } else if (_selectedIndexPath.section==2&&_selectedIndexPath.row==1) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_Y1];
+    } else if (_selectedIndexPath.section == 2 && _selectedIndexPath.row == 1) {
+//        cell.textField.text = _formattedFactorValues[ValueIdx_Y1];
 
         if (self.calcType==PercentCalcType_5) {
             _prevShow = YES;
@@ -1382,26 +1557,26 @@
             _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:3];
         }
         
-    } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==0) {
-        cell.textField.text = _formattedFactorValues[ValueIdx_X2];
+    } else if (_selectedIndexPath.section == 3 && _selectedIndexPath.row == 0) {
+//        cell.textField.text = _formattedFactorValues[ValueIdx_X2];
         _prevShow = YES;
         _nextShow = NO;
         _selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:3];
         
-    } else if (_selectedIndexPath.section==3&&_selectedIndexPath.row==1) {
+    } else if (_selectedIndexPath.section == 3 && _selectedIndexPath.row == 1) {
 
     }
     
-    _needToClearDetail = [self checkNeedToClearDetail];
+//    _needToClearDetail = [self checkNeedToClearDetail];
 
-    cell = (A3TableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
-    [cell.textField becomeFirstResponder];
+//    cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+//    [cell.textField becomeFirstResponder];
     [UIView beginAnimations:@"scroll" context:nil];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationCurve:7];
     [UIView setAnimationDuration:2.5];
     [self scrollTableViewToIndexPath:_selectedIndexPath];
-    cell = (A3TableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+    cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
     [cell.textField becomeFirstResponder];
     [UIView commitAnimations];
     
@@ -1409,8 +1584,17 @@
 }
 
 #pragma mark - A3PercentCalcHistoryViewController Delegate
--(void)setHistoryDataFor:(A3PercentCalcData *)history {
+-(void)setHistoryData:(A3PercentCalcData *)history {
     _formattedFactorValues = [history formattedStringValuesByCalcType];
+    _factorX1 = [history.values objectAtIndex:ValueIdx_X1];
+    _factorY1 = [history.values objectAtIndex:ValueIdx_Y1];
+    _factorX2 = @0;
+    _factorY2 = @0;
+    if ([history dataType] == PercentCalcType_5) {
+        _factorX2 = [history.values objectAtIndex:ValueIdx_X2];
+        _factorY2 = [history.values objectAtIndex:ValueIdx_Y2];
+    }
+    
     NSLog(@"here??????");
     self.calcType = history.dataType;
     self.headerView.factorValues = history;

@@ -25,6 +25,7 @@
 
 //- (void)presentCenterViewController:(UIViewController *)viewController;
 - (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController;
+- (void)presentCenterViewController:(UIViewController *)viewController fromViewController:(UIViewController *)sourceViewController withCompletion:(void (^)(void))completion;
 - (void)dismissCenterViewController;
 - (void)presentRightSideViewController:(UIViewController *)viewController;
 - (void)dismissRightSideViewController;

@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, HolidaysTableHeaderViewComponent) {
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSString *countryCodeOfCurrentLocation;
 @property (nonatomic, strong) NSMutableArray *holidayDataArray;
-@property (nonatomic, strong) id<MASConstraint> pageControlWidth;
+@property (nonatomic, strong) MASConstraint *pageControlWidth;
 @property (nonatomic, strong) A3GradientView *topGradientView;
 @property (nonatomic, strong) NSTimer *dayChangedTimer;
 

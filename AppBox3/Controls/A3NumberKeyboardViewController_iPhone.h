@@ -20,5 +20,6 @@
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *deleteButton;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *prevButton;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *nextButton;
+@property (assign) BOOL needButtonsReload;   // kjh
 
 @end

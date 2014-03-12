@@ -23,6 +23,8 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (void)handleBigButton2;
 - (NSString *)stringForBigButton1;
 - (NSString *)stringForBigButton2;
+- (NSString *)stringForPrevButton:(NSString *)current;
+- (NSString *)stringForNextButton:(NSString *)current;
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate;
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;

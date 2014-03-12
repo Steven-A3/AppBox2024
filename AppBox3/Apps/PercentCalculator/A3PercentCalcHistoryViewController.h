@@ -12,7 +12,7 @@
 
 @protocol A3PercentCalcHistoryDelegate <NSObject>
 
--(void)setHistoryDataFor:(A3PercentCalcData *)history;
+-(void)setHistoryData:(A3PercentCalcData *)history;
 -(void)didDeleteHistory;
 -(void)dismissHistoryViewController;
 @end

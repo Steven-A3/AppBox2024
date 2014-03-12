@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define A3TableViewCell_TextView_Tag 1  // KJH
+
 @interface A3TableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UIView *customTopSeparator;

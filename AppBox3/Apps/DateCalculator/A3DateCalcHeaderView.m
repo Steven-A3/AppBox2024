@@ -21,10 +21,11 @@
 #define SLIDER_OFFSET_LABEL     20
 #define SLIDER_THUMB_MARGIN     20
 
-#define COLOR_ELLIPSE_0     [UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]
-#define COLOR_ELLIPSE_1     [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]
-#define COLOR_ELLIPSE_1_BORDER     [UIColor colorWithRed:188.0/255.0 green:188.0/255.0 blue:188.0/255.0 alpha:1.0]
-#define COLOR_ELLIPSE_2_Center     [UIColor colorWithRed:12.0/255.0 green:95.0/255.0 blue:200.0/255.0 alpha:1.0]
+#define COLOR_ELLIPSE_0                 [UIColor colorWithRed:229.0/255.0 green:229.0/255.0 blue:229.0/255.0 alpha:1.0]
+#define COLOR_ELLIPSE_1                 [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0]
+#define COLOR_ELLIPSE_1_BORDER          [UIColor colorWithRed:188.0/255.0 green:188.0/255.0 blue:188.0/255.0 alpha:1.0]
+//#define COLOR_ELLIPSE_2_Center     [UIColor colorWithRed:12.0/255.0 green:95.0/255.0 blue:200.0/255.0 alpha:1.0]
+#define COLOR_ELLIPSE_2_Center          [UIColor colorWithRed:0/255.0 green:122/255.0 blue:255/255.0 alpha:1.0]
 #define COLOR_ELLIPSE_2_Center_GRAY     [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0]
 
 @interface A3DateCalcHeaderView()
@@ -39,16 +40,17 @@
 @property (assign, nonatomic) CGFloat fromValue;
 @property (assign, nonatomic) CGFloat toValue;
 
-@property (weak, nonatomic) IBOutlet UIView *sliderLineView;    // 슬라이더 베이스 라인
+@property (strong, nonatomic) UIView *sliderLineView;    // 슬라이더 베이스 라인
 @property (strong, nonatomic) A3DateCalcResultCursorView *resultLabel;   // 슬라이더 커서 상단 결과 출력
-@property (weak, nonatomic) IBOutlet UILabel *fromLabel;    // 슬라이더 커서 하단 날짜 출력
-@property (weak, nonatomic) IBOutlet UILabel *toLabel;      // 슬라이더 커서 하단 날짜 출력
+@property (strong, nonatomic) UILabel *resultTextLabel;
+@property (strong, nonatomic) UILabel *fromLabel;    // 슬라이더 커서 하단 날짜 출력
+@property (strong, nonatomic) UILabel *toLabel;      // 슬라이더 커서 하단 날짜 출력
 
 @property (strong, nonatomic) A3OverlappedCircleView * fromThumbView;
 @property (strong, nonatomic) A3OverlappedCircleView * toThumbView;
 
-@property (weak, nonatomic) IBOutlet UIView *fromToRangeLineView;   // 슬라이더 커서 간격 표시 라인
-@property (weak, nonatomic) IBOutlet UIView *bottomLineView;
+@property (strong, nonatomic) UIView *fromToRangeLineView;   // 슬라이더 커서 간격 표시 라인
+@property (strong, nonatomic) UIView *bottomLineView;
 
 @property (assign, nonatomic) CGFloat availableWidth;
 
@@ -56,6 +58,7 @@
 
 @implementation A3DateCalcHeaderView
 {
+    //UILabel *test;
     CALC_TYPE _calcType;
     BOOL _fromLagerThanTo;
     BOOL _freezeToDragLeftCircle;   // from
@@ -67,131 +70,126 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-
+        [self initializeSubViews];
+        [self setupGestureRecognizer];
     }
     return self;
 }
 
-- (void)awakeFromNib
+-(void)awakeFromNib
 {
     [super awakeFromNib];
-    [self initialize];
+    [self initializeSubViews];
 }
 
 #pragma mark - Initialization
 
-- (void)initialize
+- (void)initializeSubViews
 {
     _minValue = 0;
     _maxValue = 100;
     
     SLIDER_OFFSET = IS_RETINA ? 22.5 : 23;
     
-    CGFloat lineYOffset = 0.0;
-    CGFloat lineHeight = 1.0;
-    CGFloat borderLine = 1.0;
+    self.sliderLineView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.fromToRangeLineView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.bottomLineView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.fromThumbView = [[A3OverlappedCircleView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];;
+    self.toThumbView = [[A3OverlappedCircleView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];;
+    self.resultLabel = [[A3DateCalcResultCursorView alloc] initWithFrame:CGRectZero];
+    self.fromLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.toLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     
-    if (IS_RETINA) {
-        lineYOffset = 1.0;
-        lineHeight = 0.5;
-        borderLine = 0.5;
-    }
-    
-    // 1 point 라인이 2 point 로 보이는 현상 제거를 위하여...
-    {
-        CGRect rect = _bottomLineView.frame;
-        rect.origin.y += lineYOffset;
-        rect.size.height = lineHeight;
-        _bottomLineView.frame = rect;
-        _bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
-        
-        rect = _fromToRangeLineView.frame;
-        rect.size.height = lineHeight;
-        _fromToRangeLineView.frame = rect;
-        
-        rect = _sliderLineView.frame;
-        rect.size.height = lineHeight;
-        _sliderLineView.frame = rect;
-    }
-    
-    _fromThumbView = [[A3OverlappedCircleView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];;
-    _toThumbView = [[A3OverlappedCircleView alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];;
-    _fromThumbView.centerColor = COLOR_NEGATIVE;
-    _toThumbView.centerColor = COLOR_NEGATIVE;
-    
-    [self addSubview:_fromThumbView];
-    [self addSubview:_toThumbView];
+//    test = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 70, 40)];
+//    test.layer.borderColor = [COLOR_POSITIVE CGColor];
+//    test.layer.borderWidth = 1.0;
+//    test.backgroundColor = [UIColor clearColor];
+//    [self addSubview:test];
+//    //test.text = [A3DateCalcStateManager formattedStringDate:[NSDate date]];
+//    test.text = @"2016";
+//    test.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+//    test.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+
     
     if (IS_IPHONE) {
-        _sliderLineView.center = CGPointMake(_sliderLineView.center.x, 59.0);
-        _fromToRangeLineView.center = CGPointMake(_fromToRangeLineView.center.x, 59.0);
-        _fromThumbView.center = CGPointMake(_fromThumbView.center.x, 59.0);
-        _toThumbView.center = CGPointMake(_toThumbView.center.x, 59.0);
-        
-//        _fromLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
-//        _toLabel.font = [UIFont fontWithName:@"Helvetica Neue" size:13.0];
-        _fromLabel.font = [UIFont systemFontOfSize:13];
-        _toLabel.font = [UIFont systemFontOfSize:13];
+        CGFloat baseLineCenterY = 59.0;
+        CGFloat lineHeight = IS_RETINA ? 0.5 : 1.0;
+        self.sliderLineView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), lineHeight);
+        self.fromToRangeLineView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), lineHeight);
+        self.bottomLineView.frame = CGRectMake(0, CGRectGetHeight(self.frame) - lineHeight, CGRectGetWidth(self.frame), lineHeight);
 
-    } else {
-        _sliderLineView.center = CGPointMake(_sliderLineView.center.x, 78.0);
-        _fromToRangeLineView.center = CGPointMake(_fromToRangeLineView.center.x, 78.0);
-        _fromThumbView.center = CGPointMake(_fromThumbView.center.x, 78.0);
-        _toThumbView.center = CGPointMake(_toThumbView.center.x, 78.0);
+        self.sliderLineView.center = CGPointMake(_sliderLineView.center.x, baseLineCenterY);
+        self.fromToRangeLineView.center = CGPointMake(_fromToRangeLineView.center.x, baseLineCenterY);
+        self.fromThumbView.center = CGPointMake(_fromThumbView.center.x, baseLineCenterY);
+        self.toThumbView.center = CGPointMake(_toThumbView.center.x, baseLineCenterY);
     }
+    else {
+        CGFloat baseLineCenterY = 78.0;
+        CGFloat lineHeight = IS_RETINA ? 0.5 : 1.0;
+        self.sliderLineView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), lineHeight);
+        self.fromToRangeLineView.frame = CGRectMake(0, 0, CGRectGetWidth(self.frame), lineHeight);
+        self.bottomLineView.frame = CGRectMake(0, CGRectGetHeight(self.frame) - lineHeight, CGRectGetWidth(self.frame), lineHeight);
+        
+        self.sliderLineView.center = CGPointMake(_sliderLineView.center.x, baseLineCenterY);
+        self.fromToRangeLineView.center = CGPointMake(_fromToRangeLineView.center.x, baseLineCenterY);
+        self.fromThumbView.center = CGPointMake(_fromThumbView.center.x, baseLineCenterY);
+        self.toThumbView.center = CGPointMake(_toThumbView.center.x, baseLineCenterY);
+    }
+    
+    self.sliderLineView.backgroundColor = [UIColor colorWithRed:188/255.0 green:188/255.0 blue:188/255.0 alpha:1.0];
+    self.fromToRangeLineView.backgroundColor = COLOR_ELLIPSE_2_Center;
+    self.bottomLineView.backgroundColor = COLOR_TABLE_SEPARATOR;
+    self.fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+    self.toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+    self.backgroundColor = COLOR_HEADERVIEW_BG;
+    self.sliderLineView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
+    self.fromToRangeLineView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
+    self.bottomLineView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleRightMargin;
+    
+    [self addSubview:_sliderLineView];
+    [self addSubview:_fromToRangeLineView];
+    [self addSubview:_bottomLineView];
+    [self addSubview:_fromThumbView];
+    [self addSubview:_toThumbView];
+    [self addSubview:_fromLabel];
+    [self addSubview:_toLabel];
 
     _resultLabel = [[A3DateCalcResultCursorView alloc] initWithFrame:CGRectZero ArrowDirection:ArrowDirection_From];
     _resultLabel.center = _sliderLineView.center;
     [self addSubview:_resultLabel];
-    //_resultLabel.arrowDirection = ArrowDirection_From;
-
-    _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
-
-    [self setupGestureRecognizer];
-
-    self.backgroundColor = COLOR_HEADERVIEW_BG;
+    
+//    _resultTextLabel = [[UILabel alloc] initWithFrame:_resultLabel.frame];
+//    _resultTextLabel.text = @"211";
+//    _resultTextLabel.textColor = COLOR_POSITIVE;
+//    _resultTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+//    _resultTextLabel.backgroundColor = [UIColor whiteColor];
+//    [self addSubview:_resultTextLabel];
 }
 
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    //    [self initialize];
-
-    [self setupConstraints];
-    [super layoutSubviews];
     
-    if (IS_RETINA) {
-        CGRect rect = _sliderLineView.frame;
-        rect.size.height = 0.5;
-        _sliderLineView.frame = rect;
-        rect = _fromToRangeLineView.frame;
-        rect.size.height = 0.5;
-        _fromToRangeLineView.frame = rect;
-        rect = _bottomLineView.frame;
-        rect.size.height = 0.5;
-        _bottomLineView.frame = rect;
-    }
-
-}
-
-- (void)setupConstraints
-{
-    [_resultLabel setNeedsLayout];
-    if (IS_IPAD) {
-        _fromLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        _toLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-        [_fromLabel sizeToFit];
-        [_toLabel sizeToFit];
-    }
+    [self adjustFromToBetweenLineWidth];
+    [self adjustFromToLabelPosition];
+    [self adjustSubviewsFont];
     
     if (_calcType == CALC_TYPE_SUB) {
         [self setupResultLabelPositionForThumbView:_fromThumbView];
     } else {
         [self setupResultLabelPositionForThumbView:nil];
     }
-    [self adjustFromToBetweenLineWidth];
-    [self adjustFromToLabelPosition];
 }
+
+//-(void)drawRect:(CGRect)rect {
+//    UIBezierPath * path = [UIBezierPath new];
+//    [path moveToPoint:CGPointMake(70, 40.5)];
+//    [path addLineToPoint:CGPointMake(130, 40.5)];
+//    [path closePath];
+//    [path setLineWidth:1.0];
+//    [COLOR_POSITIVE setStroke];
+//    [path stroke];
+//}
 
 - (void)setupGestureRecognizer
 {
@@ -208,6 +206,270 @@
                                                                               action:@selector(toThumbTapGesture:)];
     [_toThumbView addGestureRecognizer:toPan];
     [_toThumbView addGestureRecognizer:toTap];
+}
+
+#pragma mark View Control, Result
+
+- (void)adjustSubviewsFont
+{
+    [_resultLabel setNeedsLayout];
+    if (IS_IPAD) {
+        self.fromLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        self.toLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+//        _resultTextLabel.font = self.resultLabel.contentLabel.font;
+        [self.fromLabel sizeToFit];
+        [self.toLabel sizeToFit];
+    }
+    else {
+        self.fromLabel.font = [UIFont systemFontOfSize:13];
+        self.toLabel.font = [UIFont systemFontOfSize:13];
+        self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont systemFontOfSize:17] : [UIFont systemFontOfSize:13];
+        
+//        _resultTextLabel.font = self.resultLabel.contentLabel.font;
+    }
+    
+//    test.text = self.resultLabel.contentLabel.text;
+//    test.font = self.resultLabel.contentLabel.font;
+//    [test sizeToFit];
+}
+
+- (void)adjustFromToBetweenLineWidth
+{
+    CGRect fRect = _fromThumbView.frame;
+    CGRect tRect = _toThumbView.frame;
+    CGRect rect = _fromToRangeLineView.frame;
+    CGFloat fXpos = _fromValue + CGRectGetWidth(fRect)/8;
+    CGFloat tXpos = _toValue - CGRectGetWidth(tRect)/8;
+    
+    NSLog(@"_toThumbView.center.x: %f", _toThumbView.center.x);
+    
+    rect.origin = CGPointMake(fXpos, rect.origin.y);
+    rect.size = CGSizeMake(tXpos - fXpos, rect.size.height);
+    
+    [UIView animateWithDuration:0.5
+                          delay:0
+         usingSpringWithDamping:500.0f
+          initialSpringVelocity:0.0f
+                        options:UIViewAnimationOptionCurveLinear
+                     animations:^{
+                         [_fromToRangeLineView setFrame:rect];
+                     } completion:^(BOOL finished) {
+                         
+                     }];
+    
+    //    // From Label 위치 지정
+    //    [_fromLabel sizeToFit];
+    //    NSDictionary *attributes;
+    //    if (IS_IPAD) {
+    //        attributes = @{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] };
+    //    } else {
+    //        attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Helvetica Neue" size:13.0] };
+    //    }
+    //    CGRect fontRect = [_fromLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
+    //                                                    options:NSStringDrawingUsesLineFragmentOrigin
+    //                                                 attributes:attributes
+    //                                                    context:nil];
+    //
+    //    _fromLabel.center = CGPointMake(_fromThumbView.center.x, _toLabel.center.y);
+    //    CGRect labelRect = _fromLabel.frame;
+    //    if (IS_IPHONE) {
+    //        labelRect.origin.y = _sliderLineView.center.y + 9.0;
+    //    } else {
+    //        labelRect.origin.y = _sliderLineView.center.y + 23.0;
+    //    }
+    //
+    //    labelRect.size.width = fontRect.size.width;
+    //    if (labelRect.origin.x < self.bounds.origin.x + SLIDER_OFFSET_LABEL ) {
+    //        labelRect.origin.x = self.bounds.origin.x + SLIDER_OFFSET_LABEL;
+    //    } else if ((labelRect.origin.x+labelRect.size.width+SLIDER_OFFSET_LABEL) > _toLabel.frame.origin.x) {
+    //        labelRect.origin.x = _toLabel.frame.origin.x - labelRect.size.width - SLIDER_OFFSET_LABEL;
+    //    }
+    //
+    //    _fromLabel.frame = labelRect;
+    //
+    //    // ToLabel 위치 지정
+    //    [_toLabel sizeToFit];
+    //    //attributes = @{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]};
+    //    fontRect = [_toLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
+    //                                           options:NSStringDrawingUsesLineFragmentOrigin
+    //                                        attributes:attributes
+    //                                           context:nil];
+    //    _toLabel.center = CGPointMake(_toThumbView.center.x, _toLabel.center.y);
+    //    labelRect = _toLabel.frame;
+    //    labelRect.size.width = fontRect.size.width;
+    //    if (IS_IPHONE) {
+    //        labelRect.origin.y = _sliderLineView.center.y + 9.0;
+    //    } else {
+    //        labelRect.origin.y = _sliderLineView.center.y + 23.0;
+    //    }
+    //
+    //    if ((labelRect.origin.x+labelRect.size.width) > (CGRectGetWidth(self.bounds) - SLIDER_OFFSET_LABEL)) {
+    //        labelRect.origin.x = CGRectGetWidth(self.bounds) - labelRect.size.width - SLIDER_OFFSET_LABEL;
+    //
+    //    } else if (labelRect.origin.x < (_fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL)) {
+    //        labelRect.origin.x = _fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL;
+    //    }
+    //
+    //    _toLabel.frame = labelRect;
+}
+
+- (void)adjustFromToLabelPosition {
+    // From Label 위치 지정
+    [_fromLabel sizeToFit];
+    NSDictionary *attributes;
+    if (IS_IPAD) {
+        attributes = @{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] };
+    } else {
+        //attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Helvetica Neue" size:13.0] };
+        attributes = @{ NSFontAttributeName : [UIFont systemFontOfSize:13] };
+    }
+    CGRect fontRect = [_fromLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
+                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                 attributes:attributes
+                                                    context:nil];
+    
+    _fromLabel.center = CGPointMake(_fromThumbView.center.x, _toLabel.center.y);
+    CGRect labelRect = _fromLabel.frame;
+    if (IS_IPHONE) {
+        labelRect.origin.y = _sliderLineView.center.y + 9.0;
+    } else {
+        labelRect.origin.y = _sliderLineView.center.y + 23.0;
+    }
+    
+    labelRect.size.width = fontRect.size.width;
+    if (labelRect.origin.x < self.bounds.origin.x + SLIDER_OFFSET_LABEL ) {
+        labelRect.origin.x = roundf( self.bounds.origin.x + SLIDER_OFFSET_LABEL );
+    } else if ((labelRect.origin.x + labelRect.size.width + SLIDER_OFFSET_LABEL) > _toLabel.frame.origin.x) {
+        labelRect.origin.x = roundf( _toLabel.frame.origin.x - labelRect.size.width - SLIDER_OFFSET_LABEL );
+    }
+    
+    _fromLabel.frame = labelRect;
+    
+    // ToLabel 위치 지정
+    [_toLabel sizeToFit];
+    //attributes = @{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]};
+    fontRect = [_toLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
+                                           options:NSStringDrawingUsesLineFragmentOrigin
+                                        attributes:attributes
+                                           context:nil];
+    _toLabel.center = CGPointMake(_toThumbView.center.x, _toLabel.center.y);
+    labelRect = _toLabel.frame;
+    labelRect.size.width = roundf( fontRect.size.width );
+    if (IS_IPHONE) {
+        labelRect.origin.y = _sliderLineView.center.y + 9.0;
+    } else {
+        labelRect.origin.y = _sliderLineView.center.y + 23.0;
+    }
+    
+    if ((labelRect.origin.x+labelRect.size.width) > (CGRectGetWidth(self.bounds) - SLIDER_OFFSET_LABEL)) {
+        labelRect.origin.x = roundf( CGRectGetWidth(self.bounds) - labelRect.size.width - SLIDER_OFFSET_LABEL );
+        
+    } else if (labelRect.origin.x < (_fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL)) {
+        labelRect.origin.x = roundf( _fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL );
+    }
+    
+    _toLabel.frame = labelRect;
+}
+
+- (void)setupResultLabelPositionForThumbView:(UIView *)aThumbView
+{
+    if (_calcType==CALC_TYPE_BETWEEN) {
+        if (_fromLagerThanTo == YES) {
+            aThumbView = _fromThumbView;
+            self.resultLabel.arrowDirection = ArrowDirection_From;
+        } else {
+            aThumbView = _toThumbView;
+            self.resultLabel.arrowDirection = ArrowDirection_To;
+        }
+    } else {
+        if (_calcType==CALC_TYPE_ADD) {
+            aThumbView = _toThumbView;
+            self.resultLabel.arrowDirection = ArrowDirection_To;
+        } else {
+            aThumbView = _fromThumbView;
+            self.resultLabel.arrowDirection = ArrowDirection_From;
+        }
+    }
+    
+    if (_fromThumbView==aThumbView) {
+        CGRect rRect = _resultLabel.frame;
+        CGRect fRect = _fromThumbView.frame;
+        
+        rRect.origin.x = ceilf(_fromThumbView.center.x + CGRectGetWidth(fRect)/2);
+        rRect.origin.y = IS_IPHONE ? ceilf(_sliderLineView.center.y - 15.5 - CGRectGetHeight(_resultLabel.frame)) : ceilf(_sliderLineView.center.y - 16.0 - CGRectGetHeight(_resultLabel.frame));
+        rRect.size.width = ceilf(_resultLabel.sizeOfResultText.width) + 38;
+        rRect.size.height = 25;
+        
+        if (rRect.origin.x + rRect.size.width > CGRectGetWidth(self.bounds)) {
+            rRect.origin.x = ceilf(CGRectGetWidth(self.bounds) - rRect.size.width);
+        }
+        _resultLabel.frame = rRect;
+//        _resultTextLabel.frame = CGRectMake(ceilf(rRect.origin.x), ceilf(rRect.origin.y), 100, 25);
+    }
+    else {
+        CGRect rRect = _resultLabel.frame;
+        CGRect tRect = _toThumbView.frame;
+        
+        rRect.origin.x = ceilf(_toThumbView.center.x - CGRectGetWidth(tRect)/2 - _resultLabel.sizeOfResultText.width - 35);
+        rRect.origin.y = IS_IPHONE ? ceilf(_sliderLineView.center.y - 15.5 - CGRectGetHeight(_resultLabel.frame)) : ceilf(_sliderLineView.center.y - 16.0 - CGRectGetHeight(_resultLabel.frame));
+        rRect.size.width = ceilf(_resultLabel.sizeOfResultText.width) + 38;
+        rRect.size.height = 25;
+        
+        if (rRect.origin.x < 0) {
+            rRect.origin.x = 0;
+        }
+        _resultLabel.frame = rRect;
+        //_resultTextLabel.frame = rRect;
+//        _resultTextLabel.frame = CGRectMake(ceilf(rRect.origin.x), ceilf(rRect.origin.y), 100, 25);
+    }
+}
+
+- (void)setupSliderThumbShadeByCalcType
+{
+    _toThumbView.hidden = NO;
+    _toLabel.hidden = NO;
+    _fromToRangeLineView.hidden = NO;
+    
+    if (_calcType == CALC_TYPE_BETWEEN) {
+        
+        if (_fromLagerThanTo) {
+            // From 날짜가 To 날짜보다 큰 경우.
+            _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+            _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+            _freezeToDragLeftCircle = NO;
+            _freezeToDragRightCircle = YES;
+        }
+        else {
+            if ([_fromDate isEqualToDate:_toDate]) {
+                // From 날짜 To 날짜 같은 경우.
+                _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+                _freezeToDragLeftCircle = YES;
+                _toThumbView.hidden = YES;
+                _toLabel.hidden = YES;
+                _fromToRangeLineView.hidden = YES;
+            }
+            else {
+                // From 날짜가 To 날짜보다 작은 경우.
+                _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+                _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+                _freezeToDragLeftCircle = YES;
+                _freezeToDragRightCircle = NO;
+            }
+        }
+        
+    } else if (_calcType == CALC_TYPE_ADD) {
+        _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+        _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+        _freezeToDragLeftCircle = YES;
+        _freezeToDragRightCircle = NO;
+        
+    } else if (_calcType == CALC_TYPE_SUB) {
+        _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
+        _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
+        _freezeToDragLeftCircle = NO;
+        _freezeToDragRightCircle = YES;
+    }
 }
 
 #pragma mark - Actions
@@ -232,13 +494,16 @@
         
         if (_calcType == CALC_TYPE_SUB) {
             [self setupResultLabelPositionForThumbView:_fromThumbView];
-        } else if (_calcType == CALC_TYPE_ADD) {
+        }
+        else if (_calcType == CALC_TYPE_ADD) {
             [self setupResultLabelPositionForThumbView:_toThumbView];
             self.resultLabel.arrowDirection = ArrowDirection_To;
-        } else {
+        }
+        else {
             [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
             self.resultLabel.arrowDirection = _fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
         }
+        
         [self calculateBetweenFromAndTo];
     }
 }
@@ -263,7 +528,8 @@
         //[self setupRangeLine];
         if (_calcType == CALC_TYPE_SUB) {
             [self setupResultLabelPositionForThumbView:_fromThumbView];
-        } else {
+        }
+        else {
             [self setupResultLabelPositionForThumbView:_toThumbView];
         }
         [self calculateBetweenFromAndTo];
@@ -351,7 +617,7 @@
                      animations:^{
                          _toThumbView.center = point;
                      } completion:^(BOOL finished) {
-                         
+
                      }];
 }
 
@@ -453,7 +719,7 @@
         }
         
     } else if (_calcType == CALC_TYPE_ADD) {
-        
+        NSLog(@"_calcType == CALC_TYPE_ADD 결과출력.");
     }
 }
 
@@ -515,242 +781,6 @@
     return [result componentsJoinedByString:@" "];
 }
 
-#pragma mark - View Control, Result Reflection
-- (void)adjustFromToBetweenLineWidth
-{
-    CGRect fRect = _fromThumbView.frame;
-    CGRect tRect = _toThumbView.frame;
-    CGRect rect = _fromToRangeLineView.frame;
-    CGFloat fXpos = _fromValue + CGRectGetWidth(fRect)/8;
-    CGFloat tXpos = _toValue - CGRectGetWidth(tRect)/8;
-    
-    NSLog(@"_toThumbView.center.x: %f", _toThumbView.center.x);
-    
-    rect.origin = CGPointMake(fXpos, rect.origin.y);
-    rect.size = CGSizeMake(tXpos - fXpos, rect.size.height);
-    
-    [UIView animateWithDuration:0.5
-                          delay:0
-         usingSpringWithDamping:500.0f
-          initialSpringVelocity:0.0f
-                        options:UIViewAnimationOptionCurveLinear
-                     animations:^{
-                         [_fromToRangeLineView setFrame:rect];
-                     } completion:^(BOOL finished) {
-                         
-                     }];
-    
-//    // From Label 위치 지정
-//    [_fromLabel sizeToFit];
-//    NSDictionary *attributes;
-//    if (IS_IPAD) {
-//        attributes = @{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] };
-//    } else {
-//        attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Helvetica Neue" size:13.0] };
-//    }
-//    CGRect fontRect = [_fromLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
-//                                                    options:NSStringDrawingUsesLineFragmentOrigin
-//                                                 attributes:attributes
-//                                                    context:nil];
-//    
-//    _fromLabel.center = CGPointMake(_fromThumbView.center.x, _toLabel.center.y);
-//    CGRect labelRect = _fromLabel.frame;
-//    if (IS_IPHONE) {
-//        labelRect.origin.y = _sliderLineView.center.y + 9.0;
-//    } else {
-//        labelRect.origin.y = _sliderLineView.center.y + 23.0;
-//    }
-//    
-//    labelRect.size.width = fontRect.size.width;
-//    if (labelRect.origin.x < self.bounds.origin.x + SLIDER_OFFSET_LABEL ) {
-//        labelRect.origin.x = self.bounds.origin.x + SLIDER_OFFSET_LABEL;
-//    } else if ((labelRect.origin.x+labelRect.size.width+SLIDER_OFFSET_LABEL) > _toLabel.frame.origin.x) {
-//        labelRect.origin.x = _toLabel.frame.origin.x - labelRect.size.width - SLIDER_OFFSET_LABEL;
-//    }
-//    
-//    _fromLabel.frame = labelRect;
-//    
-//    // ToLabel 위치 지정
-//    [_toLabel sizeToFit];
-//    //attributes = @{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]};
-//    fontRect = [_toLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
-//                                           options:NSStringDrawingUsesLineFragmentOrigin
-//                                        attributes:attributes
-//                                           context:nil];
-//    _toLabel.center = CGPointMake(_toThumbView.center.x, _toLabel.center.y);
-//    labelRect = _toLabel.frame;
-//    labelRect.size.width = fontRect.size.width;
-//    if (IS_IPHONE) {
-//        labelRect.origin.y = _sliderLineView.center.y + 9.0;
-//    } else {
-//        labelRect.origin.y = _sliderLineView.center.y + 23.0;
-//    }
-//
-//    if ((labelRect.origin.x+labelRect.size.width) > (CGRectGetWidth(self.bounds) - SLIDER_OFFSET_LABEL)) {
-//        labelRect.origin.x = CGRectGetWidth(self.bounds) - labelRect.size.width - SLIDER_OFFSET_LABEL;
-//        
-//    } else if (labelRect.origin.x < (_fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL)) {
-//        labelRect.origin.x = _fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL;
-//    }
-//    
-//    _toLabel.frame = labelRect;
-}
-
-- (void)adjustFromToLabelPosition {
-    // From Label 위치 지정
-    [_fromLabel sizeToFit];
-    NSDictionary *attributes;
-    if (IS_IPAD) {
-        attributes = @{ NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline] };
-    } else {
-        //attributes = @{ NSFontAttributeName : [UIFont fontWithName:@"Helvetica Neue" size:13.0] };
-        attributes = @{ NSFontAttributeName : [UIFont systemFontOfSize:13] };
-    }
-    CGRect fontRect = [_fromLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
-                                                    options:NSStringDrawingUsesLineFragmentOrigin
-                                                 attributes:attributes
-                                                    context:nil];
-    
-    _fromLabel.center = CGPointMake(_fromThumbView.center.x, _toLabel.center.y);
-    CGRect labelRect = _fromLabel.frame;
-    if (IS_IPHONE) {
-        labelRect.origin.y = _sliderLineView.center.y + 9.0;
-    } else {
-        labelRect.origin.y = _sliderLineView.center.y + 23.0;
-    }
-    
-    labelRect.size.width = fontRect.size.width;
-    if (labelRect.origin.x < self.bounds.origin.x + SLIDER_OFFSET_LABEL ) {
-        labelRect.origin.x = self.bounds.origin.x + SLIDER_OFFSET_LABEL;
-    } else if ((labelRect.origin.x+labelRect.size.width+SLIDER_OFFSET_LABEL) > _toLabel.frame.origin.x) {
-        labelRect.origin.x = _toLabel.frame.origin.x - labelRect.size.width - SLIDER_OFFSET_LABEL;
-    }
-    
-    _fromLabel.frame = labelRect;
-    
-    // ToLabel 위치 지정
-    [_toLabel sizeToFit];
-    //attributes = @{NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]};
-    fontRect = [_toLabel.text boundingRectWithSize:CGSizeMake(240.0, 26.0)
-                                           options:NSStringDrawingUsesLineFragmentOrigin
-                                        attributes:attributes
-                                           context:nil];
-    _toLabel.center = CGPointMake(_toThumbView.center.x, _toLabel.center.y);
-    labelRect = _toLabel.frame;
-    labelRect.size.width = fontRect.size.width;
-    if (IS_IPHONE) {
-        labelRect.origin.y = _sliderLineView.center.y + 9.0;
-    } else {
-        labelRect.origin.y = _sliderLineView.center.y + 23.0;
-    }
-    
-    if ((labelRect.origin.x+labelRect.size.width) > (CGRectGetWidth(self.bounds) - SLIDER_OFFSET_LABEL)) {
-        labelRect.origin.x = CGRectGetWidth(self.bounds) - labelRect.size.width - SLIDER_OFFSET_LABEL;
-        
-    } else if (labelRect.origin.x < (_fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL)) {
-        labelRect.origin.x = _fromLabel.frame.origin.x + _fromLabel.frame.size.width + SLIDER_OFFSET_LABEL;
-    }
-    
-    _toLabel.frame = labelRect;
-}
-
-- (void)setupResultLabelPositionForThumbView:(UIView *)aThumbView
-{
-    if (_calcType==CALC_TYPE_BETWEEN) {
-        if (_fromLagerThanTo == YES) {
-            aThumbView = _fromThumbView;
-            self.resultLabel.arrowDirection = ArrowDirection_From;
-        } else {
-            aThumbView = _toThumbView;
-            self.resultLabel.arrowDirection = ArrowDirection_To;
-        }
-    } else {
-        if (_calcType==CALC_TYPE_ADD) {
-            aThumbView = _toThumbView;
-            self.resultLabel.arrowDirection = ArrowDirection_To;
-        } else {
-            aThumbView = _fromThumbView;
-            self.resultLabel.arrowDirection = ArrowDirection_From;
-        }
-    }
-
-    if (_fromThumbView==aThumbView) {
-        CGRect rRect = _resultLabel.frame;
-        CGRect fRect = _fromThumbView.frame;
-
-        rRect.origin.x =_fromThumbView.center.x + CGRectGetWidth(fRect)/2;
-        rRect.origin.y = _sliderLineView.center.y - 9.0 - CGRectGetHeight(_resultLabel.frame);
-        rRect.size.width = _resultLabel.sizeOfResultText.width + 38;
-        rRect.size.height = 23;
-        
-        if (rRect.origin.x+rRect.size.width > CGRectGetWidth(self.bounds)) {
-            rRect.origin.x = CGRectGetWidth(self.bounds) - rRect.size.width;
-        }
-        _resultLabel.frame = rRect;
-        
-    } else {
-        CGRect rRect = _resultLabel.frame;
-        CGRect tRect = _toThumbView.frame;
-
-        rRect.origin.x = _toThumbView.center.x - CGRectGetWidth(tRect)/2 - _resultLabel.sizeOfResultText.width - 35;
-        rRect.origin.y = _sliderLineView.center.y - 9.0 - CGRectGetHeight(_resultLabel.frame);
-        rRect.size.width = _resultLabel.sizeOfResultText.width + 38;
-        rRect.size.height = 23;
-
-        if (rRect.origin.x < 0) {
-            rRect.origin.x = 0;
-        }
-        _resultLabel.frame = rRect;
-    }
-}
-
-- (void)setupSliderThumbShadeByCalcType
-{
-    _toThumbView.hidden = NO;
-    _toLabel.hidden = NO;
-    _fromToRangeLineView.hidden = NO;
-    
-    if (_calcType == CALC_TYPE_BETWEEN) {
-        
-        if (_fromLagerThanTo) {
-            // From 날짜가 To 날짜보다 큰 경우.
-            _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
-            _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-            _freezeToDragLeftCircle = NO;
-            _freezeToDragRightCircle = YES;
-            
-        } else {
-            
-            if ([_fromDate isEqualToDate:_toDate]) {
-                // From 날짜 To 날짜 같은 경우.
-                _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                _freezeToDragLeftCircle = YES;
-                _toThumbView.hidden = YES;
-                _toLabel.hidden = YES;
-                _fromToRangeLineView.hidden = YES;
-            } else {
-                // From 날짜가 To 날짜보다 작은 경우.
-                _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-                _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
-                _freezeToDragLeftCircle = YES;
-                _freezeToDragRightCircle = NO;
-            }
-        }
-
-    } else if (_calcType == CALC_TYPE_ADD) {
-        _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-        _toThumbView.centerColor = COLOR_ELLIPSE_2_Center;
-        _freezeToDragLeftCircle = YES;
-        _freezeToDragRightCircle = NO;
-        
-    } else if (_calcType == CALC_TYPE_SUB) {
-        _fromThumbView.centerColor = COLOR_ELLIPSE_2_Center;
-        _toThumbView.centerColor = COLOR_ELLIPSE_2_Center_GRAY;
-        _freezeToDragLeftCircle = NO;
-        _freezeToDragRightCircle = YES;
-    }
-}
-
 #pragma mark - Date Calc Related
 - (void)calculateBetweenFromAndTo
 {
@@ -784,9 +814,9 @@
         NSLog(@"MaxDate: %@, ToDate: %@", _maxDate, _toDate);
 
         [self setResultBetweenDate:resultComp withAnimation:YES];
-        if ([_delegate respondsToSelector:@selector(dateCalcHeaderChangedFromDate:toDate:)]) {
-            [_delegate dateCalcHeaderChangedFromDate:fDate toDate:tDate];
-        }
+//        if ([_delegate respondsToSelector:@selector(dateCalcHeaderChangedFromDate:toDate:)]) {
+//            [_delegate dateCalcHeaderChangedFromDate:fDate toDate:tDate];
+//        }
 
         _fromLabel.text = [A3DateCalcStateManager formattedStringDate:fDate];
         _toLabel.text = [A3DateCalcStateManager formattedStringDate:tDate];
@@ -857,11 +887,34 @@
                              [self setupResultLabelPositionForThumbView:_fromLagerThanTo==NO ? _toThumbView : _fromThumbView];
                              self.resultLabel.arrowDirection = _fromLagerThanTo==NO ? ArrowDirection_To : ArrowDirection_From;
                              [self setupSliderThumbShadeByCalcType];
+                             
+//                             // 출력창 상태 변경.
+//                             if ([_fromDate isEqualToDate:_toDate]) {
+//                                 _fromLabel.hidden = NO;
+//                                 _toLabel.hidden = NO;
+//                                 _resultLabel.hidden = NO;
+//                             }
+//                             else {
+//                                 _fromLabel.hidden = NO;
+//                                 _toLabel.hidden = NO;
+//                                 _resultLabel.hidden = NO;
+//                             }
                          }
                          completion:^(BOOL finished) {
                              _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
                              _toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
                              [self adjustFromToLabelPosition];
+//                             // 출력창 상태 변경.
+//                             if ([_fromDate isEqualToDate:_toDate]) {
+//                                 _fromLabel.hidden = NO;
+//                                 _toLabel.hidden = NO;
+//                                 _resultLabel.hidden = NO;
+//                             }
+//                             else {
+//                                 _fromLabel.hidden = NO;
+//                                 _toLabel.hidden = NO;
+//                                 _resultLabel.hidden = NO;
+//                             }
                          }];
     } else {
         [self adjustFromToBetweenLineWidth];
@@ -871,7 +924,20 @@
         [self setupSliderThumbShadeByCalcType];
         _fromLabel.text = [A3DateCalcStateManager formattedStringDate:_fromDate];
         _toLabel.text = [A3DateCalcStateManager formattedStringDate:_toDate];
+        
+//        // 출력창 상태 변경.
+//        if ([_fromDate isEqualToDate:_toDate]) {
+//            _fromLabel.hidden = NO;
+//            _toLabel.hidden = NO;
+//            _resultLabel.hidden = NO;
+//        }
+//        else {
+//            _fromLabel.hidden = NO;
+//            _toLabel.hidden = NO;
+//            _resultLabel.hidden = NO;
+//        }
     }
+    
 }
 
 - (void)setResultAddDate:(NSDate *)resultDate withAnimation:(BOOL)animation
@@ -987,7 +1053,8 @@
                                  [_delegate dateCalcHeaderAddSubResult:comp];
                              }
                          }];
-    } else {
+    }
+    else {
         [self adjustFromToBetweenLineWidth];
         [self adjustFromToLabelPosition];
         [self setupResultLabelPositionForThumbView:_fromThumbView];

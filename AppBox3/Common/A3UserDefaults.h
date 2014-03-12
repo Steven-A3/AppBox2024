@@ -41,6 +41,10 @@ extern NSString *const A3CurrencyShowNationalFlag;
 #pragma mark ------ Lunar Converter
 extern NSString *const A3LunarConverterLastInputDateComponents;
 extern NSString *const A3LunarConverterLastInputDateIsLunar;
+#pragma mark ------ Tip Calc
+extern NSString *const A3TipCalcTax;
+extern NSString *const A3TipCalcSplit;
+extern NSString *const A3TipCalcRoundingMethod;
 
 #pragma mark ------ clock
 extern NSString *const A3ClockTheTimeWithSeconds;

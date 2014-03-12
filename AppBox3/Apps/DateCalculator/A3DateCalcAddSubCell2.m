@@ -36,7 +36,7 @@
     // 하단 날짜 입력 부분
     if (IS_IPAD && IS_LANDSCAPE) {
         CGFloat width = self.bounds.size.width;
-        CGFloat lWidth = width/3/2;
+        CGFloat lWidth = ceilf(width / 3 / 2);
         CGRect rect;
         rect = _yearTextField.frame;
         rect.size.width = lWidth;
@@ -59,13 +59,13 @@
         _dayLabel.frame = rect;
         
         CGFloat centerOffset = width/3/2/2;
-        [_yearTextField setCenter:CGPointMake(width/3/2 - centerOffset, self.bounds.size.height/2)];
-        [_monthTextField setCenter:CGPointMake(width/2 - centerOffset, self.bounds.size.height/2)];
-        [_dayTextField setCenter:CGPointMake(width - (width/3/2) - centerOffset, self.bounds.size.height/2)];
+        [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2 - centerOffset), ceilf(self.bounds.size.height / 2))];
+        [_monthTextField setCenter:CGPointMake(ceilf(width / 2 - centerOffset), ceilf(self.bounds.size.height / 2))];
+        [_dayTextField setCenter:CGPointMake(ceilf(width - (width / 3 / 2) - centerOffset), ceilf(self.bounds.size.height / 2))];
         
-        [_yearLabel setCenter:CGPointMake(width/3/2 + centerOffset+5, self.bounds.size.height/2)];
-        [_monthLabel setCenter:CGPointMake(width/2 + centerOffset+5, self.bounds.size.height/2)];
-        [_dayLabel setCenter:CGPointMake(width - (width/3/2) + centerOffset+5, self.bounds.size.height/2)];
+        [_yearLabel setCenter:CGPointMake(ceilf(width / 3 / 2 + centerOffset + 5), ceilf(self.bounds.size.height / 2))];
+        [_monthLabel setCenter:CGPointMake(ceilf(width / 2 + centerOffset + 5), ceilf(self.bounds.size.height / 2))];
+        [_dayLabel setCenter:CGPointMake(ceilf(width - (width / 3 / 2) + centerOffset + 5), ceilf(self.bounds.size.height / 2))];
         
         [_yearTextField setTextAlignment:NSTextAlignmentRight];
         [_monthTextField setTextAlignment:NSTextAlignmentRight];
@@ -77,7 +77,7 @@
         
     } else if (IS_IPAD && IS_PORTRAIT) {
         CGFloat width = self.bounds.size.width;
-        CGFloat lWidth = width/3/2;
+        CGFloat lWidth = ceilf(width / 3 / 2);
         CGRect rect;
         rect = _yearTextField.frame;
         rect.size.width = lWidth;
@@ -100,13 +100,13 @@
         _dayLabel.frame = rect;
         
         CGFloat centerOffset = width/3/2/2;
-        [_yearTextField setCenter:CGPointMake(width/3/2 - centerOffset, self.bounds.size.height/2)];
-        [_monthTextField setCenter:CGPointMake(width/2 - centerOffset, self.bounds.size.height/2)];
-        [_dayTextField setCenter:CGPointMake(width - (width/3/2) - centerOffset, self.bounds.size.height/2)];
+        [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2 - centerOffset), ceilf(self.bounds.size.height / 2))];
+        [_monthTextField setCenter:CGPointMake(ceilf(width / 2 - centerOffset), ceilf(self.bounds.size.height / 2))];
+        [_dayTextField setCenter:CGPointMake(ceilf(width - (width / 3 / 2) - centerOffset), ceilf(self.bounds.size.height / 2))];
         
-        [_yearLabel setCenter:CGPointMake(width/3/2 + centerOffset+5, self.bounds.size.height/2)];
-        [_monthLabel setCenter:CGPointMake(width/2 + centerOffset+5, self.bounds.size.height/2)];
-        [_dayLabel setCenter:CGPointMake(width - (width/3/2) + centerOffset+5, self.bounds.size.height/2)];
+        [_yearLabel setCenter:CGPointMake(ceilf(width / 3 / 2 + centerOffset + 5), ceilf(self.bounds.size.height / 2))];
+        [_monthLabel setCenter:CGPointMake(ceilf(width / 2 + centerOffset + 5), ceilf(self.bounds.size.height / 2))];
+        [_dayLabel setCenter:CGPointMake(ceilf(width - (width / 3 / 2) + centerOffset + 5), ceilf(self.bounds.size.height / 2))];
         
         [_yearTextField setTextAlignment:NSTextAlignmentRight];
         [_monthTextField setTextAlignment:NSTextAlignmentRight];
@@ -115,30 +115,30 @@
         [_yearLabel setTextAlignment:NSTextAlignmentLeft];
         [_monthLabel setTextAlignment:NSTextAlignmentLeft];
         [_dayLabel setTextAlignment:NSTextAlignmentLeft];
-
-    } else {
+    }
+    else {
         CGFloat width = self.bounds.size.width;
         CGRect rect;
         rect = _yearTextField.frame;
-        rect.size.width = width/3;
+        rect.size.width = ceilf(width / 3);
         _yearTextField.frame = rect;
         
         rect = _monthTextField.frame;
-        rect.size.width = width/3;
+        rect.size.width = ceilf(width / 3);
         _monthTextField.frame = rect;
         
         rect = _dayTextField.frame;
-        rect.size.width = width/3;
+        rect.size.width = ceilf(width / 3);
         _dayTextField.frame = rect;
     
         
-        [_yearTextField setCenter:CGPointMake(width/3/2, 15.0 + _yearTextField.frame.size.height / 2.0)];
-        [_monthTextField setCenter:CGPointMake(width/2, 15.0 + _monthTextField.frame.size.height / 2.0)];
-        [_dayTextField setCenter:CGPointMake(width - (width/3/2), 15.0 + _dayTextField.frame.size.height / 2.0)];
+        [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(15.0 + _yearTextField.frame.size.height / 2.0))];
+        [_monthTextField setCenter:CGPointMake(ceilf(width / 2), ceilf(15.0 + _monthTextField.frame.size.height / 2.0))];
+        [_dayTextField setCenter:CGPointMake(ceilf(width - (width / 3 / 2)), ceilf(15.0 + _dayTextField.frame.size.height / 2.0))];
         
-        [_yearLabel setCenter:CGPointMake(width/3/2, _yearTextField.frame.origin.y+_yearTextField.frame.size.height+(_yearLabel.bounds.size.height/2))];
-        [_monthLabel setCenter:CGPointMake(width/2, _monthTextField.frame.origin.y+_monthTextField.frame.size.height+(_monthLabel.bounds.size.height/2))];
-        [_dayLabel setCenter:CGPointMake(width - (width/3/2), _dayTextField.frame.origin.y+_dayTextField.frame.size.height+(_dayLabel.bounds.size.height/2))];
+        [_yearLabel setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(_yearTextField.frame.origin.y + _yearTextField.frame.size.height + (_yearLabel.bounds.size.height / 2)))];
+        [_monthLabel setCenter:CGPointMake(ceilf(width / 2), ceilf(_monthTextField.frame.origin.y + _monthTextField.frame.size.height + (_monthLabel.bounds.size.height / 2)))];
+        [_dayLabel setCenter:CGPointMake(ceilf(width - (width / 3 / 2)), ceilf(_dayTextField.frame.origin.y + _dayTextField.frame.size.height + (_dayLabel.bounds.size.height / 2)))];
         
         [_yearTextField setTextAlignment:NSTextAlignmentCenter];
         [_monthTextField setTextAlignment:NSTextAlignmentCenter];
