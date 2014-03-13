@@ -64,7 +64,8 @@
 - (CGSize)intrinsicContentSize {
 	if (IS_IPAD) {
 		return CGSizeMake(704.0, 178.0);
-	} else {
+	}
+    else {
         return CGSizeMake(320.0, 178.0);
     }
 }
@@ -79,14 +80,12 @@
     _discountLabel.textColor = txtColor;
     
     for (UIView *linewView in _lineViews) {
-        
         linewView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
     }
     
     _markLabel.layer.cornerRadius = _markLabel.bounds.size.width/2;
     _markLabel.font = [UIFont systemFontOfSize:11];
     _markLabel.backgroundColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
-    
 }
 
 - (IBAction)buttonTapped:(UIButton *)sender {
