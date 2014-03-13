@@ -125,7 +125,8 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
-	[self.doneButton setBackgroundColor:[A3AppDelegate instance].window.tintColor];
+	UIColor *tintColor = self.view.tintColor;
+	[self.doneButton setBackgroundColor:tintColor];
 }
 
 - (void)initSymbolFont {

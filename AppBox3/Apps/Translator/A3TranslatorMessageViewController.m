@@ -1217,7 +1217,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 
 - (void)setupTintColorForMessageView {
 	CGFloat red, green, blue, alpha;
-	[[A3AppDelegate instance].window.tintColor getRed:&red green:&green blue:&blue alpha:&alpha];
+	[self.view.tintColor getRed:&red green:&green blue:&blue alpha:&alpha];
 
 	NSArray *visibleCells = [_messageTableView visibleCells];
 	CGFloat canvasHeight = _messageTableView.bounds.size.height;

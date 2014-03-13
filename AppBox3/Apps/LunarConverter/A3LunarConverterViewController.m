@@ -209,7 +209,7 @@
 
 	A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
 	topCell = cellView;
-	cellView.dateLabel.textColor = [A3AppDelegate instance].window.tintColor;
+	cellView.dateLabel.textColor = self.view.tintColor;
 	cellView.descriptionLabel.text = @"Solar";
 
 	cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
