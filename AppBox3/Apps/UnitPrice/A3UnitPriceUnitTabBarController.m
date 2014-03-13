@@ -163,15 +163,11 @@
 - (UISegmentedControl *)selectSegment
 {
     UISegmentedControl *segment = [[UISegmentedControl alloc] initWithItems:@[@"All Units", @"Favorites"]];
-    
     [segment setWidth:85 forSegmentAtIndex:0];
     [segment setWidth:85 forSegmentAtIndex:1];
-    
-    UIFont *font = [UIFont systemFontOfSize:13.0];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
-                                                           forKey:NSFontAttributeName];
-    [segment setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    
+    [segment setTitleTextAttributes:[NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:13.0]
+                                                                forKey:NSFontAttributeName]
+                           forState:UIControlStateNormal];
     segment.selectedSegmentIndex = 0;
     [segment addTarget:self action:@selector(selectSegmentChanged:) forControlEvents:UIControlEventValueChanged];
     
@@ -187,6 +183,7 @@
             A3UnitPriceSelectViewController *viewController = (A3UnitPriceSelectViewController *)nav.topViewController;
             viewController.isFavoriteMode = NO;
             isFavoriteMode = NO;
+            [viewController setEditing:NO];
             
             break;
         }
@@ -196,6 +193,7 @@
             A3UnitPriceSelectViewController *viewController = (A3UnitPriceSelectViewController *)nav.topViewController;
             viewController.isFavoriteMode = YES;
             isFavoriteMode = YES;
+            [viewController setEditing:NO];
             
             break;
         }

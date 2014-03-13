@@ -79,9 +79,9 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
     UISegmentedControl *segment = (UISegmentedControl *)self.navigationController.tabBarController.navigationItem.titleView;
     self.isFavoriteMode = segment.selectedSegmentIndex==1 ? YES:NO;
     
-    if (self.editing) {
-        [self setEditing:NO animated:YES];
-    }
+//    if (self.editing) {
+//        [self setEditing:NO animated:YES];
+//    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
