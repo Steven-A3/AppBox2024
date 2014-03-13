@@ -82,6 +82,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;     // KJH
     
     self.title = _isPriceA ? @"Price A":@"Price B";
     
@@ -750,8 +751,8 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    
     [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+    [self scrollToTopOfTableViewIfNeeded];
 }
 
 #pragma mark - A3UnitSelectViewControllerDelegate
@@ -807,6 +808,14 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 [inputCell.textField becomeFirstResponder];
             }
         }
+    }
+}
+
+#pragma mark TableView Manipulate
+// KJH
+- (void)scrollToTopOfTableViewIfNeeded {
+    if ([self.price.price doubleValue] > 0 && [self.price.quantity doubleValue] > 0) {
+        [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     }
 }
 

@@ -681,6 +681,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     cell.inputView.delegate = self;
     cell.inputView.tag = 1;
+    cell.inputView.markLabel.text = @"A";
     
     float unitPrice = 0;
     NSString *unitPriceTxt = @"";
@@ -756,6 +757,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 {
     cell.inputView.delegate = self;
     cell.inputView.tag = 2;
+    cell.inputView.markLabel.text = @"B";
     
     float unitPrice = 0;
     NSString *unitPriceTxt = @"";
