@@ -335,6 +335,7 @@
                                         </view>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="downSliderView" destination="kSn-74-jdo" id="483-c0-Huw"/>
                                     <outlet property="upSliderView" destination="6qm-cq-Fwa" id="ArD-tI-3XN"/>
