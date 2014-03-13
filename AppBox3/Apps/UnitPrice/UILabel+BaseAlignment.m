@@ -13,6 +13,19 @@
 - (void)adjustBaselineForContainView:(UIView *)containView fromBottomDistance:(float)distance
 {
     [self sizeToFit];
+
+//    // KJH
+//    CGFloat scale = [[UIScreen mainScreen] scale];
+//    CGFloat baseline = CGRectGetHeight(containView.frame) - distance;
+//    CGPoint baselinePoint = CGPointMake(0, baseline);
+//    baselinePoint = [containView convertPoint:baselinePoint toView:[self superview]];
+//
+//    CGFloat labelHeightWithoutDescender = CGRectGetHeight(self.frame) - self.font.descender;
+//    CGFloat labelOriginY = ceilf((baselinePoint.y - labelHeightWithoutDescender) * scale) / scale;
+//
+//    CGRect rect = self.frame;
+//    rect.origin.y = labelOriginY;
+//    self.frame = rect;
     
     CGPoint bottomCenter = CGPointMake(self.bounds.size.width/2.0, self.bounds.size.height);
     
@@ -28,6 +41,7 @@
     CGRect newFrame = self.frame;
     newFrame.origin.y -= floor(self.font.descender);
     self.frame = newFrame;
+
 }
 
 @end
