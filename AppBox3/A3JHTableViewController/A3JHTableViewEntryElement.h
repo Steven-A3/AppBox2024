@@ -8,7 +8,7 @@
 
 #import "A3JHTableViewElement.h"
 
-typedef NS_ENUM(NSInteger, A3TableViewEntryInputType) {
+typedef NS_ENUM(NSInteger, A3JHTableViewEntryInputType) {
 	A3TableViewEntryTypeText = 0,
 	A3TableViewEntryTypeCurrency,
 	A3TableViewEntryTypeYears,
@@ -19,7 +19,7 @@ typedef NS_ENUM(NSInteger, A3TableViewEntryInputType) {
 @interface A3JHTableViewEntryElement : A3JHTableViewElement
 
 @property (nonatomic, copy) NSString *placeholder;
-@property (assign) A3TableViewEntryInputType inputType;
+@property (assign) A3JHTableViewEntryInputType inputType;
 @property (nonatomic, copy) void (^onEditingFinished)(A3JHTableViewEntryElement *, UITextField *);
 @property (nonatomic, copy) void (^onEditingValueChanged)(A3JHTableViewEntryElement *, UITextField *);
 

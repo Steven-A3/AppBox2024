@@ -49,7 +49,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcRoundingViewDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3SelectTableViewControllerProtocol>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcRoundingViewDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;

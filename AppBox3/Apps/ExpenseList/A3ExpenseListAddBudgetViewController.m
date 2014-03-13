@@ -37,7 +37,7 @@ enum A3ExpenseListAddBudgetCellType {
     A3TableElementCellType_Note
 };
 
-@interface A3ExpenseListAddBudgetViewController () <A3SelectTableViewControllerProtocol>
+@interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol>
 @property (nonatomic, strong) ExpenseListBudget *currentBudget;
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3ExpenseListPreference *preferences;

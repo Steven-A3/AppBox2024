@@ -10,7 +10,7 @@
 
 @class A3JHSelectTableViewController;
 
-@protocol A3SelectTableViewControllerProtocol <NSObject>
+@protocol A3JHSelectTableViewControllerProtocol <NSObject>
 - (void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin;
 @end
 
@@ -19,7 +19,7 @@
 @interface A3JHSelectTableViewController : UITableViewController
 
 @property (nonatomic, strong) A3JHTableViewSelectElement *root;
-@property (nonatomic, weak) id<A3SelectTableViewControllerProtocol> delegate;
+@property (nonatomic, weak) id<A3JHSelectTableViewControllerProtocol> delegate;
 @property (nonatomic, strong) NSIndexPath *indexPathOfOrigin;
 
 @end

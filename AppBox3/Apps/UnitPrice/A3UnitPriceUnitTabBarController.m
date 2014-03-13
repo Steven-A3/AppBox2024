@@ -235,7 +235,7 @@
     }
     
     viewController.unitType = uType;
-    viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"type" withValue:uType andOrderBy:@"order" ascending:YES]];
+    viewController.favorites = [NSMutableArray arrayWithArray:[UnitPriceFavorite MR_findByAttribute:@"item.type" withValue:uType andOrderBy:@"order" ascending:YES]];
     viewController.selectedUnit = _price.unit;
     NSArray *items = [UnitItem MR_findByAttribute:@"type" withValue:uType andOrderBy:@"unitName" ascending:YES];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.unitName!=%@", @"feet inches"];

@@ -7,7 +7,7 @@
 //
 
 @class A3JHTableViewElement;
-@protocol A3SelectTableViewControllerProtocol;
+@protocol A3JHSelectTableViewControllerProtocol;
 typedef void (^CellValueChangedBlock)(A3JHTableViewElement *);
 
 @interface A3JHTableViewElement : NSObject
@@ -20,6 +20,6 @@ typedef void (^CellValueChangedBlock)(A3JHTableViewElement *);
 @property (nonatomic, copy) void (^onSelected)(A3JHTableViewElement *);
 
 - (UITableViewCell *)cellForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
-- (void)didSelectCellInViewController:(UIViewController<A3SelectTableViewControllerProtocol> *)viewController tableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
+- (void)didSelectCellInViewController:(UIViewController<A3JHSelectTableViewControllerProtocol> *)viewController tableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -8,12 +8,12 @@
 
 #import "A3JHTableViewElement.h"
 
-@protocol A3SelectTableViewControllerProtocol;
+@protocol A3JHSelectTableViewControllerProtocol;
 
 @interface A3JHTableViewRootElement : A3JHTableViewElement
 
 @property (nonatomic, weak) UITableView *tableView;
-@property (nonatomic, weak) UIViewController <A3SelectTableViewControllerProtocol> *viewController;
+@property (nonatomic, weak) UIViewController <A3JHSelectTableViewControllerProtocol> *viewController;
 @property (nonatomic, strong) NSArray *sectionsArray;
 
 - (NSInteger)numberOfSections;
