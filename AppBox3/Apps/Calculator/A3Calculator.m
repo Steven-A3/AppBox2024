@@ -932,7 +932,7 @@ typedef CMathParser<char, double> MathParser;
             if (range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:stringFuncName];
             } else {
-                range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890)"]];
+                range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
                 // in case of number, add multiply simbol automatically
                 if( range.location != NSNotFound) {
                     [self addMultiplyInExpressWith:stringFuncName];
@@ -1017,7 +1017,7 @@ typedef CMathParser<char, double> MathParser;
         if (range.location != NSNotFound) {
             mathexpression = [mathexpression stringByAppendingString:funcName];
         } else {
-            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890)"]];
+            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
             // in case of number, add multiply simbol automatically
             if( range.location != NSNotFound) {
                 [self addMultiplyInExpressWith:funcName];
@@ -1161,7 +1161,7 @@ typedef CMathParser<char, double> MathParser;
             range.location = [mathexpression length] - nLen;
             range.length = 1;
             lastChar = [mathexpression substringWithRange:range];
-            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
             if (range.location == NSNotFound) {
                 nLen--;
                 break;
@@ -1288,7 +1288,7 @@ typedef CMathParser<char, double> MathParser;
         case A3E_00: {
             if(([self checkIfexpressionisnull])) return;
             NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
-            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
             if(range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:@"00"];
                 [self convertMathExpressionToAttributedString];
@@ -1425,7 +1425,7 @@ typedef CMathParser<char, double> MathParser;
                     mathexpression = [mathexpression stringByAppendingString:numOperator];
                     //_expressionLabel.attributedText = [_expressionLabel.attributedText appendWithString:numOperator];
                 } else {
-                    range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890)"]];
+                    range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
                     // in case of number, add multiply simbol automatically
                     if( range.location != NSNotFound) {
                         //NSAttributedString* anumOperator = [[NSAttributedString alloc] initWithString:numOperator]; // TODO
