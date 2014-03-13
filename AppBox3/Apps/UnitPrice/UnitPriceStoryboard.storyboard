@@ -204,11 +204,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3UnitPriceCompareSliderCell" rowHeight="165" id="P8j-V6-EAs" customClass="A3UnitPriceCompareSliderCell">
-                                <rect key="frame" x="0.0" y="119" width="320" height="165"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3UnitPriceCompareSliderCell" rowHeight="166" id="P8j-V6-EAs" customClass="A3UnitPriceCompareSliderCell">
+                                <rect key="frame" x="0.0" y="119" width="320" height="166"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="P8j-V6-EAs" id="U23-Rk-kBz">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="164"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="165"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view clipsSubviews="YES" contentMode="scaleToFill" id="6qm-cq-Fwa" customClass="A3UnitPriceSliderView">
@@ -342,7 +342,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3UnitPriceInfoCell" rowHeight="178" id="vMN-DA-OfW" customClass="A3UnitPriceInfoCell">
-                                <rect key="frame" x="0.0" y="284" width="320" height="178"/>
+                                <rect key="frame" x="0.0" y="285" width="320" height="178"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vMN-DA-OfW" id="qGE-zJ-izd">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="177"/>
