@@ -198,6 +198,8 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     sliderCell.sliderView.markLabel.text = _isPriceA ? @"A":@"B";
     sliderCell.sliderView.layoutType = Slider_StandAlone;
     [sliderCell.sliderView labelFontSetting];
+    sliderCell.sliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    sliderCell.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     
     float unitPrice = 0;
     NSString *unitPriceTxt = @"";
