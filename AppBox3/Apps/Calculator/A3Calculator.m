@@ -83,8 +83,10 @@ typedef CMathParser<char, double> MathParser;
 		*err = NO;
 	}
 	catch (MathParser::ParserException &ex ) {
+#ifdef DEBUG
 		NSString *error = [NSString stringWithCString:ex.GetMessage().c_str() encoding:NSASCIIStringEncoding];
 		FNLOG(@"%@", error);
+#endif
 		*err = YES;
 	}
 	return resultValue;
