@@ -79,7 +79,6 @@ typedef CMathParser<char, double> MathParser;
 		myExpression = [self replaceSpecialCharactersExpression:myExpression];
 		p.SetExpression([myExpression cStringUsingEncoding:NSASCIIStringEncoding], radian);
 		resultValue = p.GetValue();
-        //_evaluatedResultLabel.text = [self getResultValueString:resultValue]; Why does not it work????
 		*err = NO;
 	}
 	catch (MathParser::ParserException &ex ) {
@@ -312,7 +311,7 @@ typedef CMathParser<char, double> MathParser;
         range.location = index + numberLength++;
         range.length = 1;
         currentString = [mExpression substringWithRange:range];
-        range = [currentString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+        range = [currentString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
     } while (range.location != NSNotFound &&
              index + numberLength < length);
     if(range.location == NSNotFound) {
@@ -350,12 +349,19 @@ typedef CMathParser<char, double> MathParser;
             case '6':
             case '7':
             case '8':
-            case '9': {
+            case '9':
+            case '.':{
                 range.location = i;
                 range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                 
                 currentString = [mExpression substringWithRange:range];
-                temp = [temp appendWithString:[self getResultValueString:[currentString doubleValue]]];
+                double dv = [currentString doubleValue];
+                if (dv != 0) {
+                    temp = [temp appendWithString:[self getResultValueString:dv]];
+                } else {
+                    // to reserve 0.
+                    temp = [temp appendWithString:currentString];
+                }
                 
                 i+= range.length;
             }
@@ -368,7 +374,6 @@ typedef CMathParser<char, double> MathParser;
             case '/':
             case '(':
             case ')':
-            case '.':
             case '=':{
                 range.location = i;
                 range.length = 1;
