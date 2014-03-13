@@ -640,7 +640,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     price2UnitPrice = unitPrice2;
     
     if (IS_IPAD) {
-        [cell.upSliderView.unitPriceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:172];
+        [cell.upSliderView.unitPriceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:171];
         [cell.upSliderView.priceLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:172];
         [cell.upSliderView.unitPriceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:115];
         [cell.upSliderView.priceNumLabel adjustBaselineForContainView:cell.contentView fromBottomDistance:115];
