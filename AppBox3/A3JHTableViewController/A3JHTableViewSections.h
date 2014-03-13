@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @class A3JHTableViewElement;
-@protocol A3SelectTableViewControllerProtocol;
+@protocol A3JHSelectTableViewControllerProtocol;
 
 @interface A3JHTableViewSections : NSObject
 
 @property (nonatomic, weak) UITableView *tableView;
-@property (nonatomic, weak) UIViewController <A3SelectTableViewControllerProtocol> *viewController;
+@property (nonatomic, weak) UIViewController <A3JHSelectTableViewControllerProtocol> *viewController;
 @property (nonatomic, strong) NSArray *sectionsArray;
 
 - (NSInteger)numberOfSections;

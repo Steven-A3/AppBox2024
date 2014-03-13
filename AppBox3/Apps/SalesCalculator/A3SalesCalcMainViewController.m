@@ -45,7 +45,7 @@ enum A3TableElementCellType {
     A3TableElementCellType_Note
 };
 
-@interface A3SalesCalcMainViewController () <A3SelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate>
+@interface A3SalesCalcMainViewController () <A3JHSelectTableViewControllerProtocol, A3SalesCalcHistorySelectDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3SalesCalcPreferences *preferences;
