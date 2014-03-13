@@ -791,7 +791,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
             }
             else if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
                 if (IS_IPHONE) {
-                    [self makeBackButtonEmptyArrow];
+                    //[self makeBackButtonEmptyArrow];
                     [self.navigationController pushViewController:[self unitsTabBarController] animated:YES];
                 }
                 else {

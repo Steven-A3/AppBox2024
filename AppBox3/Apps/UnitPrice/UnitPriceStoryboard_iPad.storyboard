@@ -350,8 +350,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" id="ZB7-pJ-3wR" customClass="A3UnitPriceInputView">
-                                            <rect key="frame" x="0.0" y="0.0" width="768" height="190"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="189"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <view tag="1000" contentMode="scaleToFill" id="sCw-fb-io8" userLabel="seperate Line">
                                                     <rect key="frame" x="63" y="43" width="705" height="1"/>
