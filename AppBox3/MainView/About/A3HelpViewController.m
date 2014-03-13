@@ -8,6 +8,7 @@
 
 #import "A3HelpViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "UITableViewController+standardDimension.h"
 
 @interface A3HelpViewController ()
 
@@ -30,6 +31,9 @@
 	self.title = @"Help";
 	[self leftBarButtonAppsButton];
 	self.navigationItem.hidesBackButton = YES;
+
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 #pragma mark -- Layout

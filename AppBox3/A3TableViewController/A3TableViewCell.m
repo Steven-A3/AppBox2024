@@ -45,8 +45,6 @@
 - (void)layoutSubviews {
 	[super layoutSubviews];
 
-	FNLOG(@"content inset %f", self.contentInset);
-
 	CGRect frame = self.textLabel.frame;
 	frame.origin.x = self.contentInset;
 	self.textLabel.frame = frame;

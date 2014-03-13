@@ -25,6 +25,9 @@
 	[self makeBackButtonEmptyArrow];
 	[self leftBarButtonAppsButton];
 	self.navigationItem.hidesBackButton = YES;
+
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 #pragma mark -- Layout
@@ -49,6 +52,7 @@
 	if (section == 2) return UITableViewAutomaticDimension;
 	return [self standardHeightForFooterInSection:section];
 }
+
 #pragma mark -- UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

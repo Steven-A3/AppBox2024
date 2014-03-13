@@ -38,9 +38,12 @@
 		} else {
 			[cell setBottomSeparatorForMiddleRow];
 		}
-	}
-	if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section] - 1) {
-		[cell setBottomSeparatorForBottomRow];
+	} else {
+		if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section] - 1) {
+			[cell setBottomSeparatorForBottomRow];
+		} else {
+			[cell setBottomSeparatorForMiddleRow];
+		}
 	}
 	if (indexPath.row == 0) {
 		[cell showTopSeparator];

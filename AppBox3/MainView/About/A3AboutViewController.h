@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3TableViewController.h"
 
 @interface A3AboutViewController : UITableViewController
 

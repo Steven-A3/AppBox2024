@@ -320,6 +320,7 @@ NSString *const A3WalletItemDateCellID3 = @"A3WalletItemFieldCell";
     item.name = title;
     item.note = _itemData[@"Note"];
     item.category = _selectedCategory;
+	item.modificationDate = [NSDate date];
     
     NSArray *cateFields = [self.selectedCategory fieldsArray];
     
