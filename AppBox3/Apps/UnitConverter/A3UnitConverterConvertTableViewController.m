@@ -519,7 +519,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     // toss unit data
     viewController.convertItems = self.convertItems;
     viewController.selectedItem = nil;
-    viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
+    viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"item.type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
     viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"unitName" ascending:YES]];
     
 	return viewController;
@@ -537,7 +537,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
         // toss unit data
         viewController.selectedItem = selectedItem;
-        viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
+        viewController.favorites = [NSMutableArray arrayWithArray:[UnitFavorite MR_findByAttribute:@"item.type" withValue:_unitType andOrderBy:@"order" ascending:YES]];
         viewController.allData = [NSMutableArray arrayWithArray:[UnitItem MR_findByAttribute:@"type" withValue:_unitType andOrderBy:@"unitName" ascending:YES]];
         viewController.convertItems = self.convertItems;
 	}
