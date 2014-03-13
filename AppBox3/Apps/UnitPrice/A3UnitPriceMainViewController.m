@@ -499,7 +499,7 @@
         _price1InputView = [[[NSBundle mainBundle] loadNibNamed:nibName
                                                           owner:nil
                                                         options:nil] lastObject];
-        
+        _price1InputView.markLabel.text = @"A";
         _price1InputView.layer.anchorPoint = CGPointMake(0, 1);
         _price1InputView.delegate = self;
     }
@@ -514,7 +514,7 @@
         _price2InputView = [[[NSBundle mainBundle] loadNibNamed:nibName
                                                           owner:nil
                                                         options:nil] lastObject];
-        
+        _price2InputView.markLabel.text = @"B";
         _price2InputView.layer.anchorPoint = CGPointMake(0, 1);
         _price2InputView.delegate = self;
     }
