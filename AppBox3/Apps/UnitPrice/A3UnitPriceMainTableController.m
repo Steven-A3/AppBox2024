@@ -425,10 +425,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (void)configureCompareCell:(A3UnitPriceCompareSliderCell *)cell
 {
+    [cell.upSliderView labelFontSetting];
     cell.upSliderView.displayColor = [UIColor colorWithRed:255.0/255.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
     cell.upSliderView.markLabel.text = @"A";
     cell.upSliderView.layoutType = Slider_UpperOfTwo;
     
+    [cell.downSliderView labelFontSetting];
     cell.downSliderView.displayColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
     cell.downSliderView.markLabel.text = @"B";
     cell.downSliderView.layoutType = Slider_LowerOfTwo;
@@ -682,6 +684,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.delegate = self;
     cell.inputView.tag = 1;
     cell.inputView.markLabel.text = @"A";
+    [cell.inputView loadFontSettings];
     
     float unitPrice = 0;
     NSString *unitPriceTxt = @"";
@@ -758,6 +761,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.delegate = self;
     cell.inputView.tag = 2;
     cell.inputView.markLabel.text = @"B";
+    [cell.inputView loadFontSettings];
     
     float unitPrice = 0;
     NSString *unitPriceTxt = @"";

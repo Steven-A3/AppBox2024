@@ -95,4 +95,14 @@
     }
 }
 
+- (void)loadFontSettings {
+    if (!_labels) {
+        return;
+    }
+    
+    for (UILabel *label in _labels) {
+        label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    }
+}
+
 @end

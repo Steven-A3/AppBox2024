@@ -27,5 +27,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *discountLabel;
 @property (strong, nonatomic) IBOutlet UIButton *unitPriceBtn;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *lineViews;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *labels;
+
+- (void)loadFontSettings;
 
 @end

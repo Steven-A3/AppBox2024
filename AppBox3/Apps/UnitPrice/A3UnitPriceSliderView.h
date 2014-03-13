@@ -37,4 +37,6 @@ typedef NS_ENUM(NSInteger, UnitPriceSliderViewLayout) {
 - (void)setLayoutWithAnimated;
 - (void)setLayoutWithNoAnimated;
 
+- (void)labelFontSetting;
+
 @end

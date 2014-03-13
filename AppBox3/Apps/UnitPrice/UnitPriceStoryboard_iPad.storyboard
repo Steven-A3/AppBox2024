@@ -472,6 +472,16 @@
                                                 <outlet property="unitLabel" destination="p6k-1r-cwe" id="244-1j-4fg"/>
                                                 <outlet property="unitPriceBtn" destination="BAr-yf-4sh" id="H3G-xT-yZf"/>
                                                 <outletCollection property="lineViews" destination="sCw-fb-io8" id="uwB-dM-f04"/>
+                                                <outletCollection property="labels" destination="w5d-3l-4mN" id="43I-Uf-gpK"/>
+                                                <outletCollection property="labels" destination="Si0-6G-n3o" id="huH-PM-Zah"/>
+                                                <outletCollection property="labels" destination="rV0-DY-9UV" id="2lM-f4-vbc"/>
+                                                <outletCollection property="labels" destination="Ecv-hv-npN" id="Ovo-iS-Fqh"/>
+                                                <outletCollection property="labels" destination="EgA-Kn-q3Z" id="Shn-6m-8EY"/>
+                                                <outletCollection property="labels" destination="KZ3-ij-xiC" id="TlA-7O-dOC"/>
+                                                <outletCollection property="labels" destination="p6k-1r-cwe" id="0VX-C4-shb"/>
+                                                <outletCollection property="labels" destination="Vsb-bt-v3m" id="zkI-0o-S1v"/>
+                                                <outletCollection property="labels" destination="xSm-Me-Xz7" id="xCF-P8-HQd"/>
+                                                <outletCollection property="labels" destination="LBN-UK-r4G" id="fL5-xN-HOv"/>
                                             </connections>
                                         </view>
                                     </subviews>
