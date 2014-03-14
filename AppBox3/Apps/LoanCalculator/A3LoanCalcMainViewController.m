@@ -2887,6 +2887,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     inputCell.textField.delegate = self;
                     inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
                                                                                                 attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+                    inputCell.textField.userInteractionEnabled = NO;
                     NSDateFormatter *df = [[NSDateFormatter alloc] init];
                     df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
                     inputCell.textField.text = [df stringFromDate:_loanData.startDate];
