@@ -273,6 +273,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (IS_IPAD) {
         [self refreshIPadRightBarItems];
     }
+    else {
+        [self refreshIPhoneRightBarItems];
+    }
 }
 
 - (void)dealloc
@@ -397,6 +400,17 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     } else {
         shareItem.enabled = [_loanData calculated] ? YES:NO;
     }
+    
+    // KJH
+    UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
+    composeItem.enabled = [_loanData calculated] ? YES : NO;
+}
+
+// KJH
+- (void)refreshIPhoneRightBarItems
+{
+    UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[1];
+    composeItem.enabled = [_loanData calculated] ? YES : NO;
 }
 
 - (NSMutableDictionary *)controlsEnableInfo
@@ -663,6 +677,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     if (IS_IPAD) {
         [self refreshIPadRightBarItems];
     }
+    else {
+        [self refreshIPhoneRightBarItems];
+    }
     
     [[NSUserDefaults standardUserDefaults] setBool:_isComparisonMode forKey:LoanCalcModeSave];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -764,9 +781,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 
     if (IS_IPAD) {
-        
         [self refreshIPadRightBarItems];
-        
+    }
+    else {
+        [self refreshIPhoneRightBarItems];
     }
 }
 
@@ -1413,8 +1431,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
             
             if (IS_IPAD) {
-                
                 [self refreshIPadRightBarItems];
+            }
+            else {
+                [self refreshIPhoneRightBarItems];
             }
         }
     }
