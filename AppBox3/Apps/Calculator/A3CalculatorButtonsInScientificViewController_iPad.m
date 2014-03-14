@@ -149,5 +149,12 @@
     [self.commabutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     current_x+=buttonwidth;
     [self.decimalpointbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
+    
+    UIColor *tintColor = self.view.tintColor;
+    [self.dividebutton setBackgroundColor:tintColor];
+    [self.multiplybutton setBackgroundColor:tintColor];
+    [self.minusbutton setBackgroundColor:tintColor];
+    [self.plusbutton setBackgroundColor:tintColor];
+    [self.operationendbutton setBackgroundColor:tintColor];
 }
 @end
