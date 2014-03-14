@@ -176,10 +176,13 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 
 			x = (column == 0) ? -1 : column * width;
 			y = row == 0 ? 1 : row * height;
-			CGRect frame = CGRectMake(x, y, width + (column == 0 ? 2 : 1), height + (row == 0 ? 2 : 1));
+			CGRect frame = CGRectMake(x, y, width + (column == 0 ? 2 : 1), height + (row == 0 ? 0: 1));
 			if (idx == 39) {    //"=" button
 				frame.size.height = height * 2 + 1;
 			}
+            if (idx == 46) {
+                frame.size.width = width;
+            }
 			A3KeyboardButton_iOS7_iPhone *button = [[A3KeyboardButton_iOS7_iPhone alloc] initWithFrame:frame];
 			button.tag = idx + KBD_BUTTON_TAG_BASE;
 
@@ -224,11 +227,13 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
             
 			x = (column == 0) ? -1 : column * width;
 			y = row == 0 ? 1 : row * height;
-			CGRect frame = CGRectMake(x, y, width + (column == 0 ? 2 : 1), height + (row == 0 ? 2 : 1));
+			CGRect frame = CGRectMake(x, y, width + (column == 0 ? 2 : 1), height + (row == 0 ? 0 : 1));
 			if (idx == 39) {    //"=" button
 				frame.size.height = height * 2 + 1;
 			}
-            
+            if (idx == 46) {
+                frame.size.width = width + 0.5;
+            }
             idx += KBD_BUTTON_TAG_BASE;
             A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx];
             [button setFrame:frame];

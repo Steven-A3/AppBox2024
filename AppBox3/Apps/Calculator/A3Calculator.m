@@ -79,7 +79,6 @@ typedef CMathParser<char, double> MathParser;
 		myExpression = [self replaceSpecialCharactersExpression:myExpression];
 		p.SetExpression([myExpression cStringUsingEncoding:NSASCIIStringEncoding], radian);
 		resultValue = p.GetValue();
-        //_evaluatedResultLabel.text = [self getResultValueString:resultValue]; Why does not it work????
 		*err = NO;
 	}
 	catch (MathParser::ParserException &ex ) {
@@ -312,7 +311,7 @@ typedef CMathParser<char, double> MathParser;
         range.location = index + numberLength++;
         range.length = 1;
         currentString = [mExpression substringWithRange:range];
-        range = [currentString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+        range = [currentString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
     } while (range.location != NSNotFound &&
              index + numberLength < length);
     if(range.location == NSNotFound) {
@@ -350,12 +349,19 @@ typedef CMathParser<char, double> MathParser;
             case '6':
             case '7':
             case '8':
-            case '9': {
+            case '9':
+            case '.':{
                 range.location = i;
                 range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                 
                 currentString = [mExpression substringWithRange:range];
-                temp = [temp appendWithString:[self getResultValueString:[currentString doubleValue]]];
+                double dv = [currentString doubleValue];
+                if (dv != 0) {
+                    temp = [temp appendWithString:[self getResultValueString:dv]];
+                } else {
+                    // to reserve 0.
+                    temp = [temp appendWithString:currentString];
+                }
                 
                 i+= range.length;
             }
@@ -368,7 +374,6 @@ typedef CMathParser<char, double> MathParser;
             case '/':
             case '(':
             case ')':
-            case '.':
             case '=':{
                 range.location = i;
                 range.length = 1;
@@ -927,7 +932,7 @@ typedef CMathParser<char, double> MathParser;
             if (range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:stringFuncName];
             } else {
-                range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890)"]];
+                range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
                 // in case of number, add multiply simbol automatically
                 if( range.location != NSNotFound) {
                     [self addMultiplyInExpressWith:stringFuncName];
@@ -1012,7 +1017,7 @@ typedef CMathParser<char, double> MathParser;
         if (range.location != NSNotFound) {
             mathexpression = [mathexpression stringByAppendingString:funcName];
         } else {
-            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890)"]];
+            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
             // in case of number, add multiply simbol automatically
             if( range.location != NSNotFound) {
                 [self addMultiplyInExpressWith:funcName];
@@ -1156,7 +1161,7 @@ typedef CMathParser<char, double> MathParser;
             range.location = [mathexpression length] - nLen;
             range.length = 1;
             lastChar = [mathexpression substringWithRange:range];
-            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
             if (range.location == NSNotFound) {
                 nLen--;
                 break;
@@ -1283,7 +1288,7 @@ typedef CMathParser<char, double> MathParser;
         case A3E_00: {
             if(([self checkIfexpressionisnull])) return;
             NSString* lastChar = [mathexpression substringFromIndex:[mathexpression length] -1];
-            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890"]];
+            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
             if(range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:@"00"];
                 [self convertMathExpressionToAttributedString];
@@ -1420,7 +1425,7 @@ typedef CMathParser<char, double> MathParser;
                     mathexpression = [mathexpression stringByAppendingString:numOperator];
                     //_expressionLabel.attributedText = [_expressionLabel.attributedText appendWithString:numOperator];
                 } else {
-                    range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890)"]];
+                    range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
                     // in case of number, add multiply simbol automatically
                     if( range.location != NSNotFound) {
                         //NSAttributedString* anumOperator = [[NSAttributedString alloc] initWithString:numOperator]; // TODO

@@ -817,6 +817,10 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 #pragma mark TableView Manipulate
 // KJH
 - (void)scrollToTopOfTableViewIfNeeded {
+    if (IS_IPAD) {
+        return;
+    }
+    
     if ([self.price.price doubleValue] > 0 && [self.price.quantity doubleValue] > 0) {
         [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     }

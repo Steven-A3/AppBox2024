@@ -937,10 +937,15 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return IS_IPAD ? 225 : 165;
+        return IS_IPAD ? 225 : 166;
     }
     
-    return IS_IPAD ? 190 : 178;
+    if (IS_RETINA) {
+        return IS_IPAD ? 192.5 : 178.5;
+    }
+    else {
+        return IS_IPAD ? 193 : 179;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
