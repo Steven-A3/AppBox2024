@@ -16,6 +16,8 @@
 @interface A3LoanCalcSettingViewController ()
 
 @property (nonatomic, strong) LoanCalcPreference *preference;
+@property (nonatomic, strong) void (^settingChangedBlock)(void);
+@property (nonatomic, strong) void (^settingDismissBlock)(void);
 
 @end
 
@@ -66,6 +68,10 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
+    
+    if (_settingDismissBlock) {
+        _settingDismissBlock();
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,6 +90,10 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     else {
         [[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcNotificationDownPaymentDisabled object:nil];
     }
+    
+    if (_settingChangedBlock) {
+        _settingChangedBlock();
+    }
 }
 
 - (void)extraPaymentSwitchAction:(UISwitch *)onoff
@@ -96,6 +106,19 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     else {
         [[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcNotificationExtraPaymentDisabled object:nil];
     }
+
+    if (_settingChangedBlock) {
+        _settingChangedBlock();
+    }
+}
+
+#pragma mark - 
+- (void)setSettingChangedCompletionBlock:(void (^)(void))changedBlock {
+    self.settingChangedBlock = changedBlock;
+}
+
+- (void)setSettingDismissCompletionBlock:(void (^)(void))dismissBlock {
+    self.settingDismissBlock = dismissBlock;
 }
 
 #pragma mark - Table view data source

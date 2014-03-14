@@ -893,6 +893,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
         A3LoanCalcSettingViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcSettingViewController"];
         [self presentSubViewController:viewController];
+        [viewController setSettingChangedCompletionBlock:^{
+            
+        }];
+        [viewController setSettingDismissCompletionBlock:^{
+            [self enableControls:YES];
+        }];
         
         if (IS_IPAD) {
             [self enableControls:NO];
