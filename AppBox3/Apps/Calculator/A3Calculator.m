@@ -303,7 +303,7 @@ typedef CMathParser<char, double> MathParser;
 }
 
 - (NSUInteger) getNumberLengthFromMathExpression:(NSString *)mExpression with:(NSUInteger)index {
-    NSUInteger numberLength = 0;
+    NSUInteger numberLength = 0, numParenthesis = 0;
     NSRange range;
     NSUInteger length = [mExpression length];
     NSString *currentString;
@@ -311,9 +311,21 @@ typedef CMathParser<char, double> MathParser;
         range.location = index + numberLength++;
         range.length = 1;
         currentString = [mExpression substringWithRange:range];
-        range = [currentString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
+        if([currentString isEqualToString:@"("]) {
+            numParenthesis++;
+        }
+        
+        if(numParenthesis > 0 && [currentString isEqualToString:@")"]) {
+            numParenthesis--;
+            numberLength++;
+        }
+        
+        if (numParenthesis == 0) {
+            range = [currentString rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
+        }
     } while (range.location != NSNotFound &&
              index + numberLength < length);
+    
     if(range.location == NSNotFound) {
         numberLength--;
     }
@@ -330,6 +342,7 @@ typedef CMathParser<char, double> MathParser;
     [self evaluateAndSet:NO];
 }
 - (NSAttributedString *) getExpressionWith:(NSString *) mExpression {
+    FNLOG(@"mExpression = %@",mExpression);
     NSAttributedString *temp = [[NSAttributedString alloc] init];
     NSUInteger i, length = [mExpression length];
     NSString *currentString;
@@ -536,7 +549,7 @@ typedef CMathParser<char, double> MathParser;
                         range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];//numberLength - range.location-1;
                         currentString = [mExpression substringWithRange:range];
                         temp = [temp appendWithString:[currentString stringByAppendingString:@"!"]];
-                        i+= range.location + range.length + 1; // 1 is for ')'
+                        i = range.location + range.length + 1; // 1 is for ')'
                     } else {
                         FNLOG("Error:%@ is undefined in MathExpression", currentString);
                         i+=length;// exit for loop
@@ -759,16 +772,34 @@ typedef CMathParser<char, double> MathParser;
     if ([mathexpression length] == 0) return;
     
     // Get the last number for the operator
+    NSUInteger numParenthesis = 0;
     NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
-    NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
+        
+    NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"]];
+    if ([lastChar isEqualToString:@")"]) {
+        numParenthesis++;
+    }
     if(range.location != NSNotFound) {
-        range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] options:NSBackwardsSearch];
+        range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"] options:NSBackwardsSearch];
         NSUInteger startLocation = range.location;
         
         while ( (range.location != NSNotFound) &&
                (range.location != 0)) {
-            range.location = (range.location > 0 ) ? (range.location - 1) : 0;
-            range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] options:0 range:range];
+            range.location = range.location > 0  ? (range.location - 1) : 0;
+            if (numParenthesis == 0) {
+                range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] options:0 range:range];
+            } else {
+                //range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.+()"] options:0 range:range];
+                range.location--;
+                lastChar = [mathexpression substringWithRange:range];
+
+                if ([lastChar isEqualToString:@")"]) {
+                    numParenthesis++;
+                }
+                if ([lastChar isEqualToString:@"("]) {
+                    numParenthesis--;
+                }
+            }
             if(range.location != NSNotFound) {
                 startLocation  = range.location;
             }
@@ -939,7 +970,7 @@ typedef CMathParser<char, double> MathParser;
                 }
             }
         } else {
-            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet decimalDigitCharacterSet]];
+            NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
             if(range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:stringFuncName];
                 [self evaluateAndSet:NO];
@@ -1156,15 +1187,26 @@ typedef CMathParser<char, double> MathParser;
     
     if([lastChar isEqualToString:@")"]) {
         mathexpression = [mathexpression substringToIndex:[mathexpression length] - 1];
-        NSUInteger nLen = 0;
+        NSUInteger nLen = 0, numParenthesis = 0;
         while ([mathexpression length] - ++nLen > 0) {
             range.location = [mathexpression length] - nLen;
             range.length = 1;
             lastChar = [mathexpression substringWithRange:range];
-            range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
-            if (range.location == NSNotFound) {
-                nLen--;
-                break;
+            if ([lastChar isEqualToString:@")"]) {
+                numParenthesis++;
+            }
+            
+            if (numParenthesis> 0 && [lastChar isEqualToString:@"("]) {
+                numParenthesis--;
+                continue;
+            }
+
+            if (numParenthesis == 0) {
+                range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
+                if (range.location == NSNotFound) {
+                    nLen--;
+                    break;
+                }
             }
         }
         
