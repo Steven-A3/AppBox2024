@@ -821,7 +821,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
         A3LoanCalcHistoryViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcHistoryViewController"];
         viewController.isComparisonMode = _isComparisonMode;
-        
         viewController.delegate = self;
         
         if (IS_IPHONE) {
@@ -2469,6 +2468,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self selectSegment].selectedSegmentIndex = 0;
     _calcItems = nil;
     [self.tableView reloadData];
+    
+    [self enableControls:YES];
+    if (IS_IPAD) {
+        [self refreshIPadRightBarItems];
+    }
+    else {
+        [self refreshIPhoneRightBarItems];
+    }
 }
 
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison
@@ -2488,6 +2495,24 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self selectSegment].selectedSegmentIndex = 1;
     _calcItems = nil;
     [self.tableView reloadData];
+    
+    [self enableControls:YES];
+    if (IS_IPAD) {
+        [self refreshIPadRightBarItems];
+    }
+    else {
+        [self refreshIPhoneRightBarItems];
+    }
+}
+
+- (void)historyViewControllerDismissed:(UIViewController *)viewController {
+    [self enableControls:YES];
+    if (IS_IPAD) {
+        [self refreshIPadRightBarItems];
+    }
+    else {
+        [self refreshIPhoneRightBarItems];
+    }
 }
 
 #pragma mark - LoanCalcExtraPaymentDelegate
