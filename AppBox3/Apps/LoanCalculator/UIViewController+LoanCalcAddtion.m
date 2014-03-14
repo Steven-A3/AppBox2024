@@ -26,7 +26,7 @@ static char const *const key_loanFormatter					= "key_loanFormatter";
 		}
         
 		[formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setMaximumFractionDigits:3];
+//        [formatter setMaximumFractionDigits:3];   // KJH, 기본 통화 fractionDigits 을 따르기 위해서
         
 		objc_setAssociatedObject(self, key_loanFormatter, formatter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
