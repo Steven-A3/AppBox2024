@@ -82,7 +82,9 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 		[_drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
 		}];
-		[_drawerController setMaximumLeftDrawerWidth:266.0];
+		[_drawerController setShowsShadow:NO];
+
+		[_drawerController setMaximumLeftDrawerWidth:320.0];
 
 		_drawerController.view.frame = [[UIScreen mainScreen] bounds];
 
