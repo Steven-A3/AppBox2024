@@ -175,9 +175,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     [self enableControls:YES];
     
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
+    [self refreshRightBarItems];
 }
 
 - (void)enableControls:(BOOL) onoff
@@ -270,12 +268,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
      */
     
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
-    else {
-        [self refreshIPhoneRightBarItems];
-    }
+    [self refreshRightBarItems];
 }
 
 - (void)dealloc
@@ -377,40 +370,49 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)refreshIPadRightBarItems
-{
-    // 히스토리가 존재하는지 체크
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
-    LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
-    LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
-    
-    //self.navigationItem.rightBarButtonItems = @[setting, history, share];
-    UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
-    UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[3];
-    
-    if (!history && !comparison) {
-        historyItem.enabled = NO;
+- (void)refreshRightBarItems {
+    if (IS_IPAD) {
+        // 히스토리가 존재하는지 체크
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+        LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
+        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
+        
+        //self.navigationItem.rightBarButtonItems = @[setting, history, share];
+        UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
+        UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[3];
+        
+        if (!history && !comparison) {
+            historyItem.enabled = NO;
+        }
+        else {
+            historyItem.enabled = YES;
+        }
+        
+        if (_isComparisonMode) {
+            shareItem.enabled = ([_loanDataA calculated] && [_loanDataB calculated]) ? YES:NO;
+        } else {
+            shareItem.enabled = [_loanData calculated] ? YES : NO;
+        }
+        
+        // KJH
+        UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
+        if (_isComparisonMode) {
+            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
+        }
+        else {
+            composeItem.enabled = [_loanData calculated] ? YES : NO;
+        }
     }
     else {
-        historyItem.enabled = YES;
+        UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[1];
+        
+        if (_isComparisonMode) {
+            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
+        }
+        else {
+            composeItem.enabled = [_loanData calculated] ? YES : NO;
+        }
     }
-    
-    if (_isComparisonMode) {
-        shareItem.enabled = ([_loanDataA calculated] && [_loanDataB calculated]) ? YES:NO;
-    } else {
-        shareItem.enabled = [_loanData calculated] ? YES:NO;
-    }
-    
-    // KJH
-    UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
-    composeItem.enabled = [_loanData calculated] ? YES : NO;
-}
-
-// KJH
-- (void)refreshIPhoneRightBarItems
-{
-    UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[1];
-    composeItem.enabled = [_loanData calculated] ? YES : NO;
 }
 
 - (NSMutableDictionary *)controlsEnableInfo
@@ -673,13 +675,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     [self dismissMoreMenu];
-    
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
-    else {
-        [self refreshIPhoneRightBarItems];
-    }
+    [self refreshRightBarItems];
     
     [[NSUserDefaults standardUserDefaults] setBool:_isComparisonMode forKey:LoanCalcModeSave];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -780,12 +776,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
 	}
 
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
-    else {
-        [self refreshIPhoneRightBarItems];
-    }
+    [self refreshRightBarItems];
 }
 
 - (void)dismissMoreMenu {
@@ -915,6 +906,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }];
         [viewController setSettingDismissCompletionBlock:^{
             [self enableControls:YES];
+            [self refreshRightBarItems];
         }];
         
         if (IS_IPAD) {
@@ -1428,13 +1420,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             
             // 계산이 되었으면, 상단 그래프가 보이도록 이동시킨다.
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            
-            if (IS_IPAD) {
-                [self refreshIPadRightBarItems];
-            }
-            else {
-                [self refreshIPhoneRightBarItems];
-            }
+            [self refreshRightBarItems];
         }
     }
 }
@@ -2470,12 +2456,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.tableView reloadData];
     
     [self enableControls:YES];
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
-    else {
-        [self refreshIPhoneRightBarItems];
-    }
+    [self refreshRightBarItems];
 }
 
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison
@@ -2497,22 +2478,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.tableView reloadData];
     
     [self enableControls:YES];
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
-    else {
-        [self refreshIPhoneRightBarItems];
-    }
+    [self refreshRightBarItems];
 }
 
 - (void)historyViewControllerDismissed:(UIViewController *)viewController {
     [self enableControls:YES];
-    if (IS_IPAD) {
-        [self refreshIPadRightBarItems];
-    }
-    else {
-        [self refreshIPhoneRightBarItems];
-    }
+    [self refreshRightBarItems];
 }
 
 #pragma mark - LoanCalcExtraPaymentDelegate
