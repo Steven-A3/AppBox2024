@@ -274,7 +274,7 @@
 		682EA2E815EB10B000BD6AD4 /* A3AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 682EA2E715EB10B000BD6AD4 /* A3AppDelegate.m */; };
 		6830C78418519C540075010F /* A3SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C78318519C540075010F /* A3SettingsViewController.m */; };
 		6830C7871851A26E0075010F /* NSUserDefaults+A3Addition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */; };
-		6830C78A1851BD480075010F /* A3SettingsSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7891851BD480075010F /* A3SettingsSyncViewController.m */; };
+		6830C78A1851BD480075010F /* A3SettingsBackupRestoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6830C7891851BD480075010F /* A3SettingsBackupRestoreViewController.m */; };
 		6831407F18C20C9700896819 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6831407E18C20C9700896819 /* AVFoundation.framework */; };
 		6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */; };
 		6831EBF518617CCF00BAF15B /* NSFileManager+A3Addtion.m in Sources */ = {isa = PBXBuildFile; fileRef = 682968841850401200B70E13 /* NSFileManager+A3Addtion.m */; };
@@ -682,7 +682,6 @@
 		68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */; };
 		68B9B16317D02B85003ACAD0 /* A3HolidaysCountryViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */; };
 		68B9B17017D04152003ACAD0 /* NSDate+daysleft.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */; };
-		68BA81D21866B9ED000E01F5 /* A3SettingsWalletViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */; };
 		68BB306D16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */; };
 		68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */; };
 		68BDC58317A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BDC58217A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m */; };
@@ -1233,8 +1232,8 @@
 		6830C78318519C540075010F /* A3SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsViewController.m; path = Settings/A3SettingsViewController.m; sourceTree = "<group>"; };
 		6830C7851851A26E0075010F /* NSUserDefaults+A3Addition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+A3Addition.h"; sourceTree = "<group>"; };
 		6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+A3Addition.m"; sourceTree = "<group>"; };
-		6830C7881851BD480075010F /* A3SettingsSyncViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsSyncViewController.h; path = Settings/A3SettingsSyncViewController.h; sourceTree = "<group>"; };
-		6830C7891851BD480075010F /* A3SettingsSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsSyncViewController.m; path = Settings/A3SettingsSyncViewController.m; sourceTree = "<group>"; };
+		6830C7881851BD480075010F /* A3SettingsBackupRestoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsBackupRestoreViewController.h; path = Settings/A3SettingsBackupRestoreViewController.h; sourceTree = "<group>"; };
+		6830C7891851BD480075010F /* A3SettingsBackupRestoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsBackupRestoreViewController.m; path = Settings/A3SettingsBackupRestoreViewController.m; sourceTree = "<group>"; };
 		6831407E18C20C9700896819 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6831DF0916C3D30100EABB2A /* A3ActionMenuBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ActionMenuBackgroundView.h; sourceTree = "<group>"; };
 		6831DF0A16C3D30100EABB2A /* A3ActionMenuBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ActionMenuBackgroundView.m; sourceTree = "<group>"; };
@@ -2006,8 +2005,6 @@
 		68B9B16217D02B85003ACAD0 /* A3HolidaysCountryViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCountryViewCell.m; path = Holidays/A3HolidaysCountryViewCell.m; sourceTree = "<group>"; };
 		68B9B16E17D04152003ACAD0 /* NSDate+daysleft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+daysleft.h"; sourceTree = "<group>"; };
 		68B9B16F17D04152003ACAD0 /* NSDate+daysleft.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+daysleft.m"; sourceTree = "<group>"; };
-		68BA81D01866B9ED000E01F5 /* A3SettingsWalletViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsWalletViewController.h; path = Settings/A3SettingsWalletViewController.h; sourceTree = "<group>"; };
-		68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsWalletViewController.m; path = Settings/A3SettingsWalletViewController.m; sourceTree = "<group>"; };
 		68BB306A16841F6000C3498B /* A3NumberKeyboardViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3NumberKeyboardViewController_iPad.h; sourceTree = "<group>"; };
 		68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardViewController_iPad.m; sourceTree = "<group>"; };
 		68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
@@ -3029,12 +3026,10 @@
 				68B6701218858C3C004BCE05 /* A3SettingsRecentToKeepViewController.m */,
 				68E39FF7186D845300D8482E /* A3SettingsRequireForViewController.h */,
 				68E39FF8186D845300D8482E /* A3SettingsRequireForViewController.m */,
-				6830C7881851BD480075010F /* A3SettingsSyncViewController.h */,
-				6830C7891851BD480075010F /* A3SettingsSyncViewController.m */,
+				6830C7881851BD480075010F /* A3SettingsBackupRestoreViewController.h */,
+				6830C7891851BD480075010F /* A3SettingsBackupRestoreViewController.m */,
 				6830C78218519C540075010F /* A3SettingsViewController.h */,
 				6830C78318519C540075010F /* A3SettingsViewController.m */,
-				68BA81D01866B9ED000E01F5 /* A3SettingsWalletViewController.h */,
-				68BA81D11866B9ED000E01F5 /* A3SettingsWalletViewController.m */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
@@ -5067,7 +5062,7 @@
 				68B6A44618CEE781004084EF /* MWZoomingScrollView.m in Sources */,
 				68B6A2E818CEC76D004084EF /* A3UnitPriceActionCell.m in Sources */,
 				689791911865C68200F74826 /* CurrencyHistory.m in Sources */,
-				6830C78A1851BD480075010F /* A3SettingsSyncViewController.m in Sources */,
+				6830C78A1851BD480075010F /* A3SettingsBackupRestoreViewController.m in Sources */,
 				68B6A33C18CEC76D004084EF /* A3WalletVideoItemTitleView.m in Sources */,
 				68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */,
 				68B6A32918CEC76D004084EF /* A3WalletItemFieldActionCell.m in Sources */,
@@ -5474,7 +5469,6 @@
 				680D639B18CFF9D400938AD0 /* NSAttributedString+Append.m in Sources */,
 				6829682A18503B2100B70E13 /* NSPersistentStoreCoordinator+MagicalAutoMigrations.m in Sources */,
 				68D3561A1845CF94008409B4 /* UIImage+extension.m in Sources */,
-				68BA81D21866B9ED000E01F5 /* A3SettingsWalletViewController.m in Sources */,
 				680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */,
 				6829687018503C3300B70E13 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				6829684A18503B2100B70E13 /* AutoMigratingWithSourceAndTargetModelMagicalRecordStack.m in Sources */,

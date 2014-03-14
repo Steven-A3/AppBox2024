@@ -24,6 +24,8 @@
 #import "A3KeychainUtils.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
+NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
+NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 @interface A3AppDelegate () <CLLocationManagerDelegate>
 
@@ -82,7 +84,8 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 		[_drawerController setGestureCompletionBlock:^(MMDrawerController *drawerController, UIGestureRecognizer *gesture) {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
 		}];
-		[_drawerController setMaximumLeftDrawerWidth:266.0];
+		[_drawerController setMaximumLeftDrawerWidth:320.0];
+		[_drawerController setShowsShadow:NO];
 
 		_drawerController.view.frame = [[UIScreen mainScreen] bounds];
 
@@ -168,7 +171,9 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 	if ([[DBSession sharedSession] handleOpenURL:url]) {
 		if ([[DBSession sharedSession] isLinked]) {
 			NSLog(@"App linked successfully!");
-			// At this point you can start making API calls
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginWithSuccess object:nil];
+		} else {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3DropboxLoginFailed object:nil];
 		}
 		return YES;
 	}
