@@ -66,6 +66,14 @@
 	}
 	return _highlightedMarkLayer;
 }
+
+- (void) layoutSubviews {
+    [super layoutSubviews];
+    if (_highlightedMarkLayer != nil) {
+        _highlightedMarkLayer.frame = self.layer.bounds;
+    }
+}
+
 //
 //- (CALayer *)selectedMarkLayer {
 //	if (!_selectedMarkLayer) {
