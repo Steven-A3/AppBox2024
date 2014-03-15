@@ -27,8 +27,8 @@
 }
 
 - (void)doAutolayout {
-	[self addConstraintLeft:_L1 right:_R1 centerY:2.0 * (1.0 / 4.0)];
-	[self addConstraintLeft:_L2 right:_R2 centerY:1.4];
+	[self addConstraintLeft:_L1 right:_R1 centerY:2.15 * (1.0 / 4.0)];
+	[self addConstraintLeft:_L2 right:_R2 centerY:1.425];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
