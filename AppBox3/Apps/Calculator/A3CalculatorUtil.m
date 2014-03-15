@@ -11,7 +11,7 @@
 
 @implementation A3CalculatorUtil
 - (UIFont *)superscriptFont {
-	return [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:11];
+	return [UIFont systemFontOfSize:13];
 }
 
 - (UIFont *)superscriptBigFont {
@@ -115,11 +115,11 @@
 }
 
 - (id)stringSecond {
-	return [self stringWithSuperscript:@"2nd" location:1 length:2 value:@1];
+	return [self stringWithSuperscript:@"2nd" location:1 length:2 value:@-1];
 }
 
 - (id)stringSecondBigFont {
-	return [self stringWithSuperscriptBigFont:@"2nd" location:1 length:2 value:@1];
+	return [self stringWithSuperscriptBigFont:@"2nd" location:1 length:2 value:@-1];
 }
 
 - (id)stringSquare {
