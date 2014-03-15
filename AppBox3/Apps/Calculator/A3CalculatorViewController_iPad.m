@@ -303,7 +303,11 @@
 - (void)shareAll:(id)sender {
 	@autoreleasepool {
 		NSMutableString *shareString = [[NSMutableString alloc] init];
-		[shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
+        if (![self.expressionLabel.text hasSuffix:@"="]) {
+            [shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
+        } else {
+            [shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
+        }
         
 		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
         _sharePopoverController.delegate = self;
