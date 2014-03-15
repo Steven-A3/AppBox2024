@@ -15,9 +15,8 @@
 
 @required
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcHistory:(LoanCalcHistory *)history;
-
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison;
-
+- (void)historyViewControllerDismissed:(UIViewController *)viewController;
 @end
 
 @interface A3LoanCalcHistoryViewController : UITableViewController

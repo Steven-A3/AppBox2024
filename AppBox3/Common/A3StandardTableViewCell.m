@@ -33,7 +33,7 @@
 	if (![self isEditing]) {
 		CGRect frame = self.textLabel.frame;
 		frame.origin.x = IS_IPHONE ? 15 : 28;
-		if (self.imageView) {
+		if (self.imageView.bounds.size.width) {
 			frame.origin.x += self.imageView.bounds.size.width;
 			if (IS_IPHONE) frame.origin.x += 13.0;
 		}
