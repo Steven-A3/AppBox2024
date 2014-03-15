@@ -56,7 +56,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[[A3AppDelegate instance] showLockScreen];
 }
 
 - (void)didReceiveMemoryWarning

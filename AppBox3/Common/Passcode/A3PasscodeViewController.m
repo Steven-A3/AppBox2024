@@ -77,7 +77,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	BOOL _isUserTurningPasscodeOff;
 	BOOL _isUserChangingPasscode;
 	BOOL _isUserEnablingPasscode;
-	BOOL _beingDisplayedAsLockscreen;
 	NSString *_tempPasscode;
 	BOOL _timerStartInSeconds;
 	BOOL _passcodeValid;
@@ -303,8 +302,8 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
-	if ([_delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-		[_delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+		[self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
 	}
 }
 
@@ -322,7 +321,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 	_passcodeValid = NO;
 
 	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-		[_delegate passcodeViewControllerWasDismissedWithSuccess:NO];
+		[self.delegate passcodeViewControllerWasDismissedWithSuccess:NO];
 	}
 	[self dismissViewControllerAnimated: YES completion: nil];
 }
@@ -354,14 +353,14 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 			}
 					// Update the Keychain if adding or changing passcode
 			else {
-				[A3KeychainUtils storePassword:_tempPasscode hint:nil];
-
 				if (_isUserEnablingPasscode) {
+					[A3KeychainUtils storePassword:_tempPasscode hint:nil];
 					[[A3AppDelegate instance] setEnableAskPasscodeForStarting:YES];
+
+					NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+					[defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
+					[defaults synchronize];
 				}
-				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-				[defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
-				[defaults synchronize];
 			}
 		}
 	} completion: ^(BOOL finished) {
@@ -380,7 +379,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 		_passcodeValid = YES;
 
 		if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-			[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
+			[self.delegate passcodeViewControllerWasDismissedWithSuccess:YES];
 		}
 	}];
 	[[NSNotificationCenter defaultCenter] removeObserver: self
@@ -394,6 +393,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 #pragma mark - Displaying
 - (void)showLockscreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
+	_beingDisplayedAsLockscreen = YES;
 //	// In case the user leaves the app while changing/disabling Passcode.
 //	if (!_beingDisplayedAsLockscreen) [self cancelAndDismissMe];
 	[self prepareAsLockscreen];
@@ -502,7 +502,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 #pragma mark - Preparing
 - (void)prepareAsLockscreen {
-	_beingDisplayedAsLockscreen = YES;
 	_isUserTurningPasscodeOff = NO;
 	_isUserChangingPasscode = NO;
 	_isUserConfirmingPasscode = NO;
@@ -513,7 +512,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)prepareForChangingPasscode {
 	_isCurrentlyOnScreen = YES;
-	_beingDisplayedAsLockscreen = NO;
 	_isUserTurningPasscodeOff = NO;
 	_isUserChangingPasscode = YES;
 	_isUserConfirmingPasscode = NO;
@@ -524,7 +522,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)prepareForTurningOffPasscode {
 	_isCurrentlyOnScreen = YES;
-	_beingDisplayedAsLockscreen = NO;
 	_isUserTurningPasscodeOff = YES;
 	_isUserChangingPasscode = NO;
 	_isUserConfirmingPasscode = NO;
@@ -535,7 +532,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 
 - (void)prepareForEnablingPasscode {
 	_isCurrentlyOnScreen = YES;
-	_beingDisplayedAsLockscreen = NO;
 	_isUserTurningPasscodeOff = NO;
 	_isUserChangingPasscode = NO;
 	_isUserConfirmingPasscode = NO;
@@ -767,7 +763,7 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 - (id)initWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
 	self = [super init];
 	if (self) {
-		_delegate = delegate;
+		self.delegate = delegate;
 //		[[NSNotificationCenter defaultCenter] addObserver: self
 //												 selector: @selector(applicationDidEnterBackground)
 //													 name: UIApplicationDidEnterBackgroundNotification
@@ -786,111 +782,6 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 //		[[UIApplication sharedApplication].keyWindow addSubview: _coverView];
 	}
 	return self;
-}
-
-- (NSUInteger)supportedInterfaceOrientations {
-	if (_beingDisplayedAsLockscreen) return UIInterfaceOrientationMaskAll;
-	// I'll be honest and mention I have no idea why this line of code below works.
-	// Without it, if you present the passcode view as lockscreen (directly on the window)
-	// and then inside of a modal, the orientation will be wrong.
-
-	// Feel free to explain why, I'd be more than grateful :)
-	return UIInterfaceOrientationPortraitUpsideDown;
-}
-
-
-// All of the rotation handling is thanks to Håvard Fossli's - https://github.com/hfossli
-// answer: http://stackoverflow.com/a/4960988/793916
-#pragma mark - Handling rotation
-- (void)statusBarFrameOrOrientationChanged:(NSNotification *)notification {
-	/*
-	 This notification is most likely triggered inside an animation block,
-	 therefore no animation is needed to perform this nice transition.
-	 */
-	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
-}
-
-
-// And to his AGWindowView: https://github.com/hfossli/AGWindowView
-// Without the 'desiredOrientation' method, using showLockscreen in one orientation,
-// then presenting it inside a modal in another orientation would display the view in the first orientation.
-- (UIInterfaceOrientation)desiredOrientation {
-	UIInterfaceOrientation statusBarOrientation = [[UIApplication sharedApplication] statusBarOrientation];
-	UIInterfaceOrientationMask statusBarOrientationAsMask = UIInterfaceOrientationMaskFromOrientation(statusBarOrientation);
-	if(self.supportedInterfaceOrientations & statusBarOrientationAsMask) {
-		return statusBarOrientation;
-	}
-	else {
-		if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskPortrait) {
-			return UIInterfaceOrientationPortrait;
-		}
-		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeLeft) {
-			return UIInterfaceOrientationLandscapeLeft;
-		}
-		else if(self.supportedInterfaceOrientations & UIInterfaceOrientationMaskLandscapeRight) {
-			return UIInterfaceOrientationLandscapeRight;
-		}
-		else {
-			return UIInterfaceOrientationPortraitUpsideDown;
-		}
-	}
-}
-
-
-- (void)rotateAccordingToStatusBarOrientationAndSupportedOrientations {
-	UIInterfaceOrientation orientation = [self desiredOrientation];
-	CGFloat angle = UIInterfaceOrientationAngleOfOrientation(orientation);
-	CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
-
-	[self setIfNotEqualTransform: transform
-						   frame: self.view.window.bounds];
-}
-
-
-- (void)setIfNotEqualTransform:(CGAffineTransform)transform frame:(CGRect)frame {
-	if(!CGAffineTransformEqualToTransform(self.view.transform, transform)) {
-		self.view.transform = transform;
-	}
-	if(!CGRectEqualToRect(self.view.frame, frame)) {
-		self.view.frame = frame;
-	}
-}
-
-
-+ (CGFloat)getStatusBarHeight {
-	UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-	if(UIInterfaceOrientationIsLandscape(orientation)) {
-		return [UIApplication sharedApplication].statusBarFrame.size.width;
-	}
-	else {
-		return [UIApplication sharedApplication].statusBarFrame.size.height;
-	}
-}
-
-
-CGFloat UIInterfaceOrientationAngleOfOrientation(UIInterfaceOrientation orientation) {
-	CGFloat angle;
-
-	switch (orientation) {
-		case UIInterfaceOrientationPortraitUpsideDown:
-			angle = M_PI;
-			break;
-		case UIInterfaceOrientationLandscapeLeft:
-			angle = -M_PI_2;
-			break;
-		case UIInterfaceOrientationLandscapeRight:
-			angle = M_PI_2;
-			break;
-		default:
-			angle = 0.0;
-			break;
-	}
-
-	return angle;
-}
-
-UIInterfaceOrientationMask UIInterfaceOrientationMaskFromOrientation(UIInterfaceOrientation orientation) {
-	return 1 << orientation;
 }
 
 @end

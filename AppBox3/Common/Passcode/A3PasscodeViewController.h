@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "A3PasscodeViewControllerProtocol.h"
+#import "A3PasscodeCommonViewController.h"
 
-@interface A3PasscodeViewController : UIViewController <A3PasscodeViewControllerProtocol>
+@interface A3PasscodeViewController : A3PasscodeCommonViewController
 
-@property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> delegate;
 @property (assign) BOOL isCurrentlyOnScreen;
 
 - (id)initWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;

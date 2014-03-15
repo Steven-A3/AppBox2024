@@ -7,9 +7,7 @@
 //
 
 #import "A3PasswordViewController.h"
-#import "A3UIDevice.h"
 #import "UIViewController+A3Addition.h"
-#import "A3AppDelegate+passcode.h"
 #import "A3KeychainUtils.h"
 
 #define kFailedAttemptLabelBackgroundColor [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f]
@@ -17,16 +15,20 @@ static CGFloat const kLabelFontSize = 15.0f;
 static CGFloat const kFontSizeModifier = 1.5f;
 #define kLabelFont (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize * kFontSizeModifier] : [UIFont fontWithName: @"AvenirNext-Regular" size: kLabelFontSize])
 
-@interface A3PasswordViewController () <UITextFieldDelegate>
+@interface A3PasswordViewController () <UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITextField *passwordField;
 @property (nonatomic, strong) UITextField *aNewPasswordField;
 @property (nonatomic, strong) UITextField *confirmPasswordField;
 @property (nonatomic, strong) UITextField *passwordHintField;
+@property (nonatomic, strong) UIResponder *currentResponder;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) UILabel *failedAttemptLabel;
 @property (nonatomic, strong) MASConstraint *labelWidth;
 @property (nonatomic, strong) MASConstraint *labelHeight;
+@property (nonatomic, strong) MASConstraint *headerY;
+@property (nonatomic, strong) MASConstraint *footerY;
+@property (nonatomic, strong) UITableView *tableView;
 
 @end
 
@@ -35,17 +37,17 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	BOOL _isUserTurningPasscodeOff;
 	BOOL _isUserChangingPasscode;
 	BOOL _isUserEnablingPasscode;
-	BOOL _beingDisplayedAsLockscreen;
 	BOOL _showCancelButton;
 	NSInteger _failedAttempts;
 	BOOL _passcodeValid;
 	BOOL _beingPresentedInViewController;
+	BOOL _userPressedCancelButton;
 }
 
 - (id)initWithDelegate:(id<A3PasscodeViewControllerDelegate>)delegate {
-	self = [super initWithStyle:UITableViewStyleGrouped];
+	self = [super init];
 	if (self) {
-		_delegate = delegate;
+		self.delegate = delegate;
 		_failedAttempts = 0;
 	}
 	return self;
@@ -55,15 +57,48 @@ static CGFloat const kFontSizeModifier = 1.5f;
 {
     [super viewDidLoad];
 
-	FNLOG();
+	self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+	self.tableView.dataSource = self;
+	self.tableView.delegate = self;
+	[self.view addSubview:self.tableView];
 
-	[self.tableView reloadData];
-	
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	[self.tableView makeConstraints:^(MASConstraintMaker *make) {
+		make.edges.equalTo(self.view);
+	}];
+
+	_headerLabel = [UILabel new];
+	_headerLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
+	_headerLabel.textColor = [UIColor blackColor];
+	_headerLabel.text = @"Enter your passcode";
+	_headerLabel.textAlignment = NSTextAlignmentCenter;
+	[self.view addSubview:_headerLabel];
+
+	CGFloat offset = _beingPresentedInViewController ? 64 : 0;
+	CGFloat headerHeight = [self tableView:self.tableView heightForHeaderInSection:0];
+	[_headerLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		_headerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight * 0.6 + offset);
+	}];
+
+	offset += 44.0 * [self tableView:self.tableView numberOfRowsInSection:0];
+	_failedAttemptLabel = [UILabel new];
+	_failedAttemptLabel.font = kLabelFont;
+	_failedAttemptLabel.textColor = [UIColor whiteColor];
+	_failedAttemptLabel.text = @"Enter your passcode";
+	_failedAttemptLabel.textAlignment = NSTextAlignmentCenter;
+	_failedAttemptLabel.hidden = YES;
+	_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
+	_failedAttemptLabel.layer.cornerRadius = 22 * 0.5;
+	[self.view addSubview:_failedAttemptLabel];
+
+	CGSize size = [_failedAttemptLabel.text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
+	[_failedAttemptLabel makeConstraints:^(MASConstraintMaker *make) {
+		_labelWidth = make.width.equalTo(@(size.width));
+		_labelHeight = make.height.equalTo(@(size.height));
+		make.centerX.equalTo(self.view.centerX);
+		_footerY = make.centerY.equalTo(self.view.top).with.offset(headerHeight + headerHeight/2.0 + offset);
+	}];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,8 +122,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
 
-	if ([_delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
-		[_delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewDidDisappearWithSuccess:)]) {
+		[self.delegate passcodeViewDidDisappearWithSuccess:_passcodeValid ];
 	}
 }
 
@@ -96,7 +131,6 @@ static CGFloat const kFontSizeModifier = 1.5f;
 #pragma mark - Preparing
 
 - (void)prepareAsLockscreen {
-	_beingDisplayedAsLockscreen = YES;
 	_isUserTurningPasscodeOff = NO;
 	_isUserChangingPasscode = NO;
 	_isUserEnablingPasscode = NO;
@@ -105,7 +139,6 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 
 - (void)prepareForChangingPasscode {
-	_beingDisplayedAsLockscreen = NO;
 	_isUserTurningPasscodeOff = NO;
 	_isUserChangingPasscode = YES;
 	_isUserEnablingPasscode = NO;
@@ -113,7 +146,6 @@ static CGFloat const kFontSizeModifier = 1.5f;
 }
 
 - (void)prepareForTurningOffPasscode {
-	_beingDisplayedAsLockscreen = NO;
 	_isUserTurningPasscodeOff = YES;
 	_isUserChangingPasscode = NO;
 	_isUserEnablingPasscode = NO;
@@ -122,7 +154,6 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 
 - (void)prepareForEnablingPasscode {
-	_beingDisplayedAsLockscreen = NO;
 	_isUserTurningPasscodeOff = NO;
 	_isUserChangingPasscode = NO;
 	_isUserEnablingPasscode = YES;
@@ -140,8 +171,13 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	if (_showCancelButton) {
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
 																							   target: self
-																							   action: @selector(cancelAndDismissMe)];
+																							   action: @selector(cancelButtonAction:)];
 	}
+}
+
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
+	_userPressedCancelButton = YES;
+	[self cancelAndDismissMe];
 }
 
 - (void)cancelAndDismissMe {
@@ -152,14 +188,15 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	[_confirmPasswordField resignFirstResponder];
 	[_passwordHintField resignFirstResponder];
 
-	if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-		[_delegate passcodeViewControllerWasDismissedWithSuccess:NO];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
+		[self.delegate passcodeViewControllerWasDismissedWithSuccess:NO];
 	}
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showLockscreenWithAnimation:(BOOL)animated showCacelButton:(BOOL)showCancelButton {
 	FNLOG();
+	_beingDisplayedAsLockscreen = YES;
 	_showCancelButton = showCancelButton;
 	_beingPresentedInViewController = NO;
 
@@ -177,6 +214,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 												 name:UIApplicationDidChangeStatusBarFrameNotification
 											   object:nil];
 	[mainWindow.rootViewController addChildViewController: self];
+
+	[self rotateAccordingToStatusBarOrientationAndSupportedOrientations];
 	// All this hassle because a view added to UIWindow does not rotate automatically
 	// and if we would have added the view anywhere else, it wouldn't display properly
 	// (having a modal on screen when the user leaves the app, for example).
@@ -213,13 +252,10 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
 
-- (void)statusBarFrameOrOrientationChanged:(id)statusBarFrameOrOrientationChanged {
-
-}
-
 - (void)showLockscreenInViewController:(UIViewController *)viewController {
 	_showCancelButton = YES;
-	_beingPresentedInViewController = YES;
+	_beingDisplayedAsLockscreen = YES;
+	_beingPresentedInViewController = viewController != nil;
 
 	[self prepareAsLockscreen];
 	[self prepareNavigationControllerWithController:viewController];
@@ -233,12 +269,13 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 	[self prepareForEnablingPasscode];
 	[self prepareNavigationControllerWithController: viewController];
-	self.title = NSLocalizedString(@"Enable Passcode", @"");
+	self.title = NSLocalizedString(@"Enter Passcode", @"");
 }
 
 - (void)showForChangingPasscodeInViewController:(UIViewController *)viewController {
 	FNLOG();
 	_showCancelButton = YES;
+	_beingPresentedInViewController = YES;
 	[self prepareForChangingPasscode];
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Change Passcode", @"");
@@ -247,11 +284,11 @@ static CGFloat const kFontSizeModifier = 1.5f;
 - (void)showForTurningOffPasscodeInViewController:(UIViewController *)viewController {
 	FNLOG();
 	_showCancelButton = YES;
+	_beingPresentedInViewController = YES;
 	[self prepareForTurningOffPasscode];
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Turn Off Passcode", @"");
 }
-
 
 #pragma mark - Table view data source
 
@@ -266,7 +303,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	if (_isUserChangingPasscode) return 4;		// Old passcode, New, Confirm, Hint
 	if (_beingDisplayedAsLockscreen) return 1;
 	if (_isUserTurningPasscodeOff) return 1;
-    return 0;									// Passcode
+    return 1;									// Passcode
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -296,69 +333,13 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	NSInteger numberOfRows = [self tableView:tableView numberOfRowsInSection:section];
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-	CGFloat navigationBarHeight = _beingPresentedInViewController ? 44.0 : 0.0;
-	CGFloat sectionHeight = (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0;
-	FNLOG(@"%f", sectionHeight);
+	CGFloat navigationBarHeight = _beingPresentedInViewController ? 64.0 : 0.0;
+	CGFloat sectionHeight = (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight )) / 2.0;
 	return sectionHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	return [self tableView:tableView heightForHeaderInSection:section];
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	if (_beingDisplayedAsLockscreen || _isUserTurningPasscodeOff) {
-		CGFloat viewHeight = [self tableView:tableView heightForHeaderInSection:section];
-		UIView *view = [UIView new];
-		CGRect frame = [self screenBoundsAdjustedWithOrientation];
-		frame.size.height = viewHeight;
-		[view setFrame:frame];
-
-		_headerLabel = [UILabel new];
-		_headerLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:18];
-		_headerLabel.textColor = [UIColor blackColor];
-		_headerLabel.text = @"Enter your passcode";
-		_headerLabel.textAlignment = NSTextAlignmentCenter;
-		[view addSubview:_headerLabel];
-
-		[_headerLabel makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(view.left);
-			make.right.equalTo(view.right);
-			make.centerY.equalTo(view.top).with.offset(viewHeight * 0.6);
-		}];
-
-		return view;
-	}
-	return nil;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	CGFloat viewHeight = [self tableView:tableView heightForHeaderInSection:section];
-	UIView *view = [UIView new];
-	CGRect frame = [self screenBoundsAdjustedWithOrientation];
-	frame.size.height = viewHeight;
-	[view setFrame:frame];
-
-	if (!_failedAttemptLabel) {
-		_failedAttemptLabel = [UILabel new];
-		_failedAttemptLabel.font = kLabelFont;
-		_failedAttemptLabel.textColor = [UIColor whiteColor];
-		_failedAttemptLabel.text = @"Enter your passcode";
-		_failedAttemptLabel.textAlignment = NSTextAlignmentCenter;
-		_failedAttemptLabel.hidden = YES;
-		_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
-		_failedAttemptLabel.layer.cornerRadius = 22 * 0.5;
-	}
-	[view addSubview:_failedAttemptLabel];
-
-	CGSize size = [_failedAttemptLabel.text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
-	[_failedAttemptLabel makeConstraints:^(MASConstraintMaker *make) {
-		_labelWidth = make.width.equalTo(@(size.width));
-		_labelHeight = make.height.equalTo(@(size.height));
-		make.centerX.equalTo(view.centerX);
-		make.centerY.equalTo(view.centerY);
-	}];
-	return view;
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
@@ -470,6 +451,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 #pragma mark - UITextField delegate +
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.currentResponder = textField;
 	if (_beingDisplayedAsLockscreen || _isUserTurningPasscodeOff) {
 		textField.returnKeyType = UIReturnKeyDone;
 	} else {
@@ -497,8 +479,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 		[self removeFromParentViewController];
 	}
 
-	if ([_delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
-		[_delegate passcodeViewControllerWasDismissedWithSuccess:YES];
+	if ([self.delegate respondsToSelector:@selector(passcodeViewControllerWasDismissedWithSuccess:)]) {
+		[self.delegate passcodeViewControllerWasDismissedWithSuccess:YES];
 	}
 }
 
@@ -523,6 +505,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (_userPressedCancelButton) return;
+
 	if (_isUserChangingPasscode) {
 		if (textField == _passwordField) {
 			[self isPasswordValid];
@@ -648,7 +632,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 	NSArray *lines = [_failedAttemptLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
 	_failedAttemptLabel.numberOfLines = [lines count];
 	CGSize size = [text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
-	_labelWidth.equalTo(@(size.width + 20));
+	_labelWidth.equalTo(@(size.width + 30));
 	_labelHeight.equalTo(@(size.height));
 	[_failedAttemptLabel.superview layoutIfNeeded];
 }
@@ -665,6 +649,16 @@ static CGFloat const kFontSizeModifier = 1.5f;
 			_failedAttemptLabel.backgroundColor = kFailedAttemptLabelBackgroundColor;
 		});
 	}
+}
+
+- (void)viewWillLayoutSubviews {
+	CGFloat headerHeight = [self tableView:self.tableView heightForHeaderInSection:0];
+	FNLOG(@"%f", headerHeight);
+	CGFloat offset = _beingPresentedInViewController ? 64 : 0;
+	_headerY.with.offset(headerHeight * 0.6 + offset);
+	offset += 44.0 * [self tableView:self.tableView numberOfRowsInSection:0];
+	_footerY.with.offset(headerHeight + headerHeight/2.0 + offset);
+	[self.view layoutIfNeeded];
 }
 
 @end

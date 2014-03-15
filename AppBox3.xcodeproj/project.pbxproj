@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */; };
 		17D4211E8BD7D7B7D8112049 /* A3OnOffLeftRightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B75C71DE69EE18900CC /* A3OnOffLeftRightButton.m */; };
 		17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */; };
 		17D4214BE6CE4609897ABAF7 /* FSTargetCallback.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4238040BE6E57ED2A1CE6 /* FSTargetCallback.m */; };
@@ -853,6 +854,7 @@
 		17D42220C3CF119DC5027EB3 /* A3CurrencyHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyHistoryCell.h; path = Apps/Currency/A3CurrencyHistoryCell.h; sourceTree = "<group>"; };
 		17D4223EB4F5F9B75527C516 /* A3TableViewExpandableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewExpandableCell.h; path = A3TableViewController/A3TableViewExpandableCell.h; sourceTree = "<group>"; };
 		17D4227E7D59F72869C3BE40 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		17D42289427C0BC32E80BBA4 /* A3PasscodeCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasscodeCommonViewController.h; path = Passcode/A3PasscodeCommonViewController.h; sourceTree = "<group>"; };
 		17D422D3369CD87A8563DB6B /* A3AddLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3AddLocationViewController.m; sourceTree = "<group>"; };
 		17D422E56CE0BDC7213428A1 /* FSRequester.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSRequester.m; sourceTree = "<group>"; };
 		17D422F078FF20AC13BDAE74 /* A3SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SearchViewController.h; path = Apps/Currency/A3SearchViewController.h; sourceTree = "<group>"; };
@@ -882,6 +884,7 @@
 		17D425DE3A3E4C299A8A0D06 /* MathParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MathParser.h; sourceTree = "<group>"; };
 		17D42632666AC2368C10B1BA /* A3CurrencyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTableViewCell.h; path = Apps/Currency/A3CurrencyTableViewCell.h; sourceTree = "<group>"; };
 		17D4263A1F905EB73EA573B2 /* A3SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SearchViewController.m; path = Apps/Currency/A3SearchViewController.m; sourceTree = "<group>"; };
+		17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3PasscodeCommonViewController.m; path = Passcode/A3PasscodeCommonViewController.m; sourceTree = "<group>"; };
 		17D426503D335516CC3EFD93 /* A3TranslatorFavoriteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorFavoriteCell.m; path = Translator/A3TranslatorFavoriteCell.m; sourceTree = "<group>"; };
 		17D426630AB9804BD87B1DD5 /* A3_30x30Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3_30x30Button.h; sourceTree = "<group>"; };
 		17D426904883F7E9B5AA523B /* A3NumberKeyboardSimpleVC_iPad.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3NumberKeyboardSimpleVC_iPad.m; sourceTree = "<group>"; };
@@ -2584,6 +2587,8 @@
 				68067C90186E926D00D1A1D1 /* A3PasscodeViewControllerProtocol.h */,
 				68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */,
 				68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */,
+				17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */,
+				17D42289427C0BC32E80BBA4 /* A3PasscodeCommonViewController.h */,
 			);
 			name = Passcode;
 			sourceTree = "<group>";
@@ -5588,6 +5593,7 @@
 				17D4237EB40E1456E494D076 /* TranslatorHistory+manager.m in Sources */,
 				68B6A2EB18CEC76D004084EF /* A3UnitPriceDetailTableController.m in Sources */,
 				68B6A34E18CEC76D004084EF /* A3WalletMainTabBarController.m in Sources */,
+				17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

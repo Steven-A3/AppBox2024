@@ -7,11 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3PasscodeViewControllerProtocol.h"
+#import "A3PasscodeCommonViewController.h"
 
-@interface A3PasswordViewController : UITableViewController <A3PasscodeViewControllerProtocol>
-
-@property (nonatomic, weak) id<A3PasscodeViewControllerDelegate> delegate;
+@interface A3PasswordViewController : A3PasscodeCommonViewController
 
 - (id)initWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 @end
