@@ -10,7 +10,7 @@
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3ExpressionComponent.h"
 #import "A3CalculatorUtil.h"
-#import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation A3CalcKeyboardView_iPhone {
     A3CalculatorUtil *calutil;
@@ -200,8 +200,8 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
                 [button setBackgroundColorForHighlightedState:[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:1.0]];
 				[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
                  */
-                UIColor *tintColor = [A3AppDelegate instance].window.tintColor;//self.tintColor;
-                [button setBackgroundColor:tintColor];
+                UIColor *themeColor = [A3AppDelegate instance].themeColor;
+                [button setBackgroundColor:themeColor];
 
 			//} else if (row > 1 && column >= 4) {
 			//	[button setBackgroundColor:[UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0]];

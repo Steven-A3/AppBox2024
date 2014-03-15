@@ -769,133 +769,147 @@ typedef CMathParser<char, double> MathParser;
 }
 
 - (void) changethelastnumberwithoperator:(NSUInteger) key{
-    if ([mathexpression length] == 0) return;
-    
-    // Get the last number for the operator
-    NSUInteger numParenthesis = 0;
-    NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
+    if ([mathexpression length] != 0) {
         
-    NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"]];
-    if ([lastChar isEqualToString:@")"]) {
-        numParenthesis++;
+        // Get the last number for the operator
+        NSUInteger numParenthesis = 0;
+        NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
+        
+        NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"]];
+        if ([lastChar isEqualToString:@")"]) {
+            numParenthesis++;
+        }
+        if(range.location != NSNotFound) {
+            range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"] options:NSBackwardsSearch];
+            NSUInteger startLocation = range.location;
+            
+            while ( (range.location != NSNotFound) &&
+                   (range.location != 0)) {
+                range.location = range.location > 0  ? (range.location - 1) : 0;
+                if (numParenthesis == 0) {
+                    range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] options:0 range:range];
+                } else {
+                    //range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.+()"] options:0 range:range];
+                    range.location--;
+                    lastChar = [mathexpression substringWithRange:range];
+                    
+                    if ([lastChar isEqualToString:@")"]) {
+                        numParenthesis++;
+                    }
+                    if ([lastChar isEqualToString:@"("]) {
+                        numParenthesis--;
+                    }
+                }
+                if(range.location != NSNotFound) {
+                    startLocation  = range.location;
+                }
+            } // end - while
+            
+            NSString *lastnumber = [mathexpression substringFromIndex:startLocation];
+            
+            // count the character which exists ONLY in expression.text
+            // NSCharacterSet *charset = [NSCharacterSet characterSetWithCharactersInString:@"^"];
+            // int numberOfcharacter = [self getCharacterCountInExpression:mathexpression withCharacterSet:charset];
+            
+            range.location = startLocation;// - numberOfcharacter; // for _expressLabel.attributedtext
+            range.length = [lastnumber length];
+            
+            switch (key) {
+                case A3E_POWER_2: {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [@"2^" stringByAppendingString:lastnumber];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                }
+                    break;
+                case A3E_POWER_10: {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [@"10^" stringByAppendingString:lastnumber];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                    
+                }
+                    break;
+                case A3E_FACTORIAL: {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [[@"FACT(" stringByAppendingString:lastnumber] stringByAppendingString:@")"];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                }
+                    break;
+                case A3E_LOG_Y : {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [[@"LOGN(" stringByAppendingString:lastnumber] stringByAppendingString:@","];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                }
+                    break;
+                case  A3E_NTHROOT: {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [[@"NTHRT(" stringByAppendingString:lastnumber] stringByAppendingString:@","];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                        numberMode = YES;
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                }
+                    break;
+                case  A3E_POWER_XY: {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [lastnumber stringByAppendingString:@"^"];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                }
+                    break;
+                case A3E_DIVIDE_X : {
+                    range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
+                    if (range.location != NSNotFound) {
+                        NSString *newString = [[@"1/(" stringByAppendingString:lastnumber] stringByAppendingString:@")"];
+                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
+                    } else {
+                        FNLOG("%@ is not found in mathexpression",lastnumber);
+                    }
+                    
+                    
+                }
+                    break;
+                default:
+                    break;
+                    
+                    
+            }
+            [self convertMathExpressionToAttributedString];
+            FNLOG("mathexpression = %@", mathexpression);
+            return;
+        }
     }
-    if(range.location != NSNotFound) {
-        range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.)"] options:NSBackwardsSearch];
-        NSUInteger startLocation = range.location;
-        
-        while ( (range.location != NSNotFound) &&
-               (range.location != 0)) {
-            range.location = range.location > 0  ? (range.location - 1) : 0;
-            if (numParenthesis == 0) {
-                range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."] options:0 range:range];
-            } else {
-                //range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890.+()"] options:0 range:range];
-                range.location--;
-                lastChar = [mathexpression substringWithRange:range];
-
-                if ([lastChar isEqualToString:@")"]) {
-                    numParenthesis++;
-                }
-                if ([lastChar isEqualToString:@"("]) {
-                    numParenthesis--;
-                }
-            }
-            if(range.location != NSNotFound) {
-                startLocation  = range.location;
-            }
-        } // end - while
-        
-        NSString *lastnumber = [mathexpression substringFromIndex:startLocation];
-        
-        // count the character which exists ONLY in expression.text
-        // NSCharacterSet *charset = [NSCharacterSet characterSetWithCharactersInString:@"^"];
-        // int numberOfcharacter = [self getCharacterCountInExpression:mathexpression withCharacterSet:charset];
-        
-        range.location = startLocation;// - numberOfcharacter; // for _expressLabel.attributedtext
-        range.length = [lastnumber length];
-        
-        switch (key) {
-            case A3E_POWER_2: {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [@"2^" stringByAppendingString:lastnumber];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-            }
-                break;
-            case A3E_POWER_10: {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [@"10^" stringByAppendingString:lastnumber];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-                
-            }
-                break;
-            case A3E_FACTORIAL: {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [[@"FACT(" stringByAppendingString:lastnumber] stringByAppendingString:@")"];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-            }
-                break;
-            case A3E_LOG_Y : {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [[@"LOGN(" stringByAppendingString:lastnumber] stringByAppendingString:@","];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-            }
-                break;
-            case  A3E_NTHROOT: {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [[@"NTHRT(" stringByAppendingString:lastnumber] stringByAppendingString:@","];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                    numberMode = YES;
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-            }
-                break;
-            case  A3E_POWER_XY: {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [lastnumber stringByAppendingString:@"^"];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-            }
-                break;
-            case A3E_DIVIDE_X : {
-                range = [mathexpression rangeOfString:lastnumber options:NSBackwardsSearch];
-                if (range.location != NSNotFound) {
-                    NSString *newString = [[@"1/(" stringByAppendingString:lastnumber] stringByAppendingString:@")"];
-                    mathexpression = [mathexpression stringByReplacingOccurrencesOfString:lastnumber withString:newString options:NSBackwardsSearch range:range];
-                } else {
-                    FNLOG("%@ is not found in mathexpression",lastnumber);
-                }
-                
-                
-            }
-                break;
-            default:
-                break;
-                
-                
+    
+    if (key == A3E_POWER_2||key == A3E_POWER_10) {
+        if (!mathexpression) {
+            mathexpression = [NSString new];
+        }
+        if (key == A3E_POWER_10) {
+            mathexpression = [mathexpression stringByAppendingString:@"10^"];
+        } else {
+            mathexpression = [mathexpression stringByAppendingString:@"2^"];
         }
         [self convertMathExpressionToAttributedString];
-        FNLOG("mathexpression = %@", mathexpression);
     }
 }
 
