@@ -336,9 +336,7 @@
         
         _scrollView.contentSize = CGSizeMake(screenBounds.size.width, 240.0);
         _scrollView.scrollEnabled = NO;
-        //if ([self hidesNavigationBar]) {
-            navGestureRecognizer.enabled = YES;
-        //}
+        navGestureRecognizer.enabled = NO;
         
         [self setNavigationBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
