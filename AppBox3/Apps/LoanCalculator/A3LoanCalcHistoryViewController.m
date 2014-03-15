@@ -116,10 +116,6 @@ NSString *const A3LoanCalcComparisonHistoryCellID = @"A3LoanCalcComparisonHistor
 	} else {
 		[self dismissViewControllerAnimated:YES completion:nil];
 	}
-
-    if ([_delegate respondsToSelector:@selector(historyViewControllerDismissed:)]) {
-        [_delegate historyViewControllerDismissed:self];
-    }
 }
 
 - (void)dealloc {

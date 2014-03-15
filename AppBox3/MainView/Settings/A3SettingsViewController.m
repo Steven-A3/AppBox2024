@@ -13,10 +13,9 @@
 #import "A3AppDelegate+appearance.h"
 #import "A3UIDevice.h"
 #import "UITableViewController+standardDimension.h"
-#import "A3AppDelegate+iCloud.h"
 
 typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
-	A3SettingsRowUseiCloud = 1100,
+	A3SettingsRowSync = 1100,
 	A3SettingsRowPasscodeLock = 2100,
 	A3SettingsRowWalletSecurity = 2200,
 	A3SettingsRowEditFavorites = 3100,
@@ -29,8 +28,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 @property (nonatomic, strong) UIViewController<A3PasscodeViewControllerProtocol> *passcodeViewController;
 @property (nonatomic, strong) UIButton *colorButton;
-@property (nonatomic, strong) UISwitch *iCloudSwitch;
-@property (nonatomic, strong) MBProgressHUD *HUD;
 
 @end
 
@@ -82,25 +79,18 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	if (section == 1) return UITableViewAutomaticDimension;
 	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	if (section == 0) return UITableViewAutomaticDimension;
 	return [self standardHeightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	A3SettingsTableViewRow row = (A3SettingsTableViewRow) cell.tag;
 	switch (row) {
-		case A3SettingsRowUseiCloud:
-			if (!_iCloudSwitch) {
-				_iCloudSwitch = [UISwitch new];
-				_iCloudSwitch.on = [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled];
-				[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
-			}
-			cell.accessoryView = _iCloudSwitch;
+		case A3SettingsRowSync:
+			cell.detailTextLabel.text = [[NSUserDefaults standardUserDefaults] stringForSyncMethod];
 			break;
 		case A3SettingsRowPasscodeLock:
 			cell.detailTextLabel.text = [[A3KeychainUtils getPassword] length] ? [A3KeychainUtils passcodeTimeString] : NSLocalizedString(@"Off", nil);
@@ -147,16 +137,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 			[self performSegueWithIdentifier:@"passcode" sender:nil];
 		}
 	}
-}
-
-- (void)toggleCloud:(UISwitch *)switchControl {
-	if ([switchControl isOn] && ![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"iCloud" message:@"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertView show];
-		[switchControl setOn:NO animated:YES];
-		return;
-	}
-	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
 }
 
 - (void)themeColor {

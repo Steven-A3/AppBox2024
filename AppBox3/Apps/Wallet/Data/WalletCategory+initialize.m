@@ -30,13 +30,11 @@
     WalletCategory *favCate = [WalletCategory MR_createEntity];
     favCate.name = @"Favorite";
     favCate.icon = @"star01";
-	favCate.modificationDate = [NSDate date];
     [tmp addObjectToSortedArray:favCate];
     
     WalletCategory *allCate = [WalletCategory MR_createEntity];
     allCate.name = @"All";
     allCate.icon = @"wallet_folder";
-	allCate.modificationDate = [NSDate date];
     [tmp addObjectToSortedArray:allCate];
 
     for (int i=0; i<categoryPresets.count; i++) {
@@ -45,7 +43,6 @@
         WalletCategory *category = [WalletCategory MR_createEntity];
         category.name = preset[@"Name"];
         category.icon = preset[@"Icon"];
-		category.modificationDate = [NSDate date];
         [tmp addObjectToSortedArray:category];
         
         NSArray *fieldPresets = preset[@"Fields"];

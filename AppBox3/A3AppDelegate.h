@@ -44,8 +44,6 @@ extern NSString *const A3AppsMainMenuContentsChangedNotification;
 extern NSString *const A3DrawerStateChanged;
 extern NSString *const A3MainMenuBecameFirstResponder;
 extern NSString *const A3MainMenuResignFirstResponder;
-extern NSString *const A3DropboxLoginWithSuccess;
-extern NSString *const A3DropboxLoginFailed;
 
 /* Global Settings */
 extern NSString *const kA3ThemeColorIndex;

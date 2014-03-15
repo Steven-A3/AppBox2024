@@ -175,7 +175,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     [self enableControls:YES];
     
-    [self refreshRightBarItems];
+    if (IS_IPAD) {
+        [self refreshIPadRightBarItems];
+    }
 }
 
 - (void)enableControls:(BOOL) onoff
@@ -268,7 +270,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
      */
     
-    [self refreshRightBarItems];
+    if (IS_IPAD) {
+        [self refreshIPadRightBarItems];
+    }
 }
 
 - (void)dealloc
@@ -370,48 +374,28 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (void)refreshRightBarItems {
-    if (IS_IPAD) {
-        // 히스토리가 존재하는지 체크
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
-        LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
-        LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
-        
-        //self.navigationItem.rightBarButtonItems = @[setting, history, share];
-        UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
-        UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[3];
-        
-        if (!history && !comparison) {
-            historyItem.enabled = NO;
-        }
-        else {
-            historyItem.enabled = YES;
-        }
-        
-        if (_isComparisonMode) {
-            shareItem.enabled = ([_loanDataA calculated] && [_loanDataB calculated]) ? YES:NO;
-        } else {
-            shareItem.enabled = [_loanData calculated] ? YES : NO;
-        }
-        
-        // KJH
-        UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
-        if (_isComparisonMode) {
-            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
-        }
-        else {
-            composeItem.enabled = [_loanData calculated] ? YES : NO;
-        }
+- (void)refreshIPadRightBarItems
+{
+    // 히스토리가 존재하는지 체크
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"compareWith = nil"];
+    LoanCalcHistory *history = [LoanCalcHistory MR_findFirstWithPredicate:predicate sortedBy:@"created" ascending:NO];
+    LoanCalcComparisonHistory *comparison = [LoanCalcComparisonHistory MR_findFirstOrderedByAttribute:@"calculateDate" ascending:NO];
+    
+    //self.navigationItem.rightBarButtonItems = @[setting, history, share];
+    UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
+    UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[3];
+    
+    if (!history && !comparison) {
+        historyItem.enabled = NO;
     }
     else {
-        UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[1];
-        
-        if (_isComparisonMode) {
-            composeItem.enabled = [_loanDataA calculated] && [_loanDataB calculated]  ? YES : NO;
-        }
-        else {
-            composeItem.enabled = [_loanData calculated] ? YES : NO;
-        }
+        historyItem.enabled = YES;
+    }
+    
+    if (_isComparisonMode) {
+        shareItem.enabled = ([_loanDataA calculated] && [_loanDataB calculated]) ? YES:NO;
+    } else {
+        shareItem.enabled = [_loanData calculated] ? YES:NO;
     }
 }
 
@@ -675,7 +659,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     [self dismissMoreMenu];
-    [self refreshRightBarItems];
+    
+    if (IS_IPAD) {
+        [self refreshIPadRightBarItems];
+    }
     
     [[NSUserDefaults standardUserDefaults] setBool:_isComparisonMode forKey:LoanCalcModeSave];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -776,7 +763,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
 	}
 
-    [self refreshRightBarItems];
+    if (IS_IPAD) {
+        
+        [self refreshIPadRightBarItems];
+        
+    }
 }
 
 - (void)dismissMoreMenu {
@@ -812,6 +803,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
         A3LoanCalcHistoryViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcHistoryViewController"];
         viewController.isComparisonMode = _isComparisonMode;
+        
         viewController.delegate = self;
         
         if (IS_IPHONE) {
@@ -906,7 +898,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }];
         [viewController setSettingDismissCompletionBlock:^{
             [self enableControls:YES];
-            [self refreshRightBarItems];
         }];
         
         if (IS_IPAD) {
@@ -1420,7 +1411,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             
             // 계산이 되었으면, 상단 그래프가 보이도록 이동시킨다.
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            [self refreshRightBarItems];
+            
+            if (IS_IPAD) {
+                
+                [self refreshIPadRightBarItems];
+            }
         }
     }
 }
@@ -2454,9 +2449,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self selectSegment].selectedSegmentIndex = 0;
     _calcItems = nil;
     [self.tableView reloadData];
-    
-    [self enableControls:YES];
-    [self refreshRightBarItems];
 }
 
 - (void)historyViewController:(UIViewController *)viewController selectLoanCalcComparisonHistory:(LoanCalcComparisonHistory *)comparison
@@ -2476,14 +2468,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self selectSegment].selectedSegmentIndex = 1;
     _calcItems = nil;
     [self.tableView reloadData];
-    
-    [self enableControls:YES];
-    [self refreshRightBarItems];
-}
-
-- (void)historyViewControllerDismissed:(UIViewController *)viewController {
-    [self enableControls:YES];
-    [self refreshRightBarItems];
 }
 
 #pragma mark - LoanCalcExtraPaymentDelegate
@@ -2903,7 +2887,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     inputCell.textField.delegate = self;
                     inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
                                                                                                 attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-                    inputCell.textField.userInteractionEnabled = NO;
                     NSDateFormatter *df = [[NSDateFormatter alloc] init];
                     df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
                     inputCell.textField.text = [df stringFromDate:_loanData.startDate];

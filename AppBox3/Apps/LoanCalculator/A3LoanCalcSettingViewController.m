@@ -50,9 +50,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0);
     
-    if (IS_IPHONE) {
-        [self rightBarButtonDoneButton];
-    }
+    [self rightBarButtonDoneButton];
 }
 
 - (LoanCalcPreference *)preference

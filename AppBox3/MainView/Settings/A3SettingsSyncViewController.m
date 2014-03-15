@@ -1,12 +1,12 @@
 //
-//  A3SettingsBackupRestoreViewController.m
+//  A3SettingsSyncViewController.m
 //  AppBox3
 //
 //  Created by A3 on 12/6/13.
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3SettingsBackupRestoreViewController.h"
+#import "A3SettingsSyncViewController.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+iCloud.h"
 #import "A3SettingsDropboxSelectBackupViewController.h"
@@ -15,8 +15,9 @@
 
 NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
-@interface A3SettingsBackupRestoreViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate>
+@interface A3SettingsSyncViewController () <DBSessionDelegate, DBRestClientDelegate, A3SettingsDropboxSelectBackupDelegate>
 
+@property (nonatomic, strong) UISwitch *iCloudSwitch;
 @property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) DBAccountInfo *dropboxAccountInfo;
 @property (nonatomic, strong) DBMetadata *dropboxMetadata;
@@ -24,7 +25,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 
 @end
 
-@implementation A3SettingsBackupRestoreViewController {
+@implementation A3SettingsSyncViewController {
 	BOOL _dropboxLoginInProgress;
 	BOOL _selectBackupInProgress;
 }
@@ -53,41 +54,39 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 			[[DBSession alloc] initWithAppKey:appKey appSecret:appSecret root:root];
 	session.delegate = self; // DBSessionDelegate methods allow you to handle re-authenticating
 	[DBSession setSharedSession:session];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive)
+												 name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+}
 
-	if ([[DBSession sharedSession] isLinked]) {
+- (void)applicationDidBecomeActive {
+	if (_dropboxLoginInProgress) {
+		_dropboxLoginInProgress = NO;
+		
 		[self.restClient loadAccountInfo];
 		[self.restClient loadMetadata:kDropboxDir];
 	}
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dropboxLoginWithSuccess) name:A3DropboxLoginWithSuccess object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dropboxLoginFailed) name:A3DropboxLoginFailed object:nil];
 }
-
-- (void)dropboxLoginWithSuccess {
-	if ([[DBSession sharedSession] isLinked]) {
-		[self.restClient loadAccountInfo];
-		[self.restClient loadMetadata:kDropboxDir];
-	}
-}
-
-- (void)dropboxLoginFailed {
-	[self.navigationController popViewControllerAnimated:YES];
-}
-
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
-		if (![[DBSession sharedSession] isLinked]) {
-			_dropboxLoginInProgress = YES;
-			[[DBSession sharedSession] linkFromController:self];
+		if ([[DBSession sharedSession] isLinked]) {
+			[self.restClient loadAccountInfo];
+			[self.restClient loadMetadata:kDropboxDir];
+		}
+	} else if (_dropboxLoginInProgress) {
+		_dropboxLoginInProgress = NO;
+
+		if ([[DBSession sharedSession] isLinked]) {
+			[self.restClient loadAccountInfo];
+			[self.restClient loadMetadata:kDropboxDir];
 		}
 	} else if (_selectBackupInProgress) {
 		_selectBackupInProgress = NO;
 	}
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -98,37 +97,93 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	if (section == 1) return UITableViewAutomaticDimension;
 	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	if (section == 0) return UITableViewAutomaticDimension;
 	return [self standardHeightForFooterInSection:section];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (cell.tag == 1100) {
-		cell.detailTextLabel.text = self.dropboxAccountInfo ? _dropboxAccountInfo.displayName : @"";
+		if (!_iCloudSwitch) {
+			_iCloudSwitch = [UISwitch new];
+			[_iCloudSwitch setEnabled:[[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]];
+			_iCloudSwitch.on = [[A3AppDelegate instance].ubiquityStoreManager cloudEnabled];
+			[_iCloudSwitch addTarget:self action:@selector(toggleCloud:) forControlEvents:UIControlEventValueChanged];
+		}
+		cell.accessoryView = _iCloudSwitch;
+	} else if (indexPath.section == 1) {
+		if ([[DBSession sharedSession] isLinked]) {
+			switch (indexPath.row) {
+				case 0:
+					cell.textLabel.text = @"Backup";
+					break;
+				case 1:
+					cell.textLabel.text = @"Restore";
+					break;
+				case 2:
+					cell.textLabel.text = @"Unlink Account";
+					break;
+			}
+		} else {
+			cell.textLabel.text = @"Link Account";
+		}
 	}
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (section == 1) {
+		return [[DBSession sharedSession] isLinked] ? 3 : 1;
+	}
+	return [super tableView:tableView numberOfRowsInSection:section];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+	if (section == 0) {
+		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
+			return @"Enable iCloud and Documents and Data storages in your Settings to gain access to this feature.";
+		}
+	} else if (section == 1) {
+		if ([[DBSession sharedSession] isLinked] && self.dropboxAccountInfo) {
+			return [NSString stringWithFormat:@"AppBox Pro™ is linked to [%@] Dropbox accont.", self.dropboxAccountInfo.displayName];
+		}
+	}
+	return nil;
+}
+
+- (void)toggleCloud:(UISwitch *)switchControl {
+	[[A3AppDelegate instance] setCloudEnabled:switchControl.on];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-	switch (indexPath.section) {
-		case 1:
-			switch (indexPath.row) {
-				case 0:
-					break;
-				case 1:
-					_selectBackupInProgress = YES;
-					[self.restClient loadMetadata:kDropboxDir];
-					break;
-			}
-			break;
-		case 2:
-			[[DBSession sharedSession] unlinkAll];
-			[self.navigationController popViewControllerAnimated:YES];
-			break;
+	
+	if (indexPath.section == 1) {
+		switch (indexPath.row) {
+			case 0:
+				if ([[DBSession sharedSession] isLinked]) {
+					// Do backup
+				} else {
+					_dropboxLoginInProgress = YES;
+					[[DBSession sharedSession] linkFromController:self];
+				}
+				break;
+			case 1:
+				// Restore from backup
+				_selectBackupInProgress = YES;
+				[self.restClient loadMetadata:kDropboxDir];
+				break;
+			case 2:
+				// Unlink
+				[[DBSession sharedSession] unlinkAll];
+				
+				self.dropboxAccountInfo = Nil;
+				[self.tableView reloadData];
+				break;
+		}
 	}
 }
 
@@ -146,6 +201,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 #pragma mark - Dropbox DBSessionDelegate
 
 - (void)sessionDidReceiveAuthorizationFailure:(DBSession *)session userId:(NSString *)userId {
+
 }
 
 #pragma mark - DBRestClientDelegate
@@ -224,5 +280,7 @@ NSString *const kDropboxDir = @"/AllAboutApps/AppBox Pro";
 	[_HUD show:YES];
 
 }
+
+
 
 @end

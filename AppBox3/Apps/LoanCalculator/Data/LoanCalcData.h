@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "LoanCalcMode.h"
 
-@interface LoanCalcData : NSObject <NSCoding>
+@interface LoanCalcData : NSObject
 
 @property (nonatomic, strong) NSNumber *principal;
 @property (nonatomic, strong) NSNumber *downPayment;

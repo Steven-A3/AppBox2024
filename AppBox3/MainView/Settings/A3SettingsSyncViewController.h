@@ -1,5 +1,5 @@
 //
-//  A3SettingsBackupRestoreViewController.h
+//  A3SettingsSyncViewController.h
 //  AppBox3
 //
 //  Created by A3 on 12/6/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3SettingsBackupRestoreViewController : UITableViewController
+@interface A3SettingsSyncViewController : UITableViewController
 
 @end

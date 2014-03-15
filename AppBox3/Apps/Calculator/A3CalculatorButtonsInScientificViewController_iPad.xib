@@ -74,20 +74,12 @@
                     <state key="highlighted">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForHighlightedState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForDefaultState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="divideaction:" destination="-1" eventType="touchUpInside" id="JYS-sv-3kB"/>
                     </connections>
                 </button>
                 <button opaque="NO" alpha="0.75" tag="16" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zze-vx-Ng7" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="896" y="79" width="128" height="80"/>
+                    <rect key="frame" x="896" y="80" width="128" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="28"/>
@@ -98,14 +90,6 @@
                     <state key="highlighted">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForHighlightedState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForDefaultState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="multiplyaction:" destination="-1" eventType="touchUpInside" id="HTP-Ni-2RK"/>
                     </connections>
@@ -122,14 +106,6 @@
                     <state key="highlighted">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForHighlightedState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForDefaultState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="minusaction:" destination="-1" eventType="touchUpInside" id="ixJ-ia-2Kd"/>
                     </connections>
@@ -146,14 +122,6 @@
                     <state key="highlighted">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForHighlightedState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForDefaultState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="plusaction:" destination="-1" eventType="touchUpInside" id="yo4-5X-MFW"/>
                     </connections>
@@ -170,14 +138,6 @@
                     <state key="highlighted">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForHighlightedState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForDefaultState">
-                            <color key="value" red="0.0" green="0.47843137254901957" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="operationendaction:" destination="-1" eventType="touchUpInside" id="EWa-nS-NB4"/>
                     </connections>
