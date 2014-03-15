@@ -229,6 +229,8 @@ static CGFloat const kFontSizeModifier = 1.5f;
 - (void)showForEnablingPasscodeInViewController:(UIViewController *)viewController {
 	FNLOG();
 	_showCancelButton = YES;
+	_beingPresentedInViewController = YES;
+
 	[self prepareForEnablingPasscode];
 	[self prepareNavigationControllerWithController: viewController];
 	self.title = NSLocalizedString(@"Enable Passcode", @"");
@@ -295,7 +297,9 @@ static CGFloat const kFontSizeModifier = 1.5f;
 
 	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 	CGFloat navigationBarHeight = _beingPresentedInViewController ? 44.0 : 0.0;
-	return (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0;
+	CGFloat sectionHeight = (screenBounds.size.height - (44.0 * numberOfRows + [self keyboardHeight] + navigationBarHeight + 20.0 )) / 2.0;
+	FNLOG(@"%f", sectionHeight);
+	return sectionHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -580,6 +584,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 			if ([self isNewPasscodeValid]) {
 				
 				[A3KeychainUtils storePassword:_aNewPasswordField.text hint:_passwordHintField.text];
+				[[A3AppDelegate instance] setEnableAskPasscodeForStarting:YES];
 				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 				[defaults setBool:NO forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];
@@ -617,7 +622,7 @@ static CGFloat const kFontSizeModifier = 1.5f;
 		} else if (![_confirmPasswordField.text length]) {
 			[self setMessage:@"Please enter confirm passcode."];
 		} else {
-			[self setMessage:@"New Passcode and Confirm \nPasscode did not match."];
+			[self setMessage:NSLocalizedString(@"Passcodes did not match. Try again.", @"")];
 		}
 	}
 	return NO;
@@ -638,16 +643,14 @@ static CGFloat const kFontSizeModifier = 1.5f;
 }
 
 - (void)setMessage:(NSString *)text {
-	@autoreleasepool {
-		_failedAttemptLabel.text = text;
-		_failedAttemptLabel.hidden = NO;
-		NSArray *lines = [_failedAttemptLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-		_failedAttemptLabel.numberOfLines = [lines count];
-		CGSize size = [text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
-		_labelWidth.equalTo(@(size.width + 20));
-		_labelHeight.equalTo(@(size.height));
-		[_failedAttemptLabel.superview layoutIfNeeded];
-	}
+	_failedAttemptLabel.text = text;
+	_failedAttemptLabel.hidden = NO;
+	NSArray *lines = [_failedAttemptLabel.text componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+	_failedAttemptLabel.numberOfLines = [lines count];
+	CGSize size = [text sizeWithAttributes:@{NSFontAttributeName:_failedAttemptLabel.font, NSForegroundColorAttributeName:[UIColor blackColor]}];
+	_labelWidth.equalTo(@(size.width + 20));
+	_labelHeight.equalTo(@(size.height));
+	[_failedAttemptLabel.superview layoutIfNeeded];
 }
 
 - (void)showHint:(NSString *)text {

@@ -44,7 +44,7 @@
     
     self.navigationItem.title = @"Calculation";
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
 }
 
 - (void)didReceiveMemoryWarning

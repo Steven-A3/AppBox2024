@@ -51,7 +51,7 @@ NSString *const A3UnitPriceHistoryCellID = @"cell3Row";
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
     
 	self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     
     /*
 	UILabel *notice = [[UILabel alloc] init];

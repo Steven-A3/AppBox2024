@@ -54,7 +54,7 @@ NSString *const A3UnitPriceActionCellID2 = @"A3UnitPriceActionCell";
 	_tableView.dataSource = self;
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-    _tableView.separatorColor = [self tableViewSeperatorColor];
+    _tableView.separatorColor = [self tableViewSeparatorColor];
     _tableView.rowHeight = 44.0;
 	[self.view addSubview:_tableView];
     

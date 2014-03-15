@@ -81,7 +81,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
     self.tableView.rowHeight = 74.0;
     self.tableView.showsVerticalScrollIndicator = NO;
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.backgroundColor = [UIColor whiteColor];
     
     [self registerContentSizeCategoryDidChangeNotification];
@@ -742,7 +742,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
     UIView *foot = [[UIView alloc] initWithFrame:CGRectZero];
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, IS_RETINA?0.5:1.0)];
-    line.backgroundColor = [self tableViewSeperatorColor];
+    line.backgroundColor = [self tableViewSeparatorColor];
     [foot addSubview:line];
     
     return foot;

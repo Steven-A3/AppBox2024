@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIImage (extension)
+@interface UIImage (imageWithColor)
 
 + (UIImage *)imageWithColor:(UIColor *)color;
 

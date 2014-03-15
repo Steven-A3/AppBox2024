@@ -146,7 +146,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     
     UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 2)];
     line.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0];
@@ -615,7 +615,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         UIView *bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0, 55, self.view.bounds.size.width, IS_RETINA ? 0.5:1)];
         bottomLine.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         bottomLine.tag = 5678;
-        bottomLine.backgroundColor = [self tableViewSeperatorColor];
+        bottomLine.backgroundColor = [self tableViewSeparatorColor];
         [_advancedTitleView addSubview:bottomLine];
         
         if (_loanData.showAdvanced) {

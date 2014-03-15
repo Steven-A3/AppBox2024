@@ -67,7 +67,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletCateEditPlusCellID];
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
     [self.tableView setEditing:YES animated:NO];

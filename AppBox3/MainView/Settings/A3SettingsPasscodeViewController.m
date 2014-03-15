@@ -14,8 +14,9 @@
 #import "A3KeychainUtils.h"
 #import "A3UIDevice.h"
 #import "UITableViewController+standardDimension.h"
+#import "Reachability.h"
 
-@interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate>
+@interface A3SettingsPasscodeViewController () <A3PasscodeViewControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) UISwitch *useSimpleCodeSwitch;
 @property (nonatomic, strong) UISwitch *askPasscodeForStarting;
@@ -105,7 +106,7 @@
 			break;
 		case 1:
 			cell.selectionStyle = passcodeEnabled ? UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
-			cell.textLabel.textColor = passcodeEnabled ? A3_TEXT_COLOR_DEFAULT : A3_TEXT_COLOR_DISABLED;
+			cell.textLabel.textColor = passcodeEnabled ? [self.view tintColor] : A3_TEXT_COLOR_DISABLED;
 			break;
 	}
 }
@@ -146,7 +147,7 @@
 				_askPasscodeForSettings = [UISwitch new];
 				[_askPasscodeForSettings addTarget:self action:@selector(askPasscodeForSettingsValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForSettings setEnabled:passcodeEnabled];
+			[_askPasscodeForSettings setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
 			[_askPasscodeForSettings setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings]];
 			cell.accessoryView = _askPasscodeForSettings;
 			break;
@@ -155,7 +156,7 @@
 				_askPasscodeForDaysCounter = [UISwitch new];
 				[_askPasscodeForDaysCounter addTarget:self action:@selector(askPasscodeForDaysCounterValueChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForDaysCounter setEnabled:passcodeEnabled];
+			[_askPasscodeForDaysCounter setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
 			[_askPasscodeForDaysCounter setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForDaysCounter]];
 			cell.accessoryView = _askPasscodeForDaysCounter;
 			break;
@@ -164,7 +165,7 @@
 				_askPasscodeForLadyCalendar = [UISwitch new];
 				[_askPasscodeForLadyCalendar addTarget:self action:@selector(askPasscodeForLadyCalendarValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForLadyCalendar setEnabled:passcodeEnabled];
+			[_askPasscodeForLadyCalendar setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
 			[_askPasscodeForLadyCalendar setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForLadyCalendar]];
 			cell.accessoryView = _askPasscodeForLadyCalendar;
 			break;
@@ -173,7 +174,7 @@
 				_askPasscodeForWallet = [UISwitch new];
 				[_askPasscodeForWallet addTarget:self action:@selector(askPasscodeForWalletValuedChanged:) forControlEvents:UIControlEventValueChanged];
 			}
-			[_askPasscodeForWallet setEnabled:passcodeEnabled];
+			[_askPasscodeForWallet setEnabled:passcodeEnabled && ![[A3AppDelegate instance] askPasscodeForStarting]];
 			[_askPasscodeForWallet setOn:[[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForWallet]];
 			cell.accessoryView = _askPasscodeForWallet;
 			break;
@@ -181,9 +182,8 @@
 }
 
 - (void)askPasscodeForStartingValueChanged:(UISwitch *)control {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setBool:control.isOn forKey:kUserDefaultsKeyForAskPasscodeForStarting];
-	[defaults synchronize];
+	[[A3AppDelegate instance] setEnableAskPasscodeForStarting:control.on];
+	[self.tableView reloadData];
 }
 
 - (void)askPasscodeForSettingsValueChanged:(UISwitch *)control {
@@ -218,8 +218,51 @@
 		case 1:
 			[self didSelectRowAtSection1:indexPath.row];
 			break;
+		case 3:
+			[self alertSecurityInfo];
+			[tableView deselectRowAtIndexPath:indexPath animated:YES];
+			break;
 	}
 
+}
+
+- (void)alertSecurityInfo {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Information"
+														message:NSLocalizedString(@"SECURITY_INFO", nil)
+													   delegate:self
+											  cancelButtonTitle:@"OK"
+											  otherButtonTitles:@"How To Enable Data Protection", @"Learn about iOS Security", nil];
+	[alertView show];
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+	if (buttonIndex != alertView.cancelButtonIndex) {
+		if (![[A3AppDelegate instance].reachability isReachable]) {
+			[self alertInternetConnectionIsNotAvailable];
+			return;
+		}
+		if (buttonIndex == 1) {
+			NSArray *availableLocales = @[@"en_US", @"cs_CZ", @"da_DK", @"de_DE", @"el_GR", @"es_ES", @"fi_FI", @"fr_FR",
+					@"hr_HR", @"hu_HU", @"id_ID", @"it_IT", @"ja_JP", @"ko_KR", @"nl_NL", @"no_NO", @"pl_PL", @"pt_BR",
+					@"pt_PT", @"ro_RO", @"ru_RU", @"sk_SK", @"sv_SE", @"th_TH", @"tr_TR", @"zh_CN", @"zh_TW"
+			];
+			NSString *currentLanguageCode = [[NSLocale currentLocale] objectForKey:NSLocaleLanguageCode];
+			NSUInteger languageIndex = [availableLocales indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+				BOOL result = [currentLanguageCode isEqualToString:[obj substringToIndex:2]];
+				if (result) *stop = YES;
+				return result;
+			}];
+			if (languageIndex == NSNotFound) {
+				languageIndex = 0;
+			}
+			NSString *urlString = [NSString stringWithFormat:@"http://support.apple.com/kb/HT4175?viewlocale=%@", availableLocales[languageIndex]];
+			NSURL *url = [NSURL URLWithString:urlString];
+			[[UIApplication sharedApplication] openURL:url];
+		} else if (buttonIndex == 2) {
+			NSURL *url = [NSURL URLWithString:@"http://www.apple.com/ipad/business/docs/iOS_Security_Oct12.pdf"];
+			[[UIApplication sharedApplication] openURL:url];
+		}
+	}
 }
 
 - (void)didSelectRowAtSection0:(NSInteger)row {

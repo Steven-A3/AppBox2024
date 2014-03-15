@@ -47,7 +47,7 @@
     
     self.navigationItem.hidesBackButton = YES;
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.rowHeight = 44.0;
 }
 

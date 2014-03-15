@@ -63,6 +63,23 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 @end
 
 @implementation A3PasscodeViewController {
+	UIView *_animatingView;
+	UITextField *_firstDigitTextField;
+	UITextField *_secondDigitTextField;
+	UITextField *_thirdDigitTextField;
+	UITextField *_fourthDigitTextField;
+	UITextField *_passcodeTextField;
+	UILabel *_failedAttemptLabel;
+	UILabel *_enterPasscodeLabel;
+	int _failedAttempts;
+	BOOL _isUserConfirmingPasscode;
+	BOOL _isUserBeingAskedForNewPasscode;
+	BOOL _isUserTurningPasscodeOff;
+	BOOL _isUserChangingPasscode;
+	BOOL _isUserEnablingPasscode;
+	BOOL _beingDisplayedAsLockscreen;
+	NSString *_tempPasscode;
+	BOOL _timerStartInSeconds;
 	BOOL _passcodeValid;
 }
 
@@ -338,7 +355,10 @@ static NSInteger const kMaxNumberOfAllowedFailedAttempts = 10;
 					// Update the Keychain if adding or changing passcode
 			else {
 				[A3KeychainUtils storePassword:_tempPasscode hint:nil];
-				
+
+				if (_isUserEnablingPasscode) {
+					[[A3AppDelegate instance] setEnableAskPasscodeForStarting:YES];
+				}
 				NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 				[defaults setBool:YES forKey:kUserDefaultsKeyForUseSimplePasscode];
 				[defaults synchronize];

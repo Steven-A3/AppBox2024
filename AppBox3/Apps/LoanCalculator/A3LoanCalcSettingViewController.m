@@ -47,7 +47,7 @@ NSString *const A3LoanCalcSettingSelectCellID = @"A3LoanCalcSettingSelectCell";
     
     self.navigationItem.title = @"Settings";
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 0, 0);
     
     if (IS_IPHONE) {

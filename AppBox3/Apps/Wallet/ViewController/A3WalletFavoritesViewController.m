@@ -69,7 +69,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
     
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.rowHeight = 48.0;
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     if (IS_IPAD) {
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
     }

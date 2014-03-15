@@ -42,7 +42,7 @@
     
     self.navigationItem.title = @"Frequency";
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
 }
 
 - (void)didReceiveMemoryWarning

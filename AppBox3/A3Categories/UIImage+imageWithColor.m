@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "UIImage+extension.h"
+#import "UIImage+imageWithColor.h"
 
-@implementation UIImage (extension)
+@implementation UIImage (imageWithColor)
 
 + (UIImage *)imageWithColor:(UIColor *)color
 {

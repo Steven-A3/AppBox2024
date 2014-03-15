@@ -702,7 +702,7 @@
 		68D178A7162FEC7100F71732 /* A3TickerControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D178A6162FEC7100F71732 /* A3TickerControl.m */; };
 		68D1AC9917977F960047D4BF /* A3CurrencyTVEqualCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D1AC9817977F960047D4BF /* A3CurrencyTVEqualCell.m */; };
 		68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */; };
-		68D3561A1845CF94008409B4 /* UIImage+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D356191845CF94008409B4 /* UIImage+extension.m */; };
+		68D3561A1845CF94008409B4 /* UIImage+imageWithColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D356191845CF94008409B4 /* UIImage+imageWithColor.m */; };
 		68D4558F1886C374004F3877 /* A3SettingsChooseColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D4558E1886C374004F3877 /* A3SettingsChooseColorViewController.m */; };
 		68D455961886DD8C004F3877 /* A3AppDelegate+appearance.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D455951886DD8C004F3877 /* A3AppDelegate+appearance.m */; };
 		68D48CEC17142B5200299354 /* A3NumberKeyboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68D48CEB17142B5200299354 /* A3NumberKeyboardViewController.m */; };
@@ -2042,8 +2042,8 @@
 		68D1AC9717977F960047D4BF /* A3CurrencyTVEqualCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVEqualCell.h; path = Apps/Currency/A3CurrencyTVEqualCell.h; sourceTree = "<group>"; };
 		68D1AC9817977F960047D4BF /* A3CurrencyTVEqualCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVEqualCell.m; path = Apps/Currency/A3CurrencyTVEqualCell.m; sourceTree = "<group>"; };
 		68D1AC9B17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3CurrencyTVEqualCell.xib; path = Apps/Currency/A3CurrencyTVEqualCell.xib; sourceTree = "<group>"; };
-		68D356181845CF94008409B4 /* UIImage+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+extension.h"; sourceTree = "<group>"; };
-		68D356191845CF94008409B4 /* UIImage+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+extension.m"; sourceTree = "<group>"; };
+		68D356181845CF94008409B4 /* UIImage+imageWithColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+imageWithColor.h"; sourceTree = "<group>"; };
+		68D356191845CF94008409B4 /* UIImage+imageWithColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+imageWithColor.m"; sourceTree = "<group>"; };
 		68D4558D1886C374004F3877 /* A3SettingsChooseColorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsChooseColorViewController.h; path = Settings/A3SettingsChooseColorViewController.h; sourceTree = "<group>"; };
 		68D4558E1886C374004F3877 /* A3SettingsChooseColorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsChooseColorViewController.m; path = Settings/A3SettingsChooseColorViewController.m; sourceTree = "<group>"; };
 		68D455941886DD8C004F3877 /* A3AppDelegate+appearance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+appearance.h"; path = "AppDelegate/A3AppDelegate+appearance.h"; sourceTree = "<group>"; };
@@ -2421,8 +2421,8 @@
 				6830C7861851A26E0075010F /* NSUserDefaults+A3Addition.m */,
 				68E6F35017B2722000F10ED9 /* NSUserDefaults+A3Defaults.h */,
 				68E6F35117B2722000F10ED9 /* NSUserDefaults+A3Defaults.m */,
-				68D356181845CF94008409B4 /* UIImage+extension.h */,
-				68D356191845CF94008409B4 /* UIImage+extension.m */,
+				68D356181845CF94008409B4 /* UIImage+imageWithColor.h */,
+				68D356191845CF94008409B4 /* UIImage+imageWithColor.m */,
 				17D426B199FD2AC623B42755 /* UITableViewCell+accessory.h */,
 				17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */,
 				68F32E4F188AC3C600248F16 /* UITableViewController+standardDimension.h */,
@@ -5468,7 +5468,7 @@
 				6829682E18503B2100B70E13 /* NSPersistentStoreCoordinator+MagicalInMemoryStoreAdditions.m in Sources */,
 				680D639B18CFF9D400938AD0 /* NSAttributedString+Append.m in Sources */,
 				6829682A18503B2100B70E13 /* NSPersistentStoreCoordinator+MagicalAutoMigrations.m in Sources */,
-				68D3561A1845CF94008409B4 /* UIImage+extension.m in Sources */,
+				68D3561A1845CF94008409B4 /* UIImage+imageWithColor.m in Sources */,
 				680D638E18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.m in Sources */,
 				6829687018503C3300B70E13 /* NSAttributeDescription+MagicalDataImport.m in Sources */,
 				6829684A18503B2100B70E13 /* AutoMigratingWithSourceAndTargetModelMagicalRecordStack.m in Sources */,

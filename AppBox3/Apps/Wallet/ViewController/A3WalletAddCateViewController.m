@@ -74,7 +74,7 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
     self.tableView.allowsSelectionDuringEditing = YES;
     [self setEditing:YES animated:NO];
     
-    self.tableView.separatorColor =[self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     
     [self registerContentSizeCategoryDidChangeNotification];
 }

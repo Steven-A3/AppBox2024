@@ -131,7 +131,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[_fmMoveTableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVEqualCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterEqualCellID];
 
 	_fmMoveTableView.rowHeight = 84.0;
-	_fmMoveTableView.separatorColor = [self tableViewSeperatorColor];
+	_fmMoveTableView.separatorColor = [self tableViewSeparatorColor];
 	_fmMoveTableView.separatorInset = UIEdgeInsetsMake(0.0, 0.0, -1.0, 0.0);
 	_fmMoveTableView.contentInset = UIEdgeInsetsMake(0, 0, 70.0, 0);
 	_fmMoveTableView.showsVerticalScrollIndicator = NO;

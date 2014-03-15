@@ -45,7 +45,7 @@
     self.title = [NSString stringWithFormat:@"%@ Units", firstItem.type.unitTypeName];
     
     self.tableView.rowHeight = 44.0;
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
 
     [self rightBarButtonDoneButton];
     self.navigationItem.hidesBackButton = YES;

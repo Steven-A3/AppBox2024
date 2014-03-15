@@ -161,7 +161,7 @@ enum SortingKind {
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     _tableView.rowHeight = 48.0;
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     if (IS_IPAD) {
         _tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
     }	[self.view addSubview:_tableView];

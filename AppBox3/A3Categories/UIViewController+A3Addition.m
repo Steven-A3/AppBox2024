@@ -461,9 +461,14 @@
 	return ([[A3KeychainUtils getPassword] length] && [[A3AppDelegate instance] didPasscodeTimerEnd]);
 }
 
-- (UIColor *)tableViewSeperatorColor
+- (UIColor *)tableViewSeparatorColor
 {
     return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+}
+
+- (void)alertInternetConnectionIsNotAvailable {
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info" message:@"Internet Connection is not available. Try again later." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+	[alertView show];
 }
 
 @end

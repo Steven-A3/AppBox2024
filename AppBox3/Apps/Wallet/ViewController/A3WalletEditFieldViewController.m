@@ -51,7 +51,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     
     [self makeBackButtonEmptyArrow];
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.showsVerticalScrollIndicator = NO;
     
     // keyboard up

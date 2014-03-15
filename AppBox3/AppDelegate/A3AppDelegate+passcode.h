@@ -20,6 +20,19 @@
 - (void)applicationDidBecomeActive_passcode;
 - (void)applicationWillEnterForeground_passcode;
 - (void)applicationWillResignActive_passcode;
+
+- (BOOL)askPasscodeForStarting;
+
+- (void)setEnableAskPasscodeForStarting:(BOOL)enable;
+
+- (BOOL)askPasscodeForSettings;
+
+- (BOOL)askPasscodeForDaysCounter;
+
+- (BOOL)askPasscodeForLadyCalendar;
+
+- (BOOL)askPasscodeForWallet;
+
 - (double)timerDuration;
 
 @end

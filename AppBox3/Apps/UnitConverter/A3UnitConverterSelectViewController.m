@@ -58,7 +58,7 @@ NSString *const A3UnitConverterActionCellID2 = @"A3UnitConverterActionCell";
 //    float heightGap = IS_RETINA ? kSearchBarHeight+3.5:kSearchBarHeight+3.0;
 //    _tableView.frame = CGRectMake(0, heightGap, self.view.bounds.size.width, self.view.bounds.size.height-heightGap);
     
-    _tableView.separatorColor = [self tableViewSeperatorColor];
+    _tableView.separatorColor = [self tableViewSeparatorColor];
 	[self.view addSubview:_tableView];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"A3UnitConverterTVActionCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3UnitConverterActionCellID2];

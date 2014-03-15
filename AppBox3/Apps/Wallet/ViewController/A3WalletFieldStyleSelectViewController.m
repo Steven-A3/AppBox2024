@@ -42,7 +42,7 @@
     
     self.navigationItem.title = @"Field Style";
     
-    self.tableView.separatorColor = [self tableViewSeperatorColor];
+    self.tableView.separatorColor = [self tableViewSeparatorColor];
     
     [self registerContentSizeCategoryDidChangeNotification];
 }
