@@ -139,6 +139,8 @@
 		cell.accessoryView = plusButton;
 	}
 	plusButton.tag = indexPath.row;
+
+	cell.textLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	[plusButton setSelected:isFavoriteItem];
 
 	return cell;

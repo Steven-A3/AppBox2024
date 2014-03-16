@@ -10,7 +10,6 @@
 #import "WalletData.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
-#import "UIViewController+A3Addition.h"
 
 @interface A3WalletFieldTypeSelectViewController ()
 

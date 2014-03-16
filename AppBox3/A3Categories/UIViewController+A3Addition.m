@@ -11,6 +11,7 @@
 #import "A3CenterViewDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "A3KeychainUtils.h"
+#import "UIViewController+A3AppCategory.h"
 
 @implementation UIViewController (A3Addition)
 
@@ -459,11 +460,6 @@
 
 - (BOOL)checkPasscode {
 	return ([[A3KeychainUtils getPassword] length] && [[A3AppDelegate instance] didPasscodeTimerEnd]);
-}
-
-- (UIColor *)tableViewSeparatorColor
-{
-    return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 }
 
 - (void)alertInternetConnectionIsNotAvailable {

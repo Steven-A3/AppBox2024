@@ -25,7 +25,6 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3RootViewController_iPad.h"
 #import "NSString+conversion.h"
-#import "UIViewController+A3Addition.h"
 #import "NSDateFormatter+A3Addition.h"
 
 @interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>

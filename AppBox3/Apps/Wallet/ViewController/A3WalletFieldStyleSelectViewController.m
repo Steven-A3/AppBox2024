@@ -11,7 +11,6 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "NSString+WalletStyle.h"
-#import "UIViewController+A3Addition.h"
 
 @interface A3WalletFieldStyleSelectViewController ()
 

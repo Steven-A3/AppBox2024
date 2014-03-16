@@ -10,7 +10,6 @@
 #import "LoanCalcString.h"
 
 #import "A3AppDelegate.h"
-#import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 
 @interface A3LoanCalcSelectFrequencyViewController ()

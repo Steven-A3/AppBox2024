@@ -194,4 +194,8 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	return [nf stringFromNumber:value];
 }
 
+- (UIColor *)tableViewSeparatorColor
+{
+    return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
+}
 @end
