@@ -10,7 +10,6 @@
 
 extern NSString *const A3SettingsUsePasscodeLock;
 extern NSString *const A3SettingsNumberOfItemsRecentToKeep;
-extern NSString *const A3SettingsUseLunarCalendar;
 extern NSString *const A3SettingsUseKoreanCalendarForLunarConversion;
 
 @interface NSUserDefaults (A3Addition)
@@ -19,8 +18,6 @@ extern NSString *const A3SettingsUseKoreanCalendarForLunarConversion;
 - (NSString *)stringForRecentToKeep;
 
 - (BOOL)useKoreanLunarCalendar;
-
-- (NSString *)stringForLunarCalendarCountry;
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key;
 

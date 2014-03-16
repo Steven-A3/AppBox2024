@@ -63,20 +63,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	@autoreleasepool {
-		self.view.backgroundColor = [UIColor whiteColor];
-		self.navigationItem.hidesBackButton = YES;
-		[self makeBackButtonEmptyArrow];
+	self.view.backgroundColor = [UIColor whiteColor];
+	self.navigationItem.hidesBackButton = YES;
+	[self makeBackButtonEmptyArrow];
 
-		if (IS_IPHONE) {
-			[self leftBarButtonAppsButton];
-		}
+	[self leftBarButtonAppsButton];
 
-		[self setupSubviews];
+	[self setupSubviews];
 
-		[self registerContentSizeCategoryDidChangeNotification];
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
-	}
+	[self registerContentSizeCategoryDidChangeNotification];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,11 +82,6 @@
 }
 
 - (void)applicationDidEnterBackground:(NSNotification *)notification {
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
@@ -155,18 +146,6 @@
 			make.height.equalTo(@44);
 			make.bottom.equalTo(self.view.bottom).with.offset(IS_RETINA ? -10.5 : -10);
 		}];
-	}
-}
-
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
-
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
 	}
 }
 

@@ -242,20 +242,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self clearEverything];
 }
 
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
-    
-	if (IS_IPAD) {
-        
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-
-	}
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

@@ -212,17 +212,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     } else {
         // 아님
         self.navigationItem.hidesBackButton = YES;
-        
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            } else {
-                [self leftBarButtonAppsButton];
-            }
-        }
-        else {
-            [self leftBarButtonAppsButton];
-        }
+
+		[self leftBarButtonAppsButton];
     }
 }
 

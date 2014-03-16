@@ -67,7 +67,11 @@
 }
 
 - (void)doneAction {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	if (IS_IPAD) {
+		[self.navigationController popViewControllerAnimated:YES];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:NULL];
+	}
 }
 
 -(void)viewWillAppear:(BOOL)animated

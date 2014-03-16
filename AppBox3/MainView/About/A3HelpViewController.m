@@ -36,18 +36,6 @@
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
-#pragma mark -- Layout
-
-- (void)viewDidLayoutSubviews {
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

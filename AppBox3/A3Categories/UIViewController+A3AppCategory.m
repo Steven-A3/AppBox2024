@@ -198,4 +198,9 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 {
     return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];
 }
+
+- (UIColor *)selectedTextColor {
+	return [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+}
+
 @end

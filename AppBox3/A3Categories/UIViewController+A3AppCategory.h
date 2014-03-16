@@ -45,4 +45,6 @@
 - (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value;
 
 - (UIColor *)tableViewSeparatorColor;
+
+- (UIColor *)selectedTextColor;
 @end

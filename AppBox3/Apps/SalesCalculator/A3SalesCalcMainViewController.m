@@ -112,19 +112,6 @@ enum A3TableElementCellType {
     [self.headerView setResultData:[_preferences calcData] withAnimation:NO];
 }
 
--(void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 -(void)contentSizeDidChange:(NSNotification *)notification
 {
     [_headerView setNeedsLayout];

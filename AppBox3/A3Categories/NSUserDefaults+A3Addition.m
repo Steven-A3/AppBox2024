@@ -10,7 +10,6 @@
 #import "A3AppDelegate+iCloud.h"
 #import "A3AppDelegate+mainMenu.h"
 
-NSString *const A3SettingsUseLunarCalendar = @"A3SettingsUseLunarCalendar";
 NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseKoreanCalendarForLunarConversion";
 
 @implementation NSUserDefaults (A3Addition)
@@ -36,14 +35,6 @@ NSString *const A3SettingsUseKoreanCalendarForLunarConversion = @"A3SettingsUseK
 		return [obj boolValue];
 	}
 	return [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
-}
-
-- (NSString *)stringForLunarCalendarCountry {
-	if (![[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseLunarCalendar]) {
-		return NSLocalizedString(@"Off", @"Value for Use Lunar Calendar");
-	}
-	return [[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion] ?
-		NSLocalizedString(@"Korean", @"In Settings, selected lunar calendar name for Korean Lunar Calendar") : NSLocalizedString(@"Chinese", @"In Settings, selected lunar calendar name for Chinese Lunar Calendar");
 }
 
 - (void)setDateComponents:(NSDateComponents *)dateComponents forKey:(NSString *)key {

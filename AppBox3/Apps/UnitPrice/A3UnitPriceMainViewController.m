@@ -110,12 +110,6 @@
 	[super viewWillLayoutSubviews];
     
 	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-        
         // 아이패드도 바운스가 되도록 하기 위해서, 화면 높이보다 크게 컨텐츠 영역 높이를 준다.
         CGSize contentSize = self.scrollView.contentSize;
         float scrollContentHeight = contentSize.height;

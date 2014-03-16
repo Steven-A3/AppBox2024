@@ -284,96 +284,72 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
         
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            } else {
-                [self leftBarButtonAppsButton];
-            }
-        }
-        else {
-            [self leftBarButtonAppsButton];
-        }
+		[self leftBarButtonAppsButton];
     }
 }
 
 - (void)appsButtonAction {
-	@autoreleasepool {
-		[_firstResponder resignFirstResponder];
-        
-		if (IS_IPHONE) {
-			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-            
-			if ([_moreMenuView superview]) {
-				[self dismissMoreMenu];
-				[self rightButtonMoreButton];
-			}
-		} else {
-			[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+	[_firstResponder resignFirstResponder];
+
+	if (IS_IPHONE) {
+		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+
+		if ([_moreMenuView superview]) {
+			[self dismissMoreMenu];
+			[self rightButtonMoreButton];
 		}
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
 }
 
 - (void)moreButtonAction:(UIButton *)button {
-    @autoreleasepool {
-        [_firstResponder resignFirstResponder];
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
-        
-        _moreMenuButtons = @[self.shareButton, [self historyButton:NULL]];
-        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:_fmMoveTableView];
-        _isShowMoreMenu = YES;
-    };
+	[_firstResponder resignFirstResponder];
+
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+
+	_moreMenuButtons = @[self.shareButton, [self historyButton:NULL]];
+	_moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:_fmMoveTableView];
+	_isShowMoreMenu = YES;
 }
 
 - (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		[self dismissMoreMenu];
-	}
+	[self dismissMoreMenu];
 }
 
 - (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu || IS_IPAD ) return;
-        
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	}
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
+
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
-	@autoreleasepool {
-		if (!_isShowMoreMenu) return;
-        
-		_isShowMoreMenu = NO;
-        
-		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView tableView:_fmMoveTableView];
-		[self.view removeGestureRecognizer:gestureRecognizer];
-	}
+	if (!_isShowMoreMenu) return;
+
+	_isShowMoreMenu = NO;
+
+	[self rightButtonMoreButton];
+	[self dismissMoreMenuView:_moreMenuView tableView:_fmMoveTableView];
+	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-		[self clearEverything];
-        
-        [self shareAll:sender];
-	}
+	[self clearEverything];
+
+	[self shareAll:sender];
 }
 
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
 		[self clearEverything];
         
         A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
 		[self presentSubViewController:viewController];
         
-//        _unitHistory = nil;
         _unitValue = nil;
         
         if (IS_IPAD) {
             [self enableControls:NO];
         }
-	}
 }
 
 - (NSMutableArray *)convertItems {
@@ -411,9 +387,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
  */
 
 - (void)addEqualAndPlus {
-	@autoreleasepool {
-		[_convertItems insertObjectToSortedArray:self.equalItem atIndex:1];
-	}
+	[_convertItems insertObjectToSortedArray:self.equalItem atIndex:1];
 }
 
 - (NSMutableDictionary *)equalItem {

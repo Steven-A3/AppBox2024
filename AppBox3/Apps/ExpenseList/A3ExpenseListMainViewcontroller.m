@@ -204,18 +204,6 @@ static NSString *CellIdentifier = @"Cell";
 {
     [super viewWillLayoutSubviews];
     
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		}
-        else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-    else {
-
-    }
-    
     [self drawCellSeparatorLineView];
 }
 

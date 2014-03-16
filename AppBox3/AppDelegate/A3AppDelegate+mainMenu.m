@@ -146,9 +146,9 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 				kA3AppsExpandableChildren :
 				@[
 						@{kA3AppsMenuName : @"Currency", kA3AppsClassName_iPhone : @"A3CurrencyViewController", kA3AppsMenuImageName : @"Currency"},
-						@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"DateCalculator"},
-						@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"SalesCalculator"},
-						@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName_iPhone : @"", kA3AppsMenuImageName : @"TipCalculator"},
+						@{kA3AppsMenuName : @"Date Calculator", kA3AppsClassName_iPhone : @"A3DateMainTableViewController", kA3AppsMenuImageName : @"DateCalculator"},
+						@{kA3AppsMenuName : @"Sales Calculator", kA3AppsClassName_iPhone : @"A3SalesCalcMainViewController", kA3AppsMenuImageName : @"SalesCalculator"},
+						@{kA3AppsMenuName : @"Tip Calculator", kA3AppsClassName_iPhone : @"A3TipCalcMainTableViewController", kA3AppsMenuImageName : @"TipCalculator"},
 				]
 		};
 		[self storeFavoriteMenuDictionary:[dictionary mutableCopy] withDate:[NSDate distantPast]];
@@ -183,6 +183,8 @@ NSString *const kA3AppsDataUpdateDate = @"kA3AppsDataUpdateDate";
 }
 
 - (void)storeMenuDictionary:(NSMutableDictionary *)mutableDictionary forKey:(NSString *)key {
+	FNLOG(@"%@, %@", key, mutableDictionary);
+
 	[[NSUserDefaults standardUserDefaults] setObject:mutableDictionary forKey:key];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 

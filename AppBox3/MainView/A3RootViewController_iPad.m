@@ -69,63 +69,25 @@ static const CGFloat kSideViewWidth = 319.0;
 - (void)layoutSubviews {
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 
-	if (IS_PORTRAIT || [self useFullScreenInLandscapeForCurrentTopViewController]) {
-		self.centerNavigationController.view.frame = bounds;
-        // KJH
-        A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
-        if (presentedViewController) {
-            presentedViewController.view.frame = bounds;
-        }
+	self.centerNavigationController.view.frame = bounds;
+	// KJH
+	A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+	if (presentedViewController) {
+		presentedViewController.view.frame = bounds;
+	}
 
-		if (self.showLeftView) {
-			_leftNavigationController.view.frame = CGRectMake(0,0,kSideViewWidth, bounds.size.height);
-			_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
-			[self bringUpCenterCoverView];
-		} else if (self.showRightView) {
-			_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
-			_rightNavigationController.view.frame = CGRectMake(bounds.size.width - kSideViewWidth + 1.0, 0, kSideViewWidth, bounds.size.height);
-			[self bringUpCenterCoverView];
-		} else {
-			_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
-			_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
-			[_centerCoverView setHidden:YES];
-		}
+	if (self.showLeftView) {
+		_leftNavigationController.view.frame = CGRectMake(0,0,kSideViewWidth, bounds.size.height);
+		_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
+		[self bringUpCenterCoverView];
+	} else if (self.showRightView) {
+		_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
+		_rightNavigationController.view.frame = CGRectMake(bounds.size.width - kSideViewWidth + 1.0, 0, kSideViewWidth, bounds.size.height);
+		[self bringUpCenterCoverView];
 	} else {
-		CGFloat centerViewWidth = 704.0;
-
-		if (![self useFullScreenInLandscapeForCurrentTopViewController]) {
-			[_centerCoverView setHidden:YES];
-			_showLeftView = NO;
-		} else {
-			[_centerCoverView setHidden:!_showLeftView];
-		}
-		if (self.showRightView) {
-			CGRect frame = CGRectMake(-kSideViewWidth - 1, 0, kSideViewWidth, bounds.size.height);
-			_leftNavigationController.view.frame = frame;
-			frame = CGRectMake(0, 0, centerViewWidth, bounds.size.height);
-			_centerNavigationController.view.frame = frame;
-            // KJH
-            A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
-            if (presentedViewController) {
-                presentedViewController.view.frame = frame;
-            }
-            
-			frame = CGRectMake(centerViewWidth + 1.0, 0, kSideViewWidth, bounds.size.height);
-			_rightNavigationController.view.frame = frame;
-			[self bringUpCenterCoverView];
-		} else /* if (_showLeftView) */ {
-			CGRect frame = CGRectMake(0, 0, kSideViewWidth, bounds.size.height);
-			_leftNavigationController.view.frame = frame;
-			frame = CGRectMake(kSideViewWidth + 1.0, 0, centerViewWidth, bounds.size.height);
-			_centerNavigationController.view.frame = frame;
-            // KJH
-            for (A3NavigationController *presentedViewController in _presentViewControllers) {
-                presentedViewController.view.frame = frame;
-            }
-            
-			frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
-			_rightNavigationController.view.frame = frame;
-		}
+		_leftNavigationController.view.frame = CGRectMake(-kSideViewWidth - 1,0,kSideViewWidth, bounds.size.height);
+		_rightNavigationController.view.frame = CGRectMake(bounds.size.width, 0, kSideViewWidth, bounds.size.height);
+		[_centerCoverView setHidden:YES];
 	}
 }
 

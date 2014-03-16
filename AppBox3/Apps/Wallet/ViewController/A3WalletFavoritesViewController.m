@@ -112,17 +112,8 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
         // 아님
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
-        
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            } else {
-                [self leftBarButtonAppsButton];
-            }
-        }
-        else {
-            [self leftBarButtonAppsButton];
-        }
+
+		[self leftBarButtonAppsButton];
     }
 }
 
@@ -159,14 +150,9 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
     [super setEditing:editing animated:animated];
     
     if (editing) {
-        if (IS_IPHONE) {
-            self.navigationItem.leftBarButtonItem = nil;
-        }
-    }
-    else {
-        if (IS_IPHONE) {
-            [self leftBarButtonAppsButton];
-        }
+		self.navigationItem.leftBarButtonItem = nil;
+    } else {
+		[self leftBarButtonAppsButton];
     }
 }
 

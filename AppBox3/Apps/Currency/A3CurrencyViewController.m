@@ -181,16 +181,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	}
 }
 
-- (void)viewDidLayoutSubviews {
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 - (UIView *)footerView {
 	if (!_footerView) {
 		_footerView = [UIView new];

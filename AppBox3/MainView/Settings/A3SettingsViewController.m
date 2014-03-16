@@ -65,16 +65,6 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 	}
 }
 
-- (void)viewDidLayoutSubviews {
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

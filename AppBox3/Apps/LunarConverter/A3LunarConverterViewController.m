@@ -125,12 +125,6 @@
 {
 	[super viewWillAppear:animated];
 
-	if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation) )
-		[self leftBarButtonAppsButton];
-	else{
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
-	}
-
 	[self calculateDate];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuBecameFirstResponder) name:A3MainMenuBecameFirstResponder object:nil];
@@ -166,15 +160,6 @@
 {
 	if( IS_IPAD ){
 		[self layoutKeyboardToOrientation:toInterfaceOrientation];
-	}
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-	if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation) )
-		[self leftBarButtonAppsButton];
-	else{
-		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
 	}
 }
 

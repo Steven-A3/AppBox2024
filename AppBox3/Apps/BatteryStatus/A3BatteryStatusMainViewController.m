@@ -123,18 +123,6 @@
 	[self refreshHeaderView];
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 - (A3BatteryStatusListPageSectionView *)sectionHeaderView {
 	if (!_sectionHeaderView) {
 		_sectionHeaderView = [[A3BatteryStatusListPageSectionView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 56.0)];

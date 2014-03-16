@@ -43,37 +43,18 @@
 	return [self standardHeightForHeaderInSection:section];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return [self standardHeightForFooterInSection:section];
-}
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
 	switch (cell.tag) {
 		case 1100:
-			if (![[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseLunarCalendar]) {
+			if (![[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]) {
 				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			}
 			break;
 		case 1200:
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseLunarCalendar]) {
-				if (![[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]) {
-					cell.accessoryType = UITableViewCellAccessoryCheckmark;
-				} else {
-					cell.accessoryType = UITableViewCellAccessoryNone;
-				}
-			} else {
-				cell.accessoryType = UITableViewCellAccessoryNone;
-			}
-			break;
-		case 1300:
-			if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseLunarCalendar]) {
-				if ([[NSUserDefaults standardUserDefaults] boolForKey:A3SettingsUseKoreanCalendarForLunarConversion]) {
-					cell.accessoryType = UITableViewCellAccessoryCheckmark;
-				} else {
-					cell.accessoryType = UITableViewCellAccessoryNone;
-				}
+			if ([[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]) {
+				cell.accessoryType = UITableViewCellAccessoryCheckmark;
 			} else {
 				cell.accessoryType = UITableViewCellAccessoryNone;
 			}
@@ -85,16 +66,10 @@
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	switch (cell.tag) {
 		case 1100:
-			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3SettingsUseLunarCalendar];
-			[[NSUserDefaults standardUserDefaults] synchronize];
-			break;
-		case 1200:
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsUseLunarCalendar];
 			[[NSUserDefaults standardUserDefaults] setBool:NO forKey:A3SettingsUseKoreanCalendarForLunarConversion];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 			break;
-		case 1300:
-			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsUseLunarCalendar];
+		case 1200:
 			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3SettingsUseKoreanCalendarForLunarConversion];
 			[[NSUserDefaults standardUserDefaults] synchronize];
 			break;

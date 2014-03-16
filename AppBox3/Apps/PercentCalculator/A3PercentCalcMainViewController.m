@@ -121,19 +121,6 @@
     [_firstResponder resignFirstResponder];
 }
 
--(void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

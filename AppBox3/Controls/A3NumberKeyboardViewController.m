@@ -73,8 +73,10 @@
 	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
 		UITextField *textField = (UITextField *) _textInputTarget;
 		UITextRange *selectedRange = textField.selectedTextRange;
-		NSUInteger location = (NSUInteger) [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
-		NSUInteger length = (NSUInteger) [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
+		NSInteger location = [textField offsetFromPosition:textField.beginningOfDocument toPosition:selectedRange.start];
+		NSInteger length = [textField offsetFromPosition:selectedRange.start toPosition:selectedRange.end];
+		if (!location && !length) return;
+
 		if (length == 0) {
 			location = MAX(location - 1, 0);
 			length = 1;

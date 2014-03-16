@@ -77,7 +77,6 @@ enum SortingKind {
     self.navigationItem.hidesBackButton = YES;
     [self leftBarButtonAppsButton];
     
-//    self.navigationItem.rightBarButtonItems = @[self.editButtonItem, self.searchItem];
     self.navigationItem.rightBarButtonItem = self.searchItem;
     
     [self initializeViews];
@@ -138,16 +137,7 @@ enum SortingKind {
         [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
         
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            } else {
-                [self leftBarButtonAppsButton];
-            }
-        }
-        else {
-            [self leftBarButtonAppsButton];
-        }
+		[self leftBarButtonAppsButton];
     }
 }
 
@@ -261,15 +251,8 @@ enum SortingKind {
     }
     else {
         self.searchItem.enabled = YES;
-        
-        if (IS_IPHONE) {
-            [self leftBarButtonAppsButton];
-        }
-        else {
-            if (IS_PORTRAIT) {
-                [self leftBarButtonAppsButton];
-            }
-        }
+
+		[self leftBarButtonAppsButton];
     }
 }
 

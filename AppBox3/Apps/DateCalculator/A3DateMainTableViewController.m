@@ -190,14 +190,6 @@ NSString *kCalculationString;
     [super viewWillLayoutSubviews];
     
     [self setResultToHeaderViewWithAnimation:NO];
-    
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *)notification {

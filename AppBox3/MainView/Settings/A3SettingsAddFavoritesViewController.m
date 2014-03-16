@@ -134,49 +134,69 @@
 		plusButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		[plusButton setImage:[UIImage imageNamed:@"add04"] forState:UIControlStateNormal];
 		[plusButton setImage:[UIImage imageNamed:@"add05"] forState:UIControlStateSelected];
-		[plusButton sizeToFit];
+		[plusButton setBounds:CGRectMake(0, 0, 44.0, 44.0)];
 		[plusButton addTarget:self action:@selector(plusButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 		cell.accessoryView = plusButton;
 	}
 	plusButton.tag = indexPath.row;
 
-	cell.textLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	[plusButton setSelected:isFavoriteItem];
+	[self setTextColorForCell:cell favorite:isFavoriteItem];
 
 	return cell;
 }
 
-- (void)plusButtonAction:(UIButton *)button {
-	// Re-read data from store.
-	_favoritesMenuItems = nil;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[self toggleFavorite:indexPath.row button:nil];
+}
 
-	NSUInteger menuIdx = (NSUInteger) button.tag;
-	NSDictionary *menuItem = self.allMenuItems[menuIdx];
+- (void)plusButtonAction:(UIButton *)button {
+	[self toggleFavorite:button.tag button:button];
+}
+
+- (void)toggleFavorite:(NSUInteger)menuIndex button:(UIButton *)button {
+	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:menuIndex inSection:0]];
+	if (!button) {
+		button = (UIButton *) cell.accessoryView;
+	}
+	// Reload favorite items
+	_favoritesMenuItems = nil;
+	NSDictionary *menuItem = self.allMenuItems[menuIndex];
 	NSUInteger idxFavorite = [self indexOfMenuInFavorites:menuItem];
+	BOOL isFavorite;
 	if ([button isSelected]) {
 		// Remove from favorites
+		isFavorite = NO;
 		if (idxFavorite != NSNotFound) {
 			[self.favoritesMenuItems removeObjectAtIndex:idxFavorite];
 			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
 
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
-			
+
 			[button setSelected:NO];
 		} else {
 			FNLOG(@"Data changed before re-load tableview");
 		}
 	} else {
+		isFavorite = YES;
 		if (idxFavorite == NSNotFound) {
 			[self.favoritesMenuItems addObject:menuItem];
+			FNLOG(@"%@", menuItem);
 			[[A3AppDelegate instance] storeFavorites:self.favoritesMenuItems];
 
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3AppsMainMenuContentsChangedNotification object:self];
-			
+
 			[button setSelected:YES];
 		} else {
 			FNLOG(@"Data changed before re-load tableview");
 		}
 	}
+
+	[self setTextColorForCell:cell favorite:isFavorite];
+}
+
+- (void)setTextColorForCell:(UITableViewCell *)cell favorite:(BOOL)isFavorite {
+	cell.textLabel.textColor = isFavorite ? [self selectedTextColor] : [UIColor blackColor];
 }
 
 /*

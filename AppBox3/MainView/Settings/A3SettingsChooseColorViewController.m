@@ -89,7 +89,7 @@ NSString *const kCellID = @"Cell";                          // UICollectionViewC
 	[cell addSubview:self.collectionViewInCell];
 
 	[_collectionViewInCell makeConstraints:^(MASConstraintMaker *make) {
-		make.edges.equalTo(cell);
+		make.edges.equalTo(cell).with.insets(UIEdgeInsetsMake(0, 0, 1, 0));
 	}];
 }
 

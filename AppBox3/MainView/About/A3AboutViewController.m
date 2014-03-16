@@ -10,6 +10,7 @@
 #import "A3BasicWebViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UITableViewController+standardDimension.h"
+#import "Reachability.h"
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
 
@@ -28,18 +29,6 @@
 
 	self.tableView.separatorColor = A3UITableViewSeparatorColor;
 	self.tableView.separatorInset = A3UITableViewSeparatorInset;
-}
-
-#pragma mark -- Layout
-
-- (void)viewDidLayoutSubviews {
-	if (IS_IPAD) {
-		if (IS_LANDSCAPE) {
-			self.navigationItem.leftBarButtonItem = nil;
-		} else {
-			[self leftBarButtonAppsButton];
-		}
-	}
 }
 
 #pragma mark -- UITableViewDataSource
@@ -72,25 +61,25 @@
 }
 
 - (void)didSelectSectionZeroAtRow:(NSInteger)row {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		[self alertInternetConnectionIsNotAvailable];
+		return;
+	}
 	switch (row) {
-		case 0:{
+		case 0: {
 			A3BasicWebViewController *viewController = [A3BasicWebViewController new];
 			viewController.url = [NSURL URLWithString:@"http://www.allaboutapps.net"];
 			[self.navigationController pushViewController:viewController animated:YES];
 			break;
 		}
 		case 1: {
-			SLComposeViewController *viewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeTwitter];
-			[viewController setInitialText:NSLocalizedString(@"tellafriend", nil)];
-
-			[self presentViewController:viewController animated:YES completion:nil];
+			NSURL *twitterURL = [NSURL URLWithString:@"twitter://user?screen_name=AppBox_Pro"];
+			[[UIApplication sharedApplication] openURL:twitterURL];
 			break;
 		}
 		case 2: {
-			SLComposeViewController *viewController = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
-			[viewController setInitialText:NSLocalizedString(@"tellafriend", nil)];
-
-			[self presentViewController:viewController animated:YES completion:nil];
+			NSURL *twitterURL = [NSURL URLWithString:@"fb://profile/131703690193422"];
+			[[UIApplication sharedApplication] openURL:twitterURL];
 			break;
 		}
 		case 3: {
@@ -104,20 +93,18 @@
 			break;
 		}
 		case 4: {
-			[self openMailComposerWithSubject:NSLocalizedString(@"A friend has recommended AppBox Pro™ from the iTunes App Store", nil)
-									 withBody:NSLocalizedString(@"tellafriend", nil)
+			[self openMailComposerWithSubject:NSLocalizedString(@"A friend has recommended AppBox Pro™ from the iTunes App Store", @"")
+									 withBody:NSLocalizedString(@"tellafriend", @"")
 								withRecipient:nil];
 			break;
 		}
-		case 5:
-		{
+		case 5: {
 			NSString *review_url = @"itms-apps://userpub.itunes.apple.com/WebObjects/MZUserPublishing.woa/wa/addUserReview?id=318404385";
 			NSURL *url = [[NSURL alloc] initWithString:review_url];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
 		}
-		case 6:
-		{
+		case 6: {
 			NSURL *url = [[NSURL alloc] initWithString:@"itms-apps://itunes.apple.com/artist/allaboutapps/id307094026"];
 			[[UIApplication sharedApplication] openURL:url];
 			break;
@@ -152,6 +139,10 @@
 }
 
 - (void)didSelectSectionOneAtRow:(NSInteger)row {
+	if (![[A3AppDelegate instance].reachability isReachable]) {
+		[self alertInternetConnectionIsNotAvailable];
+		return;
+	}
 	NSString *emailSubject = [NSString stringWithFormat:
 			NSLocalizedString(@"AppBox Pro™ V%@ Contact Support", nil),
 			[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] ];
