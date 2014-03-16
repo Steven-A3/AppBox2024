@@ -180,9 +180,9 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [self ShowOneFilterView:nFilterIndex];
 
     
-    lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,36,36)];
+    lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
     [lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
-    lastimageButton.layer.cornerRadius = 18.0;
+    lastimageButton.layer.cornerRadius = 23.5;
     lastimageButton.layer.masksToBounds = YES;
     [self.bottomBar.items[0] setCustomView:lastimageButton];
     [self loadFirstPhoto];
@@ -219,7 +219,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
     [self.topBar setFrame:(CGRectMake(self.topBar.bounds.origin.x, 20 , screenBounds.size.width, self.topBar.bounds.size.height))];
-    [self.bottomBar setFrame:(CGRectMake(self.bottomBar.bounds.origin.x, screenBounds.size.height - 44 , screenBounds.size.width, self.bottomBar.bounds.size.height))];
+    [self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
+    [self.zoomSlider  setFrame:CGRectMake(self.zoomToolBar.bounds.origin.x + 40, self.zoomToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
    // [self.brightnessslider setFrame:CGRectMake(self.brightnessToolBar.bounds.origin.x + 40, self.brightnessToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
     //[self.magnifierslider setFrame:CGRectMake(self.magnifierToolBar.bounds.origin.x + 40, self.magnifierToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
 }
@@ -728,12 +729,12 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         if ([self getMaxZoom] != 1) {
             if(hidden == YES) {
                 [self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
-                                                      self.zoomToolBar.frame.origin.y + self.zoomToolBar.frame.size.height,
+                                                      self.view.frame.size.height - self.zoomToolBar.frame.size.height,
                                                       self.zoomToolBar.frame.size.width,
                                                       self.zoomToolBar.frame.size.height)];
             } else {
                 [self.zoomToolBar setFrame:CGRectMake(self.zoomToolBar.frame.origin.x,
-                                                      self.zoomToolBar.frame.origin.y - self.zoomToolBar.frame.size.height,
+                                                      self.view.bounds.size.height - self.zoomToolBar.frame.size.height - self.bottomBar.frame.size.height,
                                                       self.zoomToolBar.frame.size.width,
                                                       self.zoomToolBar.frame.size.height)];
             }
@@ -817,6 +818,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     monoLabel.textColor = [UIColor whiteColor];
     monoLabel.backgroundColor = [UIColor clearColor];
     monoLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    monoLabel.shadowColor = [UIColor blackColor];
     monoLabel.text = @"Mono";
     
     
@@ -824,49 +826,57 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     tonalLabel.textColor = [UIColor whiteColor];
     tonalLabel.backgroundColor = [UIColor clearColor];
     tonalLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    tonalLabel.shadowColor = [UIColor blackColor];
     tonalLabel.text = @"Tonal";
     
     noirLabel = [UILabel new];
     noirLabel.textColor = [UIColor whiteColor];
     noirLabel.backgroundColor = [UIColor clearColor];
     noirLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    noirLabel.shadowColor = [UIColor blackColor];
     noirLabel.text = @"Noir";
     
     fadeLabel = [UILabel new];
     fadeLabel.textColor = [UIColor whiteColor];
     fadeLabel.backgroundColor = [UIColor clearColor];
     fadeLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    fadeLabel.shadowColor = [UIColor blackColor];
     fadeLabel.text = @"Fade";
     
     noneLabel = [UILabel new];
     noneLabel.textColor = [UIColor whiteColor];
     noneLabel.backgroundColor = [UIColor clearColor];
     noneLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    noneLabel.shadowColor = [UIColor blackColor];
     noneLabel.text = @"None";
     
     chromeLabel = [UILabel new];
     chromeLabel.textColor = [UIColor whiteColor];
     chromeLabel.backgroundColor = [UIColor clearColor];
     chromeLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    chromeLabel.shadowColor = [UIColor blackColor];
     chromeLabel.text = @"Chrome";
     
     processLabel = [UILabel new];
     processLabel.textColor = [UIColor whiteColor];
     processLabel.backgroundColor = [UIColor clearColor];
     processLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    processLabel.shadowColor = [UIColor blackColor];
     processLabel.text = @"Process";
     
     transferLabel = [UILabel new];
     transferLabel.textColor = [UIColor whiteColor];
     transferLabel.backgroundColor = [UIColor clearColor];
     transferLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
+    transferLabel.shadowColor = [UIColor blackColor];
     transferLabel.text = @"Transfer";
     
     instantLabel = [UILabel new];
     instantLabel.textColor = [UIColor whiteColor];
     instantLabel.backgroundColor = [UIColor clearColor];
     instantLabel.font = [UIFont fontWithName:@"Trebuchet MS" size: 10.0f];
-    instantLabel.text = @"Transfer";
+    instantLabel.shadowColor = [UIColor blackColor];
+    instantLabel.text = @"Instant";
 }
 
 
@@ -1331,7 +1341,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 -(UIImage *)cropImageWithSquare:(UIImage *)source
 {
-    CGSize finalsize = CGSizeMake(36,36);
+    CGSize finalsize = CGSizeMake(47,47);
     
     CGFloat scale = MAX(
                         finalsize.width/source.size.width,

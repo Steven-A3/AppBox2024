@@ -71,9 +71,9 @@ static const int MAX_ZOOM_FACTOR = 6;
     [self setNavigationBarHidden:YES];
     [self setToolBarsHidden:YES];
     
-    lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,36,36)];
+    lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
     [lastimageButton addTarget:_cameraRollButton.target action:_cameraRollButton.action forControlEvents:UIControlEventTouchUpInside];
-    lastimageButton.layer.cornerRadius = 18.0;
+    lastimageButton.layer.cornerRadius = 23.5;
     lastimageButton.layer.masksToBounds = YES;
     [self.bottomToolBar.items[0] setCustomView:lastimageButton];
     [self loadFirstPhoto];
@@ -101,27 +101,33 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void) setPreviewRotation:(CGRect)screenBounds {
-    
-    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-    if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-        previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
-    } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        previewLayer.transform = CGAffineTransformMakeRotation(-M_PI_2);
-    } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-        previewLayer.transform = CGAffineTransformMakeRotation(M_PI);
+    if (IS_IPAD) {
+        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+            previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            previewLayer.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+            previewLayer.transform = CGAffineTransformMakeRotation(M_PI);
+        } else {
+            previewLayer.transform = CGAffineTransformMakeRotation(0);
+        }
     } else {
-        previewLayer.transform = CGAffineTransformMakeRotation(0);
+        previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
     }
-
+    
     previewLayer.frame = screenBounds;
 }
 
 - (void)viewWillLayoutSubviews {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-    [self setPreviewRotation:screenBounds];
+    if(IS_IPAD) {
+        [self setPreviewRotation:screenBounds];
+    }
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
     [self.brightnessslider setFrame:CGRectMake(self.brightnessToolBar.bounds.origin.x + 40, self.brightnessToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
     [self.magnifierslider setFrame:CGRectMake(self.magnifierToolBar.bounds.origin.x + 40, self.magnifierToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
+    [self.bottomToolBar setFrame:CGRectMake(self.bottomToolBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
 }
 
 - (void) setupPreview {
@@ -235,8 +241,8 @@ static const int MAX_ZOOM_FACTOR = 6;
         }
         
     } else {
-        if (IS_IPAD) {
-        [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+        if (!IS_IPAD) {
+            [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
         }
         else {
             UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
@@ -270,20 +276,20 @@ static const int MAX_ZOOM_FACTOR = 6;
         self.bottomToolBar.hidden = hidden;
         if (hidden == YES) {
             [self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
-                                                        self.brightnessToolBar.frame.origin.y + self.brightnessToolBar.frame.size.height,
+                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height,
                                                         self.brightnessToolBar.frame.size.width,
                                                         self.brightnessToolBar.frame.size.height)];
             [self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
-                                                        self.magnifierToolBar.frame.origin.y + self.magnifierToolBar.frame.size.height,
+                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height,
                                                         self.magnifierToolBar.frame.size.width,
                                                         self.magnifierToolBar.frame.size.height)];
         } else {
             [self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
-                                                        self.brightnessToolBar.frame.origin.y - self.brightnessToolBar.frame.size.height,
+                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
                                                         self.brightnessToolBar.frame.size.width,
                                                         self.brightnessToolBar.frame.size.height)];
             [self.magnifierToolBar setFrame:CGRectMake(self.magnifierToolBar.frame.origin.x,
-                                                       self.magnifierToolBar.frame.origin.y - self.magnifierToolBar.frame.size.height,
+                                                       self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
                                                        self.magnifierToolBar.frame.size.width,
                                                        self.magnifierToolBar.frame.size.height)];        }
         self.statusBarBackground.hidden = hidden;
@@ -721,7 +727,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 #pragma mark - Load Assets
 -(UIImage *)cropImageWithSquare:(UIImage *)source
 {
-    CGSize finalsize = CGSizeMake(36,36);
+    CGSize finalsize = CGSizeMake(47,47);
     
     CGFloat scale = MAX(
                         finalsize.width/source.size.width,

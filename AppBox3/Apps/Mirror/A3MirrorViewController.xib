@@ -24,9 +24,11 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="5Uy-un-e3j">
                     <rect key="frame" x="0.0" y="480" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                     <items>
-                        <barButtonItem image="add03" id="Em9-S4-yLZ"/>
+                        <barButtonItem enabled="NO" image="add03" id="Em9-S4-yLZ">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
                         <barButtonItem style="plain" id="T3u-XL-NUh">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="QVy-O7-Xte">
                                 <rect key="frame" x="42" y="5" width="237" height="34"/>
@@ -35,7 +37,9 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem image="add03" width="24" id="LfU-uz-p1H"/>
+                        <barButtonItem enabled="NO" image="add03" width="24" id="LfU-uz-p1H">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
                     </items>
                     <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </toolbar>
@@ -65,7 +69,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                     <items>
-                        <barButtonItem width="36" id="qKc-6Q-p2H">
+                        <barButtonItem width="47" id="qKc-6Q-p2H">
                             <connections>
                                 <action selector="loadCameraRoll:" destination="-1" id="V9J-sO-D7D"/>
                             </connections>
