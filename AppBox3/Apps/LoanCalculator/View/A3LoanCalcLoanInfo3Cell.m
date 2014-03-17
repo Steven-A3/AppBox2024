@@ -72,7 +72,7 @@
     UIColor *valueColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
     
     //float startX = IS_IPAD ? 73 : 60;
-    float startX = IS_IPAD ? 28 : 60;
+    float startX = IS_IPAD ? 28 : 15;
     float startY = IS_IPAD ? 96.0 : 96 - 23;
     float endX = self.bounds.size.width - 15;
     float titleWidth = 200;
