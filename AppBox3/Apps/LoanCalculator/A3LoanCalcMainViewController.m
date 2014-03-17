@@ -2178,22 +2178,76 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)textViewDidChange:(UITextView *)textView
 {
+    if ([textView.text isEqualToString:_loanData.note]) {
+        return;
+    }
+    
     _loanData.note = textView.text;
     
-    [self.tableView beginUpdates];
+//    [self.tableView beginUpdates];
     
-    CGRect frame = textView.frame;
-    frame.size.height = textView.contentSize.height+25;
-    textView.frame = frame;
+//    CGRect frame = textView.frame;
+//    frame.size.height = textView.contentSize.height+25;
+//    textView.frame = frame;
+//    
+//    textViewHeight = frame.size.height;
     
-    textViewHeight = frame.size.height;
+//    [self.tableView endUpdates];
     
-    [self.tableView endUpdates];
+    
+    // KJH
+//    __block CGFloat diffHeight;
+//    
+//    [CATransaction begin];
+//    [CATransaction setCompletionBlock:^{
+//        [UIView beginAnimations:@"cellExpand" context:nil];
+//        [UIView setAnimationBeginsFromCurrentState:YES];
+//        [UIView setAnimationCurve:7];
+//        [UIView setAnimationDuration:0.25];
+//        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
+//        [UIView commitAnimations];
+//    }];
+//    
+//    [self.tableView beginUpdates];
+//    CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
+//    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+//    diffHeight = newSize.height - currentCell.frame.size.height;
+//    
+//    currentCell.frame = CGRectMake(currentCell.frame.origin.x,
+//                                   currentCell.frame.origin.y,
+//                                   currentCell.frame.size.width,
+//                                   newSize.height);
+//    [self.tableView endUpdates];
+//    [CATransaction commit];
+
+    CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
+    if (newSize.height < 180) {
+        return;
+    }
+    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+    CGFloat diffHeight = newSize.height - currentCell.frame.size.height;
+    
+    currentCell.frame = CGRectMake(currentCell.frame.origin.x,
+                                   currentCell.frame.origin.y,
+                                   currentCell.frame.size.width,
+                                   newSize.height);
+    
+    [UIView beginAnimations:@"cellExpand" context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:7];
+    [UIView setAnimationDuration:0.25];
+    self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
+    [UIView commitAnimations];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     _loanData.note = textView.text;
+    [self saveLoanData];
+    
+    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:currentCell];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - TextFieldDelegate
@@ -2917,6 +2971,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
                     noteCell.textView.font = [UIFont systemFontOfSize:17];
                     noteCell.textView.text = _loanData.note;
+                    noteCell.textView.scrollEnabled = NO;
                     
                     cell = noteCell;
                 }
@@ -2978,8 +3033,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 UITextView *txtView = [[UITextView alloc] init];
                 [txtView setAttributedText:attributedString];
                 float margin = IS_IPAD ? 49:31;
-                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
-                float cellHeight = txtViewSize.height + 20;
+                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
+                //float cellHeight = txtViewSize.height + 20;
+                float cellHeight = txtViewSize.height;
                 
                 // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
                 float defaultCellHeight = 180.0;
