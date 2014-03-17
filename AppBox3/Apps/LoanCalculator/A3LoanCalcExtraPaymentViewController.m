@@ -371,6 +371,23 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    if ([_items containsObject:self.dateInputItem]) {
+        [_items removeObject:self.dateInputItem];
+        
+        [self.tableView beginUpdates];
+        
+        NSIndexPath *dateIP = [NSIndexPath indexPathForRow:1 inSection:0];
+        NSIndexPath *pickerIP = [NSIndexPath indexPathForRow:2 inSection:0];
+        
+        [self.tableView reloadRowsAtIndexPaths:@[dateIP] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView deleteRowsAtIndexPaths:@[pickerIP] withRowAnimation:UITableViewRowAnimationFade];
+        
+        [self.tableView endUpdates];
+        
+        _dateTextField = nil;
+    }
+    
+    
     UITableViewCell *cell;
     UIView *testView = textField;
     while (testView.superview) {
