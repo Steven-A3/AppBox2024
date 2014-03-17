@@ -289,6 +289,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         NSDate *pickDate = [df dateFromString:_dateTextField.text];
         _loanCalcData.extraPaymentOneTimeDate = pickDate;
     }
+    
+    if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
+        [_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
+    }
 }
 
 #pragma mark - Picker datasource
@@ -366,6 +370,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
     else if (currentIndexPath.row == 1) {
         // 날짜는 datepicker에서 처리함
+    }
+    
+    if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
+        [_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
     }
 }
 

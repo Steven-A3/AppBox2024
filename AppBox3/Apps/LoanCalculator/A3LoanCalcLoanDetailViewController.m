@@ -22,7 +22,7 @@
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3NumberKeyboardViewController.h"
 
-@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate>
+@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
 {
     BOOL _isTotalMode;
     NSIndexPath *currentIndexPath;
@@ -613,6 +613,12 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     }
 }
 
+#pragma mark - LoanCalcExtraPaymentDelegate
+
+- (void)didChangedLoanCalcExtraPayment:(LoanCalcData *)loanCalc {
+    [self.tableView reloadData];
+}
+
 #pragma mark - TextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
@@ -874,6 +880,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             A3LoanCalcExtraPaymentViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcExtraPaymentViewController"];
             viewController.exPaymentType = exPaymentItem;
             viewController.loanCalcData = _loanData;
+            viewController.delegate = self;
             
             [self presentSubViewController:viewController];
         }
