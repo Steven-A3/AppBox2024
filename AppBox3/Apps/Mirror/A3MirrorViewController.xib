@@ -37,7 +37,7 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem enabled="NO" image="add03" width="24" id="LfU-uz-p1H">
+                        <barButtonItem enabled="NO" image="add03" id="LfU-uz-p1H">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
                     </items>

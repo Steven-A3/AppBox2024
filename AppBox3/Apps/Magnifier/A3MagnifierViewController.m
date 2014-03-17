@@ -125,8 +125,8 @@ static const int MAX_ZOOM_FACTOR = 6;
         [self setPreviewRotation:screenBounds];
     }
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
-    [self.brightnessslider setFrame:CGRectMake(self.brightnessToolBar.bounds.origin.x + 40, self.brightnessToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
-    [self.magnifierslider setFrame:CGRectMake(self.magnifierToolBar.bounds.origin.x + 40, self.magnifierToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
+    [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 82, self.brightnessslider.frame.size.height)];
+    [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 82, self.magnifierslider.frame.size.height)];
     [self.bottomToolBar setFrame:CGRectMake(self.bottomToolBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
 }
 
@@ -555,7 +555,7 @@ static const int MAX_ZOOM_FACTOR = 6;
         FNLOG(@"Lock failure %@", error);
     }
     
-    if (!_device.hasFlash) {
+    if (!_device.hasTorch) {
         [self.lightButton setImage:nil];
         [self.lightButton  setEnabled:NO];
     }
@@ -610,7 +610,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 	[session startRunning];
 }
 
-- (void)cleaUp
+- (void)cleanUp
 {
     [session stopRunning];
     session = nil;
@@ -619,7 +619,12 @@ static const int MAX_ZOOM_FACTOR = 6;
     [previewLayer removeFromSuperview];
     previewLayer = nil;
     
-     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    _assetLibrary = nil;
+    _assetrollGroup = nil;
+    _device = nil;
+    _statusBarBackground = nil;
+    lastimageButton = nil;
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 - (CGFloat) getMaxZoom {
 	return MIN( _device.activeFormat.videoMaxZoomFactor, MAX_ZOOM_FACTOR );
