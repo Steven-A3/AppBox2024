@@ -156,10 +156,11 @@
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-2;
 }
 
+/*
 -(CGFloat) getDegreeLabelBottomOffset:(CGRect) screenBounds {
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15.5:-15.5):-8.0;
 }
-
+*/
 -(id) getSVHeight:(CGRect) screenBounds {
     return screenBounds.size.height == 320? @240: @324;
 }
@@ -205,11 +206,8 @@
         self.expressionTopconstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
     }];
     
-    [self.view addSubview:self.degreeandradianLabel];
-    [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.left).with.offset(7);
-        self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
-    }];
+
+    [self setDegAndRad:YES];
 
     _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:_evaluatedResultLabel];
     _calculator.delegate = self;
@@ -217,11 +215,33 @@
 
 }
 
+- (void) setDegAndRad:(BOOL ) bFirst {
+    if (!bFirst) {
+        [_degreeandradianLabel removeFromSuperview];
+    }
+    
+    if (IS_LANDSCAPE) {
+        
+        [self.view addSubview:self.degreeandradianLabel];
+        [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.left).with.offset(8);
+            //self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
+            make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
+        }];
+    } else {
+        [self.pageControl addSubview:self.degreeandradianLabel];
+        [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.pageControl.left).with.offset(8);
+            make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
+        }];
+    }
+}
+
 - (HTCopyableLabel *)expressionLabel {
 	if (!_expressionLabel) {
 		_expressionLabel = [HTCopyableLabel new];
 		_expressionLabel.backgroundColor = [UIColor whiteColor];
-		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:15];
+		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:14];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
@@ -251,6 +271,7 @@
         _degreeandradianLabel.font = [UIFont systemFontOfSize:15];
         _degreeandradianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         _degreeandradianLabel.textAlignment = NSTextAlignmentLeft;
+        _degreeandradianLabel.backgroundColor = [UIColor clearColor];
 //        _degreeandradianLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
         _degreeandradianLabel.text = @"Rad";
     }
@@ -342,6 +363,8 @@
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         self.calculator.isLandScape = YES;
+        
+        
     }
     
     self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
@@ -349,10 +372,11 @@
     self.resultLabelHeightconstraint.equalTo([self getResultLabelHight:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
     self.resultLabelBottomconstraint.offset([self getResultLabelBottomOffSet:screenBounds]);
-    self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
+    //self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
     self.svheightconstraint.equalTo([self getSVHeight:screenBounds]);
     
     self.evaluatedResultLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 60 : 83):55];
+    [self setDegAndRad:NO];
     [self.calculator evaluateAndSet];
     [_keyboardView layoutIfNeeded];
     
