@@ -150,15 +150,15 @@
 }
 
 - (CGFloat) getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-16.5):-4.5;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-16.5):-9.5;
 }
 
 - (CGFloat) getResultLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-13.5):-2.5;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-13.5):-7.5;
 }
 
 - (CGFloat) getResultLabelBottomOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-2;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-4;
 }
 
 
@@ -260,7 +260,7 @@
 		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 		_evaluatedResultLabel = [HTCopyableLabel new];
 		_evaluatedResultLabel.backgroundColor = [UIColor whiteColor];
-		_evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 480 ? 60 : 83];
+		_evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : 84];
 		_evaluatedResultLabel.textColor = [UIColor blackColor];
 		_evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
 		_evaluatedResultLabel.text = @"0";
