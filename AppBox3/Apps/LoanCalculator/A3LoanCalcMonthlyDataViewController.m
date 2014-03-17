@@ -230,7 +230,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         UILabel *titleLB = infoCell.downTitleLBs[idx];
         titleLB.text = [LoanCalcString titleOfItem:calItem];
         titleLB.text = [titleLB.text uppercaseString];
-
+        [titleLB sizeToFit];
     }
     
     for (int i=0; i<calItems.count; i++) {
@@ -266,6 +266,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 {
                     titleLB.text = IS_IPAD ? @"ExtraPayments(Monthly)":@"Extra(Monthly)";
                     titleLB.text = [titleLB.text uppercaseString];
+                    [titleLB sizeToFit];
                     valueLB.text = [self.currencyFormatter stringFromNumber:_loanData.extraPaymentMonthly];
                     break;
                 }
@@ -273,6 +274,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
                 {
                     titleLB.text = IS_IPAD ? @"ExtraPayments(Yearly)":@"Extra(Yearly)";
                     titleLB.text = [titleLB.text uppercaseString];
+                    [titleLB sizeToFit];
 
                     NSString *currencyText = @"";
                     if (_loanData.extraPaymentYearly) {
