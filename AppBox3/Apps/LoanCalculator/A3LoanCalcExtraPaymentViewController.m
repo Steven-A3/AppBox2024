@@ -585,12 +585,12 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
                 
                 if (IS_IPAD) {
                     NSArray *months = [df monthSymbols];
-                    NSString *monthText = months[month];
+                    NSString *monthText = months[month - 1];
                     inputCell.textField.text = monthText;
                 }
                 else {
                     NSArray *months = [df shortMonthSymbols];
-                    NSString *monthText = months[month];
+                    NSString *monthText = months[month - 1];
                     inputCell.textField.text = monthText;
                 }
             }
