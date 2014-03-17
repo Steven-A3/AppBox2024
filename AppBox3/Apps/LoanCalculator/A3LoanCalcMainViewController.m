@@ -637,6 +637,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)selectSegmentChanged:(UISegmentedControl*) segment
 {
+    [self dismissDatePicker];
+    
     switch (segment.selectedSegmentIndex) {
         case 0:
         {
@@ -2191,6 +2193,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self dismissMoreMenu];
+    [self dismissDatePicker];
     
     _currentTextView = textView;
     
@@ -2391,6 +2394,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [self dismissMoreMenu];
+    [self dismissDatePicker];
 
     UITableViewCell *cell;
     UIView *testView = textField;
@@ -2631,6 +2635,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             }
             viewController.delegate = self;
             [self.navigationController pushViewController:viewController animated:YES];
+            [self dismissDatePicker];
         }
         
     }
@@ -2650,6 +2655,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             else {
                 [self presentSubViewController:viewController];
             }
+            [self dismissDatePicker];
         }
         else if (indexPath.section == 2) {
             // calculation items
@@ -2667,6 +2673,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 else {
                     [self presentSubViewController:viewController];
                 }
+                
+                [self dismissDatePicker];
             }
             else {
                 A3LoanCalcTextInputCell *inputCell = (A3LoanCalcTextInputCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -2695,6 +2703,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 else {
                     [self presentSubViewController:viewController];
                 }
+                [self dismissDatePicker];
             }
         }
         if (indexPath.section == 4) {
