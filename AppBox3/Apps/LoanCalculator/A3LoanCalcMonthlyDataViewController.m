@@ -365,10 +365,18 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         payInfoCell.dateLb.text = [df stringFromDate:date];
     }
     
-    payInfoCell.interestLb.text = [self.currencyFormatter stringFromNumber:interest];
-    payInfoCell.paymentLb.text = [self.currencyFormatter stringFromNumber:payment];
-    payInfoCell.principalLb.text = [self.currencyFormatter stringFromNumber:principal];
-    payInfoCell.balanceLb.text = [self.currencyFormatter stringFromNumber:balance];
+    if (IS_IPHONE) {
+        payInfoCell.interestLb.text = [[self.currencyFormatter stringFromNumber:interest] stringByReplacingOccurrencesOfString:[self.currencyFormatter currencySymbol] withString:@""];
+        payInfoCell.paymentLb.text = [[self.currencyFormatter stringFromNumber:payment] stringByReplacingOccurrencesOfString:[self.currencyFormatter currencySymbol] withString:@""];
+        payInfoCell.principalLb.text = [[self.currencyFormatter stringFromNumber:principal] stringByReplacingOccurrencesOfString:[self.currencyFormatter currencySymbol] withString:@""];
+        payInfoCell.balanceLb.text = [[self.currencyFormatter stringFromNumber:balance] stringByReplacingOccurrencesOfString:[self.currencyFormatter currencySymbol] withString:@""];
+    }
+    else {
+        payInfoCell.interestLb.text = [self.currencyFormatter stringFromNumber:interest];
+        payInfoCell.paymentLb.text = [self.currencyFormatter stringFromNumber:payment];
+        payInfoCell.principalLb.text = [self.currencyFormatter stringFromNumber:principal];
+        payInfoCell.balanceLb.text = [self.currencyFormatter stringFromNumber:balance];
+    }
 }
 
 - (NSUInteger)countForLoanItem:(LoanCalcData *)loan
