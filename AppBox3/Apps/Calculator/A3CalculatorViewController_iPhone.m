@@ -35,6 +35,7 @@
 @property (nonatomic, strong) MASConstraint *resultLabelBottomconstraint;
 @property (nonatomic, strong) MASConstraint *degreeLabelBottomConstraint;
 @property (nonatomic, strong) MASConstraint *expressionLabelRightConstraint;
+@property (nonatomic, strong) MASConstraint *resultLabelRightConstraint;
 @property (nonatomic, strong) MASConstraint *svheightconstraint;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 //@property (nonatomic, strong) A3Expression *expression;
@@ -149,12 +150,17 @@
 }
 
 - (CGFloat) getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-21):-17.5;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-16.5):-4.5;
+}
+
+- (CGFloat) getResultLabelRightOffSet:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-13.5):-2.5;
 }
 
 - (CGFloat) getResultLabelBottomOffSet:(CGRect) screenBounds {
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-2;
 }
+
 
 /*
 -(CGFloat) getDegreeLabelBottomOffset:(CGRect) screenBounds {
@@ -193,7 +199,7 @@
 	[self.view addSubview:self.evaluatedResultLabel];
 	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(67);
-		make.right.equalTo(self.view.right).with.offset(-15);
+        self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
 		self.resultLabelBottomconstraint = make.bottom.equalTo(_keyboardView.top).with.offset([self getResultLabelBottomOffSet:screenBounds]);
 		self.resultLabelHeightconstraint = make.height.equalTo([self getResultLabelHight:screenBounds]);
 	}];
@@ -372,6 +378,7 @@
     self.resultLabelHeightconstraint.equalTo([self getResultLabelHight:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
     self.resultLabelBottomconstraint.offset([self getResultLabelBottomOffSet:screenBounds]);
+    self.resultLabelRightConstraint.offset([self getResultLabelRightOffSet:screenBounds]);
     //self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
     self.svheightconstraint.equalTo([self getSVHeight:screenBounds]);
     
