@@ -2706,6 +2706,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     [self makeCompareCellClear:compareCell];
                 }
                 
+                [compareCell adjustSubviewsFontSize];
+                
                 cell = compareCell;
             }
             else if (indexPath.section == 1){
@@ -2762,6 +2764,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                 [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                 [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+                [graphCell adjustSubviewsFontSize];
                 
                 if ([_loanData calculated]) {
                     [self displayGraphCell:graphCell];

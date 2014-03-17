@@ -9,6 +9,10 @@
 #import "A3LoanCalcCompareGraphCell.h"
 
 @implementation A3LoanCalcCompareGraphCell
+{
+    NSArray *_percentALabels;
+    NSArray *_percentBLabels;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -75,6 +79,8 @@
         
         float gapRight = 6;
         
+        NSMutableArray *percentLabelArray = [NSMutableArray new];
+        
         for (int i=0; i<5; i++) {
             UIView *tmp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 23)];
             tmp.backgroundColor = [UIColor clearColor];
@@ -93,7 +99,13 @@
             [_bg_A_Line addSubview:tmp];
             tmp.center = CGPointMake(_bg_A_Line.bounds.size.width/5.0*(i+1), 0);
             tmp.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            
+            [percentLabelArray addObject:pctLB];
         }
+        _percentALabels = percentLabelArray;
+
+
+        percentLabelArray = [NSMutableArray new];
         
         for (int i=0; i<5; i++) {
             UIView *tmp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 23)];
@@ -113,7 +125,9 @@
             [_bg_B_Line addSubview:tmp];
             tmp.center = CGPointMake(_bg_B_Line.bounds.size.width/5.0*(i+1), 0);
             tmp.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            [percentLabelArray addObject:pctLB];
         }
+        _percentBLabels = percentLabelArray;
     }
 }
 
@@ -141,6 +155,29 @@
     }
     
     return _circleB_View;
+}
+
+#pragma mark 
+
+- (void)adjustSubviewsFontSize {
+    _left_A_Label.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]:[UIFont systemFontOfSize:15.0];
+    _left_B_Label.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]:[UIFont systemFontOfSize:15.0];
+    _right_A_Label.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]:[UIFont boldSystemFontOfSize:17.0];
+    _right_B_Label.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline]:[UIFont boldSystemFontOfSize:17.0];
+    _totalInterestLB.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]:[UIFont systemFontOfSize:13.0];
+    _totalAmountLB.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]:[UIFont systemFontOfSize:13.0];
+    
+    if (_percentALabels) {
+        [_percentALabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+            label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        }];
+    }
+    
+    if (_percentBLabels) {
+        [_percentBLabels enumerateObjectsUsingBlock:^(UILabel *label, NSUInteger idx, BOOL *stop) {
+            label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        }];
+    }
 }
 
 @end

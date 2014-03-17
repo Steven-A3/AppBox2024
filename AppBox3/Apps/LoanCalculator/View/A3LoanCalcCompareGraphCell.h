@@ -31,4 +31,6 @@
 @property (readwrite) float rightA_X;
 @property (readwrite) float rightB_X;
 
+- (void)adjustSubviewsFontSize;
+
 @end

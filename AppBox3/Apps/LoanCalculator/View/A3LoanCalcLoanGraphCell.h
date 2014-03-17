@@ -21,4 +21,5 @@
 @property (strong, nonatomic) IBOutlet UIButton *totalButton;
 @property (strong, nonatomic) A3TripleCircleView *circleView;
 
+- (void)adjustSubviewsFontSize;
 @end

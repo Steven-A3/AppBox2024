@@ -10,6 +10,9 @@
 #import "A3TripleCircleView.h"
 
 @implementation A3LoanCalcLoanGraphCell
+{
+    NSArray *_percentLabels;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -84,7 +87,8 @@
         // percent bar
         
         float gapRight = 6;
-
+        NSMutableArray *percentLabelArray = [NSMutableArray new];
+        
         for (int i=0; i<5; i++) {
             UIView *tmp = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 23)];
             tmp.backgroundColor = [UIColor clearColor];
@@ -103,7 +107,10 @@
             [_bgLineView addSubview:tmp];
             tmp.center = CGPointMake(_bgLineView.bounds.size.width/5.0*(i+1), 0);
             tmp.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+            [percentLabelArray addObject:pctLB];
         }
+        
+        _percentLabels = percentLabelArray;
     }
 }
 
@@ -131,6 +138,18 @@
     else {
         _totalButton.layer.borderColor = selectedColor.CGColor;
         _monthlyButton.layer.borderColor = [UIColor clearColor].CGColor;
+    }
+}
+
+#pragma mark 
+
+- (void)adjustSubviewsFontSize {
+    _monthlyButton.titleLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] : [UIFont systemFontOfSize:12.0];
+    _totalButton.titleLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] : [UIFont systemFontOfSize:12.0];
+    if (_percentLabels) {
+        [_percentLabels enumerateObjectsUsingBlock:^(UILabel *percentLabel, NSUInteger idx, BOOL *stop) {
+            percentLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        }];
     }
 }
 
