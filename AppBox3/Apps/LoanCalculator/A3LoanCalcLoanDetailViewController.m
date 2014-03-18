@@ -74,6 +74,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     
     // init
     _isTotalMode = NO;
+    [self.percentFormatter setMaximumFractionDigits:3];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
  
@@ -655,6 +656,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     // update
     if (endIndexPath.section == 1) {
         // calculation item
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         NSNumber *calcItemNum = _calcItems[endIndexPath.row];
         A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
         double inputFloat = [textField.text doubleValue];
@@ -678,11 +681,10 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
                 if ([textField.text length] > 0) {
                     NSNumber *percentNum = @(inputFloat/100.0);
                     _loanData.annualInterestRate = percentNum;
-                    textField.text = [NSString stringWithFormat:@"%@%%", inputNum.stringValue];
-                    //                textField.text = [self.percentFormatter stringFromNumber:percentNum];
+                    textField.text = [self.percentFormatter stringFromNumber:percentNum];
                 }
                 else {
-                    textField.text = [NSString stringWithFormat:@"%@%%", @([_loanData.annualInterestRate doubleValue] * 100.0)];
+                    textField.text = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
                 }
                 break;
             }

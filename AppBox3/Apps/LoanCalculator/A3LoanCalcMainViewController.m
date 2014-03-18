@@ -139,6 +139,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     isFirstViewLoad = YES;
+    [self.percentFormatter setMaximumFractionDigits:3];
     
     // load data
     [self loadPreviousCalcultaion];
@@ -2336,11 +2337,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     // update
     if (endIP.section == 2) {
         // calculation item
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        
         NSNumber *calcItemNum = _calcItems[endIP.row];
         A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
-        double inputFloat = [textField.text doubleValue];
-        NSNumber *inputNum = @(inputFloat);
-        
+        //double inputFloat = [textField.text doubleValue];
+        NSNumber *inputNum = [formatter numberFromString:[textField text]];
+        float inputFloat = [inputNum floatValue];
+
         switch (calcItem) {
             case A3LC_CalculationItemDownPayment:
             {
@@ -2358,11 +2363,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 if ([textField.text length] > 0) {
                     NSNumber *percentNum = @(inputFloat/100.0);
                     _loanData.annualInterestRate = percentNum;
-                    textField.text = [NSString stringWithFormat:@"%@%%", inputNum.stringValue];
-                    //                textField.text = [self.percentFormatter stringFromNumber:percentNum];
+                    textField.text = [self.percentFormatter stringFromNumber:percentNum];
                 }
                 else {
-                    textField.text = [NSString stringWithFormat:@"%@%%", @([_loanData.annualInterestRate doubleValue] * 100.0)];
+                    textField.text = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
                 }
                 break;
             }
@@ -2411,7 +2415,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         // extra payment
         NSNumber *exPayItemNum = _extraPaymentItems[endIP.row];
         A3LoanCalcExtraPaymentType exPayType = exPayItemNum.integerValue;
-        double inputFloat = [textField.text doubleValue];
+        float inputFloat = [textField.text floatValue];
         NSNumber *inputNum = @(inputFloat);
         
         if (exPayType == A3LC_ExtraPaymentMonthly) {
