@@ -428,6 +428,7 @@
 - (UILabel *)foldingLabel {
 	UILabel *foldingLabel = [UILabel new];
 	foldingLabel.textAlignment = NSTextAlignmentCenter;
+	foldingLabel.layer.masksToBounds = YES;
 	return foldingLabel;
 }
 
