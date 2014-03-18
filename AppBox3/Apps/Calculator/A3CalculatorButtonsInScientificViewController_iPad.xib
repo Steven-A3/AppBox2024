@@ -555,7 +555,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="28"/>
-                    <state key="normal" image="backspace">
+                    <state key="normal" image="backspace_p">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="highlighted">
@@ -1155,7 +1155,7 @@
         </view>
     </objects>
     <resources>
-        <image name="backspace" width="28" height="20"/>
+        <image name="backspace_p" width="30" height="22"/>
         <image name="k_1_p" width="44" height="44"/>
         <image name="k_2_p" width="44" height="44"/>
         <image name="k_3_p" width="44" height="44"/>
