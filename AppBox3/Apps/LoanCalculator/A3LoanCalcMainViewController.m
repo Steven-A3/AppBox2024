@@ -782,7 +782,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		_isShowMoreMenu = NO;
         
 		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView tableView:self.tableView];
+		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
 		[self.view removeGestureRecognizer:gestureRecognizer];
 	}
 }
@@ -1299,7 +1299,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 //                NSString *result = [NSString stringWithFormat:@"%d %@(%d mo)", yearInt, unit, monthInt];
 //                return result;
 //                break;
-                if (roundl([data.monthOfTerms doubleValue]) < 12.0) {
+                if (round([data.monthOfTerms doubleValue]) < 12.0) {
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
                     NSString *result = [NSString stringWithFormat:@"(%d mo)", monthInt];
                     return result;
@@ -1329,7 +1329,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
 }
 
-#pragma mark - Loan mode calcultaion
+#pragma mark - Loan Mode Calculation
 
 - (BOOL)isSameHistory:(LoanCalcHistory *)history withLan:(LoanCalcData *)loan
 {

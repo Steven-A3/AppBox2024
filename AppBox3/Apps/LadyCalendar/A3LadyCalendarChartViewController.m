@@ -1,0 +1,271 @@
+ //
+//  A3LadyCalendarChartViewController.m
+//  A3TeamWork
+//
+//  Created by coanyaa on 2013. 11. 18..
+//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3LadyCalendarChartViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3LadyCalendarDefine.h"
+#import "A3LadyCalendarModelManager.h"
+#import "A3DateHelper.h"
+#import "LadyCalendarAccount.h"
+#import "LadyCalendarPeriod.h"
+#import "A3LineChartView.h"
+#import "UIColor+A3Addition.h"
+
+@interface A3LadyCalendarChartViewController ()
+@property (strong, nonatomic) NSArray *itemArray;
+@property (strong, nonatomic) NSArray *cycleLengthArray;
+@property (strong, nonatomic) NSArray *mensPeriodArray;
+@property (strong, nonatomic) NSMutableArray *cycleYLabelArray;
+@property (strong, nonatomic) NSMutableArray *cycleXLabelArray;
+@property (strong, nonatomic) NSMutableArray *mensXLabelArray;
+@property (strong, nonatomic) NSMutableArray *mensYLabelArray;
+
+- (NSInteger)monthsFromCurrentSegment;
+- (void)makeChartDataWithArray:(NSArray*)array;
+@end
+
+@implementation A3LadyCalendarChartViewController
+- (NSInteger)monthsFromCurrentSegment
+{
+    NSInteger retMonth = 0;
+    
+    switch ( _periodSegmentCtrl.selectedSegmentIndex ) {
+        case 0:
+            retMonth = 6;
+            break;
+        case 1:
+            retMonth = 9;
+            break;
+        case 2:
+            retMonth = 12;
+            break;
+        case 3:
+            retMonth = 24;
+            break;
+    }
+    
+    return retMonth;
+}
+
+- (void)makeChartDataWithArray:(NSArray*)array
+{
+    NSMutableArray *cycleArray = [NSMutableArray array];
+    NSMutableArray *periodArray = [NSMutableArray array];
+    self.cycleXLabelArray = [NSMutableArray array];
+    self.cycleYLabelArray = [NSMutableArray array];
+    self.mensXLabelArray = [NSMutableArray array];
+    self.mensYLabelArray = [NSMutableArray array];
+    
+    
+    minCycleLength = 0;
+    maxCycleLength = 0;
+    minMensPeriod = -1;
+    maxMensPeriod = -1;
+
+    for(NSInteger i=0; i < [array count]; i++){
+        LadyCalendarPeriod *period = [array objectAtIndex:i];
+        LadyCalendarPeriod *nextPeriod = ( i+1 < [array count] ? [array objectAtIndex:i+1] : nil);
+        NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
+        [periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, mensPeriod)]];
+        minMensPeriod = ( minMensPeriod < 0 ? mensPeriod : MIN(minMensPeriod, mensPeriod) );
+        maxMensPeriod = (maxMensPeriod < 0 ? mensPeriod : MAX(maxMensPeriod,mensPeriod));
+        [_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
+        
+        NSInteger diffDays = 0;
+        if( nextPeriod == nil ){
+            diffDays = [period.cycleLength integerValue];
+        }
+        else{
+            diffDays = [A3DateHelper diffDaysFromDate:period.startDate toDate:nextPeriod.startDate];
+        }
+        [cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
+        minCycleLength = ( minCycleLength == 0 ? diffDays : MIN(minCycleLength,diffDays));
+        maxCycleLength = ( maxCycleLength == 0 ? diffDays : MAX(maxCycleLength, diffDays));
+        [_mensXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
+    }
+    
+    for(NSInteger i = minCycleLength; i <= maxCycleLength; i++)
+        [_cycleYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
+    for(NSInteger i = minMensPeriod; i <= maxMensPeriod; i++){
+        [_mensYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
+    }
+    
+    self.cycleLengthArray = [NSArray arrayWithArray:cycleArray];
+    self.mensPeriodArray = [NSArray arrayWithArray:periodArray];
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    self.title = @"Chart";
+    [self makeBackButtonEmptyArrow];
+    _periodSegmentCtrl.selectedSegmentIndex = 3;
+    _segmentLeftConst.constant = (IS_IPHONE ? 15.0 : 28.0);
+    _segmentRightConst.constant = (IS_IPHONE ? 15.0 : 28.0);
+    _seperatorHeightConst.constant = 1.0 / [[UIScreen mainScreen] scale];
+    NSArray *titleArray = @[(IS_IPHONE ? @"6 Mos" : @"6 Months"),(IS_IPHONE ? @"9 Mos" : @"9 Months"),@"1 Year",@"2 Years"];
+    xLabelDisplayInterval = 1;
+    for(NSInteger i=0; i < [_periodSegmentCtrl numberOfSegments];i++){
+        [_periodSegmentCtrl setTitle:[titleArray objectAtIndex:i] forSegmentAtIndex:i];
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setToolbarHidden:YES];
+    [self periodChangedAction:_periodSegmentCtrl];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellID = @"chartCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    if( cell == nil ){
+        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarChartCell" owner:nil options:nil];
+        cell = [cellArray objectAtIndex:0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        UIView *leftView = [cell viewWithTag:10];
+        UIView *bottomView = [cell viewWithTag:11];
+        for(NSLayoutConstraint *layout in cell.contentView.constraints){
+            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView )
+                layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+            else if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == bottomView )
+                layout.constant = (IS_IPHONE ? 15.0 : 28.0);
+            else if( layout.firstAttribute == NSLayoutAttributeTrailing && layout.secondItem ==  bottomView )
+                layout.constant = (IS_IPHONE ? 18.0 : 28.0);
+            else if( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == leftView )
+                layout.constant = (indexPath.row == 0 ? (IS_IPHONE ? 11.0 : 26.0) :(IS_IPHONE ? 14.0 : 45.0));
+            else if( layout.firstAttribute == NSLayoutAttributeTop && layout.firstItem == bottomView )
+                layout.constant = (IS_IPHONE ? 26.0 : 36.0);
+        }
+    }
+    
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    A3LineChartView *chartView = (A3LineChartView*)[cell viewWithTag:11];
+    
+    if( indexPath.row == 0 ){
+        textLabel.text = @"CYCLE LENGTH";
+        chartView.averageColor = [UIColor colorWithRGBRed:76 green:217 blue:100 alpha:255];
+        chartView.xLabelItems = _cycleXLabelArray;
+        chartView.yLabelItems = _cycleYLabelArray;
+        chartView.showXLabel = NO;
+        chartView.showYLabel = YES;
+        chartView.minXValue = 0;
+        chartView.minYValue = minCycleLength;
+        chartView.maxXValue = [_cycleXLabelArray count];
+        chartView.maxYValue = maxCycleLength;
+        chartView.xLabelDisplayInterval = xLabelDisplayInterval;
+        chartView.valueArray = _cycleLengthArray;
+    }
+    else if( indexPath.row == 1 ){
+        textLabel.text = @"MENSTRUAL PERIOD";
+        chartView.averageColor = [UIColor colorWithRGBRed:255 green:45 blue:85 alpha:255];
+        chartView.xLabelItems = _mensXLabelArray;
+        chartView.yLabelItems = _mensYLabelArray;
+        chartView.showXLabel = YES;
+        chartView.showYLabel = YES;
+        chartView.minXValue = 0;
+        chartView.minYValue = minMensPeriod;
+        chartView.maxXValue = [_mensXLabelArray count];
+        chartView.maxYValue = maxMensPeriod;
+        chartView.xLabelDisplayInterval = xLabelDisplayInterval;
+        chartView.valueArray = _mensPeriodArray;
+    }
+
+    [chartView setNeedsDisplay];
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return (indexPath.row == 0 ? 236.0 : (IS_IPHONE ? 236 : 270));
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+#pragma mark - action method
+- (IBAction)periodChangedAction:(id)sender {
+    NSInteger periodMonth = [self monthsFromCurrentSegment];
+    if( IS_IPAD ){
+        if( periodMonth == 24 )
+            xLabelDisplayInterval = 2;
+        else
+            xLabelDisplayInterval = 1;
+    }
+    else{
+        switch (periodMonth) {
+            case 9:
+                xLabelDisplayInterval = 2;
+                break;
+            case 12:
+                xLabelDisplayInterval = 3;
+                break;
+            case 24:
+                xLabelDisplayInterval = 4;
+                break;
+                
+            default:
+                xLabelDisplayInterval = 1;
+                break;
+        }
+    }
+    NSDate *currentMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
+    NSDate *fromMonth = [A3DateHelper dateByAddingMonth:1 fromDate:currentMonth];
+    LadyCalendarAccount *account = [[A3LadyCalendarModelManager sharedManager] currentAccount];
+    self.itemArray = [[A3LadyCalendarModelManager sharedManager] periodListWithMonth:fromMonth period:periodMonth accountID:account.accountID];
+    if( [self.itemArray count] > 0 ){
+        [self makeChartDataWithArray:_itemArray];
+    }
+    [self.tableView reloadData];
+}
+@end

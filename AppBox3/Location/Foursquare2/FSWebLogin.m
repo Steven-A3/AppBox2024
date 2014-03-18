@@ -1,4 +1,4 @@
-//
+    //
 //  ElanceWebLogin.m
 //  elance
 //
@@ -9,33 +9,24 @@
 #import "FSWebLogin.h"
 #import "Foursquare2.h"
 
+@interface FSWebLogin () <UIWebViewDelegate>
+
+@property (nonatomic, strong) NSString *url;
+@property (nonatomic, weak) IBOutlet UIWebView *webView;
+
+@end
 
 @implementation FSWebLogin
-@synthesize selector,delegate;
-// The designated initializer.  Override if you create the controller programmatically and want to perform customization that is not appropriate for viewDidLoad.
-/*
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization.
-    }
-    return self;
-}
-*/
 
-- (id) initWithUrl:(NSString*)url
-{
+- (id) initWithUrl:(NSString *)url {
 	self = [super init];
 	if (self != nil) {
-		_url = url;
+		self.url = url;
 	}
 	return self;
 }
 
-
-
-// Implement loadView to create a view hierarchy programmatically, without using a nib.
-- (void)viewDidLoad{
+- (void)viewDidLoad {
     [super viewDidLoad];
     self.title = NSLocalizedString(@"Login", nil);
     self.navigationItem.leftBarButtonItem =
@@ -44,22 +35,26 @@
                                     target:self
                                     action:@selector(cancel)];
 	
-	self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:_url]];
-	[webView loadRequest:request];
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:self.url]];
+	[self.webView loadRequest:request];
 }
 
 
 
 
--(void)cancel{
-    [delegate performSelector:selector withObject:nil afterDelay:0];
-	[self dismissViewControllerAnimated:YES completion:nil];
+- (void)cancel {
+	[self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate performSelector:self.selector withObject:nil afterDelay:0];
+    }];
 }
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+
+- (BOOL)webView:(UIWebView *)webView
+shouldStartLoadWithRequest:(NSURLRequest *)request
+ navigationType:(UIWebViewNavigationType)navigationType {
 	NSString *url =[[request URL] absoluteString];
-
 	if ([url rangeOfString:@"access_token="].length != 0) {
 		NSHTTPCookie *cookie;
 		NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
@@ -72,49 +67,24 @@
 		
 		NSArray *arr = [url componentsSeparatedByString:@"="];
         [Foursquare2 setAccessToken:arr[1]];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-		[delegate performSelector:selector withObject:nil];
-#pragma clang diagnostic pop
-		[self dismissViewControllerAnimated:YES completion:nil];
+		[self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate performSelector:self.selector withObject:nil];
+        }];
 	}else if ([url rangeOfString:@"error="].length != 0) {
 		NSArray *arr = [url componentsSeparatedByString:@"="];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-		[delegate performSelector:selector withObject:arr[1]];
-#pragma clang diagnostic pop
-        
+		[self.delegate performSelector:self.selector withObject:arr[1]];
 	} 
 
 	return YES;
 }
-- (void)webViewDidStartLoad:(UIWebView *)webView{
-}
-- (void)webViewDidFinishLoad:(UIWebView *)webView{
-}
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+#pragma clang diagnostic pop
+- (void)webViewDidStartLoad:(UIWebView *)webView {
 }
 
-/*
-// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
 }
-*/
 
-/*
-// Override to allow orientations other than the default portrait orientation.
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    // Return YES for supported orientations.
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-*/
-
-- (void)didReceiveMemoryWarning {
-    // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 }
 
 @end

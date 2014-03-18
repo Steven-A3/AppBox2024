@@ -21,6 +21,7 @@
 + (NSInteger)yearFromDate:(NSDate*)date;
 + (NSInteger)monthFromDate:(NSDate*)date;
 + (NSInteger)dayFromDate:(NSDate*)date;
++ (NSInteger)weekdayFromDate:(NSDate*)date;
 + (NSInteger)getDaysFromTodayToDate:(NSDate*)goalDate;
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
 + (NSInteger)diffWeeksFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;

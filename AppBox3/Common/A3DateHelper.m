@@ -97,6 +97,13 @@
 	return [str intValue];
 }
 
++ (NSInteger)weekdayFromDate:(NSDate*)date
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSWeekdayCalendarUnit fromDate:date];
+    
+    return [comp weekday];
+}
+
 + (NSInteger)getDaysFromTodayToDate:(NSDate*)goalDate
 {
 	if( goalDate == nil )

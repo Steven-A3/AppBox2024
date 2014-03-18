@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DaysCounterViewController">
+            <connections>
+                <outlet property="addEventButton" destination="igt-f2-sch" id="eZ5-Nc-8pl"/>
+                <outlet property="bottomToolbar" destination="VFR-AQ-cZU" id="WB5-vy-tNH"/>
+                <outlet property="collectionView" destination="JYB-gf-7p7" id="W3R-Kj-CBA"/>
+                <outlet property="naviRightButtonView" destination="AhU-YX-WEH" id="lnH-mT-nHA"/>
+                <outlet property="naviRightButtonViewiPhone" destination="6gM-wX-IaP" id="ieM-2F-imV"/>
+                <outlet property="noPhotoView" destination="R5M-x6-qpJ" id="qIH-LS-Sum"/>
+                <outlet property="topToolbar" destination="ZvV-eG-XtD" id="aKz-Pq-j8l"/>
+                <outlet property="view" destination="1" id="3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="1">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="JYB-gf-7p7">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="APB-HJ-Ee3">
+                        <size key="itemSize" width="320" height="568"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <cells/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="2us-At-Knt"/>
+                        <outlet property="delegate" destination="-1" id="y7h-PG-cAB"/>
+                    </connections>
+                </collectionView>
+                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R5M-x6-qpJ">
+                    <rect key="frame" x="0.0" y="250" width="320" height="67"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Photos" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9RI-sD-Jlu">
+                            <rect key="frame" x="20" y="0.0" width="280" height="32"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="TZR-G3-w9V"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                            <color key="textColor" red="0.60000002384185791" green="0.60000002384185791" blue="0.60000002384185791" alpha="1" colorSpace="deviceRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can add photos into events." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="utq-Yo-ui9">
+                            <rect key="frame" x="19" y="46" width="280" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="AUF-XO-ego"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="95R-wW-k4Z"/>
+                        <constraint firstAttribute="bottom" secondItem="utq-Yo-ui9" secondAttribute="bottom" id="DM7-2x-v25"/>
+                        <constraint firstItem="9RI-sD-Jlu" firstAttribute="top" secondItem="R5M-x6-qpJ" secondAttribute="top" id="HMF-zj-3mJ"/>
+                        <constraint firstAttribute="trailing" secondItem="9RI-sD-Jlu" secondAttribute="trailing" constant="20" id="RUU-zY-F5M"/>
+                        <constraint firstItem="9RI-sD-Jlu" firstAttribute="leading" secondItem="R5M-x6-qpJ" secondAttribute="leading" constant="20" id="TNK-hb-s1Q"/>
+                        <constraint firstAttribute="trailing" secondItem="utq-Yo-ui9" secondAttribute="trailing" constant="21" id="l50-5b-g2Y"/>
+                        <constraint firstItem="utq-Yo-ui9" firstAttribute="leading" secondItem="R5M-x6-qpJ" secondAttribute="leading" constant="19" id="pS2-Tg-ybg"/>
+                        <constraint firstAttribute="height" constant="67" id="qdc-Dk-qV6"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="R5M-x6-qpJ" secondAttribute="centerX" id="EVv-oU-w0m"/>
+                <constraint firstItem="JYB-gf-7p7" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="I6w-Gv-Uaw"/>
+                <constraint firstAttribute="bottom" secondItem="JYB-gf-7p7" secondAttribute="bottom" id="YAt-kR-Fvh"/>
+                <constraint firstAttribute="trailing" secondItem="JYB-gf-7p7" secondAttribute="trailing" id="cYJ-sz-UqQ"/>
+                <constraint firstAttribute="centerY" secondItem="R5M-x6-qpJ" secondAttribute="centerY" id="qTR-lx-t39"/>
+                <constraint firstItem="JYB-gf-7p7" firstAttribute="top" secondItem="1" secondAttribute="top" id="sK9-Xj-nPH"/>
+            </constraints>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="ZvV-eG-XtD" userLabel="Toolbar - top">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="ofT-U5-yJj"/>
+                <barButtonItem image="information" id="2nu-PP-xCw">
+                    <connections>
+                        <action selector="detailAction:" destination="-1" id="WHm-Hm-n9x"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="KQj-Do-4hR"/>
+                <barButtonItem image="share" id="ro2-2X-w14">
+                    <connections>
+                        <action selector="shareOtherAction:" destination="-1" id="2NT-1A-Wj3"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="iaR-xW-TG6"/>
+            </items>
+            <color key="barTintColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+        </toolbar>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="VFR-AQ-cZU" userLabel="Toolbar - bottom">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem image="photoview_on" width="30" id="vih-tF-kNC"/>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="zbF-VK-msD"/>
+                <barButtonItem image="list" width="30" id="7St-sC-t9Z">
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="calendarViewAction:" destination="-1" id="jcN-lC-etg"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="sc1-4g-ZTc"/>
+                <barButtonItem image="reminder" width="30" id="2yq-56-h7b">
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="reminderAction:" destination="-1" id="Yg0-dM-LBG"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="GBN-Hs-q2O"/>
+                <barButtonItem image="star01" width="30" id="mnz-9W-LDO">
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="favoriteAction:" destination="-1" id="jYT-xQ-1NV"/>
+                    </connections>
+                </barButtonItem>
+            </items>
+        </toolbar>
+        <view contentMode="scaleToFill" id="AhU-YX-WEH">
+            <rect key="frame" x="0.0" y="0.0" width="145" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ouw-SM-ZrO">
+                    <rect key="frame" x="90" y="0.0" width="35" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="share">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="shareOtherAction:" destination="-1" eventType="touchUpInside" id="Mh7-LW-VBz"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NL-WN-c0O">
+                    <rect key="frame" x="19" y="0.0" width="36" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="information">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="detailAction:" destination="-1" eventType="touchUpInside" id="H1k-qr-Mg6"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="igt-f2-sch" userLabel="Button - add">
+            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+            <state key="normal" image="add01">
+                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+            </state>
+            <connections>
+                <action selector="addEventAction:" destination="-1" eventType="touchUpInside" id="LQx-9O-HeH"/>
+            </connections>
+        </button>
+        <view contentMode="scaleToFill" id="6gM-wX-IaP">
+            <rect key="frame" x="0.0" y="0.0" width="78" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oef-x9-dUm">
+                    <rect key="frame" x="-1" y="0.0" width="36" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="information">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="detailAction:" destination="-1" eventType="touchUpInside" id="M6j-2T-FSP"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeM-t5-bQP">
+                    <rect key="frame" x="43" y="0.0" width="35" height="44"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" image="share">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="shareOtherAction:" destination="-1" eventType="touchUpInside" id="MF6-nw-6Kz"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="add01" width="25" height="25"/>
+        <image name="information" width="22" height="22"/>
+        <image name="list" width="22" height="13"/>
+        <image name="photoview_on" width="30" height="30"/>
+        <image name="reminder" width="30" height="30"/>
+        <image name="share" width="20" height="28"/>
+        <image name="star01" width="26" height="26"/>
+    </resources>
+</document>

@@ -15,6 +15,7 @@
 
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)popToRootAndPushViewController:(UIViewController *)viewController;
+- (void)popToRootAndPushViewController:(UIViewController *)viewController animate:(BOOL)animate;
 - (void)leftBarButtonAppsButton;
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
@@ -25,7 +26,7 @@
 
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
-- (void)dismissMoreMenuView:(UIView *)moreMenuView tableView:(UITableView *)tableView;
+- (void)dismissMoreMenuView:(UIView *)moreMenuView scrollView:(UIScrollView *)scrollView;
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer;
 - (UIButton *)shareButton;
 - (void)shareButtonAction:(id)sender;
@@ -51,4 +52,7 @@
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
 
 - (BOOL)checkPasscode;
+
+- (void)willDismissFromRightSide;
+
 @end

@@ -1,0 +1,302 @@
+//
+//  A3DaysCounterFavoriteListViewController.m
+//  A3TeamWork
+//
+//  Created by coanyaa on 13. 10. 18..
+//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3DaysCounterFavoriteListViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterAddEventViewController.h"
+#import "A3DaysCounterCalendarListViewController.h"
+#import "A3DaysCounterReminderListViewController.h"
+#import "A3DaysCounterFavoriteListViewController.h"
+#import "A3DaysCounterEventDetailViewController.h"
+#import "A3DaysCounterEventDetailViewController_iPad.h"
+#import "A3DaysCounterDefine.h"
+#import "A3DaysCounterModelManager.h"
+#import "DaysCounterCalendar.h"
+#import "DaysCounterEvent.h"
+#import "A3DateHelper.h"
+#import "SFKImage.h"
+
+@interface A3DaysCounterFavoriteListViewController ()
+@property (strong, nonatomic) NSMutableArray *itemArray;
+
+- (void)editAction:(id)sender;
+@end
+
+@implementation A3DaysCounterFavoriteListViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    self.title = @"Favorites";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+    self.toolbarItems = _bottomToolbar.items;
+//    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
+//	[SFKImage setDefaultColor:[UIColor blueColor]];
+//    UIImage *image = [SFKImage imageNamed:@"d"];
+//    UIBarButtonItem *lastButton = [_bottomToolbar.items lastObject];
+//    [lastButton setImage:image];
+    
+    if( IS_IPHONE )
+        [self leftBarButtonAppsButton];
+    [self makeBackButtonEmptyArrow];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.delegate = nil;
+    [self.navigationController setToolbarHidden:NO];
+    self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] favoriteEventsList]];
+    [self.tableView reloadData];
+    self.navigationItem.rightBarButtonItem.enabled = ([_itemArray count] > 0);
+    if( IS_IPAD ){
+        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+            [self leftBarButtonAppsButton];
+        }
+        else{
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+        }
+    }
+//    if( ![_addEventButton isDescendantOfView:self.view] ){
+//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+//        [self.view addSubview:_addEventButton];
+//    }
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    self.itemArray = nil;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if( IS_IPAD ){
+        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+            [self leftBarButtonAppsButton];
+        }
+        else{
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+        }
+    }
+}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"eventListNameCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
+        cell = [cellArray objectAtIndex:0];
+        
+        UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+        UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
+        textLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
+        daysLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]);
+        daysLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
+        UIView *leftView = [cell viewWithTag:13];
+        NSLayoutConstraint *leftConst = nil;
+        for(NSLayoutConstraint *layout in cell.contentView.constraints){
+            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ){
+                leftConst = layout;
+                break;
+            }
+        }
+        
+        if( leftConst ){
+            leftConst.constant = ( IS_IPHONE ? 15.0 : 28.0 );
+            [cell layoutIfNeeded];
+        }
+    }
+    
+    // Configure the cell...
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
+    UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
+    
+    if( [_itemArray count] > 0){
+        DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+        
+        textLabel.text = item.eventName;
+        UIImage *image = ([item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil);
+        imageView.image =  (image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)]  : nil);
+        NSDate *today = [NSDate date];
+        NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:item.startDate];
+        daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue] fromDate:today toDate:item.startDate isAllDay:[item.isAllDay boolValue]];
+        if( diffDays > 0 ){
+            markLabel.text = @"Until";
+            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+        }
+        else{
+            markLabel.text = @"Since";
+            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+        }
+        markLabel.layer.borderWidth = 1.0;
+        markLabel.layer.masksToBounds = YES;
+        markLabel.layer.cornerRadius = 9.0;
+        markLabel.layer.borderColor = markLabel.textColor.CGColor;
+        
+       if( IS_IPAD ){
+            UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
+            dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"EEEE, MMM dd"];
+           dateLabel.hidden = NO;
+        }
+
+        
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    else{
+        textLabel.text = @"";
+        daysLabel.text = @"";
+        markLabel.text = @"";
+        imageView.hidden = YES;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        DaysCounterEvent *event = [_itemArray objectAtIndex:indexPath.row];
+        event.isFavorite = [NSNumber numberWithBool:NO];
+        [event.managedObjectContext MR_saveToPersistentStoreAndWait];
+        [_itemArray removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }   
+}
+
+#pragma mark - Table view delegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 62.0;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
+    NSLayoutConstraint *widthConst = nil;
+    for(NSLayoutConstraint *layout in imageView.constraints ){
+        if( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ){
+            widthConst = layout;
+            break;
+        }
+    }
+    
+    if( widthConst ){
+        widthConst.constant = (imageView.image ? 33.0 : 0.0);
+        [cell layoutIfNeeded];
+    }
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if( [_itemArray count] < 1 )
+        return;
+    DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+//    if( IS_IPHONE ){
+        A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+        viewCtrl.eventItem = item;
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+//    }
+//    else{
+//        A3DaysCounterEventDetailViewController_iPad *viewCtrl = [[A3DaysCounterEventDetailViewController_iPad alloc] initWithNibName:@"A3DaysCounterEventDetailViewController_iPad" bundle:nil];
+//        viewCtrl.eventItem = item;
+//        [self.navigationController pushViewController:viewCtrl animated:YES];
+//    }
+}
+
+#pragma mark - action method
+- (IBAction)photoViewAction:(id)sender {
+//    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ){
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alertView show];
+//        return;
+//    }
+    A3DaysCounterViewController *viewCtrl = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
+    [self popToRootAndPushViewController:viewCtrl animate:NO];
+}
+
+- (IBAction)calendarViewAction:(id)sender {
+    A3DaysCounterCalendarListViewController *viewCtrl = [[A3DaysCounterCalendarListViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+    [self popToRootAndPushViewController:viewCtrl animate:NO];
+}
+
+- (IBAction)addEventAction:(id)sender {
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
+    if( IS_IPHONE ){
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+    else{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    }
+}
+
+- (IBAction)reminderAction:(id)sender {
+    A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+    [self popToRootAndPushViewController:viewCtrl animate:NO];
+}
+
+- (void)editAction:(id)sender
+{
+    [self.tableView setEditing:!self.tableView.editing animated:YES];
+}
+
+@end
