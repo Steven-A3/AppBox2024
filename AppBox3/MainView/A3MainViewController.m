@@ -8,6 +8,7 @@
 
 #import "A3MainViewController.h"
 #import "UIViewController+A3Addition.h"
+#import "A3LaunchSceneTransitionManager.h"
 
 @interface A3MainViewController ()
 
@@ -31,9 +32,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-	[self leftBarButtonAppsButton];
 
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -43,7 +42,6 @@
 		[[A3AppDelegate instance] showLockScreen];
 	}
 }
-
 
 - (void)didReceiveMemoryWarning
 {

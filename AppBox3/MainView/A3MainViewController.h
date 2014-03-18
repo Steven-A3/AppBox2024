@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3LaunchViewController.h"
 
-@interface A3MainViewController : UIViewController
+@interface A3MainViewController : A3LaunchViewController
 
 @end

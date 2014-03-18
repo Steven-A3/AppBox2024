@@ -9,19 +9,18 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import <CoreLocation/CoreLocation.h>
 #import "A3AppDelegate.h"
-#import "A3UIDevice.h"
 #import "A3MainMenuTableViewController.h"
 #import "MMDrawerController.h"
-#import "A3MainViewController.h"
 #import "NSFileManager+A3Addtion.h"
 #import "A3AppDelegate+iCloud.h"
 #import "A3AppDelegate+passcode.h"
 #import "A3AppDelegate+keyValueStore.h"
-#import "A3PasscodeViewControllerProtocol.h"
 #import "A3AppDelegate+appearance.h"
 #import "Reachability.h"
 #import "A3CacheStoreManager.h"
 #import "A3KeychainUtils.h"
+#import "A3LaunchViewController.h"
+#import "A3MainViewController.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -72,8 +71,8 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 		A3MainMenuTableViewController *leftMenuViewController = [[A3MainMenuTableViewController alloc] init];
 		UINavigationController *menuNavigationController = [[UINavigationController alloc] initWithRootViewController:leftMenuViewController];
 
-		A3MainViewController *centerViewController = [[A3MainViewController alloc] initWithNibName:nil bundle:nil];
-		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:centerViewController];
+		UIViewController *viewController = [A3MainViewController new];
+		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 
 		_drawerController = [[MMDrawerController alloc]
 				initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
