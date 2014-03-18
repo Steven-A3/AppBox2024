@@ -390,7 +390,8 @@ enum A3TableElementCellType {
     _price.valueType = A3TableViewValueTypeCurrency;
     _price.onEditingBegin = [self cellTextInputBeginBlock];
     _price.onEditingValueChanged = [self cellTextInputChangedBlock];
-    _price.onEditingFinished = [self cellTextInputFinishedBlock];
+//    _price.onEditingFinished = [self cellTextInputFinishedBlock];
+    _price.onEditingFinishAll = [self cellTextInputFinishAllBlock];
     _price.doneButtonPressed = [self cellInputDoneButtonPressed];
     _price.identifier = A3TableElementCellType_Price;
 
