@@ -119,6 +119,10 @@
 		68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */ = {isa = PBXBuildFile; fileRef = 68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */; };
 		68236CE0186C22E5006F442B /* StringsDict.strings in Resources */ = {isa = PBXBuildFile; fileRef = 68236CDE186C22E5006F442B /* StringsDict.strings */; };
 		68236CE1186C22E5006F442B /* StringsDict.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 68236CDF186C22E5006F442B /* StringsDict.stringsdict */; };
+		682393BC18D6F73600B382DC /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 682393BB18D6F73600B382DC /* Launch.storyboard */; };
+		682393BF18D6F75C00B382DC /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682393BE18D6F75C00B382DC /* A3LaunchViewController.m */; };
+		682393C218D71B8800B382DC /* A3LaunchSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 682393C118D71B8800B382DC /* A3LaunchSceneViewController.m */; };
+		682393CB18D71C1B00B382DC /* A3LaunchSceneTransitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 682393CA18D71C1B00B382DC /* A3LaunchSceneTransitionManager.m */; };
 		6823F6EB1863287B00E6E90D /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */; };
 		6823F6EE1863287B00E6E90D /* CurrencyHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6ED1863287B00E6E90D /* CurrencyHistoryItem.m */; };
 		6823F6F3186328AF00E6E90D /* CurrencyRateItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */; };
@@ -1048,6 +1052,13 @@
 		68236CDC186AA7B4006F442B /* A3AppDelegate+passcode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+passcode.m"; path = "AppDelegate/A3AppDelegate+passcode.m"; sourceTree = "<group>"; };
 		68236CDE186C22E5006F442B /* StringsDict.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = StringsDict.strings; path = AppBox3/StringsDict.strings; sourceTree = "<group>"; };
 		68236CDF186C22E5006F442B /* StringsDict.stringsdict */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = StringsDict.stringsdict; path = AppBox3/StringsDict.stringsdict; sourceTree = "<group>"; };
+		682393BB18D6F73600B382DC /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		682393BD18D6F75C00B382DC /* A3LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchViewController.h; sourceTree = "<group>"; };
+		682393BE18D6F75C00B382DC /* A3LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchViewController.m; sourceTree = "<group>"; };
+		682393C018D71B8800B382DC /* A3LaunchSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneViewController.h; sourceTree = "<group>"; };
+		682393C118D71B8800B382DC /* A3LaunchSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneViewController.m; sourceTree = "<group>"; };
+		682393C918D71C1B00B382DC /* A3LaunchSceneTransitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneTransitionManager.h; sourceTree = "<group>"; };
+		682393CA18D71C1B00B382DC /* A3LaunchSceneTransitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneTransitionManager.m; sourceTree = "<group>"; };
 		6823F6E91863287B00E6E90D /* CurrencyRateItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyRateItem.h; path = Apps/Currency/Model/CurrencyRateItem.h; sourceTree = "<group>"; };
 		6823F6EA1863287B00E6E90D /* CurrencyRateItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyRateItem.m; path = Apps/Currency/Model/CurrencyRateItem.m; sourceTree = "<group>"; };
 		6823F6EC1863287B00E6E90D /* CurrencyHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistoryItem.h; path = Apps/Currency/Model/CurrencyHistoryItem.h; sourceTree = "<group>"; };
@@ -2593,6 +2604,20 @@
 			name = Passcode;
 			sourceTree = "<group>";
 		};
+		682393BA18D6F73600B382DC /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				682393BB18D6F73600B382DC /* Launch.storyboard */,
+				682393BD18D6F75C00B382DC /* A3LaunchViewController.h */,
+				682393BE18D6F75C00B382DC /* A3LaunchViewController.m */,
+				682393C018D71B8800B382DC /* A3LaunchSceneViewController.h */,
+				682393C118D71B8800B382DC /* A3LaunchSceneViewController.m */,
+				682393C918D71C1B00B382DC /* A3LaunchSceneTransitionManager.h */,
+				682393CA18D71C1B00B382DC /* A3LaunchSceneTransitionManager.m */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
 		6823F6F21863288D00E6E90D /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -3232,6 +3257,7 @@
 		683B954915EB233500575377 /* MainView */ = {
 			isa = PBXGroup;
 			children = (
+				682393BA18D6F73600B382DC /* Launch */,
 				684E9EF4188A203B00FAA48E /* About */,
 				6830C77E18519BF90075010F /* Settings */,
 				68B635BD17B504C100570B09 /* A3RootViewController_iPad.h */,
@@ -4839,6 +4865,7 @@
 				68B6A47618CEE938004084EF /* forward_icon.png in Resources */,
 				68B6A47518CEE938004084EF /* back_icon@2x.png in Resources */,
 				68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */,
+				682393BC18D6F73600B382DC /* Launch.storyboard in Resources */,
 				68B6A2F618CEC76D004084EF /* A3UnitPriceMainViewController.xib in Resources */,
 				68B6A30518CEC76D004084EF /* UnitPriceStoryboard.storyboard in Resources */,
 				680D639E18CFF9D400938AD0 /* A3MagnifierViewController.xib in Resources */,
@@ -5052,6 +5079,7 @@
 				6829684218503B2100B70E13 /* MagicalRecord+Setup.m in Sources */,
 				6829683C18503B2100B70E13 /* MagicalMigrationManager.m in Sources */,
 				68B6A34118CEC76D004084EF /* A3WalletAddItemViewController.m in Sources */,
+				682393BF18D6F75C00B382DC /* A3LaunchViewController.m in Sources */,
 				68B6A35818CEDDD1004084EF /* JVFloatLabeledTextField.m in Sources */,
 				68C26F1617C71CF400751BE3 /* A3ImageView.m in Sources */,
 				689C9A4F1839CD7F007C97EE /* AFURLConnectionOperation.m in Sources */,
@@ -5350,6 +5378,7 @@
 				17D42C1D1934D1D8D770DE4A /* A3AddLocationViewController.m in Sources */,
 				68E2A64918D0B1FC00E834D9 /* A3ExpenseListHeaderView.m in Sources */,
 				68E2A66318D0B1FC00E834D9 /* A3PercentCalcResultLabelView.m in Sources */,
+				682393CB18D71C1B00B382DC /* A3LaunchSceneTransitionManager.m in Sources */,
 				17D42F5FD45C92F0F9F5D7D4 /* FSWebLogin.m in Sources */,
 				68E2A64E18D0B1FC00E834D9 /* A3ExpenseListPreference.m in Sources */,
 				17D42A703C7FED539C1C2F2F /* Foursquare2.m in Sources */,
@@ -5430,6 +5459,7 @@
 				684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */,
 				6897918E1865C57600F74826 /* CurrencyFavorite.m in Sources */,
 				684D92BE18BC1EFE005016F7 /* A3BatteryStatusMainViewController.m in Sources */,
+				682393C218D71B8800B382DC /* A3LaunchSceneViewController.m in Sources */,
 				680D639718CFF9D400938AD0 /* A3CalculatorUtil.m in Sources */,
 				68E2A66418D0B1FC00E834D9 /* A3PercentCalculator.m in Sources */,
 				68E2A5FD18D0AC6100E834D9 /* A3JHTableViewMonthEntryElement.m in Sources */,
