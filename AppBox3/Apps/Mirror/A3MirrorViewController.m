@@ -220,7 +220,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
     [self.topBar setFrame:(CGRectMake(self.topBar.bounds.origin.x, 20 , screenBounds.size.width, self.topBar.bounds.size.height))];
     [self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
-    [self.zoomSlider  setFrame:CGRectMake(self.zoomToolBar.bounds.origin.x + 40, self.zoomToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
+    [self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 82, self.zoomSlider.frame.size.height)];
    // [self.brightnessslider setFrame:CGRectMake(self.brightnessToolBar.bounds.origin.x + 40, self.brightnessToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
     //[self.magnifierslider setFrame:CGRectMake(self.magnifierToolBar.bounds.origin.x + 40, self.magnifierToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
 }
@@ -907,6 +907,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [_videoPreviewViewProcessFilter removeFromSuperview];
     [_videoPreviewViewTransferFilter removeFromSuperview];
     [_videoPreviewViewInstantFilter removeFromSuperview];
+    
 }
 
 
@@ -927,6 +928,29 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     
     [self _stop];
+    [_videoDevice unlockForConfiguration];
+    
+    previewNoFilterGestureRecognizer = nil;
+    previewMonoFilterGestureRecognizer = nil;
+    previewTonalFilterGestureRecognizer = nil;
+    previewNoirFilterGestureRecognizer = nil;
+    previewFadeFilterGestureRecognizer = nil;
+    previewChromeFilterGestureRecognizer = nil;
+    previewProcessFilterGestureRecognizer = nil;
+    previewTransferFilterGestureRecognizer = nil;
+    previewInstantFilterGestureRecognizer = nil;
+    
+    monoLabel = nil;
+    tonalLabel = nil;
+    noirLabel = nil;
+    fadeLabel = nil;
+    noneLabel = nil;
+    chromeLabel = nil;
+    processLabel = nil;
+    transferLabel = nil;
+    instantLabel = nil;
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

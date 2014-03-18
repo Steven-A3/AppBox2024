@@ -35,6 +35,7 @@
 @property (nonatomic, strong) MASConstraint *resultLabelBottomconstraint;
 @property (nonatomic, strong) MASConstraint *degreeLabelBottomConstraint;
 @property (nonatomic, strong) MASConstraint *expressionLabelRightConstraint;
+@property (nonatomic, strong) MASConstraint *resultLabelRightConstraint;
 @property (nonatomic, strong) MASConstraint *svheightconstraint;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 //@property (nonatomic, strong) A3Expression *expression;
@@ -149,17 +150,26 @@
 }
 
 - (CGFloat) getExpressionLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-21):-17.5;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -16.5:-16.5):-9.5;
+}
+
+- (CGFloat) getResultLabelRightOffSet:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-13.5):-7.5;
 }
 
 - (CGFloat) getResultLabelBottomOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-2;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-4;
 }
 
+- (UIFont *) getResultLabelFont:(CGRect) screenBounds {
+    return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : screenBounds.size.height == 480 ? 62: 84];
+}
+
+/*
 -(CGFloat) getDegreeLabelBottomOffset:(CGRect) screenBounds {
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15.5:-15.5):-8.0;
 }
-
+*/
 -(id) getSVHeight:(CGRect) screenBounds {
     return screenBounds.size.height == 320? @240: @324;
 }
@@ -191,8 +201,8 @@
 
 	[self.view addSubview:self.evaluatedResultLabel];
 	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(67);
-		make.right.equalTo(self.view.right).with.offset(-15);
+		make.left.equalTo(self.view.left).with.offset(30);
+        self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
 		self.resultLabelBottomconstraint = make.bottom.equalTo(_keyboardView.top).with.offset([self getResultLabelBottomOffSet:screenBounds]);
 		self.resultLabelHeightconstraint = make.height.equalTo([self getResultLabelHight:screenBounds]);
 	}];
@@ -205,11 +215,8 @@
         self.expressionTopconstraint = make.top.equalTo(self.view.top).with.offset([self getExpressionLabelTopOffSet:screenBounds]);
     }];
     
-    [self.view addSubview:self.degreeandradianLabel];
-    [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.left).with.offset(7);
-        self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
-    }];
+
+    [self setDegAndRad:YES];
 
     _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:_evaluatedResultLabel];
     _calculator.delegate = self;
@@ -217,11 +224,33 @@
 
 }
 
+- (void) setDegAndRad:(BOOL ) bFirst {
+    if (!bFirst) {
+        [_degreeandradianLabel removeFromSuperview];
+    }
+    
+    if (IS_LANDSCAPE) {
+        
+        [self.view addSubview:self.degreeandradianLabel];
+        [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.left).with.offset(8);
+            //self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
+            make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
+        }];
+    } else {
+        [self.pageControl addSubview:self.degreeandradianLabel];
+        [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.pageControl.left).with.offset(8);
+            make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
+        }];
+    }
+}
+
 - (HTCopyableLabel *)expressionLabel {
 	if (!_expressionLabel) {
 		_expressionLabel = [HTCopyableLabel new];
 		_expressionLabel.backgroundColor = [UIColor whiteColor];
-		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:15];
+		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:14];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
@@ -234,7 +263,7 @@
 		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 		_evaluatedResultLabel = [HTCopyableLabel new];
 		_evaluatedResultLabel.backgroundColor = [UIColor whiteColor];
-		_evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 480 ? 60 : 83];
+		_evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
 		_evaluatedResultLabel.textColor = [UIColor blackColor];
 		_evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
 		_evaluatedResultLabel.text = @"0";
@@ -251,6 +280,7 @@
         _degreeandradianLabel.font = [UIFont systemFontOfSize:15];
         _degreeandradianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         _degreeandradianLabel.textAlignment = NSTextAlignmentLeft;
+        _degreeandradianLabel.backgroundColor = [UIColor clearColor];
 //        _degreeandradianLabel.baselineAdjustment = UIBaselineAdjustmentAlignBaselines;
         _degreeandradianLabel.text = @"Rad";
     }
@@ -342,17 +372,21 @@
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
         self.calculator.isLandScape = YES;
+        
+        
     }
-    
+    _evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
     self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
     self.expressionTopconstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
     self.resultLabelHeightconstraint.equalTo([self getResultLabelHight:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);
     self.resultLabelBottomconstraint.offset([self getResultLabelBottomOffSet:screenBounds]);
-    self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
+    self.resultLabelRightConstraint.offset([self getResultLabelRightOffSet:screenBounds]);
+    //self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
     self.svheightconstraint.equalTo([self getSVHeight:screenBounds]);
     
     self.evaluatedResultLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 60 : 83):55];
+    [self setDegAndRad:NO];
     [self.calculator evaluateAndSet];
     [_keyboardView layoutIfNeeded];
     

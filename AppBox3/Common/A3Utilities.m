@@ -72,6 +72,12 @@ NSString *const A3ClockLEDColorIndex						= @"A3ClockLEDColorIndex";
 #pragma mark ------ Unit Converter
 NSString *const A3UnitConverterDefaultCurrentUnitTap		= @"A3UnitConverterDefaultCurrentUnitTap";
 
+#pragma mark ------ Lady Calendar
+NSString *const A3LadyCalendarCurrentAccountID              = @"A3LadyCalendarCurrentAccountID";
+NSString *const A3LadyCalendarSetting                       = @"A3LadyCalendarSetting";
+NSString *const A3LadyCalendarOvulationDays                 = @"A3LadyCalendarOvulationDays";
+NSString *const A3LadyCalendarLastViewMonth                 = @"A3LadyCalendarLastViewMonth";
+
 CGFloat dash_line_pattern[] = {2.0f, 2.0f};
 
 @implementation A3Utilities

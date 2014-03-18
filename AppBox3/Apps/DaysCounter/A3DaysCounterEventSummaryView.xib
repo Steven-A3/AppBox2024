@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="summaryCell" id="Pw2-No-a6D">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yFA-J0-wtx">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8PY-bc-aDl" customClass="FXLabel">
+                        <rect key="frame" x="62" y="49" width="196" height="101"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="101" id="CUV-dC-ilm"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="88"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="yoV-Pe-VFu" customClass="FXLabel">
+                        <rect key="frame" x="263" y="67" width="44" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="44" id="Yoz-Qk-yBW"/>
+                        </constraints>
+                        <string key="text">Days
+Since</string>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="13" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thursday, August 6, 2009" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qgs-xV-Oz7" customClass="FXLabel">
+                        <rect key="frame" x="0.0" y="158" width="320" height="22"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="14" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Release AppBox" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lWv-jq-Rqh" customClass="FXLabel">
+                        <rect key="frame" x="76" y="519" width="169" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstItem="Qgs-xV-Oz7" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" id="481-r3-cRI"/>
+                <constraint firstAttribute="bottom" secondItem="lWv-jq-Rqh" secondAttribute="bottom" constant="20" id="5tj-Ic-HdR"/>
+                <constraint firstAttribute="centerX" secondItem="lWv-jq-Rqh" secondAttribute="centerX" id="5u1-0N-5vD"/>
+                <constraint firstAttribute="trailing" secondItem="yFA-J0-wtx" secondAttribute="trailing" id="7rj-D9-4P9"/>
+                <constraint firstAttribute="bottom" secondItem="yFA-J0-wtx" secondAttribute="bottom" id="Gdg-1z-RI6"/>
+                <constraint firstAttribute="centerX" secondItem="Qgs-xV-Oz7" secondAttribute="centerX" id="MND-2X-XTe"/>
+                <constraint firstItem="yFA-J0-wtx" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" id="NoW-eN-kRA"/>
+                <constraint firstItem="yoV-Pe-VFu" firstAttribute="leading" secondItem="8PY-bc-aDl" secondAttribute="trailing" constant="5" id="Rsa-Jo-PtO"/>
+                <constraint firstAttribute="centerX" secondItem="8PY-bc-aDl" secondAttribute="centerX" id="Xkt-sd-HXp"/>
+                <constraint firstItem="yoV-Pe-VFu" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" constant="67" id="bTe-U7-8ck"/>
+                <constraint firstItem="Qgs-xV-Oz7" firstAttribute="top" secondItem="8PY-bc-aDl" secondAttribute="bottom" constant="8" id="bcG-U7-246"/>
+                <constraint firstAttribute="trailing" secondItem="Qgs-xV-Oz7" secondAttribute="trailing" id="dyp-KR-DBH"/>
+                <constraint firstItem="8PY-bc-aDl" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" constant="49" id="q8P-LI-qVh"/>
+                <constraint firstItem="yFA-J0-wtx" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" id="vsP-6E-zks"/>
+            </constraints>
+        </collectionViewCell>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+</document>

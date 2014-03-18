@@ -562,7 +562,7 @@ NSString *kCalculationString;
 		_isShowMoreMenu = NO;
         
 		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView tableView:self.tableView];
+		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
 		[self.view removeGestureRecognizer:gestureRecognizer];
 	}
 }

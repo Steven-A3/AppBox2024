@@ -10,73 +10,28 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
-        needToShowErrorAlert = YES;
+        self.asyncConnDict = [NSMutableDictionary dictionary];
     }
-//    self.requestHistory = [NSMutableArray array];
-    self.asyncConnDict = [NSMutableDictionary dictionaryWithCapacity:1];
     return self;
 }
 
-
-
-
--(void)changeStateErrorAlert{
-    needToShowErrorAlert = YES;
+- (void)connectTarget:(FSTargetCallback *)target andConnection:(NSURLConnection *)connection {
+   [asyncConnDict setValue:target forKey:[NSString stringWithFormat: @"%ld", (long)[connection hash]]];
 }
 
-- (void)handleConnectionError:(NSError *)error{
-	if(!error) {
-		return;
-	}
-
-
+- (void)disconnettargetWithConnection:(NSURLConnection *)connection {
+    [asyncConnDict removeObjectForKey: [NSString stringWithFormat: @"%ld", (long)[connection hash]]];
 }
 
-- (void) makeAsyncRequest:(NSURL *)url target:(FSTargetCallback *)target {
-
-	NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url
-												cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
-											timeoutInterval:TIMEOUT_INTERVAL];
-	
-	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest 
-                                                                   delegate:self] ;
-	if (connection) {
-		target.receivedData = [NSMutableData data];
-        [self connectTarget:target andConnection:connection];
-	} else {
-		NSMutableDictionary *dict  = [NSMutableDictionary dictionaryWithObject:@"async_conn_creation_failed" forKey:NSLocalizedDescriptionKey];
-		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo:dict];
-		
-		[self handleConnectionError: error];
-
-		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
-
-        
-	}
-	
-}
-
--(void)connectTarget:(FSTargetCallback*)target andConnection:(NSURLConnection*)connection{
-   [asyncConnDict setValue:target forKey:[NSString stringWithFormat: @"%lu", (unsigned long)[connection hash]]];
-}
-
--(void)disconnettargetWithConnection:(NSURLConnection*)connection{
-    [asyncConnDict removeObjectForKey: [NSString stringWithFormat: @"%lu", (unsigned long)[connection hash]]];
-}
-
--(FSTargetCallback*)targetForConnection:(NSURLConnection*)connection{
-    return asyncConnDict[[NSString stringWithFormat: @"%lu", (unsigned long)[connection hash]]];
+- (FSTargetCallback *)targetForConnection:(NSURLConnection *)connection {
+    return asyncConnDict[[NSString stringWithFormat: @"%ld", (long)[connection hash]]];
 }
 
 
 - (void) makeAsyncRequestWithRequest:(NSURLRequest *)urlRequest target:(FSTargetCallback *)target {
-
-
-
 	NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:urlRequest delegate:self] ;
 	
 	if (connection) {
@@ -86,14 +41,12 @@
 	} else {
 		NSMutableDictionary *dict  = [NSMutableDictionary dictionaryWithObject:@"async_conn_creation_failed" forKey:NSLocalizedDescriptionKey];
 		NSError *error = [NSError errorWithDomain:@"com.com" code:0 userInfo: dict];
-		
-		[self handleConnectionError: error];
-
-		[target.targetObject performSelector: target.targetCallback withObject: nil withObject: error];
-        
+        if (target.resultCallback) {
+            [self performSelector:target.resultCallback
+                       withObject:error
+                       withObject:target];
+        }
 	}
-	
-
 }
 
 #pragma mark NSURLConnection
@@ -112,8 +65,7 @@
     [challenge.sender continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
-- (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)response
-{
+- (void)connection:(NSURLConnection *)aConnection didReceiveResponse:(NSURLResponse *)response {
 
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
@@ -122,8 +74,7 @@
 
 
 
-- (void)connection:(NSURLConnection *)aConnection didReceiveData:(NSData *)data
-{
+- (void)connection:(NSURLConnection *)aConnection didReceiveData:(NSData *)data {
 
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
@@ -132,22 +83,16 @@
 	
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)aConnection
-{
+- (void)connectionDidFinishLoading:(NSURLConnection *)aConnection {
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 	NSMutableData *receivedData = [target receivedData];
-	
-
-	
-	id result = nil;
-	
-    result = [NSJSONSerialization JSONObjectWithData:receivedData
-                                             options:0
-                                               error:nil];
+	id result = [NSJSONSerialization JSONObjectWithData:receivedData
+                                                options:0
+                                                  error:nil];
 	if (target.resultCallback) {
-        [self performSelector:target.resultCallback withObject:result withObject:target];
-
-        
+        [self performSelector:target.resultCallback
+                   withObject:result
+                   withObject:target];
     }
 	
 	
@@ -160,7 +105,11 @@
 	
 	FSTargetCallback *target = [self targetForConnection:aConnection];
 
-	[target.targetObject performSelector:target.targetCallback withObject:nil withObject:error];
+    if (target.resultCallback) {
+        [self performSelector:target.resultCallback
+                   withObject:error
+                   withObject:target];
+    }
 
     
     

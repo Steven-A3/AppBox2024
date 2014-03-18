@@ -1,0 +1,22 @@
+//
+//  A3LadyCalendarAddPeriodViewController.h
+//  A3TeamWork
+//
+//  Created by coanyaa on 2013. 11. 18..
+//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "A3KeyboardProtocol.h"
+
+@class LadyCalendarPeriod;
+@class LadyCalendarAccount;
+@interface A3LadyCalendarAddPeriodViewController : UITableViewController<UITextViewDelegate,A3KeyboardDelegate,UITextFieldDelegate,UIAlertViewDelegate,UIActionSheetDelegate>{
+    LadyCalendarAccount *currentAccount;
+}
+
+@property (assign, nonatomic) UINavigationController *parentNavigationCtrl;
+@property (strong, nonatomic) LadyCalendarPeriod *periodItem;
+@property (strong, nonatomic) NSMutableArray *items;
+@property (assign, nonatomic) BOOL isEditMode;
+@end

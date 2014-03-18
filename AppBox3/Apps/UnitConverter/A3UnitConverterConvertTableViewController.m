@@ -329,7 +329,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_isShowMoreMenu = NO;
 
 	[self rightButtonMoreButton];
-	[self dismissMoreMenuView:_moreMenuView tableView:_fmMoveTableView];
+	[self dismissMoreMenuView:_moreMenuView scrollView:_fmMoveTableView];
 	[self.view removeGestureRecognizer:gestureRecognizer];
 }
 

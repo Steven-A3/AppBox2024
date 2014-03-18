@@ -68,4 +68,13 @@ extern NSString *const A3ClockLEDColorIndex;
 #pragma mark ------ Unit Converter
 extern NSString *const A3UnitConverterDefaultCurrentUnitTap;
 
+#pragma mark ------ DaysCounter
+extern NSString *const A3DaysCounterSlideshowOption;
+
+#pragma mark ------ LadyCalendar
+extern NSString *const A3LadyCalendarCurrentAccountID;
+extern NSString *const A3LadyCalendarSetting;
+extern NSString *const A3LadyCalendarOvulationDays;
+extern NSString *const A3LadyCalendarLastViewMonth;
+
 #endif

@@ -1,0 +1,119 @@
+//
+//  A3DaysCounterChangeLocationViewController.m
+//  A3TeamWork
+//
+//  Created by coanyaa on 2014. 1. 11..
+//  Copyright (c) 2014년 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3DaysCounterChangeLocationViewController.h"
+#import "UIViewController+A3Addition.h"
+#import "UIViewController+A3AppCategory.h"
+#import "A3DaysCounterDefine.h"
+#import "A3DaysCounterModelManager.h"
+#import "FSVenue.h"
+#import "common.h"
+#import "Foursquare2.h"
+#import "FSConverter.h"
+#import "NSString+conversion.h"
+#import <AddressBookUI/AddressBookUI.h>
+#import <CoreLocation/CoreLocation.h>
+
+@interface A3DaysCounterChangeLocationViewController ()
+@property (strong, nonatomic) NSMutableArray *resultArray;
+@end
+
+@implementation A3DaysCounterChangeLocationViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    self.navigationItem.title = @"Change Location";
+    self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [_resultArray count] + 1;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellID = @"locationCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+    
+    if( cell == nil ){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    if( indexPath.row == 0 ){
+        cell.textLabel.text = @"Current Location";
+        cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
+    }
+    else{
+        cell.textLabel.textColor = [UIColor darkTextColor];
+        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.resultArray objectAtIndex:indexPath.row-1]];
+        cell.textLabel.text = address;
+    }
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_resultArray objectAtIndex:indexPath.row-1]);
+    if( self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:)] ){
+        [self.delegate changeLocationViewController:self didSelectLocation:placemark];
+    }
+}
+
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSString *searchText = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if( [searchText length] < 1 )
+        return;
+    
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
+        self.resultArray = [NSMutableArray array];
+//        NSLog(@"%s %@",__FUNCTION__,placemarks);
+        for(CLPlacemark *placemark in placemarks){
+            NSLog(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
+            [self.resultArray addObject:placemark];
+        }
+        [self.tableView reloadData];
+    }];
+}
+
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+}
+
+@end

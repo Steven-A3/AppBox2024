@@ -43,7 +43,7 @@
     return self;
 }
 
--(void) encodeWithCoder:(NSCoder *)aCoder
+-(void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:_principal forKey:@"principal"];
     [aCoder encodeObject:_downPayment forKey:@"downPayment"];

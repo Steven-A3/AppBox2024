@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13B3116" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DaysCounterEventListViewController">
+            <connections>
+                <outlet property="addEventButton" destination="1yj-jE-SCC" id="AUB-Nq-Vzr"/>
+                <outlet property="bottomToolbar" destination="S3u-7Y-Yjq" id="kzk-zt-0mB"/>
+                <outlet property="editButton" destination="c85-mX-z3r" id="kkj-p7-CFz"/>
+                <outlet property="headerSeperatorHeightConst" destination="aiC-z6-xIk" id="whK-ua-UgY"/>
+                <outlet property="headerSeperatorView" destination="v6s-kv-ZVW" id="LZj-DC-iit"/>
+                <outlet property="headerView" destination="rtE-zw-6ea" id="XKW-Vo-8PF"/>
+                <outlet property="rightButtonsView" destination="1x4-LW-hvp" id="i6Y-Ee-1cf"/>
+                <outlet property="searchButton" destination="BQK-6w-vHW" id="GLY-Wy-Gxl"/>
+                <outlet property="searchDisplayController" destination="dwC-tC-hWB" id="hvZ-AF-qKg"/>
+                <outlet property="segmentControlWidthConst" destination="9uX-E1-UZf" id="kae-Dr-HDV"/>
+                <outlet property="sortTypeSegmentCtrl" destination="S9q-hc-7Mt" id="OQb-3T-ZGR"/>
+                <outlet property="tableView" destination="4" id="I7w-Y4-BVk"/>
+                <outlet property="view" destination="mDx-pq-GFH" id="FCU-DQ-igw"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="mDx-pq-GFH">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="4">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                    <view key="tableHeaderView" contentMode="scaleToFill" id="rtE-zw-6ea">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="S9q-hc-7Mt">
+                                <rect key="frame" x="75" y="7" width="170" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="170" id="9uX-E1-UZf"/>
+                                    <constraint firstAttribute="height" constant="28" id="kRr-Gp-ekr"/>
+                                </constraints>
+                                <segments>
+                                    <segment title="Date"/>
+                                    <segment title="Name"/>
+                                </segments>
+                                <connections>
+                                    <action selector="changeSortAction:" destination="-1" eventType="valueChanged" id="Tou-8a-spd"/>
+                                </connections>
+                            </segmentedControl>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v6s-kv-ZVW">
+                                <rect key="frame" x="0.0" y="41" width="320" height="1"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="aiC-z6-xIk"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="v6s-kv-ZVW" firstAttribute="leading" secondItem="rtE-zw-6ea" secondAttribute="leading" id="GJF-kT-50d"/>
+                            <constraint firstAttribute="centerX" secondItem="S9q-hc-7Mt" secondAttribute="centerX" id="GdA-W8-wgH"/>
+                            <constraint firstAttribute="centerY" secondItem="S9q-hc-7Mt" secondAttribute="centerY" id="Q4G-6M-t4J"/>
+                            <constraint firstAttribute="trailing" secondItem="v6s-kv-ZVW" secondAttribute="trailing" id="fnx-7G-5RS"/>
+                            <constraint firstAttribute="bottom" secondItem="v6s-kv-ZVW" secondAttribute="bottom" constant="1" id="pWc-Kt-era"/>
+                        </constraints>
+                        <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    </view>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="6"/>
+                        <outlet property="delegate" destination="-1" id="7"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="4" firstAttribute="leading" secondItem="mDx-pq-GFH" secondAttribute="leading" id="RG9-Ze-8HK"/>
+                <constraint firstAttribute="trailing" secondItem="4" secondAttribute="trailing" id="hoo-Bw-L1x"/>
+                <constraint firstItem="4" firstAttribute="top" secondItem="mDx-pq-GFH" secondAttribute="top" id="mXO-c8-FTN"/>
+                <constraint firstAttribute="bottom" secondItem="4" secondAttribute="bottom" id="s1c-B7-0dJ"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="1x4-LW-hvp" userLabel="View - top button">
+            <rect key="frame" x="0.0" y="0.0" width="69" height="33"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c85-mX-z3r">
+                    <rect key="frame" x="32" y="2" width="37" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="2v0-Oq-RKC"/>
+                        <constraint firstAttribute="width" priority="800" constant="37" id="bOl-Ed-BRs"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" title="Edit">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="editAction:" destination="-1" eventType="touchUpInside" id="CjP-nY-Gul"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQK-6w-vHW">
+                    <rect key="frame" x="0.0" y="2" width="24" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="9rX-1Q-QAS"/>
+                        <constraint firstAttribute="width" priority="800" constant="24" id="umV-6D-7uM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <state key="normal" image="search"/>
+                    <connections>
+                        <action selector="searchAction:" destination="-1" eventType="touchUpInside" id="cpE-57-bfo"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="c85-mX-z3r" firstAttribute="leading" secondItem="BQK-6w-vHW" secondAttribute="trailing" constant="8" id="Fnk-c5-6pD"/>
+                <constraint firstAttribute="centerY" secondItem="BQK-6w-vHW" secondAttribute="centerY" id="HjP-7v-aNa"/>
+                <constraint firstAttribute="centerY" secondItem="c85-mX-z3r" secondAttribute="centerY" id="aPd-uD-oi0"/>
+                <constraint firstAttribute="trailing" secondItem="c85-mX-z3r" secondAttribute="trailing" id="x9o-NI-gdC"/>
+            </constraints>
+        </view>
+        <searchBar contentMode="redraw" id="AWt-jT-k3r">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <textInputTraits key="textInputTraits"/>
+            <connections>
+                <outlet property="delegate" destination="-1" id="GSW-gl-WNq"/>
+            </connections>
+        </searchBar>
+        <searchDisplayController id="dwC-tC-hWB">
+            <connections>
+                <outlet property="delegate" destination="-1" id="rKr-wR-Pjw"/>
+                <outlet property="searchBar" destination="AWt-jT-k3r" id="6ac-VE-FTm"/>
+                <outlet property="searchContentsController" destination="-1" id="Wbq-CY-dlj"/>
+                <outlet property="searchResultsDataSource" destination="-1" id="SiF-f7-ozw"/>
+                <outlet property="searchResultsDelegate" destination="-1" id="Giw-lU-wSf"/>
+            </connections>
+        </searchDisplayController>
+        <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="S3u-7Y-Yjq" userLabel="Toolbar - bottom">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <items>
+                <barButtonItem image="photoview" width="30" id="DYd-OB-fhK">
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="photoViewAction:" destination="-1" id="TKo-Ty-2Oz"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="fwH-f6-9l4"/>
+                <barButtonItem image="listbox_on" width="30" id="lbh-4s-mbl"/>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="6h6-ka-Rt0"/>
+                <barButtonItem image="reminder" width="30" id="bfj-11-lof">
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="reminderAction:" destination="-1" id="aOb-oz-KSr"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem style="plain" systemItem="flexibleSpace" id="9IX-ID-O6R"/>
+                <barButtonItem image="star01" width="30" id="ebv-fJ-MgY">
+                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="favoriteAction:" destination="-1" id="FrI-TP-ZP8"/>
+                    </connections>
+                </barButtonItem>
+            </items>
+        </toolbar>
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="1yj-jE-SCC" userLabel="Button - add">
+            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+            <state key="normal" image="add01">
+                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+            </state>
+            <connections>
+                <action selector="addEventAction:" destination="-1" eventType="touchUpInside" id="Lsb-Zx-6Mo"/>
+            </connections>
+        </button>
+    </objects>
+    <resources>
+        <image name="add01" width="25" height="25"/>
+        <image name="listbox_on" width="30" height="30"/>
+        <image name="photoview" width="29" height="23"/>
+        <image name="reminder" width="26" height="24"/>
+        <image name="search" width="16" height="16"/>
+        <image name="star01" width="26" height="26"/>
+    </resources>
+</document>

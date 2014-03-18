@@ -34,6 +34,49 @@
         <attribute name="rateToUSD" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="updated" optional="YES" attributeType="Date" syncable="YES"/>
     </entity>
+    <entity name="DaysCounterCalendar" representedClassName="DaysCounterCalendar" syncable="YES">
+        <attribute name="calendarColor" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="calendarId" attributeType="String" syncable="YES"/>
+        <attribute name="calendarName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="calendarType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isDefault" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isShow" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="DaysCounterEvent" inverseName="calendar" inverseEntity="DaysCounterEvent" syncable="YES"/>
+    </entity>
+    <entity name="DaysCounterEvent" representedClassName="DaysCounterEvent" syncable="YES">
+        <attribute name="alertDatetime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="calendarId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="eventId" attributeType="String" syncable="YES"/>
+        <attribute name="eventKitId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageFilename" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="repeatEndDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="calendar" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterCalendar" inverseName="events" inverseEntity="DaysCounterCalendar" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterEventLocation" inverseName="event" inverseEntity="DaysCounterEventLocation" syncable="YES"/>
+    </entity>
+    <entity name="DaysCounterEventLocation" representedClassName="DaysCounterEventLocation" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="city" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contact" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="eventId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Float" syncable="YES"/>
+        <attribute name="locationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Float" syncable="YES"/>
+        <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="location" inverseEntity="DaysCounterEvent" syncable="YES"/>
+    </entity>
     <entity name="ExpenseListBudget" representedClassName="ExpenseListBudget" syncable="YES">
         <attribute name="budgetId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
@@ -77,6 +120,29 @@
         <attribute name="qty" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="subTotal" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <relationship name="budget" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListBudget" inverseName="expenseItems" inverseEntity="ExpenseListBudget" syncable="YES"/>
+    </entity>
+    <entity name="LadyCalendarAccount" representedClassName="LadyCalendarAccount" syncable="YES">
+        <attribute name="accountID" attributeType="String" syncable="YES"/>
+        <attribute name="accountName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="accountNotes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="birthDay" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="periods" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="LadyCalendarPeriod" inverseName="account" inverseEntity="LadyCalendarPeriod" syncable="YES"/>
+    </entity>
+    <entity name="LadyCalendarPeriod" representedClassName="LadyCalendarPeriod" syncable="YES">
+        <attribute name="accountID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="calendarID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="cycleLength" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="endDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isAutoSave" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isPredict" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="ovulation" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="periodID" attributeType="String" syncable="YES"/>
+        <attribute name="periodNotes" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LadyCalendarAccount" inverseName="periods" inverseEntity="LadyCalendarAccount" syncable="YES"/>
     </entity>
     <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
         <attribute name="calculateDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -294,8 +360,18 @@
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
+        <element name="ExpenseListBudget" positionX="-531" positionY="-342" width="128" height="238"/>
+        <element name="ExpenseListBudgetLocation" positionX="-585" positionY="-396" width="128" height="178"/>
+        <element name="ExpenseListCategories" positionX="-549" positionY="-360" width="128" height="75"/>
+        <element name="ExpenseListHistory" positionX="-585" positionY="-396" width="128" height="73"/>
+        <element name="ExpenseListItem" positionX="-567" positionY="-378" width="128" height="163"/>
         <element name="LoanCalcComparisonHistory" positionX="115" positionY="593" width="128" height="135"/>
         <element name="LoanCalcHistory" positionX="313" positionY="536" width="128" height="433"/>
+        <element name="PercentCalcHistory" positionX="-567" positionY="-378" width="128" height="75"/>
+        <element name="SalesCalcHistory" positionX="-576" positionY="-387" width="128" height="210"/>
+        <element name="TipCalcHistory" positionX="-540" positionY="-351" width="128" height="103"/>
+        <element name="TipCalcRecently" positionX="-558" positionY="-369" width="128" height="283"/>
+        <element name="TipCalcRoundMethod" positionX="-576" positionY="-387" width="128" height="148"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="75"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="105"/>
         <element name="TranslatorHistory" positionX="-207" positionY="-189" width="128" height="120"/>
@@ -314,15 +390,10 @@
         <element name="WalletField" positionX="-576" positionY="539" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-324" positionY="513" width="128" height="118"/>
         <element name="WalletItem" positionX="-585" positionY="776" width="128" height="148"/>
-        <element name="ExpenseListBudgetLocation" positionX="-585" positionY="-396" width="128" height="178"/>
-        <element name="SalesCalcHistory" positionX="-576" positionY="-387" width="128" height="210"/>
-        <element name="PercentCalcHistory" positionX="-567" positionY="-378" width="128" height="75"/>
-        <element name="TipCalcRecently" positionX="-558" positionY="-369" width="128" height="283"/>
-        <element name="ExpenseListCategories" positionX="-549" positionY="-360" width="128" height="75"/>
-        <element name="TipCalcHistory" positionX="-540" positionY="-351" width="128" height="103"/>
-        <element name="ExpenseListBudget" positionX="-531" positionY="-342" width="128" height="238"/>
-        <element name="ExpenseListHistory" positionX="-585" positionY="-396" width="128" height="73"/>
-        <element name="TipCalcRoundMethod" positionX="-576" positionY="-387" width="128" height="148"/>
-        <element name="ExpenseListItem" positionX="-567" positionY="-378" width="128" height="163"/>
+        <element name="DaysCounterEvent" positionX="-585" positionY="-396" width="128" height="328"/>
+        <element name="DaysCounterEventLocation" positionX="-576" positionY="-387" width="128" height="193"/>
+        <element name="LadyCalendarPeriod" positionX="-567" positionY="-378" width="128" height="223"/>
+        <element name="LadyCalendarAccount" positionX="-558" positionY="-369" width="128" height="148"/>
+        <element name="DaysCounterCalendar" positionX="-549" positionY="-360" width="128" height="163"/>
     </elements>
 </model>

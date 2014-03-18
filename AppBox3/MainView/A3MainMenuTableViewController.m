@@ -23,6 +23,9 @@
 #import "NSMutableArray+MoveObject.h"
 #import "A3AppDelegate+mainMenu.h"
 #import "A3TableViewExpandableCell.h"
+#import "A3DaysCounterModelManager.h"
+#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterCalendarListViewController.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
@@ -213,58 +216,56 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			element.needSecurityCheck = [elementDescription[kA3AppsMenuNeedSecurityCheck] boolValue];
 			element.doNotKeepAsRecent = [elementDescription[kA3AppsDoNotKeepAsRecent] boolValue];
 
-			if ([element.className_iPhone length] || [element.storyboardName_iPhone length]) {
 
-				__typeof(self) __weak weakSelf = self;
+			__typeof(self) __weak weakSelf = self;
 
-				element.onSelected = ^(A3TableViewElement *elementObject) {
-					@autoreleasepool {
-						A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
-						UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
+			element.onSelected = ^(A3TableViewElement *elementObject) {
+				@autoreleasepool {
+					A3TableViewMenuElement *menuElement = (A3TableViewMenuElement *) elementObject;
+					UIViewController *targetViewController= [self getViewControllerForElement:menuElement];
 
-						BOOL proceedPasscodeCheck = NO;
-						// Check active view controller
-						if (![weakSelf isActiveViewController:[targetViewController class]]) {
-							if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
-								proceedPasscodeCheck = YES;
+					BOOL proceedPasscodeCheck = NO;
+					// Check active view controller
+					if (![weakSelf isActiveViewController:[targetViewController class]]) {
+						if ([A3KeychainUtils getPassword] && [menuElement respondsToSelector:@selector(needSecurityCheck)] && [menuElement needSecurityCheck]) {
+							proceedPasscodeCheck = YES;
 
-								if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
-									proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
-								}
+							if ([menuElement.storyboardName_iPhone isEqualToString:@"A3Settings"]) {
+								proceedPasscodeCheck &= [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsKeyForAskPasscodeForSettings];
 							}
-							if (proceedPasscodeCheck) {
-								weakSelf.selectedElement = menuElement;
-								weakSelf.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
-								UIViewController *passcodeTargetViewController;
-								if (IS_IPHONE) {
-									passcodeTargetViewController = [self mm_drawerController];
-								} else {
-									passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
-								}
-								[_passcodeViewController showLockscreenInViewController:passcodeTargetViewController];
+						}
+						if (proceedPasscodeCheck) {
+							weakSelf.selectedElement = menuElement;
+							weakSelf.passcodeViewController = [UIViewController passcodeViewControllerWithDelegate:self];
+							UIViewController *passcodeTargetViewController;
+							if (IS_IPHONE) {
+								passcodeTargetViewController = [self mm_drawerController];
 							} else {
-								[weakSelf popToRootAndPushViewController:targetViewController];
-								[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
-
-								if (IS_IPHONE) {
-									[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
-										[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
-									}];
-								}
+								passcodeTargetViewController = [[A3AppDelegate instance] rootViewController];
 							}
+							[_passcodeViewController showLockscreenInViewController:passcodeTargetViewController];
 						} else {
+							[weakSelf popToRootAndPushViewController:targetViewController];
+							[weakSelf updateRecentlyUsedAppsWithElement:menuElement];
+
 							if (IS_IPHONE) {
 								[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
 									[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
 								}];
-							} else if (IS_PORTRAIT) {
-								[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 							}
 						}
+					} else {
+						if (IS_IPHONE) {
+							[self.mm_drawerController closeDrawerAnimated:YES completion:^(BOOL finished) {
+								[[NSNotificationCenter defaultCenter] postNotificationName:A3DrawerStateChanged object:nil];
+							}];
+						} else if (IS_PORTRAIT) {
+							[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+						}
 					}
+				}
 
-				};
-			}
+			};
 			[elementsArray addObject:element];
 		}
 	}
@@ -302,6 +303,18 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 - (UIViewController *)getViewControllerForElement:(A3TableViewMenuElement *)menuElement {
 	UIViewController *targetViewController;
+
+	if ([menuElement.title isEqualToString:@"Days Counter"]) {
+		[[A3DaysCounterModelManager sharedManager] prepare];
+		if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
+			targetViewController = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
+		}
+		else{
+			targetViewController = [[A3DaysCounterCalendarListViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+		}
+		return targetViewController;
+	}
+
 	if ([menuElement.className_iPhone length]) {
 		Class class;
 		NSString *nibName;

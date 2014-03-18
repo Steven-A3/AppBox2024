@@ -390,7 +390,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
 	@autoreleasepool {
 		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView tableView:self.tableView];
+		[self dismissMoreMenuView:_moreMenuView scrollView:self.tableView];
 		[self.view removeGestureRecognizer:gestureRecognizer];
 	}
 }
