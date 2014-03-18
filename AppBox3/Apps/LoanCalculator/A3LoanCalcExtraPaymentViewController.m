@@ -72,17 +72,17 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     if (_exPaymentType == A3LC_ExtraPaymentYearly) {
         self.navigationItem.title = @"Yearly";
         
-        if (_loanCalcData.extraPaymentYearlyDate == nil) {
-            _loanCalcData.extraPaymentYearlyDate = [NSDate date];
-        }
+//        if (_loanCalcData.extraPaymentYearlyDate == nil) {
+//            _loanCalcData.extraPaymentYearlyDate = [NSDate date];
+//        }
         
     }
     else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
         self.navigationItem.title = @"One-Time";
         
-        if (_loanCalcData.extraPaymentOneTimeDate == nil) {
-            _loanCalcData.extraPaymentOneTimeDate = [NSDate date];
-        }
+//        if (_loanCalcData.extraPaymentOneTimeDate == nil) {
+//            _loanCalcData.extraPaymentOneTimeDate = [NSDate date];
+//        }
     }
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -600,50 +600,84 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         inputCell.textField.placeholder = @"None";
         
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-            if (_loanCalcData.extraPaymentYearlyDate) {
-                
-                NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate;
-                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
-                NSInteger month = [components month];
-                
-                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                
-                if (IS_IPAD) {
-                    NSArray *months = [df monthSymbols];
-                    NSString *monthText = months[month - 1];
-                    inputCell.textField.text = monthText;
-                }
-                else {
-                    NSArray *months = [df shortMonthSymbols];
-                    NSString *monthText = months[month - 1];
-                    inputCell.textField.text = monthText;
-                }
+//            if (_loanCalcData.extraPaymentYearlyDate) {
+//                
+//                NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate;
+//                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
+//                NSInteger month = [components month];
+//                
+//                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//                
+//                if (IS_IPAD) {
+//                    NSArray *months = [df monthSymbols];
+//                    NSString *monthText = months[month - 1];
+//                    inputCell.textField.text = monthText;
+//                }
+//                else {
+//                    NSArray *months = [df shortMonthSymbols];
+//                    NSString *monthText = months[month - 1];
+//                    inputCell.textField.text = monthText;
+//                }
+//            }
+//            else {
+//                inputCell.textField.text = @"";
+//            }
+            
+            NSDate *pickDate = ![_loanCalcData extraPaymentYearlyDate] ? [NSDate date] : [_loanCalcData extraPaymentYearlyDate];
+            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:pickDate];
+            NSInteger month = [components month];
+            
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            
+            if (IS_IPAD) {
+                NSArray *months = [df monthSymbols];
+                NSString *monthText = months[month - 1];
+                inputCell.textField.text = monthText;
             }
             else {
-                inputCell.textField.text = @"";
+                NSArray *months = [df shortMonthSymbols];
+                NSString *monthText = months[month - 1];
+                inputCell.textField.text = monthText;
             }
+            
         }
         else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-            if (_loanCalcData.extraPaymentOneTimeDate) {
-                NSDate *pickDate = _loanCalcData.extraPaymentOneTimeDate;
-                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-
-                if (IS_IPAD) {
+//            if (_loanCalcData.extraPaymentOneTimeDate) {
+//                NSDate *pickDate = _loanCalcData.extraPaymentOneTimeDate;
+//                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+//
+//                if (IS_IPAD) {
+//                    inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//                }
+//                else {
+//                    // 한국만 예외적으로 long스타일 적용
+//                    NSLocale *locale = [NSLocale currentLocale];
+//                    if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
+//                        inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+//                    }
+//                    else {
+//                        inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
+//                    }
+//                }
+//            }
+//            else {
+//                inputCell.textField.text = @"";
+//            }
+            NSDate *pickDate = ![_loanCalcData extraPaymentOneTimeDate] ? [NSDate date] : [_loanCalcData extraPaymentOneTimeDate];
+            NSDateFormatter *df = [[NSDateFormatter alloc] init];
+            
+            if (IS_IPAD) {
+                inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
+            }
+            else {
+                // 한국만 예외적으로 long스타일 적용
+                NSLocale *locale = [NSLocale currentLocale];
+                if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
                     inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
                 }
                 else {
-                    // 한국만 예외적으로 long스타일 적용
-                    NSLocale *locale = [NSLocale currentLocale];
-                    if ([locale.localeIdentifier isEqualToString:@"ko_KR"]) {
-                        inputCell.textField.text = [df localizedLongStyleYearMonthFromDate:pickDate];
-                    }
-                    else {
-                        inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
-                    }
+                    inputCell.textField.text = [df localizedMediumStyleYearMonthFromDate:pickDate];
                 }
-            }
-            else {
-                inputCell.textField.text = @"";
             }
         }
         cell = inputCell;
