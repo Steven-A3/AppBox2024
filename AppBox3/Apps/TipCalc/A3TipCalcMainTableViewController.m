@@ -968,7 +968,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)rightBarButtons {
     if (IS_IPHONE) {
-        UIImage *image = [UIImage imageNamed:@"more_stroke"];
+        UIImage *image = [UIImage imageNamed:@"more"];
         UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
         self.navigationItem.rightBarButtonItems = @[moreButtonItem, saveItem];

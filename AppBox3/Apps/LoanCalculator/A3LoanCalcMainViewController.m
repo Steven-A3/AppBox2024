@@ -46,7 +46,7 @@
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
-@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate>
+@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate>
 {
     BOOL		_isShowMoreMenu;
     
@@ -80,7 +80,7 @@
 // comparison mode
 @property (nonatomic, strong) LoanCalcData *loanDataA;
 @property (nonatomic, strong) LoanCalcData *loanDataB;
-
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @end
 
 @implementation A3LoanCalcMainViewController
@@ -121,8 +121,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     self.navigationItem.titleView = self.selectSegment;
     
     if (IS_IPHONE) {
-        
-        UIImage *image = [UIImage imageNamed:@"more_stroke"];
+        UIImage *image = [UIImage imageNamed:@"more"];
         UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
 
         UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonAction:)];
@@ -791,6 +790,17 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)shareButtonAction:(id)sender {
 	@autoreleasepool {
 		[self clearEverything];
+        
+        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"Loan Calculator in the AppBox Pro"]
+                                                                               subject:@"Loan Calculator in the AppBox Pro"
+                                                                     fromBarButtonItem:sender];
+        
+        if (IS_IPAD) {
+            _sharePopoverController.delegate = self;
+            [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+                [buttonItem setEnabled:NO];
+            }];
+        }
 	}
 }
 
@@ -1333,6 +1343,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     else {
         return @"";
     }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	// Popver controller, iPad only.
+	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+		[buttonItem setEnabled:YES];
+	}];
+	_sharePopoverController = nil;
 }
 
 #pragma mark - Loan Mode Calculation
