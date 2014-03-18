@@ -139,6 +139,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     isFirstViewLoad = YES;
+    [self.percentFormatter setMaximumFractionDigits:3];
     
     // load data
     [self loadPreviousCalcultaion];
@@ -925,7 +926,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     switch (calcItem) {
         case A3LC_CalculationItemDownPayment:
         {
-            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
+//            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
             textFieldText = [self.loanFormatter stringFromNumber:_loanData.downPayment];
             break;
         }
@@ -937,7 +938,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         case A3LC_CalculationItemPrincipal:
         {
-            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
+//            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
             textFieldText = [self.loanFormatter stringFromNumber:_loanData.principal];
             break;
         }
@@ -965,7 +966,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)configureInputCell:(A3LoanCalcTextInputCell *)inputCell withExtraPaymentItem:(A3LoanCalcExtraPaymentType) extraPaymentItem
 {
     inputCell.titleLabel.text = [LoanCalcString titleOfExtraPayment:extraPaymentItem];
-    NSString *placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
+//    NSString *placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
+    NSString *placeHolderText = @"";
     NSString *textFieldText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly];
     inputCell.textField.text = textFieldText;
     inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderText
@@ -1191,6 +1193,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)initializeLoanData:(LoanCalcData *)loan
 {
     LoanCalcPreference *preference = [LoanCalcPreference new];
+    loan.principal = @0;
+    loan.downPayment = @0;
+    loan.extraPaymentMonthly = @0;
+    
     loan.frequencyIndex = A3LC_FrequencyMonthly;
     loan.startDate = [NSDate date];
     loan.calculationFor = A3LC_CalculationForRepayment;
@@ -1201,9 +1207,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)clearLoanData:(LoanCalcData *)loan
 {
-    loan.principal = nil;
+    loan.principal = @0;
     loan.repayment = nil;
-    loan.downPayment = nil;
+    loan.downPayment = @0;
     loan.monthOfTerms = nil;
     loan.annualInterestRate = nil;
     loan.calculationDate = nil;
@@ -1211,7 +1217,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     loan.startDate = [NSDate date];
     loan.note = @"";
     
-    loan.extraPaymentMonthly = nil;
+    loan.extraPaymentMonthly = @0;
     loan.extraPaymentOneTime = nil;
     loan.extraPaymentYearly = nil;
     loan.extraPaymentOneTimeDate = nil;
@@ -1285,7 +1291,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             {
                 NSString *unit = [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyMonthly];
                 int monthInt =  (int)round(data.monthOfTerms.doubleValue);
-                NSString *result = [NSString stringWithFormat:@"%d %@", monthInt, unit];
+                NSString *result = [NSString stringWithFormat:@"%ld %@", (long)monthInt, unit];
                 return result;
                 break;
             }
@@ -1301,7 +1307,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 //                break;
                 if (round([data.monthOfTerms doubleValue]) < 12.0) {
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
-                    NSString *result = [NSString stringWithFormat:@"(%d mo)", monthInt];
+                    NSString *result = [NSString stringWithFormat:@"(%ld mo)", (long)monthInt];
                     return result;
                     break;
                 }
@@ -1310,10 +1316,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]) - (12 * yearInt);
                     NSString *result;
                     if (monthInt == 0) {
-                        result = [NSString stringWithFormat:@"%d %@", yearInt, unit];
+                        result = [NSString stringWithFormat:@"%ld %@", (long)yearInt, unit];
                     }
                     else {
-                        result = [NSString stringWithFormat:@"%d %@(%d mo)", yearInt, unit, monthInt];
+                        result = [NSString stringWithFormat:@"%ld %@(%ld mo)", (long)yearInt, unit, (long)monthInt];
                     }
                     return result;
                     break;
@@ -2331,44 +2337,74 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     // update
     if (endIP.section == 2) {
         // calculation item
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+        
         NSNumber *calcItemNum = _calcItems[endIP.row];
         A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
-        double inputFloat = [textField.text doubleValue];
-        NSNumber *inputNum = @(inputFloat);
-        
+        //double inputFloat = [textField.text doubleValue];
+        NSNumber *inputNum = [formatter numberFromString:[textField text]];
+        float inputFloat = [inputNum floatValue];
+
         switch (calcItem) {
             case A3LC_CalculationItemDownPayment:
             {
-                _loanData.downPayment = inputNum;
-//                textField.text = [self.loanFormatter stringFromNumber:inputNum];
-                textField.text = [self.loanFormatter stringFromNumber:inputNum];
+                if ([textField.text length] > 0) {
+                    _loanData.downPayment = inputNum;
+                    textField.text = [self.loanFormatter stringFromNumber:inputNum];
+                }
+                else {
+                    textField.text = [self.loanFormatter stringFromNumber:_loanData.downPayment];
+                }
                 break;
             }
             case A3LC_CalculationItemInterestRate:
             {
-                NSNumber *percentNum = @(inputFloat/100.0);
-                _loanData.annualInterestRate = percentNum;
-                textField.text = [NSString stringWithFormat:@"%@%%", inputNum.stringValue];
-//                textField.text = [self.percentFormatter stringFromNumber:percentNum];
+                if ([textField.text length] > 0) {
+                    NSNumber *percentNum = @(inputFloat/100.0);
+                    _loanData.annualInterestRate = percentNum;
+                    textField.text = [self.percentFormatter stringFromNumber:percentNum];
+                }
+                else {
+                    textField.text = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
+                }
                 break;
             }
             case A3LC_CalculationItemPrincipal:
             {
-                _loanData.principal = inputNum;
-                textField.text = [self.loanFormatter stringFromNumber:inputNum];
+                if ([textField.text length] > 0) {
+                    _loanData.principal = inputNum;
+                    textField.text = [self.loanFormatter stringFromNumber:inputNum];
+                }
+                else {
+                    textField.text = [self.loanFormatter stringFromNumber:_loanData.principal];
+                }
+                
                 break;
             }
             case A3LC_CalculationItemRepayment:
             {
-                _loanData.repayment = inputNum;
-                textField.text = [self.loanFormatter stringFromNumber:inputNum];
+                if ([textField.text length] > 0) {
+                    _loanData.repayment = inputNum;
+                    textField.text = [self.loanFormatter stringFromNumber:inputNum];
+                }
+                else {
+                    textField.text = [self.loanFormatter stringFromNumber:_loanData.repayment];
+                }
+                
                 break;
             }
             case A3LC_CalculationItemTerm:
             {
-                _loanData.monthOfTerms = @(inputNum.integerValue * 12);
-                int years = inputNum.intValue;
-                textField.text = [NSString stringWithFormat:@"%d years", years];
+                if ([textField.text length] > 0) {
+                    _loanData.monthOfTerms = @(inputNum.integerValue * 12);
+                    int years = inputNum.intValue;
+                    textField.text = [NSString stringWithFormat:@"%d years", years];
+                }
+                else {
+                    textField.text = [NSString stringWithFormat:@"%d years", [_loanData.monthOfTerms intValue] / 12];
+                }
+                
                 break;
             }
             default:
@@ -2379,12 +2415,17 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         // extra payment
         NSNumber *exPayItemNum = _extraPaymentItems[endIP.row];
         A3LoanCalcExtraPaymentType exPayType = exPayItemNum.integerValue;
-        double inputFloat = [textField.text doubleValue];
+        float inputFloat = [textField.text floatValue];
         NSNumber *inputNum = @(inputFloat);
         
         if (exPayType == A3LC_ExtraPaymentMonthly) {
-            _loanData.extraPaymentMonthly = inputNum;
-            textField.text = [self.loanFormatter stringFromNumber:inputNum];
+            if ([textField.text length] > 0) {
+                _loanData.extraPaymentMonthly = inputNum;
+                textField.text = [self.loanFormatter stringFromNumber:inputNum];
+            }
+            else {
+                textField.text = [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly];
+            }
         }
     }
     
