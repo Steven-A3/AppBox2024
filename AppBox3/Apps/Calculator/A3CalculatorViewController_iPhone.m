@@ -161,6 +161,9 @@
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-4;
 }
 
+- (UIFont *) getResultLabelFont:(CGRect) screenBounds {
+    return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : screenBounds.size.height == 480 ? 62: 84];
+}
 
 /*
 -(CGFloat) getDegreeLabelBottomOffset:(CGRect) screenBounds {
@@ -198,7 +201,7 @@
 
 	[self.view addSubview:self.evaluatedResultLabel];
 	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(67);
+		make.left.equalTo(self.view.left).with.offset(30);
         self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
 		self.resultLabelBottomconstraint = make.bottom.equalTo(_keyboardView.top).with.offset([self getResultLabelBottomOffSet:screenBounds]);
 		self.resultLabelHeightconstraint = make.height.equalTo([self getResultLabelHight:screenBounds]);
@@ -260,7 +263,7 @@
 		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 		_evaluatedResultLabel = [HTCopyableLabel new];
 		_evaluatedResultLabel.backgroundColor = [UIColor whiteColor];
-		_evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : 84];
+		_evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
 		_evaluatedResultLabel.textColor = [UIColor blackColor];
 		_evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
 		_evaluatedResultLabel.text = @"0";
@@ -372,7 +375,7 @@
         
         
     }
-    
+    _evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
     self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
     self.expressionTopconstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
     self.resultLabelHeightconstraint.equalTo([self getResultLabelHight:screenBounds]);
