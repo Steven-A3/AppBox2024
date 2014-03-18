@@ -791,9 +791,69 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	@autoreleasepool {
 		[self clearEverything];
         
-        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[@"Loan Calculator in the AppBox Pro"]
-                                                                               subject:@"Loan Calculator in the AppBox Pro"
-                                                                     fromBarButtonItem:sender];
+        if (_isComparisonMode) {
+            NSMutableString *body = [NSMutableString new];
+            [body appendFormat:@"I'd like to share a calculation with you.\n"];
+            [body appendFormat:@"* Loan A \n"]; // * Loan A
+            [body appendFormat:@"Principal: \n"]; // Principal: $200,000.00 (입력값)
+            [body appendFormat:@"Down Payment: \n"]; // Down Payment: (값이 있는 경우)
+            [body appendFormat:@"Term: 5 years \n"]; // Term: 5 years (입력값)
+            [body appendFormat:@"Interest Rate: 4.62%% \n"]; // Interest Rate: 4.62% (입력값)
+            [body appendFormat:@"Frequency: Monthly \n"]; // Frequency: Monthly (선택값)
+            [body appendFormat:@"Extra Payment(monthly):  \n"]; // Extra Payment(monthly): (값이 있는 경우)
+            [body appendFormat:@"Extra Payment(yearly):  \n"]; // Extra Payment(yearly): (값이 있는 경우)
+            [body appendFormat:@"Extra Payment(one-time):  \n"]; // Extra Payment(one-time): (값이 있는 경우)
+            [body appendFormat:@"Payment:  \n"]; // Payment: (결과값)
+            [body appendFormat:@"Interest: $23,981.60  \n"]; // Interest: $23,981.60 (결과값)
+            [body appendFormat:@"Total Amount: $223,981.60 \n"]; // Total Amount: $223,981.60 (결과값)
+            [body appendFormat:@"* Loan B \n"]; // * Loan B
+            [body appendFormat:@"Principal: $200,000.00  \n"]; // Principal: $200,000.00 (입력값)
+            [body appendFormat:@"Down Payment:  \n"]; // Down Payment: (값이 있는 경우)
+            [body appendFormat:@"Term: 5 years \n"]; // Term: 5 years (입력값)
+            [body appendFormat:@"Interest Rate: 4.62%% \n"]; // Interest Rate: 4.62% (입력값)
+            [body appendFormat:@"Frequency: Monthly \n"]; // Frequency: Monthly (선택값)
+            [body appendFormat:@"Extra Payment(monthly):  \n"]; // Extra Payment(monthly): (값이 있는 경우)
+            [body appendFormat:@"Extra Payment(yearly):  \n"]; // Extra Payment(yearly): (값이 있는 경우)
+            [body appendFormat:@"Extra Payment(one-time):  \n"]; // Extra Payment(one-time): (값이 있는 경우)
+            [body appendFormat:@"Payment:  \n"]; // Payment: (결과값)
+            [body appendFormat:@"Interest: $23,981.60  \n"]; // Interest: $23,981.60 (결과값)
+            [body appendFormat:@"Total Amount: $223,981.60 \n"]; // Total Amount: $223,981.60 (결과값)
+            [body appendFormat:@"You can calculate more in the AppBox Pro. \n"]; // You can calculate more in the AppBox Pro.
+            [body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"]; // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
+            // 첨부파일 (monthly data 테이블로 csv 파일 만들어서 첨부해주세요)
+            // AppBoxPro_amortization_loanA.csv
+            // AppBoxPro_amortization_loanb.csv
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body]
+                                                                                   subject:@"Loan Calculator in the AppBox Pro"
+                                                                         fromBarButtonItem:sender];
+        }
+        else {
+            NSMutableString *body = [NSMutableString new];
+            [body appendFormat:@"I'd like to share a calculation with you.\n"];
+            [body appendFormat:@"Principal: %@\n", [_loanData principal]];
+            if ([_loanData downPayment]) {
+                [body appendFormat:@"Down Payment: %@\n", [_loanData downPayment]];
+            }
+            [body appendFormat:@"Term: %@ years.\n", @([[_loanData monthOfTerms] intValue] / 12)];
+            [body appendFormat:@"Interest Rate: %@%%\n", [_loanData annualInterestRate]];
+            [body appendFormat:@"Frequency: Monthly \n"];  // Frequency: Monthly (선택값)
+            [body appendFormat:@"Extra Payment(monthly): \n"];  // Extra Payment(monthly): (값이 있는 경우)
+            [body appendFormat:@"Extra Payment(yearly): \n"];  // Extra Payment(yearly): (값이 있는 경우)
+            [body appendFormat:@"Extra Payment(one-time): \n"];  // Extra Payment(one-time): (값이 있는 경우)
+            [body appendFormat:@"Payment: \n"];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+            [body appendFormat:@"Interest: \n"];  // Interest: $23,981.60 (결과값)
+            [body appendFormat:@"Total Amount: \n"];  // Total Amount: $223,981.60 (결과값)
+            [body appendFormat:@"You can calculate more in the AppBox Pro. \n"];  // You can calculate more in the AppBox Pro.
+            [body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"];  // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
+
+            // 첨부파일 (monthly data 테이블로 csv 파일 만들어서 첨부해주세요)
+            // AppBoxPro_amortization.csv
+
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body]
+                                                                                   subject:@"Loan Calculator in the AppBox Pro"
+                                                                         fromBarButtonItem:sender];
+        }
+        
         
         if (IS_IPAD) {
             _sharePopoverController.delegate = self;
