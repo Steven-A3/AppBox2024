@@ -383,13 +383,15 @@ NSString *kCalculationString;
                 
                 if (intervals.length <= 0) {
                     [shareString appendString:[NSString stringWithFormat:@"Added: 0 days\n"]];
-                } else {
+                }
+                else {
                     [shareString appendString:[NSString stringWithFormat:@"Added: %@\n", intervals]];
                 }
                 
                 [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
                 
-            } else {
+            }
+            else {
                 NSDateComponents *compAdd = [NSDateComponents new];
                 compAdd.year = self.offsetComp.year * -1;
                 compAdd.month = self.offsetComp.month * -1;
@@ -421,9 +423,8 @@ NSString *kCalculationString;
                 
                 [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
             }
-            
-        } else {
-            
+        }
+        else {
             /*  Between인 경우
              "Calculate duration between two dates.
              From and including: 시작날
