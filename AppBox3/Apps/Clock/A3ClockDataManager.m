@@ -108,16 +108,6 @@
 	NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
 	NSMutableArray *circleArray = [[userDefaults objectForKey:A3ClockWaveCircleLayout] mutableCopy];
 
-	NSUInteger weatherIndexToDelete = [circleArray indexOfObjectPassingTest:^BOOL(NSNumber *typeObj, NSUInteger idx, BOOL *stop) {
-		if (typeObj.unsignedIntegerValue == A3ClockWaveCircleTypeWeather) {
-			return !self.clockInfo.currentWeather;
-		}
-		return NO;
-	}];
-	if (weatherIndexToDelete != NSNotFound) {
-		[circleArray removeObjectAtIndex:weatherIndexToDelete];
-	}
-
 	if (circleArray) return circleArray;
 
 	circleArray = [NSMutableArray new];
