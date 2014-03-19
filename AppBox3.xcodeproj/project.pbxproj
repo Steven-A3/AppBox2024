@@ -2221,7 +2221,6 @@
 		68E2A60618D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListAddBudgetViewController.m; sourceTree = "<group>"; };
 		68E2A60718D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListColumnSectionView.h; sourceTree = "<group>"; };
 		68E2A60818D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListColumnSectionView.m; sourceTree = "<group>"; };
-		68E2A60918D0B1FC00E834D9 /* A3ExpenseListDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListDefines.h; sourceTree = "<group>"; };
 		68E2A60A18D0B1FC00E834D9 /* A3ExpenseListHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListHeaderView.h; sourceTree = "<group>"; };
 		68E2A60B18D0B1FC00E834D9 /* A3ExpenseListHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListHeaderView.m; sourceTree = "<group>"; };
 		68E2A60C18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListHistoryCell.h; sourceTree = "<group>"; };
@@ -4784,7 +4783,6 @@
 				68E2A60618D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m */,
 				68E2A60718D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.h */,
 				68E2A60818D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.m */,
-				68E2A60918D0B1FC00E834D9 /* A3ExpenseListDefines.h */,
 				68E2A60A18D0B1FC00E834D9 /* A3ExpenseListHeaderView.h */,
 				68E2A60B18D0B1FC00E834D9 /* A3ExpenseListHeaderView.m */,
 				68E2A60C18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.h */,

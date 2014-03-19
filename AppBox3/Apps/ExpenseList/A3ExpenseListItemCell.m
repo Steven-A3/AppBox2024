@@ -108,45 +108,39 @@
 
 -(void)setupConstraintLayout
 {
+    CGFloat leftInset = IS_IPHONE ? 15 : 28;
+    CGFloat sep1_Item = ceilf(CGRectGetWidth(self.contentView.frame) * 0.33);
+    CGFloat sep2_Price = ceilf(CGRectGetWidth(self.contentView.frame) * 0.26);
+    CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);    
+    
     [_checkButton makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(@15);
         make.centerY.equalTo(self.centerY);
         make.width.equalTo(@21);
         make.height.equalTo(@21);
     }];
+    
     [_sep1View makeConstraints:^(MASConstraintMaker *make) {
-        if ( IS_IPAD ) {
-            _sep1Const = make.leading.equalTo(@(IS_LANDSCAPE ? SEP1_XPOS_IPAD_LAND : SEP1_XPOS_IPAD));
-        } else {
-            _sep1Const = make.leading.equalTo(@(SEP1_XPOS_IPHONE));
-        }
+        _sep1Const = make.leading.equalTo(@(leftInset + sep1_Item));
         make.top.equalTo(self.contentView.top);
         make.width.equalTo(IS_RETINA? @0.5 : @1);
         make.height.equalTo(self.contentView.height);
     }];
+    
     [_sep2View makeConstraints:^(MASConstraintMaker *make) {
-        if ( IS_IPAD ) {
-            _sep2Const = make.leading.equalTo(@(IS_LANDSCAPE ? SEP2_XPOS_IPAD_LAND : SEP2_XPOS_IPAD));
-        } else {
-            _sep2Const = make.leading.equalTo(@(SEP2_XPOS_IPHONE));
-        }
-
+        _sep2Const = make.leading.equalTo(@(leftInset + sep1_Item + sep2_Price));
         make.top.equalTo(self.contentView.top);
         make.width.equalTo(IS_RETINA? @0.5 : @1);
         make.height.equalTo(self.contentView.height);
     }];
+    
     [_sep3View makeConstraints:^(MASConstraintMaker *make) {
-        
-        if ( IS_IPAD ) {
-            _sep3Const = make.leading.equalTo(@(IS_LANDSCAPE ? SEP3_XPOS_IPAD_LAND : SEP3_XPOS_IPAD));
-        } else {
-            _sep3Const = make.leading.equalTo(@(SEP3_XPOS_IPHONE));
-        }
-        
+        _sep3Const = make.leading.equalTo(@(leftInset + sep1_Item + sep2_Price + sep3_Quantity));
         make.top.equalTo(self.contentView.top);
         make.width.equalTo(IS_RETINA? @0.5 : @1);
         make.height.equalTo(self.contentView.height);
     }];
+    
     [_nameTextField makeConstraints:^(MASConstraintMaker *make) {
         if (IS_IPHONE) {
             make.leading.equalTo(@15);
@@ -157,18 +151,21 @@
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
+    
     [_priceTextField makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(_sep1View.right);
         make.trailing.equalTo(_sep2View.left).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
+    
     [_qtyTextField makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(_sep2View.right);
         make.trailing.equalTo(_sep3View.left);
         make.centerY.equalTo(self.contentView.centerY);
         make.height.equalTo(@23.0);
     }];
+    
     [_subTotalLabel makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(_sep3View.right);
         make.trailing.equalTo(self.contentView.right).with.offset(IS_IPHONE ? -5 : IS_RETINA ? -9.5 : -9);
@@ -179,6 +176,11 @@
 
 -(void)adjustConstraintLaout
 {
+    CGFloat leftInset = IS_IPHONE ? 15 : 28;
+    CGFloat sep1_Item = ceilf(CGRectGetWidth(self.contentView.frame) * 0.33);
+    CGFloat sep2_Price = ceilf(CGRectGetWidth(self.contentView.frame) * 0.26);
+    CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.contentView.frame) * 0.11);
+    
     if (IS_IPAD) {
         _nameTextField.font = [UIFont systemFontOfSize:17.0];
         _priceTextField.font = [UIFont systemFontOfSize:17.0];
@@ -192,28 +194,10 @@
         _qtyTextField.font = [UIFont systemFontOfSize:13.0];
         _subTotalLabel.font = [UIFont systemFontOfSize:13.0];
     }
-
     
-    if ( IS_IPAD ) {
-        _sep1Const.equalTo(@(IS_LANDSCAPE ? SEP1_XPOS_IPAD_LAND : SEP1_XPOS_IPAD));
-    }
-    else {
-        _sep1Const.equalTo(@(SEP1_XPOS_IPHONE));
-    }
-    
-    if ( IS_IPAD ) {
-        _sep2Const.equalTo(@(IS_LANDSCAPE ? SEP2_XPOS_IPAD_LAND : SEP2_XPOS_IPAD));
-    }
-    else {
-        _sep2Const.equalTo(@(SEP2_XPOS_IPHONE));
-    }
-    
-    if ( IS_IPAD ) {
-        _sep3Const.equalTo(@(IS_LANDSCAPE ? SEP3_XPOS_IPAD_LAND : SEP3_XPOS_IPAD));
-    }
-    else {
-        _sep3Const.equalTo(@(SEP3_XPOS_IPHONE));
-    }
+    _sep1Const.equalTo(@(leftInset + sep1_Item));
+    _sep2Const.equalTo(@(leftInset + sep1_Item + sep2_Price));
+    _sep3Const.equalTo(@(leftInset + sep1_Item + sep2_Price + sep3_Quantity));
 }
 
 #pragma mark - View Event

@@ -157,43 +157,28 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)drawCellSeparatorLineView
 {
-    CGFloat originX = 0.0;
+    CGFloat leftInset = IS_IPHONE ? 15 : 28;
+    CGFloat sep1XPos = (ceilf(CGRectGetWidth(self.view.frame) * 0.33));
+    CGFloat sep2XPos = (ceilf(CGRectGetWidth(self.view.frame) * 0.26));
+    CGFloat sep3XPos = (ceilf(CGRectGetWidth(self.view.frame) * 0.11));
+    
     CGRect rect = _sep1View.frame;
-    if ( IS_IPAD ) {
-        originX = IS_LANDSCAPE ? SEP1_XPOS_IPAD_LAND : SEP1_XPOS_IPAD;
-    }
-    else {
-        originX = SEP1_XPOS_IPHONE;
-    }
-    rect.origin.x = originX;
+    rect.origin.x = leftInset + sep1XPos;
     rect.origin.y = self.tableView.contentSize.height;//0.0;
     rect.size.width = IS_RETINA ? 0.5 : 1.0;
     rect.size.height = self.tableView.frame.size.height + self.tableView.contentSize.height;
     _sep1View.frame = rect;
     
-
-    if ( IS_IPAD ) {
-        originX = IS_LANDSCAPE ? SEP2_XPOS_IPAD_LAND : SEP2_XPOS_IPAD;
-    }
-    else {
-        originX = SEP2_XPOS_IPHONE;
-    }
     rect = _sep2View.frame;
-    rect.origin.x = originX;
+    rect.origin.x = leftInset + sep1XPos + sep2XPos;
     rect.origin.y = self.tableView.contentSize.height;//0.0;
     rect.size.width = IS_RETINA ? 0.5 : 1.0;
     rect.size.height = self.tableView.frame.size.height + self.tableView.contentSize.height;
     _sep2View.frame = rect;
     
 
-    if ( IS_IPAD ) {
-        originX = IS_LANDSCAPE ? SEP3_XPOS_IPAD_LAND : SEP3_XPOS_IPAD;
-    }
-    else {
-        originX = SEP3_XPOS_IPHONE;
-    }
     rect = _sep3View.frame;
-    rect.origin.x = originX;
+    rect.origin.x = leftInset + sep1XPos + sep2XPos + sep3XPos;
     rect.origin.y = self.tableView.contentSize.height;//0.0;
     rect.size.width = IS_RETINA ? 0.5 : 1.0;
     rect.size.height = self.tableView.frame.size.height + self.tableView.contentSize.height;
