@@ -508,44 +508,42 @@
 - (NSArray *)paymentList
 {
     NSMutableArray * paymentList = [NSMutableArray new];
-    if (!paymentList) {
-        paymentList = [[NSMutableArray alloc] init];
+    paymentList = [[NSMutableArray alloc] init];
+    
+    // date, payment, principal, interest, balance
+    
+    double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
+    double balance = (self.principal.doubleValue - downPayment);
+    NSUInteger paymentIndex = 0;    // start from 0
+    
+    do {
+        NSDate *payDate = [self dateOfPaymentIndex:paymentIndex];
+        NSNumber *interest = @(balance * [self interestRateOfFrequency]);
         
-        // date, payment, principal, interest, balance
+        double paymentTmp = [self paymentOfPaymentIndex:paymentIndex].doubleValue;
+        if ((paymentTmp-interest.floatValue) > balance) {
+            paymentTmp = balance + interest.floatValue;
+        }
+        NSNumber *payment = @(paymentTmp);
+        NSNumber *principal = @(payment.doubleValue - interest.doubleValue);
+        balance -= principal.doubleValue;
         
-        double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
-        double balance = (self.principal.doubleValue - downPayment);
-        NSUInteger paymentIndex = 0;    // start from 0
+        // 간혹 마지막 차에서 소수점이 남는 문제를 보정하기 위해 0.5미만은 0으로 바꾼다.
+        if (balance < 0.5) {
+            balance = 0;
+        }
+        NSNumber *balanceNum = @(balance);
         
-        do {
-            NSDate *payDate = [self dateOfPaymentIndex:paymentIndex];
-            NSNumber *interest = @(balance * [self interestRateOfFrequency]);
-            
-            double paymentTmp = [self paymentOfPaymentIndex:paymentIndex].doubleValue;
-            if ((paymentTmp-interest.floatValue) > balance) {
-                paymentTmp = balance + interest.floatValue;
-            }
-            NSNumber *payment = @(paymentTmp);
-            NSNumber *principal = @(payment.doubleValue - interest.doubleValue);
-            balance -= principal.doubleValue;
-            
-            // 간혹 마지막 차에서 소수점이 남는 문제를 보정하기 위해 0.5미만은 0으로 바꾼다.
-            if (balance < 0.5) {
-                balance = 0;
-            }
-            NSNumber *balanceNum = @(balance);
-            
-            [paymentList addObject:@{
-                                      @"Date": payDate,
-                                      @"Payment": payment,
-                                      @"Principal": principal,
-                                      @"Interest": interest,
-                                      @"Balance": balanceNum
-                                      }];
-            paymentIndex++;
-            
-        } while (balance > 0);
-    }
+        [paymentList addObject:@{
+                                 @"Date": payDate,
+                                 @"Payment": payment,
+                                 @"Principal": principal,
+                                 @"Interest": interest,
+                                 @"Balance": balanceNum
+                                 }];
+        paymentIndex++;
+        
+    } while (balance > 0);
     
     return paymentList;
 }
