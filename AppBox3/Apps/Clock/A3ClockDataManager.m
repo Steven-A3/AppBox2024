@@ -34,13 +34,10 @@
 - (id)init {
 	self = [super init];
 	if (self) {
-		if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
-			if ([[A3AppDelegate instance].reachability isReachable]) {
-				[self.locationManager startMonitoringSignificantLocationChanges];
-			}
-		} else {
-			[[NSUserDefaults standardUserDefaults] setClockShowWeather:NO];
+		if ([[A3AppDelegate instance].reachability isReachable]) {
+			[self.locationManager startMonitoringSignificantLocationChanges];
 		}
+
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
 	}
@@ -113,7 +110,7 @@
 
 	NSUInteger weatherIndexToDelete = [circleArray indexOfObjectPassingTest:^BOOL(NSNumber *typeObj, NSUInteger idx, BOOL *stop) {
 		if (typeObj.unsignedIntegerValue == A3ClockWaveCircleTypeWeather) {
-			return (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized);
+			return !self.clockInfo.currentWeather;
 		}
 		return NO;
 	}];
@@ -122,10 +119,6 @@
 	}
 
 	if (circleArray) return circleArray;
-
-	if (![CLLocationManager locationServicesEnabled] || [CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorized) {
-		[userDefaults setClockShowWeather:NO];
-	}
 
 	circleArray = [NSMutableArray new];
 	[circleArray addObject:@(A3ClockWaveCircleTypeTime)];
@@ -491,10 +484,9 @@
 
 - (void)updateWeather {
 	_weatherTimer = nil;
-	if ([CLLocationManager locationServicesEnabled] && [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized) {
-		if ([[A3AppDelegate instance].reachability isReachable]) {
-			[self.locationManager startMonitoringSignificantLocationChanges];
-		}
+
+	if ([[A3AppDelegate instance].reachability isReachable]) {
+		[self.locationManager startMonitoringSignificantLocationChanges];
 	}
 }
 

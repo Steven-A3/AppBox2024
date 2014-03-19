@@ -140,6 +140,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
+	FNLOG();
 	if ([self isMovingToParentViewController]) {
 		[self layoutSubviews];
 		[self.clockDataManager startTimer];
@@ -152,6 +153,10 @@
 	[super viewDidAppear:animated];
 
 	[self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
+
+	if ([self isMovingToParentViewController]) {
+		[self showMenus:YES];
+	}
 }
 
 - (void)settingsChanged {
@@ -500,7 +505,9 @@
 }
 
 - (void)layoutSubviews {
+	self.view.frame = [self screenBoundsAdjustedWithOrientation];
 	CGRect bounds = self.view.bounds;
+	FNLOGRECT(bounds);
 
 	[self.viewControllers enumerateObjectsUsingBlock:^(UIViewController *viewController, NSUInteger idx, BOOL *stop) {
 		CGRect frame = CGRectMake(bounds.size.width * idx, 0, bounds.size.width, bounds.size.height);

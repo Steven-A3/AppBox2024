@@ -28,7 +28,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 @interface A3AppDelegate () <CLLocationManagerDelegate>
 
-@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSString *previousVersion;
 
 @end
@@ -46,14 +45,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 	if (!_previousVersion) {
 		[A3KeychainUtils removePassword];
 	}
-
-	FNLOG(@"Location available: %@", [CLLocationManager locationServicesEnabled] ? @"YES" : @"NO");
-	FNLOG(@"Location kCLAuthorizationStatusAuthorized: %@", [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized ? @"YES" : @"NO");
-
-	_locationManager = [CLLocationManager new];
-	_locationManager.delegate = self;
-	_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
-	[_locationManager startMonitoringSignificantLocationChanges];
 
 	self.reachability = [Reachability reachabilityWithHostname:@"www.google.com"];
 	[self.reachability startNotifier];
@@ -217,11 +208,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 - (UIViewController *)visibleViewController {
 	UINavigationController *navigationController = [self navigationController];
 	return [navigationController visibleViewController];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-	[_locationManager stopMonitoringSignificantLocationChanges];
-	_locationManager = nil;
 }
 
 - (NSCalendar *)calendar {

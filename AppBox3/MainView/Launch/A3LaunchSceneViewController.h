@@ -13,5 +13,7 @@
 @interface A3LaunchSceneViewController : UIViewController
 
 @property (nonatomic, weak) id<A3LaunchSceneViewControllerDelegate> delegate;
+@property (nonatomic, assign) NSUInteger sceneNumber;
 
+@property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @end

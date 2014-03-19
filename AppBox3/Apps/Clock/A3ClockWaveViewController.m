@@ -14,6 +14,7 @@
 #import "A3UIDevice.h"
 #import "A3AppDelegate.h"
 #import "Reachability.h"
+#import "UIViewController+A3Addition.h"
 
 @interface A3ClockWaveViewController () <A3ClockWaveCircleDelegate>
 
@@ -91,6 +92,8 @@
 
 - (void)layoutSubviews
 {
+	self.view.frame = [self screenBoundsAdjustedWithOrientation];
+
 	if (IS_IPHONE) {
 		[self layoutSubViewsIPHONE];
 	} else {
@@ -316,6 +319,7 @@
 	NSArray *centerArray;
 	NSUInteger numberOfViews = [_circleArray count];
 	CGRect bounds = self.view.bounds;
+	FNLOGRECT(bounds);
 
 	switch (numberOfViews) {
 		case 1:

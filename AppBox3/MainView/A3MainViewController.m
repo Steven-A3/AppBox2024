@@ -8,7 +8,6 @@
 
 #import "A3MainViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "A3LaunchSceneTransitionManager.h"
 
 @interface A3MainViewController ()
 

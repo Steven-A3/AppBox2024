@@ -55,4 +55,5 @@
 
 - (void)willDismissFromRightSide;
 
+- (void)alertCloudNotEnabled;
 @end

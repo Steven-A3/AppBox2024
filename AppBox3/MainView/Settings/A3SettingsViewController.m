@@ -141,8 +141,7 @@ typedef NS_ENUM(NSInteger, A3SettingsTableViewRow) {
 
 - (void)toggleCloud:(UISwitch *)switchControl {
 	if ([switchControl isOn] && ![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
-		UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"iCloud" message:@"Please goto Settings of your device. Enable iCloud and Documents and Data storages in your Settings to gain access to this feature." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertView show];
+		[self alertCloudNotEnabled];
 		[switchControl setOn:NO animated:YES];
 		return;
 	}

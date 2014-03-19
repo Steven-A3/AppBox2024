@@ -121,7 +121,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     self.navigationItem.titleView = self.selectSegment;
     
     if (IS_IPHONE) {
-        
         UIImage *image = [UIImage imageNamed:@"more_stroke"];
         UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
 

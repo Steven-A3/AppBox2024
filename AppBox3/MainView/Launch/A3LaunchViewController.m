@@ -7,21 +7,25 @@
 //
 
 #import "A3LaunchViewController.h"
-#import "A3LaunchSceneTransitionManager.h"
 #import "A3ClockMainViewController.h"
 #import "A3LaunchSceneViewController.h"
+#import "UIViewController+MMDrawerController.h"
+#import "A3AppDelegate.h"
+#import "UIViewController+A3Addition.h"
+#import "A3AppDelegate+iCloud.h"
+
+NSString *const A3UserDefaultsDidShowWhatsNew_3_0 = @"A3UserDefaultsDidShowWhatsNew_3_0";
 
 @interface A3LaunchViewController () <UIViewControllerTransitioningDelegate>
 
-@property (nonatomic, strong) A3LaunchSceneTransitionManager *transitionManager;
 @property (nonatomic, strong) UIStoryboard *launchStoryboard;
 @property (nonatomic, strong) A3LaunchSceneViewController *currentSceneViewController;
-@property (nonatomic, strong) A3LaunchSceneViewController *nextSceneViewController;
 
 @end
 
 @implementation A3LaunchViewController {
 	NSUInteger sceneNumber;
+	BOOL		cloudButtonUsed;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,13 +42,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
+	if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+		return;
+	}
+	
 	sceneNumber = 0;
 
-	_launchStoryboard = [UIStoryboard storyboardWithName:@"Launch" bundle:nil];
+	_launchStoryboard = [UIStoryboard storyboardWithName:IS_IPHONE ? @"Launch_iPhone" : @"Launch_iPad" bundle:nil];
 	_currentSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:@"LaunchScene0"];
+	_currentSceneViewController.sceneNumber = sceneNumber;
 	_currentSceneViewController.delegate = self;
-
 	[self.view addSubview:_currentSceneViewController.view];
+	[self addChildViewController:_currentSceneViewController];
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,50 +65,75 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[self.navigationController setNavigationBarHidden:YES animated:NO];
-	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+	if ([self isMovingToParentViewController]) {
+		if ([[NSUserDefaults standardUserDefaults] boolForKey:A3UserDefaultsDidShowWhatsNew_3_0]) {
+			A3ClockMainViewController *clockVC = [A3ClockMainViewController new];
+			[self.navigationController pushViewController:clockVC animated:NO];
 
-	UIImage *image = [UIImage new];
-	[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-	[self.navigationController.navigationBar setShadowImage:image];
-}
-
-- (A3LaunchSceneTransitionManager *)transitionManager {
-	if (!_transitionManager) {
-		_transitionManager = [A3LaunchSceneTransitionManager new];
+			if (IS_IPHONE) {
+				[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:NO completion:nil];
+			}
+		}
+		else
+		{
+			[self.navigationController setNavigationBarHidden:YES animated:NO];
+			[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationNone];
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
+			
+			UIImage *image = [UIImage new];
+			[self.navigationController.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+			[self.navigationController.navigationBar setShadowImage:image];
+			
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:A3UserDefaultsDidShowWhatsNew_3_0];
+			[[NSUserDefaults standardUserDefaults] synchronize];
+		}
 	}
-	return _transitionManager;
-}
-
-- (IBAction)continueButtonAction:(UIButton *)sender {
-}
-
-#pragma mark - UIVieControllerTransitioningDelegate -
-
-- (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented
-                                                                   presentingController:(UIViewController *)presenting
-                                                                       sourceController:(UIViewController *)source{
-    return self.transitionManager;
-}
-
-- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
-{
-    return self.transitionManager;
 }
 
 - (void)useICloudButtonPressedInViewController:(UIViewController *)viewController {
+	if (!cloudButtonUsed) {
+		cloudButtonUsed = YES;
+		[_currentSceneViewController.rightButton setTitle:@"Continue" forState:UIControlStateNormal];
 
+		if (![[A3AppDelegate instance].ubiquityStoreManager cloudAvailable]) {
+			[self alertCloudNotEnabled];
+			return;
+		}
+		[[A3AppDelegate instance] setCloudEnabled:YES];
+	} else {
+		[self continueButtonPressedInViewController:_currentSceneViewController];
+	}
 }
 
 - (void)continueButtonPressedInViewController:(UIViewController *)viewController {
 	sceneNumber++;
-	A3LaunchSceneViewController *nextSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:[NSString stringWithFormat:@"LaunchScene%ld", (long)sceneNumber]];
+	A3LaunchSceneViewController *nextSceneViewController = [_launchStoryboard instantiateViewControllerWithIdentifier:[NSString stringWithFormat:@"LaunchScene%ld", (long) sceneNumber]];
+	nextSceneViewController.sceneNumber = sceneNumber;
 	nextSceneViewController.delegate = self;
-	nextSceneViewController.transitioningDelegate = self;
-	nextSceneViewController.modalPresentationStyle = UIModalPresentationCustom;
-	_currentSceneViewController = nextSceneViewController;
-	[viewController presentViewController:nextSceneViewController animated:YES completion:nil];
+
+	CGRect currentViewFrame = _currentSceneViewController.view.frame;
+
+	nextSceneViewController.view.frame = CGRectMake(currentViewFrame.size.width, 0, currentViewFrame.size.width, currentViewFrame.size.height);
+	[self.view addSubview:nextSceneViewController.view];
+
+	[UIView animateWithDuration:1.0
+						  delay:0.0
+		 usingSpringWithDamping:.8
+		  initialSpringVelocity:6.0
+						options:UIViewAnimationOptionCurveEaseIn
+					 animations:^{
+						 _currentSceneViewController.view.frame = CGRectMake(-currentViewFrame.size.width, 0, currentViewFrame.size.width, currentViewFrame.size.height);
+						 nextSceneViewController.view.frame = currentViewFrame;
+					 }
+			completion:^(BOOL finished) {
+				[_currentSceneViewController.view removeFromSuperview];
+				[_currentSceneViewController removeFromParentViewController];
+				_currentSceneViewController = nil;
+
+				[self addChildViewController:nextSceneViewController];
+				_currentSceneViewController = nextSceneViewController;
+			}
+	];
 }
 
 - (void)useAppBoxButtonPressedInViewController:(UIViewController *)viewController {

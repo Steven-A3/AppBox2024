@@ -678,6 +678,7 @@
 		68BB306D16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BB306B16841F6000C3498B /* A3NumberKeyboardViewController_iPad.m */; };
 		68BB306E16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */; };
 		68BDC58317A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BDC58217A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m */; };
+		68BF9B3218D9288600D13872 /* Launch_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68BF9B3118D9288600D13872 /* Launch_iPad.storyboard */; };
 		68C11CBC1808025F00F05F77 /* A3KeyboardButton_iOS7.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C11CBB1808025F00F05F77 /* A3KeyboardButton_iOS7.m */; };
 		68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C1ABF918B1C05200021001 /* NSDateFormatter+LunarDate.m */; };
 		68C26F1617C71CF400751BE3 /* A3ImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C26F1517C71CF400751BE3 /* A3ImageView.m */; };
@@ -930,10 +931,9 @@
 		68F1C91D18D81D3E009FAE8A /* FSConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C91418D81D3E009FAE8A /* FSConverter.m */; };
 		68F1C91E18D81D3E009FAE8A /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C91618D81D3E009FAE8A /* FSVenue.m */; };
 		68F1C92318D82500009FAE8A /* NYXProgressiveImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */; };
-		68F319FB18D83D1F0003BE62 /* A3LaunchSceneTransitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F518D83D1F0003BE62 /* A3LaunchSceneTransitionManager.m */; };
 		68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */; };
 		68F319FD18D83D1F0003BE62 /* A3LaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */; };
-		68F319FE18D83D1F0003BE62 /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68F319FA18D83D1F0003BE62 /* Launch.storyboard */; };
+		68F319FE18D83D1F0003BE62 /* Launch_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68F319FA18D83D1F0003BE62 /* Launch_iPhone.storyboard */; };
 		68F32E51188AC3C600248F16 /* UITableViewController+standardDimension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F32E50188AC3C600248F16 /* UITableViewController+standardDimension.m */; };
 		68F3A9E61677320100DFCAB7 /* A3YellowXButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F3A9E51677320100DFCAB7 /* A3YellowXButton.m */; };
 		68F4EE8117E461A0009BDE05 /* A3ImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F4EE8017E461A0009BDE05 /* A3ImageCropperViewController.m */; };
@@ -2119,6 +2119,7 @@
 		68BB306C16841F6000C3498B /* A3NumberKeyboardViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardViewController_iPad.xib; sourceTree = "<group>"; };
 		68BDC58117A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardButton_iOS7_iPhone.h; sourceTree = "<group>"; };
 		68BDC58217A0C56900E29E15 /* A3KeyboardButton_iOS7_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardButton_iOS7_iPhone.m; sourceTree = "<group>"; };
+		68BF9B3118D9288600D13872 /* Launch_iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch_iPad.storyboard; sourceTree = "<group>"; };
 		68C11CBA1808025F00F05F77 /* A3KeyboardButton_iOS7.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardButton_iOS7.h; sourceTree = "<group>"; };
 		68C11CBB1808025F00F05F77 /* A3KeyboardButton_iOS7.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardButton_iOS7.m; sourceTree = "<group>"; };
 		68C1ABF818B1C05200021001 /* NSDateFormatter+LunarDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDateFormatter+LunarDate.h"; sourceTree = "<group>"; };
@@ -2553,13 +2554,11 @@
 		68F1C91F18D8248A009FAE8A /* NYXImagesKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXImagesKit.h; sourceTree = "<group>"; };
 		68F1C92118D82500009FAE8A /* NYXProgressiveImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NYXProgressiveImageView.h; sourceTree = "<group>"; };
 		68F1C92218D82500009FAE8A /* NYXProgressiveImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NYXProgressiveImageView.m; sourceTree = "<group>"; };
-		68F319F418D83D1F0003BE62 /* A3LaunchSceneTransitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneTransitionManager.h; sourceTree = "<group>"; };
-		68F319F518D83D1F0003BE62 /* A3LaunchSceneTransitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneTransitionManager.m; sourceTree = "<group>"; };
 		68F319F618D83D1F0003BE62 /* A3LaunchSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchSceneViewController.h; sourceTree = "<group>"; };
 		68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchSceneViewController.m; sourceTree = "<group>"; };
 		68F319F818D83D1F0003BE62 /* A3LaunchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LaunchViewController.h; sourceTree = "<group>"; };
 		68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LaunchViewController.m; sourceTree = "<group>"; };
-		68F319FA18D83D1F0003BE62 /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		68F319FA18D83D1F0003BE62 /* Launch_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch_iPhone.storyboard; sourceTree = "<group>"; };
 		68F32E4F188AC3C600248F16 /* UITableViewController+standardDimension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+standardDimension.h"; sourceTree = "<group>"; };
 		68F32E50188AC3C600248F16 /* UITableViewController+standardDimension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+standardDimension.m"; sourceTree = "<group>"; };
 		68F3A9E41677320100DFCAB7 /* A3YellowXButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3YellowXButton.h; sourceTree = "<group>"; };
@@ -3524,15 +3523,15 @@
 		683B954915EB233500575377 /* MainView */ = {
 			isa = PBXGroup;
 			children = (
-				68F319F318D83D1F0003BE62 /* Launch */,
-				684E9EF4188A203B00FAA48E /* About */,
-				6830C77E18519BF90075010F /* Settings */,
-				68B635BD17B504C100570B09 /* A3RootViewController_iPad.h */,
-				68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */,
 				17D42540FDF81A08CF1E081E /* A3MainMenuTableViewController.h */,
 				17D42C744692C76C892CBBCC /* A3MainMenuTableViewController.m */,
 				6883D5E0183E7ABA00808CD2 /* A3MainViewController.h */,
 				6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */,
+				68B635BD17B504C100570B09 /* A3RootViewController_iPad.h */,
+				68B635BE17B504C100570B09 /* A3RootViewController_iPad.m */,
+				684E9EF4188A203B00FAA48E /* About */,
+				68F319F318D83D1F0003BE62 /* Launch */,
+				6830C77E18519BF90075010F /* Settings */,
 			);
 			path = MainView;
 			sourceTree = "<group>";
@@ -5245,13 +5244,12 @@
 		68F319F318D83D1F0003BE62 /* Launch */ = {
 			isa = PBXGroup;
 			children = (
-				68F319F418D83D1F0003BE62 /* A3LaunchSceneTransitionManager.h */,
-				68F319F518D83D1F0003BE62 /* A3LaunchSceneTransitionManager.m */,
 				68F319F618D83D1F0003BE62 /* A3LaunchSceneViewController.h */,
 				68F319F718D83D1F0003BE62 /* A3LaunchSceneViewController.m */,
 				68F319F818D83D1F0003BE62 /* A3LaunchViewController.h */,
 				68F319F918D83D1F0003BE62 /* A3LaunchViewController.m */,
-				68F319FA18D83D1F0003BE62 /* Launch.storyboard */,
+				68F319FA18D83D1F0003BE62 /* Launch_iPhone.storyboard */,
+				68BF9B3118D9288600D13872 /* Launch_iPad.storyboard */,
 			);
 			path = Launch;
 			sourceTree = "<group>";
@@ -5413,6 +5411,7 @@
 				68B6A35218CEC76D004084EF /* WalletPhoneStoryBoard.storyboard in Resources */,
 				68F1C88E18D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib in Resources */,
 				68E2A6BB18D0B22800E834D9 /* TipCalcUsaTax in Resources */,
+				68BF9B3218D9288600D13872 /* Launch_iPad.storyboard in Resources */,
 				68F1C89118D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib in Resources */,
 				68B6A32718CEC76D004084EF /* A3WalletCateTitleView_iPad.xib in Resources */,
 				684D92F918BC1FBC005016F7 /* A3DateCalcHeaderView.xib in Resources */,
@@ -5471,7 +5470,7 @@
 				68F1C8CA18D7F37D009FAE8A /* A3LadyCalendarListCell.xib in Resources */,
 				68B6A2D518CEC76D004084EF /* A3UnitConverterTVActionCell.xib in Resources */,
 				68DAF6F116BFE3B000775372 /* Localizable.strings in Resources */,
-				68F319FE18D83D1F0003BE62 /* Launch.storyboard in Resources */,
+				68F319FE18D83D1F0003BE62 /* Launch_iPhone.storyboard in Resources */,
 				68F1C8B018D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.xib in Resources */,
 				68F1C88718D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib in Resources */,
 				68F1C8A218D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.xib in Resources */,
@@ -6054,7 +6053,6 @@
 				6829683018503B2100B70E13 /* NSPersistentStoreCoordinator+MagicalManualMigrations.m in Sources */,
 				68B6A30E18CEC76D004084EF /* WalletFieldItem+initialize.m in Sources */,
 				68953480178686AF007061CA /* UIImage+Resizing.m in Sources */,
-				68F319FB18D83D1F0003BE62 /* A3LaunchSceneTransitionManager.m in Sources */,
 				680886DD1891751B0093FD97 /* A3ClockViewController.m in Sources */,
 				68B6A49C18CF3311004084EF /* WalletCategory.m in Sources */,
 				68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */,
