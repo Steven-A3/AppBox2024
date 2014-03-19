@@ -361,8 +361,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (NSArray *)tableSectionDataAtSection:(NSInteger)section {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterDecimalStyle;
-    formatter.minimumFractionDigits = 2;
+    formatter.numberStyle = kCFNumberFormatterNoStyle;
+    formatter.maximumFractionDigits = 2;
     NSArray * result;
     
     switch (section) {
@@ -641,7 +641,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark - Delegate
 #pragma mark Settings
 - (void)tipCalcSettingsChanged {
-    //    [_headerView layoutIfNeeded];
     [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
     //    [UIView animateWithDuration:0.3 animations:^{
     self.tableView.tableHeaderView = [self headerView];
@@ -731,14 +730,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         _headerView.beforeSplitButton.selected = NO;
         _headerView.perPersonButton.selected = YES;
     }
-}
-
-- (NSString*)percentFormattedStringTipCalc:(NSString*)aNum
-{
-    NSString* strRst = [aNum stringByReplacingOccurrencesOfString:@"%" withString:@""];
-    strRst = [NSString stringWithFormat:@"%@%%", strRst];
-    
-    return strRst;
 }
 
 #pragma mark - keyboard Stuff
