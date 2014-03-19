@@ -796,19 +796,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             NSMutableString *body = [NSMutableString new];
             [body appendFormat:@"I'd like to share a calculation with you.\n\n"];
             
-//            [body appendFormat:@"* Loan A \n"]; // * Loan A
-//            [body appendFormat:@"Principal: \n"]; // Principal: $200,000.00 (입력값)
-//            [body appendFormat:@"Down Payment: \n"]; // Down Payment: (값이 있는 경우)
-//            [body appendFormat:@"Term: 5 years \n"]; // Term: 5 years (입력값)
-//            [body appendFormat:@"Interest Rate: 4.62%% \n"]; // Interest Rate: 4.62% (입력값)
-//            [body appendFormat:@"Frequency: Monthly \n"]; // Frequency: Monthly (선택값)
-//            [body appendFormat:@"Extra Payment(monthly):  \n"]; // Extra Payment(monthly): (값이 있는 경우)
-//            [body appendFormat:@"Extra Payment(yearly):  \n"]; // Extra Payment(yearly): (값이 있는 경우)
-//            [body appendFormat:@"Extra Payment(one-time):  \n"]; // Extra Payment(one-time): (값이 있는 경우)
-//            [body appendFormat:@"Payment:  \n"]; // Payment: (결과값)
-//            [body appendFormat:@"Interest: $23,981.60  \n"]; // Interest: $23,981.60 (결과값)
-//            [body appendFormat:@"Total Amount: $223,981.60 \n"]; // Total Amount: $223,981.60 (결과값)
-//            [body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanData.principal]];
             // * Loan A
             [body appendFormat:@"* Loan A \n"];
             [body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanDataA.principal]];
@@ -835,24 +822,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
             }
             else {
-                // monthly
-                //[body appendFormat:@"Interest: %@ (monthly)\n", [_loanDataA monthlyAverageInterest]];  // Interest: $23,981.60 (결과값)
                 [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
                 [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
             }
             
-//            [body appendFormat:@"* Loan B \n"]; // * Loan B
-//            [body appendFormat:@"Principal: $200,000.00  \n"]; // Principal: $200,000.00 (입력값)
-//            [body appendFormat:@"Down Payment:  \n"]; // Down Payment: (값이 있는 경우)
-//            [body appendFormat:@"Term: 5 years \n"]; // Term: 5 years (입력값)
-//            [body appendFormat:@"Interest Rate: 4.62%% \n"]; // Interest Rate: 4.62% (입력값)
-//            [body appendFormat:@"Frequency: Monthly \n"]; // Frequency: Monthly (선택값)
-//            [body appendFormat:@"Extra Payment(monthly):  \n"]; // Extra Payment(monthly): (값이 있는 경우)
-//            [body appendFormat:@"Extra Payment(yearly):  \n"]; // Extra Payment(yearly): (값이 있는 경우)
-//            [body appendFormat:@"Extra Payment(one-time):  \n"]; // Extra Payment(one-time): (값이 있는 경우)
-//            [body appendFormat:@"Payment:  \n"]; // Payment: (결과값)
-//            [body appendFormat:@"Interest: $23,981.60  \n"]; // Interest: $23,981.60 (결과값)
-//            [body appendFormat:@"Total Amount: $223,981.60 \n"]; // Total Amount: $223,981.60 (결과값)
+            // * Loan B
             [body appendFormat:@"\n* Loan B \n"];
             [body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanDataB.principal]];
             if ([_loanDataB downPayment]) {
@@ -878,8 +852,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
             }
             else {
-                // monthly
-                //[body appendFormat:@"Interest: %@ (monthly)\n", [_loanDataB monthlyAverageInterest]];  // Interest: $23,981.60 (결과값)
                 [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
                 [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
             }
@@ -887,7 +859,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             
             [body appendFormat:@"\nYou can calculate more in the AppBox Pro. \n"]; // You can calculate more in the AppBox Pro.
             [body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"]; // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
-            // 첨부파일 (monthly data 테이블로 csv 파일 만들어서 첨부해주세요)
             // AppBoxPro_amortization_loanA.csv
             // AppBoxPro_amortization_loanb.csv
             NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
@@ -923,16 +894,12 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
             }
             else {
-                // monthly
-                //[body appendFormat:@"Interest: %@ (monthly)\n", [_loanData monthlyAverageInterest]];  // Interest: $23,981.60 (결과값)
                 [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
                 [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
             }
             
             [body appendFormat:@"\nYou can calculate more in the AppBox Pro. \n"];  // You can calculate more in the AppBox Pro.
             [body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"];  // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
-
-            // 첨부파일 (monthly data 테이블로 csv 파일 만들어서 첨부해주세요)
             // AppBoxPro_amortization.csv
             NSURL *fileUrl = [NSURL fileURLWithPath:[_loanData filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
             _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrl]

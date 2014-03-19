@@ -452,7 +452,7 @@
     }
 }
 
-//- (NSString *)filePahtOfCsvStringForMonthlyDataArray:(NSArray *)dataArray {
+#pragma mark - CSV Attachment File Export
 - (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName {
     NSString *csvString;
     NSMutableArray *csvArray = [NSMutableArray new];
@@ -511,7 +511,6 @@
     paymentList = [[NSMutableArray alloc] init];
     
     // date, payment, principal, interest, balance
-    
     double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
     double balance = (self.principal.doubleValue - downPayment);
     NSUInteger paymentIndex = 0;    // start from 0

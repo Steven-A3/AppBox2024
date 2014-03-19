@@ -28,8 +28,6 @@
 
 - (BOOL)calculated;
 
-
-//- (NSString *)filePahtOfCsvStringForMonthlyDataArray:(NSArray *)dataArray;
+#pragma mark - CSV Attachment File Export
 - (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName;
-//- (NSArray *)paymentList;
 @end
