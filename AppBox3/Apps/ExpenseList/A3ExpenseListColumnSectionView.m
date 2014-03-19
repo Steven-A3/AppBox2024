@@ -8,7 +8,6 @@
 
 #import "A3ExpenseListColumnSectionView.h"
 #import "A3DefaultColorDefines.h"
-#import "A3ExpenseListDefines.h"
 #import "SFKImage.h"
 
 @interface A3ExpenseListColumnSectionView()

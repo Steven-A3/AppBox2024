@@ -11,7 +11,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3NumberKeyboardViewController_iPad.h"
-#import "A3ExpenseListDefines.h"
+
 
 @interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate>
 @property (nonatomic, strong) UIButton *checkButton;
