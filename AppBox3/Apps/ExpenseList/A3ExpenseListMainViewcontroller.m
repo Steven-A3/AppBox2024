@@ -287,6 +287,9 @@ static NSString *CellIdentifier = @"Cell";
     if (!_priceNumberformatter) {
         _priceNumberformatter = [NSNumberFormatter new];
         [_priceNumberformatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        if (IS_IPHONE) {
+            _priceNumberformatter.currencySymbol = @"";
+        }
     }
     
     return _priceNumberformatter;
