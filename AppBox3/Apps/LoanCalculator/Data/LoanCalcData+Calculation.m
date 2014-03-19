@@ -454,7 +454,6 @@
 
 #pragma mark - CSV Attachment File Export
 - (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName {
-    NSString *csvString;
     NSMutableArray *csvArray = [NSMutableArray new];
     NSDateFormatter *df = [NSDateFormatter new];
     df.dateStyle = NSDateFormatterShortStyle;
@@ -496,7 +495,7 @@
     }];
     
     
-    csvString = [csvArray componentsJoinedByString:@"\n"];
+    NSString *csvString = [csvArray componentsJoinedByString:@"\n"];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
