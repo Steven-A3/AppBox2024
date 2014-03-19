@@ -521,7 +521,7 @@ static NSString *CellIdentifier = @"Cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell * cell = [self.root cellForRowAtIndexPath:indexPath];
     [self updateTableViewCell:cell atIndexPath:indexPath];
-    cell.textLabel.font = [UIFont fontWithName:cell.textLabel.font.fontName size:17.0];
+    cell.textLabel.font = [UIFont systemFontOfSize:17.0];
 
     return cell;
 }
@@ -559,6 +559,7 @@ static NSString *CellIdentifier = @"Cell";
         case AddBudgetCellID_Categories:
         {
             cell.separatorInset = UIEdgeInsetsMake(0.0, IS_IPAD ? 28.0 : 15.0, 0.0, 0.0);
+            cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
         }
             break;
 

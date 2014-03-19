@@ -311,7 +311,6 @@
         
     }
 
-
     if (_onEditingValueChanged) {
         _onEditingValueChanged(self, textField);
     }

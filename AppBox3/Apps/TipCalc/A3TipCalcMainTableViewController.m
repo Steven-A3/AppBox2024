@@ -206,6 +206,116 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return _headerView;
 }
 
+#pragma mark - button event
+- (void)detailButtonTouchedUp:(UIButton* )aSender
+{
+    if (self.localPopoverController) {
+        [self disposeInitializedCondition];
+        return;
+    }
+    
+    if (self.firstResponder) {
+        [self.firstResponder resignFirstResponder];
+        return;
+    }
+    
+    A3PopoverTableViewController * popoverTableView = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    NSMutableArray *titles = [NSMutableArray new];
+    NSMutableArray *details = [NSMutableArray new];
+    NSMutableArray *values;
+    
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    //formatter.roundingMode = NSNumberFormatterRoundCeiling;
+    //    [formatter setMaximumFractionDigits:3];
+    //    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
+    //    [formatter setRoundingIncrement:@3];
+    //    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
+    //    NSLog(@"test : %@", test);
+    //
+    //    [formatter setRoundingMode:NSNumberFormatterRoundHalfDown];
+    //    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
+    //    NSLog(@"test : %@", test);
+    //
+    //    [formatter setRoundingMode:NSNumberFormatterRoundHalfEven];
+    //    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
+    //    NSLog(@"test : %@", test);
+    
+    if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+        values = [NSMutableArray new];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] costBeforeTax] stringValue]];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] taxValue] stringValue]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] taxValue]]];
+        [titles addObject:@[@"Costs", @"Tax"]];
+        [details addObject:values];
+        
+        values = [NSMutableArray new];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] subtotal] stringValue]];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] tipValue] stringValue]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] subtotal]]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] tipValue]]];
+        [titles addObject:@[@"Subtotal", @"Tip"]];
+        [details addObject:values];
+        
+        //        values = [NSMutableArray new];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] totalBeforeSplit] stringValue]];
+        //        [titles addObject:@[@"Total Before Split"]];
+        //        [details addObject:values];
+    }
+    else if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_PerPerson) {
+        values = [NSMutableArray new];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] costBeforeTaxWithSplit] stringValue]];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] taxValueWithSplit] stringValue]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTaxWithSplit]]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] taxValueWithSplit]]];
+        [titles addObject:@[@"Costs", @"Tax"]];
+        [details addObject:values];
+        
+        values = [NSMutableArray new];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] subtotalWithSplit] stringValue]];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] tipValueWithSplit] stringValue]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] subtotalWithSplit]]];
+        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] tipValueWithSplit]]];
+        [titles addObject:@[@"Subtotal", @"Tip"]];
+        [details addObject:values];
+        
+        //        values = [NSMutableArray new];
+        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] totalPerPerson] stringValue]];
+        //        [titles addObject:@[@"Total Per Person"]];
+        //        [details addObject:values];
+    }
+    [popoverTableView setSectionArrayForTitles:titles withDetails:details];
+    
+    self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableView];
+    self.localPopoverController.backgroundColor = [UIColor whiteColor];
+    self.localPopoverController.delegate = self;
+    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, 266) animated:NO];
+    [self.localPopoverController presentPopoverFromRect:aSender.frame
+                                                 inView:aSender.superview
+                               permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, popoverTableView.tableView.contentSize.height)
+                                              animated:NO];
+    [self setBarButtonsEnable:NO];
+}
+
+- (void)beforeSplitButtonTouchedUp:(id)aSender
+{
+    _headerView.beforeSplitButton.selected = YES;
+    _headerView.perPersonButton.selected = NO;
+    [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_BeforeSplit;
+    
+    [self outputAllResultWithAnimation:YES];
+}
+
+- (void)perPersonButtonTouchedUp:(id)aSender {
+    _headerView.beforeSplitButton.selected = NO;
+    _headerView.perPersonButton.selected = YES;
+    [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_PerPerson;
+    
+    [self outputAllResultWithAnimation:YES];
+}
+
 #pragma mark - Table Data Configuration
 
 - (A3JHTableViewRootElement *)tableDataSource {
@@ -251,8 +361,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (NSArray *)tableSectionDataAtSection:(NSInteger)section {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterDecimalStyle;
-    formatter.minimumFractionDigits = 2;
+    formatter.numberStyle = kCFNumberFormatterNoStyle;
+    formatter.maximumFractionDigits = 2;
     NSArray * result;
     
     switch (section) {
@@ -531,7 +641,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark - Delegate
 #pragma mark Settings
 - (void)tipCalcSettingsChanged {
-    //    [_headerView layoutIfNeeded];
     [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
     //    [UIView animateWithDuration:0.3 animations:^{
     self.tableView.tableHeaderView = [self headerView];
@@ -621,124 +730,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         _headerView.beforeSplitButton.selected = NO;
         _headerView.perPersonButton.selected = YES;
     }
-}
-
-- (NSString*)percentFormattedStringTipCalc:(NSString*)aNum
-{
-    NSString* strRst = [aNum stringByReplacingOccurrencesOfString:@"%" withString:@""];
-    strRst = [NSString stringWithFormat:@"%@%%", strRst];
-    
-    return strRst;
-}
-
-#pragma mark - button event
-- (void)detailButtonTouchedUp:(UIButton* )aSender
-{
-    if (self.localPopoverController) {
-        [self disposeInitializedCondition];
-        return;
-    }
-    
-    if (self.firstResponder) {
-        [self.firstResponder resignFirstResponder];
-        return;
-    }
-    
-    A3PopoverTableViewController * popoverTableView = [[A3PopoverTableViewController alloc] initWithStyle:UITableViewStylePlain];
-    NSMutableArray *titles = [NSMutableArray new];
-    NSMutableArray *details = [NSMutableArray new];
-    NSMutableArray *values;
-    
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    //formatter.roundingMode = NSNumberFormatterRoundCeiling;
-//    [formatter setMaximumFractionDigits:3];
-//    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
-//    [formatter setRoundingIncrement:@3];
-//    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
-//    NSLog(@"test : %@", test);
-//
-//    [formatter setRoundingMode:NSNumberFormatterRoundHalfDown];
-//    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
-//    NSLog(@"test : %@", test);
-//    
-//    [formatter setRoundingMode:NSNumberFormatterRoundHalfEven];
-//    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
-//    NSLog(@"test : %@", test);
-    
-    if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_BeforeSplit) {
-        values = [NSMutableArray new];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] costBeforeTax] stringValue]];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] taxValue] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] taxValue]]];
-        [titles addObject:@[@"Costs", @"Tax"]];
-        [details addObject:values];
-        
-        values = [NSMutableArray new];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] subtotal] stringValue]];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] tipValue] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] subtotal]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] tipValue]]];
-        [titles addObject:@[@"Subtotal", @"Tip"]];
-        [details addObject:values];
-        
-//        values = [NSMutableArray new];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] totalBeforeSplit] stringValue]];
-//        [titles addObject:@[@"Total Before Split"]];
-//        [details addObject:values];
-    }
-    else if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_PerPerson) {
-        values = [NSMutableArray new];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] costBeforeTaxWithSplit] stringValue]];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] taxValueWithSplit] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTaxWithSplit]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] taxValueWithSplit]]];
-        [titles addObject:@[@"Costs", @"Tax"]];
-        [details addObject:values];
-        
-        values = [NSMutableArray new];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] subtotalWithSplit] stringValue]];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] tipValueWithSplit] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] subtotalWithSplit]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] tipValueWithSplit]]];
-        [titles addObject:@[@"Subtotal", @"Tip"]];
-        [details addObject:values];
-        
-//        values = [NSMutableArray new];
-//        [values addObject:[[[A3TipCalcDataManager sharedInstance] totalPerPerson] stringValue]];
-//        [titles addObject:@[@"Total Per Person"]];
-//        [details addObject:values];
-    }
-    [popoverTableView setSectionArrayForTitles:titles withDetails:details];
-
-    self.localPopoverController = [[UIPopoverController alloc] initWithContentViewController:popoverTableView];
-    self.localPopoverController.backgroundColor = [UIColor whiteColor];
-    self.localPopoverController.delegate = self;
-    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, 266) animated:NO];
-    [self.localPopoverController presentPopoverFromRect:aSender.frame
-                                                 inView:aSender.superview
-                               permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
-    [self.localPopoverController setPopoverContentSize:CGSizeMake(224, popoverTableView.tableView.contentSize.height)
-                                              animated:NO];
-    [self setBarButtonsEnable:NO];
-}
-
-- (void)beforeSplitButtonTouchedUp:(id)aSender
-{
-    _headerView.beforeSplitButton.selected = YES;
-    _headerView.perPersonButton.selected = NO;
-    [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_BeforeSplit;
-    
-    [self outputAllResultWithAnimation:YES];
-}
-
-- (void)perPersonButtonTouchedUp:(id)aSender {
-    _headerView.beforeSplitButton.selected = NO;
-    _headerView.perPersonButton.selected = YES;
-    [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_PerPerson;
-    
-    [self outputAllResultWithAnimation:YES];
 }
 
 #pragma mark - keyboard Stuff
@@ -968,7 +959,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)rightBarButtons {
     if (IS_IPHONE) {
-        UIImage *image = [UIImage imageNamed:@"more_stroke"];
+        UIImage *image = [UIImage imageNamed:@"more"];
         UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
         UIBarButtonItem *saveItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(saveToHistoryAndInitialize:)];
         self.navigationItem.rightBarButtonItems = @[moreButtonItem, saveItem];

@@ -383,13 +383,15 @@ NSString *kCalculationString;
                 
                 if (intervals.length <= 0) {
                     [shareString appendString:[NSString stringWithFormat:@"Added: 0 days\n"]];
-                } else {
+                }
+                else {
                     [shareString appendString:[NSString stringWithFormat:@"Added: %@\n", intervals]];
                 }
                 
                 [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
                 
-            } else {
+            }
+            else {
                 NSDateComponents *compAdd = [NSDateComponents new];
                 compAdd.year = self.offsetComp.year * -1;
                 compAdd.month = self.offsetComp.month * -1;
@@ -421,9 +423,8 @@ NSString *kCalculationString;
                 
                 [shareString appendString:[NSString stringWithFormat:@"Result: %@", [A3DateCalcStateManager formattedStringDate:result]]];
             }
-            
-        } else {
-            
+        }
+        else {
             /*  Between인 경우
              "Calculate duration between two dates.
              From and including: 시작날
@@ -460,23 +461,24 @@ NSString *kCalculationString;
         }
         
         NSString * mailTailString = @"\n\nYou can calculate more in the AppBox Pro.\n https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8";
-        NSString * etcTailString = @"\n\nCheck out the AppBox Pro!";
+//        NSString * etcTailString = @"\n\nCheck out the AppBox Pro!";
         
         /**
          https://github.com/waynehartman/WHMessageActivities
          **/
-        NSMutableArray *activityItems = [NSMutableArray new];
-        [activityItems addObject:[WHMailActivityItem mailActivityItemWithSelectionHandler:^(MFMailComposeViewController *mailController) {
-            [mailController setSubject:@"Date Calculator in the AppBox Pro"];
-            [mailController setMessageBody:[NSString stringWithFormat:@"%@%@%@", headString, shareString, mailTailString] isHTML:NO];
-            mailController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        }]];
-        [activityItems addObject:[NSString stringWithFormat:@"%@%@", shareString, etcTailString]];
+//        NSMutableArray *activityItems = [NSMutableArray new];
+//        [activityItems addObject:[WHMailActivityItem mailActivityItemWithSelectionHandler:^(MFMailComposeViewController *mailController) {
+//            [mailController setSubject:@"Date Calculator in the AppBox Pro"];
+//            [mailController setMessageBody:[NSString stringWithFormat:@"%@%@%@", headString, shareString, mailTailString] isHTML:NO];
+//            mailController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//            [mailController addAttachmentData:nil mimeType:nil fileName:nil];
+//        }]];
+//        [activityItems addObject:[NSString stringWithFormat:@"%@%@", shareString, etcTailString]];
         
-        //        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:activityItems
-        //                                                                            activities:@[[[WHMailActivity alloc] init]]
-        //                                                                          excludedType:@[UIActivityTypeMail]
-        //                                                                     fromBarButtonItem:sender];
+//        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:activityItems
+//                                                                            activities:@[[[WHMailActivity alloc] init]]
+//                                                                          excludedType:@[UIActivityTypeMail]
+//                                                                     fromBarButtonItem:sender];
         
         _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[[NSString stringWithFormat:@"%@%@%@", headString, shareString, mailTailString]]
                                                                                subject:@"Date Calculator in the AppBox Pro"

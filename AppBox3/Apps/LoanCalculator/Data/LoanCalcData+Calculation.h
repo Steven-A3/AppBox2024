@@ -28,4 +28,6 @@
 
 - (BOOL)calculated;
 
+#pragma mark - CSV Attachment File Export
+- (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName;
 @end

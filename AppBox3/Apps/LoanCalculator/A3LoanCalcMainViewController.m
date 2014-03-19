@@ -43,10 +43,11 @@
 #import "UIViewController+A3Addition.h"
 #import "SFKImage.h"
 #import "UIViewController+LoanCalcAddtion.h"
+#import "WHMailActivityItem.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
-@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate>
+@interface A3LoanCalcMainViewController () <LoanCalcHistoryViewControllerDelegate, LoanCalcExtraPaymentDelegate, LoanCalcLoanDataDelegate, LoanCalcSelectCalcForDelegate, LoanCalcSelectFrequencyDelegate, A3KeyboardDelegate, UITextFieldDelegate, UITextViewDelegate, UIPopoverControllerDelegate>
 {
     BOOL		_isShowMoreMenu;
     
@@ -80,7 +81,7 @@
 // comparison mode
 @property (nonatomic, strong) LoanCalcData *loanDataA;
 @property (nonatomic, strong) LoanCalcData *loanDataB;
-
+@property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @end
 
 @implementation A3LoanCalcMainViewController
@@ -121,7 +122,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     self.navigationItem.titleView = self.selectSegment;
     
     if (IS_IPHONE) {
-        UIImage *image = [UIImage imageNamed:@"more_stroke"];
+        UIImage *image = [UIImage imageNamed:@"more"];
         UIBarButtonItem *moreButtonItem = [[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] style:UIBarButtonItemStylePlain target:self action:@selector(moreButtonAction:)];
 
         UIBarButtonItem *composeItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCompose target:self action:@selector(composeButtonAction:)];
@@ -158,9 +159,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationDownPaymentEnabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentDisabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
@@ -790,6 +789,129 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)shareButtonAction:(id)sender {
 	@autoreleasepool {
 		[self clearEverything];
+        
+        if (_isComparisonMode) {
+            NSMutableString *body = [NSMutableString new];
+            [body appendFormat:@"I'd like to share a calculation with you.\n\n"];
+            
+            // * Loan A
+            [body appendFormat:@"* Loan A \n"];
+            [body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanDataA.principal]];
+            if ([_loanDataA downPayment]) {
+                [body appendFormat:@"Down Payment: %@\n", [_loanDataA downPayment]];  // Down Payment: (값이 있는 경우)
+            }
+            [body appendFormat:@"Term: %@ years.\n", @([[_loanDataA monthOfTerms] intValue] / 12)];
+            [body appendFormat:@"Interest Rate: %@\n", [self.percentFormatter stringFromNumber:_loanDataA.annualInterestRate]];
+            [body appendFormat:@"Frequency: %@ \n", [LoanCalcString titleOfFrequency:_loanDataA.frequencyIndex]];  // Frequency: Monthly (선택값)
+            if (_loanDataA.extraPaymentMonthly && [_loanDataA.extraPaymentMonthly floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(monthly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
+            }
+            if (_loanDataA.extraPaymentYearly && [_loanDataA.extraPaymentYearly floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(yearly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
+            }
+            if (_loanDataA.extraPaymentOneTime && [_loanDataA.extraPaymentOneTime floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(one-time): %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
+            }
+            
+            [body appendFormat:@"Payment: %@ \n", [self.loanFormatter stringFromNumber:_loanDataA.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+            
+            if (_isTotalMode) {
+                [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
+                [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+            }
+            else {
+                [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalInterest]]];  // Interest: $23,981.60 (결과값)
+                [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataA totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+            }
+            
+            // * Loan B
+            [body appendFormat:@"\n* Loan B \n"];
+            [body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanDataB.principal]];
+            if ([_loanDataB downPayment]) {
+                [body appendFormat:@"Down Payment: %@\n", [_loanDataB downPayment]];  // Down Payment: (값이 있는 경우)
+            }
+            [body appendFormat:@"Term: %@ years.\n", @([[_loanDataB monthOfTerms] intValue] / 12)];
+            [body appendFormat:@"Interest Rate: %@\n", [self.percentFormatter stringFromNumber:_loanDataB.annualInterestRate]];
+            [body appendFormat:@"Frequency: %@ \n", [LoanCalcString titleOfFrequency:_loanDataB.frequencyIndex]];  // Frequency: Monthly (선택값)
+            if (_loanDataB.extraPaymentMonthly && [_loanDataB.extraPaymentMonthly floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(monthly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
+            }
+            if (_loanDataB.extraPaymentYearly && [_loanDataB.extraPaymentYearly floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(yearly): %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
+            }
+            if (_loanDataB.extraPaymentOneTime && [_loanDataB.extraPaymentOneTime floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(one-time): %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
+            }
+            
+            [body appendFormat:@"Payment: %@ \n", [self.loanFormatter stringFromNumber:_loanDataB.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+            
+            if (_isTotalMode) {
+                [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
+                [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+            }
+            else {
+                [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalInterest]]];  // Interest: $23,981.60 (결과값)
+                [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanDataB totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+            }
+            
+            
+            [body appendFormat:@"\nYou can calculate more in the AppBox Pro. \n"]; // You can calculate more in the AppBox Pro.
+            [body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"]; // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
+            // AppBoxPro_amortization_loanA.csv
+            // AppBoxPro_amortization_loanb.csv
+            NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
+            NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrlA, fileUrlB]
+                                                                                   subject:@"Loan Calculator in the AppBox Pro"
+                                                                         fromBarButtonItem:sender];
+        }
+        else {
+            NSMutableString *body = [NSMutableString new];
+            [body appendFormat:@"I'd like to share a calculation with you.\n\n"];
+            [body appendFormat:@"Principal: %@\n", [self.loanFormatter stringFromNumber:_loanData.principal]];
+            if ([_loanData downPayment]) {
+                [body appendFormat:@"Down Payment: %@\n", [_loanData downPayment]];  // Down Payment: (값이 있는 경우)
+            }
+            [body appendFormat:@"Term: %@ years.\n", @([[_loanData monthOfTerms] intValue] / 12)];
+            [body appendFormat:@"Interest Rate: %@\n", [self.percentFormatter stringFromNumber:_loanData.annualInterestRate]];
+            [body appendFormat:@"Frequency: %@ \n", [LoanCalcString titleOfFrequency:_loanData.frequencyIndex]];  // Frequency: Monthly (선택값)
+            if (_loanData.extraPaymentMonthly && [_loanData.extraPaymentMonthly floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(monthly): %@ \n", [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly]];  // Extra Payment(monthly): (값이 있는 경우)
+            }
+            if (_loanData.extraPaymentYearly && [_loanData.extraPaymentYearly floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(yearly): %@ \n", [self.loanFormatter stringFromNumber:_loanData.extraPaymentYearly]];  // Extra Payment(yearly): (값이 있는 경우)
+            }
+            if (_loanData.extraPaymentOneTime && [_loanData.extraPaymentOneTime floatValue] > 0.0) {
+                [body appendFormat:@"Extra Payment(one-time): %@ \n", [self.loanFormatter stringFromNumber:_loanData.extraPaymentOneTime]];  // Extra Payment(one-time): (값이 있는 경우)
+            }
+            
+            [body appendFormat:@"Payment: %@ \n", [self.loanFormatter stringFromNumber:_loanData.repayment]];  // Payment: (사용자가 선택한 calculation과 결과값. 위의 입력값은 calculation 선택값에 따라 달라집니다.)
+            
+            if (_isTotalMode) {
+                [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+                [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+            }
+            else {
+                [body appendFormat:@"Interest: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalInterest]]];  // Interest: $23,981.60 (결과값)
+                [body appendFormat:@"Total Amount: %@ \n", [self.loanFormatter stringFromNumber:[_loanData totalAmount]]];  // Total Amount: $223,981.60 (결과값)
+            }
+            
+            [body appendFormat:@"\nYou can calculate more in the AppBox Pro. \n"];  // You can calculate more in the AppBox Pro.
+            [body appendFormat:@"https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8 \n"];  // https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8
+            // AppBoxPro_amortization.csv
+            NSURL *fileUrl = [NSURL fileURLWithPath:[_loanData filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrl]
+                                                                                   subject:@"Loan Calculator in the AppBox Pro"
+                                                                         fromBarButtonItem:sender];
+        }
+        
+        
+        if (IS_IPAD) {
+            _sharePopoverController.delegate = self;
+            [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+                [buttonItem setEnabled:NO];
+            }];
+        }
 	}
 }
 
@@ -915,114 +1037,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     _calcItems = nil;
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(1, 2)] withRowAnimation:UITableViewRowAnimationFade];
-}
-
-- (void)configureInputCell:(A3LoanCalcTextInputCell *)inputCell withCalculationItem:(A3LoanCalcCalculationItem) calcItem
-{
-    inputCell.titleLabel.text = [LoanCalcString titleOfItem:calcItem];
-    NSString *placeHolderText = @"";
-    NSString *textFieldText = @"";
-    switch (calcItem) {
-        case A3LC_CalculationItemDownPayment:
-        {
-//            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
-            textFieldText = [self.loanFormatter stringFromNumber:_loanData.downPayment];
-            break;
-        }
-        case A3LC_CalculationItemInterestRate:
-        {
-            placeHolderText = [NSString stringWithFormat:@"Annual %@", [self.percentFormatter stringFromNumber:@(0)]];
-            textFieldText = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
-            break;
-        }
-        case A3LC_CalculationItemPrincipal:
-        {
-//            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
-            textFieldText = [self.loanFormatter stringFromNumber:_loanData.principal];
-            break;
-        }
-        case A3LC_CalculationItemRepayment:
-        {
-            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
-            textFieldText = [self.loanFormatter stringFromNumber:_loanData.repayment];
-            break;
-        }
-        case A3LC_CalculationItemTerm:
-        {
-            placeHolderText = @"0 years";
-            int yearInt =  (int)round(_loanData.monthOfTerms.doubleValue/12.0);
-            textFieldText = [NSString stringWithFormat:@"%d years", yearInt];
-            break;
-        }
-        default:
-            break;
-    }
-    inputCell.textField.text = textFieldText;
-    inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderText
-                                                                                attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-}
-
-- (void)configureInputCell:(A3LoanCalcTextInputCell *)inputCell withExtraPaymentItem:(A3LoanCalcExtraPaymentType) extraPaymentItem
-{
-    inputCell.titleLabel.text = [LoanCalcString titleOfExtraPayment:extraPaymentItem];
-//    NSString *placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
-    NSString *placeHolderText = @"";
-    NSString *textFieldText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly];
-    inputCell.textField.text = textFieldText;
-    inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderText
-                                                                                attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-}
-
-- (void)configureExtraPaymentYearlyCell:(UITableViewCell *)cell
-{
-    cell.textLabel.text = [LoanCalcString titleOfExtraPayment:A3LC_ExtraPaymentYearly];
-    NSString *currencyText = @"";
-    if (_loanData.extraPaymentYearly) {
-        currencyText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentYearly];
-    }
-    else {
-        currencyText = [self.loanFormatter stringFromNumber:@(0)];
-    }
-    NSString *dateText = @"";
-    
-    if (_loanData.extraPaymentYearlyDate) {
-        NSDate *pickDate = _loanData.extraPaymentYearlyDate;
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterMediumStyle];
-        [formatter setDateFormat:@"MMM"];
-        dateText = [formatter stringFromDate:pickDate];
-    }
-    else {
-        dateText = @"None";
-    }
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
-}
-
-- (void)configureExtraPaymentOneTimeCell:(UITableViewCell *)cell
-{
-    cell.textLabel.text = [LoanCalcString titleOfExtraPayment:A3LC_ExtraPaymentOnetime];
-    NSString *currencyText = @"";
-    if (_loanData.extraPaymentOneTime) {
-        currencyText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentOneTime];
-    }
-    else {
-        currencyText = [self.loanFormatter stringFromNumber:@(0)];
-    }
-    NSString *dateText = @"";
-    if (_loanData.extraPaymentOneTimeDate) {
-        NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
-
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterMediumStyle];
-        [formatter setDateFormat:@"MMM, yyyy"];
-        dateText = [formatter stringFromDate:pickDate];
-    }
-    else {
-        dateText = @"None";
-    }
-    
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
 }
 
 - (NSUInteger)indexOfCalcItem:(A3LoanCalcCalculationItem) calcItem
@@ -1332,6 +1346,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     else {
         return @"";
     }
+}
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+	// Popver controller, iPad only.
+	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
+		[buttonItem setEnabled:YES];
+	}];
+	_sharePopoverController = nil;
 }
 
 #pragma mark - Loan Mode Calculation
@@ -2810,258 +2832,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     return 0;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (_isComparisonMode) {
-            
-            if (indexPath.section == 0) {
-                A3LoanCalcCompareGraphCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcCompareGraphCellID forIndexPath:indexPath];
-                compareCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                // loan data A,B
-                if ([_loanDataA calculated] || [_loanDataB calculated]) {
-                    [self displayCompareCell:compareCell];
-                }
-                else {
-                    [self makeCompareCellClear:compareCell];
-                }
-                
-                [compareCell adjustSubviewsFontSize];
-                
-                cell = compareCell;
-            }
-            else if (indexPath.section == 1){
-                A3LoanCalcLoanInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCellID forIndexPath:indexPath];
-                infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                infoCell.markLabel.text = @"A";
-                
-                if ([_loanDataA calculated]) {
-                    [self updateInfoCell:infoCell withLoanInfo:_loanDataA];
-                }
-                else {
-                    [self makeClearInfoCell:infoCell];
-                }
-                
-                if (IS_RETINA) {
-                    for (UIView *line in infoCell.hori1PxLines) {
-                        CGRect rect = line.frame;
-                        rect.size.height = 0.5f;
-                        line.frame = rect;
-                    }
-                }
-                
-                cell = infoCell;
-            }
-            else if (indexPath.section == 2){
-                A3LoanCalcLoanInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCellID forIndexPath:indexPath];
-                infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                
-                infoCell.markLabel.text = @"B";
-                
-                if ([_loanDataB calculated]) {
-                    [self updateInfoCell:infoCell withLoanInfo:_loanDataB];
-                }
-                else {
-                    [self makeClearInfoCell:infoCell];
-                }
-                
-                if (IS_RETINA) {
-                    for (UIView *line in infoCell.hori1PxLines) {
-                        CGRect rect = line.frame;
-                        rect.size.height = 0.5f;
-                        line.frame = rect;
-                    }
-                }
-                
-                cell = infoCell;
-            }
-        }
-        else {
-            if (indexPath.section == 0) {
-                // graph
-                A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID forIndexPath:indexPath];
-                [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                [graphCell adjustSubviewsFontSize];
-                
-                if ([_loanData calculated]) {
-                    [self displayGraphCell:graphCell];
-                }
-                else {
-                    [self makeGraphCellClear:graphCell];
-                }
-                
-                [graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:_loanData.frequencyIndex] forState:UIControlStateNormal];
-                
-                cell = graphCell;
-            }
-            else if (indexPath.section == 1) {
-                // calculation
-                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
-                cell.textLabel.text = @"Calculation";
-                if ([_loanData calculated]) {
-                    
-                    NSDictionary *textAttributes1 = @{
-                                                      NSFontAttributeName : [UIFont systemFontOfSize:17.0],
-                                                      NSForegroundColorAttributeName:[UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
-                                                      };
-                    
-                    NSDictionary *textAttributes2 = @{
-                                                      NSFontAttributeName : IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont systemFontOfSize:17.0],
-                                                      NSForegroundColorAttributeName:[UIColor blackColor]
-                                                      };
-                    
-                    NSString *calcuTitle = [LoanCalcString titleOfCalFor:_loanData.calculationFor];
-                    NSString *resultText = [self resultTextOfLoan:_loanData forCalcuFor:_loanData.calculationFor];
-                    
-                    if (IS_IPAD) {
-                        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
-                        NSMutableAttributedString *text1 = [[NSMutableAttributedString alloc] initWithString:calcuTitle attributes:textAttributes1];
-                        NSMutableAttributedString *text2 = [[NSMutableAttributedString alloc] initWithString:resultText attributes:textAttributes2];
-                        NSMutableAttributedString *divide = [[NSMutableAttributedString alloc] initWithString:@" " attributes:textAttributes2];
-                        [attrString appendAttributedString:text1];
-                        [attrString appendAttributedString:divide];
-                        [attrString appendAttributedString:text2];
-                        cell.detailTextLabel.attributedText = attrString;
-                        cell.detailTextLabel.numberOfLines = 1;
-                        cell.textLabel.numberOfLines = 1;
-                    }
-                    else {
-                        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
-                        NSMutableAttributedString *text1 = [[NSMutableAttributedString alloc] initWithString:calcuTitle attributes:textAttributes1];
-                        NSMutableAttributedString *text2 = [[NSMutableAttributedString alloc] initWithString:resultText attributes:textAttributes2];
-                        NSMutableAttributedString *line = [[NSMutableAttributedString alloc] initWithString:@"\n" attributes:textAttributes2];
-                        [attrString appendAttributedString:text1];
-                        [attrString appendAttributedString:line];
-                        [attrString appendAttributedString:text2];
-                        cell.detailTextLabel.attributedText = attrString;
-                        cell.detailTextLabel.numberOfLines = 2;
-                        cell.textLabel.numberOfLines = 2;
-                    }
-                }
-                else {
-                    cell.detailTextLabel.text = [LoanCalcString titleOfCalFor:_loanData.calculationFor];
-                    cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                    cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    cell.detailTextLabel.numberOfLines = 1;
-                    cell.textLabel.numberOfLines = 1;
-                }
-            }
-            else if (indexPath.section == 2) {
-                // calculation items
-                NSNumber *calcItemNum = _calcItems[indexPath.row];
-                A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
-
-                if (calcItem == A3LC_CalculationItemFrequency) {
-                    cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
-                    cell.textLabel.text = [LoanCalcString titleOfItem:calcItem];
-                    cell.detailTextLabel.text = [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex];
-                    cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                    cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                }
-                else {
-                    A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-                    inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    inputCell.textField.delegate = self;
-                    inputCell.textField.font = [UIFont systemFontOfSize:17];
-                    inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    
-                    [self configureInputCell:inputCell withCalculationItem:calcItem];
-                    
-                    cell = inputCell;
-                }
-            }
-            else if (indexPath.section == 3) {
-                // extra payment
-                NSNumber *exPaymentItemNum = _extraPaymentItems[indexPath.row];
-                A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
-                
-                if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
-                    A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-                    inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    inputCell.textField.font = [UIFont systemFontOfSize:17];
-                    inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    inputCell.textField.delegate = self;
-                    
-                    [self configureInputCell:inputCell withExtraPaymentItem:exPaymentItem];
-                    
-                    cell = inputCell;
-                }
-                else {
-                    cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
-                    cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                    cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    
-                    if (exPaymentItem == A3LC_ExtraPaymentYearly) {
-                        [self configureExtraPaymentYearlyCell:cell];
-                    }
-                    else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
-                        [self configureExtraPaymentOneTimeCell:cell];
-                    }
-                }
-            }
-            else  if (indexPath.section == 4) {
-                // advanced
-                if (_advItems[indexPath.row] == self.startDateItem) {
-                    A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
-                    inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    inputCell.textField.font = [UIFont systemFontOfSize:17];
-                    inputCell.titleLabel.text = _startDateItem[@"Title"];
-                    inputCell.textField.delegate = self;
-                    inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
-                                                                                                attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-                    inputCell.textField.userInteractionEnabled = NO;
-                    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                    df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
-                    inputCell.textField.text = [df stringFromDate:_loanData.startDate];
-                    
-                    if ([_advItems containsObject:self.dateInputItem]) {
-                        inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
-                    } else {
-                        inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    }
-                    
-                    cell = inputCell;
-                }
-                else if (_advItems[indexPath.row] == self.noteItem) {
-                    // note
-                    A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
-                    
-                    noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    noteCell.textView.delegate = self;
-                    noteCell.textView.bounces = NO;
-                    noteCell.textView.placeholder = @"Notes";
-                    noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-                    noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                    noteCell.textView.font = [UIFont systemFontOfSize:17];
-                    noteCell.textView.text = _loanData.note;
-                    noteCell.textView.scrollEnabled = NO;
-                    
-                    cell = noteCell;
-                }
-                else if (_advItems[indexPath.row] == self.dateInputItem) {
-                    // date input cell
-                    A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDateInputCellID forIndexPath:indexPath];
-                    dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    dateInputCell.datePicker.date = preDate;
-                    dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
-                    [dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
-                    
-                    cell = dateInputCell;
-                }
-            }
-        }
-	}
-    
-    return cell;
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (_isComparisonMode) {
@@ -3193,6 +2963,400 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     return nil;
+}
+
+#pragma mark Configure TableView Cell
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell=nil;
+	@autoreleasepool {
+		cell = nil;
+        
+        if (_isComparisonMode) {
+            cell = [self tableView:tableView cellForComparisonModeRowAtIndexPath:indexPath];
+        }
+        else {
+            cell = [self tableView:tableView cellForLoanModeRowAtIndexPath:indexPath];
+        }
+	}
+    
+    return cell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForComparisonModeRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell=nil;
+    
+    if (indexPath.section == 0) {
+        A3LoanCalcCompareGraphCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcCompareGraphCellID forIndexPath:indexPath];
+        compareCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        // loan data A,B
+        if ([_loanDataA calculated] || [_loanDataB calculated]) {
+            [self displayCompareCell:compareCell];
+        }
+        else {
+            [self makeCompareCellClear:compareCell];
+        }
+        
+        [compareCell adjustSubviewsFontSize];
+        
+        cell = compareCell;
+    }
+    else if (indexPath.section == 1){
+        A3LoanCalcLoanInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCellID forIndexPath:indexPath];
+        infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        infoCell.markLabel.text = @"A";
+        
+        if ([_loanDataA calculated]) {
+            [self updateInfoCell:infoCell withLoanInfo:_loanDataA];
+        }
+        else {
+            [self makeClearInfoCell:infoCell];
+        }
+        
+        if (IS_RETINA) {
+            for (UIView *line in infoCell.hori1PxLines) {
+                CGRect rect = line.frame;
+                rect.size.height = 0.5f;
+                line.frame = rect;
+            }
+        }
+        
+        cell = infoCell;
+    }
+    else if (indexPath.section == 2){
+        A3LoanCalcLoanInfoCell *infoCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanInfoCellID forIndexPath:indexPath];
+        infoCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        
+        infoCell.markLabel.text = @"B";
+        
+        if ([_loanDataB calculated]) {
+            [self updateInfoCell:infoCell withLoanInfo:_loanDataB];
+        }
+        else {
+            [self makeClearInfoCell:infoCell];
+        }
+        
+        if (IS_RETINA) {
+            for (UIView *line in infoCell.hori1PxLines) {
+                CGRect rect = line.frame;
+                rect.size.height = 0.5f;
+                line.frame = rect;
+            }
+        }
+        
+        cell = infoCell;
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForLoanModeRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell;
+    
+    switch ([indexPath section]) {
+        case 0:
+        {
+            // graph
+            A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID forIndexPath:indexPath];
+            [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+            [graphCell adjustSubviewsFontSize];
+            
+            if ([_loanData calculated]) {
+                [self displayGraphCell:graphCell];
+            }
+            else {
+                [self makeGraphCellClear:graphCell];
+            }
+            
+            [graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:_loanData.frequencyIndex] forState:UIControlStateNormal];
+            
+            cell = graphCell;
+        }
+            break;
+            
+        case 1:
+        {
+            // calculation
+            cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
+            cell.textLabel.text = @"Calculation";
+            if ([_loanData calculated]) {
+                
+                NSDictionary *textAttributes1 = @{
+                                                  NSFontAttributeName : [UIFont systemFontOfSize:17.0],
+                                                  NSForegroundColorAttributeName:[UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
+                                                  };
+                
+                NSDictionary *textAttributes2 = @{
+                                                  NSFontAttributeName : IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont systemFontOfSize:17.0],
+                                                  NSForegroundColorAttributeName:[UIColor blackColor]
+                                                  };
+                
+                NSString *calcuTitle = [LoanCalcString titleOfCalFor:_loanData.calculationFor];
+                NSString *resultText = [self resultTextOfLoan:_loanData forCalcuFor:_loanData.calculationFor];
+                
+                if (IS_IPAD) {
+                    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
+                    NSMutableAttributedString *text1 = [[NSMutableAttributedString alloc] initWithString:calcuTitle attributes:textAttributes1];
+                    NSMutableAttributedString *text2 = [[NSMutableAttributedString alloc] initWithString:resultText attributes:textAttributes2];
+                    NSMutableAttributedString *divide = [[NSMutableAttributedString alloc] initWithString:@" " attributes:textAttributes2];
+                    [attrString appendAttributedString:text1];
+                    [attrString appendAttributedString:divide];
+                    [attrString appendAttributedString:text2];
+                    cell.detailTextLabel.attributedText = attrString;
+                    cell.detailTextLabel.numberOfLines = 1;
+                    cell.textLabel.numberOfLines = 1;
+                }
+                else {
+                    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
+                    NSMutableAttributedString *text1 = [[NSMutableAttributedString alloc] initWithString:calcuTitle attributes:textAttributes1];
+                    NSMutableAttributedString *text2 = [[NSMutableAttributedString alloc] initWithString:resultText attributes:textAttributes2];
+                    NSMutableAttributedString *line = [[NSMutableAttributedString alloc] initWithString:@"\n" attributes:textAttributes2];
+                    [attrString appendAttributedString:text1];
+                    [attrString appendAttributedString:line];
+                    [attrString appendAttributedString:text2];
+                    cell.detailTextLabel.attributedText = attrString;
+                    cell.detailTextLabel.numberOfLines = 2;
+                    cell.textLabel.numberOfLines = 2;
+                }
+            }
+            else {
+                cell.detailTextLabel.text = [LoanCalcString titleOfCalFor:_loanData.calculationFor];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+                cell.detailTextLabel.numberOfLines = 1;
+                cell.textLabel.numberOfLines = 1;
+            }
+        }
+            break;
+            
+        case 2:
+        {
+            // calculation items
+            NSNumber *calcItemNum = _calcItems[indexPath.row];
+            A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
+            
+            if (calcItem == A3LC_CalculationItemFrequency) {
+                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
+                cell.textLabel.text = [LoanCalcString titleOfItem:calcItem];
+                cell.detailTextLabel.text = [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            }
+            else {
+                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                inputCell.textField.delegate = self;
+                inputCell.textField.font = [UIFont systemFontOfSize:17];
+                inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+                
+                [self configureInputCell:inputCell withCalculationItem:calcItem];
+                
+                cell = inputCell;
+            }
+            
+        }
+            break;
+            
+        case 3:
+        {
+            // extra payment
+            NSNumber *exPaymentItemNum = _extraPaymentItems[indexPath.row];
+            A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
+            
+            if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
+                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                inputCell.textField.font = [UIFont systemFontOfSize:17];
+                inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+                inputCell.textField.delegate = self;
+                
+                [self configureInputCell:inputCell withExtraPaymentItem:exPaymentItem];
+                
+                cell = inputCell;
+            }
+            else {
+                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID forIndexPath:indexPath];
+                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+                
+                if (exPaymentItem == A3LC_ExtraPaymentYearly) {
+                    [self configureExtraPaymentYearlyCell:cell];
+                }
+                else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
+                    [self configureExtraPaymentOneTimeCell:cell];
+                }
+            }
+        }
+            break;
+            
+        case 4:
+        {
+            // advanced
+            if (_advItems[indexPath.row] == self.startDateItem) {
+                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID forIndexPath:indexPath];
+                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                inputCell.textField.font = [UIFont systemFontOfSize:17];
+                inputCell.titleLabel.text = _startDateItem[@"Title"];
+                inputCell.textField.delegate = self;
+                inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"None"
+                                                                                            attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+                inputCell.textField.userInteractionEnabled = NO;
+                NSDateFormatter *df = [[NSDateFormatter alloc] init];
+                df.dateStyle = IS_IPAD ? NSDateFormatterFullStyle : NSDateFormatterMediumStyle;
+                inputCell.textField.text = [df stringFromDate:_loanData.startDate];
+                
+                if ([_advItems containsObject:self.dateInputItem]) {
+                    inputCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+                } else {
+                    inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+                }
+                
+                cell = inputCell;
+            }
+            else if (_advItems[indexPath.row] == self.noteItem) {
+                // note
+                A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanNoteCellID forIndexPath:indexPath];
+                
+                noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                noteCell.textView.delegate = self;
+                noteCell.textView.bounces = NO;
+                noteCell.textView.placeholder = @"Notes";
+                noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+                noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+                noteCell.textView.font = [UIFont systemFontOfSize:17];
+                noteCell.textView.text = _loanData.note;
+                noteCell.textView.scrollEnabled = NO;
+                
+                cell = noteCell;
+            }
+            else if (_advItems[indexPath.row] == self.dateInputItem) {
+                // date input cell
+                A3WalletDateInputCell *dateInputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcDateInputCellID forIndexPath:indexPath];
+                dateInputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+                dateInputCell.datePicker.date = preDate;
+                dateInputCell.datePicker.datePickerMode = UIDatePickerModeDate;
+                [dateInputCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+                
+                cell = dateInputCell;
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
+    return cell;
+}
+
+- (void)configureInputCell:(A3LoanCalcTextInputCell *)inputCell withCalculationItem:(A3LoanCalcCalculationItem) calcItem
+{
+    inputCell.titleLabel.text = [LoanCalcString titleOfItem:calcItem];
+    NSString *placeHolderText = @"";
+    NSString *textFieldText = @"";
+    switch (calcItem) {
+        case A3LC_CalculationItemDownPayment:
+        {
+            textFieldText = [self.loanFormatter stringFromNumber:_loanData.downPayment];
+            break;
+        }
+        case A3LC_CalculationItemInterestRate:
+        {
+            placeHolderText = [NSString stringWithFormat:@"Annual %@", [self.percentFormatter stringFromNumber:@(0)]];
+            textFieldText = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
+            break;
+        }
+        case A3LC_CalculationItemPrincipal:
+        {
+            textFieldText = [self.loanFormatter stringFromNumber:_loanData.principal];
+            break;
+        }
+        case A3LC_CalculationItemRepayment:
+        {
+            placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
+            textFieldText = [self.loanFormatter stringFromNumber:_loanData.repayment];
+            break;
+        }
+        case A3LC_CalculationItemTerm:
+        {
+            placeHolderText = @"0 years";
+            int yearInt =  (int)round(_loanData.monthOfTerms.doubleValue/12.0);
+            textFieldText = [NSString stringWithFormat:@"%d years", yearInt];
+            break;
+        }
+        default:
+            break;
+    }
+    inputCell.textField.text = textFieldText;
+    inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderText
+                                                                                attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+}
+
+- (void)configureInputCell:(A3LoanCalcTextInputCell *)inputCell withExtraPaymentItem:(A3LoanCalcExtraPaymentType) extraPaymentItem
+{
+    inputCell.titleLabel.text = [LoanCalcString titleOfExtraPayment:extraPaymentItem];
+    //    NSString *placeHolderText = [self.loanFormatter stringFromNumber:@(0)];
+    NSString *placeHolderText = @"";
+    NSString *textFieldText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly];
+    inputCell.textField.text = textFieldText;
+    inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolderText
+                                                                                attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+}
+
+- (void)configureExtraPaymentYearlyCell:(UITableViewCell *)cell
+{
+    cell.textLabel.text = [LoanCalcString titleOfExtraPayment:A3LC_ExtraPaymentYearly];
+    NSString *currencyText = @"";
+    if (_loanData.extraPaymentYearly) {
+        currencyText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentYearly];
+    }
+    else {
+        currencyText = [self.loanFormatter stringFromNumber:@(0)];
+    }
+    NSString *dateText = @"";
+    
+    if (_loanData.extraPaymentYearlyDate) {
+        NSDate *pickDate = _loanData.extraPaymentYearlyDate;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setDateFormat:@"MMM"];
+        dateText = [formatter stringFromDate:pickDate];
+    }
+    else {
+        dateText = @"None";
+    }
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
+}
+
+- (void)configureExtraPaymentOneTimeCell:(UITableViewCell *)cell
+{
+    cell.textLabel.text = [LoanCalcString titleOfExtraPayment:A3LC_ExtraPaymentOnetime];
+    NSString *currencyText = @"";
+    if (_loanData.extraPaymentOneTime) {
+        currencyText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentOneTime];
+    }
+    else {
+        currencyText = [self.loanFormatter stringFromNumber:@(0)];
+    }
+    NSString *dateText = @"";
+    if (_loanData.extraPaymentOneTimeDate) {
+        NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateStyle:NSDateFormatterMediumStyle];
+        [formatter setDateFormat:@"MMM, yyyy"];
+        dateText = [formatter stringFromDate:pickDate];
+    }
+    else {
+        dateText = @"None";
+    }
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@", currencyText, dateText];
 }
 
 /*

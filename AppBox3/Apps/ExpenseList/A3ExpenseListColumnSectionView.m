@@ -8,7 +8,6 @@
 
 #import "A3ExpenseListColumnSectionView.h"
 #import "A3DefaultColorDefines.h"
-#import "A3ExpenseListDefines.h"
 #import "SFKImage.h"
 
 @interface A3ExpenseListColumnSectionView()
@@ -57,13 +56,11 @@
 }
 
 - (void)initializeSubviews {
-    //_addItemButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _itemLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _priceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _qtyLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     _subTotalLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     
-    //[_addItemButton setBackgroundImage:[UIImage imageNamed:@"add03"] forState:UIControlStateNormal];
     if (IS_IPHONE) {
         _itemLabel.text = @"ITEM";
         _priceLabel.text = @"PRICE";
@@ -81,12 +78,6 @@
     _qtyLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
     _subTotalLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
     
-//    _itemLabel.font = IS_IPHONE ? [UIFont fontWithName:@"Helvetica Neue" size:11.0] : FONT_TABLE_SECTION_TITLE;
-//    _priceLabel.font = IS_IPHONE ? [UIFont fontWithName:@"Helvetica Neue" size:11.0] : FONT_TABLE_SECTION_TITLE;
-//    _qtyLabel.font = IS_IPHONE ? [UIFont fontWithName:@"Helvetica Neue" size:11.0] : FONT_TABLE_SECTION_TITLE;
-//    _subTotalLabel.font = IS_IPHONE ? [UIFont fontWithName:@"Helvetica Neue" size:11.0] : FONT_TABLE_SECTION_TITLE;
-    
-    //[self addSubview:_addItemButton];
     [self addSubview:_itemLabel];
     [self addSubview:_priceLabel];
     [self addSubview:_qtyLabel];
@@ -102,89 +93,29 @@
 
 -(void)setupConstraintLayout
 {
-//    NSNumber *leadingAdd;
-//    NSNumber *leadingItem;
-//    NSNumber *leadingPrice;
-//    NSNumber *leadingQty;
-//    NSNumber *leadingSubTotal;
+    CGFloat leftInset = IS_IPHONE ? 15 : 28;
+    CGFloat sep1_Item = ceilf(CGRectGetWidth(self.frame) * 0.33);
+    CGFloat sep2_Price = ceilf(CGRectGetWidth(self.frame) * 0.26);
+    CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.frame) * 0.11);
+    CGFloat sep4_Subtotal = leftInset + sep1_Item + sep2_Price + sep3_Quantity;
     
-//    float width = self.frame.size.width;
-//    if (IS_IPHONE) {
-//        leadingAdd = @(width/100.0 * (17.0/320.0*100));
-//        //leadingItem = @(width/100.0 * (70.0/320.0*100));
-//        leadingItem = @(width/100.0 * (62.5/320.0*100));
-//        leadingPrice = @(width/100.0 * (166.0/320.0*100));
-//        leadingQty = @(width/100.0 * (222.0/320.0*100));
-//        leadingSubTotal = @(width/100.0 * (260.0/320.0*100));
-//    } else {
-//        leadingAdd = @(width/100.0 * (17.0/320.0*100));
-//        leadingItem = @172;
-//        leadingPrice = @409;
-//        leadingQty = @518;
-//        leadingSubTotal = @633;
-//    }
-
     [_itemLabel makeConstraints:^(MASConstraintMaker *make) {
-        
-        if (IS_IPHONE) {
-            make.centerX.equalTo(self.left).with.offset(((SEP1_XPOS_IPHONE-15) / 2) + 15);
-            
-        } else {
-            if (IS_LANDSCAPE) {
-                _itemLabelConst = make.centerX.equalTo(self.left).with.offset(((SEP1_XPOS_IPAD_LAND - 28) / 2) + 28);
-            } else {
-                _itemLabelConst = make.centerX.equalTo(self.left).with.offset(((SEP1_XPOS_IPAD - 28) / 2) + 28);
-            }
-        }
-        
+        _itemLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + ceilf(sep1_Item / 2));
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
     [_priceLabel makeConstraints:^(MASConstraintMaker *make) {
-        
-        if (IS_IPHONE) {
-            make.centerX.equalTo(self.left).with.offset(SEP1_XPOS_IPHONE + ((SEP2_XPOS_IPHONE-SEP1_XPOS_IPHONE)/2));
-            
-        } else {
-            if (IS_LANDSCAPE) {
-                _priceLabelConst = make.centerX.equalTo(self.left).with.offset(SEP1_XPOS_IPAD_LAND + ((SEP2_XPOS_IPAD_LAND - SEP1_XPOS_IPAD_LAND) / 2));
-            } else {
-                _priceLabelConst = make.centerX.equalTo(self.left).with.offset(SEP1_XPOS_IPAD + ((SEP2_XPOS_IPAD - SEP1_XPOS_IPAD) / 2));
-            }
-        }
-        
+        _priceLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + sep1_Item + ceilf(sep2_Price / 2));
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
     [_qtyLabel makeConstraints:^(MASConstraintMaker *make) {
-        
-        if (IS_IPHONE) {
-            make.centerX.equalTo(self.left).with.offset(SEP2_XPOS_IPHONE + ((SEP3_XPOS_IPHONE-SEP2_XPOS_IPHONE)/2));
-            
-        } else {
-            if (IS_LANDSCAPE) {
-                _qtyLabelConst = make.centerX.equalTo(self.left).with.offset(SEP2_XPOS_IPAD_LAND + ((SEP3_XPOS_IPAD_LAND - SEP2_XPOS_IPAD_LAND) / 2));
-            } else {
-                _qtyLabelConst = make.centerX.equalTo(self.left).with.offset(SEP2_XPOS_IPAD + ((SEP3_XPOS_IPAD - SEP2_XPOS_IPAD) / 2));
-            }
-        }
-        
+        _qtyLabelConst = make.centerX.equalTo(self.left).with.offset(leftInset + sep1_Item + sep2_Price + ceilf(sep3_Quantity / 2));
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
     [_subTotalLabel makeConstraints:^(MASConstraintMaker *make) {
-        
-        if (IS_IPHONE) {
-            make.centerX.equalTo(self.left).with.offset(SEP3_XPOS_IPHONE + ((self.frame.size.width-SEP3_XPOS_IPHONE)/2));
-            
-        } else {
-            if (IS_LANDSCAPE) {
-                _subTotalLabelConst = make.centerX.equalTo(self.left).with.offset(SEP3_XPOS_IPAD_LAND + ((self.frame.size.width - SEP3_XPOS_IPAD_LAND) / 2));
-            } else {
-                _subTotalLabelConst = make.centerX.equalTo(self.left).with.offset(SEP3_XPOS_IPAD + ((self.frame.size.width-SEP3_XPOS_IPAD)/2));
-            }
-        }
-        
+        _subTotalLabelConst = make.centerX.equalTo(self.left).with.offset(sep4_Subtotal + (ceilf((CGRectGetWidth(self.frame) - sep4_Subtotal) / 2)) );
         make.centerY.equalTo(self.bottom).with.offset(-17);
     }];
     
@@ -204,29 +135,24 @@
 
 -(void)adjustLayoutSubviews
 {
+    CGFloat leftInset = IS_IPHONE ? 15 : 28;
+    CGFloat sep1_Item = ceilf(CGRectGetWidth(self.frame) * 0.33);
+    CGFloat sep2_Price = ceilf(CGRectGetWidth(self.frame) * 0.26);
+    CGFloat sep3_Quantity = ceilf(CGRectGetWidth(self.frame) * 0.11);
+    CGFloat sep4_Subtotal = leftInset + sep1_Item + sep2_Price + sep3_Quantity;
+
+    _itemLabelConst.equalTo(@0).with.offset(leftInset + ceilf(sep1_Item / 2));
+    _priceLabelConst.equalTo(@0).with.offset(leftInset + sep1_Item + ceilf(sep2_Price / 2));
+    _qtyLabelConst.equalTo(@0).with.offset(leftInset + sep1_Item + sep2_Price + ceilf(sep3_Quantity / 2));
+    _subTotalLabelConst.equalTo(@0).with.offset(sep4_Subtotal + (ceilf((CGRectGetWidth(self.frame) - sep4_Subtotal) / 2)) );
     
     if (IS_IPHONE) {
         _itemLabel.font = [UIFont systemFontOfSize:11.0];
         _priceLabel.font = [UIFont systemFontOfSize:11.0];
         _qtyLabel.font = [UIFont systemFontOfSize:11.0];
         _subTotalLabel.font = [UIFont systemFontOfSize:11.0];
-        
-    } else {
-        
-        if (IS_LANDSCAPE) {
-            _itemLabelConst.equalTo(@0).with.offset(((SEP1_XPOS_IPAD_LAND - 28) / 2) + 28);
-            _priceLabelConst.equalTo(@0).with.offset(SEP1_XPOS_IPAD_LAND + ((SEP2_XPOS_IPAD_LAND - SEP1_XPOS_IPAD_LAND) / 2));
-            _qtyLabelConst.equalTo(@0).with.offset(SEP2_XPOS_IPAD_LAND + ((SEP3_XPOS_IPAD_LAND - SEP2_XPOS_IPAD_LAND) / 2));
-            _subTotalLabelConst.equalTo(@0).with.offset(SEP3_XPOS_IPAD_LAND + ((self.frame.size.width - SEP3_XPOS_IPAD_LAND) / 2));
-            
-        } else {
-            _itemLabelConst.equalTo(@0).with.offset(((SEP1_XPOS_IPAD - 28) / 2) + 28);
-            _priceLabelConst.equalTo(@0).with.offset(SEP1_XPOS_IPAD + ((SEP2_XPOS_IPAD - SEP1_XPOS_IPAD) / 2));
-            _qtyLabelConst.equalTo(@0).with.offset(SEP2_XPOS_IPAD + ((SEP3_XPOS_IPAD-SEP2_XPOS_IPAD) / 2));
-            _subTotalLabelConst.equalTo(@0).with.offset(SEP3_XPOS_IPAD + ((self.frame.size.width-SEP3_XPOS_IPAD) / 2));
-            
-        }
-        
+    }
+    else {
         _itemLabel.font = [UIFont systemFontOfSize:14.0];
         _priceLabel.font = [UIFont systemFontOfSize:14.0];
         _qtyLabel.font = [UIFont systemFontOfSize:14.0];

@@ -109,7 +109,7 @@
 }
 
 -(void)setupConstraintLayout
-{
+{    
     [_sliderBaseLineView makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.width);
         make.height.equalTo(@5.0);

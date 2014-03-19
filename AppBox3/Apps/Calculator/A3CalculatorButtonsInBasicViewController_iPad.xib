@@ -44,7 +44,7 @@
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="28"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" image="backspace"/>
+                    <state key="normal" image="backspace_p"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="backgroundColorForHighlightedState">
                             <color key="value" red="0.91764705882352937" green="0.91764705882352937" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
@@ -544,7 +544,7 @@
         </view>
     </objects>
     <resources>
-        <image name="backspace" width="28" height="20"/>
+        <image name="backspace_p" width="30" height="22"/>
         <image name="k_6_p" width="40" height="40"/>
     </resources>
 </document>

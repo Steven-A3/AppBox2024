@@ -2222,7 +2222,6 @@
 		68E2A60618D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListAddBudgetViewController.m; sourceTree = "<group>"; };
 		68E2A60718D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListColumnSectionView.h; sourceTree = "<group>"; };
 		68E2A60818D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListColumnSectionView.m; sourceTree = "<group>"; };
-		68E2A60918D0B1FC00E834D9 /* A3ExpenseListDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListDefines.h; sourceTree = "<group>"; };
 		68E2A60A18D0B1FC00E834D9 /* A3ExpenseListHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListHeaderView.h; sourceTree = "<group>"; };
 		68E2A60B18D0B1FC00E834D9 /* A3ExpenseListHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ExpenseListHeaderView.m; sourceTree = "<group>"; };
 		68E2A60C18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ExpenseListHistoryCell.h; sourceTree = "<group>"; };
@@ -3386,15 +3385,15 @@
 		683B950C15EB233500575377 /* Apps */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C7CD18D7F37D009FAE8A /* DaysCounter */,
-				68F1C83A18D7F37D009FAE8A /* LadyCalendar */,
 				684D929F18BC1EFE005016F7 /* BatteryStatus */,
 				680D636418CFF9D400938AD0 /* Calculator */,
 				680886A41891751B0093FD97 /* Clock */,
 				68AA75EB16A53B43005742D8 /* Currency */,
 				684D92C518BC1FBC005016F7 /* DateCalculator */,
+				68F1C7CD18D7F37D009FAE8A /* DaysCounter */,
 				68E2A60118D0B1FC00E834D9 /* ExpenseList */,
 				6888091217C640BC008B2856 /* Holidays */,
+				68F1C83A18D7F37D009FAE8A /* LadyCalendar */,
 				68B6A16918CEC76C004084EF /* LoanCalculator */,
 				6825366618A7B89F00EAFB84 /* LunarConverter */,
 				680D638418CFF9D400938AD0 /* Magnifier */,
@@ -4783,7 +4782,6 @@
 				68E2A60618D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m */,
 				68E2A60718D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.h */,
 				68E2A60818D0B1FC00E834D9 /* A3ExpenseListColumnSectionView.m */,
-				68E2A60918D0B1FC00E834D9 /* A3ExpenseListDefines.h */,
 				68E2A60A18D0B1FC00E834D9 /* A3ExpenseListHeaderView.h */,
 				68E2A60B18D0B1FC00E834D9 /* A3ExpenseListHeaderView.m */,
 				68E2A60C18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.h */,

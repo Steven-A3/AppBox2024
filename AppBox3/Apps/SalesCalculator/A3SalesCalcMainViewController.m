@@ -390,7 +390,8 @@ enum A3TableElementCellType {
     _price.valueType = A3TableViewValueTypeCurrency;
     _price.onEditingBegin = [self cellTextInputBeginBlock];
     _price.onEditingValueChanged = [self cellTextInputChangedBlock];
-    _price.onEditingFinished = [self cellTextInputFinishedBlock];
+//    _price.onEditingFinished = [self cellTextInputFinishedBlock];
+    _price.onEditingFinishAll = [self cellTextInputFinishAllBlock];
     _price.doneButtonPressed = [self cellInputDoneButtonPressed];
     _price.identifier = A3TableElementCellType_Price;
 
@@ -610,96 +611,96 @@ enum A3TableElementCellType {
 }
 
 // 계산 값 입력을 마친 경우에 호출됨.
--(CellTextInputBlock)cellTextInputFinishedBlock
-{
-    if (!_cellTextInputFinishedBlock) {
-        __weak A3SalesCalcMainViewController * weakSelf = self;
-        
-        _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-            if (weakSelf.firstResponder == textField) {
-                weakSelf.firstResponder = nil;
-            }
-
-            NSString *stringValue = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
-            
-            switch (element.identifier) {
-                case A3TableElementCellType_Additional:
-                case A3TableElementCellType_Tax:
-                {
-                    NSNumberFormatter *formatter = [NSNumberFormatter new];
-                    NSNumber *value = [formatter numberFromString:stringValue];
-                    element.value = (!value || [value isEqualToNumber:@0]) ? @"" : stringValue;
-                }
-                    break;
-                    
-                default:
-                {
-                    if (textField.text && textField.text.length!=0) {
-                        element.value = textField.text;
-                    }
-                }
-                    break;
-            }
-            
-//            // InputString set to value.
-//            NSString *value;
-//            value = textField.text;
+//-(CellTextInputBlock)cellTextInputFinishedBlock
+//{
+//    if (!_cellTextInputFinishedBlock) {
+//        __weak A3SalesCalcMainViewController * weakSelf = self;
+//        
+//        _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
+//            if (weakSelf.firstResponder == textField) {
+//                weakSelf.firstResponder = nil;
+//            }
+//
+//            NSString *stringValue = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
 //            
-//            if (element.valueType == A3TableViewValueTypeText) {
-//                element.value = value;
-//            }
-//            else {
-//                value = [value stringByReplacingOccurrencesOfString:@"," withString:@""];
-//                element.value = value;
-//            }
-//            
-//            if (element.identifier == A3TableElementCellType_Price) {
-//                [weakSelf.preferences.calcData setPrice:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setPriceType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Discount) {
-//                [weakSelf.preferences.calcData setDiscount:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setDiscountType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Additional) {
-//                [weakSelf.preferences.calcData setAdditionalOff:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setAdditionalOffType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Tax) {
-//                [weakSelf.preferences.calcData setTax:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setTaxType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Note) {
-//                [weakSelf.preferences.calcData setNotes:textField.text];
-//                if (value.length==0) {
-//                    textField.placeholder = @"Notes";
+//            switch (element.identifier) {
+//                case A3TableElementCellType_Additional:
+//                case A3TableElementCellType_Tax:
+//                {
+//                    NSNumberFormatter *formatter = [NSNumberFormatter new];
+//                    NSNumber *value = [formatter numberFromString:stringValue];
+//                    element.value = (!value || [value isEqualToNumber:@0]) ? @"" : stringValue;
 //                }
-//                else {
-//                    textField.placeholder = value;
+//                    break;
+//                    
+//                default:
+//                {
+//                    if (textField.text && textField.text.length!=0) {
+//                        element.value = textField.text;
+//                    }
 //                }
+//                    break;
 //            }
 //            
-//            [weakSelf saveInputTextData:weakSelf.preferences.calcData];
-
-            [weakSelf checkPercentValuesOfTableDataSource];
-            
-            if (!weakSelf.preferences.calcData.price || !weakSelf.preferences.calcData.discount) {
-                return;
-            }
-
-            // 계산 결과 반영.
-            [weakSelf.headerView setResultData:weakSelf.preferences.calcData withAnimation:YES];
-            [weakSelf setBarButtonsEnable:YES];
-            
-            // 계산 결과 저장.
-            if ([weakSelf.preferences didSaveBefore]==NO) {
-                [weakSelf.preferences setOldCalcData:weakSelf.preferences.calcData];
-            }
-        };
-    }
-
-    return _cellTextInputFinishedBlock;
-}
+////            // InputString set to value.
+////            NSString *value;
+////            value = textField.text;
+////            
+////            if (element.valueType == A3TableViewValueTypeText) {
+////                element.value = value;
+////            }
+////            else {
+////                value = [value stringByReplacingOccurrencesOfString:@"," withString:@""];
+////                element.value = value;
+////            }
+////            
+////            if (element.identifier == A3TableElementCellType_Price) {
+////                [weakSelf.preferences.calcData setPrice:@(value.doubleValue)];
+////                [weakSelf.preferences.calcData setPriceType:(NSInteger)element.valueType];
+////            }
+////            else if (element.identifier == A3TableElementCellType_Discount) {
+////                [weakSelf.preferences.calcData setDiscount:@(value.doubleValue)];
+////                [weakSelf.preferences.calcData setDiscountType:(NSInteger)element.valueType];
+////            }
+////            else if (element.identifier == A3TableElementCellType_Additional) {
+////                [weakSelf.preferences.calcData setAdditionalOff:@(value.doubleValue)];
+////                [weakSelf.preferences.calcData setAdditionalOffType:(NSInteger)element.valueType];
+////            }
+////            else if (element.identifier == A3TableElementCellType_Tax) {
+////                [weakSelf.preferences.calcData setTax:@(value.doubleValue)];
+////                [weakSelf.preferences.calcData setTaxType:(NSInteger)element.valueType];
+////            }
+////            else if (element.identifier == A3TableElementCellType_Note) {
+////                [weakSelf.preferences.calcData setNotes:textField.text];
+////                if (value.length==0) {
+////                    textField.placeholder = @"Notes";
+////                }
+////                else {
+////                    textField.placeholder = value;
+////                }
+////            }
+////            
+////            [weakSelf saveInputTextData:weakSelf.preferences.calcData];
+//
+//            [weakSelf checkPercentValuesOfTableDataSource];
+//            
+//            if (!weakSelf.preferences.calcData.price || !weakSelf.preferences.calcData.discount) {
+//                return;
+//            }
+//
+//            // 계산 결과 반영.
+//            [weakSelf.headerView setResultData:weakSelf.preferences.calcData withAnimation:YES];
+//            [weakSelf setBarButtonsEnable:YES];
+//            
+//            // 계산 결과 저장.
+//            if ([weakSelf.preferences didSaveBefore]==NO) {
+//                [weakSelf.preferences setOldCalcData:weakSelf.preferences.calcData];
+//            }
+//        };
+//    }
+//
+//    return _cellTextInputFinishedBlock;
+//}
 
 // 계산 값 입력을 마친 경우에 호출됨.
 -(CellTextInputBlock)cellTextInputFinishAllBlock {
@@ -768,7 +769,6 @@ enum A3TableElementCellType {
 
             
             if (element.valueType == A3TableViewValueTypePercent) {
-
                 NSNumberFormatter *formatter = [NSNumberFormatter new];
 
                 if ((!element || ![element value]) && [inputString length] == 0) {
@@ -790,7 +790,7 @@ enum A3TableElementCellType {
                         NSLog(@"asdfasdf");
                     }
                     
-                    if (element.identifier == A3TableElementCellType_Discount) {
+                    if (element.identifier == A3TableElementCellType_Discount || (element.identifier == A3TableElementCellType_Tax && [weakSelf.preferences.calcData shownPriceType] == ShowPriceType_Sale)) {
                         element.value = [element.value stringByReplacingOccurrencesOfString:@"," withString:@""];
                         if ([element valueType] == A3TableViewValueTypePercent) {
                             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -827,7 +827,13 @@ enum A3TableElementCellType {
                 // update currency to percent
                 NSNumber *currency;
                 NSNumber *percent;
+                NSIndexPath * indexPath = [weakSelf.root indexPathForElement:element];
+                UITableViewCell *cell = [weakSelf.tableView cellForRowAtIndexPath:indexPath];
+                
                 switch (element.identifier) {
+                    case A3TableElementCellType_Price:
+                        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                        break;
                     case A3TableElementCellType_Discount:
                     case A3TableElementCellType_Additional:
                     case A3TableElementCellType_Tax:
@@ -844,17 +850,14 @@ enum A3TableElementCellType {
                             currency = weakSelf.preferences.calcData.tax;
                             percent = [A3SalesCalcCalculator taxPercentForCalcData:weakSelf.preferences.calcData];
                         }
-                        NSIndexPath * indexPath = [weakSelf.root indexPathForElement:element];
-                        UITableViewCell *cell = [weakSelf.tableView cellForRowAtIndexPath:indexPath];
+                        
                         [weakSelf updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:currency andPercent:percent];
-                        //[weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                        //[weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:[indexPath section]] withRowAnimation:UITableViewRowAnimationNone];
                     }
                         break;
                 }
             }
             
-            [weakSelf checkPercentValuesOfTableDataSource];
+            [weakSelf reloadPercentValuesToTableDataSource];
             [weakSelf saveInputTextData:weakSelf.preferences.calcData];
             
             
@@ -974,27 +977,34 @@ enum A3TableElementCellType {
 
         case A3TableElementCellType_Additional:
         {
-            A3TableViewInputElement *additional = (A3TableViewInputElement *)element;
-            if (additional.valueType == A3TableViewValueTypeCurrency) {
-                [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[additional value] doubleValue]) andPercent:[A3SalesCalcCalculator additionalOffPercentForCalcData:self.preferences.calcData]];
+            if (!element.value || (element && ([element.value length] == 0 || [element.value isEqualToString:@"0"]))) {
+                ((A3JHTableViewEntryCell *)cell).textField.text = @"";
+                ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Optional"
+                                                                                                                   attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17]} ];
+            }
+            else {
+                A3TableViewInputElement *additional = (A3TableViewInputElement *)element;
+                if (additional.valueType == A3TableViewValueTypeCurrency) {
+                    [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[additional value] doubleValue]) andPercent:[A3SalesCalcCalculator additionalOffPercentForCalcData:self.preferences.calcData]];
+                }
             }
         }
             break;
             
         case A3TableElementCellType_Tax:
         {
-//            if ([_locationCode isEqualToString:@"US"] && [[_locationTax stringValue] isEqualToString:[element value]]) {
-//            }
-            if (!element.value || (element && ([element.value length] == 0 || [element.value isEqualToString:@"0"]))) {
-                ((A3JHTableViewEntryCell *)cell).textField.text = @"";
-                ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Optional"
-                                                                                                                 attributes:@{ //NSForegroundColorAttributeName : [UIColor redColor],
-                                                                                                                               NSFontAttributeName : [UIFont systemFontOfSize:17] } ];
-            }
-            else {
-                A3TableViewInputElement *tax = (A3TableViewInputElement *)element;
-                if (tax.valueType == A3TableViewValueTypeCurrency) {
-                    [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[tax value] doubleValue]) andPercent:[A3SalesCalcCalculator taxPercentForCalcData:self.preferences.calcData]];
+            if ([_preferences.calcData shownPriceType] == ShowPriceType_Origin) {
+                if (!element.value || (element && ([element.value length] == 0 || [element.value isEqualToString:@"0"]))) {
+                    ((A3JHTableViewEntryCell *)cell).textField.text = @"";
+                    ((A3JHTableViewEntryCell *)cell).textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Optional"
+                                                                                                                       attributes:@{ //NSForegroundColorAttributeName : [UIColor redColor],
+                                                                                                                                    NSFontAttributeName : [UIFont systemFontOfSize:17] } ];
+                }
+                else {
+                    A3TableViewInputElement *tax = (A3TableViewInputElement *)element;
+                    if (tax.valueType == A3TableViewValueTypeCurrency) {
+                        [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:@([[tax value] doubleValue]) andPercent:[A3SalesCalcCalculator taxPercentForCalcData:self.preferences.calcData]];
+                    }
                 }
             }
         }
@@ -1019,9 +1029,13 @@ enum A3TableElementCellType {
 
         [_headerView setResultData:self.preferences.calcData withAnimation:YES];
         [_headerView setNeedsLayout];
+        
         _price.title = _preferences.calcData.shownPriceType == ShowPriceType_Origin ? @"Original Price" : (IS_IPAD ? @"Sale Price with Tax" :    @"Sale Price w/Tax");
+        A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+        cell.textLabel.text = _price.title;
+        
         //[self.tableView reloadData];
-        [self checkPercentValuesOfTableDataSource];
+        [self reloadPercentValuesToTableDataSource];
         
         if ([self.preferences didSaveBefore]==NO) {
             [self.preferences setOldCalcData:_preferences.calcData];
@@ -1134,7 +1148,7 @@ enum A3TableElementCellType {
              };
 }
 
-- (void)checkPercentValuesOfTableDataSource {
+- (void)reloadPercentValuesToTableDataSource {
     NSNumber *currency;
     NSNumber *percent;
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:1 inSection:1];
@@ -1169,12 +1183,33 @@ enum A3TableElementCellType {
             [self updateTableViewCell:cell atIndexPath:indexPath textFieldTextToCurrency:currency andPercent:percent];
         }
     }
+    else {
+        A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        if ([self.preferences.calcData shownPriceType] == ShowPriceType_Sale) {
+            cell.textField.text = [NSString stringWithFormat:@"%@%%", [self.preferences.calcData tax]];
+        }
+        else {
+            if ([self.preferences.calcData.tax doubleValue] > 0) {
+                cell.textField.text = [NSString stringWithFormat:@"%@%%", [self.preferences.calcData tax]];
+            }
+            else {
+                cell.textField.text = @"";
+            }
+        }
+    }
 }
 
 - (void)updateTableViewCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath textFieldTextToCurrency:(NSNumber *)amount andPercent:(NSNumber *)percent {
-    if (!amount || [amount isEqualToNumber:@0]) {
-        ((A3JHTableViewEntryCell *)cell).textField.text = @"";
-        return;
+    if ([indexPath section] == 2 && [indexPath row] == 1) {
+        if ((!amount || [amount isEqualToNumber:@0]) && [self.preferences.calcData shownPriceType] != ShowPriceType_Sale) {
+            ((A3JHTableViewEntryCell *)cell).textField.text = @"";
+            return;
+        }
+    } else {
+        if (!amount || [amount isEqualToNumber:@0]) {
+            ((A3JHTableViewEntryCell *)cell).textField.text = @"";
+            return;
+        }
     }
     
     NSNumberFormatter *formatter = [NSNumberFormatter new];
