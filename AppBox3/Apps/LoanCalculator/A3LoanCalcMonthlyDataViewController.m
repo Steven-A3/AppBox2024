@@ -255,11 +255,11 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         
         int calItemsCount = _loanData.showDownPayment ? 5:4;
         
-        for (int i = 0; i<extraItems.count; i++) {
-            UILabel *titleLB = infoCell.downTitleLBs[calItemsCount + i];
-            UILabel *valueLB = infoCell.downValueLBs[calItemsCount + i];
+        for (int idx = 0; idx < [extraItems count]; idx++) {
+            UILabel *titleLB = infoCell.downTitleLBs[calItemsCount + idx];
+            UILabel *valueLB = infoCell.downValueLBs[calItemsCount + idx];
             
-            NSNumber *num = extraItems[i];
+            NSNumber *num = extraItems[idx];
             A3LoanCalcExtraPaymentType extraType = num.integerValue;
             
             switch (extraType) {

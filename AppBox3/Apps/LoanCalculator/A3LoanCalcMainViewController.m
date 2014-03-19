@@ -43,6 +43,7 @@
 #import "UIViewController+A3Addition.h"
 #import "SFKImage.h"
 #import "UIViewController+LoanCalcAddtion.h"
+#import "WHMailActivityItem.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -889,7 +890,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             // 첨부파일 (monthly data 테이블로 csv 파일 만들어서 첨부해주세요)
             // AppBoxPro_amortization_loanA.csv
             // AppBoxPro_amortization_loanb.csv
-            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body]
+            NSURL *fileUrlA = [NSURL fileURLWithPath:[_loanDataA filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanA.csv"]];
+            NSURL *fileUrlB = [NSURL fileURLWithPath:[_loanDataB filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization_loanB.csv"]];
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrlA, fileUrlB]
                                                                                    subject:@"Loan Calculator in the AppBox Pro"
                                                                          fromBarButtonItem:sender];
         }
@@ -931,8 +934,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
             // 첨부파일 (monthly data 테이블로 csv 파일 만들어서 첨부해주세요)
             // AppBoxPro_amortization.csv
-
-            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body]
+            NSURL *fileUrl = [NSURL fileURLWithPath:[_loanData filePathOfCsvStringForMonthlyDataWithFileName:@"AppBoxPro_amortization.csv"]];
+            _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[body, fileUrl]
                                                                                    subject:@"Loan Calculator in the AppBox Pro"
                                                                          fromBarButtonItem:sender];
         }

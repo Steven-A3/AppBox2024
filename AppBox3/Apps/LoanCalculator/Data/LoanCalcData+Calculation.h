@@ -28,4 +28,8 @@
 
 - (BOOL)calculated;
 
+
+//- (NSString *)filePahtOfCsvStringForMonthlyDataArray:(NSArray *)dataArray;
+- (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName;
+//- (NSArray *)paymentList;
 @end

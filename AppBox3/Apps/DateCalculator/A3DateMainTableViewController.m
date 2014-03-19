@@ -461,23 +461,24 @@ NSString *kCalculationString;
         }
         
         NSString * mailTailString = @"\n\nYou can calculate more in the AppBox Pro.\n https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8";
-        NSString * etcTailString = @"\n\nCheck out the AppBox Pro!";
+//        NSString * etcTailString = @"\n\nCheck out the AppBox Pro!";
         
         /**
          https://github.com/waynehartman/WHMessageActivities
          **/
-        NSMutableArray *activityItems = [NSMutableArray new];
-        [activityItems addObject:[WHMailActivityItem mailActivityItemWithSelectionHandler:^(MFMailComposeViewController *mailController) {
-            [mailController setSubject:@"Date Calculator in the AppBox Pro"];
-            [mailController setMessageBody:[NSString stringWithFormat:@"%@%@%@", headString, shareString, mailTailString] isHTML:NO];
-            mailController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        }]];
-        [activityItems addObject:[NSString stringWithFormat:@"%@%@", shareString, etcTailString]];
+//        NSMutableArray *activityItems = [NSMutableArray new];
+//        [activityItems addObject:[WHMailActivityItem mailActivityItemWithSelectionHandler:^(MFMailComposeViewController *mailController) {
+//            [mailController setSubject:@"Date Calculator in the AppBox Pro"];
+//            [mailController setMessageBody:[NSString stringWithFormat:@"%@%@%@", headString, shareString, mailTailString] isHTML:NO];
+//            mailController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+//            [mailController addAttachmentData:nil mimeType:nil fileName:nil];
+//        }]];
+//        [activityItems addObject:[NSString stringWithFormat:@"%@%@", shareString, etcTailString]];
         
-        //        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:activityItems
-        //                                                                            activities:@[[[WHMailActivity alloc] init]]
-        //                                                                          excludedType:@[UIActivityTypeMail]
-        //                                                                     fromBarButtonItem:sender];
+//        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:activityItems
+//                                                                            activities:@[[[WHMailActivity alloc] init]]
+//                                                                          excludedType:@[UIActivityTypeMail]
+//                                                                     fromBarButtonItem:sender];
         
         _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[[NSString stringWithFormat:@"%@%@%@", headString, shareString, mailTailString]]
                                                                                subject:@"Date Calculator in the AppBox Pro"

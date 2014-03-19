@@ -452,4 +452,103 @@
     }
 }
 
+//- (NSString *)filePahtOfCsvStringForMonthlyDataArray:(NSArray *)dataArray {
+- (NSString *)filePathOfCsvStringForMonthlyDataWithFileName:(NSString *)fileName {
+    NSString *csvString;
+    NSMutableArray *csvArray = [NSMutableArray new];
+    NSDateFormatter *df = [NSDateFormatter new];
+    df.dateStyle = NSDateFormatterShortStyle;
+    NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+    numberFormatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    
+    NSArray *paymentDataList = [self paymentList];
+    
+    [csvArray addObject:[NSString stringWithFormat:@"Date, Principal, Payment, Interest, Balance"]];
+    [paymentDataList enumerateObjectsUsingBlock:^(NSDictionary *data, NSUInteger idx, BOOL *stop) {
+        NSString *date;
+        NSString *principal;
+        NSString *payment;
+        NSString *interest;
+        NSString *balance;
+        
+        if ((self.frequencyIndex == A3LC_FrequencyBiweekly) || (self.frequencyIndex == A3LC_FrequencyWeekly)) {
+            date = [df stringFromDate:data[@"Date"]];
+        }
+        else {
+            [df setDateFormat:@"MMM yyyy"];
+            date = [df stringFromDate:data[@"Date"]];
+        }
+        
+        if (IS_IPHONE) {
+            interest = [[numberFormatter stringFromNumber:data[@"Interest"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];
+            payment = [[numberFormatter stringFromNumber:data[@"Payment"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];
+            principal = [[numberFormatter stringFromNumber:data[@"Principal"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];
+            balance = [[numberFormatter stringFromNumber:data[@"Balance"]] stringByReplacingOccurrencesOfString:[numberFormatter currencySymbol] withString:@""];
+        }
+        else {
+            interest = [numberFormatter stringFromNumber:data[@"Interest"]];
+            payment = [numberFormatter stringFromNumber:data[@"Payment"]];
+            principal = [numberFormatter stringFromNumber:data[@"Principal"]];
+            balance = [numberFormatter stringFromNumber:data[@"Balance"]];
+        }
+        
+        [csvArray addObject:[NSString stringWithFormat:@"\"%@\", \"%@\", \"%@\", \"%@\", \"%@\"", date, principal, payment, interest, balance]];
+    }];
+    
+    
+    csvString = [csvArray componentsJoinedByString:@"\n"];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *filePath = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+    BOOL result = [fileManager createFileAtPath:filePath contents:[csvString dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
+    
+    return result ? filePath : nil;
+}
+
+- (NSArray *)paymentList
+{
+    NSMutableArray * paymentList = [NSMutableArray new];
+    if (!paymentList) {
+        paymentList = [[NSMutableArray alloc] init];
+        
+        // date, payment, principal, interest, balance
+        
+        double downPayment = self.downPayment ? self.downPayment.doubleValue : 0;
+        double balance = (self.principal.doubleValue - downPayment);
+        NSUInteger paymentIndex = 0;    // start from 0
+        
+        do {
+            NSDate *payDate = [self dateOfPaymentIndex:paymentIndex];
+            NSNumber *interest = @(balance * [self interestRateOfFrequency]);
+            
+            double paymentTmp = [self paymentOfPaymentIndex:paymentIndex].doubleValue;
+            if ((paymentTmp-interest.floatValue) > balance) {
+                paymentTmp = balance + interest.floatValue;
+            }
+            NSNumber *payment = @(paymentTmp);
+            NSNumber *principal = @(payment.doubleValue - interest.doubleValue);
+            balance -= principal.doubleValue;
+            
+            // 간혹 마지막 차에서 소수점이 남는 문제를 보정하기 위해 0.5미만은 0으로 바꾼다.
+            if (balance < 0.5) {
+                balance = 0;
+            }
+            NSNumber *balanceNum = @(balance);
+            
+            [paymentList addObject:@{
+                                      @"Date": payDate,
+                                      @"Payment": payment,
+                                      @"Principal": principal,
+                                      @"Interest": interest,
+                                      @"Balance": balanceNum
+                                      }];
+            paymentIndex++;
+            
+        } while (balance > 0);
+    }
+    
+    return paymentList;
+}
+
+
 @end
