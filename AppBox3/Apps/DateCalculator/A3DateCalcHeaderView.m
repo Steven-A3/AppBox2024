@@ -217,21 +217,15 @@
         self.fromLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         self.toLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-//        _resultTextLabel.font = self.resultLabel.contentLabel.font;
-        [self.fromLabel sizeToFit];
-        [self.toLabel sizeToFit];
     }
     else {
         self.fromLabel.font = [UIFont systemFontOfSize:13];
         self.toLabel.font = [UIFont systemFontOfSize:13];
         self.resultLabel.contentLabel.font = _calcType == CALC_TYPE_BETWEEN ? [UIFont systemFontOfSize:17] : [UIFont systemFontOfSize:13];
-        
-//        _resultTextLabel.font = self.resultLabel.contentLabel.font;
     }
-    
-//    test.text = self.resultLabel.contentLabel.text;
-//    test.font = self.resultLabel.contentLabel.font;
-//    [test sizeToFit];
+
+    [self.fromLabel sizeToFit];
+    [self.toLabel sizeToFit];
 }
 
 - (void)adjustFromToBetweenLineWidth

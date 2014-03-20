@@ -321,7 +321,6 @@
 		684D92F618BC1FBC005016F7 /* A3DateCalcFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 684D92D618BC1FBC005016F7 /* A3DateCalcFooterView.xib */; };
 		684D92F718BC1FBC005016F7 /* A3DateCalcFooterViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */; };
 		684D92F818BC1FBC005016F7 /* A3DateCalcHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92DA18BC1FBC005016F7 /* A3DateCalcHeaderView.m */; };
-		684D92F918BC1FBC005016F7 /* A3DateCalcHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 684D92DB18BC1FBC005016F7 /* A3DateCalcHeaderView.xib */; };
 		684D92FC18BC1FBC005016F7 /* A3DateCalcResultCursorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E018BC1FBC005016F7 /* A3DateCalcResultCursorView.m */; };
 		684D92FD18BC1FBC005016F7 /* A3DateCalcStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E218BC1FBC005016F7 /* A3DateCalcStateManager.m */; };
 		684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */; };
@@ -719,8 +718,6 @@
 		68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0517CAE519005AB571 /* HolidayData+Europe.m */; };
 		68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
 		68DC38251871BD0C0088DDA0 /* A3KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */; };
-		68E2A5D918D0AC5200E834D9 /* A3DateCalcHeaderView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68E2A5D418D0AC5200E834D9 /* A3DateCalcHeaderView_iPad.xib */; };
-		68E2A5DA18D0AC5200E834D9 /* A3DateCalcNewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5D618D0AC5200E834D9 /* A3DateCalcNewHeaderView.m */; };
 		68E2A5DB18D0AC5200E834D9 /* A3DateMainTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */; };
 		68E2A5F518D0AC6100E834D9 /* A3JHSelectTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5DE18D0AC6100E834D9 /* A3JHSelectTableViewController.m */; };
 		68E2A5F618D0AC6100E834D9 /* A3JHTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A5E018D0AC6100E834D9 /* A3JHTableViewCell.m */; };
@@ -1433,7 +1430,6 @@
 		684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcFooterViewCell.m; sourceTree = "<group>"; };
 		684D92D918BC1FBC005016F7 /* A3DateCalcHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcHeaderView.h; sourceTree = "<group>"; };
 		684D92DA18BC1FBC005016F7 /* A3DateCalcHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcHeaderView.m; sourceTree = "<group>"; };
-		684D92DB18BC1FBC005016F7 /* A3DateCalcHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateCalcHeaderView.xib; sourceTree = "<group>"; };
 		684D92DF18BC1FBC005016F7 /* A3DateCalcResultCursorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcResultCursorView.h; sourceTree = "<group>"; };
 		684D92E018BC1FBC005016F7 /* A3DateCalcResultCursorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcResultCursorView.m; sourceTree = "<group>"; };
 		684D92E118BC1FBC005016F7 /* A3DateCalcStateManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcStateManager.h; sourceTree = "<group>"; };
@@ -2180,9 +2176,6 @@
 		68DBF04A17CB884F009CAC33 /* A3HolidaysTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysTest.m; path = Holidays/A3HolidaysTest.m; sourceTree = "<group>"; };
 		68DC38231871BD0C0088DDA0 /* A3KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3KeychainUtils.h; path = Passcode/A3KeychainUtils.h; sourceTree = "<group>"; };
 		68DC38241871BD0C0088DDA0 /* A3KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3KeychainUtils.m; path = Passcode/A3KeychainUtils.m; sourceTree = "<group>"; };
-		68E2A5D418D0AC5200E834D9 /* A3DateCalcHeaderView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateCalcHeaderView_iPad.xib; sourceTree = "<group>"; };
-		68E2A5D518D0AC5200E834D9 /* A3DateCalcNewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcNewHeaderView.h; sourceTree = "<group>"; };
-		68E2A5D618D0AC5200E834D9 /* A3DateCalcNewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcNewHeaderView.m; sourceTree = "<group>"; };
 		68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateMainTableViewController.h; sourceTree = "<group>"; };
 		68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateMainTableViewController.m; sourceTree = "<group>"; };
 		68E2A5DD18D0AC6100E834D9 /* A3JHSelectTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3JHSelectTableViewController.h; sourceTree = "<group>"; };
@@ -3665,10 +3658,6 @@
 				684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */,
 				684D92D918BC1FBC005016F7 /* A3DateCalcHeaderView.h */,
 				684D92DA18BC1FBC005016F7 /* A3DateCalcHeaderView.m */,
-				684D92DB18BC1FBC005016F7 /* A3DateCalcHeaderView.xib */,
-				68E2A5D418D0AC5200E834D9 /* A3DateCalcHeaderView_iPad.xib */,
-				68E2A5D518D0AC5200E834D9 /* A3DateCalcNewHeaderView.h */,
-				68E2A5D618D0AC5200E834D9 /* A3DateCalcNewHeaderView.m */,
 				684D92DF18BC1FBC005016F7 /* A3DateCalcResultCursorView.h */,
 				684D92E018BC1FBC005016F7 /* A3DateCalcResultCursorView.m */,
 				684D92E118BC1FBC005016F7 /* A3DateCalcStateManager.h */,
@@ -5394,7 +5383,6 @@
 				68BF9B3218D9288600D13872 /* Launch_iPad.storyboard in Resources */,
 				68F1C89118D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib in Resources */,
 				68B6A32718CEC76D004084EF /* A3WalletCateTitleView_iPad.xib in Resources */,
-				684D92F918BC1FBC005016F7 /* A3DateCalcHeaderView.xib in Resources */,
 				68B6A31D18CEC76D004084EF /* A3WalletAllTopCell.xib in Resources */,
 				68B6A2E718CEC76D004084EF /* UnitConverterPhoneStoryboard.storyboard in Resources */,
 				68F1C8A418D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.xib in Resources */,
@@ -5508,7 +5496,6 @@
 				680D638F18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib in Resources */,
 				68B6A47818CEE938004084EF /* reload_icon.png in Resources */,
 				68F1C87B18D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib in Resources */,
-				68E2A5D918D0AC5200E834D9 /* A3DateCalcHeaderView_iPad.xib in Resources */,
 				68F1C8C218D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.xib in Resources */,
 				68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */,
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
@@ -5895,7 +5882,6 @@
 				6848FB8D17A39C1100EBDBED /* NSMutableArray+A3Sort.m in Sources */,
 				68B42B3F16FAA44800A73061 /* A3CircleView.m in Sources */,
 				684A71C21853464A0004A9FE /* A3AppDelegate+iCloud.m in Sources */,
-				68E2A5DA18D0AC5200E834D9 /* A3DateCalcNewHeaderView.m in Sources */,
 				68E6F37917B2A1DE00F10ED9 /* A3CurrencyHistoryViewController.m in Sources */,
 				681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */,
 				68F1C8F618D7FA41009FAE8A /* MPAnimation.m in Sources */,

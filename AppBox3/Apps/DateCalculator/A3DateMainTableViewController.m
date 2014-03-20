@@ -13,7 +13,6 @@
 #import "A3DateCalcHeaderView.h"
 #import "A3DateCalcFooterView.h"
 #import "A3DateCalcTableRowData.h"
-//#import "A3DateCalcTableviewCell.h"
 #import "A3DateCalcFooterViewCell.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController.h"
@@ -29,7 +28,6 @@
 #import "A3DateCalcAddSubCell1.h"
 #import "A3DateCalcAddSubCell2.h"
 #import "A3DefaultColorDefines.h"
-#import "A3DateCalcNewHeaderView.h"
 
 #define kDefaultBackgroundColor     [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
@@ -910,9 +908,6 @@ NSString *kCalculationString;
         
         if (self.isAddSubMode) {
             [self moveToFooterView];
-//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
-//            [self.tableView scrollRectToVisible:CGRectMake(0, cell.frame.origin.y + cell.frame.size.height + 100, 1, 1) animated:YES];
         }
         
         [UIView commitAnimations];
