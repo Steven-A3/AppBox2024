@@ -4923,102 +4923,17 @@
 		68F1C7CD18D7F37D009FAE8A /* DaysCounter */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C7D018D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.h */,
-				68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */,
-				68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */,
-				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
-				68F1C7D418D7F37D009FAE8A /* A3DaysCounterAddEventViewController.h */,
-				68F1C7D518D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m */,
-				68F1C7D618D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib */,
-				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
-				68F1C7D818D7F37D009FAE8A /* A3DaysCounterCalendarListViewController.h */,
-				68F1C7D918D7F37D009FAE8A /* A3DaysCounterCalendarListViewController.m */,
-				68F1C7DA18D7F37D009FAE8A /* A3DaysCounterCalendarListViewController.xib */,
-				68F1C7DB18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.h */,
-				68F1C7DC18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.m */,
-				68F1C7DD18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib */,
+				804C330A18DAE15200DBCE83 /* 1. SliderShow */,
+				804C330B18DAE1D400DBCE83 /* 2. CalendarList */,
+				804C330D18DAE25700DBCE83 /* 3. Reminder */,
+				804C330C18DAE22D00DBCE83 /* 4. Favorite */,
+				804C330918DAE11900DBCE83 /* Setup */,
+				804C330818DAE0E500DBCE83 /* Event Related */,
+				804C330E18DAE33D00DBCE83 /* SubDetails */,
 				68F1C7DE18D7F37D009FAE8A /* A3DaysCounterDefine.h */,
-				68F1C7DF18D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.h */,
-				68F1C7E018D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.m */,
-				68F1C7E118D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.xib */,
-				68F1C7E218D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.h */,
-				68F1C7E318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.m */,
-				68F1C7E418D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib */,
-				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
-				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
-				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
-				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
-				68F1C7E918D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.m */,
-				68F1C7EA18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib */,
-				68F1C7EB18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController_iPad.h */,
-				68F1C7EC18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController_iPad.m */,
-				68F1C7ED18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController_iPad.xib */,
-				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
-				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
-				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
-				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
-				68F1C7F218D7F37D009FAE8A /* A3DaysCounterEventListViewController.h */,
-				68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */,
-				68F1C7F418D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib */,
-				68F1C7F518D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib */,
-				68F1C7F618D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.h */,
-				68F1C7F718D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.m */,
-				68F1C7F818D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib */,
 				68F1C7F918D7F37D009FAE8A /* A3DaysCounterHeaderFooterView.xib */,
-				68F1C7FA18D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib */,
-				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
-				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
-				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,
-				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
-				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
-				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
 				68F1C80118D7F37D009FAE8A /* A3DaysCounterModelManager.h */,
 				68F1C80218D7F37D009FAE8A /* A3DaysCounterModelManager.m */,
-				68F1C80318D7F37D009FAE8A /* A3DaysCounterReminderListViewController.h */,
-				68F1C80418D7F37D009FAE8A /* A3DaysCounterReminderListViewController.m */,
-				68F1C80518D7F37D009FAE8A /* A3DaysCounterReminderListViewController.xib */,
-				68F1C80618D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.h */,
-				68F1C80718D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.m */,
-				68F1C80818D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.xib */,
-				68F1C80918D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.h */,
-				68F1C80A18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.m */,
-				68F1C80B18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.xib */,
-				68F1C80C18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.h */,
-				68F1C80D18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.m */,
-				68F1C80E18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.xib */,
-				68F1C80F18D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.h */,
-				68F1C81018D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.m */,
-				68F1C81118D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.xib */,
-				68F1C81218D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.h */,
-				68F1C81318D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.m */,
-				68F1C81418D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.xib */,
-				68F1C81518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.h */,
-				68F1C81618D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m */,
-				68F1C81718D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.xib */,
-				68F1C81818D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.h */,
-				68F1C81918D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.m */,
-				68F1C81A18D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.xib */,
-				68F1C81B18D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.h */,
-				68F1C81C18D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.m */,
-				68F1C81D18D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.xib */,
-				68F1C81E18D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.h */,
-				68F1C81F18D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.m */,
-				68F1C82018D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.xib */,
-				68F1C82118D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.h */,
-				68F1C82218D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.m */,
-				68F1C82318D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.xib */,
-				68F1C82418D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.h */,
-				68F1C82518D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.m */,
-				68F1C82618D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.xib */,
-				68F1C82718D7F37D009FAE8A /* A3DaysCounterViewController.h */,
-				68F1C82818D7F37D009FAE8A /* A3DaysCounterViewController.m */,
-				68F1C82918D7F37D009FAE8A /* A3DaysCounterViewController.xib */,
-				68F1C82A18D7F37D009FAE8A /* A3PhotoSelectCell.xib */,
-				68F1C82B18D7F37D009FAE8A /* A3PhotoSelectViewController.h */,
-				68F1C82C18D7F37D009FAE8A /* A3PhotoSelectViewController.m */,
-				68F1C82D18D7F37D009FAE8A /* A3PhotoSelectViewController.xib */,
-				68F1C82E18D7F37D009FAE8A /* A3SlideshowActivity.h */,
-				68F1C82F18D7F37D009FAE8A /* A3SlideshowActivity.m */,
 				68F1C83018D7F37D009FAE8A /* CustomView */,
 				68F1C83318D7F37D009FAE8A /* Model */,
 			);
@@ -5241,6 +5156,147 @@
 			);
 			name = FMFramework;
 			path = External/FMMoveTableView/FMFramework;
+			sourceTree = "<group>";
+		};
+		804C330818DAE0E500DBCE83 /* Event Related */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
+				68F1C7D418D7F37D009FAE8A /* A3DaysCounterAddEventViewController.h */,
+				68F1C7D518D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m */,
+				68F1C7D618D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib */,
+				68F1C7E218D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.h */,
+				68F1C7E318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.m */,
+				68F1C7E418D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib */,
+				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
+				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
+				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
+				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
+				68F1C7E918D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.m */,
+				68F1C7EA18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib */,
+				68F1C7EB18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController_iPad.h */,
+				68F1C7EC18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController_iPad.m */,
+				68F1C7ED18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController_iPad.xib */,
+				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
+				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
+				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
+				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
+				68F1C7F218D7F37D009FAE8A /* A3DaysCounterEventListViewController.h */,
+				68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */,
+				68F1C7F418D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib */,
+				68F1C7F518D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib */,
+			);
+			name = "Event Related";
+			sourceTree = "<group>";
+		};
+		804C330918DAE11900DBCE83 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C80618D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.h */,
+				68F1C80718D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.m */,
+				68F1C80818D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.xib */,
+				68F1C80918D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.h */,
+				68F1C80A18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.m */,
+				68F1C80B18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.xib */,
+				68F1C80C18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.h */,
+				68F1C80D18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.m */,
+				68F1C80E18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.xib */,
+				68F1C80F18D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.h */,
+				68F1C81018D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.m */,
+				68F1C81118D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.xib */,
+				68F1C81218D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.h */,
+				68F1C81318D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.m */,
+				68F1C81418D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.xib */,
+				68F1C81518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.h */,
+				68F1C81618D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m */,
+				68F1C81718D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.xib */,
+				68F1C81818D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.h */,
+				68F1C81918D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.m */,
+				68F1C81A18D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.xib */,
+			);
+			name = Setup;
+			sourceTree = "<group>";
+		};
+		804C330A18DAE15200DBCE83 /* 1. SliderShow */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C81B18D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.h */,
+				68F1C81C18D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.m */,
+				68F1C81D18D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.xib */,
+				68F1C81E18D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.h */,
+				68F1C81F18D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.m */,
+				68F1C82018D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.xib */,
+				68F1C82118D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.h */,
+				68F1C82218D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.m */,
+				68F1C82318D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.xib */,
+				68F1C82418D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.h */,
+				68F1C82518D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.m */,
+				68F1C82618D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.xib */,
+				68F1C82E18D7F37D009FAE8A /* A3SlideshowActivity.h */,
+				68F1C82F18D7F37D009FAE8A /* A3SlideshowActivity.m */,
+			);
+			name = "1. SliderShow";
+			sourceTree = "<group>";
+		};
+		804C330B18DAE1D400DBCE83 /* 2. CalendarList */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C7DF18D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.h */,
+				68F1C7E018D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.m */,
+				68F1C7E118D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.xib */,
+				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
+				68F1C7D818D7F37D009FAE8A /* A3DaysCounterCalendarListViewController.h */,
+				68F1C7D918D7F37D009FAE8A /* A3DaysCounterCalendarListViewController.m */,
+				68F1C7DA18D7F37D009FAE8A /* A3DaysCounterCalendarListViewController.xib */,
+			);
+			name = "2. CalendarList";
+			sourceTree = "<group>";
+		};
+		804C330C18DAE22D00DBCE83 /* 4. Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C7F618D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.h */,
+				68F1C7F718D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.m */,
+				68F1C7F818D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib */,
+			);
+			name = "4. Favorite";
+			sourceTree = "<group>";
+		};
+		804C330D18DAE25700DBCE83 /* 3. Reminder */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C80318D7F37D009FAE8A /* A3DaysCounterReminderListViewController.h */,
+				68F1C80418D7F37D009FAE8A /* A3DaysCounterReminderListViewController.m */,
+				68F1C80518D7F37D009FAE8A /* A3DaysCounterReminderListViewController.xib */,
+			);
+			name = "3. Reminder";
+			sourceTree = "<group>";
+		};
+		804C330E18DAE33D00DBCE83 /* SubDetails */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C7D018D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.h */,
+				68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */,
+				68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */,
+				68F1C7DB18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.h */,
+				68F1C7DC18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.m */,
+				68F1C7DD18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib */,
+				68F1C82718D7F37D009FAE8A /* A3DaysCounterViewController.h */,
+				68F1C82818D7F37D009FAE8A /* A3DaysCounterViewController.m */,
+				68F1C82918D7F37D009FAE8A /* A3DaysCounterViewController.xib */,
+				68F1C82A18D7F37D009FAE8A /* A3PhotoSelectCell.xib */,
+				68F1C82B18D7F37D009FAE8A /* A3PhotoSelectViewController.h */,
+				68F1C82C18D7F37D009FAE8A /* A3PhotoSelectViewController.m */,
+				68F1C82D18D7F37D009FAE8A /* A3PhotoSelectViewController.xib */,
+				68F1C7FA18D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib */,
+				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
+				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
+				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,
+				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
+				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
+				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
+			);
+			name = SubDetails;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
