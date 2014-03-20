@@ -562,6 +562,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             if (element.identifier == RowElementID_Tip) {
                 textField.inputAccessoryView = [weakSelf keyboardAccessoryView];
             }
+            else {
+                textField.inputAccessoryView = nil;
+            }
         };
     }
     
