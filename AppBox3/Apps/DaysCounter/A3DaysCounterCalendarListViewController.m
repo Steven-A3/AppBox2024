@@ -59,16 +59,18 @@
     [super viewDidLoad];
 
     self.navigationItem.title = @"Days Counter";
-    if( IS_IPHONE )
+    if ( IS_IPHONE ) {
         [self leftBarButtonAppsButton];
+    }
+    [self makeBackButtonEmptyArrow];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightTopButtonView];
-
     [self setToolbarItems:_bottomToolbar.items];
     
-    if( IS_IPHONE )
+    if ( IS_IPHONE ) {
         [self.tableView setTableHeaderView:_headerView];
-    else{
+    }
+    else {
         [self.tableView setTableHeaderView:_iPadheaderView];
         self.numberOfCalendarLabel = self.numberOfCalendarLabeliPad;
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
@@ -76,7 +78,6 @@
     }
 //    [self.tableView setTableFooterView:_footerView];
     
-    [self makeBackButtonEmptyArrow];
     for(NSLayoutConstraint *layout in _verticalSeperators){
         layout.constant = 1.0 / [[UIScreen mainScreen] scale];
     }
@@ -87,24 +88,27 @@
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyContentSizeCategoryDidChanged:) name:UIContentSizeCategoryDidChangeNotification object:nil];
     self.navigationController.delegate = nil;
+    [self.navigationController setToolbarHidden:NO];
+    if ( IS_IPAD ) {
+        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            [self leftBarButtonAppsButton];
+        }
+        else {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+        }
+    }
+    
     _searchButton.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
-    [self.navigationController setToolbarHidden:NO];
     
-    if( ![_addEventButton isDescendantOfView:self.view] ){
-        _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+    if (![_addEventButton isDescendantOfView:self.view]) {
+        _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
+                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                           _addEventButton.frame.size.width,
+                                           _addEventButton.frame.size.height);
         [self.view addSubview:_addEventButton];
-    }
-    
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
     }
 }
 
@@ -124,7 +128,7 @@
 {
     _addEventButton.hidden = YES;
     if( IS_IPAD ){
-        CGFloat barWidth = ( UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? self.view.frame.size.width : self.view.frame.size.height);
+        CGFloat barWidth = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? self.view.frame.size.width : self.view.frame.size.height);
         _iPadHeaderCenterConstraints.constant = barWidth / 3.0;
         [UIView animateWithDuration:duration animations:^{
             [self.view layoutIfNeeded];
@@ -142,7 +146,10 @@
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
         }
     }
-    _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+    _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
+                                       self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                       _addEventButton.frame.size.width,
+                                       _addEventButton.frame.size.height);
     _addEventButton.hidden = NO;
 }
 
@@ -155,12 +162,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if( tableView != self.tableView )
+    if ( tableView != self.tableView ) {
         return [_searchResultArray count];
+    }
     
     NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
     
-    return ([_itemArray count] > numberOfPage ? [_itemArray count] + 1 : numberOfPage + 1);
+    return [_itemArray count] > numberOfPage ? [_itemArray count] + 1 : numberOfPage + 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -173,16 +181,29 @@
     return 0.01;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DaysCounterCalendar *item = ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) ? nil : [(tableView == self.tableView ?_itemArray : _searchResultArray) objectAtIndex:indexPath.row]);
+    //DaysCounterCalendar *item = (tableView == self.tableView && (indexPath.row >= [_itemArray count])) ? nil : [(tableView == self.tableView ? _itemArray : _searchResultArray) objectAtIndex:indexPath.row];
+    DaysCounterCalendar *item;
+    if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
+        item = nil;
+    }
+    else {
+        if (tableView == self.tableView) {
+            item = [_itemArray objectAtIndex:[indexPath row]];
+        }
+        else {
+            item = [_searchResultArray objectAtIndex:[indexPath row]];
+        }
+    }
+    
     
     UITableViewCell *cell = nil;
-    if( item ){
+    if ( item ) {
         NSInteger cellType = [item.calendarType integerValue];
-        NSString *CellIdentifier = ( cellType == CalendarCellType_System ? @"systemCalendarListCell" : @"userCalendarListCell");
+        NSString *CellIdentifier = cellType == CalendarCellType_System ? @"systemCalendarListCell" : @"userCalendarListCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
         if (cell == nil) {
             NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
             cell = [cellArray objectAtIndex:cellType];
@@ -190,63 +211,73 @@
 
         UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
         UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
-        
         textLabel.textColor = [item color];
         countLabel.textColor = [item color];
         textLabel.text = item.calendarName;
-        if( cellType == CalendarCellType_User ){
+        
+        if ( cellType == CalendarCellType_User ) {
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
             UILabel *eventNameLabel = (UILabel*)[cell viewWithTag:12];
             UILabel *periodLabel = (UILabel*)[cell viewWithTag:13];
             
-            if( [item.events count] < 1 ){
+            if ( [item.events count] < 1 ) {
                 eventNameLabel.text = @"";
                 periodLabel.text = @"";
             }
-            else{
+            else {
                 DaysCounterEvent *event = [item.events lastObject];
                 eventNameLabel.text = event.eventName;
                 NSDate *today = [NSDate date];
                 NSDate *calcDate = event.startDate;
                 NSInteger diffDay = 0;
-                if( [event.repeatType integerValue] != RepeatType_Never ){
+                if ( [event.repeatType integerValue] != RepeatType_Never ) {
                     NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:event.startDate fromDate:today];
-                
                     diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
                     calcDate = nextDate;
                 }
-                else{
+                else {
                     diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate];
                 }
                 
-                if( diffDay == 0 )
+                if ( diffDay == 0 ) {
                     periodLabel.text = @"Release 0 days";
-                else{
-                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@",[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day fromDate:today toDate:calcDate isAllDay:[event.isAllDay boolValue]],(diffDay > 0 ? @"until" : @"since")];
                 }
-                if( IS_IPAD ){
+                else {
+                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
+                                                                                                                                             fromDate:today
+                                                                                                                                               toDate:calcDate
+                                                                                                                                             isAllDay:[event.isAllDay boolValue]],
+                                        diffDay > 0 ? @"until" : @"since"];
+                }
+                
+                if ( IS_IPAD ) {
                     UILabel *dateLabel = (UILabel*)[cell viewWithTag:14];
                     dateLabel.hidden = NO;
-                    dateLabel.text = [A3DateHelper dateStringFromDate:calcDate withFormat:([event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE h:m a")];
+                    dateLabel.text = [A3DateHelper dateStringFromDate:calcDate
+                                                           withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE h:m a"];
                 }
             }
         }
-        else{
+        else {
             NSInteger numberOfEvents = 0;
-            if( [item.calendarId isEqualToString:SystemCalendarID_All] )
+            if ( [item.calendarId isEqualToString:SystemCalendarID_All] ) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
-            else if( [item.calendarId isEqualToString:SystemCalendarID_Upcoming])
+            }
+            else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfUpcomingEventsWithDate:[NSDate date]];
-            else if( [item.calendarId isEqualToString:SystemCalendarID_Past] )
+            }
+            else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] ) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfPastEventsWithDate:[NSDate date]];
+            }
             
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];
         }
     }
-    else{
+    else {
         cell = [tableView dequeueReusableCellWithIdentifier:@"emptyCell"];
-        if( cell == nil )
+        if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"emptyCell"];
+        }
         cell.textLabel.text = @"";
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -260,15 +291,17 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
-    if( tableView == self.tableView && ( indexPath.row >= [_itemArray count] && indexPath.row+1 >= numberOfPage) )
+    if ( tableView == self.tableView && ( indexPath.row >= [_itemArray count] && indexPath.row+1 >= numberOfPage) ) {
         return 42.0;
+    }
     return 84.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
+    if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) ) {
         return;
+    }
     
     DaysCounterCalendar *item = [(tableView == self.tableView ?_itemArray : _searchResultArray) objectAtIndex:indexPath.row];
     
@@ -279,10 +312,12 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( editingStyle == UITableViewCellEditingStyleDelete ){
+    if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-        if( [item.calendarType integerValue] == CalendarCellType_System )
+        if ( [item.calendarType integerValue] == CalendarCellType_System ) {
             return;
+        }
+        
         [[A3DaysCounterModelManager sharedManager] removeCalendarItemWithID:item.calendarId];
         self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
         [self setupHeaderInfo];
@@ -296,6 +331,10 @@
         return NO;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
+    if ([item.events count] == 0) {
+        return NO;
+    }
+    
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }
 

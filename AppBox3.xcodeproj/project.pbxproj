@@ -3637,35 +3637,19 @@
 		684D92C518BC1FBC005016F7 /* DateCalculator */ = {
 			isa = PBXGroup;
 			children = (
-				684D92C618BC1FBC005016F7 /* A3DateCalcAddSubButton.h */,
-				684D92C718BC1FBC005016F7 /* A3DateCalcAddSubButton.m */,
-				684D92C818BC1FBC005016F7 /* A3DateCalcAddSubCell1.h */,
-				684D92C918BC1FBC005016F7 /* A3DateCalcAddSubCell1.m */,
-				684D92CA18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib */,
-				684D92CB18BC1FBC005016F7 /* A3DateCalcAddSubCell2.h */,
-				684D92CC18BC1FBC005016F7 /* A3DateCalcAddSubCell2.m */,
-				684D92CD18BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib */,
+				804C330F18DAE53500DBCE83 /* Cells & Custom */,
 				684D92CE18BC1FBC005016F7 /* A3DateCalcDurationViewController.h */,
 				684D92CF18BC1FBC005016F7 /* A3DateCalcDurationViewController.m */,
 				684D92D018BC1FBC005016F7 /* A3DateCalcEditEventViewController.h */,
 				684D92D118BC1FBC005016F7 /* A3DateCalcEditEventViewController.m */,
 				684D92D218BC1FBC005016F7 /* A3DateCalcExcludeViewController.h */,
 				684D92D318BC1FBC005016F7 /* A3DateCalcExcludeViewController.m */,
-				684D92D418BC1FBC005016F7 /* A3DateCalcFooterView.h */,
-				684D92D518BC1FBC005016F7 /* A3DateCalcFooterView.m */,
-				684D92D618BC1FBC005016F7 /* A3DateCalcFooterView.xib */,
-				684D92D718BC1FBC005016F7 /* A3DateCalcFooterViewCell.h */,
-				684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */,
 				684D92D918BC1FBC005016F7 /* A3DateCalcHeaderView.h */,
 				684D92DA18BC1FBC005016F7 /* A3DateCalcHeaderView.m */,
-				684D92DF18BC1FBC005016F7 /* A3DateCalcResultCursorView.h */,
-				684D92E018BC1FBC005016F7 /* A3DateCalcResultCursorView.m */,
 				684D92E118BC1FBC005016F7 /* A3DateCalcStateManager.h */,
 				684D92E218BC1FBC005016F7 /* A3DateCalcStateManager.m */,
 				684D92E318BC1FBC005016F7 /* A3DateCalcTableRowData.h */,
 				684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */,
-				684D92E518BC1FBC005016F7 /* A3DateCalcTableviewCell.h */,
-				684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */,
 				68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */,
 				68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */,
 				684D92E718BC1FBC005016F7 /* A3DefaultColorDefines.h */,
@@ -5297,6 +5281,30 @@
 				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
 			);
 			name = SubDetails;
+			sourceTree = "<group>";
+		};
+		804C330F18DAE53500DBCE83 /* Cells & Custom */ = {
+			isa = PBXGroup;
+			children = (
+				684D92DF18BC1FBC005016F7 /* A3DateCalcResultCursorView.h */,
+				684D92E018BC1FBC005016F7 /* A3DateCalcResultCursorView.m */,
+				684D92C618BC1FBC005016F7 /* A3DateCalcAddSubButton.h */,
+				684D92C718BC1FBC005016F7 /* A3DateCalcAddSubButton.m */,
+				684D92E518BC1FBC005016F7 /* A3DateCalcTableviewCell.h */,
+				684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */,
+				684D92D418BC1FBC005016F7 /* A3DateCalcFooterView.h */,
+				684D92D518BC1FBC005016F7 /* A3DateCalcFooterView.m */,
+				684D92D618BC1FBC005016F7 /* A3DateCalcFooterView.xib */,
+				684D92D718BC1FBC005016F7 /* A3DateCalcFooterViewCell.h */,
+				684D92D818BC1FBC005016F7 /* A3DateCalcFooterViewCell.m */,
+				684D92C818BC1FBC005016F7 /* A3DateCalcAddSubCell1.h */,
+				684D92C918BC1FBC005016F7 /* A3DateCalcAddSubCell1.m */,
+				684D92CA18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib */,
+				684D92CB18BC1FBC005016F7 /* A3DateCalcAddSubCell2.h */,
+				684D92CC18BC1FBC005016F7 /* A3DateCalcAddSubCell2.m */,
+				684D92CD18BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib */,
+			);
+			name = "Cells & Custom";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
