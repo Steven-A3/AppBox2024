@@ -43,7 +43,6 @@
 #import "UIViewController+A3Addition.h"
 #import "SFKImage.h"
 #import "UIViewController+LoanCalcAddtion.h"
-#import "WHMailActivityItem.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 

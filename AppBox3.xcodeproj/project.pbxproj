@@ -326,8 +326,6 @@
 		684D92FD18BC1FBC005016F7 /* A3DateCalcStateManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E218BC1FBC005016F7 /* A3DateCalcStateManager.m */; };
 		684D92FE18BC1FBC005016F7 /* A3DateCalcTableRowData.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E418BC1FBC005016F7 /* A3DateCalcTableRowData.m */; };
 		684D92FF18BC1FBC005016F7 /* A3DateCalcTableviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */; };
-		684D930018BC1FBC005016F7 /* WHMailActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92EA18BC1FBC005016F7 /* WHMailActivity.m */; };
-		684D930118BC1FBC005016F7 /* WHMailActivityItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D92EC18BC1FBC005016F7 /* WHMailActivityItem.m */; };
 		684D932E18BC20E1005016F7 /* NSDate+formatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 684D932D18BC20E1005016F7 /* NSDate+formatting.m */; };
 		684E944217C22E760081A8B5 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 684E944117C22E760081A8B5 /* Images.xcassets */; };
 		684E9EF7188A206C00FAA48E /* A3AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 684E9EF6188A206C00FAA48E /* A3AboutViewController.m */; };
@@ -1445,10 +1443,6 @@
 		684D92E518BC1FBC005016F7 /* A3DateCalcTableviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateCalcTableviewCell.h; sourceTree = "<group>"; };
 		684D92E618BC1FBC005016F7 /* A3DateCalcTableviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateCalcTableviewCell.m; sourceTree = "<group>"; };
 		684D92E718BC1FBC005016F7 /* A3DefaultColorDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DefaultColorDefines.h; sourceTree = "<group>"; };
-		684D92E918BC1FBC005016F7 /* WHMailActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHMailActivity.h; sourceTree = "<group>"; };
-		684D92EA18BC1FBC005016F7 /* WHMailActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHMailActivity.m; sourceTree = "<group>"; };
-		684D92EB18BC1FBC005016F7 /* WHMailActivityItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WHMailActivityItem.h; sourceTree = "<group>"; };
-		684D92EC18BC1FBC005016F7 /* WHMailActivityItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WHMailActivityItem.m; sourceTree = "<group>"; };
 		684D932C18BC20E1005016F7 /* NSDate+formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+formatting.h"; sourceTree = "<group>"; };
 		684D932D18BC20E1005016F7 /* NSDate+formatting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+formatting.m"; sourceTree = "<group>"; };
 		684E944117C22E760081A8B5 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "AppBox3/Asset Catalogs/Images.xcassets"; sourceTree = "<group>"; };
@@ -3686,20 +3680,8 @@
 				68E2A5D718D0AC5200E834D9 /* A3DateMainTableViewController.h */,
 				68E2A5D818D0AC5200E834D9 /* A3DateMainTableViewController.m */,
 				684D92E718BC1FBC005016F7 /* A3DefaultColorDefines.h */,
-				684D92E818BC1FBC005016F7 /* WHMailActivity */,
 			);
 			path = DateCalculator;
-			sourceTree = "<group>";
-		};
-		684D92E818BC1FBC005016F7 /* WHMailActivity */ = {
-			isa = PBXGroup;
-			children = (
-				684D92E918BC1FBC005016F7 /* WHMailActivity.h */,
-				684D92EA18BC1FBC005016F7 /* WHMailActivity.m */,
-				684D92EB18BC1FBC005016F7 /* WHMailActivityItem.h */,
-				684D92EC18BC1FBC005016F7 /* WHMailActivityItem.m */,
-			);
-			path = WHMailActivity;
 			sourceTree = "<group>";
 		};
 		684E0D2918169CEC003D01EE /* A3TableViewController */ = {
@@ -6006,7 +5988,6 @@
 				68B6A33F18CEC76D004084EF /* A3WalletAddCateViewController.m in Sources */,
 				68B6A31718CEC76D004084EF /* A3WalletSegmentedControl.m in Sources */,
 				684D92FD18BC1FBC005016F7 /* A3DateCalcStateManager.m in Sources */,
-				684D930118BC1FBC005016F7 /* WHMailActivityItem.m in Sources */,
 				68B6A2AF18CEC76D004084EF /* A3LoanCalcSelectFrequencyViewController.m in Sources */,
 				689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */,
 				68ADE14A17D83D28009618A7 /* UIViewController+MMDrawerController.m in Sources */,
@@ -6064,7 +6045,6 @@
 				68B6A2D618CEC76D004084EF /* A3UnitConverterTVDataCell.m in Sources */,
 				689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */,
 				684D92F718BC1FBC005016F7 /* A3DateCalcFooterViewCell.m in Sources */,
-				684D930018BC1FBC005016F7 /* WHMailActivity.m in Sources */,
 				68F4EE8117E461A0009BDE05 /* A3ImageCropperViewController.m in Sources */,
 				68B6A47A18CEE938004084EF /* TSMiniWebBrowser.m in Sources */,
 				68FEE387174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m in Sources */,
