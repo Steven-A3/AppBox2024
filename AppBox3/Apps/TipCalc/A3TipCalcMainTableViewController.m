@@ -206,6 +206,43 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return _headerView;
 }
 
+- (UIView *)keyboardAccessoryView {
+    UIView *accessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 45)];
+    accessoryView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
+    UIView *topLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), IS_RETINA ? 0.5 : 1)];
+    topLine.backgroundColor = [UIColor colorWithRed:178/255.0 green:178/255.0 blue:178/255.0 alpha:1.0];
+    UIButton *percentButton15 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [percentButton15 setTitle:@"15%" forState:UIControlStateNormal];
+    [percentButton15 setTitleColor:[UIColor colorWithRed:0.0 green:122/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [percentButton15 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+    percentButton15.frame = CGRectMake(15, 0, 50, 45);
+    percentButton15.tag = 15;
+    [percentButton15 addTarget:self action:@selector(keyboardAccessoryButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *percentButton20 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [percentButton20 setTitle:@"20%" forState:UIControlStateNormal];
+    [percentButton20 setTitleColor:[UIColor colorWithRed:0.0 green:122/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [percentButton20 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+    percentButton20.frame = CGRectMake(15 + 50 + 10, 0, 50, 45);
+    percentButton20.tag = 20;
+    [percentButton20 addTarget:self action:@selector(keyboardAccessoryButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *percentButton25 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [percentButton25 setTitle:@"25%" forState:UIControlStateNormal];
+    [percentButton25 setTitleColor:[UIColor colorWithRed:0.0 green:122/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [percentButton25 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
+    percentButton25.frame = CGRectMake(15 + 50 + 10 + 50 + 10, 0, 50, 45);
+    percentButton25.tag = 25;
+    [percentButton25 addTarget:self action:@selector(keyboardAccessoryButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [accessoryView addSubview:percentButton15];
+    [accessoryView addSubview:percentButton20];
+    [accessoryView addSubview:percentButton25];
+    [accessoryView addSubview:topLine];
+    
+    return accessoryView;
+}
+
 #pragma mark - button event
 - (void)detailButtonTouchedUp:(UIButton* )aSender
 {
@@ -314,6 +351,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_PerPerson;
     
     [self outputAllResultWithAnimation:YES];
+}
+
+#pragma mark KeyboardAccessoryView Button
+- (void)keyboardAccessoryButtonTouchedUp:(UIButton *)sender {
+    ((UITextField *)_firstResponder).text = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
 }
 
 #pragma mark - Table Data Configuration
@@ -516,6 +558,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             weakSelf.firstResponder = textField;
             [weakSelf dismissMoreMenu];
+            
+            if (element.identifier == RowElementID_Tip) {
+                textField.inputAccessoryView = [weakSelf keyboardAccessoryView];
+            }
         };
     }
     
