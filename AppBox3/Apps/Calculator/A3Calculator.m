@@ -95,30 +95,30 @@ typedef CMathParser<char, double> MathParser;
 
     NSUInteger maxFractionDigt = 11;
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    NSUInteger maxDigitLen = 16, maxSignificantDigits = 15;
+    NSUInteger maxDigitLen = 16, maxSignificantDigits = 16;
     FNLOG("value = %f", value);
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
     if (IS_IPHONE && _isLandScape == NO) {
         maxFractionDigt = 4;
         maxDigitLen = 9;
-        maxSignificantDigits = 7;
+        maxSignificantDigits = 9;
     }
-    
+    [nf setLocale:[NSLocale currentLocale]];
+    [nf setMaximumFractionDigits:maxFractionDigt];
+    [nf setUsesSignificantDigits:YES];
+    [nf setMaximumSignificantDigits:maxSignificantDigits];
     if(numLen <= maxDigitLen + 7) {
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
-        [nf setMaximumFractionDigits:maxFractionDigt];
+
+        /*
         nf.usesGroupingSeparator = YES;
         [nf setGroupingSize:3];
         [nf setGroupingSeparator:@","];
-        
+        */
         resultString = [nf stringFromNumber:[NSNumber numberWithDouble:value]];
     }else {
         [nf setNumberStyle:NSNumberFormatterScientificStyle];
-        //[nf setMaximumFractionDigits:maxFractionDigt];
-        nf.usesGroupingSeparator = YES;
-        nf.usesSignificantDigits = YES;
-        [nf setMaximumSignificantDigits:maxSignificantDigits];
         [nf setExponentSymbol:@"e"];
         
         if(IS_IPHONE && _isLandScape == NO) {
