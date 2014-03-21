@@ -644,7 +644,6 @@
     
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    //navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 

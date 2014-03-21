@@ -56,6 +56,7 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
+    [self registerContentSizeCategoryDidChangeNotification];
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, ([_itemArray count] > 0 ? 48.0 : 15.0), 0, 0);
     [self.tableView reloadData];
@@ -85,6 +86,10 @@
 - (void)dealloc
 {
     self.itemArray = nil;
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -151,6 +156,9 @@
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
     UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
+    
+    textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     if ( [_itemArray count] > 0 ) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
