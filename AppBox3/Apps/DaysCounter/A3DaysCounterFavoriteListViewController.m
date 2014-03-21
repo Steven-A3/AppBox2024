@@ -47,13 +47,14 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
+    [self registerContentSizeCategoryDidChangeNotification];
 //    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
 //	[SFKImage setDefaultColor:[UIColor blueColor]];
 //    UIImage *image = [SFKImage imageNamed:@"d"];
 //    UIBarButtonItem *lastButton = [_bottomToolbar.items lastObject];
 //    [lastButton setImage:image];
     
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
@@ -67,15 +68,15 @@
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] favoriteEventsList]];
     [self.tableView reloadData];
     self.navigationItem.rightBarButtonItem.enabled = ([_itemArray count] > 0);
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+    if ( IS_IPAD ) {
+        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             [self leftBarButtonAppsButton];
         }
-        else{
+        else {
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
         }
     }
-//    if( ![_addEventButton isDescendantOfView:self.view] ){
+//    if ( ![_addEventButton isDescendantOfView:self.view] ) {
 //        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
 //        [self.view addSubview:_addEventButton];
 //    }
@@ -95,14 +96,18 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+    if ( IS_IPAD ) {
+        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             [self leftBarButtonAppsButton];
         }
-        else{
+        else {
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
         }
     }
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
@@ -143,14 +148,14 @@
         daysLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
         UIView *leftView = [cell viewWithTag:13];
         NSLayoutConstraint *leftConst = nil;
-        for(NSLayoutConstraint *layout in cell.contentView.constraints){
-            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ){
+        for(NSLayoutConstraint *layout in cell.contentView.constraints) {
+            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
                 leftConst = layout;
                 break;
             }
         }
         
-        if( leftConst ){
+        if ( leftConst ) {
             leftConst.constant = ( IS_IPHONE ? 15.0 : 28.0 );
             [cell layoutIfNeeded];
         }
@@ -162,7 +167,10 @@
     UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     
-    if( [_itemArray count] > 0){
+    textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    
+    if ( [_itemArray count] > 0) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
         
         textLabel.text = item.eventName;
@@ -171,11 +179,11 @@
         NSDate *today = [NSDate date];
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:item.startDate];
         daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue] fromDate:today toDate:item.startDate isAllDay:[item.isAllDay boolValue]];
-        if( diffDays > 0 ){
+        if ( diffDays > 0 ) {
             markLabel.text = @"Until";
             markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
         }
-        else{
+        else {
             markLabel.text = @"Since";
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
@@ -184,7 +192,7 @@
         markLabel.layer.cornerRadius = 9.0;
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
         
-       if( IS_IPAD ){
+       if ( IS_IPAD ) {
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
             dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"EEEE, MMM dd"];
            dateLabel.hidden = NO;
@@ -195,7 +203,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
-    else{
+    else {
         textLabel.text = @"";
         daysLabel.text = @"";
         markLabel.text = @"";
@@ -229,14 +237,14 @@
 {
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     NSLayoutConstraint *widthConst = nil;
-    for(NSLayoutConstraint *layout in imageView.constraints ){
-        if( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ){
+    for(NSLayoutConstraint *layout in imageView.constraints ) {
+        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
             widthConst = layout;
             break;
         }
     }
     
-    if( widthConst ){
+    if ( widthConst ) {
         widthConst.constant = (imageView.image ? 33.0 : 0.0);
         [cell layoutIfNeeded];
     }
@@ -245,7 +253,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( [_itemArray count] < 1 )
+    if ( [_itemArray count] < 1 )
         return;
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     
@@ -256,7 +264,7 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-//    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ){
+//    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
 //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //        [alertView show];
 //        return;
@@ -272,12 +280,12 @@
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else{
+    else {
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
 }
