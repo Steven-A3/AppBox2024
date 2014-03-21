@@ -196,6 +196,66 @@
     periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
 }
 
+#pragma mark - action method
+- (IBAction)photoViewAction:(id)sender {
+    A3DaysCounterViewController *viewCtrl = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
+    [self popToRootAndPushViewController:viewCtrl animate:NO];
+}
+
+- (IBAction)addEventAction:(id)sender {
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
+    viewCtrl.landscapeFullScreen = NO;
+    if( IS_IPHONE ){
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+    else{
+        [self.navigationController pushViewController:viewCtrl animated:YES];
+    }
+}
+
+- (IBAction)reminderAction:(id)sender {
+    A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+    [self popToRootAndPushViewController:viewCtrl animate:NO];
+}
+
+- (IBAction)favoriteAction:(id)sender {
+    A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+    [self popToRootAndPushViewController:viewCtrl animate:NO];
+}
+
+- (IBAction)editAction:(id)sender {
+    A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] initWithNibName:@"A3DaysCounterEditCalendarListViewController" bundle:nil];
+    
+    if( IS_IPHONE ){
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+    else
+        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+}
+
+- (IBAction)addCalendarAction:(id)sender {
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+    viewCtrl.isEditMode = NO;
+    viewCtrl.calendarItem = nil;
+    
+    if( IS_IPHONE ){
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+    else{
+        [self.A3RootViewController presentRightSideViewController:viewCtrl];
+    }
+}
+
+- (IBAction)searchAction:(id)sender {
+    self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+    [self.searchDisplayController setActive:YES animated:YES];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -433,66 +493,5 @@
     NSLog(@"%s %@ : %ld", __FUNCTION__, searchText, (long)[_searchResultArray count]);
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
-
-#pragma mark - action method
-- (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterViewController *viewCtrl = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
-}
-
-- (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
-    viewCtrl.landscapeFullScreen = NO;
-    if( IS_IPHONE ){
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
-    else{
-        [self.navigationController pushViewController:viewCtrl animated:YES];
-    }
-}
-
-- (IBAction)reminderAction:(id)sender {
-    A3DaysCounterReminderListViewController *viewCtrl = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
-}
-
-- (IBAction)favoriteAction:(id)sender {
-    A3DaysCounterFavoriteListViewController *viewCtrl = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
-    [self popToRootAndPushViewController:viewCtrl animate:NO];
-}
-
-- (IBAction)editAction:(id)sender {
-    A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] initWithNibName:@"A3DaysCounterEditCalendarListViewController" bundle:nil];
-    
-    if( IS_IPHONE ){
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
-    else
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
-}
-
-- (IBAction)addCalendarAction:(id)sender {
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
-    viewCtrl.isEditMode = NO;
-    viewCtrl.calendarItem = nil;
-    
-    if( IS_IPHONE ){
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
-    else{
-        [self.A3RootViewController presentRightSideViewController:viewCtrl];
-    }
-}
-
-- (IBAction)searchAction:(id)sender {
-    self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
-    [self.searchDisplayController setActive:YES animated:YES];
-}
-
 
 @end

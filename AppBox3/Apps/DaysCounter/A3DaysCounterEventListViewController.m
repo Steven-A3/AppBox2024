@@ -46,20 +46,20 @@
         return [item1.startDate compare:item2.startDate];
     }];
     
-    if( !ascending )
+    if ( !ascending )
         array = [[array reverseObjectEnumerator] allObjects];
     
     NSMutableArray *sectionArray = [NSMutableArray array];
     NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
-    for(DaysCounterEvent *event in array){
+    for(DaysCounterEvent *event in array) {
         NSString *sectionKey = [A3DateHelper dateStringFromDate:event.startDate withFormat:@"yyyy.MM"];
         NSMutableArray *items = [sectionDict objectForKey:sectionKey];
-        if( items == nil ){
+        if ( items == nil ) {
             items = [NSMutableArray arrayWithObject:event];
             [sectionDict setObject:items forKey:sectionKey];
             [sectionArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:event.startDate,EventKey_Date,items,EventKey_Items, nil]];
         }
-        else{
+        else {
             [items addObject:event];
         }
     }
@@ -76,7 +76,7 @@
         return [item1.eventName compare:item2.eventName];
     }];
     
-    if( !ascending )
+    if ( !ascending )
         array = [[array reverseObjectEnumerator] allObjects];
     
     return [NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray arrayWithArray:array],EventKey_Items, nil]];
@@ -99,10 +99,12 @@
         }
     }
     
-    if( sortType == EventSortType_Name )
+    if ( sortType == EventSortType_Name ) {
         self.itemArray = [self sortedArrayByNameAscending:isAscending];
-    else if( sortType == EventSortType_Date )
+    }
+    else if ( sortType == EventSortType_Date ) {
         self.itemArray = [self sortedArrayByDateAscending:isAscending];
+    }
     [self.tableView reloadData];
     
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
@@ -129,6 +131,7 @@
     self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events")];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightButtonsView];
     [self makeBackButtonEmptyArrow];
+    [self registerContentSizeCategoryDidChangeNotification];
     sortType = EventSortType_Name;
     _sortTypeSegmentCtrl.selectedSegmentIndex = sortType;
     isAscending = YES;
@@ -144,14 +147,14 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO];
-    if( ![_addEventButton isDescendantOfView:self.view] ){
+    if ( ![_addEventButton isDescendantOfView:self.view] ) {
         _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
         [self.view addSubview:_addEventButton];
     }
-    if( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ){
+    if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ) {
         self.calendarItem = [[A3DaysCounterModelManager sharedManager] calendarItemByID:self.changedCalendarID];
         self.changedCalendarID = nil;
-        if( self.calendarItem )
+        if ( self.calendarItem )
             self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events")];
     }
     [self loadEventDatas];
@@ -170,12 +173,34 @@
     self.itemArray = nil;
 }
 
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
+}
+
+- (void)adjustFontSizeOfCell:(UITableViewCell *)cell {
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
+    UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
+    if ( IS_IPHONE ) {
+        textLabel.font = [UIFont systemFontOfSize:15.0];
+        markLabel.font = [UIFont systemFontOfSize:11.0];
+        daysLabel.font = [UIFont systemFontOfSize:13.0];
+    }
+    else {
+        textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        markLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+        daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    }
+    
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if( tableView != self.tableView )
+    if ( tableView != self.tableView )
         return 1;
     
     return ([_itemArray count] < 1 ? 1 : [_itemArray count]);
@@ -184,34 +209,34 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if( tableView != self.tableView )
+    if ( tableView != self.tableView )
         return [_searchResultArray count];
     
 
-    if( sortType == EventSortType_Date ){
+    if ( sortType == EventSortType_Date ) {
         NSInteger retNumber = 0;
-        if( section+1 >= [_itemArray count] ){
+        if ( section+1 >= [_itemArray count] ) {
             CGFloat totalHeight = 0.0;
-            for( NSDictionary *dict in _itemArray ){
+            for( NSDictionary *dict in _itemArray ) {
                 totalHeight += 23.0;
                 NSArray *items = [dict objectForKey:EventKey_Items];
                 totalHeight += [items count] * 62.0;
             }
             
             CGFloat tableHeight = tableView.frame.size.height - _bottomToolbar.frame.size.height - _headerView.frame.size.height;
-            if( [_itemArray count] > 0 ){
+            if ( [_itemArray count] > 0 ) {
                 NSDictionary *dict = [_itemArray objectAtIndex:section];
                 NSArray *items = [dict objectForKey:EventKey_Items];
                 retNumber = [items count];
             }
             
-            if( totalHeight < tableHeight ){
+            if ( totalHeight < tableHeight ) {
                 CGFloat remainHeight = tableHeight - totalHeight;
                 NSInteger emptyNum = remainHeight / 62.0;
                 retNumber += emptyNum;
             }
         }
-        else{
+        else {
             NSDictionary *dict = [_itemArray objectAtIndex:section];
             NSArray *items = [dict objectForKey:EventKey_Items];
             retNumber = [items count];
@@ -223,7 +248,7 @@
     NSInteger numberOfCellInPage = (NSInteger)((tableView.frame.size.height - _bottomToolbar.frame.size.height - _headerView.frame.size.height) / 62.0 );
   
     NSArray *items = nil;
-    if( section < [_itemArray count] ){
+    if ( section < [_itemArray count] ) {
         NSDictionary *dict = [_itemArray objectAtIndex:section];
         items = [dict objectForKey:EventKey_Items];
     }
@@ -233,15 +258,15 @@
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if( tableView != self.tableView )
+    if ( tableView != self.tableView )
         return nil;
     
-    if( sortType != EventSortType_Date )
+    if ( sortType != EventSortType_Date )
         return nil;
     
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     NSArray *items = [dict objectForKey:EventKey_Items];
-    if( [items count] < 1 )
+    if ( [items count] < 1 )
         return nil;
     
     NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
@@ -249,11 +274,11 @@
     UILabel *monthLabel = (UILabel*)[headerView viewWithTag:10];
     UILabel *yearLabel = (UILabel*)[headerView viewWithTag:11];
     
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         monthLabel.font = [UIFont systemFontOfSize:13.0];
         yearLabel.font = [UIFont systemFontOfSize:13.0];
     }
-    else{
+    else {
         monthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
@@ -267,12 +292,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if( tableView != self.tableView)
+    if ( tableView != self.tableView)
         return 0.01;
     
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     NSArray *items = [dict objectForKey:EventKey_Items];
-    if( [items count] < 1 )
+    if ( [items count] < 1 )
         return 0.01;
     
     return (sortType == EventSortType_Date ? 23.0 : 0.01);
@@ -291,48 +316,36 @@
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:(sortType == EventSortType_Name ? 0 : 3)];
         
-        UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-        UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
-        UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
-        if( IS_IPHONE ){
-            textLabel.font = [UIFont systemFontOfSize:15.0];
-            markLabel.font = [UIFont systemFontOfSize:11.0];
-            daysLabel.font = [UIFont systemFontOfSize:13.0];
-        }
-        else{
-            textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-            markLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
-            daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        }
-        
         UIView *leftView = nil;
-        if( sortType == EventSortType_Name ){
+        if ( sortType == EventSortType_Name ) {
             leftView = [cell viewWithTag:13];
         }
-        else{
+        else {
             leftView = [cell viewWithTag:14];
         }
         NSLayoutConstraint *leftConst = nil;
-        for(NSLayoutConstraint *layout in cell.contentView.constraints){
-            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ){
+        for(NSLayoutConstraint *layout in cell.contentView.constraints) {
+            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
                 leftConst = layout;
                 break;
             }
         }
         
-        if( leftConst ){
+        if ( leftConst ) {
             leftConst.constant = ( IS_IPHONE ? 15.0 : 28.0 );
             [cell layoutIfNeeded];
         }
     }
     
+    [self adjustFontSizeOfCell:cell];
+    
     // Configure the cell...
     DaysCounterEvent *item = nil;
-    if( tableView == self.tableView ){
-        if( indexPath.section < [_itemArray count] ){
+    if ( tableView == self.tableView ) {
+        if ( indexPath.section < [_itemArray count] ) {
             NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
             NSArray *items = [dict objectForKey:EventKey_Items];
-            if( indexPath.row < [items count] ){
+            if ( indexPath.row < [items count] ) {
                 item = [items objectAtIndex:indexPath.row];
             }
         }
@@ -346,7 +359,7 @@
     UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     
-    if( item ){
+    if ( item ) {
         NSLog(@"%s %@/%@",__FUNCTION__,indexPath,item.imageFilename);
         markLabel.hidden = NO;
         imageView.hidden = NO;
@@ -357,7 +370,7 @@
         NSDate *today = [NSDate date];
         NSDate *calcDate = item.startDate;
         NSInteger diffDays = 0;
-        if( [item.repeatType integerValue] != RepeatType_Never ){
+        if ( [item.repeatType integerValue] != RepeatType_Never ) {
             NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
             calcDate = nextDate;
         }
@@ -369,18 +382,18 @@
                       toDate:calcDate options:0];
         
         NSInteger day = ABS([comps day]);
-        if( ![[A3DateHelper dateStringFromDate:today withFormat:@"yyyyMMdd"] isEqualToString:[A3DateHelper dateStringFromDate:calcDate withFormat:@"yyyyMMdd"]] ){
-            if( ABS([comps hour]) > 0 || ABS([comps minute]) > 0 || ABS([comps second]) > 0 )
+        if ( ![[A3DateHelper dateStringFromDate:today withFormat:@"yyyyMMdd"] isEqualToString:[A3DateHelper dateStringFromDate:calcDate withFormat:@"yyyyMMdd"]] ) {
+            if ( ABS([comps hour]) > 0 || ABS([comps minute]) > 0 || ABS([comps second]) > 0 )
                 day++;
         }
         daysLabel.text = [NSString stringWithFormat:@"%ld day%@", (long)day, (day>1 ? @"s" : @"")];
         
 //        daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue] fromDate:today toDate:calcDate isAllDay:[item.isAllDay boolValue]];//[NSString stringWithFormat:@"%d days",ABS(diffDays)];
-        if( diffDays > 0 ){
+        if ( diffDays > 0 ) {
             markLabel.text = @"Until";
             markLabel.textColor = [UIColor colorWithRed:78.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
         }
-        else{
+        else {
             markLabel.text = @"Since";
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
@@ -390,7 +403,7 @@
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
         
         
-        if( sortType == EventSortType_Date ){
+        if ( sortType == EventSortType_Date ) {
             A3RoundDateView *dateView = (A3RoundDateView*)[cell viewWithTag:14];
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
             
@@ -401,14 +414,14 @@
             favoriteView.hidden = ![item.isFavorite boolValue];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
             dateLabel.hidden = YES;
-//            if( IS_IPAD ){
+//            if ( IS_IPAD ) {
 //                UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
 //                dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"dd/MM/yy HH:mm a"];
 //                dateLabel.hidden = NO;
 //            }
         }
-        else{
-            if( IS_IPAD ){
+        else {
+            if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 dateLabel.text = [A3DateHelper dateStringFromDate:calcDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 dateLabel.hidden = NO;
@@ -418,7 +431,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
-    else{
+    else {
         NSLog(@"%s %@",__FUNCTION__,indexPath);
         textLabel.text = @"";
         daysLabel.text = @"";
@@ -426,14 +439,14 @@
         markLabel.hidden = YES;
         imageView.hidden = YES;
         
-        if( sortType == EventSortType_Date ){
+        if ( sortType == EventSortType_Date ) {
             A3RoundDateView *dateView = (A3RoundDateView*)[cell viewWithTag:14];
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
             dateView.hidden = YES;
             favoriteView.hidden = YES;
         }
         
-        if( IS_IPAD ){
+        if ( IS_IPAD ) {
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
             dateLabel.text = @"";
             dateLabel.hidden = YES;
@@ -459,14 +472,14 @@
 {
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     NSLayoutConstraint *widthConst = nil;
-    for(NSLayoutConstraint *layout in imageView.constraints ){
-        if( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ){
+    for(NSLayoutConstraint *layout in imageView.constraints ) {
+        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
             widthConst = layout;
             break;
         }
     }
     
-    if( widthConst ){
+    if ( widthConst ) {
         widthConst.constant = (imageView.image ? 33.0 : 0.0);
         [cell layoutIfNeeded];
         NSLog(@"%s %@ %f",__FUNCTION__,indexPath,widthConst.constant);
@@ -476,20 +489,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DaysCounterEvent *item = nil;
-    if( tableView == self.tableView ){
-        if( indexPath.section < [_itemArray count] ){
+    if ( tableView == self.tableView ) {
+        if ( indexPath.section < [_itemArray count] ) {
             NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
             NSArray *items = [dict objectForKey:EventKey_Items];
-            if( indexPath.row < [items count] ){
+            if ( indexPath.row < [items count] ) {
                 item = [items objectAtIndex:indexPath.row];
             }
         }
     }
-    else{
+    else {
         item = [_searchResultArray objectAtIndex:indexPath.row];
     }
     
-    if( item == nil )
+    if ( item == nil )
         return;
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
@@ -500,11 +513,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( editingStyle == UITableViewCellEditingStyleDelete ){
+    if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
         NSArray *items = [dict objectForKey:EventKey_Items];
         DaysCounterEvent *item = nil;
-        if( [items count] > 0){
+        if ( [items count] > 0) {
             item = [items objectAtIndex:indexPath.row];
         }
         
@@ -515,7 +528,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( [_sourceArray count] < 1 )
+    if ( [_sourceArray count] < 1 )
         return NO;
     
     return YES;
@@ -565,12 +578,12 @@
 - (IBAction)editAction:(id)sender {
     A3DaysCounterEventListEditViewController *viewCtrl = [[A3DaysCounterEventListEditViewController alloc] initWithNibName:@"A3DaysCounterEventListEditViewController" bundle:nil];
     viewCtrl.calendarItem = _calendarItem;
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else{
+    else {
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
     }
 }
@@ -594,12 +607,12 @@
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.landscapeFullScreen = NO;
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else{
+    else {
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
 }
