@@ -30,19 +30,6 @@
 @end
 
 @implementation A3DaysCounterCalendarListViewController
-- (void)setupHeaderInfo
-{
-    NSInteger eventNumber = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
-    NSDate *latestDate = [[A3DaysCounterModelManager sharedManager] dateOfLatestEvent];
-    _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
-    _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
-    _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-/-/-");
-    _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
-}
-
-- (void)notifyContentSizeCategoryDidChanged:(NSNotification*)noti
-{
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,7 +50,8 @@
         [self leftBarButtonAppsButton];
     }
     [self makeBackButtonEmptyArrow];
-
+    [self registerContentSizeCategoryDidChangeNotification];
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightTopButtonView];
     [self setToolbarItems:_bottomToolbar.items];
     
@@ -71,14 +59,14 @@
         [self.tableView setTableHeaderView:_headerView];
     }
     else {
-        [self.tableView setTableHeaderView:_iPadheaderView];
+        [self.tableView setTableHeaderView:_headerView_iPad];
         self.numberOfCalendarLabel = self.numberOfCalendarLabeliPad;
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
         self.updateDateLabel = self.updateDateLabeliPad;
     }
 //    [self.tableView setTableFooterView:_footerView];
     
-    for(NSLayoutConstraint *layout in _verticalSeperators){
+    for (NSLayoutConstraint *layout in _verticalSeperators) {
         layout.constant = 1.0 / [[UIScreen mainScreen] scale];
     }
 }
@@ -86,7 +74,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notifyContentSizeCategoryDidChanged:) name:UIContentSizeCategoryDidChangeNotification object:nil];
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
     if ( IS_IPAD ) {
@@ -153,6 +140,62 @@
     _addEventButton.hidden = NO;
 }
 
+- (void)setupHeaderInfo
+{
+    NSInteger eventNumber = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
+    NSDate *latestDate = [[A3DaysCounterModelManager sharedManager] dateOfLatestEvent];
+    _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
+    _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
+    _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-/-/-");
+    _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+}
+
+#pragma mark Initialize FontSize
+- (void)contentSizeDidChange:(NSNotification*)noti
+{
+    [self adjustFontSizeOfHeaderView:IS_IPHONE ? _headerView : _headerView_iPad];
+}
+
+- (void)adjustFontSizeOfHeaderView:(UIView *)aView {
+    if ([aView.subviews count] > 0) {
+        [aView.subviews enumerateObjectsUsingBlock:^(UIView *subview, NSUInteger idx, BOOL *stop) {
+            [self adjustFontSizeOfHeaderView:subview];
+        }];
+    }
+    else {
+//        if (![aView isKindOfClass:[UILabel class]]) {
+//            return;
+//        }
+        
+        switch ([aView tag]) {
+            case 12:
+                ((UILabel *)aView).font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+                [((UILabel *)aView) sizeToFit];
+                break;
+                
+            case 13:
+                ((UILabel *)aView).font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+                [((UILabel *)aView) sizeToFit];
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
+    [self.tableView reloadData];
+}
+
+- (void)adjustFontSizeOfCell:(UITableViewCell *)cell withCellType:(A3DaysCounterCalendarCellType)cellType {
+    // suffix is tag
+    UILabel *eventNameLabel12 = (UILabel*)[cell viewWithTag:12];
+    UILabel *periodLabel13 = (UILabel*)[cell viewWithTag:13];
+    UILabel *periodLabel14 = (UILabel*)[cell viewWithTag:14];
+    eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+    periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -199,23 +242,40 @@
     
     
     UITableViewCell *cell = nil;
-    if ( item ) {
-        NSInteger cellType = [item.calendarType integerValue];
-        NSString *CellIdentifier = cellType == CalendarCellType_System ? @"systemCalendarListCell" : @"userCalendarListCell";
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        
-        if (cell == nil) {
-            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
-            cell = [cellArray objectAtIndex:cellType];
+    
+    if (!item) {
+        cell = [tableView dequeueReusableCellWithIdentifier:@"emptyCell"];
+        if ( cell == nil ) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"emptyCell"];
         }
-
-        UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-        UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
-        textLabel.textColor = [item color];
-        countLabel.textColor = [item color];
-        textLabel.text = item.calendarName;
-        
-        if ( cellType == CalendarCellType_User ) {
+        cell.textLabel.text = @"";
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    
+    
+    NSInteger cellType = [item.calendarType integerValue];
+    NSString *CellIdentifier = cellType == CalendarCellType_System ? @"systemCalendarListCell" : @"userCalendarListCell";
+    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil) {
+        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
+        cell = [cellArray objectAtIndex:cellType];
+    }
+    
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
+    textLabel.textColor = [item color];
+    countLabel.textColor = [item color];
+    textLabel.text = item.calendarName;
+    
+    [self adjustFontSizeOfCell:cell withCellType:cellType];
+    
+    
+    switch (cellType) {
+        case CalendarCellType_User:
+        {
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
             UILabel *eventNameLabel = (UILabel*)[cell viewWithTag:12];
             UILabel *periodLabel = (UILabel*)[cell viewWithTag:13];
@@ -231,7 +291,9 @@
                 NSDate *calcDate = event.startDate;
                 NSInteger diffDay = 0;
                 if ( [event.repeatType integerValue] != RepeatType_Never ) {
-                    NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:event.startDate fromDate:today];
+                    NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                                                 firstDate:event.startDate
+                                                                                                  fromDate:today];
                     diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
                     calcDate = nextDate;
                 }
@@ -258,7 +320,10 @@
                 }
             }
         }
-        else {
+            break;
+            
+        case CalendarCellType_System:
+        {
             NSInteger numberOfEvents = 0;
             if ( [item.calendarId isEqualToString:SystemCalendarID_All] ) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
@@ -272,16 +337,11 @@
             
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];
         }
+            break;
+        default:
+            break;
     }
-    else {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"emptyCell"];
-        if ( cell == nil ) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"emptyCell"];
-        }
-        cell.textLabel.text = @"";
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    
     
     return cell;
 }
@@ -358,10 +418,12 @@
 - (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
 {
     self.searchResultArray = nil;
-    if( IS_IPHONE )
+    if ( IS_IPHONE ) {
         self.tableView.tableHeaderView = _headerView;
-    else
-        self.tableView.tableHeaderView = _iPadheaderView;
+    }
+    else {
+        self.tableView.tableHeaderView = _headerView_iPad;
+    }
 }
 
 #pragma mark - UISearchBarDelegate

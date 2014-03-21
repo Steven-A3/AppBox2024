@@ -57,6 +57,114 @@
 
 @implementation A3DaysCounterAddEventViewController
 
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+    self.title = (_eventItem ? @"Edit Event" : @"Add Event");
+    [self makeBackButtonEmptyArrow];
+    
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
+    [self rightBarButtonDoneButton];
+    
+    if ( _eventItem ) {
+        [self setupSectionTemplateWithInfo:_eventItem];
+    }
+    else {
+        self.sectionTitleArray = [NSMutableArray arrayWithObjects:
+                                  @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},@{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
+                                  @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)},@{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},@{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},@{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)}, nil]},
+                                  @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObject:@{EventRowTitle : @"ADVANCED",EventRowType : @(EventCellType_Advanced)}]},
+                                  nil];
+        
+    }
+    
+    if ( ![[A3DaysCounterModelManager sharedManager] isSupportLunar] ) {
+        NSMutableArray *items = [[self.sectionTitleArray objectAtIndex:1] objectForKey:AddEventItems];
+        [items removeObjectAtIndex:0];
+    }
+    
+    [self.navigationController setToolbarHidden:YES];
+    isFirstAppear = YES;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if( [_sectionTitleArray count] > AddSection_Advanced ){
+        if( [[_eventModel objectForKey:EventItem_RepeatType] integerValue] != 0 ){
+            // 반복 종료일자 아이템 추가
+            if( ![self isExistsCellType:EventCellType_EndRepeatDate section:AddSection_Advanced] )
+                [self insertCellType:EventCellType_EndRepeatDate row:2 section:AddSection_Advanced ];
+        }
+        else{
+            // 반복 종료일자 아이템 삭제
+            if( [self isExistsCellType:EventCellType_EndRepeatDate section:AddSection_Advanced] )
+                [self removeCellType:EventCellType_EndRepeatDate section:AddSection_Advanced];
+        }
+    }
+    if( !isFirstAppear )
+        [self.tableView reloadData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear: animated];
+    
+    if( isFirstAppear ){
+        
+        if( _eventItem ){
+            self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
+        }
+        else{
+            self.eventModel = [[A3DaysCounterModelManager sharedManager] emptyEventModel];
+        }
+        [self.tableView reloadData];
+        if( self.eventItem )
+            isFirstAppear = NO;
+    }
+    
+    if( self.eventItem == nil && isFirstAppear){
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        UITextField *textField = (UITextField*)[cell viewWithTag:10];
+        [textField becomeFirstResponder];
+        isFirstAppear = NO;
+    }
+}
+
+- (BOOL)usesFullScreenInLandscape
+{
+    return (IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && _landscapeFullScreen);
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+
 - (void)alertMessage:(NSString*)message
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -198,113 +306,6 @@
     [items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
 //    [_sectionTitleArray addObject:@{AddEventSectionName : @"ADVANCED", AddEventItems : items}];
 }
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    self.title = (_eventItem ? @"Edit Event" : @"Add Event");
-    [self makeBackButtonEmptyArrow];
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
-    [self rightBarButtonDoneButton];
-    
-    if( _eventItem ){
-        [self setupSectionTemplateWithInfo:_eventItem];
-    }
-    else{
-        self.sectionTitleArray = [NSMutableArray arrayWithObjects:
-                                  @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},@{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
-                                  @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)},@{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},@{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},@{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)}, nil]},
-                                  @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObject:@{EventRowTitle : @"ADVANCED",EventRowType : @(EventCellType_Advanced)}]},
-                                  nil];
-        
-    }
-    
-    if( ![[A3DaysCounterModelManager sharedManager] isSupportLunar] ){
-        NSMutableArray *items = [[self.sectionTitleArray objectAtIndex:1] objectForKey:AddEventItems];
-        [items removeObjectAtIndex:0];
-    }
-    
-    [self.navigationController setToolbarHidden:YES];
-    isFirstAppear = YES;
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if( [_sectionTitleArray count] > AddSection_Advanced ){
-        if( [[_eventModel objectForKey:EventItem_RepeatType] integerValue] != 0 ){
-            // 반복 종료일자 아이템 추가
-            if( ![self isExistsCellType:EventCellType_EndRepeatDate section:AddSection_Advanced] )
-                [self insertCellType:EventCellType_EndRepeatDate row:2 section:AddSection_Advanced ];
-        }
-        else{
-            // 반복 종료일자 아이템 삭제
-            if( [self isExistsCellType:EventCellType_EndRepeatDate section:AddSection_Advanced] )
-                [self removeCellType:EventCellType_EndRepeatDate section:AddSection_Advanced];
-        }
-    }
-    if( !isFirstAppear )
-        [self.tableView reloadData];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear: animated];
-
-    if( isFirstAppear ){
-
-        if( _eventItem ){
-            self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
-        }
-        else{
-            self.eventModel = [[A3DaysCounterModelManager sharedManager] emptyEventModel];
-        }
-        [self.tableView reloadData];
-        if( self.eventItem )
-            isFirstAppear = NO;
-    }
-    
-    if( self.eventItem == nil && isFirstAppear){
-        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        UITextField *textField = (UITextField*)[cell viewWithTag:10];
-        [textField becomeFirstResponder];
-        isFirstAppear = NO;
-    }
-}
-
-- (BOOL)usesFullScreenInLandscape
-{
-    return (IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation) && _landscapeFullScreen);
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 #pragma mark - Table view data source
 

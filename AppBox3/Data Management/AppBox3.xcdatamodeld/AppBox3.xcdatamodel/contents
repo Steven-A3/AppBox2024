@@ -360,11 +360,16 @@
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
-        <element name="ExpenseListBudget" positionX="-531" positionY="-342" width="128" height="238"/>
-        <element name="ExpenseListBudgetLocation" positionX="-585" positionY="-396" width="128" height="178"/>
-        <element name="ExpenseListCategories" positionX="-549" positionY="-360" width="128" height="75"/>
-        <element name="ExpenseListHistory" positionX="-585" positionY="-396" width="128" height="73"/>
-        <element name="ExpenseListItem" positionX="-567" positionY="-378" width="128" height="163"/>
+        <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
+        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="328"/>
+        <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
+        <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
+        <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
+        <element name="ExpenseListCategories" positionX="540" positionY="-405" width="135" height="75"/>
+        <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="73"/>
+        <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="163"/>
+        <element name="LadyCalendarAccount" positionX="-558" positionY="-369" width="128" height="148"/>
+        <element name="LadyCalendarPeriod" positionX="-567" positionY="-378" width="128" height="223"/>
         <element name="LoanCalcComparisonHistory" positionX="115" positionY="593" width="128" height="135"/>
         <element name="LoanCalcHistory" positionX="313" positionY="536" width="128" height="433"/>
         <element name="PercentCalcHistory" positionX="-567" positionY="-378" width="128" height="75"/>
@@ -390,10 +395,5 @@
         <element name="WalletField" positionX="-576" positionY="539" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-324" positionY="513" width="128" height="118"/>
         <element name="WalletItem" positionX="-585" positionY="776" width="128" height="148"/>
-        <element name="DaysCounterEvent" positionX="-585" positionY="-396" width="128" height="328"/>
-        <element name="DaysCounterEventLocation" positionX="-576" positionY="-387" width="128" height="193"/>
-        <element name="LadyCalendarPeriod" positionX="-567" positionY="-378" width="128" height="223"/>
-        <element name="LadyCalendarAccount" positionX="-558" positionY="-369" width="128" height="148"/>
-        <element name="DaysCounterCalendar" positionX="-549" positionY="-360" width="128" height="163"/>
     </elements>
 </model>

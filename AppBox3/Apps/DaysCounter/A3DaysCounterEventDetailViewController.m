@@ -641,16 +641,11 @@
     self.initialCalendarID = _eventItem.calendarId;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.eventItem = _eventItem;
-
-//    if( IS_IPHONE ){
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-        navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:navCtrl animated:YES completion:nil];
-//    }
-//    else{
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)deleteEventAction:(id)sender {
