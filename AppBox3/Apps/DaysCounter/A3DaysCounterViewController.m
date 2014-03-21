@@ -19,7 +19,6 @@
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventDetailViewController.h"
-#import "A3DaysCounterEventDetailViewController_iPad.h"
 #import "A3DaysCounterSlideshowOptionViewController.h"
 #import "MMDrawerController+Subclass.h"
 #import "A3MainViewController.h"
@@ -406,16 +405,10 @@
         return;
     [self hideTopToolbarAnimated:NO];
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
-//    if( IS_IPHONE ){
-        A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
-        viewCtrl.eventItem = item;
-        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
-//    else{
-//        A3DaysCounterEventDetailViewController_iPad *viewCtrl = [[A3DaysCounterEventDetailViewController_iPad alloc] initWithNibName:@"A3DaysCounterEventDetailViewController_iPad" bundle:nil];
-//        viewCtrl.eventItem = item;
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+    viewCtrl.eventItem = item;
+    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 - (IBAction)calendarViewAction:(id)sender {

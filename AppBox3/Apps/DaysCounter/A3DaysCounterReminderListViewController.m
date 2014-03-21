@@ -15,7 +15,6 @@
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterEventDetailViewController.h"
-#import "A3DaysCounterEventDetailViewController_iPad.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
@@ -187,16 +186,10 @@
     if( [_itemArray count] < 1 )
         return;
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-//    if( IS_IPHONE ){
-        A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
-        viewCtrl.eventItem = item;
-        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
-//    else{
-//        A3DaysCounterEventDetailViewController_iPad *viewCtrl = [[A3DaysCounterEventDetailViewController_iPad alloc] initWithNibName:@"A3DaysCounterEventDetailViewController_iPad" bundle:nil];
-//        viewCtrl.eventItem = item;
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+    viewCtrl.eventItem = item;
+    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 #pragma mark - action method

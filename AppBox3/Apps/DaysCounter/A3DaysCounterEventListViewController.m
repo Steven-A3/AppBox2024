@@ -16,7 +16,6 @@
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListEditViewController.h"
-#import "A3DaysCounterEventDetailViewController_iPad.h"
 #import "A3DateHelper.h"
 #import "A3RoundDateView.h"
 #import "A3DaysCounterViewController.h"
@@ -85,15 +84,19 @@
 
 - (void)loadEventDatas
 {
-    if( [_calendarItem.calendarType integerValue] == CalendarCellType_User)
+    if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
         self.sourceArray = [_calendarItem.events array];
-    else{
-        if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] )
+    }
+    else {
+        if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
             self.sourceArray = [[A3DaysCounterModelManager sharedManager] allEventsList];
-        else if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] )
+        }
+        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
             self.sourceArray = [[A3DaysCounterModelManager sharedManager] pastEventsListWithDate:[NSDate date]];
-        else if( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] )
+        }
+        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] ) {
             self.sourceArray = [[A3DaysCounterModelManager sharedManager] upcomingEventsListWithDate:[NSDate date]];
+        }
     }
     
     if( sortType == EventSortType_Name )
@@ -489,17 +492,10 @@
     if( item == nil )
         return;
     
-//    if( IS_IPHONE ){
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
     viewCtrl.delegate = self;
     [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
-//    else{
-//        A3DaysCounterEventDetailViewController_iPad *viewCtrl = [[A3DaysCounterEventDetailViewController_iPad alloc] initWithNibName:@"A3DaysCounterEventDetailViewController_iPad" bundle:nil];
-//        viewCtrl.eventItem = item;
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -551,10 +547,13 @@
     UISegmentedControl *segCtrl = (UISegmentedControl*)sender;
     sortType = segCtrl.selectedSegmentIndex;
     
-    if( sortType == EventSortType_Date )
+    if ( sortType == EventSortType_Date ) {
         _headerSeperatorView.hidden = NO;
-    else
+    }
+    else {
         _headerSeperatorView.hidden = YES;
+    }
+    
     [self loadEventDatas];
 }
 
