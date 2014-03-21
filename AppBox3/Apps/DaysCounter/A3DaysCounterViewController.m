@@ -12,7 +12,7 @@
 #import "A3SlideshowActivity.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DaysCounterCalendarListViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterDefine.h"
@@ -412,7 +412,7 @@
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListViewController *viewCtrl = [[A3DaysCounterCalendarListViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 

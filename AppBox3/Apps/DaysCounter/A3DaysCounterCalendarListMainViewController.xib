@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DaysCounterCalendarListViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DaysCounterCalendarListMainViewController">
             <connections>
                 <outlet property="addEventButton" destination="PbB-Oj-YOd" id="Zsl-b4-g4u"/>
                 <outlet property="bottomToolbar" destination="4qe-bg-2TE" id="OBg-yW-OQn"/>
@@ -259,7 +259,7 @@
                             <rect key="frame" x="103" y="20" width="68" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="68" id="ide-gm-FXo"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="68" id="ide-gm-FXo"/>
                                 <constraint firstAttribute="height" constant="14" id="lI8-of-Tmj"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
@@ -350,7 +350,7 @@
                             <rect key="frame" x="139" y="20" width="53" height="14"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="53" id="HU2-CP-gwV"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="53" id="HU2-CP-gwV"/>
                                 <constraint firstAttribute="height" constant="14" id="XcK-1s-b7v"/>
                             </constraints>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>

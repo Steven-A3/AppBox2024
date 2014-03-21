@@ -6,7 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3DaysCounterCalendarListViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3DaysCounterDefine.h"
@@ -22,14 +22,14 @@
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 
-@interface A3DaysCounterCalendarListViewController ()
+@interface A3DaysCounterCalendarListMainViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 
 - (void)setupHeaderInfo;
 @end
 
-@implementation A3DaysCounterCalendarListViewController
+@implementation A3DaysCounterCalendarListMainViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

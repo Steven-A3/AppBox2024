@@ -25,7 +25,7 @@
 #import "A3TableViewExpandableCell.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterViewController.h"
-#import "A3DaysCounterCalendarListViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
@@ -310,7 +310,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 			targetViewController = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
 		}
 		else{
-			targetViewController = [[A3DaysCounterCalendarListViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+			targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
 		}
 		return targetViewController;
 	}

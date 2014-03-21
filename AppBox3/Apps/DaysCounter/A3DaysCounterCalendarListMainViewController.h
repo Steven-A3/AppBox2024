@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3DaysCounterCalendarListViewController : UIViewController<UISearchBarDelegate,UISearchDisplayDelegate,UIScrollViewDelegate>
+@interface A3DaysCounterCalendarListMainViewController : UIViewController<UISearchBarDelegate,UISearchDisplayDelegate,UIScrollViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UIView *rightTopButtonView;
