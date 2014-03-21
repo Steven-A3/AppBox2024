@@ -114,7 +114,7 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     _addEventButton.hidden = YES;
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         CGFloat barWidth = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? self.view.frame.size.width : self.view.frame.size.height);
         _iPadHeaderCenterConstraints.constant = barWidth / 3.0;
         [UIView animateWithDuration:duration animations:^{
@@ -125,11 +125,11 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
+    if ( IS_IPAD ) {
+        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
             [self leftBarButtonAppsButton];
         }
-        else{
+        else {
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
         }
     }
@@ -205,14 +205,18 @@
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.landscapeFullScreen = NO;
-    if( IS_IPHONE ){
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
-    else{
-        [self.navigationController pushViewController:viewCtrl animated:YES];
-    }
+    
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    [self presentViewController:navCtrl animated:YES completion:nil];
+//    if ( IS_IPHONE ) {
+//        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+//        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+//        [self presentViewController:navCtrl animated:YES completion:nil];
+//    }
+//    else {
+//        [self.navigationController pushViewController:viewCtrl animated:YES];
+//    }
 }
 
 - (IBAction)reminderAction:(id)sender {
@@ -228,7 +232,7 @@
 - (IBAction)editAction:(id)sender {
     A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] initWithNibName:@"A3DaysCounterEditCalendarListViewController" bundle:nil];
     
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
@@ -241,12 +245,12 @@
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else{
+    else {
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
     }
 }
@@ -447,7 +451,7 @@
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
+    if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
         return NO;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
@@ -460,17 +464,17 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if( scrollView != self.tableView )
+    if ( scrollView != self.tableView )
         return;
-    if( (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height && scrollView.contentSize.height > (scrollView.frame.size.height-_headerView.frame.size.height - _bottomToolbar.frame.size.height) )
+    if ( (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height && scrollView.contentSize.height > (scrollView.frame.size.height-_headerView.frame.size.height - _bottomToolbar.frame.size.height) )
         scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y-10.0);
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if( scrollView != self.tableView )
+    if ( scrollView != self.tableView )
         return;
-    if( !decelerate )
+    if ( !decelerate )
         [self scrollViewDidEndDecelerating:scrollView];
 }
 

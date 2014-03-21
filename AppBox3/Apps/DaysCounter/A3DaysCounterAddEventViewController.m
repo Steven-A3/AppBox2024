@@ -943,15 +943,16 @@
 - (void)cancelAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
-    if ( _eventItem ) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else {
-        if ( IS_IPHONE )
-            [self dismissViewControllerAnimated:YES completion:nil];
-        else
-            [self.navigationController popViewControllerAnimated:YES];
-    }
+//    if ( _eventItem ) {
+//        [self dismissViewControllerAnimated:YES completion:nil];
+//    }
+//    else {
+//        if ( IS_IPHONE )
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        else
+//            [self.navigationController popViewControllerAnimated:YES];
+//    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)toggleFavorite:(id)sender
