@@ -16,6 +16,7 @@
 #import "A3DaysCounterSlideshowTimeSelectViewController.h"
 #import "A3DaysCounterSlideshowViewController.h"
 #import "A3AppDelegate.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;
@@ -231,12 +232,42 @@
         
         [self saveCurrentOption];
 
-        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
-        viewCtrl.optionDict = self.optionDict;
-        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+//        viewCtrl.optionDict = self.optionDict;
+//        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+
 //        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
 //        navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:viewCtrl animated:YES completion:nil];
+
+        if (IS_IPHONE) {
+//            [self dismissViewControllerAnimated:YES completion:^{
+//                A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+//                viewCtrl.optionDict = self.optionDict;
+//                viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//                [self presentViewController:viewCtrl animated:YES completion:nil];
+//                if (_completionBlock) {
+//                    _completionBlock(self.optionDict);
+//                }
+//            }];
+            
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            viewCtrl.optionDict = self.optionDict;
+            viewCtrl.completionBlock = ^{
+                [self dismissViewControllerAnimated:NO completion:nil];
+//                A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+//                [self popToRootAndPushViewController:viewCtrl animate:NO];
+            };
+            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:viewCtrl animated:YES completion:nil];
+        }
+        else {
+            [self.A3RootViewController dismissRightSideViewController];
+
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            viewCtrl.optionDict = self.optionDict;
+            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:viewCtrl animated:YES completion:nil];
+        }
     }
 }
 

@@ -260,8 +260,17 @@
 - (void)endSlideshow
 {
     [self stopTimer];
-    [self dismissViewControllerAnimated:YES completion:nil];
-//    [self.navigationController popViewControllerAnimated:YES];
+
+    if (IS_IPHONE) {
+        [self dismissViewControllerAnimated:NO completion:^{
+            if (_completionBlock) {
+                _completionBlock();
+            }
+        }];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer*)gesture

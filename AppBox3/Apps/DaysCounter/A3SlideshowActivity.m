@@ -10,6 +10,7 @@
 #import "SFKImage.h"
 #import "A3DaysCounterSlideshowOptionViewController.h"
 #import "A3DaysCounterModelManager.h"
+#import "A3DaysCounterSlideshowViewController.h"
 
 @interface A3SlideshowActivity ()
 @property (strong, nonatomic) UIImage *playImage;
@@ -78,7 +79,10 @@
     if( IS_IPHONE ){
         A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
         viewCtrl.activity = self;
+        viewCtrl.completionBlock = _completionBlock;
+
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        
         return navCtrl;
     }
     else{

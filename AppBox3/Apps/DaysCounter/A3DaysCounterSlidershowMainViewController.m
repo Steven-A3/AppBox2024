@@ -25,6 +25,7 @@
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "UIImage+JHExtension.h"
 #import "A3DefaultColorDefines.h"
+#import "A3DaysCounterSlideshowViewController.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
@@ -454,6 +455,14 @@
 - (IBAction)shareOtherAction:(id)sender {
     
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
+//    slideActivity.completionBlock = ^(NSDictionary *userInfo) {
+//        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+//        viewCtrl.optionDict = userInfo;
+//        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+//        [self presentViewController:viewCtrl animated:YES completion:^{
+//            
+//        }];
+//    };
     
     NSString *shareString = ( [_eventsArray count] > 0 ? [[A3DaysCounterModelManager sharedManager] stringForShareEvent:[_eventsArray objectAtIndex:currentIndex]] : @"");
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareString] applicationActivities:@[slideActivity]];
@@ -467,7 +476,9 @@
         popoverController.delegate = self;
         self.popoverVC = popoverController;
 //		[popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        [popoverController presentPopoverFromRect:[button convertRect:button.bounds toView:self.view] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [popoverController presentPopoverFromRect:[button convertRect:button.bounds toView:self.view]
+                                           inView:self.view
+                         permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             NSLog(@"%s %@",__FUNCTION__,activityType);
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {

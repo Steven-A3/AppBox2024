@@ -15,4 +15,5 @@
 }
 
 @property (strong, nonatomic) NSDictionary *optionDict;
+@property (strong, nonatomic) void (^completionBlock)(void);
 @end
