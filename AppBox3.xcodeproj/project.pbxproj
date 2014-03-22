@@ -824,7 +824,7 @@
 		68F1C88C18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */; };
 		68F1C88D18D7F37D009FAE8A /* A3DaysCounterEventListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */; };
 		68F1C88E18D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7F418D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib */; };
-		68F1C88F18D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7F518D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib */; };
+		68F1C88F18D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7F518D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib */; };
 		68F1C89018D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C7F718D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.m */; };
 		68F1C89118D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7F818D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib */; };
 		68F1C89218D7F37D009FAE8A /* A3DaysCounterHeaderFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7F918D7F37D009FAE8A /* A3DaysCounterHeaderFooterView.xib */; };
@@ -2369,7 +2369,7 @@
 		68F1C7F218D7F37D009FAE8A /* A3DaysCounterEventListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListViewController.h; sourceTree = "<group>"; };
 		68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListViewController.m; sourceTree = "<group>"; };
 		68F1C7F418D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterEventListViewController.xib; sourceTree = "<group>"; };
-		68F1C7F518D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterEventSummaryView.xib; sourceTree = "<group>"; };
+		68F1C7F518D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterSlideshowEventSummaryView.xib; sourceTree = "<group>"; };
 		68F1C7F618D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterFavoriteListViewController.h; sourceTree = "<group>"; };
 		68F1C7F718D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterFavoriteListViewController.m; sourceTree = "<group>"; };
 		68F1C7F818D7F37D009FAE8A /* A3DaysCounterFavoriteListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterFavoriteListViewController.xib; sourceTree = "<group>"; };
@@ -5151,7 +5151,6 @@
 				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
 				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
 				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
-				68F1C7F518D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib */,
 			);
 			name = "Event Related";
 			sourceTree = "<group>";
@@ -5204,6 +5203,7 @@
 				68F1C82618D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.xib */,
 				68F1C82E18D7F37D009FAE8A /* A3SlideshowActivity.h */,
 				68F1C82F18D7F37D009FAE8A /* A3SlideshowActivity.m */,
+				68F1C7F518D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib */,
 			);
 			name = "1. SliderShow";
 			sourceTree = "<group>";
@@ -5560,7 +5560,7 @@
 				68F1C88118D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.xib in Resources */,
 				68F1C8C518D7F37D009FAE8A /* A3LadyCalendarChartCell.xib in Resources */,
 				68B6A30618CEC76D004084EF /* UnitPriceStoryboard_iPad.storyboard in Resources */,
-				68F1C88F18D7F37D009FAE8A /* A3DaysCounterEventSummaryView.xib in Resources */,
+				68F1C88F18D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */,
 				6825367118A7B89F00EAFB84 /* A3LunarConverterViewController.xib in Resources */,
 				68B6A47718CEE938004084EF /* forward_icon@2x.png in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,

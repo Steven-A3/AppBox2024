@@ -175,7 +175,7 @@
     }
     
     currentIndex = (currentIndex+1) % [_itemArray count];
-    self.nextView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventSummaryView" owner:nil options:nil] objectAtIndex:0];
+    self.nextView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
     CGSize size = ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ? CGSizeMake(self.view.frame.size.height, self.view.frame.size.width) : self.view.frame.size );
     _nextView.frame = CGRectMake(0, 0, size.width, size.height);
         
@@ -297,7 +297,7 @@
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [self.view addGestureRecognizer:gesture];
     
-    self.currentView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventSummaryView" owner:nil options:nil] objectAtIndex:0];
+    self.currentView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSlideshowEventSummaryView" owner:nil options:nil] objectAtIndex:0];
     
     [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_itemArray objectAtIndex:currentIndex] toView:self.currentView];
     
