@@ -613,7 +613,12 @@
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
-        [self.navigationController pushViewController:viewCtrl animated:YES];
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewCtrl]
+                                     fromViewController:self
+                                         withCompletion:^{
+                                             
+                                         }];
     }
 }
 

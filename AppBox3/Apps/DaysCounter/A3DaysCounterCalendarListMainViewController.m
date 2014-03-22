@@ -206,17 +206,19 @@
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.landscapeFullScreen = NO;
     
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:navCtrl animated:YES completion:nil];
-//    if ( IS_IPHONE ) {
-//        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-//        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-//        [self presentViewController:navCtrl animated:YES completion:nil];
-//    }
-//    else {
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    if ( IS_IPHONE ) {
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+    else {
+        A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewCtrl]
+                                     fromViewController:self
+                                         withCompletion:^{
+                                             
+                                         }];
+    }
 }
 
 - (IBAction)reminderAction:(id)sender {

@@ -644,9 +644,22 @@
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.eventItem = _eventItem;
     
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:navCtrl animated:YES completion:nil];
+    if (IS_IPHONE) {
+        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+        navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+    else {
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        A3NavigationController *nav = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [rootViewController presentCenterViewController:nav
+                                     fromViewController:self
+                                         withCompletion:^{
+                                             
+                                         }];
+    }
 }
 
 - (IBAction)deleteEventAction:(id)sender {
