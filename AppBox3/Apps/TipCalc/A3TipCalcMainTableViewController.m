@@ -355,7 +355,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 #pragma mark KeyboardAccessoryView Button
 - (void)keyboardAccessoryButtonTouchedUp:(UIButton *)sender {
-    ((UITextField *)_firstResponder).text = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
+    ((UITextField *)self.firstResponder).text = [NSString stringWithFormat:@"%ld", (long)[sender tag]];
 }
 
 #pragma mark - Table Data Configuration
