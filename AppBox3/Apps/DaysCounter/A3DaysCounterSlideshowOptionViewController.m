@@ -67,7 +67,7 @@
     [super viewDidLoad];
 
     self.title = @"Slideshow Options";
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self makeBackButtonEmptyArrow];
     
@@ -205,7 +205,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger cellType = [self cellTypeAtIndexPath:indexPath];
-    if( cellType == SlideshowOptionType_Startshow ){
+    if ( cellType == SlideshowOptionType_Startshow ) {
         cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
     }
 }
@@ -213,18 +213,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger cellType = [self cellTypeAtIndexPath:indexPath];
-    if( cellType == SlideshowOptionType_Transition ){
+    if ( cellType == SlideshowOptionType_Transition ) {
         A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTransitionSelectViewController" bundle:nil];
         viewCtrl.optionDict = self.optionDict;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-    else if( cellType == SlideshowOptionType_Showtime ){
+    else if ( cellType == SlideshowOptionType_Showtime ) {
         A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTimeSelectViewController" bundle:nil];
         viewCtrl.optionDict = self.optionDict;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-    else if( cellType == SlideshowOptionType_Startshow ){
-        if( [[A3DaysCounterModelManager sharedManager] numberOfAllEvents] < 1 ){
+    else if ( cellType == SlideshowOptionType_Startshow ) {
+        if ( [[A3DaysCounterModelManager sharedManager] numberOfAllEvents] < 1 ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"There is no events" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alertView show];
             return;
@@ -232,33 +232,12 @@
         
         [self saveCurrentOption];
 
-//        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
-//        viewCtrl.optionDict = self.optionDict;
-//        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
-//        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-//        navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
         if (IS_IPHONE) {
-//            [self dismissViewControllerAnimated:YES completion:^{
-//                A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
-//                viewCtrl.optionDict = self.optionDict;
-//                viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//                [self presentViewController:viewCtrl animated:YES completion:nil];
-//                if (_completionBlock) {
-//                    _completionBlock(self.optionDict);
-//                }
-//            }];
-            
-            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
-            viewCtrl.optionDict = self.optionDict;
-            viewCtrl.completionBlock = ^{
-                [self dismissViewControllerAnimated:NO completion:nil];
-//                A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
-//                [self popToRootAndPushViewController:viewCtrl animate:NO];
-            };
-            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentViewController:viewCtrl animated:YES completion:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (_completionBlock) {
+                    _completionBlock(self.optionDict, self.activity);
+                }
+            }];
         }
         else {
             [self.A3RootViewController dismissRightSideViewController];
@@ -274,11 +253,11 @@
 #pragma mark - action methods
 - (void)cancelAction:(id)sender
 {
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         [self.activity activityDidFinish:YES];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    else{
+    else {
         [self.A3RootViewController dismissRightSideViewController];
 //        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }

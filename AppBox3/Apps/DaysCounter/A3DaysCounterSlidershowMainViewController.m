@@ -453,16 +453,17 @@
 }
 
 - (IBAction)shareOtherAction:(id)sender {
-    
+
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
-//    slideActivity.completionBlock = ^(NSDictionary *userInfo) {
-//        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
-//        viewCtrl.optionDict = userInfo;
-//        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//        [self presentViewController:viewCtrl animated:YES completion:^{
-//            
-//        }];
-//    };
+    slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [activity activityDidFinish:YES];
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            viewCtrl.optionDict = userInfo;
+            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:viewCtrl animated:YES completion:nil];
+        }];
+    };
     
     NSString *shareString = ( [_eventsArray count] > 0 ? [[A3DaysCounterModelManager sharedManager] stringForShareEvent:[_eventsArray objectAtIndex:currentIndex]] : @"");
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareString] applicationActivities:@[slideActivity]];

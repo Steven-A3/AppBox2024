@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface A3SlideshowActivity : UIActivity
-@property (strong, nonatomic) void (^completionBlock)(NSDictionary *userInfo);
+@property (strong, nonatomic) void (^completionBlock)(NSDictionary *userInfo, UIActivity *activity);
 @end

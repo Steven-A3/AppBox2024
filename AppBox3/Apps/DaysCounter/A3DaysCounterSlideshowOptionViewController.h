@@ -11,6 +11,6 @@
 @interface A3DaysCounterSlideshowOptionViewController : UITableViewController
 
 @property (strong,nonatomic) UIActivity *activity;
-@property (strong, nonatomic) void (^completionBlock)(NSDictionary *userInfo);
+@property (strong, nonatomic) void (^completionBlock)(NSDictionary *userInfo, UIActivity *activity);
 
 @end
