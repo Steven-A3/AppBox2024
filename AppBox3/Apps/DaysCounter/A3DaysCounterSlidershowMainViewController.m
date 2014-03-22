@@ -22,6 +22,7 @@
 #import "A3DaysCounterSlideshowOptionViewController.h"
 #import "MMDrawerController+Subclass.h"
 #import "A3MainViewController.h"
+#import "A3DaysCounterSlideshowEventSummaryView.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 

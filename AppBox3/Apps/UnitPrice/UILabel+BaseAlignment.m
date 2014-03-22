@@ -44,4 +44,16 @@
 
 }
 
+- (void)adjustAscenderlineForContainView:(UIView *)containView fromTopDistance:(float)topline {
+    [self sizeToFit];
+    
+    // KJH
+    CGPoint toplinePoint = CGPointMake(0, topline);
+    toplinePoint = [containView convertPoint:toplinePoint toView:[self superview]];
+    
+    CGRect rect = self.frame;
+    rect.origin.y = toplinePoint.y - self.font.ascender;
+    self.frame = rect;
+}
+
 @end

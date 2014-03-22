@@ -939,6 +939,7 @@
 		68FEC64D1630D8CC004F4A9E /* A3RoundedCornerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FEC64C1630D8CC004F4A9E /* A3RoundedCornerView.m */; };
 		68FEE387174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 68FEE386174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m */; };
 		68FEE389174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68FEE388174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib */; };
+		80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2563,6 +2564,8 @@
 		68FEE385174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController_iPhone.h; sourceTree = "<group>"; };
 		68FEE386174C4EC900DCC578 /* A3DateKeyboardViewController_iPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateKeyboardViewController_iPhone.m; sourceTree = "<group>"; };
 		68FEE388174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DateKeyboardViewController_iPhone.xib; sourceTree = "<group>"; };
+		80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
+		80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5203,6 +5206,8 @@
 				68F1C82618D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.xib */,
 				68F1C82E18D7F37D009FAE8A /* A3SlideshowActivity.h */,
 				68F1C82F18D7F37D009FAE8A /* A3SlideshowActivity.m */,
+				80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */,
+				80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */,
 				68F1C7F518D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib */,
 			);
 			name = "1. SliderShow";
@@ -5671,6 +5676,7 @@
 				68F1C89B18D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.m in Sources */,
 				68F1C91A18D81D3E009FAE8A /* FSTargetCallback.m in Sources */,
 				689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */,
+				80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */,
 				68F1C8D918D7F37D009FAE8A /* A3CalendarView.m in Sources */,
 				68B6A44718CEE781004084EF /* DACircularProgressView.m in Sources */,
 				6823F6EB1863287B00E6E90D /* CurrencyRateItem.m in Sources */,

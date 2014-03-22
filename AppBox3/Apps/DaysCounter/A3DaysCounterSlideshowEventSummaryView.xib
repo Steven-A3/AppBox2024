@@ -5,7 +5,7 @@
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="summaryCell" id="Pw2-No-a6D">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="summaryCell" id="Pw2-No-a6D" customClass="A3DaysCounterSlideshowEventSummaryView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -16,7 +16,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8PY-bc-aDl" customClass="FXLabel">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8PY-bc-aDl" customClass="FXLabel">
                         <rect key="frame" x="62" y="49" width="196" height="101"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -27,7 +27,7 @@
                         <nil key="highlightedColor"/>
                         <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="yoV-Pe-VFu" customClass="FXLabel">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.59999999999999998" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="yoV-Pe-VFu" userLabel="Label - Days Since" customClass="FXLabel">
                         <rect key="frame" x="263" y="67" width="44" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -75,6 +75,12 @@ Since</string>
                 <constraint firstItem="8PY-bc-aDl" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" constant="49" id="q8P-LI-qVh"/>
                 <constraint firstItem="yFA-J0-wtx" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" id="vsP-6E-zks"/>
             </constraints>
+            <connections>
+                <outlet property="dayCountLabel" destination="8PY-bc-aDl" id="FJF-u8-Uio"/>
+                <outlet property="dayCountTopSpaceConst" destination="q8P-LI-qVh" id="3aO-BU-rZn"/>
+                <outlet property="daysSinceLabel" destination="yoV-Pe-VFu" id="tqg-sd-N2x"/>
+                <outlet property="daysSinceTopSpaceConst" destination="bTe-U7-8ck" id="e21-vH-Kju"/>
+            </connections>
         </collectionViewCell>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
     </objects>
