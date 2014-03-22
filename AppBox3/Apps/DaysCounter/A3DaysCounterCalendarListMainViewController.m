@@ -48,7 +48,7 @@
     self.navigationItem.title = @"Days Counter";
 
     [self leftBarButtonAppsButton];
-    }
+
     [self makeBackButtonEmptyArrow];
     [self registerContentSizeCategoryDidChangeNotification];
     
