@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, strong) NSNumberFormatter *percentFormatter;
+@property (nonatomic, weak) UIResponder *firstResponder;
 
 - (A3RootViewController_iPad *)A3RootViewController;
 
@@ -29,6 +30,8 @@
 - (A3NumberKeyboardViewController *)normalNumberKeyboard;
 
 - (A3NumberKeyboardViewController *)passcodeKeyboard;
+
+- (A3DateKeyboardViewController *)newDateKeyboardViewController;
 
 - (NSString *)zeroCurrency;
 
@@ -47,4 +50,5 @@
 - (UIColor *)tableViewSeparatorColor;
 
 - (UIColor *)selectedTextColor;
+
 @end

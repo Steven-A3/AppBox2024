@@ -64,7 +64,7 @@
                     </connections>
                 </barButtonItem>
                 <barButtonItem style="plain" systemItem="flexibleSpace" id="FI2-uS-8hW"/>
-                <barButtonItem image="star01_full" width="30" id="daa-3x-2GR"/>
+                <barButtonItem image="star01_on" width="30" id="daa-3x-2GR"/>
             </items>
         </toolbar>
         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="YL6-tE-EgA" userLabel="Button - add">
@@ -82,8 +82,8 @@
     <resources>
         <image name="add01" width="25" height="25"/>
         <image name="list" width="22" height="13"/>
-        <image name="photoview" width="29" height="23"/>
-        <image name="reminder" width="26" height="24"/>
-        <image name="star01_full" width="26" height="26"/>
+        <image name="photoview" width="30" height="30"/>
+        <image name="reminder" width="30" height="30"/>
+        <image name="star01_on" width="26" height="26"/>
     </resources>
 </document>

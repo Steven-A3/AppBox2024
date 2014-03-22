@@ -42,7 +42,6 @@
 @property (nonatomic, strong) NSMutableArray *convertItems;
 //@property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
-@property (nonatomic, weak)	UITextField *firstResponder;
 @property (nonatomic, strong) NSMutableDictionary *text1Fields;
 @property (nonatomic, strong) NSMutableDictionary *text2Fields;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -252,7 +251,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)clearEverything {
 	@autoreleasepool {
-		[_firstResponder resignFirstResponder];
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
 		[self dismissMoreMenu];
 	}
 }
@@ -271,12 +271,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                 self.navigationItem.leftBarButtonItem = nil;
             }
             else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
                 self.navigationItem.leftBarButtonItem = appsItem;
             }
         }
         else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
             self.navigationItem.leftBarButtonItem = appsItem;
         }
     } else {
@@ -288,8 +288,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     }
 }
 
-- (void)appsButtonAction {
-	[_firstResponder resignFirstResponder];
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 
 	if (IS_IPHONE) {
 		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
@@ -303,8 +304,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}
 }
 
-- (void)moreButtonAction:(UIButton *)button {
-	[_firstResponder resignFirstResponder];
+- (void)moreButtonAction:(UIBarButtonItem *)button {
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 
@@ -467,8 +469,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)addUnitAction {
 	@autoreleasepool {
-		if ([_firstResponder isFirstResponder]) {
-			[_firstResponder resignFirstResponder];
+		if ([self.firstResponder isFirstResponder]) {
+			[self.firstResponder resignFirstResponder];
+			[self setFirstResponder:nil];
 			return;
 		}
         
@@ -862,8 +865,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         
-		if ([_firstResponder isFirstResponder]) {
-			[_firstResponder resignFirstResponder];
+		if ([self.firstResponder isFirstResponder]) {
+			[self.firstResponder resignFirstResponder];
+			[self setFirstResponder:nil];
 			return;
 		}
         
@@ -1136,21 +1140,22 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             
 			return YES;
 		} else {
-			[_firstResponder resignFirstResponder];
-            
+			[self.firstResponder resignFirstResponder];
+			[self setFirstResponder:nil];
+
 			// shifted 0 : shift self
 			// shifted 1 and it is me. unshift self
 			// shifted 1 and it is not me. unshift him and shift me.
 			NSArray *swipped = self.swipedCells.allObjects;
 			if (![swipped count]) {
 
-                // khkim_131217 : requirement 수정사항
-                // 셀을 탭할때 more mene 보이지 않는다
-                /*
+				// khkim_131217 : requirement 수정사항
+				// 셀을 탭할때 more mene 보이지 않는다
+				/*
 				id cell = [_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-                
+
 				[self shiftLeft:cell];
-                 */
+				 */
 			} else {
 				[self unSwipeAll];
 			}
@@ -1163,7 +1168,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	@autoreleasepool {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
-        _firstResponder = textField;
+        self.firstResponder = textField;
         //[self.normalNumberKeyboard reloadPrevNextButtons];
 	}
 }
@@ -1190,7 +1195,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-		_firstResponder = nil;
+		[self setFirstResponder:nil];
 		//self.numberKeyboardViewController = nil;
 
         // 숫자 입력 보정여부
@@ -1418,11 +1423,12 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 #pragma mark - A3KeyboardDelegate
 
 - (BOOL)isPreviousEntryExists{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 2)) {
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+	UIView *viewInRespond = (UIView *) self.firstResponder;
+    if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 2)) {
         return YES;
     }
-    else if ((cell.inputType==UnitInput_FeetInch) && (_firstResponder.tag == 2)) {
+    else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 2)) {
         return YES;
     }
     else {
@@ -1432,10 +1438,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (BOOL)isNextEntryExists{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 1)) {
+	UIView *viewInRespond = (UIView *) self.firstResponder;
+    if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 1)) {
         return YES;
     }
-    else if ((cell.inputType==UnitInput_FeetInch) && (_firstResponder.tag == 1)) {
+    else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 1)) {
         return YES;
     }
     else {
@@ -1455,20 +1462,22 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)prevButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 2)) {
+	UIView *viewInRespond = (UIView *) self.firstResponder;
+    if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 2)) {
         [cell.valueField becomeFirstResponder];
     }
-    else if ((cell.inputType==UnitInput_FeetInch) && (_firstResponder.tag == 2)) {
+    else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 2)) {
         [cell.valueField becomeFirstResponder];
     }
 }
 
 - (void)nextButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if ((cell.inputType==UnitInput_Fraction) && (_firstResponder.tag == 1)) {
+	UIView *viewInRespond = (UIView *) self.firstResponder;
+    if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 1)) {
         [cell.value2Field becomeFirstResponder];
     }
-    else if ((cell.inputType==UnitInput_FeetInch) && (_firstResponder.tag == 1)) {
+    else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 1)) {
         [cell.value2Field becomeFirstResponder];
     }
 }

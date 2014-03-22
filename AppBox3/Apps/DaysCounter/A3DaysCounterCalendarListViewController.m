@@ -59,8 +59,8 @@
     [super viewDidLoad];
 
     self.navigationItem.title = @"Days Counter";
-    if( IS_IPHONE )
-        [self leftBarButtonAppsButton];
+
+    [self leftBarButtonAppsButton];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightTopButtonView];
 
@@ -97,15 +97,6 @@
         _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
         [self.view addSubview:_addEventButton];
     }
-    
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -134,14 +125,6 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
     _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
     _addEventButton.hidden = NO;
 }

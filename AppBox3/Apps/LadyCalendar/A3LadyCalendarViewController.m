@@ -234,9 +234,10 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Lady Calendar";
-    
+
+	[self leftBarButtonAppsButton];
+
     if( IS_IPHONE ){
-        [self leftBarButtonAppsButton];
         [self rightButtonMoreButton];
         
         self.chartButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -255,13 +256,7 @@
         [_settingButton addTarget:self action:@selector(settingAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     else{
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation) )
-            [self leftBarButtonAppsButton];
-        else
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightButtons];
         self.navigationItem.rightBarButtonItems = @[_settingBarButton,_accountBarButton,_chartBarButton];
-        
     }
     self.toolbarItems = _bottomToolbar.items;
     
@@ -352,11 +347,9 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ){
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
         _topNaviView.frame = CGRectMake(_topNaviView.frame.origin.x, _topNaviView.frame.origin.y, self.view.frame.size.width, _topNaviView.frame.size.height);
     }
     else{
-        [self leftBarButtonAppsButton];
         _topNaviView.frame = CGRectMake(_topNaviView.frame.origin.x, _topNaviView.frame.origin.y, self.view.frame.size.width, _topNaviView.frame.size.height);
     }
     [_collectionView reloadData];

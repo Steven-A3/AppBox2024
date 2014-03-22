@@ -29,7 +29,6 @@
     BOOL _isLoanCalcEdited;
 }
 
-@property (nonatomic, weak)	UITextField *firstResponder;
 @property (nonatomic, strong) NSMutableArray *calcItems;
 @property (nonatomic, strong) NSMutableArray *extraPaymentItems;
 
@@ -181,7 +180,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (void)clearEverything {
 	@autoreleasepool {
-		[_firstResponder resignFirstResponder];
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
 	}
 }
 
@@ -623,7 +623,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 #pragma mark - TextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _firstResponder = textField;
+    self.firstResponder = textField;
     
     textField.text = @"";
     
@@ -650,9 +650,9 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     NSIndexPath *endIndexPath = [self.tableView indexPathForCell:cell];
     
     NSLog(@"End IP : %ld - %ld", (long)endIndexPath.section, (long)endIndexPath.row);
-    
-    _firstResponder = nil;
-    
+
+	[self setFirstResponder:nil];
+
     // update
     if (endIndexPath.section == 1) {
         // calculation item
@@ -821,14 +821,16 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_firstResponder resignFirstResponder];
+    [self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
     
     return YES;
 }
 
 - (void)textChanged:(NSNotification *)noti
 {
-    NSString *testText = _firstResponder.text;
+	UITextField *textField = noti.object;
+    NSString *testText = textField.text;
     
     if ([testText rangeOfString:@"."].location == NSNotFound) {
         return;
@@ -843,8 +845,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         }
         
         NSString *reText = [NSString stringWithFormat:@"%@.%@", intString, floatString];
-        _firstResponder.text = reText;
-        
+        textField.text = reText;
     }
 }
 
@@ -1134,7 +1135,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 #pragma mark - A3KeyboardDelegate
 
 - (BOOL)isPreviousEntryExists{
-    if ([self previousTextField:_firstResponder]) {
+    if ([self previousTextField:(UITextField *) self.firstResponder]) {
         return YES;
     }
     else {
@@ -1143,7 +1144,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (BOOL)isNextEntryExists{
-    if ([self nextTextField:_firstResponder]) {
+    if ([self nextTextField:(UITextField *) self.firstResponder]) {
         return YES;
     }
     else {
@@ -1152,8 +1153,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (void)prevButtonPressed{
-    if (_firstResponder) {
-        UITextField *prevTxtField = [self previousTextField:_firstResponder];
+    if (self.firstResponder) {
+        UITextField *prevTxtField = [self previousTextField:(UITextField *) self.firstResponder];
         if (prevTxtField) {
             [prevTxtField becomeFirstResponder];
         }
@@ -1161,8 +1162,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 }
 
 - (void)nextButtonPressed{
-    if (_firstResponder) {
-        UITextField *nextTxtField = [self nextTextField:_firstResponder];
+    if (self.firstResponder) {
+        UITextField *nextTxtField = [self nextTextField:(UITextField *) self.firstResponder];
         if (nextTxtField) {
             [nextTxtField becomeFirstResponder];
         }

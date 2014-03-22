@@ -28,7 +28,6 @@
 @property (nonatomic, strong) WalletCategory *category;
 @property (nonatomic, strong) NSMutableArray *fields;
 @property (nonatomic, strong) NSMutableDictionary *plusItem;
-@property (nonatomic, assign) UITextField *firstResponder;
 @property (nonatomic, strong) WalletField *toAddField;
 
 @end
@@ -154,10 +153,9 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 
 - (void)doneButtonAction:(id)sender
 {
-    if (_firstResponder) {
-        [_firstResponder resignFirstResponder];
-    }
-    
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
     if (_category.name.length == 0) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Enter category name"
                                                         message:nil
@@ -193,11 +191,10 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 }
 
 - (void)presentSubViewController:(UIViewController *)viewController {
-    
-    if (_firstResponder) {
-        [_firstResponder resignFirstResponder];
-    }
-    
+
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
 	if (IS_IPHONE) {
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
@@ -294,12 +291,12 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     _category.name = textField.text;
-    _firstResponder = nil;
+	[self setFirstResponder:nil];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _firstResponder = textField;
+	[self setFirstResponder:textField];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

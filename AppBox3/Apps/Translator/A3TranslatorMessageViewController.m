@@ -1262,7 +1262,7 @@ static NSString *const GOOGLE_TRANSLATE_API_V2_URL = @"https://www.googleapis.co
 - (void)addToolbar {
 	_toolbarDeleteButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(deleteActionFromToolbar)];
 
-	_toolbarSetFavoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star01_full"] style:UIBarButtonItemStylePlain target:self action:@selector(setFavoriteActionFromToolbar)];
+	_toolbarSetFavoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star01_on"] style:UIBarButtonItemStylePlain target:self action:@selector(setFavoriteActionFromToolbar)];
 
 	_toolbarUnsetFavoriteButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"star01"] style:UIBarButtonItemStylePlain target:self action:@selector(unsetFavoriteActionFromToolbar)];
 

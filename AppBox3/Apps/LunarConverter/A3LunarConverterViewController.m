@@ -148,7 +148,7 @@
 }
 
 - (void)mainMenuBecameFirstResponder {
-	[self A3KeyboardDoneButtonPressed];
+	[self dateKeyboardDoneButtonPressed:nil ];
 }
 
 - (void)mainMenuResignFirstResponder {
@@ -688,8 +688,7 @@
 	[self calculateDate];
 }
 
-- (void)A3KeyboardDoneButtonPressed
-{
+- (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
     [self hideKeyboardAnimate:YES];
 }
 
@@ -826,7 +825,7 @@
 }
 
 - (BOOL)resignFirstResponder {
-	[self A3KeyboardDoneButtonPressed];
+	[self dateKeyboardDoneButtonPressed:nil ];
 	return [super resignFirstResponder];
 }
 
@@ -834,7 +833,7 @@
 	[super appsButtonAction:barButtonItem];
 
 	if (IS_IPAD) {
-		[self A3KeyboardDoneButtonPressed];
+		[self dateKeyboardDoneButtonPressed:nil ];
 	}
 }
 

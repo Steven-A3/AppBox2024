@@ -201,8 +201,7 @@
     [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
-- (void)A3KeyboardDoneButtonPressed
-{
+- (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
     [self doneButtonAction:nil];
 }
 

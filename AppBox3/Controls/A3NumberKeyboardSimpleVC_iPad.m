@@ -13,11 +13,13 @@
 @implementation A3NumberKeyboardSimpleVC_iPad
 
 - (void)viewWillLayoutSubviews {
+	BOOL isLandscape = IS_LANDSCAPE;
+
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat width_extra;
-	if (IS_PORTRAIT) {
+	if (!isLandscape) {
 		CGFloat space1 = 16.0, space2 = 30.0;
 		width_big = 124.0, height_big = 118.0;
 		width_small = 108.0, height_small = 57.0;
@@ -58,6 +60,25 @@
 	[self.clearButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
 	[self.calculatorButton setFrame:CGRectMake(col_5, row_3, width_small, height_small)];
 	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_small, height_small)];
+
+	UIFont *numberFont = [UIFont systemFontOfSize:isLandscape ? 27 : 22];
+	[self.num7Button.titleLabel setFont:numberFont];
+	[self.num8Button.titleLabel setFont:numberFont];
+	[self.num9Button.titleLabel setFont:numberFont];
+
+	[self.num6Button.titleLabel setFont:numberFont];
+	[self.num5Button.titleLabel setFont:numberFont];
+	[self.num4Button.titleLabel setFont:numberFont];
+
+	[self.num3Button.titleLabel setFont:numberFont];
+	[self.num2Button.titleLabel setFont:numberFont];
+	[self.num1Button.titleLabel setFont:numberFont];
+	[self.num0Button.titleLabel setFont:numberFont];
+
+	[self.clearButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
+	[self.doneButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
+
+	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 33 : 28]];
 }
 
 @end

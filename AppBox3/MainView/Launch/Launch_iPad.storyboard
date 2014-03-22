@@ -99,6 +99,7 @@
                                         <rect key="frame" x="102" y="603" width="639" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="30"/>
+                                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" id="DL3-jB-DKV">
@@ -441,7 +442,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Grl-6N-y1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-527" y="-168"/>
+            <point key="canvasLocation" x="-1482" y="-196"/>
         </scene>
         <!--Launch Scene View Controller-->
         <scene sceneID="jKK-6c-bqL">
@@ -562,7 +563,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A6e-OC-wJt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="286" y="-168"/>
+            <point key="canvasLocation" x="-669" y="-196"/>
         </scene>
         <!--Launch Scene View Controller-->
         <scene sceneID="SFg-pl-07v">
@@ -638,7 +639,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IAC-qQ-U1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1901" y="-168"/>
+            <point key="canvasLocation" x="946" y="-196"/>
         </scene>
         <!--Launch Scene View Controller-->
         <scene sceneID="4eh-HT-aKD">
@@ -745,7 +746,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tke-Li-mJ6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1096" y="-168"/>
+            <point key="canvasLocation" x="141" y="-196"/>
         </scene>
     </scenes>
     <resources>

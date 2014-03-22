@@ -48,8 +48,8 @@
     self.title = @"Reminder";
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
-    if( IS_IPHONE )
-        [self leftBarButtonAppsButton];
+
+	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
 }
 
@@ -61,20 +61,6 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, ([_itemArray count] > 0 ? 48.0 : 15.0), 0, 0);
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
-    
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
-    
-//    if( ![_addEventButton isDescendantOfView:self.view] ){
-//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//        [self.view addSubview:_addEventButton];
-//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,18 +72,6 @@
 - (void)dealloc
 {
     self.itemArray = nil;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
 }
 
 #pragma mark - Table view data source

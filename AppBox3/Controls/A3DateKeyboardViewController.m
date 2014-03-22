@@ -34,6 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
+	
 	[self switchToYear];
 }
 
@@ -51,23 +52,24 @@
 - (void)initExtraLabels {
 }
 
-- (void)resetNumberButtons {
+- (void)resetToNumbersButtons {
 	NSArray *order = @[_num0_Oct_Button,
 			_num1_Jul_Button, _num2_Aug_Button, _num3_Sep_Button,
 			_num4_Apr_Button, _num5_May_Button, _num6_Jun_Button,
 			_num7_Jan_Button, _num8_Feb_Button, _num9_Mar_Button
 	];
-	NSInteger index = 0;
-	for (UIButton *button in order) {
-		[button setTitle:[NSString stringWithFormat:@"%ld", (long)index] forState:UIControlStateNormal];
-		index++;
-	}
+
+	[order enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+		[button setTitle:[NSString stringWithFormat:@"%ld", (long) idx] forState:UIControlStateNormal];
+		button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 26 : IS_LANDSCAPE ? 27 : 22];
+	}];
 
 	[CATransaction begin];
 	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
 
 	[_Nov_Button setHidden:YES];
 	[_today_Dec_Button setTitle:@"Today" forState:UIControlStateNormal];
+	_today_Dec_Button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
 
 	CGRect frame = _num0_Oct_Button.frame;
 	frame.size.width = CGRectGetMaxX(_num2_Aug_Button.frame) - CGRectGetMinX(_num1_Jul_Button.frame);
@@ -78,7 +80,7 @@
 
 - (IBAction)switchToYear {
 	[self initExtraLabels];
-	[self resetNumberButtons];
+	[self resetToNumbersButtons];
 
 	_yearButton.selected = YES;
 	_monthButton.selected = NO;
@@ -94,12 +96,11 @@
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	NSArray *monthSymbols = dateFormatter.shortMonthSymbols;
-	NSUInteger idx = 0;
 
 	NSString *january = monthSymbols[0];
 
 	BOOL showNumber = [january rangeOfString:@"1"].location == NSNotFound;
-	for (A3KeyboardButton_iOS7 *button in order) {
+	[order enumerateObjectsUsingBlock:^(A3KeyboardButton_iOS7 *button, NSUInteger idx, BOOL *stop) {
 		if (showNumber) {
 			[button setTitle:@"" forState:UIControlStateNormal];
 			button.mainTitle.text = [monthSymbols objectAtIndex:idx];
@@ -107,9 +108,10 @@
 		} else {
 			[button setTitle:monthSymbols[idx] forState:UIControlStateNormal];
 		}
-
-		idx++;
-	}
+		button.mainTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
+		button.subTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 16 : IS_LANDSCAPE ? 17 : 15];
+		button.subTitle.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+	}];
 
 	[CATransaction begin];
 	[CATransaction setValue:[NSNumber numberWithBool:YES] forKey:kCATransactionDisableActions];
@@ -129,7 +131,7 @@
 	_dayButton.selected = YES;
 
 	[self initExtraLabels];
-	[self resetNumberButtons];
+	[self resetToNumbersButtons];
 }
 
 - (NSArray *)monthOrder {
@@ -224,8 +226,8 @@
 }
 
 - (IBAction)doneButtonAction {
-	if ([_delegate respondsToSelector:@selector(A3KeyboardDoneButtonPressed)]) {
-		[_delegate A3KeyboardDoneButtonPressed];
+	if ([_delegate respondsToSelector:@selector(dateKeyboardDoneButtonPressed:)]) {
+		[_delegate dateKeyboardDoneButtonPressed:self ];
 	}
 }
 

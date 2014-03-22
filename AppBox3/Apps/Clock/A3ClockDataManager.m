@@ -60,13 +60,10 @@
 	[self refreshClock:YES];
 }
 
-- (void)dealloc {
+- (void)cleanUp {
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-
-	[_clockTickTimer invalidate];
-	_clockTickTimer = nil;
-	[_weatherTimer invalidate];
-	_weatherTimer = nil;
+	
+	[self stopTimer];
 }
 
 - (CLLocationManager *)locationManager {
@@ -138,6 +135,8 @@
 - (void)stopTimer {
 	[_clockTickTimer invalidate];
 	_clockTickTimer = nil;
+	[_weatherTimer invalidate];
+	_weatherTimer = nil;
 }
 
 - (A3ClockInfo *)clockInfo {

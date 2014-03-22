@@ -43,10 +43,8 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
 @property (nonatomic, strong) NSMutableDictionary *textFields;
 @property (nonatomic, strong) CurrencyHistory *history;
-@property (nonatomic, weak)	UITextField *firstResponder;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
-@property (nonatomic, strong) NSDate *animationStarted;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) UIButton *plusButton;
 @property (nonatomic, strong) UIView *footerView;
@@ -88,7 +86,6 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	_textFields = nil;
 	_history = nil;
 	_moreMenuButtons = nil;
-	_animationStarted = nil;
 	[_plusButton removeFromSuperview];
 	_plusButton = nil;
 }
@@ -216,37 +213,34 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)clearEverything {
-	@autoreleasepool {
-		[self unSwipeAll];
+	[self unSwipeAll];
 
-		[_firstResponder resignFirstResponder];
-		_firstResponder = nil;
-		[self dismissMoreMenu];
-	}
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	[self dismissMoreMenu];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
-	@autoreleasepool {
-		[_firstResponder resignFirstResponder];
-		_firstResponder = nil;
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 
-		if (IS_IPHONE) {
-			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+	if (IS_IPHONE) {
+		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 
-			if ([_moreMenuView superview]) {
-				[self dismissMoreMenu];
-				[self rightButtonMoreButton];
-			}
-		} else {
-			[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+		if ([_moreMenuView superview]) {
+			[self dismissMoreMenu];
+			[self rightButtonMoreButton];
 		}
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
 }
 
 - (void)moreButtonAction:(UIBarButtonItem *)button {
     @autoreleasepool {
-		[_firstResponder resignFirstResponder];
-		_firstResponder = nil;
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
 
 		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
 
@@ -335,7 +329,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[alertView show];
 		return;
 	}
-	if (_firstResponder) {
+	if (self.firstResponder) {
 		[self.refreshControl endRefreshing];
 		return;
 	}
@@ -360,7 +354,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyRatesUpdated) name:A3NotificationCurrencyRatesUpdated object:nil];
 
 
-		if (!_firstResponder) {
+		if (!self.firstResponder) {
 			[self.refreshControl beginRefreshing];
 		}
 
@@ -678,9 +672,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	@autoreleasepool {
-		if ([_firstResponder isFirstResponder]) {
-			[_firstResponder resignFirstResponder];
-			_firstResponder = nil;
+		if (self.firstResponder) {
+			[self.firstResponder resignFirstResponder];
+			[self setFirstResponder:nil];
 			[tableView deselectRowAtIndexPath:indexPath animated:YES];
 			return;
 		}
@@ -713,9 +707,9 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)plusButtonAction:(UIButton *)button {
 	@autoreleasepool {
-		if ([_firstResponder isFirstResponder]) {
-			[_firstResponder resignFirstResponder];
-			_firstResponder = nil;
+		if (self.firstResponder) {
+			[self.firstResponder resignFirstResponder];
+			[self setFirstResponder:nil];
 			return;
 		}
 
@@ -775,12 +769,12 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			self.numberKeyboardViewController = keyboardVC;
 			textField.inputView = [keyboardVC view];
 
-			_firstResponder = textField;
+			[self setFirstResponder:textField];
 
 			return YES;
 		} else {
-			[_firstResponder resignFirstResponder];
-			_firstResponder = nil;
+			[self.firstResponder resignFirstResponder];
+			[self setFirstResponder:nil];
 
 			// shifted 0 : shift self
 			// shifted 1 and it is me. unshift self
@@ -841,8 +835,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	@autoreleasepool {
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-		_firstResponder = nil;
-		self.numberKeyboardViewController = nil;
+		[self setFirstResponder:nil];
+		[self setNumberKeyboardViewController:nil];
 
 		BOOL valueChanged = NO;
 		if (![textField.text length]) {

@@ -48,15 +48,10 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
-//    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
-//	[SFKImage setDefaultColor:[UIColor blueColor]];
-//    UIImage *image = [SFKImage imageNamed:@"d"];
-//    UIBarButtonItem *lastButton = [_bottomToolbar.items lastObject];
-//    [lastButton setImage:image];
-    
-    if( IS_IPHONE )
-        [self leftBarButtonAppsButton];
+
+	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
+
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 }
 
@@ -68,20 +63,7 @@
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] favoriteEventsList]];
     [self.tableView reloadData];
     self.navigationItem.rightBarButtonItem.enabled = ([_itemArray count] > 0);
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
-//    if( ![_addEventButton isDescendantOfView:self.view] ){
-//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//        [self.view addSubview:_addEventButton];
-//    }
 }
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -92,18 +74,6 @@
 - (void)dealloc
 {
     self.itemArray = nil;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    if( IS_IPAD ){
-        if( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)){
-            [self leftBarButtonAppsButton];
-        }
-        else{
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
 }
 
 #pragma mark - Table view data source

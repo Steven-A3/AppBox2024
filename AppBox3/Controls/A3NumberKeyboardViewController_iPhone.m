@@ -8,10 +8,7 @@
 
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3KeyboardButton_iPhone.h"
-#import "SFKImage.h"
-#import "A3UIDevice.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
-#import "A3AppDelegate.h"
 
 @interface A3NumberKeyboardViewController_iPhone ()
 
@@ -125,18 +122,9 @@
 	[super viewDidLoad];
 	// Do any additional setup after loading the view from its nib.
 
-	UIColor *tintColor = self.view.tintColor;
-	[self.doneButton setBackgroundColor:tintColor];
-}
-
-- (void)initSymbolFont {
-	[SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:30.0]];
-	[SFKImage setDefaultColor:[UIColor whiteColor]];
 }
 
 - (void)reloadPrevNextButtons {
-	[self initSymbolFont];
-    
     if ([self.delegate respondsToSelector:@selector(stringForPrevButton:)]) {
         self.prevBtnTitleText = [self.delegate stringForPrevButton:self.prevBtnTitleText];
     }
@@ -156,7 +144,7 @@
             [_nextButton setTitle:available ? self.nextBtnTitleText : nil forState:UIControlStateNormal];
             _nextButton.titleLabel.font = _doneButton.titleLabel.font;
         } else {
-            UIImage *image = available ? [SFKImage imageNamed:@"arrowdown"] : nil;
+            UIImage *image = available ? [UIImage imageNamed:@"k_down"] : nil;
             [_nextButton setImage:image forState:UIControlStateNormal];
             [_nextButton setTitle:nil forState:UIControlStateNormal];
         }
@@ -175,7 +163,7 @@
             [_prevButton setTitle:available ? self.prevBtnTitleText : nil forState:UIControlStateNormal];
             _prevButton.titleLabel.font = _doneButton.titleLabel.font;
         } else {
-            UIImage *image = available ? [SFKImage imageNamed:@"arrowup"] : nil;
+            UIImage *image = available ? [UIImage imageNamed:@"k_up"] : nil;
             [_prevButton setImage:image forState:UIControlStateNormal];
             [_prevButton setTitle:nil forState:UIControlStateNormal];
         }

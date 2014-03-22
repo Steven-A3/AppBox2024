@@ -47,9 +47,6 @@
 		cell = [[A3TranslatorFavoriteCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
 	}
 
-//	UIImage *image = [UIImage imageNamed:@"star02_full"];
-//	cell.imageView.image = image;
-
 	TranslatorFavorite *item = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
 	cell.textLabel.text = [NSString stringWithFormat:@"%@ to %@", [A3TranslatorLanguage localizedNameForCode:item.text.group.sourceLanguage],

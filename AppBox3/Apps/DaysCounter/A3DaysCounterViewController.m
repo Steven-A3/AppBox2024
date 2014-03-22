@@ -230,25 +230,24 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    @autoreleasepool {
-        UIView *rightButtonView = nil;
-        if( IS_IPHONE ){
-            [self leftBarButtonAppsButton];
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-            rightButtonView = _naviRightButtonViewiPhone;
-//            [self rightButtonMoreButton];
-        }
-        else{
+	UIView *rightButtonView = nil;
 
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
-            rightButtonView = _naviRightButtonView;
-        }
-        self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
-    }
+	[self leftBarButtonAppsButton];
+
+	if( IS_IPHONE ){
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
+		rightButtonView = _naviRightButtonViewiPhone;
+	}
+	else{
+		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
+		rightButtonView = _naviRightButtonView;
+	}
+	self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
+	self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+
     [self.navigationController setToolbarHidden:YES];
     [self setToolbarItems:_bottomToolbar.items];
-    [self leftBarButtonAppsButton];
+
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     
     currentIndex = 0;

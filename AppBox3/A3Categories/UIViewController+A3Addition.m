@@ -144,6 +144,7 @@
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self.firstResponder resignFirstResponder];
 	if (IS_IPHONE) {
 		[[self mm_drawerController] toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
 	} else {

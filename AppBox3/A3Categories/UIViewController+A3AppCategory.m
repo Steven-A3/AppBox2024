@@ -24,6 +24,7 @@ static char const *const key_dateKeyboardViewController 		= "key_dateKeyboardVie
 static char const *const key_currencyFormatter					= "key_currencyFormatter";
 static char const *const key_decimalFormatter 					= "key_decimalFormatter";
 static char const *const key_percentFormatter					= "key_percentFormatter";
+static char const *const key_firstResponder 					= "key_firstResponder";
 
 @implementation UIViewController (A3AppCategory)
 
@@ -80,17 +81,20 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 	objc_setAssociatedObject(self, key_numberKeyboardViewController, keyboardViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (A3DateKeyboardViewController *)newDateKeyboardViewController {
+	A3DateKeyboardViewController *viewController;
+	if (IS_IPAD) {
+		viewController = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
+	} else {
+		viewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
+	}
+	viewController.delegate = (id <A3DateKeyboardDelegate>) self;
+	[viewController view];
+	return viewController;
+}
+
 - (A3DateKeyboardViewController *)dateKeyboardViewController {
 	A3DateKeyboardViewController *viewController = objc_getAssociatedObject(self, key_dateKeyboardViewController);
-	if (nil == viewController) {
-		if (IS_IPAD) {
-			viewController = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
-		} else {
-			viewController = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
-		}
-		viewController.delegate = (id <A3DateKeyboardDelegate>) self;
-		objc_setAssociatedObject(self, key_dateKeyboardViewController, viewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-	}
 	return viewController;
 }
 
@@ -201,6 +205,14 @@ static char const *const key_percentFormatter					= "key_percentFormatter";
 
 - (UIColor *)selectedTextColor {
 	return [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+}
+
+- (UIResponder *)firstResponder {
+	return objc_getAssociatedObject(self, key_firstResponder);
+}
+
+- (void)setFirstResponder:(UIResponder *)firstResponder {
+	objc_setAssociatedObject(self, key_firstResponder, firstResponder, OBJC_ASSOCIATION_ASSIGN);
 }
 
 @end

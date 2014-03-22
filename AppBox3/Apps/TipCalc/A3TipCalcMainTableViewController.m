@@ -57,7 +57,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) CellTextInputBlock cellTextInputChangedBlock;
 @property (nonatomic, strong) CellTextInputBlock cellTextInputFinishedBlock;
 @property (nonatomic, strong) BasicBlock cellInputDoneButtonPressed;
-@property (nonatomic, strong) id firstResponder;
 @property (nonatomic, strong) UIPopoverController * localPopoverController;
 @property (nonatomic, strong) A3TipCalcHeaderView * headerView;
 
@@ -128,7 +127,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)disposeInitializedCondition
 {
-    [_firstResponder resignFirstResponder];
+    [self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
     
     if (IS_IPHONE) {
         [self dismissMoreMenu];
@@ -740,7 +740,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         strPlaceHoler = [NSString stringWithFormat:@"%@0", [A3TipCalcDataManager sharedInstance].tipCalcData.currenySymbol];
     
     
-    ((UITextField *)_firstResponder).attributedPlaceholder = [[NSAttributedString alloc] initWithString:strPlaceHoler attributes:@{NSForegroundColorAttributeName: kColorPlaceHolder}];
+    ((UITextField *)self.firstResponder).attributedPlaceholder = [[NSAttributedString alloc] initWithString:strPlaceHoler attributes:@{NSForegroundColorAttributeName: kColorPlaceHolder}];
 }
 
 #pragma mark - currencyselected view stuff
@@ -898,24 +898,25 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 #pragma mark - apps & more button stuff
-- (void)appsButtonAction {
-	@autoreleasepool {
-        [self disposeInitializedCondition];
 
-		if (IS_IPHONE) {
-			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-            
-			if ([_moreMenuView superview]) {
-                [self rightBarButtons];
-			}
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self.firstResponder resignFirstResponder];
+	
+	[self disposeInitializedCondition];
+	
+	if (IS_IPHONE) {
+		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+		
+		if ([_moreMenuView superview]) {
+			[self rightBarButtons];
 		}
-        else {
-			[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
-		}
+	}
+	else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
 }
 
-- (void)moreButtonAction:(UIButton *)button {
+- (void)moreButtonAction:(UIBarButtonItem *)button {
     @autoreleasepool {
         [self disposeInitializedCondition];
         

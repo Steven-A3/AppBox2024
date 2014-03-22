@@ -201,12 +201,12 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 self.navigationItem.leftBarButtonItem = nil;
             }
             else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
                 self.navigationItem.leftBarButtonItem = appsItem;
             }
         }
         else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction)];
+            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
             self.navigationItem.leftBarButtonItem = appsItem;
         }
     } else {
@@ -434,20 +434,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     }
 }
 
-- (void)appsButtonAction {
-	@autoreleasepool {
-		if (IS_IPHONE) {
-			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-		} else {
-			[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
-		}
-	}
-}
-
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-        [self shareAll:sender];
-	}
+    [self shareAll:sender];
 }
 
 - (void)infoButtonAction:(id)sender {

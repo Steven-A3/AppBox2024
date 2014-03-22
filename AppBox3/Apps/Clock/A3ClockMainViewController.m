@@ -52,11 +52,9 @@
 	return _clockDataManager;
 }
 
-- (void)dealloc {
-	[self cleanUp];
-}
-
 - (void)cleanUp {
+	FNLOG();
+	[_clockDataManager cleanUp];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[_buttonsTimer invalidate];
 	_buttonsTimer = nil;

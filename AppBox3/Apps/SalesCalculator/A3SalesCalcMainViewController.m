@@ -62,7 +62,6 @@ enum A3TableElementCellType {
 @property (nonatomic, strong) A3TableViewInputElement *taxElement;
 @property (nonatomic, strong) A3TableViewInputElement *price;
 @property (nonatomic, strong) A3TextViewElement *notes;
-@property (nonatomic, strong) UITextField *firstResponder;
 @property (nonatomic, strong) UITextView *textViewResponder;
 @end
 
@@ -126,7 +125,7 @@ enum A3TableElementCellType {
 {
     [self.firstResponder resignFirstResponder];
     [self.textViewResponder resignFirstResponder];
-    self.firstResponder = nil;
+	[self setFirstResponder:nil];
     _textViewResponder = nil;
     
     self.preferences.calcData = aData;
@@ -154,13 +153,10 @@ enum A3TableElementCellType {
     self.navigationItem.rightBarButtonItems = @[historyItem, compoItem];
 }
 
-- (void)appsButtonAction {
-	@autoreleasepool {
-        [self.firstResponder resignFirstResponder];
-        [self.textViewResponder resignFirstResponder];
-        
-        [super appsButtonAction:nil];
-	}
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self.textViewResponder resignFirstResponder];
+
+	[super appsButtonAction:barButtonItem];
 }
 
 -(void)setBarButtonsEnable:(BOOL)enable
@@ -206,6 +202,8 @@ enum A3TableElementCellType {
 -(void)historyButtonAction:(id)sender
 {
     [self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
     [self.textViewResponder resignFirstResponder];
     A3SalesCalcHistoryViewController *viewController = [[A3SalesCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
     viewController.delegate = self;
@@ -303,6 +301,7 @@ enum A3TableElementCellType {
 
 -(void)detailInfoButtonTouchedUp {
     [self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
     [self.textViewResponder resignFirstResponder];
     
     _headerView.detailInfoButton.enabled = NO;
@@ -519,7 +518,7 @@ enum A3TableElementCellType {
 -(CellTextInputBlock)cellTextInputBeginBlock
 {
     if (!_cellTextInputBeginBlock) {
-        __weak A3SalesCalcMainViewController * weakSelf = self;
+		__typeof(self) __weak  weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             weakSelf.firstResponder = textField;
         };
@@ -705,7 +704,7 @@ enum A3TableElementCellType {
 // 계산 값 입력을 마친 경우에 호출됨.
 -(CellTextInputBlock)cellTextInputFinishAllBlock {
     if (!_cellTextInputFinishAllBlock) {
-        __weak A3SalesCalcMainViewController * weakSelf = self;
+        __typeof(self) __weak weakSelf = self;
         
         _cellTextInputFinishAllBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             if (weakSelf.firstResponder == textField) {

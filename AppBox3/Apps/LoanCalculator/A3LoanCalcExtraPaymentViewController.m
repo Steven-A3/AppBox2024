@@ -34,7 +34,6 @@
     BOOL _isExtraPaymentEdited;
 }
 
-@property (nonatomic, strong) UITextField *firstResponder;
 @property (nonatomic, strong) UITextField *dateTextField;
 @property (nonatomic, strong) NSMutableArray *years;
 @property (nonatomic, strong) NSMutableArray *months;
@@ -180,7 +179,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (void)doneButtonAction:(id)button {
 	@autoreleasepool {
-        [_firstResponder resignFirstResponder];
+        [self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
 		[self.A3RootViewController dismissRightSideViewController];
 	}
 }
@@ -343,14 +343,14 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 #pragma mark - TextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _firstResponder = textField;
+    self.firstResponder = textField;
     
     textField.text = @"";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _firstResponder = nil;
+    self.firstResponder = nil;
     
     // update
     _isExtraPaymentEdited = YES;
@@ -466,9 +466,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_firstResponder resignFirstResponder];
-    
-    return YES;
+    [self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	return YES;
 }
 
 #pragma mark - Table view delegate
@@ -483,7 +484,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     }
     else if (_items[indexPath.row] == self.dateItem) {
         
-        [_firstResponder resignFirstResponder];
+        [self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
         
         // toggle
         if ([_items containsObject:self.dateInputItem]) {
@@ -779,7 +781,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 
 - (BOOL)isPreviousEntryExists
 {
-    if ([self previousTextField:_firstResponder]) {
+    if ([self previousTextField:(UITextField *) self.firstResponder]) {
         return YES;
     }
     else {
@@ -788,7 +790,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (BOOL)isNextEntryExists{
-    if ([self nextTextField:_firstResponder]) {
+    if ([self nextTextField:(UITextField *) self.firstResponder]) {
         return YES;
     }
     else {
@@ -797,8 +799,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)prevButtonPressed{
-    if (_firstResponder) {
-        UITextField *prevTxtField = [self previousTextField:_firstResponder];
+    if (self.firstResponder) {
+        UITextField *prevTxtField = [self previousTextField:(UITextField *) self.firstResponder];
         if (prevTxtField) {
             [prevTxtField becomeFirstResponder];
         }
@@ -806,8 +808,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 }
 
 - (void)nextButtonPressed{
-    if (_firstResponder) {
-        UITextField *nextTxtField = [self nextTextField:_firstResponder];
+    if (self.firstResponder) {
+        UITextField *nextTxtField = [self nextTextField:(UITextField *) self.firstResponder];
         if (nextTxtField) {
             [nextTxtField becomeFirstResponder];
         }

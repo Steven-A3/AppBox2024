@@ -40,7 +40,6 @@
     
     CGFloat _tableYOffset, _oldTableOffset;
     A3NumberKeyboardViewController *_simpleNormalNumberKeyboard;
-    UITextField *_firstResponder;
     NSIndexPath *_selectedIndexPath;
     NSIndexPath *_selectedOptionIndexPath;
     
@@ -118,7 +117,8 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [_firstResponder resignFirstResponder];
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -217,12 +217,11 @@
     self.navigationItem.rightBarButtonItems = @[buttonItem, saveItem];
 }
 
-- (void)appsButtonAction {
-	@autoreleasepool {
-        [_firstResponder resignFirstResponder];
-        
-        [super appsButtonAction:nil];
-	}
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[super appsButtonAction:barButtonItem];
+	
+    [self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 }
 
 //-(void)enableBarButtons
@@ -305,19 +304,19 @@
     NSLog(@"here????????");
 }
 
--(void)historyButtonAction:(id)sender
-{
-    [_firstResponder resignFirstResponder];
-    
-    A3PercentCalcHistoryViewController *viewController = [[A3PercentCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
-    viewController.delegate = self;
-    [self presentSubViewController:viewController];
-    
-    if (IS_IPAD) {
-        [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * barButton, NSUInteger idx, BOOL *stop) {
-            barButton.enabled = NO;
-        }];
-    }
+-(void)historyButtonAction:(id)sender {
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	A3PercentCalcHistoryViewController *viewController = [[A3PercentCalcHistoryViewController alloc] initWithStyle:UITableViewStylePlain];
+	viewController.delegate = self;
+	[self presentSubViewController:viewController];
+
+	if (IS_IPAD) {
+		[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *barButton, NSUInteger idx, BOOL *stop) {
+			barButton.enabled = NO;
+		}];
+	}
 }
 
 -(void)saveToHistory:(id)sender
@@ -716,7 +715,7 @@
 //                                         [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
 //                                     }];
                     
-//                    [_firstResponder resignFirstResponder];
+//                    [self.firstResponder resignFirstResponder];
 //                    [self.tableView beginUpdates];
 //                    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationMiddle];
 //                    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:3] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -753,7 +752,7 @@
                             break;
                     }
                     
-                    if (!_firstResponder) {
+                    if (!self.firstResponder) {
                         [self showKeyboardIfXFieldIsZeroAtTableView:self.tableView];
                     }
                 
@@ -1004,7 +1003,7 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     _isKeyboardShown = YES;
-    _firstResponder = textField;
+    self.firstResponder = textField;
     //textField.textColor = COLOR_TABLE_TEXT_TYPING;
     
     // 입력하려는 Cell에 이미 데이터가 있는 경우, 지우고 시작하기 위하여.
@@ -1210,7 +1209,7 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField {
     _isKeyboardShown = NO;
-    _firstResponder = nil;
+	[self setFirstResponder:nil];
 
     if ([textField.text length] > 0) {
         NSNumberFormatter *formatter = [NSNumberFormatter new];

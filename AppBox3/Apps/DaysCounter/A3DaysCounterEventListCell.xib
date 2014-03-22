@@ -194,7 +194,7 @@
                             <constraint firstAttribute="height" constant="32" id="zPk-o8-2VX"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" tag="15" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star02_full" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-Iw-2YD">
+                    <imageView userInteractionEnabled="NO" tag="15" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star02_on" translatesAutoresizingMaskIntoConstraints="NO" id="Sfh-Iw-2YD">
                         <rect key="frame" x="141" y="8" width="20" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -296,6 +296,6 @@
     <resources>
         <image name="check" width="22" height="22"/>
         <image name="delete03" width="14" height="14"/>
-        <image name="star02_full" width="20" height="20"/>
+        <image name="star02_on" width="20" height="20"/>
     </resources>
 </document>

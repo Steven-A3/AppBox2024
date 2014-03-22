@@ -35,7 +35,6 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
     float textViewHeight;
 }
 
-@property (nonatomic, weak)	UITextField *firstResponder;
 @property (nonatomic, strong) NSNumber *lastTextFieldNumber;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
@@ -118,10 +117,9 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    if (_firstResponder) {
-        [_firstResponder resignFirstResponder];
-    }
+
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -560,7 +558,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
-    _firstResponder = textField;
+	[self setFirstResponder:textField];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -576,8 +574,9 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [_firstResponder resignFirstResponder];
-    
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
 	return YES;
 }
 
@@ -620,7 +619,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         
         [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-        _firstResponder = nil;
+		[self setFirstResponder:nil];
         
         if ([self.items objectAtIndex:_currentIndexPath.row] != self.noteItem) {
             if (self.lastTextFieldNumber) {
@@ -682,7 +681,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 }
 
 - (void)prevButtonPressed{
-    if (_firstResponder && _currentIndexPath) {
+    if (self.firstResponder && _currentIndexPath) {
         if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
             NSUInteger index = [self.items indexOfObject:self.priceItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
@@ -702,7 +701,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 }
 
 - (void)nextButtonPressed{
-    if (_firstResponder && _currentIndexPath) {
+    if (self.firstResponder && _currentIndexPath) {
         if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
             NSUInteger index = [self.items indexOfObject:self.sizeItem];
             A3UnitPriceInputCell *inputCell = (A3UnitPriceInputCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
@@ -799,10 +798,10 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 }
                 else {
                     self.navigationController.navigationItem.backBarButtonItem.enabled = NO;
-                    
-                    if (_firstResponder) {
-                        [_firstResponder resignFirstResponder];
-                    }
+
+					[self.firstResponder resignFirstResponder];
+					[self setFirstResponder:nil];
+
                     [self presentSubViewController:[self unitsTabBarController]];
                 }
             }

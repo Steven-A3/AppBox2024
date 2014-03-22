@@ -54,7 +54,6 @@ enum A3ExpenseListAddBudgetCellType {
 @property (nonatomic, strong) NSArray *expandableCellElements;
 @property (nonatomic, strong) A3TableViewDatePickerElement* datePickerElement;
 
-@property (nonatomic, strong) UITextField *firstResponder;
 @property (nonatomic, strong) UITextView *textViewResponder;
 
 @end
@@ -610,7 +609,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    [_firstResponder resignFirstResponder];
+    [self.firstResponder resignFirstResponder];
     
     A3JHTableViewElement *element = [self.root elementForIndexPath:indexPath];
 

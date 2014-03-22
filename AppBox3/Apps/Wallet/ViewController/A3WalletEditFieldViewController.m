@@ -18,8 +18,6 @@
 
 @interface A3WalletEditFieldViewController () <WalletFieldTypeSelectDelegate, WalletFieldStyleSelectDelegate, UITextFieldDelegate>
 
-@property (nonatomic, assign) UITextField *firstResponder;
-
 @end
 
 @implementation A3WalletEditFieldViewController
@@ -101,10 +99,9 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 - (void)doneButtonAction:(id)sender
 {
-    if (_firstResponder) {
-        [_firstResponder resignFirstResponder];
-    }
-    
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
     if (IS_IPAD) {
         
         if (_field.name.length > 0) {
@@ -171,12 +168,12 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     _field.name = textField.text;
-    _firstResponder = nil;
+	[self setFirstResponder:nil];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _firstResponder = textField;
+	[self setFirstResponder:textField];
 }
 
 #pragma mark - Table view delegate

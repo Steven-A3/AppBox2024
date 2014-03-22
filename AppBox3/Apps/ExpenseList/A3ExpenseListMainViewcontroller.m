@@ -52,7 +52,6 @@ static BOOL _isAutoMovingAddBudgetView = NO;
 @implementation A3ExpenseListMainViewController
 {
     ExpenseListBudget *_currentBudget;
-    UITextField *_firstResponder;
     ExpenseListItem *_selectedItem;
 	BOOL    _isShowMoreMenu;
     UITapGestureRecognizer *_tapGestureRecognizer;
@@ -274,12 +273,10 @@ static NSString *CellIdentifier = @"Cell";
     return [[NSUserDefaults standardUserDefaults] objectForKey:key_currentBudgetId];
 }
 
-- (void)appsButtonAction {
-	@autoreleasepool {
-        [self clearEverything];
-        
-        [super appsButtonAction:nil];
-	}
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self clearEverything];
+
+	[super appsButtonAction:barButtonItem];
 }
 
 - (NSNumberFormatter *)priceNumberformatter
@@ -359,19 +356,16 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)clearEverything {
-	@autoreleasepool {
-		[self dismissMoreMenu];
-        [_firstResponder resignFirstResponder];
-	}
+	[self dismissMoreMenu];
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
 }
 
 - (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu || IS_IPAD ) return;
+	if ( !_isShowMoreMenu || IS_IPAD ) return;
 
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-        _isShowMoreMenu = NO;
-	}
+	[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
+	_isShowMoreMenu = NO;
 }
 
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
@@ -525,7 +519,8 @@ static NSString *CellIdentifier = @"Cell";
 - (void)moreButtonAction:(UIButton *)button
 {
     @autoreleasepool {
-        [_firstResponder resignFirstResponder];
+        [self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
         
         if (_isAutoMovingAddBudgetView) {
             return;
@@ -1206,7 +1201,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - A3ExpenseListItemCell Delegate
 -(void)itemCellTextFieldBeginEditing:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
-    _firstResponder = textField;
+	[self setFirstResponder:textField];
     [self dismissMoreMenu];
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:aCell];
@@ -1293,9 +1288,9 @@ static NSString *CellIdentifier = @"Cell";
         // 행에 출력된 초기값을 제거하여 공백 셀을 만든다.
         item.hasData = @(NO);
         
-        if ( (_firstResponder != textField && _selectedItem == item) || index.row==0) {
-        //if ( (_firstResponder != textField && _selectedItem == item) || index.row==0) {
-        //if (_firstResponder != textField && (_selectedItem == item || index.row==0)) {
+        if ( (self.firstResponder != textField && _selectedItem == item) || index.row==0) {
+        //if ( (self.firstResponder != textField && _selectedItem == item) || index.row==0) {
+        //if (self.firstResponder != textField && (_selectedItem == item || index.row==0)) {
             return;
         }
 
@@ -1321,7 +1316,7 @@ static NSString *CellIdentifier = @"Cell";
     [self disableMoreButtonsIfBugdetNotExist];
     
     // 예외처리, itemName 편집 종료시, top scroll 적용.
-    if (textField == aCell.nameTextField && textField == _firstResponder) {
+    if (textField == aCell.nameTextField && textField == self.firstResponder) {
         [self scrollToTopOfTableView];
     }
 }
@@ -1388,16 +1383,17 @@ static NSString *CellIdentifier = @"Cell";
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
     ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
-    
-    _firstResponder.text = @"";
+
+	UITextField *textField = (UITextField *) self.firstResponder;
+    textField.text = @"";
     if (sender.priceTextField == keyInputDelegate) {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        _firstResponder.placeholder = [formatter stringFromNumber:@0];
+        textField.placeholder = [formatter stringFromNumber:@0];
         aItem.price = @0;
     }
     else {
-        _firstResponder.placeholder = @"";
+        textField.placeholder = @"";
         aItem.qty = @0;
     }
 }

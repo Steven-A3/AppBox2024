@@ -40,6 +40,8 @@ typedef NS_ENUM(NSUInteger, A3ClockWaveCircleTypes) {
 @property (nonatomic, strong) id<A3ClockDataManagerDelegate> delegate;
 @property (nonatomic, strong) A3ClockInfo *clockInfo;
 
+- (void)cleanUp;
+
 - (void)enableWeatherCircle:(BOOL)enable;
 - (void)enableDateCircle:(BOOL)enable;
 - (void)enableWeekdayCircle:(BOOL)enable;

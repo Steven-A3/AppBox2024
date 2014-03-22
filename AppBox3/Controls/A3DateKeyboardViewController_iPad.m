@@ -19,6 +19,18 @@
 {
 	[super viewDidLoad];
 
+	[self setupSelectedColorForYearMonthDay];
+}
+
+- (void)setupSelectedColorForYearMonthDay {
+	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.yearButton];
+	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.monthButton];
+	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.dayButton];
+}
+
+- (void)setupSelectedColor:(A3KeyboardButton_iOS7 *)button {
+	button.backgroundColorForDefaultState = [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
+	button.backgroundColorForSelectedState = self.view.tintColor;
 }
 
 - (void)removeExtraLabelsForButton:(UIButton *)button {

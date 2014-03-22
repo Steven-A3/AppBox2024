@@ -68,7 +68,6 @@
 @property (nonatomic, strong) UISegmentedControl *selectSegment;
 @property (nonatomic, strong) NSMutableDictionary *controlsEnableInfo;
 // Loan mode
-@property (nonatomic, weak)	UITextField *firstResponder;
 @property (nonatomic, weak)	UITextView *currentTextView;
 @property (nonatomic, strong) LoanCalcData *loanData;
 @property (nonatomic, strong) NSMutableArray *calcItems;
@@ -142,7 +141,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.percentFormatter setMaximumFractionDigits:3];
     
     // load data
-    [self loadPreviousCalcultaion];
+	[self loadPreviousCalculation];
     
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -668,27 +667,27 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)appsButtonAction {
-	@autoreleasepool {
-		[_firstResponder resignFirstResponder];
-        
-		if (IS_IPHONE) {
-			[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
-            
-			if ([_moreMenuView superview]) {
-				[self dismissMoreMenu];
-				[self rightButtonMoreButton];
-			}
-		} else {
-			[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
+- (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	if (IS_IPHONE) {
+		[self.mm_drawerController toggleDrawerSide:MMDrawerSideLeft animated:YES completion:nil];
+
+		if ([_moreMenuView superview]) {
+			[self dismissMoreMenu];
+			[self rightButtonMoreButton];
 		}
+	} else {
+		[[[A3AppDelegate instance] rootViewController] toggleLeftMenuViewOnOff];
 	}
 }
 
-- (void)moreButtonAction:(UIButton *)button {
+- (void)moreButtonAction:(UIBarButtonItem *)button {
     @autoreleasepool {
-        [_firstResponder resignFirstResponder];
-        
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
         
         _moreMenuButtons = @[self.shareButton, [self historyButton:NULL], self.settingsButton];
@@ -919,8 +918,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	@autoreleasepool {
 		[self clearEverything];
         
-        UIStoryboard *stroyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
-        A3LoanCalcHistoryViewController *viewController = [stroyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcHistoryViewController"];
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"LoanCalculatorPhoneStoryBoard" bundle:nil];
+        A3LoanCalcHistoryViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3LoanCalcHistoryViewController"];
         viewController.isComparisonMode = _isComparisonMode;
         viewController.delegate = self;
         
@@ -1027,7 +1026,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)clearEverything {
 	@autoreleasepool {
-		[_firstResponder resignFirstResponder];
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+
 		[self dismissMoreMenu];
         [_currentTextView resignFirstResponder];
 	}
@@ -1237,7 +1238,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     loan.extraPaymentYearlyDate = nil;
 }
 
-- (void)loadPreviousCalcultaion
+- (void)loadPreviousCalculation
 {
     [self loanData];
     [self loanDataA];
@@ -1288,17 +1289,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             case A3LC_CalculationForDownPayment:
             {
                 return [self.loanFormatter stringFromNumber:data.downPayment];
-                break;
             }
             case A3LC_CalculationForPrincipal:
             {
                 return [self.loanFormatter stringFromNumber:data.principal];
-                break;
             }
             case A3LC_CalculationForRepayment:
             {
                 return [self.loanFormatter stringFromNumber:data.repayment];
-                break;
             }
             case A3LC_CalculationForTermOfMonths:
             {
@@ -1306,7 +1304,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 int monthInt =  (int)round(data.monthOfTerms.doubleValue);
                 NSString *result = [NSString stringWithFormat:@"%ld %@", (long)monthInt, unit];
                 return result;
-                break;
             }
             case A3LC_CalculationForTermOfYears:
             {
@@ -1322,7 +1319,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                     NSInteger monthInt = roundl([data.monthOfTerms doubleValue]);
                     NSString *result = [NSString stringWithFormat:@"(%ld mo)", (long)monthInt];
                     return result;
-                    break;
                 }
                 else {
                     NSInteger yearInt = roundl([data.monthOfTerms doubleValue]) / 12.0;
@@ -1335,12 +1331,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                         result = [NSString stringWithFormat:@"%ld %@(%ld mo)", (long)yearInt, unit, (long)monthInt];
                     }
                     return result;
-                    break;
                 }
             }
             default:
                 return @"";
-                break;
         }
     }
     else {
@@ -1349,7 +1343,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	// Popver controller, iPad only.
+	// Popover controller, iPad only.
 	[self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
 		[buttonItem setEnabled:YES];
 	}];
@@ -2223,6 +2217,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self dismissDatePicker];
     
     _currentTextView = textView;
+	[self setFirstResponder:textView];
     
     return YES;
 }
@@ -2299,13 +2294,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:currentCell];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+
+	[self setFirstResponder:nil];
 }
 
 #pragma mark - TextFieldDelegate
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _firstResponder = textField;
-    
+	[self setFirstResponder:textField];
+
     textField.text = @"";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
@@ -2313,7 +2310,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)textChanged:(NSNotification *)noti
 {
-    NSString *testText = _firstResponder.text;
+	UITextField *textField = noti.object;
+    NSString *testText = textField.text;
     
     if ([testText rangeOfString:@"."].location == NSNotFound) {
         return;
@@ -2328,13 +2326,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         }
         
         NSString *reText = [NSString stringWithFormat:@"%@.%@", intString, floatString];
-        _firstResponder.text = reText;
+        textField.text = reText;
         
     }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	[self setFirstResponder:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
     
     UITableViewCell *cell;
@@ -2352,9 +2352,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     NSIndexPath *endIP = [self.tableView indexPathForCell:cell];
     
     NSLog(@"End IP : %ld - %ld", (long)endIP.section, (long)endIP.row);
-    
-    _firstResponder = nil;
-    
+
     // update
     if (endIP.section == 2) {
         // calculation item
@@ -2532,7 +2530,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             return NO;
         }
     }
-    
+
     return YES;
 }
 
@@ -2543,7 +2541,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [_firstResponder resignFirstResponder];
+	[textField resignFirstResponder];
+	[self setFirstResponder:nil];
     
     return YES;
 }
@@ -3413,7 +3412,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 #pragma mark - A3KeyboardDelegate
 
 - (BOOL)isPreviousEntryExists{
-    if ([self previousTextField:_firstResponder]) {
+    if ([self previousTextField:(UITextField *) self.firstResponder]) {
         return YES;
     }
     else {
@@ -3422,7 +3421,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (BOOL)isNextEntryExists{
-    if ([self nextTextField:_firstResponder]) {
+    if ([self nextTextField:(UITextField *) self.firstResponder]) {
         return YES;
     }
     else {
@@ -3431,8 +3430,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)prevButtonPressed{
-    if (_firstResponder) {
-        UITextField *prevTxtField = [self previousTextField:_firstResponder];
+    if (self.firstResponder) {
+        UITextField *prevTxtField = [self previousTextField:(UITextField *) self.firstResponder];
         if (prevTxtField) {
             [prevTxtField becomeFirstResponder];
         }
@@ -3440,8 +3439,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)nextButtonPressed{
-    if (_firstResponder) {
-        UITextField *nextTxtField = [self nextTextField:_firstResponder];
+    if (self.firstResponder) {
+        UITextField *nextTxtField = [self nextTextField:(UITextField *) self.firstResponder];
         if (nextTxtField) {
             [nextTxtField becomeFirstResponder];
         }
