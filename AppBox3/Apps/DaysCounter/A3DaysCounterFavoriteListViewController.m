@@ -9,7 +9,7 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterSlidershowMainViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
@@ -269,12 +269,12 @@
 //        [alertView show];
 //        return;
 //    }
-    A3DaysCounterViewController *viewCtrl = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
+    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 

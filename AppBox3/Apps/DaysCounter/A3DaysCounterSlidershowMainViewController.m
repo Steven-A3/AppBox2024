@@ -6,7 +6,7 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterSlidershowMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3SlideshowActivity.h"
@@ -25,7 +25,7 @@
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterViewController ()
+@interface A3DaysCounterSlidershowMainViewController ()
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -43,7 +43,153 @@
 - (CGRect)orientataionBounds;
 @end
 
-@implementation A3DaysCounterViewController
+@implementation A3DaysCounterSlidershowMainViewController
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    @autoreleasepool {
+        UIView *rightButtonView = nil;
+        if( IS_IPHONE ){
+            [self leftBarButtonAppsButton];
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
+            rightButtonView = _naviRightButtonViewiPhone;
+            //            [self rightButtonMoreButton];
+        }
+        else{
+            
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
+            rightButtonView = _naviRightButtonView;
+        }
+        self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
+        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+    }
+    [self.navigationController setToolbarHidden:YES];
+    [self setToolbarItems:_bottomToolbar.items];
+    [self leftBarButtonAppsButton];
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
+    
+    currentIndex = 0;
+    [self makeBackButtonEmptyArrow];
+    
+    //    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    //    [_infoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
+    //    [_infoButton addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
+    //    [_infoButton setBackgroundColor:[UIColor clearColor]];
+    //    self.shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    //    [_shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
+    //    [_shareButton addTarget:self action:@selector(shareOtherAction:) forControlEvents:UIControlEventTouchUpInside];
+    //    [_shareButton setBackgroundColor:[UIColor clearColor]];
+    
+    self.navigationController.navigationBar.translucent = YES;
+    [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
+    
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu:)];
+    tapGesture.delegate = self;
+    [_collectionView addGestureRecognizer:tapGesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.delegate = self;
+    self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
+    
+    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
+        //        [[UIApplication sharedApplication] setStatusBarHidden:YES];
+        if( !_isShowMoreMenu )
+            self.navigationController.navigationBarHidden = YES;
+        else
+            self.navigationController.navigationBarHidden = NO;
+        _noPhotoView.hidden = YES;
+        _collectionView.hidden = NO;
+        _infoButton.enabled = YES;
+        _shareButton.enabled = YES;
+    }
+    else{
+        //        [[UIApplication sharedApplication] setStatusBarHidden:NO];
+        if( _isShowMoreMenu )
+            [self hideTopToolbarAnimated:NO];
+        self.navigationController.navigationBarHidden = NO;
+        _noPhotoView.hidden = NO;
+        _collectionView.hidden = YES;
+        _infoButton.enabled = NO;
+        _shareButton.enabled = NO;
+        [self.view bringSubviewToFront:_noPhotoView];
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
+    //    if( ![_addEventButton isDescendantOfView:self.view] ){
+    //        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+    //        [self.view addSubview:_addEventButton];
+    //    }
+    //    _addEventButton.hidden = self.navigationController.navigationBarHidden;
+    
+    [self updateNavigationTitle];
+    
+    if( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
+        [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
+    }
+    if( self.A3RootViewController.showRightView ){
+        if( self.navigationController.navigationBarHidden )
+            [self toggleMenu:nil];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if( _isShowMoreMenu )
+        [self hideTopToolbarAnimated:YES];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.navigationController.delegate = nil;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    //    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+    //    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
+    //    [UIView animateWithDuration:duration animations:^{
+    //        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+    //    }];
+    
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [_collectionView reloadData];
+}
+
+- (void)dealloc
+{
+    self.eventsArray = nil;
+    self.infoButton = nil;
+    self.shareButton = nil;
+}
+
+#pragma mark -
 
 - (CGRect)orientataionFrame
 {
@@ -214,152 +360,6 @@
     }
 }
 
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    @autoreleasepool {
-        UIView *rightButtonView = nil;
-        if( IS_IPHONE ){
-            [self leftBarButtonAppsButton];
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-            rightButtonView = _naviRightButtonViewiPhone;
-//            [self rightButtonMoreButton];
-        }
-        else{
-
-            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
-            rightButtonView = _naviRightButtonView;
-        }
-        self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
-    }
-    [self.navigationController setToolbarHidden:YES];
-    [self setToolbarItems:_bottomToolbar.items];
-    [self leftBarButtonAppsButton];
-    [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    
-    currentIndex = 0;
-    [self makeBackButtonEmptyArrow];
-    
-//    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [_infoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
-//    [_infoButton addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [_infoButton setBackgroundColor:[UIColor clearColor]];
-//    self.shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [_shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-//    [_shareButton addTarget:self action:@selector(shareOtherAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [_shareButton setBackgroundColor:[UIColor clearColor]];
-    
-    self.navigationController.navigationBar.translucent = YES;
-    [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
-    
-
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu:)];
-    tapGesture.delegate = self;
-    [_collectionView addGestureRecognizer:tapGesture];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.delegate = self;
-    self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
-    
-    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
-//        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        if( !_isShowMoreMenu )
-            self.navigationController.navigationBarHidden = YES;
-        else
-            self.navigationController.navigationBarHidden = NO;
-        _noPhotoView.hidden = YES;
-        _collectionView.hidden = NO;
-        _infoButton.enabled = YES;
-        _shareButton.enabled = YES;
-    }
-    else{
-//        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        if( _isShowMoreMenu )
-            [self hideTopToolbarAnimated:NO];
-        self.navigationController.navigationBarHidden = NO;
-        _noPhotoView.hidden = NO;
-        _collectionView.hidden = YES;
-        _infoButton.enabled = NO;
-        _shareButton.enabled = NO;
-        [self.view bringSubviewToFront:_noPhotoView];
-    }
-    [self setNeedsStatusBarAppearanceUpdate];
-    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
-//    if( ![_addEventButton isDescendantOfView:self.view] ){
-//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//        [self.view addSubview:_addEventButton];
-//    }
-//    _addEventButton.hidden = self.navigationController.navigationBarHidden;
-    
-    [self updateNavigationTitle];
-    
-    if( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
-        [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
-    }
-    if( self.A3RootViewController.showRightView ){
-        if( self.navigationController.navigationBarHidden )
-            [self toggleMenu:nil];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if( _isShowMoreMenu )
-        [self hideTopToolbarAnimated:YES];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    self.navigationController.delegate = nil;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-//    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-//    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
-//    [UIView animateWithDuration:duration animations:^{
-//        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//    }];
-
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [_collectionView reloadData];
-}
-
-- (void)dealloc
-{
-    self.eventsArray = nil;
-    self.infoButton = nil;
-    self.shareButton = nil;
-}
-
-
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleDefault;
@@ -412,7 +412,7 @@
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 

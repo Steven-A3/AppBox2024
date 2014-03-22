@@ -11,7 +11,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterSlidershowMainViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterEditCalendarListViewController.h"
 #import "A3DaysCounterAddAndEditCalendarViewController.h"
@@ -59,7 +59,7 @@
         [self.tableView setTableHeaderView:_headerView];
     }
     else {
-        [self.tableView setTableHeaderView:_headerView_iPad];
+        [self.tableView setTableHeaderView:_iPadheaderView];
         self.numberOfCalendarLabel = self.numberOfCalendarLabeliPad;
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
         self.updateDateLabel = self.updateDateLabeliPad;
@@ -153,7 +153,7 @@
 #pragma mark Initialize FontSize
 - (void)contentSizeDidChange:(NSNotification*)noti
 {
-    [self adjustFontSizeOfHeaderView:IS_IPHONE ? _headerView : _headerView_iPad];
+    [self adjustFontSizeOfHeaderView:IS_IPHONE ? _headerView : _iPadheaderView];
 }
 
 - (void)adjustFontSizeOfHeaderView:(UIView *)aView {
@@ -198,7 +198,7 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    A3DaysCounterViewController *viewCtrl = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
+    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
@@ -486,7 +486,7 @@
         self.tableView.tableHeaderView = _headerView;
     }
     else {
-        self.tableView.tableHeaderView = _headerView_iPad;
+        self.tableView.tableHeaderView = _iPadheaderView;
     }
 }
 

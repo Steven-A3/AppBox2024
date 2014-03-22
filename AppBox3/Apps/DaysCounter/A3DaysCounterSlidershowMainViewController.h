@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "A3CenterViewDelegate.h"
 
-@interface A3DaysCounterViewController : UIViewController<A3CenterViewDelegate,UIPopoverControllerDelegate,UIGestureRecognizerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>{
+@interface A3DaysCounterSlidershowMainViewController : UIViewController<A3CenterViewDelegate,UIPopoverControllerDelegate,UIGestureRecognizerDelegate,UINavigationControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>{
     NSInteger currentIndex;
 }
 

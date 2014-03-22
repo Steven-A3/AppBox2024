@@ -71,6 +71,7 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0];
     }
     
     NSInteger type = [[_itemArray objectAtIndex:indexPath.row] integerValue];

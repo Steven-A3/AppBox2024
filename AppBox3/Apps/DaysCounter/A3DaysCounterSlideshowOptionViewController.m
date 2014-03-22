@@ -116,6 +116,7 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     UISwitch *swButton = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 51, 31)];
     [swButton addTarget:self action:selector forControlEvents:UIControlEventValueChanged];
+    cell.textLabel.font = [UIFont systemFontOfSize:17.0];
     cell.accessoryView = swButton;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -132,7 +133,8 @@
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
             break;
-        case SlideshowOptionType_Repeat:cell = [self createSwitchCellID:cellID selector:@selector(repeatValueChanged:)];
+        case SlideshowOptionType_Repeat:
+            cell = [self createSwitchCellID:cellID selector:@selector(repeatValueChanged:)];
             break;
         case SlideshowOptionType_Shuffle:
             cell = [self createSwitchCellID:cellID selector:@selector(shuffleValueChanged:)];

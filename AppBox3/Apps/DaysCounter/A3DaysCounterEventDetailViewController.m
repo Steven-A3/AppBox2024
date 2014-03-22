@@ -143,10 +143,12 @@
     NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
     switch (cellType) {
         case EventCellType_Title:{
-            if ( [cellID isEqualToString:@"eventInfoCelliPad"] )
+            if ( [cellID isEqualToString:@"eventInfoCelliPad"] ) {
                 cell = [cellArray objectAtIndex:11];
-            else
+            }
+            else {
                 cell = [cellArray objectAtIndex:9];
+            }
             UIView *baseView = [cell viewWithTag:10];
             [self setupDefaultValueForView:baseView];
             baseView = [cell viewWithTag:11];

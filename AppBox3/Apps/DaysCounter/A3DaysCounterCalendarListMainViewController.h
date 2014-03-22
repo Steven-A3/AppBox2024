@@ -18,7 +18,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *numberOfEventsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *updateDateLabel;
 @property (strong, nonatomic) IBOutlet UIButton *editButton;
-@property (strong, nonatomic) IBOutlet UIView *headerView_iPad;
+@property (strong, nonatomic) IBOutlet UIView *iPadheaderView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *iPadHeaderCenterConstraints;
 @property (strong, nonatomic) IBOutlet UILabel *numberOfCalendarLabeliPad;
 @property (strong, nonatomic) IBOutlet UILabel *numberOfEventsLabeliPad;
