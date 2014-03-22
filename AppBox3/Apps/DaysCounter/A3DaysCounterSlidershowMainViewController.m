@@ -23,10 +23,12 @@
 #import "MMDrawerController+Subclass.h"
 #import "A3MainViewController.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
+#import "UIImage+JHExtension.h"
+#import "A3DefaultColorDefines.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterSlidershowMainViewController ()
+@interface A3DaysCounterSlidershowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -75,6 +77,9 @@
         }
         self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
         self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+        
+        [self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
+        [self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
     [self.navigationController setToolbarHidden:YES];
     [self setToolbarItems:_bottomToolbar.items];
@@ -83,15 +88,6 @@
     
     currentIndex = 0;
     [self makeBackButtonEmptyArrow];
-    
-    //    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    //    [_infoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
-    //    [_infoButton addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
-    //    [_infoButton setBackgroundColor:[UIColor clearColor]];
-    //    self.shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    //    [_shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-    //    [_shareButton addTarget:self action:@selector(shareOtherAction:) forControlEvents:UIControlEventTouchUpInside];
-    //    [_shareButton setBackgroundColor:[UIColor clearColor]];
     
     self.navigationController.navigationBar.translucent = YES;
     [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterSlideshowEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
@@ -108,7 +104,6 @@
     self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
     
     if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ) {
-        //        [[UIApplication sharedApplication] setStatusBarHidden:YES];
         if ( !_isShowMoreMenu ) {
             self.navigationController.navigationBarHidden = YES;
         }
@@ -121,7 +116,6 @@
         _shareButton.enabled = YES;
     }
     else {
-        //        [[UIApplication sharedApplication] setStatusBarHidden:NO];
         if ( _isShowMoreMenu ) {
             [self hideTopToolbarAnimated:NO];
         }
@@ -149,6 +143,8 @@
         if ( self.navigationController.navigationBarHidden )
             [self toggleMenu:nil];
     }
+
+    [_collectionView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -394,6 +390,12 @@
     self.popoverVC = nil;
 }
 
+#pragma mark - 
+- (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController *)ctrl {
+    NSLog(@"sdf");
+}
+
+
 #pragma mark - action method
 - (void)moreButtonAction:(UIBarButtonItem *)button {
     if ( ![_topToolbar isDescendantOfView:self.view] ) {
@@ -417,6 +419,7 @@
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
+    viewCtrl.delegate = self;
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
