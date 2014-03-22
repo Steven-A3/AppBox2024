@@ -70,7 +70,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
         cell.textLabel.font = [UIFont systemFontOfSize:17.0];
     }
     
@@ -85,14 +85,29 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     NSInteger currentType = [[_optionDict objectForKey:OptionKey_Transition] integerValue];
     NSIndexPath *prevIndexPath = [NSIndexPath indexPathForRow:currentType inSection:indexPath.section];
-    
+
     [_optionDict setObject:@(indexPath.row) forKey:OptionKey_Transition];
-    [tableView beginUpdates];
-    [tableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [tableView endUpdates];
+
+//    [CATransaction begin];
+//    [CATransaction setCompletionBlock:^{
+//        [self.navigationController popViewControllerAnimated:YES];
+//    }];
+//    UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:prevIndexPath];
+//    UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];
+//    prevCell.accessoryType = UITableViewCellAccessoryNone;
+//    curCell.accessoryType = UITableViewCellAccessoryCheckmark;
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    [CATransaction commit];
+    
+    UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:prevIndexPath];
+    UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];
+    prevCell.accessoryType = UITableViewCellAccessoryNone;
+    curCell.accessoryType = UITableViewCellAccessoryCheckmark;
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end
