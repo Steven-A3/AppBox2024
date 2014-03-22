@@ -120,9 +120,9 @@ enum A3DaysCounterAddEventCellType{
     EventCellType_Advanced,
 };
 
-enum A3DaysCounterCalendarCellType {
+typedef NS_ENUM(NSInteger, A3DaysCounterCalendarCellType) {
     CalendarCellType_User = 0,
-    CalendarCellType_System,
+    CalendarCellType_System
 };
 
 enum A3DaysCounterAlertType{

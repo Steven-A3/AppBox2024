@@ -24,14 +24,6 @@
 @end
 
 @implementation A3DaysCounterEditCalendarListViewController
-- (void)reorderingItems
-{
-    for(NSInteger i=0; i < [_itemArray count]; i++){
-        DaysCounterCalendar *item = [_itemArray objectAtIndex:i];
-        item.order = [NSNumber numberWithInteger:i+1];
-    }
-    [[[A3DaysCounterModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
-}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -56,10 +48,11 @@
     [super viewWillAppear:animated];
     self.modalVC = nil;
     NSMutableArray *array = [[A3DaysCounterModelManager sharedManager] allCalendarList];
-    if( self.itemArray == nil )
+    if ( self.itemArray == nil ) {
         self.itemArray = array;
-    else{
-        if( [self.itemArray count] != [array count] ){
+    }
+    else {
+        if ( [self.itemArray count] != [array count] ){
             self.itemArray = array;
             [self reorderingItems];
         }
@@ -73,6 +66,15 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)reorderingItems
+{
+    for(NSInteger i=0; i < [_itemArray count]; i++){
+        DaysCounterCalendar *item = [_itemArray objectAtIndex:i];
+        item.order = [NSNumber numberWithInteger:i+1];
+    }
+    [[[A3DaysCounterModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - Table view data source
@@ -112,12 +114,12 @@
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [item.calendarType integerValue];
     
-    if( cellType == CalendarCellType_System ){
+    if ( cellType == CalendarCellType_System ) {
         imageView.hidden = YES;
         cell.editingAccessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    else{
+    else {
         imageView.hidden = NO;
         cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -127,13 +129,13 @@
     textLabel.text = item.calendarName;
     checkButton.selected = [item.isShow boolValue];
     detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
-    if( [item.calendarType integerValue] == CalendarCellType_System ){
+    if ( [item.calendarType integerValue] == CalendarCellType_System ) {
         NSInteger numberOfEvents = 0;
-        if( [item.calendarId isEqualToString:SystemCalendarID_All] )
+        if ( [item.calendarId isEqualToString:SystemCalendarID_All] )
             numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
-        else if( [item.calendarId isEqualToString:SystemCalendarID_Upcoming])
+        else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming])
             numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfUpcomingEventsWithDate:[NSDate date]];
-        else if( [item.calendarId isEqualToString:SystemCalendarID_Past] )
+        else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] )
             numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfPastEventsWithDate:[NSDate date]];
         detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)numberOfEvents];
     }
@@ -175,7 +177,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-    if( [item.calendarType integerValue] == CalendarCellType_System )
+    if ( [item.calendarType integerValue] == CalendarCellType_System )
         return;
     
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
@@ -191,10 +193,10 @@
 #pragma mark - action method
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         [self dismissViewControllerAnimated:YES completion:nil];
-    else{
-        if( self.modalVC ){
+    else {
+        if ( self.modalVC ){
             [self.modalVC dismissViewControllerAnimated:NO completion:^{
                 [self.A3RootViewController dismissRightSideViewController];
                 UINavigationController *navCtrl = self.A3RootViewController.centerNavigationController;
@@ -202,7 +204,7 @@
                 [viewCtrl viewWillAppear:YES];
             }];
         }
-        else{
+        else {
             [self.A3RootViewController dismissRightSideViewController];
             UINavigationController *navCtrl = self.A3RootViewController.centerNavigationController;
             UIViewController *viewCtrl = navCtrl.topViewController;
@@ -215,7 +217,7 @@
 {
     UIButton *button = (UIButton*)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
-    if( indexPath == nil )
+    if ( indexPath == nil )
         return;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
@@ -231,14 +233,14 @@
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     
-//    if( IS_IPHONE ){
+//    if ( IS_IPHONE ){
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 
     self.modalVC = navCtrl;
     [self presentViewController:navCtrl animated:YES completion:nil];
 //    }
-//    else{
+//    else {
 //        [self.A3RootViewController presentRightSideViewController:viewCtrl];
 //    }
 }

@@ -30,10 +30,10 @@
     
     NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
     
-    for(NSInteger i=0; i < [optionArray count]; i++){
+    for (NSInteger i=0; i < [optionArray count]; i++) {
         NSInteger flag = [[optionArray objectAtIndex:i] integerValue];
-        if( optionValue & flag ){
-            if( [retStr length] > 0 )
+        if ( optionValue & flag ) {
+            if ( [retStr length] > 0 )
                 retStr = [retStr stringByAppendingString:@" "];
             retStr = [retStr stringByAppendingString:[valueArray objectAtIndex:i]];
         }
@@ -55,15 +55,11 @@
 {
     [super viewDidLoad];
 
-    if( IS_IPAD ){
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
-        [SFKImage setDefaultColor:[UIColor blueColor]];
-        UIImage *image = [SFKImage imageNamed:@"o"];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonAction:)];
+    if ( IS_IPAD ) {
         self.originalValue = [_eventModel objectForKey:EventItem_DurationOption];
     }
     self.title = @"Duration Options";
-    [self makeBackButtonEmptyArrow];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     self.itemArray = @[
   @{EventRowTitle : @"Year",EventRowType : @(DurationOption_Year)},
   @{EventRowTitle : @"Month",EventRowType : @(DurationOption_Month)},
@@ -140,7 +136,7 @@
     NSInteger flag = [[item objectForKey:EventRowType] integerValue];
     
     optionValue ^= flag;
-    if( optionValue == 0 ){
+    if ( optionValue == 0 ) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"To show results, need one option." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertView show];
         return;
@@ -154,22 +150,22 @@
 - (void)cancelAction:(id)sender
 {
     [_eventModel setObject:self.originalValue forKey:EventItem_DurationOption];
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

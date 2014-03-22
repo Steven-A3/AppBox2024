@@ -100,14 +100,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if( IS_IPAD ){
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
-        [SFKImage setDefaultColor:[UIColor blueColor]];
-        UIImage *image = [SFKImage imageNamed:@"o"];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonAction:)];
         self.originalValue = [_eventModel objectForKey:EventItem_RepeatEndDate];
     }
     self.title = @"End Repeat";
-    [self makeBackButtonEmptyArrow];
     
     self.itemArray = @[@"Never",@"Custom"];
 }

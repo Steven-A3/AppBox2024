@@ -6,27 +6,30 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterSlidershowMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3SlideshowActivity.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterModelManager.h"
-#import "A3DaysCounterCalendarListViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterDefine.h"
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventDetailViewController.h"
-#import "A3DaysCounterEventDetailViewController_iPad.h"
 #import "A3DaysCounterSlideshowOptionViewController.h"
 #import "MMDrawerController+Subclass.h"
 #import "A3MainViewController.h"
+#import "A3DaysCounterSlideshowEventSummaryView.h"
+#import "UIImage+JHExtension.h"
+#import "A3DefaultColorDefines.h"
+#import "A3DaysCounterSlideshowViewController.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterViewController ()
+@interface A3DaysCounterSlidershowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -44,13 +47,165 @@
 - (CGRect)orientataionBounds;
 @end
 
-@implementation A3DaysCounterViewController
+@implementation A3DaysCounterSlidershowMainViewController
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    @autoreleasepool {
+        UIView *rightButtonView = nil;
+        if ( IS_IPHONE ) {
+            [self leftBarButtonAppsButton];
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
+            rightButtonView = _naviRightButtonViewiPhone;
+            //            [self rightButtonMoreButton];
+        }
+        else {
+            
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
+            rightButtonView = _naviRightButtonView;
+        }
+        self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
+        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+        
+        [self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
+        [self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
+    }
+    [self.navigationController setToolbarHidden:YES];
+    [self setToolbarItems:_bottomToolbar.items];
+    [self leftBarButtonAppsButton];
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
+    
+    currentIndex = 0;
+    [self makeBackButtonEmptyArrow];
+    
+    self.navigationController.navigationBar.translucent = YES;
+    [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterSlideshowEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu:)];
+    tapGesture.delegate = self;
+    [_collectionView addGestureRecognizer:tapGesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.delegate = self;
+    self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
+    
+    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ) {
+        if ( !_isShowMoreMenu ) {
+            self.navigationController.navigationBarHidden = YES;
+        }
+        else {
+            self.navigationController.navigationBarHidden = NO;
+        }
+        _noPhotoView.hidden = YES;
+        _collectionView.hidden = NO;
+        _infoButton.enabled = YES;
+        _shareButton.enabled = YES;
+    }
+    else {
+        if ( _isShowMoreMenu ) {
+            [self hideTopToolbarAnimated:NO];
+        }
+        self.navigationController.navigationBarHidden = NO;
+        _noPhotoView.hidden = NO;
+        _collectionView.hidden = YES;
+        _infoButton.enabled = NO;
+        _shareButton.enabled = NO;
+        [self.view bringSubviewToFront:_noPhotoView];
+    }
+    [self setNeedsStatusBarAppearanceUpdate];
+    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
+    //    if ( ![_addEventButton isDescendantOfView:self.view] ) {
+    //        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+    //        [self.view addSubview:_addEventButton];
+    //    }
+    //    _addEventButton.hidden = self.navigationController.navigationBarHidden;
+    
+    [self updateNavigationTitle];
+    
+    if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
+        [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
+    }
+    if ( self.A3RootViewController.showRightView ) {
+        if ( self.navigationController.navigationBarHidden )
+            [self toggleMenu:nil];
+    }
+
+    [_collectionView reloadData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if ( _isShowMoreMenu ) {
+        [self hideTopToolbarAnimated:YES];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.navigationController.delegate = nil;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    //    if ( [_eventsArray count] > 0 ) {
+    //        [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_eventsArray objectAtIndex:currentIndex] toView:self.visibleView];
+    //    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    //    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+    //    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
+    //    [UIView animateWithDuration:duration animations:^{
+    //        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+    //    }];
+    [_collectionView reloadData];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+//    [_collectionView reloadData];
+}
+
+- (void)dealloc
+{
+    self.eventsArray = nil;
+    self.infoButton = nil;
+    self.shareButton = nil;
+}
+
+#pragma mark -
 
 - (CGRect)orientataionFrame
 {
     CGSize size = self.view.frame.size;
-    if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) )
+    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
         size = CGSizeMake(size.height, size.width);
+    }
     
     return CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, size.width, size.height);
 }
@@ -58,15 +213,16 @@
 - (CGRect)orientataionBounds
 {
     CGSize size = self.view.bounds.size;
-    if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) )
+    if ( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ) {
         size = CGSizeMake(size.height, size.width);
+    }
     
     return CGRectMake(0, 0, size.width, size.height);
 }
 
 - (void)presentMoreMenuView
 {
-    if( self.moreMenuView == nil ){
+    if ( self.moreMenuView == nil ) {
         UIView *moreMenuView = [self moreMenuViewWithButtons:@[self.infoButton,self.shareButton]];
         moreMenuView.backgroundColor = [UIColor clearColor];
         
@@ -136,11 +292,11 @@
 
 - (void)showTopToolbarAnimated:(BOOL)animated
 {
-    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ){
+    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
         _infoButton.enabled = NO;
         _shareButton.enabled = NO;
     }
-    else{
+    else {
         _infoButton.enabled = YES;
         _shareButton.enabled = YES;
     }
@@ -151,7 +307,9 @@
 
 - (void)hideTopToolbarAnimated:(BOOL)animated
 {
-    if (!_isShowMoreMenu) return;
+    if (!_isShowMoreMenu) {
+        return;
+    }
     
     _isShowMoreMenu = NO;
     
@@ -162,15 +320,17 @@
 
 - (void)updateNavigationTitle
 {
-    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 )
+    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
         self.navigationItem.title = @"Days Counter";
-    else
+    }
+    else {
         self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex+1, (long)[_eventsArray count]];
+    }
 }
 
 - (void)addViewToMain:(UIView*)addView
 {
-    if( [addView isDescendantOfView:self.view] )
+    if ( [addView isDescendantOfView:self.view] )
         return;
     
     addView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -207,158 +367,13 @@
     [self setNeedsStatusBarAppearanceUpdate];
 
     _addEventButton.hidden = !isHidden;
-    if( !isHidden ){
+    if ( !isHidden ) {
         [self hideTopToolbarAnimated:YES];
-        if( IS_IPHONE )
+        if ( IS_IPHONE )
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
 //            [self rightButtonMoreButton];
     }
 }
-
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-	UIView *rightButtonView = nil;
-
-	[self leftBarButtonAppsButton];
-
-	if( IS_IPHONE ){
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-		rightButtonView = _naviRightButtonViewiPhone;
-	}
-	else{
-		self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
-		rightButtonView = _naviRightButtonView;
-	}
-	self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-	self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
-
-    [self.navigationController setToolbarHidden:YES];
-    [self setToolbarItems:_bottomToolbar.items];
-
-    [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    
-    currentIndex = 0;
-    [self makeBackButtonEmptyArrow];
-    
-//    self.infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [_infoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
-//    [_infoButton addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [_infoButton setBackgroundColor:[UIColor clearColor]];
-//    self.shareButton = [UIButton buttonWithType:UIButtonTypeSystem];
-//    [_shareButton setImage:[UIImage imageNamed:@"share"] forState:UIControlStateNormal];
-//    [_shareButton addTarget:self action:@selector(shareOtherAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [_shareButton setBackgroundColor:[UIColor clearColor]];
-    
-    self.navigationController.navigationBar.translucent = YES;
-    [_collectionView registerNib:[UINib nibWithNibName:@"A3DaysCounterEventSummaryView" bundle:nil] forCellWithReuseIdentifier:@"summaryCell"];
-    
-
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleMenu:)];
-    tapGesture.delegate = self;
-    [_collectionView addGestureRecognizer:tapGesture];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.delegate = self;
-    self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
-    
-    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
-//        [[UIApplication sharedApplication] setStatusBarHidden:YES];
-        if( !_isShowMoreMenu )
-            self.navigationController.navigationBarHidden = YES;
-        else
-            self.navigationController.navigationBarHidden = NO;
-        _noPhotoView.hidden = YES;
-        _collectionView.hidden = NO;
-        _infoButton.enabled = YES;
-        _shareButton.enabled = YES;
-    }
-    else{
-//        [[UIApplication sharedApplication] setStatusBarHidden:NO];
-        if( _isShowMoreMenu )
-            [self hideTopToolbarAnimated:NO];
-        self.navigationController.navigationBarHidden = NO;
-        _noPhotoView.hidden = NO;
-        _collectionView.hidden = YES;
-        _infoButton.enabled = NO;
-        _shareButton.enabled = NO;
-        [self.view bringSubviewToFront:_noPhotoView];
-    }
-    [self setNeedsStatusBarAppearanceUpdate];
-    [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
-//    if( ![_addEventButton isDescendantOfView:self.view] ){
-//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//        [self.view addSubview:_addEventButton];
-//    }
-//    _addEventButton.hidden = self.navigationController.navigationBarHidden;
-    
-    [self updateNavigationTitle];
-    
-    if( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
-        [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:YES];
-    }
-    if( self.A3RootViewController.showRightView ){
-        if( self.navigationController.navigationBarHidden )
-            [self toggleMenu:nil];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    if( _isShowMoreMenu )
-        [self hideTopToolbarAnimated:YES];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    self.navigationController.delegate = nil;
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-//    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-//    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
-//    [UIView animateWithDuration:duration animations:^{
-//        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//    }];
-
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [_collectionView reloadData];
-}
-
-- (void)dealloc
-{
-    self.eventsArray = nil;
-    self.infoButton = nil;
-    self.shareButton = nil;
-}
-
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -370,24 +385,21 @@
     return self.navigationController.navigationBarHidden;
 }
 
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-//    if( [_eventsArray count] > 0 ){
-//        [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_eventsArray objectAtIndex:currentIndex] toView:self.visibleView];
-//    }
-}
-
 #pragma mark - UIPopoverControllerDelegate
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     self.popoverVC = nil;
 }
 
+#pragma mark - 
+- (void)didChangedCalendarEventDetailViewController:(A3DaysCounterEventDetailViewController *)ctrl {
+    NSLog(@"sdf");
+}
+
+
 #pragma mark - action method
 - (void)moreButtonAction:(UIBarButtonItem *)button {
-    if( ![_topToolbar isDescendantOfView:self.view] ){
+    if ( ![_topToolbar isDescendantOfView:self.view] ) {
         [self rightBarButtonDoneButton];
         [self showTopToolbarAnimated:YES];
     }
@@ -401,36 +413,31 @@
 }
 
 - (IBAction)detailAction:(id)sender {
-    if( [_eventsArray count] < 1 )
+    if ( [_eventsArray count] < 1 )
         return;
     [self hideTopToolbarAnimated:NO];
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
-//    if( IS_IPHONE ){
-        A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
-        viewCtrl.eventItem = item;
-        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
-//    else{
-//        A3DaysCounterEventDetailViewController_iPad *viewCtrl = [[A3DaysCounterEventDetailViewController_iPad alloc] initWithNibName:@"A3DaysCounterEventDetailViewController_iPad" bundle:nil];
-//        viewCtrl.eventItem = item;
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+    viewCtrl.eventItem = item;
+    viewCtrl.delegate = self;
+    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListViewController *viewCtrl = [[A3DaysCounterCalendarListViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.landscapeFullScreen = YES;
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else{
+    else {
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
 }
@@ -446,24 +453,36 @@
 }
 
 - (IBAction)shareOtherAction:(id)sender {
-    
+
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
+    slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [activity activityDidFinish:YES];
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            viewCtrl.optionDict = userInfo;
+            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:viewCtrl animated:YES completion:nil];
+        }];
+    };
     
     NSString *shareString = ( [_eventsArray count] > 0 ? [[A3DaysCounterModelManager sharedManager] stringForShareEvent:[_eventsArray objectAtIndex:currentIndex]] : @"");
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareString] applicationActivities:@[slideActivity]];
     activityController.excludedActivityTypes = @[UIActivityTypeCopyToPasteboard];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
-	} else {
+	}
+    else {
         UIButton *button = (UIButton*)sender;
 		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
         popoverController.delegate = self;
         self.popoverVC = popoverController;
 //		[popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        [popoverController presentPopoverFromRect:[button convertRect:button.bounds toView:self.view] inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        activityController.completionHandler = ^(NSString* activityType, BOOL completed){
+        [popoverController presentPopoverFromRect:[button convertRect:button.bounds toView:self.view]
+                                           inView:self.view
+                         permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
             NSLog(@"%s %@",__FUNCTION__,activityType);
-            if( completed && [activityType isEqualToString:@"Slideshow"] ){
+            if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
                 [self presentSubViewController:viewCtrl];
             }
@@ -475,8 +494,8 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if( [viewController isKindOfClass:[A3MainViewController class]]){
-        if( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)){
+    if ( [viewController isKindOfClass:[A3MainViewController class]]) {
+        if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
             [self.A3RootViewController animateHideLeftViewForFullScreenCenterView:NO];
         }
     }

@@ -11,5 +11,6 @@
 @interface UILabel (BaseAlignment)
 
 - (void)adjustBaselineForContainView:(UIView *)containView fromBottomDistance:(float)distance;
+- (void)adjustAscenderlineForContainView:(UIView *)containView fromTopDistance:(float)distance;
 
 @end

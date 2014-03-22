@@ -1,14 +1,14 @@
 //
-//  A3DateCalcNewHeaderView.m
-//  A3TeamWork
+//  A3DaysCounterSlideshowEventSummaryView.m
+//  AppBox3
 //
-//  Created by dotnetguy83 on 3/11/14.
+//  Created by dotnetguy83 on 3/22/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3DateCalcNewHeaderView.h"
+#import "A3DaysCounterSlideshowEventSummaryView.h"
 
-@implementation A3DateCalcNewHeaderView
+@implementation A3DaysCounterSlideshowEventSummaryView
 
 - (id)initWithFrame:(CGRect)frame
 {

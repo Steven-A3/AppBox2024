@@ -16,6 +16,7 @@
 #import "A3DaysCounterSlideshowTimeSelectViewController.h"
 #import "A3DaysCounterSlideshowViewController.h"
 #import "A3AppDelegate.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 
 @interface A3DaysCounterSlideshowOptionViewController ()
 @property (strong, nonatomic) NSArray *sectionArray;
@@ -66,7 +67,7 @@
     [super viewDidLoad];
 
     self.title = @"Slideshow Options";
-    if( IS_IPHONE )
+    if ( IS_IPHONE )
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self makeBackButtonEmptyArrow];
     
@@ -116,6 +117,7 @@
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
     UISwitch *swButton = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 51, 31)];
     [swButton addTarget:self action:selector forControlEvents:UIControlEventValueChanged];
+    cell.textLabel.font = [UIFont systemFontOfSize:17.0];
     cell.accessoryView = swButton;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -132,7 +134,8 @@
             cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
             break;
-        case SlideshowOptionType_Repeat:cell = [self createSwitchCellID:cellID selector:@selector(repeatValueChanged:)];
+        case SlideshowOptionType_Repeat:
+            cell = [self createSwitchCellID:cellID selector:@selector(repeatValueChanged:)];
             break;
         case SlideshowOptionType_Shuffle:
             cell = [self createSwitchCellID:cellID selector:@selector(shuffleValueChanged:)];
@@ -202,7 +205,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger cellType = [self cellTypeAtIndexPath:indexPath];
-    if( cellType == SlideshowOptionType_Startshow ){
+    if ( cellType == SlideshowOptionType_Startshow ) {
         cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
     }
 }
@@ -210,18 +213,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger cellType = [self cellTypeAtIndexPath:indexPath];
-    if( cellType == SlideshowOptionType_Transition ){
+    if ( cellType == SlideshowOptionType_Transition ) {
         A3DaysCounterSlideshowTransitionSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTransitionSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTransitionSelectViewController" bundle:nil];
         viewCtrl.optionDict = self.optionDict;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-    else if( cellType == SlideshowOptionType_Showtime ){
+    else if ( cellType == SlideshowOptionType_Showtime ) {
         A3DaysCounterSlideshowTimeSelectViewController *viewCtrl = [[A3DaysCounterSlideshowTimeSelectViewController alloc] initWithNibName:@"A3DaysCounterSlideshowTimeSelectViewController" bundle:nil];
         viewCtrl.optionDict = self.optionDict;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-    else if( cellType == SlideshowOptionType_Startshow ){
-        if( [[A3DaysCounterModelManager sharedManager] numberOfAllEvents] < 1 ){
+    else if ( cellType == SlideshowOptionType_Startshow ) {
+        if ( [[A3DaysCounterModelManager sharedManager] numberOfAllEvents] < 1 ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"There is no events" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alertView show];
             return;
@@ -229,23 +232,32 @@
         
         [self saveCurrentOption];
 
-        A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
-        viewCtrl.optionDict = self.optionDict;
-        viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-//        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-//        navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:viewCtrl animated:YES completion:nil];
+        if (IS_IPHONE) {
+            [self dismissViewControllerAnimated:YES completion:^{
+                if (_completionBlock) {
+                    _completionBlock(self.optionDict, self.activity);
+                }
+            }];
+        }
+        else {
+            [self.A3RootViewController dismissRightSideViewController];
+
+            A3DaysCounterSlideshowViewController *viewCtrl = [[A3DaysCounterSlideshowViewController alloc] initWithNibName:@"A3DaysCounterSlideshowViewController" bundle:nil];
+            viewCtrl.optionDict = self.optionDict;
+            viewCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentViewController:viewCtrl animated:YES completion:nil];
+        }
     }
 }
 
 #pragma mark - action methods
 - (void)cancelAction:(id)sender
 {
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         [self.activity activityDidFinish:YES];
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    else{
+    else {
         [self.A3RootViewController dismissRightSideViewController];
 //        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
@@ -253,7 +265,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    [self saveCurrentOption];
+//    [self saveCurrentOption];
     [self cancelAction:nil];
 }
 

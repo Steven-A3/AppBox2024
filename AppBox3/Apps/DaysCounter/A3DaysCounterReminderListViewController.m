@@ -9,13 +9,12 @@
 #import "A3DaysCounterReminderListViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3DaysCounterViewController.h"
+#import "A3DaysCounterSlidershowMainViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
-#import "A3DaysCounterCalendarListViewController.h"
+#import "A3DaysCounterCalendarListMainViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterEventDetailViewController.h"
-#import "A3DaysCounterEventDetailViewController_iPad.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
@@ -57,10 +56,25 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
+    [self registerContentSizeCategoryDidChangeNotification];
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, ([_itemArray count] > 0 ? 48.0 : 15.0), 0, 0);
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
+    
+    if ( IS_IPAD ) {
+        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            [self leftBarButtonAppsButton];
+        }
+        else {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+        }
+    }
+    
+//    if ( ![_addEventButton isDescendantOfView:self.view] ) {
+//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+//        [self.view addSubview:_addEventButton];
+//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -72,6 +86,22 @@
 - (void)dealloc
 {
     self.itemArray = nil;
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if ( IS_IPAD ) {
+        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            [self leftBarButtonAppsButton];
+        }
+        else {
+            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+        }
+    }
 }
 
 #pragma mark - Table view data source
@@ -127,7 +157,10 @@
     UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
     UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
     
-    if( [_itemArray count] > 0 ){
+    textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    
+    if ( [_itemArray count] > 0 ) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
         
         
@@ -138,7 +171,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
-    else{
+    else {
         textLabel.text = @"";
         detailTextLabel.text = @"";
         deleteButton.hidden = YES;
@@ -158,45 +191,39 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( [_itemArray count] < 1 )
+    if ( [_itemArray count] < 1 )
         return;
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-//    if( IS_IPHONE ){
-        A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
-        viewCtrl.eventItem = item;
-        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
-//    else{
-//        A3DaysCounterEventDetailViewController_iPad *viewCtrl = [[A3DaysCounterEventDetailViewController_iPad alloc] initWithNibName:@"A3DaysCounterEventDetailViewController_iPad" bundle:nil];
-//        viewCtrl.eventItem = item;
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    
+    A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
+    viewCtrl.eventItem = item;
+    [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-//    if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ){
+//    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
 //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //        [alertView show];
 //        return;
 //    }
-    A3DaysCounterViewController *viewCtrl = [[A3DaysCounterViewController alloc] initWithNibName:@"A3DaysCounterViewController" bundle:nil];
+    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListViewController *viewCtrl = [[A3DaysCounterCalendarListViewController alloc] initWithNibName:@"A3DaysCounterCalendarListViewController" bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else{
+    else {
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
 }
@@ -210,7 +237,7 @@
 {
     UIButton *button = (UIButton*)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
-    if( indexPath == nil )
+    if ( indexPath == nil )
         return;
     
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
@@ -225,13 +252,13 @@
 {
     UIButton *button = (UIButton*)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
-    if( indexPath == nil )
+    if ( indexPath == nil )
         return;
     
     NSIndexPath *prevIndexPath = (_clearIndexPath ? [NSIndexPath indexPathForRow:_clearIndexPath.row inSection:_clearIndexPath.section] : nil);
     self.clearIndexPath = indexPath;
     [self.tableView beginUpdates];
-    if( prevIndexPath && (prevIndexPath.row != indexPath.row) ){
+    if ( prevIndexPath && (prevIndexPath.row != indexPath.row) ) {
         [self.tableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];

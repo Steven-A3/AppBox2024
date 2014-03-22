@@ -48,6 +48,7 @@
     self.title = @"Custom";
     self.templateArray = [NSMutableArray arrayWithArray:@[@{EventRowTitle : @"Days Before",EventRowType: @(CustomAlertCell_DaysBefore)},@{EventRowTitle : @"Time",EventRowType : @(CustomAlertCell_Time)}]];
     self.keyboardVC = [self simpleNumberKeyboard];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 }
 
 - (void)didReceiveMemoryWarning

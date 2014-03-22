@@ -37,23 +37,6 @@
 @end
 
 @implementation A3DaysCounterEventDetailViewController
-- (void)constructItemsFromEvent:(DaysCounterEvent*)event
-{
-    self.itemArray = [NSMutableArray array];
-    [_itemArray addObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_Title)}];
-    if( event.alertDatetime )
-        [_itemArray addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
-    if( [event.calendarId length] )
-        [_itemArray addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
-    if( event.durationOption )
-        [_itemArray addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
-    [_itemArray addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
-    if( [event.notes length] > 0 )
-        [_itemArray addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
-    [_itemArray addObject:@{ EventRowTitle : @"Share Event", EventRowType : @(EventCellType_Share)}];
-    [_itemArray addObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_Favorites)}];
-    [self.tableView reloadData];
-}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -72,6 +55,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     [self.navigationController setToolbarHidden:YES];
     [self makeBackButtonEmptyArrow];
+    [self registerContentSizeCategoryDidChangeNotification];
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
     self.initialCalendarID = _eventItem.calendarId;
@@ -79,12 +63,6 @@
     UIView *removeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, 1.0/[[UIScreen mainScreen] scale])];
     removeView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
     [self.tableView addSubview:removeView];
-//    [removeView makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.tableView.left);
-//        make.right.equalTo(self.tableView.right);
-//        make.top.equalTo(self.tableView.top);
-//        make.height.equalTo(@(removeView.frame.size.height));
-//    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -93,13 +71,13 @@
 //    self.tableView.tableFooterView = _footerView;
 //    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
 //    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
-    if( [_eventItem.eventId length] > 0 )
+    if ( [_eventItem.eventId length] > 0 )
         [self constructItemsFromEvent:_eventItem];
     else
         [self.navigationController popViewControllerAnimated:YES];
     
-    if( ![self.initialCalendarID isEqualToString:_eventItem.calendarId] ){
-        if( self.delegate && [self.delegate respondsToSelector:@selector(didChangedCalendarEventDetailViewController:)])
+    if ( ![self.initialCalendarID isEqualToString:_eventItem.calendarId] ) {
+        if ( self.delegate && [self.delegate respondsToSelector:@selector(didChangedCalendarEventDetailViewController:)])
             [self.delegate didChangedCalendarEventDetailViewController:self];
     }
 }
@@ -120,6 +98,28 @@
 - (void)dealloc
 {
     self.itemArray = nil;
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+    [self.tableView reloadData];
+}
+
+- (void)constructItemsFromEvent:(DaysCounterEvent*)event
+{
+    self.itemArray = [NSMutableArray array];
+    [_itemArray addObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_Title)}];
+    if ( event.alertDatetime )
+        [_itemArray addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
+    if ( [event.calendarId length] )
+        [_itemArray addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
+    if ( event.durationOption )
+        [_itemArray addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
+    [_itemArray addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
+    if ( [event.notes length] > 0 )
+        [_itemArray addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
+    [_itemArray addObject:@{ EventRowTitle : @"Share Event", EventRowType : @(EventCellType_Share)}];
+    [_itemArray addObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_Favorites)}];
+    [self.tableView reloadData];
 }
 
 #pragma mark - cell
@@ -143,10 +143,12 @@
     NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
     switch (cellType) {
         case EventCellType_Title:{
-            if( [cellID isEqualToString:@"eventInfoCelliPad"] )
+            if ( [cellID isEqualToString:@"eventInfoCelliPad"] ) {
                 cell = [cellArray objectAtIndex:11];
-            else
+            }
+            else {
                 cell = [cellArray objectAtIndex:9];
+            }
             UIView *baseView = [cell viewWithTag:10];
             [self setupDefaultValueForView:baseView];
             baseView = [cell viewWithTag:11];
@@ -193,10 +195,10 @@
             break;
     }
     
-    if( cell && cellType != EventCellType_DateInput){
+    if ( cell && cellType != EventCellType_DateInput) {
         UIView *leftView = [cell viewWithTag:([cellID isEqualToString:@"eventInfoCelliPad"] ? 13 : 10)];
-        for(NSLayoutConstraint *layout in cell.contentView.constraints ){
-            if( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ){
+        for(NSLayoutConstraint *layout in cell.contentView.constraints ) {
+            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
                 break;
             }
@@ -214,13 +216,13 @@
     UILabel *dateLabel2 = (UILabel*)[baseView viewWithTag:23];
     UIImageView *lunarImageView = (UIImageView*)[baseView viewWithTag:24];
     
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         markLabel.font = [UIFont systemFontOfSize:11.0];
         daysLabel.font = [UIFont systemFontOfSize:15.0];
         dateLabel1.font = [UIFont systemFontOfSize:13.0];
         dateLabel2.font = [UIFont systemFontOfSize:13.0];
     }
-    else{
+    else {
         markLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         dateLabel1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
@@ -242,7 +244,7 @@
     NSDate *now = [NSDate date];
     NSInteger diffDays = [A3DateHelper diffDaysFromDate:now toDate:info.startDate];
     BOOL isSince = NO;
-    if( diffDays <= 0 )
+    if ( diffDays <= 0 )
         isSince = YES;
     NSString *dateText1 = @"";
     NSString *dateText2 = @"";
@@ -251,7 +253,7 @@
     NSDate *startDate = info.startDate;
     NSDate *endDate = info.endDate;
     
-    if( isLunar ){
+    if ( isLunar ) {
         NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
         BOOL isResultLeapMonth = NO;
 		NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
@@ -259,7 +261,7 @@
 
         startDate = convertDate;
         
-        if( endDate ){
+        if ( endDate ) {
             dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
             dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
 			convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
@@ -267,11 +269,11 @@
         }
     }
     
-    if( [info.isPeriod boolValue] ){
+    if ( [info.isPeriod boolValue] ) {
         dateText1 = [NSString stringWithFormat:@"from %@",[A3DateHelper dateStringFromDate:startDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
         dateText2 = [NSString stringWithFormat:@"to %@",[A3DateHelper dateStringFromDate:endDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
     }
-    else{
+    else {
         dateText1 = [NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:startDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
     }
     
@@ -285,7 +287,7 @@
     BOOL isLunar = [info.isLunar boolValue];
     NSDate *startDate = info.startDate;
     
-    if( isLunar ){
+    if ( isLunar ) {
         NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
         BOOL isResultLeapMonth = NO;
 		dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
@@ -297,7 +299,7 @@
     NSInteger diffStartDays = [A3DateHelper diffDaysFromDate:now toDate:startDate];
     
     [self setupInfoToView:untilView isSince:NO daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue] fromDate:now toDate:nextDate isAllDay:[info.isAllDay boolValue]] dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]] dateText2:[NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]] isLunar:[info.isLunar boolValue]];
-    if( diffStartDays < 0 ){
+    if ( diffStartDays < 0 ) {
         [self setupInfoToView:sinceView isSince:YES daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue] fromDate:startDate toDate:now isAllDay:[info.isAllDay boolValue]] dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]] dateText2:@"first date" isLunar:[info.isLunar boolValue]];
     }
 }
@@ -308,32 +310,32 @@
     UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
     UIImageView *favoriteImageView = (UIImageView*)[cell viewWithTag:12];
     
-    if( IS_IPHONE ){
+    if ( IS_IPHONE ) {
         textLabel.font = [UIFont systemFontOfSize:17.0];
     }
-    else{
+    else {
         textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     }
     
-    if( imageView ){
-        if( [info.imageFilename length] > 0 ){
+    if ( imageView ) {
+        if ( [info.imageFilename length] > 0 ) {
             imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename] rect:CGRectMake(0, 0, 65, 65)];
         }
-        else{
+        else {
             imageView.image = nil;
         }
     }
-    if( textLabel )
+    if ( textLabel )
         textLabel.text = info.eventName;
-    if( favoriteImageView )
+    if ( favoriteImageView )
         favoriteImageView.hidden = ![info.isFavorite boolValue];
     
     UIView *topInfoView = [cell viewWithTag:13];
     UIView *bottomInfoView = [cell viewWithTag:14];
-    if( [info.repeatType integerValue] == RepeatType_Never ){
+    if ( [info.repeatType integerValue] == RepeatType_Never ) {
         [self setupNoRepeatEventInfo:info toView:topInfoView];
     }
-    else{
+    else {
         [self setupRepeatEventInfo:info untilView:topInfoView sinceView:bottomInfoView];
     }
 }
@@ -365,11 +367,11 @@
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
             DaysCounterCalendar *calendar = _eventItem.calendar;
-            if( calendar ){
+            if ( calendar ) {
                 nameLabel.text = calendar.calendarName;
                 colorImageView.tintColor = [calendar color];
             }
-            else{
+            else {
                 nameLabel.text = @"";
             }
             colorImageView.hidden = ([nameLabel.text length] < 1 );
@@ -378,7 +380,7 @@
         case EventCellType_Location:{
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             DaysCounterEventLocation *location = _eventItem.location;
-            if( location ){
+            if ( location ) {
                 FSVenue *venue = [[FSVenue alloc] init];
                 venue.location.country = location.country;
                 venue.location.state = location.state;
@@ -388,7 +390,7 @@
                 textLabel.text = ([location.locationName length] > 0 ? location.locationName : address);
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-            else{
+            else {
                 textLabel.text = @"No location";
                 cell.accessoryType = UITableViewCellAccessoryNone;
             }
@@ -422,7 +424,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if( section == 1 )
+    if ( section == 1 )
         return 1;
     return [_itemArray count];
 }
@@ -430,13 +432,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    if( indexPath.section == 0 ){
+    if ( indexPath.section == 0 ) {
         NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
         NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
         NSArray *cellIDs = @[@"eventInfoCell",@"",@"",@"",@"",@"",@"",@"value1Cell",@"value1Cell",@"value1Cell",@"calendarInfoCell",@"value1Cell",@"value1Cell",@"multilineCell",@"",@"defaultCell",@"defalutCell"];
         
         NSString *CellIdentifier = [cellIDs objectAtIndex:cellType];
-//        if( IS_IPAD && cellType == EventCellType_Title && (_eventItem.location == nil && [_eventItem.imageFilename length] <1))
+//        if ( IS_IPAD && cellType == EventCellType_Title && (_eventItem.location == nil && [_eventItem.imageFilename length] <1))
 //            CellIdentifier = @"eventInfoCelliPad";
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -446,10 +448,10 @@
         
         [self updateTableViewCell:cell indexPath:indexPath];
     }
-    else{
+    else {
         NSString *cellID = @"normalCell";
         cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-        if( cell == nil ){
+        if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
         
@@ -463,21 +465,21 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if(section == 1 )
+    if (section == 1 )
         return 35.0;
     return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if( section == 1 )
+    if ( section == 1 )
         return 35.0;
     return 0.01;
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if( section == 1 ){
+    if ( section == 1 ) {
         UIView *retView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36.0)];
         retView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];\
         return retView;
@@ -488,7 +490,7 @@
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if( section == 1 ){
+    if ( section == 1 ) {
         UIView *retView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36.0)];
         retView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];\
         return retView;
@@ -502,26 +504,26 @@
 {
     NSLog(@"%s %@",__FUNCTION__,cell.reuseIdentifier);
     
-    if( indexPath.section == 0 ){
+    if ( indexPath.section == 0 ) {
         NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
         NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
-        if( cellType != EventCellType_Title )
+        if ( cellType != EventCellType_Title )
             return;
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:10];
         NSLayoutConstraint *widthConst = nil;
-        for(NSLayoutConstraint *layout in imageView.constraints){
-            if( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ){
+        for(NSLayoutConstraint *layout in imageView.constraints) {
+            if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
                 widthConst = layout;
                 break;
             }
         }
-        if( widthConst ){
+        if ( widthConst ) {
             widthConst.constant = (imageView.image ? 65.0 : 0.0);
             [cell layoutIfNeeded];
         }
         return;
     }
-    else{
+    else {
         cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
     }
 }
@@ -530,34 +532,34 @@
 {
     CGFloat retHeight = 44.0;
     
-    if( indexPath.section == 1 )
+    if ( indexPath.section == 1 )
         return retHeight;
     
     BOOL isiPadFullMode = NO;
-    if( IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1 ))
+    if ( IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1 ))
         isiPadFullMode = YES;
     
     NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
     
-    if( cellType == EventCellType_Title ){
-        if( [_eventItem.repeatType integerValue] == RepeatType_Never )
+    if ( cellType == EventCellType_Title ) {
+        if ( [_eventItem.repeatType integerValue] == RepeatType_Never )
             retHeight = (isiPadFullMode ? 106.0 : 142.0);
-        else{
+        else {
             NSDate *date = [NSDate date];
             NSInteger diffDays = [A3DateHelper diffDaysFromDate:date toDate:_eventItem.startDate];
-            if( diffDays < 0 )
+            if ( diffDays < 0 )
                 retHeight = (isiPadFullMode ? 195.0 : 236.0);
             else
                 retHeight = (isiPadFullMode ? 106.0 : 142.0);
         }
     }
-    else if( cellType == EventCellType_Notes ){
+    else if ( cellType == EventCellType_Notes ) {
         CGSize textSize = [_eventItem.notes sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
         retHeight = ceilf(textSize.height) + 11.0 + 30.0;
     }
-    else{
-        if( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) )
+    else {
+        if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) )
             retHeight = 74.0;
     }
     
@@ -566,7 +568,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section == 1 ){
+    if ( indexPath.section == 1 ) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         [self deleteEventAction:nil];
         return;
@@ -574,12 +576,12 @@
     NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
 
-    if( cellType == EventCellType_Location && _eventItem.location ){
+    if ( cellType == EventCellType_Location && _eventItem.location ) {
         A3DaysCounterEventDetailLocationViewController *viewCtrl = [[A3DaysCounterEventDetailLocationViewController alloc] initWithNibName:@"A3DaysCounterEventDetailLocationViewController" bundle:nil];
         viewCtrl.location = _eventItem.location;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-    else if( cellType == EventCellType_Share ){
+    else if ( cellType == EventCellType_Share ) {
         UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[_eventItem.eventName] applicationActivities:nil];
         if (IS_IPHONE) {
             [self presentViewController:activityController animated:YES completion:NULL];
@@ -591,11 +593,11 @@
         }
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    else if( cellType == EventCellType_Favorites ){
+    else if ( cellType == EventCellType_Favorites ) {
         _eventItem.isFavorite = [NSNumber numberWithBool:![_eventItem.isFavorite boolValue]];
         [_eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
         [self.tableView reloadData];
-        if( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)])
+        if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)])
             [self.delegate willChangeEventDetailViewController:self];
     }
 }
@@ -610,11 +612,11 @@
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if( buttonIndex == alertView.firstOtherButtonIndex ){
-        if( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]){
+    if ( buttonIndex == alertView.firstOtherButtonIndex ) {
+        if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
-        else{
+        else {
             [[A3DaysCounterModelManager sharedManager] removeEvent:_eventItem];
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -624,11 +626,11 @@
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if( buttonIndex == actionSheet.destructiveButtonIndex ){
-        if( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]){
+    if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
+        if ( self.delegate && [self.delegate respondsToSelector:@selector(willDeleteEvent:daysCounterEventDetailViewController:)]) {
             [self.delegate willDeleteEvent:self.eventItem daysCounterEventDetailViewController:self];
         }
-        else{
+        else {
             [[A3DaysCounterModelManager sharedManager] removeEvent:_eventItem];
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -641,16 +643,23 @@
     self.initialCalendarID = _eventItem.calendarId;
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.eventItem = _eventItem;
-
-//    if( IS_IPHONE ){
+    
+    if (IS_IPHONE) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         navCtrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:navCtrl animated:YES completion:nil];
-//    }
-//    else{
-//        [self.navigationController pushViewController:viewCtrl animated:YES];
-//    }
+    }
+    else {
+		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+        A3NavigationController *nav = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [rootViewController presentCenterViewController:nav
+                                     fromViewController:self
+                                         withCompletion:^{
+                                             
+                                         }];
+    }
 }
 
 - (IBAction)deleteEventAction:(id)sender {
