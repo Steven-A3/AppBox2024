@@ -73,16 +73,10 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.title = @"Alert";
-    [self makeBackButtonEmptyArrow];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
     self.itemArray = @[@{EventRowTitle : @"None",EventRowType : @(AlertType_None)},@{EventRowTitle : @"At time of event", EventRowType : @(AlertType_AtTimeOfEvent)}, @{EventRowTitle : @"5 minutes before", EventRowType : @(AlertType_5MinutesBefore)}, @{EventRowTitle : @"15 minutes before", EventRowType : @(AlertType_15MinutesBefore)},@{EventRowTitle : @"30 minutes before", EventRowType : @(AlertType_5MinutesBefore)},@{ EventRowTitle : @"1 hour before", EventRowType : @(AlertType_1HourBefore)},@{ EventRowTitle : @"2 hours before", EventRowType : @(AlertType_2HoursBefore)},@{ EventRowTitle : @"1 day before", EventRowType : @(AlertType_1DayBefore)}, @{ EventRowTitle : @"2 days before", EventRowType : @(AlertType_2DaysBefore)}, @{ EventRowTitle : @"1 week before", EventRowType : @(AlertType_1WeekBefore)},@{ EventRowTitle : @"Custom", EventRowType : @(AlertType_Custom)}];
-    if( IS_IPAD ){
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
-        [SFKImage setDefaultColor:[UIColor blueColor]];
-        UIImage *image = [SFKImage imageNamed:@"o"];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonAction:)];
-//        [self rightBarButtonDoneButton];
-    }
+
     self.originalValue = [_eventModel objectForKey:EventItem_AlertDatetime];
 }
 

@@ -4909,7 +4909,7 @@
 				804C330B18DAE1D400DBCE83 /* 2. CalendarList */,
 				804C330D18DAE25700DBCE83 /* 3. Reminder */,
 				804C330C18DAE22D00DBCE83 /* 4. Favorite */,
-				804C330918DAE11900DBCE83 /* Setup */,
+				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
 				804C330818DAE0E500DBCE83 /* Event Related */,
 				804C330E18DAE33D00DBCE83 /* SubDetails */,
 				68F1C7DE18D7F37D009FAE8A /* A3DaysCounterDefine.h */,
@@ -5158,7 +5158,7 @@
 			name = "Event Related";
 			sourceTree = "<group>";
 		};
-		804C330918DAE11900DBCE83 /* Setup */ = {
+		804C330918DAE11900DBCE83 /* Setup (rightSubViews) */ = {
 			isa = PBXGroup;
 			children = (
 				68F1C80618D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.h */,
@@ -5183,7 +5183,7 @@
 				68F1C81918D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.m */,
 				68F1C81A18D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.xib */,
 			);
-			name = Setup;
+			name = "Setup (rightSubViews)";
 			sourceTree = "<group>";
 		};
 		804C330A18DAE15200DBCE83 /* 1. SliderShow */ = {

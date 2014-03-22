@@ -77,22 +77,10 @@
 {
     [super viewDidLoad];
 
-    if( IS_IPAD ){
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:31.0]];
-        [SFKImage setDefaultColor:[UIColor blueColor]];
-        UIImage *image = [SFKImage imageNamed:@"o"];
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonAction:)];
-    }
     self.title = @"Repeat";
     self.itemArray = @[@"Never",@"Every Day",@"Every Week", @"Every 2 Weeks",@"Every Month",@"Every Year",@"Custom"];
     self.numberKeyboardVC = [self simpleNumberKeyboard];
     self.originalValue = [_eventModel objectForKey:EventItem_RepeatType];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self makeBackButtonEmptyArrow];
 }
 
 - (void)didReceiveMemoryWarning
