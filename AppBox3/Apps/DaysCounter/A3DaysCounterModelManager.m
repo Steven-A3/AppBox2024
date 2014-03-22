@@ -1307,6 +1307,12 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 //    categoryCell.daysSinceTopSpaceConst.constant = categoryCell.dayCountTopSpaceConst.constant;
     if (IS_IPAD) {
         categoryCell.daysSinceTopSpaceConst.constant = 57;
+        categoryCell.titleLeadingSpaceConst.constant = 28;
+        categoryCell.titleTrailingSpaceConst.constant = 28;
+    }
+    else {
+        categoryCell.titleLeadingSpaceConst.constant = 15;
+        categoryCell.titleTrailingSpaceConst.constant = 15;
     }
     
     

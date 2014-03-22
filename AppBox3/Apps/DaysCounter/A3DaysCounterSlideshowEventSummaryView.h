@@ -15,5 +15,7 @@
 @property (weak, nonatomic) IBOutlet FXLabel *daysSinceLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dayCountTopSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *daysSinceTopSpaceConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLeadingSpaceConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTrailingSpaceConst;
 
 @end
