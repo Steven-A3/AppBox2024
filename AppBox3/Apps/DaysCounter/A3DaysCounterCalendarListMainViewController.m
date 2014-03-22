@@ -269,7 +269,12 @@
     
     NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
     
-    return [_itemArray count] > numberOfPage ? [_itemArray count] + 1 : numberOfPage + 1;
+    if ([_itemArray count] > numberOfPage) {
+        return [_itemArray count] + 1;
+    }
+    else {
+        return numberOfPage + 1;;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -314,7 +319,7 @@
     
     
     NSInteger cellType = [item.calendarType integerValue];
-    NSString *CellIdentifier = cellType == CalendarCellType_System ? @"systemCalendarListCell" : @"userCalendarListCell";
+    NSString *CellIdentifier = (cellType == CalendarCellType_System) ? @"systemCalendarListCell" : @"userCalendarListCell";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
