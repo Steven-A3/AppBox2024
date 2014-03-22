@@ -255,7 +255,7 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    [self saveCurrentOption];
+//    [self saveCurrentOption];
     [self cancelAction:nil];
 }
 

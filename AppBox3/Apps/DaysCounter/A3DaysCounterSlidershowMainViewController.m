@@ -182,12 +182,12 @@
     //    [UIView animateWithDuration:duration animations:^{
     //        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
     //    }];
-    
+    [_collectionView reloadData];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [_collectionView reloadData];
+//    [_collectionView reloadData];
 }
 
 - (void)dealloc
