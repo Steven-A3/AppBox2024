@@ -80,7 +80,10 @@
     [self rightBarButtons];
     radian = YES;
 	[self setupSubviews];
-    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
+        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
+        [_calculator evaluateAndSet];
+    }
     [self setupGestureRecognizer];
     
 
@@ -220,6 +223,7 @@
 
     _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:_evaluatedResultLabel];
     _calculator.delegate = self;
+
 	[self.view layoutIfNeeded];
 
 }

@@ -71,6 +71,10 @@
     [self checkRightButtonDisable];
     radian = YES;
     [self setupSubViews];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
+        [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
+        [_calculator evaluateAndSet];
+    }
 }
 
 - (BOOL)usesFullScreenInLandscape {

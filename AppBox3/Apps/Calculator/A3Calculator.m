@@ -243,6 +243,10 @@ typedef CMathParser<char, double> MathParser;
     else if (A3E_PI <= key && key < A3E_CONSTANT_END) {
         [self constantHandler:key];
     }
+    
+    [[NSUserDefaults standardUserDefaults] setValue:mathexpression forKey:@"savedTheLastExpressionInCalculator"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+
 }
 
 - (void) eehandler {
