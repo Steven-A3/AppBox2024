@@ -93,7 +93,7 @@
 	[_expressionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(15);
         make.right.equalTo(self.view.right).with.offset(-15);
-        make.top.equalTo(@91);
+        make.top.equalTo(@100);
         make.height.equalTo(@24);
 	}];
     
@@ -107,7 +107,7 @@
     [self.view addSubview:self.basicandscientificLabel];
     [_basicandscientificLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(15);
-        make.top.equalTo(@95);
+        make.top.equalTo(@100);
     }];
     
     UITapGestureRecognizer *basicscientificTapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(basicscientifictapAction)];
