@@ -62,7 +62,7 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" alpha="0.75" tag="8" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6Jc-Q7-uSg" customClass="A3KeyboardButton_iOS7_iPhone">
+                <button opaque="NO" tag="8" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="6Jc-Q7-uSg" customClass="A3KeyboardButton_iOS7_iPhone">
                     <rect key="frame" x="896" y="0.0" width="128" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
@@ -78,7 +78,7 @@
                         <action selector="divideaction:" destination="-1" eventType="touchUpInside" id="JYS-sv-3kB"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.75" tag="16" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zze-vx-Ng7" customClass="A3KeyboardButton_iOS7_iPhone">
+                <button opaque="NO" tag="16" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zze-vx-Ng7" customClass="A3KeyboardButton_iOS7_iPhone">
                     <rect key="frame" x="896" y="80" width="128" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
@@ -94,7 +94,7 @@
                         <action selector="multiplyaction:" destination="-1" eventType="touchUpInside" id="HTP-Ni-2RK"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.75" tag="24" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3m8-le-yxj" customClass="A3KeyboardButton_iOS7_iPhone">
+                <button opaque="NO" tag="24" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="3m8-le-yxj" customClass="A3KeyboardButton_iOS7_iPhone">
                     <rect key="frame" x="896" y="159" width="128" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
@@ -110,7 +110,7 @@
                         <action selector="minusaction:" destination="-1" eventType="touchUpInside" id="ixJ-ia-2Kd"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.75" tag="32" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9e5-3G-vVf" customClass="A3KeyboardButton_iOS7_iPhone">
+                <button opaque="NO" tag="32" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9e5-3G-vVf" customClass="A3KeyboardButton_iOS7_iPhone">
                     <rect key="frame" x="896" y="239" width="128" height="80"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
@@ -126,7 +126,7 @@
                         <action selector="plusaction:" destination="-1" eventType="touchUpInside" id="yo4-5X-MFW"/>
                     </connections>
                 </button>
-                <button opaque="NO" alpha="0.75" tag="40" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="50I-3J-lsm" customClass="A3KeyboardButton_iOS7_iPhone">
+                <button opaque="NO" tag="40" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="50I-3J-lsm" customClass="A3KeyboardButton_iOS7_iPhone">
                     <rect key="frame" x="896" y="319" width="128" height="161"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
