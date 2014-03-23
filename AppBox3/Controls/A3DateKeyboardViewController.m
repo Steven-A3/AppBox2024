@@ -34,7 +34,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	
 	[self switchToYear];
 }
 
@@ -79,6 +78,8 @@
 }
 
 - (IBAction)switchToYear {
+	[[UIDevice currentDevice] playInputClick];
+	
 	[self initExtraLabels];
 	[self resetToNumbersButtons];
 
@@ -88,6 +89,8 @@
 }
 
 - (IBAction)switchToMonth {
+	[[UIDevice currentDevice] playInputClick];
+	
 	_yearButton.selected = NO;
 	_monthButton.selected = YES;
 	_dayButton.selected = NO;
@@ -105,12 +108,14 @@
 			[button setTitle:@"" forState:UIControlStateNormal];
 			button.mainTitle.text = [monthSymbols objectAtIndex:idx];
 			button.subTitle.text = [NSString stringWithFormat:@"%ld", (long)idx + 1];
+			
+			button.mainTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
+			button.subTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 16 : IS_LANDSCAPE ? 17 : 15];
+			button.subTitle.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
 		} else {
 			[button setTitle:monthSymbols[idx] forState:UIControlStateNormal];
+			button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 26 : 27];
 		}
-		button.mainTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
-		button.subTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 16 : IS_LANDSCAPE ? 17 : 15];
-		button.subTitle.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
 	}];
 
 	[CATransaction begin];
@@ -126,6 +131,8 @@
 }
 
 - (IBAction)switchToDay {
+	[[UIDevice currentDevice] playInputClick];
+	
 	_yearButton.selected = NO;
 	_monthButton.selected = NO;
 	_dayButton.selected = YES;
@@ -172,6 +179,9 @@
 	if (!_monthButton.selected && button == _today_Dec_Button) {
 		return;
 	}
+	
+	[[UIDevice currentDevice] playInputClick];
+	
 	if (_monthButton.selected) {
 		self.dateComponents.month = [self monthNumberOfButton:button];
 	} else if (_yearButton.selected) {
@@ -226,12 +236,16 @@
 }
 
 - (IBAction)doneButtonAction {
+	[[UIDevice currentDevice] playInputClick];
+
 	if ([_delegate respondsToSelector:@selector(dateKeyboardDoneButtonPressed:)]) {
 		[_delegate dateKeyboardDoneButtonPressed:self ];
 	}
 }
 
 - (IBAction)todayButtonAction {
+	[[UIDevice currentDevice] playInputClick];
+
 	if (_monthButton.selected) {
 		return;
 	}
@@ -270,6 +284,5 @@
 	}
 	return _dateFormatter;
 }
-
 
 @end

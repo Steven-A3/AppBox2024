@@ -302,6 +302,8 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 
 
 - (void)buttonPressed:(A3KeyboardButton_iOS7_iPhone *)button {
+	[[UIDevice currentDevice] playInputClick];
+	
 	A3ExpressionKind input = (A3ExpressionKind)button.identifier;
 	if (input == A3E_2ND) {
 		[self setLevel:!button.selected ? 0 : 1];
