@@ -56,9 +56,19 @@
     [self setToolbarItems:_bottomToolbar.items];
     
     if ( IS_IPHONE ) {
+        if (IS_RETINA) {
+            CGRect rect = _headerView.frame;
+            rect.size.height += 0.5;
+            _headerView.frame = rect;
+        }
         [self.tableView setTableHeaderView:_headerView];
     }
     else {
+        if (IS_RETINA) {
+            CGRect rect = _iPadheaderView.frame;
+            rect.size.height += 0.5;
+            _iPadheaderView.frame = rect;
+        }
         [self.tableView setTableHeaderView:_iPadheaderView];
         self.numberOfCalendarLabel = self.numberOfCalendarLabeliPad;
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
@@ -137,7 +147,8 @@
     NSInteger eventNumber = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
     NSDate *latestDate = [[A3DaysCounterModelManager sharedManager] dateOfLatestEvent];
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
-    _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
+    //_numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
+    _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
     _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-/-/-");
     _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
 }
@@ -145,7 +156,9 @@
 #pragma mark Initialize FontSize
 - (void)contentSizeDidChange:(NSNotification*)noti
 {
-    [self adjustFontSizeOfHeaderView:IS_IPHONE ? _headerView : _iPadheaderView];
+    if (IS_IPAD) {
+        [self adjustFontSizeOfHeaderView:_iPadheaderView];
+    }
 }
 
 - (void)adjustFontSizeOfHeaderView:(UIView *)aView {
@@ -155,10 +168,6 @@
         }];
     }
     else {
-//        if (![aView isKindOfClass:[UILabel class]]) {
-//            return;
-//        }
-        
         switch ([aView tag]) {
             case 12:
                 ((UILabel *)aView).font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
@@ -365,13 +374,15 @@
                 }
                 
                 if ( diffDay == 0 ) {
-                    periodLabel.text = @"Release 0 days";
+//                    periodLabel.text = @"Release 0 days";
+                    periodLabel.text = @"0 days";
                 }
                 else {
-                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
-                                                                                                                                             fromDate:today
-                                                                                                                                               toDate:calcDate
-                                                                                                                                             isAllDay:[event.isAllDay boolValue]],
+//                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
+                    periodLabel.text = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
+                                                                                                                                     fromDate:today
+                                                                                                                                       toDate:calcDate
+                                                                                                                                     isAllDay:[event.isAllDay boolValue]],
                                         diffDay > 0 ? @"until" : @"since"];
                 }
                 

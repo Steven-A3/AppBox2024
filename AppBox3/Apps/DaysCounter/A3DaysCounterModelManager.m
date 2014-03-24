@@ -412,19 +412,19 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSString *retStr = @"";
     
     if ( value & DurationOption_Year )
-        retStr = [retStr stringByAppendingFormat:@"%@Years",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Years",([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Month )
-        retStr = [retStr stringByAppendingFormat:@"%@Months",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Months",([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Week)
-        retStr = [retStr stringByAppendingFormat:@"%@Weeks",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Weeks",([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Day )
-        retStr = [retStr stringByAppendingFormat:@"%@Days",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Days",([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Hour)
-        retStr = [retStr stringByAppendingFormat:@"%@Hours",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Hours",([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Minutes)
-        retStr = [retStr stringByAppendingFormat:@"%@Minutes",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Minutes",([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Seconds)
-        retStr = [retStr stringByAppendingFormat:@"%@Seconds",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Seconds",([retStr length] > 0 ? @" " : @"")];
     
     return retStr;
 }
@@ -1247,27 +1247,27 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSString *retStr = @"";
     
     if ( (option & DurationOption_Year) && [diffComponent year] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ldyear%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent year],([diffComponent year] > 1 ? @"s" : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@%ld year%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent year],([diffComponent year] > 1 ? @"s" : @"")];
     }
     if ( (option & DurationOption_Month) && [diffComponent month] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ldmonth%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent month],([diffComponent month] > 1 ? @"s" : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@%ld month%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent month],([diffComponent month] > 1 ? @"s" : @"")];
     }
     if ( (option & DurationOption_Week) && [diffComponent week] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ldweek%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent week],([diffComponent week] > 1 ? @"s" : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@%ld week%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent week],([diffComponent week] > 1 ? @"s" : @"")];
     }
     if ( (option & DurationOption_Day) && [diffComponent day] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ldday%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent day],([diffComponent day] > 1 ? @"s" : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@%ld day%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent day],([diffComponent day] > 1 ? @"s" : @"")];
     }
     
     if ( !isAllDay ) {
         if ( (option & DurationOption_Hour) && [diffComponent hour] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ldhour%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent hour],([diffComponent hour] > 1 ? @"s" : @"")];
+            retStr = [retStr stringByAppendingFormat:@"%@%ld hour%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent hour],([diffComponent hour] > 1 ? @"s" : @"")];
         }
         if ( (option & DurationOption_Minutes) && [diffComponent minute] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ldminute%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent minute],([diffComponent minute] > 1 ? @"s" : @"")];
+            retStr = [retStr stringByAppendingFormat:@"%@%ld minute%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent minute],([diffComponent minute] > 1 ? @"s" : @"")];
         }
         if ( (option & DurationOption_Seconds) && [diffComponent second] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ldsecond%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent second],([diffComponent second] > 1 ? @"s" : @"")];
+            retStr = [retStr stringByAppendingFormat:@"%@%ld second%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent second],([diffComponent second] > 1 ? @"s" : @"")];
         }
     }
 
@@ -1275,16 +1275,16 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         NSDateComponents *fullComponent = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:smallDate toDate:largeDate options:0];
 
         if ( [fullComponent year] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ldyear%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent year],([fullComponent year] > 1 ? @"s" : @"")];
+            retStr = [retStr stringByAppendingFormat:@"%@%ld year%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent year],([fullComponent year] > 1 ? @"s" : @"")];
         }
         else if ( [fullComponent month] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ldmonth%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent month],([fullComponent month] > 1 ? @"s" : @"")];
+            retStr = [retStr stringByAppendingFormat:@"%@%ld month%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent month],([fullComponent month] > 1 ? @"s" : @"")];
         }
 //        else if ( [fullComponent week] > 0 ) {
 //            retStr = [retStr stringByAppendingFormat:@"%@%dweek%@",([retStr length] > 0 ? @" " : @""),[fullComponent week],([fullComponent week] > 1 ? @"s" : @"")];
 //        }
         else if ( [fullComponent day] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ldday%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent day],([fullComponent day] > 1 ? @"s" : @"")];
+            retStr = [retStr stringByAppendingFormat:@"%@%ld day%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent day],([fullComponent day] > 1 ? @"s" : @"")];
         }
         
         if ( isAllDay ) {
@@ -1293,18 +1293,18 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             NSInteger second = [fullComponent second];
             
             if ( hour > 0 || minute > 0 || second > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"0day"];
+                retStr = [retStr stringByAppendingFormat:@"0 day"];
             }
         }
         else {
             if ( [fullComponent hour] > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"%@%ldhour%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent hour],([fullComponent hour] > 1 ? @"s" : @"")];
+                retStr = [retStr stringByAppendingFormat:@"%@%ld hour%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent hour],([fullComponent hour] > 1 ? @"s" : @"")];
             }
             else if ( [fullComponent minute] > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"%@%ldminute%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent minute],([fullComponent minute] > 1 ? @"s" : @"")];
+                retStr = [retStr stringByAppendingFormat:@"%@%ld minute%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent minute],([fullComponent minute] > 1 ? @"s" : @"")];
             }
             else if ( [fullComponent second] > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"%@%ldsecond%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent second],([fullComponent second] > 1 ? @"s" : @"")];
+                retStr = [retStr stringByAppendingFormat:@"%@%ld second%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent second],([fullComponent second] > 1 ? @"s" : @"")];
             }
         }
     }
