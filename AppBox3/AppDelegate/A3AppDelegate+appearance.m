@@ -25,6 +25,7 @@
 
 - (UIColor *)themeColor {
 	NSNumber *selectedIndex = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
+	FNLOG(@"%@", selectedIndex);
 	if (selectedIndex) {
 		return self.themeColors[[selectedIndex unsignedIntegerValue]];
 	}

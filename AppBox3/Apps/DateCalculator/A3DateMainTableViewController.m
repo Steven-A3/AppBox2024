@@ -9,29 +9,25 @@
 #import "A3DateMainTableViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
-#import "common.h"
 #import "A3DateCalcHeaderView.h"
 #import "A3DateCalcFooterView.h"
-#import "A3DateCalcTableRowData.h"
-#import "A3DateCalcFooterViewCell.h"
 #import "A3DateKeyboardViewController.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3NumberKeyboardViewController_iPad.h"
-#import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3DateCalcDurationViewController.h"
 #import "A3DateCalcExcludeViewController.h"
 #import "A3DateCalcEditEventViewController.h"
-#import "A3DateCalcResultCursorView.h"
 #import "A3DateCalcStateManager.h"
 #import "A3DateCalcAddSubCell1.h"
 #import "A3DateCalcAddSubCell2.h"
 #import "A3DefaultColorDefines.h"
+#import "A3AppDelegate+appearance.h"
 
 #define kDefaultBackgroundColor     [UIColor lightGrayColor]
 #define kDefaultButtonColor     [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0]
-#define kSelectedButtonColor    [UIColor colorWithRed:12.0/255.0 green:95.0/255.0 blue:250.0/255.0 alpha:1.0]
+#define kSelectedButtonColor    [A3AppDelegate instance].themeColor
 NSString *kCalculationString;
 
 @interface A3DateMainTableViewController () <UITextFieldDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate, A3DateCalcExcludeDelegate, A3DateCalcDurationDelegate, A3DateCalcHeaderViewDelegate, A3DateCalcEditEventDelegate>
@@ -557,7 +553,7 @@ NSString *kCalculationString;
     
     self.selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
-    cell.detailTextLabel.textColor = COLOR_TABLE_TEXT_TYPING;
+    cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     
@@ -583,7 +579,7 @@ NSString *kCalculationString;
     
     self.selectedIndexPath = [NSIndexPath indexPathForRow:1 inSection:1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:self.selectedIndexPath];
-    cell.detailTextLabel.textColor = COLOR_TABLE_TEXT_TYPING;
+    cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
     cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
     cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
     _isSelectedFromToCell = YES;
@@ -1306,7 +1302,7 @@ NSString *kCalculationString;
             
             // 선택된 셀 텍스트 색상 편집 중에만 변경.
             if (_isKeyboardShown && _selectedIndexPath && (indexPath.row==_selectedIndexPath.row)) {
-                cell.detailTextLabel.textColor = COLOR_TABLE_TEXT_TYPING;
+                cell.detailTextLabel.textColor = [A3AppDelegate instance].themeColor;
             } else {
                 cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
             }

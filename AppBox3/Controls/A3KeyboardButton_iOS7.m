@@ -100,10 +100,4 @@
 	_subTitle = nil;
 }
 
-- (void)setSelected:(BOOL)selected {
-	[super setSelected:selected];
-
-	self.backgroundColor = selected ? self.tintColor : [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
-}
-
 @end
