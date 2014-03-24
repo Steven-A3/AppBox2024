@@ -23,9 +23,9 @@
 - (NSInteger)indexOfCurrentColor:(UIColor*)color
 {
     NSInteger retIndex = NSNotFound;
-    for(NSInteger i=0; i < [_colorArray count]; i++){
+    for(NSInteger i=0; i < [_colorArray count]; i++) {
         NSDictionary *item = [_colorArray objectAtIndex:i];
-        if( CGColorEqualToColor([[item objectForKey:CalendarItem_Color] CGColor], [color CGColor]) ){
+        if ( CGColorEqualToColor([[item objectForKey:CalendarItem_Color] CGColor], [color CGColor]) ) {
             retIndex = i;
             break;
         }
@@ -50,7 +50,7 @@
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
-    if( !_isEditMode ){
+    if ( !_isEditMode ) {
         self.calendarItem = [[A3DaysCounterModelManager sharedManager] itemForNewUserCalendar];
     }
     
@@ -66,9 +66,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if( !self.isEditMode ){
+    if ( !self.isEditMode ) {
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        if( cell ){
+        if ( cell ) {
             UITextField *textField = (UITextField*)[cell viewWithTag:10];
             [textField becomeFirstResponder];
         }
@@ -91,11 +91,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger rowCount = 0;
-    if( section == 0 )
+    if ( section == 0 )
         rowCount = 1;
-    else if( section == 1 )
+    else if ( section == 1 )
         rowCount = [_colorArray count];
-    else if( section == 2 )
+    else if ( section == 2 )
         rowCount = 1;
     return rowCount;
 }
@@ -103,23 +103,27 @@
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *title = @"";
-    if( section == 1 )
+    if ( section == 1 )
         title = @"COLOR";
     return title;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if( section == 0)
+    if ( section == 0) {
         return 35.0;
-    else if( section ==1 )
-        return 56.0;
+    }
+    else if ( section ==1 ) {
+        return 55;
+        //return IS_RETINA ? 55 : 56;
+    }
+    
     return 36.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if( section == (_isEditMode ? 2 : 1) )
+    if ( section == (_isEditMode ? 2 : 1) )
         return 37.0;
     return 0.01;
 }
@@ -129,10 +133,10 @@
     NSString *CellIdentifier = (indexPath.section == 0 ? @"inputCell" : (indexPath.section > 1 ? @"deleteCell" : @"colorCell"));
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if( indexPath.section < 2 ){
+    if ( indexPath.section < 2 ) {
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-            if( indexPath.section == 0 ){
+            if ( indexPath.section == 0 ) {
                 UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(20, 6, 280, 32)];
                 textField.placeholder = @"Calendar Name";
                 textField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -147,26 +151,26 @@
                 [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0]];
                 [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-20.0]];
             }
-            else if( indexPath.section == 1){
+            else if ( indexPath.section == 1) {
                 cell.imageView.image = [[UIImage imageNamed:@"calendar_circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
         }
         
-        if( indexPath.section == 0 ){
+        if ( indexPath.section == 0 ) {
             UITextField *textField = (UITextField*)[cell viewWithTag:10];
-            if( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 )
+            if ( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 )
                 textField.text = [self.calendarItem objectForKey:CalendarItem_Name];
         }
-        else if( indexPath.section == 1 ){
+        else if ( indexPath.section == 1 ) {
             NSDictionary *colorItem = [_colorArray objectAtIndex:indexPath.row];
             cell.textLabel.text = [colorItem objectForKey:CalendarItem_Name];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
             cell.accessoryType = ( CGColorEqualToColor([[colorItem objectForKey:CalendarItem_Color] CGColor], [[_calendarItem objectForKey:CalendarItem_Color] CGColor]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
         }
     }
-    else{
-        if( cell == nil ){
+    else {
+        if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         }
         
@@ -181,7 +185,7 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section < 2 )
+    if ( indexPath.section < 2 )
         return;
     
     cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
@@ -189,10 +193,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section == 1 )
+    if ( indexPath.section == 1 )
     {
         NSInteger index = [self indexOfCurrentColor:[_calendarItem objectForKey:CalendarItem_Color]];
-        if( index == indexPath.row )
+        if ( index == indexPath.row )
             return;
         
         UIColor *color = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Color];
@@ -203,7 +207,7 @@
         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         [tableView endUpdates];
     }
-    else if( indexPath.section == 2){
+    else if ( indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Calendar" otherButtonTitles:nil];
         [actionSheet showInView:self.view];
 //        [self deleteCalendarAction:nil];
@@ -213,7 +217,7 @@
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if( buttonIndex == actionSheet.destructiveButtonIndex ){
+    if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
         [self deleteCalendarAction:nil];
     }
 }
@@ -242,7 +246,7 @@
 - (void)resignAllAction
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if( cell ){
+    if ( cell ) {
         UITextField *textField = (UITextField*)[cell viewWithTag:10];
         [textField resignFirstResponder];
     }
@@ -257,9 +261,9 @@
 
 - (void)cancelAction:(id)sender
 {
-//    if( IS_IPHONE || _isEditMode )
+//    if ( IS_IPHONE || _isEditMode )
         [self dismissViewControllerAnimated:YES completion:nil];
-//    else{
+//    else {
 //        [self.A3RootViewController dismissRightSideViewController];
 //        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
 //    }
@@ -269,12 +273,17 @@
 {
     [self resignAllAction];
     // 모델 업데이트 하고
-    if( [[_calendarItem objectForKey:CalendarItem_Name] length] < 1 )
+    if ( [[_calendarItem objectForKey:CalendarItem_Name] length] < 1 ) {
         [_calendarItem setObject:@"Untitled" forKey:CalendarItem_Name];
-    if( !_isEditMode )
+    }
+    
+    if ( !_isEditMode ) {
         [[A3DaysCounterModelManager sharedManager] addCalendarItem:_calendarItem];
-    else
+    }
+    else {
         [[A3DaysCounterModelManager sharedManager] updateCalendarItem:_calendarItem];
+    }
+    
     [self cancelAction:nil];
 }
 
