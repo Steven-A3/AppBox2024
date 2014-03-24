@@ -109,12 +109,12 @@
 			button.mainTitle.text = [monthSymbols objectAtIndex:idx];
 			button.subTitle.text = [NSString stringWithFormat:@"%ld", (long)idx + 1];
 			
-			button.mainTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : IS_LANDSCAPE ? 25 : 18];
+			button.mainTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : 20];
 			button.subTitle.font = [UIFont systemFontOfSize:IS_IPHONE ? 16 : IS_LANDSCAPE ? 17 : 15];
 			button.subTitle.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
 		} else {
 			[button setTitle:monthSymbols[idx] forState:UIControlStateNormal];
-			button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 26 : 27];
+			button.titleLabel.font = [UIFont systemFontOfSize:IS_IPHONE ? 18 : 20];
 		}
 	}];
 

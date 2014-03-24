@@ -12,14 +12,14 @@
 @implementation UITableViewController (standardDimension)
 
 - (CGFloat)standardHeightForHeaderInSection:(NSInteger)section {
-	if (section == 0) return IS_RETINA ? 35.5 : 35.0;
+	if (section == 0) return 35.0;
 	return 18;
 }
 
 - (CGFloat)standardHeightForFooterInSection:(NSInteger)section {
 	NSInteger numberOfSection = [self.tableView numberOfSections];
 	if (section == numberOfSection - 1) return 38.0;
-	return IS_RETINA ? 17.5 : 18.0;
+	return IS_RETINA ? 17.0 : 18.0;
 }
 
 @end

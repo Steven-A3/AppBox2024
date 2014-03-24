@@ -8,8 +8,8 @@
 
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "A3KeyboardButton_iPhone.h"
-#import "SFKImage.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DateKeyboardViewController_iPhone ()
 
@@ -24,25 +24,6 @@
         // Custom initialization
     }
     return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-
-	[self setupSelectedColorForYearMonthDay];
-}
-
-- (void)setupSelectedColorForYearMonthDay {
-	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.yearButton];
-	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.monthButton];
-	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.dayButton];
-}
-
-- (void)setupSelectedColor:(A3KeyboardButton_iOS7 *)button {
-	button.backgroundColorForDefaultState = [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
-	button.backgroundColorForSelectedState = self.view.tintColor;
 }
 
 - (void)didReceiveMemoryWarning

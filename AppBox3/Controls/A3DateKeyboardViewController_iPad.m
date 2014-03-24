@@ -15,24 +15,6 @@
 
 @implementation A3DateKeyboardViewController_iPad
 
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-
-	[self setupSelectedColorForYearMonthDay];
-}
-
-- (void)setupSelectedColorForYearMonthDay {
-	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.yearButton];
-	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.monthButton];
-	[self setupSelectedColor:(A3KeyboardButton_iOS7 *) self.dayButton];
-}
-
-- (void)setupSelectedColor:(A3KeyboardButton_iOS7 *)button {
-	button.backgroundColorForDefaultState = [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
-	button.backgroundColorForSelectedState = self.view.tintColor;
-}
-
 - (void)removeExtraLabelsForButton:(UIButton *)button {
 	A3KeyboardButton_iOS7 *aButton = (A3KeyboardButton_iOS7 *) button;
 	if ([aButton respondsToSelector:@selector(removeExtraLabels)]) {
@@ -60,8 +42,9 @@
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat zeroWidth;
-	
-	if (UIDeviceOrientationIsPortrait(toInterfaceOrientation)) {
+
+	BOOL portrait = UIDeviceOrientationIsPortrait(toInterfaceOrientation);
+	if (portrait) {
 		width_big = 124.0; height_big = 118.0;
 		width_small = 89.0; height_small = 57.0;
 		col_1 = 74.0; col_2 = 237.0; col_3 = 338.0; col_4 = 440.0, col_5 = 570.0;
@@ -97,6 +80,38 @@
 	[self.monthButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
 	[self.dayButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
 	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
+
+	[self setupFonts];
+}
+
+- (void)setupFonts {
+	BOOL portrait = IS_PORTRAIT;
+
+	if ([self.yearButton isSelected] || [self.dayButton isSelected]) {
+		NSArray *numbers = @[self.num0_Oct_Button, self.num1_Jul_Button, self.num2_Aug_Button, self.num3_Sep_Button, self.num4_Apr_Button, self.num5_May_Button, self.num6_Jun_Button, self.num7_Jan_Button, self.num8_Feb_Button, self.num9_Mar_Button];
+		[numbers enumerateObjectsUsingBlock:^(A3KeyboardButton_iOS7_iPad *button, NSUInteger idx, BOOL *stop) {
+			button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 22 : 27];
+		}];
+		[self.today_Dec_Button.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 18 : 25]];
+	} else {
+		NSArray *months = @[self.num7_Jan_Button, self.num8_Feb_Button, self.num9_Mar_Button, self.num4_Apr_Button, self.num5_May_Button, self.num6_Jun_Button, self.num1_Jul_Button, self.num2_Aug_Button, self.num3_Sep_Button, self.num0_Oct_Button, self.Nov_Button, self.today_Dec_Button];
+		BOOL showNumber = [self.num7_Jan_Button.titleLabel.text rangeOfString:@"1"].location == NSNotFound;
+		if (showNumber) {
+			[months enumerateObjectsUsingBlock:^(A3KeyboardButton_iOS7_iPad *button, NSUInteger idx, BOOL *stop) {
+				button.mainTitle.font = [UIFont systemFontOfSize:20];
+				button.subTitle.font = [UIFont systemFontOfSize:portrait ? 15 : 17];
+			}];
+		} else {
+			[months enumerateObjectsUsingBlock:^(A3KeyboardButton_iOS7_iPad *button, NSUInteger idx, BOOL *stop) {
+				button.titleLabel.font = [UIFont systemFontOfSize:20];
+			}];
+		}
+	}
+
+	[self.yearButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 18 : 25]];
+	[self.monthButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 18 : 25]];
+	[self.dayButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 18 : 25]];
+	[self.doneButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 18 : 25]];
 }
 
 @end

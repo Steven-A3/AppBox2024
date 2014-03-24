@@ -7,6 +7,7 @@
 //
 
 #import "A3KeyboardButton_iOS7_iPad.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3KeyboardButton_iOS7_iPad ()
 
@@ -47,7 +48,7 @@
 
 - (void)setupLayer {
 	self.backgroundColorForDefaultState = [UIColor colorWithRed:250.0/255.0 green:251.0/255.0 blue:251.0/255.0 alpha:1.0];
-	self.backgroundColorForSelectedState = [UIColor colorWithRed:212.0/255.0 green:214.0/255.0 blue:216.0/255.0 alpha:1.0];
+	self.backgroundColorForSelectedState = [A3AppDelegate instance].themeColor;
 	self.backgroundColorForHighlightedState = [UIColor colorWithRed:212.0/255.0 green:214.0/255.0 blue:216.0/255.0 alpha:1.0];
 	
 	_shadowColor = [UIColor colorWithRed:132.0/255.0 green:134.0/255.0 blue:136.0/255.0 alpha:1.0];
