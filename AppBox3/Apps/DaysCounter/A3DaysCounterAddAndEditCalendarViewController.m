@@ -110,21 +110,22 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ( section == 0) {
-        return 35.0;
+
+    if ( section == 0 ) {
+        return IS_RETINA ? 35.5 : 35;
     }
     else if ( section ==1 ) {
         return 55;
-        //return IS_RETINA ? 55 : 56;
     }
     
-    return 36.0;
+    return 35;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if ( section == (_isEditMode ? 2 : 1) )
-        return 37.0;
+    if ( section == (_isEditMode ? 2 : 1) ) {
+        return IS_RETINA ? 35.5 : 35;
+    }
     return 0.01;
 }
 
@@ -153,18 +154,21 @@
             }
             else if ( indexPath.section == 1) {
                 cell.imageView.image = [[UIImage imageNamed:@"calendar_circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                cell.selectionStyle = UITableViewCellSelectionStyleGray;
             }
         }
         
         if ( indexPath.section == 0 ) {
             UITextField *textField = (UITextField*)[cell viewWithTag:10];
-            if ( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 )
+            if ( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 ) {
                 textField.text = [self.calendarItem objectForKey:CalendarItem_Name];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if ( indexPath.section == 1 ) {
             NSDictionary *colorItem = [_colorArray objectAtIndex:indexPath.row];
             cell.textLabel.text = [colorItem objectForKey:CalendarItem_Name];
+            cell.textLabel.font = [UIFont systemFontOfSize:17];
             cell.imageView.tintColor = [colorItem objectForKey:CalendarItem_Color];
             cell.accessoryType = ( CGColorEqualToColor([[colorItem objectForKey:CalendarItem_Color] CGColor], [[_calendarItem objectForKey:CalendarItem_Color] CGColor]) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
         }
@@ -176,7 +180,7 @@
         
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
         cell.textLabel.text = @"Delete Calendar";
-        cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:48.0/255.0 alpha:1.0];
+        cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0];
     }
     
     return cell;
@@ -202,10 +206,11 @@
         UIColor *color = [[_colorArray objectAtIndex:indexPath.row] objectForKey:CalendarItem_Color];
         [_calendarItem setObject:color forKey:CalendarItem_Color];
         
-        [tableView beginUpdates];
-        [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [tableView endUpdates];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:indexPath.section]];
+        UITableViewCell *curCell = [tableView cellForRowAtIndexPath:indexPath];
+        prevCell.accessoryType = UITableViewCellAccessoryNone;
+        curCell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else if ( indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Calendar" otherButtonTitles:nil];

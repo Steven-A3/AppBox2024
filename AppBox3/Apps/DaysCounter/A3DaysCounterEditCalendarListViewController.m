@@ -129,6 +129,9 @@
     textLabel.text = item.calendarName;
     checkButton.selected = [item.isShow boolValue];
     detailTextLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
+    
+    textLabel.font = [UIFont systemFontOfSize:17];
+    
     if ( [item.calendarType integerValue] == CalendarCellType_System ) {
         NSInteger numberOfEvents = 0;
         if ( [item.calendarId isEqualToString:SystemCalendarID_All] )
@@ -169,7 +172,8 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 37.0;
+//    return 37.0;
+    return IS_RETINA ? 35.5 : 36;
 }
 
 
