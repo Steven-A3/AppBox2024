@@ -189,12 +189,24 @@
 
 - (void)adjustFontSizeOfCell:(UITableViewCell *)cell withCellType:(A3DaysCounterCalendarCellType)cellType {
     // suffix is tag
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
     UILabel *eventNameLabel12 = (UILabel*)[cell viewWithTag:12];
     UILabel *periodLabel13 = (UILabel*)[cell viewWithTag:13];
     UILabel *periodLabel14 = (UILabel*)[cell viewWithTag:14];
-    eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
-    periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+    
+    textLabel.font = [UIFont systemFontOfSize:30];
+    countLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:65];
+    if (IS_IPHONE) {
+        eventNameLabel12.font = [UIFont systemFontOfSize:13];
+        periodLabel13.font = [UIFont systemFontOfSize:11];
+        periodLabel14.font = [UIFont systemFontOfSize:11];
+    }
+    else {
+        eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+        periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    }
 }
 
 #pragma mark - action method
