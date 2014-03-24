@@ -23,6 +23,8 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "A3DaysCounterReminderListViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
+#import "A3DaysCounterEventListDateCell.h"
+#import "A3DaysCounterEventListNameCell.h"
 
 
 @interface A3DaysCounterEventListViewController ()
@@ -60,6 +62,11 @@
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+    if (IS_RETINA) {
+        CGRect rect = self.tableView.tableHeaderView.frame;
+        rect.size.height += 0.5;
+        self.tableView.tableHeaderView.frame = rect;
+    }
     _headerSeperatorHeightConst.constant = (1.0 / [[UIScreen mainScreen] scale] );
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 170.0 : 300.0);
     [self.view layoutIfNeeded];
@@ -130,12 +137,13 @@
         return [item1.startDate compare:item2.startDate];
     }];
     
-    if ( !ascending )
+    if ( !ascending ) {
         array = [[array reverseObjectEnumerator] allObjects];
+    }
     
     NSMutableArray *sectionArray = [NSMutableArray array];
     NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
-    for(DaysCounterEvent *event in array) {
+    for (DaysCounterEvent *event in array) {
         NSString *sectionKey = [A3DateHelper dateStringFromDate:event.startDate withFormat:@"yyyy.MM"];
         NSMutableArray *items = [sectionDict objectForKey:sectionKey];
         if ( items == nil ) {
@@ -160,8 +168,9 @@
         return [item1.eventName compare:item2.eventName];
     }];
     
-    if ( !ascending )
+    if ( !ascending ) {
         array = [[array reverseObjectEnumerator] allObjects];
+    }
     
     return [NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray arrayWithArray:array],EventKey_Items, nil]];
 }
@@ -203,8 +212,9 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    if ( tableView != self.tableView )
+    if ( tableView != self.tableView ) {
         return 1;
+    }
     
     return ([_itemArray count] < 1 ? 1 : [_itemArray count]);
 }
@@ -261,16 +271,19 @@
 
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if ( tableView != self.tableView )
+    if ( tableView != self.tableView ) {
         return nil;
+    }
     
-    if ( sortType != EventSortType_Date )
+    if ( sortType != EventSortType_Date ) {
         return nil;
+    }
     
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     NSArray *items = [dict objectForKey:EventKey_Items];
-    if ( [items count] < 1 )
+    if ( [items count] < 1 ) {
         return nil;
+    }
     
     NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
     UIView *headerView = [cellArray objectAtIndex:2];
@@ -295,13 +308,15 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ( tableView != self.tableView)
+    if ( tableView != self.tableView) {
         return 0.01;
+    }
     
     NSDictionary *dict = [_itemArray objectAtIndex:section];
     NSArray *items = [dict objectForKey:EventKey_Items];
-    if ( [items count] < 1 )
+    if ( [items count] < 1 ) {
         return 0.01;
+    }
     
     return (sortType == EventSortType_Date ? 23.0 : 0.01);
 }
@@ -322,9 +337,18 @@
         UIView *leftView = nil;
         if ( sortType == EventSortType_Name ) {
             leftView = [cell viewWithTag:13];
+            ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst; 58
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst; 58
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst;
         }
         else {
             leftView = [cell viewWithTag:14];
+            ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundDateLeadingConst;
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst; 57
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst;  95
+//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst; 95
         }
         NSLayoutConstraint *leftConst = nil;
         for(NSLayoutConstraint *layout in cell.contentView.constraints) {
@@ -386,8 +410,9 @@
         
         NSInteger day = ABS([comps day]);
         if ( ![[A3DateHelper dateStringFromDate:today withFormat:@"yyyyMMdd"] isEqualToString:[A3DateHelper dateStringFromDate:calcDate withFormat:@"yyyyMMdd"]] ) {
-            if ( ABS([comps hour]) > 0 || ABS([comps minute]) > 0 || ABS([comps second]) > 0 )
+            if ( ABS([comps hour]) > 0 || ABS([comps minute]) > 0 || ABS([comps second]) > 0 ) {
                 day++;
+            }
         }
         daysLabel.text = [NSString stringWithFormat:@"%ld day%@", (long)day, (day>1 ? @"s" : @"")];
         
@@ -400,11 +425,11 @@
             markLabel.text = @"Since";
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
+        
         markLabel.layer.borderWidth = 1.0;
         markLabel.layer.masksToBounds = YES;
         markLabel.layer.cornerRadius = 9.0;
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
-        
         
         if ( sortType == EventSortType_Date ) {
             A3RoundDateView *dateView = (A3RoundDateView*)[cell viewWithTag:14];

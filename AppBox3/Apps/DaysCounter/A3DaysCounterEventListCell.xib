@@ -6,7 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="eventListNameCell" rowHeight="62" id="JJE-q2-T1Q">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="eventListNameCell" rowHeight="62" id="JJE-q2-T1Q" customClass="A3DaysCounterEventListNameCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JJE-q2-T1Q" id="5JQ-zP-85K">
@@ -59,19 +59,24 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="centerY" secondItem="nf0-gC-Ila" secondAttribute="centerY" id="4i7-An-l62"/>
-                    <constraint firstItem="cVW-rD-TDa" firstAttribute="leading" secondItem="nf0-gC-Ila" secondAttribute="trailing" constant="5" id="AAe-K4-JrH"/>
                     <constraint firstItem="nf0-gC-Ila" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="20" id="AyX-9V-nhE"/>
                     <constraint firstAttribute="bottom" secondItem="FSv-H1-Ld2" secondAttribute="bottom" constant="11" id="Bl0-jq-uBn"/>
                     <constraint firstItem="1Fo-Ne-hUa" firstAttribute="top" secondItem="5JQ-zP-85K" secondAttribute="top" constant="12" id="F2R-5I-EoH"/>
                     <constraint firstItem="FSv-H1-Ld2" firstAttribute="leading" secondItem="cVW-rD-TDa" secondAttribute="trailing" constant="5" id="cJE-FC-RDK"/>
+                    <constraint firstItem="1Fo-Ne-hUa" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="58" id="fO1-Q9-30H"/>
                     <constraint firstAttribute="trailing" secondItem="FSv-H1-Ld2" secondAttribute="trailing" id="fl2-QQ-KMo"/>
-                    <constraint firstItem="1Fo-Ne-hUa" firstAttribute="leading" secondItem="nf0-gC-Ila" secondAttribute="trailing" constant="5" id="hJT-8Y-TSp"/>
                     <constraint firstAttribute="centerY" secondItem="CAj-rj-Pk3" secondAttribute="centerY" id="hpU-XT-NxN"/>
                     <constraint firstAttribute="trailing" secondItem="1Fo-Ne-hUa" secondAttribute="trailing" id="mjJ-vj-4F7"/>
                     <constraint firstAttribute="trailing" secondItem="CAj-rj-Pk3" secondAttribute="trailing" id="qlw-OR-Jbp"/>
                     <constraint firstAttribute="bottom" secondItem="cVW-rD-TDa" secondAttribute="bottom" constant="9" id="snx-f4-SpN"/>
+                    <constraint firstItem="cVW-rD-TDa" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="58" id="zKN-EE-xnY"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="nameLeadingConst" destination="fO1-Q9-30H" id="vrh-YM-q2p"/>
+                <outlet property="photoLeadingConst" destination="AyX-9V-nhE" id="CEG-B4-lVh"/>
+                <outlet property="sinceLeadingConst" destination="zKN-EE-xnY" id="dJ9-Mj-LeI"/>
+            </connections>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="eventListEditCell" id="Vf5-Ks-p84">
             <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
@@ -145,7 +150,7 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="eventListDateCell" rowHeight="62" id="04y-rH-iju">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="eventListDateCell" rowHeight="62" id="04y-rH-iju" customClass="A3DaysCounterEventListDateCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="04y-rH-iju" id="hhi-r9-3pq">
@@ -216,20 +221,26 @@
                 <constraints>
                     <constraint firstItem="Sfh-Iw-2YD" firstAttribute="top" secondItem="hhi-r9-3pq" secondAttribute="top" constant="8" id="22i-gr-b0F"/>
                     <constraint firstItem="0tC-Nh-7bR" firstAttribute="leading" secondItem="mFS-ka-IaY" secondAttribute="trailing" constant="5" id="5QG-JD-Dyt"/>
-                    <constraint firstItem="iYT-8F-ddM" firstAttribute="leading" secondItem="GuD-ew-L6W" secondAttribute="trailing" constant="5" id="QbV-nz-CmR"/>
+                    <constraint firstItem="iYT-8F-ddM" firstAttribute="leading" secondItem="hhi-r9-3pq" secondAttribute="leading" constant="57" id="B8Y-ud-XUm"/>
+                    <constraint firstItem="tOt-3V-HQV" firstAttribute="leading" secondItem="hhi-r9-3pq" secondAttribute="leading" constant="95" id="KaG-p1-KBm"/>
+                    <constraint firstItem="mFS-ka-IaY" firstAttribute="leading" secondItem="hhi-r9-3pq" secondAttribute="leading" constant="95" id="URx-dA-ZoT"/>
                     <constraint firstItem="ulB-GP-1ZR" firstAttribute="leading" secondItem="0tC-Nh-7bR" secondAttribute="trailing" constant="8" id="bMn-d3-g6t"/>
                     <constraint firstItem="tOt-3V-HQV" firstAttribute="top" secondItem="hhi-r9-3pq" secondAttribute="top" constant="9" id="brE-Yy-QEl"/>
                     <constraint firstItem="GuD-ew-L6W" firstAttribute="leading" secondItem="hhi-r9-3pq" secondAttribute="leading" constant="20" id="ckD-KB-176"/>
                     <constraint firstItem="Sfh-Iw-2YD" firstAttribute="leading" secondItem="tOt-3V-HQV" secondAttribute="trailing" constant="8" id="dPR-CJ-Jen"/>
-                    <constraint firstItem="tOt-3V-HQV" firstAttribute="leading" secondItem="iYT-8F-ddM" secondAttribute="trailing" constant="5" id="eoz-fe-jn3"/>
                     <constraint firstItem="mFS-ka-IaY" firstAttribute="centerY" secondItem="0tC-Nh-7bR" secondAttribute="centerY" id="m8U-wC-O7B"/>
                     <constraint firstAttribute="bottom" secondItem="mFS-ka-IaY" secondAttribute="bottom" constant="9" id="oGH-qF-p2A"/>
                     <constraint firstItem="ulB-GP-1ZR" firstAttribute="centerY" secondItem="0tC-Nh-7bR" secondAttribute="centerY" id="owQ-XU-rfv"/>
-                    <constraint firstItem="mFS-ka-IaY" firstAttribute="leading" secondItem="iYT-8F-ddM" secondAttribute="trailing" constant="5" id="q2n-Dk-LPu"/>
                     <constraint firstAttribute="centerY" secondItem="iYT-8F-ddM" secondAttribute="centerY" id="v72-fa-Bji"/>
                     <constraint firstAttribute="centerY" secondItem="GuD-ew-L6W" secondAttribute="centerY" id="w7I-7E-FHp"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="nameLeadingConst" destination="KaG-p1-KBm" id="sxT-Nz-LAW"/>
+                <outlet property="photoLeadingConst" destination="B8Y-ud-XUm" id="7Ph-pW-HWs"/>
+                <outlet property="roundDateLeadingConst" destination="ckD-KB-176" id="TUY-zx-ltd"/>
+                <outlet property="sinceLeadingConst" destination="URx-dA-ZoT" id="EsF-tk-4q0"/>
+            </connections>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reminderCell" rowHeight="62" id="571-NJ-3Uz">
             <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
