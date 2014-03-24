@@ -20,9 +20,10 @@
 #import "A3CalculatorHistoryViewController.h"
 #import "UILabel+Boldify.h"
 #import "MBProgressHUD.h"
+#import "A3KeyboardView.h"
 
 
-@interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate>
+@interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, strong) UILabel *degreeandradianLabel;
@@ -34,6 +35,8 @@
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
+@property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
 
 @end
 
@@ -75,6 +78,14 @@
         [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
         [_calculator evaluateAndSet];
     }
+
+	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
+	_textFieldForPlayInputClick.delegate = self;
+	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
+	[self.view addSubview:_textFieldForPlayInputClick];
+
+	[_textFieldForPlayInputClick becomeFirstResponder];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -284,7 +295,10 @@
 }
 
 - (void)keyboardButtonPressed:(NSUInteger)key {
-    NSString *expression;
+	[_textFieldForPlayInputClick becomeFirstResponder];
+	[[UIDevice currentDevice] playInputClick];
+
+	NSString *expression;
     if(key == A3E_CALCULATE){
         expression =_expressionLabel.text;
     }

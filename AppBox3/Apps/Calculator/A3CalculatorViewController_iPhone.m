@@ -10,15 +10,15 @@
 #import "HTCopyableLabel.h"
 #import "A3CalcKeyboardView_iPhone.h"
 #import "FXPageControl.h"
-#import "common.h"
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "A3Calculator.h"
 #import "Calculation.h"
 #import "A3CalculatorHistoryViewController.h"
 #import "MBProgressHUD.h"
+#import "A3KeyboardView.h"
 
-@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate>
+@interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
 @property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
@@ -38,6 +38,8 @@
 @property (nonatomic, strong) MASConstraint *resultLabelRightConstraint;
 @property (nonatomic, strong) MASConstraint *svheightconstraint;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
+@property (nonatomic, strong) UITextField *textFieldForPlayInputClick;
+@property (nonatomic, strong) A3KeyboardView *inputViewForPlayInputClick;
 //@property (nonatomic, strong) A3Expression *expression;
 
 @end
@@ -85,8 +87,14 @@
         [_calculator evaluateAndSet];
     }
     [self setupGestureRecognizer];
-    
 
+	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
+	_textFieldForPlayInputClick.delegate = self;
+	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
+	[self.view addSubview:_textFieldForPlayInputClick];
+
+	[_textFieldForPlayInputClick becomeFirstResponder];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -404,7 +412,10 @@
 }
 
 - (void)keyboardButtonPressed:(NSUInteger)key {
-    NSString *expression;
+	[_textFieldForPlayInputClick becomeFirstResponder];
+	[[UIDevice currentDevice] playInputClick];
+
+	NSString *expression;
     //FNLOG("text = %@ attributedText = %@", _expressionLabel.text, [_expressionLabel.attributedText string]);
     if([self hidesNavigationBar]) {
         [self setNavigationBarHidden:YES];
@@ -427,15 +438,14 @@
 }
 
 #pragma mark - Right Button more
--(void) rightBarButtons {
-    @autoreleasepool {
-        share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-        history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-        //UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        //space.width = 4.0;
-        self.navigationItem.rightBarButtonItems = @[history, share];
-        [self checkRightButtonDisable];
-    }
+
+- (void) rightBarButtons {
+	share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+	history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+	//UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	//space.width = 4.0;
+	self.navigationItem.rightBarButtonItems = @[history, share];
+	[self checkRightButtonDisable];
 }
 
 - (BOOL) isCalculationHistoryEmpty {
@@ -516,64 +526,57 @@
 }
 */
 - (void)shareAll:(id)sender {
-	@autoreleasepool {
-		NSMutableString *shareString = [[NSMutableString alloc] init];
-        if (![self.expressionLabel.text hasSuffix:@"="]) {
-            [shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-        } else {
-            [shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-        }
-        
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
+	NSMutableString *shareString = [[NSMutableString alloc] init];
+	if (![self.expressionLabel.text hasSuffix:@"="]) {
+		[shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
+	} else {
+		[shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
 	}
+
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
 }
 
 
 - (void)shareButtonAction:(id)sender {
-	@autoreleasepool {
-		//[self clearEverything];
-        
-		[self shareAll:sender];
-	}
+	//[self clearEverything];
+
+	[self shareAll:sender];
 }
 
 
 
 #pragma mark - History
 - (void)historyButtonAction:(UIButton *)button {
-	@autoreleasepool {
-    //[self clearEverything];
-        
+	//[self clearEverything];
+
 	A3CalculatorHistoryViewController *viewController = [[A3CalculatorHistoryViewController alloc] initWithNibName:nil bundle:nil];
-        viewController.calculator = self.calculator;
+	viewController.calculator = self.calculator;
 	[self presentSubViewController:viewController];
-        
+
 	//	_currencyHistory = nil;
-	}
 }
 
 - (void)putCalculationHistoryWithExpression:(NSString *)expression{
-	@autoreleasepool {
-        NSString *mathExpression = [self.calculator getMathExpression];
-		Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
-        
-		// Compare code and value.
-		if (lastcalculation) {
-			if ([lastcalculation.expression isEqualToString:mathExpression]) {
-				return;
-			}
+	NSString *mathExpression = [self.calculator getMathExpression];
+	Calculation *lastcalculation = [Calculation MR_findFirstOrderedByAttribute:@"date" ascending:NO];
+
+	// Compare code and value.
+	if (lastcalculation) {
+		if ([lastcalculation.expression isEqualToString:mathExpression]) {
+			return;
 		}
-        
-        
-		Calculation *calculation = [Calculation MR_createEntity];
-		NSDate *keyDate = [NSDate date];
-        calculation.expression = mathExpression;
-        calculation.result = _evaluatedResultLabel.text;
-        calculation.date = keyDate;
-        
-		[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 	}
+
+
+	Calculation *calculation = [Calculation MR_createEntity];
+	NSDate *keyDate = [NSDate date];
+	calculation.expression = mathExpression;
+	calculation.result = _evaluatedResultLabel.text;
+	calculation.date = keyDate;
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];
 }
+
 - (void) ShowMessage:(NSString *)message {
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.navigationController.view addSubview:HUD];
@@ -592,5 +595,7 @@
     [HUD show:YES];
     [HUD hide:YES afterDelay:3];
 }
+
 #pragma mark -- THE END
+
 @end
