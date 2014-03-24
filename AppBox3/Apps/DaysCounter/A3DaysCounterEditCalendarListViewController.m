@@ -39,6 +39,7 @@
     [super viewDidLoad];
     self.title = @"Edit Calendars";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCalendarAction:)];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     [self rightBarButtonDoneButton];
     
 }
@@ -52,7 +53,7 @@
         self.itemArray = array;
     }
     else {
-        if ( [self.itemArray count] != [array count] ){
+        if ( [self.itemArray count] != [array count] ) {
             self.itemArray = array;
             [self reorderingItems];
         }
@@ -70,7 +71,7 @@
 
 - (void)reorderingItems
 {
-    for(NSInteger i=0; i < [_itemArray count]; i++){
+    for (NSInteger i=0; i < [_itemArray count]; i++) {
         DaysCounterCalendar *item = [_itemArray objectAtIndex:i];
         item.order = [NSNumber numberWithInteger:i+1];
     }
@@ -163,6 +164,26 @@
     [_itemArray insertObject:item atIndex:toIndexPath.row];
     
     [self reorderingItems];
+    
+//    UITableViewCell *fromCell = [tableView cellForRowAtIndexPath:fromIndexPath];
+//    UITableViewCell *toCell = [tableView cellForRowAtIndexPath:toIndexPath];
+//    if (fromIndexPath.row == ([_itemArray count] - 1)) {
+//        fromCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    }
+//    else {
+//        fromCell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+//    }
+//    
+//    if (toIndexPath.row == ([_itemArray count] - 1)) {
+//        toCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    }
+//    else {
+//        toCell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+//    }
+    
+    //[tableView reloadRowsAtIndexPaths:@[fromIndexPath, toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+    //[tableView reloadData];
+    [tableView reloadData];
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -200,7 +221,7 @@
     if ( IS_IPHONE )
         [self dismissViewControllerAnimated:YES completion:nil];
     else {
-        if ( self.modalVC ){
+        if ( self.modalVC ) {
             [self.modalVC dismissViewControllerAnimated:NO completion:^{
                 [self.A3RootViewController dismissRightSideViewController];
                 UINavigationController *navCtrl = self.A3RootViewController.centerNavigationController;
@@ -237,7 +258,7 @@
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     
-//    if ( IS_IPHONE ){
+//    if ( IS_IPHONE ) {
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 
