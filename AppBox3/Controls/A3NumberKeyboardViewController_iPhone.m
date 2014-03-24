@@ -186,6 +186,8 @@
 }
 
 - (IBAction)bigButton1Action {
+	[[UIDevice currentDevice] playInputClick];
+	
 	//if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate) || (self.keyboardType == A3NumberKeyboardTypeCurrency)) {   // KJH
 		[self.bigButton1 setSelected:YES];
@@ -197,6 +199,8 @@
 }
 
 - (IBAction)bigButton2Action {
+	[[UIDevice currentDevice] playInputClick];
+
 	//if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
     if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate) || (self.keyboardType == A3NumberKeyboardTypeCurrency)) {
 		[self.bigButton1 setSelected:NO];
@@ -206,6 +210,11 @@
 	if ([self.delegate respondsToSelector:@selector(handleBigButton2)]) {
 		[self.delegate handleBigButton2];
 	}
+}
+
+- (IBAction)calculatorButtonAction:(UIButton *)sender {
+	[[UIDevice currentDevice] playInputClick];
+
 }
 
 @end

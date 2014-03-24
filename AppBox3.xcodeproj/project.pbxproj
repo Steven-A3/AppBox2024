@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		17D420A9793E2C5001387907 /* A3KeyboardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B048C751164E26AFDE8 /* A3KeyboardView.m */; };
 		17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42647DF41660948614893 /* A3PasscodeCommonViewController.m */; };
 		17D4211E8BD7D7B7D8112049 /* A3OnOffLeftRightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B75C71DE69EE18900CC /* A3OnOffLeftRightButton.m */; };
 		17D42129FB82BFB4E56A8D7A /* A3TranslatorLanguage.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */; };
@@ -967,6 +968,7 @@
 		17D4223EB4F5F9B75527C516 /* A3TableViewExpandableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewExpandableCell.h; path = A3TableViewController/A3TableViewExpandableCell.h; sourceTree = "<group>"; };
 		17D4227E7D59F72869C3BE40 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		17D42289427C0BC32E80BBA4 /* A3PasscodeCommonViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3PasscodeCommonViewController.h; path = Passcode/A3PasscodeCommonViewController.h; sourceTree = "<group>"; };
+		17D42293E62D1CA772ACAC56 /* A3KeyboardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardView.h; sourceTree = "<group>"; };
 		17D422F078FF20AC13BDAE74 /* A3SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SearchViewController.h; path = Apps/Currency/A3SearchViewController.h; sourceTree = "<group>"; };
 		17D422F17E6A37A2E93CD352 /* A3BarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BarButton.m; sourceTree = "<group>"; };
 		17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorLanguage.m; path = Translator/A3TranslatorLanguage.m; sourceTree = "<group>"; };
@@ -1013,6 +1015,7 @@
 		17D42943209504ED58B4EADB /* A3TranslatorMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageCell.h; path = Translator/A3TranslatorMessageCell.h; sourceTree = "<group>"; };
 		17D429779D86BF82D8EB2269 /* A3DateKeyboardViewController_iPad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DateKeyboardViewController_iPad.h; sourceTree = "<group>"; };
 		17D429F751726E40952CD34C /* A3TableViewSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TableViewSection.h; path = A3TableViewController/A3TableViewSection.h; sourceTree = "<group>"; };
+		17D42B048C751164E26AFDE8 /* A3KeyboardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3KeyboardView.m; sourceTree = "<group>"; };
 		17D42B28914A1D7FD233EC49 /* JNJProgressButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNJProgressButton.h; sourceTree = "<group>"; };
 		17D42B3BE8DDD4EBEBCA10BE /* A3BackgroundWithPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BackgroundWithPatternView.h; sourceTree = "<group>"; };
 		17D42B6B2A160E066608E06C /* A3LocationPlacemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LocationPlacemarkView.m; sourceTree = "<group>"; };
@@ -2805,8 +2808,8 @@
 				680D637918CFF9D400938AD0 /* A3CalculatorViewController_iPad.h */,
 				680D637A18CFF9D400938AD0 /* A3CalculatorViewController_iPad.m */,
 				680D637B18CFF9D400938AD0 /* A3CalculatorViewController_iPhone.h */,
-				680D637D18CFF9D400938AD0 /* A3ExpressionComponent.h */,
 				680D637C18CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m */,
+				680D637D18CFF9D400938AD0 /* A3ExpressionComponent.h */,
 				680D637E18CFF9D400938AD0 /* Calculation.h */,
 				680D637F18CFF9D400938AD0 /* Calculation.m */,
 				17D425DE3A3E4C299A8A0D06 /* MathParser.h */,
@@ -3487,6 +3490,8 @@
 				68F3A9E51677320100DFCAB7 /* A3YellowXButton.m */,
 				683B954115EB233500575377 /* CoolButton.h */,
 				683B954215EB233500575377 /* CoolButton.m */,
+				17D42293E62D1CA772ACAC56 /* A3KeyboardView.h */,
+				17D42B048C751164E26AFDE8 /* A3KeyboardView.m */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -6337,6 +6342,7 @@
 				17D420FD697D545A9027AB7C /* A3PasscodeCommonViewController.m in Sources */,
 				68F319FC18D83D1F0003BE62 /* A3LaunchSceneViewController.m in Sources */,
 				17D4280E6A9B6B8B51313704 /* UIViewController+A3AppCategory.m in Sources */,
+				17D420A9793E2C5001387907 /* A3KeyboardView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

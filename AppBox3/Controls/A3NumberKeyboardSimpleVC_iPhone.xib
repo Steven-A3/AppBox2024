@@ -24,14 +24,14 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clipsSubviews="YES" contentMode="scaleToFill" id="1">
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="1" customClass="A3KeyboardView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="216"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="8" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="0.0" y="0.0" width="82" height="54"/>
+                    <rect key="frame" x="-1" y="0.0" width="82" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="7">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -48,9 +48,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="81" y="0.0" width="81" height="54"/>
+                    <rect key="frame" x="80" y="0.0" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="8">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -67,9 +67,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="10" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="161" y="0.0" width="81" height="54"/>
+                    <rect key="frame" x="160" y="0.0" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="9">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -86,7 +86,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="23" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="240" y="0.0" width="81" height="54"/>
+                    <rect key="frame" x="240" y="0.0" width="82" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.75686274509803919" green="0.76862745098039209" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -99,9 +99,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="12" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="0.0" y="53" width="82" height="55"/>
+                    <rect key="frame" x="-1" y="54" width="82" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="4">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -118,9 +118,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="13" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="81" y="53" width="81" height="55"/>
+                    <rect key="frame" x="80" y="54" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="5">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -134,9 +134,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="14" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="161" y="53" width="81" height="55"/>
+                    <rect key="frame" x="160" y="54" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="6">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -150,7 +150,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="24" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="240" y="53" width="81" height="55"/>
+                    <rect key="frame" x="240" y="54" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.75686274509803919" green="0.76862745098039209" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -169,9 +169,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="16" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="0.0" y="107" width="82" height="56"/>
+                    <rect key="frame" x="-1" y="108" width="82" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="1">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -188,9 +188,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="17" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="81" y="107" width="81" height="56"/>
+                    <rect key="frame" x="80" y="108" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="2">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -204,9 +204,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="18" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="161" y="107" width="81" height="56"/>
+                    <rect key="frame" x="160" y="108" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="3">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -220,7 +220,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="25" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="240" y="107" width="81" height="57"/>
+                    <rect key="frame" x="240" y="108" width="81" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.75686274509803919" green="0.76862745098039209" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -234,11 +234,14 @@
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="markInsetsString" value="@{0.0, 0.0, 0.0, 1.0}"/>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="calculatorButtonAction:" destination="-1" eventType="touchUpInside" id="dCc-91-aMd"/>
+                    </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="21" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="0.0" y="162" width="162" height="55"/>
+                    <rect key="frame" x="-1" y="162" width="162" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="26"/>
                     <state key="normal" title="0">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -255,9 +258,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="22" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="161" y="162" width="81" height="55"/>
+                    <rect key="frame" x="160" y="162" width="81" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="32"/>
                     <state key="normal" title=".">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -274,7 +277,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="26" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="240" y="162" width="81" height="55"/>
+                    <rect key="frame" x="240" y="162" width="81" height="56"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.75686274509803919" green="0.76862745098039209" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" title="Return">

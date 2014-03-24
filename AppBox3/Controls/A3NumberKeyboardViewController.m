@@ -41,6 +41,8 @@
 }
 
 - (IBAction)keyboardInputAction:(UIButton *)button {
+	[[UIDevice currentDevice] playInputClick];
+
 	NSString *pressedString = [button titleForState:UIControlStateNormal];
 	BOOL allowedToChange = YES;
 
@@ -62,12 +64,16 @@
 }
 
 - (IBAction)clearButtonAction {
+	[[UIDevice currentDevice] playInputClick];
+
 	if ([_delegate respondsToSelector:@selector(A3KeyboardController:clearButtonPressedTo:)]) {
 		[_delegate A3KeyboardController:(id) self clearButtonPressedTo:_textInputTarget];
 	}
 }
 
 - (IBAction)backspaceAction:(UIButton *)button {
+	[[UIDevice currentDevice] playInputClick];
+	
 	BOOL allowedToChange = YES;
 
 	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
@@ -94,18 +100,24 @@
 }
 
 - (IBAction)prevAction {
+	[[UIDevice currentDevice] playInputClick];
+	
 	if ([_delegate respondsToSelector:@selector(prevButtonPressed)]) {
 		[_delegate prevButtonPressed];
 	}
 }
 
 - (IBAction)nextAction {
+	[[UIDevice currentDevice] playInputClick];
+
 	if ([_delegate respondsToSelector:@selector(nextButtonPressed)]) {
 		[_delegate nextButtonPressed];
 	}
 }
 
 - (IBAction)doneAction {
+	[[UIDevice currentDevice] playInputClick];
+
 	if ([_delegate respondsToSelector:@selector(A3KeyboardController:doneButtonPressedTo:)]) {
 		[_delegate A3KeyboardController:self doneButtonPressedTo:_textInputTarget];
 	}

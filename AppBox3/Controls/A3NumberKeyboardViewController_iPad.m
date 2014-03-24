@@ -151,6 +151,8 @@
 }
 
 - (IBAction)bigButton1Action {
+	[[UIDevice currentDevice] playInputClick];
+
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
 		[self.bigButton1 setSelected:YES];
 		[self.bigButton2 setSelected:NO];
@@ -161,6 +163,8 @@
 }
 
 - (IBAction)bigButton2Action {
+	[[UIDevice currentDevice] playInputClick];
+
 	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
 		[self.bigButton1 setSelected:NO];
 		[self.bigButton2 setSelected:YES];
