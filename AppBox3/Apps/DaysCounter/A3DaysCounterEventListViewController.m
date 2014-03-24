@@ -37,84 +37,6 @@
 
 @implementation A3DaysCounterEventListViewController
 
-- (NSMutableArray*)sortedArrayByDateAscending:(BOOL)ascending
-{
-    NSArray *array = [_sourceArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
-        DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
-        
-        return [item1.startDate compare:item2.startDate];
-    }];
-    
-    if ( !ascending )
-        array = [[array reverseObjectEnumerator] allObjects];
-    
-    NSMutableArray *sectionArray = [NSMutableArray array];
-    NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
-    for(DaysCounterEvent *event in array) {
-        NSString *sectionKey = [A3DateHelper dateStringFromDate:event.startDate withFormat:@"yyyy.MM"];
-        NSMutableArray *items = [sectionDict objectForKey:sectionKey];
-        if ( items == nil ) {
-            items = [NSMutableArray arrayWithObject:event];
-            [sectionDict setObject:items forKey:sectionKey];
-            [sectionArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:event.startDate,EventKey_Date,items,EventKey_Items, nil]];
-        }
-        else {
-            [items addObject:event];
-        }
-    }
-    
-    return sectionArray;
-}
-
-- (NSMutableArray*)sortedArrayByNameAscending:(BOOL)ascending
-{
-    NSArray *array = [_sourceArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
-        DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
-        
-        return [item1.eventName compare:item2.eventName];
-    }];
-    
-    if ( !ascending )
-        array = [[array reverseObjectEnumerator] allObjects];
-    
-    return [NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray arrayWithArray:array],EventKey_Items, nil]];
-}
-
-- (void)loadEventDatas
-{
-    if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
-        self.sourceArray = [_calendarItem.events array];
-    }
-    else {
-        if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
-            self.sourceArray = [[A3DaysCounterModelManager sharedManager] allEventsList];
-        }
-        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
-            self.sourceArray = [[A3DaysCounterModelManager sharedManager] pastEventsListWithDate:[NSDate date]];
-        }
-        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] ) {
-            self.sourceArray = [[A3DaysCounterModelManager sharedManager] upcomingEventsListWithDate:[NSDate date]];
-        }
-    }
-    
-    if ( sortType == EventSortType_Name ) {
-        self.itemArray = [self sortedArrayByNameAscending:isAscending];
-    }
-    else if ( sortType == EventSortType_Date ) {
-        self.itemArray = [self sortedArrayByDateAscending:isAscending];
-    }
-    [self.tableView reloadData];
-    
-    _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
-    _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0]);
-    
-    _searchButton.enabled = ([_sourceArray count] > 0);
-    _editButton.enabled = ([_sourceArray count] > 0);
-}
-
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -193,6 +115,84 @@
         daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
     
+}
+
+#pragma mark 
+- (NSMutableArray*)sortedArrayByDateAscending:(BOOL)ascending
+{
+    NSArray *array = [_sourceArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
+        DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
+        
+        return [item1.startDate compare:item2.startDate];
+    }];
+    
+    if ( !ascending )
+        array = [[array reverseObjectEnumerator] allObjects];
+    
+    NSMutableArray *sectionArray = [NSMutableArray array];
+    NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
+    for(DaysCounterEvent *event in array) {
+        NSString *sectionKey = [A3DateHelper dateStringFromDate:event.startDate withFormat:@"yyyy.MM"];
+        NSMutableArray *items = [sectionDict objectForKey:sectionKey];
+        if ( items == nil ) {
+            items = [NSMutableArray arrayWithObject:event];
+            [sectionDict setObject:items forKey:sectionKey];
+            [sectionArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:event.startDate,EventKey_Date,items,EventKey_Items, nil]];
+        }
+        else {
+            [items addObject:event];
+        }
+    }
+    
+    return sectionArray;
+}
+
+- (NSMutableArray*)sortedArrayByNameAscending:(BOOL)ascending
+{
+    NSArray *array = [_sourceArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
+        DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
+        
+        return [item1.eventName compare:item2.eventName];
+    }];
+    
+    if ( !ascending )
+        array = [[array reverseObjectEnumerator] allObjects];
+    
+    return [NSMutableArray arrayWithObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSMutableArray arrayWithArray:array],EventKey_Items, nil]];
+}
+
+- (void)loadEventDatas
+{
+    if ( [_calendarItem.calendarType integerValue] == CalendarCellType_User) {
+        self.sourceArray = [_calendarItem.events array];
+    }
+    else {
+        if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
+            self.sourceArray = [[A3DaysCounterModelManager sharedManager] allEventsList];
+        }
+        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
+            self.sourceArray = [[A3DaysCounterModelManager sharedManager] pastEventsListWithDate:[NSDate date]];
+        }
+        else if ( [_calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming] ) {
+            self.sourceArray = [[A3DaysCounterModelManager sharedManager] upcomingEventsListWithDate:[NSDate date]];
+        }
+    }
+    
+    if ( sortType == EventSortType_Name ) {
+        self.itemArray = [self sortedArrayByNameAscending:isAscending];
+    }
+    else if ( sortType == EventSortType_Date ) {
+        self.itemArray = [self sortedArrayByDateAscending:isAscending];
+    }
+    [self.tableView reloadData];
+    
+    _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
+    _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0]);
+    
+    _searchButton.enabled = ([_sourceArray count] > 0);
+    _editButton.enabled = ([_sourceArray count] > 0);
 }
 
 #pragma mark - Table view data source
@@ -528,8 +528,9 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [_sourceArray count] < 1 )
+    if ( [_sourceArray count] < 1 ) {
         return NO;
+    }
     
     return YES;
 }

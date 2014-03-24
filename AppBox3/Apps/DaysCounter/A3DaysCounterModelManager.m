@@ -841,7 +841,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     else if ( eventItem.location ) {
        [eventItem.location MR_deleteEntity];
     }
-    [eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+//    [eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
@@ -859,7 +860,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 ////            [_eventStore removeReminder:reminder commit:YES error:nil];
 //    }
     [eventItem MR_deleteEntity];
-    [eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+//    [eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
 }
@@ -867,41 +869,54 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (NSMutableDictionary *)dictionaryFromEventEntity:(DaysCounterEvent*)item
 {
     NSMutableDictionary *dict = [self emptyEventModel];
-    
     [dict setObject:item.eventId forKey:EventItem_ID];
     [dict setObject:item.eventName forKey:EventItem_Name];
+    
     if ( [item.imageFilename length] > 0 ) {
-        
         [dict setObject:item.imageFilename forKey:EventItem_ImageFilename];
         UIImage *image = [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename];
-        if ( image )
+        if ( image ) {
             [dict setObject:[A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, image.size.width, image.size.height)] forKey:EventItem_Thumbnail];
+        }
         image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
-        if ( image )
+        
+        if ( image ) {
             [dict setObject:image forKey:EventItem_Image];
+        }
     }
     [dict setObject:item.isLunar forKey:EventItem_IsLunar];
     [dict setObject:item.isAllDay forKey:EventItem_IsAllDay];
     [dict setObject:item.isPeriod forKey:EventItem_IsPeriod];
     [dict setObject:item.startDate forKey:EventItem_StartDate];
-    if ( item.endDate )
+    
+    if ( item.endDate ) {
         [dict setObject:item.endDate forKey:EventItem_EndDate];
+    }
     [dict setObject:item.repeatType forKey:EventItem_RepeatType];
-    if ( item.repeatEndDate )
+    
+    if ( item.repeatEndDate ) {
         [dict setObject:item.repeatEndDate forKey:EventItem_RepeatEndDate];
-    if ( item.alertDatetime )
+    }
+    if ( item.alertDatetime ) {
         [dict setObject:item.alertDatetime forKey:EventItem_AlertDatetime];
-    if ( [item.calendarId length] > 0 )
+    }
+    if ( [item.calendarId length] > 0 ) {
         [dict setObject:item.calendarId forKey:EventItem_CalendarId];
-    if ( item.calendar )
+    }
+    if ( item.calendar ) {
         [dict setObject:item.calendar forKey:EventItem_Calendar];
+    }
     [dict setObject:item.durationOption forKey:EventItem_DurationOption];
-    if ( [item.notes length] > 0 )
+    
+    if ( [item.notes length] > 0 ) {
         [dict setObject:item.notes forKey:EventItem_Notes];
+    }
     [dict setObject:item.isFavorite forKey:EventItem_IsFavorite];
     [dict setObject:item.regDate forKey:EventItem_RegDate];
-    if ( item.location )
+    
+    if ( item.location ) {
         [dict setObject:[self dictionaryFromEventLocationEntity:item.location] forKey:EventItem_Location];
+    }
     
     return dict;
 }
@@ -1001,8 +1016,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [context MR_saveToPersistentStoreAndWait];
         retValue = YES;
     }
-    else
+    else {
         retValue = NO;
+    }
+    
     return retValue;
 }
 
@@ -1056,12 +1073,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@",date] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@",date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate < %@",date] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate < %@", date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfUserCalendarVisible
@@ -1115,12 +1134,16 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@",date] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@",date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
+                                           inContext:[self managedObjectContext]];
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate < %@",date] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate < %@",date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
+                                           inContext:[self managedObjectContext]];
 }
 
 - (NSArray*)favoriteEventsList

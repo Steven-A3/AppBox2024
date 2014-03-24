@@ -5222,6 +5222,9 @@
 				68F1C7DF18D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.h */,
 				68F1C7E018D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.m */,
 				68F1C7E118D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.xib */,
+				68F1C7D018D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.h */,
+				68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */,
+				68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */,
 				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
 				68F1C7F218D7F37D009FAE8A /* A3DaysCounterEventListViewController.h */,
 				68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */,
@@ -5259,9 +5262,6 @@
 		804C330E18DAE33D00DBCE83 /* SubDetails */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C7D018D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.h */,
-				68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */,
-				68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */,
 				68F1C7DB18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.h */,
 				68F1C7DC18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.m */,
 				68F1C7DD18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib */,

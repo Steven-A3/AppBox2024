@@ -234,6 +234,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [_calendarItem setObject:textField.text forKey:CalendarItem_Name];
+    [textField resignFirstResponder];
     return YES;
 }
 
