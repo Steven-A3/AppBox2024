@@ -56,9 +56,19 @@
     [self setToolbarItems:_bottomToolbar.items];
     
     if ( IS_IPHONE ) {
+        if (IS_RETINA) {
+            CGRect rect = _headerView.frame;
+            rect.size.height += 0.5;
+            _headerView.frame = rect;
+        }
         [self.tableView setTableHeaderView:_headerView];
     }
     else {
+        if (IS_RETINA) {
+            CGRect rect = _iPadheaderView.frame;
+            rect.size.height += 0.5;
+            _iPadheaderView.frame = rect;
+        }
         [self.tableView setTableHeaderView:_iPadheaderView];
         self.numberOfCalendarLabel = self.numberOfCalendarLabeliPad;
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
@@ -155,10 +165,6 @@
         }];
     }
     else {
-//        if (![aView isKindOfClass:[UILabel class]]) {
-//            return;
-//        }
-        
         switch ([aView tag]) {
             case 12:
                 ((UILabel *)aView).font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
