@@ -37,4 +37,8 @@
 - (IBAction)editAction:(id)sender;
 - (IBAction)addCalendarAction:(id)sender;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator1_TopConst_iPhone;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator2_TopConst_iPhone;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator1_TopConst_iPad;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerSeparator2_TopConst_iPad;
 @end

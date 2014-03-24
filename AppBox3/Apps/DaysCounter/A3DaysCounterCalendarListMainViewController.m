@@ -79,6 +79,15 @@
     for (NSLayoutConstraint *layout in _verticalSeperators) {
         layout.constant = 1.0 / [[UIScreen mainScreen] scale];
     }
+    
+    if (IS_IPHONE) {
+        _headerSeparator1_TopConst_iPhone.constant = 0.5;
+        _headerSeparator2_TopConst_iPhone.constant = 0.5;
+    }
+    else {
+        _headerSeparator1_TopConst_iPad.constant = 0.5;
+        _headerSeparator2_TopConst_iPad.constant = 0.5;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
