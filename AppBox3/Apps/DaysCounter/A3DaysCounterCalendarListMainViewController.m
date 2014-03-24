@@ -102,7 +102,8 @@
     
     if (![_addEventButton isDescendantOfView:self.view]) {
         _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                           //self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
                                            _addEventButton.frame.size.width,
                                            _addEventButton.frame.size.height);
         [self.view addSubview:_addEventButton];
@@ -136,7 +137,8 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                       self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                       //self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                       self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
                                        _addEventButton.frame.size.width,
                                        _addEventButton.frame.size.height);
     _addEventButton.hidden = NO;
