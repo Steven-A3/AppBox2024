@@ -60,14 +60,14 @@
                     <constraint firstItem="V0X-mh-XMU" firstAttribute="top" secondItem="xhw-5N-aQx" secondAttribute="top" constant="3" id="BNE-0N-pit"/>
                     <constraint firstItem="c1b-Bv-kIf" firstAttribute="leading" secondItem="84m-39-mLt" secondAttribute="trailing" constant="4" id="CGU-GR-aIp"/>
                     <constraint firstAttribute="centerY" secondItem="V0X-mh-XMU" secondAttribute="centerY" id="Cze-9I-TBB"/>
-                    <constraint firstItem="c1b-Bv-kIf" firstAttribute="centerY" secondItem="hX1-P6-pXu" secondAttribute="centerY" id="Gs7-xS-8w8"/>
+                    <constraint firstItem="c1b-Bv-kIf" firstAttribute="baseline" secondItem="hX1-P6-pXu" secondAttribute="baseline" id="Gs7-xS-8w8"/>
                     <constraint firstAttribute="bottom" secondItem="V0X-mh-XMU" secondAttribute="bottom" constant="2" id="Hpx-gu-BKp"/>
                     <constraint firstItem="84m-39-mLt" firstAttribute="leading" secondItem="xhw-5N-aQx" secondAttribute="leading" constant="20" id="RUF-N0-qdm"/>
                     <constraint firstItem="V0X-mh-XMU" firstAttribute="leading" secondItem="QuV-Ym-Mvr" secondAttribute="trailing" constant="8" id="Rc1-C7-LXq"/>
                     <constraint firstAttribute="trailing" secondItem="V0X-mh-XMU" secondAttribute="trailing" constant="20" id="Y1j-0M-gmK"/>
                     <constraint firstItem="QuV-Ym-Mvr" firstAttribute="leading" secondItem="xhw-5N-aQx" secondAttribute="leading" constant="20" id="ZHX-D2-RBD"/>
                     <constraint firstAttribute="bottom" secondItem="84m-39-mLt" secondAttribute="bottom" constant="14" id="vNA-NX-OSv"/>
-                    <constraint firstItem="c1b-Bv-kIf" firstAttribute="centerY" secondItem="84m-39-mLt" secondAttribute="centerY" id="yWL-DY-HR9"/>
+                    <constraint firstItem="c1b-Bv-kIf" firstAttribute="baseline" secondItem="84m-39-mLt" secondAttribute="baseline" id="yWL-DY-HR9"/>
                     <constraint firstItem="QuV-Ym-Mvr" firstAttribute="top" secondItem="xhw-5N-aQx" secondAttribute="top" constant="14" id="z9H-L6-vFR"/>
                 </constraints>
             </tableViewCellContentView>

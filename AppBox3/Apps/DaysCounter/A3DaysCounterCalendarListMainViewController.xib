@@ -11,6 +11,10 @@
                 <outlet property="editButton" destination="5oo-pn-Rs5" id="pTj-oZ-QQb"/>
                 <outlet property="footerView" destination="NCo-qs-zff" id="Kvh-fP-5mg"/>
                 <outlet property="headerEventLabel" destination="cwh-zt-SKb" id="jbC-qP-JpE"/>
+                <outlet property="headerSeparator1_TopConst_iPad" destination="KlN-0h-1Aj" id="Nee-vJ-t5r"/>
+                <outlet property="headerSeparator1_TopConst_iPhone" destination="Lgg-b3-N71" id="8qE-sW-Fk4"/>
+                <outlet property="headerSeparator2_TopConst_iPad" destination="hac-lC-bun" id="Q58-pK-wkL"/>
+                <outlet property="headerSeparator2_TopConst_iPhone" destination="Wp3-Pg-gy4" id="uaW-Oa-Z27"/>
                 <outlet property="headerView" destination="AOS-JJ-toU" id="CZy-zk-TRj"/>
                 <outlet property="iPadHeaderCenterConstraints" destination="Dqv-SF-ipm" id="h7Y-ks-ACV"/>
                 <outlet property="iPadheaderView" destination="i6Z-ga-ATv" id="J69-Se-ZBx"/>
@@ -204,7 +208,7 @@
                     </constraints>
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tcL-Q6-O87">
-                    <rect key="frame" x="106" y="0.0" width="1" height="55"/>
+                    <rect key="frame" x="106" y="1" width="1" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -212,7 +216,7 @@
                     </constraints>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7oL-ir-tKd">
-                    <rect key="frame" x="213" y="0.0" width="1" height="55"/>
+                    <rect key="frame" x="213" y="1" width="1" height="54"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
@@ -231,12 +235,12 @@
                 <constraint firstAttribute="bottom" secondItem="7oL-ir-tKd" secondAttribute="bottom" id="Gq5-QP-mku"/>
                 <constraint firstItem="xzb-xT-q5H" firstAttribute="top" secondItem="AOS-JJ-toU" secondAttribute="top" id="HYN-tg-jiY"/>
                 <constraint firstAttribute="bottom" secondItem="qiV-Mg-5vL" secondAttribute="bottom" id="Iac-24-lmL"/>
-                <constraint firstItem="tcL-Q6-O87" firstAttribute="top" secondItem="AOS-JJ-toU" secondAttribute="top" id="Lgg-b3-N71"/>
+                <constraint firstItem="tcL-Q6-O87" firstAttribute="top" secondItem="AOS-JJ-toU" secondAttribute="top" constant="1" id="Lgg-b3-N71"/>
                 <constraint firstItem="SY5-0b-CcV" firstAttribute="leading" secondItem="tcL-Q6-O87" secondAttribute="trailing" id="O1E-1f-PEb"/>
                 <constraint firstAttribute="trailing" secondItem="qiV-Mg-5vL" secondAttribute="trailing" id="VTE-Ll-1Mj"/>
                 <constraint firstAttribute="centerX" secondItem="SY5-0b-CcV" secondAttribute="centerX" id="VlG-ss-tLu"/>
                 <constraint firstItem="7oL-ir-tKd" firstAttribute="leading" secondItem="SY5-0b-CcV" secondAttribute="trailing" id="Vnr-ip-wEd"/>
-                <constraint firstItem="7oL-ir-tKd" firstAttribute="top" secondItem="AOS-JJ-toU" secondAttribute="top" id="Wp3-Pg-gy4"/>
+                <constraint firstItem="7oL-ir-tKd" firstAttribute="top" secondItem="AOS-JJ-toU" secondAttribute="top" constant="1" id="Wp3-Pg-gy4"/>
                 <constraint firstAttribute="centerY" secondItem="xzb-xT-q5H" secondAttribute="centerY" id="ZZj-is-IR1"/>
                 <constraint firstAttribute="bottom" secondItem="tcL-Q6-O87" secondAttribute="bottom" id="bSl-rK-5FN"/>
                 <constraint firstAttribute="centerY" secondItem="SY5-0b-CcV" secondAttribute="centerY" id="qqs-6H-ZVR"/>
@@ -277,7 +281,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uka-wH-eQo">
-                            <rect key="frame" x="255" y="0.0" width="1" height="55"/>
+                            <rect key="frame" x="255" y="1" width="1" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -289,7 +293,7 @@
                     <constraints>
                         <constraint firstAttribute="centerY" secondItem="FjR-xT-MtN" secondAttribute="centerY" id="2ng-aU-0RA"/>
                         <constraint firstAttribute="centerY" secondItem="FjR-xT-MtN" secondAttribute="centerY" id="Fc6-Mc-nus"/>
-                        <constraint firstItem="uka-wH-eQo" firstAttribute="top" secondItem="tnr-lt-Efz" secondAttribute="top" id="KlN-0h-1Aj"/>
+                        <constraint firstItem="uka-wH-eQo" firstAttribute="top" secondItem="tnr-lt-Efz" secondAttribute="top" constant="1" id="KlN-0h-1Aj"/>
                         <constraint firstAttribute="bottom" secondItem="uka-wH-eQo" secondAttribute="bottom" id="Mq3-HN-5Js"/>
                         <constraint firstAttribute="centerX" secondItem="FjR-xT-MtN" secondAttribute="centerX" constant="-9" id="OkS-UQ-Pxh"/>
                         <constraint firstAttribute="trailing" secondItem="uka-wH-eQo" secondAttribute="trailing" id="Weh-Xo-t63"/>
@@ -302,7 +306,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EnK-5a-KhH">
-                            <rect key="frame" x="255" y="0.0" width="1" height="55"/>
+                            <rect key="frame" x="255" y="1" width="1" height="54"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -337,7 +341,7 @@
                         <constraint firstAttribute="centerY" secondItem="GrP-W4-GKm" secondAttribute="centerY" id="KR2-ub-2rh"/>
                         <constraint firstItem="GrP-W4-GKm" firstAttribute="leading" secondItem="Saf-0v-qFB" secondAttribute="trailing" constant="8" id="V1N-fV-dzv"/>
                         <constraint firstAttribute="centerX" secondItem="GrP-W4-GKm" secondAttribute="centerX" constant="-8" id="fv1-5S-UEW"/>
-                        <constraint firstItem="EnK-5a-KhH" firstAttribute="top" secondItem="IlV-Gq-zrV" secondAttribute="top" id="hac-lC-bun"/>
+                        <constraint firstItem="EnK-5a-KhH" firstAttribute="top" secondItem="IlV-Gq-zrV" secondAttribute="top" constant="1" id="hac-lC-bun"/>
                         <constraint firstAttribute="trailing" secondItem="EnK-5a-KhH" secondAttribute="trailing" id="m0R-r9-MUz"/>
                         <constraint firstAttribute="centerY" secondItem="Saf-0v-qFB" secondAttribute="centerY" id="t5K-ne-dB4"/>
                     </constraints>

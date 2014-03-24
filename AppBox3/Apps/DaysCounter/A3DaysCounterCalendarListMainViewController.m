@@ -79,6 +79,15 @@
     for (NSLayoutConstraint *layout in _verticalSeperators) {
         layout.constant = 1.0 / [[UIScreen mainScreen] scale];
     }
+    
+    if (IS_IPHONE) {
+        _headerSeparator1_TopConst_iPhone.constant = 0.5;
+        _headerSeparator2_TopConst_iPhone.constant = 0.5;
+    }
+    else {
+        _headerSeparator1_TopConst_iPad.constant = 0.5;
+        _headerSeparator2_TopConst_iPad.constant = 0.5;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -102,7 +111,8 @@
     
     if (![_addEventButton isDescendantOfView:self.view]) {
         _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                           //self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
                                            _addEventButton.frame.size.width,
                                            _addEventButton.frame.size.height);
         [self.view addSubview:_addEventButton];
@@ -136,7 +146,8 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                       self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                       //self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
+                                       self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
                                        _addEventButton.frame.size.width,
                                        _addEventButton.frame.size.height);
     _addEventButton.hidden = NO;
@@ -189,12 +200,24 @@
 
 - (void)adjustFontSizeOfCell:(UITableViewCell *)cell withCellType:(A3DaysCounterCalendarCellType)cellType {
     // suffix is tag
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
     UILabel *eventNameLabel12 = (UILabel*)[cell viewWithTag:12];
     UILabel *periodLabel13 = (UILabel*)[cell viewWithTag:13];
     UILabel *periodLabel14 = (UILabel*)[cell viewWithTag:14];
-    eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
-    periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
+    
+    textLabel.font = [UIFont systemFontOfSize:30];
+    countLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:65];
+    if (IS_IPHONE) {
+        eventNameLabel12.font = [UIFont systemFontOfSize:13];
+        periodLabel13.font = [UIFont systemFontOfSize:11];
+        periodLabel14.font = [UIFont systemFontOfSize:11];
+    }
+    else {
+        eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+        periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    }
 }
 
 #pragma mark - action method
@@ -424,10 +447,10 @@
 #pragma mark - Table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
-    if ( tableView == self.tableView && ( indexPath.row >= [_itemArray count] && indexPath.row+1 >= numberOfPage) ) {
-        return 42.0;
-    }
+//    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
+//    if ( tableView == self.tableView && ( indexPath.row >= [_itemArray count] && indexPath.row+1 >= numberOfPage) ) {
+//        return 42.0;
+//    }
     return 84.0;
 }
 
