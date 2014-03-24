@@ -155,7 +155,9 @@
 #pragma mark Initialize FontSize
 - (void)contentSizeDidChange:(NSNotification*)noti
 {
-    [self adjustFontSizeOfHeaderView:IS_IPHONE ? _headerView : _iPadheaderView];
+    if (IS_IPAD) {
+        [self adjustFontSizeOfHeaderView:_iPadheaderView];
+    }
 }
 
 - (void)adjustFontSizeOfHeaderView:(UIView *)aView {
