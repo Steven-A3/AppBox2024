@@ -109,18 +109,18 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Nm-fW-aXf">
-                        <rect key="frame" x="20" y="9" width="22" height="22"/>
+                        <rect key="frame" x="-2" y="-2" width="44" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="22" id="P2g-dr-Id4"/>
-                            <constraint firstAttribute="height" constant="22" id="iIc-c8-zLN"/>
+                            <constraint firstAttribute="width" constant="44" id="P2g-dr-Id4"/>
+                            <constraint firstAttribute="height" constant="44" id="iIc-c8-zLN"/>
                         </constraints>
                         <state key="normal">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
                     <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_circle" translatesAutoresizingMaskIntoConstraints="NO" id="VZI-92-7Fd">
-                        <rect key="frame" x="50" y="14" width="12" height="12"/>
+                        <rect key="frame" x="39" y="14" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="81R-Bd-gzZ"/>
@@ -128,7 +128,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EYb-qN-vne">
-                        <rect key="frame" x="70" y="9" width="185" height="21"/>
+                        <rect key="frame" x="59" y="9" width="196" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
@@ -143,11 +143,11 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="Nox-TX-V4B" firstAttribute="leading" secondItem="EYb-qN-vne" secondAttribute="trailing" constant="16" id="4jw-uH-lDr"/>
+                    <constraint firstItem="VZI-92-7Fd" firstAttribute="leading" secondItem="PpS-h4-JuW" secondAttribute="leading" constant="39" id="B7Z-2C-zl1"/>
                     <constraint firstAttribute="centerY" secondItem="EYb-qN-vne" secondAttribute="centerY" id="DWA-wI-jTw"/>
                     <constraint firstAttribute="trailing" secondItem="Nox-TX-V4B" secondAttribute="trailing" constant="20" id="JL0-qB-9wS"/>
                     <constraint firstAttribute="centerY" secondItem="VZI-92-7Fd" secondAttribute="centerY" id="L9u-Mj-J7n"/>
-                    <constraint firstItem="VZI-92-7Fd" firstAttribute="leading" secondItem="6Nm-fW-aXf" secondAttribute="trailing" constant="8" id="PSD-FX-QCa"/>
-                    <constraint firstItem="6Nm-fW-aXf" firstAttribute="leading" secondItem="PpS-h4-JuW" secondAttribute="leading" constant="20" id="ajh-0F-DcM"/>
+                    <constraint firstItem="6Nm-fW-aXf" firstAttribute="leading" secondItem="PpS-h4-JuW" secondAttribute="leading" constant="-2" id="ajh-0F-DcM"/>
                     <constraint firstAttribute="centerY" secondItem="Nox-TX-V4B" secondAttribute="centerY" id="bq6-4z-5en"/>
                     <constraint firstAttribute="centerY" secondItem="6Nm-fW-aXf" secondAttribute="centerY" id="dhu-wr-5fG"/>
                     <constraint firstItem="EYb-qN-vne" firstAttribute="leading" secondItem="VZI-92-7Fd" secondAttribute="trailing" constant="8" id="kdI-ra-yhq"/>
