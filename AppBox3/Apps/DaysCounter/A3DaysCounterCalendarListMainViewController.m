@@ -147,7 +147,8 @@
     NSInteger eventNumber = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
     NSDate *latestDate = [[A3DaysCounterModelManager sharedManager] dateOfLatestEvent];
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
-    _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
+    //_numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
+    _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
     _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-/-/-");
     _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
 }
@@ -373,13 +374,15 @@
                 }
                 
                 if ( diffDay == 0 ) {
-                    periodLabel.text = @"Release 0 days";
+//                    periodLabel.text = @"Release 0 days";
+                    periodLabel.text = @"0 days";
                 }
                 else {
-                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
-                                                                                                                                             fromDate:today
-                                                                                                                                               toDate:calcDate
-                                                                                                                                             isAllDay:[event.isAllDay boolValue]],
+//                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
+                    periodLabel.text = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
+                                                                                                                                     fromDate:today
+                                                                                                                                       toDate:calcDate
+                                                                                                                                     isAllDay:[event.isAllDay boolValue]],
                                         diffDay > 0 ? @"until" : @"since"];
                 }
                 
