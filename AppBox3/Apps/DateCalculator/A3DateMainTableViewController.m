@@ -1029,8 +1029,9 @@ NSString *kCalculationString;
 //    [self.tableView scrollRectToVisible:CGRectMake(0, _oldTableOffset, 1, 1) animated:YES];
     
 //    [self.tableView setContentOffset:CGPointMake(0.0, _oldTableOffset) animated:YES];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
-    
+	FNLOG(@"%f", self.tableView.contentInset.top);
+    [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentInset.top, 1, 1) animated:YES];
+
     [self.fromToTextField resignFirstResponder];
     _isKeyboardShown = NO;
     
