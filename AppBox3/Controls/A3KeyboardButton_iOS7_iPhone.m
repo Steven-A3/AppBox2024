@@ -8,6 +8,7 @@
 
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "common.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3KeyboardButton_iOS7_iPhone ()
 
@@ -77,7 +78,7 @@
 - (void)setSelected:(BOOL)selected {
 	[super setSelected:selected];
 
-	self.backgroundColor = selected ? self.tintColor : [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
+	self.backgroundColor = selected ? [A3AppDelegate instance].themeColor : [UIColor colorWithRed:193.0/255.0 green:196.0/255.0 blue:200.0/255.0 alpha:1.0];
 }
 
 @end

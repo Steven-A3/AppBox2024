@@ -226,6 +226,12 @@
 
 }
 
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.section == 3) {
+		[self alertSecurityInfo];
+	}
+}
+
 - (void)alertSecurityInfo {
 	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Information"
 														message:NSLocalizedString(@"SECURITY_INFO", nil)
