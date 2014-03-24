@@ -179,6 +179,8 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 }
 
 - (IBAction)secondaction:(id)sender {
+	[[UIDevice currentDevice] playInputClick];
+	
     A3KeyboardButton_iOS7_iPhone * button = (A3KeyboardButton_iOS7_iPhone *)sender;
     [self setLevel:!button.selected ? 0 : 1];
     button.selected = !button.selected;
