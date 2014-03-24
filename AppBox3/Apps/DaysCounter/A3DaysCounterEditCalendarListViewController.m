@@ -118,10 +118,12 @@
     if ( cellType == CalendarCellType_System ) {
         imageView.hidden = YES;
         cell.editingAccessoryView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+        cell.editingAccessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     else {
         imageView.hidden = NO;
+        cell.editingAccessoryView = nil;
         cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
@@ -162,9 +164,9 @@
     DaysCounterCalendar *item = [_itemArray objectAtIndex:fromIndexPath.row];
     [_itemArray removeObjectAtIndex:fromIndexPath.row];
     [_itemArray insertObject:item atIndex:toIndexPath.row];
-    
+
     [self reorderingItems];
-    
+
 //    UITableViewCell *fromCell = [tableView cellForRowAtIndexPath:fromIndexPath];
 //    UITableViewCell *toCell = [tableView cellForRowAtIndexPath:toIndexPath];
 //    if (fromIndexPath.row == ([_itemArray count] - 1)) {
@@ -180,7 +182,7 @@
 //    else {
 //        toCell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 //    }
-    
+
     //[tableView reloadRowsAtIndexPaths:@[fromIndexPath, toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
     //[tableView reloadData];
     [tableView reloadData];
