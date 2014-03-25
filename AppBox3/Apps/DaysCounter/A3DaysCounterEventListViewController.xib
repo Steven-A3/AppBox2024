@@ -9,9 +9,10 @@
                 <outlet property="addEventButton" destination="1yj-jE-SCC" id="AUB-Nq-Vzr"/>
                 <outlet property="bottomToolbar" destination="S3u-7Y-Yjq" id="kzk-zt-0mB"/>
                 <outlet property="editButton" destination="c85-mX-z3r" id="kkj-p7-CFz"/>
-                <outlet property="headerSeperatorHeightConst" destination="aiC-z6-xIk" id="whK-ua-UgY"/>
-                <outlet property="headerSeperatorView" destination="v6s-kv-ZVW" id="LZj-DC-iit"/>
+                <outlet property="headerSeperatorView" destination="uWa-Al-TvQ" id="aji-RM-t5j"/>
                 <outlet property="headerView" destination="rtE-zw-6ea" id="XKW-Vo-8PF"/>
+                <outlet property="headerViewSeparatorHeightConst" destination="hIe-Q4-k75" id="j24-M5-hDh"/>
+                <outlet property="headerViewTopConst" destination="a4n-BD-fsq" id="n5r-ge-BpZ"/>
                 <outlet property="rightButtonsView" destination="1x4-LW-hvp" id="i6Y-Ee-1cf"/>
                 <outlet property="searchButton" destination="BQK-6w-vHW" id="GLY-Wy-Gxl"/>
                 <outlet property="searchDisplayController" destination="dwC-tC-hWB" id="hvZ-AF-qKg"/>
@@ -52,22 +53,22 @@
                                     <action selector="changeSortAction:" destination="-1" eventType="valueChanged" id="Tou-8a-spd"/>
                                 </connections>
                             </segmentedControl>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="v6s-kv-ZVW">
-                                <rect key="frame" x="0.0" y="41" width="320" height="1"/>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uWa-Al-TvQ">
+                                <rect key="frame" x="0.0" y="42" width="320" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="aiC-z6-xIk"/>
+                                    <constraint firstAttribute="height" constant="1" id="hIe-Q4-k75"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="v6s-kv-ZVW" firstAttribute="leading" secondItem="rtE-zw-6ea" secondAttribute="leading" id="GJF-kT-50d"/>
                             <constraint firstAttribute="centerX" secondItem="S9q-hc-7Mt" secondAttribute="centerX" id="GdA-W8-wgH"/>
+                            <constraint firstAttribute="trailing" secondItem="uWa-Al-TvQ" secondAttribute="trailing" id="KPA-qt-cpG"/>
                             <constraint firstAttribute="centerY" secondItem="S9q-hc-7Mt" secondAttribute="centerY" id="Q4G-6M-t4J"/>
-                            <constraint firstAttribute="trailing" secondItem="v6s-kv-ZVW" secondAttribute="trailing" id="fnx-7G-5RS"/>
-                            <constraint firstAttribute="bottom" secondItem="v6s-kv-ZVW" secondAttribute="bottom" constant="1" id="pWc-Kt-era"/>
+                            <constraint firstItem="uWa-Al-TvQ" firstAttribute="top" secondItem="rtE-zw-6ea" secondAttribute="top" constant="42" id="a4n-BD-fsq"/>
+                            <constraint firstItem="uWa-Al-TvQ" firstAttribute="leading" secondItem="rtE-zw-6ea" secondAttribute="leading" id="zdK-Nw-It9"/>
                         </constraints>
                         <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     </view>

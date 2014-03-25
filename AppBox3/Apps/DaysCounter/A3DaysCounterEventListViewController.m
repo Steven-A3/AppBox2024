@@ -25,7 +25,7 @@
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterEventListDateCell.h"
 #import "A3DaysCounterEventListNameCell.h"
-
+#import "A3DaysCounterEventListSectionHeader.h"
 
 @interface A3DaysCounterEventListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -66,9 +66,12 @@
         CGRect rect = self.tableView.tableHeaderView.frame;
         rect.size.height += 0.5;
         self.tableView.tableHeaderView.frame = rect;
+        self.headerViewSeparatorHeightConst.constant = 0.5;
+        self.headerViewTopConst.constant += 0.5;
     }
-    _headerSeperatorHeightConst.constant = (1.0 / [[UIScreen mainScreen] scale] );
+
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 170.0 : 300.0);
+
     [self.view layoutIfNeeded];
 }
 
@@ -230,7 +233,7 @@
         NSInteger retNumber = 0;
         if ( section+1 >= [_itemArray count] ) {
             CGFloat totalHeight = 0.0;
-            for( NSDictionary *dict in _itemArray ) {
+            for ( NSDictionary *dict in _itemArray ) {
                 totalHeight += 23.0;
                 NSArray *items = [dict objectForKey:EventKey_Items];
                 totalHeight += [items count] * 62.0;
@@ -299,9 +302,18 @@
         yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
     
+    ((A3DaysCounterEventListSectionHeader *)headerView).monthLeadingConst.constant = IS_IPHONE ? 15 : 28;
+    
     NSDate *date = [dict objectForKey:EventKey_Date];
     yearLabel.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper yearFromDate:date]];
     monthLabel.text = [A3DateHelper dateStringFromDate:date withFormat:@"MMMM"];
+    
+//    CGRect rect = headerView.frame;
+//    rect.origin.y = -10;
+//    headerView.frame = rect;
+    
+//    UIView *header2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 23)];
+//    header2.backgroundColor = [UIColor redColor];
     
     return headerView;
 }
@@ -333,35 +345,6 @@
     if (cell == nil) {
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:(sortType == EventSortType_Name ? 0 : 3)];
-        
-        UIView *leftView = nil;
-        if ( sortType == EventSortType_Name ) {
-            leftView = [cell viewWithTag:13];
-            ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst; 58
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst; 58
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst;
-        }
-        else {
-            leftView = [cell viewWithTag:14];
-            ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundDateLeadingConst;
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst; 57
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst;  95
-//            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst; 95
-        }
-        NSLayoutConstraint *leftConst = nil;
-        for(NSLayoutConstraint *layout in cell.contentView.constraints) {
-            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
-                leftConst = layout;
-                break;
-            }
-        }
-        
-        if ( leftConst ) {
-            leftConst.constant = ( IS_IPHONE ? 15.0 : 28.0 );
-            [cell layoutIfNeeded];
-        }
     }
     
     [self adjustFontSizeOfCell:cell];
@@ -393,7 +376,36 @@
         
         textLabel.text = item.eventName;
         UIImage *image = ([item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil);
-        imageView.image =  (image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 33.0, 33.0)]  : nil);
+        if (image) {
+            imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 33.0, 33.0)];
+            
+            if ( sortType == EventSortType_Name ) {
+                ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
+                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
+                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            }
+            else {
+                ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
+                ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 53 : 65;
+                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
+                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
+            }
+        }
+        else {
+            imageView.image = nil;
+            
+            if ( sortType == EventSortType_Name ) {
+                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
+                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            }
+            else {
+                ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
+                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
+                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            }
+        }
+
+        
         NSDate *today = [NSDate date];
         NSDate *calcDate = item.startDate;
         NSInteger diffDays = 0;
@@ -500,7 +512,7 @@
 {
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     NSLayoutConstraint *widthConst = nil;
-    for(NSLayoutConstraint *layout in imageView.constraints ) {
+    for (NSLayoutConstraint *layout in imageView.constraints ) {
         if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
             widthConst = layout;
             break;
