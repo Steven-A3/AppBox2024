@@ -114,7 +114,7 @@
                 </constraints>
             </tableViewCellContentView>
         </tableViewCell>
-        <view contentMode="scaleToFill" id="XIh-tP-1mz">
+        <view contentMode="scaleToFill" id="XIh-tP-1mz" customClass="A3DaysCounterEventListSectionHeader">
             <rect key="frame" x="0.0" y="0.0" width="320" height="23"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -149,6 +149,9 @@
                 <constraint firstItem="djs-iK-yXc" firstAttribute="leading" secondItem="XIh-tP-1mz" secondAttribute="leading" constant="20" id="wI8-zm-C9v"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="monthLeadingConst" destination="wI8-zm-C9v" id="xcT-il-684"/>
+            </connections>
         </view>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="eventListDateCell" rowHeight="62" id="04y-rH-iju" customClass="A3DaysCounterEventListDateCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>

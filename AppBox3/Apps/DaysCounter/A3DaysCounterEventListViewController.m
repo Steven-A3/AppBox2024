@@ -25,7 +25,7 @@
 #import "A3DaysCounterAddEventViewController.h"
 #import "A3DaysCounterEventListDateCell.h"
 #import "A3DaysCounterEventListNameCell.h"
-
+#import "A3DaysCounterEventListSectionHeader.h"
 
 @interface A3DaysCounterEventListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -71,6 +71,7 @@
     }
 
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 170.0 : 300.0);
+
     [self.view layoutIfNeeded];
 }
 
@@ -300,6 +301,8 @@
         monthLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         yearLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
+    
+    ((A3DaysCounterEventListSectionHeader *)headerView).monthLeadingConst.constant = IS_IPHONE ? 15 : 28;
     
     NSDate *date = [dict objectForKey:EventKey_Date];
     yearLabel.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper yearFromDate:date]];
