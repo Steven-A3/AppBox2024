@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) UIColor *fillColor;
 @property (strong, nonatomic) UIColor *strokColor;
-@property (readonly,nonatomic) UILabel *dateLabel;
+@property (readonly,nonatomic) UILabel *dateLabelTop;
+@property (readonly,nonatomic) UILabel *dateLabelBottom;
 @property (strong, nonatomic) NSDate *date;
 @end
