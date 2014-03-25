@@ -92,8 +92,8 @@
         if ( self.calendarItem )
             self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events")];
     }
-    [self loadEventDatas];
     
+    [self loadEventDatas];
 }
 
 - (void)didReceiveMemoryWarning
@@ -386,7 +386,7 @@
             }
             else {
                 ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 53 : 65;
+                ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
                 ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
                 ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
             }
@@ -431,7 +431,7 @@
 //        daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue] fromDate:today toDate:calcDate isAllDay:[item.isAllDay boolValue]];//[NSString stringWithFormat:@"%d days",ABS(diffDays)];
         if ( diffDays > 0 ) {
             markLabel.text = @"Until";
-            markLabel.textColor = [UIColor colorWithRed:78.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
         }
         else {
             markLabel.text = @"Since";
