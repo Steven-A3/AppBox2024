@@ -71,6 +71,13 @@
     }
 
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 170.0 : 300.0);
+    
+    
+    [self.view addSubview:_addEventButton];
+    [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.centerX);
+        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 21));
+    }];
 
     [self.view layoutIfNeeded];
 }
@@ -79,13 +86,7 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:NO];
-    if ( ![_addEventButton isDescendantOfView:self.view] ) {
-        _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
-                                           _addEventButton.frame.size.width,
-                                           _addEventButton.frame.size.height);
-        [self.view addSubview:_addEventButton];
-    }
+
     if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ) {
         self.calendarItem = [[A3DaysCounterModelManager sharedManager] calendarItemByID:self.changedCalendarID];
         self.changedCalendarID = nil;
