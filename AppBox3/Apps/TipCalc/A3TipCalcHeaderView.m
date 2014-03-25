@@ -14,6 +14,7 @@
 #import "A3OverlappedCircleView.h"
 #import "A3DefaultColorDefines.h"
 #import "UIImage+JHExtension.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation A3TipCalcHeaderView
 {
@@ -34,10 +35,12 @@
 
 #pragma mark - initialize
 
--(id)initWithFrame:(CGRect)frame {
+-(id)initWithFrame:(CGRect)frame dataManager:(A3TipCalcDataManager *)dataManager {
     self = [super initWithFrame:frame];
     
     if (self) {
+		self.dataManager = dataManager;
+
         [self initializeSubViews];
         [self setupConstraints];
         [self setResult:nil];
@@ -48,17 +51,17 @@
 
 -(void)layoutSubviews {
     [super layoutSubviews];
-    [self setResult:[A3TipCalcDataManager sharedInstance].tipCalcData];
+    [self setResult:self.dataManager.tipCalcData];
     [self adjustMeterViewConstraints];
     
-    _beforeSplitButton.hidden = [[A3TipCalcDataManager sharedInstance] isSplitOptionOn] == YES ? NO : YES;
-    _perPersonButton.hidden = [[A3TipCalcDataManager sharedInstance] isSplitOptionOn] == YES ? NO : YES;
+    _beforeSplitButton.hidden = [self.dataManager isSplitOptionOn] == YES ? NO : YES;
+    _perPersonButton.hidden = [self.dataManager isSplitOptionOn] == YES ? NO : YES;
     _beforeSplitButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     _perPersonButton.titleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     [super layoutSubviews];
     
-    if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+    if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
         _beforeSplitButton.selected = YES;
         _perPersonButton.selected = NO;
     }
@@ -80,7 +83,9 @@
 	[self addSubview:_perPersonButton];
 	[self addSubview:_detailInfoButton];
 	[_beforeSplitButton setTitle:@"Before Split" forState:UIControlStateNormal];
+	[_beforeSplitButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
 	[_perPersonButton setTitle:@"Per Person" forState:UIControlStateNormal];
+	[_perPersonButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     _detailInfoButton.frame = CGRectMake(0.0, 0.0, 44.0, 44.0);
     [_detailInfoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
     [_detailInfoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
@@ -225,8 +230,8 @@
 }
 
 - (void)showDetailInfoButton {
-    //if ([[A3TipCalcDataManager sharedInstance] hasCalcData] && [[A3TipCalcDataManager sharedInstance] isTaxOptionOn] && ![[A3TipCalcDataManager sharedInstance] isSplitOptionOn]) {
-    if ([[A3TipCalcDataManager sharedInstance] hasCalcData] && [[A3TipCalcDataManager sharedInstance] isTaxOptionOn]) {
+    //if ([self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn] && ![self.dataManager isSplitOptionOn]) {
+    if ([self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn]) {
         self.detailInfoButton.hidden = NO;
         //_totalLabelTrailingConst.equalTo(@(-CGRectGetWidth(_detailInfoButton.bounds)));
         
@@ -254,15 +259,15 @@
     // tipLabel
     double dTip = 0.0;
     if (result) {
-        if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_PerPerson) {
-            dTip = [[[A3TipCalcDataManager sharedInstance] tipValueWithSplit] doubleValue];
+        if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
+            dTip = [[self.dataManager tipValueWithSplit] doubleValue];
         }
         else {
-            dTip = [[[A3TipCalcDataManager sharedInstance] tipValue] doubleValue];
+            dTip = [[self.dataManager tipValue] doubleValue];
         }
     }
     
-    NSString *tip = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:dTip];
+    NSString *tip = [self.dataManager currencyStringFromNum:dTip];
     NSNumberFormatter *formatter = [NSNumberFormatter new];
     [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
     NSArray * strings = @[tip, @"  Tip"];
@@ -288,21 +293,21 @@
     // totalLabel
     double dTotal = 0.0;
     if (result) {
-        if ([[A3TipCalcDataManager sharedInstance] isSplitOptionOn]) {
-            if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_PerPerson) {
-                dTotal = [[[A3TipCalcDataManager sharedInstance] totalPerPerson] doubleValue] + ([[[A3TipCalcDataManager sharedInstance] taxValue] doubleValue]  / [[[A3TipCalcDataManager sharedInstance].tipCalcData split] doubleValue]);
-                NSString *total = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:dTotal];
+        if ([self.dataManager isSplitOptionOn]) {
+            if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
+                dTotal = [[self.dataManager totalPerPerson] doubleValue] + ([[self.dataManager taxValue] doubleValue]  / [[self.dataManager.tipCalcData split] doubleValue]);
+                NSString *total = [self.dataManager currencyStringFromNum:dTotal];
                 strings = @[total, @" Total Per Person"];
             }
             else {
-                dTotal = [[[A3TipCalcDataManager sharedInstance] totalBeforeSplit] doubleValue] + [[[A3TipCalcDataManager sharedInstance] taxValue] doubleValue];
-                NSString *total = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:dTotal];
+                dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
+                NSString *total = [self.dataManager currencyStringFromNum:dTotal];
                 strings = @[total, @" Total Before Split"];
             }
         }
         else {
-            dTotal = [[[A3TipCalcDataManager sharedInstance] totalBeforeSplit] doubleValue] + [[[A3TipCalcDataManager sharedInstance] taxValue] doubleValue];
-            NSString *total = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:dTotal];
+            dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
+            NSString *total = [self.dataManager currencyStringFromNum:dTotal];
             strings = @[total, @" Total"];
         }
     }
@@ -325,7 +330,7 @@
     _totalLabel.attributedText = totalAttributeText;
     
     float fWidthRate = 0.0;
-    dTotal = [[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_BeforeSplit ? [[A3TipCalcDataManager sharedInstance].costBeforeTax doubleValue] : [[A3TipCalcDataManager sharedInstance].costBeforeTaxWithSplit doubleValue];
+    dTotal = [self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit ? [self.dataManager.costBeforeTax doubleValue] : [self.dataManager.costBeforeTaxWithSplit doubleValue];
     
     if (dTip > 0.0 && dTotal > 0.0) {
         if (dTotal == 0 || dTip == 0) {

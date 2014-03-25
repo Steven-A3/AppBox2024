@@ -11,18 +11,11 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3RoundedSideButton.h"
-#import "TipCalcRecently.h"
-#import "A3TipCalcDataManager.h"
 #import "A3TipCalcSettingViewController.h"
-#import "UIViewController+A3Addition.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 #import "A3TipCalcHeaderView.h"
-#import "A3NumberKeyboardViewController.h"
-#import "A3TipCalcRoundingViewController.h"
 #import "A3TipCalcHistoryViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3CurrencySelectViewController.h"
 #import "A3JHTableViewRootElement.h"
 #import "A3TableViewCheckMarkElement.h"
 #import "A3TableViewInputElement.h"
@@ -49,7 +42,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, A3TipCalcRoundingViewDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -59,6 +52,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 @property (nonatomic, strong) BasicBlock cellInputDoneButtonPressed;
 @property (nonatomic, strong) UIPopoverController * localPopoverController;
 @property (nonatomic, strong) A3TipCalcHeaderView * headerView;
+@property (nonatomic, strong) A3TipCalcDataManager *dataManager;
 
 @end
 
@@ -81,6 +75,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	return self;
 }
 
+- (A3TipCalcDataManager *)dataManager {
+	if (!_dataManager) {
+		_dataManager = [A3TipCalcDataManager new];
+		_dataManager.delegate = self;
+	}
+	return _dataManager;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -88,8 +90,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [self initialize];
     [self outputAllResultWithAnimation:NO];
     [self.headerView showDetailInfoButton];
-    if (![[A3TipCalcDataManager sharedInstance] hasCalcData] && [[A3TipCalcDataManager sharedInstance] isTaxOptionOn]) {
-        [[A3TipCalcDataManager sharedInstance] getUSTaxRateByLocation];     // to calledFromAreaTax
+    if (![self.dataManager hasCalcData] && [self.dataManager isTaxOptionOn]) {
+        [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
     }
     [self refreshMoreButtonState];
 }
@@ -117,10 +119,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.tableHeaderView = [self headerView];
     
-    [A3TipCalcDataManager terminate];
-    A3TipCalcDataManager *dataManager = [A3TipCalcDataManager sharedInstance];
-    dataManager.delegate = self;
-
     [self reloadTableDataSource];
     [self registerContentSizeCategoryDidChangeNotification];
 }
@@ -158,7 +156,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 {
     CGRect frame = CGRectZero;
     if (!_headerView) {
-        if ([[A3TipCalcDataManager sharedInstance] isSplitOptionOn]) {
+        if ([self.dataManager isSplitOptionOn]) {
             if (IS_IPAD) {
                 frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), IS_RETINA ? 192.5 : 193);
             }
@@ -175,7 +173,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             }
         }
 
-        _headerView = [[A3TipCalcHeaderView alloc] initWithFrame:frame];
+        _headerView = [[A3TipCalcHeaderView alloc] initWithFrame:frame dataManager:self.dataManager];
+		_headerView.dataManager = self.dataManager;
         [_headerView.beforeSplitButton addTarget:self action:@selector(beforeSplitButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.perPersonButton addTarget:self action:@selector(perPersonButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
         [_headerView.detailInfoButton addTarget:self action:@selector(detailButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
@@ -183,7 +182,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     else {
         frame = _headerView.frame;
         
-        if ([[A3TipCalcDataManager sharedInstance] isSplitOptionOn]) {
+        if ([self.dataManager isSplitOptionOn]) {
             if (IS_IPAD) {
                 frame = CGRectMake(0, 0, CGRectGetWidth(self.view.frame), IS_RETINA ? 192.5 : 193);
             }
@@ -213,15 +212,15 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     topLine.backgroundColor = [UIColor colorWithRed:178/255.0 green:178/255.0 blue:178/255.0 alpha:1.0];
     UIButton *percentButton15 = [UIButton buttonWithType:UIButtonTypeCustom];
     [percentButton15 setTitle:@"15%" forState:UIControlStateNormal];
-    [percentButton15 setTitleColor:[UIColor colorWithRed:0.0 green:122/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [percentButton15 setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     [percentButton15 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     percentButton15.frame = CGRectMake(15, 0, 50, 45);
     percentButton15.tag = 15;
     [percentButton15 addTarget:self action:@selector(keyboardAccessoryButtonTouchedUp:) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UIButton *percentButton20 = [UIButton buttonWithType:UIButtonTypeCustom];
     [percentButton20 setTitle:@"20%" forState:UIControlStateNormal];
-    [percentButton20 setTitleColor:[UIColor colorWithRed:0.0 green:122/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [percentButton20 setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     [percentButton20 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     percentButton20.frame = CGRectMake(15 + 50 + 10, 0, 50, 45);
     percentButton20.tag = 20;
@@ -229,7 +228,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     UIButton *percentButton25 = [UIButton buttonWithType:UIButtonTypeCustom];
     [percentButton25 setTitle:@"25%" forState:UIControlStateNormal];
-    [percentButton25 setTitleColor:[UIColor colorWithRed:0.0 green:122/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [percentButton25 setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     [percentButton25 setTitleColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0] forState:UIControlStateHighlighted];
     percentButton25.frame = CGRectMake(15 + 50 + 10 + 50 + 10, 0, 50, 45);
     percentButton25.tag = 25;
@@ -239,7 +238,22 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     [accessoryView addSubview:percentButton20];
     [accessoryView addSubview:percentButton25];
     [accessoryView addSubview:topLine];
-    
+
+	[percentButton25 makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(accessoryView.right).with.offset(-28);
+		make.centerY.equalTo(accessoryView.centerY);
+	}];
+
+	[percentButton20 makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(percentButton25.left).with.offset(-25);
+		make.centerY.equalTo(accessoryView.centerY);
+	}];
+
+	[percentButton15 makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(percentButton20.left).with.offset(-25);
+		make.centerY.equalTo(accessoryView.centerY);
+	}];
+
     return accessoryView;
 }
 
@@ -267,58 +281,58 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     //    [formatter setMaximumFractionDigits:3];
     //    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
     //    [formatter setRoundingIncrement:@3];
-    //    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
+    //    test = [formatter stringFromNumber:[self.dataManager costBeforeTax]];
     //    NSLog(@"test : %@", test);
     //
     //    [formatter setRoundingMode:NSNumberFormatterRoundHalfDown];
-    //    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
+    //    test = [formatter stringFromNumber:[self.dataManager costBeforeTax]];
     //    NSLog(@"test : %@", test);
     //
     //    [formatter setRoundingMode:NSNumberFormatterRoundHalfEven];
-    //    test = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]];
+    //    test = [formatter stringFromNumber:[self.dataManager costBeforeTax]];
     //    NSLog(@"test : %@", test);
     
-    if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+    if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
         values = [NSMutableArray new];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] costBeforeTax] stringValue]];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] taxValue] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTax]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] taxValue]]];
+        //        [values addObject:[[self.dataManager costBeforeTax] stringValue]];
+        //        [values addObject:[[self.dataManager taxValue] stringValue]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTax]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager taxValue]]];
         [titles addObject:@[@"Costs", @"Tax"]];
         [details addObject:values];
         
         values = [NSMutableArray new];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] subtotal] stringValue]];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] tipValue] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] subtotal]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] tipValue]]];
+        //        [values addObject:[[self.dataManager subtotal] stringValue]];
+        //        [values addObject:[[self.dataManager tipValue] stringValue]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager subtotal]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager tipValue]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
         
         //        values = [NSMutableArray new];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] totalBeforeSplit] stringValue]];
+        //        [values addObject:[[self.dataManager totalBeforeSplit] stringValue]];
         //        [titles addObject:@[@"Total Before Split"]];
         //        [details addObject:values];
     }
-    else if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_PerPerson) {
+    else if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
         values = [NSMutableArray new];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] costBeforeTaxWithSplit] stringValue]];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] taxValueWithSplit] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] costBeforeTaxWithSplit]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] taxValueWithSplit]]];
+        //        [values addObject:[[self.dataManager costBeforeTaxWithSplit] stringValue]];
+        //        [values addObject:[[self.dataManager taxValueWithSplit] stringValue]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTaxWithSplit]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager taxValueWithSplit]]];
         [titles addObject:@[@"Costs", @"Tax"]];
         [details addObject:values];
         
         values = [NSMutableArray new];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] subtotalWithSplit] stringValue]];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] tipValueWithSplit] stringValue]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] subtotalWithSplit]]];
-        [values addObject:[formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance] tipValueWithSplit]]];
+        //        [values addObject:[[self.dataManager subtotalWithSplit] stringValue]];
+        //        [values addObject:[[self.dataManager tipValueWithSplit] stringValue]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager subtotalWithSplit]]];
+        [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplit]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
         
         //        values = [NSMutableArray new];
-        //        [values addObject:[[[A3TipCalcDataManager sharedInstance] totalPerPerson] stringValue]];
+        //        [values addObject:[[self.dataManager totalPerPerson] stringValue]];
         //        [titles addObject:@[@"Total Per Person"]];
         //        [details addObject:values];
     }
@@ -340,7 +354,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 {
     _headerView.beforeSplitButton.selected = YES;
     _headerView.perPersonButton.selected = NO;
-    [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_BeforeSplit;
+	self.dataManager.tipSplitOption = TCTipSplitOption_BeforeSplit;
     
     [self outputAllResultWithAnimation:YES];
 }
@@ -348,7 +362,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)perPersonButtonTouchedUp:(id)aSender {
     _headerView.beforeSplitButton.selected = NO;
     _headerView.perPersonButton.selected = YES;
-    [A3TipCalcDataManager sharedInstance].tipSplitOption = TCTipSplitOption_PerPerson;
+	self.dataManager.tipSplitOption = TCTipSplitOption_PerPerson;
     
     [self outputAllResultWithAnimation:YES];
 }
@@ -373,13 +387,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     // Sections
     NSMutableArray *sections = [NSMutableArray new];
     // Section 0
-    if ([[A3TipCalcDataManager sharedInstance] isTaxOptionOn]) {
+    if ([self.dataManager isTaxOptionOn]) {
         [sections addObject:@"KNOWN VALUE"];
     }
     // Section 1
     [sections addObject:@""];
     // Section 2
-    if ([[A3TipCalcDataManager sharedInstance] isRoundingOptionOn]) {
+    if ([self.dataManager isRoundingOptionOn]) {
         [sections addObject:@"ROUNDING METHOD"];
     }
     
@@ -388,13 +402,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     
     // Rows
     NSMutableArray * sectionsRows = [NSMutableArray new];
-    if ([[A3TipCalcDataManager sharedInstance] isTaxOptionOn]) {
+    if ([self.dataManager isTaxOptionOn]) {
         [sectionsRows addObject:[self tableSectionDataAtSection:0]];
     }
     
     [sectionsRows addObject:[self tableSectionDataAtSection:1]];
     
-    if ([[A3TipCalcDataManager sharedInstance] isRoundingOptionOn]) {
+    if ([self.dataManager isRoundingOptionOn]) {
         [sectionsRows addObject:[self tableSectionDataAtSection:2]];
     }
     
@@ -413,12 +427,12 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3TableViewCheckMarkElement *subtotal = [A3TableViewCheckMarkElement new];
             subtotal.title = @"Costs After Tax";
             subtotal.identifier = RowElementID_SubTotal;
-            subtotal.checked = [[A3TipCalcDataManager sharedInstance] knownValue] == TCKnownValue_Subtotal ? YES : NO;
+            subtotal.checked = [self.dataManager knownValue] == TCKnownValue_Subtotal ? YES : NO;
             
             A3TableViewCheckMarkElement *costsBeforeTax = [A3TableViewCheckMarkElement new];
             costsBeforeTax.title = @"Costs Before Tax";
             costsBeforeTax.identifier = RowElementID_CostsBeforeTax;
-            costsBeforeTax.checked = [[A3TipCalcDataManager sharedInstance] knownValue] == TCKnownValue_CostsBeforeTax ? YES : NO;
+            costsBeforeTax.checked = [self.dataManager knownValue] == TCKnownValue_CostsBeforeTax ? YES : NO;
             
             result = @[subtotal, costsBeforeTax];
         }
@@ -428,14 +442,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         {
             NSMutableArray *elements = [NSMutableArray new];
             A3TableViewInputElement *costs = [A3TableViewInputElement new];
-            if ([[A3TipCalcDataManager sharedInstance].tipCalcData.showTax boolValue]) {
-                costs.title = [[A3TipCalcDataManager sharedInstance] knownValue] == TCKnownValue_Subtotal ? @"Costs After Tax" : @"Costs Before Tax";
+            if ([self.dataManager.tipCalcData.showTax boolValue]) {
+                costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? @"Costs After Tax" : @"Costs Before Tax";
             }
             else {
                 costs.title = @"Cost";
             }
             
-            costs.value = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance].tipCalcData costs]];
+            costs.value = [formatter stringFromNumber:[self.dataManager.tipCalcData costs]];
             costs.inputType = A3TableViewEntryTypeCurrency;
             costs.bigButton1Type = A3TableViewBigButtonTypeCurrency;
             costs.bigButton2Type = A3TableViewBigButtonTypeCalculator;
@@ -449,16 +463,16 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             costs.identifier = RowElementID_Costs;
             [elements addObject:costs];
 
-            if ([[A3TipCalcDataManager sharedInstance] isTaxOptionOn]) {
+            if ([self.dataManager isTaxOptionOn]) {
                 A3TableViewInputElement *tax = [A3TableViewInputElement new];
                 tax.title = @"Tax";
-                tax.value = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance].tipCalcData tax]];
+                tax.value = [formatter stringFromNumber:[self.dataManager.tipCalcData tax]];
                 tax.inputType = A3TableViewEntryTypeCurrency;
                 tax.bigButton1Type = A3TableViewBigButtonTypePercent;
                 tax.bigButton2Type = A3TableViewBigButtonTypeCurrency;
                 tax.prevEnabled = YES;
                 tax.nextEnabled = YES;
-                tax.valueType = [[A3TipCalcDataManager sharedInstance].tipCalcData.isPercentTax boolValue] ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
+                tax.valueType = [self.dataManager.tipCalcData.isPercentTax boolValue] ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
                 tax.onEditingBegin = [self cellTextInputBeginBlock];
                 tax.onEditingValueChanged = [self cellTextInputChangedBlock];
                 tax.onEditingFinished = [self cellTextInputFinishedBlock];
@@ -470,13 +484,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             A3TableViewInputElement *tip = [A3TableViewInputElement new];
             tip.title = @"Tip";
-            tip.value = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance].tipCalcData tip]];
+            tip.value = [formatter stringFromNumber:[self.dataManager.tipCalcData tip]];
             tip.inputType = A3TableViewEntryTypeCurrency;
             tip.bigButton1Type = A3TableViewBigButtonTypePercent;
             tip.bigButton2Type = A3TableViewBigButtonTypeCurrency;
             tip.prevEnabled = YES;
             tip.nextEnabled = YES;
-            tip.valueType = [[A3TipCalcDataManager sharedInstance].tipCalcData.isPercentTip boolValue] ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
+            tip.valueType = [self.dataManager.tipCalcData.isPercentTip boolValue] ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
             tip.onEditingBegin = [self cellTextInputBeginBlock];
             tip.onEditingValueChanged = [self cellTextInputChangedBlock];
             tip.onEditingFinished = [self cellTextInputFinishedBlock];
@@ -484,10 +498,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             tip.identifier = RowElementID_Tip;
             [elements addObject:tip];
 
-            if ([[A3TipCalcDataManager sharedInstance] isSplitOptionOn]) {
+            if ([self.dataManager isSplitOptionOn]) {
                 A3TableViewInputElement *split = [A3TableViewInputElement new];
                 split.title = @"Split";
-                split.value = [formatter stringFromNumber:[[A3TipCalcDataManager sharedInstance].tipCalcData split]];
+                split.value = [formatter stringFromNumber:[self.dataManager.tipCalcData split]];
                 split.inputType = A3TableViewEntryTypeSimpleNumber;
                 split.valueType = A3TableViewValueTypeNumber;
                 split.bigButton1Type = A3TableViewBigButtonTypePercent;
@@ -511,13 +525,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             A3JHTableViewSelectElement * value = [A3JHTableViewSelectElement new];
             value.title = @"Value";
             value.items = @[@"Tip", @"Total", @"Total Per Person", @"Tip Per Person"];
-            value.selectedIndex = [[A3TipCalcDataManager sharedInstance] roundingMethodValue];
+            value.selectedIndex = [self.dataManager roundingMethodValue];
             value.identifier = RowElementID_Value;
             
             A3JHTableViewSelectElement * option = [A3JHTableViewSelectElement new];
             option.title = @"Option";
             option.items = @[@"Exact", @"Up", @"Down", @"Off"];
-            option.selectedIndex = [[A3TipCalcDataManager sharedInstance] roundingMethodOption];
+            option.selectedIndex = [self.dataManager roundingMethodOption];
             option.identifier = RowElementID_Option;
             result = @[value, option];
         }
@@ -598,20 +612,20 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 //                    case RowElementID_Costs:
 //                    {
 //                        element.value = textField.text;
-//                        [[A3TipCalcDataManager sharedInstance] setTipCalcDataCost:@([textField.text doubleValue])];
+//                        [self.dataManager setTipCalcDataCost:@([textField.text doubleValue])];
 //                    }
 //                        break;
 //                    case RowElementID_Tax:
 //                    {
 //                        element.value = [textField text];
-//                        [[A3TipCalcDataManager sharedInstance] setTipCalcDataTax:@([textField.text doubleValue])
+//                        [self.dataManager setTipCalcDataTax:@([textField.text doubleValue])
 //                                                                   isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO ];
 //                    }
 //                        break;
 //                    case RowElementID_Tip:
 //                    {
 //                        element.value = [textField text];
-//                        [[A3TipCalcDataManager sharedInstance] setTipCalcDataTip:@([textField.text doubleValue])
+//                        [self.dataManager setTipCalcDataTip:@([textField.text doubleValue])
 //                                                                   isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO];
 //                    }
 //                        break;
@@ -619,7 +633,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 //                    {
 //                        //element.value = @([textField.text doubleValue]);
 //                        element.value = [textField text];
-//                        [[A3TipCalcDataManager sharedInstance] setTipCalcDataSplit:@([textField.text doubleValue])];
+//                        [self.dataManager setTipCalcDataSplit:@([textField.text doubleValue])];
 //                    }
 //                        break;
 //                        
@@ -638,24 +652,24 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             switch (element.identifier) {
                 case RowElementID_Costs:
                 {
-                    [[A3TipCalcDataManager sharedInstance] setTipCalcDataCost:value];
+                    [weakSelf.dataManager setTipCalcDataCost:value];
                 }
                     break;
                 case RowElementID_Tax:
                 {
-                    [[A3TipCalcDataManager sharedInstance] setTipCalcDataTax:value
+                    [weakSelf.dataManager setTipCalcDataTax:value
                                                                isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO ];
                 }
                     break;
                 case RowElementID_Tip:
                 {
-                    [[A3TipCalcDataManager sharedInstance] setTipCalcDataTip:value
+                    [weakSelf.dataManager setTipCalcDataTip:value
                                                                isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO];
                 }
                     break;
                 case RowElementID_Split:
                 {
-                    [[A3TipCalcDataManager sharedInstance] setTipCalcDataSplit:value];
+                    [weakSelf.dataManager setTipCalcDataSplit:value];
                 }
                     break;
                     
@@ -664,7 +678,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             }
             
             [weakSelf.headerView showDetailInfoButton];
-            [weakSelf.headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
+            [weakSelf.headerView setResult:weakSelf.dataManager.tipCalcData withAnimation:YES];
             [weakSelf refreshMoreButtonState];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         };
@@ -677,7 +691,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     if (!_cellInputDoneButtonPressed) {
         __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
-            if ([[A3TipCalcDataManager sharedInstance].tipCalcData.costs doubleValue] > 0 && [[A3TipCalcDataManager sharedInstance].tipCalcData.tip doubleValue] > 0) {
+            if ([weakSelf.dataManager.tipCalcData.costs doubleValue] > 0 && [weakSelf.dataManager.tipCalcData.tip doubleValue] > 0) {
                 [weakSelf scrollToTopOfTableView];
             }
         };
@@ -690,7 +704,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark - Delegate
 #pragma mark Settings
 - (void)tipCalcSettingsChanged {
-    [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
+    [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
     //    [UIView animateWithDuration:0.3 animations:^{
     self.tableView.tableHeaderView = [self headerView];
     [self reloadTableDataSource];
@@ -705,10 +719,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 #pragma mark A3TipCalcHistorySelectDelegate
 - (void)didSelectHistoryData:(TipCalcHistory *)aHistory {
-    [[A3TipCalcDataManager sharedInstance] historyToRecently:aHistory];
+    [self.dataManager historyToRecently:aHistory];
 
     self.tableView.tableHeaderView = [self headerView];
-    [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
+    [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
     [self reloadTableDataSource];
     [self.tableView reloadData];
 }
@@ -722,7 +736,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)tipCalcRoundingChanged {
-    [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
+    [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
     [self reloadTableDataSource];
     [self.tableView reloadData];
 }
@@ -733,23 +747,23 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     viewController.root.selectedIndex = index;
     
     if ([viewController.root.title isEqualToString:@"Option"]) {
-        [A3TipCalcDataManager sharedInstance].roundingMethodOption = index;
+		self.dataManager.roundingMethodOption = index;
         
-        NSNumber * result = [[A3TipCalcDataManager sharedInstance] numberByRoundingMethodForValue:@0.4];
+        NSNumber * result = [self.dataManager numberByRoundingMethodForValue:@0.4];
         NSLog(@"result: %@", result);
         
-        result = [[A3TipCalcDataManager sharedInstance] numberByRoundingMethodForValue:@0.5];
+        result = [self.dataManager numberByRoundingMethodForValue:@0.5];
         NSLog(@"result: %@", result);
         
-        result = [[A3TipCalcDataManager sharedInstance] numberByRoundingMethodForValue:@0.6];
+        result = [self.dataManager numberByRoundingMethodForValue:@0.6];
         NSLog(@"result: %@", result);
     }
     else {
-        [A3TipCalcDataManager sharedInstance].roundingMethodValue = index;
+		self.dataManager.roundingMethodValue = index;
     }
     
     [self.headerView showDetailInfoButton];
-    [self.headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
+    [self.headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
     [self refreshMoreButtonState];
     [self.tableView reloadData];
 }
@@ -757,7 +771,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark Location Manager Delegate
 - (void)dataManager:(id)manager taxValueUpdated:(NSNumber *)taxRate {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
-	[[A3TipCalcDataManager sharedInstance] setTipCalcDataTax:taxRate isPercentType:YES];
+	[self.dataManager setTipCalcDataTax:taxRate isPercentType:YES];
     _taxElement.value = [formatter stringFromNumber:taxRate];
     _taxElement.valueType = A3TableViewValueTypePercent;
 
@@ -767,11 +781,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark - private
 - (void)outputAllResultWithAnimation:(BOOL)animate
 {
-    [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:animate];
+    [_headerView setResult:self.dataManager.tipCalcData withAnimation:animate];
     [self reloadTableDataSource];
     [self.tableView reloadData];
     
-    if ([[A3TipCalcDataManager sharedInstance] tipSplitOption] == TCTipSplitOption_BeforeSplit) {
+    if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
         _headerView.beforeSplitButton.selected = YES;
         _headerView.perPersonButton.selected = NO;
     }
@@ -785,8 +799,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)changePlaceHolder
 {
     NSString* strPlaceHoler = @"0%";
-    if(![[A3TipCalcDataManager sharedInstance].tipCalcData.isPercentTax boolValue])
-        strPlaceHoler = [NSString stringWithFormat:@"%@0", [A3TipCalcDataManager sharedInstance].tipCalcData.currenySymbol];
+    if(![self.dataManager.tipCalcData.isPercentTax boolValue])
+        strPlaceHoler = [NSString stringWithFormat:@"%@0", self.dataManager.tipCalcData.currenySymbol];
     
     
     ((UITextField *)self.firstResponder).attributedPlaceholder = [[NSAttributedString alloc] initWithString:strPlaceHoler attributes:@{NSForegroundColorAttributeName: kColorPlaceHolder}];
@@ -795,9 +809,9 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 #pragma mark - currencyselected view stuff
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-    
-    [A3TipCalcDataManager sharedInstance].tipCalcData.currenyCode = selectedItem;
-    [A3TipCalcDataManager sharedInstance].tipCalcData.currenySymbol = [[A3TipCalcDataManager sharedInstance] currencySymbolFromCode:selectedItem];
+
+	self.dataManager.tipCalcData.currenyCode = selectedItem;
+	self.dataManager.tipCalcData.currenySymbol = [self.dataManager currencySymbolFromCode:selectedItem];
     
     [self outputAllResultWithAnimation:YES];
 }
@@ -887,17 +901,17 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 beforeTax.checked = NO;
                 subtotalCell.accessoryType = UITableViewCellAccessoryCheckmark;
                 beforeTaxCell.accessoryType = UITableViewCellAccessoryNone;
-                [A3TipCalcDataManager sharedInstance].knownValue = TCKnownValue_Subtotal;
+				self.dataManager.knownValue = TCKnownValue_Subtotal;
             }
             else {
                 subtotal.checked = NO;
                 beforeTax.checked = YES;
                 subtotalCell.accessoryType = UITableViewCellAccessoryNone;
                 beforeTaxCell.accessoryType = UITableViewCellAccessoryCheckmark;
-                [A3TipCalcDataManager sharedInstance].knownValue = RowElementID_CostsBeforeTax;
+				self.dataManager.knownValue = RowElementID_CostsBeforeTax;
             }
             
-            if ([[A3TipCalcDataManager sharedInstance].tipCalcData.beforeSplit intValue] == 0) {
+            if ([self.dataManager.tipCalcData.beforeSplit intValue] == 0) {
                 _headerView.beforeSplitButton.selected = YES;
                 _headerView.perPersonButton.selected = NO;
             }
@@ -906,11 +920,11 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 _headerView.perPersonButton.selected = YES;
             }
             
-            [_headerView setResult:[A3TipCalcDataManager sharedInstance].tipCalcData withAnimation:YES];
+            [_headerView setResult:self.dataManager.tipCalcData withAnimation:YES];
             
 
             UITableViewCell *costs = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
-            costs.textLabel.text = [[A3TipCalcDataManager sharedInstance] knownValue] == TCKnownValue_Subtotal ? @"Costs After Tax" : @"Costs Before Tax";
+            costs.textLabel.text = [self.dataManager knownValue] == TCKnownValue_Subtotal ? @"Costs After Tax" : @"Costs Before Tax";
         }
             break;
 
@@ -1038,7 +1052,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [self disposeInitializedCondition];
 
         
-        NSString *activityItem = [[A3TipCalcDataManager sharedInstance] sharedData];
+        NSString *activityItem = [self.dataManager sharedData];
 
         self.localPopoverController = [self presentActivityViewControllerWithActivityItems:@[activityItem] fromBarButtonItem:sender];
         self.localPopoverController.delegate = self;
@@ -1067,13 +1081,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (void)settingsButtonAction:(UIButton *)button {
 	@autoreleasepool {
-        [self disposeInitializedCondition];\
+        [self disposeInitializedCondition];
         [self setBarButtonsEnable:NO];
         
 //		A3TipCalcSettingsViewController *viewController = [[A3TipCalcSettingsViewController alloc] initWithRoot:nil];
 //        viewController.delegate = self;
 //		[self presentSubViewController:viewController];
 		A3TipCalcSettingViewController *viewController = [[A3TipCalcSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
+		viewController.dataManager = self.dataManager;
         viewController.delegate = self;
 		[self presentSubViewController:viewController];
 	}
@@ -1082,15 +1097,15 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)saveToHistoryAndInitialize:(id)sender {
     [self disposeInitializedCondition];
     
-    [[A3TipCalcDataManager sharedInstance] saveToHistory];
+    [self.dataManager saveToHistory];
     
-    if ([[A3TipCalcDataManager sharedInstance] isTaxOptionOn]) {
-        [[A3TipCalcDataManager sharedInstance] getUSTaxRateByLocation];     // to calledFromAreaTax
+    if ([self.dataManager isTaxOptionOn]) {
+        [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
     }
     
     // Initailize
     [self.headerView showDetailInfoButton];
-    //[self.headerView setResult:[[A3TipCalcDataManager sharedInstance] tipCalcData] withAnimation:YES];
+    //[self.headerView setResult:[self.dataManager tipCalcData] withAnimation:YES];
     self.tableView.tableHeaderView = self.headerView;
     [self.headerView setResult:nil withAnimation:YES];
     [self reloadTableDataSource];
@@ -1101,17 +1116,17 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (void)refreshMoreButtonState {
     if (IS_IPHONE) {
         UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-        save.enabled = [[A3TipCalcDataManager sharedInstance].tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+        save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
         if (_isShowMoreMenu) {
             UIBarButtonItem *share = [_arrMenuButtons objectAtIndex:0];
-            share.enabled = [[A3TipCalcDataManager sharedInstance].tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+            share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
         }
     }
     else {
         UIBarButtonItem *save = [self.navigationItem.rightBarButtonItems objectAtIndex:3];
-        save.enabled = [[A3TipCalcDataManager sharedInstance].tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+        save.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
         UIBarButtonItem *share = [self.navigationItem.rightBarButtonItems objectAtIndex:5];
-        share.enabled = [[A3TipCalcDataManager sharedInstance].tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
+        share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
     }
     
 }

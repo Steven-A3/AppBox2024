@@ -11,13 +11,16 @@
 
 @class A3RoundedSideButton;
 @class TipCalcRecently;
-
+@class A3TipCalcDataManager;
 
 @interface A3TipCalcHeaderView : UIView
 
+@property (nonatomic, weak) A3TipCalcDataManager *dataManager;
 @property (nonatomic, strong) A3RoundedSideButton *beforeSplitButton;
 @property (nonatomic, strong) A3RoundedSideButton *perPersonButton;
 @property (nonatomic, strong) UIButton *detailInfoButton;
+
+- (id)initWithFrame:(CGRect)frame dataManager:(A3TipCalcDataManager *)dataManager;
 
 - (void)showDetailInfoButton;
 - (void)setResult:(TipCalcRecently *)result;

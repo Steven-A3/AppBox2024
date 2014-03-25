@@ -93,15 +93,15 @@
     switch ([indexPath section]) {
         case 0:
             cell.textLabel.text = @"Tax";
-            [((UISwitch *)cell.accessoryView) setOn:[[A3TipCalcDataManager sharedInstance].tipCalcData.showTax boolValue]];
+            [((UISwitch *)cell.accessoryView) setOn:[self.dataManager.tipCalcData.showTax boolValue]];
             break;
         case 1:
             cell.textLabel.text = @"Split";
-            [((UISwitch *)cell.accessoryView) setOn:[[A3TipCalcDataManager sharedInstance].tipCalcData.showSplit boolValue]];
+            [((UISwitch *)cell.accessoryView) setOn:[self.dataManager.tipCalcData.showSplit boolValue]];
             break;
         case 2:
             cell.textLabel.text = @"Rounding Method";
-            [((UISwitch *)cell.accessoryView) setOn:[[A3TipCalcDataManager sharedInstance].tipCalcData.showRounding boolValue]];
+            [((UISwitch *)cell.accessoryView) setOn:[self.dataManager.tipCalcData.showRounding boolValue]];
             break;
             
         default:
@@ -116,12 +116,12 @@
     switch ([sender tag]) {
         case 0:
         {
-            [A3TipCalcDataManager sharedInstance].taxOption = [sender isOn];
+			self.dataManager.taxOption = [sender isOn];
             if ([sender isOn]) {
-                //[A3TipCalcDataManager sharedInstance].knownValue = TCKnownValue_CostsBeforeTax;
-                //if (![[A3TipCalcDataManager sharedInstance] hasCalcData] && [[A3TipCalcDataManager sharedInstance] isTaxByLocation] || ![[A3TipCalcDataManager sharedInstance] defaultTax]) {
-                if ([[A3TipCalcDataManager sharedInstance].taxPercent isEqualToNumber:@0]) {
-                    [[A3TipCalcDataManager sharedInstance] getUSTaxRateByLocation];
+                //self.dataManager.knownValue = TCKnownValue_CostsBeforeTax;
+                //if (![self.dataManager hasCalcData] && [self.dataManager isTaxByLocation] || ![self.dataManager defaultTax]) {
+                if ([self.dataManager.taxPercent isEqualToNumber:@0]) {
+                    [self.dataManager getUSTaxRateByLocation];
                 }
             }
             
@@ -132,7 +132,7 @@
             break;
         case 1:
         {
-            [A3TipCalcDataManager sharedInstance].splitOption = [sender isOn];
+			self.dataManager.splitOption = [sender isOn];
             
             if ([_delegate respondsToSelector:@selector(tipCalcSettingsChanged)]) {
                 [_delegate tipCalcSettingsChanged];
@@ -141,9 +141,9 @@
             break;
         case 2:
         {
-            [A3TipCalcDataManager sharedInstance].RoundingOption = [sender isOn];
+			self.dataManager.RoundingOption = [sender isOn];
             if ([sender isOn]) {
-                //[A3TipCalcDataManager sharedInstance].roundingMethodOption = TCRoundingMethodOption_Exact;
+                //self.dataManager.roundingMethodOption = TCRoundingMethodOption_Exact;
             }
             
             if ([_delegate respondsToSelector:@selector(tipCalcSettingsChanged)]) {
