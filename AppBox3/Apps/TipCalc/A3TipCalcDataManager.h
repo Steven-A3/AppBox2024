@@ -59,10 +59,6 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
     CLLocationManager* _lm;
 }
 
-
-+ (A3TipCalcDataManager*)sharedInstance;
-+ (void)terminate;
-
 @property (nonatomic, weak) id<A3TipCalcDataManagerDelegate> delegate;
 
 - (TipCalcRecently*)tipCalcData;
@@ -72,8 +68,8 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 - (void)getUSTaxRateByLocation;
 
 - (NSString*)currencyStringFromNum:(double)aNum;
-- (double)numFromCurrencyString:(NSString*)aCurreny;
-- (NSString*)stringNumFromCurrencyString:(NSString*)aCurreny;
+- (double)numFromCurrencyString:(NSString*)currency;
+- (NSString*)stringNumFromCurrencyString:(NSString*)currency;
 
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal;

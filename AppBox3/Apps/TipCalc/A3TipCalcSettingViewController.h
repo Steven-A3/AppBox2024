@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3TipCalcDataManager;
+
 @protocol A3TipCalcSettingsDelegate <NSObject>
 @required
 - (void)tipCalcSettingsChanged;
@@ -15,5 +17,8 @@
 @end
 
 @interface A3TipCalcSettingViewController : UITableViewController
-@property (nonatomic, assign) id<A3TipCalcSettingsDelegate> delegate;
+
+@property (nonatomic, weak) A3TipCalcDataManager *dataManager;
+@property (nonatomic, weak) id<A3TipCalcSettingsDelegate> delegate;
+
 @end

@@ -8,37 +8,11 @@
 
 #import "A3TipCalcDataManager.h"
 #import "TipCalcRoundMethod.h"
-#import "UIViewController+A3AppCategory.h"
-#import "A3TipCalcMainTableViewController.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "NSUserDefaults+A3Defaults.h"
-
-static A3TipCalcDataManager* g_instanceA3TipCalcDataManager = nil;
-static dispatch_once_t predpredA3TipCalcDataManager;
 
 @implementation A3TipCalcDataManager
 {
     TipCalcRecently* _tipCalcData;
 }
-
-#pragma mark - init
-+ (A3TipCalcDataManager*)sharedInstance
-{
-    dispatch_once(&predpredA3TipCalcDataManager, ^{
-        g_instanceA3TipCalcDataManager = [[A3TipCalcDataManager alloc] init];
-        
-    });
-    
-    return g_instanceA3TipCalcDataManager;
-}
-
-+ (void)terminate
-{
-    predpredA3TipCalcDataManager = 0;
-    g_instanceA3TipCalcDataManager = nil;
-}
-
-
 
 - (id)init
 {
@@ -82,9 +56,9 @@ static dispatch_once_t predpredA3TipCalcDataManager;
 
 
 
-- (double)numFromCurrencyString:(NSString*)aCurreny
+- (double)numFromCurrencyString:(NSString*)currency
 {
-    double fNum = [[[[aCurreny
+    double fNum = [[[[currency
                       stringByReplacingOccurrencesOfString:self.tipCalcData.currenySymbol withString:@""]
                      stringByReplacingOccurrencesOfString:@" " withString:@""]
                     stringByReplacingOccurrencesOfString:self.tipCalcData.currenyCode withString:@""] doubleValue];
@@ -92,9 +66,9 @@ static dispatch_once_t predpredA3TipCalcDataManager;
     return fNum;
 }
 
-- (NSString*)stringNumFromCurrencyString:(NSString*)aCurreny
+- (NSString*)stringNumFromCurrencyString:(NSString*)currency
 {
-    double fNum = [self numFromCurrencyString:aCurreny];
+    double fNum = [self numFromCurrencyString:currency];
     if(fNum != 0)
         return [NSString stringWithFormat:@"%.2f", fNum];
     else
@@ -102,31 +76,26 @@ static dispatch_once_t predpredA3TipCalcDataManager;
 }
 
 
-- (void)deepcopyRecently:(TipCalcRecently*)aSrc dest:(TipCalcRecently*)aDest
+- (void)deepCopyRecently:(TipCalcRecently *)source dest:(TipCalcRecently*)destination
 {
-    aDest.beforeSplit = aSrc.beforeSplit;
-    aDest.costs = aSrc.costs;
-    aDest.currenyCode = aSrc.currenyCode;
-//    aDest.isMain = aSrc.isMain;
-    aDest.isPercentTax = aSrc.isPercentTax;
-    aDest.isPercentTip = aSrc.isPercentTip;
-    aDest.knownValue = aSrc.knownValue;
-    aDest.showRounding = aSrc.showRounding;
-    aDest.showSplit = aSrc.showSplit;
-    aDest.showTax = aSrc.showTax;
-    aDest.split = aSrc.split;
-    aDest.tax = aSrc.tax;
-    aDest.tip = aSrc.tip;
-    aDest.currenySymbol = aSrc.currenySymbol;
-//    if(aDest.rRoundMethod)
-//        [aDest.rRoundMethod MR_deleteEntity];
-//    
-//    aDest.rRoundMethod = [TipCalcRoundMethod MR_createEntity];
-    aDest.rRoundMethod.tip = aSrc.rRoundMethod.tip;
-    aDest.rRoundMethod.tipPerPerson = aSrc.rRoundMethod.tipPerPerson;
-    aDest.rRoundMethod.total = aSrc.rRoundMethod.total;
-    aDest.rRoundMethod.totalPerPerson = aSrc.rRoundMethod.totalPerPerson;
-    aDest.rRoundMethod.optionType = aSrc.rRoundMethod.optionType;
+    destination.beforeSplit = source.beforeSplit;
+    destination.costs = source.costs;
+    destination.currenyCode = source.currenyCode;
+    destination.isPercentTax = source.isPercentTax;
+    destination.isPercentTip = source.isPercentTip;
+    destination.knownValue = source.knownValue;
+    destination.showRounding = source.showRounding;
+    destination.showSplit = source.showSplit;
+    destination.showTax = source.showTax;
+    destination.split = source.split;
+    destination.tax = source.tax;
+    destination.tip = source.tip;
+    destination.currenySymbol = source.currenySymbol;
+    destination.rRoundMethod.tip = source.rRoundMethod.tip;
+    destination.rRoundMethod.tipPerPerson = source.rRoundMethod.tipPerPerson;
+    destination.rRoundMethod.total = source.rRoundMethod.total;
+    destination.rRoundMethod.totalPerPerson = source.rRoundMethod.totalPerPerson;
+    destination.rRoundMethod.optionType = source.rRoundMethod.optionType;
 }
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal
@@ -136,13 +105,13 @@ static dispatch_once_t predpredA3TipCalcDataManager;
     history.labelTip = aCaptionTip;
     history.labelTotal = aCaptionTotal;
     history.rRecently = [TipCalcRecently MR_createEntity];
-    
-    [self deepcopyRecently:self.tipCalcData dest:history.rRecently];
+
+	[self deepCopyRecently:self.tipCalcData dest:history.rRecently];
 }
 
 - (void)historyToRecently:(TipCalcHistory*)aHistory
 {
-    [self deepcopyRecently:aHistory.rRecently dest:self.tipCalcData];
+	[self deepCopyRecently:aHistory.rRecently dest:self.tipCalcData];
 }
 
 
@@ -267,7 +236,7 @@ static dispatch_once_t predpredA3TipCalcDataManager;
     double dRst = 0.0;
     
     if([self.tipCalcData.knownValue intValue] == 1) // 세전금액입력일경우 그냥 리턴
-        return [[A3TipCalcDataManager sharedInstance].tipCalcData.costs doubleValue];
+        return [self.tipCalcData.costs doubleValue];
     
     double dCosts = [self.tipCalcData.costs doubleValue];
     double dTaxPer = [self.tipCalcData.tax doubleValue];
@@ -332,8 +301,8 @@ static dispatch_once_t predpredA3TipCalcDataManager;
             dRst = dCosts * (dTipPer * 0.01);
         }
         
-        if ([[A3TipCalcDataManager sharedInstance] roundingMethodValue] == TCRoundingMethodValue_Tip) {
-            dRst = [self roundingValue:dRst rdMethod:[[A3TipCalcDataManager sharedInstance].tipCalcData.rRoundMethod.tip intValue]];
+        if ([self roundingMethodValue] == TCRoundingMethodValue_Tip) {
+            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tip intValue]];
         }
     }
 
@@ -341,10 +310,10 @@ static dispatch_once_t predpredA3TipCalcDataManager;
     {
         dRst = dRst / dSplit;
         
-//        if([[A3TipCalcDataManager sharedInstance].tipCalcData.rRoundMethod.selectedValue integerValue] == TipCalcRoundingTargetTipPerPerson)
-//            dRst = [self roundingValue:dRst rdMethod:[[A3TipCalcDataManager sharedInstance].tipCalcData.rRoundMethod.tipPerPerson intValue]];
-        if ([[A3TipCalcDataManager sharedInstance] roundingMethodValue] == TCRoundingMethodValue_Tip) {
-            dRst = [self roundingValue:dRst rdMethod:[[A3TipCalcDataManager sharedInstance].tipCalcData.rRoundMethod.tipPerPerson intValue]];
+//        if([self.tipCalcData.rRoundMethod.selectedValue integerValue] == TipCalcRoundingTargetTipPerPerson)
+//            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tipPerPerson intValue]];
+        if ([self roundingMethodValue] == TCRoundingMethodValue_Tip) {
+            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tipPerPerson intValue]];
         }
     }
     
@@ -364,15 +333,15 @@ static dispatch_once_t predpredA3TipCalcDataManager;
     else    // 세전가격
         dRst = dCosts + [self taxRst] + [self tipRst:0];
     
-    if ([[A3TipCalcDataManager sharedInstance] roundingMethodValue] == TCRoundingMethodValue_Total) {
-        dRst = [self roundingValue:dRst rdMethod:[[A3TipCalcDataManager sharedInstance].tipCalcData.rRoundMethod.total intValue]];
+    if ([self roundingMethodValue] == TCRoundingMethodValue_Total) {
+        dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.total intValue]];
     }
     
     if (aBeforeSplitFlag == 1) {
         dRst = dRst / dSplit;
 
-        if ([[A3TipCalcDataManager sharedInstance] roundingMethodValue] == TCRoundingMethodValue_TotalPerPerson) {
-            dRst = [self roundingValue:dRst rdMethod:[[A3TipCalcDataManager sharedInstance].tipCalcData.rRoundMethod.totalPerPerson intValue]];
+        if ([self roundingMethodValue] == TCRoundingMethodValue_TotalPerPerson) {
+            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.totalPerPerson intValue]];
         }
     }
     
@@ -425,30 +394,30 @@ static dispatch_once_t predpredA3TipCalcDataManager;
 #pragma mark - Setting
 
 - (void)setTaxOption:(BOOL)taxOption {
-    [A3TipCalcDataManager sharedInstance].tipCalcData.showTax = @(taxOption);
-    [A3TipCalcDataManager sharedInstance].tipCalcData.knownValue = taxOption == YES ? [[A3TipCalcDataManager sharedInstance].tipCalcData knownValue] : @(0);
+	self.tipCalcData.showTax = @(taxOption);
+	self.tipCalcData.knownValue = taxOption == YES ? [self.tipCalcData knownValue] : @(0);
 }
 
 -(BOOL)isTaxOptionOn {
-    return [[A3TipCalcDataManager sharedInstance].tipCalcData.showTax boolValue];
+    return [self.tipCalcData.showTax boolValue];
 }
 
 -(void)setSplitOption:(BOOL)splitOption {
-    [A3TipCalcDataManager sharedInstance].tipCalcData.showSplit = @(splitOption);
-    [A3TipCalcDataManager sharedInstance].tipCalcData.beforeSplit = splitOption == YES ? [[A3TipCalcDataManager sharedInstance].tipCalcData beforeSplit] : @(0);
+	self.tipCalcData.showSplit = @(splitOption);
+	self.tipCalcData.beforeSplit = splitOption == YES ? [self.tipCalcData beforeSplit] : @(0);
 }
 
 -(BOOL)isSplitOptionOn {
-    return [[A3TipCalcDataManager sharedInstance].tipCalcData.showSplit boolValue];
+    return [self.tipCalcData.showSplit boolValue];
 }
 
 -(void)setRoundingOption:(BOOL)RoundingOption {
-    [A3TipCalcDataManager sharedInstance].tipCalcData.showRounding = @(RoundingOption);
+	self.tipCalcData.showRounding = @(RoundingOption);
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (BOOL)isRoundingOptionOn {
-    return [[A3TipCalcDataManager sharedInstance].tipCalcData.showRounding boolValue];
+    return [self.tipCalcData.showRounding boolValue];
 }
 
 #pragma mark Manipulate TipCalc Data
@@ -538,15 +507,15 @@ static dispatch_once_t predpredA3TipCalcDataManager;
     
     TipCalcHistory* history = [TipCalcHistory MR_createEntity];
 //    if ([self tipSplitOption] == TCTipSplitOption_BeforeSplit) {
-//        history.labelTip = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:[self.tipValue doubleValue]];
-//        history.labelTotal = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:[self.totalBeforeSplit doubleValue]];
+//        history.labelTip = [self currencyStringFromNum:[self.tipValue doubleValue]];
+//        history.labelTotal = [self currencyStringFromNum:[self.totalBeforeSplit doubleValue]];
 //    }
 //    else {
-//        history.labelTip = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:[self.tipValueWithSplit doubleValue]];
-//        history.labelTotal = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:[self.totalPerPerson doubleValue]];
+//        history.labelTip = [self currencyStringFromNum:[self.tipValueWithSplit doubleValue]];
+//        history.labelTotal = [self currencyStringFromNum:[self.totalPerPerson doubleValue]];
 //    }
-    history.labelTip = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:[self.tipValue doubleValue]];
-    history.labelTotal = [[A3TipCalcDataManager sharedInstance] currencyStringFromNum:[self.totalBeforeSplit doubleValue]];
+    history.labelTip = [self currencyStringFromNum:[self.tipValue doubleValue]];
+    history.labelTotal = [self currencyStringFromNum:[self.totalBeforeSplit doubleValue]];
     
     history.dateTime = [NSDate date];
     history.rRecently = self.tipCalcData;
@@ -824,7 +793,7 @@ static dispatch_once_t predpredA3TipCalcDataManager;
 			 
 			 if (knownTax) {
                  _defaultTax = knownTax;  // US 지역 기본 Tax 지정. - KJH
-                 [[A3TipCalcDataManager sharedInstance] setTipCalcDataTax:_defaultTax isPercentType:YES];
+                 [self setTipCalcDataTax:_defaultTax isPercentType:YES];
                  
 				 id <A3TipCalcDataManagerDelegate> o = self.delegate;
 				 if ([o respondsToSelector:@selector(dataManager:taxValueUpdated:)]) {

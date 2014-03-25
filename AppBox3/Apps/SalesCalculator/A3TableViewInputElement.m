@@ -463,7 +463,7 @@
 
 - (NSString *)stringForPrevButton:(NSString *)current {
     if (IS_IPAD) {
-        return @"Up";
+        return @"Prev";
     }
     
     return current;
@@ -471,7 +471,7 @@
 
 - (NSString *)stringForNextButton:(NSString *)current {
     if (IS_IPAD) {
-        return @"Down";
+        return @"Next";
     }
     
     return current;
