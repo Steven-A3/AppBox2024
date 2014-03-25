@@ -19,14 +19,15 @@
 @property (strong, nonatomic) IBOutlet UIView *rightButtonsView;
 @property (strong, nonatomic) IBOutlet UISegmentedControl *sortTypeSegmentCtrl;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
-@property (strong, nonatomic) IBOutlet UIImageView *headerSeperatorView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *headerSeperatorHeightConst;
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 @property (strong, nonatomic) IBOutlet UIButton *editButton;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UIButton *addEventButton;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentControlWidthConst;
+@property (strong, nonatomic) IBOutlet UIView *headerSeperatorView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewTopConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewSeparatorHeightConst;
 
 - (IBAction)changeSortAction:(id)sender;
 - (IBAction)searchAction:(id)sender;

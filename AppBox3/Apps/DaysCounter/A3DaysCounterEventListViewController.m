@@ -66,8 +66,10 @@
         CGRect rect = self.tableView.tableHeaderView.frame;
         rect.size.height += 0.5;
         self.tableView.tableHeaderView.frame = rect;
+        self.headerViewSeparatorHeightConst.constant = 0.5;
+        self.headerViewTopConst.constant += 0.5;
     }
-    _headerSeperatorHeightConst.constant = (1.0 / [[UIScreen mainScreen] scale] );
+
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 170.0 : 300.0);
     [self.view layoutIfNeeded];
 }
@@ -303,6 +305,13 @@
     yearLabel.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper yearFromDate:date]];
     monthLabel.text = [A3DateHelper dateStringFromDate:date withFormat:@"MMMM"];
     
+//    CGRect rect = headerView.frame;
+//    rect.origin.y = -10;
+//    headerView.frame = rect;
+    
+//    UIView *header2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 23)];
+//    header2.backgroundColor = [UIColor redColor];
+    
     return headerView;
 }
 
@@ -333,35 +342,6 @@
     if (cell == nil) {
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:(sortType == EventSortType_Name ? 0 : 3)];
-        
-//        UIView *leftView = nil;
-//        if ( sortType == EventSortType_Name ) {
-//            leftView = [cell viewWithTag:13];
-//            ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst; 58
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst; 58
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst;
-//        }
-//        else {
-//            leftView = [cell viewWithTag:14];
-//            ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *roundDateLeadingConst;
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst; 57
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst;  95
-////            @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst; 95
-//        }
-//        NSLayoutConstraint *leftConst = nil;
-//        for (NSLayoutConstraint *layout in cell.contentView.constraints) {
-//            if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
-//                leftConst = layout;
-//                break;
-//            }
-//        }
-//        
-//        if ( leftConst ) {
-//            leftConst.constant = ( IS_IPHONE ? 15.0 : 28.0 );
-//            [cell layoutIfNeeded];
-//        }
     }
     
     [self adjustFontSizeOfCell:cell];
