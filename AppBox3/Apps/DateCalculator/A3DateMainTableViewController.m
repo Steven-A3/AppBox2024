@@ -1034,7 +1034,9 @@ NSString *kCalculationString;
 
     [self.fromToTextField resignFirstResponder];
     _isKeyboardShown = NO;
-    
+
+	_selectedIndexPath = nil;
+
     [self.tableView reloadData];
     [self setResultToHeaderViewWithAnimation:YES];
 
@@ -1062,7 +1064,7 @@ NSString *kCalculationString;
         [self setResultToHeaderViewWithAnimation:YES];
         [_selectedTextField resignFirstResponder];
         //[self.tableView setContentOffset:CGPointMake(0.0, -_tableYOffset) animated:YES];
-    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
+    	[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentInset.top, 1, 1) animated:YES];
     }
     
     if ((IS_IPHONE) || (IS_IPAD && IS_LANDSCAPE)) {
@@ -1487,7 +1489,7 @@ NSString *kCalculationString;
 		self.dateKeyboardViewController = self.newDateKeyboardViewController;
 
         [self.fromToTextField becomeFirstResponder];
-        [self.dateKeyboardViewController switchToYear];
+        [self.dateKeyboardViewController changeInputToYear];
         
         if (indexPath.row==0) {
             self.dateKeyboardViewController.date = self.fromDate;

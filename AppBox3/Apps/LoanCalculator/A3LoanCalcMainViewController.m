@@ -2492,11 +2492,13 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             case A3LC_CalculationItemInterestRate:
             {
                 self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
-                break;
+				[self.numberKeyboardViewController.bigButton1 setSelected:YES];
+				break;
             }
             case A3LC_CalculationItemTerm:
             {
                 self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
+				[self.numberKeyboardViewController.bigButton1 setSelected:YES];
                 break;
             }
             default:
@@ -2507,6 +2509,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         keyboardVC.textInputTarget = textField;
         keyboardVC.delegate = self;
         self.numberKeyboardViewController = keyboardVC;
+
+		[keyboardVC reloadPrevNextButtons];
     }
     else if (currentIndexPath.section == 3) {
         // extra payment
@@ -2522,6 +2526,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             keyboardVC.textInputTarget = textField;
             keyboardVC.delegate = self;
             self.numberKeyboardViewController = keyboardVC;
+
+			[keyboardVC reloadPrevNextButtons];
         }
     }
     else if (currentIndexPath.section == 4) {
@@ -3457,5 +3463,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
 }
+
+- (NSString *)stringForPrevButton:(NSString *)current {
+	return @"Prev";
+}
+
+- (NSString *)stringForNextButton:(NSString *)current {
+	return @"Next";
+}
+
 
 @end

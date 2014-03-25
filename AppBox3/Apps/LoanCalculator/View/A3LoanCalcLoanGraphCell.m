@@ -8,6 +8,7 @@
 
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3TripleCircleView.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation A3LoanCalcLoanGraphCell
 {
@@ -47,11 +48,13 @@
     _monthlyButton.layer.borderWidth = 1;
     _monthlyButton.layer.cornerRadius = _monthlyButton.bounds.size.height/2;
     [_monthlyButton addTarget:self action:@selector(kindButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[_monthlyButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     _monthlyButton.layer.borderColor = _monthlyButton.currentTitleColor.CGColor;
-    
-    _totalButton.layer.borderWidth = 1;
+
+	_totalButton.layer.borderWidth = 1;
     _totalButton.layer.cornerRadius = _totalButton.bounds.size.height/2;
     [_totalButton addTarget:self action:@selector(kindButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+	[_totalButton setTitleColor:[A3AppDelegate instance].themeColor forState:UIControlStateNormal];
     _totalButton.layer.borderColor = [UIColor clearColor].CGColor;
     
     // up label pos

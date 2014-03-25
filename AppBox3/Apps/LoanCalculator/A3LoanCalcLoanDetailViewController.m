@@ -60,7 +60,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     [self makeBackButtonEmptyArrow];
-    
+
     // init loan
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;

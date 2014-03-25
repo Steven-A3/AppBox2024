@@ -34,7 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-	[self switchToYear];
+	[self changeInputToYear];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -79,13 +79,8 @@
 
 - (IBAction)switchToYear {
 	[[UIDevice currentDevice] playInputClick];
-	
-	[self initExtraLabels];
-	[self resetToNumbersButtons];
 
-	_yearButton.selected = YES;
-	_monthButton.selected = NO;
-	_dayButton.selected = NO;
+	[self changeInputToYear];
 }
 
 - (IBAction)switchToMonth {
@@ -139,6 +134,15 @@
 
 	[self initExtraLabels];
 	[self resetToNumbersButtons];
+}
+
+- (void)changeInputToYear {
+	[self initExtraLabels];
+	[self resetToNumbersButtons];
+
+	_yearButton.selected = YES;
+	_monthButton.selected = NO;
+	_dayButton.selected = NO;
 }
 
 - (NSArray *)monthOrder {

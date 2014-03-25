@@ -44,18 +44,7 @@
 @property (nonatomic, assign) BOOL isLunarDate;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
-- (void)initExtraLabels;
-- (IBAction)switchToYear;
-
-- (IBAction)switchToMonth;
-
-- (IBAction)switchToDay;
-
-- (NSArray *)monthOrder;
-- (NSArray *)numberOrder;
-- (IBAction)numberButtonAction:(UIButton *)button;
-- (IBAction)doneButtonAction;
-- (IBAction)todayButtonAction;
+- (void)changeInputToYear;
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
