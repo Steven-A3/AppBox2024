@@ -16,23 +16,40 @@
     self.fillColor = [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0.0 alpha:1.0];
     self.strokColor = self.fillColor;
     
-    _dateLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    _dateLabel.backgroundColor = [UIColor clearColor];
-    _dateLabel.textAlignment = NSTextAlignmentCenter;
-    _dateLabel.numberOfLines = 0;
-    _dateLabel.textColor = [UIColor whiteColor];
-    if( IS_IPHONE )
-        _dateLabel.font = [UIFont systemFontOfSize:13.0];
-    else
-        _dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    _dateLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    _dateLabel.adjustsFontSizeToFitWidth = YES;
+    _dateLabelTop = [[UILabel alloc] initWithFrame:CGRectZero];
+    _dateLabelTop.backgroundColor = [UIColor clearColor];
+    _dateLabelTop.textAlignment = NSTextAlignmentCenter;
+    _dateLabelTop.textColor = [UIColor whiteColor];
+    _dateLabelBottom = [[UILabel alloc] initWithFrame:CGRectZero];
+    _dateLabelBottom.backgroundColor = [UIColor clearColor];
+    _dateLabelBottom.textAlignment = NSTextAlignmentCenter;
+    _dateLabelBottom.textColor = [UIColor whiteColor];
+    if ( IS_IPHONE ) {
+        _dateLabelTop.font = [UIFont systemFontOfSize:13.0];
+        _dateLabelBottom.font = [UIFont systemFontOfSize:13.0];
+    }
+    else {
+        _dateLabelTop.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        _dateLabelBottom.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    }
+    _dateLabelTop.lineBreakMode = NSLineBreakByTruncatingTail;
+    _dateLabelTop.adjustsFontSizeToFitWidth = YES;
+    _dateLabelBottom.lineBreakMode = NSLineBreakByTruncatingTail;
+    _dateLabelBottom.adjustsFontSizeToFitWidth = YES;
+    
+    [self addSubview:_dateLabelTop];
+    [self addSubview:_dateLabelBottom];
 
-    [self addSubview:_dateLabel];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dateLabel attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dateLabel attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dateLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_dateLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    [_dateLabelTop makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.left);
+        make.trailing.equalTo(self.right);
+        make.bottom.equalTo(self.centerY).with.offset(2);
+    }];
+    [_dateLabelBottom makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(self.left);
+        make.trailing.equalTo(self.right);
+        make.top.equalTo(self.centerY).with.offset(-2);
+    }];
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -64,8 +81,8 @@
 - (void)setDate:(NSDate *)date
 {
     _date = date;
-    _dateLabel.text = [NSString stringWithFormat:@"%ld\n%@",(long)[A3DateHelper dayFromDate:date],[A3DateHelper dateStringFromDate:date withFormat:@"EEE"]];
-    
+    _dateLabelTop.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper dayFromDate:date]];
+    _dateLabelBottom.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:@"EEE"]];
 }
 
 - (void)setFillColor:(UIColor *)fillColor
