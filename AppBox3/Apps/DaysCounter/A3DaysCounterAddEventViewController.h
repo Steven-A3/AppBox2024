@@ -17,5 +17,7 @@
 
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) BOOL landscapeFullScreen;
-
+@property (strong, nonatomic) NSString *calendarId;
+@property (strong, nonatomic) NSString *calendarName;
+@property (strong, nonatomic) UIColor *calendarColor;
 @end
