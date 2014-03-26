@@ -20,6 +20,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
+#import "NSDate+TimeAgo.h"
 
 @interface A3DaysCounterReminderListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -47,6 +48,7 @@
     self.title = @"Reminder";
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
 
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
@@ -58,7 +60,6 @@
     self.navigationController.delegate = nil;
     [self registerContentSizeCategoryDidChangeNotification];
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, ([_itemArray count] > 0 ? 48.0 : 15.0), 0, 0);
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
     
@@ -70,11 +71,6 @@
             self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
         }
     }
-    
-//    if ( ![_addEventButton isDescendantOfView:self.view] ) {
-//        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//        [self.view addSubview:_addEventButton];
-//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -113,18 +109,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
+    return [_itemArray count];
+    //return ([_itemArray count] < 1) ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.01;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 0.01;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 0.01;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -145,10 +142,8 @@
         clearButton.layer.cornerRadius = 9.0;
         [clearButton addTarget:self action:@selector(clearAction:) forControlEvents:UIControlEventTouchUpInside];
     
-        UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+
         UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-        textLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
-        detailTextLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]);
         detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
     }
     
@@ -157,15 +152,22 @@
     UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
     UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
     
-    textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    detailTextLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    
     
     if ( [_itemArray count] > 0 ) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-        
-        
         textLabel.text = item.eventName;
-        detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime withFormat:@"EEEE,MMM dd,yyyy hh:mm a"];
+        
+        if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
+            detailTextLabel.text = [item.alertDatetime timeAgo];
+        }
+        else {
+            detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
+                                                         withFormat:IS_IPHONE ? @"EEEE, MMM dd, yyyy hh:mm a" : @"EEEE, MMMM dd, yyyy hh:mm a"];
+        }
+        
         deleteButton.hidden = (_clearIndexPath && (_clearIndexPath.row == indexPath.row));
         clearButton.hidden = !deleteButton.hidden;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -191,8 +193,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [_itemArray count] < 1 )
+    if ( [_itemArray count] < 1 ) {
         return;
+    }
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
@@ -207,17 +210,20 @@
 //        [alertView show];
 //        return;
 //    }
-    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+    A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController"
+                                                                                                                      bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)calendarViewAction:(id)sender {
-    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+    A3DaysCounterCalendarListMainViewController *viewCtrl = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController"
+                                                                                                                          bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
 - (IBAction)addEventAction:(id)sender {
-    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
+    A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController"
+                                                                                                          bundle:nil];
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -237,8 +243,9 @@
 {
     UIButton *button = (UIButton*)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
-    if ( indexPath == nil )
+    if ( indexPath == nil ) {
         return;
+    }
     
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     item.alertDatetime = nil;
@@ -252,8 +259,9 @@
 {
     UIButton *button = (UIButton*)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
-    if ( indexPath == nil )
+    if ( indexPath == nil ) {
         return;
+    }
     
     NSIndexPath *prevIndexPath = (_clearIndexPath ? [NSIndexPath indexPathForRow:_clearIndexPath.row inSection:_clearIndexPath.section] : nil);
     self.clearIndexPath = indexPath;
@@ -261,6 +269,7 @@
     if ( prevIndexPath && (prevIndexPath.row != indexPath.row) ) {
         [self.tableView reloadRowsAtIndexPaths:@[prevIndexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
+    
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
 }

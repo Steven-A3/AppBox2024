@@ -21,6 +21,7 @@
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "SFKImage.h"
+#import "A3DaysCounterEventListNameCell.h"
 
 @interface A3DaysCounterFavoriteListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -89,18 +90,19 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
+//    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
+    return [_itemArray count];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.01;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 0.01;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 0.01;
+//}
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -110,7 +112,7 @@
     if (cell == nil) {
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:0];
-        
+
         UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
         UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
         textLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
@@ -148,7 +150,22 @@
         imageView.image =  (image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)]  : nil);
         NSDate *today = [NSDate date];
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:item.startDate];
-        daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue] fromDate:today toDate:item.startDate isAllDay:[item.isAllDay boolValue]];
+        daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
+                                                                                  fromDate:today
+                                                                                    toDate:item.startDate
+                                                                                  isAllDay:[item.isAllDay boolValue]];
+        
+        if (image) {
+            ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+        }
+        else {
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
+        }
+
+
         if ( diffDays > 0 ) {
             markLabel.text = @"Until";
             markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
@@ -157,6 +174,7 @@
             markLabel.text = @"Since";
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
+        markLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         markLabel.layer.borderWidth = 1.0;
         markLabel.layer.masksToBounds = YES;
         markLabel.layer.cornerRadius = 9.0;
@@ -223,8 +241,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [_itemArray count] < 1 )
+    if ( [_itemArray count] < 1 ) {
         return;
+    }
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];

@@ -1212,9 +1212,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay
 {
-    
-    if ( toDate == nil || fromDate == nil)
+    if ( toDate == nil || fromDate == nil) {
 		return @"";
+    }
     
     NSDate *smallDate = fromDate;
     NSDate *largeDate = toDate;
@@ -1272,7 +1272,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
     if ( [retStr length] < 1 ) {
-        NSDateComponents *fullComponent = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:smallDate toDate:largeDate options:0];
+        NSDateComponents *fullComponent = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                                      fromDate:smallDate
+                                                        toDate:largeDate
+                                                       options:0];
 
         if ( [fullComponent year] > 0 ) {
             retStr = [retStr stringByAppendingFormat:@"%@%ld year%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent year],([fullComponent year] > 1 ? @"s" : @"")];

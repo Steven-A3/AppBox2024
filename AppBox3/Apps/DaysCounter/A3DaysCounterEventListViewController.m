@@ -387,9 +387,9 @@
             }
             else {
                 ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
-                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
-                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
+                ((A3DaysCounterEventListDateCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
+                ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
+                ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
             }
         }
         else {
@@ -401,8 +401,8 @@
             }
             else {
                 ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
-                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+                ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
+                ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
             }
         }
 
