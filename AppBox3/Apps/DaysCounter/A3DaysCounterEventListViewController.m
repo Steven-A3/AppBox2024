@@ -649,8 +649,7 @@
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.calendarId = _calendarItem.calendarId;
-    viewCtrl.calendarName = _calendarItem.calendarName;
-    viewCtrl.calendarColor = _calendarItem.color;
+
     viewCtrl.landscapeFullScreen = NO;
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

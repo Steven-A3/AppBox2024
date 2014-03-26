@@ -132,6 +132,13 @@
         }
         else {
             self.eventModel = [[A3DaysCounterModelManager sharedManager] emptyEventModel];
+            if (self.calendarId) {
+                DaysCounterCalendar *selectedCalendar = [[[[A3DaysCounterModelManager sharedManager] allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@", self.calendarId]] lastObject];
+                if (selectedCalendar) {
+                    [self.eventModel setObject:self.calendarId forKey:EventItem_CalendarId];
+                    [self.eventModel setObject:selectedCalendar forKey:EventItem_Calendar];
+                }
+            }
         }
         [self.tableView reloadData];
         if ( self.eventItem )
@@ -597,15 +604,13 @@
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
-            DaysCounterCalendar *calendar;
-            if (self.calendarId) {
-                nameLabel.text = self.calendarName;
-                colorImageView.tintColor = self.calendarColor;
-            }
-            else {
-                calendar = [_eventModel objectForKey:EventItem_Calendar];
+            DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
+            if (calendar) {
                 nameLabel.text = calendar.calendarName;
                 colorImageView.tintColor = [calendar color];
+            }
+            else {
+                nameLabel.text = @"";
             }
             
             colorImageView.hidden = ([nameLabel.text length] < 1 );
@@ -845,6 +850,9 @@
         case EventCellType_Calendar:{
             A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
+            nextVC.completionBlock = ^{
+                [self.tableView reloadData];
+            };
             if ( IS_IPHONE )
                 [self.navigationController pushViewController:nextVC animated:YES];
             else

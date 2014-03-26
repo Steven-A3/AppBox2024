@@ -11,4 +11,5 @@
 @interface A3DaysCounterSetupCalendarViewController : UITableViewController
 
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
+@property (strong, nonatomic) void (^completionBlock)();
 @end

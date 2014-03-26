@@ -108,6 +108,10 @@
     [_eventModel setObject:item forKey:EventItem_Calendar];
     [tableView reloadData];
     [self doneButtonAction:nil];
+    
+    if (_completionBlock) {
+        _completionBlock();
+    }
 }
 
 #pragma mark - action method
