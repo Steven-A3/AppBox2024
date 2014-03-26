@@ -44,6 +44,9 @@
 	[[UIDevice currentDevice] playInputClick];
 
 	NSString *pressedString = [button titleForState:UIControlStateNormal];
+	if (![pressedString length]) {
+		return;
+	}
 	BOOL allowedToChange = YES;
 
 	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
