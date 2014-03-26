@@ -12,7 +12,7 @@
 #import "A3DateKeyboardViewController_iPad.h"
 #import "NSDate+LunarConverter.h"
 #import "UIViewController+A3Addition.h"
-#import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 #import "A3UserDefaults.h"
 #import "A3DateHelper.h"
 #import "NSDateFormatter+LunarDate.h"
@@ -194,7 +194,7 @@
 
 	A3LunarConverterCellView *cellView = (A3LunarConverterCellView*)[pageView viewWithTag:100];
 	topCell = cellView;
-	cellView.dateLabel.textColor = self.view.tintColor;
+	cellView.dateLabel.textColor = [A3AppDelegate instance].themeColor;
 	cellView.descriptionLabel.text = @"Solar";
 
 	cellView = (A3LunarConverterCellView*)[pageView viewWithTag:101];
