@@ -596,7 +596,8 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
+                                                                                            alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
             textLabel.textColor = [UIColor blackColor];
         }
             break;
@@ -823,6 +824,9 @@
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
             };
             if ( IS_IPHONE )
                 [self.navigationController pushViewController:nextVC animated:YES];
@@ -836,6 +840,9 @@
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:[_eventModel objectForKey:EventItem_RepeatEndDate]];
             };
             
             if ( IS_IPHONE )
@@ -850,6 +857,10 @@
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
+                                                                                                alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
             };
             
             if ( IS_IPHONE ) {
@@ -864,12 +875,21 @@
         case EventCellType_Calendar:{
             A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
-            nextVC.completionBlock = ^{
-                [self.tableView reloadData];
-            };
-            
             nextVC.dismissCompletionBlock = ^{
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
+                UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
+                DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
+                if (calendar) {
+                    nameLabel.text = calendar.calendarName;
+                    colorImageView.tintColor = [calendar color];
+                }
+                else {
+                    nameLabel.text = @"";
+                }
+                
+                colorImageView.hidden = ([nameLabel.text length] < 1 );
             };
 
             if ( IS_IPHONE ) {
@@ -886,6 +906,9 @@
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
             };
             
             if ( IS_IPHONE )

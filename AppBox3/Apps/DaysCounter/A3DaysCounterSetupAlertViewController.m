@@ -75,7 +75,17 @@
     self.title = @"Alert";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
-    self.itemArray = @[@{EventRowTitle : @"None",EventRowType : @(AlertType_None)},@{EventRowTitle : @"At time of event", EventRowType : @(AlertType_AtTimeOfEvent)}, @{EventRowTitle : @"5 minutes before", EventRowType : @(AlertType_5MinutesBefore)}, @{EventRowTitle : @"15 minutes before", EventRowType : @(AlertType_15MinutesBefore)},@{EventRowTitle : @"30 minutes before", EventRowType : @(AlertType_5MinutesBefore)},@{ EventRowTitle : @"1 hour before", EventRowType : @(AlertType_1HourBefore)},@{ EventRowTitle : @"2 hours before", EventRowType : @(AlertType_2HoursBefore)},@{ EventRowTitle : @"1 day before", EventRowType : @(AlertType_1DayBefore)}, @{ EventRowTitle : @"2 days before", EventRowType : @(AlertType_2DaysBefore)}, @{ EventRowTitle : @"1 week before", EventRowType : @(AlertType_1WeekBefore)},@{ EventRowTitle : @"Custom", EventRowType : @(AlertType_Custom)}];
+    self.itemArray = @[@{EventRowTitle : @"None", EventRowType : @(AlertType_None)},
+                       @{EventRowTitle : @"At time of event", EventRowType : @(AlertType_AtTimeOfEvent)},
+                       @{EventRowTitle : @"5 minutes before", EventRowType : @(AlertType_5MinutesBefore)},
+                       @{EventRowTitle : @"15 minutes before", EventRowType : @(AlertType_15MinutesBefore)},
+                       @{EventRowTitle : @"30 minutes before", EventRowType : @(AlertType_30MinutesBefore)},
+                       @{EventRowTitle : @"1 hour before", EventRowType : @(AlertType_1HourBefore)},
+                       @{EventRowTitle : @"2 hours before", EventRowType : @(AlertType_2HoursBefore)},
+                       @{EventRowTitle : @"1 day before", EventRowType : @(AlertType_1DayBefore)},
+                       @{EventRowTitle : @"2 days before", EventRowType : @(AlertType_2DaysBefore)},
+                       @{EventRowTitle : @"1 week before", EventRowType : @(AlertType_1WeekBefore)},
+                       @{EventRowTitle : @"Custom", EventRowType : @(AlertType_Custom)}];
 
     self.originalValue = [_eventModel objectForKey:EventItem_AlertDatetime];
 }
@@ -131,18 +141,30 @@
     cell.textLabel.text = [item objectForKey:EventRowTitle];
     cell.detailTextLabel.text = @"";
     
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_StartDate]
+                                                                                  alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
     NSInteger rowType = [[item objectForKey:EventRowType] integerValue];
     
-    if( rowType  == AlertType_Custom )
+    if ( rowType  == AlertType_Custom ) {
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    else
-        cell.accessoryType = ( rowType == alertType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
+    }
+    else {
+        if (rowType == alertType) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
+    }
     
-    if( alertType == AlertType_Custom && [[item objectForKey:EventRowType] integerValue] == alertType ){
+    if ( alertType == AlertType_Custom && [[item objectForKey:EventRowType] integerValue] == alertType ) {
         NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
-        if( alertDate )
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld days before %@", (long)[A3DateHelper diffDaysFromDate:alertDate toDate:[_eventModel objectForKey:EventItem_StartDate]],[A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"] ];//[[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+        if ( alertDate ) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld days before %@",
+                                         (long)[A3DateHelper diffDaysFromDate:alertDate
+                                                                       toDate:[_eventModel objectForKey:EventItem_StartDate]],
+                                         [A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"] ];//[[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+        }
     }
     
     return cell;
@@ -203,20 +225,18 @@
     }
     
     [_eventModel setObject:value forKey:EventItem_AlertDatetime];
-    [self.tableView beginUpdates];
-    if( prevIndex != indexPath.row ){
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-    }
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [self.tableView endUpdates];
+    UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prevIndex inSection:0]];
+    UITableViewCell *curCell = [self.tableView cellForRowAtIndexPath:indexPath];
+    prevCell.accessoryType = UITableViewCellAccessoryNone;
+    curCell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-    if( indexPath.row == ([_itemArray count] -1) ){
+    if ( indexPath.row == ([_itemArray count] -1) ) {
 //        [self showDatePicker];
         A3DaysCounterSetupCustomAlertViewController *viewCtrl = [[A3DaysCounterSetupCustomAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupCustomAlertViewController" bundle:nil];
         viewCtrl.eventModel = self.eventModel;
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
-    else{
+    else {
 //        [self hideDatePicker];
         [self doneButtonAction:nil];
     }
@@ -228,7 +248,7 @@
     NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
     NSDate *today = [NSDate date];
     
-    if( [today timeIntervalSince1970] > [startDate timeIntervalSince1970] && [datePicker.date timeIntervalSince1970] < [today timeIntervalSince1970] ){
+    if ( [today timeIntervalSince1970] > [startDate timeIntervalSince1970] && [datePicker.date timeIntervalSince1970] < [today timeIntervalSince1970] ) {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter your dates in the future." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertView show];
         return;
@@ -241,22 +261,22 @@
 - (void)cancelAction:(id)sender
 {
     [_eventModel setObject:self.originalValue forKey:EventItem_AlertDatetime];
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
     

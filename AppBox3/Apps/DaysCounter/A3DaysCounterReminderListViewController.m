@@ -139,7 +139,8 @@
         unReadMark.tag = UNREADVIEW_TAG;
         unReadMark.backgroundColor = [UIColor colorWithRed:0 green:126.0/255 blue:248.0/255 alpha:1.0];
         unReadMark.layer.cornerRadius = 5;
-        [cell.contentView addSubview:unReadMark];
+        //[cell.contentView addSubview:unReadMark];
+        [cell addSubview:unReadMark];
         [unReadMark makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(cell.contentView.left).with.offset(8);
             //make.top.equalTo(cell.contentView.top).with.offset(10);
@@ -253,7 +254,9 @@
         return;
     }
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-    
+    item.alertDatetime = nil;
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
     [self.navigationController pushViewController:viewCtrl animated:YES];
