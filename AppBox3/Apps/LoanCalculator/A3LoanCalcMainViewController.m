@@ -2295,6 +2295,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
 	[self setFirstResponder:nil];
+
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 #pragma mark - TextFieldDelegate
@@ -2448,6 +2450,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
     
     [self updateLoanCalculation];
+
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -3460,17 +3464,15 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    
-    [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+    [keyInputDelegate resignFirstResponder];
 }
 
 - (NSString *)stringForPrevButton:(NSString *)current {
-	return @"Prev";
+	return IS_IPAD ? @"Prev" : nil;
 }
 
 - (NSString *)stringForNextButton:(NSString *)current {
-	return @"Next";
+	return IS_IPAD ? @"Next" : nil;
 }
-
 
 @end

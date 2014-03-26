@@ -1023,16 +1023,9 @@ NSString *kCalculationString;
 }
 
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
-//    if ((IS_IPHONE && self.isAddSubMode) || (IS_IPAD && IS_LANDSCAPE)) {
-//        self.tableView.contentOffset = CGPointMake(0.0, _oldTableOffset);
-//    }
-//    [self.tableView scrollRectToVisible:CGRectMake(0, _oldTableOffset, 1, 1) animated:YES];
-    
-//    [self.tableView setContentOffset:CGPointMake(0.0, _oldTableOffset) animated:YES];
-	FNLOG(@"%f", self.tableView.contentInset.top);
-    [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentInset.top, 1, 1) animated:YES];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 
-    [self.fromToTextField resignFirstResponder];
+	[self.fromToTextField resignFirstResponder];
     _isKeyboardShown = NO;
 
 	_selectedIndexPath = nil;

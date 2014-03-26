@@ -144,7 +144,7 @@
             [_nextButton setTitle:available ? self.nextBtnTitleText : nil forState:UIControlStateNormal];
             _nextButton.titleLabel.font = _doneButton.titleLabel.font;
         } else {
-            UIImage *image = available ? [UIImage imageNamed:@"k_down"] : nil;
+            UIImage *image = available ? [UIImage imageNamed:@"k_next"] : nil;
             [_nextButton setImage:image forState:UIControlStateNormal];
             [_nextButton setTitle:nil forState:UIControlStateNormal];
         }
@@ -163,7 +163,7 @@
             [_prevButton setTitle:available ? self.prevBtnTitleText : nil forState:UIControlStateNormal];
             _prevButton.titleLabel.font = _doneButton.titleLabel.font;
         } else {
-            UIImage *image = available ? [UIImage imageNamed:@"k_up"] : nil;
+            UIImage *image = available ? [UIImage imageNamed:@"k_previous"] : nil;
             [_prevButton setImage:image forState:UIControlStateNormal];
             [_prevButton setTitle:nil forState:UIControlStateNormal];
         }
