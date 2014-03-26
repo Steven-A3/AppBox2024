@@ -426,31 +426,6 @@ static NSString *CellIdentifier = @"Cell";
     [self setCurrentBudgetId:nil];
     [self reloadBudgetDataWithAnimation:YES];
     [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
-//    NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
-//    
-//    if (!_currentBudget.category && [filteredSet count] == 0) {
-//        // 입력된 상태가 없는 경우. 이때는 초기화만 시킴.
-//        [_currentBudget MR_deleteEntity];
-//        
-//        _currentBudget = nil;
-//        _currentBudget = [ExpenseListBudget MR_createEntity];
-//        _currentBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
-//        //[self setCurrentBudgetId:_currentBudget.budgetId];
-//        _tableDataSourceArray = nil;
-//        [self reloadBudgetDataWithAnimation:YES];
-//        [self scrollToTopOfTableView];
-//    }
-//    else {
-//        // 현재 상태 저장.
-//        [self saveCurrentBudgetToHistory];
-//        
-//        // 초기화.
-//        _currentBudget = nil;
-//        _tableDataSourceArray = nil;
-//        [self setCurrentBudgetId:nil];
-//        [self reloadBudgetDataWithAnimation:YES];
-//        [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
-//    }
 }
 
 - (void)historyButtonAction:(id)sender
@@ -782,18 +757,6 @@ static NSString *CellIdentifier = @"Cell";
                 aItem.itemDate = nil;
                 [noDateValueArray2 addObject:aItem];
             }
-
-//            if ( aItem.itemName.length != 0 ||
-//                (aItem.price && [aItem.price isEqualToNumber:@0]==NO) ||
-//                (aItem.qty && [aItem.qty isEqualToNumber:@1]==NO) ) {
-//                
-//                [valideValueArray1 addObject:aItem];
-//                
-//            } else {
-//                // 유효한 아이템 데이터가 없는 경우, itemDate 를 없애고 순서에서 제외 시킨다.
-//                aItem.itemDate = nil;
-//                [noDateValueArray2 addObject:aItem];
-//            }
         }
         
         // 기록 당시 순서 고려하여 정렬 시작.
@@ -829,12 +792,8 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark Save Related
 -(void)saveCurrentBudget
 {
-    //NSDate * updateDate = [NSDate date];
-    
-    //_currentBudget.updateDate = updateDate;
-
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    
+
     NSLog(@"History count : %ld", (long)[[ExpenseListHistory MR_findAll] count]);
     NSLog(@"Budget count : %ld", (long)[[ExpenseListBudget MR_findAll] count]);
 }
@@ -843,10 +802,8 @@ static NSString *CellIdentifier = @"Cell";
 {
     NSDate * updateDate = [NSDate date];
 
-    //_currentBudget.updateDate = updateDate;
-
     ExpenseListHistory * history = [ExpenseListHistory MR_findFirstByAttribute:@"budgetData" withValue:_currentBudget];
-    //if (!history && [_currentBudget category]) {
+
     if (!history) {
         history = [ExpenseListHistory MR_createEntity];
         history.budgetData = _currentBudget;
@@ -871,11 +828,6 @@ static NSString *CellIdentifier = @"Cell";
         // AddNew
         UIButton *aBtn = [_moreMenuButtons objectAtIndex:1];
         if (aBtn) {
-//            aBtn.enabled = (!_currentBudget || _currentBudget.category == nil) ? NO : YES;
-//            NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
-//            if (_currentBudget.category && [filteredSet count] == 0) {
-//                aBtn.enabled = NO;
-//            }
             NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
             aBtn.enabled = [filteredSet count] > 0 ? YES : NO;
         }
@@ -897,11 +849,6 @@ static NSString *CellIdentifier = @"Cell";
         // AddNew
         UIBarButtonItem *aBtn = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
         if (aBtn) {
-//            aBtn.enabled = (!_currentBudget || _currentBudget.category == nil) ? NO : YES;
-//            NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
-//            if (_currentBudget.category && [filteredSet count] == 0) {
-//                aBtn.enabled = NO;
-//            }
             NSSet *filteredSet = [_currentBudget.expenseItems filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"hasData == YES"]];
             aBtn.enabled = [filteredSet count] > 0 ? YES : NO;
         }
@@ -1038,18 +985,6 @@ static NSString *CellIdentifier = @"Cell";
         [aItem MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-//        NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-//            ExpenseListItem * aItem = (ExpenseListItem *)evaluatedObject;
-//            return (aItem.itemDate != nil && (aItem.itemName.length>0 || aItem.price || [aItem.qty compare:@1]==NSOrderedDescending));
-//        }];
-//        
-//        NSArray * filtered = [_tableDataSourceArray filteredArrayUsingPredicate:predicate];
-//        if (filtered.count==0) {
-//            ExpenseListItem *aItem = [_tableDataSourceArray objectAtIndex:0];
-//            aItem.itemName = @"";
-//            aItem.price = @0;
-//            aItem.qty = @1;
-//        }
         [self reloadBudgetDataWithAnimation:YES];
     }
     else {
@@ -1064,7 +999,6 @@ static NSString *CellIdentifier = @"Cell";
         
         NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
             ExpenseListItem * aItem = (ExpenseListItem *)evaluatedObject;
-            //return ((aItem.itemDate != nil || [aItem.hasData boolValue]) && (aItem.itemName.length>0 || aItem.price || [aItem.qty compare:@1]==NSOrderedDescending));
             return ([aItem.hasData boolValue] && (aItem.itemName.length>0 || aItem.price || [aItem.qty compare:@1] == NSOrderedDescending));
         }];
         
@@ -1084,7 +1018,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return 45.0;
     return IS_RETINA ? 56.0 : 57.0;
 }
 

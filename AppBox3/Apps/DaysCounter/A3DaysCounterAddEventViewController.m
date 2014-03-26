@@ -127,12 +127,18 @@
     [super viewDidAppear: animated];
     
     if ( isFirstAppear ) {
-        
         if ( _eventItem ) {
             self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
         }
         else {
             self.eventModel = [[A3DaysCounterModelManager sharedManager] emptyEventModel];
+            if (self.calendarId) {
+                DaysCounterCalendar *selectedCalendar = [[[[A3DaysCounterModelManager sharedManager] allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@", self.calendarId]] lastObject];
+                if (selectedCalendar) {
+                    [self.eventModel setObject:self.calendarId forKey:EventItem_CalendarId];
+                    [self.eventModel setObject:selectedCalendar forKey:EventItem_Calendar];
+                }
+            }
         }
         [self.tableView reloadData];
         if ( self.eventItem )
@@ -524,16 +530,21 @@
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
 //            UIButton *arrowButton = (UIButton*)[cell viewWithTag:13];
             
-            if ( [[_eventModel objectForKey:EventItem_IsPeriod] boolValue] )
+            if ( [[_eventModel objectForKey:EventItem_IsPeriod] boolValue] ) {
                 titleLabel.text = (itemType == EventCellType_StartDate ? @"Starts" : @"Ends");
-            else
+            }
+            else {
                 titleLabel.text = @"Date";
+            }
+            
             lunarImageView.hidden = ![[_eventModel objectForKey:EventItem_IsLunar] boolValue];
+            
             if ( [[_eventModel objectForKey:keyName] isKindOfClass:[NSDate class]] ) {
                 dateLabel.text = [A3Formatter stringFromDate:[_eventModel objectForKey:keyName] format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[[_eventModel objectForKey:EventItem_IsAllDay] boolValue]]];
             }
-            else
+            else {
                 dateLabel.text = @"";
+            }
             
             NSInteger inputType = ( [self.inputDateKey isEqualToString:EventItem_StartDate] ? EventCellType_StartDate : ([self.inputDateKey isEqualToString:EventItem_EndDate] ? EventCellType_EndDate : 0) );
 //            if ( itemType == inputType )
@@ -541,10 +552,12 @@
 //            else
 //                arrowButton.transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
             
-            if ( [keyName isEqualToString:self.inputDateKey] && itemType == inputType )
+            if ( [keyName isEqualToString:self.inputDateKey] && itemType == inputType ) {
                 dateLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
-            else
+            }
+            else {
                 dateLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            }
             
             if ( [[_eventModel objectForKey:EventItem_IsPeriod] boolValue] && itemType == EventCellType_EndDate ) {
                 NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
@@ -592,13 +605,14 @@
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
             DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
-            if ( calendar ) {
+            if (calendar) {
                 nameLabel.text = calendar.calendarName;
                 colorImageView.tintColor = [calendar color];
             }
             else {
                 nameLabel.text = @"";
             }
+            
             colorImageView.hidden = ([nameLabel.text length] < 1 );
         }
             break;
@@ -642,15 +656,37 @@
             break;
         case EventCellType_DateInput:{
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
-            if ( [self.inputDateKey isEqualToString: EventItem_EndDate] )
-                datePicker.date = [_eventModel objectForKey:EventItem_StartDate];
+            if ( [self.inputDateKey isEqualToString: EventItem_StartDate] ) {
+                NSDate *date = [_eventModel objectForKey:EventItem_StartDate];
+                if (!date || [date isKindOfClass:[NSNull class]]) {
+                    date = [_eventModel objectForKey:EventItem_EndDate];
+                }
+                if (!date || [date isKindOfClass:[NSNull class]]) {
+                    date = [NSDate date];
+                }
+                
+                datePicker.date = date;
+            }
+            else if ( [self.inputDateKey isEqualToString: EventItem_EndDate] ) {
+                NSDate *date = [_eventModel objectForKey:EventItem_EndDate];
+                if (!date || [date isKindOfClass:[NSNull class]]) {
+                    date = [_eventModel objectForKey:EventItem_StartDate];
+                }
+                if (!date || [date isKindOfClass:[NSNull class]]) {
+                    date = [NSDate date];
+                }
+                
+                datePicker.date = date;
+            }
             else {
                 datePicker.date = ([[_eventModel objectForKey:self.inputDateKey] isKindOfClass:[NSDate class]] ? [_eventModel objectForKey:self.inputDateKey] : [NSDate date]);
             }
-            if ( [[_eventModel objectForKey:EventItem_IsAllDay] boolValue] )
+            if ( [[_eventModel objectForKey:EventItem_IsAllDay] boolValue] ) {
                 datePicker.datePickerMode = UIDatePickerModeDate;
-            else
+            }
+            else {
                 datePicker.datePickerMode = UIDatePickerModeDateAndTime;
+            }
         }
             break;
         case EventCellType_Advanced:{
@@ -814,6 +850,9 @@
         case EventCellType_Calendar:{
             A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
+            nextVC.completionBlock = ^{
+                [self.tableView reloadData];
+            };
             if ( IS_IPHONE )
                 [self.navigationController pushViewController:nextVC animated:YES];
             else

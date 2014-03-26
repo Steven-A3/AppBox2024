@@ -88,6 +88,12 @@
         _headerSeparator1_TopConst_iPad.constant = 0.5;
         _headerSeparator2_TopConst_iPad.constant = 0.5;
     }
+    
+    [self.view addSubview:_addEventButton];
+    [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.centerX);
+        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 21));
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -108,15 +114,6 @@
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
-    
-    if (![_addEventButton isDescendantOfView:self.view]) {
-        _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                           //self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
-                                           self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
-                                           _addEventButton.frame.size.width,
-                                           _addEventButton.frame.size.height);
-        [self.view addSubview:_addEventButton];
-    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -133,7 +130,6 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    _addEventButton.hidden = YES;
     if ( IS_IPAD ) {
         CGFloat barWidth = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? self.view.frame.size.width : self.view.frame.size.height);
         _iPadHeaderCenterConstraints.constant = barWidth / 3.0;
@@ -141,16 +137,6 @@
             [self.view layoutIfNeeded];
         }];
     }
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    _addEventButton.frame = CGRectMake(self.view.frame.size.width * 0.5 - _addEventButton.frame.size.width * 0.5,
-                                       //self.view.frame.size.height - _bottomToolbar.frame.size.height - 20.0 - _addEventButton.frame.size.height,
-                                       self.view.frame.size.height - _bottomToolbar.frame.size.height - 11.0 - _addEventButton.frame.size.height,
-                                       _addEventButton.frame.size.width,
-                                       _addEventButton.frame.size.height);
-    _addEventButton.hidden = NO;
 }
 
 - (void)setupHeaderInfo
@@ -488,9 +474,9 @@
         return NO;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-    if ([item.events count] == 0) {
-        return NO;
-    }
+//    if ([item.events count] == 0) {
+//        return NO;
+//    }
     
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }
