@@ -939,6 +939,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)scrollToTopOfTableView {
+//    [self.tableView scrollRectToVisible:CGRectMake(0, 0, 1, 1) animated:YES];
     if (IS_LANDSCAPE) {
         [UIView beginAnimations:@"KeyboardWillShow" context:nil];
         [UIView setAnimationBeginsFromCurrentState:YES];
@@ -1282,15 +1283,12 @@ static NSString *CellIdentifier = @"Cell";
     [self calculateAndDisplayResultWithAnimation:YES];
 
     // 유효성 체크, 유효하지 않은 아이템에 기본값 부여.
-    //[self validateEmptyOrInput:item aCell:aCell];
-    if ( item.itemName.length==0 && (!item.price || [item.price isEqualToNumber:@0]) && (!item.qty || [item.qty isEqualToNumber:@1] || [item.qty isEqualToNumber:@0] ) ) {
+    if ([self isEmptyItemRow:item]) {
         // 아무 입력이 없었던 경우
         // 행에 출력된 초기값을 제거하여 공백 셀을 만든다.
         item.hasData = @(NO);
         
-        if ( (self.firstResponder != textField && _selectedItem == item) || index.row==0) {
-        //if ( (self.firstResponder != textField && _selectedItem == item) || index.row==0) {
-        //if (self.firstResponder != textField && (_selectedItem == item || index.row==0)) {
+        if ([self isSameFocusingOnItemRow:item toTextField:textField] || index.row==0) {
             return;
         }
 
@@ -1306,6 +1304,7 @@ static NSString *CellIdentifier = @"Cell";
         aCell.subTotalLabel.text = @"";
         aCell.priceTextField.placeholder = @"";
         aCell.qtyTextField.placeholder = @"";
+        self.firstResponder = nil;
         return;
     }
 
@@ -1316,9 +1315,31 @@ static NSString *CellIdentifier = @"Cell";
     [self disableMoreButtonsIfBugdetNotExist];
     
     // 예외처리, itemName 편집 종료시, top scroll 적용.
-    if (textField == aCell.nameTextField && textField == self.firstResponder) {
+    if (textField == aCell.nameTextField && textField == [self firstResponder]) {
         [self scrollToTopOfTableView];
+        self.firstResponder = nil;
     }
+    else {
+        if (textField == [self firstResponder]) {
+            self.firstResponder = nil;
+        }
+    }
+}
+
+- (BOOL)isEmptyItemRow:(ExpenseListItem *)item {
+    if (item.itemName.length==0 && (!item.price || [item.price isEqualToNumber:@0]) && (!item.qty || [item.qty isEqualToNumber:@1] || [item.qty isEqualToNumber:@0] )) {
+        return YES;
+    }
+
+    return NO;
+}
+
+- (BOOL)isSameFocusingOnItemRow:(ExpenseListItem *)item toTextField:(UITextField *)textField {
+    if (([self firstResponder] != textField && _selectedItem == item)) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 -(void)itemCellTextFieldDonePressed:(A3ExpenseListItemCell *)aCell
@@ -1369,17 +1390,6 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)removeItemForCell:(A3ExpenseListItemCell *)sender responder:(UIResponder *)keyInputDelegate
 {
-//    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-//    indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
-//    ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
-//    aItem.itemDate = nil;
-//    aItem.itemName = @"";
-//    aItem.price = nil;
-//    aItem.qty = nil;
-//    aItem.hasData = @(NO);
-////    aItem.price = @0;
-////    aItem.qty = @1;
-//    [[NSManagedObjectContext MR_contextForCurrentThread] MR_saveToPersistentStoreAndWait];
     NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
     indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
     ExpenseListItem *aItem = _tableDataSourceArray[indexPath.row];
