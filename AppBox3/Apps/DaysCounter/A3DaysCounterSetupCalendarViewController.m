@@ -137,6 +137,10 @@
     else{
         [self.navigationController popViewControllerAnimated:YES];
     }
+    
+    if (_dismissCompletionBlock) {
+        _dismissCompletionBlock();
+    }
 }
 
 @end

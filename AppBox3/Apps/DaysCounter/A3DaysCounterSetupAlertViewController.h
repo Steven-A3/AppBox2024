@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
 @property (strong, nonatomic) IBOutlet UIDatePicker *datePickerView;
+@property (strong, nonatomic) void (^dismissCompletionBlock)();
 
 - (IBAction)dateChangedAction:(id)sender;
 

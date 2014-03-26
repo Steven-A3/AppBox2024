@@ -13,4 +13,5 @@
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
 @property (strong, nonatomic) IBOutlet UIView *infoView;
 @property (strong, nonatomic) IBOutlet UILabel *examLabel;
+@property (strong, nonatomic) void (^dismissCompletionBlock)();
 @end

@@ -790,6 +790,7 @@
     [self resignAllAction];
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
         [self deleteEventAction:nil];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
@@ -820,6 +821,9 @@
         case EventCellType_RepeatType:{
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
+            nextVC.dismissCompletionBlock = ^{
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            };
             if ( IS_IPHONE )
                 [self.navigationController pushViewController:nextVC animated:YES];
             else
@@ -830,6 +834,10 @@
         case EventCellType_EndRepeatDate:{
             A3DaysCounterSetupEndRepeatViewController *nextVC = [[A3DaysCounterSetupEndRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupEndRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
+            nextVC.dismissCompletionBlock = ^{
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            };
+            
             if ( IS_IPHONE )
                 [self.navigationController pushViewController:nextVC animated:YES];
             else
@@ -840,10 +848,16 @@
         case EventCellType_Alert:{
             A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
-            if ( IS_IPHONE )
+            nextVC.dismissCompletionBlock = ^{
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            };
+            
+            if ( IS_IPHONE ) {
                 [self.navigationController pushViewController:nextVC animated:YES];
-            else
+            }
+            else {
                 [self.A3RootViewController presentRightSideViewController:nextVC];
+            }
             [self closeDatePickerCell];
         }
             break;
@@ -853,16 +867,27 @@
             nextVC.completionBlock = ^{
                 [self.tableView reloadData];
             };
-            if ( IS_IPHONE )
+            
+            nextVC.dismissCompletionBlock = ^{
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            };
+
+            if ( IS_IPHONE ) {
                 [self.navigationController pushViewController:nextVC animated:YES];
-            else
+            }
+            else {
                 [self.A3RootViewController presentRightSideViewController:nextVC];
+            }
             [self closeDatePickerCell];
         }
             break;
         case EventCellType_DurationOption:{
             A3DaysCounterSetupDurationViewController *nextVC = [[A3DaysCounterSetupDurationViewController alloc] initWithNibName:@"A3DaysCounterSetupDurationViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
+            nextVC.dismissCompletionBlock = ^{
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            };
+            
             if ( IS_IPHONE )
                 [self.navigationController pushViewController:nextVC animated:YES];
             else

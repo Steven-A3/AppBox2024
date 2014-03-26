@@ -13,4 +13,5 @@
 
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) void (^dismissCompletionBlock)();
 @end

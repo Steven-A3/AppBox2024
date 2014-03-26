@@ -48,7 +48,8 @@
     self.title = @"Reminder";
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    //self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 30, 0, 0);
 
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
@@ -123,66 +124,121 @@
 //    return 0.01;
 //}
 
+#define UNREADVIEW_TAG  111
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"reminderCell";
+    static NSString *const CellIdentifier = @"reminderCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:4];
-        UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
-        UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
-        [deleteButton setImage:[[deleteButton imageForState:UIControlStateNormal] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-        deleteButton.tintColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-        [deleteButton addTarget:self action:@selector(changeClearAction:) forControlEvents:UIControlEventTouchUpInside];
-        
-        clearButton.layer.masksToBounds = YES;
-        clearButton.layer.borderWidth = 1.0;
-        clearButton.layer.borderColor = [[clearButton titleColorForState:UIControlStateNormal] CGColor];
-        clearButton.layer.cornerRadius = 9.0;
-        [clearButton addTarget:self action:@selector(clearAction:) forControlEvents:UIControlEventTouchUpInside];
     
-
-        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-        detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:IS_IPHONE ? UITableViewCellStyleSubtitle : UITableViewCellStyleValue1
+                                      reuseIdentifier:CellIdentifier];
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+        UIView *unReadMark = [[UIView alloc] initWithFrame:CGRectZero];
+        unReadMark.tag = UNREADVIEW_TAG;
+        unReadMark.backgroundColor = [UIColor colorWithRed:0 green:126.0/255 blue:248.0/255 alpha:1.0];
+        unReadMark.layer.cornerRadius = 5;
+        [cell.contentView addSubview:unReadMark];
+        [unReadMark makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(cell.contentView.left).with.offset(8);
+            //make.top.equalTo(cell.contentView.top).with.offset(10);
+            make.centerY.equalTo(cell.textLabel.centerY);
+            make.width.equalTo(@10);
+            make.height.equalTo(@10);
+        }];
     }
     
-    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-    UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
-    UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
+    cell.textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    cell.detailTextLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     
-    textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    detailTextLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    
+    UIView *unreadMarkView = [cell viewWithTag:UNREADVIEW_TAG];
     
     if ( [_itemArray count] > 0 ) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-        textLabel.text = item.eventName;
+        cell.textLabel.text = item.eventName;
         
         if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
-            detailTextLabel.text = [item.alertDatetime timeAgo];
+            cell.detailTextLabel.text = [item.alertDatetime timeAgo];
+            unreadMarkView.hidden = NO;
         }
         else {
-            detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
-                                                         withFormat:IS_IPHONE ? @"EEEE, MMM dd, yyyy hh:mm a" : @"EEEE, MMMM dd, yyyy hh:mm a"];
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
+                                                              withFormat:IS_IPHONE ? @"EEEE, MMM dd, yyyy hh:mm a" : @"EEEE, MMMM dd, yyyy hh:mm a"];
+            unreadMarkView.hidden = YES;
         }
         
-        deleteButton.hidden = (_clearIndexPath && (_clearIndexPath.row == indexPath.row));
-        clearButton.hidden = !deleteButton.hidden;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     else {
-        textLabel.text = @"";
-        detailTextLabel.text = @"";
-        deleteButton.hidden = YES;
-        clearButton.hidden = YES;
+        unreadMarkView.hidden = YES;
+        cell.textLabel.text = @"";
+        cell.detailTextLabel.text = @"";
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    
+
     return cell;
+    
+//    static NSString *CellIdentifier = @"reminderCell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//    if (cell == nil) {
+//        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
+//        cell = [cellArray objectAtIndex:4];
+//        UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
+//        UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
+//        [deleteButton setImage:[[deleteButton imageForState:UIControlStateNormal] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
+//        deleteButton.tintColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+//        [deleteButton addTarget:self action:@selector(changeClearAction:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        clearButton.layer.masksToBounds = YES;
+//        clearButton.layer.borderWidth = 1.0;
+//        clearButton.layer.borderColor = [[clearButton titleColorForState:UIControlStateNormal] CGColor];
+//        clearButton.layer.cornerRadius = 9.0;
+//        [clearButton addTarget:self action:@selector(clearAction:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//
+//        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//        detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+//    }
+//    
+//    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+//    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//    UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
+//    UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
+//    
+//    textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+//    detailTextLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//    
+//    
+//    if ( [_itemArray count] > 0 ) {
+//        DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+//        textLabel.text = item.eventName;
+//        
+//        if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
+//            detailTextLabel.text = [item.alertDatetime timeAgo];
+//        }
+//        else {
+//            detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
+//                                                         withFormat:IS_IPHONE ? @"EEEE, MMM dd, yyyy hh:mm a" : @"EEEE, MMMM dd, yyyy hh:mm a"];
+//        }
+//        
+//        deleteButton.hidden = (_clearIndexPath && (_clearIndexPath.row == indexPath.row));
+//        clearButton.hidden = !deleteButton.hidden;
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+//    }
+//    else {
+//        textLabel.text = @"";
+//        detailTextLabel.text = @"";
+//        deleteButton.hidden = YES;
+//        clearButton.hidden = YES;
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    }
+//
+//    return cell;
 }
 
 #pragma mark - Table view delegate
