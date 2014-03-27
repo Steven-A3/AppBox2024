@@ -164,13 +164,13 @@
         }
         else {
             _inputViewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimpleVC_iPad" bundle:nil];
-            _inputViewController.prevBtnTitleText = @"UP";
-            _inputViewController.nextBtnTitleText = @"DOWN";
+            _inputViewController.prevBtnTitleText = @"Prev";
+            _inputViewController.nextBtnTitleText = @"Next";
             _inputViewController.textInputTarget = textField;
             _inputViewController.delegate = self;
             textField.inputView = _inputViewController.view;
-            [((A3NumberKeyboardViewController_iPad *)_inputViewController).prevButton setTitle:@"UP" forState:UIControlStateNormal];
-            [((A3NumberKeyboardViewController_iPad *)_inputViewController).nextButton setTitle:@"DOWN" forState:UIControlStateNormal];
+            [((A3NumberKeyboardViewController_iPad *)_inputViewController).prevButton setTitle:@"Prev" forState:UIControlStateNormal];
+            [((A3NumberKeyboardViewController_iPad *)_inputViewController).nextButton setTitle:@"Next" forState:UIControlStateNormal];
 
 			// TODO: 아래 한줄의 용도를 정환이에게 확인해야 함
 //            [((A3NumberKeyboardViewController_iPad *)_inputViewController).prevButton removeTarget:self action:@selector(clearButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -192,8 +192,8 @@
         }
         else {
             _inputViewController = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
-            _inputViewController.prevBtnTitleText = @"UP";
-            _inputViewController.nextBtnTitleText = @"DOWN";
+            _inputViewController.prevBtnTitleText = @"Prev";
+            _inputViewController.nextBtnTitleText = @"Next";
             _inputViewController.textInputTarget = textField;
             _inputViewController.delegate = self;
             textField.inputView = _inputViewController.view;

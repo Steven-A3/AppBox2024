@@ -19,9 +19,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		_currencyCode = [numberFormatter currencyCode];
-		_currencySymbol = [numberFormatter currencySymbol];
     }
     return self;
 }
@@ -31,7 +28,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
 
-
+	[self setupLocale];
 }
 
 - (void)didReceiveMemoryWarning
@@ -138,6 +135,21 @@
 	[nf setCurrencyCode:currencyCode];
 	_currencySymbol = nf.currencySymbol;
 	FNLOG(@"%@, %@", _currencyCode, _currencySymbol);
+}
+
+- (void)setupLocale {
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	_currencyCode = [numberFormatter currencyCode];
+	_currencySymbol = [numberFormatter currencySymbol];
+
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	if (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0) {
+		[self.dotButton setTitle:@"" forState:UIControlStateNormal];
+		[self.dotButton setEnabled:NO];
+	} else {
+		[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
+		[self.dotButton setEnabled:YES];
+	}
 }
 
 @end

@@ -17,6 +17,7 @@
 @property (nonatomic, weak) id<A3KeyboardDelegate> delegate;			// Handle big button one and two
 @property (nonatomic, weak) IBOutlet UIButton *bigButton1;
 @property (nonatomic, weak) IBOutlet UIButton *bigButton2;
+@property (nonatomic, weak) IBOutlet UIButton *dotButton;
 
 @property (nonatomic, strong) NSString * prevBtnTitleText;
 @property (nonatomic, strong) NSString * nextBtnTitleText;
@@ -25,4 +26,5 @@
 
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 
+- (void)setupLocale;
 @end

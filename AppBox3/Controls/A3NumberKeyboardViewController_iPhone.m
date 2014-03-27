@@ -45,11 +45,14 @@
 
 	super.keyboardType = keyboardType;
 	switch (keyboardType) {
+		case A3NumberKeyboardTypeInteger:
+		case A3NumberKeyboardTypeReal:
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
-			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setEnabled:YES];
 			break;
 		}
 		case A3NumberKeyboardTypePercent: {
@@ -62,7 +65,8 @@
 			image = [UIImage imageNamed:@"keyboard_calculator_white"];
 			[bigButton2 setImage:image forState:UIControlStateHighlighted];
 			[bigButton2 setTitle:nil forState:UIControlStateNormal];
-			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setEnabled:YES];
 			break;
 		}
 		case A3NumberKeyboardTypeMonthYear: {
@@ -71,7 +75,8 @@
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];
 			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
-			[_dotButton setTitle:nil forState:UIControlStateNormal];
+			[self.dotButton setTitle:nil forState:UIControlStateNormal];
+			[self.dotButton setEnabled:NO];
 			break;
 		}
 		case A3NumberKeyboardTypeInterestRate: {
@@ -80,7 +85,8 @@
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];
 			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
-			[_dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setEnabled:YES];
 			break;
 		}
         case A3NumberKeyboardTypeFraction: {
@@ -88,9 +94,11 @@
 			bigButton1.selected = NO;
 			bigButton2.selected = YES;
 			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			[self.dotButton setEnabled:YES];
 			break;
 		}
 	}
+	[self setupLocale];
 }
 
 - (void)fillBigButtonTitleWith:(NSString *)defaultTitle1 bigButton2Title:(NSString *)defaultTitle2 {

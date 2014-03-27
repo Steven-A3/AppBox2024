@@ -34,6 +34,8 @@
 	A3KeyboardButton_iOS7 *bigButton2 = (A3KeyboardButton_iOS7 *) self.bigButton2;
 
 	switch (keyboardType) {
+		case A3NumberKeyboardTypeInteger:
+		case A3NumberKeyboardTypeReal:
 		case A3NumberKeyboardTypeCurrency: {
 			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
 			bigButton1.selected = NO;
@@ -75,6 +77,7 @@
 		case A3NumberKeyboardTypeFraction:
 			break;
 	}
+	[self setupLocale];
 }
 
 - (void)fillBigButtonTitleWith:(NSString *)defaultTitle1 bigButton2Title:(NSString *)defaultTitle2 {
@@ -105,37 +108,13 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+
     if (self.prevBtnTitleText) {        // KJH
-//        [self.prevButton setTitle:self.prevBtnTitleText forState:UIControlStateNormal];
-//        self.prevButton.titleLabel.text = self.prevBtnTitleText;
         [self.prevButton setTitle:@"" forState:UIControlStateNormal];
-        [self.prevButton setTitle:@"" forState:UIControlStateHighlighted];
-        [self.prevButton setTitle:@"" forState:UIControlStateDisabled];
-        [self.prevButton setTitle:@"" forState:UIControlStateSelected];
-        self.prevButton.titleLabel.text = @"";
-        
-//        [self.bigButton1 setTitle:@"" forState:UIControlStateNormal];
-//        [self.bigButton1 setTitle:@"" forState:UIControlStateHighlighted];
-//        [self.bigButton1 setTitle:@"" forState:UIControlStateDisabled];
-//        [self.bigButton1 setTitle:@"" forState:UIControlStateSelected];
-//        self.bigButton1.titleLabel.text = @"";
-//        
-//        [self.bigButton2 setTitle:@"" forState:UIControlStateNormal];
-//        [self.bigButton2 setTitle:@"" forState:UIControlStateHighlighted];
-//        [self.bigButton2 setTitle:@"" forState:UIControlStateDisabled];
-//        [self.bigButton2 setTitle:@"" forState:UIControlStateSelected];
-//        self.bigButton2.titleLabel.text = @"";
     }
     if (self.nextBtnTitleText) {
-//        [self.nextButton setTitle:self.nextBtnTitleText forState:UIControlStateNormal];
-//        self.nextButton.titleLabel.text = self.nextBtnTitleText;
         [self.nextButton setTitle:@"" forState:UIControlStateNormal];
-        [self.nextButton setTitle:@"" forState:UIControlStateHighlighted];
-        [self.nextButton setTitle:@"" forState:UIControlStateDisabled];
-        [self.nextButton setTitle:@"" forState:UIControlStateSelected];
-        self.nextButton.titleLabel.text = @"";
     }
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
