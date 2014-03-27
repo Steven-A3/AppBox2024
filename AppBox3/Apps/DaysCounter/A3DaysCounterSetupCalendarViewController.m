@@ -77,7 +77,6 @@
         cell = [cellArray objectAtIndex:8];
         UIImageView *imageView = (UIImageView*)[cell viewWithTag:10];
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     // Configure the cell...
