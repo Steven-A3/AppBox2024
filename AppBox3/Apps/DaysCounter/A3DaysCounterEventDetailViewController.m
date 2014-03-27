@@ -158,10 +158,17 @@
             break;
         case EventCellType_Alert:
         case EventCellType_DurationOption:{
-            cell = [cellArray objectAtIndex:14];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
-            detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+//            cell = [cellArray objectAtIndex:14];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
+//            detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+            cell.textLabel.tag = 10;
+            cell.detailTextLabel.tag = 11;
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;

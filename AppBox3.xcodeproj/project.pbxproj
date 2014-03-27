@@ -911,6 +911,7 @@
 		804A405E18E070A200556029 /* A3DaysCounterEventListNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */; };
 		804A406118E070C500556029 /* A3DaysCounterEventListDateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */; };
 		8054E88818E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */; };
+		8054E88B18E425CF00598FB3 /* A3DaysCounterValue1Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8054E88A18E425CF00598FB3 /* A3DaysCounterValue1Cell.m */; };
 		80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */; };
 /* End PBXBuildFile section */
 
@@ -2479,6 +2480,8 @@
 		804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListDateCell.m; sourceTree = "<group>"; };
 		8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterRepeatCustomCell.h; sourceTree = "<group>"; };
 		8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterRepeatCustomCell.m; sourceTree = "<group>"; };
+		8054E88918E425CF00598FB3 /* A3DaysCounterValue1Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterValue1Cell.h; sourceTree = "<group>"; };
+		8054E88A18E425CF00598FB3 /* A3DaysCounterValue1Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterValue1Cell.m; sourceTree = "<group>"; };
 		80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -5045,12 +5048,12 @@
 				68F1C80618D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.h */,
 				68F1C80718D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.m */,
 				68F1C80818D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.xib */,
-				68F1C80918D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.h */,
-				68F1C80A18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.m */,
-				68F1C80B18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.xib */,
 				68F1C80C18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.h */,
 				68F1C80D18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.m */,
 				68F1C80E18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.xib */,
+				68F1C80918D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.h */,
+				68F1C80A18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.m */,
+				68F1C80B18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.xib */,
 				68F1C80F18D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.h */,
 				68F1C81018D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.m */,
 				68F1C81118D7F37D009FAE8A /* A3DaysCounterSetupDurationViewController.xib */,
@@ -5191,6 +5194,8 @@
 				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
 				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
+				8054E88918E425CF00598FB3 /* A3DaysCounterValue1Cell.h */,
+				8054E88A18E425CF00598FB3 /* A3DaysCounterValue1Cell.m */,
 			);
 			name = "Cells (AddEvent)";
 			sourceTree = "<group>";
@@ -6115,6 +6120,7 @@
 				68E39FF9186D845300D8482E /* A3SettingsRequireForViewController.m in Sources */,
 				68B6A44D18CEE781004084EF /* PSTCollectionViewController.m in Sources */,
 				68143D1218E3EC1F00569691 /* A3KeyboardView.m in Sources */,
+				8054E88B18E425CF00598FB3 /* A3DaysCounterValue1Cell.m in Sources */,
 				680886DA1891751B0093FD97 /* A3ClockLEDViewController.m in Sources */,
 				68B6A2D118CEC76D004084EF /* A3UnitConverterHistoryViewController.m in Sources */,
 				6829687818503C3300B70E13 /* NSRelationshipDescription+MagicalDataImport.m in Sources */,

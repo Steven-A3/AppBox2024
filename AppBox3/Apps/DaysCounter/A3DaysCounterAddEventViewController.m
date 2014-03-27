@@ -395,15 +395,22 @@
         NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
         NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
         NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
+//        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
         
         if ( itemType == EventCellType_RepeatType || itemType == EventCellType_EndRepeatDate || itemType == EventCellType_Alert || itemType == EventCellType_DurationOption || itemType == EventCellType_Location) {
-            cell = [cellArray objectAtIndex:14];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+//            cell = [cellArray objectAtIndex:14];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+//            [cell setNeedsLayout];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            cell.textLabel.tag = 10;
+            cell.detailTextLabel.tag = 11;
         }
         else {
+            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
             
             switch (itemType) {
                 case EventCellType_Title :{
@@ -652,11 +659,15 @@
             break;
         case EventCellType_DurationOption:
         {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+            UILabel *textLabel = [cell textLabel];
+            UILabel *detailTextLabel = [cell detailTextLabel];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
             detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
             textLabel.textColor = [UIColor blackColor];
+            [textLabel sizeToFit];
+            [detailTextLabel sizeToFit];
         }
             break;
         case EventCellType_Location:
