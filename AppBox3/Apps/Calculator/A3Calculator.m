@@ -93,19 +93,17 @@ typedef CMathParser<char, double> MathParser;
 
 - (NSString *)getResultValueString:(double)value {
 
-    NSUInteger maxFractionDigt = 15;
+    NSUInteger maxFractionDigt = 14;
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    NSUInteger maxDigitLen = 16, maxSignificantDigits = 16;
+    NSUInteger maxDigitLen = 16, maxSignificantDigits = 15;
     FNLOG("value = %.15f %ld", value, (long)nf.roundingMode);
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
-    [nf setRoundingMode:NSNumberFormatterRoundFloor];
     
     if (IS_IPHONE && _isLandScape == NO) {
         maxFractionDigt = 8;
         maxDigitLen = 9;
         maxSignificantDigits = 9;
-        [nf setRoundingMode:NSNumberFormatterRoundHalfUp];
     }
     [nf setLocale:[NSLocale currentLocale]];
     [nf setMaximumFractionDigits:maxFractionDigt];
@@ -115,9 +113,9 @@ typedef CMathParser<char, double> MathParser;
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
 
         resultString = [nf stringFromNumber:[NSDecimalNumber numberWithDouble:value]];
+        FNLOG(@"Normal : %@",resultString);
     }else {
         [nf setNumberStyle:NSNumberFormatterScientificStyle];
-        [nf setRoundingMode:NSNumberFormatterRoundHalfUp];
         [nf setExponentSymbol:@"e"];
         if(IS_IPHONE && _isLandScape == NO) {
             [nf setPositiveFormat:@"0.######E+0"];
@@ -126,6 +124,7 @@ typedef CMathParser<char, double> MathParser;
         }
         
         resultString = [nf stringFromNumber:[NSDecimalNumber numberWithDouble:value]];
+                FNLOG(@"Faction : %@",resultString);
     }
     
     return resultString;

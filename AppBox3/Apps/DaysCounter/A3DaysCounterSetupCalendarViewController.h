@@ -12,4 +12,5 @@
 
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
 @property (strong, nonatomic) void (^completionBlock)();
+@property (strong, nonatomic) void (^dismissCompletionBlock)();
 @end

@@ -373,8 +373,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)alertTypeIndexFromDate:(NSDate*)date alertDate:(id)alertDate
 {
-    if ( [alertDate isKindOfClass:[NSNull class]] )
+    if ( [alertDate isKindOfClass:[NSNull class]] ) {
         return AlertType_None;
+    }
     
     NSInteger retType = AlertType_Custom;
     NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute fromDate:alertDate toDate:date options:0];

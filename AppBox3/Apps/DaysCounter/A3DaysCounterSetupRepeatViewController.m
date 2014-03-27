@@ -110,7 +110,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 35.0;
+    return IS_RETINA ? 35.5 : 35;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -254,6 +254,10 @@
     }
     else{
         [self.navigationController popViewControllerAnimated:YES];
+    }
+    
+    if (_dismissCompletionBlock) {
+        _dismissCompletionBlock();
     }
 }
 

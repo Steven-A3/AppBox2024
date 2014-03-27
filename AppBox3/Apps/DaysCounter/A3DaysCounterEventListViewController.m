@@ -543,8 +543,9 @@
         item = [_searchResultArray objectAtIndex:indexPath.row];
     }
     
-    if ( item == nil )
+    if ( item == nil ) {
         return;
+    }
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;

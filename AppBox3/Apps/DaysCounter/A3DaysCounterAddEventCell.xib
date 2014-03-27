@@ -191,7 +191,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dma-R2-HZz">
-                        <rect key="frame" x="245" y="11" width="42" height="21"/>
+                        <rect key="frame" x="230" y="11" width="42" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="MWs-KB-RWM"/>
@@ -201,7 +201,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_circle" translatesAutoresizingMaskIntoConstraints="NO" id="FIJ-Xp-d8e">
-                        <rect key="frame" x="225" y="16" width="12" height="12"/>
+                        <rect key="frame" x="210" y="16" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="mQD-Ed-LKc"/>
@@ -213,7 +213,7 @@
                     <constraint firstAttribute="centerY" secondItem="dma-R2-HZz" secondAttribute="centerY" id="M1A-wa-r8M"/>
                     <constraint firstAttribute="centerY" secondItem="FIJ-Xp-d8e" secondAttribute="centerY" id="PpQ-JF-Ynm"/>
                     <constraint firstAttribute="centerY" secondItem="ebu-wK-H1v" secondAttribute="centerY" id="W3Y-Lq-if0"/>
-                    <constraint firstAttribute="trailing" secondItem="dma-R2-HZz" secondAttribute="trailing" id="bWU-wP-HCz"/>
+                    <constraint firstAttribute="trailing" secondItem="dma-R2-HZz" secondAttribute="trailing" constant="15" id="bWU-wP-HCz"/>
                     <constraint firstItem="ebu-wK-H1v" firstAttribute="leading" secondItem="9Kt-os-Kxn" secondAttribute="leading" constant="15" id="yT6-Mm-y9E"/>
                     <constraint firstItem="dma-R2-HZz" firstAttribute="leading" secondItem="FIJ-Xp-d8e" secondAttribute="trailing" constant="8" id="z06-Lf-kdm"/>
                 </constraints>
