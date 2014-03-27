@@ -677,40 +677,56 @@ NSString *kCalculationString;
      #입력중에도 좌우 크기에 따라서, 터치했던 커서의 위치겨 변경됩니다.
      #회색 처리된 circle 도, 탭 가능.
      */
-    
-    if (!self.isAddSubMode) {
-        
+
+	_selectedTextField = self.isAddSubMode ? nil : _fromToTextField; // + / - 모드에서만
+
+	self.dateKeyboardViewController = self.newDateKeyboardViewController;
+	[self.dateKeyboardViewController changeInputToYear];
+
+	if (!self.isAddSubMode) {
+
         if ([self.fromDate compare:self.toDate] == NSOrderedDescending) {
             // from > to, 큰 값이 오른쪽(to)에 위치한다.
-            [self.fromToTextField becomeFirstResponder];
-            [self moveToToDateCell];
+			self.dateKeyboardViewController.date = self.toDate;
+
+			[self.fromToTextField becomeFirstResponder];
+			[self moveToToDateCell];
         } else {
             // from < to
+			self.dateKeyboardViewController.date = self.fromDate;
+
             [self.fromToTextField becomeFirstResponder];
             [self moveToFromDateCell];
         }
         
     } else {
         if ([self didSelectedAdd]) {
-            [self.fromToTextField becomeFirstResponder];
+			self.dateKeyboardViewController.date = self.fromDate;
+
+			[self.fromToTextField becomeFirstResponder];
             [self moveToFromDateCell];
         } else {
             [_footerCell.yearTextField becomeFirstResponder];
         }
     }
-    
 }
 
 -(void)dateCalcHeaderToThumbTapped {
-    
-    if (!self.isAddSubMode) {
+	_selectedTextField = self.isAddSubMode ? nil : _fromToTextField; // + / - 모드에서만
+
+	self.dateKeyboardViewController = self.newDateKeyboardViewController;
+	[self.dateKeyboardViewController changeInputToYear];
+
+	if (!self.isAddSubMode) {
         
         if ([self.fromDate compare:self.toDate] == NSOrderedDescending) {
             // from > to, 큰 값이 오른쪽(to)에 위치한다.
+			self.dateKeyboardViewController.date = self.fromDate;
             [self.fromToTextField becomeFirstResponder];
             [self moveToFromDateCell];
         } else {
             // from < to
+			self.dateKeyboardViewController.date = self.toDate;
             [self.fromToTextField becomeFirstResponder];
             [self moveToToDateCell];
         }
@@ -719,6 +735,7 @@ NSString *kCalculationString;
         if ([self didSelectedAdd]) {
             [_footerCell.yearTextField becomeFirstResponder];
         } else {
+			self.dateKeyboardViewController.date = self.fromDate;
             [self.fromToTextField becomeFirstResponder];
             [self moveToFromDateCell];
         }
@@ -733,13 +750,13 @@ NSString *kCalculationString;
     
     if ([_footerCell hasEqualTextField:_selectedTextField]) {
         if (_simpleNormalNumberKeyboard==nil) {
-            _simpleNormalNumberKeyboard = [self simpleNumberKeyboard];
+            _simpleNormalNumberKeyboard = [self simplePrevNextNumberKeyboard];
             if (IS_IPHONE) {
                 ((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).needButtonsReload = NO;
             }
         }
-        
-        _simpleNormalNumberKeyboard.textInputTarget = textField;
+
+		_simpleNormalNumberKeyboard.textInputTarget = textField;
         _simpleNormalNumberKeyboard.delegate = self;
         _selectedTextField.inputView = _simpleNormalNumberKeyboard.view;
         
@@ -785,18 +802,11 @@ NSString *kCalculationString;
         }
         
 		[_simpleNormalNumberKeyboard reloadPrevNextButtons];
-        
-        if (IS_IPHONE) {
-            [((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).prevButton setImage:nil forState:UIControlStateNormal];
-            [((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).prevButton setTitle:_datePrevShow?@"Prev":nil forState:UIControlStateNormal];
-            [((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).nextButton setImage:nil forState:UIControlStateNormal];
-            [((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).nextButton setTitle:_dateNextShow?@"Next":nil forState:UIControlStateNormal];
-        }
     }
     else {
         A3DateKeyboardViewController * keyboardVC = [self dateKeyboardViewController];
         keyboardVC.delegate = self;
-        
+
         _selectedTextField.inputView = keyboardVC.view;
     }
     
@@ -1449,10 +1459,10 @@ NSString *kCalculationString;
         _selectedTextField = self.isAddSubMode ? nil : _fromToTextField; // + / - 모드에서만
 
 		self.dateKeyboardViewController = self.newDateKeyboardViewController;
+		[self.dateKeyboardViewController changeInputToYear];
 
         [self.fromToTextField becomeFirstResponder];
-        [self.dateKeyboardViewController changeInputToYear];
-        
+
         if (indexPath.row==0) {
             self.dateKeyboardViewController.date = self.fromDate;
             [self moveToFromDateCell];

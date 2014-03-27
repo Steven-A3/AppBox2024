@@ -57,7 +57,7 @@
 		}
 		case A3NumberKeyboardTypePercent: {
 			[self fillBigButtonTitleWith:@"%" bigButton2Title:@"$"];
-			bigButton1.selected = NO;
+			bigButton1.selected = YES;
 			bigButton2.selected = NO;
 
 			UIImage *image = [UIImage imageNamed:@"keyboard_calculator_black.png"];
@@ -71,7 +71,7 @@
 		}
 		case A3NumberKeyboardTypeMonthYear: {
 			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			bigButton1.selected = NO;
+			bigButton1.selected = YES;
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];
 			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
@@ -81,7 +81,7 @@
 		}
 		case A3NumberKeyboardTypeInterestRate: {
 			[self fillBigButtonTitleWith:@"% /yr" bigButton2Title:@"% /mo"];
-			bigButton1.selected = NO;
+			bigButton1.selected = YES;
 			bigButton2.selected = NO;
 			[bigButton2 setImage:nil forState:UIControlStateNormal];
 			[bigButton2 setImage:nil forState:UIControlStateHighlighted];

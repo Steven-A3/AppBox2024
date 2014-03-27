@@ -27,6 +27,8 @@
 
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 
+- (A3NumberKeyboardViewController *)simplePrevNextNumberKeyboard;
+
 - (A3NumberKeyboardViewController *)normalNumberKeyboard;
 
 - (A3NumberKeyboardViewController *)passcodeKeyboard;

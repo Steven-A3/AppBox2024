@@ -2496,13 +2496,11 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             case A3LC_CalculationItemInterestRate:
             {
                 self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
-				[self.numberKeyboardViewController.bigButton1 setSelected:YES];
 				break;
             }
             case A3LC_CalculationItemTerm:
             {
                 self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
-				[self.numberKeyboardViewController.bigButton1 setSelected:YES];
                 break;
             }
             default:

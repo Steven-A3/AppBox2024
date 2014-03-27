@@ -143,10 +143,14 @@
 	_currencySymbol = [numberFormatter currencySymbol];
 
 	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	if (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0) {
-		[self.dotButton setTitle:@"" forState:UIControlStateNormal];
+	if (   (A3NumberKeyboardTypeMonthYear == self.keyboardType)
+		|| (A3NumberKeyboardTypeInteger == self.keyboardType)
+		|| (A3NumberKeyboardTypeFraction == self.keyboardType)
+		|| (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0) )
+	{
+		[self.dotButton setTitle:nil forState:UIControlStateNormal];
 		[self.dotButton setEnabled:NO];
-	} else {
+	} else  {
 		[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
 		[self.dotButton setEnabled:YES];
 	}

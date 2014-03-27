@@ -33,14 +33,18 @@
 	A3KeyboardButton_iOS7 *bigButton1 = (A3KeyboardButton_iOS7 *) self.bigButton1;
 	A3KeyboardButton_iOS7 *bigButton2 = (A3KeyboardButton_iOS7 *) self.bigButton2;
 
+	[bigButton2 setTitle:nil forState:UIControlStateNormal];
+	[bigButton2 setImage:nil forState:UIControlStateNormal];
+
 	switch (keyboardType) {
 		case A3NumberKeyboardTypeInteger:
 		case A3NumberKeyboardTypeReal:
 		case A3NumberKeyboardTypeCurrency: {
-			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@"%"];
+			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@""];
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
-			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			[bigButton2 setTitle:nil forState:UIControlStateNormal];
+			[bigButton2 setImage:[UIImage imageNamed:@"calculator"] forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypePercent: {
@@ -48,30 +52,20 @@
 			bigButton1.selected = NO;
 			bigButton2.selected = NO;
 
-			UIImage *image = [UIImage imageNamed:@"keyboard_calculator_black"];
-			[bigButton2 setImage:image forState:UIControlStateNormal];
-			image = [UIImage imageNamed:@"keyboard_calculator_white"];
-			[bigButton2 setImage:image forState:UIControlStateHighlighted];
 			[bigButton2 setTitle:nil forState:UIControlStateNormal];
-			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
+			[bigButton2 setImage:[UIImage imageNamed:@"calculator"] forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeMonthYear: {
 			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			bigButton1.selected = NO;
+			bigButton1.selected = YES;
 			bigButton2.selected = NO;
-			[bigButton2 setImage:nil forState:UIControlStateNormal];
-			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
-			[self.dotButton setTitle:nil forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeInterestRate: {
 			[self fillBigButtonTitleWith:@"% /year" bigButton2Title:@"% /month"];
-			bigButton1.selected = NO;
+			bigButton1.selected = YES;
 			bigButton2.selected = NO;
-			[bigButton2 setImage:nil forState:UIControlStateNormal];
-			[bigButton2 setImage:nil forState:UIControlStateHighlighted];
-			[self.dotButton setTitle:@"." forState:UIControlStateNormal];
 			break;
 		}
 		case A3NumberKeyboardTypeFraction:
@@ -158,10 +152,14 @@
     // KJH - Keyboard Prev/Next 텍스트 변경을 위하여 추가했습니다.
     if ([self.delegate respondsToSelector:@selector(stringForPrevButton:)]) {
         self.prevBtnTitleText = [self.delegate stringForPrevButton:self.prevBtnTitleText];
-    }
+    } else {
+		self.prevBtnTitleText = @"Prev";
+	}
     if ([self.delegate respondsToSelector:@selector(stringForNextButton:)]) {
         self.nextBtnTitleText = [self.delegate stringForNextButton:self.nextBtnTitleText];
-    }
+    } else {
+		self.nextBtnTitleText = @"Next";
+	}
     
 	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
 
@@ -241,6 +239,11 @@
 	[@[self.clearButton, self.doneButton, self.prevButton, self.nextButton] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 18 : 25];
 	}];
+}
+
+- (IBAction)calculatorButtonAction:(UIButton *)sender {
+	[[UIDevice currentDevice] playInputClick];
+	
 }
 
 @end

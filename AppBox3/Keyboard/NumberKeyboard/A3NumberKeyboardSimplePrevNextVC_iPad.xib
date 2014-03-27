@@ -6,11 +6,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3NumberKeyboardViewController_iPad">
             <connections>
-                <outlet property="calculatorButton" destination="9Br-jx-mBi" id="eYT-hD-yym"/>
-                <outlet property="clearButton" destination="Pia-ao-xdh" id="OQz-N4-GB3"/>
                 <outlet property="deleteButton" destination="Waq-RS-nBr" id="Rsz-jy-bqv"/>
                 <outlet property="doneButton" destination="Sb5-Qb-oKu" id="zvj-ts-Jx6"/>
                 <outlet property="dotButton" destination="Oc0-Eq-lHU" id="5ed-gR-YF8"/>
+                <outlet property="nextButton" destination="9Br-jx-mBi" id="4cq-5G-JIa"/>
                 <outlet property="num0Button" destination="QK8-jF-e0C" id="KSi-zo-yxN"/>
                 <outlet property="num1Button" destination="xqI-ns-uag" id="fdL-Lz-rAK"/>
                 <outlet property="num2Button" destination="nbt-Xk-acx" id="Vfa-ac-gYY"/>
@@ -21,6 +20,7 @@
                 <outlet property="num7Button" destination="h5B-4r-sZg" id="reT-wF-4JE"/>
                 <outlet property="num8Button" destination="t9z-cp-1xj" id="6od-tb-kll"/>
                 <outlet property="num9Button" destination="Zwh-A7-lnq" id="d9z-Yi-Z0D"/>
+                <outlet property="prevButton" destination="Pia-ao-xdh" id="k5y-fR-UjS"/>
                 <outlet property="view" destination="2" id="3"/>
             </connections>
         </placeholder>
@@ -159,12 +159,12 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
-                    <state key="normal" title="Clear">
+                    <state key="normal" title="Prev">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="clearButtonAction" destination="-1" eventType="touchUpInside" id="XMp-LM-dap"/>
+                        <action selector="prevAction" destination="-1" eventType="touchUpInside" id="nh8-iC-PBj"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="9Br-jx-mBi" customClass="A3KeyboardButton_iOS7_iPad">
@@ -172,12 +172,12 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.9882352941176471" green="0.9882352941176471" blue="0.99215686274509807" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="24"/>
-                    <state key="normal" image="calculator">
+                    <state key="normal" title="Next">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="calculatorButtonAction:" destination="-1" eventType="touchUpInside" id="9v0-nK-880"/>
+                        <action selector="nextAction" destination="-1" eventType="touchUpInside" id="Px6-K8-2g8"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="146" placeholderIntrinsicHeight="75" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Sb5-Qb-oKu" customClass="A3KeyboardButton_iOS7_iPad">
@@ -268,6 +268,5 @@
     </objects>
     <resources>
         <image name="backspace_p" width="30" height="22"/>
-        <image name="calculator" width="21" height="29"/>
     </resources>
 </document>

@@ -10,6 +10,7 @@
                 <outlet property="deleteButton" destination="23" id="30"/>
                 <outlet property="doneButton" destination="26" id="31"/>
                 <outlet property="dotButton" destination="22" id="32"/>
+                <outlet property="nextButton" destination="25" id="hJ4-B5-PDr"/>
                 <outlet property="num0Button" destination="21" id="34"/>
                 <outlet property="num1Button" destination="16" id="35"/>
                 <outlet property="num2Button" destination="17" id="36"/>
@@ -20,6 +21,7 @@
                 <outlet property="num7Button" destination="8" id="41"/>
                 <outlet property="num8Button" destination="9" id="42"/>
                 <outlet property="num9Button" destination="10" id="43"/>
+                <outlet property="prevButton" destination="24" id="0Zi-Iq-19q"/>
                 <outlet property="view" destination="1" id="45"/>
             </connections>
         </placeholder>
@@ -150,11 +152,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="24" customClass="A3KeyboardButton_iOS7_iPhone">
-                    <rect key="frame" x="240" y="54" width="81" height="55"/>
+                    <rect key="frame" x="240" y="54" width="82" height="55"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.75686274509803919" green="0.76862745098039209" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                    <state key="normal" title="C">
+                    <state key="normal" image="k_previous">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -165,7 +167,7 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="markInsetsString" value="@{0.0, 0.0, 0.0, 1.0}"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="clearButtonAction" destination="-1" eventType="touchUpInside" id="VZC-aD-tZf"/>
+                        <action selector="prevAction" destination="-1" eventType="touchUpInside" id="ZJs-cN-Q3U"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="16" customClass="A3KeyboardButton_iOS7_iPhone">
@@ -224,7 +226,7 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.75686274509803919" green="0.76862745098039209" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                    <state key="normal" image="calculator">
+                    <state key="normal" image="k_next">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -235,7 +237,7 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="markInsetsString" value="@{0.0, 0.0, 0.0, 1.0}"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="calculatorButtonAction:" destination="-1" eventType="touchUpInside" id="dCc-91-aMd"/>
+                        <action selector="nextAction" destination="-1" eventType="touchUpInside" id="DB3-j9-kAk"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="21" customClass="A3KeyboardButton_iOS7_iPhone">
@@ -301,6 +303,7 @@
     </objects>
     <resources>
         <image name="backspace" width="22" height="16"/>
-        <image name="calculator" width="21" height="29"/>
+        <image name="k_next" width="21" height="21"/>
+        <image name="k_previous" width="21" height="21"/>
     </resources>
 </document>

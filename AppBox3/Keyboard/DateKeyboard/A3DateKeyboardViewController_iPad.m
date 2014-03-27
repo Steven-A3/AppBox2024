@@ -37,6 +37,12 @@
 	[self removeExtraLabelsForButton:self.today_Dec_Button];
 }
 
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	[self rotateToInterfaceOrientation:self.interfaceOrientation];
+}
+
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
