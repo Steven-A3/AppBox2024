@@ -942,6 +942,7 @@
 		68FEE389174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68FEE388174C4EE400DCC578 /* A3DateKeyboardViewController_iPhone.xib */; };
 		804A405E18E070A200556029 /* A3DaysCounterEventListNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */; };
 		804A406118E070C500556029 /* A3DaysCounterEventListDateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */; };
+		8054E88818E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */; };
 		80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */; };
 /* End PBXBuildFile section */
 
@@ -2573,6 +2574,8 @@
 		804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListNameCell.m; sourceTree = "<group>"; };
 		804A405F18E070C500556029 /* A3DaysCounterEventListDateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListDateCell.h; sourceTree = "<group>"; };
 		804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListDateCell.m; sourceTree = "<group>"; };
+		8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterRepeatCustomCell.h; sourceTree = "<group>"; };
+		8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterRepeatCustomCell.m; sourceTree = "<group>"; };
 		80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -4918,6 +4921,7 @@
 				804C330B18DAE1D400DBCE83 /* 2. CalendarList */,
 				804C330D18DAE25700DBCE83 /* 3. Reminder */,
 				804C330C18DAE22D00DBCE83 /* 4. Favorite */,
+				8054E88518E3E66C00598FB3 /* Cells (AddEvent) */,
 				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
 				804C330818DAE0E500DBCE83 /* Event Related */,
 				804C330E18DAE33D00DBCE83 /* SubDetails */,
@@ -5152,7 +5156,6 @@
 		804C330818DAE0E500DBCE83 /* Event Related */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
 				68F1C7E218D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.h */,
 				68F1C7E318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.m */,
 				68F1C7E418D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib */,
@@ -5317,6 +5320,16 @@
 				684D92CD18BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib */,
 			);
 			name = "Cells & Custom";
+			sourceTree = "<group>";
+		};
+		8054E88518E3E66C00598FB3 /* Cells (AddEvent) */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
+				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
+				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
+			);
+			name = "Cells (AddEvent)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5977,6 +5990,7 @@
 				68953482178686AF007061CA /* UIImage+Rotating.m in Sources */,
 				6895347C178686AF007061CA /* UIImage+Masking.m in Sources */,
 				68E2A64F18D0B1FC00E834D9 /* A3ItemSelectListViewController.m in Sources */,
+				8054E88818E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m in Sources */,
 				68B6A46118CEE781004084EF /* SDWebImageManager.m in Sources */,
 				687F45D417E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m in Sources */,
 				68E2A6A418D0B22800E834D9 /* A3SalesCalcHistoryCell.m in Sources */,
