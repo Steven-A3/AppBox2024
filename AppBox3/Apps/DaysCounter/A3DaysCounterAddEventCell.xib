@@ -289,7 +289,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </constraints>
             </tableViewCellContentView>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="customInputCell" id="brT-cx-dqK">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="customInputCell" id="brT-cx-dqK" customClass="A3DaysCounterRepeatCustomCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="brT-cx-dqK" id="1oK-Fa-usZ">
@@ -297,14 +297,14 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField opaque="NO" clipsSubviews="YES" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KgT-t7-whD">
-                        <rect key="frame" x="117" y="7" width="139" height="30"/>
+                        <rect key="frame" x="132" y="7" width="139" height="30"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="Wom-iT-mtH"/>
                             <constraint firstAttribute="width" constant="139" id="kN2-Kc-Mz0"/>
                         </constraints>
                         <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yz0-SJ-00Q">
@@ -318,7 +318,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="day(s)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuN-0h-tIg">
-                        <rect key="frame" x="256" y="11" width="49" height="21"/>
+                        <rect key="frame" x="271" y="11" width="49" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="3S9-PW-cY1"/>
@@ -328,16 +328,27 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check_02" translatesAutoresizingMaskIntoConstraints="NO" id="iOD-0J-Q3k">
+                        <rect key="frame" x="290" y="16" width="15" height="11"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="centerY" secondItem="yz0-SJ-00Q" secondAttribute="centerY" id="0KP-i6-X4F"/>
                     <constraint firstAttribute="centerY" secondItem="KgT-t7-whD" secondAttribute="centerY" id="24I-Fu-jCq"/>
-                    <constraint firstAttribute="trailing" secondItem="KuN-0h-tIg" secondAttribute="trailing" constant="15" id="GDQ-Yd-bQV"/>
+                    <constraint firstAttribute="trailing" secondItem="KuN-0h-tIg" secondAttribute="trailing" id="GDQ-Yd-bQV"/>
                     <constraint firstAttribute="centerY" secondItem="KuN-0h-tIg" secondAttribute="centerY" id="ME0-W9-hZq"/>
                     <constraint firstItem="KuN-0h-tIg" firstAttribute="leading" secondItem="KgT-t7-whD" secondAttribute="trailing" id="ata-J7-ZFJ"/>
                     <constraint firstItem="yz0-SJ-00Q" firstAttribute="leading" secondItem="1oK-Fa-usZ" secondAttribute="leading" constant="15" id="jZG-HR-lWt"/>
+                    <constraint firstAttribute="centerY" secondItem="iOD-0J-Q3k" secondAttribute="centerY" id="p9h-uJ-4mA"/>
+                    <constraint firstAttribute="trailing" secondItem="iOD-0J-Q3k" secondAttribute="trailing" constant="15" id="wSV-Wv-cpl"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="checkImageTrailingConst" destination="wSV-Wv-cpl" id="TD0-Hj-sz3"/>
+                <outlet property="checkImageView" destination="iOD-0J-Q3k" id="NFf-6j-KAX"/>
+                <outlet property="daysLabelTrailingConst" destination="GDQ-Yd-bQV" id="oqT-Hl-FpO"/>
+            </connections>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="calendarListCell" id="1XR-5a-0TV">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -347,7 +358,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_circle" translatesAutoresizingMaskIntoConstraints="NO" id="FDd-dP-OIA">
-                        <rect key="frame" x="20" y="16" width="12" height="12"/>
+                        <rect key="frame" x="15" y="16" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="47e-UL-2S5"/>
@@ -355,7 +366,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TUH-9H-ZPi">
-                        <rect key="frame" x="40" y="11" width="260" height="21"/>
+                        <rect key="frame" x="35" y="11" width="265" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="apz-i1-hVc"/>
@@ -366,7 +377,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </subviews>
                 <constraints>
                     <constraint firstItem="TUH-9H-ZPi" firstAttribute="leading" secondItem="FDd-dP-OIA" secondAttribute="trailing" constant="8" id="67l-EN-I0G"/>
-                    <constraint firstItem="FDd-dP-OIA" firstAttribute="leading" secondItem="wwH-Jz-7aV" secondAttribute="leading" constant="20" id="bls-Oq-ECS"/>
+                    <constraint firstItem="FDd-dP-OIA" firstAttribute="leading" secondItem="wwH-Jz-7aV" secondAttribute="leading" constant="15" id="bls-Oq-ECS"/>
                     <constraint firstAttribute="trailing" secondItem="TUH-9H-ZPi" secondAttribute="trailing" constant="20" id="gEO-fa-j86"/>
                     <constraint firstAttribute="centerY" secondItem="TUH-9H-ZPi" secondAttribute="centerY" id="ptX-32-Kl3"/>
                     <constraint firstAttribute="centerY" secondItem="FDd-dP-OIA" secondAttribute="centerY" id="ruW-j8-g25"/>
@@ -901,6 +912,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <image name="arrow" width="8" height="13"/>
         <image name="calendar_circle" width="12" height="12"/>
         <image name="camera" width="24" height="19"/>
+        <image name="check_02" width="15" height="11"/>
         <image name="lunar_stroke" width="20" height="20"/>
         <image name="star02" width="20" height="20"/>
         <image name="star02_on" width="20" height="20"/>

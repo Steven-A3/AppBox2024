@@ -164,6 +164,7 @@
                                          (long)[A3DateHelper diffDaysFromDate:alertDate
                                                                        toDate:[_eventModel objectForKey:EventItem_StartDate]],
                                          [A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"] ];//[[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     }
     

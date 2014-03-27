@@ -14,6 +14,7 @@
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "SFKImage.h"
+#import "A3DaysCounterRepeatCustomCell.h"
 
 @interface A3DaysCounterSetupRepeatViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -30,20 +31,20 @@
 - (void)showNumberKeyboard
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
-    if( cell == nil )
+    if ( cell == nil )
         return;
     
     UITextField *textField = (UITextField*)[cell viewWithTag:12];
     textField.delegate = self;
     [textField becomeFirstResponder];
 
-//    if( IS_IPHONE ){
+//    if ( IS_IPHONE ) {
 //        self.numberKeyboardVC = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
 //        self.numberKeyboardVC.delegate = self;
 //        [self.tableView setTableFooterView:self.numberKeyboardVC.view];
 //        [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentSize.height - self.numberKeyboardVC.view.frame.size.height, self.tableView.frame.size.width, self.numberKeyboardVC.view.frame.size.height) animated:YES];
 //    }
-//    else{
+//    else {
 //        self.numberKeyboardVC = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
 //        self.numberKeyboardVC.delegate = self;
 //    }
@@ -52,12 +53,12 @@
 - (void)hideNumberkeyboard
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
-    if( cell == nil )
+    if ( cell == nil )
         return;
     
     UITextField *textField = (UITextField*)[cell viewWithTag:12];
     [textField resignFirstResponder];
-//    if( IS_IPHONE ){
+//    if ( IS_IPHONE ) {
 //        [self.tableView setTableFooterView:nil];
 //        self.numberKeyboardVC.delegate = nil;
 //        self.numberKeyboardVC = nil;
@@ -94,6 +95,20 @@
     self.numberKeyboardVC = nil;
 }
 
+#pragma mark 
+- (void)setCheckmarkOnCustomInputCell:(UITableViewCell *)cell CheckShow:(BOOL)show
+{
+    if (show) {
+        ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.hidden = NO;
+        //((A3DaysCounterRepeatCustomCell *)cell).checkImageTrailingConst.constant = 15;
+        ((A3DaysCounterRepeatCustomCell *)cell).daysLabelTrailingConst.constant = 33;
+    }
+    else {
+        ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.hidden = YES;
+        ((A3DaysCounterRepeatCustomCell *)cell).daysLabelTrailingConst.constant = 15;
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -123,14 +138,14 @@
     NSString *CellIdentifier = (indexPath.row == ([_itemArray count]-1) ? @"customInputCell" : @"Cell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        if( indexPath.row == ([_itemArray count] -1) ){
+        if ( indexPath.row == ([_itemArray count] -1) ) {
             NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
             cell = [cellArray objectAtIndex:7];
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        else{
+        else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
@@ -139,51 +154,60 @@
     // Configure the cell...
     NSInteger value = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
     NSInteger index = 0;
-    if( value < 0 ){
+    if ( value < 0 ) {
         index = ABS(value);
     }
-    else{
-        if( value > 0 )
+    else {
+        if ( value > 0 ) {
             index = [_itemArray count] -1;
-        else
+        }
+        else {
             index = value;
+        }
     }
-    cell.selected = (indexPath.row == index);
-    cell.accessoryType = ( cell.selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone );
     
-    if( indexPath.row != ([_itemArray count]-1) ){
+    cell.selected = (indexPath.row == index);
+    
+    if ( indexPath.row != ([_itemArray count]-1) ) {
+        // Custom Input Cell
         cell.textLabel.text = [_itemArray objectAtIndex:indexPath.row];
         cell.detailTextLabel.text = @"";
+        cell.accessoryType = cell.selected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
-    else{
+    else {
         UITextField *textField = (UITextField*)[cell viewWithTag:12];
         textField.text = [NSString stringWithFormat:@"%ld", (long)(value > 0 ? value : 0)];
-        cell.accessoryView = [[UIView alloc] init];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        if ([cell isSelected]) {
+            [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];
+        }
+        else {
+            [self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
+        }
     }
-    
+
     return cell;
 }
-
 
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger prevValue = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
     NSInteger prevIndex = ( prevValue < 0 ? prevValue * -1 : (prevValue > 0 ? [_itemArray count]-1 : 0));
-    NSInteger value = ( prevValue <= 0 && (indexPath.row == ([_itemArray count]-1)) ? 1 : indexPath.row * -1 );
+    NSInteger value = (prevValue <= 0 && (indexPath.row == ([_itemArray count]-1))) ? 1 : indexPath.row * -1;
     [_eventModel setObject:[NSNumber numberWithInteger:value] forKey:EventItem_RepeatType];
     [tableView beginUpdates];
-    if( prevIndex != indexPath.row ){
+    if ( prevIndex != indexPath.row ) {
         [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     }
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [tableView endUpdates];
 
-    if( indexPath.row == ([_itemArray count]-1) ){
+    if ( indexPath.row == ([_itemArray count]-1) ) {
         // 키보드 보여주기
         [self showNumberKeyboard];
     }
-    else{
+    else {
         [self hideNumberkeyboard];
         [self doneButtonAction:nil];
     }
@@ -227,32 +251,54 @@
 #pragma mark - A3KeyboardDelegate
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
 {
-//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
-//    UITextField *textField = (UITextField*)[cell viewWithTag:12];
-//    [textField resignFirstResponder];
-    [self doneButtonAction:nil];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
+    UITextField *textField = (UITextField*)[cell viewWithTag:12];
+    [textField resignFirstResponder];
+
+//    [self doneButtonAction:nil];
+    
+//    NSInteger value = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
+//    NSInteger prevIndex = 0;
+//    if ( value < 0 ) {
+//        prevIndex = ABS(value);
+//    }
+//    else {
+//        if ( value > 0 ) {
+//            prevIndex = [_itemArray count] -1;
+//        }
+//        else {
+//            prevIndex = value;
+//        }
+//    }
+//
+//    UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prevIndex inSection:0]];
+//    prevCell.accessoryType = UITableViewCellAccessoryNone;
+    
+    [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];
+    //[cell setNeedsLayout];
+    [self.tableView reloadData];
 }
 
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
     [_eventModel setObject:self.originalValue forKey:EventItem_RepeatType];
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
     

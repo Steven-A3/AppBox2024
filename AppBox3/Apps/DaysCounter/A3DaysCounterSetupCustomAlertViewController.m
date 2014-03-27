@@ -20,17 +20,10 @@
 @property (strong, nonatomic) A3NumberKeyboardViewController* keyboardVC;
 
 - (void)timeChangedAction:(id)sender;
-- (void)resignAllAction;
+
 @end
 
 @implementation A3DaysCounterSetupCustomAlertViewController
-- (void)resignAllAction
-{
-    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    UITextField *textField = (UITextField*)cell.accessoryView;
-    [textField resignFirstResponder];
-}
-
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -74,21 +67,21 @@
     return IS_RETINA ? 35.5 : 35;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 35.0;
-}
+//- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 35.0;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *cellIDs = @[@"inputCell",@"value1Cell",@"dateInputCell"];
+    NSArray *cellIDs = @[@"inputCell", @"value1Cell", @"dateInputCell"];
     NSInteger cellType = [[[_templateArray objectAtIndex:indexPath.row] objectForKey:EventRowType] integerValue];
     
     NSString *CellIdentifier = [cellIDs objectAtIndex:cellType];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        if( cellType == CustomAlertCell_TimeInput ){
+        if ( cellType == CustomAlertCell_TimeInput ) {
             NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
             cell = [cellArray objectAtIndex:6];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -97,11 +90,11 @@
             datePicker.datePickerMode = UIDatePickerModeTime;
             [datePicker addTarget:self action:@selector(timeChangedAction:) forControlEvents:UIControlEventValueChanged];
         }
-        else{
+        else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            if( cellType == CustomAlertCell_DaysBefore ){
+            if ( cellType == CustomAlertCell_DaysBefore ) {
                 UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 80.0, cell.contentView.frame.size.height)];
                 textField.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
                 textField.textAlignment = NSTextAlignmentRight;
@@ -113,27 +106,29 @@
     }
     
     NSDictionary *item = [_templateArray objectAtIndex:indexPath.row];
-    if( cellType != CustomAlertCell_TimeInput ){
+    if ( cellType != CustomAlertCell_TimeInput ) {
         cell.textLabel.text = [item objectForKey:EventRowTitle];
         NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
-        if( cellType == CustomAlertCell_DaysBefore ){
+        if ( cellType == CustomAlertCell_DaysBefore ) {
             NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
-            
-            
+
             UITextField *textField = (UITextField*)cell.accessoryView;
-            if( alertDate == nil )
+            if ( alertDate == nil ) {
                 textField.text = @"";
-            else
+            }
+            else {
                 textField.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper diffDaysFromDate:alertDate toDate:startDate]];
+            }
         }
-        else if( cellType == CustomAlertCell_Time ){
-            
+        else if ( cellType == CustomAlertCell_Time ) {
             cell.detailTextLabel.text = ( alertDate ? [A3DateHelper dateStringFromDate:alertDate withFormat:@"h:mm a"] : nil);
             
-            if( [_templateArray count] > 2 )
+            if ( [_templateArray count] > 2 ) {
                 cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:125.0/255.0 blue:248.0/255.0 alpha:1.0];
-            else
+            }
+            else {
                 cell.detailTextLabel.textColor = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0];
+            }
         }
     }
     
@@ -145,8 +140,9 @@
     CGFloat retHeight = 44.0;
     
     NSDictionary *item = [_templateArray objectAtIndex:indexPath.row];
-    if( [[item objectForKey:EventRowType] integerValue] == CustomAlertCell_TimeInput )
+    if ( [[item objectForKey:EventRowType] integerValue] == CustomAlertCell_TimeInput ) {
         retHeight = 236.0;
+    }
     
     return retHeight;
 }
@@ -157,30 +153,31 @@
     NSDictionary *item = [_templateArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[item objectForKey:EventRowType] integerValue];
     
-    [self resignAllAction];
-    if( cellType == CustomAlertCell_DaysBefore ){
+    if ( cellType == CustomAlertCell_DaysBefore ) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         UITextField *textField = (UITextField*)cell.accessoryView;
         [textField becomeFirstResponder];
     }
-    else if( cellType == CustomAlertCell_Time ){
-        if( [_templateArray count] > 2 ){
+    else if ( cellType == CustomAlertCell_Time ) {
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            [self.tableView reloadData];
+        }];
+        [tableView beginUpdates];
+        if ( [_templateArray count] > 2 ) {
             // close
             [_templateArray removeObjectAtIndex:indexPath.row+1];
             [tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
         }
-        else{
+        else {
             // open
             [_templateArray addObject:@{EventRowTitle : @"", EventRowType : @(CustomAlertCell_TimeInput)}];
             [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
         }
+        [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [tableView endUpdates];
+        [CATransaction commit];
     }
-}
-
-#pragma mark - UIScrollViewDelegate
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    [self resignAllAction];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -199,6 +196,18 @@
 	self.keyboardVC.delegate = self;
 	textField.inputView = self.keyboardVC.view;
 	textField.text = @"";
+    
+    if ( [_templateArray count] > 2 ) {
+        // close
+        [_templateArray removeObjectAtIndex:2];
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        }];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationMiddle];
+        [CATransaction commit];
+    }
+    
     return YES;
 }
 
@@ -211,6 +220,12 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 
+#pragma mark - A3KeyboardDelegate
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
+{
+    [keyInputDelegate resignFirstResponder];
+}
+
 #pragma mark - action method
 - (void)timeChangedAction:(id)sender
 {
@@ -218,13 +233,17 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[datePicker.superview superview] superview]];
   
     NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
-    if( alertDate == nil )
+    if ( alertDate == nil ) {
         alertDate = [_eventModel objectForKey:EventItem_StartDate];
+    }
     
-    [_eventModel setObject:[A3DateHelper dateMakeDate:alertDate Hour:[A3DateHelper hour24FromDate:datePicker.date] minute:[A3DateHelper minuteFromDate:datePicker.date]] forKey:EventItem_AlertDatetime];
+    [_eventModel setObject:[A3DateHelper dateMakeDate:alertDate
+                                                 Hour:[A3DateHelper hour24FromDate:datePicker.date]
+                                               minute:[A3DateHelper minuteFromDate:datePicker.date]]
+                    forKey:EventItem_AlertDatetime];
 //    [_settingDict setObject:[A3DateHelper dateMakeSecondZero:datePicker.date] forKey:SettingItem_CustomAlertTime];
-    
-    if( indexPath )
+
+    if ( indexPath )
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
 }
 @end
