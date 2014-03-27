@@ -358,7 +358,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_circle" translatesAutoresizingMaskIntoConstraints="NO" id="FDd-dP-OIA">
-                        <rect key="frame" x="20" y="16" width="12" height="12"/>
+                        <rect key="frame" x="15" y="16" width="12" height="12"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="47e-UL-2S5"/>
@@ -366,7 +366,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TUH-9H-ZPi">
-                        <rect key="frame" x="40" y="11" width="260" height="21"/>
+                        <rect key="frame" x="35" y="11" width="265" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="apz-i1-hVc"/>
@@ -377,7 +377,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </subviews>
                 <constraints>
                     <constraint firstItem="TUH-9H-ZPi" firstAttribute="leading" secondItem="FDd-dP-OIA" secondAttribute="trailing" constant="8" id="67l-EN-I0G"/>
-                    <constraint firstItem="FDd-dP-OIA" firstAttribute="leading" secondItem="wwH-Jz-7aV" secondAttribute="leading" constant="20" id="bls-Oq-ECS"/>
+                    <constraint firstItem="FDd-dP-OIA" firstAttribute="leading" secondItem="wwH-Jz-7aV" secondAttribute="leading" constant="15" id="bls-Oq-ECS"/>
                     <constraint firstAttribute="trailing" secondItem="TUH-9H-ZPi" secondAttribute="trailing" constant="20" id="gEO-fa-j86"/>
                     <constraint firstAttribute="centerY" secondItem="TUH-9H-ZPi" secondAttribute="centerY" id="ptX-32-Kl3"/>
                     <constraint firstAttribute="centerY" secondItem="FDd-dP-OIA" secondAttribute="centerY" id="ruW-j8-g25"/>
