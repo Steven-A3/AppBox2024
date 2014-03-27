@@ -395,15 +395,22 @@
         NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
         NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
         NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
+//        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
         
         if ( itemType == EventCellType_RepeatType || itemType == EventCellType_EndRepeatDate || itemType == EventCellType_Alert || itemType == EventCellType_DurationOption || itemType == EventCellType_Location) {
-            cell = [cellArray objectAtIndex:14];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+//            cell = [cellArray objectAtIndex:14];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//            detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+//            [cell setNeedsLayout];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            cell.textLabel.tag = 10;
+            cell.detailTextLabel.tag = 11;
         }
         else {
+            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
             
             switch (itemType) {
                 case EventCellType_Title :{
@@ -652,11 +659,16 @@
             break;
         case EventCellType_DurationOption:
         {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
-            textLabel.textColor = [UIColor blackColor];
+//            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            textLabel.text = [itemDict objectForKey:EventRowTitle];
+//            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+//            textLabel.textColor = [UIColor blackColor];
+//            [textLabel sizeToFit];
+//            [detailTextLabel sizeToFit];
+            cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+            cell.textLabel.textColor = [UIColor blackColor];
         }
             break;
         case EventCellType_Location:
@@ -675,7 +687,7 @@
             }
             else {
                 textLabel.text = @"Location";
-                textLabel.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
+                textLabel.textColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:205/255.0 alpha:1.0];
             }
 //            cell.textLabel.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
             detailTextLabel.text = @"";
@@ -685,10 +697,12 @@
         {
             UITextView *textView = (UITextView*)[cell viewWithTag:10];
             textView.text = ([[_eventModel objectForKey:EventItem_Notes] length] > 0 ? [_eventModel objectForKey:EventItem_Notes] : @"Notes");
-            if ( [[_eventModel objectForKey:EventItem_Notes] length] > 0 )
+            if ( [[_eventModel objectForKey:EventItem_Notes] length] > 0 ) {
                 textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-            else
-                textView.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
+            }
+            else {
+                textView.textColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:205/255.0 alpha:1.0];
+            }
         }
             break;
         case EventCellType_DateInput:

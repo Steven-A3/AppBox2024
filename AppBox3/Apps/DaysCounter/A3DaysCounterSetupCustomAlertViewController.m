@@ -109,6 +109,10 @@
     if ( cellType != CustomAlertCell_TimeInput ) {
         cell.textLabel.text = [item objectForKey:EventRowTitle];
         NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+        if (!alertDate || [alertDate isKindOfClass:[NSNull class]]) {
+            alertDate = [NSDate date];
+        }
+        
         if ( cellType == CustomAlertCell_DaysBefore ) {
             NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
 
@@ -117,11 +121,11 @@
                 textField.text = @"";
             }
             else {
-                textField.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper diffDaysFromDate:alertDate toDate:startDate]];
+                textField.text = [NSString stringWithFormat:@"%ld", labs((long)[A3DateHelper diffDaysFromDate:alertDate toDate:startDate])];
             }
         }
         else if ( cellType == CustomAlertCell_Time ) {
-            cell.detailTextLabel.text = ( alertDate ? [A3DateHelper dateStringFromDate:alertDate withFormat:@"h:mm a"] : nil);
+            cell.detailTextLabel.text = alertDate ? [A3DateHelper dateStringFromDate:alertDate withFormat:@"h:mm a"] : nil;
             
             if ( [_templateArray count] > 2 ) {
                 cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:125.0/255.0 blue:248.0/255.0 alpha:1.0];
@@ -217,6 +221,14 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    if ([textField.text length] == 0) {
+        NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+        NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
+        if (alertDate) {
+            textField.text = [NSString stringWithFormat:@"%ld", labs((long)[A3DateHelper diffDaysFromDate:alertDate toDate:startDate])];
+        }
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 }
 

@@ -161,9 +161,9 @@
         NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
         if ( alertDate ) {
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld days before %@",
-                                         (long)[A3DateHelper diffDaysFromDate:alertDate
-                                                                       toDate:[_eventModel objectForKey:EventItem_StartDate]],
-                                         [A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"] ];//[[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+                                         labs((long)[A3DateHelper diffDaysFromDate:alertDate
+                                                                       toDate:[_eventModel objectForKey:EventItem_StartDate]]),
+                                         [A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"]];//[[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     }
@@ -225,7 +225,6 @@
             break;
     }
     
-    [_eventModel setObject:value forKey:EventItem_AlertDatetime];
     UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prevIndex inSection:0]];
     UITableViewCell *curCell = [self.tableView cellForRowAtIndexPath:indexPath];
     prevCell.accessoryType = UITableViewCellAccessoryNone;
@@ -239,6 +238,7 @@
     }
     else {
 //        [self hideDatePicker];
+        [_eventModel setObject:value forKey:EventItem_AlertDatetime];
         [self doneButtonAction:nil];
     }
 }

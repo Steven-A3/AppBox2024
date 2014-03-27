@@ -158,10 +158,15 @@
             break;
         case EventCellType_Alert:
         case EventCellType_DurationOption:{
-            cell = [cellArray objectAtIndex:14];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
-            detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+//            cell = [cellArray objectAtIndex:14];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
+//            detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;
@@ -356,10 +361,13 @@
         }
             break;
         case EventCellType_DurationOption:{
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
+//            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+//            textLabel.text = [itemDict objectForKey:EventRowTitle];
+//            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
+
+            cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
         }
             break;
         case EventCellType_Calendar:{
