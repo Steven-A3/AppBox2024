@@ -661,13 +661,14 @@
         {
 //            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
 //            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            UILabel *textLabel = [cell textLabel];
-            UILabel *detailTextLabel = [cell detailTextLabel];
-            textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
-            textLabel.textColor = [UIColor blackColor];
-            [textLabel sizeToFit];
-            [detailTextLabel sizeToFit];
+//            textLabel.text = [itemDict objectForKey:EventRowTitle];
+//            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+//            textLabel.textColor = [UIColor blackColor];
+//            [textLabel sizeToFit];
+//            [detailTextLabel sizeToFit];
+            cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+            cell.textLabel.textColor = [UIColor blackColor];
         }
             break;
         case EventCellType_Location:
