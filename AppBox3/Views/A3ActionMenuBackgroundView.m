@@ -7,7 +7,6 @@
 //
 
 #import "A3ActionMenuBackgroundView.h"
-#import "A3UIKit.h"
 #import "UIView+A3Drawing.h"
 
 @implementation A3ActionMenuBackgroundView

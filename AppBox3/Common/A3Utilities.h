@@ -8,15 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
-void addLeftGradientLayer8Point(UIView *targetView);
-void addRightGradientLayer8Point(UIView *targetView);
 void drawLinearGradient(CGContextRef context, CGRect rect, NSArray *colors);
 
 extern CGFloat dash_line_pattern[];
 
 @interface A3Utilities : NSObject
-
-+ (NSDate *)firstWeekdayOfDate:(NSDate *)date;
-+ (NSDate *)dateByAddingDay:(NSInteger)difference toDate:(NSDate *)date;
 
 @end

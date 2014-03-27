@@ -93,6 +93,8 @@ NSString *kCalculationString;
     self.title = @"Date Calculator";
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
+
+	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeInteractive;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
     
@@ -118,8 +120,8 @@ NSString *kCalculationString;
     _hasKeyboardInputedText = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDisappear:) name:UIKeyboardWillHideNotification object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+
     [self initializeControl];
     [self reloadTableViewData:YES];
     [self registerContentSizeCategoryDidChangeNotification];
@@ -537,13 +539,6 @@ NSString *kCalculationString;
 
 #pragma mark - View Control Actions
 
-- (void)scrollTableViewToIndexPath:(NSIndexPath *)indexPath
-{
-    CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
-    CGFloat offset = (cellRect.origin.y + cellRect.size.height); // and more condition...
-    [self.tableView setContentOffset:CGPointMake(0.0, offset) animated:YES];
-}
-
 - (void)moveToFromDateCell
 {
     _datePrevShow = NO;
@@ -589,6 +584,9 @@ NSString *kCalculationString;
     }
     
     CGRect cellRect = [self.tableView rectForRowAtIndexPath:self.selectedIndexPath];
+	FNLOGRECT(self.tableView.frame);
+	FNLOGRECT(self.dateKeyboardViewController.view.bounds);
+	FNLOGRECT(cellRect);
     CGFloat offset = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.dateKeyboardViewController.view.bounds.size.height);
     _oldTableOffset = self.tableView.contentOffset.y;
     [self.tableView setContentOffset:CGPointMake(0.0, offset) animated:YES];
@@ -603,16 +601,13 @@ NSString *kCalculationString;
     CGPoint contentOffset = CGPointZero;
     CGRect cellRect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]];
     CGFloat keyboardPadding = IS_IPHONE ? 0.0 : 2.0;
-    contentOffset.y = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.dateKeyboardViewController.view.bounds.size.height);
-    
+    contentOffset.y = (cellRect.origin.y + cellRect.size.height + keyboardPadding) - (self.tableView.frame.size.height-self.simpleNumberKeyboard.view.bounds.size.height);
+	FNLOGRECT(self.tableView.frame);
+	FNLOGRECT(self.simpleNumberKeyboard.view.frame);
+	FNLOGRECT(cellRect);
+
     _oldTableOffset = self.tableView.contentOffset.y;
     self.tableView.contentOffset = contentOffset;
-//    [self.tableView setContentOffset:contentOffset animated:YES];
-}
-
-- (void)movePreviousContentOffset
-{
-    [self.tableView setContentOffset:CGPointMake(0.0, -_tableYOffset) animated:YES];
 }
 
 - (void)setResultToHeaderViewWithAnimation:(BOOL)animation
@@ -911,30 +906,10 @@ NSString *kCalculationString;
         [UIView commitAnimations];
     }
 }
-//
-//-(void)keyboardWillDisappear:(NSNotification *)aNoti
-//{
-////    NSDictionary *aDict = [aNoti userInfo];
-////    CGRect keyboardSize = [self.view convertRect:[[aDict valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
-////    keyboardSize.size.height = keyboardSize.size.height-90.0;
-////    NSNumber *animationCurve = [aNoti.userInfo valueForKey:UIKeyboardAnimationCurveUserInfoKey];
-////    NSNumber *animationDuration = [aNoti.userInfo valueForKey:UIKeyboardAnimationDurationUserInfoKey];
-////    
-////    [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-////    [UIView setAnimationBeginsFromCurrentState:YES];
-////    [UIView setAnimationCurve:[animationCurve intValue]];
-////    [UIView setAnimationDuration:[animationDuration doubleValue]];
-////    
-////    [self movePreviousContentOffset];
-////    
-////    [UIView commitAnimations];
-//    
-//    if (_selectedIndexPath) {
-//        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedIndexPath];
-//        cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
-//        _selectedIndexPath = nil;
-//    }
-//}
+
+- (void)keyboardDidHide:(NSNotification *)noti {
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+}
 
 #pragma mark  A3KeyboardViewControllerDelegate
 - (void)dateKeyboardValueChangedDate:(NSDate *)date
@@ -1023,8 +998,6 @@ NSString *kCalculationString;
 }
 
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
-
 	[self.fromToTextField resignFirstResponder];
     _isKeyboardShown = NO;
 
@@ -1056,15 +1029,11 @@ NSString *kCalculationString;
         [_footerCell setOffsetDateComp:self.offsetComp];
         [self setResultToHeaderViewWithAnimation:YES];
         [_selectedTextField resignFirstResponder];
-        //[self.tableView setContentOffset:CGPointMake(0.0, -_tableYOffset) animated:YES];
-    	[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentInset.top, 1, 1) animated:YES];
     }
     
-    if ((IS_IPHONE) || (IS_IPAD && IS_LANDSCAPE)) {
-        //self.tableView.contentOffset = CGPointMake(0.0, _oldTableOffset);
-        
-        //[self.tableView setContentOffset:CGPointMake(0.0, -_tableYOffset) animated:YES];
-    }
+//    if ((IS_IPHONE) || (IS_IPAD && IS_LANDSCAPE)) {
+//		[self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentInset.top, 1, 1) animated:YES];
+//    }
     
     _isKeyboardShown = NO;
 }

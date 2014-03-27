@@ -6,10 +6,7 @@
 //  Copyright (c) 2012 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <QuartzCore/QuartzCore.h>
 #import "A3BarButton.h"
-#import "common.h"
-#import "A3UIKit.h"
 
 @interface A3BarButton ()
 @property (nonatomic, strong) CAGradientLayer *gradientLayer;
