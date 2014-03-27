@@ -851,7 +851,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 </constraints>
             </tableViewCellContentView>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="value1Cell" id="sOK-0p-Dww" customClass="A3DaysCounterValue1Cell">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="value1Cell" id="sOK-0p-Dww">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sOK-0p-Dww" id="wa2-aE-BSs">
@@ -873,10 +873,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </label>
                 </subviews>
             </tableViewCellContentView>
-            <connections>
-                <outlet property="titleTextLabel" destination="vPj-Mk-zYg" id="q8A-7G-rmt"/>
-                <outlet property="value1TextLabel" destination="4Qb-od-lDW" id="qwn-GJ-mZK"/>
-            </connections>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteDisplayCell" id="xIu-6p-acx">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

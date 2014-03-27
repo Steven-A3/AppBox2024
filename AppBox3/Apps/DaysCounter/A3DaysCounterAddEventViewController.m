@@ -687,7 +687,7 @@
             }
             else {
                 textLabel.text = @"Location";
-                textLabel.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
+                textLabel.textColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:205/255.0 alpha:1.0];
             }
 //            cell.textLabel.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
             detailTextLabel.text = @"";
@@ -697,10 +697,12 @@
         {
             UITextView *textView = (UITextView*)[cell viewWithTag:10];
             textView.text = ([[_eventModel objectForKey:EventItem_Notes] length] > 0 ? [_eventModel objectForKey:EventItem_Notes] : @"Notes");
-            if ( [[_eventModel objectForKey:EventItem_Notes] length] > 0 )
+            if ( [[_eventModel objectForKey:EventItem_Notes] length] > 0 ) {
                 textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-            else
-                textView.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
+            }
+            else {
+                textView.textColor = [UIColor colorWithRed:199/255.0 green:199/255.0 blue:205/255.0 alpha:1.0];
+            }
         }
             break;
         case EventCellType_DateInput:
