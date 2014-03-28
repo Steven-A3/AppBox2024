@@ -155,6 +155,7 @@
 		68143D6D18E3ECB700569691 /* A3ImageCropperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D6C18E3ECB700569691 /* A3ImageCropperViewController.m */; };
 		68143D7018E3ED9B00569691 /* A3Weather.m in Sources */ = {isa = PBXBuildFile; fileRef = 68143D6F18E3ED9B00569691 /* A3Weather.m */; };
 		68143D7918E40D7A00569691 /* A3NumberKeyboardSimplePrevNextVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68143D7818E40D7A00569691 /* A3NumberKeyboardSimplePrevNextVC_iPad.xib */; };
+		68143D7A18E4FFBB00569691 /* NSDate+TimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6872DD3017B3D56600C1BF44 /* NSDate+TimeAgo.m */; };
 		68144BC61743381600FD22CF /* A3PlacemarkBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68144BC51743381600FD22CF /* A3PlacemarkBackgroundView.m */; };
 		681614051709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m in Sources */ = {isa = PBXBuildFile; fileRef = 681614031709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.m */; };
 		681614061709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 681614041709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib */; };
@@ -6210,6 +6211,7 @@
 				68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */,
 				68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */,
 				6819A86F18A6092B00E63C8B /* NSDateFormatter+A3Addition.m in Sources */,
+				68143D7A18E4FFBB00569691 /* NSDate+TimeAgo.m in Sources */,
 				68DBF05517CB8AAB009CAC33 /* HolidayData+Country.m in Sources */,
 				6876D71317A75E5A00E16991 /* A3CurrencyViewControllerTest.m in Sources */,
 				68DBF05617CB8AAB009CAC33 /* HolidayData+Europe.m in Sources */,
