@@ -42,17 +42,17 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"Location";
-    if( self.isEditMode ){
+    if ( self.isEditMode ) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     }
-    else
+    else {
         [self rightBarButtonDoneButton];
+    }
     [self makeBackButtonEmptyArrow];
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
 //    _tableView.separatorInset = UIEdgeInsetsMake(0, 44.0, 0, 0);
-    
-    self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
+//    self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,9 +63,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if( _isEditMode ){
+    
+    if ( _isEditMode ) {
         NSDictionary *locItem = [_eventModel objectForKey:EventItem_Location];
-        if( ([[locItem objectForKey:EventItem_Latitude] isKindOfClass:[NSNumber class]] && [[locItem objectForKey:EventItem_Longitude] isKindOfClass:[NSNumber class]] ) && (  [[locItem objectForKey:EventItem_Latitude] doubleValue] != _locationItem.location.coordinate.latitude || [[locItem objectForKey:EventItem_Longitude] doubleValue] != _locationItem.location.coordinate.longitude) ){
+        if ( ([[locItem objectForKey:EventItem_Latitude] isKindOfClass:[NSNumber class]] && [[locItem objectForKey:EventItem_Longitude] isKindOfClass:[NSNumber class]] ) && (  [[locItem objectForKey:EventItem_Latitude] doubleValue] != _locationItem.location.coordinate.latitude || [[locItem objectForKey:EventItem_Longitude] doubleValue] != _locationItem.location.coordinate.longitude) ) {
             [_mapView removeAnnotation:self.locationItem];
             self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:locItem];
             self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
@@ -74,8 +75,10 @@
         }
     }
     
-    if( [_mapView.annotations count] < 1 )
+    if ( [_mapView.annotations count] < 1 ) {
         [_mapView addAnnotation:self.locationItem];
+    }
+    
     [_mapView setRegion:MKCoordinateRegionMakeWithDistance(_locationItem.coordinate, 2000.0, 2000.0) animated:YES];
 }
 
@@ -98,21 +101,21 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if( section == 1 )
+    if ( section == 1 )
         return 1;
     return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if( section == 1 )
+    if ( section == 1 )
         return 18.0;
     return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if( section == 1 )
+    if ( section == 1 )
         return 18.0;
     return 0.01;
 }
@@ -121,27 +124,26 @@
 {
     NSString *cellID = (indexPath.section == 0 ? @"locationDetailCell" : @"deleteCell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    
-    
-    if( cell == nil ){
-        if( indexPath.section == 0){
+
+    if ( cell == nil ) {
+        if ( indexPath.section == 0) {
             NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterLocationDetailCell" owner:nil options:nil];
             cell = [cellArray objectAtIndex:0];
         }
-        else{
+        else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
     }
         
-    if( indexPath.section == 0){
+    if ( indexPath.section == 0) {
         UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
         UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
         
-        if( indexPath.row == 0 ){
+        if ( indexPath.row == 0 ) {
             textLabel.text = @"Phone";
             detailTextLabel.text = _locationItem.contact;
         }
-        else{
+        else {
             textLabel.text = @"Address";
             detailTextLabel.text = _addressStr;
         }
@@ -158,10 +160,10 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section == 0 ){
+    if ( indexPath.section == 0 ) {
         UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-        for(NSLayoutConstraint *layout in cell.contentView.constraints){
-            if( layout.firstItem == textLabel && layout.firstAttribute == NSLayoutAttributeLeading ){
+        for(NSLayoutConstraint *layout in cell.contentView.constraints) {
+            if ( layout.firstItem == textLabel && layout.firstAttribute == NSLayoutAttributeLeading ) {
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
             }
         }
@@ -174,12 +176,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section == 0 ){
+    if ( indexPath.section == 0 ) {
         NSString *str = (indexPath.row == 0 ? _locationItem.contact : _addressStr);
         CGRect rect = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width-35.0, 99999.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]} context:nil];
         CGFloat retHeight = 15.0 + 17.0 + 10.0 + ceilf(rect.size.height) + 15.0;
 //        NSLog(@"%s %@ / %f",__FUNCTION__,NSStringFromCGRect(rect),retHeight);
-//        if( retHeight < (tableView.frame.size.height-44.0))
+//        if ( retHeight < (tableView.frame.size.height-44.0))
 //            retHeight = tableView.frame.size.height - 44.0;
         return retHeight;
     }
@@ -188,7 +190,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.section == 0 )
+    if ( indexPath.section == 0 )
         return;
     [self deleteLocationAction:nil];
 }
@@ -217,17 +219,17 @@
     [locItem setObject:([_locationItem.contact length] > 0 ? _locationItem.contact : @"") forKey:EventItem_Contact];
     [_eventModel setObject:locItem forKey:EventItem_Location];
     
-    if( _isEditMode )
+    if ( _isEditMode )
         [self.navigationController popViewControllerAnimated:YES];
-    else{
-        if( IS_IPHONE )
+    else {
+        if ( IS_IPHONE )
             [self dismissViewControllerAnimated:YES completion:nil];
-        else{
-            if( [self.navigationController.viewControllers count] > 2 ){
+        else {
+            if ( [self.navigationController.viewControllers count] > 2 ) {
                 UIViewController *viewCtrl = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
                 [self.navigationController popToViewController:viewCtrl animated:YES];
             }
-            else{
+            else {
                 [self dismissViewControllerAnimated:YES completion:nil];
             }
         }
@@ -237,10 +239,10 @@
 - (IBAction)deleteLocationAction:(id)sender {
     [_eventModel removeObjectForKey:EventItem_Location];
     
-    if( _isEditMode )
+    if ( _isEditMode )
         [self.navigationController popViewControllerAnimated:YES];
-    else{
-        if( IS_IPHONE )
+    else {
+        if ( IS_IPHONE )
             [self dismissViewControllerAnimated:YES completion:nil];
         else
             [self.navigationController popViewControllerAnimated:YES];
@@ -260,8 +262,9 @@
 		annotationView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
 		annotationView.draggable = NO;
 	}
-    if ([annotation respondsToSelector:@selector(title)] && [annotation title])
+    if ([annotation respondsToSelector:@selector(title)] && [annotation title]) {
 		annotationView.canShowCallout = YES;
+    }
 	annotationView.animatesDrop = YES;
     
 	return annotationView;
@@ -269,7 +272,7 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    if( IS_IPAD ){
+    if ( IS_IPAD ) {
         [mapView deselectAnnotation:view.annotation animated:NO];
         
         A3DaysCounterLocationPopupViewController *viewCtrl = [[A3DaysCounterLocationPopupViewController alloc] initWithNibName:@"A3DaysCounterLocationPopupViewController" bundle:nil];

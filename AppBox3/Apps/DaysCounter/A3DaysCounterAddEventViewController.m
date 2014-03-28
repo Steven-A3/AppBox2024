@@ -981,28 +981,15 @@
         }
             break;
         case EventCellType_Location:{
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:([_eventModel objectForKey:EventItem_Location] ? @"Delete Location" : nil) otherButtonTitles:@"Use My Location",@"Search Location", nil];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"Cancel"
+                                                       destructiveButtonTitle:([_eventModel objectForKey:EventItem_Location] ? @"Delete Location" : nil)
+                                                            otherButtonTitles:@"Use My Location",@"Search Location", nil];
             actionSheet.tag = ActionTag_Location;
             [actionSheet showInView:self.view];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self closeDatePickerCell];
-
-//            if ( [_eventModel objectForKey:EventItem_Location]) {
-            
-//                A3DaysCounterLocationDetailViewController *nextVC = [[A3DaysCounterLocationDetailViewController alloc] initWithNibName:@"A3DaysCounterLocationDetailViewController" bundle:nil];
-//                nextVC.eventModel = self.eventModel;
-//                nextVC.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:[_eventModel objectForKey:EventItem_Location]];
-//                nextVC.isEditMode = YES;
-//                [self.navigationController pushViewController:nextVC animated:YES];
-//            }
-//            else {
-//                A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
-//                nextVC.eventModel = self.eventModel;
-//                UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
-//                navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-//                [self presentViewController:navCtrl animated:YES completion:nil];
-//            }
-            
         }
             break;
         case EventCellType_Advanced:
@@ -1264,7 +1251,7 @@
     
     if ( removeType != itemType ) {
         if ( removeType == EventCellType_StartDate ) {
-            indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+            indexPath = [NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section];
         }
         self.inputDateKey = itemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
         [items insertObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_DateInput)} atIndex:indexPath.row+1];
@@ -1294,13 +1281,15 @@
         NSMutableArray *items = advItems;//[NSMutableArray array];
         
         [items addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
-        if ( [[_eventModel objectForKey:EventItem_RepeatType] integerValue] != 0 )
+        if ( [[_eventModel objectForKey:EventItem_RepeatType] integerValue] != 0 ) {
             [items addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+        }
         [items addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
         [items addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
         [items addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
         [items addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
         [items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
+
 //        [_sectionTitleArray addObject:@{AddEventSectionName : @"ADVANCED", AddEventItems : items}];
 //        [self.tableView insertSections:[NSIndexSet indexSetWithIndex:AddSection_Advanced] withRowAnimation:UITableViewRowAnimationMiddle];
         textLabel.textColor = [UIColor colorWithRed:3.0/255.0 green:122.0/255.0 blue:1.0 alpha:1.0];
@@ -1309,7 +1298,7 @@
             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
         }
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-        
+
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
     else {
@@ -1374,26 +1363,18 @@
             [_locationManager startUpdatingLocation];
         }
         else if ( buttonIndex == (actionSheet.firstOtherButtonIndex+1)) {
-//            if ( [_eventModel objectForKey:EventItem_Location]) {
-//                A3DaysCounterLocationDetailViewController *nextVC = [[A3DaysCounterLocationDetailViewController alloc] initWithNibName:@"A3DaysCounterLocationDetailViewController" bundle:nil];
-//                nextVC.eventModel = self.eventModel;
-//                nextVC.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:[_eventModel objectForKey:EventItem_Location]];
-//                nextVC.isEditMode = YES;
-//                [self.navigationController pushViewController:nextVC animated:YES];
-//            }
-//            else {
             if (![[A3AppDelegate instance].reachability isReachable]) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
                 return;
             }
-        
-                A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
-                nextVC.eventModel = self.eventModel;
-                UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
-                navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-                [self presentViewController:navCtrl animated:YES completion:nil];
-//            }
+            
+            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController"
+                                                                                                                          bundle:nil];
+            nextVC.eventModel = self.eventModel;
+            UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
+            navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+            [self presentViewController:navCtrl animated:YES completion:nil];
         }
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {
@@ -1402,9 +1383,6 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
-//    else if ( buttonIndex == actionSheet.firstOtherButtonIndex+1) {
-//        [self showPhotoSelector];
-//    }
 }
 
 - (IBAction)deleteEventAction:(id)sender {

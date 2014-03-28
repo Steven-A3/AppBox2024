@@ -43,6 +43,66 @@
 @end
 
 @implementation A3DaysCounterSetupLocationViewController
+{
+    BOOL _initializedLocale;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view from its nib.
+    self.title = @"Location";
+    self.navigationItem.titleView = self.searchBarBaseView;
+    [self setAutomaticallyAdjustsScrollViewInsets:NO];
+    [self makeBackButtonEmptyArrow];
+    [self.infoTableView setTableFooterView:_tableFooterView];
+    self.searchIcon = [[UIImage imageNamed:@"search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    _currentLocationButton.layer.backgroundColor = [[UIColor whiteColor] CGColor];
+    _currentLocationButton.layer.borderWidth = 1.0;
+    _currentLocationButton.layer.borderColor = [[UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0] CGColor];
+    _currentLocationButton.layer.cornerRadius = 6.0;
+    _currentLocationButton.layer.masksToBounds = YES;
+    
+    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:18.0]];
+	[SFKImage setDefaultColor:[UIColor blackColor]];
+    UIImage *image = [SFKImage imageNamed:@"k"];
+    [_currentLocationButton setImage:image forState:UIControlStateNormal];
+    
+    [Foursquare2 initialize];
+    [Foursquare2 setupFoursquareWithClientId:FOURSQUARE_CLIENTID
+                                      secret:FOURSQUARE_CLIENTSECRET
+                                 callbackURL:FOURSQUARE_REDIRECTURI];
+//    [self.searchDisplayController setActive:NO];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self hideCurrentLocationTableView];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc
+{
+    self.searchIcon = nil;
+}
+
+#pragma makr - Methods
 
 - (A3LocationPlacemarkView *)placemarkView {
 	if (nil == _placemarkView) {
@@ -60,7 +120,7 @@
 	NSMutableArray *annForRemove = [[NSMutableArray alloc] initWithArray:self.mapView.annotations];
 	if ([self.mapView.annotations.lastObject isKindOfClass:[MKUserLocation class]]) {
 		[annForRemove removeObject:self.mapView.annotations.lastObject];
-	}else {
+	} else {
 		for (id <MKAnnotation> annot_ in self.mapView.annotations)
 		{
 			if ([annot_ isKindOfClass:[MKUserLocation class]] ) {
@@ -125,41 +185,48 @@
 
 - (void)forsqareSearchCoordinate:(CLLocationCoordinate2D)coord radius:(CGFloat)radius searchString:(NSString*)searchString
 {
-    [Foursquare2 venueSearchNearByLatitude:@(coord.latitude) longitude:@(coord.longitude) query:searchString limit:nil intent:intentCheckin radius:@(radius) categoryId:nil callback:^(BOOL success, id result) {
-        if (success) {
-            isLoading = NO;
-            NSDictionary *dic = result;
-            NSArray *venues = [dic valueForKeyPath:@"response.venues"];
-            FSConverter *converter = [[FSConverter alloc] init];
-            self.nearbyVenues = [converter convertToObjects:venues];
-            [self proccessAnnotations];
-            [_infoTableView reloadData];
-//            [self.searchDisplayController.searchResultsTableView reloadData];
-            
-            if ( [self.nearbyVenues count] > 2 ) {
-                _tableViewHeightConstraint.constant = 229.0;
-            }
-            else {
-                _tableViewHeightConstraint.constant = 88.0;
-            }
-            if ( isSearchActive ) {
-                [self showSearchResultView];
-//                if ( [self.nearbyVenues count] < 1 ) {
-//                    _searchResultsTableView.hidden = YES;
-//                    _noResultsView.hidden = NO;
-//                }
-//                else {
-//                    _searchResultsTableView.hidden = NO;
-//                    _noResultsView.hidden = YES;
-//                }
-            }
-//            _tableViewTopConst.constant = self.view.frame.size.height - self.searchDisplayController.searchBar.frame.size.height - _tableViewHeightConstraint.constant;
-            
-            [UIView animateWithDuration:0.3 animations:^{
-                [self.view layoutIfNeeded];
-            }];
-        }
-    }];
+    [Foursquare2 venueSearchNearByLatitude:@(coord.latitude)
+                                 longitude:@(coord.longitude)
+                                     query:searchString
+                                     limit:nil
+                                    intent:intentCheckin
+                                    radius:@(radius)
+                                categoryId:nil
+                                  callback:^(BOOL success, id result) {
+                                      if (success) {
+                                          isLoading = NO;
+                                          NSDictionary *dic = result;
+                                          NSArray *venues = [dic valueForKeyPath:@"response.venues"];
+                                          FSConverter *converter = [[FSConverter alloc] init];
+                                          self.nearbyVenues = [converter convertToObjects:venues];
+                                          [self proccessAnnotations];
+                                          [_infoTableView reloadData];
+                                          //            [self.searchDisplayController.searchResultsTableView reloadData];
+                                          
+                                          if ( [self.nearbyVenues count] > 2 ) {
+                                              _tableViewHeightConstraint.constant = 229.0;
+                                          }
+                                          else {
+                                              _tableViewHeightConstraint.constant = 88.0;
+                                          }
+                                          if ( isSearchActive ) {
+                                              [self showSearchResultView];
+                                              //                if ( [self.nearbyVenues count] < 1 ) {
+                                              //                    _searchResultsTableView.hidden = YES;
+                                              //                    _noResultsView.hidden = NO;
+                                              //                }
+                                              //                else {
+                                              //                    _searchResultsTableView.hidden = NO;
+                                              //                    _noResultsView.hidden = YES;
+                                              //                }
+                                          }
+                                          //            _tableViewTopConst.constant = self.view.frame.size.height - self.searchDisplayController.searchBar.frame.size.height - _tableViewHeightConstraint.constant;
+                                          
+                                          [UIView animateWithDuration:0.3 animations:^{
+                                              [self.view layoutIfNeeded];
+                                          }];
+                                      }
+                                  }];
 }
 
 - (void)moveToLocationDetailWithItem:(FSVenue *)item
@@ -171,62 +238,6 @@
     [self.navigationController pushViewController:viewCtrl animated:YES];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    self.title = @"Location";
-    self.navigationItem.titleView = self.searchBarBaseView;
-    [self setAutomaticallyAdjustsScrollViewInsets:NO];
-    [self.infoTableView setTableFooterView:_tableFooterView];
-//    self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
-    self.searchIcon = [[UIImage imageNamed:@"search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    [self makeBackButtonEmptyArrow];
-
-//    [self.view addSubview:self.placemarkView];
-    _currentLocationButton.layer.backgroundColor = [[UIColor whiteColor] CGColor];
-    _currentLocationButton.layer.borderWidth = 1.0;
-    _currentLocationButton.layer.borderColor = [[UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0] CGColor];
-    _currentLocationButton.layer.cornerRadius = 6.0;
-    _currentLocationButton.layer.masksToBounds = YES;
-    
-    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:18.0]];
-	[SFKImage setDefaultColor:[UIColor blackColor]];
-    UIImage *image = [SFKImage imageNamed:@"k"];
-    [_currentLocationButton setImage:image forState:UIControlStateNormal];
-    
-    [Foursquare2 initialize];
-    [Foursquare2 setupFoursquareWithClientId:FOURSQUARE_CLIENTID
-                                      secret:FOURSQUARE_CLIENTSECRET
-                                 callbackURL:FOURSQUARE_REDIRECTURI];
-//    [self.searchDisplayController setActive:NO];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self hideCurrentLocationTableView];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-- (void)dealloc
-{
-    self.searchIcon = nil;
-}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -241,8 +252,24 @@
     
 //    if ( [self.searchDisplayController isActive] && isInputing )
 //        return 0;
-    
-    return ( [self.nearbyVenues count] > 0 ? [self.nearbyVenues count] + (tableView != _infoTableView ? 1 : 0) : (tableView == _infoTableView ? 1 : 1) );
+
+    //return ([self.nearbyVenues count] > 0) ? [self.nearbyVenues count] + (tableView != _infoTableView ? 1 : 0) : (tableView == _infoTableView ? 1 : 1) ;
+    if ([self.nearbyVenues count] > 0) {
+        if (tableView != _infoTableView) {
+            return [self.nearbyVenues count] + 1;
+        }
+        else {
+            return [self.nearbyVenues count];
+        }
+    }
+    else {
+        if (tableView == _infoTableView) {
+            return 1;
+        }
+        else {
+            return 1;
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -263,15 +290,24 @@
         cell = [tableView dequeueReusableCellWithIdentifier:@"currentLocationCell"];
         if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
-            cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0)-tableView.separatorInset.left;
+            cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
             cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
         
-        if ( self.changedPlace )
+        if (self.changedPlace) {
             cell.textLabel.text = [[[A3DaysCounterModelManager sharedManager] addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        else
+            
+//            NSString *locationText = [[[A3DaysCounterModelManager sharedManager] addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+//            NSRange matchRange = [locationText rangeOfString:self.searchText options:NSCaseInsensitiveSearch];
+//            NSMutableAttributedString *attrText = [[NSMutableAttributedString alloc] initWithString:locationText];
+//            [attrText addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:17] range:matchRange];
+//            cell.textLabel.attributedText = attrText;
+        }
+        else {
             cell.textLabel.text = @"Current Location";
+        }
+        
         return cell;
     }
 
@@ -307,11 +343,20 @@
     }
     else {
         FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];
-
+        
         cell.textLabel.text = item.name;
         cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:item isDetail:NO];
         cell.textLabel.textColor = [UIColor blackColor];
         cell.detailTextLabel.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+        
+        if (self.searchText && [self.searchText length] > 0) {
+            NSRange matchRange = [cell.textLabel.text rangeOfString:self.searchText options:NSCaseInsensitiveSearch];
+            if (matchRange.location != NSNotFound) {
+                NSMutableAttributedString *attrText = [[NSMutableAttributedString alloc] initWithAttributedString:cell.textLabel.attributedText];
+                [attrText addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:17] range:matchRange];
+                cell.textLabel.attributedText = attrText;
+            }
+        }
     }
 //    if ( [self.nearbyVenues count] > 0 )
 //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -352,7 +397,9 @@
         return;
     }
     
-    if ( tableView == _infoTableView && [self.nearbyVenues count] < 1 )    return;
+    if ( tableView == _infoTableView && [self.nearbyVenues count] < 1 ) {
+        return;
+    }
     else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
         // 이 위치를 추가하는 화면으로 이동
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
@@ -438,20 +485,28 @@
 #pragma mark - UIMapViewDelegate
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
-    if ( self.changedPlace )
+    if (self.changedPlace) {
         return;
+    }
+    if (_initializedLocale) {
+        return;
+    }
+    
     CLLocationCoordinate2D coord = userLocation.coordinate;
     [mapView setRegion:MKCoordinateRegionMakeWithDistance(coord, 2000, 2000) animated:YES];
     isLoading = YES;
     [_infoTableView reloadData];
     self.searchCenterCoord = coord;
     [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:nil];
+
+    _initializedLocale = YES;
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation
 {
-	if ([annotation isKindOfClass:[MKUserLocation class]])
+	if ([annotation isKindOfClass:[MKUserLocation class]]) {
 		return nil;
+    }
     
 	static NSString *identifier = @"A3MapViewAnnotation";
     
@@ -479,8 +534,10 @@
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
     NSInteger index = [self.nearbyVenues indexOfObject:view.annotation];
-    if ( index != NSNotFound )
+    if ( index != NSNotFound ) {
         [_infoTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    }
+    
     if ( IS_IPAD ) {
         [mapView deselectAnnotation:view.annotation animated:NO];
         
@@ -517,7 +574,7 @@
 - (void)showCurrentLocationTableView
 {
     if ( ![_currentLocationView isDescendantOfView:self.navigationController.view]) {
-        _currentLocationView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height+20.0, _currentLocationView.frame.size.width, _currentLocationView.frame.size.height);
+        _currentLocationView.frame = CGRectMake(0, self.navigationController.navigationBar.frame.size.height + 20.0, _currentLocationView.frame.size.width, _currentLocationView.frame.size.height);
         [self.navigationController.view insertSubview:_currentLocationView belowSubview:self.navigationController.navigationBar];
         [_currentLocationTableView reloadData];
         [_currentLocationView makeConstraints:^(MASConstraintMaker *make) {
@@ -597,6 +654,7 @@
         [self hideCurrentLocationTableView];
         self.searchText = nil;
         [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:self.searchText];
+        [searchBar resignFirstResponder];
     }
 }
 
@@ -626,6 +684,8 @@
 #pragma mark - A3DaysCounterChangeLocationViewControllerDelegate
 - (void)changeLocationViewController:(A3DaysCounterChangeLocationViewController *)ctrl didSelectLocation:(CLPlacemark *)placemark
 {
+    _initializedLocale = NO;
+    
     if ( placemark == nil ) {
         [self moveCurrentLocationAction:nil];
         self.changedPlace = nil;
