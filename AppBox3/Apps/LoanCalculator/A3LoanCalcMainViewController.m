@@ -3473,4 +3473,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	return IS_IPAD ? @"Next" : nil;
 }
 
+- (UIViewController *)modalPresentingParentViewControllerForCalculator {
+	return self;
+}
+
 @end

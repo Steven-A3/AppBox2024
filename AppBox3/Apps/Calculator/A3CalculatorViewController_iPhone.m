@@ -10,6 +10,7 @@
 #import "HTCopyableLabel.h"
 #import "A3CalcKeyboardView_iPhone.h"
 #import "FXPageControl.h"
+#import "A3CalculatorDelegate.h"
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "A3Calculator.h"
@@ -77,9 +78,15 @@
 
     self.automaticallyAdjustsScrollViewInsets = NO;
 	self.title = @"Calculator"; // TODO localization
-	[self leftBarButtonAppsButton];
-	//[self rightButtonMoreButton];
-    [self rightBarButtons];
+
+	if (!_modalPresentingParentViewController) {
+		[self leftBarButtonAppsButton];
+		[self rightBarButtons];
+	} else {
+		[self leftBarButtonCancelButton];
+		[self rightBarButtonDoneButton];
+	}
+
     radian = YES;
 	[self setupSubviews];
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
@@ -101,6 +108,18 @@
 	[super viewWillAppear:animated];
 
 	_scrollView.contentOffset = CGPointMake(320, 0);
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:nil];
+	id <A3CalculatorDelegate> delegate = self.delegate;
+	if ([delegate respondsToSelector:@selector(calculatorViewController:didDismissWithValue:)]) {
+		[delegate calculatorViewController:self didDismissWithValue:self.evaluatedResultLabel.text];
+	}
+}
+
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setupGestureRecognizer {

@@ -5,6 +5,11 @@
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3NumberKeyboardViewController_iPad">
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="simpleKeyboardLayout">
+                    <integer key="value" value="1"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="deleteButton" destination="Waq-RS-nBr" id="Rsz-jy-bqv"/>
                 <outlet property="doneButton" destination="Sb5-Qb-oKu" id="zvj-ts-Jx6"/>

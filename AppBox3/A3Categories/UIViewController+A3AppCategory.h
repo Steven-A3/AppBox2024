@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
-#import "A3KeyboardProtocol.h"
+#import "A3KeyboardDelegate.h"
 #import "A3RootViewController_iPad.h"
 
 @class A3NumberKeyboardViewController;
@@ -28,6 +28,8 @@
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
 
 - (A3NumberKeyboardViewController *)simplePrevNextNumberKeyboard;
+
+- (A3NumberKeyboardViewController *)simplePrevNextClearNumberKeyboard;
 
 - (A3NumberKeyboardViewController *)normalNumberKeyboard;
 

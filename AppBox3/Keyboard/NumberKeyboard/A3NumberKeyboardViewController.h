@@ -6,7 +6,13 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3KeyboardProtocol.h"
+#import "A3KeyboardDelegate.h"
+
+typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
+	A3NumberKeyboardSimpleLayoutHasCalculator = 0,
+	A3NumberKeyboardSimpleLayoutHasPrevNext,
+	A3NumberKeyboardSimpleLayoutHasPrevNextClear
+};
 
 @interface A3NumberKeyboardViewController : UIViewController
 
@@ -21,10 +27,10 @@
 
 @property (nonatomic, strong) NSString * prevBtnTitleText;
 @property (nonatomic, strong) NSString * nextBtnTitleText;
+@property (nonatomic, strong) NSNumber *simpleKeyboardLayout;
 
 - (void)reloadPrevNextButtons;
-
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-
 - (void)setupLocale;
+
 @end

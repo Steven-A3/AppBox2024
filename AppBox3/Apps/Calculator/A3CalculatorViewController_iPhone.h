@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3CalculatorViewController.h"
 
-@interface A3CalculatorViewController_iPhone : UIViewController
-{
-}
+@protocol A3CalculatorDelegate;
+
+@interface A3CalculatorViewController_iPhone : A3CalculatorViewController
 
 @end

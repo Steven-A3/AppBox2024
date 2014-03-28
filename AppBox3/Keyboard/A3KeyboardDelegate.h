@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol A3CalculatorDelegate;
+
 typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 	A3NumberKeyboardTypeCurrency = 0,
 	A3NumberKeyboardTypePercent,
@@ -35,5 +37,7 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (BOOL)isNextEntryExists;
 - (void)prevButtonPressed;
 - (void)nextButtonPressed;
+- (UIViewController *)modalPresentingParentViewControllerForCalculator;
+- (id<A3CalculatorDelegate>)delegateForCalculator;
 
 @end

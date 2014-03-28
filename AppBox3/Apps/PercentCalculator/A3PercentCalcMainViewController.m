@@ -1031,9 +1031,10 @@
 //    _needToClearDetail = [self checkNeedToClearDetail];
     
     if (_simpleNormalNumberKeyboard == nil) {
-        _simpleNormalNumberKeyboard = [self simpleNumberKeyboard];
+        _simpleNormalNumberKeyboard = [self simplePrevNextClearNumberKeyboard];
+		_simpleNormalNumberKeyboard.keyboardType = A3NumberKeyboardTypeReal;
     }
-    
+
     textField.inputView = _simpleNormalNumberKeyboard.view;
     _simpleNormalNumberKeyboard.textInputTarget = textField;
     _simpleNormalNumberKeyboard.delegate = self;
@@ -1362,6 +1363,13 @@
     }
     
     [_simpleNormalNumberKeyboard reloadPrevNextButtons];
+}
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	if ([keyInputDelegate isKindOfClass:[UITextField class]]) {
+		UITextField *textField = (UITextField *) keyInputDelegate;
+		textField.text = @"";
+	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {

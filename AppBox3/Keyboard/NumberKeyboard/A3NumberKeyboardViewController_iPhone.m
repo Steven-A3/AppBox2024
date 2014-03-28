@@ -9,6 +9,8 @@
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3KeyboardButton_iPhone.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
+#import "A3CalculatorViewController_iPhone.h"
+#import "A3CalculatorDelegate.h"
 
 @interface A3NumberKeyboardViewController_iPhone ()
 
@@ -223,6 +225,17 @@
 - (IBAction)calculatorButtonAction:(UIButton *)sender {
 	[[UIDevice currentDevice] playInputClick];
 
+	id <A3KeyboardDelegate> delegate = self.delegate;
+	if ([delegate respondsToSelector:@selector(modalPresentingParentViewControllerForCalculator)]) {
+		UIViewController *modalPresentingParentViewController = [delegate modalPresentingParentViewControllerForCalculator];
+		A3CalculatorViewController_iPhone *calculatorViewController = [[A3CalculatorViewController_iPhone alloc] initWithPresentingViewController:modalPresentingParentViewController];
+
+		if ([delegate respondsToSelector:@selector(delegateForCalculator)]) {
+			calculatorViewController.delegate = [delegate delegateForCalculator];
+		}
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:calculatorViewController];
+		[modalPresentingParentViewController presentViewController:navigationController animated:YES completion:nil];
+	}
 }
 
 @end

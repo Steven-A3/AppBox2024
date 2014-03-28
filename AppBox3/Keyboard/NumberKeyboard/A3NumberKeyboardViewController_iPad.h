@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3KeyboardProtocol.h"
+#import "A3KeyboardDelegate.h"
 #import "A3NumberKeyboardViewController.h"
 
 @interface A3NumberKeyboardViewController_iPad : A3NumberKeyboardViewController

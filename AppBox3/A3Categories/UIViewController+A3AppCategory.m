@@ -56,6 +56,16 @@ static char const *const key_firstResponder 					= "key_firstResponder";
 	return viewController;
 }
 
+- (A3NumberKeyboardViewController *)simplePrevNextClearNumberKeyboard {
+	A3NumberKeyboardViewController *viewController;
+	if (IS_IPHONE) {
+		viewController = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextClearVC_iPhone" bundle:nil];
+	} else {
+		viewController = [[A3NumberKeyboardSimpleVC_iPad alloc] initWithNibName:@"A3NumberKeyboardSimplePrevNextClearVC_iPad" bundle:nil];
+	}
+	return viewController;
+}
+
 - (A3NumberKeyboardViewController *)normalNumberKeyboard {
 	A3NumberKeyboardViewController *viewController;
 	if (IS_IPAD) {
