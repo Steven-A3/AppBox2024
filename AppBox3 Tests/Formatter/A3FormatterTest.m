@@ -9,6 +9,7 @@
 #import <XCTest/XCTest.h>
 #import "NSDateFormatter+A3Addition.h"
 #import "NSDateFormatter+LunarDate.h"
+#import "NSDate+TimeAgo.h"
 
 @interface A3FormatterTest : XCTestCase
 
@@ -114,5 +115,56 @@
 	[log appendFormat:@"%@\t[ %@ ]\t[ %@ ]\n", localeID,  originalFormat, [df stringFromDateComponents:dateComponents]];
 
 }
+
+- (NSArray *)timesArray {
+	return @[
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 60],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 30],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 15],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 14],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 8],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 7],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 5],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 4],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 3],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 2],
+			 [NSDate dateWithTimeIntervalSinceNow:60 * 60 * 24 * 1],
+			 [NSDate dateWithTimeIntervalSinceNow:0],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 1],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 2],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 3],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 4],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 5],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 7],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 8],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 14],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 15],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 30],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 31],
+			 [NSDate dateWithTimeIntervalSinceNow:-60 * 60 * 24 * 60],
+			 ];
+}
+
+- (void)testTimeAgo {
+	NSMutableString *log = [NSMutableString new];
+	[[self timesArray] enumerateObjectsUsingBlock:^(NSDate *date, NSUInteger idx, BOOL *stop) {
+		[log appendString:[NSString stringWithFormat:@"%@\n", [date timeAgo]]];
+	}];
+	NSLog(@"%@", log);
+}
+
+- (void)testRelativeFormatting {
+	NSMutableString *log = [NSMutableString new];
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setDoesRelativeDateFormatting:YES];
+	[dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+	[dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
+	[[self timesArray] enumerateObjectsUsingBlock:^(NSDate *date, NSUInteger idx, BOOL *stop) {
+		[log appendString:[NSString stringWithFormat:@"%@\n", [dateFormatter stringFromDate:date]]];
+	}];
+	NSLog(@"%@", log);
+}
+
+
 
 @end
