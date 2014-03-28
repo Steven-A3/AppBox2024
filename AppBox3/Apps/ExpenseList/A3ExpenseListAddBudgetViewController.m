@@ -643,27 +643,21 @@ static NSString *CellIdentifier = @"Cell";
         UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
         
         if (_showDatePicker) {
-            //[self.root setSectionsArray:@[self.section0_Array, [self tableDataSourceWithDatePicker:YES]]];
             [self.root setSectionsArray:@[[self tableDataSourceWithDatePicker:YES]]];
             [CATransaction begin];
             [CATransaction setCompletionBlock:^{
-                //[tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:3 inSection:1] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:6 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
                 cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255 blue:255.0/255.0 alpha:1];
             }];
             [tableView beginUpdates];
-//            [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [tableView endUpdates];
             [CATransaction commit];
         }
         else {
             cell.detailTextLabel.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
-            //[self.root setSectionsArray:@[self.section0_Array, [self tableDataSourceWithDatePicker:NO]]];
             [self.root setSectionsArray:@[[self tableDataSourceWithDatePicker:NO]]];
             [tableView beginUpdates];
-//            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
-//            [tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
             [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
             [tableView endUpdates];
