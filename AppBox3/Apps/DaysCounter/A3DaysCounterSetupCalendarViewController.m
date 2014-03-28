@@ -85,7 +85,13 @@
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
     textLabel.text = item.calendarName;
-    textLabel.textColor = ( item.isShow ? [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0] : [UIColor colorWithRed:143.0/255.0 green:143.0/255.0 blue:143.0/255.0 alpha:1.0] );
+    if ([[item isShow] boolValue]) {
+        textLabel.textColor = [UIColor blackColor];
+    }
+    else {
+        textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
+    }
+    
     imageView.tintColor = [item color];
     cell.accessoryType = ( [item.calendarId isEqualToString:[_eventModel objectForKey:EventItem_CalendarId]] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
     

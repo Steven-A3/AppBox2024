@@ -26,6 +26,8 @@
 #import "DaysCounterEventLocation.h"
 #import "NSDate+LunarConverter.h"
 #import "SFKImage.h"
+#import "A3AppDelegate.h"
+#import "Reachability.h"
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -56,6 +58,9 @@
 @end
 
 @implementation A3DaysCounterAddEventViewController
+{
+    NSIndexPath *_indexPathOfShownDatePickerCell;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -224,7 +229,7 @@
         type = EventCellType_EndDate;
     
     NSInteger index = 0;
-    for(NSDictionary *item in items) {
+    for (NSDictionary *item in items) {
         if ( [[item objectForKey:EventRowType] integerValue] == type ) {
             break;
         }
@@ -385,7 +390,6 @@
     
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-        
         cell.textLabel.text = @"Delete Event";
         cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59.0/255.0 blue:48.0/255.0 alpha:1.0];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -442,12 +446,9 @@
                 case EventCellType_StartDate:
                 case EventCellType_EndDate:{
                     cell = [cellArray objectAtIndex:3];
-    //                UIButton *button = (UIButton*)[cell viewWithTag:13];
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
                     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     imageView.tintColor = [UIColor lightGrayColor];
-    //                button.transform = CGAffineTransformMakeRotation(DegreesToRadians(90));
-    //                [button addTarget:self action:@selector(toggleDateInputAction:) forControlEvents:UIControlEventTouchUpInside];
                 }
                     break;
                 case EventCellType_Calendar:
@@ -459,6 +460,7 @@
                     break;
                 case EventCellType_Notes:{
                     cell = [cellArray objectAtIndex:5];
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     UITextView *textView = (UITextView*)[cell viewWithTag:10];
                     textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
                     textView.delegate = self;
@@ -559,15 +561,15 @@
         }
             break;
         case EventCellType_StartDate:
-        case EventCellType_EndDate:{
-            NSString *keyName = ( itemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate );
+        case EventCellType_EndDate:
+        {
+            NSString *keyName = itemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
             UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
             UIImageView *lunarImageView = (UIImageView*)[cell viewWithTag:11];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
-//            UIButton *arrowButton = (UIButton*)[cell viewWithTag:13];
             
             if ( [[_eventModel objectForKey:EventItem_IsPeriod] boolValue] ) {
-                titleLabel.text = (itemType == EventCellType_StartDate ? @"Starts" : @"Ends");
+                titleLabel.text = itemType == EventCellType_StartDate ? @"Starts" : @"Ends";
             }
             else {
                 titleLabel.text = @"Date";
@@ -576,10 +578,12 @@
             lunarImageView.hidden = ![[_eventModel objectForKey:EventItem_IsLunar] boolValue];
             
             if ( [[_eventModel objectForKey:keyName] isKindOfClass:[NSDate class]] ) {
-                dateLabel.text = [A3Formatter stringFromDate:[_eventModel objectForKey:keyName] format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[[_eventModel objectForKey:EventItem_IsAllDay] boolValue]]];
+                dateLabel.text = [A3Formatter stringFromDate:[_eventModel objectForKey:keyName]
+                                                      format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[[_eventModel objectForKey:EventItem_IsAllDay] boolValue]]];
             }
             else {
-                dateLabel.text = @"";
+                dateLabel.text = [A3Formatter stringFromDate:[NSDate date]
+                                                      format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[[_eventModel objectForKey:EventItem_IsAllDay] boolValue]]];
             }
             
             NSInteger inputType = ( [self.inputDateKey isEqualToString:EventItem_StartDate] ? EventCellType_StartDate : ([self.inputDateKey isEqualToString:EventItem_EndDate] ? EventCellType_EndDate : 0) );
@@ -865,13 +869,15 @@
             [self closeDatePickerCell];
             break;
         case EventCellType_StartDate:
-        case EventCellType_EndDate:{
+        case EventCellType_EndDate:
+        {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             UIButton *button = (UIButton*)[cell viewWithTag:13];
             [self toggleDateInputAction:button];
         }
             break;
-        case EventCellType_RepeatType:{
+        case EventCellType_RepeatType:
+        {
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
@@ -887,7 +893,8 @@
             [self closeDatePickerCell];
         }
             break;
-        case EventCellType_EndRepeatDate:{
+        case EventCellType_EndRepeatDate:
+        {
             A3DaysCounterSetupEndRepeatViewController *nextVC = [[A3DaysCounterSetupEndRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupEndRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
@@ -904,7 +911,8 @@
             [self closeDatePickerCell];
         }
             break;
-        case EventCellType_Alert:{
+        case EventCellType_Alert:
+        {
             A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
@@ -924,7 +932,8 @@
             [self closeDatePickerCell];
         }
             break;
-        case EventCellType_Calendar:{
+        case EventCellType_Calendar:
+        {
             A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
@@ -953,7 +962,8 @@
             [self closeDatePickerCell];
         }
             break;
-        case EventCellType_DurationOption:{
+        case EventCellType_DurationOption:
+        {
             A3DaysCounterSetupDurationViewController *nextVC = [[A3DaysCounterSetupDurationViewController alloc] initWithNibName:@"A3DaysCounterSetupDurationViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
@@ -976,6 +986,7 @@
             [actionSheet showInView:self.view];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self closeDatePickerCell];
+
 //            if ( [_eventModel objectForKey:EventItem_Location]) {
             
 //                A3DaysCounterLocationDetailViewController *nextVC = [[A3DaysCounterLocationDetailViewController alloc] initWithNibName:@"A3DaysCounterLocationDetailViewController" bundle:nil];
@@ -1240,10 +1251,12 @@
 
     // 입력대상이 셋팅 되어있으면 삭제한다.
     NSInteger removeType = 0;
-    if ( [self.inputDateKey isEqualToString:EventItem_StartDate] )
+    if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
         removeType = EventCellType_StartDate;
-    else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] )
+    }
+    else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
         removeType = EventCellType_EndDate;
+    }
 
     if ( self.inputDateKey ) {
         [self removeDateInputCellWithItems:items indexPath:indexPath];
@@ -1253,13 +1266,17 @@
         if ( removeType == EventCellType_StartDate ) {
             indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
         }
-        self.inputDateKey = ( itemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate );
+        self.inputDateKey = itemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
         [items insertObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_DateInput)} atIndex:indexPath.row+1];
+        [CATransaction begin];
+        [CATransaction setCompletionBlock:^{
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }];
         [self.tableView beginUpdates];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        [CATransaction commit];
     }
 }
 
@@ -1365,6 +1382,12 @@
 //                [self.navigationController pushViewController:nextVC animated:YES];
 //            }
 //            else {
+            if (![[A3AppDelegate instance].reachability isReachable]) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alertView show];
+                return;
+            }
+        
                 A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
                 nextVC.eventModel = self.eventModel;
                 UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
@@ -1401,7 +1424,8 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     [manager stopUpdatingLocation];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Can not find current location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Can not find current location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertView show];
     self.locationManager = nil;
 }
@@ -1413,6 +1437,12 @@
     
     CLGeocoder *geoCoder = [[CLGeocoder alloc] init];
     [geoCoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error) {
+        if ([error code] == kCLErrorNetwork) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+            return;
+        }
+        
         if ( error == nil ) {
             if ( [placemarks count] < 1 ) {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Can not find current location information" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -1483,6 +1513,7 @@
 {
 //    UITableViewCell *cell = (UITableViewCell*)[[textField.superview superview] superview];
 //    cell.selected = YES;
+    [self closeDatePickerCell];
     return YES;
 }
 
