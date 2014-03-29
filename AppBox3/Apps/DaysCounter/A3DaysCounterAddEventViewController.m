@@ -1372,9 +1372,10 @@
             A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController"
                                                                                                                           bundle:nil];
             nextVC.eventModel = self.eventModel;
-            UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
-            navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-            [self presentViewController:navCtrl animated:YES completion:nil];
+//            UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
+//            navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+//            [self presentViewController:navCtrl animated:YES completion:nil];
+            [self.navigationController pushViewController:nextVC animated:YES];
         }
     }
     else if ( actionSheet.tag == ActionTag_DeleteEvent ) {

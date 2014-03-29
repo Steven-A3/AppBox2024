@@ -183,7 +183,7 @@
     return [_searchResultBaseView isDescendantOfView:self.view];
 }
 
-- (void)forsqareSearchCoordinate:(CLLocationCoordinate2D)coord radius:(CGFloat)radius searchString:(NSString*)searchString
+- (void)forsqareSearchCoordinate:(CLLocationCoordinate2D)coord radius:(CGFloat)radius searchString:(NSString*)searchString completion:(void (^)(void))completionBlock
 {
     [Foursquare2 venueSearchNearByLatitude:@(coord.latitude)
                                  longitude:@(coord.longitude)
@@ -209,18 +209,10 @@
                                           else {
                                               _tableViewHeightConstraint.constant = 88.0;
                                           }
-                                          if ( isSearchActive ) {
-                                              [self showSearchResultView];
-                                              //                if ( [self.nearbyVenues count] < 1 ) {
-                                              //                    _searchResultsTableView.hidden = YES;
-                                              //                    _noResultsView.hidden = NO;
-                                              //                }
-                                              //                else {
-                                              //                    _searchResultsTableView.hidden = NO;
-                                              //                    _noResultsView.hidden = YES;
-                                              //                }
+                                          
+                                          if (completionBlock) {
+                                              completionBlock();
                                           }
-                                          //            _tableViewTopConst.constant = self.view.frame.size.height - self.searchDisplayController.searchBar.frame.size.height - _tableViewHeightConstraint.constant;
                                           
                                           [UIView animateWithDuration:0.3 animations:^{
                                               [self.view layoutIfNeeded];
@@ -497,7 +489,7 @@
     isLoading = YES;
     [_infoTableView reloadData];
     self.searchCenterCoord = coord;
-    [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:nil];
+    [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:nil completion:nil];
 
     _initializedLocale = YES;
 }
@@ -561,7 +553,7 @@
 	if (newState == MKAnnotationViewDragStateEnding)
 	{
 		CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;
-        [self forsqareSearchCoordinate:droppedAt radius:20000.0 searchString:self.searchText];
+        [self forsqareSearchCoordinate:droppedAt radius:20000.0 searchString:self.searchText completion:nil];
     }
 }
 
@@ -633,31 +625,6 @@
 }
 */
 #pragma mark - UISearchBarDelegate
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
-{
-    isInputing = NO;
-    self.searchText = searchBar.text;
-    [searchBar resignFirstResponder];
-    [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:searchBar.text];
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    if ( !isSearchActive ) {
-        [self hideSearchResultView];
-        [self hideCurrentLocationTableView];
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else {
-        isSearchActive = NO;
-        [self hideSearchResultView];
-        [self hideCurrentLocationTableView];
-        self.searchText = nil;
-        [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:self.searchText];
-        [searchBar resignFirstResponder];
-    }
-}
-
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     isSearchActive = YES;
@@ -666,13 +633,58 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    if ( ![self isSearchResultShow] )
+    if ( ![self isSearchResultShow] ) {
         [self showCurrentLocationTableView];
+    }
+    
+    [searchBar setShowsCancelButton:YES animated:YES];
+    [self.navigationItem setHidesBackButton:YES animated:YES];
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    
+}
 
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    isInputing = NO;
+    self.searchText = searchBar.text;
+    [searchBar resignFirstResponder];
+    [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:searchBar.text completion:^{
+        
+//        if ( isSearchActive ) {
+            [self showSearchResultView];
+            //                if ( [self.nearbyVenues count] < 1 ) {
+            //                    _searchResultsTableView.hidden = YES;
+            //                    _noResultsView.hidden = NO;
+            //                }
+            //                else {
+            //                    _searchResultsTableView.hidden = NO;
+            //                    _noResultsView.hidden = YES;
+            //                }
+//        }
+    }];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    [self.navigationItem setHidesBackButton:NO animated:YES];
+    
+    if ( !isSearchActive ) {
+        [self hideSearchResultView];
+        [self hideCurrentLocationTableView];
+//        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else {
+        isSearchActive = NO;
+        [self hideSearchResultView];
+        [self hideCurrentLocationTableView];
+        self.searchText = nil;
+//        [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:self.searchText completion:nil];
+        [searchBar resignFirstResponder];
+    }
 }
 
 #pragma mark - action method
@@ -690,13 +702,13 @@
         [self moveCurrentLocationAction:nil];
         self.changedPlace = nil;
         self.searchCenterCoord = _mapView.userLocation.coordinate;
-        [self forsqareSearchCoordinate:_mapView.userLocation.coordinate radius:20000.0 searchString:self.searchText];
+        [self forsqareSearchCoordinate:_mapView.userLocation.coordinate radius:20000.0 searchString:self.searchText completion:nil];
     }
     else {
         self.searchCenterCoord = placemark.location.coordinate;
         self.changedPlace = placemark;
         [_mapView setCenterCoordinate:_searchCenterCoord animated:YES];
-        [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:self.searchText];
+        [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:self.searchText completion:nil];
     }
     [self.currentLocationTableView reloadData];
     [ctrl.navigationController popViewControllerAnimated:YES];

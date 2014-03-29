@@ -120,7 +120,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <searchBar clipsSubviews="YES" contentMode="redraw" searchBarStyle="minimal" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-D1-0hT">
+                <searchBar clipsSubviews="YES" contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-D1-0hT">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

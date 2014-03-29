@@ -30,6 +30,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *searchResultsTableView;
 @property (strong, nonatomic) IBOutlet UIView *searchResultBaseView;
 @property (weak, nonatomic) IBOutlet UIView *noResultsView;
+@property (strong, nonatomic) IBOutlet UISearchBar *testSearchBar;
 
 - (IBAction)moveCurrentLocationAction:(id)sender;
 @end
