@@ -172,9 +172,6 @@
     return screenBounds.size.height == 320? 0: -20;
 }
 
-- (id) getResultLabelHight:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@60;
-}
 
 - (CGFloat) getExpressionLabelTopOffSet:(CGRect) screenBounds {
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 25.5:80): 5.5;
@@ -185,15 +182,19 @@
 }
 
 - (CGFloat) getResultLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-13.5):-7.5;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-14):-8.5;
 }
 
 - (CGFloat) getResultLabelBottomOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-4;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -11.5:-8):-6;
 }
 
 - (UIFont *) getResultLabelFont:(CGRect) screenBounds {
     return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : screenBounds.size.height == 480 ? 62: 84];
+}
+
+- (id) getResultLabelHight:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@44;
 }
 
 /*
@@ -417,7 +418,7 @@
     //self.degreeLabelBottomConstraint.offset([self getDegreeLabelBottomOffset:screenBounds]);
     self.svheightconstraint.equalTo([self getSVHeight:screenBounds]);
     
-    self.evaluatedResultLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 60 : 83):55];
+    //self.evaluatedResultLabel.font = [UIFont fontWithName:@"HelveticaNeue-UltraLight" size:screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 60 : 83):55];
     [self setDegAndRad:NO];
     [self.calculator evaluateAndSet];
     [_keyboardView layoutIfNeeded];
