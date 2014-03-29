@@ -95,7 +95,7 @@
         [self checkRightButtonDisable];
     }
     [self setupGestureRecognizer];
-
+    
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
 	_textFieldForPlayInputClick.delegate = self;
 	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -103,6 +103,7 @@
 	[self.view addSubview:_textFieldForPlayInputClick];
 
 	[_textFieldForPlayInputClick becomeFirstResponder];
+     
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -381,11 +382,10 @@
             navGestureRecognizer.enabled = NO;
             [self setNavigationBarHidden:NO];
         }
-        
         self.pageControl.hidden = NO;
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        
+        _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
         self.calculator.isLandScape = NO;
     } else {
         CGRect frame = _keyboardView.frame;
@@ -404,6 +404,7 @@
         [self setNavigationBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0];
         self.calculator.isLandScape = YES;
         
         
