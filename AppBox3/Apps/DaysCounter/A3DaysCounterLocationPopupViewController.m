@@ -59,6 +59,14 @@
 #pragma mark
 - (void)detailInfoButtonTouchUp:(UIBarButtonItem *)item {
     self.isFullPrint = !_isFullPrint;
+    if (self.resizeFrameBlock) {
+        if (_isFullPrint) {
+            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), self.tableView.contentSize.height));
+        }
+        else {
+            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), 0));
+        }
+    }
 }
 
 #pragma mark - UITableViewDataSource

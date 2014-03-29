@@ -584,6 +584,9 @@
         
         A3DaysCounterLocationPopupViewController *viewCtrl = [[A3DaysCounterLocationPopupViewController alloc] initWithNibName:@"A3DaysCounterLocationPopupViewController" bundle:nil];
         viewCtrl.locationItem = view.annotation;
+        viewCtrl.resizeFrameBlock = ^(CGSize size) {
+            [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height + 44) animated:YES];
+        };
         
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         CGSize size = viewCtrl.view.frame.size;
@@ -593,7 +596,7 @@
         viewCtrl.popoverVC = self.popoverVC;
         [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44.0) animated:NO];
 //        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height) animated:NO];
-        [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
+        [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
 
