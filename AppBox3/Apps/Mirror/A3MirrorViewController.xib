@@ -101,6 +101,6 @@
         <image name="add03" width="16" height="16"/>
         <image name="m_color" width="26" height="25"/>
         <image name="m_horizon" width="17" height="21"/>
-        <image name="m_snap" width="34" height="34"/>
+        <image name="m_snap" width="60" height="60"/>
     </resources>
 </document>

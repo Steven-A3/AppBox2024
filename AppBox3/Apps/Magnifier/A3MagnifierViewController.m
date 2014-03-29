@@ -170,8 +170,8 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void)setupTorchLevelBar {
-    [self.flashbrightslider setMinimumValueImage:[UIImage imageNamed:@"m_flash_off"]];
-    [self.flashbrightslider setMaximumValueImage:[UIImage imageNamed:@"m_flash_off"]];
+    [self.flashbrightslider setMinimumValueImage:[UIImage imageNamed:@"m_flash_on"]];
+    [self.flashbrightslider setMaximumValueImage:[UIImage imageNamed:@"m_flash_on"]];
     self.flashbrightslider.hidden = YES;
 }
 
@@ -334,11 +334,13 @@ static const int MAX_ZOOM_FACTOR = 6;
                     self.flashbrightslider.value = 1.0;
                 }
                 self.flashbrightslider.hidden = NO;
+                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_off"]];
                // [_device setFlashMode:AVCaptureFlashModeOn];
             }
             else {
                 [_device setTorchMode:AVCaptureTorchModeOff];
                 self.flashbrightslider.hidden = YES;
+                                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_on"]];
                 //[_device setFlashMode:AVCaptureFlashModeOff];
             }
          //   [_device unlockForConfiguration];
