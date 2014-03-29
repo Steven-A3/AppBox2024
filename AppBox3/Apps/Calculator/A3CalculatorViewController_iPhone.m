@@ -593,7 +593,7 @@
 	Calculation *calculation = [Calculation MR_createEntity];
 	NSDate *keyDate = [NSDate date];
 	calculation.expression = mathExpression;
-	calculation.result = _evaluatedResultLabel.text;
+	calculation.result = [self.calculator getResultString];
 	calculation.date = keyDate;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];

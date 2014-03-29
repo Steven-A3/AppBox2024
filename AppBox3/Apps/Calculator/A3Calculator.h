@@ -22,5 +22,6 @@
 - (NSAttributedString *) getExpressionWith:(NSString *)mathExpression;
 - (NSString *) getMathExpression;
 - (void) evaluateAndSet;
+- (NSString *) getResultString;
 - (void) setMathExpression:(NSString *) mathExpression;
 @end

@@ -91,7 +91,7 @@ typedef CMathParser<char, double> MathParser;
 	return resultValue;
 }
 
-- (NSString *)getResultValueString:(double)value {
+- (NSString *)getResultValueString:(double)value shortFormat:(BOOL)isShort{
 
     NSUInteger maxFractionDigt = 15;
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
@@ -100,9 +100,9 @@ typedef CMathParser<char, double> MathParser;
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
     
-    if (1 > value) maxSignificantDigits = 15; // why app's defaul calculator like this??
+    if (1 > value) maxSignificantDigits = 15; // why app's default calculator like this??
     
-    if (IS_IPHONE && _isLandScape == NO) {
+    if (isShort  == YES) {
         maxFractionDigt = 8;
         maxDigitLen = 9;
         maxSignificantDigits = 8;
@@ -119,7 +119,7 @@ typedef CMathParser<char, double> MathParser;
     }else {
         [nf setNumberStyle:NSNumberFormatterScientificStyle];
         [nf setExponentSymbol:@"e"];
-        if(IS_IPHONE && _isLandScape == NO) {
+        if(isShort == YES) {
             [nf setPositiveFormat:@"0.######E+0"];
         } else {
             [nf setPositiveFormat:@"0.#############E+0"];
@@ -132,29 +132,27 @@ typedef CMathParser<char, double> MathParser;
     return resultString;
 }
 
-- (void) evaluateAndSet {
+- (NSString *) getResultString {
     if ([self checkIfexpressionisnull] == NO) {
-        [self evaluateAndSet:NO];
+        	BOOL	isError;
+        double result = [self evaluate:&isError];
+        
+        if (isError == NO) {
+            return [self getResultValueString:result shortFormat:NO];
+        }
     }
+    return nil;
 }
-
-- (void)evaluateAndSet:(BOOL)setDisplayField {
+- (void)evaluateAndSet{
 	BOOL	isError;
 	
-    if(mathexpression == nil) return;
-    double result = [self evaluate:&isError];
-    
-	if (isError) {
-		if (setDisplayField) {
-			_evaluatedResultLabel.text = @"";
+    if ([self checkIfexpressionisnull] == NO) {
+        double result = [self evaluate:&isError];
+        
+        if (isError == NO) {
+            _evaluatedResultLabel.text = [self getResultValueString:result shortFormat: (IS_IPHONE && _isLandScape == NO ? YES:NO)];
         }
-	} else {
-		if (setDisplayField) {
-			mathexpression = [self getResultValueString:result];
-            _expressionLabel.text = mathexpression;
-		}
-        _evaluatedResultLabel.text = [self getResultValueString:result];
-	}
+    }
 }
 
 - (void) changeEEExpression {
@@ -286,7 +284,7 @@ typedef CMathParser<char, double> MathParser;
         NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
         if (range.location != NSNotFound) {
             mathexpression = [[mathexpression stringByAppendingString:@"x"] stringByAppendingString:constant];
-            [self evaluateAndSet:NO];
+            [self evaluateAndSet];
         } else {
             range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"x/+-("]];
             if (range.location != NSNotFound) {
@@ -295,13 +293,13 @@ typedef CMathParser<char, double> MathParser;
         }
     }
     [self convertMathExpressionToAttributedString];
-    [self evaluateAndSet:NO];
+    [self evaluateAndSet];
 }
 
 - (void) doubleargHandler:(NSUInteger) key {
     
     [self changethelastnumberwithoperator:key];
-    [self evaluateAndSet:NO];
+    [self evaluateAndSet];
     return;
 }
 
@@ -342,7 +340,7 @@ typedef CMathParser<char, double> MathParser;
 - (void) setMathExpression:(NSString *) mathExpr {
     mathexpression = mathExpr;
     _expressionLabel.attributedText = [self getExpressionWith:mathexpression];
-    [self evaluateAndSet:NO];
+    [self evaluateAndSet];
 }
 - (NSAttributedString *) getExpressionWith:(NSString *) mExpression {
     FNLOG(@"mExpression = %@",mExpression);
@@ -373,7 +371,7 @@ typedef CMathParser<char, double> MathParser;
                 currentString = [mExpression substringWithRange:range];
                 double dv = [currentString doubleValue];
                 if (dv != 0) {
-                    temp = [temp appendWithString:[self getResultValueString:dv]];
+                    temp = [temp appendWithString:[self getResultValueString:dv shortFormat:(IS_IPHONE && _isLandScape == NO ? YES:NO)]];
                 } else {
                     // to reserve 0.
                     temp = [temp appendWithString:currentString];
@@ -961,7 +959,7 @@ typedef CMathParser<char, double> MathParser;
         case A3E_POWER_10:
         case A3E_LOG_Y:
             [self changethelastnumberwithoperator:key];
-            [self evaluateAndSet:NO];
+            [self evaluateAndSet];
             return;
             
     }
@@ -990,7 +988,7 @@ typedef CMathParser<char, double> MathParser;
             NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"01234567890.)"]];
             if(range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:stringFuncName];
-                [self evaluateAndSet:NO];
+                [self evaluateAndSet];
             }
         }
     }
@@ -1272,7 +1270,7 @@ typedef CMathParser<char, double> MathParser;
                         range.length = range.length - 1;
                         mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@")" withString:@"" options:0 range:range];
                         [self convertMathExpressionToAttributedString];
-                        [self evaluateAndSet:NO];
+                        [self evaluateAndSet];
                     }
                 }
             }
@@ -1295,7 +1293,7 @@ typedef CMathParser<char, double> MathParser;
                     range.length = [mathexpression length] - startLocation;
                     mathexpression = [mathexpression stringByReplacingOccurrencesOfString:oldNumber withString:newNumber options:0 range:range];
                     [self convertMathExpressionToAttributedString];
-                    [self evaluateAndSet:NO];
+                    [self evaluateAndSet];
                 }
             }
             break;
@@ -1310,14 +1308,14 @@ typedef CMathParser<char, double> MathParser;
                 _evaluatedResultLabel.text = @"0";
             } else {
                 [self convertMathExpressionToAttributedString];
-                [self evaluateAndSet:NO];
+                [self evaluateAndSet];
             }
             
             break;
         }
         case A3E_DIVIDE_X: {
             [self changethelastnumberwithoperator:key];
-            [self evaluateAndSet:NO];
+            [self evaluateAndSet];
             return;
         }
             break;
@@ -1341,7 +1339,7 @@ typedef CMathParser<char, double> MathParser;
                 mathexpression = [mathexpression stringByAppendingString:@"="];
             }
             [self convertMathExpressionToAttributedString];
-            [self evaluateAndSet:NO];
+            [self evaluateAndSet];
         }
             break;
         case A3E_00: {
@@ -1351,7 +1349,7 @@ typedef CMathParser<char, double> MathParser;
             if(range.location != NSNotFound) {
                 mathexpression = [mathexpression stringByAppendingString:@"00"];
                 [self convertMathExpressionToAttributedString];
-                [self evaluateAndSet:NO];
+                [self evaluateAndSet];
             }
         }
             break;
@@ -1396,7 +1394,7 @@ typedef CMathParser<char, double> MathParser;
         
         mathexpression = [mathexpression stringByAppendingString:num];
         [self convertMathExpressionToAttributedString];
-        [self evaluateAndSet:NO];
+        [self evaluateAndSet];
     }
 }
 
@@ -1467,7 +1465,7 @@ typedef CMathParser<char, double> MathParser;
                 }
             }
             [self convertMathExpressionToAttributedString];
-            [self evaluateAndSet:NO];
+            [self evaluateAndSet];
             
             break;
         }
@@ -1513,7 +1511,7 @@ typedef CMathParser<char, double> MathParser;
                 // _expressionLabel.attributedText = [_expressionLabel.attributedText appendWithString:@")"];
             }
             [self convertMathExpressionToAttributedString];
-            [self evaluateAndSet:NO];
+            [self evaluateAndSet];
             break;
         }
     }
