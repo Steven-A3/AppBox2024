@@ -48,7 +48,7 @@
 	self.L1.font = [UIFont systemFontOfSize:15];
 	self.L2.font = [UIFont systemFontOfSize:13];
     self.L2.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
-	self.R1.font = [UIFont systemFontOfSize:15];
+	self.R1.font = [UIFont systemFontOfSize:12];
     self.R1.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	self.R2.font = [UIFont systemFontOfSize:12];
     self.R1.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
@@ -90,6 +90,6 @@
                                                                     toItem:left
                                                                  attribute:NSLayoutAttributeCenterY
                                                                 multiplier:1.0
-                                                                  constant:0.0]];
+                                                                  constant:1.5]];
 }
 @end
