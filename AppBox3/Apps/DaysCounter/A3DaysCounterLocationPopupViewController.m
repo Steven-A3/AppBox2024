@@ -62,16 +62,6 @@
     return 2;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"Cell";
@@ -93,10 +83,14 @@
     if( indexPath.row == 0 ){
         cell.textLabel.text = @"Phone";
         cell.detailTextLabel.text = _locationItem.contact;
+        cell.separatorInset = UIEdgeInsetsMake(0, 45, 0, 0);
     }
     else{
         cell.textLabel.text = @"Address";
         cell.detailTextLabel.text = _addressStr;
+//        cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.frame), 0, 0);
+        cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
+//        cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, cell.bounds.size.width);
     }
     
     return cell;

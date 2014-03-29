@@ -4831,6 +4831,7 @@
 				804C330C18DAE22D00DBCE83 /* 4. Favorite */,
 				8054E88518E3E66C00598FB3 /* Cells (AddEvent) */,
 				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
+				8094E0DF18E6D04800CB03BC /* Location SubDetail */,
 				804C330818DAE0E500DBCE83 /* Event Related */,
 				804C330E18DAE33D00DBCE83 /* SubDetails */,
 				68F1C7DE18D7F37D009FAE8A /* A3DaysCounterDefine.h */,
@@ -5158,12 +5159,6 @@
 				68F1C82C18D7F37D009FAE8A /* A3PhotoSelectViewController.m */,
 				68F1C82D18D7F37D009FAE8A /* A3PhotoSelectViewController.xib */,
 				68F1C7FA18D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib */,
-				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
-				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
-				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,
-				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
-				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
-				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
 			);
 			name = SubDetails;
 			sourceTree = "<group>";
@@ -5200,6 +5195,19 @@
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
 			);
 			name = "Cells (AddEvent)";
+			sourceTree = "<group>";
+		};
+		8094E0DF18E6D04800CB03BC /* Location SubDetail */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
+				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
+				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,
+				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
+				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
+				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
+			);
+			name = "Location SubDetail";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

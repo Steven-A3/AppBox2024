@@ -348,7 +348,7 @@
         }
         cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0)-tableView.separatorInset.left;
+        cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
     }
     
     
@@ -574,10 +574,10 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-    NSInteger index = [self.nearbyVenues indexOfObject:view.annotation];
-    if ( index != NSNotFound ) {
-        [_infoTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    }
+//    NSInteger index = [self.nearbyVenues indexOfObject:view.annotation];
+//    if ( index != NSNotFound ) {
+//        [_infoTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//    }
     
     if ( IS_IPAD ) {
         [mapView deselectAnnotation:view.annotation animated:NO];
@@ -599,8 +599,7 @@
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState
    fromOldState:(MKAnnotationViewDragState)oldState
 {
-	if (newState == MKAnnotationViewDragStateEnding)
-	{
+	if (newState == MKAnnotationViewDragStateEnding) {
 		CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;
         [self forsqareSearchCoordinate:droppedAt radius:20000.0 searchString:self.searchText completion:nil];
     }
