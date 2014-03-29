@@ -21,6 +21,7 @@
 #import "UILabel+Boldify.h"
 #import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
+#import "NSAttributedString+Append.h"
 
 
 @interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
@@ -321,11 +322,19 @@
 
 - (void)shareAll:(id)sender {
 	@autoreleasepool {
+        /*
 		NSMutableString *shareString = [[NSMutableString alloc] init];
         if (![self.expressionLabel.text hasSuffix:@"="]) {
             [shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
         } else {
             [shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
+        }
+         */
+        NSAttributedString *shareString = [[NSAttributedString alloc] init];
+        if (![self.expressionLabel.text hasSuffix:@"="]) {
+            shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
+        } else {
+            shareString = [_expressionLabel.attributedText appendWithString:[self.calculator getResultString]];
         }
         
 		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
