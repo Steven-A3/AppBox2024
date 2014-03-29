@@ -77,6 +77,7 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
         [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
         [_calculator evaluateAndSet];
+        [self checkRightButtonDisable];
     }
 
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
