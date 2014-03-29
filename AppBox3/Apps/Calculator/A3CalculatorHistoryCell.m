@@ -27,7 +27,7 @@
 }
 
 - (void)doAutolayout {
-	[self addConstraintLeft:_L1 right:_R1 centerY:2.15 * (1.0 / 4.0)];
+	[self addConstraintLeft:_L1 right:_R1 centerY:1.9 * (1.0 / 4.0)];
 	[self addConstraintLeft:_L2 right:_R2 centerY:1.425];
 }
 
@@ -48,7 +48,7 @@
 	self.L1.font = [UIFont systemFontOfSize:15];
 	self.L2.font = [UIFont systemFontOfSize:13];
     self.L2.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
-	self.R1.font = [UIFont systemFontOfSize:12];
+	self.R1.font = [UIFont systemFontOfSize:15];
     self.R1.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	self.R2.font = [UIFont systemFontOfSize:12];
     self.R1.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
