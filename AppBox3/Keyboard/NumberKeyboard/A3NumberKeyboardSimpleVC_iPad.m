@@ -53,12 +53,10 @@
 	[self.num2Button setFrame:CGRectMake(col_3, row_3, width_small, height_small)];
 	[self.num3Button setFrame:CGRectMake(col_4, row_3, width_small, height_small)];
 
-	[self.num0Button setFrame:CGRectMake(col_2, row_4, width_extra, height_small)];
 	[self.dotButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
 
 	[self.deleteButton setFrame:CGRectMake(col_5, row_1, width_small, height_small)];
 	// SimpleVC_iPad 에는 clearButton 과 calculationButton 이 있고,
-	[self.clearButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
 	[self.calculatorButton setFrame:CGRectMake(col_5, row_3, width_small, height_small)];
 	// SimplePrevNextVC_iPad 에는 prevButton 과 nextButton 이 있다.
 	[self.prevButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
@@ -85,6 +83,14 @@
 	[self.nextButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 
 	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 33 : 28]];
+	
+	if ([self.simpleKeyboardLayout unsignedIntegerValue] == A3NumberKeyboardSimpleLayoutHasPrevNextClear) {
+		[self.clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
+		[self.num0Button setFrame:CGRectMake(col_3, row_4, width_small, height_small)];
+	} else {
+		[self.clearButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
+		[self.num0Button setFrame:CGRectMake(col_2, row_4, width_extra, height_small)];
+	}
 }
 
 @end

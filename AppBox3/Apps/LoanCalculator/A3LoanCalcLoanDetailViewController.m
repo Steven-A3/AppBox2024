@@ -17,7 +17,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+LoanCalcAddtion.h"
-#import "A3KeyboardProtocol.h"
+#import "A3KeyboardDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3NumberKeyboardViewController.h"

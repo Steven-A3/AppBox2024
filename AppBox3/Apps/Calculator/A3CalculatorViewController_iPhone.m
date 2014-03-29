@@ -10,6 +10,7 @@
 #import "HTCopyableLabel.h"
 #import "A3CalcKeyboardView_iPhone.h"
 #import "FXPageControl.h"
+#import "A3CalculatorDelegate.h"
 #import "A3ExpressionComponent.h"
 #import "UIViewController+A3Addition.h"
 #import "A3Calculator.h"
@@ -77,9 +78,15 @@
 
     self.automaticallyAdjustsScrollViewInsets = NO;
 	self.title = @"Calculator"; // TODO localization
-	[self leftBarButtonAppsButton];
-	//[self rightButtonMoreButton];
-    [self rightBarButtons];
+
+	if (!_modalPresentingParentViewController) {
+		[self leftBarButtonAppsButton];
+		[self rightBarButtons];
+	} else {
+		[self leftBarButtonCancelButton];
+		[self rightBarButtonDoneButton];
+	}
+
     radian = YES;
 	[self setupSubviews];
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
@@ -101,6 +108,18 @@
 	[super viewWillAppear:animated];
 
 	_scrollView.contentOffset = CGPointMake(320, 0);
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:nil];
+	id <A3CalculatorDelegate> delegate = self.delegate;
+	if ([delegate respondsToSelector:@selector(calculatorViewController:didDismissWithValue:)]) {
+		[delegate calculatorViewController:self didDismissWithValue:self.evaluatedResultLabel.text];
+	}
+}
+
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setupGestureRecognizer {
@@ -245,14 +264,14 @@
         
         [self.view addSubview:self.degreeandradianLabel];
         [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.left).with.offset(8);
+            make.left.equalTo(self.view.left).with.offset(12);
             //self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
             make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
         }];
     } else {
         [self.pageControl addSubview:self.degreeandradianLabel];
         [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.pageControl.left).with.offset(8);
+            make.left.equalTo(self.pageControl.left).with.offset(12);
             make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
         }];
     }
@@ -289,7 +308,7 @@
     if(!_degreeandradianLabel) {
         _degreeandradianLabel = [UILabel new];
         _degreeandradianLabel.backgroundColor= [UIColor whiteColor];
-        _degreeandradianLabel.font = [UIFont systemFontOfSize:15];
+        _degreeandradianLabel.font = [UIFont systemFontOfSize:14];
         _degreeandradianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         _degreeandradianLabel.textAlignment = NSTextAlignmentLeft;
         _degreeandradianLabel.backgroundColor = [UIColor clearColor];

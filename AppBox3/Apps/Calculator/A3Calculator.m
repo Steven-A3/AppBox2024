@@ -93,17 +93,19 @@ typedef CMathParser<char, double> MathParser;
 
 - (NSString *)getResultValueString:(double)value {
 
-    NSUInteger maxFractionDigt = 14;
+    NSUInteger maxFractionDigt = 15;
     NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    NSUInteger maxDigitLen = 16, maxSignificantDigits = 15;
-    FNLOG("value = %.15f %ld", value, (long)nf.roundingMode);
+    NSUInteger maxDigitLen = 16, maxSignificantDigits = 16;
+    FNLOG("value   = %.15f %ld", value, (long)nf.roundingMode);
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
+    
+    if (1 > value) maxSignificantDigits = 15; // why app's defaul calculator like this??
     
     if (IS_IPHONE && _isLandScape == NO) {
         maxFractionDigt = 8;
         maxDigitLen = 9;
-        maxSignificantDigits = 9;
+        maxSignificantDigits = 8;
     }
     [nf setLocale:[NSLocale currentLocale]];
     [nf setMaximumFractionDigits:maxFractionDigt];

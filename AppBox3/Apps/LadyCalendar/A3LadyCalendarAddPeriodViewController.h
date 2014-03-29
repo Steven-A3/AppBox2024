@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3KeyboardProtocol.h"
+#import "A3KeyboardDelegate.h"
 
 @class LadyCalendarPeriod;
 @class LadyCalendarAccount;

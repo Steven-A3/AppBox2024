@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3CalculatorViewController.h"
 #import "A3CalculatorButtonsViewController_iPad.h"
-@interface A3CalculatorViewController_iPad : UIViewController
+
+@protocol A3CalculatorDelegate;
+
+@interface A3CalculatorViewController_iPad : A3CalculatorViewController
+
 - (void) checkRightButtonDisable;
+
 @end

@@ -29,6 +29,7 @@
 #import "A3CurrencyDataManager.h"
 #import "CurrencyRateItem.h"
 #import "NSDate+TimeAgo.h"
+#import "A3CalculatorDelegate.h"
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -36,7 +37,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 
 @interface A3CurrencyViewController () <UITextFieldDelegate, ATSDragToReorderTableViewControllerDelegate,
 		A3CurrencyMenuDelegate, A3SearchViewControllerDelegate, A3CurrencySettingsDelegate, A3CurrencyChartViewDelegate,
-		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource>
+		UIPopoverControllerDelegate, NSFetchedResultsControllerDelegate, UIActivityItemSource, A3CalculatorDelegate>
 
 
 @property (nonatomic, strong) NSMutableArray *favorites;
@@ -51,6 +52,7 @@ NSString *const A3CurrencyUpdateDate = @"A3CurrencyUpdateDate";
 @property (nonatomic, copy) NSString *previousValue;
 @property (nonatomic, strong) NSDate *updateStartDate;
 @property (nonatomic, strong) UIBarButtonItem *historyBarButton;
+@property (nonatomic, weak) UITextField *lastEditingTextField;
 
 @end
 
@@ -750,6 +752,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	@autoreleasepool {
+		_lastEditingTextField = textField;
+
 		CurrencyFavorite *favorite = self.favorites[0];
 
 		if (textField == _textFields[favorite.currencyCode]) {
@@ -783,7 +787,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			if (![swipped count]) {
 				CGPoint center = [textField convertPoint:textField.center toView:nil];
 				NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[self.view convertPoint:center fromView:nil]];
-				UITableViewCell<A3TableViewSwipeCellDelegate> *cell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
+				UITableViewCell <A3TableViewSwipeCellDelegate> *cell = (UITableViewCell <A3TableViewSwipeCellDelegate> *) [self.tableView cellForRowAtIndexPath:indexPath];
 
 				if (cell) {
 					[self shiftLeft:cell];
@@ -799,34 +803,10 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	@autoreleasepool {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
-
-- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
-	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
-	if ([textField isKindOfClass:[UITextField class]]) {
-		textField.text = @"";
-	}
-}
-
-- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-	FNLOG();
-	return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	return YES;
-}
-
 
 - (void)textFieldDidChange:(NSNotification *)notification {
-	FNLOG();
 	UITextField *textField = [notification object];
 	[self updateTextFieldsWithSourceTextField:textField];
 }
@@ -855,6 +835,46 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 			[self putHistoryWithValue:@([self.previousValue floatValueEx])];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 		}
+	}
+}
+
+#pragma mark - KeyboardViewControllerDelegate
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
+	if ([textField isKindOfClass:[UITextField class]]) {
+		textField.text = @"";
+	}
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+	[self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+}
+
+- (UIViewController *)modalPresentingParentViewControllerForCalculator {
+	return self;
+}
+
+- (id <A3CalculatorDelegate>)delegateForCalculator {
+	return self;
+}
+
+#pragma mark -- CalculatorDelegate
+
+- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)valueObject {
+	BOOL valueChanged = NO;
+	CurrencyFavorite *currencyFavorite = self.favorites[0];
+	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+	[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	_lastEditingTextField.text = [self currencyFormattedStringForCurrency:currencyFavorite.currencyCode value:[numberFormatter numberFromString:valueObject]];
+	if (![_lastEditingTextField.text isEqualToString:self.previousValue]) {
+		valueChanged = YES;
+	}
+	[self updateTextFieldsWithSourceTextField:_lastEditingTextField];
+
+	if (valueChanged) {
+		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	}
 }
 

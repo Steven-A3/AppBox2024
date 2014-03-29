@@ -94,6 +94,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     
     bInvertedColor = NO;
     bLightOn = NO;
+    self.flashbrightslider.value = 0.0;
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -125,6 +126,7 @@ static const int MAX_ZOOM_FACTOR = 6;
         [self setPreviewRotation:screenBounds];
     }
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
+    [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 82, self.flashbrightslider.frame.size.height)];
     [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 82, self.brightnessslider.frame.size.height)];
     [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 82, self.magnifierslider.frame.size.height)];
     [self.bottomToolBar setFrame:CGRectMake(self.bottomToolBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
@@ -170,9 +172,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (void)setupTorchLevelBar {
-    [self.flashbrightslider setMinimumValueImage:[UIImage imageNamed:@"m_flash_off"]];
-    [self.flashbrightslider setMaximumValueImage:[UIImage imageNamed:@"m_flash_off"]];
-    self.flashbrightslider.hidden = YES;
+    self.flashToolBar.hidden = YES;
 }
 
 - (void)setupGestureRecognizer {
@@ -275,6 +275,10 @@ static const int MAX_ZOOM_FACTOR = 6;
         self.topToolBar.hidden = hidden;
         self.bottomToolBar.hidden = hidden;
         if (hidden == YES) {
+            [self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
+                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.flashToolBar.frame.size.height,
+                                                        self.flashToolBar.frame.size.width,
+                                                        self.flashToolBar.frame.size.height)];
             [self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
                                                         self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height,
                                                         self.brightnessToolBar.frame.size.width,
@@ -284,6 +288,10 @@ static const int MAX_ZOOM_FACTOR = 6;
                                                         self.magnifierToolBar.frame.size.width,
                                                         self.magnifierToolBar.frame.size.height)];
         } else {
+            [self.flashToolBar setFrame:CGRectMake(self.flashToolBar.frame.origin.x,
+                                                        self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height-self.flashToolBar.frame.size.height,
+                                                        self.flashToolBar.frame.size.width,
+                                                        self.flashToolBar.frame.size.height)];
             [self.brightnessToolBar setFrame:CGRectMake(self.brightnessToolBar.frame.origin.x,
                                                         self.view.frame.size.height - self.magnifierToolBar.frame.size.height - self.brightnessToolBar.frame.size.height - self.bottomToolBar.frame.size.height,
                                                         self.brightnessToolBar.frame.size.width,
@@ -326,19 +334,21 @@ static const int MAX_ZOOM_FACTOR = 6;
             
             if (bLightOn == YES) {
                 if (self.flashbrightslider.value != 0.0) {
+                    [_device setTorchMode:AVCaptureTorchModeOn];
                     if([_device setTorchModeOnWithLevel:self.flashbrightslider.value error:&error]!= YES) {
                             FNLOG(@"setTorchModeOnWithLevel error: %@", error);
                     }
                 } else {
-                    [_device setTorchMode:AVCaptureTorchModeOn];
-                    self.flashbrightslider.value = 1.0;
+                    [_device setTorchMode:AVCaptureTorchModeOff];
                 }
-                self.flashbrightslider.hidden = NO;
+                self.flashToolBar.hidden = NO;
+                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_off"]];
                // [_device setFlashMode:AVCaptureFlashModeOn];
             }
             else {
                 [_device setTorchMode:AVCaptureTorchModeOff];
-                self.flashbrightslider.hidden = YES;
+                self.flashToolBar.hidden = YES;
+                                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_on"]];
                 //[_device setFlashMode:AVCaptureFlashModeOff];
             }
          //   [_device unlockForConfiguration];
@@ -519,7 +529,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 - (IBAction)flashbrightslider:(id)sender {
-    VerticalSlider *flashslider = (VerticalSlider *)sender;
+    UISlider  *flashslider = (UISlider  *)sender;
     if(_device.torchAvailable == YES) {
         if (flashslider.value == 0.0) {
             [_device setTorchMode:AVCaptureTorchModeOff];
