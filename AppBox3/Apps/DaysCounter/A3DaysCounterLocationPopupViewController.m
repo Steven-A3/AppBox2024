@@ -15,6 +15,7 @@
 
 @interface A3DaysCounterLocationPopupViewController ()
 @property (strong, nonatomic) NSString *addressStr;
+@property (nonatomic) BOOL isFullPrint;
 @end
 
 @implementation A3DaysCounterLocationPopupViewController
@@ -38,6 +39,10 @@
     
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 44.0, 0, 0);
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(detailInfoButtonTouchUp:)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -49,6 +54,19 @@
 - (void)dealloc
 {
     self.popoverVC = nil;
+}
+
+#pragma mark
+- (void)detailInfoButtonTouchUp:(UIBarButtonItem *)item {
+    self.isFullPrint = !_isFullPrint;
+    if (self.resizeFrameBlock) {
+        if (_isFullPrint) {
+            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), self.tableView.contentSize.height));
+        }
+        else {
+            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), 0));
+        }
+    }
 }
 
 #pragma mark - UITableViewDataSource

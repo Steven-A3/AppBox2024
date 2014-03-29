@@ -14,4 +14,5 @@
 @property (strong, nonatomic) FSVenue *locationItem;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (assign, nonatomic) BOOL showDoneButton;
+@property (strong, nonatomic) void (^resizeFrameBlock)(CGSize size);
 @end
