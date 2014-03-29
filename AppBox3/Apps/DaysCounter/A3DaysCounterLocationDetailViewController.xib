@@ -18,7 +18,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dif-8n-4PQ">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="339"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="WPv-nq-he9"/>
@@ -43,11 +43,11 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="3wr-pT-j1S" secondAttribute="bottom" id="34N-u3-SZS"/>
                 <constraint firstAttribute="centerX" secondItem="dif-8n-4PQ" secondAttribute="centerX" id="7NV-PO-AWk"/>
-                <constraint firstAttribute="bottom" secondItem="dif-8n-4PQ" secondAttribute="bottom" id="DpP-RF-2jb"/>
                 <constraint firstItem="dif-8n-4PQ" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="DzO-Fk-inK"/>
                 <constraint firstAttribute="centerX" secondItem="3wr-pT-j1S" secondAttribute="centerX" id="JIv-g3-l7L"/>
                 <constraint firstItem="dif-8n-4PQ" firstAttribute="top" secondItem="1" secondAttribute="top" id="gVC-nG-thZ"/>
                 <constraint firstAttribute="trailing" secondItem="dif-8n-4PQ" secondAttribute="trailing" id="kxE-ZZ-GZx"/>
+                <constraint firstItem="3wr-pT-j1S" firstAttribute="top" secondItem="dif-8n-4PQ" secondAttribute="bottom" id="qBT-I6-LMi"/>
                 <constraint firstAttribute="trailing" secondItem="3wr-pT-j1S" secondAttribute="trailing" id="uIk-CQ-TCb"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
