@@ -75,7 +75,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                     <items>
-                        <barButtonItem enabled="NO" image="m_brightness_left" id="NN8-uu-Gar">
+                        <barButtonItem enabled="NO" image="m_zoomout" id="NN8-uu-Gar">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
                         <barButtonItem style="plain" id="4TB-LA-Qw3">
@@ -87,7 +87,7 @@
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem enabled="NO" image="add03" id="jEE-YA-MkH">
+                        <barButtonItem enabled="NO" image="m_zoomin" id="jEE-YA-MkH">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
                     </items>
@@ -130,11 +130,12 @@
         </view>
     </objects>
     <resources>
-        <image name="add03" width="16" height="16"/>
         <image name="m_brightness_left" width="23" height="23"/>
         <image name="m_brightness_right" width="23" height="23"/>
         <image name="m_flash_on" width="14" height="21"/>
         <image name="m_invert" width="18" height="18"/>
         <image name="m_snap" width="60" height="60"/>
+        <image name="m_zoomin" width="23" height="23"/>
+        <image name="m_zoomout" width="23" height="23"/>
     </resources>
 </document>
