@@ -591,7 +591,8 @@
         self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:navCtrl];
         self.popoverVC.delegate = self;
         viewCtrl.popoverVC = self.popoverVC;
-        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height + 44.0) animated:NO];
+        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44.0) animated:NO];
+//        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionRight animated:YES];
     }
 }
