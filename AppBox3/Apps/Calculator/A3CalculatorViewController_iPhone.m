@@ -289,6 +289,7 @@
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
+        _expressionLabel.copyingEnabled = NO;
 	}
 	return _expressionLabel;
 }
