@@ -323,22 +323,7 @@
 
 - (void)shareAll:(id)sender {
 	@autoreleasepool {
-        /*
-		NSMutableString *shareString = [[NSMutableString alloc] init];
-        if (![self.expressionLabel.text hasSuffix:@"="]) {
-            [shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-        } else {
-            [shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-        }
-         */
-        NSAttributedString *shareString = [[NSAttributedString alloc] init];
-        if (![self.expressionLabel.text hasSuffix:@"="]) {
-            shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
-        } else {
-            shareString = [_expressionLabel.attributedText appendWithString:[self.calculator getResultString]];
-        }
-        
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
+		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
         _sharePopoverController.delegate = self;
         [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
             [buttonItem setEnabled:NO];
@@ -346,6 +331,37 @@
         
 	}
 }
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+    return @"";
+}
+
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+    if ([activityType isEqualToString:UIActivityTypeMail]) {
+        NSAttributedString *shareString = [[NSAttributedString alloc] init];
+        if (![self.expressionLabel.text hasSuffix:@"="]) {
+            shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
+        } else {
+            shareString = [_expressionLabel.attributedText appendWithString:[self.calculator getResultString]];
+            
+        }
+        return shareString;
+    } else {
+        return [self.calculator getResultString];
+    }
+    
+    return @"";
+}
+
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+    return @"Calculator";
+}
+
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     
