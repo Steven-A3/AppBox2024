@@ -28,6 +28,7 @@ typedef CMathParser<char, double> MathParser;
     BOOL                radian;
     BOOL                numberMode;
     BOOL                EEMode;
+    BOOL                LOGYMode;
     A3CalculatorUtil    *calutil;
 }
 
@@ -42,6 +43,7 @@ typedef CMathParser<char, double> MathParser;
         radian = YES;
         numberMode = NO;
         EEMode = NO;
+        LOGYMode = NO;
         calutil = [A3CalculatorUtil new];
     }
     
@@ -901,14 +903,18 @@ typedef CMathParser<char, double> MathParser;
         }
     }
     
-    if (key == A3E_POWER_2||key == A3E_POWER_10) {
+    if (key == A3E_POWER_2 ||
+        key == A3E_POWER_10 ||
+        key == A3E_LOG_Y) {
         if (!mathexpression) {
             mathexpression = [NSString new];
         }
         if (key == A3E_POWER_10) {
             mathexpression = [mathexpression stringByAppendingString:@"10^"];
-        } else {
+        } else  if (key == A3E_POWER_2){
             mathexpression = [mathexpression stringByAppendingString:@"2^"];
+        } else if (key == A3E_LOG_Y) {
+            LOGYMode = YES;
         }
         [self convertMathExpressionToAttributedString];
     }
@@ -1370,6 +1376,17 @@ typedef CMathParser<char, double> MathParser;
 - (void)numberHandler:(NSUInteger)key {
     
     NSString *num = [NSString stringWithFormat:@"%lu", (unsigned long)key - A3E_0];
+    
+    if (LOGYMode == YES) {
+        if ([mathexpression length] == 0) {
+            mathexpression =  [[@"LOGN(" stringByAppendingString:num] stringByAppendingString:@","];
+        } else {
+            mathexpression = [mathexpression stringByAppendingString:[[@"LOGN(" stringByAppendingString:num] stringByAppendingString:@","]];
+        }
+        [self convertMathExpressionToAttributedString];
+        LOGYMode = NO;
+        return;
+    }
     
     if ([mathexpression length] == 0) {
         mathexpression = num;
