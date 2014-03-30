@@ -1260,24 +1260,37 @@ typedef CMathParser<char, double> MathParser;
             break;
         }
         case A3E_SIGN: {
-            if([self checkIfexpressionisnull]) return;
+            if([self checkIfexpressionisnull]) {
+                if (mathexpression == nil) {
+                    mathexpression = [NSString new];
+                }
+                mathexpression = @"(-0)";
+                [self convertMathExpressionToAttributedString];
+                return;
+            }
             NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
             if ([lastChar isEqualToString:@")"]) {
                 lastChar = [mathexpression substringFromIndex:[mathexpression length] - 2];
                 NSRange range = [lastChar rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"1234567890."]];
                 if (range.location != NSNotFound) {
-                    range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"] options:NSBackwardsSearch];
-                    if (range.location != NSNotFound) {// remove '-'
-                        range.location = range.location - 1;
-                        range.length = [mathexpression length] - range.location;
-                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@"-" withString:@"" options:0 range:range];
-                        range.length = range.length - 1;
-                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@"(" withString:@"" options:0 range:range];
-                        range.length = range.length - 1;
-                        mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@")" withString:@"" options:0 range:range];
-                        [self convertMathExpressionToAttributedString];
-                        [self evaluateAndSet];
+                    if ([[mathexpression substringFromIndex:[mathexpression length] -4] isEqualToString:@"(-0)"]) {
+                        mathexpression = [mathexpression substringToIndex:[mathexpression length] -4];
                     }
+                    else {
+                        range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"-"] options:NSBackwardsSearch];
+                        if (range.location != NSNotFound) {// remove '-'
+                            range.location = range.location - 1;
+                            range.length = [mathexpression length] - range.location;
+                            mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@"-" withString:@"" options:0 range:range];
+                            range.length = range.length - 1;
+                            mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@"(" withString:@"" options:0 range:range];
+                            range.length = range.length - 1;
+                            mathexpression = [mathexpression stringByReplacingOccurrencesOfString:@")" withString:@"" options:0 range:range];
+                            
+                        }
+                    }
+                    [self convertMathExpressionToAttributedString];
+                    [self evaluateAndSet];
                 }
             }
             else
@@ -1300,6 +1313,9 @@ typedef CMathParser<char, double> MathParser;
                     mathexpression = [mathexpression stringByReplacingOccurrencesOfString:oldNumber withString:newNumber options:0 range:range];
                     [self convertMathExpressionToAttributedString];
                     [self evaluateAndSet];
+                } else {
+                    mathexpression = [mathexpression stringByAppendingString:@"(-0)"];
+                    [self convertMathExpressionToAttributedString];
                 }
             }
             break;
@@ -1399,8 +1415,11 @@ typedef CMathParser<char, double> MathParser;
         if ([lastChar isEqualToString:@")"]) {
             NSString *temp = [mathexpression substringFromIndex:[mathexpression length] - 4];
             if ([temp isEqualToString:@"(-0)"]) {
-                mathexpression = [mathexpression substringFromIndex:[mathexpression length] - 4];
-                
+                mathexpression = [mathexpression substringToIndex:[mathexpression length] - 4];
+                mathexpression = [mathexpression stringByAppendingString:[NSString stringWithFormat:@"(-%@)",num]];
+                [self convertMathExpressionToAttributedString];
+                [self evaluateAndSet];
+                return;
             } else {
                 mathexpression = [mathexpression stringByAppendingString:@"+"];
             }
