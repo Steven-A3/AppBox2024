@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSString *initialCalendarID;
+@property (strong, nonatomic) UIView *topWhitePaddingView;
 
 - (void)editAction:(id)sender;
 - (void)constructItemsFromEvent:(DaysCounterEvent*)event;
@@ -64,6 +65,16 @@
     UIView *removeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, 1.0/[[UIScreen mainScreen] scale])];
     removeView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
     [self.tableView addSubview:removeView];
+    
+    [self setupTopWhitePaddingView];
+}
+
+- (void)setupTopWhitePaddingView
+{
+    _topWhitePaddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 0.0)];
+    _topWhitePaddingView.backgroundColor = [UIColor whiteColor];
+    _topWhitePaddingView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+    [self.tableView addSubview:_topWhitePaddingView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -131,12 +142,8 @@
     switch (cellType) {
         case EventCellType_Title:
         {
-            if ( [cellID isEqualToString:@"eventInfoCelliPad"] ) {
-                cell = [cellArray objectAtIndex:11];
-            }
-            else {
-                cell = [cellArray objectAtIndex:9];
-            }
+            cell = [cellArray objectAtIndex:9];
+            
             UIView *baseView = [cell viewWithTag:10];
             [self setupDefaultValueForView:baseView];
             baseView = [cell viewWithTag:11];
@@ -197,8 +204,9 @@
     }
     
     if ( cell && cellType != EventCellType_DateInput) {
-        UIView *leftView = [cell viewWithTag:([cellID isEqualToString:@"eventInfoCelliPad"] ? 13 : 10)];
-        for(NSLayoutConstraint *layout in cell.contentView.constraints ) {
+        //UIView *leftView = [cell viewWithTag:([cellID isEqualToString:@"eventInfoCelliPad"] ? 13 : 10)];
+        UIView *leftView = [cell viewWithTag:10];
+        for (NSLayoutConstraint *layout in cell.contentView.constraints ) {
             if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
                 break;
@@ -484,9 +492,6 @@
         NSArray *cellIDs = @[@"eventInfoCell",@"",@"",@"",@"",@"",@"",@"value1Cell",@"value1Cell",@"value1Cell",@"calendarInfoCell",@"value1Cell",@"value1Cell",@"multilineCell",@"",@"defaultCell",@"defalutCell"];
         
         NSString *CellIdentifier = [cellIDs objectAtIndex:cellType];
-//        if ( IS_IPAD && cellType == EventCellType_Title && (_eventItem.location == nil && [_eventItem.imageFilename length] <1))
-//            CellIdentifier = @"eventInfoCelliPad";
-        
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [self createCellWithType:cellType cellIdentifier:CellIdentifier];
@@ -560,7 +565,7 @@
             return;
         UIImageView *imageView = (UIImageView *)[cell viewWithTag:10];
         NSLayoutConstraint *widthConst = nil;
-        for(NSLayoutConstraint *layout in imageView.constraints) {
+        for (NSLayoutConstraint *layout in imageView.constraints) {
             if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
                 widthConst = layout;
                 break;
@@ -654,6 +659,24 @@
         [self.tableView reloadData];
         if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)]) {
             [self.delegate willChangeEventDetailViewController:self];
+        }
+    }
+}
+
+#pragma mark TableView ScrollView
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (_topWhitePaddingView) {
+        if (scrollView.contentOffset.y < -scrollView.contentInset.top ) {
+            CGRect rect = _topWhitePaddingView.frame;
+            rect.origin.y = -(fabs(scrollView.contentOffset.y) - scrollView.contentInset.top);
+            rect.size.height = fabs(scrollView.contentOffset.y) - scrollView.contentInset.top;
+            _topWhitePaddingView.frame = rect;
+        } else {
+            CGRect rect = _topWhitePaddingView.frame;
+            rect.origin.y = 0.0;
+            rect.size.height = 0.0;
+            _topWhitePaddingView.frame = rect;
         }
     }
 }
