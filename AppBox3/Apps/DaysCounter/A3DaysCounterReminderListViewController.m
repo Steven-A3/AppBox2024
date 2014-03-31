@@ -64,14 +64,14 @@
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
     
-    if ( IS_IPAD ) {
-        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            [self leftBarButtonAppsButton];
-        }
-        else {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
+//    if ( IS_IPAD ) {
+//        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+//            [self leftBarButtonAppsButton];
+//        }
+//        else {
+//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+//        }
+//    }
 }
 
 - (void)didReceiveMemoryWarning

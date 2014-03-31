@@ -101,14 +101,14 @@
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
-    if ( IS_IPAD ) {
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            [self leftBarButtonAppsButton];
-        }
-        else {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
+//    if ( IS_IPAD ) {
+//        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+//            [self leftBarButtonAppsButton];
+//        }
+//        else {
+//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
+//        }
+//    }
     
     _searchButton.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
