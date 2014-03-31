@@ -587,6 +587,21 @@
         viewCtrl.resizeFrameBlock = ^(CGSize size) {
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height + 44) animated:YES];
         };
+        viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
+            NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
+            [locItem setObject:[_eventModel objectForKey:EventItem_ID] forKey:EventItem_ID];
+            [locItem setObject:@(locationItem.location.coordinate.latitude) forKey:EventItem_Latitude];
+            [locItem setObject:@(locationItem.location.coordinate.longitude) forKey:EventItem_Longitude];
+            [locItem setObject:locationItem.name forKey:EventItem_LocationName];
+            [locItem setObject:([locationItem.location.country length] > 0 ? locationItem.location.country : @"") forKey:EventItem_Country];
+            [locItem setObject:([locationItem.location.state length] > 0 ? locationItem.location.state : @"") forKey:EventItem_State];
+            [locItem setObject:([locationItem.location.city length] > 0 ? locationItem.location.city : @"") forKey:EventItem_City];
+            [locItem setObject:([locationItem.location.address length] > 0 ? locationItem.location.address : @"") forKey:EventItem_Address];
+            [locItem setObject:([locationItem.contact length] > 0 ? locationItem.contact : @"") forKey:EventItem_Contact];
+            [_eventModel setObject:locItem forKey:EventItem_Location];
+            [self.navigationController popViewControllerAnimated:YES];
+            //[self dismissViewControllerAnimated:YES completion:nil];
+        };
         
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         CGSize size = viewCtrl.view.frame.size;

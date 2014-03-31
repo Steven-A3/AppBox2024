@@ -39,10 +39,16 @@
     
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 44.0, 0, 0);
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(detailInfoButtonTouchUp:)];
+    if (IS_IPAD) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(detailInfoButtonTouchUp:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(doneButtonAction:)];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,6 +74,15 @@
         }
     }
 }
+
+- (void)doneButtonAction:(UIBarButtonItem *)button
+{
+    [self.popoverVC dismissPopoverAnimated:YES];
+    if (_dismissCompletionBlock) {
+        _dismissCompletionBlock(_locationItem);
+    }
+}
+                                                  
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -128,12 +143,6 @@
         //        return 122.0;
     }
     return 44.0;
-}
-
-#pragma mark - action method
-- (void)doneButtonAction:(UIBarButtonItem *)button
-{
-    [self.popoverVC dismissPopoverAnimated:YES];
 }
 
 @end
