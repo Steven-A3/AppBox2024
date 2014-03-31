@@ -29,12 +29,12 @@
 
 - (void)editAction:(id)sender;
 - (void)constructItemsFromEvent:(DaysCounterEvent*)event;
-- (void)setupDefaultValueForView:(UIView*)baseView;
+- (void)createCellForDefaultValueForView:(UIView*)baseView;
 - (UITableViewCell*)createCellWithType:(NSInteger)cellType cellIdentifier:(NSString*)cellID;
 - (void)setupInfoToView:(UIView*)baseView isSince:(BOOL)isSince daysText:(NSString*)daysText dateText1:(NSString*)dateText1 dateText2:(NSString*)dateText2 isLunar:(BOOL)isLunar;
-- (void)setupNoRepeatEventInfo:(DaysCounterEvent*)info toView:(UIView*)baseView;
-- (void)setupRepeatEventInfo:(DaysCounterEvent*)info untilView:(UIView*)untilView sinceView:(UIView*)sinceView;
-- (void)setupEventInfoCell:(UITableViewCell*)cell withInfo:(DaysCounterEvent*)info;
+- (void)updateEventInfoCellToNoRepeatEventInfo:(DaysCounterEvent*)info toView:(UIView*)baseView;
+- (void)updateEventInfoCellToRepeatEventInfo:(DaysCounterEvent*)info untilView:(UIView*)untilView sinceView:(UIView*)sinceView;
+- (void)updateEventInfoCell:(UITableViewCell*)cell withInfo:(DaysCounterEvent*)info;
 - (void)updateTableViewCell:(UITableViewCell*)cell indexPath:(NSIndexPath*)indexPath;
 @end
 
@@ -145,9 +145,9 @@
             cell = [cellArray objectAtIndex:9];
             
             UIView *baseView = [cell viewWithTag:10];
-            [self setupDefaultValueForView:baseView];
+            [self createCellForDefaultValueForView:baseView];
             baseView = [cell viewWithTag:11];
-            [self setupDefaultValueForView:baseView];
+            [self createCellForDefaultValueForView:baseView];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;
@@ -225,7 +225,7 @@
     switch (cellType) {
         case EventCellType_Title:
         {
-            [self setupEventInfoCell:cell withInfo:_eventItem];
+            [self updateEventInfoCell:cell withInfo:_eventItem];
         }
             break;
         case EventCellType_Alert:
@@ -239,11 +239,6 @@
             break;
         case EventCellType_DurationOption:
         {
-            //            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            //            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            //            textLabel.text = [itemDict objectForKey:EventRowTitle];
-            //            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
-            
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
             cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
         }
@@ -308,7 +303,153 @@
     }
 }
 
-- (void)setupDefaultValueForView:(UIView*)baseView
+- (void)updateEventInfoCell:(UITableViewCell*)cell withInfo:(DaysCounterEvent*)info
+{
+    UIImageView *imageView = (UIImageView *)[cell viewWithTag:10];
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
+    UIImageView *favoriteImageView = (UIImageView*)[cell viewWithTag:12];
+    
+    if ( IS_IPHONE ) {
+        textLabel.font = [UIFont systemFontOfSize:17.0];
+    }
+    else {
+        textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    }
+    
+    if ( imageView ) {
+        if ( [info.imageFilename length] > 0 ) {
+            imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename]
+                                                                       rect:CGRectMake(0, 0, 65, 65)];
+            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 8;
+        }
+        else {
+            imageView.image = nil;
+            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 0;
+        }
+    }
+    if ( textLabel ) {
+        textLabel.text = info.eventName;
+    }
+    if ( favoriteImageView ) {
+        favoriteImageView.hidden = ![info.isFavorite boolValue];
+    }
+    
+    UIView *topInfoView = [cell viewWithTag:13];
+    UIView *bottomInfoView = [cell viewWithTag:14];
+    if ( [info.repeatType integerValue] == RepeatType_Never ) {
+        [self updateEventInfoCellToNoRepeatEventInfo:info
+                                              toView:topInfoView];
+    }
+    else {
+        [self updateEventInfoCellToRepeatEventInfo:info
+                                         untilView:topInfoView
+                                         sinceView:bottomInfoView];
+    }
+}
+
+- (void)updateEventInfoCellToNoRepeatEventInfo:(DaysCounterEvent*)info toView:(UIView*)baseView
+{
+    NSDate *now = [NSDate date];
+    NSInteger diffDays = [A3DateHelper diffDaysFromDate:now
+                                                 toDate:info.startDate];
+    BOOL isSince = NO;
+    if ( diffDays <= 0 ) {
+        isSince = YES;
+    }
+    NSString *dateText1 = @"";
+    NSString *dateText2 = @"";
+    
+    BOOL isLunar = [info.isLunar boolValue];
+    NSDate *startDate = info.startDate;
+    NSDate *endDate = info.endDate;
+    
+    if ( isLunar ) {
+        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
+        BOOL isResultLeapMonth = NO;
+		NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+                                                            gregorianToLunar:NO
+                                                                   leapMonth:NO
+                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                             resultLeapMonth:&isResultLeapMonth];
+        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+        
+        startDate = convertDate;
+        
+        if ( endDate ) {
+            dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
+            dateComp = [NSDate lunarCalcWithComponents:dateComp
+                                      gregorianToLunar:NO
+                                             leapMonth:NO
+                                                korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                       resultLeapMonth:&isResultLeapMonth];
+			convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+            endDate = convertDate;
+        }
+    }
+    
+    if ( [info.isPeriod boolValue] ) {
+        dateText1 = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:startDate
+                                                                                 withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+        dateText2 = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:endDate
+                                                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+    }
+    else {
+        dateText1 = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:startDate
+                                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+    }
+    
+    [self setupInfoToView:baseView
+                  isSince:isSince
+                 daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                   fromDate:now
+                                                                                     toDate:startDate
+                                                                                   isAllDay:[info.isAllDay boolValue]]
+                dateText1:dateText1
+                dateText2:dateText2
+                  isLunar:[info.isLunar boolValue]];
+}
+
+- (void)updateEventInfoCellToRepeatEventInfo:(DaysCounterEvent*)info untilView:(UIView*)untilView sinceView:(UIView*)sinceView
+{
+    NSDate *now = [NSDate date];
+    
+    BOOL isLunar = [info.isLunar boolValue];
+    NSDate *startDate = info.startDate;
+    
+    if ( isLunar ) {
+        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
+        BOOL isResultLeapMonth = NO;
+		dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+        startDate = convertDate;
+    }
+    
+    NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now];
+    NSInteger diffStartDays = [A3DateHelper diffDaysFromDate:now toDate:startDate];
+    
+    [self setupInfoToView:untilView
+                  isSince:NO
+                 daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                   fromDate:now toDate:nextDate
+                                                                                   isAllDay:[info.isAllDay boolValue]]
+                dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate
+                                                                                 withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
+     
+                dateText2:[NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]]
+                  isLunar:[info.isLunar boolValue]];
+    if ( diffStartDays < 0 ) {
+        [self setupInfoToView:sinceView isSince:YES daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                                                      fromDate:startDate
+                                                                                                                        toDate:now
+                                                                                                                      isAllDay:[info.isAllDay boolValue]]
+                    dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate
+                                                                                     withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
+                    dateText2:@"first date"
+                      isLunar:[info.isLunar boolValue]];
+    }
+}
+
+- (void)createCellForDefaultValueForView:(UIView*)baseView
 {
     UILabel *markLabel = (UILabel*)[baseView viewWithTag:20];
     markLabel.layer.masksToBounds = YES;
@@ -354,139 +495,6 @@
     dateLabel1.text = dateText1;
     dateLabel2.text = dateText2;
     lunarImageView.hidden = !isLunar;
-}
-
-- (void)setupNoRepeatEventInfo:(DaysCounterEvent*)info toView:(UIView*)baseView
-{
-    NSDate *now = [NSDate date];
-    NSInteger diffDays = [A3DateHelper diffDaysFromDate:now toDate:info.startDate];
-    BOOL isSince = NO;
-    if ( diffDays <= 0 )
-        isSince = YES;
-    NSString *dateText1 = @"";
-    NSString *dateText2 = @"";
-    
-    BOOL isLunar = [info.isLunar boolValue];
-    NSDate *startDate = info.startDate;
-    NSDate *endDate = info.endDate;
-    
-    if ( isLunar ) {
-        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
-        BOOL isResultLeapMonth = NO;
-		NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
-
-        startDate = convertDate;
-        
-        if ( endDate ) {
-            dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:endDate];
-            dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-			convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
-            endDate = convertDate;
-        }
-    }
-    
-    if ( [info.isPeriod boolValue] ) {
-        dateText1 = [NSString stringWithFormat:@"from %@",[A3DateHelper dateStringFromDate:startDate
-                                                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-        dateText2 = [NSString stringWithFormat:@"to %@",[A3DateHelper dateStringFromDate:endDate
-                                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-    }
-    else {
-        dateText1 = [NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:startDate
-                                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-    }
-    
-    [self setupInfoToView:baseView
-                  isSince:isSince
-                 daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
-                                                                                   fromDate:now
-                                                                                     toDate:startDate
-                                                                                   isAllDay:[info.isAllDay boolValue]]
-                dateText1:dateText1
-                dateText2:dateText2
-                  isLunar:[info.isLunar boolValue]];
-}
-
-- (void)setupRepeatEventInfo:(DaysCounterEvent*)info untilView:(UIView*)untilView sinceView:(UIView*)sinceView
-{
-    NSDate *now = [NSDate date];
-    
-    BOOL isLunar = [info.isLunar boolValue];
-    NSDate *startDate = info.startDate;
-    
-    if ( isLunar ) {
-        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
-        BOOL isResultLeapMonth = NO;
-		dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
-        startDate = convertDate;
-    }
-    
-    NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now];
-    NSInteger diffStartDays = [A3DateHelper diffDaysFromDate:now toDate:startDate];
-    
-    [self setupInfoToView:untilView
-                  isSince:NO
-                 daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
-                                                                                   fromDate:now toDate:nextDate
-                                                                                   isAllDay:[info.isAllDay boolValue]]
-                dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate
-                                                                                 withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
-     
-                dateText2:[NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]]
-                  isLunar:[info.isLunar boolValue]];
-    if ( diffStartDays < 0 ) {
-        [self setupInfoToView:sinceView isSince:YES daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
-                                                                                                                      fromDate:startDate
-                                                                                                                        toDate:now
-                                                                                                                      isAllDay:[info.isAllDay boolValue]]
-                    dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate
-                                                                                     withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
-                    dateText2:@"first date"
-                      isLunar:[info.isLunar boolValue]];
-    }
-}
-
-- (void)setupEventInfoCell:(UITableViewCell*)cell withInfo:(DaysCounterEvent*)info
-{
-    UIImageView *imageView = (UIImageView *)[cell viewWithTag:10];
-    UILabel *textLabel = (UILabel*)[cell viewWithTag:11];
-    UIImageView *favoriteImageView = (UIImageView*)[cell viewWithTag:12];
-    
-    if ( IS_IPHONE ) {
-        textLabel.font = [UIFont systemFontOfSize:17.0];
-    }
-    else {
-        textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    }
-    
-    if ( imageView ) {
-        if ( [info.imageFilename length] > 0 ) {
-            imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename]
-                                                                       rect:CGRectMake(0, 0, 65, 65)];
-            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 8;
-        }
-        else {
-            imageView.image = nil;
-            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 0;
-        }
-    }
-    if ( textLabel ) {
-        textLabel.text = info.eventName;
-    }
-    if ( favoriteImageView ) {
-        favoriteImageView.hidden = ![info.isFavorite boolValue];
-    }
-    
-    UIView *topInfoView = [cell viewWithTag:13];
-    UIView *bottomInfoView = [cell viewWithTag:14];
-    if ( [info.repeatType integerValue] == RepeatType_Never ) {
-        [self setupNoRepeatEventInfo:info toView:topInfoView];
-    }
-    else {
-        [self setupRepeatEventInfo:info untilView:topInfoView sinceView:bottomInfoView];
-    }
 }
 
 #pragma mark - Table view data source
