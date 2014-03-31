@@ -312,27 +312,7 @@
     UITableViewCell *cell = nil;
     
     if ( tableView == _currentLocationTableView ) {
-        cell = [tableView dequeueReusableCellWithIdentifier:@"currentLocationCell"];
-        if ( cell == nil ) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
-            cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
-            cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
-        
-        if (self.changedPlace) {
-            cell.textLabel.text = [[[A3DaysCounterModelManager sharedManager] addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            
-            //            NSString *locationText = [[[A3DaysCounterModelManager sharedManager] addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            //            NSRange matchRange = [locationText rangeOfString:self.searchText options:NSCaseInsensitiveSearch];
-            //            NSMutableAttributedString *attrText = [[NSMutableAttributedString alloc] initWithString:locationText];
-            //            [attrText addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:17] range:matchRange];
-            //            cell.textLabel.attributedText = attrText;
-        }
-        else {
-            cell.textLabel.text = @"Current Location";
-        }
-        
+        cell = [self tableView:tableView cellOfChangeLocationAtIndexPath:indexPath];
         return cell;
     }
     
@@ -391,6 +371,27 @@
     if ( tableView != _infoTableView ) {
         cell.imageView.image = self.searchIcon;
         cell.imageView.tintColor = [UIColor lightGrayColor];
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellOfChangeLocationAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"currentLocationCell"];
+    
+    if ( cell == nil ) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
+        cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
+        cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    if (self.changedPlace) {
+        cell.textLabel.text = [[[A3DaysCounterModelManager sharedManager] addressFromPlacemark:self.changedPlace] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+    else {
+        cell.textLabel.text = @"Current Location";
     }
     
     return cell;

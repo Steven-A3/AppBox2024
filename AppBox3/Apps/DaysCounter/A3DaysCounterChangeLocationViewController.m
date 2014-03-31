@@ -40,6 +40,9 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"Change Location";
     self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+    self.searchBarTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.frame) + CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,6 +69,7 @@
     
     if ( cell == nil ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
@@ -75,7 +79,7 @@
     }
     else {
         cell.textLabel.textColor = [UIColor darkTextColor];
-        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.resultArray objectAtIndex:indexPath.row-1]];
+        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.resultArray objectAtIndex:indexPath.row - 1]];
         cell.textLabel.text = address;
     }
     
@@ -103,6 +107,16 @@
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
         self.resultArray = [NSMutableArray array];
+        
+        if (!placemarks || [error code] == kCLErrorGeocodeFoundNoResult) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"No Results Found"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil, nil];
+            [alertView show];
+            return;
+        }
 
         for (CLPlacemark *placemark in placemarks) {
             NSLog(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);

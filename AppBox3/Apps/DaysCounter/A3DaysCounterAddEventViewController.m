@@ -988,7 +988,6 @@
                                                             otherButtonTitles:@"Use My Location",@"Search Location", nil];
             actionSheet.tag = ActionTag_Location;
             [actionSheet showInView:self.view];
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [self closeDatePickerCell];
         }
             break;
@@ -1320,6 +1319,13 @@
 }
 
 #pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+     if ( actionSheet.tag == ActionTag_Location ) {
+        [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:2] animated:YES];
+     }
+}
+
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if ( actionSheet.tag == ActionTag_Photo ) {
