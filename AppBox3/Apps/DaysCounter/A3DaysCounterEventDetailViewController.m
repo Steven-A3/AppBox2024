@@ -19,6 +19,7 @@
 #import "A3DaysCounterEventDetailLocationViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
 #import "NSDate+LunarConverter.h"
+#import "A3DaysCounterEventInfoCell.h"
 
 @interface A3DaysCounterEventDetailViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -436,15 +437,19 @@
         if ( [info.imageFilename length] > 0 ) {
             imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename]
                                                                        rect:CGRectMake(0, 0, 65, 65)];
+            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 8;
         }
         else {
             imageView.image = nil;
+            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 0;
         }
     }
-    if ( textLabel )
+    if ( textLabel ) {
         textLabel.text = info.eventName;
-    if ( favoriteImageView )
+    }
+    if ( favoriteImageView ) {
         favoriteImageView.hidden = ![info.isFavorite boolValue];
+    }
     
     UIView *topInfoView = [cell viewWithTag:13];
     UIView *bottomInfoView = [cell viewWithTag:14];
@@ -497,7 +502,8 @@
         }
         
         cell.textLabel.text = @"Delete Event";
-        cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:48.0/255.0 alpha:1.0];
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
+        cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59/255.0 blue:48.0/255.0 alpha:1.0];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     }
     
@@ -506,15 +512,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == 1 )
+    if (section == 1 ) {
         return 35.0;
+    }
+    
     return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ( section == 1 )
+    if ( section == 1 ) {
         return 35.0;
+    }
+    
     return 0.01;
 }
 
@@ -543,8 +553,6 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%s %@",__FUNCTION__,cell.reuseIdentifier);
-    
     if ( indexPath.section == 0 ) {
         NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
         NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
@@ -573,26 +581,31 @@
 {
     CGFloat retHeight = 44.0;
     
-    if ( indexPath.section == 1 )
+    if ( indexPath.section == 1 ) {
         return retHeight;
+    }
     
     BOOL isiPadFullMode = NO;
-    if ( IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1 ))
+    if ( IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1) ) {
         isiPadFullMode = YES;
+    }
     
     NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
     
     if ( cellType == EventCellType_Title ) {
-        if ( [_eventItem.repeatType integerValue] == RepeatType_Never )
+        if ( [_eventItem.repeatType integerValue] == RepeatType_Never ) {
             retHeight = (isiPadFullMode ? 106.0 : 142.0);
+        }
         else {
             NSDate *date = [NSDate date];
             NSInteger diffDays = [A3DateHelper diffDaysFromDate:date toDate:_eventItem.startDate];
-            if ( diffDays < 0 )
+            if ( diffDays < 0 ) {
                 retHeight = (isiPadFullMode ? 195.0 : 236.0);
-            else
+            }
+            else {
                 retHeight = (isiPadFullMode ? 106.0 : 142.0);
+            }
         }
     }
     else if ( cellType == EventCellType_Notes ) {
@@ -600,8 +613,9 @@
         retHeight = ceilf(textSize.height) + 11.0 + 30.0;
     }
     else {
-        if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) )
+        if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) ) {
             retHeight = 74.0;
+        }
     }
     
     return retHeight;
@@ -638,8 +652,9 @@
         _eventItem.isFavorite = [NSNumber numberWithBool:![_eventItem.isFavorite boolValue]];
         [_eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
         [self.tableView reloadData];
-        if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)])
+        if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)]) {
             [self.delegate willChangeEventDetailViewController:self];
+        }
     }
 }
 
