@@ -160,8 +160,7 @@
 
     if ( cell == nil ) {
         if ( indexPath.section == 0) {
-            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterLocationDetailCell" owner:nil options:nil];
-            cell = [cellArray objectAtIndex:0];
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterLocationDetailCell" owner:nil options:nil] lastObject];
         }
         else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
@@ -183,9 +182,7 @@
             else {
                 textLabel.text = @"Address";
                 detailTextLabel.text = _addressStr;
-                //            cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.frame), 0, 0);
                 cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
-                //            cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, CGRectGetWidth(cell.contentView.frame));
             }
         }
             break;
