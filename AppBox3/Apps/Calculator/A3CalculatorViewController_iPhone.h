@@ -11,6 +11,6 @@
 
 @protocol A3CalculatorDelegate;
 
-@interface A3CalculatorViewController_iPhone : A3CalculatorViewController
+@interface A3CalculatorViewController_iPhone : A3CalculatorViewController <UIActivityItemSource>
 
 @end

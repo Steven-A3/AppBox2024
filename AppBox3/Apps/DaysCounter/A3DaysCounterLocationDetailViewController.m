@@ -93,7 +93,6 @@
     }
     
     [_mapView setRegion:MKCoordinateRegionMakeWithDistance(_locationItem.coordinate, 2000.0, 2000.0) animated:YES];
-    [_mapView selectAnnotation:_locationItem animated:YES];
 }
 
 - (void)didReceiveMemoryWarning

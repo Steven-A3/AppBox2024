@@ -5065,6 +5065,9 @@
 				68F1C81218D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.h */,
 				68F1C81318D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.m */,
 				68F1C81418D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.xib */,
+				68F1C81518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.h */,
+				68F1C81618D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m */,
+				68F1C81718D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.xib */,
 				68F1C81818D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.h */,
 				68F1C81918D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.m */,
 				68F1C81A18D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.xib */,
@@ -5197,9 +5200,6 @@
 		8094E0DF18E6D04800CB03BC /* Location SubDetail */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C81518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.h */,
-				68F1C81618D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m */,
-				68F1C81718D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.xib */,
 				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
 				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
 				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,

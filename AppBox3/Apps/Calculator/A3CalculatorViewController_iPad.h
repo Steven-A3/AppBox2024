@@ -12,7 +12,7 @@
 
 @protocol A3CalculatorDelegate;
 
-@interface A3CalculatorViewController_iPad : A3CalculatorViewController
+@interface A3CalculatorViewController_iPad : A3CalculatorViewController<UIActivityItemSource>
 
 - (void) checkRightButtonDisable;
 
