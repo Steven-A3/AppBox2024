@@ -123,20 +123,6 @@
 }
 
 #pragma mark - cell
-- (void)setupDefaultValueForView:(UIView*)baseView
-{
-    UILabel *markLabel = (UILabel*)[baseView viewWithTag:20];
-    markLabel.layer.masksToBounds = YES;
-    markLabel.layer.borderColor = [markLabel.textColor CGColor];
-    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
-    markLabel.layer.cornerRadius = 9.0;
-    
-    UIImageView *lunarImageView = (UIImageView*)[baseView viewWithTag:24];
-    lunarImageView.image = [lunarImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    lunarImageView.tintColor = [UIColor lightGrayColor];
-
-}
-
 - (UITableViewCell*)createCellWithType:(NSInteger)cellType cellIdentifier:(NSString*)cellID
 {
     UITableViewCell *cell = nil;
@@ -160,11 +146,11 @@
         case EventCellType_Alert:
         case EventCellType_DurationOption:
         {
-//            cell = [cellArray objectAtIndex:14];
-//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-//            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
-//            detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            //            cell = [cellArray objectAtIndex:14];
+            //            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+            //            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
+            //            detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+            //            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
@@ -196,7 +182,7 @@
             textLabel.textColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
             textLabel.numberOfLines = 0;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            cell.textLabel.baselineAdjustment = UIBaselineAdjustmentNone;
+            //            cell.textLabel.baselineAdjustment = UIBaselineAdjustmentNone;
         }
             break;
         case EventCellType_Share:
@@ -220,6 +206,111 @@
     }
     
     return cell;
+}
+
+
+- (void)updateTableViewCell:(UITableViewCell*)cell indexPath:(NSIndexPath*)indexPath
+{
+    NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
+    NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
+    switch (cellType) {
+        case EventCellType_Title:
+        {
+            [self setupEventInfoCell:cell withInfo:_eventItem];
+        }
+            break;
+        case EventCellType_Alert:
+        {
+            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+            textLabel.text = [itemDict objectForKey:EventRowTitle];
+            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
+                                                                                            alertDate:_eventItem.alertDatetime];
+        }
+            break;
+        case EventCellType_DurationOption:
+        {
+            //            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+            //            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+            //            textLabel.text = [itemDict objectForKey:EventRowTitle];
+            //            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
+            
+            cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
+        }
+            break;
+        case EventCellType_Calendar:
+        {
+            UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
+            UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
+            
+            DaysCounterCalendar *calendar = _eventItem.calendar;
+            if ( calendar ) {
+                nameLabel.text = calendar.calendarName;
+                colorImageView.tintColor = [calendar color];
+            }
+            else {
+                nameLabel.text = @"";
+            }
+            colorImageView.hidden = ([nameLabel.text length] < 1 );
+        }
+            break;
+        case EventCellType_Location:
+        {
+            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+            DaysCounterEventLocation *location = _eventItem.location;
+            if ( location ) {
+                FSVenue *venue = [[FSVenue alloc] init];
+                venue.location.country = location.country;
+                venue.location.state = location.state;
+                venue.location.city = location.city;
+                venue.location.address = location.address;
+                NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromVenue:venue isDetail:NO];
+                textLabel.text = ([location.locationName length] > 0 ? location.locationName : address);
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            else {
+                textLabel.text = @"No location";
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+        }
+            break;
+        case EventCellType_Notes:
+        {
+            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+            textLabel.text = _eventItem.notes;
+        }
+            break;
+        case EventCellType_Share:
+        {
+            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+            textLabel.text = @"Share Event";
+            textLabel.textColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
+        }
+            break;
+        case EventCellType_Favorites:
+        {
+            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+            textLabel.text = ([_eventItem.isFavorite boolValue] ? @"Remove from Favorites" : @"Add to Favorites");
+            textLabel.textColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
+        }
+            break;
+            
+    }
+}
+
+- (void)setupDefaultValueForView:(UIView*)baseView
+{
+    UILabel *markLabel = (UILabel*)[baseView viewWithTag:20];
+    markLabel.layer.masksToBounds = YES;
+    markLabel.layer.borderColor = [markLabel.textColor CGColor];
+    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+    markLabel.layer.cornerRadius = 9.0;
+    
+    UIImageView *lunarImageView = (UIImageView*)[baseView viewWithTag:24];
+    lunarImageView.image = [lunarImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    lunarImageView.tintColor = [UIColor lightGrayColor];
+
 }
 
 - (void)setupInfoToView:(UIView*)baseView isSince:(BOOL)isSince daysText:(NSString*)daysText dateText1:(NSString*)dateText1 dateText2:(NSString*)dateText2 isLunar:(BOOL)isLunar
@@ -362,94 +453,6 @@
     }
     else {
         [self setupRepeatEventInfo:info untilView:topInfoView sinceView:bottomInfoView];
-    }
-}
-
-- (void)updateTableViewCell:(UITableViewCell*)cell indexPath:(NSIndexPath*)indexPath
-{
-    NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
-    NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
-    switch (cellType) {
-        case EventCellType_Title:
-        {
-            [self setupEventInfoCell:cell withInfo:_eventItem];
-        }
-            break;
-        case EventCellType_Alert:
-        {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
-                                                                                            alertDate:_eventItem.alertDatetime];
-        }
-            break;
-        case EventCellType_DurationOption:
-        {
-//            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-//            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-//            textLabel.text = [itemDict objectForKey:EventRowTitle];
-//            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
-
-            cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
-            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
-        }
-            break;
-        case EventCellType_Calendar:
-        {
-            UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
-            UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-            
-            DaysCounterCalendar *calendar = _eventItem.calendar;
-            if ( calendar ) {
-                nameLabel.text = calendar.calendarName;
-                colorImageView.tintColor = [calendar color];
-            }
-            else {
-                nameLabel.text = @"";
-            }
-            colorImageView.hidden = ([nameLabel.text length] < 1 );
-        }
-            break;
-        case EventCellType_Location:
-        {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            DaysCounterEventLocation *location = _eventItem.location;
-            if ( location ) {
-                FSVenue *venue = [[FSVenue alloc] init];
-                venue.location.country = location.country;
-                venue.location.state = location.state;
-                venue.location.city = location.city;
-                venue.location.address = location.address;
-                NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromVenue:venue isDetail:NO];
-                textLabel.text = ([location.locationName length] > 0 ? location.locationName : address);
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-            else {
-                textLabel.text = @"No location";
-                cell.accessoryType = UITableViewCellAccessoryNone;
-            }
-        }
-            break;
-        case EventCellType_Notes:
-        {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.text = _eventItem.notes;
-        }
-            break;
-        case EventCellType_Share:
-        {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.text = @"Share Event";
-        }
-            break;
-        case EventCellType_Favorites:
-        {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.text = ([_eventItem.isFavorite boolValue] ? @"Remove from Favorites" : @"Add to Favorites");
-        }
-            break;
-            
     }
 }
 
