@@ -74,7 +74,6 @@
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
         self.updateDateLabel = self.updateDateLabeliPad;
     }
-//    [self.tableView setTableFooterView:_footerView];
     
     for (NSLayoutConstraint *layout in _verticalSeperators) {
         layout.constant = 1.0 / [[UIScreen mainScreen] scale];
@@ -101,14 +100,6 @@
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
-//    if ( IS_IPAD ) {
-//        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-//            [self leftBarButtonAppsButton];
-//        }
-//        else {
-//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-//        }
-//    }
     
     _searchButton.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
