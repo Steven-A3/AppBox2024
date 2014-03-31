@@ -61,10 +61,10 @@
     
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
     self.initialCalendarID = _eventItem.calendarId;
-    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-    UIView *removeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, 1.0/[[UIScreen mainScreen] scale])];
-    removeView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
-    [self.tableView addSubview:removeView];
+//    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+//    UIView *removeView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, appFrame.size.width, 1.0/[[UIScreen mainScreen] scale])];
+//    removeView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
+//    [self.tableView addSubview:removeView];
     
     [self setupTopWhitePaddingView];
 }
@@ -387,14 +387,25 @@
     }
     
     if ( [info.isPeriod boolValue] ) {
-        dateText1 = [NSString stringWithFormat:@"from %@",[A3DateHelper dateStringFromDate:startDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-        dateText2 = [NSString stringWithFormat:@"to %@",[A3DateHelper dateStringFromDate:endDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+        dateText1 = [NSString stringWithFormat:@"from %@",[A3DateHelper dateStringFromDate:startDate
+                                                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+        dateText2 = [NSString stringWithFormat:@"to %@",[A3DateHelper dateStringFromDate:endDate
+                                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
     }
     else {
-        dateText1 = [NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:startDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+        dateText1 = [NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:startDate
+                                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
     }
     
-    [self setupInfoToView:baseView isSince:isSince daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue] fromDate:now toDate:startDate isAllDay:[info.isAllDay boolValue]] dateText1:dateText1 dateText2:dateText2 isLunar:[info.isLunar boolValue]];
+    [self setupInfoToView:baseView
+                  isSince:isSince
+                 daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                   fromDate:now
+                                                                                     toDate:startDate
+                                                                                   isAllDay:[info.isAllDay boolValue]]
+                dateText1:dateText1
+                dateText2:dateText2
+                  isLunar:[info.isLunar boolValue]];
 }
 
 - (void)setupRepeatEventInfo:(DaysCounterEvent*)info untilView:(UIView*)untilView sinceView:(UIView*)sinceView
@@ -415,7 +426,16 @@
     NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now];
     NSInteger diffStartDays = [A3DateHelper diffDaysFromDate:now toDate:startDate];
     
-    [self setupInfoToView:untilView isSince:NO daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue] fromDate:now toDate:nextDate isAllDay:[info.isAllDay boolValue]] dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]] dateText2:[NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]] isLunar:[info.isLunar boolValue]];
+    [self setupInfoToView:untilView
+                  isSince:NO
+                 daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                   fromDate:now toDate:nextDate
+                                                                                   isAllDay:[info.isAllDay boolValue]]
+                dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate
+                                                                                 withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
+     
+                dateText2:[NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]]
+                  isLunar:[info.isLunar boolValue]];
     if ( diffStartDays < 0 ) {
         [self setupInfoToView:sinceView isSince:YES daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                                                       fromDate:startDate
@@ -670,7 +690,7 @@
         if (scrollView.contentOffset.y < -scrollView.contentInset.top ) {
             CGRect rect = _topWhitePaddingView.frame;
             rect.origin.y = -(fabs(scrollView.contentOffset.y) - scrollView.contentInset.top);
-            rect.size.height = fabs(scrollView.contentOffset.y) - scrollView.contentInset.top;
+            rect.size.height = fabs(scrollView.contentOffset.y) - scrollView.contentInset.top + (IS_RETINA ? 0.5 : 1.0);
             _topWhitePaddingView.frame = rect;
         } else {
             CGRect rect = _topWhitePaddingView.frame;
