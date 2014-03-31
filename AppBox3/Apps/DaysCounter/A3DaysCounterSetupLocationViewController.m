@@ -69,7 +69,7 @@
     self.searchIcon = [[UIImage imageNamed:@"search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     _currentLocationButton.layer.backgroundColor = [[UIColor whiteColor] CGColor];
-    _currentLocationButton.layer.borderWidth = 1.0;
+    _currentLocationButton.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
     _currentLocationButton.layer.borderColor = [[UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0] CGColor];
     _currentLocationButton.layer.cornerRadius = 6.0;
     _currentLocationButton.layer.masksToBounds = YES;

@@ -128,7 +128,7 @@
     UILabel *markLabel = (UILabel*)[baseView viewWithTag:20];
     markLabel.layer.masksToBounds = YES;
     markLabel.layer.borderColor = [markLabel.textColor CGColor];
-    markLabel.layer.borderWidth = 1.0;
+    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
     markLabel.layer.cornerRadius = 9.0;
     
     UIImageView *lunarImageView = (UIImageView*)[baseView viewWithTag:24];
@@ -142,7 +142,8 @@
     UITableViewCell *cell = nil;
     NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
     switch (cellType) {
-        case EventCellType_Title:{
+        case EventCellType_Title:
+        {
             if ( [cellID isEqualToString:@"eventInfoCelliPad"] ) {
                 cell = [cellArray objectAtIndex:11];
             }
@@ -157,7 +158,8 @@
         }
             break;
         case EventCellType_Alert:
-        case EventCellType_DurationOption:{
+        case EventCellType_DurationOption:
+        {
 //            cell = [cellArray objectAtIndex:14];
 //            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
 //            detailTextLabel.font = [UIFont systemFontOfSize:17.0];
@@ -170,23 +172,28 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;
-        case EventCellType_Calendar:{
+        case EventCellType_Calendar:
+        {
             cell = [cellArray objectAtIndex:10];
             UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
             imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;
-        case EventCellType_Location:{
+        case EventCellType_Location:
+        {
             cell = [cellArray objectAtIndex:13];
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            textLabel.font = [UIFont systemFontOfSize:17];
+            textLabel.textColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
         }
             break;
-        case EventCellType_Notes:{
+        case EventCellType_Notes:
+        {
             cell = [cellArray objectAtIndex:15];
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+            textLabel.font = [UIFont systemFontOfSize:17];
+            textLabel.textColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
             textLabel.numberOfLines = 0;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
 //            cell.textLabel.baselineAdjustment = UIBaselineAdjustmentNone;
@@ -194,9 +201,11 @@
             break;
         case EventCellType_Share:
         case EventCellType_Favorites:
+        {
             cell = [cellArray objectAtIndex:13];
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            textLabel.textColor = [UIColor colorWithRed:0.0 green:124.0/255.0 blue:247.0/255.0 alpha:1.0];
+            textLabel.textColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
+        }
             break;
     }
     
@@ -235,8 +244,11 @@
     }
         
     markLabel.text = (isSince ? @"Since" : @"Until" );
-    markLabel.textColor = (isSince ? [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] : [UIColor colorWithRed:78.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]);
+    markLabel.textColor = (isSince ? [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] : [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]);
     markLabel.layer.borderColor = [markLabel.textColor CGColor];
+    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+    markLabel.layer.masksToBounds = YES;
+    markLabel.layer.cornerRadius = 9.0;
     
     daysLabel.text = daysText;
     dateLabel1.text = dateText1;
@@ -305,7 +317,14 @@
     
     [self setupInfoToView:untilView isSince:NO daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue] fromDate:now toDate:nextDate isAllDay:[info.isAllDay boolValue]] dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]] dateText2:[NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]] isLunar:[info.isLunar boolValue]];
     if ( diffStartDays < 0 ) {
-        [self setupInfoToView:sinceView isSince:YES daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue] fromDate:startDate toDate:now isAllDay:[info.isAllDay boolValue]] dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]] dateText2:@"first date" isLunar:[info.isLunar boolValue]];
+        [self setupInfoToView:sinceView isSince:YES daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                                                      fromDate:startDate
+                                                                                                                        toDate:now
+                                                                                                                      isAllDay:[info.isAllDay boolValue]]
+                    dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate
+                                                                                     withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
+                    dateText2:@"first date"
+                      isLunar:[info.isLunar boolValue]];
     }
 }
 
@@ -324,7 +343,8 @@
     
     if ( imageView ) {
         if ( [info.imageFilename length] > 0 ) {
-            imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename] rect:CGRectMake(0, 0, 65, 65)];
+            imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename]
+                                                                       rect:CGRectMake(0, 0, 65, 65)];
         }
         else {
             imageView.image = nil;
@@ -351,16 +371,21 @@
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
     switch (cellType) {
         case EventCellType_Title:
+        {
             [self setupEventInfoCell:cell withInfo:_eventItem];
+        }
             break;
-        case EventCellType_Alert:{
+        case EventCellType_Alert:
+        {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate alertDate:_eventItem.alertDatetime];
+            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
+                                                                                            alertDate:_eventItem.alertDatetime];
         }
             break;
-        case EventCellType_DurationOption:{
+        case EventCellType_DurationOption:
+        {
 //            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
 //            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
 //            textLabel.text = [itemDict objectForKey:EventRowTitle];
@@ -370,7 +395,8 @@
             cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
         }
             break;
-        case EventCellType_Calendar:{
+        case EventCellType_Calendar:
+        {
             UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
             UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
             
@@ -385,7 +411,8 @@
             colorImageView.hidden = ([nameLabel.text length] < 1 );
         }
             break;
-        case EventCellType_Location:{
+        case EventCellType_Location:
+        {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             DaysCounterEventLocation *location = _eventItem.location;
             if ( location ) {
@@ -404,17 +431,20 @@
             }
         }
             break;
-        case EventCellType_Notes:{
+        case EventCellType_Notes:
+        {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = _eventItem.notes;
         }
             break;
-        case EventCellType_Share:{
+        case EventCellType_Share:
+        {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = @"Share Event";
         }
             break;
-        case EventCellType_Favorites:{
+        case EventCellType_Favorites:
+        {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = ([_eventItem.isFavorite boolValue] ? @"Remove from Favorites" : @"Add to Favorites");
         }
@@ -671,7 +701,11 @@
 }
 
 - (IBAction)deleteEventAction:(id)sender {
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Event" otherButtonTitles: nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:@"Delete Event"
+                                                    otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
 

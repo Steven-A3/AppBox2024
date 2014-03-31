@@ -23,7 +23,7 @@
 		_gradientLayer.endPoint = CGPointMake(0.5, 1.0);
 		_gradientLayer.bounds = self.bounds;
 		[self setGradientLayerColor];
-		_gradientLayer.borderWidth = 1.0;
+		_gradientLayer.borderWidth = IS_RETINA ? 0.5 : 1.0;
 		_gradientLayer.borderColor = [UIColor colorWithRed:55.0/255.0 green:55.0/255.0 blue:55.0/255.0 alpha:1.0].CGColor;
 		_gradientLayer.cornerRadius = 5.0;
 		[self.layer insertSublayer:_gradientLayer atIndex:0];

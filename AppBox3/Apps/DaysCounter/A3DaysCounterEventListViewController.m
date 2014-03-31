@@ -439,7 +439,7 @@
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         
-        markLabel.layer.borderWidth = 1.0;
+        markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
         markLabel.layer.cornerRadius = 9.0;
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
