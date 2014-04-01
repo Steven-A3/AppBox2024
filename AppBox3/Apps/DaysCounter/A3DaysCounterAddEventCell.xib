@@ -543,6 +543,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <constraints>
                     <constraint firstItem="ueY-V3-jop" firstAttribute="top" secondItem="FPF-Ms-sKZ" secondAttribute="top" constant="20" id="1UZ-ge-ZGU"/>
                     <constraint firstItem="3Tv-Am-iF5" firstAttribute="leading" secondItem="FPF-Ms-sKZ" secondAttribute="leading" id="44q-dh-22d"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ueY-V3-jop" secondAttribute="trailing" constant="15" id="B7V-y9-MS5"/>
                     <constraint firstItem="aBc-DX-0fm" firstAttribute="top" secondItem="5H7-OB-3c5" secondAttribute="bottom" constant="7" id="I48-xS-AcX"/>
                     <constraint firstAttribute="trailing" secondItem="aBc-DX-0fm" secondAttribute="trailing" id="NUo-lh-3xM"/>
                     <constraint firstItem="5H7-OB-3c5" firstAttribute="leading" secondItem="aBc-DX-0fm" secondAttribute="leading" id="Qfk-oM-AHm"/>

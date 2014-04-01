@@ -62,6 +62,7 @@
                     <constraint firstItem="QuV-Ym-Mvr" firstAttribute="leading" secondItem="xhw-5N-aQx" secondAttribute="leading" constant="20" id="ZHX-D2-RBD"/>
                     <constraint firstAttribute="bottom" secondItem="84m-39-mLt" secondAttribute="bottom" constant="14" id="vNA-NX-OSv"/>
                     <constraint firstItem="c1b-Bv-kIf" firstAttribute="baseline" secondItem="84m-39-mLt" secondAttribute="baseline" id="yWL-DY-HR9"/>
+                    <constraint firstItem="V0X-mh-XMU" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="hX1-P6-pXu" secondAttribute="trailing" constant="5" id="yil-rB-2aC"/>
                     <constraint firstItem="QuV-Ym-Mvr" firstAttribute="top" secondItem="xhw-5N-aQx" secondAttribute="top" constant="14" id="z9H-L6-vFR"/>
                 </constraints>
             </tableViewCellContentView>
