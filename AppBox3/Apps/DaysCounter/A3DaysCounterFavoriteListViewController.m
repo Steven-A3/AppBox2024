@@ -43,16 +43,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     self.title = @"Favorites";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
     [self registerContentSizeCategoryDidChangeNotification];
-
+    
     [self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
-
+    
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 }
 
@@ -90,7 +90,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-//    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
+    //    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
     return [_itemArray count];
 }
 
@@ -112,7 +112,7 @@
     if (cell == nil) {
         NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
         cell = [cellArray objectAtIndex:0];
-
+        
         UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
         UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
         textLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
@@ -164,8 +164,8 @@
             ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
         }
-
-
+        
+        
         if ( diffDays > 0 ) {
             markLabel.text = @"Until";
             markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
@@ -175,18 +175,16 @@
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         markLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
-        markLabel.layer.borderWidth = 1.0;
+        markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
         markLabel.layer.cornerRadius = 9.0;
         markLabel.layer.borderColor = markLabel.textColor.CGColor;
         
-       if ( IS_IPAD ) {
+        if ( IS_IPAD ) {
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
             dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"EEEE, MMM dd"];
-           dateLabel.hidden = NO;
+            dateLabel.hidden = NO;
         }
-
-        
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -212,7 +210,7 @@
         [event.managedObjectContext MR_saveToPersistentStoreAndWait];
         [_itemArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
+    }
 }
 
 #pragma mark - Table view delegate
@@ -253,11 +251,11 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-//    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alertView show];
-//        return;
-//    }
+    //    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    //        [alertView show];
+    //        return;
+    //    }
     A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }

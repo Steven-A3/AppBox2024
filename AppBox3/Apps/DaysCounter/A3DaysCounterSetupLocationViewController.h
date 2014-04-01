@@ -30,6 +30,11 @@
 @property (strong, nonatomic) IBOutlet UITableView *searchResultsTableView;
 @property (strong, nonatomic) IBOutlet UIView *searchResultBaseView;
 @property (weak, nonatomic) IBOutlet UIView *noResultsView;
+@property (strong, nonatomic) IBOutlet UISearchBar *testSearchBar;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mapViewHeightConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *currentLocationButtonTopConst;
+
 
 - (IBAction)moveCurrentLocationAction:(id)sender;
 @end

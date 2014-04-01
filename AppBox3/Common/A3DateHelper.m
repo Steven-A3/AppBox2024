@@ -130,6 +130,32 @@
 	NSDateComponents *diffComponent = [calendar components:NSDayCalendarUnit
 												  fromDate:fromDate
 													toDate:toDate options:0];
+
+	return [diffComponent day];
+}
+
+// KJH
++ (NSInteger)diffDaysOfAllDayTypeFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate
+{
+	if ( toDate == nil || fromDate == nil) {
+		return 0;
+    }
+    
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
+    NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+    
+    fromComp.hour = 0;
+    fromComp.minute = 0;
+    fromComp.second = 0;
+    toComp.hour = 0;
+    toComp.minute = 0;
+    toComp.second = 0;
+    
+    NSDateComponents *diffComponent = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                                  fromDate:[calendar dateFromComponents:fromComp]
+                                                    toDate:[calendar dateFromComponents:toComp]
+                                                   options:0];
 	
 	return [diffComponent day];
 }

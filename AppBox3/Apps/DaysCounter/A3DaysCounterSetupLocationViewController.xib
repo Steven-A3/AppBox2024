@@ -7,17 +7,18 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="A3DaysCounterSetupLocationViewController">
             <connections>
                 <outlet property="currentLocationButton" destination="Knt-eG-igr" id="bZp-lc-3uc"/>
+                <outlet property="currentLocationButtonTopConst" destination="aSI-WQ-dOI" id="jMs-Ju-ftd"/>
                 <outlet property="currentLocationTableView" destination="iWB-4X-1g4" id="qDU-7K-Pbj"/>
                 <outlet property="currentLocationView" destination="xi7-AT-O2X" id="dwm-Gy-zj0"/>
                 <outlet property="infoTableView" destination="8nI-l6-Zgz" id="Oqf-3v-Nj2"/>
                 <outlet property="mapView" destination="GHA-40-y1U" id="IVY-DV-P27"/>
+                <outlet property="mapViewHeightConst" destination="T9s-fx-urW" id="TmI-tA-1CE"/>
                 <outlet property="noResultsView" destination="wwE-of-RWo" id="3oR-Mz-Hkx"/>
                 <outlet property="searchBar" destination="JxF-D1-0hT" id="NoE-Dg-lik"/>
                 <outlet property="searchBarBaseView" destination="9lT-4v-eJg" id="KTJ-8l-YMu"/>
                 <outlet property="searchResultBaseView" destination="89q-LI-vDn" id="bmV-mn-Sbf"/>
                 <outlet property="searchResultsTableView" destination="Y49-WI-4dL" id="13p-98-nZi"/>
                 <outlet property="tableFooterView" destination="RxG-Ft-3fg" id="LDp-EJ-aBf"/>
-                <outlet property="tableViewHeightConstraint" destination="Mge-iT-1IK" id="aZw-p5-Wqt"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>
@@ -26,28 +27,28 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GHA-40-y1U">
+                <tableView clipsSubviews="YES" alpha="0.94999999999999996" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="8nI-l6-Zgz">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="q51-sq-EEF"/>
-                    </connections>
-                </mapView>
-                <tableView clipsSubviews="YES" alpha="0.94999999999999996" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="8nI-l6-Zgz">
-                    <rect key="frame" x="0.0" y="480" width="320" height="88"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="88" id="Mge-iT-1IK"/>
-                    </constraints>
                     <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="0ua-IA-ODj"/>
                         <outlet property="delegate" destination="-1" id="Aaa-VI-f8d"/>
                     </connections>
                 </tableView>
+                <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GHA-40-y1U">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="T9s-fx-urW"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="q51-sq-EEF"/>
+                    </connections>
+                </mapView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Knt-eG-igr">
-                    <rect key="frame" x="16" y="422" width="42" height="42"/>
+                    <rect key="frame" x="15" y="258" width="42" height="42"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="42" id="M6n-ph-7Xd"/>
@@ -63,15 +64,15 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="GHA-40-y1U" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="93v-w2-4fm"/>
+                <constraint firstAttribute="trailing" secondItem="GHA-40-y1U" secondAttribute="trailing" id="42Z-ZL-USF"/>
                 <constraint firstAttribute="centerX" secondItem="8nI-l6-Zgz" secondAttribute="centerX" id="9uc-qJ-BQR"/>
+                <constraint firstItem="8nI-l6-Zgz" firstAttribute="top" secondItem="1" secondAttribute="top" id="DZV-6e-DUf"/>
                 <constraint firstAttribute="trailing" secondItem="8nI-l6-Zgz" secondAttribute="trailing" id="ETZ-uQ-daM"/>
-                <constraint firstAttribute="bottom" secondItem="GHA-40-y1U" secondAttribute="bottom" id="ZON-1b-UVF"/>
                 <constraint firstAttribute="bottom" secondItem="8nI-l6-Zgz" secondAttribute="bottom" id="ZQc-IZ-unv"/>
-                <constraint firstItem="Knt-eG-igr" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="16" id="ivE-Xe-4mW"/>
-                <constraint firstItem="8nI-l6-Zgz" firstAttribute="top" secondItem="Knt-eG-igr" secondAttribute="bottom" constant="16" id="kIe-u9-BFe"/>
-                <constraint firstItem="GHA-40-y1U" firstAttribute="top" secondItem="1" secondAttribute="top" id="oKY-pw-Tyi"/>
-                <constraint firstAttribute="trailing" secondItem="GHA-40-y1U" secondAttribute="trailing" id="xBE-50-euV"/>
+                <constraint firstItem="Knt-eG-igr" firstAttribute="top" secondItem="1" secondAttribute="top" constant="258" id="aSI-WQ-dOI"/>
+                <constraint firstItem="GHA-40-y1U" firstAttribute="top" secondItem="1" secondAttribute="top" id="fZR-dX-GbT"/>
+                <constraint firstItem="Knt-eG-igr" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="uWu-o6-bRb"/>
+                <constraint firstItem="GHA-40-y1U" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="zc3-xH-KwC"/>
             </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -120,7 +121,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <searchBar clipsSubviews="YES" contentMode="redraw" searchBarStyle="minimal" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-D1-0hT">
+                <searchBar clipsSubviews="YES" contentMode="redraw" searchBarStyle="minimal" translatesAutoresizingMaskIntoConstraints="NO" id="JxF-D1-0hT">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>

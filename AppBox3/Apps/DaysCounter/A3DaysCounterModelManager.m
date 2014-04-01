@@ -413,19 +413,19 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSString *retStr = @"";
     
     if ( value & DurationOption_Year )
-        retStr = [retStr stringByAppendingFormat:@"%@ Years",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Years", ([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Month )
-        retStr = [retStr stringByAppendingFormat:@"%@ Months",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Months", ([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Week)
-        retStr = [retStr stringByAppendingFormat:@"%@ Weeks",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Weeks", ([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Day )
-        retStr = [retStr stringByAppendingFormat:@"%@ Days",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Days", ([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Hour)
-        retStr = [retStr stringByAppendingFormat:@"%@ Hours",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Hours", ([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Minutes)
-        retStr = [retStr stringByAppendingFormat:@"%@ Minutes",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Minutes", ([retStr length] > 0 ? @" " : @"")];
     if ( value & DurationOption_Seconds)
-        retStr = [retStr stringByAppendingFormat:@"%@ Seconds",([retStr length] > 0 ? @" " : @"")];
+        retStr = [retStr stringByAppendingFormat:@"%@ Seconds", ([retStr length] > 0 ? @" " : @"")];
     
     return retStr;
 }
@@ -443,11 +443,11 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     NSString *address = venue.location.address;
     if ( [venue.location.city length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@",(isDetail ? @"\n" : @" "),venue.location.city];
+        address = [address stringByAppendingFormat:@"%@%@", (isDetail ? @"\n" : @" "),venue.location.city];
     if ( [venue.location.state length] > 0 )
-         address = [address stringByAppendingFormat:@"%@%@",(isDetail ? @"\n" : @" "),venue.location.state];
+         address = [address stringByAppendingFormat:@"%@%@", (isDetail ? @"\n" : @" "),venue.location.state];
     if ( [venue.location.country length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@",(isDetail ? @"\n" : @" "),venue.location.country];
+        address = [address stringByAppendingFormat:@"%@%@", (isDetail ? @"\n" : @" "),venue.location.country];
     return address;
 }
 
@@ -458,13 +458,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( [[addressDict objectForKey:(NSString*)kABPersonAddressStreetKey] length] > 0 )
        address = [addressDict objectForKey:(NSString*)kABPersonAddressStreetKey];
     if ( [placemark.subLocality length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@",([address length] > 0 ? @" " : @""),placemark.subLocality];
+        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),placemark.subLocality];
     if ( [[addressDict objectForKey:(NSString*)kABPersonAddressCityKey] length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@",([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressCityKey]];
+        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressCityKey]];
     if ( [[addressDict objectForKey:(NSString*)kABPersonAddressStateKey] length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@",([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressStateKey]];
+        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressStateKey]];
     if ( [[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey] length] > 0 )
-        address = [address stringByAppendingFormat:@"%@%@",([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey]];
+        address = [address stringByAppendingFormat:@"%@%@", ([address length] > 0 ? @" " : @""),[addressDict objectForKey:(NSString*)kABPersonAddressCountryKey]];
     return address;
 }
 
@@ -1241,54 +1241,78 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         flag |= NSMonthCalendarUnit;
     if ( option & DurationOption_Year )
         flag |= NSYearCalendarUnit;
+
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *diffComponent = [calendar components:flag
 												  fromDate:smallDate
 													toDate:largeDate options:0];
-    NSString *retStr = @"";
+    if (isAllDay) {
+        NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                                 fromDate:fromDate];
+        NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                               fromDate:toDate];
+        fromComp.hour = 0;
+        fromComp.minute = 0;
+        fromComp.second = 0;
+        toComp.hour = 0;
+        toComp.minute = 0;
+        toComp.second = 0;
+        
+        diffComponent = [calendar components:flag
+                                    fromDate:[calendar dateFromComponents:fromComp]
+                                      toDate:[calendar dateFromComponents:toComp]
+                                     options:0];
+    }
+    else {
+        diffComponent = [calendar components:flag
+                                    fromDate:smallDate
+                                      toDate:largeDate options:0];
+    }
+
+    NSMutableArray * resultArray = [NSMutableArray new];
     
     if ( (option & DurationOption_Year) && [diffComponent year] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ld year%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent year],([diffComponent year] > 1 ? @"s" : @"")];
+        [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)[diffComponent year], ([diffComponent year] > 1 ? @"s" : @"")]];
     }
     if ( (option & DurationOption_Month) && [diffComponent month] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ld month%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent month],([diffComponent month] > 1 ? @"s" : @"")];
+        [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)[diffComponent month], ([diffComponent month] > 1 ? @"s" : @"")]];
     }
     if ( (option & DurationOption_Week) && [diffComponent week] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ld week%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent week],([diffComponent week] > 1 ? @"s" : @"")];
+        [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)[diffComponent week], ([diffComponent week] > 1 ? @"s" : @"")]];
     }
     if ( (option & DurationOption_Day) && [diffComponent day] > 0 ) {
-        retStr = [retStr stringByAppendingFormat:@"%@%ld day%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent day],([diffComponent day] > 1 ? @"s" : @"")];
+        [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)[diffComponent day], ([diffComponent day] > 1 ? @"s" : @"")]];
     }
     
-    if ( !isAllDay ) {
+    if (!isAllDay) {
         if ( (option & DurationOption_Hour) && [diffComponent hour] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ld hour%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent hour],([diffComponent hour] > 1 ? @"s" : @"")];
+            [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)[diffComponent hour], ([diffComponent hour] > 1 ? @"s" : @"")]];
         }
         if ( (option & DurationOption_Minutes) && [diffComponent minute] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ld minute%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent minute],([diffComponent minute] > 1 ? @"s" : @"")];
+            [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)[diffComponent minute], ([diffComponent minute] > 1 ? @"s" : @"")]];
         }
         if ( (option & DurationOption_Seconds) && [diffComponent second] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ld second%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent second],([diffComponent second] > 1 ? @"s" : @"")];
+            [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)[diffComponent second], ([diffComponent second] > 1 ? @"s" : @"")]];
         }
     }
 
-    if ( [retStr length] < 1 ) {
+    if ([resultArray count] == 0) {
         NSDateComponents *fullComponent = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
                                                       fromDate:smallDate
                                                         toDate:largeDate
                                                        options:0];
 
         if ( [fullComponent year] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ld year%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent year],([fullComponent year] > 1 ? @"s" : @"")];
+            [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)[fullComponent year], ([fullComponent year] > 1 ? @"s" : @"")]];
         }
         else if ( [fullComponent month] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ld month%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent month],([fullComponent month] > 1 ? @"s" : @"")];
+            [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)[fullComponent month], ([fullComponent month] > 1 ? @"s" : @"")]];
         }
 //        else if ( [fullComponent week] > 0 ) {
-//            retStr = [retStr stringByAppendingFormat:@"%@%dweek%@",([retStr length] > 0 ? @" " : @""),[fullComponent week],([fullComponent week] > 1 ? @"s" : @"")];
+//            [resultArray addObject:[NSString stringWithFormat:@"%@%dweek%@", [fullComponent week], ([fullComponent week] > 1 ? @"s" : @"")];
 //        }
         else if ( [fullComponent day] > 0 ) {
-            retStr = [retStr stringByAppendingFormat:@"%@%ld day%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent day],([fullComponent day] > 1 ? @"s" : @"")];
+            [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)[fullComponent day], ([fullComponent day] > 1 ? @"s" : @"")]];
         }
         
         if ( isAllDay ) {
@@ -1297,23 +1321,24 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             NSInteger second = [fullComponent second];
             
             if ( hour > 0 || minute > 0 || second > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"0 day"];
+                [resultArray addObject:[NSString stringWithFormat:@"0 day"]];
             }
         }
         else {
             if ( [fullComponent hour] > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"%@%ld hour%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent hour],([fullComponent hour] > 1 ? @"s" : @"")];
+                [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)[fullComponent hour], ([fullComponent hour] > 1 ? @"s" : @"")]];
             }
             else if ( [fullComponent minute] > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"%@%ld minute%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent minute],([fullComponent minute] > 1 ? @"s" : @"")];
+                [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)[fullComponent minute], ([fullComponent minute] > 1 ? @"s" : @"")]];
             }
             else if ( [fullComponent second] > 0 ) {
-                retStr = [retStr stringByAppendingFormat:@"%@%ld second%@",([retStr length] > 0 ? @" " : @""),(long)[fullComponent second],([fullComponent second] > 1 ? @"s" : @"")];
+                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)[fullComponent second], ([fullComponent second] > 1 ? @"s" : @"")]];
             }
         }
     }
-    
-    return retStr;
+        
+    NSString *result = [resultArray componentsJoinedByString:@" "];
+    return result;
 }
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type
@@ -1386,7 +1411,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     else {
         daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
     }
-    daysLabel.text = [NSString stringWithFormat:@"%ld",(long)ABS(diffDays)];
+    daysLabel.text = [NSString stringWithFormat:@"%ld", (long)ABS(diffDays)];
     if ( [item.imageFilename length] > 0 ) {
 //        NSLog(@"%s %@",__FUNCTION__,NSStringFromCGRect(toView.frame));
         UIImage *image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
@@ -1408,9 +1433,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     NSString *retStr = event.eventName;
     
-    retStr = [retStr stringByAppendingFormat:@"\nStart : %@%@",[A3DateHelper dateStringFromDate:event.startDate withFormat:@"EEEE, MMMM dd, yyyy"],([event.isLunar boolValue] ? @"(lunar)" : @"")];
+    retStr = [retStr stringByAppendingFormat:@"\nStart : %@%@",[A3DateHelper dateStringFromDate:event.startDate withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
     if ( event.endDate )
-        retStr = [retStr stringByAppendingFormat:@"\nEnd : %@%@",[A3DateHelper dateStringFromDate:event.endDate withFormat:@"EEEE, MMMM dd, yyyy"],([event.isLunar boolValue] ? @"(lunar)" : @"")];
+        retStr = [retStr stringByAppendingFormat:@"\nEnd : %@%@",[A3DateHelper dateStringFromDate:event.endDate withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
     if ( [event.repeatType integerValue] != RepeatType_Never )
         retStr = [retStr stringByAppendingFormat:@"\nRepeat : %@",[self repeatTypeStringFromValue:[event.repeatType integerValue]]];
     if ( event.location )
@@ -1422,7 +1447,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (BOOL)isSupportLunar
 {
     NSString *locale = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
-    if ( [locale	isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] )
+    if ( [locale	isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] )
         return YES;
     
     return NO;

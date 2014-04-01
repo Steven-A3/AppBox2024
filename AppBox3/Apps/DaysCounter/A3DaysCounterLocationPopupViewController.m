@@ -15,6 +15,7 @@
 
 @interface A3DaysCounterLocationPopupViewController ()
 @property (strong, nonatomic) NSString *addressStr;
+@property (nonatomic) BOOL isFullPrint;
 @end
 
 @implementation A3DaysCounterLocationPopupViewController
@@ -33,11 +34,21 @@
     [super viewDidLoad];
 
     self.title = _locationItem.name;
-    if( self.showDoneButton )
+    if ( self.showDoneButton )
         [self rightBarButtonDoneButton];
     
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 44.0, 0, 0);
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+    if (IS_IPAD) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(detailInfoButtonTouchUp:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(doneButtonAction:)];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -51,6 +62,28 @@
     self.popoverVC = nil;
 }
 
+#pragma mark
+- (void)detailInfoButtonTouchUp:(UIBarButtonItem *)item {
+    self.isFullPrint = !_isFullPrint;
+    if (self.resizeFrameBlock) {
+        if (_isFullPrint) {
+            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), self.tableView.contentSize.height));
+        }
+        else {
+            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), 0));
+        }
+    }
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button
+{
+    [self.popoverVC dismissPopoverAnimated:YES];
+    if (_dismissCompletionBlock) {
+        _dismissCompletionBlock(_locationItem);
+    }
+}
+                                                  
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -62,41 +95,27 @@
     return 2;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *cellID = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     
-    if( cell == nil ){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellID];
-        
-        cell.textLabel.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
-        cell.textLabel.font = [UIFont systemFontOfSize:15.0];
-        
-        cell.detailTextLabel.textColor = [UIColor blackColor];
-        cell.detailTextLabel.numberOfLines = 0;
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
-        cell.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if ( cell == nil ) {
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterLocationDetailCell" owner:nil options:nil] lastObject];
     }
     
-    if( indexPath.row == 0 ){
-        cell.textLabel.text = @"Phone";
-        cell.detailTextLabel.text = _locationItem.contact;
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+    
+    if ( indexPath.row == 0 ) {
+        textLabel.text = @"Phone";
+        detailTextLabel.text = _locationItem.contact;
+        cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     }
-    else{
-        cell.textLabel.text = @"Address";
-        cell.detailTextLabel.text = _addressStr;
+    else {
+        textLabel.text = @"Address";
+        detailTextLabel.text = _addressStr;
+        cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
     }
     
     return cell;
@@ -107,21 +126,33 @@
 {
 }
 
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ( indexPath.row == 1 ) {
+//        CGSize size = [self.addressStr sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
+//        CGSize textSize = [@"Address" sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15.0]}];
+//        return size.height + textSize.height + 14.0;
+//        //        return 122.0;
+//    }
+//    return 44.0;
+//}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if( indexPath.row == 1 ){
-        CGSize size = [self.addressStr sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
-        CGSize textSize = [@"Address" sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15.0]}];
-        return size.height + textSize.height + 14.0;
-        //        return 122.0;
+    if ( indexPath.section == 0 ) {
+        NSString *str = (indexPath.row == 0 ? _locationItem.contact : _addressStr);
+        CGRect rect = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width - 35.0, CGFLOAT_MAX)
+                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                     attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:17.0] }
+                                        context:nil];
+        CGFloat retHeight = 15.0 + 17.0 + 10.0 + ceilf(rect.size.height) + 15.0;
+        
+        return retHeight;
     }
+    
     return 44.0;
 }
 
-#pragma mark - action method
-- (void)doneButtonAction:(UIBarButtonItem *)button
-{
-    [self.popoverVC dismissPopoverAnimated:YES];
-}
+
 
 @end

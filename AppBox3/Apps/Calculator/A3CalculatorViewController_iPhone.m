@@ -18,6 +18,7 @@
 #import "A3CalculatorHistoryViewController.h"
 #import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
+#import "NSAttributedString+Append.h"
 
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
 
@@ -92,9 +93,10 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
         [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
         [_calculator evaluateAndSet];
+        [self checkRightButtonDisable];
     }
     [self setupGestureRecognizer];
-
+    
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
 	_textFieldForPlayInputClick.delegate = self;
 	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
@@ -102,6 +104,7 @@
 	[self.view addSubview:_textFieldForPlayInputClick];
 
 	[_textFieldForPlayInputClick becomeFirstResponder];
+     
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -177,9 +180,6 @@
     return screenBounds.size.height == 320? 0: -20;
 }
 
-- (id) getResultLabelHight:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@60;
-}
 
 - (CGFloat) getExpressionLabelTopOffSet:(CGRect) screenBounds {
     return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? 25.5:80): 5.5;
@@ -190,7 +190,7 @@
 }
 
 - (CGFloat) getResultLabelRightOffSet:(CGRect) screenBounds {
-    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-13.5):-7.5;
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? -15:-14):-8.5;
 }
 
 - (CGFloat)getResultLabelBaselineOffSet:(CGRect) screenBounds {
@@ -199,6 +199,10 @@
 
 - (UIFont *) getResultLabelFont:(CGRect) screenBounds {
     return [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:screenBounds.size.height == 320 ? 44 : screenBounds.size.height == 480 ? 62: 84];
+}
+
+- (id) getResultLabelHight:(CGRect) screenBounds {
+    return screenBounds.size.height != 320 ? (screenBounds.size.height == 480 ? @60 : @83):@44;
 }
 
 /*
@@ -269,14 +273,14 @@
         
         [self.view addSubview:self.degreeandradianLabel];
         [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.left).with.offset(8);
+            make.left.equalTo(self.view.left).with.offset(12);
             //self.degreeLabelBottomConstraint =  make.bottom.equalTo(_keyboardView.top).with.offset([self getDegreeLabelBottomOffset:screenBounds]);
             make.bottom.equalTo(_keyboardView.top).with.offset(-8.0);
         }];
     } else {
         [self.pageControl addSubview:self.degreeandradianLabel];
         [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.pageControl.left).with.offset(8);
+            make.left.equalTo(self.pageControl.left).with.offset(12);
             make.bottom.equalTo(self.pageControl.bottom).with.offset(-1);
         }];
     }
@@ -289,6 +293,7 @@
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
+        _expressionLabel.copyingEnabled = NO;
 	}
 	return _expressionLabel;
 }
@@ -310,7 +315,7 @@
 - (UILabel *)degreeandradianLabel {
     if(!_degreeandradianLabel) {
         _degreeandradianLabel = [UILabel new];
-        _degreeandradianLabel.font = [UIFont systemFontOfSize:15];
+        _degreeandradianLabel.font = [UIFont systemFontOfSize:14];
         _degreeandradianLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         _degreeandradianLabel.textAlignment = NSTextAlignmentLeft;
         _degreeandradianLabel.backgroundColor = [UIColor clearColor];
@@ -381,11 +386,10 @@
             navGestureRecognizer.enabled = NO;
             [self setNavigationBarHidden:NO];
         }
-        
         self.pageControl.hidden = NO;
         [[UIApplication sharedApplication] setStatusBarHidden:NO];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-        
+        _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
         self.calculator.isLandScape = NO;
     } else {
         CGRect frame = _keyboardView.frame;
@@ -404,6 +408,7 @@
         [self setNavigationBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarHidden:YES];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+        _inputViewForPlayInputClick.backgroundColor = [UIColor colorWithRed:252.0 / 255.0 green:252.0 / 255.0 blue:253.0 / 255.0 alpha:1.0];
         self.calculator.isLandScape = YES;
         
         
@@ -545,14 +550,38 @@
 }
 */
 - (void)shareAll:(id)sender {
-	NSMutableString *shareString = [[NSMutableString alloc] init];
-	if (![self.expressionLabel.text hasSuffix:@"="]) {
-		[shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-	} else {
-		[shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-	}
+	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
+}
 
-	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+    return @"";
+}
+
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+    if ([activityType isEqualToString:UIActivityTypeMail]) {
+        NSAttributedString *shareString = [[NSAttributedString alloc] init];
+        if (![self.expressionLabel.text hasSuffix:@"="]) {
+            shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
+        } else {
+            shareString = [_expressionLabel.attributedText appendWithString:[self.calculator getResultString]];
+            
+        }
+        return shareString;
+    } else {
+        return [self.calculator getResultString];
+    }
+    
+    return @"";
+}
+
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+    return @"Calculator";
 }
 
 
@@ -590,7 +619,7 @@
 	Calculation *calculation = [Calculation MR_createEntity];
 	NSDate *keyDate = [NSDate date];
 	calculation.expression = mathExpression;
-	calculation.result = _evaluatedResultLabel.text;
+	calculation.result = [self.calculator getResultString];
 	calculation.date = keyDate;
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];

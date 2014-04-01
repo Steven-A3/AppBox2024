@@ -74,7 +74,6 @@
         self.numberOfEventsLabel = self.numberOfEventsLabeliPad;
         self.updateDateLabel = self.updateDateLabeliPad;
     }
-//    [self.tableView setTableFooterView:_footerView];
     
     for (NSLayoutConstraint *layout in _verticalSeperators) {
         layout.constant = 1.0 / [[UIScreen mainScreen] scale];
@@ -101,14 +100,6 @@
     [super viewWillAppear:animated];
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
-    if ( IS_IPAD ) {
-        if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            [self leftBarButtonAppsButton];
-        }
-        else {
-            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-        }
-    }
     
     _searchButton.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
@@ -188,22 +179,22 @@
     // suffix is tag
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
-    UILabel *eventNameLabel12 = (UILabel*)[cell viewWithTag:12];
-    UILabel *periodLabel13 = (UILabel*)[cell viewWithTag:13];
-    UILabel *periodLabel14 = (UILabel*)[cell viewWithTag:14];
+//    UILabel *eventNameLabel12 = (UILabel*)[cell viewWithTag:12];
+//    UILabel *periodLabel13 = (UILabel*)[cell viewWithTag:13];
+//    UILabel *periodLabel14 = (UILabel*)[cell viewWithTag:14];
     
     textLabel.font = [UIFont systemFontOfSize:30];
     countLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:65];
-    if (IS_IPHONE) {
-        eventNameLabel12.font = [UIFont systemFontOfSize:13];
-        periodLabel13.font = [UIFont systemFontOfSize:11];
-        periodLabel14.font = [UIFont systemFontOfSize:11];
-    }
-    else {
-        eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-        periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    }
+//    if (IS_IPHONE) {
+//        eventNameLabel12.font = [UIFont systemFontOfSize:13];
+//        periodLabel13.font = [UIFont systemFontOfSize:11];
+//        periodLabel14.font = [UIFont systemFontOfSize:11];
+//    }
+//    else {
+//        eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+//        periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//        periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+//    }
 }
 
 #pragma mark - action method
@@ -305,6 +296,64 @@
     return 0.01;
 }
 
+- (NSString *)periodStringForEvent:(DaysCounterEvent *)event
+{
+    NSString *result;
+    NSDate *today = [NSDate date];
+    NSDate *calcDate = event.startDate;
+    NSInteger diffDay = 0;
+    if ( [event.repeatType integerValue] != RepeatType_Never ) {
+        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                                     firstDate:event.startDate
+                                                                                      fromDate:today];
+        diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
+        calcDate = nextDate;
+    }
+    else {
+        if (event.isAllDay) {
+            diffDay = [A3DateHelper diffDaysOfAllDayTypeFromDate:today toDate:event.startDate];
+        }
+        else {
+            diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate];
+        }
+    }
+    
+    if ( diffDay == 0 ) {
+        result = @"0 days";
+    }
+    else {
+        result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
+                                                                                                               fromDate:today
+                                                                                                                 toDate:calcDate
+                                                                                                               isAllDay:[event.isAllDay boolValue]],
+                  diffDay > 0 ? @"until" : @"since"];
+    }
+    
+    return result;
+}
+
+- (NSString *)dateStringForEvent:(DaysCounterEvent *)event
+{
+    NSString *result;
+    NSDate *today = [NSDate date];
+    NSDate *calcDate = event.startDate;
+    NSInteger diffDay = 0;
+    
+    if ( [event.repeatType integerValue] != RepeatType_Never ) {
+        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                                     firstDate:event.startDate
+                                                                                      fromDate:today];
+        diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
+        calcDate = nextDate;
+    }
+
+    result = [A3DateHelper dateStringFromDate:calcDate
+                                   withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE h:m a"];
+    
+    return result;
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //DaysCounterCalendar *item = (tableView == self.tableView && (indexPath.row >= [_itemArray count])) ? nil : [(tableView == self.tableView ? _itemArray : _searchResultArray) objectAtIndex:indexPath.row];
@@ -351,56 +400,64 @@
     countLabel.textColor = [item color];
     textLabel.text = item.calendarName;
     
-    [self adjustFontSizeOfCell:cell withCellType:cellType];
-    
+//    [self adjustFontSizeOfCell:cell withCellType:cellType];
     
     switch (cellType) {
         case CalendarCellType_User:
         {
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
-            UILabel *eventNameLabel = (UILabel*)[cell viewWithTag:12];
-            UILabel *periodLabel = (UILabel*)[cell viewWithTag:13];
             
-            if ( [item.events count] < 1 ) {
-                eventNameLabel.text = @"";
-                periodLabel.text = @"";
+            UILabel *eventDetailInfoLabel = (UILabel*)[cell viewWithTag:15];
+            NSMutableAttributedString *eventDetailInfoString = [[NSMutableAttributedString alloc] initWithString:@""];
+            if ([item.events count] > 0) {
+                DaysCounterEvent *event = [item.events lastObject];
+                
+                NSAttributedString *eventName;
+                NSAttributedString *period;
+                NSAttributedString *date;
+                if (IS_IPHONE) {
+                    eventName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [event eventName]]
+                                                                attributes:@{
+                                                                             NSFontAttributeName : [UIFont systemFontOfSize:13],
+                                                                             NSForegroundColorAttributeName : [UIColor blackColor]
+                                                                             }];
+                    period = [[NSAttributedString alloc] initWithString:[self periodStringForEvent:event]
+                                                             attributes:@{
+                                                                          NSFontAttributeName : [UIFont systemFontOfSize:11],
+                                                                          NSForegroundColorAttributeName : [UIColor colorWithRed:77/255.0 green:77/255.0 blue:77/255.0 alpha:1.0]
+                                                                          }];
+                    date = [[NSAttributedString alloc] initWithString:@""
+                                                           attributes:@{
+                                                                        NSFontAttributeName : [UIFont systemFontOfSize:11],
+                                                                        NSForegroundColorAttributeName : [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0]
+                                                                        }];
+                }
+                else {
+                    eventName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [event eventName]]
+                                                                attributes:@{
+                                                                             NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote],
+                                                                             NSForegroundColorAttributeName : [UIColor blackColor]
+                                                                             }];
+                    period = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [self periodStringForEvent:event]]
+                                                             attributes:@{
+                                                                          NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
+                                                                          NSForegroundColorAttributeName : [UIColor colorWithRed:77/255.0 green:77/255.0 blue:77/255.0 alpha:1.0]
+                                                                          }];
+                    date = [[NSAttributedString alloc] initWithString:[self dateStringForEvent:event]
+                                                           attributes:@{
+                                                                        NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
+                                                                        NSForegroundColorAttributeName : [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0]
+                                                                        }];
+                }
+                
+                
+                [eventDetailInfoString appendAttributedString:eventName];
+                [eventDetailInfoString appendAttributedString:period];
+                [eventDetailInfoString appendAttributedString:date];
+                eventDetailInfoLabel.attributedText = eventDetailInfoString;
             }
             else {
-                DaysCounterEvent *event = [item.events lastObject];
-                eventNameLabel.text = event.eventName;
-                NSDate *today = [NSDate date];
-                NSDate *calcDate = event.startDate;
-                NSInteger diffDay = 0;
-                if ( [event.repeatType integerValue] != RepeatType_Never ) {
-                    NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
-                                                                                                 firstDate:event.startDate
-                                                                                                  fromDate:today];
-                    diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
-                    calcDate = nextDate;
-                }
-                else {
-                    diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate];
-                }
-                
-                if ( diffDay == 0 ) {
-//                    periodLabel.text = @"Release 0 days";
-                    periodLabel.text = @"0 days";
-                }
-                else {
-//                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
-                    periodLabel.text = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
-                                                                                                                                     fromDate:today
-                                                                                                                                       toDate:calcDate
-                                                                                                                                     isAllDay:[event.isAllDay boolValue]],
-                                        diffDay > 0 ? @"until" : @"since"];
-                }
-                
-                if ( IS_IPAD ) {
-                    UILabel *dateLabel = (UILabel*)[cell viewWithTag:14];
-                    dateLabel.hidden = NO;
-                    dateLabel.text = [A3DateHelper dateStringFromDate:calcDate
-                                                           withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE h:m a"];
-                }
+                eventDetailInfoLabel.text = @"";
             }
         }
             break;
@@ -425,9 +482,13 @@
             break;
     }
     
+    [self adjustFontSizeOfCell:cell withCellType:cellType];
+    
     
     return cell;
 }
+
+
 
 
 #pragma mark - Table view delegate

@@ -415,11 +415,16 @@
             calcDate = nextDate;
         }
 
-        diffDays = [A3DateHelper diffDaysFromDate:today toDate:calcDate];
+        if (item.isAllDay) {
+            diffDays = [A3DateHelper diffDaysOfAllDayTypeFromDate:today toDate:calcDate];
+        }
+        else {
+            diffDays = [A3DateHelper diffDaysFromDate:today toDate:calcDate];
+        }
         
         NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
-                    fromDate:today
-                      toDate:calcDate options:0];
+                                                                  fromDate:today
+                                                                    toDate:calcDate options:0];
         
         NSInteger day = ABS([comps day]);
         if ( ![[A3DateHelper dateStringFromDate:today withFormat:@"yyyyMMdd"] isEqualToString:[A3DateHelper dateStringFromDate:calcDate withFormat:@"yyyyMMdd"]] ) {
@@ -439,7 +444,7 @@
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         
-        markLabel.layer.borderWidth = 1.0;
+        markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
         markLabel.layer.cornerRadius = 9.0;
         markLabel.layer.borderColor = markLabel.textColor.CGColor;

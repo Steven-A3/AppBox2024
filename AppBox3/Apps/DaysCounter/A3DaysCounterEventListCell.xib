@@ -22,14 +22,14 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Fo-Ne-hUa">
-                        <rect key="frame" x="58" y="12" width="229" height="18"/>
+                        <rect key="frame" x="58" y="2" width="229" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Since" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVW-rD-TDa">
-                        <rect key="frame" x="58" y="34" width="42" height="18"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Since" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cVW-rD-TDa" userLabel="Label 1 Since">
+                        <rect key="frame" x="58" y="30" width="42" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="32q-pa-M8x"/>
@@ -39,8 +39,8 @@
                         <color key="textColor" red="1" green="0.1764705882352941" blue="0.33333333333333331" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSv-H1-Ld2">
-                        <rect key="frame" x="105" y="35" width="182" height="15"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSv-H1-Ld2" userLabel="Label 2">
+                        <rect key="frame" x="105" y="31" width="182" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                         <color key="textColor" red="0.30196078431372547" green="0.30196078431372547" blue="0.30196078431372547" alpha="1" colorSpace="calibratedRGB"/>
@@ -60,15 +60,15 @@
                 <constraints>
                     <constraint firstAttribute="centerY" secondItem="nf0-gC-Ila" secondAttribute="centerY" id="4i7-An-l62"/>
                     <constraint firstItem="nf0-gC-Ila" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="20" id="AyX-9V-nhE"/>
-                    <constraint firstAttribute="bottom" secondItem="FSv-H1-Ld2" secondAttribute="bottom" constant="11" id="Bl0-jq-uBn"/>
-                    <constraint firstItem="1Fo-Ne-hUa" firstAttribute="top" secondItem="5JQ-zP-85K" secondAttribute="top" constant="12" id="F2R-5I-EoH"/>
+                    <constraint firstAttribute="bottom" secondItem="FSv-H1-Ld2" secondAttribute="bottom" constant="15" id="Bl0-jq-uBn"/>
                     <constraint firstItem="FSv-H1-Ld2" firstAttribute="leading" secondItem="cVW-rD-TDa" secondAttribute="trailing" constant="5" id="cJE-FC-RDK"/>
+                    <constraint firstItem="FSv-H1-Ld2" firstAttribute="centerY" secondItem="cVW-rD-TDa" secondAttribute="centerY" id="f36-Gd-8nR"/>
                     <constraint firstItem="1Fo-Ne-hUa" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="58" id="fO1-Q9-30H"/>
                     <constraint firstAttribute="trailing" secondItem="FSv-H1-Ld2" secondAttribute="trailing" id="fl2-QQ-KMo"/>
                     <constraint firstAttribute="centerY" secondItem="CAj-rj-Pk3" secondAttribute="centerY" id="hpU-XT-NxN"/>
                     <constraint firstAttribute="trailing" secondItem="1Fo-Ne-hUa" secondAttribute="trailing" id="mjJ-vj-4F7"/>
+                    <constraint firstAttribute="bottom" secondItem="1Fo-Ne-hUa" secondAttribute="bottom" constant="41" id="n6L-Yh-jBj"/>
                     <constraint firstAttribute="trailing" secondItem="CAj-rj-Pk3" secondAttribute="trailing" id="qlw-OR-Jbp"/>
-                    <constraint firstAttribute="bottom" secondItem="cVW-rD-TDa" secondAttribute="bottom" constant="9" id="snx-f4-SpN"/>
                     <constraint firstItem="cVW-rD-TDa" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="58" id="zKN-EE-xnY"/>
                 </constraints>
             </tableViewCellContentView>

@@ -1,4 +1,3 @@
-//
 //  A3MagnifierViewController.h
 //  A3TeamWork
 //
@@ -9,7 +8,6 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import <GLKit/GLKit.h>
-#import "VerticalSlider.h"
 #import "MWPhotoBrowser.h"
 
 @interface A3MagnifierViewController : UIViewController <MWPhotoBrowserDelegate, AVCaptureVideoDataOutputSampleBufferDelegate,GLKViewDelegate, UIGestureRecognizerDelegate>
@@ -28,8 +26,9 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
 @property (weak, nonatomic) IBOutlet UISlider *magnifierslider;
 @property (weak, nonatomic) IBOutlet UISlider *brightnessslider;
-@property (weak, nonatomic) IBOutlet VerticalSlider *flashbrightslider;
+@property (weak, nonatomic) IBOutlet UISlider *flashbrightslider;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *lightButton;
+@property (weak, nonatomic) IBOutlet UIToolbar *flashToolBar;
 
 
 @end

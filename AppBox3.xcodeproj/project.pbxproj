@@ -54,6 +54,7 @@
 		17D42F37E672CCF7D71978C9 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DA2DACEFCA29645708D /* NSManagedObject+Clone.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
+		57D31ACE18E95C120081A810 /* A3DaysCounterEventInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */; };
 		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
@@ -1024,6 +1025,8 @@
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; };
 		577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListSectionHeader.h; sourceTree = "<group>"; };
 		577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListSectionHeader.m; sourceTree = "<group>"; };
+		57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventInfoCell.h; sourceTree = "<group>"; };
+		57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventInfoCell.m; sourceTree = "<group>"; };
 		6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3EmptyActionMenuViewController_iPad.xib; path = ViewControllers/A3EmptyActionMenuViewController_iPad.xib; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3UIDevice.m; sourceTree = "<group>"; };
@@ -4836,6 +4839,7 @@
 				804C330C18DAE22D00DBCE83 /* 4. Favorite */,
 				8054E88518E3E66C00598FB3 /* Cells (AddEvent) */,
 				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
+				8094E0DF18E6D04800CB03BC /* Location SubDetail */,
 				804C330818DAE0E500DBCE83 /* Event Related */,
 				804C330E18DAE33D00DBCE83 /* SubDetails */,
 				68F1C7DE18D7F37D009FAE8A /* A3DaysCounterDefine.h */,
@@ -5069,9 +5073,6 @@
 				68F1C81218D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.h */,
 				68F1C81318D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.m */,
 				68F1C81418D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.xib */,
-				68F1C81518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.h */,
-				68F1C81618D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m */,
-				68F1C81718D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.xib */,
 				68F1C81818D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.h */,
 				68F1C81918D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.m */,
 				68F1C81A18D7F37D009FAE8A /* A3DaysCounterSetupRepeatViewController.xib */,
@@ -5163,12 +5164,6 @@
 				68F1C82C18D7F37D009FAE8A /* A3PhotoSelectViewController.m */,
 				68F1C82D18D7F37D009FAE8A /* A3PhotoSelectViewController.xib */,
 				68F1C7FA18D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib */,
-				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
-				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
-				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,
-				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
-				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
-				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
 			);
 			name = SubDetails;
 			sourceTree = "<group>";
@@ -5203,8 +5198,26 @@
 				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
 				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
+				57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */,
+				57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */,
 			);
 			name = "Cells (AddEvent)";
+			sourceTree = "<group>";
+		};
+		8094E0DF18E6D04800CB03BC /* Location SubDetail */ = {
+			isa = PBXGroup;
+			children = (
+				68F1C81518D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.h */,
+				68F1C81618D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.m */,
+				68F1C81718D7F37D009FAE8A /* A3DaysCounterSetupLocationViewController.xib */,
+				68F1C7FB18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.h */,
+				68F1C7FC18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.m */,
+				68F1C7FD18D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib */,
+				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
+				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
+				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
+			);
+			name = "Location SubDetail";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5946,6 +5959,7 @@
 				680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */,
 				68F1C8FA18D7FA41009FAE8A /* MPFlipSegue.m in Sources */,
 				68B6A45A18CEE781004084EF /* NSData+GIF.m in Sources */,
+				57D31ACE18E95C120081A810 /* A3DaysCounterEventInfoCell.m in Sources */,
 				6829683018503B2100B70E13 /* NSPersistentStoreCoordinator+MagicalManualMigrations.m in Sources */,
 				68B6A30E18CEC76D004084EF /* WalletFieldItem+initialize.m in Sources */,
 				68953480178686AF007061CA /* UIImage+Resizing.m in Sources */,
@@ -6465,8 +6479,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = AppBox3/AppBox3.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: jeonghwan kim (3ZVY2RYR2X)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: jeonghwan kim (3ZVY2RYR2X)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/External/dropbox-ios-sdk-1.3.9",

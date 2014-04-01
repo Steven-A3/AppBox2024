@@ -21,6 +21,7 @@
 #import "UILabel+Boldify.h"
 #import "MBProgressHUD.h"
 #import "A3KeyboardView.h"
+#import "NSAttributedString+Append.h"
 
 
 @interface A3CalculatorViewController_iPad ()<A3CalcKeyboardViewIPadDelegate, UIPopoverControllerDelegate, MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
@@ -77,6 +78,7 @@
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
         [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
         [_calculator evaluateAndSet];
+        [self checkRightButtonDisable];
     }
 
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
@@ -109,7 +111,7 @@
         make.left.equalTo(self.view.left).with.offset(15);
         make.right.equalTo(self.view.right).with.offset(-15);
         make.top.equalTo(@91);
-        make.height.equalTo(@24);
+        make.height.equalTo(@25.5);
 	}];
     
     [self.view addSubview:self.degreeandradianLabel];
@@ -217,6 +219,7 @@
 - (HTCopyableLabel *)expressionLabel {
 	if (!_expressionLabel) {
 		_expressionLabel = [HTCopyableLabel new];
+        _expressionLabel.copyingEnabled = NO;
 		_expressionLabel.backgroundColor =[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
 		_expressionLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:22];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
@@ -320,14 +323,7 @@
 
 - (void)shareAll:(id)sender {
 	@autoreleasepool {
-		NSMutableString *shareString = [[NSMutableString alloc] init];
-        if (![self.expressionLabel.text hasSuffix:@"="]) {
-            [shareString appendString:[NSString stringWithFormat:@"%@=%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-        } else {
-            [shareString appendString:[NSString stringWithFormat:@"%@%@\n", _expressionLabel.text, _evaluatedResultLabel.text]];
-        }
-        
-		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[shareString] fromBarButtonItem:sender];
+		_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
         _sharePopoverController.delegate = self;
         [self.navigationItem.rightBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem *buttonItem, NSUInteger idx, BOOL *stop) {
             [buttonItem setEnabled:NO];
@@ -335,6 +331,37 @@
         
 	}
 }
+
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+    return @"";
+}
+
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+    if ([activityType isEqualToString:UIActivityTypeMail]) {
+        NSAttributedString *shareString = [[NSAttributedString alloc] init];
+        if (![self.expressionLabel.text hasSuffix:@"="]) {
+            shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
+        } else {
+            shareString = [_expressionLabel.attributedText appendWithString:[self.calculator getResultString]];
+            
+        }
+        return shareString;
+    } else {
+        return [self.calculator getResultString];
+    }
+    
+    return @"";
+}
+
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+    return @"Calculator";
+}
+
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
     

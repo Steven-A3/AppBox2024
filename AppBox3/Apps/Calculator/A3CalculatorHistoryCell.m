@@ -27,7 +27,7 @@
 }
 
 - (void)doAutolayout {
-	[self addConstraintLeft:_L1 right:_R1 centerY:2.15 * (1.0 / 4.0)];
+	[self addConstraintLeft:_L1 right:_R1 centerY:1.9 * (1.0 / 4.0)];
 	[self addConstraintLeft:_L2 right:_R2 centerY:1.425];
 }
 
@@ -90,6 +90,6 @@
                                                                     toItem:left
                                                                  attribute:NSLayoutAttributeCenterY
                                                                 multiplier:1.0
-                                                                  constant:0.0]];
+                                                                  constant:1.5]];
 }
 @end

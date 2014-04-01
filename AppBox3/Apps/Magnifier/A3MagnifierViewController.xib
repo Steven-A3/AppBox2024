@@ -10,7 +10,8 @@
                 <outlet property="brightnessToolBar" destination="YpF-Zt-14A" id="CmE-F2-EqH"/>
                 <outlet property="brightnessslider" destination="odj-7y-xmn" id="uuL-UE-rlt"/>
                 <outlet property="cameraRollButton" destination="kvd-IK-1j1" id="YwS-oQ-cJX"/>
-                <outlet property="flashbrightslider" destination="QGV-Pm-m4M" id="gU9-ad-jkc"/>
+                <outlet property="flashToolBar" destination="VNC-ds-Hi4" id="gbx-AN-LE7"/>
+                <outlet property="flashbrightslider" destination="2dF-jI-xRn" id="ueh-DU-fE5"/>
                 <outlet property="lightButton" destination="V3Z-ZX-qW7" id="o1U-34-Had"/>
                 <outlet property="magnifierToolBar" destination="cPy-Lx-SnA" id="hRY-aN-quI"/>
                 <outlet property="magnifierslider" destination="XkM-xa-vJh" id="VHN-xz-lIf"/>
@@ -26,7 +27,7 @@
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="O1O-Nj-Osb">
                     <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                     <items>
                         <barButtonItem title="Item" width="47" id="kvd-IK-1j1">
                             <connections>
@@ -55,7 +56,7 @@
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="gUz-wQ-jb0"/>
-                        <barButtonItem image="m_flash_off" id="V3Z-ZX-qW7">
+                        <barButtonItem image="m_flash_on" id="V3Z-ZX-qW7">
                             <connections>
                                 <action selector="lightButton:" destination="-1" id="6Hs-8x-4Ih"/>
                             </connections>
@@ -75,19 +76,19 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
                     <items>
-                        <barButtonItem enabled="NO" image="m_brightness_left" id="NN8-uu-Gar">
+                        <barButtonItem enabled="NO" image="m_zoomout" id="NN8-uu-Gar">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
                         <barButtonItem style="plain" id="4TB-LA-Qw3">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="XkM-xa-vJh">
-                                <rect key="frame" x="41" y="6" width="236" height="32"/>
+                                <rect key="frame" x="49" y="6" width="236" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="manifierslider:" destination="-1" eventType="valueChanged" id="8Jn-FC-oDt"/>
                                 </connections>
                             </slider>
                         </barButtonItem>
-                        <barButtonItem enabled="NO" image="add03" id="jEE-YA-MkH">
+                        <barButtonItem enabled="NO" image="m_zoomin" id="jEE-YA-MkH">
                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </barButtonItem>
                     </items>
@@ -103,7 +104,7 @@
                         </barButtonItem>
                         <barButtonItem style="plain" id="cGr-qd-1Gg">
                             <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="odj-7y-xmn">
-                                <rect key="frame" x="41" y="-1" width="237" height="45"/>
+                                <rect key="frame" x="49" y="-1" width="237" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="brightSlider:" destination="-1" eventType="valueChanged" id="gus-S4-XUl"/>
@@ -116,25 +117,46 @@
                     </items>
                     <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </toolbar>
-                <view opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="QGV-Pm-m4M" customClass="VerticalSlider">
-                    <rect key="frame" x="276" y="85" width="44" height="247"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
-                    <connections>
-                        <action selector="flashbrightslider:" destination="-1" eventType="valueChanged" id="G6r-ul-hVh"/>
-                    </connections>
-                </view>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="VNC-ds-Hi4">
+                    <rect key="frame" x="0.0" y="392" width="320" height="44"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.20000000000000001" colorSpace="calibratedRGB"/>
+                    <items>
+                        <barButtonItem enabled="NO" image="m_flash_left" id="2wb-4J-sVt">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
+                        <barButtonItem style="plain" id="7qe-YI-HPp">
+                            <slider key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" id="2dF-jI-xRn">
+                                <rect key="frame" x="49" y="8" width="233" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="flashbrightslider:" destination="-1" eventType="valueChanged" id="7W5-W0-cdK"/>
+                                </connections>
+                            </slider>
+                            <connections>
+                                <action selector="flashbrightslider:" destination="-1" id="EKB-PQ-rAw"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem enabled="NO" image="m_flash_right" id="IGd-JE-axe">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </barButtonItem>
+                    </items>
+                    <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <resources>
-        <image name="add03" width="16" height="16"/>
-        <image name="m_brightness_left" width="15" height="15"/>
+        <image name="m_brightness_left" width="23" height="23"/>
         <image name="m_brightness_right" width="23" height="23"/>
-        <image name="m_flash_off" width="14" height="21"/>
+        <image name="m_flash_left" width="23" height="23"/>
+        <image name="m_flash_on" width="14" height="21"/>
+        <image name="m_flash_right" width="23" height="23"/>
         <image name="m_invert" width="18" height="18"/>
-        <image name="m_snap" width="34" height="34"/>
+        <image name="m_snap" width="60" height="60"/>
+        <image name="m_zoomin" width="23" height="23"/>
+        <image name="m_zoomout" width="23" height="23"/>
     </resources>
 </document>

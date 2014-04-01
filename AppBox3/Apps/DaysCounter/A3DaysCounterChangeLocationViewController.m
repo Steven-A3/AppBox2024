@@ -40,6 +40,9 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"Change Location";
     self.automaticallyAdjustsScrollViewInsets = NO;
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+    self.searchBarTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.frame) + CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,18 +67,19 @@
     static NSString *cellID = @"locationCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     
-    if( cell == nil ){
+    if ( cell == nil ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
+        cell.textLabel.font = [UIFont systemFontOfSize:17];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    if( indexPath.row == 0 ){
+    if ( indexPath.row == 0 ) {
         cell.textLabel.text = @"Current Location";
         cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
     }
-    else{
+    else {
         cell.textLabel.textColor = [UIColor darkTextColor];
-        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.resultArray objectAtIndex:indexPath.row-1]];
+        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.resultArray objectAtIndex:indexPath.row - 1]];
         cell.textLabel.text = address;
     }
     
@@ -86,7 +90,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_resultArray objectAtIndex:indexPath.row-1]);
-    if( self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:)] ){
+    if ( self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:)] ) {
         [self.delegate changeLocationViewController:self didSelectLocation:placemark];
     }
 }
@@ -96,14 +100,25 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     NSString *searchText = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if( [searchText length] < 1 )
+    if ( [searchText length] < 1 ) {
         return;
+    }
     
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
         self.resultArray = [NSMutableArray array];
-//        NSLog(@"%s %@",__FUNCTION__,placemarks);
-        for(CLPlacemark *placemark in placemarks){
+        
+        if (!placemarks || [error code] == kCLErrorGeocodeFoundNoResult) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
+                                                                message:@"No Results Found"
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil, nil];
+            [alertView show];
+            return;
+        }
+
+        for (CLPlacemark *placemark in placemarks) {
             NSLog(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
             [self.resultArray addObject:placemark];
         }
