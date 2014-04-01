@@ -13,6 +13,10 @@
 @implementation A3NumberKeyboardSimpleVC_iPad
 
 - (void)viewWillLayoutSubviews {
+	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
+- (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	BOOL isLandscape = IS_LANDSCAPE;
 
 	CGFloat col_1, col_2, col_3, col_4, col_5;
@@ -83,7 +87,7 @@
 	[self.nextButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 
 	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 33 : 28]];
-	
+
 	if ([self.simpleKeyboardLayout unsignedIntegerValue] == A3NumberKeyboardSimpleLayoutHasPrevNextClear) {
 		[self.clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
 		[self.num0Button setFrame:CGRectMake(col_3, row_4, width_small, height_small)];
@@ -92,5 +96,6 @@
 		[self.num0Button setFrame:CGRectMake(col_2, row_4, width_extra, height_small)];
 	}
 }
+
 
 @end

@@ -477,9 +477,6 @@
 #pragma mark - misc
 
 - (void)moveTableScrollToIndexPath:(NSIndexPath *)indexPath textField:(UITextField *)textField {
-	[UIView beginAnimations:nil context:nil];
-	[UIView setAnimationDuration:0.3];
-
     CGRect cellRect = [_rootTableView rectForRowAtIndexPath:indexPath];
 	CGFloat keyboardHeight;
 	if (textField) {
@@ -487,9 +484,14 @@
 	} else {
 		keyboardHeight = _inputViewController.view.bounds.size.height;
 	}
-    if ((cellRect.origin.y + cellRect.size.height + _rootTableView.contentInset.top) < (_rootTableView.frame.size.height - keyboardHeight))
-        return;
-    CGFloat offset = (cellRect.origin.y + cellRect.size.height) - (_rootTableView.frame.size.height - keyboardHeight);
+    if ((cellRect.origin.y + cellRect.size.height + _rootTableView.contentInset.top) < (_rootTableView.frame.size.height - keyboardHeight)) {
+		return;
+	}
+
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.3];
+
+	CGFloat offset = (cellRect.origin.y + cellRect.size.height) - (_rootTableView.frame.size.height - keyboardHeight);
     _rootTableView.contentOffset = CGPointMake(0.0, offset);
 
 	[UIView commitAnimations];

@@ -48,6 +48,23 @@
 }
 
 - (void)viewWillLayoutSubviews {
+	[self rotateToInterfaceOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+}
+
+- (void)setupFonts:(BOOL)portrait {
+	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 28 : 33]];
+
+	NSArray *numbers = @[_num0Button, _num1Button, _num2Button, _num3Button, _num4Button, _num5Button, _num6Button, _num7Button, _num8Button, _num9Button, self.bigButton1, self.bigButton2];
+	[numbers enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 22 : 27];
+	}];
+
+	[@[self.clearButton, self.doneButton, self.prevButton, self.nextButton] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
+		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 18 : 25];
+	}];
+}
+
+- (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
 	CGFloat col_1, col_2, col_3, col_4, col_5;
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
@@ -91,19 +108,6 @@
 	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
 
 	[self setupFonts:IS_PORTRAIT ];
-}
-
-- (void)setupFonts:(BOOL)portrait {
-	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:portrait ? 28 : 33]];
-
-	NSArray *numbers = @[_num0Button, _num1Button, _num2Button, _num3Button, _num4Button, _num5Button, _num6Button, _num7Button, _num8Button, _num9Button, self.bigButton1, self.bigButton2];
-	[numbers enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
-		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 22 : 27];
-	}];
-
-	[@[self.clearButton, self.doneButton, self.prevButton, self.nextButton] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
-		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 18 : 25];
-	}];
 }
 
 @end
