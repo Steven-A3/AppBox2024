@@ -323,10 +323,10 @@
     }
     else {
         result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
-                                                                                                                         fromDate:today
-                                                                                                                           toDate:calcDate
-                                                                                                                         isAllDay:[event.isAllDay boolValue]],
-                            diffDay > 0 ? @"until" : @"since"];
+                                                                                                               fromDate:today
+                                                                                                                 toDate:calcDate
+                                                                                                               isAllDay:[event.isAllDay boolValue]],
+                  diffDay > 0 ? @"until" : @"since"];
     }
     
     return result;
