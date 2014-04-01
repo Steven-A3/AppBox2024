@@ -370,15 +370,18 @@
                     calcDate = nextDate;
                 }
                 else {
-                    diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate];
+                    if (event.isAllDay) {
+                        diffDay = [A3DateHelper diffDaysOfAllDayTypeFromDate:today toDate:event.startDate];
+                    }
+                    else {
+                        diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate];
+                    }
                 }
                 
                 if ( diffDay == 0 ) {
-//                    periodLabel.text = @"Release 0 days";
                     periodLabel.text = @"0 days";
                 }
                 else {
-//                    periodLabel.text = [NSString stringWithFormat:@"Release %@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
                     periodLabel.text = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
                                                                                                                                      fromDate:today
                                                                                                                                        toDate:calcDate

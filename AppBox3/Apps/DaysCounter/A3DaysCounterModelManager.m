@@ -1241,10 +1241,35 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         flag |= NSMonthCalendarUnit;
     if ( option & DurationOption_Year )
         flag |= NSYearCalendarUnit;
+
 	NSCalendar *calendar = [NSCalendar currentCalendar];
 	NSDateComponents *diffComponent = [calendar components:flag
 												  fromDate:smallDate
 													toDate:largeDate options:0];
+    if (isAllDay) {
+        NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                                 fromDate:fromDate];
+        NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                               fromDate:toDate];
+        fromComp.hour = 0;
+        fromComp.minute = 0;
+        fromComp.second = 0;
+        toComp.hour = 0;
+        toComp.minute = 0;
+        toComp.second = 0;
+        
+        diffComponent = [calendar components:flag
+                                    fromDate:[calendar dateFromComponents:fromComp]
+                                      toDate:[calendar dateFromComponents:toComp]
+                                     options:0];
+    }
+    else {
+        diffComponent = [calendar components:flag
+                                    fromDate:smallDate
+                                      toDate:largeDate options:0];
+    }
+
+    
     NSString *retStr = @"";
     
     if ( (option & DurationOption_Year) && [diffComponent year] > 0 ) {
@@ -1260,7 +1285,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         retStr = [retStr stringByAppendingFormat:@"%@%ld day%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent day],([diffComponent day] > 1 ? @"s" : @"")];
     }
     
-    if ( !isAllDay ) {
+    if (!isAllDay) {
         if ( (option & DurationOption_Hour) && [diffComponent hour] > 0 ) {
             retStr = [retStr stringByAppendingFormat:@"%@%ld hour%@",([retStr length] > 0 ? @" " : @""),(long)[diffComponent hour],([diffComponent hour] > 1 ? @"s" : @"")];
         }
