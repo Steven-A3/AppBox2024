@@ -28,87 +28,11 @@
     return self;
 }
 
-- (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
-	super.keyboardType = keyboardType;
-	A3KeyboardButton_iOS7 *bigButton1 = (A3KeyboardButton_iOS7 *) self.bigButton1;
-	A3KeyboardButton_iOS7 *bigButton2 = (A3KeyboardButton_iOS7 *) self.bigButton2;
-
-	[bigButton2 setTitle:nil forState:UIControlStateNormal];
-	[bigButton2 setImage:nil forState:UIControlStateNormal];
-
-	switch (keyboardType) {
-		case A3NumberKeyboardTypeInteger:
-		case A3NumberKeyboardTypeReal:
-		case A3NumberKeyboardTypeCurrency: {
-			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@""];
-			bigButton1.selected = NO;
-			bigButton2.selected = NO;
-			[bigButton2 setTitle:nil forState:UIControlStateNormal];
-			[bigButton2 setImage:[UIImage imageNamed:@"calculator"] forState:UIControlStateNormal];
-			break;
-		}
-		case A3NumberKeyboardTypePercent: {
-			[self fillBigButtonTitleWith:@"%" bigButton2Title:@"$"];
-			bigButton1.selected = NO;
-			bigButton2.selected = NO;
-
-			[bigButton2 setTitle:nil forState:UIControlStateNormal];
-			[bigButton2 setImage:[UIImage imageNamed:@"calculator"] forState:UIControlStateNormal];
-			break;
-		}
-		case A3NumberKeyboardTypeMonthYear: {
-			[self fillBigButtonTitleWith:@"Years" bigButton2Title:@"Months"];
-			bigButton1.selected = YES;
-			bigButton2.selected = NO;
-			break;
-		}
-		case A3NumberKeyboardTypeInterestRate: {
-			[self fillBigButtonTitleWith:@"% /year" bigButton2Title:@"% /month"];
-			bigButton1.selected = YES;
-			bigButton2.selected = NO;
-			break;
-		}
-		case A3NumberKeyboardTypeFraction:
-			break;
-	}
-	[self setupLocale];
-}
-
-- (void)fillBigButtonTitleWith:(NSString *)defaultTitle1 bigButton2Title:(NSString *)defaultTitle2 {
-	NSString *bigButton1Title = nil, *bigButton2Title = nil;
-	id <A3KeyboardDelegate> o = self.delegate;
-	if ([o respondsToSelector:@selector(stringForBigButton1)]) {
-		bigButton1Title = [o stringForBigButton1];
-	}
-	if (bigButton1Title == nil) {
-		bigButton1Title = defaultTitle1;
-	}
-	if ([o respondsToSelector:@selector(stringForBigButton2)]) {
-		bigButton2Title = [o stringForBigButton2];
-	}
-	if (bigButton2Title == nil) {
-		bigButton2Title = defaultTitle2;
-	}
-	[self.bigButton1 setTitle:bigButton1Title forState:UIControlStateNormal];
-	[self.bigButton2 setTitle:bigButton2Title forState:UIControlStateNormal];
-}
-
-- (void)setCurrencyCode:(NSString *)currencyCode {
-	super.currencyCode = currencyCode;
-	[self.bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    if (self.prevBtnTitleText) {        // KJH
-        [self.prevButton setTitle:@"" forState:UIControlStateNormal];
-    }
-    if (self.nextBtnTitleText) {
-        [self.nextButton setTitle:@"" forState:UIControlStateNormal];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -121,65 +45,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (IBAction)bigButton1Action {
-	[[UIDevice currentDevice] playInputClick];
-
-	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
-		[self.bigButton1 setSelected:YES];
-		[self.bigButton2 setSelected:NO];
-	}
-	if ([self.delegate respondsToSelector:@selector(handleBigButton1)]) {
-		[self.delegate handleBigButton1];
-	}
-}
-
-- (IBAction)bigButton2Action {
-	[[UIDevice currentDevice] playInputClick];
-
-	if ((self.keyboardType == A3NumberKeyboardTypeMonthYear) || (self.keyboardType == A3NumberKeyboardTypeInterestRate)) {
-		[self.bigButton1 setSelected:NO];
-		[self.bigButton2 setSelected:YES];
-	}
-	if ([self.delegate respondsToSelector:@selector(handleBigButton2)]) {
-		[self.delegate handleBigButton2];
-	}
-}
-
-- (void)reloadPrevNextButtons {
-    
-    // KJH - Keyboard Prev/Next 텍스트 변경을 위하여 추가했습니다.
-    if ([self.delegate respondsToSelector:@selector(stringForPrevButton:)]) {
-        self.prevBtnTitleText = [self.delegate stringForPrevButton:self.prevBtnTitleText];
-    } else {
-		self.prevBtnTitleText = @"Prev";
-	}
-    if ([self.delegate respondsToSelector:@selector(stringForNextButton:)]) {
-        self.nextBtnTitleText = [self.delegate stringForNextButton:self.nextBtnTitleText];
-    } else {
-		self.nextBtnTitleText = @"Next";
-	}
-    
-	if ([self.delegate respondsToSelector:@selector(isNextEntryExists)]) {
-
-		BOOL available = [self.delegate isNextEntryExists];
-        [self.nextButton setTitle:available ? self.nextBtnTitleText : @"" forState:UIControlStateNormal];
-		[self.nextButton setImage:nil forState:UIControlStateNormal];
-		[self.nextButton setEnabled:available];
-	} else {
-		[self.nextButton setTitle:@"Next" forState:UIControlStateNormal];
-		[self.nextButton setEnabled:YES];
-	}
-	if ([self.delegate respondsToSelector:@selector(isPreviousEntryExists)]) {
-		BOOL available = [self.delegate isPreviousEntryExists];
-		[self.prevButton setTitle:available?@"Prev" : @"" forState:UIControlStateNormal];
-		[self.prevButton setEnabled:available];
-		[self.prevButton setImage:nil forState:UIControlStateNormal];
-	} else {
-		[self.prevButton setTitle:@"Prev" forState:UIControlStateNormal];
-		[self.prevButton setEnabled:YES];
-	}
 }
 
 - (void)viewWillLayoutSubviews {
@@ -239,11 +104,6 @@
 	[@[self.clearButton, self.doneButton, self.prevButton, self.nextButton] enumerateObjectsUsingBlock:^(UIButton *button, NSUInteger idx, BOOL *stop) {
 		button.titleLabel.font = [UIFont systemFontOfSize:portrait ? 18 : 25];
 	}];
-}
-
-- (IBAction)calculatorButtonAction:(UIButton *)sender {
-	[[UIDevice currentDevice] playInputClick];
-	
 }
 
 @end

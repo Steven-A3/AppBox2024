@@ -14,4 +14,5 @@
 
 @property (assign, nonatomic) BOOL showCancelButton;
 
+- (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;
 @end

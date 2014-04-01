@@ -21,8 +21,10 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3NumberKeyboardViewController.h"
+#import "A3CalculatorDelegate.h"
+#import "A3SearchViewController.h"
 
-@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate>
+@interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
     BOOL _isTotalMode;
     NSIndexPath *currentIndexPath;
@@ -31,6 +33,7 @@
 
 @property (nonatomic, strong) NSMutableArray *calcItems;
 @property (nonatomic, strong) NSMutableArray *extraPaymentItems;
+@property (nonatomic, weak) UITextField *calculatorTargetTextField;
 
 @end
 
@@ -780,6 +783,10 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             case A3LC_CalculationItemPrincipal:
             case A3LC_CalculationItemRepayment:
             {
+				NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+				if ([customCurrencyCode length]) {
+					[self.numberKeyboardViewController setCurrencyCode:customCurrencyCode];
+				}
                 self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
                 break;
             }
@@ -1180,6 +1187,43 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
     
     [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+}
+
+- (UIViewController *)modalPresentingParentViewControllerForCalculator {
+	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	return self;
+}
+
+- (id <A3CalculatorDelegate>)delegateForCalculator {
+	return self;
+}
+
+- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
+	return self;
+}
+
+- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
+	return self;
+}
+
+#pragma mark --- Calculator View Delegate
+
+- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
+	_calculatorTargetTextField.text = value;
+	[self textFieldDidEndEditing:_calculatorTargetTextField];
+}
+
+#pragma mark --- Currency Select View Controller
+
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	if ([selectedItem length]) {
+		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		[self.loanFormatter setCurrencyCode:selectedItem];
+
+		[self.tableView reloadData];
+	}
 }
 
 @end

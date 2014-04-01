@@ -25,6 +25,8 @@
 #import "A3PopoverTableViewController.h"
 #import "A3DefaultColorDefines.h"
 #import "A3ItemSelectListViewController.h"
+#import "A3CalculatorDelegate.h"
+#import "A3SearchViewController.h"
 
 #define kColorPlaceHolder [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]
 
@@ -42,7 +44,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 };
 
 
-@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol>
+@interface A3TipCalcMainTableViewController () <UITextFieldDelegate, A3TipCalcDataManagerDelegate, A3TipCalcSettingsDelegate, UIPopoverControllerDelegate, A3TipCalcHistorySelectDelegate, A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate>
 
 @property (nonatomic, strong) A3JHTableViewRootElement *tableDataSource;
 @property (nonatomic, strong) NSArray * tableSectionTitles;
@@ -107,6 +109,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)initialize {
+	FNLOG();
     [self makeBackButtonEmptyArrow];
     [self leftBarButtonAppsButton];
     [self rightBarButtons];
@@ -417,7 +420,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (NSArray *)tableSectionDataAtSection:(NSInteger)section {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = kCFNumberFormatterNoStyle;
+    formatter.numberStyle = NSNumberFormatterNoStyle;
     formatter.maximumFractionDigits = 2;
     NSArray * result;
     
@@ -442,6 +445,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         {
             NSMutableArray *elements = [NSMutableArray new];
             A3TableViewInputElement *costs = [A3TableViewInputElement new];
+			costs.delegate = self;
             if ([self.dataManager.tipCalcData.showTax boolValue]) {
                 costs.title = [self.dataManager knownValue] == TCKnownValue_Subtotal ? @"Costs After Tax" : @"Costs Before Tax";
             }
@@ -451,8 +455,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             
             costs.value = [formatter stringFromNumber:[self.dataManager.tipCalcData costs]];
             costs.inputType = A3TableViewEntryTypeCurrency;
-            costs.bigButton1Type = A3TableViewBigButtonTypeCurrency;
-            costs.bigButton2Type = A3TableViewBigButtonTypeCalculator;
             costs.prevEnabled = NO;
             costs.nextEnabled = YES;
             costs.valueType = A3TableViewValueTypeCurrency;
@@ -465,11 +467,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             if ([self.dataManager isTaxOptionOn]) {
                 A3TableViewInputElement *tax = [A3TableViewInputElement new];
+				tax.delegate = self;
                 tax.title = @"Tax";
                 tax.value = [formatter stringFromNumber:[self.dataManager.tipCalcData tax]];
-                tax.inputType = A3TableViewEntryTypeCurrency;
-                tax.bigButton1Type = A3TableViewBigButtonTypePercent;
-                tax.bigButton2Type = A3TableViewBigButtonTypeCurrency;
+                tax.inputType = A3TableViewEntryTypePercent;
                 tax.prevEnabled = YES;
                 tax.nextEnabled = YES;
                 tax.valueType = [self.dataManager.tipCalcData.isPercentTax boolValue] ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
@@ -483,11 +484,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             }
 
             A3TableViewInputElement *tip = [A3TableViewInputElement new];
+			tip.delegate = self;
             tip.title = @"Tip";
             tip.value = [formatter stringFromNumber:[self.dataManager.tipCalcData tip]];
-            tip.inputType = A3TableViewEntryTypeCurrency;
-            tip.bigButton1Type = A3TableViewBigButtonTypePercent;
-            tip.bigButton2Type = A3TableViewBigButtonTypeCurrency;
+            tip.inputType = A3TableViewEntryTypePercent;
             tip.prevEnabled = YES;
             tip.nextEnabled = YES;
             tip.valueType = [self.dataManager.tipCalcData.isPercentTip boolValue] ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
@@ -500,12 +500,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
             if ([self.dataManager isSplitOptionOn]) {
                 A3TableViewInputElement *split = [A3TableViewInputElement new];
+				split.delegate = self;
                 split.title = @"Split";
                 split.value = [formatter stringFromNumber:[self.dataManager.tipCalcData split]];
-                split.inputType = A3TableViewEntryTypeSimpleNumber;
-                split.valueType = A3TableViewValueTypeNumber;
-                split.bigButton1Type = A3TableViewBigButtonTypePercent;
-                split.bigButton2Type = A3TableViewBigButtonTypeCurrency;
+                split.inputType = A3TableViewEntryTypeInteger;
                 split.prevEnabled = YES;
                 split.nextEnabled = NO;
                 split.onEditingBegin = [self cellTextInputBeginBlock];
@@ -565,6 +563,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 #pragma mark - Table InputElement Manipulate Blocks
+
 -(CellTextInputBlock)cellTextInputBeginBlock
 {
     if (!_cellTextInputBeginBlock) {
@@ -607,40 +606,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 weakSelf.firstResponder = nil;
             }
 
-//            if ([textField.text length] > 0) {
-//                switch (element.identifier) {
-//                    case RowElementID_Costs:
-//                    {
-//                        element.value = textField.text;
-//                        [self.dataManager setTipCalcDataCost:@([textField.text doubleValue])];
-//                    }
-//                        break;
-//                    case RowElementID_Tax:
-//                    {
-//                        element.value = [textField text];
-//                        [self.dataManager setTipCalcDataTax:@([textField.text doubleValue])
-//                                                                   isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO ];
-//                    }
-//                        break;
-//                    case RowElementID_Tip:
-//                    {
-//                        element.value = [textField text];
-//                        [self.dataManager setTipCalcDataTip:@([textField.text doubleValue])
-//                                                                   isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO];
-//                    }
-//                        break;
-//                    case RowElementID_Split:
-//                    {
-//                        //element.value = @([textField.text doubleValue]);
-//                        element.value = [textField text];
-//                        [self.dataManager setTipCalcDataSplit:@([textField.text doubleValue])];
-//                    }
-//                        break;
-//                        
-//                    default:
-//                        break;
-//                }
-//            }
             NSNumber *value;
             if ([textField.text length] == 0) {
                 value = @([[element value] doubleValue]);
@@ -653,26 +618,26 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 case RowElementID_Costs:
                 {
                     [weakSelf.dataManager setTipCalcDataCost:value];
-                }
-                    break;
+					break;
+				}
                 case RowElementID_Tax:
                 {
-                    [weakSelf.dataManager setTipCalcDataTax:value
-                                                               isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO ];
-                }
-                    break;
+					[weakSelf.dataManager setTipCalcDataTax:value
+											  isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO ];
+					break;
+				}
                 case RowElementID_Tip:
                 {
-                    [weakSelf.dataManager setTipCalcDataTip:value
-                                                               isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO];
-                }
-                    break;
+					[weakSelf.dataManager setTipCalcDataTip:value
+											  isPercentType:[element valueType] == A3TableViewValueTypePercent ? YES : NO];
+					break;
+				}
                 case RowElementID_Split:
                 {
                     [weakSelf.dataManager setTipCalcDataSplit:value];
-                }
-                    break;
-                    
+					break;
+				}
+
                 default:
                     break;
             }
@@ -806,7 +771,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     ((UITextField *)self.firstResponder).attributedPlaceholder = [[NSAttributedString alloc] initWithString:strPlaceHoler attributes:@{NSForegroundColorAttributeName: kColorPlaceHolder}];
 }
 
-#pragma mark - currencyselected view stuff
+#pragma mark - Currency Select Delegate
 
 - (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
 
@@ -817,6 +782,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 #pragma mark - Table view data source
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [self.tableDataSource numberOfSections];
@@ -908,7 +874,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 beforeTax.checked = YES;
                 subtotalCell.accessoryType = UITableViewCellAccessoryNone;
                 beforeTaxCell.accessoryType = UITableViewCellAccessoryCheckmark;
-				self.dataManager.knownValue = RowElementID_CostsBeforeTax;
+				self.dataManager.knownValue = TCKnownValue_CostsBeforeTax;
             }
             
             if ([self.dataManager.tipCalcData.beforeSplit intValue] == 0) {
@@ -1129,6 +1095,22 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
     }
     
+}
+
+- (A3JHTableViewRootElement *)tableElementRootDataSource {
+	return self.tableDataSource;
+}
+
+- (UIViewController *)containerViewController {
+	return self;
+}
+
+- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
+	return self;
+}
+
+- (void)willDismissSearchViewController {
+
 }
 
 @end

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const A3LoanCalcCustomCurrencyCode;
+
 @interface UIViewController (LoanCalcAddtion)
 
 @property (nonatomic, strong) NSNumberFormatter *loanFormatter;

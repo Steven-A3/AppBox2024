@@ -382,11 +382,8 @@ enum A3TableElementCellType {
     }
     _price.title = _preferences.calcData.shownPriceType == ShowPriceType_Origin ? @"Original Price" : (IS_IPAD ? @"Sale Price with Tax" : @"Sale Price w/Tax");
     _price.inputType = A3TableViewEntryTypeCurrency;
-    _price.bigButton1Type = A3TableViewBigButtonTypeCurrency;
-    _price.bigButton2Type = A3TableViewBigButtonTypeCalculator;
     _price.prevEnabled = NO;
     _price.nextEnabled = YES;
-    _price.valueType = A3TableViewValueTypeCurrency;
     _price.onEditingBegin = [self cellTextInputBeginBlock];
     _price.onEditingValueChanged = [self cellTextInputChangedBlock];
 //    _price.onEditingFinished = [self cellTextInputFinishedBlock];
@@ -398,22 +395,16 @@ enum A3TableElementCellType {
     if (aData) {
         // 세일된 가격
         _price.value = [formatter stringFromNumber:aData.price];
-        _price.valueType = A3TableViewValueTypeCurrency;
     }
     else {
         _price.value = [formatter stringFromNumber:self.preferences.calcData.price];
-        //_price.valueType = self.preferences.calcData.priceType;
-        _price.valueType = A3TableViewValueTypeCurrency;
     }
     
     A3TableViewInputElement *discount = [A3TableViewInputElement new];
     discount.title = @"Discount";
-    discount.inputType = A3TableViewEntryTypeCurrency;
-    discount.bigButton1Type = A3TableViewBigButtonTypePercent;
-    discount.bigButton2Type = A3TableViewBigButtonTypeCurrency;
+    discount.inputType = A3TableViewEntryTypePercent;
     discount.prevEnabled = YES;
     discount.nextEnabled = YES;
-    discount.valueType = A3TableViewValueTypePercent;
     discount.onEditingBegin = [self cellTextInputBeginBlock];
     discount.onEditingValueChanged = [self cellTextInputChangedBlock];
     //discount.onEditingFinished = [self cellTextInputFinishedBlock];
@@ -424,10 +415,8 @@ enum A3TableElementCellType {
     [elements addObject:discount];
     if (aData) {
         discount.value = [formatter stringFromNumber:aData.discount];
-        discount.valueType = aData.discountType == SCValueType_PERCENT ? A3TableViewValueTypePercent : A3TableViewValueTypeCurrency;
     } else {
         discount.value = [formatter stringFromNumber:self.preferences.calcData.discount];
-        discount.valueType = (A3TableElementValueType) self.preferences.calcData.discountType;
     }
     
     return elements;
@@ -443,11 +432,8 @@ enum A3TableElementCellType {
     additional.title = @"Additional Off";
     additional.placeholder = @"Optional";
     additional.inputType = A3TableViewEntryTypeCurrency;
-    additional.bigButton1Type = A3TableViewBigButtonTypePercent;
-    additional.bigButton2Type = A3TableViewBigButtonTypeCurrency;
     additional.prevEnabled = YES;
     additional.nextEnabled = YES;
-    additional.valueType = A3TableViewValueTypePercent;
     additional.onEditingBegin = [self cellTextInputBeginBlock];
     additional.onEditingValueChanged = [self cellTextInputChangedBlock];
 //    additional.onEditingFinished = [self cellTextInputFinishedBlock];
@@ -458,18 +444,14 @@ enum A3TableElementCellType {
         additional.value = [formatter stringFromNumber:aData.additionalOff];
     } else {
         additional.value = [formatter stringFromNumber:self.preferences.calcData.additionalOff];
-        additional.valueType = (A3TableElementValueType) self.preferences.calcData.additionalOffType;
     }
     
     A3TableViewInputElement *tax = [A3TableViewInputElement new];
     tax.title = @"Tax";
     tax.placeholder = @"Optional";
     tax.inputType = A3TableViewEntryTypeCurrency;
-    tax.bigButton1Type = A3TableViewBigButtonTypePercent;
-    tax.bigButton2Type = A3TableViewBigButtonTypeCurrency;
     tax.prevEnabled = YES;
     tax.nextEnabled = YES;
-    tax.valueType = A3TableViewValueTypePercent;
     tax.onEditingBegin = [self cellTextInputBeginBlock];
     tax.onEditingValueChanged = [self cellTextInputChangedBlock];
 //    tax.onEditingFinished = [self cellTextInputFinishedBlock];
@@ -478,11 +460,9 @@ enum A3TableElementCellType {
     tax.identifier = A3TableElementCellType_Tax;
     if (aData) {
         tax.value = [formatter stringFromNumber:aData.tax];
-        tax.valueType = (A3TableElementValueType) aData.taxType;
     }
     else {
         tax.value = [formatter stringFromNumber:self.preferences.calcData.tax];
-        tax.valueType = (A3TableElementValueType) self.preferences.calcData.taxType;
     }
     
 //    _taxElement = tax;

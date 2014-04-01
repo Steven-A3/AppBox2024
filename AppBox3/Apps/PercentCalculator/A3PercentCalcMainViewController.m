@@ -1457,22 +1457,6 @@
     return _nextShow;
 }
 
--(NSString *)stringForPrevButton:(NSString *)current {
-    if (IS_IPHONE) {
-        return current;
-    }
-    
-    return @"Up";
-}
-
--(NSString *)stringForNextButton:(NSString *)current {
-    if (IS_IPHONE) {
-        return current;
-    }
-    
-    return @"Down";
-}
-
 -(void)prevButtonPressed{
     A3JHTableViewEntryCell *cell = (A3JHTableViewEntryCell *)[self.tableView cellForRowAtIndexPath:_selectedIndexPath];
     

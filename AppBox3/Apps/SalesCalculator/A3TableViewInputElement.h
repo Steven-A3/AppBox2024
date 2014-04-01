@@ -11,11 +11,10 @@
 typedef NS_ENUM(NSInteger, A3TableViewInputType) {
 	A3TableViewEntryTypeText = 0,
 	A3TableViewEntryTypeCurrency,
+	A3TableViewEntryTypePercent,
 	A3TableViewEntryTypeYears,
-	A3TableViewEntryTypeInterestRates,
-	A3TableViewEntryTypeCalculator,
-    A3TableViewEntryTypeTextView,
-    A3TableViewEntryTypeSimpleNumber
+	A3TableViewEntryTypeRealNumber,
+	A3TableViewEntryTypeInteger,
 };
 
 typedef NS_ENUM(NSInteger, A3TableElementValueType) {
@@ -34,27 +33,33 @@ typedef NS_ENUM(NSInteger, A3TableElementBigButtonType) {
 @class A3JHTableViewRootElement;
 @class A3TableViewInputElement;
 @class A3NumberKeyboardViewController;
+@protocol A3CalculatorDelegate;
+@protocol A3SearchViewControllerDelegate;
+
 typedef void (^CellTextInputBlock)(A3TableViewInputElement *, UITextField *);
 typedef void (^BasicBlock)(id sender);
 
 @protocol A3TableViewInputElementDelegate <NSObject>
--(A3JHTableViewRootElement *)tableElementRootDataSource;
+- (A3JHTableViewRootElement *)tableElementRootDataSource;
+- (UIViewController *)containerViewController;
+- (id<A3CalculatorDelegate>)delegateForCalculator;
+- (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
 @end
 
 @interface A3TableViewInputElement : A3JHTableViewElement
 
 @property (nonatomic, copy) NSString *placeholder;
-@property (assign) A3TableViewInputType inputType;
-@property (assign) BOOL prevEnabled;
-@property (assign) BOOL nextEnabled;
-@property (assign) A3TableElementValueType valueType;
-@property (assign) A3TableElementBigButtonType bigButton1Type;
-@property (assign) A3TableElementBigButtonType bigButton2Type;
+@property (nonatomic, assign) A3TableViewInputType inputType;
+@property (nonatomic, assign) BOOL prevEnabled;
+@property (nonatomic, assign) BOOL nextEnabled;
+@property (nonatomic, assign) A3TableElementValueType valueType;
+@property (nonatomic, copy) NSString *currencyCode;
 @property (nonatomic, weak) id<A3TableViewInputElementDelegate> delegate;
 @property (nonatomic, copy) CellTextInputBlock onEditingBegin;
 @property (nonatomic, copy) CellTextInputBlock onEditingFinished;
 @property (nonatomic, copy) CellTextInputBlock onEditingFinishAll; // for SalesCalc addional
 @property (nonatomic, copy) CellTextInputBlock onEditingValueChanged;
 @property (nonatomic, copy) BasicBlock doneButtonPressed;
-@property (strong) A3NumberKeyboardViewController * inputViewController;
+@property (nonatomic, strong) A3NumberKeyboardViewController * inputViewController;
+
 @end

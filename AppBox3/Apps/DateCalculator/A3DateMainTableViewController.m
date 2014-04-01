@@ -605,6 +605,7 @@ NSString *kCalculationString;
 	FNLOGRECT(self.tableView.frame);
 	FNLOGRECT(self.simpleNumberKeyboard.view.frame);
 	FNLOGRECT(cellRect);
+	FNLOG(@"contentOffset.y = %f", contentOffset.y);
 
     _oldTableOffset = self.tableView.contentOffset.y;
     self.tableView.contentOffset = contentOffset;
@@ -1053,6 +1054,7 @@ NSString *kCalculationString;
 }
 
 #pragma mark - UITableView Related
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [self.sectionTitles count];

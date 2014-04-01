@@ -14,12 +14,10 @@
 
 @interface A3NumberKeyboardViewController_iPhone : A3NumberKeyboardViewController
 
-@property (nonatomic, weak) IBOutlet UIButton *bigButton1;
-@property (nonatomic, weak) IBOutlet UIButton *bigButton2;
 @property (nonatomic, weak) IBOutlet UIButton *dotButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *deleteButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *prevButton;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *nextButton;
+@property (nonatomic, weak) IBOutlet UIButton *deleteButton;
+@property (nonatomic, weak) IBOutlet UIButton *prevButton;
+@property (nonatomic, weak) IBOutlet UIButton *nextButton;
 @property (assign) BOOL needButtonsReload;   // kjh
 
 @end

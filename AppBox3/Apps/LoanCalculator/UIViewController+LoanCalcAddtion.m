@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 
 static char const *const key_loanFormatter					= "key_loanFormatter";
+NSString *const A3LoanCalcCustomCurrencyCode = @"LoanCustomCurrencyCode";
 
 @implementation UIViewController (LoanCalcAddtion)
 
@@ -38,7 +39,11 @@ static char const *const key_loanFormatter					= "key_loanFormatter";
 }
 
 - (NSString *)defaultLoanCurrencyCode {
-    return nil;
+	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	if ([customCurrencyCode length]) {
+		return customCurrencyCode;
+	}
+	return nil;
 }
 
 @end

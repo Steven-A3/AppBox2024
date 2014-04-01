@@ -236,7 +236,7 @@
     CGFloat fXpos = _fromValue + CGRectGetWidth(fRect)/8;
     CGFloat tXpos = _toValue - CGRectGetWidth(tRect)/8;
     
-    NSLog(@"_toThumbView.center.x: %f", _toThumbView.center.x);
+//    NSLog(@"_toThumbView.center.x: %f", _toThumbView.center.x);
     
     rect.origin = CGPointMake(fXpos, rect.origin.y);
     rect.size = CGSizeMake(tXpos - fXpos, rect.size.height);
@@ -601,7 +601,7 @@
     
     CGPoint point = _toThumbView.center;
     point.x = _toValue;
-    NSLog(@"toValue: %f", _toValue);
+//    NSLog(@"toValue: %f", _toValue);
     
     [UIView animateWithDuration:0.5
                           delay:0

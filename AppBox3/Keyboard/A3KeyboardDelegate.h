@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol A3CalculatorDelegate;
+@protocol A3SearchViewControllerDelegate;
 
 typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 	A3NumberKeyboardTypeCurrency = 0,
@@ -27,8 +28,6 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (void)handleBigButton2;
 - (NSString *)stringForBigButton1;
 - (NSString *)stringForBigButton2;
-- (NSString *)stringForPrevButton:(NSString *)current;
-- (NSString *)stringForNextButton:(NSString *)current;
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate;
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
@@ -39,5 +38,7 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 - (void)nextButtonPressed;
 - (UIViewController *)modalPresentingParentViewControllerForCalculator;
 - (id<A3CalculatorDelegate>)delegateForCalculator;
+- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector;
+- (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
 
 @end

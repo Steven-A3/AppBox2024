@@ -24,13 +24,17 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @property (nonatomic, weak) IBOutlet UIButton *bigButton1;
 @property (nonatomic, weak) IBOutlet UIButton *bigButton2;
 @property (nonatomic, weak) IBOutlet UIButton *dotButton;
+@property (nonatomic, weak) IBOutlet UIButton *prevButton;
+@property (nonatomic, weak) IBOutlet UIButton *nextButton;
 
-@property (nonatomic, strong) NSString * prevBtnTitleText;
-@property (nonatomic, strong) NSString * nextBtnTitleText;
 @property (nonatomic, strong) NSNumber *simpleKeyboardLayout;
 
 - (void)reloadPrevNextButtons;
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
 - (void)setupLocale;
+
+- (void)presentCurrencySelectViewController;
+
+- (IBAction)calculatorButtonAction:(UIButton *)sender;
 
 @end

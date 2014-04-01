@@ -45,6 +45,17 @@
     expect([viewController tableView:viewController.tableView numberOfRowsInSection:0]).beGreaterThan(1);
 }
 
-
+- (void)testMaximumFractionDigitsForCurrencyCodes {
+	NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	NSMutableString *log = [NSMutableString new];
+	static NSUInteger maximumFractionDigits = 0;
+	[[NSLocale ISOCurrencyCodes] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		[numberFormatter setCurrencyCode:obj];
+		[log appendFormat:@"%@, %ld\n", obj, numberFormatter.maximumFractionDigits];
+		maximumFractionDigits = MAX(maximumFractionDigits, numberFormatter.maximumFractionDigits);
+	}];
+	NSLog(@"%@\n%ld", log, maximumFractionDigits);
+}
 
 @end

@@ -1,42 +1,14 @@
 {
   "images" : [
     {
-      "resizing" : {
-        "mode" : "9-part",
-        "center" : {
-          "mode" : "fill",
-          "width" : 1,
-          "height" : 1
-        },
-        "capInsets" : {
-          "bottom" : 16,
-          "top" : 16,
-          "right" : 17,
-          "left" : 24
-        }
-      },
       "idiom" : "universal",
-      "filename" : "ballon_left.png",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "ballon_left.png"
     },
     {
-      "resizing" : {
-        "mode" : "9-part",
-        "center" : {
-          "mode" : "fill",
-          "width" : 1,
-          "height" : 1
-        },
-        "capInsets" : {
-          "bottom" : 33,
-          "top" : 33,
-          "right" : 35,
-          "left" : 48
-        }
-      },
       "idiom" : "universal",
-      "filename" : "ballon_left@2x.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "ballon_left@2x.png"
     }
   ],
   "info" : {

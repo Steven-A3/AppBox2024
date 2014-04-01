@@ -416,14 +416,6 @@
 	return _nextColumnAvail;
 }
 
--(NSString *)stringForPrevButton:(NSString *)current {
-    return @"Prev";
-}
-
-- (NSString *)stringForNextButton:(NSString *)current {
-    return @"Next";
-}
-
 - (void)prevButtonPressed{
     [self keyboardAccessoryLeftButtonTouchUp:nil];
 }

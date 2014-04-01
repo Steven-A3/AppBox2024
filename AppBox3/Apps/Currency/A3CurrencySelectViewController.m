@@ -16,19 +16,27 @@
 
 @interface A3CurrencySelectViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
+@property (nonatomic, weak) UIViewController *modalPresentingParentViewController;
+
 @end
 
 @implementation A3CurrencySelectViewController
 
+- (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController {
+	self = [super initWithNibName:nil bundle:nil];
+	if (self) {
+		_modalPresentingParentViewController = modalPresentingParentViewController;
+	}
+	return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	@autoreleasepool {
-		self.searchBar.placeholder = @"Search";
-		self.title = @"Select Currency";
+	self.searchBar.placeholder = @"Search";
+	self.title = @"Select Currency";
 
-		[self registerContentSizeCategoryDidChangeNotification];
-	}
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -52,7 +60,7 @@
 }
 
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self dismissViewControllerAnimated:YES completion:NULL];
+	[_modalPresentingParentViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (NSMutableArray *)allData {

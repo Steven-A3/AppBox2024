@@ -681,15 +681,6 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     return @"Cal";
 }
 
-- (NSString *)stringForNextButton:(NSString *)current {
-	return @"Next";
-}
-
-- (NSString *)stringForPrevButton:(NSString *)current {
-	return @"Prev";
-}
-
-
 - (void)prevButtonPressed{
     if (self.firstResponder && _currentIndexPath) {
         if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {

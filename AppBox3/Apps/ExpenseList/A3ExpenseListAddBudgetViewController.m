@@ -298,13 +298,11 @@ enum A3ExpenseListAddBudgetCellType {
         budget.inputType = A3TableViewEntryTypeCurrency;
         budget.title = @"Budget";
         budget.valueType = A3TableViewValueTypeCurrency;
-        budget.bigButton1Type = A3TableViewBigButtonTypeCurrency;
         budget.onEditingBegin = [self cellTextInputBeginBlock];
         budget.onEditingValueChanged = [self cellTextInputChangedBlock];
         budget.onEditingFinished = [self cellTextInputFinishedBlock];
-        budget.bigButton2Type = A3TableViewBigButtonTypeCalculator;
         budget.identifier = AddBudgetCellID_Budget;
-        
+
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
         //budget.placeholder = [formatter stringFromNumber: _currentBudget ? _currentBudget.totalAmount : @0 ];
