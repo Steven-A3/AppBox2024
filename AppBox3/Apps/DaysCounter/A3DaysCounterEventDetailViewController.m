@@ -20,6 +20,7 @@
 #import "A3DaysCounterAddEventViewController.h"
 #import "NSDate+LunarConverter.h"
 #import "A3DaysCounterEventInfoCell.h"
+#import "SFKImage.h"
 
 @interface A3DaysCounterEventDetailViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -144,9 +145,11 @@
         {
             cell = [cellArray objectAtIndex:9];
             
-            UIView *baseView = [cell viewWithTag:10];
+//            UIView *baseView = [cell viewWithTag:10];
+            UIView *baseView = [cell viewWithTag:13];
             [self createCellForDefaultValueForView:baseView];
-            baseView = [cell viewWithTag:11];
+//            baseView = [cell viewWithTag:11];
+            baseView = [cell viewWithTag:14];
             [self createCellForDefaultValueForView:baseView];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
@@ -502,9 +505,10 @@
     markLabel.layer.cornerRadius = 9.0;
     
     UIImageView *lunarImageView = (UIImageView*)[baseView viewWithTag:24];
-    lunarImageView.image = [lunarImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    lunarImageView.tintColor = [UIColor lightGrayColor];
-
+    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:24.0]];
+	[SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
+    UIImage * image = [SFKImage imageNamed:@"f"];
+    lunarImageView.image = image;
 }
 
 #pragma mark - Table view data source
