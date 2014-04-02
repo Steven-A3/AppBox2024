@@ -544,14 +544,16 @@
     cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     
     switch (itemType) {
-        case EventCellType_Title :{
+        case EventCellType_Title :
+        {
             UITextField *textField = (UITextField*)[cell viewWithTag:10];
             UIButton *button = (UIButton*)[cell viewWithTag:11];
             textField.text = [_eventModel objectForKey:EventItem_Name];
             button.selected = [[_eventModel objectForKey:EventItem_IsFavorite] boolValue];
         }
             break;
-        case EventCellType_Photo:{
+        case EventCellType_Photo:
+        {
             UIButton *button = (UIButton*)[cell viewWithTag:11];
             if ( [_eventModel objectForKey:EventItem_Thumbnail] ) {
                 [button setImage:[_eventModel objectForKey:EventItem_Thumbnail] forState:UIControlStateNormal];
@@ -568,7 +570,8 @@
             }
         }
             break;
-        case EventCellType_IsLunar:{
+        case EventCellType_IsLunar:
+        {
             UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
@@ -576,14 +579,16 @@
             break;
         }
             break;
-        case EventCellType_IsAllDay:{
+        case EventCellType_IsAllDay:
+        {
             UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
             swButton.on = [[_eventModel objectForKey:EventItem_IsAllDay] boolValue];
         }
             break;
-        case EventCellType_IsPeriod:{
+        case EventCellType_IsPeriod:
+        {
             UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
@@ -784,7 +789,8 @@
             }
         }
             break;
-        case EventCellType_Advanced:{
+        case EventCellType_Advanced:
+        {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             UIButton *button = (UIButton*)[cell viewWithTag:11];
             

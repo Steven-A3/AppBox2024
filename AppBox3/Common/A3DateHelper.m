@@ -135,10 +135,19 @@
 }
 
 // KJH
-+ (NSInteger)diffDaysOfAllDayTypeFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate
++ (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay
 {
 	if ( toDate == nil || fromDate == nil) {
 		return 0;
+    }
+    
+    if (!isAllDay) {
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDateComponents *diffComponent = [calendar components:NSDayCalendarUnit
+                                                      fromDate:fromDate
+                                                        toDate:toDate options:0];
+        
+        return [diffComponent day];
     }
     
 	NSCalendar *calendar = [NSCalendar currentCalendar];

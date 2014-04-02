@@ -353,18 +353,13 @@
 - (void)updateEventInfoCellToNoRepeatEventInfo:(DaysCounterEvent*)info toView:(UIView*)baseView
 {
     NSDate *now = [NSDate date];
-    NSInteger diffDays;
-    if ([info.isAllDay boolValue]) {
-        diffDays = [A3DateHelper diffDaysOfAllDayTypeFromDate:now
-                                                       toDate:info.startDate];
-    }
-    else {
-        diffDays = [A3DateHelper diffDaysFromDate:now
-                                           toDate:info.startDate];
-    }
+    NSInteger daysGap;
+    daysGap = [A3DateHelper diffDaysFromDate:now
+                                       toDate:info.startDate
+                                     isAllDay:[info.isAllDay boolValue]];
 
     BOOL isSince = NO;
-    if ( diffDays <= 0 ) {
+    if ( daysGap <= 0 ) {
         isSince = YES;
     }
     NSString *dateText1 = @"";

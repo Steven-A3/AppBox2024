@@ -90,8 +90,9 @@
     if ( [self.changedCalendarID length] > 0 && ![self.changedCalendarID isEqualToString:_calendarItem.calendarId] ) {
         self.calendarItem = [[A3DaysCounterModelManager sharedManager] calendarItemByID:self.changedCalendarID];
         self.changedCalendarID = nil;
-        if ( self.calendarItem )
-            self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events")];
+        if ( self.calendarItem ) {
+            self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName, [_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events"];
+        }
     }
     
     [self loadEventDatas];
@@ -339,175 +340,6 @@
     return 0.01;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *CellIdentifier = (sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:(sortType == EventSortType_Name ? 0 : 3)];
-    }
-    
-    [self adjustFontSizeOfCell:cell];
-    
-    // Configure the cell...
-    DaysCounterEvent *item = nil;
-    if ( tableView == self.tableView ) {
-        if ( indexPath.section < [_itemArray count] ) {
-            NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
-            NSArray *items = [dict objectForKey:EventKey_Items];
-            if ( indexPath.row < [items count] ) {
-                item = [items objectAtIndex:indexPath.row];
-            }
-        }
-    }
-    else {
-        item = [_searchResultArray objectAtIndex:indexPath.row];
-    }
-    
-    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-    UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
-    UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
-    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
-    
-    if ( item ) {
-        NSLog(@"%s %@/%@",__FUNCTION__,indexPath,item.imageFilename);
-        markLabel.hidden = NO;
-        imageView.hidden = NO;
-        
-        textLabel.text = item.eventName;
-        UIImage *image = ([item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil);
-        if (image) {
-            imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 33.0, 33.0)];
-            
-            if ( sortType == EventSortType_Name ) {
-                ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
-                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
-            }
-            else {
-                ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListDateCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
-                ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
-                ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
-            }
-        }
-        else {
-            imageView.image = nil;
-            
-            if ( sortType == EventSortType_Name ) {
-                ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            }
-            else {
-                ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
-                ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
-                ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
-            }
-        }
-
-        
-        NSDate *today = [NSDate date];
-        NSDate *calcDate = item.startDate;
-        NSInteger diffDays = 0;
-        if ( [item.repeatType integerValue] != RepeatType_Never ) {
-            NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
-            calcDate = nextDate;
-        }
-
-        if (item.isAllDay) {
-            diffDays = [A3DateHelper diffDaysOfAllDayTypeFromDate:today toDate:calcDate];
-        }
-        else {
-            diffDays = [A3DateHelper diffDaysFromDate:today toDate:calcDate];
-        }
-        
-        NSDateComponents *comps = [[NSCalendar currentCalendar] components:NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
-                                                                  fromDate:today
-                                                                    toDate:calcDate options:0];
-        
-        NSInteger day = ABS([comps day]);
-        if ( ![[A3DateHelper dateStringFromDate:today withFormat:@"yyyyMMdd"] isEqualToString:[A3DateHelper dateStringFromDate:calcDate withFormat:@"yyyyMMdd"]] ) {
-            if ( ABS([comps hour]) > 0 || ABS([comps minute]) > 0 || ABS([comps second]) > 0 ) {
-                day++;
-            }
-        }
-        daysLabel.text = [NSString stringWithFormat:@"%ld day%@", (long)day, (day>1 ? @"s" : @"")];
-        
-//        daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue] fromDate:today toDate:calcDate isAllDay:[item.isAllDay boolValue]];//[NSString stringWithFormat:@"%d days",ABS(diffDays)];
-        if ( diffDays > 0 ) {
-            markLabel.text = @"Until";
-            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
-        }
-        else {
-            markLabel.text = @"Since";
-            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
-        }
-        
-        markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
-        markLabel.layer.masksToBounds = YES;
-        markLabel.layer.cornerRadius = 9.0;
-        markLabel.layer.borderColor = markLabel.textColor.CGColor;
-        
-        if ( sortType == EventSortType_Date ) {
-            A3RoundDateView *dateView = (A3RoundDateView*)[cell viewWithTag:14];
-            UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
-            
-            dateView.fillColor = [item.calendar color];
-            dateView.strokColor = dateView.fillColor;
-            dateView.date = calcDate;//item.startDate;
-            dateView.hidden = NO;
-            favoriteView.hidden = ![item.isFavorite boolValue];
-            UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
-            dateLabel.hidden = YES;
-//            if ( IS_IPAD ) {
-//                UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
-//                dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"dd/MM/yy HH:mm a"];
-//                dateLabel.hidden = NO;
-//            }
-        }
-        else {
-            if ( IS_IPAD ) {
-                UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                dateLabel.text = [A3DateHelper dateStringFromDate:calcDate withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
-                dateLabel.hidden = NO;
-            }
-        }
-        
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-    }
-    else {
-        NSLog(@"%s %@",__FUNCTION__,indexPath);
-        textLabel.text = @"";
-        daysLabel.text = @"";
-        markLabel.text = @"";
-        markLabel.hidden = YES;
-        imageView.hidden = YES;
-        
-        if ( sortType == EventSortType_Date ) {
-            A3RoundDateView *dateView = (A3RoundDateView*)[cell viewWithTag:14];
-            UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
-            dateView.hidden = YES;
-            favoriteView.hidden = YES;
-        }
-        
-        if ( IS_IPAD ) {
-            UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
-            dateLabel.text = @"";
-            dateLabel.hidden = YES;
-            dateLabel = (UILabel*)[cell viewWithTag:16];
-            dateLabel.text = @"";
-            dateLabel.hidden = YES;
-        }
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    
-    return cell;
-}
-
-
 #pragma mark - Table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -532,8 +364,11 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+
+
+- (DaysCounterEvent *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
+    // Configure the cell...
     DaysCounterEvent *item = nil;
     if ( tableView == self.tableView ) {
         if ( indexPath.section < [_itemArray count] ) {
@@ -547,6 +382,120 @@
     else {
         item = [_searchResultArray objectAtIndex:indexPath.row];
     }
+
+    
+    return item;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *CellIdentifier = (sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
+        cell = [cellArray objectAtIndex:(sortType == EventSortType_Name ? 0 : 3)];
+    }
+    
+    [self adjustFontSizeOfCell:cell];
+    
+    DaysCounterEvent *item = [self itemForTableView:tableView atIndexPath:indexPath];
+    
+    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+    UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
+    UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
+    A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
+    
+    if ( item ) {
+        FNLOG(@"%@ / %@",indexPath, item.imageFilename);
+
+        // textLabel
+        textLabel.text = item.eventName;
+
+        // daysLabel
+        NSInteger daysGap = [self daysGapForItem:item];
+        daysLabel.text = [self daysStringForItem:item];
+        
+        // markLabel
+        if ( daysGap > 0 ) {
+            markLabel.text = @"Until";
+            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+        }
+        else {
+            markLabel.text = @"Since";
+            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+        }
+        markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+        markLabel.layer.masksToBounds = YES;
+        markLabel.layer.cornerRadius = 9.0;
+        markLabel.layer.borderColor = markLabel.textColor.CGColor;
+        markLabel.hidden = NO;
+        
+        // imageView
+        UIImage *image = ([item.imageFilename length] > 0) ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
+        [self showImageViewOfCell:cell withImage:image];
+        imageView.hidden = NO;
+        
+        // RoundDateView
+        NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                      firstDate:[item startDate]
+                                                                                       fromDate:[NSDate date]];
+        if ( sortType == EventSortType_Date ) {
+            UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
+            roundDateView.fillColor = [item.calendar color];
+            roundDateView.strokColor = roundDateView.fillColor;
+            roundDateView.date = startDate;
+            roundDateView.hidden = NO;
+            favoriteView.hidden = ![item.isFavorite boolValue];
+            UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
+            dateLabel.hidden = YES;
+        }
+        else {
+            if ( IS_IPAD ) {
+                UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
+                dateLabel.text = [A3DateHelper dateStringFromDate:startDate
+                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                dateLabel.hidden = NO;
+            }
+        }
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+    else {
+        FNLOG(@"%@", indexPath);
+
+        textLabel.text = @"";
+        daysLabel.text = @"";
+        markLabel.text = @"";
+        markLabel.hidden = YES;
+        imageView.hidden = YES;
+        
+        if ( sortType == EventSortType_Date ) {
+            UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
+            roundDateView.hidden = YES;
+            favoriteView.hidden = YES;
+        }
+        
+        if ( IS_IPAD ) {
+            UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
+            dateLabel.text = @"";
+            dateLabel.hidden = YES;
+            dateLabel = (UILabel*)[cell viewWithTag:16];
+            dateLabel.text = @"";
+            dateLabel.hidden = YES;
+        }
+
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DaysCounterEvent *item = [self itemForTableView:tableView atIndexPath:indexPath];
     
     if ( item == nil ) {
         return;
@@ -580,6 +529,85 @@
     }
     
     return YES;
+}
+
+#pragma mark Cell & Item Data Related
+- (NSInteger)daysGapForItem:(DaysCounterEvent *)item {
+    NSDate *today = [NSDate date];
+    NSInteger resultDaysGap;
+    
+    if ( [item.repeatType integerValue] == RepeatType_Never ) {
+        resultDaysGap = [A3DateHelper diffDaysFromDate:today
+                                                toDate:[item startDate]
+                                              isAllDay:[item.isAllDay boolValue]];
+    }
+    else {
+        NSDate *nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                                firstDate:item.startDate
+                                                                                                 fromDate:today];
+        resultDaysGap = [A3DateHelper diffDaysFromDate:today
+                                                toDate:nextRepeatStartDate
+                                              isAllDay:[item.isAllDay boolValue]];
+    }
+    
+    return resultDaysGap;
+}
+
+- (NSString *)daysStringForItem:(DaysCounterEvent *)item {
+    NSDate *today = [NSDate date];
+    NSDate *nextRepeatStartDate;
+    NSInteger daysGap;
+    NSString *result;
+    
+    if ( [item.repeatType integerValue] == RepeatType_Never ) {
+        daysGap = [A3DateHelper diffDaysFromDate:today
+                                          toDate:[item startDate]
+                                        isAllDay:[item.isAllDay boolValue]];
+    }
+    else {
+        nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                        firstDate:item.startDate
+                                                                                         fromDate:today];
+        daysGap = [A3DateHelper diffDaysFromDate:today
+                                          toDate:nextRepeatStartDate
+                                        isAllDay:[item.isAllDay boolValue]];
+    }
+
+    daysGap = labs(daysGap);
+    result = [NSString stringWithFormat:@"%ld day%@", (long)daysGap, daysGap > 1 ? @"s" : @""];
+    return result;
+}
+
+- (void)showImageViewOfCell:(UITableViewCell *)cell withImage:(UIImage *)image {
+    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
+    if (image) {
+        imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 33.0, 33.0)];
+        
+        if ( sortType == EventSortType_Name ) {
+            ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+        }
+        else {
+            ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListDateCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
+            ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
+        }
+    }
+    else {
+        imageView.image = nil;
+        
+        if ( sortType == EventSortType_Name ) {
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
+        }
+        else {
+            ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+        }
+    }
 }
 
 #pragma mark - A3DaysCounterEventDetailViewControllerDelegate

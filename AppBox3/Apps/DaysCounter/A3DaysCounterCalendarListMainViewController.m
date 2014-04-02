@@ -310,12 +310,7 @@
         calcDate = nextDate;
     }
     else {
-        if (event.isAllDay) {
-            diffDay = [A3DateHelper diffDaysOfAllDayTypeFromDate:today toDate:event.startDate];
-        }
-        else {
-            diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate];
-        }
+        diffDay = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
     }
     
     if ( diffDay == 0 ) {
