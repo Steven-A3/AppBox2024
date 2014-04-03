@@ -414,7 +414,11 @@
 
         // daysLabel
         NSInteger daysGap = [self daysGapForItem:item];
-        daysLabel.text = [self daysStringForItem:item];
+        //daysLabel.text = [self daysStringForItem:item];
+        daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
+                                                                                                                    fromDate:[NSDate date]
+                                                                                                                      toDate:[item startDate]
+                                                                                                                    isAllDay:[item.isAllDay boolValue]]];
         
         // markLabel
         if ( daysGap > 0 ) {

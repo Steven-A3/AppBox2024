@@ -628,36 +628,157 @@
     }
     
     BOOL isiPadFullMode = NO;
-    if ( IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1) ) {
+    if (IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1)) {
         isiPadFullMode = YES;
     }
-    
+
     NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
     
-    if ( cellType == EventCellType_Title ) {
-        if ( [_eventItem.repeatType integerValue] == RepeatType_Never ) {
-            retHeight = (isiPadFullMode ? 106.0 : 142.0);
-        }
-        else {
-            NSDate *date = [NSDate date];
-            NSInteger diffDays = [A3DateHelper diffDaysFromDate:date toDate:_eventItem.startDate];
-            if ( diffDays < 0 ) {
-                retHeight = (isiPadFullMode ? 195.0 : 236.0);
+    switch (cellType) {
+        case EventCellType_Title:
+        {
+//            iPhone/iPad
+//            * case 1. 현재의 142pt
+//            Title
+//            until(since) 계산값
+//            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
+//            (until일 경우 - repeats 옵션) (since 일 경우 to)
+//            
+//            * case 2. 162pt
+//            Title
+//            until 계산값
+//            from 선택날짜/시간
+//            to 선택날짜/시간
+//            repeats 옵션
+//            
+//            * case 3. 현재의 236pt
+//            Title
+//            until 계산값
+//            date 계산된 날짜/시간
+//            repeats 옵션
+//            
+//            since 계산값
+//            date 선택날짜/시간
+//            first date
+//            
+//            * case 4. 276pt
+//            Title
+//            until 계산값
+//            from 계산된 날짜/시간
+//            to 계산된 날짜/시간
+//            repeats 옵션
+//            
+//            since 계산값
+//            from 선택날짜/시간
+//            to 선택날짜/시간
+//            first date
+            
+            BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
+            BOOL hasEndDate = [_eventItem.isPeriod boolValue];
+            BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
+            if (!hasRepeat) {
+                if (hasEndDate) {
+                    //* case 2. 162pt  (start 안 지남, end있음)
+                    retHeight = IS_RETINA ? 162.5 : 163;
+                }
+                else {
+                    //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
+                    retHeight = IS_RETINA ? 142.5 : 143;
+                }
+//                if (hasEndDate) {
+//                    if (hasSince) {
+//                        //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
+//                        retHeight = IS_RETINA ? 142.5 : 143;
+//                    }
+//                    else {
+//                        FNLOG(@"non-case");
+//                    }
+//                }
+//                else {
+//                    if (hasSince) {
+//                        //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
+//                        retHeight = IS_RETINA ? 142.5 : 143;
+//                    }
+//                    else {
+//                        FNLOG(@"non-case");
+//                    }
+//                }
             }
             else {
-                retHeight = (isiPadFullMode ? 106.0 : 142.0);
+                if (hasEndDate) {
+                    if (hasSince) {
+                        //* case 4. 276pt  (start 지남, end있음, 다음 start있음)
+                        retHeight = IS_RETINA ? 276.5 : 277;
+                    }
+                    else {
+                        //* case 2. 162pt  (start 안 지남, end있음)
+                        retHeight = IS_RETINA ? 162.5 : 163;
+                    }
+                }
+                else {
+                    if (hasSince) {
+                        //* case 3. 현재의 236pt  (start 지남, end없음)
+                        retHeight = IS_RETINA ? 236.5 : 237;
+                    }
+                    else {
+                        //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
+                        retHeight = IS_RETINA ? 142.5 : 143;
+                    }
+                }
+            }
+
+//            if ( [_eventItem.repeatType integerValue] == RepeatType_Never ) {
+//                if (IS_RETINA) {
+//                     retHeight = 142.5;
+//                }
+//                else {
+//                    retHeight = 142.0;
+//                }
+//                if (IS_RETINA) {
+//                    retHeight = (isiPadFullMode ? 106.5 : 142.5);
+//                }
+//                else {
+//                    retHeight = (isiPadFullMode ? 106.0 : 142.0);
+//                }
+//            }
+//            else {
+//                NSDate *date = [NSDate date];
+//                NSInteger diffDays = [A3DateHelper diffDaysFromDate:date toDate:_eventItem.startDate];
+//                if ( diffDays < 0 ) {
+//                    if (IS_RETINA) {
+//                        retHeight = (isiPadFullMode ? 195.5 : 236.5);
+//                    }
+//                    else {
+//                        retHeight = (isiPadFullMode ? 195.0 : 236.0);
+//                    }
+//                }
+//                else {
+//                    if (IS_RETINA) {
+//                        retHeight = (isiPadFullMode ? 106.5 : 142.5);
+//                    }
+//                    else {
+//                        retHeight = (isiPadFullMode ? 106.0 : 142.0);
+//                    }
+//                }
+//            }
+        }
+            break;
+            
+        case EventCellType_Notes:
+        {
+            CGSize textSize = [_eventItem.notes sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
+            retHeight = ceilf(textSize.height) + 11.0 + 30.0;
+        }
+            break;
+            
+        default:
+        {
+            if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) ) {
+                retHeight = 74.0;
             }
         }
-    }
-    else if ( cellType == EventCellType_Notes ) {
-        CGSize textSize = [_eventItem.notes sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
-        retHeight = ceilf(textSize.height) + 11.0 + 30.0;
-    }
-    else {
-        if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) ) {
-            retHeight = 74.0;
-        }
+            break;
     }
     
     return retHeight;

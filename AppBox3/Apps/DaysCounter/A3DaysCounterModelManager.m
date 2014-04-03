@@ -1249,9 +1249,21 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-	NSDateComponents *diffComponent = [calendar components:flag
-												  fromDate:smallDate
-													toDate:largeDate options:0];
+//    NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+//                                             fromDate:fromDate];
+//    NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+//                                           fromDate:toDate];
+//    fromComp.hour = 0;
+//    fromComp.minute = 0;
+//    fromComp.second = 0;
+//    toComp.hour = 0;
+//    toComp.minute = 0;
+//    toComp.second = 0;
+    NSDateComponents *diffComponent;
+//    NSDateComponents *diffComponent = [calendar components:flag
+//                                                  fromDate:[calendar dateFromComponents:fromComp]
+//                                                    toDate:[calendar dateFromComponents:toComp]
+//                                                   options:0];
     if (isAllDay) {
         NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
                                                  fromDate:fromDate];

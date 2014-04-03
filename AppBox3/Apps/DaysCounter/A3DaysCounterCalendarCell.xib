@@ -14,7 +14,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="QuV-Ym-Mvr">
-                        <rect key="frame" x="20" y="14" width="199" height="36"/>
+                        <rect key="frame" x="20" y="14" width="74" height="36"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="36" id="lSb-Dx-NXy"/>
@@ -67,7 +67,7 @@
                     <constraint firstAttribute="bottom" secondItem="V0X-mh-XMU" secondAttribute="bottom" constant="2" id="Hpx-gu-BKp"/>
                     <constraint firstItem="yBc-Uq-Bxc" firstAttribute="leading" secondItem="xhw-5N-aQx" secondAttribute="leading" constant="20" id="Nkk-7k-C0C"/>
                     <constraint firstItem="84m-39-mLt" firstAttribute="leading" secondItem="xhw-5N-aQx" secondAttribute="leading" constant="20" id="RUF-N0-qdm"/>
-                    <constraint firstItem="V0X-mh-XMU" firstAttribute="leading" secondItem="QuV-Ym-Mvr" secondAttribute="trailing" constant="8" id="Rc1-C7-LXq"/>
+                    <constraint firstItem="V0X-mh-XMU" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QuV-Ym-Mvr" secondAttribute="trailing" constant="8" id="Rc1-C7-LXq"/>
                     <constraint firstAttribute="trailing" secondItem="V0X-mh-XMU" secondAttribute="trailing" constant="20" id="Y1j-0M-gmK"/>
                     <constraint firstItem="QuV-Ym-Mvr" firstAttribute="leading" secondItem="xhw-5N-aQx" secondAttribute="leading" constant="20" id="ZHX-D2-RBD"/>
                     <constraint firstAttribute="bottom" secondItem="84m-39-mLt" secondAttribute="bottom" constant="14" id="vNA-NX-OSv"/>
@@ -85,7 +85,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" text="Label" lineBreakMode="tailTruncation" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="7Qp-fa-EEK">
-                        <rect key="frame" x="20" y="24" width="199" height="35"/>
+                        <rect key="frame" x="20" y="24" width="74" height="35"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="30"/>
                         <nil key="highlightedColor"/>
@@ -99,7 +99,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="FkR-hM-81I" secondAttribute="trailing" constant="20" id="4ik-jM-YFa"/>
-                    <constraint firstItem="FkR-hM-81I" firstAttribute="leading" secondItem="7Qp-fa-EEK" secondAttribute="trailing" constant="8" id="RYK-Vt-g0P"/>
+                    <constraint firstItem="FkR-hM-81I" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7Qp-fa-EEK" secondAttribute="trailing" constant="8" id="RYK-Vt-g0P"/>
                     <constraint firstAttribute="centerY" secondItem="FkR-hM-81I" secondAttribute="centerY" id="esY-Tp-8rk"/>
                     <constraint firstItem="7Qp-fa-EEK" firstAttribute="leading" secondItem="YF9-qg-4U6" secondAttribute="leading" constant="20" id="qLP-nb-gcY"/>
                     <constraint firstAttribute="centerY" secondItem="7Qp-fa-EEK" secondAttribute="centerY" id="xWG-zo-T5B"/>
