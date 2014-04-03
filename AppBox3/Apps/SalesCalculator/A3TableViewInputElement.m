@@ -84,7 +84,10 @@
 				if (_valueType == A3TableViewValueTypePercent) {
 					cell.textField.text = [NSString stringWithFormat:@"%@%%", [self value]];
 				} else {
-					cell.textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
+					NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+					[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+					NSNumber *number = [decimalFormatter numberFromString:self.value];
+					cell.textField.text = [self.currencyFormatter stringFromNumber:number];
 				}
 			}
 			cell.textField.clearButtonMode = UITextFieldViewModeNever;
@@ -211,16 +214,19 @@
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
 	FNLOG(@"%@", textField.text);
-	if ([textField.text doubleValue] == 0.0) {
-		textField.text = @"";
-	}
+	@autoreleasepool {
+		NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+		if ([[decimalFormatter numberFromString:textField.text] doubleValue] == 0.0) {
+			textField.text = @"";
+		}
 
-																	if (self.coreDataObject && self.coreDataKey) {
-		[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
-	}
+		if (self.coreDataObject && self.coreDataKey) {
+			[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
+		}
 
-	if (_onEditingValueChanged) {
-		_onEditingValueChanged(self, textField);
+		if (_onEditingValueChanged) {
+			_onEditingValueChanged(self, textField);
+		}
 	}
 }
 
