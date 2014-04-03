@@ -11,8 +11,9 @@
 @interface A3DaysCounterEventInfoCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLeftSpaceConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundBottomConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceRoundBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleBottomSpaceConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundBottomConst;     // A, until since
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceRoundBottomConst;     // B, since
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhotoImageView;
@@ -23,12 +24,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *startEnd1ALabel;
 @property (weak, nonatomic) IBOutlet UILabel *startEnd2ALabel;
 @property (weak, nonatomic) IBOutlet UILabel *repeatALabel;
+@property (weak, nonatomic) IBOutlet UIImageView *lunar1AImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *sinceRoundLabel;
 @property (weak, nonatomic) IBOutlet UILabel *durationBLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startEnd1BLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startEnd2BLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repeatBLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *lunar1BImageView;
 
 
 @end

@@ -1330,7 +1330,6 @@
             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
         }
         [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
-
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
     else {
@@ -1339,7 +1338,7 @@
         for(NSInteger i=1; i < [advItems count]; i++) {
             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:indexPath.section]];
         }
-        [advItems removeObjectsInRange:NSMakeRange(1, [advItems count]-1)];
+        [advItems removeObjectsInRange:NSMakeRange(1, [advItems count] - 1)];
         [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationMiddle];
 //        [_sectionTitleArray removeObjectAtIndex:AddSection_Advanced];
 //        [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:AddSection_Advanced] withRowAnimation:UITableViewRowAnimationMiddle];
