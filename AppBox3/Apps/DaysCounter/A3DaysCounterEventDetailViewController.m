@@ -559,10 +559,13 @@
     BOOL isLunar = [info.isLunar boolValue];
     BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
     BOOL hasEndDate = [_eventItem.isPeriod boolValue];
-    NSInteger daysGap = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate];
-    BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
-    if (daysGap == 0) {
-        daysLabel.text = @"on going";
+    NSInteger daysGap = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:YES];
+    BOOL hasSince = daysGap < 0 ? YES : NO;
+    if (daysGap == 0 && isTypeA) {
+        cell.untilSinceRoundLabel.text = @"on going";
+    }
+    else {
+        markLabel.text = isSince ? @"Since" : @"Until";
     }
     
     if (!hasRepeat) {
