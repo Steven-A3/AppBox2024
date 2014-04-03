@@ -323,11 +323,11 @@
         if ( [info.imageFilename length] > 0 ) {
             imageView.image = [A3DaysCounterModelManager circularScaleNCrop:[A3DaysCounterModelManager photoThumbnailFromFilename:info.imageFilename]
                                                                        rect:CGRectMake(0, 0, 65, 65)];
-            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 8;
+            ((A3DaysCounterEventInfoCell*)cell).titleLeftSpaceConst.constant = 8;
         }
         else {
             imageView.image = nil;
-            ((A3DaysCounterEventInfoCell*)cell).untilPanelViewLeadingConst.constant = 0;
+            ((A3DaysCounterEventInfoCell*)cell).titleLeftSpaceConst.constant = 0;
         }
     }
     if ( textLabel ) {
