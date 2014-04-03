@@ -267,9 +267,7 @@
         }
     }
     
-    NSString *tip = [self.dataManager currencyStringFromNum:dTip];
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    NSString *tip = [self.dataManager currencyStringFromDouble:dTip];
     NSArray * strings = @[tip, @"  Tip"];
     _tipLabel.text = [strings componentsJoinedByString:@""];
     NSMutableAttributedString *tipAttributeText = [[NSMutableAttributedString alloc] initWithAttributedString:_tipLabel.attributedText];
@@ -296,18 +294,18 @@
         if ([self.dataManager isSplitOptionOn]) {
             if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
                 dTotal = [[self.dataManager totalPerPerson] doubleValue] + ([[self.dataManager taxValue] doubleValue]  / [[self.dataManager.tipCalcData split] doubleValue]);
-                NSString *total = [self.dataManager currencyStringFromNum:dTotal];
+                NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
                 strings = @[total, @" Total Per Person"];
             }
             else {
                 dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
-                NSString *total = [self.dataManager currencyStringFromNum:dTotal];
+                NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
                 strings = @[total, @" Total Before Split"];
             }
         }
         else {
             dTotal = [[self.dataManager totalBeforeSplit] doubleValue] + [[self.dataManager taxValue] doubleValue];
-            NSString *total = [self.dataManager currencyStringFromNum:dTotal];
+            NSString *total = [self.dataManager currencyStringFromDouble:dTotal];
             strings = @[total, @" Total"];
         }
     }

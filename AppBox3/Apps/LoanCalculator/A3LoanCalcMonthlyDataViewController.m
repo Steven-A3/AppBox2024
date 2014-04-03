@@ -141,33 +141,6 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-- (void)updateInfoCell:(A3LoanCalcLoanInfo2Cell *)infoCell withLoanInfo:(LoanCalcData *)loan
-{
-    if (IS_IPAD) {
-        infoCell.amountLabel.text = [self.currencyFormatter stringFromNumber:loan.totalAmount];
-    }
-    infoCell.paymentLabel.text = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:loan.repayment], [LoanCalcString shortTitleOfFrequency:loan.frequencyIndex]];
-    infoCell.frequencyLabel.text = [LoanCalcString titleOfFrequency:loan.frequencyIndex];
-    infoCell.interestLabel.text = [self.percentFormatter stringFromNumber:loan.annualInterestRate];
-    int yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
-    infoCell.termLabel.text = [NSString stringWithFormat:@"%d years", yearInt];
-    infoCell.principalLabel.text = [self.currencyFormatter stringFromNumber:loan.principal];
-}
-
-- (void)makeClearInfoCell:(A3LoanCalcLoanInfo2Cell *)infoCell
-{
-    if (IS_IPAD) {
-        infoCell.amountLabel.text = [self.currencyFormatter stringFromNumber:@(0)];
-    }
-    infoCell.paymentLabel.text = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(0)], [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyMonthly]];
-    infoCell.frequencyLabel.text = [LoanCalcString titleOfFrequency:A3LC_FrequencyMonthly];
-    infoCell.interestLabel.text = [self.percentFormatter stringFromNumber:@(0)];
-    infoCell.termLabel.text = @"0 years";
-    infoCell.principalLabel.text = [self.currencyFormatter stringFromNumber:@(0)];
-}
- */
-
 - (NSString *)valueTextForCalcItem:(A3LoanCalcCalculationItem)calcItem fromData:(LoanCalcData *)loan
 {
     switch (calcItem) {
@@ -181,7 +154,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         }
         case A3LC_CalculationItemInterestRate:
         {
-            return [self.percentFormatter stringFromNumber:loan.annualInterestRate];
+            return [loan interestRateString];
         }
         case A3LC_CalculationItemPrincipal:
         {
@@ -193,8 +166,7 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         }
         case A3LC_CalculationItemTerm:
         {
-            int yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
-            return [NSString stringWithFormat:@"%d years", yearInt];
+            return [loan termValueString];
         }
         default:
             return @"";
@@ -211,12 +183,12 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
     infoCell.upSecondTitleLB.text = [[LoanCalcString titleOfCalFor:_loanData.calculationFor] uppercaseString];
     A3LoanCalcCalculationItem resultItem = [LoanCalcMode resltItemForCalcFor:_loanData.calculationFor];
     if (_loanData.calculationFor == A3LC_CalculationForTermOfMonths) {
-        int monthInt =  (int)round(loan.monthOfTerms.doubleValue);
-        infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%d months", monthInt];
+        NSInteger monthInt =  (int)round(loan.monthOfTerms.doubleValue);
+        infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld months", (long)monthInt];
     }
     else if (_loanData.calculationFor == A3LC_CalculationForTermOfYears) {
-        int yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
-        infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%d years", yearInt];
+        NSInteger yearInt =  (int)round(loan.monthOfTerms.doubleValue/12.0);
+        infoCell.upSecondValueLB.text = [NSString stringWithFormat:@"%ld years", (long)yearInt];
     }
     else {
         infoCell.upSecondValueLB.text = [self valueTextForCalcItem:resultItem fromData:_loanData];
@@ -234,10 +206,10 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
         [titleLB sizeToFit];
     }
     
-    for (int i=0; i<calItems.count; i++) {
-        NSNumber *num = calItems[i];
-        A3LoanCalcCalculationItem calItem = num.integerValue;
-        UILabel *valueLB = infoCell.downValueLBs[i];
+    for (NSUInteger idx2 = 0; idx2 <calItems.count; idx2++) {
+        NSNumber *num = calItems[idx2];
+        A3LoanCalcCalculationItem calItem = (A3LoanCalcCalculationItem) num.integerValue;
+        UILabel *valueLB = infoCell.downValueLBs[idx2];
         valueLB.text = [self valueTextForCalcItem:calItem fromData:loan];
     }
     
@@ -337,16 +309,6 @@ NSString *const A3LoanCalcPaymentInfoCellID = @"A3LoanCalcPaymentInfoCell";
 
 - (void)makeClearInfoCell:(A3LoanCalcLoanInfo3Cell *)infoCell
 {
-    /*
-    if (IS_IPAD) {
-        infoCell.amountLabel.text = [self.currencyFormatter stringFromNumber:@(0)];
-    }
-    infoCell.paymentLabel.text = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(0)], [LoanCalcString shortTitleOfFrequency:A3LC_FrequencyMonthly]];
-    infoCell.frequencyLabel.text = [LoanCalcString titleOfFrequency:A3LC_FrequencyMonthly];
-    infoCell.interestLabel.text = [self.percentFormatter stringFromNumber:@(0)];
-    infoCell.termLabel.text = @"0 years";
-    infoCell.principalLabel.text = [self.currencyFormatter stringFromNumber:@(0)];
-     */
 }
 
 - (void)configurePayInfoCell:(A3LoanCalcPaymentInfoCell *)payInfoCell withPayment:(NSDictionary *)paymentInfo

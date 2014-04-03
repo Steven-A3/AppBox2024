@@ -15,7 +15,7 @@ typedef void (^CellValueChangedBlock)(A3JHTableViewElement *);
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) id coreDataObject;
 @property (nonatomic, copy) NSString *coreDataKey;
-@property (nonatomic, copy) id value;
+@property (nonatomic, copy) NSString* value;
 @property (nonatomic) NSInteger identifier;
 @property (nonatomic, copy) void (^onSelected)(A3JHTableViewElement *);
 

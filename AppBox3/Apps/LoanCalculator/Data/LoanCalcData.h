@@ -15,7 +15,9 @@
 @property (nonatomic, strong) NSNumber *downPayment;
 @property (nonatomic, strong) NSNumber *repayment;
 @property (nonatomic, strong) NSNumber *monthOfTerms;
+@property (nonatomic, strong) NSNumber *showsTermInMonths;
 @property (nonatomic, strong) NSNumber *annualInterestRate;
+@property (nonatomic, strong) NSNumber *showsInterestInYearly;
 @property (nonatomic, readwrite) A3LoanCalcFrequencyType frequencyIndex;
 @property (nonatomic, strong) NSDate *calculationDate;
 
@@ -36,4 +38,7 @@
 @property (nonatomic, readwrite) BOOL showDownPayment;
 @property (nonatomic, readwrite) BOOL showExtraPayment;
 
+- (NSString *)termValueString;
+
+- (NSString *)interestRateString;
 @end

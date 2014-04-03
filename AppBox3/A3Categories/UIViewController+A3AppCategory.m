@@ -132,7 +132,7 @@ static char const *const key_firstResponder 					= "key_firstResponder";
 		formatter = [[NSNumberFormatter alloc] init];
 		NSString *userCurrencyCode = nil;
 		if ([self respondsToSelector:@selector(defaultCurrencyCode)]) {
-			userCurrencyCode = [self performSelector:@selector(defaultCurrencyCode)];
+			userCurrencyCode = [self defaultCurrencyCode];
 			if ([userCurrencyCode length]) {
 				[formatter setCurrencyCode:userCurrencyCode];
 			}
@@ -167,6 +167,7 @@ static char const *const key_firstResponder 					= "key_firstResponder";
 	if (nil == formatter) {
 		formatter = [[NSNumberFormatter alloc] init];
 		[formatter setNumberStyle:NSNumberFormatterPercentStyle];
+		[formatter setMaximumFractionDigits:3];
 		objc_setAssociatedObject(self, key_percentFormatter, formatter, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 	}
 	return formatter;

@@ -206,8 +206,7 @@
     <entity name="TipCalcRecently" representedClassName="TipCalcRecently" syncable="YES">
         <attribute name="beforeSplit" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="costs" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="currenyCode" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="currenySymbol" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="currencyCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isMain" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPercentTax" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <attribute name="isPercentTip" optional="YES" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -375,7 +374,7 @@
         <element name="PercentCalcHistory" positionX="-567" positionY="-378" width="128" height="75"/>
         <element name="SalesCalcHistory" positionX="-576" positionY="-387" width="128" height="210"/>
         <element name="TipCalcHistory" positionX="-540" positionY="-351" width="128" height="103"/>
-        <element name="TipCalcRecently" positionX="-558" positionY="-369" width="128" height="283"/>
+        <element name="TipCalcRecently" positionX="-558" positionY="-369" width="128" height="268"/>
         <element name="TipCalcRoundMethod" positionX="-576" positionY="-387" width="128" height="148"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="75"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="105"/>

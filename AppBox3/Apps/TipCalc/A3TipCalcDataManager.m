@@ -6,6 +6,8 @@
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
+NSString *const A3TipCalcCurrencyCode = @"A3TipCalcCurrencyCode";
+
 #import "A3TipCalcDataManager.h"
 #import "TipCalcRoundMethod.h"
 
@@ -21,8 +23,8 @@
     {
         [self tipCalcData];
         
-        _lm = [[CLLocationManager alloc] init];
-        _lm.delegate = self;
+        _locationManager = [[CLLocationManager alloc] init];
+        _locationManager.delegate = self;
     }
     
     return self;
@@ -48,39 +50,16 @@
 
 #pragma mark - 
 
-- (NSString*)currencyStringFromNum:(double)aNum
+- (NSString*)currencyStringFromDouble:(double)value
 {
-    NSString* result = [self currencyFormattedStringForCurrency:self.tipCalcData.currenyCode value:@(round(aNum * 100.0) / 100.0)];
-    return result;
+	return [self.currencyFormatter stringFromNumber:@(value)];
 }
-
-
-
-- (double)numFromCurrencyString:(NSString*)currency
-{
-    double fNum = [[[[currency
-                      stringByReplacingOccurrencesOfString:self.tipCalcData.currenySymbol withString:@""]
-                     stringByReplacingOccurrencesOfString:@" " withString:@""]
-                    stringByReplacingOccurrencesOfString:self.tipCalcData.currenyCode withString:@""] doubleValue];
-    
-    return fNum;
-}
-
-- (NSString*)stringNumFromCurrencyString:(NSString*)currency
-{
-    double fNum = [self numFromCurrencyString:currency];
-    if(fNum != 0)
-        return [NSString stringWithFormat:@"%.2f", fNum];
-    else
-        return @"0";
-}
-
 
 - (void)deepCopyRecently:(TipCalcRecently *)source dest:(TipCalcRecently*)destination
 {
     destination.beforeSplit = source.beforeSplit;
     destination.costs = source.costs;
-    destination.currenyCode = source.currenyCode;
+    destination.currencyCode = source.currencyCode;
     destination.isPercentTax = source.isPercentTax;
     destination.isPercentTip = source.isPercentTip;
     destination.knownValue = source.knownValue;
@@ -90,7 +69,6 @@
     destination.split = source.split;
     destination.tax = source.tax;
     destination.tip = source.tip;
-    destination.currenySymbol = source.currenySymbol;
     destination.rRoundMethod.tip = source.rRoundMethod.tip;
     destination.rRoundMethod.tipPerPerson = source.rRoundMethod.tipPerPerson;
     destination.rRoundMethod.total = source.rRoundMethod.total;
@@ -115,49 +93,9 @@
 }
 
 
-- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setCurrencyCode:code];
-	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-
-	return [nf stringFromNumber:value];
-}
-
-- (NSString*)currencySymbolFromCode:(NSString*)aCode {
-    NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:aCode];
-    NSString *currencySymbol = [NSString stringWithFormat:@"%@",[locale displayNameForKey:NSLocaleCurrencySymbol value:aCode]];
-    NSLog(@"Currency Symbol : %@", currencySymbol);
-    
-	return currencySymbol;
-}
-
 #pragma mark - calculate
+
 - (NSNumber *)numberByRoundingMethodForValue:(NSNumber *)aValue {
-//    NSNumberFormatter *formatter = [NSNumberFormatter new];
-//    NSNumber *result;
-//    switch (self.roundingMethodOption) {
-//        case TCRoundingMethodOption_Exact:
-//            result = aValue;
-//            break;
-//        case TCRoundingMethodOption_Up:
-//            formatter.roundingMode = NSNumberFormatterRoundCeiling;
-//            formatter.roundingIncrement = aValue;
-//            result = [formatter roundingIncrement];
-//            break;
-//        case TCRoundingMethodOption_Down:
-//            formatter.roundingMode = NSNumberFormatterRoundFloor;
-//            formatter.roundingIncrement = aValue;
-//            result = [formatter roundingIncrement];
-//            break;
-//        case TCRoundingMethodOption_Off:
-//            formatter.roundingMode = NSNumberFormatterRoundHalfUp;
-//            formatter.roundingIncrement = aValue;
-//            result = [formatter roundingIncrement];
-//            break;
-//            
-//        default:
-//            break;
-//    }
     NSNumber *result;
     double temp;
     switch (self.roundingMethodOption) {
@@ -167,25 +105,14 @@
         case TCRoundingMethodOption_Up:
             temp = ceil([aValue doubleValue]);
             result = @(temp);
-//            temp = ceil([aValue doubleValue] * 100.0);
-//            temp = temp / 100.0;
-//            result = @(temp);
             break;
         case TCRoundingMethodOption_Down:
-            //result = @((floor([aValue doubleValue] * 100.0)) / 100.0);
-            
-//            temp = [aValue doubleValue] * 100.0;
-//            temp = floor(temp);
-//            temp = temp / 100.0;
             temp = [aValue doubleValue];
             temp = floor(temp);
             
             result = @(temp);
             break;
         case TCRoundingMethodOption_Off:
-            //result = @((round([aValue doubleValue] * 100.0)) / 100.0);
-            
-//            temp = round([aValue doubleValue] * 100.0) / 100.0;
             temp = round([aValue doubleValue]);
             
             result = @(temp);
@@ -265,17 +192,6 @@
     return dRst;
 }
 
-//@property (nonatomic, retain) NSNumber * tip;
-//@property (nonatomic, retain) NSNumber * tipPerPerson;
-//@property (nonatomic, retain) NSNumber * totalPerPerson;
-//@property (nonatomic, retain) NSNumber * total;
-//
-//TipCalcRoundingFlagExact = 0,   // 모든계산 후 결과만 내림값
-//TipCalcRoundingFlagUp,          // 모든계산 올림
-//TipCalcRoundingFlagDown,        // 모든계산 내림
-//TipCalcRoundingFlagOff
-
-// elf 수정중 - round method 적용하기
 - (double)tipRst:(int)aBeforeSplitFlag
 {
     double dRst = 0.0;
@@ -310,8 +226,6 @@
     {
         dRst = dRst / dSplit;
         
-//        if([self.tipCalcData.rRoundMethod.selectedValue integerValue] == TipCalcRoundingTargetTipPerPerson)
-//            dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tipPerPerson intValue]];
         if ([self roundingMethodValue] == TCRoundingMethodValue_Tip) {
             dRst = [self roundingValue:dRst rdMethod:[self.tipCalcData.rRoundMethod.tipPerPerson intValue]];
         }
@@ -320,7 +234,6 @@
     return dRst;
 }
 
-// elf 수정중 - round method 적용하기
 - (double)totalRst:(int)aBeforeSplitFlag
 {
     double dRst = 0.0;
@@ -353,29 +266,29 @@
     NSMutableString* mstrOutput = [[NSMutableString alloc] init];
     
     if (![self isTaxOptionOn])
-        [mstrOutput appendFormat:@"Costs : %@", [self currencyStringFromNum:[self costsAfterTax]]];
+        [mstrOutput appendFormat:@"Costs : %@", [self currencyStringFromDouble:[self costsAfterTax]]];
     else if([self.tipCalcData.knownValue intValue] == 0) // 세후가격
-        [mstrOutput appendFormat:@"Costs After Tax : %@", [self currencyStringFromNum:[self costsAfterTax]]];
+        [mstrOutput appendFormat:@"Costs After Tax : %@", [self currencyStringFromDouble:[self costsAfterTax]]];
     else
-        [mstrOutput appendFormat:@"Costs Before Tax : %@", [self currencyStringFromNum:[self costsBeforeTax]]];
+        [mstrOutput appendFormat:@"Costs Before Tax : %@", [self currencyStringFromDouble:[self costsBeforeTax]]];
     
     [mstrOutput appendFormat:@"\r\n"];
     
     if ([self isTaxOptionOn])
-        [mstrOutput appendFormat:@"Tax : %@", [self currencyStringFromNum:[self taxRst]]];
+        [mstrOutput appendFormat:@"Tax : %@", [self currencyStringFromDouble:[self taxRst]]];
     
     [mstrOutput appendFormat:@"\r\n"];
     
-    [mstrOutput appendFormat:@"Tip : %@", [self currencyStringFromNum:[self tipRst:0]]];
+    [mstrOutput appendFormat:@"Tip : %@", [self currencyStringFromDouble:[self tipRst:0]]];
     
     [mstrOutput appendFormat:@"\r\n"];
     
     if([self.tipCalcData.beforeSplit intValue] == 0)
-        [mstrOutput appendFormat:@"Total : %@", [self currencyStringFromNum:[self totalRst:0]]];
+        [mstrOutput appendFormat:@"Total : %@", [self currencyStringFromDouble:[self totalRst:0]]];
     else
     {
         [mstrOutput appendFormat:@"Split : %@\r\n", self.tipCalcData.split];
-        [mstrOutput appendFormat:@"Per Person : %@", [self currencyStringFromNum:[self totalRst:1]]];
+        [mstrOutput appendFormat:@"Per Person : %@", [self currencyStringFromDouble:[self totalRst:1]]];
     }
     
     return mstrOutput;
@@ -395,7 +308,7 @@
 
 - (void)setTaxOption:(BOOL)taxOption {
 	self.tipCalcData.showTax = @(taxOption);
-	self.tipCalcData.knownValue = taxOption == YES ? [self.tipCalcData knownValue] : @(0);
+	self.tipCalcData.knownValue = taxOption ? [self.tipCalcData knownValue] : @(0);
 }
 
 -(BOOL)isTaxOptionOn {
@@ -404,7 +317,7 @@
 
 -(void)setSplitOption:(BOOL)splitOption {
 	self.tipCalcData.showSplit = @(splitOption);
-	self.tipCalcData.beforeSplit = splitOption == YES ? [self.tipCalcData beforeSplit] : @(0);
+	self.tipCalcData.beforeSplit = splitOption ? [self.tipCalcData beforeSplit] : @(0);
 }
 
 -(BOOL)isSplitOptionOn {
@@ -421,14 +334,14 @@
 }
 
 #pragma mark Manipulate TipCalc Data
+
 - (void)setTipCalcDataForMainTableView {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isMain == %@",[NSNumber numberWithBool:YES]];
     NSArray* arrRecent = [TipCalcRecently MR_findAllWithPredicate:predicate];
     
     if(arrRecent.count > 0) {
         _tipCalcData = arrRecent[0];
-        _tipCalcData.currenySymbol = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencySymbol];
-        _tipCalcData.currenyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+        _tipCalcData.currencyCode = self.currencyCode;
     }
     else {
         TipCalcRecently* recently = [TipCalcRecently MR_createEntity];
@@ -438,8 +351,7 @@
         //recently.tax = _defaultTax;
         recently.isPercentTip = @(YES);
         recently.split = @1;
-        recently.currenySymbol = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencySymbol];
-        recently.currenyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+		recently.currencyCode = self.currencyCode;
         recently.showTax = @(YES);
         recently.showSplit = @(YES);
         recently.showRounding = @(YES);
@@ -506,16 +418,8 @@
 - (void)saveToHistory {
     
     TipCalcHistory* history = [TipCalcHistory MR_createEntity];
-//    if ([self tipSplitOption] == TCTipSplitOption_BeforeSplit) {
-//        history.labelTip = [self currencyStringFromNum:[self.tipValue doubleValue]];
-//        history.labelTotal = [self currencyStringFromNum:[self.totalBeforeSplit doubleValue]];
-//    }
-//    else {
-//        history.labelTip = [self currencyStringFromNum:[self.tipValueWithSplit doubleValue]];
-//        history.labelTotal = [self currencyStringFromNum:[self.totalPerPerson doubleValue]];
-//    }
-    history.labelTip = [self currencyStringFromNum:[self.tipValue doubleValue]];
-    history.labelTotal = [self currencyStringFromNum:[self.totalBeforeSplit doubleValue]];
+    history.labelTip = [self currencyStringFromDouble:[self.tipValue doubleValue]];
+    history.labelTotal = [self currencyStringFromDouble:[self.totalBeforeSplit doubleValue]];
     
     history.dateTime = [NSDate date];
     history.rRecently = self.tipCalcData;
@@ -528,25 +432,24 @@
     recently.split = @1;
     recently.knownValue = @(TCKnownValue_CostsBeforeTax);
     recently.tip = @20;
-//    recently.tax = _defaultTax;
     recently.isPercentTip = @(YES);
     recently.showTax = @(YES);
     recently.showSplit = @(YES);
     recently.showRounding = @(YES);
     recently.rRoundMethod = [TipCalcRoundMethod MR_createEntity];
-    recently.currenySymbol = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencySymbol];
-    recently.currenyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+    recently.currencyCode = self.currencyCode;
     _tipCalcData = recently;
 }
 
 #pragma mark Rounding Method
+
 - (void)setRoundingMethodValue:(TCRoundingMethodValue)value {
     self.tipCalcData.rRoundMethod.valueType =  @(value);
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (TCRoundingMethodValue)roundingMethodValue {
-    return [self.tipCalcData.rRoundMethod.valueType integerValue];
+    return (TCRoundingMethodValue) [self.tipCalcData.rRoundMethod.valueType integerValue];
 }
 
 - (void)setRoundingMethodOption:(TCRoundingMethodOption)option {
@@ -555,10 +458,11 @@
 }
 
 - (TCRoundingMethodOption)roundingMethodOption {
-    return [self.tipCalcData.rRoundMethod.optionType integerValue];
+    return (TCRoundingMethodOption) [self.tipCalcData.rRoundMethod.optionType integerValue];
 }
 
 #pragma mark - Result Calculation
+
 - (NSNumber *)costBeforeTax {
 
     if ([self knownValue] == TCKnownValue_CostsBeforeTax) {
@@ -746,24 +650,24 @@
 //bool kIsFirstTipCalcGeocodeTemp = YES; // temp
 - (void)getUSTaxRateByLocation
 {
-    if(_lm == nil)
+    if(_locationManager == nil)
         return;
     
 	if (!self.delegate) return;
     
-	_lm.desiredAccuracy = kCLLocationAccuracyKilometer;
-    [_lm startUpdatingLocation];
+	_locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+    [_locationManager startUpdatingLocation];
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-	if (!_lm) return;
+	if (!_locationManager) return;
 	
 	@autoreleasepool {
 		[manager stopUpdatingLocation];
 		
 		CLGeocoder* geocoder = [[CLGeocoder alloc] init];
 		
-		[geocoder reverseGeocodeLocation: _lm.location completionHandler:
+		[geocoder reverseGeocodeLocation: _locationManager.location completionHandler:
 		 ^(NSArray *placemarks, NSError *error) {
 			 
 			 NSLog(@"ori------");
@@ -801,8 +705,8 @@
 				 }
 			 }
 			 
-			 _lm.delegate = nil;
-			 _lm = nil;
+			 _locationManager.delegate = nil;
+			 _locationManager = nil;
 		 }];
 	}
 }
@@ -863,6 +767,24 @@
              @"WV" : @"5",
              @"WI" : @"4",
              };
+}
+
+- (NSString *)currencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3TipCalcCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
+}
+
+- (NSNumberFormatter *)currencyFormatter {
+	if (!_currencyFormatter) {
+		_currencyFormatter = [NSNumberFormatter new];
+		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		[_currencyFormatter setCurrencyCode:self.currencyCode];
+	}
+
+	return _currencyFormatter;
 }
 
 @end

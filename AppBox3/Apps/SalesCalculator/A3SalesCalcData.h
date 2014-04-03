@@ -7,11 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef NS_ENUM(NSInteger, SCValueType) {
-    SCValueType_PERCENT = 0,
-    SCValueType_AMOUNT
-};
+#import "A3TableViewInputElement.h"
 
 typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 	ShowPriceType_Origin = 0,
@@ -26,13 +22,13 @@ typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 @property (nonatomic, strong) NSDate *historyDate;
 @property (assign) A3SalesCalcShowPriceType shownPriceType;
 @property (nonatomic, strong) NSNumber *price;
-@property (nonatomic, assign) SCValueType priceType; // must be AMOUNT
+@property (nonatomic, assign) A3TableElementValueType priceType; // must be AMOUNT
 @property (nonatomic, strong) NSNumber *discount;
-@property (nonatomic, assign) SCValueType discountType;
+@property (nonatomic, assign) A3TableElementValueType discountType;
 @property (nonatomic, strong) NSNumber *additionalOff;
-@property (nonatomic, assign) SCValueType additionalOffType;
+@property (nonatomic, assign) A3TableElementValueType additionalOffType;
 @property (nonatomic, strong) NSNumber *tax;
-@property (nonatomic, assign) SCValueType taxType;
+@property (nonatomic, assign) A3TableElementValueType taxType;
 @property (nonatomic, strong) NSString *notes;
 
 -(BOOL)saveData;

@@ -21,6 +21,7 @@
 @interface A3TableViewInputElement () <UITextFieldDelegate, A3KeyboardDelegate, A3CalculatorDelegate>
 
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
+@property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 
 @end
 
@@ -76,8 +77,6 @@
 			break;
 		case A3TableViewEntryTypeCurrency:
 		case A3TableViewEntryTypePercent: {
-			NSNumberFormatter *currencyFormatter = [NSNumberFormatter new];
-
 			if ((![self value] || [self.value length] == 0) && [self.placeholder length] > 0) {
 				cell.textField.text = @"";
 			}
@@ -85,8 +84,7 @@
 				if (_valueType == A3TableViewValueTypePercent) {
 					cell.textField.text = [NSString stringWithFormat:@"%@%%", [self value]];
 				} else {
-					[currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-					cell.textField.text = [currencyFormatter stringFromNumber:@([self.value doubleValue])];
+					cell.textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
 				}
 			}
 			cell.textField.clearButtonMode = UITextFieldViewModeNever;
@@ -144,6 +142,7 @@
 	_inputViewController.textInputTarget = textField;
 	_inputViewController.delegate = self;
 	textField.inputView = _inputViewController.view;
+	_inputViewController.currencyCode = self.currencyCode;
 
 	switch (type) {
 		case A3TableViewEntryTypeText:
@@ -214,39 +213,9 @@
 	FNLOG(@"%@", textField.text);
 	if ([textField.text doubleValue] == 0.0) {
 		textField.text = @"";
-	} else {
-		NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
-		[numberFormatter setUsesGroupingSeparator:NO];
-		NSUInteger maximumFractionDigits = 3;
-		if (self.inputType == A3TableViewEntryTypeCurrency || (self.inputType == A3TableViewEntryTypePercent && [_inputViewController.bigButton2 isSelected])) {
-			[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-			if (self.currencyCode) {
-				[numberFormatter setCurrencyCode:self.currencyCode];
-			}
-			[numberFormatter setCurrencySymbol:@""];
-			maximumFractionDigits = numberFormatter.maximumFractionDigits;
-		} else {
-			[numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-		}
-		NSRange testRange = [textField.text rangeOfString:numberFormatter.decimalSeparator];
-		BOOL shouldAddDecimalSeparatorAtTheEnd = NO;
-		if (testRange.location == [textField.text length] - 1) {
-			shouldAddDecimalSeparatorAtTheEnd = YES;
-		}
-		if (testRange.location != NSNotFound) {
-			NSArray *components = [textField.text componentsSeparatedByString:numberFormatter.decimalSeparator];
-			[numberFormatter setMinimumFractionDigits:[components[1] length]];
-		}
-
-		// 이 코드가 실제로 값을 바꾸는 코드, 이전은 준비, 이후로는 보완하는 작업임
-		textField.text = [numberFormatter stringFromNumber:@([textField.text doubleValue])];
-
-		if (shouldAddDecimalSeparatorAtTheEnd) {
-			textField.text = [textField.text stringByAppendingString:numberFormatter.decimalSeparator];
-		}
 	}
 
-	if (self.coreDataObject && self.coreDataKey) {
+																	if (self.coreDataObject && self.coreDataKey) {
 		[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
 	}
 
@@ -284,29 +253,24 @@
 			break;
         }
 		case A3TableViewEntryTypeCurrency: {
-			NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
-			[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-			if (self.currencyCode) {
-				[numberFormatter setCurrencyCode:self.currencyCode];
-			}
 			if ([self.value doubleValue] == 0.0) {
 				textField.text = @"";
 				textField.placeholder = self.placeholder;
 			} else {
-				textField.text = [numberFormatter stringFromNumber:@([self.value doubleValue])];
+				textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
 			}
 			break;
 		}
 		case A3TableViewEntryTypePercent:
 		{
-            NSNumberFormatter *formatter = [NSNumberFormatter new];
-            
             if ((![self value] || [textField.text length] == 0) && [self.placeholder length] > 0) {
                 textField.text = @"";
                 textField.placeholder = self.placeholder;
             }
             else {
-                if (self.value == nil && textField.text.length == 0) {
+				NSNumberFormatter *formatter = [NSNumberFormatter new];
+
+				if (self.value == nil && textField.text.length == 0) {
                     self.value = @"0";
                     //textField.placeholder = self.title;
                     if (_valueType == A3TableViewValueTypePercent) {
@@ -314,22 +278,20 @@
                         textField.text = [formatter stringFromNumber:@(0)];
                     }
                     else {
-                        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                        textField.text = [formatter stringFromNumber:@(0)];
+                        textField.text = [self.currencyFormatter stringFromNumber:@(0)];
                     }
                     break;
                 }
                 
                 self.value = [self.value stringByReplacingOccurrencesOfString:@"," withString:@""];
                 if (_valueType == A3TableViewValueTypePercent) {
-                    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                    [formatter setNumberStyle:NSNumberFormatterPercentStyle];
                     [formatter setRoundingMode:NSNumberFormatterRoundDown];
-                    textField.text = [NSString stringWithFormat:@"%@%%", [formatter stringFromNumber:@([self.value doubleValue])]];
+					[formatter setMaximumFractionDigits:3];
+                    textField.text = [formatter stringFromNumber:@([self.value doubleValue] / 100.0)];
                 }
                 else {
-                    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-                    [formatter setRoundingMode:NSNumberFormatterRoundDown];
-                    textField.text = [formatter stringFromNumber:@([self.value doubleValue])];
+                    textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
                 }
             }
 			break;
@@ -385,16 +347,6 @@
     
     self.value = @"0";
     ((UITextField *)keyInputDelegate).text = @"";
-    
-//    NSNumberFormatter *currencyFormatter = [NSNumberFormatter new];
-//    if (_valueType == A3TableViewValueTypePercent) {
-//        [currencyFormatter setNumberStyle:NSNumberFormatterPercentStyle];
-//        ((UITextField *)keyInputDelegate).placeholder = [currencyFormatter stringFromNumber:@(0)];
-//    }
-//    else {
-//        [currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-//        ((UITextField *)keyInputDelegate).placeholder = [currencyFormatter stringFromNumber:@(0)];
-//    }
     
     if (_onEditingValueChanged) {
         _onEditingValueChanged(self, _firstResponder);
@@ -518,12 +470,19 @@
 - (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
 	_calculatorTargetTextField.text = value;
 	[self textFieldDidEndEditing:_calculatorTargetTextField];
+	[_rootTableView setContentOffset:CGPointMake(0, -_rootTableView.contentInset.top) animated:YES];
 }
 
 #pragma mark --- Response to Currency Select Button and result
 
 - (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
-	[_firstResponder resignFirstResponder];
+	double delayInSeconds = 0.3;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[_firstResponder resignFirstResponder];
+		_firstResponder = nil;
+	});
+
 
 	UIViewController *viewController = nil;
 	id <A3TableViewInputElementDelegate> o = self.delegate;
@@ -540,6 +499,23 @@
 		delegate = [o delegateForCurrencySelector];
 	}
 	return delegate;
+}
+
+- (NSNumberFormatter *)currencyFormatter {
+	id <A3TableViewInputElementDelegate> delegate = self.delegate;
+	if ([delegate respondsToSelector:@selector(currencyFormatterForTableViewInputElement)]) {
+
+		return [delegate currencyFormatterForTableViewInputElement];
+	}
+	if (!_currencyFormatter) {
+		_currencyFormatter = [NSNumberFormatter new];
+		[_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		[_currencyFormatter setRoundingMode:NSNumberFormatterRoundDown];
+		if (self.currencyCode) {
+			[_currencyFormatter setCurrencyCode:self.currencyCode];
+		}
+	}
+	return _currencyFormatter;
 }
 
 @end

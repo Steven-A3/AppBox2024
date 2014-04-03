@@ -512,9 +512,6 @@
 
 - (void)setResultDataWithAnimation:(A3SalesCalcData *)resultData {
     
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-
     if (!resultData) {
         resultData = [A3SalesCalcData new];
     }
@@ -528,11 +525,11 @@
         if (resultData.shownPriceType == ShowPriceType_Origin) {
             salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:resultData];
             salePriceTax = [A3SalesCalcCalculator salePriceTaxForCalcData:resultData];
-            strings = @[[formatter stringFromNumber:@([salePrice doubleValue] + [salePriceTax doubleValue])], IS_IPAD ? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
+            strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue] + [salePriceTax doubleValue])], IS_IPAD ? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
         }
         else if (resultData.shownPriceType == ShowPriceType_Sale) {
             salePrice = resultData.price;
-            strings = @[[formatter stringFromNumber:@([salePrice doubleValue])], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
+            strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue])], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
         }
         
         _detailInfoButton.hidden = NO;
@@ -547,15 +544,15 @@
         // 세금 없는 경우
         if (resultData.shownPriceType == ShowPriceType_Origin) {
             salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:resultData];
-            strings = @[[formatter stringFromNumber:salePrice], @"  Sale Price"];
+            strings = @[[_currencyFormatter stringFromNumber:salePrice], @"  Sale Price"];
         }
         else if (resultData.shownPriceType == ShowPriceType_Sale) {
             salePrice = resultData.price;
             if (!resultData.tax || [resultData.tax isEqualToNumber:@0]) {
-                strings = @[[formatter stringFromNumber:salePrice], @"  Sale Price"];
+                strings = @[[_currencyFormatter stringFromNumber:salePrice], @"  Sale Price"];
             }
             else {
-                strings = @[[formatter stringFromNumber:salePrice], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
+                strings = @[[_currencyFormatter stringFromNumber:salePrice], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
             }
         }
         
@@ -606,7 +603,7 @@
 //	} else {
 //    	strings = @[[formatter stringFromNumber:savedAmount], @" saved of ", [formatter stringFromNumber:originalPrice]];
 //	}
-    strings = @[[formatter stringFromNumber:savedTotalAmount], @" saved of ", [formatter stringFromNumber:originalPriceWithTax]];
+    strings = @[[_currencyFormatter stringFromNumber:savedTotalAmount], @" saved of ", [_currencyFormatter stringFromNumber:originalPriceWithTax]];
     
     
     _savedPricePrintLabel.text = [strings componentsJoinedByString:@""];

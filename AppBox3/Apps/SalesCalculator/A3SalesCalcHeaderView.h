@@ -12,6 +12,7 @@
 @interface A3SalesCalcHeaderView : UIView
 
 @property (nonatomic, strong) UIButton *detailInfoButton;
+@property (nonatomic, weak) NSNumberFormatter *currencyFormatter;
 
 //@property (nonatomic, setter = setResultDictionary:) NSDictionary *result;
 

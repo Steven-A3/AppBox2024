@@ -8,6 +8,7 @@
 
 #import "A3SalesCalcCalculator.h"
 #import "A3SalesCalcData.h"
+#import "A3TableViewInputElement.h"
 
 @implementation A3SalesCalcCalculator
 
@@ -45,7 +46,7 @@
     
 
     // 할인
-    if (aData.discountType == SCValueType_PERCENT) {
+    if (aData.discountType == A3TableViewValueTypePercent) {
         
         double discount = 100.0 * aData.discount.doubleValue;
         
@@ -55,7 +56,7 @@
             discountedPrice = taxedOriginalPrice;
         }
         
-    } else if (aData.discountType == SCValueType_AMOUNT) {
+    } else if (aData.discountType == A3TableViewValueTypeCurrency) {
         discountedPrice = taxedOriginalPrice - aData.discount.doubleValue;
     }
     
@@ -63,7 +64,7 @@
     // 추가 할인
     if (aData.additionalOff && [aData.additionalOff isEqualToNumber:@0]==NO) {
         
-        if (aData.additionalOffType == SCValueType_PERCENT) {
+        if (aData.additionalOffType == A3TableViewValueTypePercent) {
             double additionalOff = 100.0 * aData.additionalOff.doubleValue;
             if (additionalOff!=0.0) {
                 discountedPrice = discountedPrice - (discountedPrice / 100.0 * aData.additionalOff.doubleValue);
@@ -71,7 +72,7 @@
                 discountedPrice = discountedPrice;
             }
             
-        } else if (aData.additionalOffType == SCValueType_AMOUNT) {
+        } else if (aData.additionalOffType == A3TableViewValueTypeCurrency) {
             discountedPrice = discountedPrice - aData.additionalOff.doubleValue;
         }
     }
@@ -104,7 +105,7 @@
     double originalPrice;
 
     // Original Price 계산.
-    if (aData.additionalOffType == SCValueType_PERCENT) {
+    if (aData.additionalOffType == A3TableViewValueTypePercent) {
         
         // 추가 할인 전 Original Price.
         double addionalOff = 100.0 - aData.additionalOff.doubleValue;
@@ -118,7 +119,7 @@
         originalPrice = aData.price.doubleValue + aData.additionalOff.doubleValue;
     }
 
-    if (aData.discountType == SCValueType_PERCENT) {
+    if (aData.discountType == A3TableViewValueTypePercent) {
         
         // 할인 전 Original 가격.
         double discount = 100.0 - aData.discount.doubleValue;
@@ -139,7 +140,7 @@
     
     
     // 할인
-    if (aData.discountType == SCValueType_PERCENT) {
+    if (aData.discountType == A3TableViewValueTypePercent) {
         
         // 세금 포함 가격, 할인.
         double discount = 100.0 * aData.discount.doubleValue;
@@ -151,7 +152,7 @@
 
         }
         
-    } else if (aData.discountType == SCValueType_AMOUNT) {
+    } else if (aData.discountType == A3TableViewValueTypeCurrency) {
         discountedPrice = taxedOriginalPrice - aData.discount.doubleValue;
 
     }
@@ -160,16 +161,15 @@
     // 추가 할인
     if (aData.additionalOff && [aData.additionalOff isEqualToNumber:@0]==NO) {
         
-        if (aData.additionalOffType == SCValueType_PERCENT) {
-            
+        if (aData.additionalOffType == A3TableViewValueTypePercent) {
+
             double additionalOff = 100.0 * aData.additionalOff.doubleValue;
             if (additionalOff!=0.0) {
                 discountedPrice = discountedPrice - (discountedPrice / 100.0 * aData.additionalOff.doubleValue);
             } else {
                 discountedPrice = discountedPrice;
             }
-            
-        } else if (aData.additionalOffType == SCValueType_AMOUNT) {
+        } else if (aData.additionalOffType == A3TableViewValueTypeCurrency) {
             discountedPrice = discountedPrice - aData.additionalOff.doubleValue;
         }
     }
@@ -212,7 +212,7 @@
 
         // 추가할인 전.
         if (aData.additionalOff && ![aData.additionalOff isEqualToNumber:@0]) {
-            if (aData.additionalOffType == SCValueType_AMOUNT) {
+            if (aData.additionalOffType == A3TableViewValueTypeCurrency) {
                 preAdditionalOff = [salePrice doubleValue] + [aData.additionalOff doubleValue];
             }
             else {
@@ -225,7 +225,7 @@
         
         // 할인 전.
         if (aData.discount && ![aData.discount isEqualToNumber:@0]) {
-            if (aData.discountType == SCValueType_AMOUNT) {
+            if (aData.discountType == A3TableViewValueTypeCurrency) {
                 preDiscount = preAdditionalOff + [aData.discount doubleValue];
             }
             else {
@@ -252,7 +252,7 @@
     NSNumber *result;
     
     if (aData.shownPriceType == ShowPriceType_Origin) {
-        if (aData.taxType == SCValueType_AMOUNT) {
+        if (aData.taxType == A3TableViewValueTypeCurrency) {
             result = aData.tax;
         }
         else {
@@ -260,7 +260,7 @@
         }
     }
     else if (aData.shownPriceType == ShowPriceType_Sale) {
-        if (aData.taxType == SCValueType_AMOUNT) {
+        if (aData.taxType == A3TableViewValueTypeCurrency) {
             NSNumber *originalPrice = [self originalPriceBeforeTaxAndDiscountForCalcData:aData];
             NSNumber *taxPercent = [self taxPercentForCalcData:aData];
             if ([taxPercent isEqualToNumber:@0]) {
@@ -293,7 +293,7 @@
         
         // 할인.
         if (aData.discount && ![aData.discount isEqualToNumber:@0]) {
-            if (aData.discountType == SCValueType_AMOUNT) {
+            if (aData.discountType == A3TableViewValueTypeCurrency) {
                 discountedPrice = [aData.price doubleValue] - [aData.discount doubleValue];
             }
             else {
@@ -306,7 +306,7 @@
         
         // 추가할인.
         if (aData.additionalOff && ![aData.additionalOff isEqualToNumber:@0]) {
-            if (aData.additionalOffType == SCValueType_AMOUNT) {
+            if (aData.additionalOffType == A3TableViewValueTypeCurrency) {
                 additionalOffPrice = discountedPrice - [aData.additionalOff doubleValue];
             }
             else {
@@ -323,7 +323,7 @@
         // 세금제거.
         if (aData.tax && ![aData.tax isEqualToNumber:@0]) {
             double preTaxPrice;
-            if (aData.taxType == SCValueType_AMOUNT) {
+            if (aData.taxType == A3TableViewValueTypeCurrency) {
                 preTaxPrice = [aData.price doubleValue] - [aData.tax doubleValue];
             }
             else {
@@ -348,7 +348,7 @@
 + (NSNumber *)salePriceTaxForCalcData:(A3SalesCalcData *)aData {
     NSNumber * result;
 
-    if (aData.taxType == SCValueType_AMOUNT) {
+    if (aData.taxType == A3TableViewValueTypeCurrency) {
         NSNumber *salePrice = [self salePriceWithoutTaxForCalcData:aData];
         NSNumber *taxPercent = @([aData.tax doubleValue] / [salePrice doubleValue] * 100.0);
         result = @([salePrice doubleValue] / 100.0 * [taxPercent doubleValue]);
@@ -364,7 +364,7 @@
 + (NSNumber *)discountPercentForCalcData:(A3SalesCalcData *)aData {
     NSNumber * result;
 
-    if (aData.discountType == SCValueType_AMOUNT) {
+    if (aData.discountType == A3TableViewValueTypeCurrency) {
         NSNumber * originalPrice = [self originalPriceBeforeTaxAndDiscountForCalcData:aData];
         result = @([aData.discount doubleValue] / [originalPrice doubleValue] * 100.0);
     }
@@ -378,10 +378,10 @@
 + (NSNumber *)additionalOffPercentForCalcData:(A3SalesCalcData *)aData {
     NSNumber * result;
 
-    if (aData.additionalOffType == SCValueType_AMOUNT) {
+    if (aData.additionalOffType == A3TableViewValueTypeCurrency) {
         NSNumber * originalPrice = [self originalPriceBeforeTaxAndDiscountForCalcData:aData];
         double discountedPrice;
-        if (aData.discountType == SCValueType_AMOUNT) {
+        if (aData.discountType == A3TableViewValueTypeCurrency) {
             discountedPrice = [originalPrice doubleValue] - [aData.discount doubleValue];
         }
         else {
@@ -401,7 +401,7 @@
     NSNumber * result;
     
     if (aData.shownPriceType == ShowPriceType_Origin) {
-        if (aData.taxType == SCValueType_AMOUNT) {
+        if (aData.taxType == A3TableViewValueTypeCurrency) {
             result = @([aData.tax doubleValue] / [aData.price doubleValue] * 100.0);
         }
         else {
@@ -409,7 +409,7 @@
         }
     }
     else if (aData.shownPriceType == ShowPriceType_Sale) {
-        if (aData.taxType == SCValueType_AMOUNT) {
+        if (aData.taxType == A3TableViewValueTypeCurrency) {
             NSNumber *salePriceBeforeTax = [self salePriceWithoutTaxForCalcData:aData];
             if ([salePriceBeforeTax isEqualToNumber:@0]) {
                 return @0;

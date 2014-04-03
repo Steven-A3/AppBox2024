@@ -19,13 +19,6 @@ typedef enum{
     TipCalcRoundingFlagOff          // 반올림
 }TipCalcRoundingFlag;
 
-typedef enum{
-    TipCalcRoundingTargetTip = 0,
-    TipCalcRoundingTargetTotal,
-    TipCalcRoundingTargetTotalPerPerson,
-    TipCalcRoundingTargetTipPerPerson
-} TipCalcRoundingTarget;
-
 typedef NS_ENUM (NSInteger, TCTipSplitOption) {
 	TCTipSplitOption_BeforeSplit = 0,
     TCTipSplitOption_PerPerson
@@ -54,9 +47,11 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 #import "TipCalcHistory.h"
 #import <CoreLocation/CoreLocation.h>
 
+extern NSString *const A3TipCalcCurrencyCode;
+
 @interface A3TipCalcDataManager : NSObject<CLLocationManagerDelegate>
 {
-    CLLocationManager* _lm;
+    CLLocationManager *_locationManager;
 }
 
 @property (nonatomic, weak) id<A3TipCalcDataManagerDelegate> delegate;
@@ -67,16 +62,13 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 @property (nonatomic, strong) NSNumber * defaultTax;
 - (void)getUSTaxRateByLocation;
 
-- (NSString*)currencyStringFromNum:(double)aNum;
-- (double)numFromCurrencyString:(NSString*)currency;
-- (NSString*)stringNumFromCurrencyString:(NSString*)currency;
+- (NSString *)currencyCode;
+
+- (NSString*)currencyStringFromDouble:(double)value;
 
 
 - (void)addHistory:(NSString*)aCaptionTip total:(NSString*)aCaptionTotal;
 - (void)historyToRecently:(TipCalcHistory*)aHistory;
-
-- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value;
-- (NSString*)currencySymbolFromCode:(NSString*)aCode;
 
 - (double)costsAfterTax;
 - (double)costsBeforeTax;
@@ -96,6 +88,7 @@ typedef NS_ENUM (NSInteger, TCRoundingMethodOption) {
 @property (nonatomic, assign, getter = isTaxOptionOn) BOOL taxOption;
 @property (nonatomic, assign, getter = isSplitOptionOn) BOOL splitOption;
 @property (nonatomic, assign, getter = isRoundingOptionOn) BOOL RoundingOption;
+@property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
 
 #pragma mark Manipulate TipCalc Data
 - (void)setTipCalcDataForMainTableView;

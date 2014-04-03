@@ -242,14 +242,6 @@
             }
             else {
                 unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-                /*
-                if (self.price2.unit) {
-                    unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], self.price2.unit.unitShortName];
-                }
-                else {
-                    unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-                }
-                 */
             }
             
             _price1sliderView.progressBarHidden = NO;
@@ -260,15 +252,6 @@
             }
             else {
                 unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-
-                /*
-                if (self.price2.unit) {
-                    unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], self.price2.unit.unitShortName];
-                }
-                else {
-                    unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-                }
-                 */
             }
             
             _price1sliderView.progressBarHidden = YES;
@@ -280,15 +263,6 @@
             }
             else {
                 unitPriceTxt = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)]];
-
-                /*
-                if (self.price2.unit) {
-                    unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)], self.price2.unit.unitShortName];
-                }
-                else {
-                    unitPriceTxt = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)]];
-                }
-                 */
             }
             
             _price1sliderView.progressBarHidden = YES;
@@ -384,15 +358,6 @@
             }
             else {
                 unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-
-                /*
-                if (self.price1.unit) {
-                    unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], self.price1.unit.unitShortName];
-                }
-                else {
-                    unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-                }
-                 */
             }
             
             _price2sliderView.progressBarHidden = NO;
@@ -403,15 +368,6 @@
             }
             else {
                 unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-
-                /*
-                if (self.price1.unit) {
-                    unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], self.price1.unit.unitShortName];
-                }
-                else {
-                    unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-                }
-                 */
             }
             
             _price2sliderView.progressBarHidden = YES;
@@ -423,15 +379,6 @@
             }
             else {
                 unitPriceTxt = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)]];
-
-                /*
-                if (self.price1.unit) {
-                    unitPriceTxt = [NSString stringWithFormat:@"-%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)], self.price1.unit.unitShortName];
-                }
-                else {
-                    unitPriceTxt = [NSString stringWithFormat:@"-%@", [self.currencyFormatter stringFromNumber:@(unitPrice*-1)]];
-                }
-                 */
             }
             
             _price2sliderView.progressBarHidden = YES;
@@ -706,13 +653,6 @@
 - (void)inputViewTapped:(A3UnitPriceInputView *)inputView
 {
     if (inputView == _price1InputView) {
-        /*
-        A3UnitPriceDetailViewController *viewController = [self detailViewController];
-        viewController.isPriceA = YES;
-        viewController.price = self.price1;
-        [self.navigationController pushViewController:viewController animated:YES];
-         */
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPAD ? @"UnitPriceStoryboard_iPad" : @"UnitPriceStoryboard" bundle:nil];
         A3UnitPriceDetailTableController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3UnitPriceDetailTableController"];
         viewController.delegate = self;
@@ -721,14 +661,6 @@
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else if (inputView == _price2InputView) {
-        /*
-        A3UnitPriceDetailViewController *viewController = [self detailViewController];
-        viewController.isPriceA = NO;
-        viewController.price = self.price2;
-        [self.navigationController pushViewController:viewController animated:YES];
-         */
-        
-        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:IS_IPAD ? @"UnitPriceStoryboard_iPad" : @"UnitPriceStoryboard" bundle:nil];
         A3UnitPriceDetailTableController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"A3UnitPriceDetailTableController"];
         viewController.delegate = self;

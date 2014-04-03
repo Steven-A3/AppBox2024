@@ -179,7 +179,7 @@ enum A3ExpenseListAddBudgetCellType {
             A3TableViewInputElement *notes = elements[3];
             
             resultBudget.title = title.value;
-            resultBudget.location = location.value;
+            resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
             resultBudget.date = date.dateValue;
             resultBudget.notes = notes.value;
             resultBudget.updateDate = [NSDate date];

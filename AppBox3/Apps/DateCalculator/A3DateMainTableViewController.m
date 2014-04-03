@@ -919,7 +919,7 @@ NSString *kCalculationString;
 }
 
 - (void)keyboardDidHide:(NSNotification *)noti {
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
 }
 
 #pragma mark  A3KeyboardViewControllerDelegate

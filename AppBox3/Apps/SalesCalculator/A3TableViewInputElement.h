@@ -18,8 +18,8 @@ typedef NS_ENUM(NSInteger, A3TableViewInputType) {
 };
 
 typedef NS_ENUM(NSInteger, A3TableElementValueType) {
-    A3TableViewValueTypePercent = 0,
-    A3TableViewValueTypeCurrency,
+	A3TableViewValueTypeCurrency = 0,
+	A3TableViewValueTypePercent,
     A3TableViewValueTypeText,
     A3TableViewValueTypeNumber
 };
@@ -44,6 +44,7 @@ typedef void (^BasicBlock)(id sender);
 - (UIViewController *)containerViewController;
 - (id<A3CalculatorDelegate>)delegateForCalculator;
 - (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
+- (NSNumberFormatter *)currencyFormatterForTableViewInputElement;
 @end
 
 @interface A3TableViewInputElement : A3JHTableViewElement

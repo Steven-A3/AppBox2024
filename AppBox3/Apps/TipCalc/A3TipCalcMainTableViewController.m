@@ -278,66 +278,33 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     NSMutableArray *details = [NSMutableArray new];
     NSMutableArray *values;
     
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-    //formatter.roundingMode = NSNumberFormatterRoundCeiling;
-    //    [formatter setMaximumFractionDigits:3];
-    //    [formatter setRoundingMode:NSNumberFormatterRoundHalfUp];
-    //    [formatter setRoundingIncrement:@3];
-    //    test = [formatter stringFromNumber:[self.dataManager costBeforeTax]];
-    //    NSLog(@"test : %@", test);
-    //
-    //    [formatter setRoundingMode:NSNumberFormatterRoundHalfDown];
-    //    test = [formatter stringFromNumber:[self.dataManager costBeforeTax]];
-    //    NSLog(@"test : %@", test);
-    //
-    //    [formatter setRoundingMode:NSNumberFormatterRoundHalfEven];
-    //    test = [formatter stringFromNumber:[self.dataManager costBeforeTax]];
-    //    NSLog(@"test : %@", test);
-    
+	__weak NSNumberFormatter *formatter = self.dataManager.currencyFormatter;
+
     if ([self.dataManager tipSplitOption] == TCTipSplitOption_BeforeSplit) {
         values = [NSMutableArray new];
-        //        [values addObject:[[self.dataManager costBeforeTax] stringValue]];
-        //        [values addObject:[[self.dataManager taxValue] stringValue]];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTax]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValue]]];
         [titles addObject:@[@"Costs", @"Tax"]];
         [details addObject:values];
         
         values = [NSMutableArray new];
-        //        [values addObject:[[self.dataManager subtotal] stringValue]];
-        //        [values addObject:[[self.dataManager tipValue] stringValue]];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotal]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager tipValue]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
-        
-        //        values = [NSMutableArray new];
-        //        [values addObject:[[self.dataManager totalBeforeSplit] stringValue]];
-        //        [titles addObject:@[@"Total Before Split"]];
-        //        [details addObject:values];
     }
     else if ([self.dataManager tipSplitOption] == TCTipSplitOption_PerPerson) {
         values = [NSMutableArray new];
-        //        [values addObject:[[self.dataManager costBeforeTaxWithSplit] stringValue]];
-        //        [values addObject:[[self.dataManager taxValueWithSplit] stringValue]];
         [values addObject:[formatter stringFromNumber:[self.dataManager costBeforeTaxWithSplit]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager taxValueWithSplit]]];
         [titles addObject:@[@"Costs", @"Tax"]];
         [details addObject:values];
         
         values = [NSMutableArray new];
-        //        [values addObject:[[self.dataManager subtotalWithSplit] stringValue]];
-        //        [values addObject:[[self.dataManager tipValueWithSplit] stringValue]];
         [values addObject:[formatter stringFromNumber:[self.dataManager subtotalWithSplit]]];
         [values addObject:[formatter stringFromNumber:[self.dataManager tipValueWithSplit]]];
         [titles addObject:@[@"Subtotal", @"Tip"]];
         [details addObject:values];
-        
-        //        values = [NSMutableArray new];
-        //        [values addObject:[[self.dataManager totalPerPerson] stringValue]];
-        //        [titles addObject:@[@"Total Per Person"]];
-        //        [details addObject:values];
     }
     [popoverTableView setSectionArrayForTitles:titles withDetails:details];
     
@@ -421,7 +388,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 - (NSArray *)tableSectionDataAtSection:(NSInteger)section {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
     formatter.numberStyle = NSNumberFormatterNoStyle;
-    formatter.maximumFractionDigits = 2;
     NSArray * result;
     
     switch (section) {
@@ -463,7 +429,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             costs.onEditingFinished = [self cellTextInputFinishedBlock];
             costs.doneButtonPressed = [self cellInputDoneButtonPressed];
             costs.identifier = RowElementID_Costs;
-            [elements addObject:costs];
+			costs.currencyCode = self.dataManager.currencyCode;
+			[elements addObject:costs];
 
             if ([self.dataManager isTaxOptionOn]) {
                 A3TableViewInputElement *tax = [A3TableViewInputElement new];
@@ -479,6 +446,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 tax.onEditingFinished = [self cellTextInputFinishedBlock];
                 tax.doneButtonPressed = [self cellInputDoneButtonPressed];
                 tax.identifier = RowElementID_Tax;
+				tax.currencyCode = self.dataManager.currencyCode;
                 _taxElement = tax;
                 [elements addObject:tax];
             }
@@ -496,6 +464,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             tip.onEditingFinished = [self cellTextInputFinishedBlock];
             tip.doneButtonPressed = [self cellInputDoneButtonPressed];
             tip.identifier = RowElementID_Tip;
+			tip.currencyCode = self.dataManager.currencyCode;
             [elements addObject:tip];
 
             if ([self.dataManager isSplitOptionOn]) {
@@ -542,24 +511,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return result;
 }
 
-
 -(void)scrollToTopOfTableView {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width)).y);
-        [UIView commitAnimations];
-    }
-    else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:0.35];
-        self.tableView.contentOffset = CGPointMake(0.0, CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height)).y);
-        [UIView commitAnimations];
-    }
+	[UIView beginAnimations:@"KeyboardWillShow" context:nil];
+	[UIView setAnimationBeginsFromCurrentState:YES];
+	[UIView setAnimationCurve:7];
+	[UIView setAnimationDuration:0.35];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+	[UIView commitAnimations];
 }
 
 #pragma mark - Table InputElement Manipulate Blocks
@@ -758,27 +716,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         _headerView.beforeSplitButton.selected = NO;
         _headerView.perPersonButton.selected = YES;
     }
-}
-
-#pragma mark - keyboard Stuff
-- (void)changePlaceHolder
-{
-    NSString* strPlaceHoler = @"0%";
-    if(![self.dataManager.tipCalcData.isPercentTax boolValue])
-        strPlaceHoler = [NSString stringWithFormat:@"%@0", self.dataManager.tipCalcData.currenySymbol];
-    
-    
-    ((UITextField *)self.firstResponder).attributedPlaceholder = [[NSAttributedString alloc] initWithString:strPlaceHoler attributes:@{NSForegroundColorAttributeName: kColorPlaceHolder}];
-}
-
-#pragma mark - Currency Select Delegate
-
-- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
-
-	self.dataManager.tipCalcData.currenyCode = selectedItem;
-	self.dataManager.tipCalcData.currenySymbol = [self.dataManager currencySymbolFromCode:selectedItem];
-    
-    [self outputAllResultWithAnimation:YES];
 }
 
 #pragma mark - Table view data source
@@ -1046,18 +983,13 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 }
 
 - (void)settingsButtonAction:(UIButton *)button {
-	@autoreleasepool {
-        [self disposeInitializedCondition];
-        [self setBarButtonsEnable:NO];
-        
-//		A3TipCalcSettingsViewController *viewController = [[A3TipCalcSettingsViewController alloc] initWithRoot:nil];
-//        viewController.delegate = self;
-//		[self presentSubViewController:viewController];
-		A3TipCalcSettingViewController *viewController = [[A3TipCalcSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
-		viewController.dataManager = self.dataManager;
-        viewController.delegate = self;
-		[self presentSubViewController:viewController];
-	}
+	[self disposeInitializedCondition];
+	[self setBarButtonsEnable:NO];
+
+	A3TipCalcSettingViewController *viewController = [[A3TipCalcSettingViewController alloc] initWithStyle:UITableViewStyleGrouped];
+	viewController.dataManager = self.dataManager;
+	viewController.delegate = self;
+	[self presentSubViewController:viewController];
 }
 
 - (void)saveToHistoryAndInitialize:(id)sender {
@@ -1069,7 +1001,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
     }
     
-    // Initailize
+    // Initialize
     [self.headerView showDetailInfoButton];
     //[self.headerView setResult:[self.dataManager tipCalcData] withAnimation:YES];
     self.tableView.tableHeaderView = self.headerView;
@@ -1109,8 +1041,23 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 	return self;
 }
 
-- (void)willDismissSearchViewController {
+#pragma mark - Currency Select Delegate
 
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+
+	[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3TipCalcCurrencyCode];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	[self.dataManager setCurrencyFormatter:nil];
+
+	self.dataManager.tipCalcData.currencyCode = selectedItem;
+
+	[self outputAllResultWithAnimation:YES];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+}
+
+- (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
+	return self.dataManager.currencyFormatter;
 }
 
 @end

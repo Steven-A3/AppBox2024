@@ -18,8 +18,10 @@
         _downPayment = [aDecoder decodeObjectForKey:@"downPayment"];
         _repayment = [aDecoder decodeObjectForKey:@"repayment"];
         _monthOfTerms = [aDecoder decodeObjectForKey:@"monthOfTerms"];
+		_showsTermInMonths  = [aDecoder decodeObjectForKey:@"showsTermInMonths"];
         _annualInterestRate = [aDecoder decodeObjectForKey:@"annualInterestRate"];
-        _frequencyIndex = [aDecoder decodeIntegerForKey:@"frequencyIndex"];
+		_showsInterestInYearly = [aDecoder decodeObjectForKey:@"showsInterestInYearly"];
+		_frequencyIndex = [aDecoder decodeIntegerForKey:@"frequencyIndex"];
         _calculationDate = [aDecoder decodeObjectForKey:@"calculationDate"];
         
         // advanced
@@ -49,7 +51,9 @@
     [aCoder encodeObject:_downPayment forKey:@"downPayment"];
     [aCoder encodeObject:_repayment forKey:@"repayment"];
     [aCoder encodeObject:_monthOfTerms forKey:@"monthOfTerms"];
+	[aCoder encodeObject:_showsTermInMonths forKey:@"showsTermInMonths"];
     [aCoder encodeObject:_annualInterestRate forKey:@"annualInterestRate"];
+	[aCoder encodeObject:_showsInterestInYearly forKey:@"showsInterestInYearly"];
     [aCoder encodeInteger:_frequencyIndex forKey:@"frequencyIndex"];
     [aCoder encodeObject:_calculationDate forKey:@"calculationDate"];
     // advanced
@@ -68,4 +72,26 @@
     [aCoder encodeBool:_showExtraPayment forKey:@"showExtraPayment"];
 }
 
+- (NSString *)termValueString {
+	NSString *resultString;
+	if ([self.showsTermInMonths boolValue]) {
+		resultString = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"%ld months", @"StringsDict", @"Loan Calculation terms in months"), (long)[self.monthOfTerms integerValue] ];
+	} else {
+		resultString = [NSString localizedStringWithFormat:NSLocalizedStringFromTable(@"%ld years", @"StringsDict", @"Loan Calculation terms in years"), (long)[self.monthOfTerms integerValue] / 12 ];
+	}
+	return resultString;
+}
+
+- (NSString *)interestRateString {
+	NSString *resultString;
+	NSNumberFormatter *formatter = [NSNumberFormatter new];
+	[formatter setNumberStyle:NSNumberFormatterPercentStyle];
+	[formatter setMaximumFractionDigits:3];
+	if ([self.showsInterestInYearly boolValue]) {
+		resultString = [NSString stringWithFormat:@"Annual %@", [formatter stringFromNumber:@([self.annualInterestRate doubleValue] / 100.0)]];
+	} else {
+		resultString = [NSString stringWithFormat:@"Monthly %@", [formatter stringFromNumber:@([self.annualInterestRate doubleValue] / 100.0 / 12.0)]];
+	}
+	return resultString;
+}
 @end

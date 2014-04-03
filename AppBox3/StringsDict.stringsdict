@@ -46,5 +46,49 @@
 			<string>After %ld minutes</string>
 		</dict>
 	</dict>
+	<key>%ld months</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_months@</string>
+		<key>num_months</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>None</string>
+			<key>one</key>
+			<string>1 month</string>
+			<key>few</key>
+			<string>%ld months</string>
+			<key>many</key>
+			<string>%ld months</string>
+			<key>other</key>
+			<string>%ld months</string>
+		</dict>
+	</dict>
+	<key>%ld years</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_years@</string>
+		<key>num_years</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>None</string>
+			<key>one</key>
+			<string>1 year</string>
+			<key>few</key>
+			<string>%ld years</string>
+			<key>many</key>
+			<string>%ld years</string>
+			<key>other</key>
+			<string>%ld years</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

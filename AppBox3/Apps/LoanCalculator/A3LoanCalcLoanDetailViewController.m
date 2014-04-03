@@ -216,7 +216,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         case A3LC_CalculationItemInterestRate:
         {
             placeHolderText = [NSString stringWithFormat:@"Annual %@", [self.percentFormatter stringFromNumber:@(0)]];
-            textFieldText = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
+            textFieldText = [_loanData interestRateString];
             break;
         }
         case A3LC_CalculationItemPrincipal:
@@ -682,12 +682,11 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             case A3LC_CalculationItemInterestRate:
             {
                 if ([textField.text length] > 0) {
-                    NSNumber *percentNum = @(inputFloat/100.0);
-                    _loanData.annualInterestRate = percentNum;
-                    textField.text = [self.percentFormatter stringFromNumber:percentNum];
-                }
+                    _loanData.annualInterestRate = inputNum;
+                    textField.text = [_loanData interestRateString];
+				}
                 else {
-                    textField.text = [self.percentFormatter stringFromNumber:_loanData.annualInterestRate];
+                    textField.text = [_loanData interestRateString];
                 }
                 break;
             }

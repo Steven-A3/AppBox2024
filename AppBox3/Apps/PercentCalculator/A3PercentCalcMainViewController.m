@@ -48,6 +48,7 @@
     BOOL _prevShow, _nextShow;
     BOOL _isKeyboardShown;
 //    BOOL _needToClearDetail;
+	BOOL _scrollsToTopWhenKeyboardHide;
 }
 
 - (id)init {
@@ -59,10 +60,13 @@
 	return self;
 }
 
+- (void)cleanUp {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
 
     self.title = @"Percent Calculator";
     
@@ -108,10 +112,16 @@
     }
     
     _isKeyboardShown = NO;
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillDisappear:) name:UIKeyboardWillHideNotification object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	if (_scrollsToTopWhenKeyboardHide) {
+		[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
+	}
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -514,7 +524,6 @@
         NSLog(@"%@", exception);
     }
     @finally {
-        NSLog(@"what..");
     }
 
     return nil;
@@ -929,21 +938,12 @@
 }
 
 -(void)scrollToTableViewTop {
-    if (IS_LANDSCAPE) {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:2.5];
-        self.tableView.contentOffset = CGPointMake(0.0, CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.width)).y);
-        [UIView commitAnimations];
-    } else {
-        [UIView beginAnimations:@"KeyboardWillShow" context:nil];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:7];
-        [UIView setAnimationDuration:2.5];
-        self.tableView.contentOffset = CGPointMake(0.0, CGPointMake(0.0, -(self.navigationController.navigationBar.bounds.size.height + [[UIApplication sharedApplication] statusBarFrame].size.height)).y);
-        [UIView commitAnimations];
-    }
+//	[UIView beginAnimations:@"KeyboardWillShow" context:nil];
+//	[UIView setAnimationBeginsFromCurrentState:YES];
+//	[UIView setAnimationCurve:7];
+//	[UIView setAnimationDuration:0.35];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+//	[UIView commitAnimations];
 }
 
 -(BOOL)checkNeedToClearDetail {
@@ -1373,30 +1373,30 @@
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-    [keyInputDelegate resignFirstResponder];
-
+	_scrollsToTopWhenKeyboardHide = NO;
     if (self.calcType==PercentCalcType_5) {
-        
+
         if (_factorX1==nil || _factorY1==nil || _factorX2==nil || _factorY2==nil)
             return;
-        
+
         if ((![_factorX1 isEqualToNumber:@0] && ![_factorY1 isEqualToNumber:@0] && ![_factorX2 isEqualToNumber:@0] && ![_factorY2 isEqualToNumber:@0]) ||
             ([_factorX1 isEqualToNumber:@0] && [_factorY1 isEqualToNumber:@0] && [_factorX2 isEqualToNumber:@0] && [_factorY2 isEqualToNumber:@0])) {
-            [self scrollToTableViewTop];
+            _scrollsToTopWhenKeyboardHide = YES;
         }
-        
-        
+
+
     } else {
-        
+
         if (_factorX1==nil || _factorY1==nil)
             return;
-        
+
         if ((![_factorX1 isEqualToNumber:@0] && ![_factorY1 isEqualToNumber:@0]) ||
             ([_factorX1 isEqualToNumber:@0] && ![_factorY1 isEqualToNumber:@0]) ) {
-            [self scrollToTableViewTop];
+			_scrollsToTopWhenKeyboardHide = YES;
         }
     }
-    
+
+	[keyInputDelegate resignFirstResponder];
     [self.tableView reloadData];
 }
 

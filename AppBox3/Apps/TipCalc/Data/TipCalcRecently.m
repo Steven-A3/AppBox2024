@@ -2,7 +2,7 @@
 //  TipCalcRecently.m
 //  AppBox3
 //
-//  Created by A3 on 3/13/14.
+//  Created by A3 on 4/2/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -15,8 +15,7 @@
 
 @dynamic beforeSplit;
 @dynamic costs;
-@dynamic currenyCode;
-@dynamic currenySymbol;
+@dynamic currencyCode;
 @dynamic isMain;
 @dynamic isPercentTax;
 @dynamic isPercentTip;
@@ -27,7 +26,7 @@
 @dynamic split;
 @dynamic tax;
 @dynamic tip;
-@dynamic rRoundMethod;
 @dynamic history;
+@dynamic rRoundMethod;
 
 @end
