@@ -359,7 +359,7 @@
     }
     
     if ( widthConst ) {
-        widthConst.constant = (imageView.image ? 33.0 : 0.0);
+        widthConst.constant = (imageView.image ? 32.0 : 0.0);
         [cell layoutIfNeeded];
         NSLog(@"%s %@ %f",__FUNCTION__,indexPath,widthConst.constant);
     }
@@ -623,7 +623,7 @@
 - (void)showImageViewOfCell:(UITableViewCell *)cell withImage:(UIImage *)image {
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     if (image) {
-        imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 33.0, 33.0)];
+        imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32.0, 32.0)];
         
         if ( sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
