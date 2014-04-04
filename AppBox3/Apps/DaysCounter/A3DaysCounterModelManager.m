@@ -1250,7 +1250,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
     if ( (([largeDate timeIntervalSince1970] - [smallDate timeIntervalSince1970]) < 86400) &&
-         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) ) {
+         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) &&
+        !isAllDay ) {
         flag = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
         option = DurationOption_Seconds | DurationOption_Minutes | DurationOption_Hour;
     }
