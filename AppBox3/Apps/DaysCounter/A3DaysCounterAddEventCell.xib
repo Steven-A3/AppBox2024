@@ -565,6 +565,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="repeatBLabel" destination="Kr3-aM-j2S" id="Zfh-k2-al6"/>
                 <outlet property="sinceRoundBottomConst" destination="JCh-bd-ccy" id="8JU-hG-STR"/>
                 <outlet property="sinceRoundLabel" destination="DZy-g6-1IW" id="uK3-rM-3ar"/>
+                <outlet property="sinceRoundWidthConst" destination="Z17-eM-gBI" id="s0J-Pa-Odz"/>
                 <outlet property="startEnd1ALabel" destination="UIN-iR-qlZ" id="4pP-lU-vGw"/>
                 <outlet property="startEnd1BLabel" destination="6Vq-Is-c65" id="fzb-QG-3Sa"/>
                 <outlet property="startEnd2ALabel" destination="yxt-s9-SpV" id="Bk8-5O-a6k"/>
@@ -572,6 +573,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                 <outlet property="titleBottomSpaceConst" destination="Z8d-M5-JbA" id="4wD-hd-Egd"/>
                 <outlet property="titleLeftSpaceConst" destination="vMA-iX-1FD" id="YzB-bB-mKP"/>
                 <outlet property="untilRoundBottomConst" destination="F32-4K-w9m" id="MRE-Ad-Sp9"/>
+                <outlet property="untilRoundWidthConst" destination="9oF-1A-5bd" id="M3h-gD-pDT"/>
                 <outlet property="untilSinceRoundLabel" destination="AEq-82-Pbd" id="itn-9y-6sx"/>
             </connections>
         </tableViewCell>

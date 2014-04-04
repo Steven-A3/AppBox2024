@@ -146,6 +146,9 @@
     }
 
     [_collectionView reloadData];
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

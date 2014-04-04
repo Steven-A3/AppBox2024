@@ -135,6 +135,67 @@
 }
 
 // KJH
++ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay
+{
+    NSString *result;
+    
+    if (isAllDay) {
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
+        NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+        
+        fromComp.hour = 0;
+        fromComp.minute = 0;
+        fromComp.second = 0;
+        toComp.hour = 0;
+        toComp.minute = 0;
+        toComp.second = 0;
+        
+        NSDateComponents *daysGapComp = [calendar components:NSDayCalendarUnit
+                                                    fromDate:[calendar dateFromComponents:fromComp]
+                                                      toDate:[calendar dateFromComponents:toComp]
+                                                     options:0];
+        if ([daysGapComp day] == 0) {
+            result = @"today";
+        }
+        else {
+            if ([daysGapComp day] > 0) {
+                result = @"Until";
+            }
+            else {
+                result = @"Since";
+            }
+        }
+    }
+    else {
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
+        NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+        
+        fromComp.second = 0;
+        toComp.second = 0;
+        
+        NSDateComponents *daysGapComp = [calendar components:NSSecondCalendarUnit
+                                                    fromDate:[calendar dateFromComponents:fromComp]
+                                                      toDate:[calendar dateFromComponents:toComp]
+                                                     options:0];
+        if ([daysGapComp second] == 0) {
+            result = @"Now";
+        }
+        else {
+            if ([daysGapComp second] > 0) {
+                result = @"Until";
+            }
+            else {
+                result = @"Since";
+            }
+        }
+    }
+    
+    return result;
+}
+
+// KJH
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay
 {
 	if ( toDate == nil || fromDate == nil) {

@@ -27,6 +27,7 @@
 #import "A3DaysCounterEventListNameCell.h"
 #import "A3DaysCounterEventListSectionHeader.h"
 
+
 @interface A3DaysCounterEventListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) NSArray *sourceArray;
@@ -408,6 +409,9 @@
     
     if ( item ) {
         FNLOG(@"%@ / %@",indexPath, item.imageFilename);
+        NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                      firstDate:[item startDate]
+                                                                                       fromDate:[NSDate date]];
 
         // textLabel
         textLabel.text = item.eventName;
@@ -417,18 +421,37 @@
         //daysLabel.text = [self daysStringForItem:item];
         daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
                                                                                                                     fromDate:[NSDate date]
-                                                                                                                      toDate:[item startDate]
+                                                                                                                      toDate:startDate //[item startDate]
                                                                                                                     isAllDay:[item.isAllDay boolValue]]];
         
         // markLabel
-        if ( daysGap > 0 ) {
-            markLabel.text = @"Until";
-            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+        if (daysGap == 0) {
+            markLabel.text = @"on going";
+            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+            if (sortType == EventSortType_Name) {
+                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 65;
+            }
+            else {
+                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 65;
+            }
         }
         else {
-            markLabel.text = @"Since";
-            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+            if ( daysGap > 0 ) {
+                markLabel.text = @"Until";
+                markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+            }
+            else {
+                markLabel.text = @"Since";
+                markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+            }
+            if (sortType == EventSortType_Name) {
+                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
+            }
+            else {
+                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 42;
+            }
         }
+        
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
         markLabel.layer.cornerRadius = 9.0;
@@ -441,9 +464,6 @@
         imageView.hidden = NO;
         
         // RoundDateView
-        NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                      firstDate:[item startDate]
-                                                                                       fromDate:[NSDate date]];
         if ( sortType == EventSortType_Date ) {
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
             roundDateView.fillColor = [item.calendar color];

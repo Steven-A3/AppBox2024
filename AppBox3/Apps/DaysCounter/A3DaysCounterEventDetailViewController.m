@@ -561,16 +561,15 @@
     BOOL hasEndDate = [_eventItem.isPeriod boolValue];
     NSInteger daysGap = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:YES];
     BOOL hasSince = daysGap < 0 ? YES : NO;
-    if (daysGap == 0 && isTypeA) {
-        cell.untilSinceRoundLabel.text = @"on going";
-    }
-    else {
-        markLabel.text = isSince ? @"Since" : @"Until";
-    }
     
     if (!hasRepeat) {
         NSDate *startDate = info.startDate;
         NSDate *endDate = info.endDate;
+
+        cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
+                                                                           toDate:[info startDate]
+                                                                     allDayOption:[info.isAllDay boolValue]];
+        cell.untilRoundWidthConst.constant = 42;
         
         if ( isLunar ) {
             NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
@@ -648,10 +647,16 @@
         
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now];
         
+        // until/since & durationOption string
+        cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
+                                                                           toDate:nextDate
+                                                                     allDayOption:[info.isAllDay boolValue]];
+        cell.untilRoundWidthConst.constant = 42;
+        
         if (isTypeA) {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                       fromDate:now
-                                                                                        toDate:startDate
+                                                                                        toDate:hasSince ? nextDate : startDate
                                                                                       isAllDay:[info.isAllDay boolValue]];
         }
         else {

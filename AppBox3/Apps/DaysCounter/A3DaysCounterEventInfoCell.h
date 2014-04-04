@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleBottomSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundBottomConst;     // A, until since
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceRoundBottomConst;     // B, since
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundWidthConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceRoundWidthConst;
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *eventPhotoImageView;

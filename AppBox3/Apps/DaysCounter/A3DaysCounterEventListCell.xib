@@ -76,6 +76,7 @@
                 <outlet property="nameLeadingConst" destination="fO1-Q9-30H" id="vrh-YM-q2p"/>
                 <outlet property="photoLeadingConst" destination="AyX-9V-nhE" id="CEG-B4-lVh"/>
                 <outlet property="sinceLeadingConst" destination="zKN-EE-xnY" id="dJ9-Mj-LeI"/>
+                <outlet property="untilRoundWidthConst" destination="s48-qq-BOC" id="4G4-VE-Oqa"/>
             </connections>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="eventListEditCell" id="Vf5-Ks-p84">
@@ -243,6 +244,7 @@
                 <outlet property="photoLeadingConst" destination="B8Y-ud-XUm" id="7Ph-pW-HWs"/>
                 <outlet property="roundDateLeadingConst" destination="ckD-KB-176" id="TUY-zx-ltd"/>
                 <outlet property="sinceLeadingConst" destination="URx-dA-ZoT" id="EsF-tk-4q0"/>
+                <outlet property="untilRoundWidthConst" destination="XLZ-M3-1lY" id="hO9-jd-LeY"/>
             </connections>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reminderCell" rowHeight="62" id="571-NJ-3Uz">

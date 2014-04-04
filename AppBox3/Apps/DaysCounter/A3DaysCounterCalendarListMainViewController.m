@@ -105,6 +105,9 @@
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -306,34 +309,22 @@
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                                      firstDate:event.startDate
                                                                                       fromDate:today];
-//        daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
-//        startDate = nextDate;
+        daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
         result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
                                                                                                                fromDate:today
                                                                                                                  toDate:nextDate
                                                                                                                isAllDay:[event.isAllDay boolValue]],
-                  daysGap > 0 ? @"until" : @"since"];
+                  daysGap == 0 ? @"on going" : daysGap > 0 ? @"until" : @"since"];
     }
     else {
-//        daysGap = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
+        daysGap = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
         result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
                                                                                                                fromDate:today
                                                                                                                  toDate:startDate
                                                                                                                isAllDay:[event.isAllDay boolValue]],
-                  daysGap > 0 ? @"until" : @"since"];
+                  daysGap == 0 ? @"on going" : daysGap > 0 ? @"until" : @"since"];
     }
-    
-//    if ( daysGap == 0 ) {
-//        result = @"0 days";
-//    }
-//    else {
-//        result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
-//                                                                                                               fromDate:today
-//                                                                                                                 toDate:startDate
-//                                                                                                               isAllDay:[event.isAllDay boolValue]],
-//                  daysGap > 0 ? @"until" : @"since"];
-//    }
-    
+
     return result;
 }
 

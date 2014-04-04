@@ -64,6 +64,9 @@
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] favoriteEventsList]];
     [self.tableView reloadData];
     self.navigationItem.rightBarButtonItem.enabled = ([_itemArray count] > 0);
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)didReceiveMemoryWarning
@@ -149,10 +152,12 @@
         UIImage *image = ([item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil);
         imageView.image =  (image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)]  : nil);
         NSDate *today = [NSDate date];
-        NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:item.startDate];
+        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
+        //NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
+        NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate isAllDay:[item.isAllDay boolValue]];
         daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
                                                                                   fromDate:today
-                                                                                    toDate:item.startDate
+                                                                                    toDate:nextDate //item.startDate
                                                                                   isAllDay:[item.isAllDay boolValue]];
         
         if (image) {
