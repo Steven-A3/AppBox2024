@@ -4837,7 +4837,7 @@
 				804C330B18DAE1D400DBCE83 /* 2. CalendarList */,
 				804C330D18DAE25700DBCE83 /* 3. Reminder */,
 				804C330C18DAE22D00DBCE83 /* 4. Favorite */,
-				8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars) */,
+				8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars & EventList) */,
 				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
 				8094E0DF18E6D04800CB03BC /* Location SubDetail */,
 				804C330818DAE0E500DBCE83 /* Event Related */,
@@ -5041,14 +5041,9 @@
 				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
 				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
 				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
-				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
 				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
 				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
 				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
-				804A405C18E070A200556029 /* A3DaysCounterEventListNameCell.h */,
-				804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */,
-				804A405F18E070C500556029 /* A3DaysCounterEventListDateCell.h */,
-				804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */,
 				577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */,
 				577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */,
 			);
@@ -5118,8 +5113,8 @@
 				68F1C7E118D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.xib */,
 				68F1C7D018D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.h */,
 				68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */,
-				68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */,
 				68F1C7F218D7F37D009FAE8A /* A3DaysCounterEventListViewController.h */,
+				68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */,
 				68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */,
 				68F1C7F418D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib */,
 				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
@@ -5191,17 +5186,22 @@
 			name = "Cells & Custom";
 			sourceTree = "<group>";
 		};
-		8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars) */ = {
+		8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars & EventList) */ = {
 			isa = PBXGroup;
 			children = (
+				804A405C18E070A200556029 /* A3DaysCounterEventListNameCell.h */,
+				804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */,
+				804A405F18E070C500556029 /* A3DaysCounterEventListDateCell.h */,
+				804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */,
 				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
 				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
 				57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */,
 				57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */,
 				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
+				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
 			);
-			name = "Cells (AddEvents & Calendars)";
+			name = "Cells (AddEvents & Calendars & EventList)";
 			sourceTree = "<group>";
 		};
 		8094E0DF18E6D04800CB03BC /* Location SubDetail */ = {

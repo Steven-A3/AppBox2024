@@ -563,9 +563,16 @@
     BOOL hasSince = daysGap < 0 ? YES : NO;
     if (daysGap == 0 && isTypeA) {
         cell.untilSinceRoundLabel.text = @"on going";
+        cell.untilRoundWidthConst.constant = 65;
     }
     else {
-        markLabel.text = isSince ? @"Since" : @"Until";
+        if (isSince) {
+            markLabel.text = @"Since";
+        }
+        else {
+            markLabel.text = @"Until";
+        }
+        cell.untilRoundWidthConst.constant = 42;
     }
     
     if (!hasRepeat) {
@@ -651,7 +658,7 @@
         if (isTypeA) {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                       fromDate:now
-                                                                                        toDate:startDate
+                                                                                        toDate:hasSince ? nextDate : startDate
                                                                                       isAllDay:[info.isAllDay boolValue]];
         }
         else {

@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceLeadingConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLeadingConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundWidthConst;
 @end
