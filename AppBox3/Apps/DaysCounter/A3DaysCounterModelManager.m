@@ -1247,23 +1247,17 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( option & DurationOption_Year ) {
         flag |= NSYearCalendarUnit;
     }
+    
+    // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
+    if ( (([largeDate timeIntervalSince1970] - [smallDate timeIntervalSince1970]) < 86400) &&
+         (!(flag & NSHourCalendarUnit) && !(flag & NSMinuteCalendarUnit) && !(flag & NSSecondCalendarUnit)) ) {
+        flag = NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;
+        option = DurationOption_Seconds | DurationOption_Minutes | DurationOption_Hour;
+    }
 
 	NSCalendar *calendar = [NSCalendar currentCalendar];
-//    NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
-//                                             fromDate:fromDate];
-//    NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
-//                                           fromDate:toDate];
-//    fromComp.hour = 0;
-//    fromComp.minute = 0;
-//    fromComp.second = 0;
-//    toComp.hour = 0;
-//    toComp.minute = 0;
-//    toComp.second = 0;
     NSDateComponents *diffComponent;
-//    NSDateComponents *diffComponent = [calendar components:flag
-//                                                  fromDate:[calendar dateFromComponents:fromComp]
-//                                                    toDate:[calendar dateFromComponents:toComp]
-//                                                   options:0];
+
     if (isAllDay) {
         NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
                                                  fromDate:fromDate];
@@ -1288,31 +1282,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
     NSMutableArray * resultArray = [NSMutableArray new];
-    
-//    if ( (option & DurationOption_Year) && [diffComponent year] > 0 ) {
-//        [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)[diffComponent year], ([diffComponent year] > 1 ? @"s" : @"")]];
-//    }
-//    if ( (option & DurationOption_Month) && [diffComponent month] > 0 ) {
-//        [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)[diffComponent month], ([diffComponent month] > 1 ? @"s" : @"")]];
-//    }
-//    if ( (option & DurationOption_Week) && [diffComponent week] > 0 ) {
-//        [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)[diffComponent week], ([diffComponent week] > 1 ? @"s" : @"")]];
-//    }
-//    if ( (option & DurationOption_Day) && [diffComponent day] > 0 ) {
-//        [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)[diffComponent day], ([diffComponent day] > 1 ? @"s" : @"")]];
-//    }
-//    
-//    if (!isAllDay) {
-//        if ( (option & DurationOption_Hour) && [diffComponent hour] > 0 ) {
-//            [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)[diffComponent hour], ([diffComponent hour] > 1 ? @"s" : @"")]];
-//        }
-//        if ( (option & DurationOption_Minutes) && [diffComponent minute] > 0 ) {
-//            [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)[diffComponent minute], ([diffComponent minute] > 1 ? @"s" : @"")]];
-//        }
-//        if ( (option & DurationOption_Seconds) && [diffComponent second] > 0 ) {
-//            [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)[diffComponent second], ([diffComponent second] > 1 ? @"s" : @"")]];
-//        }
-//    }
     if ( option & DurationOption_Year && [diffComponent year] != 0) {
         [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
     }
