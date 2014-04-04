@@ -305,24 +305,31 @@
     NSDate *today = [NSDate date];
     NSDate *startDate = event.startDate;
     NSInteger daysGap = 0;
-    if ( [event.repeatType integerValue] != RepeatType_Never ) {
-        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
-                                                                                     firstDate:event.startDate
-                                                                                      fromDate:today];
-        daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
-        result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
-                                                                                                               fromDate:today
-                                                                                                                 toDate:nextDate
-                                                                                                               isAllDay:[event.isAllDay boolValue]],
-                  daysGap == 0 ? @"on going" : daysGap > 0 ? @"until" : @"since"];
+    NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
+                                                                   toDate:startDate
+                                                             allDayOption:[event.isAllDay boolValue]
+                                                                   repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO];
+    if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
+        result = untilSinceString;
     }
     else {
-        daysGap = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
-        result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
-                                                                                                               fromDate:today
-                                                                                                                 toDate:startDate
-                                                                                                               isAllDay:[event.isAllDay boolValue]],
-                  daysGap == 0 ? @"on going" : daysGap > 0 ? @"until" : @"since"];
+        if ( [event.repeatType integerValue] != RepeatType_Never ) {
+            NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                                         firstDate:event.startDate
+                                                                                          fromDate:today];
+            daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
+                                                                                                                   fromDate:today
+                                                                                                                     toDate:nextDate
+                                                                                                                   isAllDay:[event.isAllDay boolValue]], untilSinceString];
+        }
+        else {
+            daysGap = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
+                                                                                                                   fromDate:today
+                                                                                                                     toDate:startDate
+                                                                                                                   isAllDay:[event.isAllDay boolValue]], untilSinceString];
+        }
     }
 
     return result;
@@ -411,12 +418,21 @@
                 NSAttributedString *eventName;
                 NSAttributedString *period;
                 NSAttributedString *date;
+                NSDate *now = [NSDate date];
+                NSDate *startDate = [event startDate];
+                if ( [event.repeatType integerValue] != RepeatType_Never ) {
+                    startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                                          firstDate:[event startDate]
+                                                                                           fromDate:now];
+                }
+                
                 if (IS_IPHONE) {
                     eventName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [event eventName]]
                                                                 attributes:@{
                                                                              NSFontAttributeName : [UIFont systemFontOfSize:13],
                                                                              NSForegroundColorAttributeName : [UIColor blackColor]
                                                                              }];
+                    
                     period = [[NSAttributedString alloc] initWithString:[self periodStringForEvent:event]
                                                              attributes:@{
                                                                           NSFontAttributeName : [UIFont systemFontOfSize:11],

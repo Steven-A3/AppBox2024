@@ -135,14 +135,16 @@
 }
 
 // KJH
-+ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay
++ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat
 {
-    NSString *result;
-    
     if (isAllDay) {
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
         NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+        
+        if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
+            return @"today";
+        }
         
         fromComp.hour = 0;
         fromComp.minute = 0;
@@ -156,14 +158,14 @@
                                                       toDate:[calendar dateFromComponents:toComp]
                                                      options:0];
         if ([daysGapComp day] == 0) {
-            result = @"today";
+            return @"today";
         }
         else {
             if ([daysGapComp day] > 0) {
-                result = @"Until";
+                return @"Until";
             }
             else {
-                result = @"Since";
+                return @"Since";
             }
         }
     }
@@ -171,6 +173,11 @@
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
         NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
+        
+        if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
+            [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
+            return @"Now";
+        }
         
         fromComp.second = 0;
         toComp.second = 0;
@@ -180,19 +187,17 @@
                                                       toDate:[calendar dateFromComponents:toComp]
                                                      options:0];
         if ([daysGapComp second] == 0) {
-            result = @"Now";
+            return @"Now";
         }
         else {
             if ([daysGapComp second] > 0) {
-                result = @"Until";
+                return @"Until";
             }
             else {
-                result = @"Since";
+                return @"Since";
             }
         }
     }
-    
-    return result;
 }
 
 // KJH

@@ -545,6 +545,7 @@
         daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         dateLabel1.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
         dateLabel2.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        dateLabel3.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
     
     markLabel.text = (isSince ? @"Since" : @"Until" );
@@ -559,8 +560,14 @@
     BOOL isLunar = [info.isLunar boolValue];
     BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
     BOOL hasEndDate = [_eventItem.isPeriod boolValue];
-    NSInteger daysGap = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:YES];
-    BOOL hasSince = daysGap < 0 ? YES : NO;
+//    NSInteger daysGap = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:YES];
+    BOOL hasSince;
+    if ([_eventItem.isAllDay boolValue]) {
+        hasSince = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+    }
+    else {
+        hasSince = [now timeIntervalSince1970] > [_eventItem.startDate timeIntervalSince1970] ? YES : NO;
+    }
     
     if (!hasRepeat) {
         NSDate *startDate = info.startDate;
@@ -568,7 +575,8 @@
 
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                            toDate:[info startDate]
-                                                                     allDayOption:[info.isAllDay boolValue]];
+                                                                     allDayOption:[info.isAllDay boolValue]
+                                                                           repeat:hasRepeat];
         cell.untilRoundWidthConst.constant = 42;
         
         if ( isLunar ) {
@@ -594,7 +602,16 @@
                 endDate = convertDate;
             }
         }
-        
+
+        if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
+            daysLabel.text = @"";
+        }
+        else {
+            daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                      fromDate:now
+                                                                                        toDate:startDate
+                                                                                      isAllDay:[info.isAllDay boolValue]];
+        }
         
         if (hasEndDate) {
             //* case 2. 162pt  (start 안 지남, end있음)
@@ -604,10 +621,6 @@
             //            from 선택날짜/시간
             //            to 선택날짜/시간
             //            repeats 옵션
-            daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
-                                                                                      fromDate:now
-                                                                                        toDate:startDate
-                                                                                      isAllDay:[info.isAllDay boolValue]];
             dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:startDate
                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
             dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:endDate
@@ -622,10 +635,6 @@
             //            until(since) 계산값
             //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
             //            (until일 경우 - repeats 옵션) (since 일 경우 to)
-            daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
-                                                                                      fromDate:now
-                                                                                        toDate:startDate
-                                                                                      isAllDay:[info.isAllDay boolValue]];
             dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:startDate
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
             dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
@@ -634,7 +643,9 @@
             lunarImageView.hidden = !isLunar;
         }
     }
+
     else {
+        // Has Repeat
         NSDate *startDate = info.startDate;
         
         if ( isLunar ) {
@@ -650,14 +661,21 @@
         // until/since & durationOption string
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                            toDate:nextDate
-                                                                     allDayOption:[info.isAllDay boolValue]];
+                                                                     allDayOption:[info.isAllDay boolValue]
+                                                                           repeat:hasRepeat];
         cell.untilRoundWidthConst.constant = 42;
         
+        // daysLabel == period string
         if (isTypeA) {
-            daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
-                                                                                      fromDate:now
-                                                                                        toDate:hasSince ? nextDate : startDate
-                                                                                      isAllDay:[info.isAllDay boolValue]];
+            if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
+                daysLabel.text = @"";
+            }
+            else {
+                daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
+                                                                                          fromDate:now
+                                                                                            toDate:hasSince ? nextDate : startDate
+                                                                                          isAllDay:[info.isAllDay boolValue]];
+            }
         }
         else {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
@@ -665,7 +683,8 @@
                                                                                         toDate:now
                                                                                       isAllDay:[info.isAllDay boolValue]];
         }
-
+        
+        // from / to string / repeat
         if (hasEndDate) {
             if (hasSince) {
                 //* case 4. 276pt  (start 지남, end있음, 다음 start있음)
@@ -709,7 +728,7 @@
                 //            to 선택날짜/시간
                 //            repeats 옵션
                 
-                daysLabel.text = daysText;
+//                daysLabel.text = daysText;
                 dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:info.startDate
                                                                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:info.endDate
@@ -718,7 +737,7 @@
                 lunarImageView.hidden = !isLunar;
             }
         }
-        else {
+        else {  // ! hasEnd
             if (hasSince) {
                 //* case 3. 현재의 236pt  (start 지남, end없음)
                 //            * case 3. 현재의 236pt
@@ -739,7 +758,7 @@
                     dateLabel3.text = @"";
                 }
                 else {
-                    daysLabel.text = @"";
+                    //daysLabel.text = @"";
                     dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:info.startDate
                                                                                                    withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                     dateLabel2.text = [NSString stringWithFormat:@"first date"];
@@ -842,45 +861,6 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    if (section == 1 ) {
-        return 35.0;
-    }
-    
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ( section == 1 ) {
-        return 35.0;
-    }
-    
-    return 0.01;
-}
-
-- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if ( section == 1 ) {
-        UIView *retView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36.0)];
-        retView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];\
-        return retView;
-    }
-    
-    return nil;
-}
-
-- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    if ( section == 1 ) {
-        UIView *retView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36.0)];
-        retView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];\
-        return retView;
-    }
-    
-    return nil;
-}
 
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -966,7 +946,15 @@
             
             BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
             BOOL hasEndDate = [_eventItem.isPeriod boolValue];
-            BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
+            //BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
+            BOOL hasSince;
+            if ([_eventItem.isAllDay boolValue]) {
+                hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+            }
+            else {
+                hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.startDate timeIntervalSince1970] ? YES : NO;
+            }
+            
             if (!hasRepeat) {
                 if (hasEndDate) {
                     //* case 2. 162pt  (start 안 지남, end있음)
@@ -1072,6 +1060,46 @@
     }
     
     return retHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 1 ) {
+        return 35.0;
+    }
+    
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ( section == 1 ) {
+        return 35.0;
+    }
+    
+    return 0.01;
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if ( section == 1 ) {
+        UIView *retView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36.0)];
+        retView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];\
+        return retView;
+    }
+    
+    return nil;
+}
+
+- (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if ( section == 1 ) {
+        UIView *retView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 36.0)];
+        retView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];\
+        return retView;
+    }
+    
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
