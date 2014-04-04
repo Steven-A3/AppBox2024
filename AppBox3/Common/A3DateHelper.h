@@ -24,7 +24,7 @@
 + (NSInteger)weekdayFromDate:(NSDate*)date;
 + (NSInteger)getDaysFromTodayToDate:(NSDate*)goalDate;
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
-+ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay;    // KJH
++ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat;      // KJH
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay;     // KJH
 + (NSInteger)diffWeeksFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
 + (NSInteger)diffMonthsFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;

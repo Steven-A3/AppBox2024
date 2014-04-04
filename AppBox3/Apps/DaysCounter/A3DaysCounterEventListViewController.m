@@ -415,42 +415,54 @@
 
         // textLabel
         textLabel.text = item.eventName;
-
-        // daysLabel
-        NSInteger daysGap = [self daysGapForItem:item];
-        //daysLabel.text = [self daysStringForItem:item];
-        daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
-                                                                                                                    fromDate:[NSDate date]
-                                                                                                                      toDate:startDate //[item startDate]
-                                                                                                                    isAllDay:[item.isAllDay boolValue]]];
         
-        // markLabel
-        if (daysGap == 0) {
-            markLabel.text = @"on going";
-            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
-            if (sortType == EventSortType_Name) {
-                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 65;
-            }
-            else {
-                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 65;
-            }
+        // until/since markLabel
+        NSDate *now = [NSDate date];
+        markLabel.text = [A3DateHelper untilSinceStringByFromDate:now
+                                                           toDate:startDate
+                                                     allDayOption:[item.isAllDay boolValue]
+                                                           repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
+        
+        // daysLabel
+        if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
+            //NSInteger daysGap = [self daysGapForItem:item];
+            //daysLabel.text = [self daysStringForItem:item];
+            daysLabel.text = @"";
         }
         else {
-            if ( daysGap > 0 ) {
-                markLabel.text = @"Until";
-                markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
-            }
-            else {
-                markLabel.text = @"Since";
-                markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
-            }
-            if (sortType == EventSortType_Name) {
-                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
-            }
-            else {
-                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 42;
-            }
+            daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
+                                                                                                                        fromDate:now
+                                                                                                                          toDate:startDate //[item startDate]
+                                                                                                                        isAllDay:[item.isAllDay boolValue]]];
         }
+        
+//        if (daysGap == 0) {
+//            markLabel.text = @"on going";
+//            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+//            if (sortType == EventSortType_Name) {
+//                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 65;
+//            }
+//            else {
+//                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 65;
+//            }
+//        }
+//        else {
+//            if ( daysGap > 0 ) {
+//                markLabel.text = @"Until";
+//                markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+//            }
+//            else {
+//                markLabel.text = @"Since";
+//                markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+//            }
+//            if (sortType == EventSortType_Name) {
+//                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
+//            }
+//            else {
+//                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 42;
+//            }
+//        }
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;

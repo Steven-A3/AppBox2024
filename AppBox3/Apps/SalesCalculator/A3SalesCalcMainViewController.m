@@ -687,7 +687,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
                 [weakSelf.preferences setOldCalcData:weakSelf.preferences.calcData];
             }
 			if (element.identifier == A3TableElementCellType_Note) {
-				[weakSelf.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+				[weakSelf.tableView setContentOffset:CGPointMake(0, -weakSelf.tableView.contentInset.top) animated:YES];
 			}
         };
     }
