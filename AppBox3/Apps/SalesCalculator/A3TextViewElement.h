@@ -15,4 +15,5 @@
 @property (nonatomic, copy) NSString *placeHolder;
 @property (nonatomic, copy) void (^onEditingBegin)(A3TextViewElement *, UITextView *);
 @property (nonatomic, copy) void (^onEditingChange)(A3TextViewElement *, UITextView *);
+@property (nonatomic, copy) void (^onEditingDidEnd)(A3TextViewElement *, UITextView *);
 @end

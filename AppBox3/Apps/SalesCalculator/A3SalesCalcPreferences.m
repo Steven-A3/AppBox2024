@@ -23,11 +23,11 @@
 -(void)setOldCalcData:(A3SalesCalcData *)oldCalcData
 {
     _oldCalcData = [A3SalesCalcData new];
-    _oldCalcData.price = oldCalcData.price;
-    _oldCalcData.discount = oldCalcData.discount;
-    _oldCalcData.additionalOff = oldCalcData.additionalOff;
-    _oldCalcData.tax = oldCalcData.tax;
-    _oldCalcData.notes = oldCalcData.notes;
+    _oldCalcData.price = [oldCalcData.price copy];
+    _oldCalcData.discount = [oldCalcData.discount copy];
+    _oldCalcData.additionalOff = [oldCalcData.additionalOff copy];
+    _oldCalcData.tax = [oldCalcData.tax copy];
+    _oldCalcData.notes = [oldCalcData.notes copy];
     _oldCalcData.shownPriceType = oldCalcData.shownPriceType;
 }
 
@@ -42,14 +42,14 @@
         ![self.calcData.price isKindOfClass:[NSNumber class]] ||
         ![self.calcData.discount isKindOfClass:[NSNumber class]]
         ) {
-        NSLog(@"asdfasf");
+        FNLOG(@"Nil data detected.");
     }
     
-    if ([self.calcData.price isEqualToNumber:self.oldCalcData.price] &&
-        [self.calcData.discount isEqualToNumber:self.oldCalcData.discount] &&
-        [self.calcData.additionalOff isEqualToNumber:self.oldCalcData.additionalOff] &&
-        [self.calcData.tax isEqualToNumber:self.oldCalcData.tax] &&
-        [self.calcData.notes isEqualToString:self.oldCalcData.notes] &&
+    if (self.oldCalcData.price && [self.calcData.price isEqualToNumber:self.oldCalcData.price] &&
+		self.oldCalcData.discount && [self.calcData.discount isEqualToNumber:self.oldCalcData.discount] &&
+		self.oldCalcData.additionalOff && [self.calcData.additionalOff isEqualToNumber:self.oldCalcData.additionalOff] &&
+        self.oldCalcData.tax && [self.calcData.tax isEqualToNumber:self.oldCalcData.tax] &&
+		self.oldCalcData.notes && [self.calcData.notes isEqualToString:self.oldCalcData.notes] &&
         self.calcData.shownPriceType == self.oldCalcData.shownPriceType)
         return YES;
     

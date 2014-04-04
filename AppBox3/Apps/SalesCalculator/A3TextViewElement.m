@@ -117,11 +117,13 @@
         textView.textColor = COLOR_TABLE_DETAIL_TEXTLABEL;
         UITableViewCell *currentCell = (UITableViewCell *)[[textView superview] superview];
         NSIndexPath *currentIndexPath = [_rootTableView indexPathForCell:currentCell];
-        [_rootTableView reloadRowsAtIndexPaths:@[currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-        
-        
-
+		if (currentIndexPath) {
+			[_rootTableView reloadRowsAtIndexPaths:@[currentIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+		}
     }
+	if (_onEditingDidEnd) {
+		_onEditingDidEnd(self, textView);
+	}
 }
 
 - (void)textViewDidChange:(UITextView *)textView {

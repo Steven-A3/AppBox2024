@@ -189,20 +189,36 @@
 		case A3TableViewEntryTypeRealNumber:
 		case A3TableViewEntryTypeInteger:
 			[self setupNumberKeyboardForTextField:textField keyboardType:self.inputType];
-
-            textField.text = @"";
             break;
 	}
     
-    if (_onEditingBegin) {
-        _onEditingBegin(self, textField);
-    }
+	return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	FNLOG();
+
+	if (_onEditingBegin) {
+		_onEditingBegin(self, textField);
+	}
+
+	switch (self.inputType) {
+		case A3TableViewEntryTypeText:
+			break;
+		case A3TableViewEntryTypeCurrency:
+		case A3TableViewEntryTypeYears:
+		case A3TableViewEntryTypePercent:
+		case A3TableViewEntryTypeRealNumber:
+		case A3TableViewEntryTypeInteger:
+			textField.text = @"";
+			textField.placeholder = @"";
+			break;
+	}
 
 	NSIndexPath *indexPath = [_rootTableView indexPathForCellSubview:textField];
 	if (indexPath) {
 		[self moveTableScrollToIndexPath:indexPath textField:textField ];
 	}
-	return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -231,6 +247,7 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
+	FNLOG(@"%@", textField.text);
     [textField removeTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
 
 	if (self.inputType == A3TableViewEntryTypePercent) {

@@ -463,6 +463,7 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     tax.onEditingFinishAll = [self cellTextInputFinishAllBlock];
     tax.doneButtonPressed = [self cellInputDoneButtonPressed];
     tax.identifier = A3TableElementCellType_Tax;
+	tax.delegate = self;
 	tax.currencyCode = self.defaultCurrencyCode;
     if (aData) {
         tax.value = [formatter stringFromNumber:aData.tax];
@@ -525,173 +526,12 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
 {
     if (!_cellTextInputChangedBlock) {
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-
-            // InputString Validation.
-            if (element.valueType == A3TableViewValueTypePercent) {
-                NSNumberFormatter *formatter = [NSNumberFormatter new];
-                [formatter setNumberStyle:NSNumberFormatterPercentStyle];
-                [formatter setRoundingMode:NSNumberFormatterRoundDown];
-                NSString * inputString = [formatter stringFromNumber:@(textField.text.doubleValue / 100.0)];
-                if (IS_IPAD && inputString.length > 16) {
-                    textField.text = [textField.text substringToIndex:16];
-                    return;
-                }
-                else if (inputString.length > 9) {
-                    textField.text = [textField.text substringToIndex:9];
-                    return;
-                }
-
-            } else if (element.valueType == A3TableViewValueTypeCurrency) {
-                NSString * inputString = textField.text;
-                inputString = [inputString stringByReplacingOccurrencesOfString:@"," withString:@""];
-                inputString = [inputString stringByReplacingOccurrencesOfString:@"." withString:@""];
-                if (IS_IPAD && inputString.length > 16) {
-                    textField.text = element.value;
-                    return;
-                }
-                else if (inputString.length > 9) {
-                    textField.text = element.value;
-                    return;
-                }
-            }
-
-//            // InputString set to value.
-//            NSString *value;
-//            value = textField.text;
-//            
-//            if (element.valueType == A3TableViewValueTypeText) {
-//                element.value = value;
-//            }
-//            else {
-//                value = [value stringByReplacingOccurrencesOfString:@"," withString:@""];
-//                element.value = value;
-//            }
-//
-//            if (element.identifier == A3TableElementCellType_Price) {
-//                [weakSelf.preferences.calcData setPrice:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setPriceType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Discount) {
-//                [weakSelf.preferences.calcData setDiscount:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setDiscountType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Additional) {
-//                [weakSelf.preferences.calcData setAdditionalOff:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setAdditionalOffType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Tax) {
-//                [weakSelf.preferences.calcData setTax:@(value.doubleValue)];
-//                [weakSelf.preferences.calcData setTaxType:(NSInteger)element.valueType];
-//            }
-//            else if (element.identifier == A3TableElementCellType_Note) {
-//                [weakSelf.preferences.calcData setNotes:textField.text];
-//                if (value.length==0) {
-//                    textField.placeholder = @"Notes";
-//                }
-//                else {
-//                    textField.placeholder = value;
-//                }
-//            }
-//            
-//            [weakSelf saveInputTextData:weakSelf.preferences.calcData];
         };
     }
 
 
     return _cellTextInputChangedBlock;
 }
-
-// 계산 값 입력을 마친 경우에 호출됨.
-//-(CellTextInputBlock)cellTextInputFinishedBlock
-//{
-//    if (!_cellTextInputFinishedBlock) {
-//        __weak A3SalesCalcMainViewController * weakSelf = self;
-//        
-//        _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
-//            if (weakSelf.firstResponder == textField) {
-//                weakSelf.firstResponder = nil;
-//            }
-//
-//            NSString *stringValue = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
-//            
-//            switch (element.identifier) {
-//                case A3TableElementCellType_Additional:
-//                case A3TableElementCellType_Tax:
-//                {
-//                    NSNumberFormatter *formatter = [NSNumberFormatter new];
-//                    NSNumber *value = [formatter numberFromString:stringValue];
-//                    element.value = (!value || [value isEqualToNumber:@0]) ? @"" : stringValue;
-//                }
-//                    break;
-//                    
-//                default:
-//                {
-//                    if (textField.text && textField.text.length!=0) {
-//                        element.value = textField.text;
-//                    }
-//                }
-//                    break;
-//            }
-//            
-////            // InputString set to value.
-////            NSString *value;
-////            value = textField.text;
-////            
-////            if (element.valueType == A3TableViewValueTypeText) {
-////                element.value = value;
-////            }
-////            else {
-////                value = [value stringByReplacingOccurrencesOfString:@"," withString:@""];
-////                element.value = value;
-////            }
-////            
-////            if (element.identifier == A3TableElementCellType_Price) {
-////                [weakSelf.preferences.calcData setPrice:@(value.doubleValue)];
-////                [weakSelf.preferences.calcData setPriceType:(NSInteger)element.valueType];
-////            }
-////            else if (element.identifier == A3TableElementCellType_Discount) {
-////                [weakSelf.preferences.calcData setDiscount:@(value.doubleValue)];
-////                [weakSelf.preferences.calcData setDiscountType:(NSInteger)element.valueType];
-////            }
-////            else if (element.identifier == A3TableElementCellType_Additional) {
-////                [weakSelf.preferences.calcData setAdditionalOff:@(value.doubleValue)];
-////                [weakSelf.preferences.calcData setAdditionalOffType:(NSInteger)element.valueType];
-////            }
-////            else if (element.identifier == A3TableElementCellType_Tax) {
-////                [weakSelf.preferences.calcData setTax:@(value.doubleValue)];
-////                [weakSelf.preferences.calcData setTaxType:(NSInteger)element.valueType];
-////            }
-////            else if (element.identifier == A3TableElementCellType_Note) {
-////                [weakSelf.preferences.calcData setNotes:textField.text];
-////                if (value.length==0) {
-////                    textField.placeholder = @"Notes";
-////                }
-////                else {
-////                    textField.placeholder = value;
-////                }
-////            }
-////            
-////            [weakSelf saveInputTextData:weakSelf.preferences.calcData];
-//
-//            [weakSelf checkPercentValuesOfTableDataSource];
-//            
-//            if (!weakSelf.preferences.calcData.price || !weakSelf.preferences.calcData.discount) {
-//                return;
-//            }
-//
-//            // 계산 결과 반영.
-//            [weakSelf.headerView setResultData:weakSelf.preferences.calcData withAnimation:YES];
-//            [weakSelf setBarButtonsEnable:YES];
-//            
-//            // 계산 결과 저장.
-//            if ([weakSelf.preferences didSaveBefore]==NO) {
-//                [weakSelf.preferences setOldCalcData:weakSelf.preferences.calcData];
-//            }
-//        };
-//    }
-//
-//    return _cellTextInputFinishedBlock;
-//}
 
 // 계산 값 입력을 마친 경우에 호출됨.
 -(CellTextInputBlock)cellTextInputFinishAllBlock {
@@ -846,6 +686,9 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
             if (NO == [weakSelf.preferences didSaveBefore]) {
                 [weakSelf.preferences setOldCalcData:weakSelf.preferences.calcData];
             }
+			if (element.identifier == A3TableElementCellType_Note) {
+				[weakSelf.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+			}
         };
     }
     
