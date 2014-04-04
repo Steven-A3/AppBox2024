@@ -59,6 +59,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     BOOL    bFlip;
     BOOL    bMultipleView;
     CGSize  originalsize;
+    BOOL    bFiltersEnabled;
     NSUInteger  nFilterIndex;
     CGFloat     effectiveScale;
     CGFloat     beginGestureScale;
@@ -106,6 +107,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                                   @[@[@-1,@-2],@[@0,@-2],@[@1,@-2],@[@-1,@-1],@[@0,@-1],@[@1,@-1],@[@-1,@0],@[@0,@0], @[@1,@0]],
                                   @[@[@-2,@-2],@[@1,@-2],@[@0,@-2],@[@-2,@-1],@[@-1,@-1],@[@0,@-1],@[@-2,@0],@[@-1,@0], @[@0,@0]]
                                   ];
+        bFiltersEnabled = YES;
+        if ([[A3UIDevice platformString] isEqualToString:@"iPhone 4"]) {
+            bFiltersEnabled = NO;
+        }
     }
     return self;
 }
@@ -128,7 +133,12 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.view addSubview:self.statusBarBackground];
     [self.statusBarBackground setHidden:YES];
-    [self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    if (bFiltersEnabled == YES) {
+        [self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    } else {
+        [self.filterButton setImage:nil];
+        [self.filterButton setEnabled:NO];
+    }
     
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
@@ -175,9 +185,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [self _start];
     
     // create multi filter view with GestureRecognizer which should be done after AVCaptureSession initialize(_start)
-    [self createFilterViews];
+    if (bFiltersEnabled == YES) {
+        [self createFilterViews];
+        [self ShowOneFilterView:nFilterIndex];
+    }
     [self setupGestureRecognizer];
-    [self ShowOneFilterView:nFilterIndex];
+    
+    
 
     
     lastimageButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,47,47)];
@@ -313,13 +327,20 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     // obtain the preset and validate the preset
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
-            [_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+            } else {
+                [_captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+            }
         } else {
-            [_captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+            } else {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+            }
         }
-    }
-    else {
+    } else {
         [_captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
     }
     
@@ -567,80 +588,81 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 #pragma mark - TapGesture setup
 - (void)setupGestureRecognizer {
 	@autoreleasepool {
-        
-        
 		previewNoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
 		[_videoPreviewViewNoFilter addGestureRecognizer:previewNoFilterGestureRecognizer];
         
-		previewMonoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewMonoFilter addGestureRecognizer:previewMonoFilterGestureRecognizer];
-        
-        
-        
-        previewTonalFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewTonalFilter addGestureRecognizer:previewTonalFilterGestureRecognizer];
-        
-        
-        previewNoirFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewNoirFilter addGestureRecognizer:previewNoirFilterGestureRecognizer];
-        
-        
-        previewFadeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewFadeFilter addGestureRecognizer:previewFadeFilterGestureRecognizer];
-        
-        
-        previewChromeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewChromeFilter addGestureRecognizer:previewChromeFilterGestureRecognizer];
-        
-        
-        previewProcessFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewProcessFilter addGestureRecognizer:previewProcessFilterGestureRecognizer];
-        
-        
-        
-        previewTransferFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewTransferFilter addGestureRecognizer:previewTransferFilterGestureRecognizer];
-        
-        previewInstantFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
-        [_videoPreviewViewInstantFilter addGestureRecognizer:previewInstantFilterGestureRecognizer];
-        
+        if (bFiltersEnabled == YES) {
+            previewMonoFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewMonoFilter addGestureRecognizer:previewMonoFilterGestureRecognizer];
+            
+            
+            
+            previewTonalFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewTonalFilter addGestureRecognizer:previewTonalFilterGestureRecognizer];
+            
+            
+            previewNoirFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewNoirFilter addGestureRecognizer:previewNoirFilterGestureRecognizer];
+            
+            
+            previewFadeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewFadeFilter addGestureRecognizer:previewFadeFilterGestureRecognizer];
+            
+            
+            previewChromeFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewChromeFilter addGestureRecognizer:previewChromeFilterGestureRecognizer];
+            
+            
+            previewProcessFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewProcessFilter addGestureRecognizer:previewProcessFilterGestureRecognizer];
+            
+            
+            
+            previewTransferFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewTransferFilter addGestureRecognizer:previewTransferFilterGestureRecognizer];
+            
+            previewInstantFilterGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPreviewView:)];
+            [_videoPreviewViewInstantFilter addGestureRecognizer:previewInstantFilterGestureRecognizer];
+        }
         
         if([self getMaxZoom] != 1) {
             UIGestureRecognizer *noFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
             noFilterPinchGesture.delegate = self;
             [_videoPreviewViewNoFilter addGestureRecognizer:noFilterPinchGesture];
             
-            UIGestureRecognizer *monoFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            monoFilterPinchGesture.delegate = self;
-            [_videoPreviewViewMonoFilter addGestureRecognizer:monoFilterPinchGesture];
-            
-            UIGestureRecognizer *tonalFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            tonalFilterPinchGesture.delegate = self;
-            [_videoPreviewViewTonalFilter addGestureRecognizer:tonalFilterPinchGesture];
-            
-            UIGestureRecognizer *noirFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            noirFilterPinchGesture.delegate = self;
-            [_videoPreviewViewNoirFilter addGestureRecognizer:noirFilterPinchGesture];
-            
-            UIGestureRecognizer *fadeFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            fadeFilterPinchGesture.delegate = self;
-            [_videoPreviewViewFadeFilter addGestureRecognizer:fadeFilterPinchGesture];
-            
-            UIGestureRecognizer *chromeFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            chromeFilterPinchGesture.delegate = self;
-            [_videoPreviewViewChromeFilter addGestureRecognizer:chromeFilterPinchGesture];
-            
-            UIGestureRecognizer *processFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            processFilterPinchGesture.delegate = self;
-            [_videoPreviewViewProcessFilter addGestureRecognizer:processFilterPinchGesture];
-            
-            UIGestureRecognizer *transferFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            transferFilterPinchGesture.delegate = self;
-            [_videoPreviewViewTransferFilter addGestureRecognizer:transferFilterPinchGesture];
-            
-            UIGestureRecognizer *instantFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
-            instantFilterPinchGesture.delegate = self;
-            [_videoPreviewViewInstantFilter addGestureRecognizer:instantFilterPinchGesture];
+            if (bFiltersEnabled == YES ) {
+                UIGestureRecognizer *monoFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                monoFilterPinchGesture.delegate = self;
+                [_videoPreviewViewMonoFilter addGestureRecognizer:monoFilterPinchGesture];
+                
+                UIGestureRecognizer *tonalFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                tonalFilterPinchGesture.delegate = self;
+                [_videoPreviewViewTonalFilter addGestureRecognizer:tonalFilterPinchGesture];
+                
+                UIGestureRecognizer *noirFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                noirFilterPinchGesture.delegate = self;
+                [_videoPreviewViewNoirFilter addGestureRecognizer:noirFilterPinchGesture];
+                
+                UIGestureRecognizer *fadeFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                fadeFilterPinchGesture.delegate = self;
+                [_videoPreviewViewFadeFilter addGestureRecognizer:fadeFilterPinchGesture];
+                
+                UIGestureRecognizer *chromeFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                chromeFilterPinchGesture.delegate = self;
+                [_videoPreviewViewChromeFilter addGestureRecognizer:chromeFilterPinchGesture];
+                
+                UIGestureRecognizer *processFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                processFilterPinchGesture.delegate = self;
+                [_videoPreviewViewProcessFilter addGestureRecognizer:processFilterPinchGesture];
+                
+                UIGestureRecognizer *transferFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                transferFilterPinchGesture.delegate = self;
+                [_videoPreviewViewTransferFilter addGestureRecognizer:transferFilterPinchGesture];
+                
+                UIGestureRecognizer *instantFilterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinchFrom:)];
+                instantFilterPinchGesture.delegate = self;
+                [_videoPreviewViewInstantFilter addGestureRecognizer:instantFilterPinchGesture];
+            }
             
         }
         
@@ -899,15 +921,16 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 -(void) removeAllFilterViews {
     [_videoPreviewViewNoFilter removeFromSuperview];
-    [_videoPreviewViewMonoFilter removeFromSuperview];
-    [_videoPreviewViewTonalFilter removeFromSuperview];
-    [_videoPreviewViewNoirFilter removeFromSuperview];
-    [_videoPreviewViewFadeFilter removeFromSuperview];
-    [_videoPreviewViewChromeFilter removeFromSuperview];
-    [_videoPreviewViewProcessFilter removeFromSuperview];
-    [_videoPreviewViewTransferFilter removeFromSuperview];
-    [_videoPreviewViewInstantFilter removeFromSuperview];
-    
+    if (bFiltersEnabled == YES){
+        [_videoPreviewViewMonoFilter removeFromSuperview];
+        [_videoPreviewViewTonalFilter removeFromSuperview];
+        [_videoPreviewViewNoirFilter removeFromSuperview];
+        [_videoPreviewViewFadeFilter removeFromSuperview];
+        [_videoPreviewViewChromeFilter removeFromSuperview];
+        [_videoPreviewViewProcessFilter removeFromSuperview];
+        [_videoPreviewViewTransferFilter removeFromSuperview];
+        [_videoPreviewViewInstantFilter removeFromSuperview];
+    }
 }
 
 
@@ -917,39 +940,41 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [self removeAllFilterViews];
     
     _videoPreviewViewNoFilter = nil;
-    _videoPreviewViewMonoFilter = nil;
-    _videoPreviewViewTonalFilter = nil;
-    _videoPreviewViewNoirFilter = nil;
-    _videoPreviewViewFadeFilter = nil;
-    _videoPreviewViewChromeFilter = nil;
-    _videoPreviewViewProcessFilter = nil;
-    _videoPreviewViewTransferFilter = nil;
-    _videoPreviewViewInstantFilter = nil;
-    
+    if (bFiltersEnabled == YES) {
+        _videoPreviewViewMonoFilter = nil;
+        _videoPreviewViewTonalFilter = nil;
+        _videoPreviewViewNoirFilter = nil;
+        _videoPreviewViewFadeFilter = nil;
+        _videoPreviewViewChromeFilter = nil;
+        _videoPreviewViewProcessFilter = nil;
+        _videoPreviewViewTransferFilter = nil;
+        _videoPreviewViewInstantFilter = nil;
+    }
     
     [self _stop];
     [_videoDevice unlockForConfiguration];
     
     previewNoFilterGestureRecognizer = nil;
-    previewMonoFilterGestureRecognizer = nil;
-    previewTonalFilterGestureRecognizer = nil;
-    previewNoirFilterGestureRecognizer = nil;
-    previewFadeFilterGestureRecognizer = nil;
-    previewChromeFilterGestureRecognizer = nil;
-    previewProcessFilterGestureRecognizer = nil;
-    previewTransferFilterGestureRecognizer = nil;
-    previewInstantFilterGestureRecognizer = nil;
-    
-    monoLabel = nil;
-    tonalLabel = nil;
-    noirLabel = nil;
-    fadeLabel = nil;
-    noneLabel = nil;
-    chromeLabel = nil;
-    processLabel = nil;
-    transferLabel = nil;
-    instantLabel = nil;
-    
+    if (bFiltersEnabled == YES) {
+        previewMonoFilterGestureRecognizer = nil;
+        previewTonalFilterGestureRecognizer = nil;
+        previewNoirFilterGestureRecognizer = nil;
+        previewFadeFilterGestureRecognizer = nil;
+        previewChromeFilterGestureRecognizer = nil;
+        previewProcessFilterGestureRecognizer = nil;
+        previewTransferFilterGestureRecognizer = nil;
+        previewInstantFilterGestureRecognizer = nil;
+        
+        monoLabel = nil;
+        tonalLabel = nil;
+        noirLabel = nil;
+        fadeLabel = nil;
+        noneLabel = nil;
+        chromeLabel = nil;
+        processLabel = nil;
+        transferLabel = nil;
+        instantLabel = nil;
+    }
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
