@@ -423,6 +423,12 @@
                                                      allDayOption:[item.isAllDay boolValue]
                                                            repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
+        if ([markLabel.text isEqualToString:@"Since"]) {
+            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+        }
+        else {
+            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+        }
         
         // daysLabel
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {

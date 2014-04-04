@@ -548,12 +548,12 @@
         dateLabel3.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
     
-    markLabel.text = (isSince ? @"Since" : @"Until" );
-    markLabel.textColor = (isSince ? [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] : [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]);
-    markLabel.layer.borderColor = [markLabel.textColor CGColor];
-    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
-    markLabel.layer.masksToBounds = YES;
-    markLabel.layer.cornerRadius = 9.0;
+//    markLabel.text = (isSince ? @"Since" : @"Until" );
+//    markLabel.textColor = (isSince ? [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] : [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]);
+//    markLabel.layer.borderColor = [markLabel.textColor CGColor];
+//    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+//    markLabel.layer.masksToBounds = YES;
+//    markLabel.layer.cornerRadius = 9.0;
     
     NSDate *now = [NSDate date];
     
@@ -784,6 +784,19 @@
             }
         }
     }
+    
+//    markLabel.text = (isSince ? @"Since" : @"Until" );
+    if ([markLabel.text isEqualToString:@"Since"]) {
+        markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+    }
+    else {
+        markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+    }
+    
+    markLabel.layer.borderColor = [markLabel.textColor CGColor];
+    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+    markLabel.layer.masksToBounds = YES;
+    markLabel.layer.cornerRadius = 9.0;
 }
 
 - (void)initializeEventInfoCell:(A3DaysCounterEventInfoCell *)eventInfoCell
