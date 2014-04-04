@@ -26,6 +26,8 @@
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterSlidershowMainViewController.h"
 #import "A3DaysCounterCalendarListMainViewController.h"
+#import "A3DaysCounterReminderListViewController.h"
+#import "A3DaysCounterFavoriteListViewController.h"
 
 @protocol JNJProgressButtonExtension <NSObject>
 - (void)startProgress;
@@ -306,12 +308,31 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 
 	if ([menuElement.title isEqualToString:@"Days Counter"]) {
 		[[A3DaysCounterModelManager sharedManager] prepare];
-		if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
-			targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
-		}
-		else{
-			targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
-		}
+        NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
+        switch (lastOpenedMainIndex) {
+            case 0:
+                targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+                break;
+                
+            case 1:
+                targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+                break;
+            case 2:
+                targetViewController = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
+                break;
+            case 3:
+                targetViewController = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
+                break;
+                
+            default:
+                break;
+        }
+//		if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){
+//			targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
+//		}
+//		else{
+//			targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
+//		}
 		return targetViewController;
 	}
 

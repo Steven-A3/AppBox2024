@@ -105,6 +105,9 @@
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
+    
+    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
