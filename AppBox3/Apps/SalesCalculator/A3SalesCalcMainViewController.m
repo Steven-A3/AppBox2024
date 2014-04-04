@@ -487,6 +487,9 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     _notes.onEditingBegin = ^(A3TextViewElement *element, UITextView *textView) {
         weakSelf.textViewResponder = textView;
     };
+	_notes.onEditingDidEnd = ^(A3TextViewElement *element, UITextView *textView) {
+		[weakSelf.tableView setContentOffset:CGPointMake(0, -weakSelf.tableView.contentInset.top )];
+	};
     if (aData) {
         _notes.value = aData.notes;
     }
@@ -686,9 +689,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
             if (NO == [weakSelf.preferences didSaveBefore]) {
                 [weakSelf.preferences setOldCalcData:weakSelf.preferences.calcData];
             }
-			if (element.identifier == A3TableElementCellType_Note) {
-				[weakSelf.tableView setContentOffset:CGPointMake(0, -weakSelf.tableView.contentInset.top) animated:YES];
-			}
         };
     }
     
