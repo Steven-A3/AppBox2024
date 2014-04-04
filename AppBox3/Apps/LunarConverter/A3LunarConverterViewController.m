@@ -117,8 +117,6 @@
 
 	_isShowKeyboard = YES;
 
-	[self addDateKeyboard];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -141,7 +139,7 @@
 {
 	[super viewDidAppear:animated];
 
-	[self showKeyboardAnimated:YES];
+	[self addDateKeyboard];
 
 	if( _dbManager )
 		[_dbManager open];
@@ -265,6 +263,8 @@
 #pragma mark - Keyboard Layout
 
 - (void)addDateKeyboard {
+	_isShowKeyboard = YES;
+
 	if (IS_IPAD) {
 		self.dateKeyboardVC = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
 	} else {
@@ -289,8 +289,11 @@
 		_keyboardTopConstraint =  make.top.equalTo(superview.bottom);
 		_keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
 	}];
-	[self layoutKeyboardToOrientation:self.interfaceOrientation];
-	FNLOGRECT(self.view.frame);
+	[superview layoutIfNeeded];
+
+	[UIView animateWithDuration:0.3 animations:^{
+		[self layoutKeyboardToOrientation:self.interfaceOrientation];
+	}];
 
 	self.dateKeyboardVC.dateComponents = _inputDateComponents;
 	self.dateKeyboardVC.isLunarDate = _isLunarInput;
@@ -306,6 +309,8 @@
 
 - (void)layoutKeyboardToOrientation:(UIInterfaceOrientation)toOrientation
 {
+	if (!_isShowKeyboard) return;
+
 	CGFloat keyboardHeight;
 
 	if (IS_IPHONE) {
@@ -314,10 +319,10 @@
 		keyboardHeight = UIInterfaceOrientationIsLandscape(toOrientation) ? 352 : 264;
 	}
 
-	_keyboardTopConstraint.offset(-keyboardHeight);
-
+	[_keyboardTopConstraint uninstall];
 	[_keyboardHeightConstraint uninstall];
 	[self.dateKeyboardVC.view updateConstraints:^(MASConstraintMaker *make) {
+		_keyboardTopConstraint =  make.top.equalTo(self.dateKeyboardVC.view.superview.bottom).with.offset(_isShowKeyboard ? -keyboardHeight : 0);;
 		_keyboardHeightConstraint = make.height.equalTo(@(keyboardHeight));
 	}];
 	[self.dateKeyboardVC.view.superview layoutIfNeeded];
@@ -341,11 +346,30 @@
 
 - (void)showKeyboardAnimated:(BOOL)animated
 {
-	FNLOG();
-
 	self.dateKeyboardVC.isLunarDate = _isLunarInput;
 
+	UIView *superview;
+	if( IS_IPAD ){
+		UIViewController *rootViewController = [[A3AppDelegate instance] rootViewController];
+		[rootViewController.view addSubview:self.dateKeyboardVC.view];
+
+		superview = rootViewController.view;
+	} else {
+		[self.view addSubview:self.dateKeyboardVC.view];
+		superview = self.view;
+	}
+	CGFloat keyboardHeight = [self keyboardHeight];
+	[self.dateKeyboardVC.view makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(superview.left);
+		make.right.equalTo(superview.right);
+		_keyboardTopConstraint =  make.top.equalTo(superview.bottom);
+		_keyboardHeightConstraint =  make.height.equalTo(@(keyboardHeight));
+	}];
+	[self layoutKeyboardToOrientation:self.interfaceOrientation];
+	[superview layoutIfNeeded];
+
 	_isShowKeyboard = YES;
+
 	// pageControl.top = 234.5 (iphone 35)
 	// pageControl.top = 315.0
 
@@ -398,7 +422,8 @@
 
 - (void)hideKeyboardAnimate:(BOOL)animated
 {
-	FNLOG();
+	if (!_isShowKeyboard) return;
+
 	_isShowKeyboard = NO;
 
 	// pageControl.top = 310.0 (iphone 35)
@@ -447,6 +472,10 @@
 			[self.view layoutIfNeeded];
 			[self.dateKeyboardVC.view.superview layoutIfNeeded];
 			[_mainScrollView setContentOffset:CGPointMake(_mainScrollView.frame.size.width * currentPage, 0)];
+		} completion:^(BOOL finished) {
+			[self.dateKeyboardVC.view removeFromSuperview];
+			[_keyboardHeightConstraint uninstall];
+			_keyboardHeightConstraint = nil;
 		}];
 	}
 }

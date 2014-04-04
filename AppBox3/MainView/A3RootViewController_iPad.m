@@ -315,6 +315,7 @@ static const CGFloat kSideViewWidth = 319.0;
 }
 
 - (void)tapCoverViewHandler:(UITapGestureRecognizer *)gestureRecognizer {
+	FNLOG();
 	if (_showLeftView) {
 		[self setShowLeftView:NO];
 	} else {
@@ -390,8 +391,6 @@ static const CGFloat kSideViewWidth = 319.0;
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	[super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-
-	_showLeftView = NO;
 }
 
 @end
