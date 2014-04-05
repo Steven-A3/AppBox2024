@@ -205,8 +205,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 
 - (void)viewWillLayoutSubviews {
-    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     
+    CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if (bMultipleView == YES) {
         [self setFilterViewRotation:_videoPreviewViewMonoFilter];
         [self setFilterViewRotation:_videoPreviewViewTonalFilter];
@@ -236,14 +236,16 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [self.topBar setFrame:(CGRectMake(self.topBar.bounds.origin.x, 20 , screenBounds.size.width, self.topBar.bounds.size.height))];
     [self.bottomBar setFrame:CGRectMake(self.bottomBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
     [self.zoomSlider  setFrame:CGRectMake(self.zoomSlider.frame.origin.x, self.zoomSlider.frame.origin.y, screenBounds.size.width - 82, self.zoomSlider.frame.size.height)];
-    // [self.brightnessslider setFrame:CGRectMake(self.brightnessToolBar.bounds.origin.x + 40, self.brightnessToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
-    //[self.magnifierslider setFrame:CGRectMake(self.magnifierToolBar.bounds.origin.x + 40, self.magnifierToolBar.bounds.origin.y + 20 , screenBounds.size.width - 110, 44)];
+
 }
 - (void) setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
     
     [self setFilterViewRotation:filterView];
-    
-    filterView.frame = screenBounds;
+        if (bLosslessZoom == NO &&
+            bMultipleView == NO &&
+            effectiveScale <= 1) {
+            filterView.frame = screenBounds;
+        }
 }
 
 - (void) setFilterViewRotation:(GLKView *)filterView {
@@ -260,7 +262,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             filterView.transform = CGAffineTransformMakeRotation(0);
         }
     } else {
-        filterView.transform = CGAffineTransformMakeRotation(M_PI_2);
+        if (bLosslessZoom == NO &&
+            bMultipleView == NO &&
+            effectiveScale > 1) {
+            [filterView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+        } else {
+            [filterView setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+        }
     }
 }
 
@@ -278,7 +286,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             label.transform = CGAffineTransformMakeRotation(0);
         }
     } else {
+        if (bLosslessZoom == NO &&
+            bMultipleView == NO &&
+            effectiveScale > 1) {
+            label.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), 1/effectiveScale, 1/effectiveScale);
+        } else {
         label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        }
     }
 }
 
@@ -703,26 +717,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             
         }
     } else {
-        GLKView *currentView = [self currentFilterView];
-        [currentView setTransform:CGAffineTransformScale(currentView.transform, effectiveScale, effectiveScale)];
-        /*
-         if (!IS_IPAD) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
-         }
-         else {
-         UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-         if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
-         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
-         } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
-         } else {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
-         }
-         }
-         */
-    }
+        [self currentViewTransformScale];
+   }
     self.zoomSlider.value = effectiveScale;
 }
 
@@ -1035,6 +1031,27 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     // Dispose of any resources that can be recreated.
 }
 
+- (void) currentViewTransformScale
+{
+    GLKView *currentView = [self currentFilterView];
+    if (!IS_IPAD) {
+        [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+    }
+    else {
+        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
+        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
+        } else {
+            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
+        }
+    }
+    
+}
+
 #pragma mark - IB Action Buttons
 - (IBAction)zoomIng:(id)sender {
     UISlider *zoomFactor = (UISlider *) sender;
@@ -1046,27 +1063,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             effectiveScale = zoomFactor.value;
         }
     } else {
-        effectiveScale = self.zoomSlider.value;
-        GLKView *currentView = [self currentFilterView];
-        [currentView setTransform:CGAffineTransformScale(currentView.transform, effectiveScale, effectiveScale)];
-        /*
-         if (!IS_IPAD) {
-         //[[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
-         [_videoPreviewViewNoFilter setTransform:CGAffineTransformScale(_videoPreviewViewNoFilter.transform, effectiveScale, effectiveScale)];
-         }
-         else {
-         UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-         if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
-         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
-         } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
-         } else {
-         [[self currentFilterView] setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
-         }
-         }
-         */
+        effectiveScale = zoomFactor.value;
+        [self currentViewTransformScale];
     }
     
 }
@@ -1160,9 +1158,9 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                     NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                     CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
                     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-                    
                     if (bLosslessZoom == NO) {
-                        //[stillImageOutput setVideoScaleAndCropFactor:effectiveScale];
+                        AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+                        [stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
                     }
                     
                     if (bFlip == NO) {
