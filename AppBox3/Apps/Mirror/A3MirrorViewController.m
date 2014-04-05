@@ -248,19 +248,33 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         }
 }
 
+- (CGAffineTransform) getTransform {
+    CGAffineTransform   transform;
+    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+    
+    if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+        transform = CGAffineTransformMakeRotation(M_PI_2);
+    } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        transform = CGAffineTransformMakeRotation(-M_PI_2);
+    } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+        transform = CGAffineTransformMakeRotation(M_PI);
+    } else {
+        transform = CGAffineTransformMakeRotation(0);
+    }
+    
+    return transform;
+}
+
 - (void) setFilterViewRotation:(GLKView *)filterView {
     if (IS_IPAD) {
-        
-        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-            filterView.transform = CGAffineTransformMakeRotation(M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-            filterView.transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-            filterView.transform = CGAffineTransformMakeRotation(M_PI);
+        if (bLosslessZoom == NO &&
+            bMultipleView == NO &&
+            effectiveScale > 1) {
+            [filterView setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
         } else {
-            filterView.transform = CGAffineTransformMakeRotation(0);
+            [filterView setTransform:[self getTransform]];
         }
+
     } else {
         if (bLosslessZoom == NO &&
             bMultipleView == NO &&
@@ -274,18 +288,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 - (void)setLabelRotation:(UILabel *)label {
     if (IS_IPAD) {
-        
-        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-            label.transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-            label.transform = CGAffineTransformMakeRotation(M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-            label.transform = CGAffineTransformMakeRotation(M_PI);
+        if (bLosslessZoom == NO &&
+            bMultipleView == NO &&
+            effectiveScale > 1) {
+            [label setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
         } else {
-            label.transform = CGAffineTransformMakeRotation(0);
-        }
-    } else {
+            [label setTransform:[self getTransform]];
+        }    } else {
         if (bLosslessZoom == NO &&
             bMultipleView == NO &&
             effectiveScale > 1) {
@@ -1038,16 +1047,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
     }
     else {
-        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
-        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
-        } else {
-            [currentView setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
-        }
+        [currentView setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
     }
     
 }
