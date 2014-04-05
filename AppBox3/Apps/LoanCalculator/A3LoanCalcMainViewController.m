@@ -2209,6 +2209,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         NSIndexPath *ip2 = [NSIndexPath indexPathForRow:1 inSection:4];
         [self.tableView reloadRowsAtIndexPaths:@[ip1] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView insertRowsAtIndexPaths:@[ip2] withRowAnimation:UITableViewRowAnimationFade];
+		CGRect cellRect = [self.tableView rectForRowAtIndexPath:ip2];
+		[self.tableView scrollRectToVisible:cellRect animated:YES];
         [self.tableView endUpdates];
     }
 }
@@ -2787,8 +2789,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 else {
                     [self datePickerActiveFromIndexPath:indexPath];
                 }
-                
-            }
+			}
             else if (_advItems[indexPath.row] == self.noteItem) {
                 A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[tableView cellForRowAtIndexPath:indexPath];
                 [noteCell.textView becomeFirstResponder];
