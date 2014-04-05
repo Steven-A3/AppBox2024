@@ -8,6 +8,8 @@
 
 #import "LoanCalcData.h"
 
+NSString *const A3LoanCalcCurrencyCodeChanged = @"A3LoanCalcCurrencyCodeChanged";
+
 @implementation LoanCalcData
 
 -(id)initWithCoder:(NSCoder *)aDecoder

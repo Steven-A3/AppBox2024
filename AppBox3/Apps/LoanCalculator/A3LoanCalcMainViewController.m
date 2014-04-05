@@ -21,25 +21,14 @@
 #import "A3WalletNoteCell.h"
 #import "A3WalletDateInputCell.h"
 #import "LoanCalcPreference.h"
-#import "LoanCalcData.h"
 #import "LoanCalcData+Calculation.h"
-#import "LoanCalcMode.h"
 #import "LoanCalcString.h"
 #import "LoanCalcHistory.h"
 #import "LoanCalcComparisonHistory.h"
 #import "A3NumberKeyboardViewController.h"
-#import "common.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
-#import "NSMutableArray+A3Sort.h"
-#import "NSManagedObject+MagicalFinders.h"
-#import "NSManagedObjectContext+MagicalSaves.h"
-#import "NSManagedObject+MagicalRecord.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UIDevice.h"
 #import "UIViewController+MMDrawerController.h"
-#import "A3RootViewController_iPad.h"
-#import "NSString+conversion.h"
 #import "UIViewController+A3Addition.h"
 #import "SFKImage.h"
 #import "UIViewController+LoanCalcAddtion.h"
@@ -165,8 +154,22 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingNoti:) name:A3LoanCalcNotificationExtraPaymentEnabled object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillResignActive:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged) name:A3LoanCalcCurrencyCodeChanged object:nil];
+
+	// Keyboard Notification
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)cleanUp {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)currencyCodeChanged {
+	[self reloadCurrencyCode];
+	[self.tableView reloadData];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -1458,7 +1461,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
             [self saveLoanData];
             
             // 계산이 되었으면, 상단 그래프가 보이도록 이동시킨다.
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
             [self refreshRightBarItems];
         }
     }
@@ -2312,6 +2315,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	FNLOG();
 	[self dismissMoreMenu];
 	[self dismissDatePicker];
 
@@ -2509,11 +2513,10 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
-- (BOOL)	textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
 	[textField resignFirstResponder];
-	[self setFirstResponder:nil];
-    
+
     return YES;
 }
 
@@ -2539,6 +2542,38 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     }
 }
  */
+
+#pragma mark - Keyboard Show/Hide notification
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+	[self moveTableScrollToIndexPath:currentIndexPath responder:self.firstResponder];
+	FNLOG(@"top:%f, bottom:%f", self.tableView.contentInset.top, self.tableView.contentInset.bottom);
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	FNLOG(@"top:%f, bottom:%f", self.tableView.contentInset.top, self.tableView.contentInset.bottom);
+
+}
+
+- (void)moveTableScrollToIndexPath:(NSIndexPath *)indexPath responder:(UIResponder *)responder {
+	CGRect cellRect = [self.tableView rectForRowAtIndexPath:indexPath];
+	CGFloat keyboardHeight;
+	keyboardHeight = responder.inputView.bounds.size.height + responder.inputAccessoryView.bounds.size.height;
+
+	if ((cellRect.origin.y + cellRect.size.height + self.tableView.contentInset.top) < (self.tableView.frame.size.height - keyboardHeight)) {
+		return;
+	}
+
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.3];
+
+	CGFloat viewHeight = self.tableView.frame.size.height;
+	CGFloat offset = (cellRect.origin.y + cellRect.size.height) - (viewHeight - keyboardHeight);
+	self.tableView.contentInset = UIEdgeInsetsMake(64, 0, keyboardHeight, 0);
+	self.tableView.contentOffset = CGPointMake(0.0, offset);
+
+	[UIView commitAnimations];
+}
 
 #pragma mark - LoanCalcHistoryViewController delegate
 
@@ -2598,7 +2633,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (void)didEditedLoanData:(LoanCalcData *)loanCalc
 {
-	[self resetCurrencyCode];
+	[self reloadCurrencyCode];
 
     if (loanCalc == _loanDataA) {
         [self updateCompareLoanA];
@@ -3465,7 +3500,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	}
 }
 
-- (void)resetCurrencyCode {
+- (void)reloadCurrencyCode {
 	NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
 	if ([customCurrencyCode length]) {
 		[self.loanFormatter setCurrencyCode:customCurrencyCode];

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "LoanCalcMode.h"
 
+extern NSString *const A3LoanCalcCurrencyCodeChanged;
+
 @interface LoanCalcData : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSNumber *principal;

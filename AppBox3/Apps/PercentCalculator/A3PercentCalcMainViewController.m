@@ -119,9 +119,7 @@
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
-	if (_scrollsToTopWhenKeyboardHide) {
-		[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
-	}
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -30,4 +30,11 @@
 {
     [super awakeFromNib];
 }
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+
+	[self.textField setUserInteractionEnabled:YES];
+}
+
 @end
