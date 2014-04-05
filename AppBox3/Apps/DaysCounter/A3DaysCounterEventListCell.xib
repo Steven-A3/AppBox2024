@@ -14,11 +14,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nf0-gC-Ila">
-                        <rect key="frame" x="20" y="14" width="33" height="33"/>
+                        <rect key="frame" x="20" y="15" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="33" id="bY8-iJ-7oe"/>
-                            <constraint firstAttribute="width" constant="33" id="jyR-0T-Ak0"/>
+                            <constraint firstAttribute="height" constant="32" id="bY8-iJ-7oe"/>
+                            <constraint firstAttribute="width" constant="32" id="jyR-0T-Ak0"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Fo-Ne-hUa">
@@ -162,11 +162,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iYT-8F-ddM">
-                        <rect key="frame" x="57" y="14" width="33" height="33"/>
+                        <rect key="frame" x="57" y="15" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="33" id="0DI-UW-IcP"/>
-                            <constraint firstAttribute="width" constant="33" id="GOe-P3-OIS"/>
+                            <constraint firstAttribute="height" constant="32" id="0DI-UW-IcP"/>
+                            <constraint firstAttribute="width" constant="32" id="GOe-P3-OIS"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="tOt-3V-HQV">
@@ -187,7 +187,7 @@
                         <color key="textColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0tC-Nh-7bR">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0tC-Nh-7bR" userLabel="Label - Label 1">
                         <rect key="frame" x="142" y="36" width="31" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
@@ -211,7 +211,7 @@
                             <constraint firstAttribute="width" constant="20" id="ZHt-rF-BTo"/>
                         </constraints>
                     </imageView>
-                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="17" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulB-GP-1ZR">
+                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="17" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ulB-GP-1ZR" userLabel="Label - Label 2">
                         <rect key="frame" x="181" y="36" width="29" height="14"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
@@ -232,8 +232,8 @@
                     <constraint firstItem="tOt-3V-HQV" firstAttribute="top" secondItem="hhi-r9-3pq" secondAttribute="top" constant="9" id="brE-Yy-QEl"/>
                     <constraint firstItem="GuD-ew-L6W" firstAttribute="leading" secondItem="hhi-r9-3pq" secondAttribute="leading" constant="20" id="ckD-KB-176"/>
                     <constraint firstItem="Sfh-Iw-2YD" firstAttribute="leading" secondItem="tOt-3V-HQV" secondAttribute="trailing" constant="8" id="dPR-CJ-Jen"/>
+                    <constraint firstAttribute="bottom" secondItem="0tC-Nh-7bR" secondAttribute="bottom" constant="10" id="h7n-qs-iwW"/>
                     <constraint firstItem="mFS-ka-IaY" firstAttribute="centerY" secondItem="0tC-Nh-7bR" secondAttribute="centerY" id="m8U-wC-O7B"/>
-                    <constraint firstAttribute="bottom" secondItem="mFS-ka-IaY" secondAttribute="bottom" constant="9" id="oGH-qF-p2A"/>
                     <constraint firstItem="ulB-GP-1ZR" firstAttribute="centerY" secondItem="0tC-Nh-7bR" secondAttribute="centerY" id="owQ-XU-rfv"/>
                     <constraint firstAttribute="centerY" secondItem="iYT-8F-ddM" secondAttribute="centerY" id="v72-fa-Bji"/>
                     <constraint firstAttribute="centerY" secondItem="GuD-ew-L6W" secondAttribute="centerY" id="w7I-7E-FHp"/>

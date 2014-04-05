@@ -359,7 +359,7 @@
     }
     
     if ( widthConst ) {
-        widthConst.constant = (imageView.image ? 33.0 : 0.0);
+        widthConst.constant = (imageView.image ? 32.0 : 0.0);
         [cell layoutIfNeeded];
         NSLog(@"%s %@ %f",__FUNCTION__,indexPath,widthConst.constant);
     }
@@ -423,6 +423,12 @@
                                                      allDayOption:[item.isAllDay boolValue]
                                                            repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
+        if ([markLabel.text isEqualToString:@"Since"]) {
+            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+        }
+        else {
+            markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+        }
         
         // daysLabel
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
@@ -617,7 +623,7 @@
 - (void)showImageViewOfCell:(UITableViewCell *)cell withImage:(UIImage *)image {
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     if (image) {
-        imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 33.0, 33.0)];
+        imageView.image = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32.0, 32.0)];
         
         if ( sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;

@@ -409,7 +409,16 @@
     }
     
     NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now];
-    NSInteger diffStartDays = [A3DateHelper diffDaysFromDate:now toDate:startDate];
+    //NSInteger diffStartDays = [A3DateHelper diffDaysFromDate:now toDate:startDate];
+    BOOL hasSince;
+    if ([_eventItem.isAllDay boolValue]) {
+        //hasSince = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+        hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+    }
+    else {
+        hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.startDate timeIntervalSince1970] ? YES : NO;
+    }
+    
     // AdjustLayout
     [self adjustLayoutForEventInfoCell:cell eventInfo:info];
     // Set Data
@@ -427,7 +436,8 @@
                       isTypeA:YES
                     eventInfo:info];
     
-    if ( diffStartDays < 0 ) {
+    //if ( diffStartDays < 0 ) {
+    if (hasSince) {
         [self updateEventInfoCell:cell
                           isSince:YES
                          daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
@@ -447,7 +457,16 @@
 {
     BOOL hasRepeat = [_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO;
     BOOL hasEndDate = [_eventItem.isPeriod boolValue];
-    BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
+    //BOOL hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate] < 0 ? YES : NO;
+    BOOL hasSince;
+    if ([_eventItem.isAllDay boolValue]) {
+        //hasSince = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+        hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:_eventItem.startDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+    }
+    else {
+        hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.startDate timeIntervalSince1970] ? YES : NO;
+    }
+    
     CGFloat rowHeight;
     if (!hasRepeat) {
         if (hasEndDate) {
@@ -548,12 +567,12 @@
         dateLabel3.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     }
     
-    markLabel.text = (isSince ? @"Since" : @"Until" );
-    markLabel.textColor = (isSince ? [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] : [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]);
-    markLabel.layer.borderColor = [markLabel.textColor CGColor];
-    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
-    markLabel.layer.masksToBounds = YES;
-    markLabel.layer.cornerRadius = 9.0;
+//    markLabel.text = (isSince ? @"Since" : @"Until" );
+//    markLabel.textColor = (isSince ? [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0] : [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0]);
+//    markLabel.layer.borderColor = [markLabel.textColor CGColor];
+//    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+//    markLabel.layer.masksToBounds = YES;
+//    markLabel.layer.cornerRadius = 9.0;
     
     NSDate *now = [NSDate date];
     
@@ -784,6 +803,19 @@
             }
         }
     }
+    
+//    markLabel.text = (isSince ? @"Since" : @"Until" );
+    if ([markLabel.text isEqualToString:@"Since"]) {
+        markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
+    }
+    else {
+        markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
+    }
+    
+    markLabel.layer.borderColor = [markLabel.textColor CGColor];
+    markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
+    markLabel.layer.masksToBounds = YES;
+    markLabel.layer.cornerRadius = 9.0;
 }
 
 - (void)initializeEventInfoCell:(A3DaysCounterEventInfoCell *)eventInfoCell

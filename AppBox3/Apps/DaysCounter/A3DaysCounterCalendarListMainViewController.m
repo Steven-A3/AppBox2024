@@ -317,6 +317,11 @@
             NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                                          firstDate:event.startDate
                                                                                           fromDate:today];
+            untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
+                                                                 toDate:nextDate
+                                                           allDayOption:[event.isAllDay boolValue]
+                                                                 repeat:YES];
+            
             daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
             result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
                                                                                                                    fromDate:today

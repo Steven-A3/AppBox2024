@@ -142,15 +142,15 @@
     UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     
-    textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+    daysLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     
     if ( [_itemArray count] > 0) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
         
         textLabel.text = item.eventName;
-        UIImage *image = ([item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil);
-        imageView.image =  (image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)]  : nil);
+        UIImage *image = [item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
+        imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)]  : nil;
         NSDate *today = [NSDate date];
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
         //NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
@@ -236,7 +236,7 @@
     }
     
     if ( widthConst ) {
-        widthConst.constant = (imageView.image ? 33.0 : 0.0);
+        widthConst.constant = (imageView.image ? 32.0 : 0.0);
         [cell layoutIfNeeded];
     }
 }
