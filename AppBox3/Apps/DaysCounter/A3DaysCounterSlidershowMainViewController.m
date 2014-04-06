@@ -147,7 +147,7 @@
 
     [_collectionView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

@@ -64,7 +64,7 @@
     [self.tableView reloadData];
     [self.navigationController setToolbarHidden:NO];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 //    if ( IS_IPAD ) {
 //        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
