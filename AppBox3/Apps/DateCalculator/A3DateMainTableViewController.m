@@ -165,7 +165,6 @@ NSString *kCalculationString;
 {
     [super viewWillLayoutSubviews];
     
-    [self setResultToHeaderViewWithAnimation:NO];
 	[self.dateKeyboardViewController rotateToInterfaceOrientation:self.interfaceOrientation];
 }
 

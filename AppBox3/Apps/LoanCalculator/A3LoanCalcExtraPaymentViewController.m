@@ -26,8 +26,12 @@
 #import "A3RootViewController_iPad.h"
 #import "NSString+conversion.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "UIViewController+LoanCalcAddtion.h"
+#import "A3CalculatorDelegate.h"
+#import "A3SearchViewController.h"
+#import "UITableView+utility.h"
 
-@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
+@interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
     NSIndexPath *currentIndexPath;
     
@@ -41,6 +45,8 @@
 @property (nonatomic, strong) NSMutableDictionary *amountItem;
 @property (nonatomic, strong) NSMutableDictionary *dateItem;
 @property (nonatomic, strong) NSMutableDictionary *dateInputItem;
+@property (nonatomic, weak) UITextField *calculatorOutputTargetTextField;
+@property (nonatomic, copy) NSString *textBeforeEditingTextField;
 
 @end
 
@@ -344,8 +350,11 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     self.firstResponder = textField;
-    
+
+	_textBeforeEditingTextField = textField.text;
+
     textField.text = @"";
+	textField.placeholder = @"";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -357,7 +366,12 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     
     double inputFloat = [textField.text doubleValue];
     NSNumber *inputNum = @(inputFloat);
-    
+
+	if (inputFloat == 0.0) {
+		textField.text = _textBeforeEditingTextField;
+		return;
+	}
+
     if (currentIndexPath.row == 0) {
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             self.loanCalcData.extraPaymentYearly = inputNum;
@@ -366,15 +380,12 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
             self.loanCalcData.extraPaymentOneTime = inputNum;
         }
         
-        textField.text = [self.currencyFormatter stringFromNumber:inputNum];
-    }
-    else if (currentIndexPath.row == 1) {
-        // 날짜는 datepicker에서 처리함
-    }
-    
-    if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
-        [_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
-    }
+        textField.text = [self.loanFormatter stringFromNumber:inputNum];
+
+		if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
+			[_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
+		}
+	}
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -394,68 +405,21 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         
         _dateTextField = nil;
     }
-    
-    
-    UITableViewCell *cell;
-    UIView *testView = textField;
-    while (testView.superview) {
-        if ([testView.superview isKindOfClass:[UITableViewCell class]]) {
-            cell = (UITableViewCell *)testView.superview;
-            break;
-        }
-        else {
-            testView = testView.superview;
-        }
-    }
-    
-    currentIndexPath = [self.tableView indexPathForCell:cell];
-    
-    if (currentIndexPath.row == 0) {
+
+    currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+
+	if (currentIndexPath.row == 0) {
         // amount
         A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
         textField.inputView = [keyboardVC view];
         self.numberKeyboardViewController = keyboardVC;
+		self.numberKeyboardViewController.currencyCode = [self defaultCurrencyCode];
         self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
         keyboardVC.textInputTarget = textField;
         keyboardVC.delegate = self;
         self.numberKeyboardViewController = keyboardVC;
     }
-    /*
-     else if (currentIndexPath.row == 1) {
-     // date
-     textField.inputView = self.picker;
-     
-     // 해당 날짜가 선택되어지도록 (loan데이타에 날짜가 있으면 그날짜를, 없으면 오늘 날짜를)
-     if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-     NSDate *pickDate = _loanCalcData.extraPaymentOneTimeDate ? _loanCalcData.extraPaymentOneTimeDate : [NSDate date];
-     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:pickDate];
-     NSUInteger month = [components month];
-     NSUInteger year = [components year];
-     
-     [_picker selectRow:month-1 inComponent:0 animated:NO];
-     NSUInteger yearIdx = 0;
-     for (int i=0; i<_years.count; i++) {
-     NSString *yearString = _years[i];
-     NSUInteger tmp = yearString.integerValue;
-     
-     if (tmp == year) {
-     yearIdx = i;
-     break;
-     }
-     }
-     [_picker selectRow:yearIdx inComponent:1 animated:NO];
-     
-     }
-     else if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-     NSDate *pickDate = _loanCalcData.extraPaymentYearlyDate ? _loanCalcData.extraPaymentYearlyDate : [NSDate date];
-     NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:pickDate];
-     NSUInteger month = [components month];
-     
-     [_picker selectRow:month-1 inComponent:0 animated:NO];
-     }
-     }
-     */
-    
+
     return YES;
 }
 
@@ -564,11 +528,11 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         inputCell.titleLabel.text = @"Amounts";
         inputCell.textField.delegate = self;
         inputCell.textField.enabled = YES;
-        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[self.currencyFormatter stringFromNumber:@(0)]
+        inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[self.loanFormatter stringFromNumber:@(0)]
                                                                                     attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
             if (_loanCalcData.extraPaymentYearly) {
-                inputCell.textField.text = [self.currencyFormatter stringFromNumber:_loanCalcData.extraPaymentYearly];
+                inputCell.textField.text = [self.loanFormatter stringFromNumber:_loanCalcData.extraPaymentYearly];
             }
             else {
                 inputCell.textField.text = @"";
@@ -576,7 +540,7 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         }
         else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
             if (_loanCalcData.extraPaymentOneTime) {
-                inputCell.textField.text = [self.currencyFormatter stringFromNumber:_loanCalcData.extraPaymentOneTime];
+                inputCell.textField.text = [self.loanFormatter stringFromNumber:_loanCalcData.extraPaymentOneTime];
             }
             else {
                 inputCell.textField.text = @"";
@@ -726,76 +690,15 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
-
 #pragma mark - A3KeyboardDelegate
 
 - (BOOL)isPreviousEntryExists
 {
-    if ([self previousTextField:(UITextField *) self.firstResponder]) {
-        return YES;
-    }
-    else {
-        return NO;
-    }
+	return NO;
 }
 
 - (BOOL)isNextEntryExists{
-    if ([self nextTextField:(UITextField *) self.firstResponder]) {
-        return YES;
-    }
-    else {
-        return NO;
-    }
+	return NO;
 }
 
 - (void)prevButtonPressed{
@@ -826,6 +729,51 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
     
     [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
+}
+
+- (UIViewController *)modalPresentingParentViewControllerForCalculator {
+	_calculatorOutputTargetTextField = (UITextField *) self.firstResponder;
+	return self;
+}
+
+- (id <A3CalculatorDelegate>)delegateForCalculator {
+	return self;
+}
+
+- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
+	_calculatorOutputTargetTextField.text = value;
+	[self textFieldDidEndEditing:_calculatorOutputTargetTextField];
+}
+
+#pragma mark --- Response to Currency Select Button and result
+
+- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
+	return self;
+}
+
+- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
+	return self;
+}
+
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	if ([selectedItem length]) {
+		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3LoanCalcCustomCurrencyCode];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3LoanCalcCurrencyCodeChanged object:nil];
+
+		[self.loanFormatter setCurrencyCode:selectedItem];
+
+		[self.tableView reloadData];
+	}
+}
+
+- (NSString *)defaultCurrencyCode {
+	NSString *code = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	if (!code) {
+		code = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return code;
 }
 
 @end

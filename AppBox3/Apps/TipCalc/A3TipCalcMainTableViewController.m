@@ -96,6 +96,19 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         [self.dataManager getUSTaxRateByLocation];     // to calledFromAreaTax
     }
     [self refreshMoreButtonState];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	[UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:0.1];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:NO];
+	[UIView commitAnimations];
+}
+
+- (void)cleanUp {
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -511,15 +524,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return result;
 }
 
--(void)scrollToTopOfTableView {
-	[UIView beginAnimations:@"KeyboardWillShow" context:nil];
-	[UIView setAnimationBeginsFromCurrentState:YES];
-	[UIView setAnimationCurve:7];
-	[UIView setAnimationDuration:0.35];
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
-	[UIView commitAnimations];
-}
-
 #pragma mark - Table InputElement Manipulate Blocks
 
 -(CellTextInputBlock)cellTextInputBeginBlock
@@ -545,7 +549,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 -(CellTextInputBlock)cellTextInputChangedBlock
 {
     if (!_cellTextInputChangedBlock) {
-//        __weak A3TipCalcViewController * weakSelf = self;
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             
         };
@@ -610,19 +613,14 @@ typedef NS_ENUM(NSInteger, RowElementID) {
     return _cellTextInputFinishedBlock;
 }
 
--(BasicBlock)cellInputDoneButtonPressed {
+- (BasicBlock)cellInputDoneButtonPressed {
     if (!_cellInputDoneButtonPressed) {
-        __weak A3TipCalcMainTableViewController * weakSelf = self;
         _cellInputDoneButtonPressed = ^(id sender){
-            if ([weakSelf.dataManager.tipCalcData.costs doubleValue] > 0 && [weakSelf.dataManager.tipCalcData.tip doubleValue] > 0) {
-                [weakSelf scrollToTopOfTableView];
-            }
         };
     }
     
     return _cellInputDoneButtonPressed;
 }
-
 
 #pragma mark - Delegate
 #pragma mark Settings

@@ -86,6 +86,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = rootViewController;
+	self.window.backgroundColor = [UIColor whiteColor];
 
 	NSNumber *selectedColor = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ThemeColorIndex];
 	if (selectedColor) {
