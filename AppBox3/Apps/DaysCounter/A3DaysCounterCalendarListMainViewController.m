@@ -106,7 +106,7 @@
     [self setupHeaderInfo];
     [self.tableView reloadData];
     
-    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
+    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -356,7 +356,7 @@
     }
 
     result = [A3DateHelper dateStringFromDate:calcDate
-                                   withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE h:m a"];
+                                   withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
     
     return result;
 }
