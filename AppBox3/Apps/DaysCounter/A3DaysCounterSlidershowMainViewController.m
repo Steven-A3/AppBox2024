@@ -69,10 +69,8 @@
             [self leftBarButtonAppsButton];
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
             rightButtonView = _naviRightButtonViewiPhone;
-            //            [self rightButtonMoreButton];
         }
         else {
-            
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonView];
             rightButtonView = _naviRightButtonView;
         }
@@ -129,12 +127,6 @@
     }
     [self setNeedsStatusBarAppearanceUpdate];
     [self.navigationController setToolbarHidden:self.navigationController.navigationBarHidden];
-    //    if ( ![_addEventButton isDescendantOfView:self.view] ) {
-    //        _addEventButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addEventButton.frame.size.width*0.5, self.view.frame.size.height - _bottomToolbar.frame.size.height - 8 - _addEventButton.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-    //        [self.view addSubview:_addEventButton];
-    //    }
-    //    _addEventButton.hidden = self.navigationController.navigationBarHidden;
-    
     [self updateNavigationTitle];
     
     if ( IS_IPAD && UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
@@ -179,19 +171,32 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    //    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-    //    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
-    //    [UIView animateWithDuration:duration animations:^{
-    //        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-    //    }];
-    [_collectionView reloadData];
-}
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//    //    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
+//    //    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
+//    //    [UIView animateWithDuration:duration animations:^{
+//    //        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
+//    //    }];
+//    [_collectionView reloadData];
+//    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+//                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+//                                    animated:NO];
+//}
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-//    [_collectionView reloadData];
+    [_collectionView reloadData];
+    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                    animated:NO];
+    
+    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+        self.navigationItem.title = @"Days Counter";
+    }
+    else {
+        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)[_eventsArray count] - currentIndex, (long)[_eventsArray count]];
+    }
 }
 
 - (void)dealloc
@@ -522,6 +527,18 @@
     [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_eventsArray objectAtIndex:indexPath.row] toView:cell];
     
     return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    currentIndex = indexPath.row;
+    
+    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+        self.navigationItem.title = @"Days Counter";
+    }
+    else {
+        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)[_eventsArray count] - currentIndex, (long)[_eventsArray count]];
+    }
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath

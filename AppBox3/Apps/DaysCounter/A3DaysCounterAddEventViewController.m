@@ -887,10 +887,13 @@
             break;
         case EventCellType_RepeatType:
         {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                
+//                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
                 
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];

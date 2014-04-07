@@ -143,8 +143,16 @@
     UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     
-    textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    daysLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    if (IS_IPHONE) {
+        textLabel.font = [UIFont systemFontOfSize:15.0];
+        daysLabel.font = [UIFont systemFontOfSize:13.0];
+    }
+    else {
+        textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+        daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
+        dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    }
     
     if ( [_itemArray count] > 0) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
