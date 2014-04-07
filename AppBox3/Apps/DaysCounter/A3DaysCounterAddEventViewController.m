@@ -926,13 +926,10 @@
         case EventCellType_RepeatType:
         {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-//                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                
-//                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-                
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
                 
@@ -985,10 +982,14 @@
                     [self.tableView endUpdates];
                 }
             };
-            if ( IS_IPHONE )
+            
+            if ( IS_IPHONE ) {
                 [self.navigationController pushViewController:nextVC animated:YES];
-            else
+            }
+            else {
                 [self.A3RootViewController presentRightSideViewController:nextVC];
+            }
+            
             [self closeDatePickerCell];
         }
             break;
