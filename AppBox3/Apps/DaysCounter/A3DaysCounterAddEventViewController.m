@@ -77,6 +77,7 @@
     
     self.title = (_eventItem ? @"Edit Event" : @"Add Event");
     [self makeBackButtonEmptyArrow];
+    _isAdvancedCellOpen = NO;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
@@ -382,7 +383,6 @@
 {
     UITableViewCell *cell = nil;
     
-    
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
         cell.textLabel.text = @"Delete Event";
@@ -411,7 +411,6 @@
                     UITextField *textField = (UITextField*)[cell viewWithTag:10];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     textField.delegate = self;
-                    //                    textField.returnKeyType = UIReturnKeyDone;
                     [button addTarget:self action:@selector(toggleFavorite:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 }
@@ -465,6 +464,8 @@
                     cell = [cellArray objectAtIndex:12];
                     cell.contentView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    UIButton *button = (UIButton*)[cell viewWithTag:11];
+                    button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  90 : 270)));
                 }
                     break;
             }
@@ -584,6 +585,9 @@
             
             if (self.inputDateKey) {
                 if ([self.inputDateKey isEqualToString:EventItem_StartDate] && itemType == EventCellType_EndDate) {
+                    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+                }
+                else if ([self.inputDateKey isEqualToString:EventItem_EndDate] && itemType == EventCellType_StartDate) {
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
                 }
                 else {
@@ -756,14 +760,14 @@
         case EventCellType_Advanced:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            
+            UILabel *button = (UILabel*)[cell viewWithTag:11];
             if (_isAdvancedCellOpen) {
                 textLabel.textColor = [UIColor colorWithRed:3.0/255.0 green:122.0/255.0 blue:1.0 alpha:1.0];
             }
             else {
                 textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
             }
-            
+            button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  270 : 90)));
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         }
             break;
@@ -882,8 +886,7 @@
                 [tableView deselectRowAtIndexPath:indexPath animated:YES];
                 
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
+                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
                 
                 if ([[_eventModel objectForKey:EventItem_RepeatType] integerValue] == RepeatType_Never) {
                     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
@@ -1045,46 +1048,10 @@
     }
 }
 
-//#pragma mark - A3PhotoSelectViewControllerDelegate
-//- (void)photoSelectViewControllerDidCancel:(A3PhotoSelectViewController *)viewCtrl
-//{
-//    [viewCtrl dismissViewControllerAnimated:YES completion:nil];
-//}
-//
-//- (void)photoSelectViewControllerDidDone:(A3PhotoSelectViewController *)viewCtrl
-//{
-//    if ( viewCtrl.item ) {
-//        ALAsset *assetItem = (ALAsset*)viewCtrl.item;
-//        UIImage *image = [UIImage imageWithCGImage:assetItem.thumbnail];
-//        UIImage *circleImage = [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, image.size.width, image.size.height)];
-//        [_eventModel setObject:circleImage forKey:EventItem_Thumbnail];
-//        
-//        ALAssetRepresentation *rep = [assetItem defaultRepresentation];
-//        CGImageRef imgRef = [rep fullResolutionImage];
-//        UIImage *originalImage = [UIImage imageWithCGImage:imgRef];
-//        [_eventModel setObject:originalImage forKey:EventItem_Image];
-//        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-//    }
-//    [viewCtrl dismissViewControllerAnimated:YES completion:nil];
-//}
-
 #pragma mark - action method
 - (void)resignAllAction
 {
-//    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    if ( cell ) {
-//        UITextField *textField = (UITextField*)[cell viewWithTag:10];
-//        [textField resignFirstResponder];
-//    }
-    
-//    if ( [_sectionTitleArray count] > AddSection_Advanced ) {
-//        NSArray *items = [[_sectionTitleArray objectAtIndex:AddSection_Advanced] objectForKey:AddEventItems];
-//        cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[items count]-1 inSection:AddSection_Advanced]];
-//        if ( cell ) {
-//            UITextView *textView = (UITextView*)[cell viewWithTag:10];
-//            [textView resignFirstResponder];
-//        }
-//    }
+    [[self firstResponder] resignFirstResponder];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
@@ -1093,11 +1060,6 @@
     // 디비추가 처리
     if ( self.eventModel ) {
         // 입력값이 있어야 하는것들에 대한 체크
-//        if ( [[_eventModel objectForKey:EventItem_Name] length] < 1 ) {
-//            [self alertMessage:@"Please enter a title."];
-//            return;
-//        }
-//        else
         if ( [[_eventModel objectForKey:EventItem_Name] length] < 1 ) {
             [_eventModel setObject:@"Untitled" forKey:EventItem_Name];
         }
@@ -1232,6 +1194,9 @@
                 if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
                     dateInputRowIndex = [self rowIndexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
                 }
+                else if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
+                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex + 2 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+                }
                 
                 if (dateInputRowIndex != -1) {
                     [sectionRow_items removeObjectAtIndex:dateInputRowIndex];
@@ -1358,18 +1323,21 @@
     UIButton *button = (UIButton*)[cell viewWithTag:11];
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
     
+    _isAdvancedCellOpen = !_isAdvancedCellOpen;
+    
     [UIView animateWithDuration:0.35 animations:^{
-        button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  179.9 : 0)));
+        button.transform = CGAffineTransformRotate(CGAffineTransformIdentity, DegreesToRadians((_isAdvancedCellOpen ?  270 : 90)));
     }];
 
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     }];
 
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     
-    if (_isAdvancedCellOpen) {
+    if (!_isAdvancedCellOpen) {
         NSUInteger advancedCellRowIndex = [self rowIndexOfRowItemType:EventCellType_Advanced atSectionArray:section1_items];
         textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
         // remove Advanced Rows
@@ -1380,7 +1348,6 @@
         [section1_items removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(advancedCellRowIndex + 1, [section1_items count] - (advancedCellRowIndex + 1))]];
 
         [self.tableView deleteRowsAtIndexPaths:indexPathsToRemove withRowAnimation:UITableViewRowAnimationMiddle];
-        _isAdvancedCellOpen = NO;
     }
     else {
         NSMutableArray *advancedRows = [NSMutableArray new];
@@ -1403,7 +1370,6 @@
         [section1_items addObjectsFromArray:advancedRows];
         [self.tableView insertRowsAtIndexPaths:indexPathsToAdd withRowAnimation:UITableViewRowAnimationMiddle];
         [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        _isAdvancedCellOpen = YES;
     }
     [self.tableView endUpdates];
     [CATransaction commit];
@@ -1584,6 +1550,7 @@
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+    [self setFirstResponder:textField];
     [self closeDatePickerCell];
     return YES;
 }
