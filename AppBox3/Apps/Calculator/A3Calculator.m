@@ -105,7 +105,7 @@ typedef CMathParser<char, double> MathParser;
     if (1 > value) maxSignificantDigits = 15; // why app's default calculator like this??
     
     if (isShort  == YES) {
-        maxFractionDigt = 8;
+        maxFractionDigt = 9;
         maxDigitLen = 9;
         maxSignificantDigits = 8;
     }
