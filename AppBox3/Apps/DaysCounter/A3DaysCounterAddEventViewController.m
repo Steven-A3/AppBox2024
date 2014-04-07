@@ -75,9 +75,16 @@
 {
     [super viewDidLoad];
     
-    self.title = (_eventItem ? @"Edit Event" : @"Add Event");
+    if (_eventItem) {
+        self.title = @"Edit Event";
+        _isAdvancedCellOpen = YES;
+    }
+    else {
+        self.title = @"Add Event";
+        _isAdvancedCellOpen = NO;
+    }
+    
     [self makeBackButtonEmptyArrow];
-    _isAdvancedCellOpen = NO;
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
@@ -831,7 +838,7 @@
             }
                 break;
             case EventCellType_Advanced:
-                retHeight = IS_RETINA ? 56: 57.0;
+                retHeight = 56.0;
                 break;
             default:
                 retHeight = 44.0;
