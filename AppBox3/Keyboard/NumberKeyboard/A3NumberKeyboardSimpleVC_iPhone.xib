@@ -12,6 +12,7 @@
                 </userDefinedRuntimeAttribute>
             </userDefinedRuntimeAttributes>
             <connections>
+                <outlet property="clearButton" destination="24" id="urz-7g-pQa"/>
                 <outlet property="deleteButton" destination="23" id="30"/>
                 <outlet property="doneButton" destination="26" id="31"/>
                 <outlet property="dotButton" destination="22" id="32"/>

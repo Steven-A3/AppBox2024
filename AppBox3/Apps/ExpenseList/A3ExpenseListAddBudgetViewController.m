@@ -26,6 +26,8 @@
 #import "A3ItemSelectListViewController.h"
 #import "A3TextViewElement.h"
 #import "A3Formatter.h"
+#import "A3SearchViewController.h"
+#import "UITableViewController+standardDimension.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,
@@ -37,7 +39,7 @@ enum A3ExpenseListAddBudgetCellType {
     A3TableElementCellType_Note
 };
 
-@interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol>
+@interface A3ExpenseListAddBudgetViewController () <A3JHSelectTableViewControllerProtocol, A3TableViewInputElementDelegate, A3SearchViewControllerDelegate>
 @property (nonatomic, strong) ExpenseListBudget *currentBudget;
 @property (nonatomic, strong) A3JHTableViewRootElement *root;
 @property (nonatomic, strong) A3ExpenseListPreference *preferences;
@@ -64,7 +66,6 @@ enum A3ExpenseListAddBudgetCellType {
     BOOL _showDatePicker;
     BOOL _isCategoryModified;
 }
-
 
 #pragma mark -
 
@@ -115,13 +116,8 @@ enum A3ExpenseListAddBudgetCellType {
 
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    if (IS_IPHONE) {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 15.0, 0.0, 0.0);
-    }
-    else {
-        self.tableView.separatorInset = UIEdgeInsetsMake(0.0, 28.0, 0.0, 0.0);
-    }
+	self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,80 +126,78 @@ enum A3ExpenseListAddBudgetCellType {
     // Dispose of any resources that can be recreated.
 }
 
-- (void)configureTableData {
-	@autoreleasepool {
-        _preferences = [self preferences];
-
-        //[self.root setSectionsArray:@[self.section0_Array, [self tableDataSourceWithDatePicker:NO]]];
-        [self.root setSectionsArray:@[[self tableDataSourceWithDatePicker:NO]]];
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
 	}
+	return currencyCode;
+}
+
+- (void)configureTableData {
+	[self.root setSectionsArray:@[[self tableDataSourceWithDatePicker:NO]]];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-    @autoreleasepool {
-        if (IS_IPAD) {
-            [self.A3RootViewController dismissCenterViewController];
-        } else {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        
-        if ([_delegate respondsToSelector:@selector(setExpenseBudgetDataFor:)]) {
-            NSArray *section0 = [self section0_Array];
-            NSArray *elements = [self expandableCellElements];
-            
-            ExpenseListBudget *resultBudget;
-            if (!_currentBudget) {
-                resultBudget = [ExpenseListBudget MR_createEntity];
-                resultBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
-            } else {
-                resultBudget = _currentBudget;
-            }
-            
-            // Section 0.
-            A3TableViewInputElement *budget = section0[0];
-            A3JHTableViewSelectElement *category = section0[1];
-            A3JHTableViewSelectElement *payment = section0[2];
-            
-            NSNumber *totalBudget = @([((NSString *)budget.value) floatValue]);
-            NSString *categoryName = [self getCategoryNameForIndex:category.selectedIndex];
-            NSString *paymentName = [self getPaymentNameForIndex:payment.selectedIndex];
-            
-            resultBudget.totalAmount = totalBudget;
-            resultBudget.category = categoryName;
-            resultBudget.paymentType = paymentName;
-            
-            // Advanced.
-            A3TableViewInputElement *title = elements[0];
-            A3JHTableViewDateEntryElement *date = elements[1];
-            A3JHTableViewElement *location = elements[2];
-            A3TableViewInputElement *notes = elements[3];
-            
-            resultBudget.title = title.value;
-            resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
-            resultBudget.date = date.dateValue;
-            resultBudget.notes = notes.value;
-            resultBudget.updateDate = [NSDate date];
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissCenterViewController];
+	} else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+	if ([_delegate respondsToSelector:@selector(setExpenseBudgetDataFor:)]) {
+		NSArray *section0 = [self section0_Array];
+		NSArray *elements = [self expandableCellElements];
 
-            [_delegate performSelector:@selector(setExpenseBudgetDataFor:) withObject:resultBudget];
-        }
-    }
+		ExpenseListBudget *resultBudget;
+		if (!_currentBudget) {
+			resultBudget = [ExpenseListBudget MR_createEntity];
+			resultBudget.budgetId = [NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]];
+		} else {
+			resultBudget = _currentBudget;
+		}
+
+		// Section 0.
+		A3TableViewInputElement *budget = section0[0];
+		A3JHTableViewSelectElement *category = section0[1];
+		A3JHTableViewSelectElement *payment = section0[2];
+
+		NSNumber *totalBudget = @([((NSString *)budget.value) floatValue]);
+		NSString *categoryName = [self getCategoryNameForIndex:category.selectedIndex];
+		NSString *paymentName = [self getPaymentNameForIndex:payment.selectedIndex];
+
+		resultBudget.totalAmount = totalBudget;
+		resultBudget.category = categoryName;
+		resultBudget.paymentType = paymentName;
+
+		// Advanced.
+		A3TableViewInputElement *title = elements[0];
+		A3JHTableViewDateEntryElement *date = elements[1];
+		A3JHTableViewElement *location = elements[2];
+		A3TableViewInputElement *notes = elements[3];
+
+		resultBudget.title = title.value;
+		resultBudget.location = [location.value dataUsingEncoding:NSUTF8StringEncoding];
+		resultBudget.date = date.dateValue;
+		resultBudget.notes = notes.value;
+		resultBudget.updateDate = [NSDate date];
+
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		[_delegate performSelector:@selector(setExpenseBudgetDataFor:) withObject:resultBudget];
+	}
 }
 
 -(void)cancelButtonAction {
-    @autoreleasepool {
-        if (IS_IPAD) {
-            [self.A3RootViewController dismissCenterViewController];
-        }
-        else {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-    }
+	if (IS_IPAD) {
+		[self.A3RootViewController dismissCenterViewController];
+	}
+	else {
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
 }
 
 -(NSString *) dateStringFromDate:(NSDate *)date {
-    
     NSString * result;
     
     if ([[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"]) {
@@ -222,7 +216,9 @@ enum A3ExpenseListAddBudgetCellType {
     
     return result;
 }
+
 #pragma mark - Validation
+
 - (BOOL)isBudgetModified {
     if (!_currentBudget || !_currentBudget.category) {
         
@@ -231,14 +227,9 @@ enum A3ExpenseListAddBudgetCellType {
         
         // Section 0.
         A3TableViewInputElement *budget = section0[0];
-//        A3JHTableViewSelectElement *category = section0[1];
-//        A3JHTableViewSelectElement *payment = section0[2];
-        
+
         NSNumber *totalBudget = @([((NSString *)budget.value) floatValue]);
-//        NSString *categoryName = [self getCategoryNameForIndex:category.selectedIndex];
-//        NSString *paymentName = [self getPaymentNameForIndex:payment.selectedIndex];
-        
-        //if (![totalBudget isEqualToNumber:@0] || categoryName || paymentName) {
+
         if (![totalBudget isEqualToNumber:@0] || _isCategoryModified) {
             return YES;
         }
@@ -261,21 +252,7 @@ enum A3ExpenseListAddBudgetCellType {
 
 #pragma mark - TableView Data Elements
 
-//-(NSArray *)tableDataSourceWithDatePicker:(BOOL)showDatePicker {
-//    //NSMutableArray *dataSource = [NSMutableArray new];
-//    NSArray *elements = [self expandableCellElements];
-//    
-//    if (showDatePicker) {
-//        self.advancedElement.elements = @[elements[0], elements[1], [self datePickerElement], elements[2], elements[3]];
-//    }
-//    else {
-//        self.advancedElement.elements = elements;
-//    }
-//
-//    return @[self.advancedElement];
-//}
-
--(NSArray *)tableDataSourceWithDatePicker:(BOOL)showDatePicker {
+- (NSArray *)tableDataSourceWithDatePicker:(BOOL)showDatePicker {
     NSMutableArray *result = [NSMutableArray new];
     NSArray *elements = [self expandableCellElements];
     
@@ -291,7 +268,7 @@ enum A3ExpenseListAddBudgetCellType {
     return result;
 }
 
--(NSArray *)section0_Array {
+- (NSArray *)section0_Array {
     if (!_section0_Array) {
         NSMutableArray *elements = [NSMutableArray new];
         A3TableViewInputElement *budget = [A3TableViewInputElement new];
@@ -302,10 +279,8 @@ enum A3ExpenseListAddBudgetCellType {
         budget.onEditingValueChanged = [self cellTextInputChangedBlock];
         budget.onEditingFinished = [self cellTextInputFinishedBlock];
         budget.identifier = AddBudgetCellID_Budget;
-
-        NSNumberFormatter *formatter = [NSNumberFormatter new];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        //budget.placeholder = [formatter stringFromNumber: _currentBudget ? _currentBudget.totalAmount : @0 ];
+		budget.currencyCode = [self defaultCurrencyCode];
+		budget.delegate = self;
         [elements addObject:budget];
         
         A3JHTableViewSelectElement *category =[A3JHTableViewSelectElement new];
@@ -362,8 +337,7 @@ enum A3ExpenseListAddBudgetCellType {
     return _section0_Array;
 }
 
-//-(id)advancedSection1RowDataWithDatePicker:(BOOL)showDatePicker
--(A3JHTableViewExpandableElement *)advancedElement {
+- (A3JHTableViewExpandableElement *)advancedElement {
     if (!_advancedElement) {
         _advancedElement = [A3JHTableViewExpandableElement new];
         _advancedElement.title = @"ADVANCED";
@@ -374,7 +348,7 @@ enum A3ExpenseListAddBudgetCellType {
     return _advancedElement;
 }
 
--(NSArray *)expandableCellElements {
+- (NSArray *)expandableCellElements {
     if (!_expandableCellElements) {
         // Title Cell
         A3TableViewInputElement *title = [A3TableViewInputElement new];
@@ -837,6 +811,29 @@ static NSString *CellIdentifier = @"Cell";
         self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     [self.tableView reloadData];
+}
+
+- (UIViewController *)containerViewController {
+	return self;
+}
+
+- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
+	return self;
+}
+
+- (NSNumberFormatter *)currencyFormatterForTableViewInputElement {
+	return self.currencyFormatter;
+}
+
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3ExpenseListCurrencyCode];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationExpenseListCurrencyCodeChanged object:nil];
+
+	[self setCurrencyFormatter:nil];
+	[self configureTableData];
+	[self.tableView reloadData];
 }
 
 @end

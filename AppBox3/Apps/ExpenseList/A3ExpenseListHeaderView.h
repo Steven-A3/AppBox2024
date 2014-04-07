@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) UIButton *detailInfoButton;
 
+@property (nonatomic, weak) NSNumberFormatter *currencyFormatter;
+
 //-(void)setResult:(ExpenseListBudget *)budget;
 -(void)setResult:(ExpenseListBudget *)budget withAnimation:(BOOL)animation;
 @end

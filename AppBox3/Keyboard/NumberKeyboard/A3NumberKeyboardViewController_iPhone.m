@@ -26,7 +26,6 @@
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num8Button;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num9Button;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *num0Button;
-@property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *clearButton;
 @property (nonatomic, weak) IBOutlet A3KeyboardButton_iOS7_iPhone *doneButton;
 
 @end

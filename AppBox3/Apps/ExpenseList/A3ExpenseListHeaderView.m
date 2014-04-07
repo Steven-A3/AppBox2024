@@ -18,6 +18,7 @@
 @property (nonatomic, strong) MASConstraint *sliderThumbLeadingConst;
 @property (nonatomic, strong) MASConstraint *savedPriceLabelTrailingConst;
 @property (nonatomic, strong) NSMutableArray *sliderMeterViewsConst;
+
 @end
 
 @implementation A3ExpenseListHeaderView
@@ -286,11 +287,8 @@
     }
     
     // 상단 사용된 금액 결과 출력.
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-    
     NSMutableArray *usedBudgetStringArray = [[NSMutableArray alloc] init];
-    [usedBudgetStringArray addObject:[formatter stringFromNumber:usedAmount]];
+    [usedBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:usedAmount]];
     [usedBudgetStringArray addObject:@"  "];
     [usedBudgetStringArray addObject: (!budget || budget.category == nil || resultAmount == nil) ? @" " : [NSString stringWithFormat:@"%@%%", @(resultAmount.floatValue)]];
     //[usedBudgetStringArray addObject:[NSString stringWithFormat:@"%@%%", @(resultAmount.floatValue)]];
@@ -312,17 +310,16 @@
     
     // 하단 남은 예산 출력.
     NSMutableArray *resultBudgetStringArray = [[NSMutableArray alloc] init];
-    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
 
     if (!budget || budget.category == nil) {
-        [resultBudgetStringArray addObject:[formatter stringFromNumber: usedAmount]];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: usedAmount]];
         [resultBudgetStringArray addObject:[totalAmount compare:usedAmount] == NSOrderedAscending ? @" over of " : @" left of "];
-        [resultBudgetStringArray addObject:[formatter stringFromNumber:totalAmount]];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
     else {
-        [resultBudgetStringArray addObject:[formatter stringFromNumber: @(fabs(remainAmount.floatValue)) ]];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber: @(fabs(remainAmount.floatValue)) ]];
         [resultBudgetStringArray addObject:remainAmount.floatValue >= 0.0 ? @" left of " : @" over of " ];
-        [resultBudgetStringArray addObject:[formatter stringFromNumber:totalAmount]];
+        [resultBudgetStringArray addObject:[self.currencyFormatter stringFromNumber:totalAmount]];
     }
 
     _resultLabel.text = [resultBudgetStringArray componentsJoinedByString:@""];

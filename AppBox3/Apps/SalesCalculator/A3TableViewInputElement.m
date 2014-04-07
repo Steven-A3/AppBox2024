@@ -306,12 +306,14 @@
                     break;
                 }
                 
-                self.value = [self.value stringByReplacingOccurrencesOfString:@"," withString:@""];
                 if (_valueType == A3TableViewValueTypePercent) {
+					[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+					NSNumber *value = [formatter numberFromString:self.value];
+
                     [formatter setNumberStyle:NSNumberFormatterPercentStyle];
                     [formatter setRoundingMode:NSNumberFormatterRoundDown];
 					[formatter setMaximumFractionDigits:3];
-                    textField.text = [formatter stringFromNumber:@([self.value doubleValue] / 100.0)];
+                    textField.text = [formatter stringFromNumber:@([value doubleValue] / 100.0)];
                 }
                 else {
                     textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];

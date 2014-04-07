@@ -82,7 +82,7 @@ static NSString *CellIdentifier = @"Cell";
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         //[ExpenseListBudget MR_truncateAll];
 
-        NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:key_currentBudgetId];
+        NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
 //        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"budgetId != %@", currentBudgetId];
 //        [ExpenseListBudget MR_deleteAllMatchingPredicate:predicate];//현재 값 유지 후, 전체삭제 하는 형태로 변경필요.
         ExpenseListBudget *currentBudget = [ExpenseListBudget MR_findFirstByAttribute:@"budgetId" withValue:currentBudgetId];
@@ -176,7 +176,7 @@ static NSString *CellIdentifier = @"Cell";
         ExpenseListBudget *aData = [aHistory budgetData];
         
         // 현재의 편집중인 budget을 삭제한 경우.
-        NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:key_currentBudgetId];
+        NSString *currentBudgetId = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
         if ([aData.budgetId isEqualToString:currentBudgetId]) {
 //            if ([_delegate respondsToSelector:@selector(didSelectBudgetHistory:)]) {
 //                [_delegate didSelectBudgetHistory:nil];

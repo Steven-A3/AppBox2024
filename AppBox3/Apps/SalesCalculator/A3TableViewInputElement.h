@@ -40,9 +40,8 @@ typedef void (^CellTextInputBlock)(A3TableViewInputElement *, UITextField *);
 typedef void (^BasicBlock)(id sender);
 
 @protocol A3TableViewInputElementDelegate <NSObject>
-- (A3JHTableViewRootElement *)tableElementRootDataSource;
+@optional
 - (UIViewController *)containerViewController;
-- (id<A3CalculatorDelegate>)delegateForCalculator;
 - (id<A3SearchViewControllerDelegate>)delegateForCurrencySelector;
 - (NSNumberFormatter *)currencyFormatterForTableViewInputElement;
 @end

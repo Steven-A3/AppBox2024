@@ -9,16 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @protocol A3ExpenseListAccessoryDelegate <NSObject>
-//@required
 @optional
--(void)keyboardAccessoryUndoButtonTouchUp:(id)sender;
--(void)keyboardAccessoryRedoButtonTouchUp:(id)sender;
--(void)keyboardAccessoryLeftButtonTouchUp:(id)sender;
--(void)keyboardAccessoryRightButtonTouchUp:(id)sender;
--(void)keyboardAccessoryEraseButtonTouchUp:(id)sender;
--(UITextField *)textFieldBeManaged;
-//-(BOOL)enableLeftButton;
-//-(BOOL)enableRightButton;
+- (void)keyboardAccessoryUndoButtonTouchUp:(id)sender;
+- (void)keyboardAccessoryRedoButtonTouchUp:(id)sender;
+- (void)keyboardAccessoryPrevButtonTouchUp:(id)sender;
+- (void)keyboardAccessoryNextButtonTouchUp:(id)sender;
+- (void)keyboardAccessoryEraseButtonTouchUp:(id)sender;
 
 @end
 
@@ -26,7 +22,11 @@
 
 @property (nonatomic, assign) id<A3ExpenseListAccessoryDelegate> delegate;
 
--(void)undoRedoButtonStateChangeFor:(UITextField *)textField;
--(void)showEraseButton:(BOOL)show;
+@property (nonatomic, strong) UIBarButtonItem *prevButton;
+
+@property (nonatomic, strong) UIBarButtonItem *nextButton;
+
+- (void)undoRedoButtonStateChangeFor:(UITextField *)textField;
+- (void)showEraseButton:(BOOL)show;
 
 @end
