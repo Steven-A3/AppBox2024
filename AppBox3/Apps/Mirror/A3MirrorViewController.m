@@ -108,10 +108,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                                   @[@[@-1,@-2],@[@0,@-2],@[@1,@-2],@[@-1,@-1],@[@0,@-1],@[@1,@-1],@[@-1,@0],@[@0,@0], @[@1,@0]],
                                   @[@[@-2,@-2],@[@1,@-2],@[@0,@-2],@[@-2,@-1],@[@-1,@-1],@[@0,@-1],@[@-2,@0],@[@-1,@0], @[@0,@0]]
                                   ];
-        bFiltersEnabled = YES;
-        if ([[A3UIDevice platformString] isEqualToString:@"iPhone 4"]) {
-            bFiltersEnabled = NO;
-        }
     }
     return self;
 }
@@ -134,12 +130,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.view addSubview:self.statusBarBackground];
     [self.statusBarBackground setHidden:YES];
-    if (bFiltersEnabled == YES) {
-        [self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-    } else {
-        [self.filterButton setImage:nil];
-        [self.filterButton setEnabled:NO];
-    }
+
     
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
@@ -181,10 +172,17 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     originalsize = _videoPreviewViewBounds.size;
     bMultipleView = NO;
     bFlip = NO;
+    bFiltersEnabled = NO;
     effectiveScale  = 1.0;
     nFilterIndex = A3MirrorNoFilter;
     [self _start];
-    
+    if(bLosslessZoom == YES) bFiltersEnabled = YES;
+    if (bFiltersEnabled == YES) {
+        [self.filterButton setImage:[[UIImage imageNamed:@"m_color"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+    } else {
+        [self.filterButton setImage:nil];
+        [self.filterButton setEnabled:NO];
+    }
     // create multi filter view with GestureRecognizer which should be done after AVCaptureSession initialize(_start)
     if (bFiltersEnabled == YES) {
         [self createFilterViews];
@@ -242,7 +240,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     [self setViewRotation:filterView];
         if (bLosslessZoom == NO &&
-            bMultipleView == NO &&
             effectiveScale <= 1) {
             filterView.frame = screenBounds;
         }
@@ -296,7 +293,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void) setViewRotation:(UIView *)view {
     
     if (bLosslessZoom == NO &&
-        bMultipleView == NO &&
         effectiveScale > 1) {
         [view setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
     } else {
