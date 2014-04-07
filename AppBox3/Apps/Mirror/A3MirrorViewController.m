@@ -273,21 +273,24 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 - (void)setLabelRotation:(UILabel *)label {
     if (IS_IPAD) {
-        if (bLosslessZoom == NO &&
-            bMultipleView == NO &&
-            effectiveScale > 1) {
-            [label setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
+        CGAffineTransform   transform;
+        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+            transform = CGAffineTransformMakeRotation(-M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            transform = CGAffineTransformMakeRotation(M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+            transform = CGAffineTransformMakeRotation(0);
+            
         } else {
-            [label setTransform:[self getTransform]];
-        }    } else {
-            if (bLosslessZoom == NO &&
-                bMultipleView == NO &&
-                effectiveScale > 1) {
-                label.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), 1/effectiveScale, 1/effectiveScale);
-            } else {
-                label.transform = CGAffineTransformMakeRotation(-M_PI_2);
-            }
+            transform = CGAffineTransformMakeRotation(M_PI);
+            
         }
+        [label setTransform:transform];
+    } else {
+        label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        
+    }
 }
 
 - (void) setViewRotation:(UIView *)view {
