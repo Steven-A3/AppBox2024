@@ -77,7 +77,7 @@
     
     if (_eventItem) {
         self.title = @"Edit Event";
-        _isAdvancedCellOpen = YES;
+        _isAdvancedCellOpen = [self hasAdvancedData];
     }
     else {
         self.title = @"Add Event";
@@ -169,6 +169,42 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+
+- (BOOL)hasAdvancedData {
+    
+    if ([_eventModel objectForKey:EventItem_RepeatType] != 0) {
+        return YES;
+    }
+    
+    NSString *alertString = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
+                                                                                     alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    if (alertString && ![alertString isEqualToString:@"None"]) {
+        return YES;
+    }
+    
+    DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
+    if (calendar && calendar.calendarName) {
+        return YES;
+    }
+    
+    NSString *durationString = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+    if ([durationString length] > 0) {
+        return YES;
+    }
+    
+    NSMutableDictionary *location = [_eventModel objectForKey:EventItem_Location];
+    if ( location ) {
+        return YES;
+    }
+    
+    if ([[_eventModel objectForKey:EventItem_Notes] length] > 0) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark -
@@ -301,15 +337,17 @@
     }
     
     [section1_Items addObject:@{ EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
-    if ( [info.repeatType integerValue] != RepeatType_Never ) {
-        [section1_Items addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+    if (_isAdvancedCellOpen) {
+        [section1_Items addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
+        if ( [info.repeatType integerValue] != RepeatType_Never ) {
+            [section1_Items addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+        }
+        [section1_Items addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
     }
-    [section1_Items addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
     
     self.sectionTitleArray = [NSMutableArray arrayWithObjects:
                               // section 0
