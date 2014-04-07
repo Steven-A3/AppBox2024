@@ -543,7 +543,14 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG(@"%@", NSStringFromCGSize(CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)));
     return CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+}
+
+#pragma mark UICollectionView Delegate
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    FNLOG(@"%@", indexPath);
+    FNLOG(@"collectionView: %@", collectionView);
 }
 
 @end

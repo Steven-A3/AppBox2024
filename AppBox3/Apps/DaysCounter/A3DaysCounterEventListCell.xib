@@ -75,6 +75,7 @@
             <connections>
                 <outlet property="nameLeadingConst" destination="fO1-Q9-30H" id="vrh-YM-q2p"/>
                 <outlet property="photoLeadingConst" destination="AyX-9V-nhE" id="CEG-B4-lVh"/>
+                <outlet property="photoWidthConst" destination="jyR-0T-Ak0" id="Iha-56-WCf"/>
                 <outlet property="sinceLeadingConst" destination="zKN-EE-xnY" id="dJ9-Mj-LeI"/>
                 <outlet property="untilRoundWidthConst" destination="s48-qq-BOC" id="4G4-VE-Oqa"/>
             </connections>
