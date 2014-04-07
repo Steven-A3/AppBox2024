@@ -13,23 +13,19 @@
 #import "A3ExpenseListItemCell.h"
 #import "A3ExpenseListAddBudgetViewController.h"
 #import "A3ExpenseListHistoryViewController.h"
-//#import "A3ExpenseListColumnSectionCell.h"
 #import "A3ExpenseListColumnSectionView.h"
 #import "ExpenseListBudget.h"
 #import "ExpenseListItem.h"
-#import "A3JHSelectTableViewController.h"
-#import "A3JHTableViewSelectElement.h"
 #import "A3DefaultColorDefines.h"
-#import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
 #import "ExpenseListHistory.h"
-//#import "UITableViewController+Extension.h"
-//#import <objc/runtime.h>
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
 
-static BOOL _isAutoMovingAddBudgetView = NO;
+NSString *const A3ExpenseListCurrentBudgetID = @"A3ExpenseListCurrentBudgetID";
+NSString *const A3ExpenseListCurrencyCode = @"A3ExpenseListCurrencyCode";
+NSString *const A3NotificationExpenseListCurrencyCodeChanged = @"A3NotificationExpenseListCurrencyCodeChanged";
 
 @interface A3ExpenseListMainViewController () <UIPopoverControllerDelegate, A3ExpenseBudgetSettingDelegate, A3ExpenseListItemCellDelegate, UINavigationControllerDelegate, A3ExpenseListHistoryDelegate>
 @property (nonatomic, strong) A3ExpenseListHeaderView *headerView;
@@ -44,7 +40,7 @@ static BOOL _isAutoMovingAddBudgetView = NO;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
 @property (nonatomic, strong) A3ExpenseListColumnSectionView *columnSectionView;
 @property (nonatomic, strong) NSArray *tableDataSourceArray;
-@property (nonatomic, strong) NSNumberFormatter *priceNumberformatter;
+@property (nonatomic, strong) NSNumberFormatter *priceNumberFormatter;
 @property (nonatomic, strong) UIButton *addItemButton;
 @property (strong, nonatomic) UIView *topWhitePaddingView;
 @end
@@ -55,21 +51,19 @@ static BOOL _isAutoMovingAddBudgetView = NO;
     ExpenseListItem *_selectedItem;
 	BOOL    _isShowMoreMenu;
     UITapGestureRecognizer *_tapGestureRecognizer;
+	BOOL _isAutoMovingAddBudgetView;
 }
 
-#pragma mark - 
+- (id)init {
+	self = [super initWithStyle:UITableViewStylePlain];
+	if (self) {
+		_isAutoMovingAddBudgetView = NO;
+	}
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-        _isAutoMovingAddBudgetView = NO;
-    }
-    return self;
+	return self;
 }
 
-static NSString *CellIdentifier = @"Cell";
+NSString *const ExpenseListMainCellIdentifier = @"Cell";
 
 - (void)viewDidLoad
 {
@@ -102,7 +96,7 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     self.tableView.separatorColor = COLOR_TABLE_SEPARATOR;
-    [self.tableView registerClass:[A3ExpenseListItemCell class] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerClass:[A3ExpenseListItemCell class] forCellReuseIdentifier:ExpenseListMainCellIdentifier];
     // 테이블 뷰 탭 제스쳐.
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapOnTableView:)];
     [self.tableView addGestureRecognizer:_tapGestureRecognizer];
@@ -135,10 +129,23 @@ static NSString *CellIdentifier = @"Cell";
     
     
     [self reloadBudgetDataAndRemoveEmptyItem];
-    [self setupConstraintLayout];
     [self setupTopWhitePaddingView];
     [self expandContentSizeForAddItem];
     [self moveToAddBudgetIfBudgetNotExistWithDelay:1.0];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationExpenseListCurrencyCodeChanged object:nil];
+}
+
+- (void)cleanUp {
+	[self removeObserver];
+}
+
+- (void)currencyCodeChanged:(NSNotification *)notification {
+	_priceNumberFormatter = nil;
+	[self setCurrencyFormatter:nil];
+
+	_headerView.currencyFormatter = self.currencyFormatter;
+	[self reloadBudgetDataWithAnimation:NO];
 }
 
 -(void)setupTopWhitePaddingView
@@ -198,6 +205,7 @@ static NSString *CellIdentifier = @"Cell";
 -(A3ExpenseListHeaderView *)headerView {
     if (!_headerView) {
         _headerView = [[A3ExpenseListHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, IS_IPAD? (IS_RETINA? 157.5 : 157.0) : (IS_RETINA? 103.5 : 103) )];
+		_headerView.currencyFormatter = self.currencyFormatter;
         [_headerView.detailInfoButton addTarget:self action:@selector(detailInfoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
@@ -205,72 +213,12 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)setCurrentBudgetId:(NSString *)currentBudgetId {
-    [[NSUserDefaults standardUserDefaults] setObject:currentBudgetId forKey:key_currentBudgetId];
+	[[NSUserDefaults standardUserDefaults] setObject:currentBudgetId forKey:A3ExpenseListCurrentBudgetID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
--(void)setupConstraintLayout {
-//    CGFloat rate = 0.0;
-//    CGRect rect = _sep1View.frame;
-//    if ( IS_IPAD ) {
-//        rate = 344.0 / 705.0 * 100.0;
-//    } else {
-//        rate = 147.0 / 320.0 * 100.0;
-//    }
-//    rect.origin.x = rate;
-//    rect.origin.y = 0.0;
-//    rect.size.width = 1.0;
-//    rect.size.height = self.view.frame.size.height;
-//    _sep1View.frame = rect;
-
-    
-    
-//    [_sep1View makeConstraints:^(MASConstraintMaker *make) {
-//        CGFloat rate = 0.0;
-//        if ( IS_IPAD ) {
-//            rate = 344.0 / 705.0 * 100.0;
-//        } else {
-//            rate = 147.0 / 320.0 * 100.0;
-//        }
-//        
-//        _sep1Const = make.leading.equalTo(@(self.view.frame.size.width / 100.0 * rate));
-//        make.top.equalTo(@0);
-//        make.width.equalTo(@1);
-//        make.bottom.equalTo(@800);
-//    }];
-    
-//
-//    [_sep2View makeConstraints:^(MASConstraintMaker *make) {
-//        CGFloat rate = 0.0;
-//        if ( IS_IPAD ) {
-//            rate = 474.0 / 705.0 * 100.0;
-//        } else {
-//            rate = 217.0 / 320.0 * 100.0;
-//        }
-//        
-//        _sep2Const = make.leading.equalTo(@(self.view.frame.size.width / 100.0 * rate));
-//        make.top.equalTo(self.view.top);
-//        make.width.equalTo(@1);
-//        make.height.equalTo(self.view.height);
-//    }];
-//    [_sep3View makeConstraints:^(MASConstraintMaker *make) {
-//        
-//        CGFloat rate = 0.0;
-//        if ( IS_IPAD ) {
-//            rate = 563.0 / 705.0 * 100.0;
-//        } else {
-//            rate = 251.0 / 320.0 * 100.0;
-//        }
-//        
-//        _sep3Const = make.leading.equalTo(@(self.view.frame.size.width / 100.0 * rate));
-//        make.top.equalTo(self.view.top);
-//        make.width.equalTo(@1);
-//        make.height.equalTo(self.view.height);
-//    }];
-}
-
 -(NSString *)currentBudgetId {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:key_currentBudgetId];
+    return [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrentBudgetID];
 }
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem {
@@ -279,17 +227,26 @@ static NSString *CellIdentifier = @"Cell";
 	[super appsButtonAction:barButtonItem];
 }
 
-- (NSNumberFormatter *)priceNumberformatter
+- (NSNumberFormatter *)priceNumberFormatter
 {
-    if (!_priceNumberformatter) {
-        _priceNumberformatter = [NSNumberFormatter new];
-        [_priceNumberformatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    if (!_priceNumberFormatter) {
+        _priceNumberFormatter = [NSNumberFormatter new];
+        [_priceNumberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		[_priceNumberFormatter setCurrencyCode:self.defaultCurrencyCode];
         if (IS_IPHONE) {
-            _priceNumberformatter.currencySymbol = @"";
+            _priceNumberFormatter.currencySymbol = @"";
         }
     }
     
-    return _priceNumberformatter;
+    return _priceNumberFormatter;
+}
+
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3ExpenseListCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
 }
 
 #pragma mark - UINavigationController Delegate
@@ -388,6 +345,7 @@ static NSString *CellIdentifier = @"Cell";
 -(void) didTapOnTableView:(UIGestureRecognizer *)recognizer {
     CGPoint tapLocation = [recognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:tapLocation];
+	FNLOG(@"%ld", (long)indexPath.row);
     
     if (indexPath) {
         NSLog(@"%@", NSStringFromCGPoint(tapLocation));
@@ -405,6 +363,7 @@ static NSString *CellIdentifier = @"Cell";
         [self addItemWithFocus:YES];
     }
 }
+
 #pragma mark BarButton Actions
 - (UIButton *)addNewButton {
 	UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -553,9 +512,9 @@ static NSString *CellIdentifier = @"Cell";
         item.price = @0;
         item.qty = @1;
         aCell.nameTextField.text = @"";
-        aCell.priceTextField.text = [self.priceNumberformatter stringFromNumber:@0];
+        aCell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:@0];
         aCell.qtyTextField.text = @"1";
-        aCell.subTotalLabel.text = [self.priceNumberformatter stringFromNumber:@0];
+        aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@0];
         aCell.priceTextField.placeholder = @"";
         aCell.qtyTextField.placeholder = @"";
     }
@@ -563,7 +522,7 @@ static NSString *CellIdentifier = @"Cell";
         // 입력 포커스 후
         // price * qty 계산
         item.subTotal = @(item.price.floatValue * item.qty.floatValue);
-        aCell.subTotalLabel.text = [self.priceNumberformatter stringFromNumber:item.subTotal];
+        aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
         
         
         // 자동 다음 행 추가.
@@ -600,11 +559,11 @@ static NSString *CellIdentifier = @"Cell";
                 nextItem.qty = @1;
                 nextItem.subTotal = @0;
                 
-                nextCell.priceTextField.text = [self.priceNumberformatter stringFromNumber:nextItem.price];
+                nextCell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:nextItem.price];
                 NSNumberFormatter *formatter = [NSNumberFormatter new];
                 [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
                 nextCell.qtyTextField.text = [formatter stringFromNumber:nextItem.qty];
-                nextCell.subTotalLabel.text = [self.priceNumberformatter stringFromNumber:@(nextItem.price.floatValue * nextItem.qty.floatValue)];
+                nextCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(nextItem.price.floatValue * nextItem.qty.floatValue)];
             }
         }
     }
@@ -919,9 +878,9 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    A3ExpenseListItemCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    A3ExpenseListItemCell *cell = [tableView dequeueReusableCellWithIdentifier:ExpenseListMainCellIdentifier forIndexPath:indexPath];
     if (!cell) {
-        cell = [[A3ExpenseListItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[A3ExpenseListItemCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ExpenseListMainCellIdentifier];
     }
 
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:indexPath.row];
@@ -929,9 +888,9 @@ static NSString *CellIdentifier = @"Cell";
 
     if ([item.hasData boolValue] || indexPath.row == 0) {    // kjh 추후에 변경하도록
         cell.nameTextField.text = item.itemName;
-        cell.priceTextField.text = [self.priceNumberformatter stringFromNumber:item.price];
+        cell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
         cell.qtyTextField.text = item.qty.stringValue;
-        cell.subTotalLabel.text = [self.priceNumberformatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+        cell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
     } else {
         cell.nameTextField.text = @"";
         cell.priceTextField.text = @"";
@@ -1043,21 +1002,10 @@ static NSString *CellIdentifier = @"Cell";
     }
 }
 
-#pragma mark - TableView Elements Delegate
+#pragma mark - BudgetSetting Delegate
 
-//-(void)selectTableViewController:(A3JHSelectTableViewController *)viewController selectedItemIndex:(NSInteger)index indexPathOrigin:(NSIndexPath *)indexPathOrigin
-//{
-//    
-//}
-
-
-#pragma mark - Delegate
-#pragma mark BudgetSetting Delegate
 -(void)setExpenseBudgetDataFor:(ExpenseListBudget *)aBudget
 {
-//    if (!aBudget) {
-//        return;     // 초기화 된 경우, 현재의 상태를 그대로 유지하도록 함.
-//    }
     _currentBudget = aBudget;
     
     if (_currentBudget) {
@@ -1066,7 +1014,9 @@ static NSString *CellIdentifier = @"Cell";
     
     [self reloadBudgetDataWithAnimation:YES];
 }
+
 #pragma mark History Delegate
+
 - (BOOL)isAddedBudged:(ExpenseListBudget *)aBudget{
     if (aBudget.category) {
         return YES;
@@ -1146,9 +1096,9 @@ static NSString *CellIdentifier = @"Cell";
         item.qty = @1;
         item.subTotal = @0;
         
-        aCell.priceTextField.text = [self.priceNumberformatter stringFromNumber:item.price];
+        aCell.priceTextField.text = [self.priceNumberFormatter stringFromNumber:item.price];
         aCell.qtyTextField.text = item.qty.stringValue;
-        aCell.subTotalLabel.text = [self.priceNumberformatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
+        aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:@(item.price.floatValue * item.qty.floatValue)];
     }
     
     _selectedItem = item;
@@ -1156,61 +1106,31 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)itemCellTextFieldChanged:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
-//    NSIndexPath *index = [self.tableView indexPathForCell:aCell];
-//    ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
-//    
-//    if (textField.text.length==0 && aCell.nameTextField != textField) {
-//        textField.text = textField.placeholder;
-//    } else {
-//        if (textField == aCell.nameTextField) {
-//            item.itemName = textField.text;
-//        } else if (textField == aCell.priceTextField) {
-//            item.price = @(textField.text.floatValue);
-//            textField.text = [self.priceNumberformatter stringFromNumber:item.price];
-//        } else if (textField == aCell.qtyTextField) {
-//            item.qty = @(textField.text.floatValue);
-//        }
-//        
-//        // 입력 포커스 후, 아무 입력도 없었던 경우.
-//        if (item.itemName.length==0 && [item.price isEqualToNumber:@0] && [item.qty isEqualToNumber:@1]) {
-//            item.itemDate = nil;
-//            item.itemName = nil;
-//            item.price = nil;
-//            item.qty = nil;
-//            aCell.nameTextField.text = @"";
-//            aCell.priceTextField.text = @"";
-//            aCell.qtyTextField.text = @"";
-//            aCell.subTotalLabel.text = @"";
-//            aCell.priceTextField.placeholder = @"";
-//            aCell.qtyTextField.placeholder = @"";
-//        }
-//    }
 }
 
 -(void)itemCellTextFieldFinished:(A3ExpenseListItemCell *)aCell textField:(UITextField *)textField
 {
     NSIndexPath *index = [self.tableView indexPathForCell:aCell];
     ExpenseListItem *item = [_tableDataSourceArray objectAtIndex:index.row];
-    
-    if (textField.text.length==0 && aCell.nameTextField != textField) {
-        textField.text = textField.placeholder;
-    }
-    else {
-        if (textField == aCell.nameTextField) {
-            item.itemName = textField.text;
-        }
-        else if (textField == aCell.priceTextField) {
-            item.price = @(textField.text.floatValue);
-            textField.text = [self.priceNumberformatter stringFromNumber:item.price];
-        }
-        else if (textField == aCell.qtyTextField) {
-            item.qty = @(textField.text.floatValue);
-        }
-    }
-    
+
+	if (textField == aCell.nameTextField) {
+		item.itemName = textField.text;
+	}
+	else if (textField == aCell.priceTextField) {
+		item.price = [self.priceNumberFormatter numberFromString:textField.text];
+		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
+	}
+	else if (textField == aCell.qtyTextField) {
+		@autoreleasepool {
+			NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+			[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+			item.qty = [decimalFormatter numberFromString:textField.text];
+		}
+	}
+
     // price * qty 계산
     item.subTotal = @(item.price.floatValue * item.qty.floatValue);
-    aCell.subTotalLabel.text = [self.priceNumberformatter stringFromNumber:item.subTotal];
+    aCell.subTotalLabel.text = [self.priceNumberFormatter stringFromNumber:item.subTotal];
     
     // 전체 항목 계산 & 화면(헤더뷰) 반영.
     [self calculateAndDisplayResultWithAnimation:YES];
@@ -1222,6 +1142,7 @@ static NSString *CellIdentifier = @"Cell";
         item.hasData = @(NO);
         
         if ([self isSameFocusingOnItemRow:item toTextField:textField] || index.row==0) {
+			self.firstResponder = nil;
             return;
         }
 
@@ -1293,9 +1214,6 @@ static NSString *CellIdentifier = @"Cell";
 
 -(BOOL)downwardRowAvailableFor:(A3ExpenseListItemCell *)sender
 {
-//    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-//    
-//    return indexPath.row < _tableDataSourceArray.count-1 ? YES : NO;
     return YES;
 }
 
@@ -1305,7 +1223,7 @@ static NSString *CellIdentifier = @"Cell";
     indexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
     
     A3ExpenseListItemCell *cell = (A3ExpenseListItemCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell.nameTextField becomeFirstResponder];
+    [cell.qtyTextField becomeFirstResponder];
 }
 
 -(void)moveDownRowFor:(A3ExpenseListItemCell *)sender textField:(UITextField *)textField
@@ -1339,6 +1257,10 @@ static NSString *CellIdentifier = @"Cell";
         textField.placeholder = @"";
         aItem.qty = @0;
     }
+}
+
+- (UIViewController *)modalPresentingViewControllerForCalculator {
+	return self;
 }
 
 @end

@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @property (nonatomic, weak) IBOutlet UIButton *dotButton;
 @property (nonatomic, weak) IBOutlet UIButton *prevButton;
 @property (nonatomic, weak) IBOutlet UIButton *nextButton;
+@property (nonatomic, weak) IBOutlet UIButton *clearButton;
 
 @property (nonatomic, strong) NSNumber *simpleKeyboardLayout;
 

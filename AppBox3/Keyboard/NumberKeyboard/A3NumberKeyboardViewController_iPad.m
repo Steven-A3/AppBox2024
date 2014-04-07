@@ -8,8 +8,6 @@
 
 #import "A3NumberKeyboardViewController_iPad.h"
 #import "A3KeyboardMoveMarkView.h"
-#import "A3UIDevice.h"
-#import "A3KeyboardButton_iOS7.h"
 
 @interface A3NumberKeyboardViewController_iPad ()
 
@@ -98,7 +96,7 @@
 	[_num2Button setFrame:CGRectMake(col_3, row_3, width_small, height_small)];
 	[_num3Button setFrame:CGRectMake(col_4, row_3, width_small, height_small)];
 
-	[_clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
+	[self.clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
 	[_num0Button setFrame:CGRectMake(col_3, row_4, width_small, height_small)];
 	[self.dotButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
 

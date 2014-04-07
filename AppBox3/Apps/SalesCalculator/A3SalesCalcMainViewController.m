@@ -1104,10 +1104,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     }
 }
 
-- (A3JHTableViewRootElement *)tableElementRootDataSource {
-	return self.root;
-}
-
 - (UIViewController *)containerViewController {
 	return self;
 }

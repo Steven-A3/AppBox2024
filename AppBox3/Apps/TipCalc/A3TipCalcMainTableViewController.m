@@ -400,7 +400,8 @@ typedef NS_ENUM(NSInteger, RowElementID) {
 
 - (NSArray *)tableSectionDataAtSection:(NSInteger)section {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
-    formatter.numberStyle = NSNumberFormatterNoStyle;
+	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	[formatter setMaximumFractionDigits:3];
     NSArray * result;
     
     switch (section) {
@@ -571,8 +572,10 @@ typedef NS_ENUM(NSInteger, RowElementID) {
             if ([textField.text length] == 0) {
                 value = @([[element value] doubleValue]);
             } else {
-                value = @([textField.text doubleValue]);
-                element.value = [NSString stringWithString:textField.text];
+				NSNumberFormatter *formatter = [NSNumberFormatter new];
+				[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+                value = [formatter numberFromString:textField.text];
+                element.value = textField.text;
             }
             
             switch (element.identifier) {
@@ -1025,10 +1028,6 @@ typedef NS_ENUM(NSInteger, RowElementID) {
         share.enabled = [self.dataManager.tipCalcData.costs isEqualToNumber:@0] ? NO : YES;
     }
     
-}
-
-- (A3JHTableViewRootElement *)tableElementRootDataSource {
-	return self.tableDataSource;
 }
 
 - (UIViewController *)containerViewController {

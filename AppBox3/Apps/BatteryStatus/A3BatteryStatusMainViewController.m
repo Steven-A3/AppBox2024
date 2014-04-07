@@ -17,8 +17,6 @@
 #import "A3DefaultColorDefines.h"
 #import "A3RootViewController_iPad.h"
 #import "A3AppDelegate.h"
-//#import "UITableViewController+Extension.h"
-//#import <objc/runtime.h>
 
 @interface A3BatteryStatusMainViewController ()
 @property (nonatomic, strong) A3BatteryStatusSettingViewController * settingViewController;

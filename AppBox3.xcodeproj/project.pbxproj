@@ -735,7 +735,6 @@
 		68E2A65018D0B1FC00E834D9 /* A3TableViewDatePickerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61918D0B1FC00E834D9 /* A3TableViewDatePickerCell.m */; };
 		68E2A65118D0B1FC00E834D9 /* A3TableViewDatePickerElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61B18D0B1FC00E834D9 /* A3TableViewDatePickerElement.m */; };
 		68E2A65218D0B1FC00E834D9 /* A3TextViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A61D18D0B1FC00E834D9 /* A3TextViewCell.m */; };
-		68E2A65818D0B1FC00E834D9 /* UITableViewController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A62918D0B1FC00E834D9 /* UITableViewController+Extension.m */; };
 		68E2A65918D0B1FC00E834D9 /* A3OverlappedCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A62C18D0B1FC00E834D9 /* A3OverlappedCircleView.m */; };
 		68E2A65A18D0B1FC00E834D9 /* A3PercentCalcData.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A62E18D0B1FC00E834D9 /* A3PercentCalcData.m */; };
 		68E2A65B18D0B1FC00E834D9 /* A3PercentCalcFactorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E2A63018D0B1FC00E834D9 /* A3PercentCalcFactorCell.m */; };
@@ -2178,8 +2177,6 @@
 		68E2A61B18D0B1FC00E834D9 /* A3TableViewDatePickerElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TableViewDatePickerElement.m; sourceTree = "<group>"; };
 		68E2A61C18D0B1FC00E834D9 /* A3TextViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3TextViewCell.h; sourceTree = "<group>"; };
 		68E2A61D18D0B1FC00E834D9 /* A3TextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3TextViewCell.m; sourceTree = "<group>"; };
-		68E2A62818D0B1FC00E834D9 /* UITableViewController+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewController+Extension.h"; sourceTree = "<group>"; };
-		68E2A62918D0B1FC00E834D9 /* UITableViewController+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewController+Extension.m"; sourceTree = "<group>"; };
 		68E2A62B18D0B1FC00E834D9 /* A3OverlappedCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3OverlappedCircleView.h; sourceTree = "<group>"; };
 		68E2A62C18D0B1FC00E834D9 /* A3OverlappedCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3OverlappedCircleView.m; sourceTree = "<group>"; };
 		68E2A62D18D0B1FC00E834D9 /* A3PercentCalcData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3PercentCalcData.h; sourceTree = "<group>"; };
@@ -4685,8 +4682,6 @@
 				68E2A61B18D0B1FC00E834D9 /* A3TableViewDatePickerElement.m */,
 				68E2A61C18D0B1FC00E834D9 /* A3TextViewCell.h */,
 				68E2A61D18D0B1FC00E834D9 /* A3TextViewCell.m */,
-				68E2A62818D0B1FC00E834D9 /* UITableViewController+Extension.h */,
-				68E2A62918D0B1FC00E834D9 /* UITableViewController+Extension.m */,
 			);
 			path = ExpenseList;
 			sourceTree = "<group>";
@@ -5894,7 +5889,6 @@
 				680D639C18CFF9D400938AD0 /* UILabel+Boldify.m in Sources */,
 				68B6A2EF18CEC76D004084EF /* A3UnitPriceInfoCell.m in Sources */,
 				68F1C8DA18D7F37D009FAE8A /* A3ColoredCircleView.m in Sources */,
-				68E2A65818D0B1FC00E834D9 /* UITableViewController+Extension.m in Sources */,
 				68C6779F179E23E300D17B4A /* A3SwipeMenuTableViewController.m in Sources */,
 				68E2A6A718D0B22800E834D9 /* A3SalesCalcPreferences.m in Sources */,
 				6823F6EE1863287B00E6E90D /* CurrencyHistoryItem.m in Sources */,

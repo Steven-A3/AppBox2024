@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-static NSString * const key_currentBudgetId = @"key_topWhitePaddingView";
+extern NSString *const A3ExpenseListCurrentBudgetID;
+extern NSString *const A3ExpenseListCurrencyCode;
+extern NSString *const A3NotificationExpenseListCurrencyCodeChanged;
 
 @class ExpenseListBudget;
 
@@ -20,4 +22,5 @@ static NSString * const key_currentBudgetId = @"key_topWhitePaddingView";
 
 @interface A3ExpenseListMainViewController : UITableViewController
 //@property (nonatomic, strong) NSString *currentBudgetId;
+- (NSString *)defaultCurrencyCode;
 @end
