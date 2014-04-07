@@ -102,13 +102,19 @@ enum A3DaysCounterRepeatType{
 };
 
 enum A3DaysCounterAddSection {
-    AddSection_DefaultInfo = 0,
-    AddSection_DateInfo,
-    AddSection_Advanced,
-    AddSection_AdvancedSeperator,
+//    AddSection_DefaultInfo = 0,
+//    AddSection_DateInfo,
+//    AddSection_Advanced,
+//    AddSection_AdvancedSeperator,
+    AddSection_Section_0 = 0,
+    AddSection_Section_1,
+    AddSection_Section_2,
+    AddSection_Section_3,
+
 };
 
-enum A3DaysCounterAddEventCellType{
+//enum A3DaysCounterAddEventCellType{
+typedef NS_ENUM(NSInteger, A3DaysCounterAddEventCellType) {
     EventCellType_Title = 0,
     EventCellType_Photo,
     EventCellType_IsLunar,

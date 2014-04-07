@@ -332,6 +332,16 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [self setBarButtonsEnable:YES];
 }
 
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
+}
+
+
+#pragma mark TableView DataSource Configuration
 - (void)configureTableData {
 	@autoreleasepool {
         _preferences = [self preferences];
@@ -502,14 +512,6 @@ NSString *const A3SalesCalcCurrencyCode = @"A3SalesCalcCurrencyCode";
     [elements addObject:_notes];
     
     return elements;
-}
-
-- (NSString *)defaultCurrencyCode {
-	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3SalesCalcCurrencyCode];
-	if (!currencyCode) {
-		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-	}
-	return currencyCode;
 }
 
 #pragma mark - Input Related
