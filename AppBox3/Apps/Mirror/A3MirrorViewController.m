@@ -217,15 +217,15 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         [self setViewRotation:_videoPreviewViewProcessFilter];
         [self setViewRotation:_videoPreviewViewInstantFilter];
         [self setViewRotation:_videoPreviewViewTransferFilter];
-        [self setViewRotation:monoLabel];
-        [self setViewRotation:tonalLabel];
-        [self setViewRotation:noirLabel];
-        [self setViewRotation:chromeLabel];
-        [self setViewRotation:fadeLabel];
-        [self setViewRotation:noneLabel];
-        [self setViewRotation:processLabel];
-        [self setViewRotation:instantLabel];
-        [self setViewRotation:transferLabel];
+        [self setLabelRotation:monoLabel];
+        [self setLabelRotation:tonalLabel];
+        [self setLabelRotation:noirLabel];
+        [self setLabelRotation:chromeLabel];
+        [self setLabelRotation:fadeLabel];
+        [self setLabelRotation:noneLabel];
+        [self setLabelRotation:processLabel];
+        [self setLabelRotation:instantLabel];
+        [self setLabelRotation:transferLabel];
         [self ShowMultipleViews:NO];
     }
     else {
@@ -252,17 +252,45 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     CGAffineTransform   transform;
     UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
     
-    if (curDeviceOrientation == UIDeviceOrientationPortrait) {
-        transform = CGAffineTransformMakeRotation(M_PI_2);
-    } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        transform = CGAffineTransformMakeRotation(-M_PI_2);
-    } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
-        transform = CGAffineTransformMakeRotation(M_PI);
+    if (IS_IPAD) {
+        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+            transform = CGAffineTransformMakeRotation(M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            transform = CGAffineTransformMakeRotation(-M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+            transform = CGAffineTransformMakeRotation(0);
+            
+        } else {
+            transform = CGAffineTransformMakeRotation(M_PI);
+            
+        }
     } else {
-        transform = CGAffineTransformMakeRotation(0);
+        transform = CGAffineTransformMakeRotation(M_PI_2);
     }
     
     return transform;
+}
+
+- (void)setLabelRotation:(UILabel *)label {
+    if (IS_IPAD) {
+        CGAffineTransform   transform;
+        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+            transform = CGAffineTransformMakeRotation(-M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+            transform = CGAffineTransformMakeRotation(M_PI_2);
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+            transform = CGAffineTransformMakeRotation(0);
+            
+        } else {
+            transform = CGAffineTransformMakeRotation(M_PI);
+            
+        }
+        [label setTransform:transform];
+    } else {
+        label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        
+    }
 }
 
 - (void) setViewRotation:(UIView *)view {
@@ -461,14 +489,19 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     CGRect sourceExtent = ciimg.extent;
     
     
+    
     if (bFlip == NO) {
         // horizontal flip
-        //  CGAffineTransform t = CGAffineTransformMake(-1, 0, 0, 1, sourceExtent.size.width,0);
-        // ciimg = [ciimg imageByApplyingTransform:t];
+        if(IS_LANDSCAPE) {
+          CGAffineTransform t = CGAffineTransformMake(-1, 0, 0, 1, sourceExtent.size.width,0);
+         ciimg = [ciimg imageByApplyingTransform:t];
+        } else {
         CGAffineTransform t = CGAffineTransformMake(1, 0, 0, -1, 0, sourceExtent.size.height);
         ciimg = [ciimg imageByApplyingTransform:t];
+        }
         
     }
+    
     
     if(_eaglContext != [EAGLContext currentContext]) {
         [EAGLContext setCurrentContext:_eaglContext];
@@ -1047,27 +1080,26 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	}
 }
 
-- (IBAction)invertButton:(id)sender {
-    
+- (IBAction)flipButton:(id)sender {
+
     [UIView transitionWithView:self.view duration:0.7 options:UIViewAnimationOptionTransitionFlipFromRight
                     animations:^{
-                        if (bMultipleView == YES) {
-                            [self removeAllFilterViews];
-                        } else {
-                            [[self currentFilterView] removeFromSuperview];
-                        }
+                        //if (bMultipleView == YES) {
+                          //  [self removeAllFilterViews];
+                        //} else {
+                          //  [[self currentFilterView] removeFromSuperview];
+                       // }
                         [_captureSession stopRunning];
                         bFlip = !bFlip;
                         [_captureSession startRunning];
                     }completion:^(BOOL finished) {
-                        if (bMultipleView == YES) {
-                            [self.view addSubview:_videoPreviewViewNoFilter];
-                            [self.view sendSubviewToBack:_videoPreviewViewNoFilter];
-                            [self addAllFilterViews];
-                        } else {
-                            [self.view addSubview:[self currentFilterView]];
-                            [self.view sendSubviewToBack:[self currentFilterView]];
-                        }
+                        
+                       // if (bMultipleView == YES) {
+                       //     [self addAllFilterViews];
+                       // } else {
+                        //    [self.view addSubview:[self currentFilterView]];
+                          //  [self.view sendSubviewToBack:[self currentFilterView]];
+                        //}
                     }];
 }
 

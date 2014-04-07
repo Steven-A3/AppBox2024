@@ -111,12 +111,12 @@ typedef CMathParser<char, double> MathParser;
     }
     [nf setLocale:[NSLocale currentLocale]];
     [nf setMaximumFractionDigits:maxFractionDigt];
-    [nf setUsesSignificantDigits:YES];
-    [nf setMaximumSignificantDigits:maxSignificantDigits];
+    //[nf setUsesSignificantDigits:YES];
+    //[nf setMaximumSignificantDigits:maxSignificantDigits];
     if(numLen <= maxDigitLen + 7) {
         [nf setNumberStyle:NSNumberFormatterDecimalStyle];
 
-        resultString = [nf stringFromNumber:[NSDecimalNumber numberWithDouble:value]];
+        resultString = [nf stringFromNumber:[NSNumber numberWithDouble:value]];
         FNLOG(@"Normal : %@",resultString);
     }else {
         [nf setNumberStyle:NSNumberFormatterScientificStyle];
@@ -127,7 +127,7 @@ typedef CMathParser<char, double> MathParser;
             [nf setPositiveFormat:@"0.#############E+0"];
         }
         
-        resultString = [nf stringFromNumber:[NSDecimalNumber numberWithDouble:value]];
+        resultString = [nf stringFromNumber:[NSNumber numberWithDouble:value]];
                 FNLOG(@"Faction : %@",resultString);
     }
     
