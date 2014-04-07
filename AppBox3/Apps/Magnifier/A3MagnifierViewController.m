@@ -342,13 +342,13 @@ static const int MAX_ZOOM_FACTOR = 6;
                     [_device setTorchMode:AVCaptureTorchModeOff];
                 }
                 self.flashToolBar.hidden = NO;
-                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_off"]];
+                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_on"]];
                // [_device setFlashMode:AVCaptureFlashModeOn];
             }
             else {
                 [_device setTorchMode:AVCaptureTorchModeOff];
                 self.flashToolBar.hidden = YES;
-                                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_on"]];
+                                [self.lightButton setImage:[UIImage imageNamed:@"m_flash_off"]];
                 //[_device setFlashMode:AVCaptureFlashModeOff];
             }
          //   [_device unlockForConfiguration];
