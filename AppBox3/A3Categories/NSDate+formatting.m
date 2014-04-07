@@ -22,6 +22,18 @@
 	return [dateFormatter stringFromDate:self];
 }
 
+- (NSString *)a3FullStyleWithTimeString {
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+	NSString *dateFormat = [dateFormatter dateFormat];
+	if (![[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"]) {
+		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
+	}
+	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
+	[dateFormatter setDateFormat:[NSString stringWithFormat:@"%@  hh:mm a", dateFormat]];
+	return [dateFormatter stringFromDate:self];
+}
+
 - (NSString *)a3LongStyleString {
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
 	[dateFormatter setDateStyle:NSDateFormatterLongStyle];

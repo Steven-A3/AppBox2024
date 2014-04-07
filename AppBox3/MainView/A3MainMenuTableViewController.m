@@ -310,21 +310,18 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		[[A3DaysCounterModelManager sharedManager] prepare];
         NSInteger lastOpenedMainIndex = [[NSUserDefaults standardUserDefaults] integerForKey:@"DaysCounterLastOpenedMainIndex"];
         switch (lastOpenedMainIndex) {
-            case 0:
+            case 1:
                 targetViewController = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
                 break;
-                
-            case 1:
-                targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
-                break;
-            case 2:
+            case 3:
                 targetViewController = [[A3DaysCounterReminderListViewController alloc] initWithNibName:@"A3DaysCounterReminderListViewController" bundle:nil];
                 break;
-            case 3:
+            case 4:
                 targetViewController = [[A3DaysCounterFavoriteListViewController alloc] initWithNibName:@"A3DaysCounterFavoriteListViewController" bundle:nil];
                 break;
                 
             default:
+                targetViewController = [[A3DaysCounterCalendarListMainViewController alloc] initWithNibName:@"A3DaysCounterCalendarListMainViewController" bundle:nil];
                 break;
         }
 //		if( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ){

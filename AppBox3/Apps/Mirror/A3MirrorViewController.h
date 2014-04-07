@@ -29,18 +29,15 @@ enum A3MirrorFilterType {
 };
 @interface A3MirrorViewController : UIViewController <AVCaptureVideoDataOutputSampleBufferDelegate,MWPhotoBrowserDelegate, GLKViewDelegate, UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIToolbar *topBar;
-
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomBar;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cameraRollButton;
-
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *filterButton;
-
-
 @property (weak, nonatomic) IBOutlet UISlider *zoomSlider;
 @property (weak, nonatomic) IBOutlet UIToolbar *zoomToolBar;
+
 - (IBAction)zoomIng:(id)sender;
 - (IBAction)appsButton:(id)sender;
-- (IBAction)invertButton:(id)sender;
+- (IBAction)flipButton:(id)sender;
 - (IBAction)captureButton:(id)sender;
 
 - (IBAction)loadCameraRoll:(id)sender;

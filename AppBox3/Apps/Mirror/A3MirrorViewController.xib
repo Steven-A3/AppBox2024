@@ -56,7 +56,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="F0u-2q-tLD"/>
                         <barButtonItem image="m_horizon" id="yOV-d3-82x">
                             <connections>
-                                <action selector="invertButton:" destination="-1" id="xYQ-gG-FE1"/>
+                                <action selector="flipButton:" destination="-1" id="FeH-mE-DoH"/>
                             </connections>
                         </barButtonItem>
                     </items>

@@ -120,6 +120,7 @@
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
     UILabel *markLabel = (UILabel*)[cell viewWithTag:12];
+    UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
     if ( IS_IPHONE ) {
         textLabel.font = [UIFont systemFontOfSize:15.0];
         markLabel.font = [UIFont systemFontOfSize:11.0];
@@ -129,6 +130,7 @@
         textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
         markLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         daysLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+        dateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
     }
     
 }
@@ -408,7 +410,6 @@
     A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
     
     if ( item ) {
-        FNLOG(@"%@ / %@",indexPath, item.imageFilename);
         NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                       firstDate:[item startDate]
                                                                                        fromDate:[NSDate date]];
@@ -432,8 +433,6 @@
         
         // daysLabel
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
-            //NSInteger daysGap = [self daysGapForItem:item];
-            //daysLabel.text = [self daysStringForItem:item];
             daysLabel.text = @"";
         }
         else {
@@ -443,32 +442,6 @@
                                                                                                                         isAllDay:[item.isAllDay boolValue]]];
         }
         
-//        if (daysGap == 0) {
-//            markLabel.text = @"on going";
-//            markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
-//            if (sortType == EventSortType_Name) {
-//                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 65;
-//            }
-//            else {
-//                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 65;
-//            }
-//        }
-//        else {
-//            if ( daysGap > 0 ) {
-//                markLabel.text = @"Until";
-//                markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
-//            }
-//            else {
-//                markLabel.text = @"Since";
-//                markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
-//            }
-//            if (sortType == EventSortType_Name) {
-//                ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
-//            }
-//            else {
-//                ((A3DaysCounterEventListDateCell *)cell).untilRoundWidthConst.constant = 42;
-//            }
-//        }
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
@@ -505,8 +478,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
     else {
-        FNLOG(@"%@", indexPath);
-
         textLabel.text = @"";
         daysLabel.text = @"";
         markLabel.text = @"";
