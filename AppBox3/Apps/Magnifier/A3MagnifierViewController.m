@@ -108,7 +108,8 @@ static const int MAX_ZOOM_FACTOR = 6;
             previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
             previewLayer.transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight||
+                   curDeviceOrientation == UIDeviceOrientationFaceUp) {
             previewLayer.transform = CGAffineTransformMakeRotation(M_PI);
         } else {
             previewLayer.transform = CGAffineTransformMakeRotation(0);
@@ -250,7 +251,8 @@ static const int MAX_ZOOM_FACTOR = 6;
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
             } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
-            } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+            } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
+                       curDeviceOrientation == UIDeviceOrientationFaceUp) {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
             } else {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
@@ -387,7 +389,8 @@ static const int MAX_ZOOM_FACTOR = 6;
 	AVCaptureVideoOrientation result = (AVCaptureVideoOrientation)deviceOrientation;
 	if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
 		result = AVCaptureVideoOrientationLandscapeRight;
-	else if ( deviceOrientation == UIDeviceOrientationLandscapeRight )
+	else if ( deviceOrientation == UIDeviceOrientationLandscapeRight ||
+             deviceOrientation == UIDeviceOrientationFaceUp)
 		result = AVCaptureVideoOrientationLandscapeLeft;
 	return result;
 }
@@ -484,7 +487,8 @@ static const int MAX_ZOOM_FACTOR = 6;
                                                               t = CGAffineTransformMakeRotation(-M_PI / 2);
                                                           } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
                                                               t = CGAffineTransformMakeRotation(M_PI / 2);
-                                                          } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+                                                          } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
+                                                                     curDeviceOrientation == UIDeviceOrientationFaceUp) {
                                                               t = CGAffineTransformMakeRotation(M_PI);
                                                           } else {
                                                               t = CGAffineTransformMakeRotation(0);
