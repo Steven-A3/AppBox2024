@@ -137,6 +137,14 @@
             }
         }
     }
+    else if (cellType == CustomAlertCell_TimeInput) {
+        UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+        NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+        if (!alertDate || [alertDate isKindOfClass:[NSNull class]]) {
+            alertDate = [NSDate date];
+        }
+        datePicker.date = alertDate;
+    }
     
     return cell;
 }
