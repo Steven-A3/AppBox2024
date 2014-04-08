@@ -254,7 +254,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             transform = CGAffineTransformMakeRotation(M_PI_2);
         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
             transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
+                   curDeviceOrientation == UIDeviceOrientationFaceUp) {
             transform = CGAffineTransformMakeRotation(0);
             
         } else {
@@ -276,7 +277,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             transform = CGAffineTransformMakeRotation(-M_PI_2);
         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
             transform = CGAffineTransformMakeRotation(M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
+                   curDeviceOrientation == UIDeviceOrientationFaceUp) {
             transform = CGAffineTransformMakeRotation(0);
             
         } else {
@@ -1104,7 +1106,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 	AVCaptureVideoOrientation result = AVCaptureVideoOrientationLandscapeRight;
 	if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
 		result = AVCaptureVideoOrientationLandscapeRight;
-	else if ( deviceOrientation == UIDeviceOrientationLandscapeRight )
+	else if ( deviceOrientation == UIDeviceOrientationLandscapeRight ||
+             deviceOrientation == UIDeviceOrientationFaceUp)
 		result = AVCaptureVideoOrientationLandscapeLeft;
     else if (deviceOrientation == UIDeviceOrientationPortrait)
         result = AVCaptureVideoOrientationPortrait;
@@ -1168,7 +1171,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                         t = CGAffineTransformMakeRotation(-M_PI / 2);
                     } else if (orientation == UIDeviceOrientationPortraitUpsideDown) {
                         t = CGAffineTransformMakeRotation(M_PI / 2);
-                    } else if (orientation == UIDeviceOrientationLandscapeRight) {
+                    } else if (orientation == UIDeviceOrientationLandscapeRight ||
+                               orientation == UIDeviceOrientationFaceUp) {
                         t = CGAffineTransformMakeRotation(M_PI);
                     } else {
                         t = CGAffineTransformMakeRotation(0);
