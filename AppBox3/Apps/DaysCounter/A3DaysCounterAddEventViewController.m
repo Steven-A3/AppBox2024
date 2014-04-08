@@ -77,7 +77,8 @@
     
     if (_eventItem) {
         self.title = @"Edit Event";
-        _isAdvancedCellOpen = YES;
+        self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
+        _isAdvancedCellOpen = [self hasAdvancedData];
     }
     else {
         self.title = @"Add Event";
@@ -169,6 +170,42 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+#pragma mark -
+
+- (BOOL)hasAdvancedData
+{
+    if ([_eventModel objectForKey:EventItem_RepeatType] != 0) {
+        return YES;
+    }
+    
+    NSString *alertString = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
+                                                                                     alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    if (alertString && ![alertString isEqualToString:@"None"]) {
+        return YES;
+    }
+    
+    DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
+    if (calendar && calendar.calendarName) {
+        return YES;
+    }
+    
+    NSString *durationString = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+    if ([durationString length] > 0) {
+        return YES;
+    }
+    
+    NSMutableDictionary *location = [_eventModel objectForKey:EventItem_Location];
+    if ( location ) {
+        return YES;
+    }
+    
+    if ([[_eventModel objectForKey:EventItem_Notes] length] > 0) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark -
@@ -301,15 +338,17 @@
     }
     
     [section1_Items addObject:@{ EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
-    if ( [info.repeatType integerValue] != RepeatType_Never ) {
-        [section1_Items addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+    if (_isAdvancedCellOpen) {
+        [section1_Items addObject:@{ EventRowTitle : @"Repeat", EventRowType : @(EventCellType_RepeatType)}];
+        if ( [info.repeatType integerValue] != RepeatType_Never ) {
+            [section1_Items addObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)}];
+        }
+        [section1_Items addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
+        [section1_Items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
     }
-    [section1_Items addObject:@{ EventRowTitle : @"Alert", EventRowType : @(EventCellType_Alert)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Calendar", EventRowType : @(EventCellType_Calendar)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
-    [section1_Items addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
     
     self.sectionTitleArray = [NSMutableArray arrayWithObjects:
                               // section 0
@@ -637,9 +676,8 @@
         case EventCellType_RepeatType:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
             textLabel.textColor = [UIColor blackColor];
         }
             break;
@@ -888,13 +926,10 @@
         case EventCellType_RepeatType:
         {
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-//                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                
-//                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-                
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
                 
@@ -947,10 +982,14 @@
                     [self.tableView endUpdates];
                 }
             };
-            if ( IS_IPHONE )
+            
+            if ( IS_IPHONE ) {
                 [self.navigationController pushViewController:nextVC animated:YES];
-            else
+            }
+            else {
                 [self.A3RootViewController presentRightSideViewController:nextVC];
+            }
+            
             [self closeDatePickerCell];
         }
             break;
@@ -1584,6 +1623,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [_eventModel setObject:textField.text forKey:EventItem_Name];
+    self.firstResponder = nil;
 }
 
 #pragma mark - UITextViewDelegate

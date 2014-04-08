@@ -10,22 +10,25 @@
 #import "A3DaysCounterEventDetailViewController.h"
 
 @class DaysCounterCalendar;
+@class A3WalletSegmentedControl;
 @interface A3DaysCounterEventListViewController : UIViewController<UISearchDisplayDelegate,UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate,A3DaysCounterEventDetailViewControllerDelegate>{
-    NSInteger sortType;
-    BOOL isAscending;
+    NSInteger _sortType;
+    BOOL _isDateAscending;
+    BOOL _isNameAscending;
 }
 
 @property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (strong, nonatomic) IBOutlet UIView *rightButtonsView;
-@property (strong, nonatomic) IBOutlet UISegmentedControl *sortTypeSegmentCtrl;
+@property (strong, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 @property (strong, nonatomic) IBOutlet UIButton *editButton;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UIButton *addEventButton;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentControlWidthConst;
 @property (strong, nonatomic) IBOutlet UIView *headerSeperatorView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentControlWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewTopConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewSeparatorHeightConst;
 

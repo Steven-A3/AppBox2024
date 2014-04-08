@@ -123,7 +123,7 @@
 
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate
 {
-	if( toDate == nil || fromDate == nil)
+	if( toDate == nil || fromDate == nil || [fromDate isKindOfClass:[NSNull class]] || [toDate isKindOfClass:[NSNull class]])
 		return 0;
     
 	NSCalendar *calendar = [NSCalendar currentCalendar];

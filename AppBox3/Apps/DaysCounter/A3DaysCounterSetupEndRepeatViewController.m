@@ -141,7 +141,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     if ( cell == nil ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
     }
     
     cell.textLabel.text = [_itemArray objectAtIndex:indexPath.row];
@@ -163,30 +163,36 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id prevValue = [_eventModel objectForKey:EventItem_RepeatEndDate];
-    NSInteger prevIndex = 0;
-    if ( [prevValue isKindOfClass:[NSNull class]] ) {
-        prevIndex = 0;
-    }
-    else {
-        prevIndex = 1;
-    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    id value = ( indexPath.row == 0 ? [NSNull null] : [NSDate date] );
-    [_eventModel setObject:value forKey:EventItem_RepeatEndDate];
-    [tableView beginUpdates];
-    if ( prevIndex != indexPath.row ) {
-        [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-    }
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [tableView endUpdates];
-    
-    if ( indexPath.row == ( [_itemArray count] -1 )) {
-        [self showKeyboard];
-    }
-    else {
-        [self hideKeyboard];
-        [self doneButtonAction:nil];
+    switch ([indexPath row]) {
+        case 0:
+        {
+            [_eventModel setObject:[NSNull null] forKey:EventItem_RepeatEndDate];
+            [tableView reloadData];
+            [self hideKeyboard];
+            [self doneButtonAction:nil];
+        }
+            break;
+        case 1:
+        {
+            NSDate *repeatEndDate = [_eventModel objectForKey:EventItem_RepeatEndDate];
+            if (!repeatEndDate || [repeatEndDate isKindOfClass:[NSNull class]]) {
+                [_eventModel setObject:[NSDate date] forKey:EventItem_RepeatEndDate];
+            }
+            
+            UITableViewCell *cell_0row = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]];
+            cell_0row.accessoryType = UITableViewCellAccessoryNone;
+            UITableViewCell *cell_1row = [tableView cellForRowAtIndexPath:indexPath];
+            cell_1row.detailTextLabel.text = [A3Formatter stringFromDate:[_eventModel objectForKey:EventItem_RepeatEndDate] format:DaysCounterDefaultDateFormat];
+            cell_1row.accessoryType = UITableViewCellAccessoryCheckmark;
+            
+            [self showKeyboard];
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 

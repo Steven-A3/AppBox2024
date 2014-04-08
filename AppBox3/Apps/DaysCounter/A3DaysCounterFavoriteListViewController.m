@@ -94,20 +94,8 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    return ([_itemArray count] < 1 ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count]);
     return [_itemArray count];
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return 0.01;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 0.01;
-//}
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -156,27 +144,27 @@
     
     if ( [_itemArray count] > 0) {
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-        
         textLabel.text = item.eventName;
         UIImage *image = [item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
-        imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, imageView.frame.size.width, imageView.frame.size.height)]  : nil;
+        imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
         NSDate *today = [NSDate date];
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
-        //NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate isAllDay:[item.isAllDay boolValue]];
         daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
                                                                                   fromDate:today
-                                                                                    toDate:nextDate //item.startDate
+                                                                                    toDate:nextDate
                                                                                   isAllDay:[item.isAllDay boolValue]];
         
         if (image) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
             ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 32;
         }
         else {
             ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 15 : 28;
+            ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 0;
         }
         
         
@@ -196,9 +184,6 @@
         
         if ( IS_IPAD ) {
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-            //dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"EEEE, MMM dd"];
-//            dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate
-//                                                   withFormat:[item.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
             dateLabel.text = [item.isAllDay boolValue] ? [item.startDate a3FullStyleString] : [item.startDate a3FullStyleWithTimeString];
             dateLabel.hidden = NO;
         }
@@ -235,24 +220,6 @@
 {
     return 62.0;
 }
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
-    NSLayoutConstraint *widthConst = nil;
-    for(NSLayoutConstraint *layout in imageView.constraints ) {
-        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
-            widthConst = layout;
-            break;
-        }
-    }
-    
-    if ( widthConst ) {
-        widthConst.constant = (imageView.image ? 32.0 : 0.0);
-        [cell layoutIfNeeded];
-    }
-}
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
