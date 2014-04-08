@@ -1623,6 +1623,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [_eventModel setObject:textField.text forKey:EventItem_Name];
+    self.firstResponder = nil;
 }
 
 #pragma mark - UITextViewDelegate
