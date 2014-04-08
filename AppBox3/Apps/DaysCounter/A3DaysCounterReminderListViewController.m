@@ -114,18 +114,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [_itemArray count];
-    //return ([_itemArray count] < 1) ? ceilf((tableView.frame.size.height / 62.0)) : [_itemArray count];
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return 0.01;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 0.01;
-//}
 
 #define UNREADVIEW_TAG  111
 
@@ -183,65 +172,6 @@
     }
 
     return cell;
-    
-//    static NSString *CellIdentifier = @"reminderCell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (cell == nil) {
-//        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-//        cell = [cellArray objectAtIndex:4];
-//        UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
-//        UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
-//        [deleteButton setImage:[[deleteButton imageForState:UIControlStateNormal] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] forState:UIControlStateNormal];
-//        deleteButton.tintColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-//        [deleteButton addTarget:self action:@selector(changeClearAction:) forControlEvents:UIControlEventTouchUpInside];
-//        
-//        clearButton.layer.masksToBounds = YES;
-//        clearButton.layer.borderWidth = 1.0;
-//        clearButton.layer.borderColor = [[clearButton titleColorForState:UIControlStateNormal] CGColor];
-//        clearButton.layer.cornerRadius = 9.0;
-//        [clearButton addTarget:self action:@selector(clearAction:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//
-//        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-//        detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-//    }
-//    
-//    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-//    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-//    UIButton *deleteButton = (UIButton*)[cell viewWithTag:12];
-//    UIButton *clearButton = (UIButton*)[cell viewWithTag:13];
-//    
-//    textLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-//    detailTextLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:12.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-//    
-//    
-//    if ( [_itemArray count] > 0 ) {
-//        DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-//        textLabel.text = item.eventName;
-//        
-//        if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
-//            detailTextLabel.text = [item.alertDatetime timeAgo];
-//        }
-//        else {
-//            detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
-//                                                         withFormat:IS_IPHONE ? @"EEEE, MMM dd, yyyy hh:mm a" : @"EEEE, MMMM dd, yyyy hh:mm a"];
-//        }
-//        
-//        deleteButton.hidden = (_clearIndexPath && (_clearIndexPath.row == indexPath.row));
-//        clearButton.hidden = !deleteButton.hidden;
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//    }
-//    else {
-//        textLabel.text = @"";
-//        detailTextLabel.text = @"";
-//        deleteButton.hidden = YES;
-//        clearButton.hidden = YES;
-//        cell.accessoryType = UITableViewCellAccessoryNone;
-//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    }
-//
-//    return cell;
 }
 
 #pragma mark - Table view delegate
@@ -266,11 +196,6 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-//    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alertView show];
-//        return;
-//    }
     A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController"
                                                                                                                       bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];

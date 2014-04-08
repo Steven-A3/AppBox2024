@@ -427,7 +427,6 @@ enum SortingKind {
 
 - (void)segmentTitleSet:(A3WalletAllTopView *)topView;
 {
-
     float topViewWidth = topView.bounds.size.width;
     float segmentWidth = topView.sortingSegment.frame.size.width;
     float arrowRightMargin = IS_IPAD ? 30 : 15;
@@ -460,9 +459,6 @@ enum SortingKind {
         default:
             break;
     }
-    
-//    [_topHeaderView.sortingSegment setContentOffset:CGSizeMake(-5, 0) forSegmentAtIndex:0];
-//    [_topHeaderView.sortingSegment setContentOffset:CGSizeMake(-5, 0) forSegmentAtIndex:1];
 }
 
 - (void)sortingSegTapped:(UISegmentedControl *)segment
