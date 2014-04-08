@@ -77,6 +77,7 @@
     
     if (_eventItem) {
         self.title = @"Edit Event";
+        self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
         _isAdvancedCellOpen = [self hasAdvancedData];
     }
     else {
@@ -173,8 +174,8 @@
 
 #pragma mark -
 
-- (BOOL)hasAdvancedData {
-    
+- (BOOL)hasAdvancedData
+{
     if ([_eventModel objectForKey:EventItem_RepeatType] != 0) {
         return YES;
     }

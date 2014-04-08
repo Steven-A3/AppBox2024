@@ -111,7 +111,8 @@
         cell.textLabel.text = [item objectForKey:EventRowTitle];
         NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
         if (!alertDate || [alertDate isKindOfClass:[NSNull class]]) {
-            alertDate = [NSDate date];
+            //alertDate = [NSDate date];
+            alertDate = nil;
         }
         
         if ( cellType == CustomAlertCell_DaysBefore ) {
@@ -119,7 +120,7 @@
 
             UITextField *textField = (UITextField*)cell.accessoryView;
             if ( alertDate == nil ) {
-                textField.text = @"";
+                textField.text = @"0";
             }
             else {
                 textField.text = [NSString stringWithFormat:@"%ld", labs((long)[A3DateHelper diffDaysFromDate:alertDate toDate:startDate])];
@@ -246,7 +247,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[datePicker.superview superview] superview]];
   
     NSDate *alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
-    if ( alertDate == nil ) {
+    if ( alertDate == nil || [alertDate isKindOfClass:[NSNull class]]) {
         alertDate = [_eventModel objectForKey:EventItem_StartDate];
     }
     
@@ -255,7 +256,8 @@
                                                minute:[A3DateHelper minuteFromDate:datePicker.date]]
                     forKey:EventItem_AlertDatetime];
 
-    if ( indexPath )
+    if ( indexPath ) {
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 @end
