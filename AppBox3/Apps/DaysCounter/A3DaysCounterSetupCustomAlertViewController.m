@@ -39,7 +39,8 @@
     [super viewDidLoad];
 
     self.title = @"Custom";
-    self.templateArray = [NSMutableArray arrayWithArray:@[@{EventRowTitle : @"Days Before",EventRowType: @(CustomAlertCell_DaysBefore)},@{EventRowTitle : @"Time",EventRowType : @(CustomAlertCell_Time)}]];
+    self.templateArray = [NSMutableArray arrayWithArray:@[@{EventRowTitle : @"Days Before", EventRowType: @(CustomAlertCell_DaysBefore)},
+                                                          @{EventRowTitle : @"Time", EventRowType : @(CustomAlertCell_Time)}]];
     self.keyboardVC = [self simpleNumberKeyboard];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
 }
@@ -96,7 +97,7 @@
             
             if ( cellType == CustomAlertCell_DaysBefore ) {
                 UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(0, 0, 80.0, cell.contentView.frame.size.height)];
-                textField.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+                textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
                 textField.textAlignment = NSTextAlignmentRight;
                 textField.borderStyle = UITextBorderStyleNone;
                 textField.delegate = self;
@@ -131,7 +132,7 @@
                 cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:125.0/255.0 blue:248.0/255.0 alpha:1.0];
             }
             else {
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:160.0/255.0 green:160.0/255.0 blue:160.0/255.0 alpha:1.0];
+                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
             }
         }
     }
@@ -253,7 +254,6 @@
                                                  Hour:[A3DateHelper hour24FromDate:datePicker.date]
                                                minute:[A3DateHelper minuteFromDate:datePicker.date]]
                     forKey:EventItem_AlertDatetime];
-//    [_settingDict setObject:[A3DateHelper dateMakeSecondZero:datePicker.date] forKey:SettingItem_CustomAlertTime];
 
     if ( indexPath )
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];

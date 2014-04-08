@@ -675,9 +675,8 @@
         case EventCellType_RepeatType:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
             textLabel.textColor = [UIColor blackColor];
         }
             break;
