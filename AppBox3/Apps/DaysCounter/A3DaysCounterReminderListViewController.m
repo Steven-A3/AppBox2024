@@ -21,6 +21,7 @@
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "NSDate+TimeAgo.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterReminderListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -139,13 +140,12 @@
         cell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         UIView *unReadMark = [[UIView alloc] initWithFrame:CGRectZero];
         unReadMark.tag = UNREADVIEW_TAG;
-        unReadMark.backgroundColor = [UIColor colorWithRed:0 green:126.0/255 blue:248.0/255 alpha:1.0];
+        unReadMark.backgroundColor = [A3AppDelegate instance].themeColor; // [UIColor colorWithRed:0 green:126.0/255 blue:248.0/255 alpha:1.0];
         unReadMark.layer.cornerRadius = 5;
-        //[cell.contentView addSubview:unReadMark];
         [cell addSubview:unReadMark];
+        
         [unReadMark makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(cell.contentView.left).with.offset(8);
-            //make.top.equalTo(cell.contentView.top).with.offset(10);
             make.centerY.equalTo(cell.textLabel.centerY);
             make.width.equalTo(@10);
             make.height.equalTo(@10);
