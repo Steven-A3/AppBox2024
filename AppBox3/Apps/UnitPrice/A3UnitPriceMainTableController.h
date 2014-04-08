@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const A3UnitPriceCurrencyCode;
+extern NSString *const A3NotificationUnitPriceCurrencyCodeChanged;
+
 @interface A3UnitPriceMainTableController : UITableViewController
 
 @end

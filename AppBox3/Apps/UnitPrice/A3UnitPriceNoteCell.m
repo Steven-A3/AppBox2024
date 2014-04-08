@@ -30,19 +30,6 @@
 {
     [super awakeFromNib];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didTextFieldActiveNoti:) name:UITextFieldTextDidBeginEditingNotification object:self.textFd];
-}
-
-- (void)didTextFieldActiveNoti:(NSNotification *) noti
-{
-    if (_delegate && [_delegate respondsToSelector:@selector(didTextFieldBeActive:inTableViewCell:)]) {
-        [_delegate didTextFieldBeActive:self.textFd inTableViewCell:self];
-    }
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

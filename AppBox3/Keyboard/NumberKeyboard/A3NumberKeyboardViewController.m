@@ -45,17 +45,14 @@
 - (IBAction)keyboardInputAction:(UIButton *)button {
 	[[UIDevice currentDevice] playInputClick];
 
-	NSString *pressedString = [button titleForState:UIControlStateNormal];
-	if (![pressedString length]) {
+	NSString *inputString = [button titleForState:UIControlStateNormal];
+	if (![inputString length]) {
 		return;
 	}
 	BOOL allowedToChange = YES;
 
 	if ([_textInputTarget isKindOfClass:[UITextField class]]) {
 		UITextField *textField = (UITextField *) _textInputTarget;
-		// decimalSeparator 가 두번 들어가지 않도록
-		// 화폐면 화폐별 소수점 이하 이상 입력되지 않도록
-		// 실수면 소수점 3자리 이상 입력되지 않도록
 
 		// Setup
 		NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
@@ -64,8 +61,25 @@
 			[numberFormatter setCurrencyCode:self.currencyCode];
 		}
 
+		// 0 뒤에 . 이 입력된 경우는 OK
+		// 0 뒤에 0이 들어오면 무시
+		// 0 뒤에 1~9가 들어오면 0을 없앤다.
+		if ([textField.text length] == 1 && [textField.text isEqualToString:@"0"]) {
+			if ([inputString isEqualToString:@"0"]) {
+				// 입력을 처리하지 않는다.
+				return;
+			}
+			if (![inputString isEqualToString:numberFormatter.decimalSeparator]) {
+				textField.text = @"";
+			}
+		}
+
+		// decimalSeparator 가 두번 들어가지 않도록
+		// 화폐면 화폐별 소수점 이하 이상 입력되지 않도록
+		// 실수면 소수점 3자리 이상 입력되지 않도록
+
 		NSRange testRange = [textField.text rangeOfString:numberFormatter.decimalSeparator];
-		if ([pressedString isEqualToString:numberFormatter.decimalSeparator]) {
+		if ([inputString isEqualToString:numberFormatter.decimalSeparator]) {
 			if (testRange.location != NSNotFound) {
 				return;
 			}
@@ -89,11 +103,11 @@
 		FNLOG(@"%lu, %lu", (unsigned long)location, (unsigned long)length);
 		id <UITextFieldDelegate> delegate = textField.delegate;
 		if ([delegate respondsToSelector:@selector(textField:shouldChangeCharactersInRange:replacementString:)]) {
-			allowedToChange = [delegate textField:textField shouldChangeCharactersInRange:range replacementString:pressedString];
+			allowedToChange = [delegate textField:textField shouldChangeCharactersInRange:range replacementString:inputString];
 		}
 	}
 	if (allowedToChange && [_textInputTarget respondsToSelector:@selector(insertText:)]) {
-		[_textInputTarget insertText:pressedString];
+		[_textInputTarget insertText:inputString];
 	}
 }
 
@@ -173,26 +187,28 @@
 }
 
 - (void)setupLocale {
-	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-	if ([_currencyCode length]) {
-		[numberFormatter setCurrencyCode:_currencyCode];
-	} else {
-		_currencyCode = [numberFormatter currencyCode];
-	}
-	_currencySymbol = [numberFormatter currencySymbol];
+	@autoreleasepool {
+		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+		if ([_currencyCode length]) {
+			[numberFormatter setCurrencyCode:_currencyCode];
+		} else {
+			_currencyCode = [numberFormatter currencyCode];
+		}
+		_currencySymbol = [numberFormatter currencySymbol];
 
-	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-	if (   (A3NumberKeyboardTypeMonthYear == self.keyboardType)
-		|| (A3NumberKeyboardTypeInteger == self.keyboardType)
-		|| (A3NumberKeyboardTypeFraction == self.keyboardType)
-		|| (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0)
-		|| (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected]))
-	{
-		[self.dotButton setTitle:nil forState:UIControlStateNormal];
-		[self.dotButton setEnabled:NO];
-	} else  {
-		[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
-		[self.dotButton setEnabled:YES];
+		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+		if (   (A3NumberKeyboardTypeMonthYear == self.keyboardType)
+				|| (A3NumberKeyboardTypeInteger == self.keyboardType)
+				|| (A3NumberKeyboardTypeFraction == self.keyboardType)
+				|| (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0)
+				|| (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected]))
+		{
+			[self.dotButton setTitle:nil forState:UIControlStateNormal];
+			[self.dotButton setEnabled:NO];
+		} else  {
+			[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
+			[self.dotButton setEnabled:YES];
+		}
 	}
 }
 

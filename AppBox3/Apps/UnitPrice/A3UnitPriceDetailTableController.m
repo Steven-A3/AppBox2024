@@ -22,20 +22,23 @@
 #import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3UnitPriceMainTableController.h"
+#import "A3CalculatorDelegate.h"
+#import "A3SearchViewController.h"
+#import "UITableView+utility.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
     Price_Amount = 0,
     Price_Percent,
 };
 
-@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3TbvCellTextInputDelegate>
+@interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
-    PriceDiscountType discountType;
+    PriceDiscountType _discountType;
     
     float textViewHeight;
 }
 
-@property (nonatomic, strong) NSNumber *lastTextFieldNumber;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
 @property (nonatomic, strong) NSMutableArray *items;
@@ -45,6 +48,9 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, strong) NSMutableDictionary *quantityItem;
 @property (nonatomic, strong) NSMutableDictionary *discountItem;
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
+@property (nonatomic, weak) UITextField *calculatorTargetTextField;
+@property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
+@property (nonatomic, copy) NSString *textBeforeEditingTextField;
 
 @end
 
@@ -128,6 +134,16 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     // Dispose of any resources that can be recreated.
 }
 
+- (NSNumberFormatter *)decimalFormatter {
+	if (!_decimalFormatter) {
+		_decimalFormatter = [NSNumberFormatter new];
+		[_decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		[_decimalFormatter setMaximumFractionDigits:3];
+	}
+	return _decimalFormatter;
+}
+
+
 -(NSMutableArray *)items {
     if (!_items) {
         _items = [[NSMutableArray alloc] init];
@@ -199,7 +215,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     sliderCell.sliderView.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     sliderCell.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
     
-    float unitPrice = 0;
+    double unitPrice = 0;
     NSString *unitPriceTxt = @"";
     NSString *unitShortName = @"";
     NSString *unitName = @"";
@@ -212,8 +228,8 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
     
     double priceValue = priceInfo.price.doubleValue;
-    NSUInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
-    NSUInteger quantityValue = priceInfo.quantity.integerValue;
+    NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
+    NSInteger quantityValue = priceInfo.quantity.integerValue;
     
     // 할인값
     NSString *discountText = [self.currencyFormatter stringFromNumber:@(0)];
@@ -233,8 +249,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
             discountValue = priceValue * priceInfo.discountPercent.floatValue;
         }
     }
-    
-    
+
     if ((priceValue>0) && (sizeValue>0) && (quantityValue>0)) {
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
         
@@ -299,52 +314,29 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 
 - (void)configureInputCell:(A3UnitPriceInputCell *)inputCell withIndexPath:(NSIndexPath *)indexPath
 {
-    float unitPrice = 0;
-    NSString *unitPriceTxt = @"";
-    NSString *unitShortName = @"";
-    NSString *unitName = @"";
     NSString *priceTxt = @"";
     
     UnitPriceInfo *priceInfo = self.price;
     
-    priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
-    unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : @"None";
-    unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
-    
-    double priceValue = priceInfo.price.doubleValue;
-    NSUInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
-    NSUInteger quantityValue = priceInfo.quantity.integerValue;
-    
+    priceTxt = [self.currencyFormatter stringFromNumber:priceInfo.price];
+
     // 할인값
-    NSString *discountText = [self.currencyFormatter stringFromNumber:@(0)];
-    double discountValue = 0;
-    if (!priceInfo.discountPercent && !priceInfo.discountPrice) {
+    NSString *discountText = [self.currencyFormatter stringFromNumber:@0];
+    if (priceInfo.discountPercent.doubleValue == 0.0 && priceInfo.discountPrice.doubleValue == 0.0) {
         discountText = @"";
-        discountValue = 0;
     }
     else {
         if (priceInfo.discountPrice.doubleValue > 0) {
-            discountText = [self.currencyFormatter stringFromNumber:@(priceInfo.discountPrice.doubleValue)];
-            discountValue = priceInfo.discountPrice.doubleValue;
-            discountValue = MIN(discountValue, priceValue);
+            discountText = [self.currencyFormatter stringFromNumber:priceInfo.discountPrice];
         }
-        else if (priceInfo.discountPercent.floatValue > 0) {
-            discountText = [self.percentFormatter stringFromNumber:@(priceInfo.discountPercent.doubleValue)];
-            discountValue = priceValue * priceInfo.discountPercent.floatValue;
+        else if (priceInfo.discountPercent.doubleValue > 0) {
+            discountText = [self.percentFormatter stringFromNumber:priceInfo.discountPercent];
         }
     }
-    
-    
-    if ((priceValue>0) && (sizeValue>0) && (quantityValue>0)) {
-        unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue);
-        if (priceInfo.unit) {
-            unitPriceTxt = [NSString stringWithFormat:@"%@/%@", [self.currencyFormatter stringFromNumber:@(unitPrice)], unitName];
-        }
-        else {
-            unitPriceTxt = [self.currencyFormatter stringFromNumber:@(unitPrice)];
-        }
-    }
-    
+
+	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+
     if ([self.items objectAtIndex:indexPath.row] == self.priceItem) {
         inputCell.titleLB.text = @"Price";
         inputCell.textField.text = priceTxt;
@@ -352,11 +344,11 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     else if ([self.items objectAtIndex:indexPath.row] == self.sizeItem) {
         inputCell.titleLB.text = @"Size";
         inputCell.textField.placeholder = @"Optional";
-        inputCell.textField.text = priceInfo.size;
+        inputCell.textField.text = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"";
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.quantityItem) {
         inputCell.titleLB.text = @"Quantity";
-        inputCell.textField.text = priceInfo.quantity ? priceInfo.quantity:@"0";
+        inputCell.textField.text = priceInfo.quantity ? [decimalFormatter stringFromNumber:priceInfo.quantity]:[decimalFormatter stringFromNumber:@0];
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.discountItem) {
         inputCell.titleLB.text = @"Discount";
@@ -373,23 +365,23 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 
 - (void)updateValueTextField:(UITextField *)textField
 {
-    
     if ([self.items objectAtIndex:_currentIndexPath.row] == self.noteItem) {
         self.price.note = textField.text;
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
-        self.price.price = textField.text;
-        textField.text = [self.currencyFormatter stringFromNumber:@(self.price.price.doubleValue)];
+        self.price.price = [self.decimalFormatter numberFromString:textField.text];
+        textField.text = [self.currencyFormatter stringFromNumber:self.price.price];
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
         if (textField.text.length > 0) {
-            switch (discountType) {
+			_discountType = [self.numberKeyboardViewController.bigButton1 isSelected] ? Price_Percent : Price_Amount;
+			switch (_discountType) {
                 case Price_Amount:
                 {
-                    float value = textField.text.doubleValue;
+                    double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
                     value = MAX(0, value);
-                    self.price.discountPrice = textField.text;
-                    self.price.discountPercent = @"0";
+                    self.price.discountPrice = @(value);
+                    self.price.discountPercent = @0;
                     
                     // textField 의 text가 업데이트가 안되는 현상 발생 (mainQueue를 보장하게 하여 수정함)
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -400,12 +392,11 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 }
                 case Price_Percent:
                 {
-                    float value = textField.text.floatValue;
+                    double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
                     value = MAX(0, value);
-                    //value = MIN(100, value);
                     value /= 100.0;
-                    self.price.discountPercent = @(value).stringValue;
-                    self.price.discountPrice = @"0";
+                    self.price.discountPercent = @(value);
+                    self.price.discountPrice = @0;
                     
                     // textField 의 text가 업데이트가 안되는 현상 발생 (mainQueue를 보장하게 하여 수정함)
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -419,17 +410,17 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
             }
         }
         else {
-            discountType = Price_Amount;
+            _discountType = Price_Amount;
             self.price.discountPrice = nil;
             self.price.discountPercent = nil;
         }
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
-        self.price.quantity = textField.text;
+        self.price.quantity = [self.decimalFormatter numberFromString:textField.text];
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
         if (textField.text.length > 0) {
-            self.price.size = textField.text;
+            self.price.size = [self.decimalFormatter numberFromString:textField.text];
         }
         else {
             self.price.size = nil;
@@ -465,112 +456,67 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 }
 
 #pragma mark - A3TbvCellTextInputDelegate
-- (void)didTextFieldBeActive:(UITextField *)textField inTableViewCell:(UITableViewCell *)cell
-{
-    _currentIndexPath = [self.tableView indexPathForCell:cell];
-    
-    if ([self.items objectAtIndex:_currentIndexPath.row] != self.noteItem) {
-        A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-        textField.inputView = [keyboardVC view];
-        self.numberKeyboardViewController = keyboardVC;
-        self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeFraction;
-        keyboardVC.textInputTarget = textField;
-        keyboardVC.delegate = self;
-        self.numberKeyboardViewController = keyboardVC;
-		[keyboardVC reloadPrevNextButtons];
-    }
-    
-    if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
-        if (self.price.discountPrice.floatValue > 0) {
-            discountType = Price_Amount;
-            self.numberKeyboardViewController.bigButton1.selected = YES;
-            self.numberKeyboardViewController.bigButton2.selected = NO;
-        }
-        else if (self.price.discountPercent.floatValue > 0) {
-            discountType = Price_Percent;
-            self.numberKeyboardViewController.bigButton1.selected = NO;
-            self.numberKeyboardViewController.bigButton2.selected = YES;
-        }
-        else {
-            discountType = Price_Amount;
-            self.numberKeyboardViewController.bigButton1.selected = YES;
-            self.numberKeyboardViewController.bigButton2.selected = NO;
-        }
-    }
-    
-    
-    if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
-        self.lastTextFieldNumber = [self.currencyFormatter numberFromString:textField.text];
-    }
-    else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
-        self.lastTextFieldNumber = @(textField.text.floatValue);
-    }
-    else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
-        self.lastTextFieldNumber = @(textField.text.floatValue);
-    }
-    else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
-        if (textField.text.length > 0) {
-            switch (discountType) {
-                case Price_Amount:
-                {
-                    self.lastTextFieldNumber = [self.currencyFormatter numberFromString:textField.text];
-                    
-                    break;
-                }
-                case Price_Percent:
-                {
-                    NSNumber *percent = [self.percentFormatter numberFromString:textField.text];
-                    
-                    self.lastTextFieldNumber = @(percent.floatValue * 100);
-                    
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        else {
-        }
-    }
-    
-    if ([self.items objectAtIndex:_currentIndexPath.row] != self.noteItem) {
-        textField.text = @"";
-    }
-    
-    [self.normalNumberKeyboard reloadPrevNextButtons];
+
+- (void)setupCurrencyKeyboardForTextField:(UITextField *)textField usePercent:(BOOL)usePercent {
+	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
+	[keyboardVC setTextInputTarget:textField];
+	[keyboardVC setDelegate:self];
+	[textField setInputView:[keyboardVC view]];
+	[keyboardVC setCurrencyCode:[self defaultCurrencyCode]];
+	[keyboardVC setKeyboardType:usePercent ? A3NumberKeyboardTypePercent : A3NumberKeyboardTypeCurrency];
+	[keyboardVC reloadPrevNextButtons];
+	[self setNumberKeyboardViewController:keyboardVC];
+}
+
+- (void)setupDecimalKeyboardForTextField:(UITextField *)textField useFraction:(BOOL)useFraction {
+	A3NumberKeyboardViewController *keyboardVC = [self simplePrevNextClearNumberKeyboard];
+	[keyboardVC setTextInputTarget:textField];
+	[keyboardVC setDelegate:self];
+	[textField setInputView:[keyboardVC view]];
+	[keyboardVC setKeyboardType:useFraction ? A3NumberKeyboardTypeReal : A3NumberKeyboardTypeInteger];
+	[keyboardVC reloadPrevNextButtons];
+	[self setNumberKeyboardViewController:keyboardVC];
 }
 
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	@autoreleasepool {
-        
-        // 백버튼을 눌렀을때, 네비게이션이 팝이 되었는데도,
-        // 다시 textField가 firstResponder가 되면서 생기는 업데이트 문제를 수정하기 위해 조건문 추가
-        if (self.navigationController.visibleViewController != self) {
-            return NO;
-        }
-
-        return YES;
+	// 백버튼을 눌렀을때, 네비게이션이 팝이 되었는데도,
+	// 다시 textField가 firstResponder가 되면서 생기는 업데이트 문제를 수정하기 위해 조건문 추가
+	if (self.navigationController.visibleViewController != self) {
+		return NO;
 	}
+	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_textBeforeEditingTextField = textField.text;
+	textField.text = @"";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
 	[self setFirstResponder:textField];
-}
 
-- (void)textFieldDidChange:(NSNotification *)notification {
-	@autoreleasepool {
-        
-        self.lastTextFieldNumber = nil;
+	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+
+	if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
+		[self setupCurrencyKeyboardForTextField:textField usePercent:NO ];
+	}
+	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
+		[self setupDecimalKeyboardForTextField:textField useFraction:YES];
+	}
+	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
+		[self setupDecimalKeyboardForTextField:textField useFraction:NO];
+	}
+	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
+		[self setupCurrencyKeyboardForTextField:textField usePercent:YES ];
 	}
 }
 
+- (void)textFieldDidChange:(NSNotification *)notification {
+}
+
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-	FNLOG();
 	return YES;
 }
 
@@ -581,57 +527,21 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 	return YES;
 }
 
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    self.lastTextFieldNumber = nil;
-    
-    NSString *toBe = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    
-    if ([toBe rangeOfString:@"."].location == NSNotFound) {
-        NSUInteger numIntMax = IS_IPAD ? 16:11;
-        
-        if (toBe.length <= numIntMax) {
-            return YES;
-        }
-        else {
-            return NO;
-        }
-    }
-    else {
-        NSUInteger numIntMax = IS_IPAD ? 14:9;
-        NSUInteger numFloatMax = 2;
-        
-        NSArray *textDivs = [toBe componentsSeparatedByString:@"."];
-        NSString *intString = textDivs[0];
-        NSString *floatString = textDivs[1];
-        
-        if ((intString.length <= numIntMax) && (floatString.length <= numFloatMax)) {
-            return YES;
-        }
-        else {
-            return NO;
-        }
-    }
+	return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	@autoreleasepool {
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-		[self setFirstResponder:nil];
-        
-        if ([self.items objectAtIndex:_currentIndexPath.row] != self.noteItem) {
-            if (self.lastTextFieldNumber) {
-                textField.text = self.lastTextFieldNumber.stringValue;
-            }
-        }
-        
-        self.numberKeyboardViewController = nil;
-        [self updateValueTextField:textField];
-        
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+	[self setFirstResponder:nil];
+
+	if ([textField.text length] > 0) {
+		[self updateValueTextField:textField];
+		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+	} else {
+		textField.text = _textBeforeEditingTextField;
 	}
 }
 
@@ -659,26 +569,6 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         }
     }
     return NO;
-}
-
-- (NSString *)stringForBigButton1
-{
-    if (_currentIndexPath) {
-        if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
-            return @"$";
-        }
-    }
-    return @"";
-}
-
-- (NSString *)stringForBigButton2
-{
-    if (_currentIndexPath) {
-        if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
-            return @"%";
-        }
-    }
-    return @"Cal";
 }
 
 - (void)prevButtonPressed{
@@ -723,26 +613,6 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
             A3UnitPriceNote2Cell *noteCell = (A3UnitPriceNote2Cell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
             [noteCell.textView becomeFirstResponder];
         }
-    }
-}
-
-- (void)handleBigButton1
-{
-    if (_currentIndexPath && ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem)) {
-        discountType = Price_Amount;
-        
-        self.numberKeyboardViewController.bigButton1.selected = YES;
-        self.numberKeyboardViewController.bigButton2.selected = NO;
-    }
-}
-
-- (void)handleBigButton2
-{
-    if (_currentIndexPath && ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem)) {
-        discountType = Price_Percent;
-        
-        self.numberKeyboardViewController.bigButton1.selected = NO;
-        self.numberKeyboardViewController.bigButton2.selected = YES;
     }
 }
 
@@ -899,8 +769,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
                 inputCell.titleLB.textColor = [UIColor blackColor];
                 inputCell.textField.delegate = self;
-                inputCell.delegate = self;
-                
+
                 [self configureInputCell:inputCell withIndexPath:indexPath];
                 
                 cell = inputCell;
@@ -1012,5 +881,53 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 }
  
  */
+
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
+}
+
+#pragma mark --- Response to Calculator Button and result
+
+- (UIViewController *)modalPresentingParentViewControllerForCalculator {
+	_calculatorTargetTextField = (UITextField *) self.firstResponder;
+	return self;
+}
+
+- (id <A3CalculatorDelegate>)delegateForCalculator {
+	return self;
+}
+
+- (void)calculatorViewController:(UIViewController *)viewController didDismissWithValue:(NSString *)value {
+	_calculatorTargetTextField.text = value;
+	[self textFieldDidEndEditing:_calculatorTargetTextField];
+}
+
+#pragma mark --- Response to Currency Select Button and result
+
+- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
+	return self;
+}
+
+- (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
+	return self;
+}
+
+- (void)searchViewController:(UIViewController *)viewController itemSelectedWithItem:(NSString *)selectedItem {
+	if ([selectedItem length]) {
+		[[NSUserDefaults standardUserDefaults] setObject:selectedItem forKey:A3UnitPriceCurrencyCode];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+		[self.currencyFormatter setCurrencyCode:selectedItem];
+		[self.tableView reloadData];
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
+		});
+	}
+}
 
 @end

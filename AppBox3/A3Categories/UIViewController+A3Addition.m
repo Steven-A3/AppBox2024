@@ -15,6 +15,13 @@
 
 @implementation UIViewController (A3Addition)
 
+/*! MainMenuViewController에서 app switch 할 때 popToRootViewController를 한 뒤에, 각 ViewController에 cleanUp을 호출합니다.
+ *  이때 removeObserver와 nil을 할당하면 메모리를 효율적으로 제거할 수 있습니다.
+ */
+- (void)cleanUp {
+
+}
+
 - (CGRect)screenBoundsAdjustedWithOrientation {
 	CGRect bounds = [[UIScreen mainScreen] bounds];
 	if (IS_LANDSCAPE) {

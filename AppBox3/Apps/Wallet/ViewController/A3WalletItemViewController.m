@@ -27,9 +27,10 @@
 #import "UIViewController+A3AppCategory.h"
 #import "WalletField.h"
 #import "UIImage+Extension2.h"
+#import "UITableView+utility.h"
 
 
-	@interface A3WalletItemViewController () <UITextFieldDelegate, A3TbvCellTextInputDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, TSMiniWebBrowserDelegate>
+@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, TSMiniWebBrowserDelegate>
 
 @property (nonatomic, strong) A3WalletItemTitleView *headerView;
 @property (nonatomic, strong) NSMutableArray *fieldItems;
@@ -491,13 +492,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - A3TbvCellTextInputDelegate
-- (void)didTextFieldBeActive:(UITextField *)textField inTableViewCell:(UITableViewCell *)cell
-{
-    currentIndexPath = [self.tableView indexPathForCell:cell];
-    FNLOG(@"current text field indexpath : %@", [currentIndexPath description]);
-}
-
 #pragma mark - textView delegate
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
@@ -509,6 +503,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+	currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+	FNLOG(@"current text field indexpath : %@", [currentIndexPath description]);
     firstResponder = textField;
 }
 
@@ -556,7 +552,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         A3WalletItemFieldCell *textCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
         
         textCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        textCell.delegate = self;
         [self configureFloatingTextField:textCell.valueTextField];
         
         textCell.valueTextField.floatingLabelFont = [UIFont systemFontOfSize:14];
@@ -610,7 +605,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             A3WalletItemFieldCell *dateCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
             
             dateCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            dateCell.delegate = self;
             [self configureFloatingTextField:dateCell.valueTextField];
             
             dateCell.valueTextField.placeholder = fieldItem.field.name;
@@ -635,7 +629,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                 A3WalletItemFieldActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldActionCellID forIndexPath:indexPath];
                 
                 actionCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                actionCell.delegate = self;
                 [self configureFloatingTextField:actionCell.valueTextField];
 
                 actionCell.valueTextField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1];
@@ -687,7 +680,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                 A3WalletItemFieldCell *textCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID forIndexPath:indexPath];
                 
                 textCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                textCell.delegate = self;
                 [self configureFloatingTextField:textCell.valueTextField];
                 
                 textCell.valueTextField.placeholder = fieldItem.field.name;

@@ -1054,22 +1054,22 @@ NSString *kCalculationString;
 
 #pragma mark - UITableView Related
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [self.sectionTitles count];
 }
 
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.sections[section] count];
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return self.sectionTitles[section];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     //    if (self.isAddSubMode==YES && (section==2 || section==3)) {
     //        if (IS_IPAD)
@@ -1090,7 +1090,7 @@ NSString *kCalculationString;
 //    }
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     if (![self isAddSubMode]) {
         return 0;
     }
@@ -1098,7 +1098,7 @@ NSString *kCalculationString;
     return section == 3 ? (IS_RETINA ? 37.5 : 38) : 0.01;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.isAddSubMode==YES && indexPath.section==2 && indexPath.row==0) {
         //return self.footerView.bounds.size.height;
@@ -1157,7 +1157,7 @@ NSString *kCalculationString;
 //    return 0.0;
 //}
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
         case 1:  // From, To 날짜 입력 셀 섹션.
@@ -1170,7 +1170,7 @@ NSString *kCalculationString;
     }
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *const cellIdentifier = @"Cell";
     static NSString *const cellAddSubCell1 = @"AddSubCell1";
@@ -1435,7 +1435,7 @@ NSString *kCalculationString;
 }
 
 #define kAddSubRowIndex 1
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
         [self clearEverything];

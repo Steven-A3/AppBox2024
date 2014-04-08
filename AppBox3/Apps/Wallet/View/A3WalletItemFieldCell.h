@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3TbvCellTextInputDelegate.h"
 #import "JVFloatLabeledTextField.h"
 
 @interface A3WalletItemFieldCell : UITableViewCell
 
-@property (assign) id<A3TbvCellTextInputDelegate> delegate;
 @property (strong, nonatomic) IBOutlet JVFloatLabeledTextField *valueTextField;
 
 @end

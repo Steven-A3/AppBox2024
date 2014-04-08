@@ -24,35 +24,20 @@
 @property (nonatomic, weak) UIResponder *firstResponder;
 
 - (A3RootViewController_iPad *)A3RootViewController;
-
 - (A3NumberKeyboardViewController *)simpleNumberKeyboard;
-
 - (A3NumberKeyboardViewController *)simplePrevNextNumberKeyboard;
-
 - (A3NumberKeyboardViewController *)simplePrevNextClearNumberKeyboard;
-
 - (A3NumberKeyboardViewController *)normalNumberKeyboard;
-
 - (A3NumberKeyboardViewController *)passcodeKeyboard;
-
 - (A3DateKeyboardViewController *)newDateKeyboardViewController;
-
 - (NSString *)zeroCurrency;
-
 - (NSString *)currencyFormattedString:(NSString *)source;
-
 - (NSString *)percentFormattedString:(NSString *)source;
-
 - (void)registerContentSizeCategoryDidChangeNotification;
-
 - (void)contentSizeDidChange:(NSNotification *)notification;
-
 - (void)removeObserver;
-
 - (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value;
-
 - (UIColor *)tableViewSeparatorColor;
-
 - (UIColor *)selectedTextColor;
 
 @end
