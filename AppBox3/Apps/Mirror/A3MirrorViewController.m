@@ -239,10 +239,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void) setFilterViewRotation:(GLKView *)filterView withScreenBounds:(CGRect)screenBounds{
     
     [self setViewRotation:filterView];
-        if (bLosslessZoom == NO &&
-            effectiveScale <= 1) {
-            filterView.frame = screenBounds;
-        }
+    if (bLosslessZoom == NO &&
+        effectiveScale <= 1) {
+        filterView.frame = screenBounds;
+    }
 }
 
 - (CGAffineTransform) getTransform {
@@ -257,10 +257,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
                    curDeviceOrientation == UIDeviceOrientationFaceUp) {
             transform = CGAffineTransformMakeRotation(0);
-            
         } else {
             transform = CGAffineTransformMakeRotation(M_PI);
-            
         }
     } else {
         transform = CGAffineTransformMakeRotation(M_PI_2);
@@ -487,7 +485,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     CGRect sourceExtent = ciimg.extent;
     
     
-    
+
     if (bFlip == NO) {
         // horizontal flip
         if(IS_LANDSCAPE) {
@@ -499,7 +497,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         }
         
     }
-    
+
     
     if(_eaglContext != [EAGLContext currentContext]) {
         [EAGLContext setCurrentContext:_eaglContext];
@@ -1101,21 +1099,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                     }];
 }
 
-- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
-{
-	AVCaptureVideoOrientation result = AVCaptureVideoOrientationLandscapeRight;
-	if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
-		result = AVCaptureVideoOrientationLandscapeRight;
-	else if ( deviceOrientation == UIDeviceOrientationLandscapeRight ||
-             deviceOrientation == UIDeviceOrientationFaceUp)
-		result = AVCaptureVideoOrientationLandscapeLeft;
-    else if (deviceOrientation == UIDeviceOrientationPortrait)
-        result = AVCaptureVideoOrientationPortrait;
-    else if (deviceOrientation == UIDeviceOrientationPortraitUpsideDown)
-        result = AVCaptureVideoOrientationPortraitUpsideDown;
-	return result;
-}
-
 - (void) snapAnimation{
     @autoreleasepool {
         UIView *flashView = [[UIView alloc] initWithFrame:[_videoPreviewViewNoFilter frame]];
@@ -1162,8 +1145,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
                     
                     if (bFlip == NO) {
-                        CGAffineTransform f = CGAffineTransformMake(1, 0, 0, -1, 0, ciSaveImg.extent.size.height);
-                        ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
+                        if(IS_LANDSCAPE) {
+                            CGAffineTransform f = CGAffineTransformMake(-1, 0, 0, 1, ciSaveImg.extent.size.width,0);
+                            ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
+                        } else {
+                            CGAffineTransform f = CGAffineTransformMake(1, 0, 0, -1, 0, ciSaveImg.extent.size.height);
+                            ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
+                        }
                     }
                     CGAffineTransform t;
                     
@@ -1173,9 +1161,9 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                         t = CGAffineTransformMakeRotation(M_PI / 2);
                     } else if (orientation == UIDeviceOrientationLandscapeRight ||
                                orientation == UIDeviceOrientationFaceUp) {
-                        t = CGAffineTransformMakeRotation(M_PI);
-                    } else {
                         t = CGAffineTransformMakeRotation(0);
+                    } else {
+                        t = CGAffineTransformMakeRotation(M_PI);
                     }
                     
                     
