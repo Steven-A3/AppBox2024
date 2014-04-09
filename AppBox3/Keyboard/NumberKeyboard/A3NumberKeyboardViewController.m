@@ -94,6 +94,11 @@
 			if ([[components lastObject] length] >= maximumFractionDigits) {
 				return;
 			}
+		} else {
+			NSUInteger maximumIntegerDigits = IS_IPHONE ? 11 : 16;
+			if ([textField.text length] >= maximumIntegerDigits) {
+				return;
+			}
 		}
 
 		UITextRange *selectedRange = textField.selectedTextRange;

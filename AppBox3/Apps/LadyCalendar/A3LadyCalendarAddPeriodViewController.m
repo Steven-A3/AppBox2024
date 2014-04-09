@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSString *inputItemKey;
 @property (strong, nonatomic) A3NumberKeyboardViewController *keyboardVC;
 @property (strong, nonatomic) LadyCalendarPeriod *prevPeriod;
+@property (copy, nonatomic) NSString *textBeforeEditingTextField;
 
 - (void)cancelAction:(id)sender;
 - (void)changeDateAction:(id)sender;
@@ -146,8 +147,6 @@
         [_periodModel setObject:[A3DateHelper dateByAddingDays:ovulationDays fromDate:[_periodModel objectForKey:PeriodItem_StartDate]] forKey:PeriodItem_Ovulation];
         self.prevPeriod = nil;
     }
-    self.keyboardVC = [self simpleNumberKeyboard];
-    self.keyboardVC.delegate = self;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 }
 
@@ -226,7 +225,7 @@
                 textField.borderStyle = UITextBorderStyleNone;
                 textField.textAlignment = NSTextAlignmentRight;
                 textField.delegate = self;
-                textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                textField.clearButtonMode = UITextFieldViewModeNever;
                 textField.font = [UIFont systemFontOfSize:17.0];
                 textField.textColor = [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255];
                 cell.accessoryView = textField;
@@ -496,24 +495,37 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	self.keyboardVC = [self simplePrevNextClearNumberKeyboard];
+	self.keyboardVC.delegate = self;
 	self.keyboardVC.textInputTarget = textField;
 	self.keyboardVC.delegate = self;
 	textField.inputView = self.keyboardVC.view;
-	textField.text = @"";
+	[self.keyboardVC setKeyboardType:A3NumberKeyboardTypeInteger];
     [self closeDateInputCell];
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	self.textBeforeEditingTextField = textField.text;
+	textField.text = @"";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	if (![textField.text length]) {
+		textField.text = _textBeforeEditingTextField;
+	}
 }
 
 #pragma mark - A3KeyboardDelegate
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	UITextField *textField = (UITextField *) keyInputDelegate;
+	textField.text = @"";
+}
+
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate
 {
     [self resignAllAction];

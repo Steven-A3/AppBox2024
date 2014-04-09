@@ -184,63 +184,65 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     [self refreshRightBarItems];
 }
 
-- (void)enableControls:(BOOL) onoff
-{
-    UIBarButtonItem *settingItem = self.navigationItem.rightBarButtonItems[0];
-    UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
-    UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
-    UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[3];
-    
-    if (onoff) {
-        settingItem.enabled = YES;
-        historyItem.enabled = [self.controlsEnableInfo[@"historyItem"] boolValue];
-        shareItem.enabled = [self.controlsEnableInfo[@"shareItem"] boolValue];
-        composeItem.enabled = YES;
-        self.selectSegment.enabled = YES;
-        self.selectSegment.tintColor = nil;
-        self.navigationItem.leftBarButtonItem.enabled = YES;
-        
-        if (!_isComparisonMode) {
-            A3LoanCalcLoanGraphCell *cell = (A3LoanCalcLoanGraphCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            cell.infoButton.enabled = YES;
-            cell.monthlyButton.enabled = YES;
-            cell.totalButton.enabled = YES;
-            
-            if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
-                cell.monthlyButton.layer.borderColor = cell.monthlyButton.currentTitleColor.CGColor;
-            }
-            if (cell.totalButton.layer.borderColor != [UIColor clearColor].CGColor) {
-                cell.totalButton.layer.borderColor = cell.totalButton.currentTitleColor.CGColor;
-            }
-        }
-    }
-    else {
-        [self.controlsEnableInfo setObject:@(historyItem.enabled) forKey:@"historyItem"];
-        [self.controlsEnableInfo setObject:@(shareItem.enabled) forKey:@"shareItem"];
-        historyItem.enabled = NO;
-        shareItem.enabled = NO;
-        settingItem.enabled = NO;
-        composeItem.enabled = NO;
-        self.selectSegment.enabled = NO;
-        self.selectSegment.tintColor = [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0];
-        self.navigationItem.leftBarButtonItem.enabled = NO;
-        
-        if (!_isComparisonMode) {
-            A3LoanCalcLoanGraphCell *cell = (A3LoanCalcLoanGraphCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            cell.infoButton.enabled = NO;
-            cell.monthlyButton.enabled = NO;
-            cell.totalButton.enabled = NO;
-            
-            if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
-                cell.monthlyButton.layer.borderColor = [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0].CGColor;
-            }
-            if (cell.totalButton.layer.borderColor != [UIColor clearColor].CGColor) {
-                cell.totalButton.layer.borderColor = [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0].CGColor;
-            }
-        }
-    }
-    
-    
+- (void)enableControls:(BOOL) onoff {
+	if (!IS_IPAD) {
+		return;
+	}
+	UIBarButtonItem *settingItem = self.navigationItem.rightBarButtonItems[0];
+	UIBarButtonItem *historyItem = self.navigationItem.rightBarButtonItems[1];
+	UIBarButtonItem *composeItem = self.navigationItem.rightBarButtonItems[2];
+	UIBarButtonItem *shareItem = self.navigationItem.rightBarButtonItems[3];
+
+	if (onoff) {
+		settingItem.enabled = YES;
+		historyItem.enabled = [self.controlsEnableInfo[@"historyItem"] boolValue];
+		shareItem.enabled = [self.controlsEnableInfo[@"shareItem"] boolValue];
+		composeItem.enabled = YES;
+		self.selectSegment.enabled = YES;
+		self.selectSegment.tintColor = nil;
+		self.navigationItem.leftBarButtonItem.enabled = YES;
+
+		if (!_isComparisonMode) {
+			A3LoanCalcLoanGraphCell *cell = (A3LoanCalcLoanGraphCell *) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+			cell.infoButton.enabled = YES;
+			cell.monthlyButton.enabled = YES;
+			cell.totalButton.enabled = YES;
+
+			if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
+				cell.monthlyButton.layer.borderColor = cell.monthlyButton.currentTitleColor.CGColor;
+			}
+			if (cell.totalButton.layer.borderColor != [UIColor clearColor].CGColor) {
+				cell.totalButton.layer.borderColor = cell.totalButton.currentTitleColor.CGColor;
+			}
+		}
+	}
+	else {
+		[self.controlsEnableInfo setObject:@(historyItem.enabled) forKey:@"historyItem"];
+		[self.controlsEnableInfo setObject:@(shareItem.enabled) forKey:@"shareItem"];
+		historyItem.enabled = NO;
+		shareItem.enabled = NO;
+		settingItem.enabled = NO;
+		composeItem.enabled = NO;
+		self.selectSegment.enabled = NO;
+		self.selectSegment.tintColor = [UIColor colorWithRed:196.0 / 255.0 green:196.0 / 255.0 blue:196.0 / 255.0 alpha:1.0];
+		self.navigationItem.leftBarButtonItem.enabled = NO;
+
+		if (!_isComparisonMode) {
+			A3LoanCalcLoanGraphCell *cell = (A3LoanCalcLoanGraphCell *) [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+			cell.infoButton.enabled = NO;
+			cell.monthlyButton.enabled = NO;
+			cell.totalButton.enabled = NO;
+
+			if (cell.monthlyButton.layer.borderColor != [UIColor clearColor].CGColor) {
+				cell.monthlyButton.layer.borderColor = [UIColor colorWithRed:196.0 / 255.0 green:196.0 / 255.0 blue:196.0 / 255.0 alpha:1.0].CGColor;
+			}
+			if (cell.totalButton.layer.borderColor != [UIColor clearColor].CGColor) {
+				cell.totalButton.layer.borderColor = [UIColor colorWithRed:196.0 / 255.0 green:196.0 / 255.0 blue:196.0 / 255.0 alpha:1.0].CGColor;
+			}
+		}
+	}
+
+
 }
 
 - (void)appWillResignActive:(NSNotification*)noti

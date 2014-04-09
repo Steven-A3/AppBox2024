@@ -174,6 +174,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	[self setFirstResponder:textField];
+	textField.returnKeyType = UIReturnKeyDefault;
 }
 
 #pragma mark - Table view delegate

@@ -297,6 +297,7 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	[self setFirstResponder:textField];
+	textField.returnKeyType = UIReturnKeyDefault;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string

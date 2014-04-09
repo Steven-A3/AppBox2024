@@ -697,7 +697,8 @@ static NSString *CellIdentifier = @"Cell";
             [weakSelf hideDatePickerViewCell];
             
             if (element.identifier == AddBudgetCellID_Title) {
-                textField.returnKeyType = UIReturnKeyDone;
+				textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+                textField.returnKeyType = UIReturnKeyDefault;
             }
         };
     }
