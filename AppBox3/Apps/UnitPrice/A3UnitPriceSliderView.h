@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, UnitPriceSliderViewLayout) {
 
 @property (nonatomic, readwrite) float maxValue;
 @property (nonatomic, readwrite) float priceValue;
-@property (nonatomic, readwrite) float unitPriceValue;
+@property (nonatomic, readwrite) double unitPriceValue;
 @property (nonatomic, strong) UnitItem *unit;
 @property (readwrite) BOOL progressBarHidden;
 

@@ -13,15 +13,14 @@
 
 @interface UIViewController (A3Addition)
 
+- (void)cleanUp;
 - (CGRect)screenBoundsAdjustedWithOrientation;
 - (void)popToRootAndPushViewController:(UIViewController *)viewController;
 - (void)popToRootAndPushViewController:(UIViewController *)viewController animate:(BOOL)animate;
 - (void)leftBarButtonAppsButton;
 
 - (void)appsButtonAction:(UIBarButtonItem *)barButtonItem;
-
 - (void)leftBarButtonCancelButton;
-
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem;
 
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
@@ -48,12 +47,9 @@
 - (UIPopoverController *)presentActivityViewControllerWithActivityItems:(id)items fromSubView:(UIView *)subView;
 
 - (void)alertInternetConnectionIsNotAvailable;
-
 + (UIViewController <A3PasscodeViewControllerProtocol> *)passcodeViewControllerWithDelegate:(id <A3PasscodeViewControllerDelegate>)delegate;
-
 - (BOOL)checkPasscode;
-
 - (void)willDismissFromRightSide;
-
 - (void)alertCloudNotEnabled;
+
 @end

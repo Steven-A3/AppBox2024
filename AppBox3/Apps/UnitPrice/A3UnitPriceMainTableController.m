@@ -23,6 +23,9 @@
 #import "UIViewController+A3Addition.h"
 #import "UILabel+BaseAlignment.h"
 
+NSString *const A3UnitPriceCurrencyCode = @"A3UnitPriceCurrencyCode";
+NSString *const A3NotificationUnitPriceCurrencyCodeChanged = @"A3NotificationUnitPriceCurrencyCodeChanged";
+
 @interface A3UnitPriceMainTableController () <UnitPriceInputDelegate, A3UnitPriceModifyDelegate, UnitPriceHistoryViewControllerDelegate>
 {
     float price1UnitPrice;
@@ -93,11 +96,22 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     [self registerContentSizeCategoryDidChangeNotification];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSubViewDismissed:) name:@"A3_Pad_RightSubViewDismissed" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currencyCodeChanged:) name:A3NotificationUnitPriceCurrencyCodeChanged object:nil];
+}
+
+- (void)cleanUp {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
     [self.tableView reloadData];
+}
+
+- (void)currencyCodeChanged:(NSNotification *)notification {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
+	[self.currencyFormatter setCurrencyCode:currencyCode];
+	[self.tableView reloadData];
 }
 
 - (void)rightSubViewDismissed:(NSNotification *)noti
@@ -427,33 +441,26 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     cell.backgroundColor = [UIColor colorWithRed:247/255.0 green:247/255.0 blue:248/255.0 alpha:1.0];
  
-    float unitPrice1 = 0;
+    double unitPrice1 = 0;
     NSString *unitPriceTxt1 = @"";
-    NSString *unitShortName1 = @"";
-    NSString *unitName1 = @"";
-    NSString *priceTxt1 = @"";
-    NSString *sizeTxt1 = @"";
-    float maxPrice = MAX(self.price1.price.doubleValue, self.price2.price.doubleValue);
+    NSString *unitShortName1;
+    NSString *priceTxt1;
+    double maxPrice = MAX(self.price1.price.doubleValue, self.price2.price.doubleValue);
     
     priceTxt1 = [self.currencyFormatter stringFromNumber:@(self.price1.price.doubleValue)];
     unitShortName1 = self.price1.unit ? self.price1.unit.unitShortName : @"None";
-    unitName1 = self.price1.unit ? self.price1.unit.unitName : @"None";
-    sizeTxt1 = self.price1.size ? self.price1.size : @"-";
-    
-    float priceValue1 = self.price1.price.doubleValue;
-    NSUInteger sizeValue1 = (self.price1.size.integerValue <= 0) ? 1:self.price1.size.integerValue;
-    NSUInteger quantityValue1 = self.price1.quantity.integerValue;
+
+    double priceValue1 = self.price1.price.doubleValue;
+    NSInteger sizeValue1 = (self.price1.size.integerValue <= 0) ? 1 : self.price1.size.integerValue;
+    NSInteger quantityValue1 = self.price1.quantity.integerValue;
     
     // 할인값
-    NSString *discountText1 = [self.currencyFormatter stringFromNumber:@(0)];
-    float discountValue1 = 0;
+    double discountValue1 = 0;
     if (self.price1.discountPrice.doubleValue > 0) {
-        discountText1 = [self.currencyFormatter stringFromNumber:@(self.price1.discountPrice.doubleValue)];
         discountValue1 = self.price1.discountPrice.doubleValue;
         discountValue1 = MIN(discountValue1, priceValue1);
     }
     else if (self.price1.discountPercent.doubleValue > 0) {
-        discountText1 = [self.percentFormatter stringFromNumber:@(self.price1.discountPercent.doubleValue)];
         discountValue1 = priceValue1 * self.price1.discountPercent.doubleValue;
     }
     
@@ -510,21 +517,15 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     float unitPrice2 = 0;
     NSString *unitPriceTxt2 = @"";
-    NSString *price1UnitShortName2 = @"";
-    NSString *unitShortName2 = @"";
-    NSString *unitName2 = @"";
-    NSString *priceTxt2 = @"";
-    NSString *sizeTxt2 = @"";
-    
+    NSString *unitShortName2;
+    NSString *priceTxt2;
+
     priceTxt2 = [self.currencyFormatter stringFromNumber:@(self.price2.price.doubleValue)];
-    price1UnitShortName2 = _price1.unit ? _price1.unit.unitShortName : @"None";
     unitShortName2 = self.price2.unit ? self.price2.unit.unitShortName : @"None";
-    unitName2 = self.price2.unit ? self.price2.unit.unitName : @"None";
-    sizeTxt2 = self.price2.size ? self.price2.size : @"-";
-    
+
     float priceValue2 = self.price2.price.floatValue;
-    NSUInteger sizeValue2 = (self.price2.size.integerValue <= 0) ? 1:self.price2.size.integerValue;
-    NSUInteger quantityValue2 = self.price2.quantity.integerValue;
+    NSInteger sizeValue2 = (self.price2.size.integerValue <= 0) ? 1:self.price2.size.integerValue;
+    NSInteger quantityValue2 = self.price2.quantity.integerValue;
     
     // 할인값
     NSString *discountText2 = [self.currencyFormatter stringFromNumber:@(0)];
@@ -678,27 +679,30 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.markLabel.text = @"A";
     [cell.inputView loadFontSettings];
     
-    float unitPrice = 0;
+    double unitPrice = 0;
     NSString *unitPriceTxt = @"";
     NSString *unitShortName = @"";
     NSString *unitName = @"";
     NSString *priceTxt = @"";
     NSString *sizeTxt = @"";
-    
-    UnitPriceInfo *priceInfo = self.price1;
+
+	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+
+	UnitPriceInfo *priceInfo = self.price1;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
     unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : @"None";
     unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
-    sizeTxt = priceInfo.size ? priceInfo.size : @"-";
+    sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
     
-    float priceValue = priceInfo.price.doubleValue;
-    NSUInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
-    NSUInteger quantityValue = priceInfo.quantity.integerValue;
+    double priceValue = priceInfo.price.doubleValue;
+    NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
+    NSInteger quantityValue = priceInfo.quantity.integerValue;
     
     // 할인값
     NSString *discountText = [self.currencyFormatter stringFromNumber:@(0)];
-    float discountValue = 0;
+    double discountValue = 0;
     if (priceInfo.discountPrice.doubleValue > 0) {
         discountText = [self.currencyFormatter stringFromNumber:@(priceInfo.discountPrice.doubleValue)];
         discountValue = priceInfo.discountPrice.doubleValue;
@@ -738,12 +742,12 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             }
         }
     }
-    
+
     // input1
     cell.inputView.priceLabel.text = priceTxt;
     cell.inputView.unitLabel.text = IS_IPHONE ? unitShortName : unitName;
     cell.inputView.sizeLabel.text = sizeTxt;
-    cell.inputView.quantityLabel.text = priceInfo.quantity ? priceInfo.quantity:@"0";
+    cell.inputView.quantityLabel.text = priceInfo.quantity ? [decimalFormatter stringFromNumber:priceInfo.quantity]:[decimalFormatter stringFromNumber:@0];
     cell.inputView.discountLabel.text = discountText;
     [cell.inputView.unitPriceBtn setTitle:unitPriceTxt forState:UIControlStateNormal];
 }
@@ -755,29 +759,32 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.markLabel.text = @"B";
     [cell.inputView loadFontSettings];
     
-    float unitPrice = 0;
+    double unitPrice = 0;
     NSString *unitPriceTxt = @"";
     NSString *price1UnitShortName = @"";
     NSString *unitShortName = @"";
     NSString *unitName = @"";
     NSString *priceTxt = @"";
     NSString *sizeTxt = @"";
-    
+
+	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+
     UnitPriceInfo *priceInfo = self.price2;
     
     priceTxt = [self.currencyFormatter stringFromNumber:@(priceInfo.price.doubleValue)];
     price1UnitShortName = _price1.unit ? _price1.unit.unitShortName : @"None";
     unitShortName = priceInfo.unit ? priceInfo.unit.unitShortName : @"None";
     unitName = priceInfo.unit ? priceInfo.unit.unitName : @"None";
-    sizeTxt = priceInfo.size ? priceInfo.size : @"-";
+    sizeTxt = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"-";
     
-    float priceValue = priceInfo.price.floatValue;
-    NSUInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
-    NSUInteger quantityValue = priceInfo.quantity.integerValue;
+    double priceValue = priceInfo.price.floatValue;
+    NSInteger sizeValue = (priceInfo.size.integerValue <= 0) ? 1:priceInfo.size.integerValue;
+    NSInteger quantityValue = priceInfo.quantity.integerValue;
     
     // 할인값
     NSString *discountText = [self.currencyFormatter stringFromNumber:@(0)];
-    float discountValue = 0;
+    double discountValue = 0;
     if (priceInfo.discountPrice.floatValue > 0) {
         discountText = [self.currencyFormatter stringFromNumber:@(priceInfo.discountPrice.doubleValue)];
         discountValue = priceInfo.discountPrice.floatValue;
@@ -790,7 +797,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     
     if ((priceValue>0) && (sizeValue>0) && (quantityValue>0)) {
         
-        float price1CnvRate, price2CnvRate;
+        double price1CnvRate, price2CnvRate;
         
         if (_price1.unit && _price2.unit) {
             price1CnvRate = _price1.unit.conversionRate.floatValue;
@@ -809,7 +816,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
             price2CnvRate = 1;
         }
         
-        float rate = price2CnvRate / price1CnvRate;
+        double rate = price2CnvRate / price1CnvRate;
         
         unitPrice = (priceValue - discountValue) / (sizeValue * quantityValue * rate);
         
@@ -860,7 +867,7 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
     cell.inputView.priceLabel.text = priceTxt;
     cell.inputView.unitLabel.text = IS_IPHONE ? unitShortName : unitName;
     cell.inputView.sizeLabel.text = sizeTxt;
-    cell.inputView.quantityLabel.text = priceInfo.quantity ? priceInfo.quantity:@"0";
+    cell.inputView.quantityLabel.text = priceInfo.quantity ? [decimalFormatter stringFromNumber:priceInfo.quantity] : [decimalFormatter stringFromNumber:@0];
     cell.inputView.discountLabel.text = discountText;
     [cell.inputView.unitPriceBtn setTitle:unitPriceTxt forState:UIControlStateNormal];
 }
@@ -881,10 +888,9 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
 	@autoreleasepool {
-		cell = nil;
-        
+	    UITableViewCell *cell=nil;
+
         if (indexPath.section == 0) {
             A3UnitPriceCompareSliderCell *compareCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceCompareSliderCellID forIndexPath:indexPath];
             [self configureCompareCell:compareCell];
@@ -906,11 +912,11 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
                 cell = infoCell;
             }
         }
-    }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    return cell;
+
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+		return cell;
+	}
 }
 
 - (UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -1007,5 +1013,13 @@ NSString *const A3UnitPriceInfoCellID = @"A3UnitPriceInfoCell";
 }
 
  */
+
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
+}
 
 @end

@@ -292,24 +292,24 @@
         <relationship name="unitPrices" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnitPriceHistoryItem" inverseName="unitPriceHistory" inverseEntity="UnitPriceHistoryItem" syncable="YES"/>
     </entity>
     <entity name="UnitPriceHistoryItem" representedClassName="UnitPriceHistoryItem" syncable="YES">
-        <attribute name="discountPercent" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="discountPrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="discountPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="orderInComparison" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="size" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitPriceHistories" inverseEntity="UnitItem" syncable="YES"/>
         <relationship name="unitPriceHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitPriceHistory" inverseName="unitPrices" inverseEntity="UnitPriceHistory" syncable="YES"/>
     </entity>
     <entity name="UnitPriceInfo" representedClassName="UnitPriceInfo" syncable="YES">
-        <attribute name="discountPercent" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="discountPrice" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="discountPercent" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="discountPrice" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="priceName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="quantity" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="size" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="quantity" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="size" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitPriceInfos" inverseEntity="UnitItem" syncable="YES"/>
     </entity>
     <entity name="UnitType" representedClassName="UnitType" syncable="YES">

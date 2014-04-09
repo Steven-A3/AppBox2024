@@ -261,7 +261,7 @@
                                 <action selector="doneAction" destination="-1" eventType="touchUpInside" id="979"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" id="899" customClass="A3KeyboardMoveMarkView">
+                        <view hidden="YES" contentMode="scaleToFill" id="899" customClass="A3KeyboardMoveMarkView">
                             <rect key="frame" x="999" y="282" width="10" height="24"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

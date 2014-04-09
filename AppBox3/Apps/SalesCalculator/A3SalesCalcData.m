@@ -33,7 +33,7 @@
         _price = [aDecoder decodeObjectForKey:@"price"];
         _priceType = [aDecoder decodeIntegerForKey:@"priceType"];
         _discount = [aDecoder decodeObjectForKey:@"discount"];
-        _discountType = [aDecoder decodeIntegerForKey:@"discountType"];
+        _discountType = [aDecoder decodeIntegerForKey:@"_discountType"];
         _additionalOff = [aDecoder decodeObjectForKey:@"additionalOff"];
         _additionalOffType = [aDecoder decodeIntegerForKey:@"additionalOffType"];
         _tax = [aDecoder decodeObjectForKey:@"tax"];
@@ -51,7 +51,7 @@
     [aCoder encodeObject:_price forKey:@"price"];
     [aCoder encodeInteger:_priceType forKey:@"priceType"];
     [aCoder encodeObject:_discount forKey:@"discount"];
-    [aCoder encodeInteger:_discountType forKey:@"discountType"];
+    [aCoder encodeInteger:_discountType forKey:@"_discountType"];
     [aCoder encodeObject:_additionalOff forKey:@"additionalOff"];
     [aCoder encodeInteger:_additionalOffType forKey:@"additionalOffType"];
     [aCoder encodeObject:_tax forKey:@"tax"];

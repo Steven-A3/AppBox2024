@@ -23,26 +23,19 @@
 	CGFloat row_1, row_2, row_3, row_4;
 	CGFloat width_small, height_small, width_big, height_big;
 	CGFloat width_extra;
-	if (!isLandscape) {
-		CGFloat space1 = 16.0, space2 = 30.0;
+	if (IS_PORTRAIT) {
+		CGFloat space1 = 16.0;
 		width_big = 124.0, height_big = 118.0;
-		width_small = 108.0, height_small = 57.0;
-		col_1 = (768.0 - (width_small * 5 + space1 * 2 + space2 * 2)) / 2.0;
-		col_2 = col_1 + width_small + space2;
-		col_3 = col_2 + width_small + space1;
-		col_4 = col_3 + width_small + space1;
-		col_5 = col_4 + width_small + space2;
-		row_1 = 9.0;
-		row_2 = row_1 + height_small + 6.0;
-		row_3 = row_2 + height_small + 6.0;
-		row_4 = row_3 + height_small + 6.0;
+		width_small = 89.0, height_small = 57.0;
+		col_1 = 74.0; col_2 = 237.0; col_3 = 338.0; col_4 = 440.0, col_5 = 570.0;
+		row_1 = 6.0; row_2 = 72.0; row_3 = 137.0; row_4 = 201.0;
 		width_extra = width_small * 2 + space1;
 	} else {
-		width_big = 145.0, height_big = 164.0;
-		width_small = 145.0, height_small = 76.0;
-		col_1 = 114.0; col_2 = 275.0; col_3 = 440.0; col_4 = 605.0, col_5 = 790.0;
-		row_1 = 10.0; row_2 = 98.0; row_3 = 182.0; row_4 = 268.0;
-		width_extra = 308.0;
+		width_big = 172.0, height_big = 164.0;
+		width_small = 108.0, height_small = 77.0;
+		col_1 = 114.0; col_2 = 332.0; col_3 = 455.0; col_4 = 578.0, col_5 = 735.0;
+		row_1 = 8.0; row_2 = 94.0; row_3 = 179.0; row_4 = 265.0;
+		width_extra = col_3 + width_small - col_2;
 	}
 
 	[self.num7Button setFrame:CGRectMake(col_2, row_1, width_small, height_small)];
@@ -59,13 +52,13 @@
 
 	[self.dotButton setFrame:CGRectMake(col_4, row_4, width_small, height_small)];
 
-	[self.deleteButton setFrame:CGRectMake(col_5, row_1, width_small, height_small)];
+	[self.deleteButton setFrame:CGRectMake(col_5, row_1, width_big, height_small)];
 	// SimpleVC_iPad 에는 clearButton 과 calculationButton 이 있고,
-	[self.calculatorButton setFrame:CGRectMake(col_5, row_3, width_small, height_small)];
+	[self.calculatorButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
 	// SimplePrevNextVC_iPad 에는 prevButton 과 nextButton 이 있다.
-	[self.prevButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
-	[self.nextButton setFrame:CGRectMake(col_5, row_3, width_small, height_small)];
-	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_small, height_small)];
+	[self.prevButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
+	[self.nextButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
+	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
 
 	UIFont *numberFont = [UIFont systemFontOfSize:isLandscape ? 27 : 22];
 	[self.num7Button.titleLabel setFont:numberFont];

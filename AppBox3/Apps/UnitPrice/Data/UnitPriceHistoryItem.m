@@ -2,7 +2,7 @@
 //  UnitPriceHistoryItem.m
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by A3 on 4/8/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -16,10 +16,10 @@
 @dynamic discountPercent;
 @dynamic discountPrice;
 @dynamic note;
+@dynamic orderInComparison;
 @dynamic price;
 @dynamic quantity;
 @dynamic size;
-@dynamic orderInComparison;
 @dynamic unit;
 @dynamic unitPriceHistory;
 

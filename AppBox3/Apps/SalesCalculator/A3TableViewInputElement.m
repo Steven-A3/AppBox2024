@@ -229,20 +229,12 @@
 }
 
 - (void)textFieldEditingChanged:(UITextField *)textField {
-	FNLOG(@"%@", textField.text);
-	@autoreleasepool {
-		NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
-		if ([[decimalFormatter numberFromString:textField.text] doubleValue] == 0.0) {
-			textField.text = @"";
-		}
+	if (self.coreDataObject && self.coreDataKey) {
+		[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
+	}
 
-		if (self.coreDataObject && self.coreDataKey) {
-			[self.coreDataKey setValue:textField.text forKey:self.coreDataKey];
-		}
-
-		if (_onEditingValueChanged) {
-			_onEditingValueChanged(self, textField);
-		}
+	if (_onEditingValueChanged) {
+		_onEditingValueChanged(self, textField);
 	}
 }
 

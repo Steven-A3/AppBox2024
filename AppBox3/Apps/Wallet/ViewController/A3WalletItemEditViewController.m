@@ -29,11 +29,12 @@
 #import "UIViewController+A3Addition.h"
 #import "NSManagedObject+Identify.h"
 #import "UIImage+Extension2.h"
+#import "UITableView+utility.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
 
-@interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, A3TbvCellTextInputDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate>
+@interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *fieldItems;
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
@@ -1242,42 +1243,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 }
 
-#pragma mark - A3TbvCellTextInputDelegate
-- (void)didTextFieldBeActive:(UITextField *)textField inTableViewCell:(UITableViewCell *)cell
-{
-    currentIndexPath = [self.tableView indexPathForCell:cell];
-    FNLOG(@"current text field indexpath : %@", [currentIndexPath description]);
-    
-    if ([self.fieldItems objectAtIndex:currentIndexPath.row] == self.noteItem) {
-        // note
-        textField.keyboardType = UIKeyboardTypeDefault;
-    }
-    else if ([[self.fieldItems objectAtIndex:currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
-        
-        WalletFieldItem *fieldItem = [_fieldItems objectAtIndex:currentIndexPath.row];
-        if ([fieldItem.field.type isEqualToString:WalletFieldTypeText]) {
-            textField.keyboardType = UIKeyboardTypeDefault;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        }
-        else if ([fieldItem.field.type isEqualToString:WalletFieldTypeNumber]) {
-            textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        }
-        else if ([fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
-            textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        }
-        else if ([fieldItem.field.type isEqualToString:WalletFieldTypeURL]) {
-            textField.keyboardType = UIKeyboardTypeURL;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        }
-        else if ([fieldItem.field.type isEqualToString:WalletFieldTypeEmail]) {
-            textField.keyboardType = UIKeyboardTypeEmailAddress;
-            textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        }
-    }
-}
-
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -1406,7 +1371,38 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     [self dismissDatePicker];
-    
+
+	currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+	FNLOG(@"current text field indexpath : %@", [currentIndexPath description]);
+
+	if ([self.fieldItems objectAtIndex:currentIndexPath.row] == self.noteItem) {
+		// note
+		textField.keyboardType = UIKeyboardTypeDefault;
+	}
+	else if ([[self.fieldItems objectAtIndex:currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+
+		WalletFieldItem *fieldItem = [_fieldItems objectAtIndex:currentIndexPath.row];
+		if ([fieldItem.field.type isEqualToString:WalletFieldTypeText]) {
+			textField.keyboardType = UIKeyboardTypeDefault;
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		}
+		else if ([fieldItem.field.type isEqualToString:WalletFieldTypeNumber]) {
+			textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		}
+		else if ([fieldItem.field.type isEqualToString:WalletFieldTypePhone]) {
+			textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		}
+		else if ([fieldItem.field.type isEqualToString:WalletFieldTypeURL]) {
+			textField.keyboardType = UIKeyboardTypeURL;
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		}
+		else if ([fieldItem.field.type isEqualToString:WalletFieldTypeEmail]) {
+			textField.keyboardType = UIKeyboardTypeEmailAddress;
+			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		}
+	}
     return YES;
 }
 
@@ -1685,7 +1681,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     A3WalletItemFieldCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemDateCellID4 forIndexPath:indexPath];
                     
                     inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    inputCell.delegate = self;
                     [self configureFloatingTextField:inputCell.valueTextField];
                     
                     inputCell.valueTextField.enabled = NO;
@@ -1787,7 +1782,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     A3WalletItemFieldCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID4 forIndexPath:indexPath];
                     
                     inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    inputCell.delegate = self;
                     [self configureFloatingTextField:inputCell.valueTextField];
                     
                     inputCell.valueTextField.tag = 0;
