@@ -18,15 +18,15 @@
 }
 
 @property (strong, nonatomic) DaysCounterCalendar *calendarItem;
-@property (strong, nonatomic) IBOutlet UIView *rightButtonsView;
-@property (strong, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
-@property (strong, nonatomic) IBOutlet UIView *headerView;
-@property (strong, nonatomic) IBOutlet UIButton *searchButton;
-@property (strong, nonatomic) IBOutlet UIButton *editButton;
-@property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
-@property (strong, nonatomic) IBOutlet UIButton *addEventButton;
-@property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIView *headerSeperatorView;
+@property (weak, nonatomic) IBOutlet UIView *rightButtonsView;
+@property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
+@property (weak, nonatomic) IBOutlet UIView *headerView;
+@property (weak, nonatomic) IBOutlet UIButton *searchButton;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
+@property (weak, nonatomic) IBOutlet UIButton *addEventButton;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIView *headerSeperatorView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentControlWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerViewTopConst;

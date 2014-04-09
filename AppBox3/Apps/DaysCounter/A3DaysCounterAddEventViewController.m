@@ -176,7 +176,7 @@
 
 - (BOOL)hasAdvancedData
 {
-    if ([_eventModel objectForKey:EventItem_RepeatType] != 0) {
+    if ([[_eventModel objectForKey:EventItem_RepeatType] integerValue] != 0) {
         return YES;
     }
     
@@ -186,15 +186,15 @@
         return YES;
     }
     
-    DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
-    if (calendar && calendar.calendarName) {
-        return YES;
-    }
+//    DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
+//    if (calendar && calendar.calendarName) {
+//        return YES;
+//    }
     
-    NSString *durationString = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
-    if ([durationString length] > 0) {
-        return YES;
-    }
+//    NSString *durationString = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
+//    if ([durationString length] > 0) {
+//        return YES;
+//    }
     
     NSMutableDictionary *location = [_eventModel objectForKey:EventItem_Location];
     if ( location ) {
@@ -876,7 +876,7 @@
             }
                 break;
             case EventCellType_Advanced:
-                retHeight = 56.0;
+                retHeight = IS_RETINA ? 55.5 : 56.0;
                 break;
             default:
                 retHeight = 44.0;
@@ -1474,15 +1474,18 @@
             _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             [_locationManager startUpdatingLocation];
         }
-        else if ( buttonIndex == (actionSheet.firstOtherButtonIndex+1)) {
+        else if ( buttonIndex == (actionSheet.firstOtherButtonIndex + 1)) {
             if (![[A3AppDelegate instance].reachability isReachable]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                    message:@"Internet Connection is not avaiable."
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
                 [alertView show];
                 return;
             }
             
-            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController"
-                                                                                                                          bundle:nil];
+            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             [self.navigationController pushViewController:nextVC animated:YES];
         }

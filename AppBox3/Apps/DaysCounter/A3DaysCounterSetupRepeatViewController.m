@@ -37,17 +37,6 @@
     UITextField *textField = (UITextField*)[cell viewWithTag:12];
     textField.delegate = self;
     [textField becomeFirstResponder];
-
-//    if ( IS_IPHONE ) {
-//        self.numberKeyboardVC = [[A3NumberKeyboardViewController_iPhone alloc] initWithNibName:@"A3NumberKeyboardViewController_iPhone" bundle:nil];
-//        self.numberKeyboardVC.delegate = self;
-//        [self.tableView setTableFooterView:self.numberKeyboardVC.view];
-//        [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentSize.height - self.numberKeyboardVC.view.frame.size.height, self.tableView.frame.size.width, self.numberKeyboardVC.view.frame.size.height) animated:YES];
-//    }
-//    else {
-//        self.numberKeyboardVC = [[A3NumberKeyboardViewController_iPad alloc] initWithNibName:@"A3NumberKeyboardViewController_iPad" bundle:nil];
-//        self.numberKeyboardVC.delegate = self;
-//    }
 }
 
 - (void)hideNumberkeyboard
@@ -58,11 +47,6 @@
     
     UITextField *textField = (UITextField*)[cell viewWithTag:12];
     [textField resignFirstResponder];
-//    if ( IS_IPHONE ) {
-//        [self.tableView setTableFooterView:nil];
-//        self.numberKeyboardVC.delegate = nil;
-//        self.numberKeyboardVC = nil;
-//    }
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -125,7 +109,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return IS_RETINA ? 35.5 : 35;
+    return 35;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -218,7 +202,6 @@
 {
     UITextField *textField = noti.object;
     [_eventModel setObject:[NSNumber numberWithInteger:[textField.text integerValue]] forKey:EventItem_RepeatType];
-//    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -237,16 +220,15 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+    
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
+    [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];
+    [self.tableView reloadData];
+    
+    if (_dismissCompletionBlock) {
+        _dismissCompletionBlock();
+    }
 }
-
-//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-//{
-//    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
-//    NSInteger day = [text integerValue];
-//    [_eventModel setObject:[NSNumber numberWithInteger:day] forKey:EventItem_RepeatType];
-//    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-//    return NO;
-//}
 
 #pragma mark - A3KeyboardDelegate
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
@@ -254,35 +236,13 @@
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
     UITextField *textField = (UITextField*)[cell viewWithTag:12];
     [textField resignFirstResponder];
-
-//    [self doneButtonAction:nil];
-    
-//    NSInteger value = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
-//    NSInteger prevIndex = 0;
-//    if ( value < 0 ) {
-//        prevIndex = ABS(value);
-//    }
-//    else {
-//        if ( value > 0 ) {
-//            prevIndex = [_itemArray count] -1;
-//        }
-//        else {
-//            prevIndex = value;
-//        }
-//    }
-//
-//    UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prevIndex inSection:0]];
-//    prevCell.accessoryType = UITableViewCellAccessoryNone;
-    
-    [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];
-    //[cell setNeedsLayout];
-    [self.tableView reloadData];
 }
 
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
     [_eventModel setObject:self.originalValue forKey:EventItem_RepeatType];
+    
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];

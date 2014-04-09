@@ -67,10 +67,10 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
     if (IS_RETINA) {
         CGRect rect = self.tableView.tableHeaderView.frame;
-        rect.size.height += 0.5;
+        //rect.size.height += 0.5;
         self.tableView.tableHeaderView.frame = rect;
         self.headerViewSeparatorHeightConst.constant = 0.5;
-        self.headerViewTopConst.constant += 0.5;
+        //self.headerViewTopConst.constant += 0.5;
     }
 
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
@@ -423,8 +423,6 @@
     }
 }
 
-
-
 - (DaysCounterEvent *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     // Configure the cell...
@@ -707,11 +705,9 @@
     _sortType = segCtrl.selectedSegmentIndex;
     
     if ( _sortType == EventSortType_Date ) {
-        _headerSeperatorView.hidden = NO;
         _isDateAscending = !_isDateAscending;
     }
     else {
-        _headerSeperatorView.hidden = YES;
         _isNameAscending = !_isNameAscending;
     }
     

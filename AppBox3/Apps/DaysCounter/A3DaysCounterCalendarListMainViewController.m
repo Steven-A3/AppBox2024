@@ -141,7 +141,7 @@
     NSDate *latestDate = [[A3DaysCounterModelManager sharedManager] dateOfLatestEvent];
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
     _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
-    _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-/-/-");
+    _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-");
     _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
 }
 
@@ -352,7 +352,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //DaysCounterCalendar *item = (tableView == self.tableView && (indexPath.row >= [_itemArray count])) ? nil : [(tableView == self.tableView ? _itemArray : _searchResultArray) objectAtIndex:indexPath.row];
     DaysCounterCalendar *item;
     if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
         item = nil;
@@ -440,18 +439,18 @@
                 else {
                     eventName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [event eventName]]
                                                                 attributes:@{
-                                                                             NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote],
+                                                                             NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline],
                                                                              NSForegroundColorAttributeName : [UIColor blackColor]
                                                                              }];
                     period = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [self periodStringForEvent:event]]
                                                              attributes:@{
-                                                                          NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
+                                                                          NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote],
                                                                           NSForegroundColorAttributeName : [UIColor colorWithRed:77/255.0 green:77/255.0 blue:77/255.0 alpha:1.0]
                                                                           }];
                     date = [[NSAttributedString alloc] initWithString:[self dateStringForEvent:event]
                                                            attributes:@{
                                                                         NSFontAttributeName : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1],
-                                                                        NSForegroundColorAttributeName : [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0]
+                                                                        NSForegroundColorAttributeName : [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]
                                                                         }];
                 }
                 

@@ -1154,7 +1154,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)reminderList
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"alertDatetime !=  %@",[NSNull null]] inContext:[self managedObjectContext]];
+    //return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"alertDatetime !=  %@ && ",[NSNull null]] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(alertDatetime != %@ && startDate > %@) || (alertDatetime != %@ && repeatType != %@)", [NSNull null], [NSDate date], [NSNull null], @(RepeatType_Never)] inContext:[self managedObjectContext]];
 }
 
 

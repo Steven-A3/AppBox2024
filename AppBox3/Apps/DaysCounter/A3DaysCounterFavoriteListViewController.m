@@ -235,11 +235,6 @@
 
 #pragma mark - action method
 - (IBAction)photoViewAction:(id)sender {
-    //    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
-    //        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:AlertMessage_NoPhoto delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    //        [alertView show];
-    //        return;
-    //    }
     A3DaysCounterSlidershowMainViewController *viewCtrl = [[A3DaysCounterSlidershowMainViewController alloc] initWithNibName:@"A3DaysCounterSlidershowMainViewController" bundle:nil];
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
