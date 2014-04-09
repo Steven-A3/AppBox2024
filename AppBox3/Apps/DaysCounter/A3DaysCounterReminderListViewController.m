@@ -49,8 +49,7 @@
     self.title = @"Reminder";
     self.toolbarItems = _bottomToolbar.items;
     [self.navigationController setToolbarHidden:NO];
-    //self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, 30, 0, 0);
+    self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 30 : 56, 0, 0);
 
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
@@ -67,14 +66,6 @@
     
     [[NSUserDefaults standardUserDefaults] setInteger:3 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-//    if ( IS_IPAD ) {
-//        if ( UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-//            [self leftBarButtonAppsButton];
-//        }
-//        else {
-//            self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
-//        }
-//    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -185,9 +176,12 @@
     if ( [_itemArray count] < 1 ) {
         return;
     }
+    
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-    item.alertDatetime = nil;
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
+        item.alertDatetime = nil;
+        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    }
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;

@@ -1474,15 +1474,18 @@
             _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
             [_locationManager startUpdatingLocation];
         }
-        else if ( buttonIndex == (actionSheet.firstOtherButtonIndex+1)) {
+        else if ( buttonIndex == (actionSheet.firstOtherButtonIndex + 1)) {
             if (![[A3AppDelegate instance].reachability isReachable]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                    message:@"Internet Connection is not avaiable."
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
                 [alertView show];
                 return;
             }
             
-            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController"
-                                                                                                                          bundle:nil];
+            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             [self.navigationController pushViewController:nextVC animated:YES];
         }
