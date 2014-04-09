@@ -112,7 +112,7 @@
 {
 
     if ( section == 0 ) {
-        return IS_RETINA ? 35.5 : 35;
+        return 35;
     }
     else if ( section ==1 ) {
         return 55;
@@ -124,7 +124,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if ( section == (_isEditMode ? 2 : 1) ) {
-        return IS_RETINA ? 35.5 : 35;
+        return 38;//return IS_RETINA ? 35.5 : 35;
     }
     return 0.01;
 }

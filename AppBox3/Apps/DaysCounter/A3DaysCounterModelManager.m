@@ -1473,7 +1473,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( IS_IPHONE ) {
         if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일" : @"yyyy. MM. d (EEE) a h:mm");
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 (EEE)" : @"yyyy. MM. d (EEE) a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEE, MMM d, yyyy" : @"EEE, MMM d, yyyy h:mm a");
