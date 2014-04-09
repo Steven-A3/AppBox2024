@@ -1512,7 +1512,7 @@
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
 {
     [manager stopUpdatingLocation];
-    //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Can not find current location" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Internet Connection is not avaiable." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alertView show];
     self.locationManager = nil;
@@ -1536,7 +1536,6 @@
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"Can not find current location information" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
                 [alertView show];
                 return;
-                
             }
             
             CLPlacemark *placeMark = [placemarks objectAtIndex:0];

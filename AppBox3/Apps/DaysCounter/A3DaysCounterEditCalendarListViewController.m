@@ -66,7 +66,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)reorderingItems
@@ -166,25 +165,7 @@
     [_itemArray insertObject:item atIndex:toIndexPath.row];
 
     [self reorderingItems];
-
-//    UITableViewCell *fromCell = [tableView cellForRowAtIndexPath:fromIndexPath];
-//    UITableViewCell *toCell = [tableView cellForRowAtIndexPath:toIndexPath];
-//    if (fromIndexPath.row == ([_itemArray count] - 1)) {
-//        fromCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//    }
-//    else {
-//        fromCell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
-//    }
-//    
-//    if (toIndexPath.row == ([_itemArray count] - 1)) {
-//        toCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-//    }
-//    else {
-//        toCell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
-//    }
-
-    //[tableView reloadRowsAtIndexPaths:@[fromIndexPath, toIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-    //[tableView reloadData];
+    
     [tableView reloadData];
 }
 
@@ -195,8 +176,8 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    return 37.0;
-    return IS_RETINA ? 35.5 : 36;
+    //return IS_RETINA ? 35.5 : 36;
+    return 38;
 }
 
 
@@ -260,15 +241,10 @@
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
     
-//    if ( IS_IPHONE ) {
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 
     self.modalVC = navCtrl;
     [self presentViewController:navCtrl animated:YES completion:nil];
-//    }
-//    else {
-//        [self.A3RootViewController presentRightSideViewController:viewCtrl];
-//    }
 }
 @end

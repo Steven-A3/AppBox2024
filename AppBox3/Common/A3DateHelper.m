@@ -162,10 +162,10 @@
         }
         else {
             if ([daysGapComp day] > 0) {
-                return @"Until";
+                return @"until";
             }
             else {
-                return @"Since";
+                return @"since";
             }
         }
     }
@@ -191,10 +191,10 @@
         }
         else {
             if ([daysGapComp second] > 0) {
-                return @"Until";
+                return @"until";
             }
             else {
-                return @"Since";
+                return @"since";
             }
         }
     }

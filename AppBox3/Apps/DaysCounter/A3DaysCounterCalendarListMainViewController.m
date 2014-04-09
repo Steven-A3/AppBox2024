@@ -125,8 +125,10 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     if ( IS_IPAD ) {
-        CGFloat barWidth = (UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? self.view.frame.size.width : self.view.frame.size.height);
-        _iPadHeaderCenterConstraints.constant = barWidth / 3.0;
+        CGFloat barWidth = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768 : 1024;
+        _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
+        _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
+        _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
         [UIView animateWithDuration:duration animations:^{
             [self.view layoutIfNeeded];
         }];
@@ -138,7 +140,6 @@
     NSInteger eventNumber = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
     NSDate *latestDate = [[A3DaysCounterModelManager sharedManager] dateOfLatestEvent];
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
-    //_numberOfEventsLabel.text = [NSString stringWithFormat:@"%@",(eventNumber > 0 ? [NSString stringWithFormat:@"%ld", (long)eventNumber] : @"")];
     _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
     _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-/-/-");
     _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
@@ -182,22 +183,9 @@
     // suffix is tag
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
-//    UILabel *eventNameLabel12 = (UILabel*)[cell viewWithTag:12];
-//    UILabel *periodLabel13 = (UILabel*)[cell viewWithTag:13];
-//    UILabel *periodLabel14 = (UILabel*)[cell viewWithTag:14];
     
     textLabel.font = [UIFont systemFontOfSize:30];
     countLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:65];
-//    if (IS_IPHONE) {
-//        eventNameLabel12.font = [UIFont systemFontOfSize:13];
-//        periodLabel13.font = [UIFont systemFontOfSize:11];
-//        periodLabel14.font = [UIFont systemFontOfSize:11];
-//    }
-//    else {
-//        eventNameLabel12.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-//        periodLabel13.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-//        periodLabel14.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-//    }
 }
 
 #pragma mark - action method
@@ -511,10 +499,6 @@
 #pragma mark - Table view delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
-//    if ( tableView == self.tableView && ( indexPath.row >= [_itemArray count] && indexPath.row+1 >= numberOfPage) ) {
-//        return 42.0;
-//    }
     return 84.0;
 }
 
@@ -552,9 +536,6 @@
         return NO;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-//    if ([item.events count] == 0) {
-//        return NO;
-//    }
     
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }
@@ -563,8 +544,9 @@
 {
     if ( scrollView != self.tableView )
         return;
-    if ( (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height && scrollView.contentSize.height > (scrollView.frame.size.height-_headerView.frame.size.height - _bottomToolbar.frame.size.height) )
-        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y-10.0);
+    if ( (scrollView.contentOffset.y + scrollView.frame.size.height) >= scrollView.contentSize.height && scrollView.contentSize.height > (scrollView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) ) {
+        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y - 10.0);
+    }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -591,7 +573,6 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_itemArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarName contains[cd] %@",searchText]];
-    NSLog(@"%s %@ : %ld", __FUNCTION__, searchText, (long)[_searchResultArray count]);
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
