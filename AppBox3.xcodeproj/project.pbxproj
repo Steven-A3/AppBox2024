@@ -431,6 +431,8 @@
 		6883D5E2183E7ABA00808CD2 /* A3MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6883D5E1183E7ABA00808CD2 /* A3MainViewController.m */; };
 		6886791618F3D34400DF1B19 /* UnitPriceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886791518F3D34400DF1B19 /* UnitPriceInfo.m */; };
 		6886791918F3D34500DF1B19 /* UnitPriceHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6886791818F3D34500DF1B19 /* UnitPriceHistoryItem.m */; };
+		6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */; };
+		6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */; };
 		6888090A17C63DBB008B2856 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6888090917C63DBB008B2856 /* CFNetwork.framework */; };
 		6888090E17C63F57008B2856 /* A3FlickrTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6888090D17C63F57008B2856 /* A3FlickrTest.m */; };
 		6890AB321786BA08004FECE4 /* A3CurrencyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6890AB311786BA08004FECE4 /* A3CurrencyViewController.m */; };
@@ -1582,6 +1584,8 @@
 		6886791518F3D34400DF1B19 /* UnitPriceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceInfo.m; sourceTree = "<group>"; };
 		6886791718F3D34500DF1B19 /* UnitPriceHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceHistoryItem.h; sourceTree = "<group>"; };
 		6886791818F3D34500DF1B19 /* UnitPriceHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceHistoryItem.m; sourceTree = "<group>"; };
+		6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPad.xib; sourceTree = "<group>"; };
+		6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib; sourceTree = "<group>"; };
 		6888090917C63DBB008B2856 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		6888090D17C63F57008B2856 /* A3FlickrTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3FlickrTest.m; path = FlickrTest/A3FlickrTest.m; sourceTree = "<group>"; };
 		6890AB0C1786B800004FECE4 /* EXPBackwardCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXPBackwardCompatibility.h; sourceTree = "<group>"; };
@@ -2839,6 +2843,8 @@
 				68143D7C18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib */,
 				68143D7818E40D7A00569691 /* A3NumberKeyboardSimplePrevNextVC_iPad.xib */,
 				68143CD718E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib */,
+				6886791A18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib */,
+				6886791B18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib */,
 				68143CD818E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.h */,
 				68143CD918E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.m */,
 				68143CDA18E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPad.xib */,
@@ -5355,6 +5361,7 @@
 				68F1C8D018D7F37D009FAE8A /* A3LadyCalendarSettingViewController.xib in Resources */,
 				68143D7D18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPad.xib in Resources */,
 				68B6A32418CEC76D004084EF /* A3WalletCateInfoFieldCell_iPad.xib in Resources */,
+				6886791D18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPhone.xib in Resources */,
 				685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */,
 				6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */,
 				6825367318A7B89F00EAFB84 /* LunarConverter.sqlite in Resources */,
@@ -5447,6 +5454,7 @@
 				68F1C8C218D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.xib in Resources */,
 				68961FE218B311D100C89F16 /* Mirror.xcassets in Resources */,
 				686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */,
+				6886791C18F4296F00DF1B19 /* A3NumberKeyboardSimpleUnitConverterVC_iPad.xib in Resources */,
 				68F1C89E18D7F37D009FAE8A /* A3DaysCounterSetupCalendarViewController.xib in Resources */,
 				68F1C88118D7F37D009FAE8A /* A3DaysCounterEditCalendarListViewController.xib in Resources */,
 				68F1C8C518D7F37D009FAE8A /* A3LadyCalendarChartCell.xib in Resources */,

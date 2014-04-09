@@ -888,7 +888,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	@autoreleasepool {
-		float fromValue = [textField.text floatValueEx];
+		float fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
 
 		[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
 		[[NSUserDefaults standardUserDefaults] synchronize];
