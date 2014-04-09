@@ -822,7 +822,7 @@
 				<key>Type</key>
 				<string>Text</string>
 				<key>Name</key>
-				<string>Merhant Name</string>
+					<string>Merchant Name</string>
 			</dict>
 			<dict>
 				<key>Style</key>
@@ -830,7 +830,7 @@
 				<key>Type</key>
 				<string>URL</string>
 				<key>Name</key>
-				<string>Merhant Website</string>
+				<string>Merchant Website</string>
 			</dict>
 			<dict>
 				<key>Style</key>
@@ -838,7 +838,7 @@
 				<key>Type</key>
 				<string>Email</string>
 				<key>Name</key>
-				<string>Merhant Email Address</string>
+				<string>Merchant Email Address</string>
 			</dict>
 			<dict>
 				<key>Style</key>
@@ -846,7 +846,7 @@
 				<key>Type</key>
 				<string>Phone</string>
 				<key>Name</key>
-				<string>Merhant Phone</string>
+				<string>Merchant Phone</string>
 			</dict>
 			<dict>
 				<key>Style</key>
@@ -854,7 +854,7 @@
 				<key>Type</key>
 				<string>Text</string>
 				<key>Name</key>
-				<string>Merhant Address</string>
+				<string>Merchant Address</string>
 			</dict>
 		</array>
 	</dict>
