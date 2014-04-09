@@ -77,7 +77,6 @@
         _inputType = inputType;
         [self setupValueViews];
         [self addConstraints];
-        _valueField.text = @"";
         _value2Field.text = @"";
     }
 }
@@ -85,7 +84,6 @@
 - (UITextField *)valueField {
 	if (!_valueField) {
 		_valueField = [[UITextField alloc] initWithFrame:CGRectMake(7.0, 0.0, 187.0, 83.0)];
-		_valueField.borderStyle = UITextBorderStyleNone;
 		_valueField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
 		_valueField.adjustsFontSizeToFitWidth = YES;
 		_valueField.minimumFontSize = 10.0;
@@ -98,7 +96,6 @@
 - (UITextField *)value2Field {
 	if (!_value2Field) {
 		_value2Field = [[UITextField alloc] initWithFrame:CGRectMake(7.0, 0.0, 187.0, 83.0)];
-		_value2Field.borderStyle = UITextBorderStyleNone;
 		_value2Field.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
 		_value2Field.adjustsFontSizeToFitWidth = YES;
 		_value2Field.minimumFontSize = 10.0;

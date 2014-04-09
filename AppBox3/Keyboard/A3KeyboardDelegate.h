@@ -6,10 +6,9 @@
 //  Copyright (c) 2013 ALLABOUTAPPS. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @protocol A3CalculatorDelegate;
 @protocol A3SearchViewControllerDelegate;
+@class A3NumberKeyboardViewController;
 
 typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 	A3NumberKeyboardTypeCurrency = 0,
@@ -31,6 +30,8 @@ typedef NS_ENUM(NSInteger, A3NumberKeyboardType) {
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate;
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
+- (void)keyboardViewController:(A3NumberKeyboardViewController *)vc fractionButtonPressed:(UIButton *)button;
+- (void)keyboardViewController:(A3NumberKeyboardViewController *)vc plusMinusButtonPressed:(UIButton *)button;
 
 - (BOOL)isPreviousEntryExists;
 - (BOOL)isNextEntryExists;

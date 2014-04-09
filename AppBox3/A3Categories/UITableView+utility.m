@@ -21,4 +21,12 @@
 	return nil;
 }
 
+- (UITableViewCell *)cellForCellSubview:(UIView *)view {
+	UIView *parentView = view.superview;
+	while (parentView != nil && ![parentView isKindOfClass:[UITableViewCell class]]) {
+		parentView = parentView.superview;
+	}
+	return (UITableViewCell *) parentView;
+}
+
 @end

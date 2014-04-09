@@ -17,7 +17,6 @@
 #import "NSMutableArray+A3Sort.h"
 #import "NSUserDefaults+A3Defaults.h"
 #import "UIViewController+MMDrawerController.h"
-#import "NSString+conversion.h"
 #import "UIViewController+A3Addition.h"
 #import "A3UnitConverterHistoryViewController.h"
 #import "A3UnitConverterSelectViewController.h"
@@ -27,9 +26,9 @@
 #import "UnitConvertItem+initialize.h"
 #import "UnitHistory.h"
 #import "UnitHistoryItem.h"
-#import "A3FractionInputView.h"
 #import "TemperatureConveter.h"
 #import "FMMoveTableView.h"
+#import "UITableView+utility.h"
 
 #define kInchesPerFeet  (0.3048/0.0254)
 
@@ -40,21 +39,17 @@
 @property (nonatomic, strong) FMMoveTableView *fmMoveTableView;
 @property (nonatomic, strong) NSMutableSet *swipedCells;
 @property (nonatomic, strong) NSMutableArray *convertItems;
-//@property (nonatomic, strong) NSMutableArray *favorites;
 @property (nonatomic, strong) NSMutableDictionary *equalItem;
 @property (nonatomic, strong) NSMutableDictionary *text1Fields;
 @property (nonatomic, strong) NSMutableDictionary *text2Fields;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIPopoverController *sharePopoverController;
-//@property (nonatomic, strong) UnitHistory *unitHistory;
-@property (nonatomic, strong) A3FractionInputView *fractionInputView;
 @property (nonatomic, strong) NSMutableArray *shareTextList;
 @property (nonatomic, strong) UIButton *addButton;
-
 @property (nonatomic, strong) NSString *vcTitle;
-
 @property (nonatomic, strong) NSNumber *unitValue;
+@property (nonatomic, copy) NSString *textBeforeEditingTextField;
 
 @end
 
@@ -67,8 +62,9 @@
     BOOL        _isTemperatureMode;
     BOOL        _isFeetInchMode;
     
-    BOOL shareItemEnabled;
-    BOOL historyItemEnabled;
+    BOOL 		_shareItemEnabled;
+    BOOL 		_historyItemEnabled;
+	BOOL 		_isSwitchingFractionMode;
 }
 
 NSString *const A3UnitConverterDataCellID = @"A3UnitConverterDataCell";
@@ -82,7 +78,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_text1Fields = nil;
     _text2Fields = nil;
 	_moreMenuButtons = nil;
-//    _unitHistory = nil;
 }
 
 - (void)viewDidLoad
@@ -92,6 +87,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	_fmMoveTableView = [[FMMoveTableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
 	_fmMoveTableView.delegate = self;
 	_fmMoveTableView.dataSource = self;
+	_fmMoveTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	[self.view addSubview:_fmMoveTableView];
 	[_fmMoveTableView makeConstraints:^(MASConstraintMaker *make) {
@@ -162,14 +158,14 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     if (onoff) {
         
         self.navigationItem.leftBarButtonItem.enabled = YES;
-        shareItem.enabled = shareItemEnabled;
-        historyItem.enabled = historyItemEnabled;
+        shareItem.enabled = _shareItemEnabled;
+        historyItem.enabled = _historyItemEnabled;
         
     }
     else {
         
-        shareItemEnabled = shareItem.enabled;
-        historyItemEnabled = historyItem.enabled;
+        _shareItemEnabled = shareItem.enabled;
+        _historyItemEnabled = historyItem.enabled;
         
         self.navigationItem.leftBarButtonItem.enabled = NO;
         shareItem.enabled = NO;
@@ -454,17 +450,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		_text2Fields = [NSMutableDictionary new];
 	}
 	return _text2Fields;
-}
-
-- (A3FractionInputView *) fractionInputView
-{
-    if (!_fractionInputView) {
-        _fractionInputView = [[A3FractionInputView alloc] initWithFrame:CGRectZero];
-        _fractionInputView.numField.delegate = self;
-        _fractionInputView.denumField.delegate = self;
-    }
-
-    return _fractionInputView;
 }
 
 - (void)addUnitAction {
@@ -931,18 +916,18 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 				float fromValue;
 				if (cell.inputType == UnitInput_Normal) {
 					textField = cell.valueField;
-					fromValue = [textField.text floatValueEx];
+					fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
 				}
 				else if (cell.inputType == UnitInput_Fraction) {
-					float num = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
-					float denum = [cell.value2Field.text floatValueEx] > 1 ? [cell.value2Field.text floatValueEx]:1;
-					fromValue = num / denum;
+					float num = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+					float deviderNumber = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+					fromValue = num / deviderNumber;
 				}
 				else if (cell.inputType == UnitInput_FeetInch) {
 					// 0.3048, 0.0254
 					// feet inch 값을 inch값으로 변화시킨다.
-					float feet = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
-					float inch = [cell.value2Field.text floatValueEx];
+					float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+					float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
 					fromValue = feet + inch/kInchesPerFeet;
 					NSLog(@"Feet : %f / Inch : %f", feet, inch);
 					NSLog(@"Calculated : %f", fromValue);
@@ -1086,58 +1071,14 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
 	@autoreleasepool {
-        
-        NSMutableDictionary *currentTextFields = (textField.tag==1) ? _text1Fields : _text2Fields;
-        
-		NSSet *keys = [currentTextFields keysOfEntriesPassingTest:^BOOL(id key, id obj, BOOL *stop) {
-			if (obj == textField) {
-				*stop = YES;
-				return YES;
-			}
-			return NO;
-		}];
-		if (![keys count]) {
-			return NO;
-		}
-		NSString *key = keys.allObjects[0];
-        
-		NSUInteger index = [self indexForUnitName:key];
-		if (index == NSNotFound) {
-			return NO;
-		}
-        
-		if(index == 0) {
+
+		A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+		if (!cell) return NO;
+		NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+
+		if(indexPath.row == 0) {
 			[self unSwipeAll];
-            
-			if ([textField.text length]) {
-				float value = [textField.text floatValueEx];
-				if (value > 1.0) {
-					[self putHistoryWithValue:@(value)];
-                    _unitValue = nil;
-                    [self unitValue];
-//					_unitHistory = nil;
-//					[self unitHistory];
-				}
-				textField.text = @"";
-			}
-            
-			A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-			self.numberKeyboardViewController = keyboardVC;
-			keyboardVC.textInputTarget = textField;
-			keyboardVC.delegate = self;
-			self.numberKeyboardViewController = keyboardVC;
-			textField.inputView = [keyboardVC view];
-            self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeFraction;
-            A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-            if (cell.inputType == UnitInput_Fraction) {
-                self.numberKeyboardViewController.bigButton1.selected = YES;
-                self.numberKeyboardViewController.bigButton2.selected = NO;
-            }
-            else {
-                self.numberKeyboardViewController.bigButton1.selected = NO;
-                self.numberKeyboardViewController.bigButton2.selected = YES;
-            }
-            
+
 			return YES;
 		} else {
 			[self.firstResponder resignFirstResponder];
@@ -1165,11 +1106,44 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	@autoreleasepool {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
-        self.firstResponder = textField;
-        //[self.normalNumberKeyboard reloadPrevNextButtons];
+	self.firstResponder = textField;
+	if ([textField.text length]) {
+		self.textBeforeEditingTextField = textField.text;
+	}
+
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+	if (!cell) return;
+
+	if (!_isSwitchingFractionMode && [textField.text length]) {
+		float value = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+		if (value != 0.0) {
+			[self putHistoryWithValue:@(value)];
+			_unitValue = nil;
+			[self unitValue];
+		}
+		textField.text = @"";
+	}
+
+	A3NumberKeyboardViewController *keyboardVC = [self simpleUnitConverterNumberKeyboard];
+	self.numberKeyboardViewController = keyboardVC;
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+	self.numberKeyboardViewController = keyboardVC;
+	textField.inputView = [keyboardVC view];
+
+	if (cell.inputType == UnitInput_FeetInch) {
+		[keyboardVC.fractionButton setTitle:@"" forState:UIControlStateNormal];
+		[keyboardVC.fractionButton setEnabled:NO];
+	}
+
+	self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeReal;
+	if (cell.inputType == UnitInput_Fraction || cell.inputType == UnitInput_FeetInch) {
+		[self addKeyboardAccessoryToTextField:textField];
+	} else {
+		textField.inputAccessoryView = nil;
 	}
 }
 
@@ -1182,12 +1156,11 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	return YES;
 }
 
-
 - (void)textFieldDidChange:(NSNotification *)notification {
-	@autoreleasepool {
-		UITextField *textField = [notification object];
-		[self updateTextFieldsWithSourceTextField:textField];
-	}
+	UITextField *textField = [notification object];
+	[self updateTextFieldsWithSourceTextField:textField];
+
+	FNLOG(@"%@", textField.font);
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -1196,7 +1169,14 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
 		[self setFirstResponder:nil];
-		//self.numberKeyboardViewController = nil;
+
+		if (_isSwitchingFractionMode) {
+			return;
+		}
+
+		if (![textField.text length]) {
+			textField.text = _textBeforeEditingTextField;
+		}
 
         // 숫자 입력 보정여부
         double value = [textField.text doubleValue];
@@ -1235,9 +1215,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
 	@autoreleasepool {
         
-        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        
-        if (cell.inputType == UnitInput_FeetInch || cell.inputType == UnitInput_Fraction) {
+        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+
+		if (cell.inputType == UnitInput_FeetInch || cell.inputType == UnitInput_Fraction) {
             // khkim_131217 : requirement 수정
             // x/y의 x,y 사이의 간격 없애기 : textfield size 조절하기
             NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:textField.font, NSFontAttributeName, nil];
@@ -1251,19 +1231,19 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
         if (cell.inputType == UnitInput_Normal) {
             textField = cell.valueField;
-            fromValue = [textField.text floatValueEx];
+            fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
         }
         else if (cell.inputType == UnitInput_Fraction) {
-            float num = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
-            float denum = [cell.value2Field.text floatValueEx] > 1 ? [cell.value2Field.text floatValueEx]:1;
-            fromValue = num / denum;
+            float num = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+			float denum = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
+			fromValue = num / denum;
         }
         else if (cell.inputType == UnitInput_FeetInch) {
             // 0.3048, 0.0254
             // feet inch 값을 inch값으로 변화시킨다.
-            float feet = [cell.valueField.text floatValueEx] > 1 ? [cell.valueField.text floatValueEx]:1;
-            float inch = [cell.value2Field.text floatValueEx];
-            fromValue = feet + inch/kInchesPerFeet;
+            float feet = [[self.decimalFormatter numberFromString:cell.valueField.text] floatValue];
+            float inch = [[self.decimalFormatter numberFromString:cell.value2Field.text] floatValue];
+			fromValue = feet + inch/kInchesPerFeet;
             NSLog(@"Feet : %f / Inch : %f", feet, inch);
             NSLog(@"Calculated : %f", fromValue);
         }
@@ -1332,7 +1312,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)swapCellOfFromIndexPath:(NSIndexPath *)fromIp toIndexPath:(NSIndexPath *)toIp
 {
-    
     [self.convertItems exchangeObjectInSortedArrayAtIndex:fromIp.row withObjectAtIndex:toIp.row];
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     [_fmMoveTableView reloadRowsAtIndexPaths:@[fromIp, toIp] withRowAnimation:UITableViewRowAnimationMiddle];
@@ -1450,16 +1429,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     }
 }
 
-- (NSString *)stringForBigButton1
-{
-    return @"x/y";
-}
-
-- (NSString *)stringForBigButton2
-{
-    return @"Cal";
-}
-
 - (void)prevButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 	UIView *viewInRespond = (UIView *) self.firstResponder;
@@ -1482,34 +1451,60 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     }
 }
 
-- (void)handleBigButton1
-{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell* )[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    
-    // feet inch에서는 모드 변경없이 UnitInput_FeetInch으로 고정한다.
-    if (cell.inputType == UnitInput_FeetInch) {
-        return;
-    }
-    
-    cell.inputType = UnitInput_Fraction;
-    [self.numberKeyboardViewController reloadPrevNextButtons];
-    self.numberKeyboardViewController.bigButton1.selected = YES;
-    self.numberKeyboardViewController.bigButton2.selected = NO;
+- (void)keyboardViewController:(A3NumberKeyboardViewController *)vc fractionButtonPressed:(UIButton *)button {
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:(UIView *) self.firstResponder];
+	__weak UITextField *textField = (UITextField *) vc.textInputTarget;
+	if ([cell isKindOfClass:[A3UnitConverterTVDataCell class]]) {
+		switch (cell.inputType) {
+			case UnitInput_Normal:
+				cell.inputType = UnitInput_Fraction;
+				_isSwitchingFractionMode = YES;
+				[self addKeyboardAccessoryToTextField:textField];
+				FNLOG();
+				[textField resignFirstResponder];
+				[textField becomeFirstResponder];
+				FNLOG();
+				_isSwitchingFractionMode = NO;
+				break;
+			case UnitInput_Fraction:
+				cell.inputType = UnitInput_Normal;
+				_isSwitchingFractionMode = YES;
+				textField.inputAccessoryView = nil;
+				[textField resignFirstResponder];
+				[textField becomeFirstResponder];
+				_isSwitchingFractionMode = NO;
+				break;
+			case UnitInput_FeetInch:
+				break;
+		}
+	}
 }
 
-- (void)handleBigButton2
-{
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell* )[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    
-    // feet inch에서는 모드 변경없이 UnitInput_FeetInch으로 고정한다.
-    if (cell.inputType == UnitInput_FeetInch) {
-        return;
-    }
-    
-    cell.inputType = UnitInput_Normal;
-    [self.numberKeyboardViewController reloadPrevNextButtons];
-    self.numberKeyboardViewController.bigButton1.selected = NO;
-    self.numberKeyboardViewController.bigButton2.selected = YES;
+- (void)addKeyboardAccessoryToTextField:(UITextField *)field {
+	UIToolbar *keyboardAccessoryToolbar = [UIToolbar new];
+	[keyboardAccessoryToolbar sizeToFit];
+	UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+	UIBarButtonItem *prevButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Prev" style:UIBarButtonItemStylePlain target:self action:@selector(prevButtonPressed)];
+	UIBarButtonItem *nextButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed)];
+	[prevButtonItem setEnabled:[self isPreviousEntryExists]];
+	[nextButtonItem setEnabled:[self isNextEntryExists]];
+	keyboardAccessoryToolbar.items = @[flexibleSpace, prevButtonItem, nextButtonItem];
+	field.inputAccessoryView = keyboardAccessoryToolbar;
+}
+
+- (void)keyboardViewController:(A3NumberKeyboardViewController *)vc plusMinusButtonPressed:(UIButton *)button {
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:(UIView *) self.firstResponder];
+	if ([cell isKindOfClass:[A3UnitConverterTVDataCell class]]) {
+		__weak UITextField *textField = cell.valueField;
+		if ([textField.text length]) {
+			if ([[textField.text substringToIndex:1] isEqualToString:@"-"]) {
+				textField.text = [cell.valueField.text stringByReplacingCharactersInRange:NSMakeRange(0, 1) withString:@""];
+			} else {
+				textField.text = [cell.valueField.text stringByReplacingCharactersInRange:NSMakeRange(0,0) withString:@"-"];
+			}
+			[self updateTextFieldsWithSourceTextField:textField];
+		}
+	}
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {

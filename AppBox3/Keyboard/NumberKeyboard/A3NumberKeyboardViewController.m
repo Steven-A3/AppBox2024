@@ -423,4 +423,16 @@
 	}
 }
 
+- (IBAction)fractionButtonAction:(UIButton *)sender {
+	if ([_delegate respondsToSelector:@selector(keyboardViewController:fractionButtonPressed:)]) {
+		[_delegate keyboardViewController:self fractionButtonPressed:sender];
+	}
+}
+
+- (IBAction)plusMinusButtonAction:(UIButton *)sender {
+	if ([_delegate respondsToSelector:@selector(keyboardViewController:plusMinusButtonPressed:)]) {
+		[_delegate keyboardViewController:self plusMinusButtonPressed:sender];
+	}
+}
+
 @end

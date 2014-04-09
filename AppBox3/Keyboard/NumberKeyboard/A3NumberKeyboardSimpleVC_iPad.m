@@ -57,7 +57,9 @@
 	[self.calculatorButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
 	// SimplePrevNextVC_iPad 에는 prevButton 과 nextButton 이 있다.
 	[self.prevButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
+	[self.fractionButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
 	[self.nextButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
+	[self.plusMinusButton setFrame:CGRectMake(col_5, row_3, width_big, height_small)];
 	[self.doneButton setFrame:CGRectMake(col_5, row_4, width_big, height_small)];
 
 	UIFont *numberFont = [UIFont systemFontOfSize:isLandscape ? 27 : 22];
@@ -77,7 +79,9 @@
 	[self.clearButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 	[self.doneButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 	[self.prevButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
+	[self.fractionButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 	[self.nextButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
+	[self.plusMinusButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 
 	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 33 : 28]];
 
