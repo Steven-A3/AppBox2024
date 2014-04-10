@@ -62,6 +62,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView reloadData];
 	[self.tableView setEditing:YES animated:YES];
 
+	self.navigationItem.leftBarButtonItem = nil;
 	[self rightBarButtonDoneButton];
 }
 
@@ -72,6 +73,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView reloadData];
 	[self.tableView setEditing:NO animated:NO];
 
+	[self leftBarButtonAppsButton];
 	[self rightBarButtonEditButton];
 }
 
@@ -252,6 +254,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	A3UnitConverterConvertTableViewController *viewController = [[A3UnitConverterConvertTableViewController alloc] init];
 	viewController.unitType = unitType;
 	viewController.title = unitType.unitTypeName;
+	viewController.isFromMoreTableViewController = YES;
 
 	[self.navigationController pushViewController:viewController animated:YES];
 }
