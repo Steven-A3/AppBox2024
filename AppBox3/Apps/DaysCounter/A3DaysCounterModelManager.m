@@ -1327,7 +1327,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     A3DaysCounterSlideshowEventSummaryView *categoryCell = (A3DaysCounterSlideshowEventSummaryView *)toView;
 
     if (IS_IPAD) {
-        categoryCell.daysSinceTopSpaceConst.constant = 57;
+        categoryCell.daysSinceTopSpaceConst.constant = IS_LANDSCAPE ? 67 : 77;
         categoryCell.titleLeadingSpaceConst.constant = 28;
         categoryCell.titleTrailingSpaceConst.constant = 28;
         categoryCell.countBaselineConst.constant = IS_LANDSCAPE ? 150 : 160;

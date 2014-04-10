@@ -123,18 +123,32 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-(void)viewWillLayoutSubviews
 {
+    [super viewWillLayoutSubviews];
+    
     if ( IS_IPAD ) {
-        CGFloat barWidth = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768 : 1024;
+        CGFloat barWidth = IS_PORTRAIT ? 768 : 1024;
         _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
-        [UIView animateWithDuration:duration animations:^{
-            [self.view layoutIfNeeded];
-        }];
+//        [UIView animateWithDuration:duration animations:^{
+//            [self.view layoutIfNeeded];
+//        }];
     }
 }
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+//{
+//    if ( IS_IPAD ) {
+//        CGFloat barWidth = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768 : 1024;
+//        _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
+//        _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
+//        _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
+//        [UIView animateWithDuration:duration animations:^{
+//            [self.view layoutIfNeeded];
+//        }];
+//    }
+//}
 
 - (void)setupHeaderInfo
 {
