@@ -1308,48 +1308,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
         }
     }
-
-
-//    if ([resultArray count] == 0) {
-//        NSDateComponents *fullComponent = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
-//                                                      fromDate:smallDate
-//                                                        toDate:largeDate
-//                                                       options:0];
-//
-//        if ( [fullComponent year] > 0 ) {
-//            [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)[fullComponent year], ([fullComponent year] > 1 ? @"s" : @"")]];
-//        }
-//        else if ( [fullComponent month] > 0 ) {
-//            [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)[fullComponent month], ([fullComponent month] > 1 ? @"s" : @"")]];
-//        }
-////        else if ( [fullComponent week] > 0 ) {
-////            [resultArray addObject:[NSString stringWithFormat:@"%@%dweek%@", [fullComponent week], ([fullComponent week] > 1 ? @"s" : @"")];
-////        }
-//        else if ( [fullComponent day] > 0 ) {
-//            [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)[fullComponent day], ([fullComponent day] > 1 ? @"s" : @"")]];
-//        }
-//        
-//        if ( isAllDay ) {
-//            NSInteger hour = [fullComponent hour];
-//            NSInteger minute = [fullComponent minute];
-//            NSInteger second = [fullComponent second];
-//            
-//            if ( hour > 0 || minute > 0 || second > 0 ) {
-//                [resultArray addObject:[NSString stringWithFormat:@"0 day"]];
-//            }
-//        }
-//        else {
-//            if ( [fullComponent hour] > 0 ) {
-//                [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)[fullComponent hour], ([fullComponent hour] > 1 ? @"s" : @"")]];
-//            }
-//            else if ( [fullComponent minute] > 0 ) {
-//                [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)[fullComponent minute], ([fullComponent minute] > 1 ? @"s" : @"")]];
-//            }
-//            else if ( [fullComponent second] > 0 ) {
-//                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)[fullComponent second], ([fullComponent second] > 1 ? @"s" : @"")]];
-//            }
-//        }
-//    }
     
     NSString *result = [resultArray componentsJoinedByString:@" "];
     return result;
@@ -1367,20 +1325,20 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView
 {
     A3DaysCounterSlideshowEventSummaryView *categoryCell = (A3DaysCounterSlideshowEventSummaryView *)toView;
-//    CGFloat daysFontAscenderLine = roundf(categoryCell.dayCountLabel.frame.origin.y + categoryCell.dayCountLabel.font.ascender);
-//    categoryCell.daysSinceTopSpaceConst.constant = daysFontAscenderLine + categoryCell.daysSinceLabel.font.ascender;
-//    categoryCell.dayCountTopSpaceConst.constant = daysFontAscenderLine + categoryCell.daysSinceLabel.font.ascender;
-//    categoryCell.daysSinceTopSpaceConst.constant = categoryCell.dayCountTopSpaceConst.constant;
+
     if (IS_IPAD) {
         categoryCell.daysSinceTopSpaceConst.constant = 57;
         categoryCell.titleLeadingSpaceConst.constant = 28;
         categoryCell.titleTrailingSpaceConst.constant = 28;
+        categoryCell.countBaselineConst.constant = IS_LANDSCAPE ? 150 : 160;
+        categoryCell.dateBaselineConst.constant = IS_LANDSCAPE ? 188 : 198;
     }
     else {
         categoryCell.titleLeadingSpaceConst.constant = 15;
         categoryCell.titleTrailingSpaceConst.constant = 15;
+        categoryCell.countBaselineConst.constant = 120;
+        categoryCell.dateBaselineConst.constant = 148;
     }
-    
     
     UIImageView *bgImageView = (UIImageView*)[toView viewWithTag:10];
     FXLabel *daysLabel = (FXLabel*)[toView viewWithTag:11];
@@ -1403,9 +1361,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     dateLabel.shadowBlur = 2;
 
     dateLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 18.0 : 21.0)];
-    dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"EEEE, MMMM dd, yyyy"];
+    dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
     
-    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate];
+    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate isAllDay:YES];//[A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate];
     if ( diffDays > 0 ) {
         markLabel.text = @"Days\nUntil";
     }
@@ -1425,12 +1383,19 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     else {
         daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
     }
-    daysLabel.text = [NSString stringWithFormat:@"%ld", (long)ABS(diffDays)];
+    
+    if (diffDays == 0) {
+        daysLabel.text = [NSString stringWithFormat:@"%@", [item.isAllDay boolValue] ? @" Today " : @" Now "];
+        markLabel.text = @"";
+    }
+    else {
+        daysLabel.text = [NSString stringWithFormat:@"%ld", (long)ABS(diffDays)];
+    }
+    [daysLabel sizeToFit];
+    
     if ( [item.imageFilename length] > 0 ) {
-//        NSLog(@"%s %@",__FUNCTION__,NSStringFromCGRect(toView.frame));
         UIImage *image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
-//        image = [image scaleToCoverSize:toView.frame.size];
-        bgImageView.image = image;//[A3DaysCounterModelManager resizeImage:image toSize:toView.frame.size isFill:YES backgroundColor:[UIColor blackColor]];
+        bgImageView.image = image;
     }
     else {
         bgImageView.image = nil;

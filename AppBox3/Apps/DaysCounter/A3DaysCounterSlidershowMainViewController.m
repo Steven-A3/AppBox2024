@@ -171,19 +171,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-//{
-//    //    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-//    //    CGSize size = ( UIInterfaceOrientationIsLandscape(toInterfaceOrientation) ? CGSizeMake(appFrame.size.height, appFrame.size.width) : appFrame.size);
-//    //    [UIView animateWithDuration:duration animations:^{
-//    //        _addEventButton.frame = CGRectMake(size.width*0.5 - _addEventButton.frame.size.width*0.5, size.height - _addEventButton.frame.size.height - _bottomToolbar.frame.size.height, _addEventButton.frame.size.width, _addEventButton.frame.size.height);
-//    //    }];
-//    [_collectionView reloadData];
-//    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
-//                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-//                                    animated:NO];
-//}
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     [_collectionView reloadData];
@@ -195,7 +182,7 @@
         self.navigationItem.title = @"Days Counter";
     }
     else {
-        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)[_eventsArray count] - currentIndex, (long)[_eventsArray count]];
+        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
     }
 }
 
@@ -379,7 +366,6 @@
         [self hideTopToolbarAnimated:YES];
         if ( IS_IPHONE )
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
-//            [self rightButtonMoreButton];
     }
 }
 
@@ -415,14 +401,14 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-//    [self rightButtonMoreButton];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
     [self hideTopToolbarAnimated:YES];
 }
 
 - (IBAction)detailAction:(id)sender {
-    if ( [_eventsArray count] < 1 )
+    if ( [_eventsArray count] < 1 ) {
         return;
+    }
     [self hideTopToolbarAnimated:NO];
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
     
@@ -484,7 +470,6 @@
 		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
         popoverController.delegate = self;
         self.popoverVC = popoverController;
-//		[popoverController presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         [popoverController presentPopoverFromRect:[button convertRect:button.bounds toView:self.view]
                                            inView:self.view
                          permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
@@ -529,18 +514,6 @@
     return cell;
 }
 
-- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    currentIndex = indexPath.row;
-    
-    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
-        self.navigationItem.title = @"Days Counter";
-    }
-    else {
-        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)[_eventsArray count] - currentIndex, (long)[_eventsArray count]];
-    }
-}
-
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     FNLOG(@"%@", NSStringFromCGSize(CGSizeMake(self.view.frame.size.width, self.view.frame.size.height)));
@@ -551,6 +524,22 @@
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     FNLOG(@"%@", indexPath);
     FNLOG(@"collectionView: %@", collectionView);
+}
+
+#pragma mark UIScrollerView
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+    for (UICollectionViewCell *cell in [self.collectionView visibleCells]) {
+        NSIndexPath *indexPath = [self.collectionView indexPathForCell:cell];
+        currentIndex = indexPath.row;
+        NSLog(@"%@",indexPath);
+    }
+    
+    if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
+        self.navigationItem.title = @"Days Counter";
+    }
+    else {
+        self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
+    }
 }
 
 @end

@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -16,12 +17,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8PY-bc-aDl" customClass="FXLabel">
-                        <rect key="frame" x="62" y="49" width="196" height="101"/>
+                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6KW-wd-wxa" userLabel="Label - forCountBaseline">
+                        <rect key="frame" x="6" y="99" width="42" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="101" id="CUV-dC-ilm"/>
-                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9999" textAlignment="center" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8PY-bc-aDl" userLabel="Label - Count" customClass="FXLabel">
+                        <rect key="frame" x="62" y="37" width="196" height="102"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="88"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -40,8 +44,14 @@ Since</string>
                         <nil key="highlightedColor"/>
                         <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
+                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MAh-48-eiP" userLabel="Label - forDateBaseline">
+                        <rect key="frame" x="7" y="147" width="42" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="13" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thursday, August 6, 2009" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qgs-xV-Oz7" customClass="FXLabel">
-                        <rect key="frame" x="0.0" y="158" width="320" height="22"/>
+                        <rect key="frame" x="0.0" y="151" width="320" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -68,18 +78,23 @@ Since</string>
                 <constraint firstAttribute="centerX" secondItem="Qgs-xV-Oz7" secondAttribute="centerX" id="MND-2X-XTe"/>
                 <constraint firstItem="yFA-J0-wtx" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" id="NoW-eN-kRA"/>
                 <constraint firstItem="yoV-Pe-VFu" firstAttribute="leading" secondItem="8PY-bc-aDl" secondAttribute="trailing" constant="5" id="Rsa-Jo-PtO"/>
+                <constraint firstItem="6KW-wd-wxa" firstAttribute="bottom" secondItem="Pw2-No-a6D" secondAttribute="top" constant="120" id="SJZ-Va-OyD"/>
+                <constraint firstItem="MAh-48-eiP" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" constant="7" id="SK4-hp-zYL"/>
                 <constraint firstAttribute="centerX" secondItem="8PY-bc-aDl" secondAttribute="centerX" id="Xkt-sd-HXp"/>
                 <constraint firstItem="yoV-Pe-VFu" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" constant="67" id="bTe-U7-8ck"/>
-                <constraint firstItem="Qgs-xV-Oz7" firstAttribute="top" secondItem="8PY-bc-aDl" secondAttribute="bottom" constant="8" id="bcG-U7-246"/>
                 <constraint firstItem="lWv-jq-Rqh" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" constant="76" id="d0z-Xd-CZk"/>
                 <constraint firstAttribute="trailing" secondItem="Qgs-xV-Oz7" secondAttribute="trailing" id="dyp-KR-DBH"/>
-                <constraint firstItem="8PY-bc-aDl" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" constant="49" id="q8P-LI-qVh"/>
+                <constraint firstItem="6KW-wd-wxa" firstAttribute="bottom" secondItem="8PY-bc-aDl" secondAttribute="baseline" id="fG7-21-vxf"/>
+                <constraint firstItem="MAh-48-eiP" firstAttribute="bottom" secondItem="Pw2-No-a6D" secondAttribute="top" constant="168" id="hq4-6W-3aF"/>
+                <constraint firstItem="6KW-wd-wxa" firstAttribute="leading" secondItem="Pw2-No-a6D" secondAttribute="leading" constant="6" id="uax-3n-Mnm"/>
                 <constraint firstAttribute="trailing" secondItem="lWv-jq-Rqh" secondAttribute="trailing" constant="75" id="ugW-Tj-aZr"/>
                 <constraint firstItem="yFA-J0-wtx" firstAttribute="top" secondItem="Pw2-No-a6D" secondAttribute="top" id="vsP-6E-zks"/>
+                <constraint firstItem="MAh-48-eiP" firstAttribute="bottom" secondItem="Qgs-xV-Oz7" secondAttribute="baseline" id="xRE-Na-yqe"/>
             </constraints>
             <connections>
+                <outlet property="countBaselineConst" destination="SJZ-Va-OyD" id="paf-dL-wyg"/>
+                <outlet property="dateBaselineConst" destination="hq4-6W-3aF" id="sqo-fN-Ycs"/>
                 <outlet property="dayCountLabel" destination="8PY-bc-aDl" id="FJF-u8-Uio"/>
-                <outlet property="dayCountTopSpaceConst" destination="q8P-LI-qVh" id="3aO-BU-rZn"/>
                 <outlet property="daysSinceLabel" destination="yoV-Pe-VFu" id="tqg-sd-N2x"/>
                 <outlet property="daysSinceTopSpaceConst" destination="bTe-U7-8ck" id="e21-vH-Kju"/>
                 <outlet property="titleLeadingSpaceConst" destination="d0z-Xd-CZk" id="ZJG-fS-zMG"/>

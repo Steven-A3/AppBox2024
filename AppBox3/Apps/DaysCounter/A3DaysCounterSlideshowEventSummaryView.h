@@ -17,5 +17,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *daysSinceTopSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLeadingSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTrailingSpaceConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateBaselineConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *countBaselineConst;
 
 @end
