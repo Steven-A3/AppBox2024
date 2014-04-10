@@ -163,7 +163,8 @@
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld days before %@",
                                          labs((long)[A3DateHelper diffDaysFromDate:alertDate
                                                                        toDate:[_eventModel objectForKey:EventItem_StartDate]]),
-                                         [A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"]];//[[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+                                         [A3DateHelper dateStringFromDate:alertDate withFormat:@"HH:mm a"]];
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     }

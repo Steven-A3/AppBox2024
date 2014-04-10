@@ -84,7 +84,6 @@
 {
     if (show) {
         ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.hidden = NO;
-        //((A3DaysCounterRepeatCustomCell *)cell).checkImageTrailingConst.constant = 15;
         ((A3DaysCounterRepeatCustomCell *)cell).daysLabelTrailingConst.constant = 33;
     }
     else {

@@ -821,7 +821,7 @@
 }
 
 #pragma mark TableView Data Source Related
-- (NSInteger)rowIndexOfRowItemType:(A3DaysCounterAddEventCellType)itemType atSectionArray:(NSArray *)array {
+- (NSInteger)indexOfRowItemType:(A3DaysCounterAddEventCellType)itemType atSectionArray:(NSArray *)array {
     __block NSInteger rowIndex = -1;
     
     [array enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
@@ -955,7 +955,10 @@
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+                NSIndexPath *repeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_RepeatType atSectionArray:section1_items]
+                                                                  inSection:AddSection_Section_1];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
                 
                 if ([[_eventModel objectForKey:EventItem_RepeatType] integerValue] == RepeatType_Never) {
@@ -978,7 +981,6 @@
                     return;
                 }
 
-                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
                 __block NSInteger endRepeatRowIndex = -1;
                 [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
                     if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
@@ -1023,8 +1025,11 @@
             A3DaysCounterSetupEndRepeatViewController *nextVC = [[A3DaysCounterSetupEndRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupEndRepeatViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+                NSIndexPath *endRepeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:section1_items]
+                                                                     inSection:AddSection_Section_1];
+                [tableView deselectRowAtIndexPath:endRepeatIndexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:endRepeatIndexPath];
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:[_eventModel objectForKey:EventItem_RepeatEndDate]];
             };
@@ -1040,9 +1045,13 @@
         {
             A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
+
             nextVC.dismissCompletionBlock = ^{
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+                NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+                                                                 inSection:AddSection_Section_1];
+                [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
                                                                                                 alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
@@ -1062,8 +1071,11 @@
             A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+                NSIndexPath *calendarIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Calendar atSectionArray:section1_items]
+                                                                    inSection:AddSection_Section_1];
+                [tableView deselectRowAtIndexPath:calendarIndexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
                 UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
                 UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
                 DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
@@ -1092,8 +1104,11 @@
             A3DaysCounterSetupDurationViewController *nextVC = [[A3DaysCounterSetupDurationViewController alloc] initWithNibName:@"A3DaysCounterSetupDurationViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
             nextVC.dismissCompletionBlock = ^{
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+                NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_DurationOption atSectionArray:section1_items]
+                                                                    inSection:AddSection_Section_1];
+                [tableView deselectRowAtIndexPath:durationIndexPath animated:YES];
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
             };
@@ -1235,13 +1250,13 @@
     }
     else if ( rowItemType == EventCellType_IsPeriod ) {
         [_eventModel setObject:[NSNumber numberWithBool:swButton.on] forKey:EventItem_IsPeriod];
-        NSInteger startEndSwitchRowIndex = [self rowIndexOfRowItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
+        NSInteger startEndSwitchRowIndex = [self indexOfRowItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         
         if ( swButton.on ) {
             if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
-                NSInteger startDateRowIndex = [self rowIndexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
+                NSInteger startDateRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
                 NSInteger datePickerRow = 0;
                 if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
                     datePickerRow = 1;
@@ -1259,14 +1274,14 @@
         }
         else {
             if ( [self isExistsEndDateCellInItems:sectionRow_items] ) {
-                NSInteger endDateRowIndex = [self rowIndexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+                NSInteger endDateRowIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
                 if (endDateRowIndex == -1) {
                     return;
                 }
                 
                 NSInteger dateInputRowIndex = -1;
                 if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
-                    dateInputRowIndex = [self rowIndexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
+                    dateInputRowIndex = [self indexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
                 }
                 else if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
                     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex + 2 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
@@ -1412,7 +1427,7 @@
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     
     if (!_isAdvancedCellOpen) {
-        NSUInteger advancedCellRowIndex = [self rowIndexOfRowItemType:EventCellType_Advanced atSectionArray:section1_items];
+        NSUInteger advancedCellRowIndex = [self indexOfRowItemType:EventCellType_Advanced atSectionArray:section1_items];
         textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
         // remove Advanced Rows
         NSMutableArray *indexPathsToRemove = [NSMutableArray array];

@@ -56,7 +56,6 @@
 
 - (void)showKeyboard
 {
-    //    if ( IS_IPHONE ) {
     if ( self.keyboardVC || [self.keyboardVC.view isDescendantOfView:self.view]) {
         return;
     }
@@ -65,12 +64,10 @@
     self.keyboardVC.delegate = self;
     self.keyboardVC.view.frame = CGRectMake(0, self.view.frame.size.height - self.keyboardVC.view.frame.size.height, self.keyboardVC.view.frame.size.width, self.keyboardVC.view.frame.size.height);
     [self.view addSubview:self.keyboardVC.view];
-    //    }
-    //    else {
-    //        self.keyboardVC = [[A3DateKeyboardViewController_iPad alloc] initWithNibName:@"A3DateKeyboardViewController_iPad" bundle:nil];
-    //        self.keyboardVC.delegate = self;
-    //        [self.view addSubview:self.keyboardVC.view];
-    //    }
+    if ([_eventModel objectForKey:EventItem_RepeatEndDate]) {
+        self.keyboardVC.date = [_eventModel objectForKey:EventItem_RepeatEndDate];
+        
+    }
 }
 
 - (void)hideKeyboard
