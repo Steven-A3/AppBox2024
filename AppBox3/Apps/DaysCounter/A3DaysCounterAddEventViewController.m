@@ -498,6 +498,7 @@
                     UITextView *textView = (UITextView*)[cell viewWithTag:10];
                     textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
                     textView.delegate = self;
+                    textView.scrollEnabled = NO;
                 }
                     break;
                 case EventCellType_DateInput:{
@@ -868,11 +869,35 @@
                 retHeight = 236.0;
                 break;
             case EventCellType_Notes:{
+//                NSString *str = [_eventModel objectForKey:EventItem_Notes];
+//                CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, 99999.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
+//                retHeight = strBounds.size.height + 24.0;
+//                if ( retHeight < 180.0 )
+//                    retHeight = 180.0;
+                
                 NSString *str = [_eventModel objectForKey:EventItem_Notes];
-                CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, 99999.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
-                retHeight = strBounds.size.height + 24.0;
-                if ( retHeight < 180.0 )
-                    retHeight = 180.0;
+                NSDictionary *textAttributes = @{
+                                                 NSFontAttributeName : [UIFont systemFontOfSize:17]
+                                                 };
+                
+                NSString *testText = str ? str : @"";
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:testText attributes:textAttributes];
+                UITextView *txtView = [[UITextView alloc] init];
+                [txtView setAttributedText:attributedString];
+                float margin = IS_IPAD ? 49:31;
+                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
+                //float cellHeight = txtViewSize.height + 20;
+                float cellHeight = txtViewSize.height;
+                
+                // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
+                float defaultCellHeight = 180.0;
+                
+                if (cellHeight < defaultCellHeight) {
+                    return defaultCellHeight;
+                }
+                else {
+                    return cellHeight;
+                }
             }
                 break;
             case EventCellType_Advanced:
@@ -1648,34 +1673,42 @@
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    NSString *str = [textView.text stringByReplacingCharactersInRange:range withString:text];
     
-    [_eventModel setObject:str forKey:EventItem_Notes];
-    
-    CGRect strBounds = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, 99999.0) options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : textView.font} context:nil];
-
-    UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-    CGFloat diffHeight = (strBounds.size.height + 24.0 < 180.0 ? 0.0 : (strBounds.size.height + 24.0) - cell.frame.size.height);
-    
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height + diffHeight);
-    self.tableView.contentSize = CGSizeMake(self.tableView.contentSize.width, self.tableView.contentSize.height + diffHeight);
-    [self.tableView scrollRectToVisible:cell.frame animated:YES];
-    
-    if ( [str length] > 0 )
-        textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-    else
-        textView.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
-    
-    return YES;
+	[self setFirstResponder:nil];
+	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
     [_eventModel setObject:textView.text forKey:EventItem_Notes];
+    
+    if ( [textView.text length] > 0 ) {
+        textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+    }
+    else {
+        textView.textColor = [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0];
+    }
+
+    CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
+    if (newSize.height < 180) {
+        return;
+    }
+    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
+    CGFloat diffHeight = newSize.height - currentCell.frame.size.height;
+    
+    currentCell.frame = CGRectMake(currentCell.frame.origin.x,
+                                   currentCell.frame.origin.y,
+                                   currentCell.frame.size.width,
+                                   newSize.height);
+
+    [UIView beginAnimations:@"cellExpand" context:nil];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:7];
+    [UIView setAnimationDuration:0.25];
+    self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
+    [UIView commitAnimations];
+    
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:2] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

@@ -64,7 +64,6 @@
     [self.navigationController setToolbarHidden:NO];
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] favoriteEventsList]];
     [self.tableView reloadData];
-    //self.navigationItem.rightBarButtonItem.enabled = ([_itemArray count] > 0);
     
     [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];

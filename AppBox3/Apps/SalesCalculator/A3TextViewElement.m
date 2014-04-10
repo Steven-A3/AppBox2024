@@ -56,16 +56,16 @@
 	return cell;
 }
 
-- (void)didSelectCellInViewController:(UIViewController *)viewController tableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath {
+- (void)didSelectCellInViewController:(UIViewController *)viewController tableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
+{
     A3JHTableViewCell *cell = (A3JHTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
-    //A3JHTableViewCell *cell = (A3JHTableViewCell *)[tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row==0 inSection:indexPath.section]];
     cell.accessoryType = UITableViewCellAccessoryNone;
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
--(CGFloat)currentHeight {
-    
+-(CGFloat)currentHeight
+{
     if (_currentHeight==0) {
         CGFloat width = IS_IPHONE ? 320.0 - 30 : (IS_LANDSCAPE ? 704 - 43 : 768 - 43);
         UITextView * textView = [UITextView new];
@@ -101,8 +101,8 @@
     return YES;
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     NSString * result = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (result.length == 0) {
         self.value = result;
@@ -126,8 +126,8 @@
 	}
 }
 
-- (void)textViewDidChange:(UITextView *)textView {
-
+- (void)textViewDidChange:(UITextView *)textView
+{
     self.value = textView.text;
     
     CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];

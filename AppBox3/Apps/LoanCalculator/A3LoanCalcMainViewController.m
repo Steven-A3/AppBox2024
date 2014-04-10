@@ -2245,42 +2245,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     
     _loanData.note = textView.text;
     
-//    [self.tableView beginUpdates];
-    
-//    CGRect frame = textView.frame;
-//    frame.size.height = textView.contentSize.height+25;
-//    textView.frame = frame;
-//    
-//    textViewHeight = frame.size.height;
-    
-//    [self.tableView endUpdates];
-    
-    
-    // KJH
-//    __block CGFloat diffHeight;
-//    
-//    [CATransaction begin];
-//    [CATransaction setCompletionBlock:^{
-//        [UIView beginAnimations:@"cellExpand" context:nil];
-//        [UIView setAnimationBeginsFromCurrentState:YES];
-//        [UIView setAnimationCurve:7];
-//        [UIView setAnimationDuration:0.25];
-//        self.tableView.contentOffset = CGPointMake(0.0, self.tableView.contentOffset.y + diffHeight);
-//        [UIView commitAnimations];
-//    }];
-//    
-//    [self.tableView beginUpdates];
-//    CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
-//    UITableViewCell *currentCell = (UITableViewCell *)[[[textView superview] superview] superview];
-//    diffHeight = newSize.height - currentCell.frame.size.height;
-//    
-//    currentCell.frame = CGRectMake(currentCell.frame.origin.x,
-//                                   currentCell.frame.origin.y,
-//                                   currentCell.frame.size.width,
-//                                   newSize.height);
-//    [self.tableView endUpdates];
-//    [CATransaction commit];
-
     CGSize newSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, MAXFLOAT)];
     if (newSize.height < 180) {
         return;
@@ -2892,7 +2856,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
                 if (cellHeight < defaultCellHeight) {
                     return defaultCellHeight;
                 }
-                
                 else {
                     return cellHeight;
                 }
