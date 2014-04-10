@@ -1215,7 +1215,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay
 {
     if ( toDate == nil || fromDate == nil) {
-		return @"";
+		return @" ";
     }
     
     NSDate *smallDate = fromDate;
@@ -1310,6 +1310,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     
     NSString *result = [resultArray componentsJoinedByString:@" "];
+    if ([result isEqualToString:@""]) {
+        result = @" ";
+    }
     return result;
 }
 

@@ -26,6 +26,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *searchButton;
 @property (strong, nonatomic) IBOutlet UILabel *headerEventLabel;
+@property (weak, nonatomic) IBOutlet UILabel *headerEventLabel_iPad;
+
 @property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *verticalSeperators;
 
 - (IBAction)photoViewAction:(id)sender;

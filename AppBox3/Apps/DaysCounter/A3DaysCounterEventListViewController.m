@@ -489,7 +489,7 @@
                                                      allDayOption:[item.isAllDay boolValue]
                                                            repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
-        if ([markLabel.text isEqualToString:@"Since"]) {
+        if ([markLabel.text isEqualToString:@"since"]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         else {
@@ -506,7 +506,6 @@
                                                                                                                           toDate:startDate //[item startDate]
                                                                                                                         isAllDay:[item.isAllDay boolValue]]];
         }
-        
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
@@ -536,6 +535,7 @@
                 dateLabel.text = [A3DateHelper dateStringFromDate:startDate
                                                        withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 dateLabel.hidden = NO;
+                ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
             }
         }
         

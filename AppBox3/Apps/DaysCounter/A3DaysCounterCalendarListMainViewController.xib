@@ -10,7 +10,8 @@
                 <outlet property="bottomToolbar" destination="4qe-bg-2TE" id="OBg-yW-OQn"/>
                 <outlet property="editButton" destination="5oo-pn-Rs5" id="pTj-oZ-QQb"/>
                 <outlet property="footerView" destination="NCo-qs-zff" id="Kvh-fP-5mg"/>
-                <outlet property="headerEventLabel" destination="GrP-W4-GKm" id="ZMF-rf-7Ap"/>
+                <outlet property="headerEventLabel" destination="cwh-zt-SKb" id="p5j-Pg-jPx"/>
+                <outlet property="headerEventLabel_iPad" destination="GrP-W4-GKm" id="Ec5-Oh-SgU"/>
                 <outlet property="headerSeparator1_TopConst_iPad" destination="KlN-0h-1Aj" id="Nee-vJ-t5r"/>
                 <outlet property="headerSeparator1_TopConst_iPhone" destination="Lgg-b3-N71" id="8qE-sW-Fk4"/>
                 <outlet property="headerSeparator2_TopConst_iPad" destination="hac-lC-bun" id="Q58-pK-wkL"/>

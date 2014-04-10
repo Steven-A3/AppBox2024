@@ -17,4 +17,5 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleBottomConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleRightSpaceConst;
 @end

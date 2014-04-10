@@ -132,23 +132,8 @@
         _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
-//        [UIView animateWithDuration:duration animations:^{
-//            [self.view layoutIfNeeded];
-//        }];
     }
 }
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-//{
-//    if ( IS_IPAD ) {
-//        CGFloat barWidth = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768 : 1024;
-//        _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
-//        _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
-//        _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
-//        [UIView animateWithDuration:duration animations:^{
-//            [self.view layoutIfNeeded];
-//        }];
-//    }
-//}
 
 - (void)setupHeaderInfo
 {
@@ -157,7 +142,12 @@
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
     _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
     _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-");
-    _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+    if (IS_IPAD) {
+        _headerEventLabel_iPad.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+    }
+    else {
+        _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+    }
 }
 
 #pragma mark Initialize FontSize
