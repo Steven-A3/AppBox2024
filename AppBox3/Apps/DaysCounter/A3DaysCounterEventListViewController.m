@@ -485,7 +485,7 @@
         
         // daysLabel
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
-            daysLabel.text = @"";
+            daysLabel.text = @" ";
         }
         else {
             daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
@@ -651,14 +651,14 @@
         
         if ( _sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
-            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
         }
         else {
             ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListDateCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
-            ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
-            ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
+            ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 89 : 102;
+            ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 89 : 102;
         }
     }
     else {

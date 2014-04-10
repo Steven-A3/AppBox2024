@@ -125,7 +125,7 @@
         [cell addSubview:unReadMark];
         
         [unReadMark makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(cell.contentView.left).with.offset(8);
+            make.leading.equalTo(cell.contentView.left).with.offset(IS_IPAD ? 23 : 10);
             make.centerY.equalTo(cell.textLabel.centerY);
             make.width.equalTo(@10);
             make.height.equalTo(@10);

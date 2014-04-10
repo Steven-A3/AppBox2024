@@ -15,4 +15,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoLeadingConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *photoWidthConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *untilRoundWidthConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleBottomConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sinceBottomConst;
 @end
