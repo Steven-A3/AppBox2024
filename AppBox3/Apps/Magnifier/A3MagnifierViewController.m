@@ -125,12 +125,21 @@ static const int MAX_ZOOM_FACTOR = 6;
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(IS_IPAD) {
         [self setPreviewRotation:screenBounds];
+        [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 106, self.flashbrightslider.frame.size.height)];
+        [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 106, self.brightnessslider.frame.size.height)];
+        [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 106, self.magnifierslider.frame.size.height)];
+
     }
+    else {
+        [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 98, self.flashbrightslider.frame.size.height)];
+        [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 98, self.brightnessslider.frame.size.height)];
+        [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 98, self.magnifierslider.frame.size.height)];
+        
+    }
+ 
     [self.statusBarBackground setFrame:CGRectMake(self.statusBarBackground.bounds.origin.x, self.statusBarBackground.bounds.origin.y , screenBounds.size.width , self.statusBarBackground.bounds.size.height)];
-    [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 82, self.flashbrightslider.frame.size.height)];
-    [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 82, self.brightnessslider.frame.size.height)];
-    [self.magnifierslider setFrame:CGRectMake(self.magnifierslider.frame.origin.x, self.magnifierslider.frame.origin.y  , screenBounds.size.width - 82, self.magnifierslider.frame.size.height)];
     [self.bottomToolBar setFrame:CGRectMake(self.bottomToolBar.bounds.origin.x, screenBounds.size.height - 74 , screenBounds.size.width, 74)];
+
 }
 
 - (void) setupPreview {
