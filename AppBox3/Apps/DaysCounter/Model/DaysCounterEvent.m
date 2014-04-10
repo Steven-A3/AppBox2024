@@ -1,35 +1,37 @@
 //
 //  DaysCounterEvent.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 5..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by kimjeonghwan on 4/10/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "DaysCounterEvent.h"
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEventLocation.h"
 
+
 @implementation DaysCounterEvent
 
+@dynamic alertDatetime;
+@dynamic calendarId;
+@dynamic durationOption;
+@dynamic endDate;
 @dynamic eventId;
 @dynamic eventKitId;
-@dynamic calendarId;
 @dynamic eventName;
-@dynamic isLunar;
 @dynamic imageFilename;
 @dynamic isAllDay;
-@dynamic isPeriod;
-@dynamic startDate;
-@dynamic endDate;
-@dynamic repeatType;
-@dynamic repeatEndDate;
-@dynamic alertDatetime;
-@dynamic durationOption;
-@dynamic notes;
 @dynamic isFavorite;
+@dynamic isLunar;
+@dynamic isPeriod;
+@dynamic notes;
 @dynamic regDate;
-@dynamic location;
+@dynamic repeatEndDate;
+@dynamic repeatType;
+@dynamic startDate;
+@dynamic effectiveStartDate;
 @dynamic calendar;
+@dynamic location;
 
 @end

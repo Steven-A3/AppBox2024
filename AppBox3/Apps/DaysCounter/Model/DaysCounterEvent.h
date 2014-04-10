@@ -1,9 +1,9 @@
 //
 //  DaysCounterEvent.h
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 5..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by kimjeonghwan on 4/10/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -13,24 +13,25 @@
 
 @interface DaysCounterEvent : NSManagedObject
 
+@property (nonatomic, retain) NSDate * alertDatetime;
+@property (nonatomic, retain) NSString * calendarId;
+@property (nonatomic, retain) NSNumber * durationOption;
+@property (nonatomic, retain) NSDate * endDate;
 @property (nonatomic, retain) NSString * eventId;
 @property (nonatomic, retain) NSString * eventKitId;
-@property (nonatomic, retain) NSString * calendarId;
 @property (nonatomic, retain) NSString * eventName;
-@property (nonatomic, retain) NSNumber * isLunar;
 @property (nonatomic, retain) NSString * imageFilename;
 @property (nonatomic, retain) NSNumber * isAllDay;
-@property (nonatomic, retain) NSNumber * isPeriod;
-@property (nonatomic, retain) NSDate * startDate;
-@property (nonatomic, retain) NSDate * endDate;
-@property (nonatomic, retain) NSNumber * repeatType;
-@property (nonatomic, retain) NSDate * repeatEndDate;
-@property (nonatomic, retain) NSDate * alertDatetime;
-@property (nonatomic, retain) NSNumber * durationOption;
-@property (nonatomic, retain) NSString * notes;
 @property (nonatomic, retain) NSNumber * isFavorite;
+@property (nonatomic, retain) NSNumber * isLunar;
+@property (nonatomic, retain) NSNumber * isPeriod;
+@property (nonatomic, retain) NSString * notes;
 @property (nonatomic, retain) NSDate * regDate;
-@property (nonatomic, retain) DaysCounterEventLocation *location;
+@property (nonatomic, retain) NSDate * repeatEndDate;
+@property (nonatomic, retain) NSNumber * repeatType;
+@property (nonatomic, retain) NSDate * startDate;
+@property (nonatomic, retain) NSDate * effectiveStartDate;
 @property (nonatomic, retain) DaysCounterCalendar *calendar;
+@property (nonatomic, retain) DaysCounterEventLocation *location;
 
 @end
