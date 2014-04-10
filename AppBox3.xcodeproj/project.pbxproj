@@ -422,6 +422,11 @@
 		687D0D0F17CAE519005AB571 /* HolidayData+MiddleEast.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0717CAE519005AB571 /* HolidayData+MiddleEast.m */; };
 		687D0D1017CAE519005AB571 /* HolidayData.m in Sources */ = {isa = PBXBuildFile; fileRef = 687D0D0917CAE519005AB571 /* HolidayData.m */; };
 		687F45D417E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 687F45D317E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m */; };
+		687F927D18F5FEE3006377B9 /* UnitItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687F927C18F5FEE3006377B9 /* UnitItem.m */; };
+		687F928018F5FEE3006377B9 /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 687F927F18F5FEE3006377B9 /* UnitHistoryItem.m */; };
+		687F928318F5FEE3006377B9 /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 687F928218F5FEE3006377B9 /* UnitHistory.m */; };
+		687F928618F603F1006377B9 /* A3UnitConverterMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687F928518F603F1006377B9 /* A3UnitConverterMoreTableViewController.m */; };
+		687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 687F928818F69C74006377B9 /* A3MoreTableViewCell.m */; };
 		687FF89A17D1931100130ABC /* A3HolidaysCountrySearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */; };
 		688257AA17D37863006429D3 /* A3HolidaysEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 688257A917D37863006429D3 /* A3HolidaysEditViewController.m */; };
 		688257B117D37D37006429D3 /* A3HolidaysEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 688257B017D37D37006429D3 /* A3HolidaysEditCell.m */; };
@@ -680,10 +685,7 @@
 		68B6A4A218CF3311004084EF /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A118CF3311004084EF /* WalletFieldItem.m */; };
 		68B6A4A518CF335D004084EF /* UnitConvertItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A418CF335D004084EF /* UnitConvertItem.m */; };
 		68B6A4A818CF335E004084EF /* UnitType.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A718CF335E004084EF /* UnitType.m */; };
-		68B6A4AB18CF335E004084EF /* UnitItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4AA18CF335E004084EF /* UnitItem.m */; };
-		68B6A4AE18CF335E004084EF /* UnitHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4AD18CF335E004084EF /* UnitHistory.m */; };
 		68B6A4B118CF335E004084EF /* UnitFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4B018CF335E004084EF /* UnitFavorite.m */; };
-		68B6A4B418CF335E004084EF /* UnitHistoryItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4B318CF335E004084EF /* UnitHistoryItem.m */; };
 		68B6A4B718CF34A1004084EF /* UnitPriceHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4B618CF34A1004084EF /* UnitPriceHistory.m */; };
 		68B9B15717CF4D8F003ACAD0 /* FXPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15617CF4D8F003ACAD0 /* FXPageControl.m */; };
 		68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B9B15B17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m */; };
@@ -1566,6 +1568,16 @@
 		687D0D0917CAE519005AB571 /* HolidayData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = HolidayData.m; path = Holidays/HolidayData.m; sourceTree = "<group>"; };
 		687F45D217E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysFlickrDownloadManager.h; path = Holidays/A3HolidaysFlickrDownloadManager.h; sourceTree = "<group>"; };
 		687F45D317E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysFlickrDownloadManager.m; path = Holidays/A3HolidaysFlickrDownloadManager.m; sourceTree = "<group>"; };
+		687F927B18F5FEE3006377B9 /* UnitItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitItem.h; sourceTree = "<group>"; };
+		687F927C18F5FEE3006377B9 /* UnitItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitItem.m; sourceTree = "<group>"; };
+		687F927E18F5FEE3006377B9 /* UnitHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistoryItem.h; sourceTree = "<group>"; };
+		687F927F18F5FEE3006377B9 /* UnitHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistoryItem.m; sourceTree = "<group>"; };
+		687F928118F5FEE3006377B9 /* UnitHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistory.h; sourceTree = "<group>"; };
+		687F928218F5FEE3006377B9 /* UnitHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistory.m; sourceTree = "<group>"; };
+		687F928418F603F1006377B9 /* A3UnitConverterMoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitConverterMoreTableViewController.h; sourceTree = "<group>"; };
+		687F928518F603F1006377B9 /* A3UnitConverterMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitConverterMoreTableViewController.m; sourceTree = "<group>"; };
+		687F928718F69C74006377B9 /* A3MoreTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MoreTableViewCell.h; sourceTree = "<group>"; };
+		687F928818F69C74006377B9 /* A3MoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3MoreTableViewCell.m; sourceTree = "<group>"; };
 		687FF89817D1931100130ABC /* A3HolidaysCountrySearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysCountrySearchViewController.h; path = Holidays/A3HolidaysCountrySearchViewController.h; sourceTree = "<group>"; };
 		687FF89917D1931100130ABC /* A3HolidaysCountrySearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3HolidaysCountrySearchViewController.m; path = Holidays/A3HolidaysCountrySearchViewController.m; sourceTree = "<group>"; };
 		688257A817D37863006429D3 /* A3HolidaysEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3HolidaysEditViewController.h; path = Holidays/A3HolidaysEditViewController.h; sourceTree = "<group>"; };
@@ -2080,14 +2092,8 @@
 		68B6A4A418CF335D004084EF /* UnitConvertItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitConvertItem.m; sourceTree = "<group>"; };
 		68B6A4A618CF335E004084EF /* UnitType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitType.h; sourceTree = "<group>"; };
 		68B6A4A718CF335E004084EF /* UnitType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitType.m; sourceTree = "<group>"; };
-		68B6A4A918CF335E004084EF /* UnitItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitItem.h; sourceTree = "<group>"; };
-		68B6A4AA18CF335E004084EF /* UnitItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitItem.m; sourceTree = "<group>"; };
-		68B6A4AC18CF335E004084EF /* UnitHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistory.h; sourceTree = "<group>"; };
-		68B6A4AD18CF335E004084EF /* UnitHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistory.m; sourceTree = "<group>"; };
 		68B6A4AF18CF335E004084EF /* UnitFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitFavorite.h; sourceTree = "<group>"; };
 		68B6A4B018CF335E004084EF /* UnitFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitFavorite.m; sourceTree = "<group>"; };
-		68B6A4B218CF335E004084EF /* UnitHistoryItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitHistoryItem.h; sourceTree = "<group>"; };
-		68B6A4B318CF335E004084EF /* UnitHistoryItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitHistoryItem.m; sourceTree = "<group>"; };
 		68B6A4B518CF34A1004084EF /* UnitPriceHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceHistory.h; sourceTree = "<group>"; };
 		68B6A4B618CF34A1004084EF /* UnitPriceHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceHistory.m; sourceTree = "<group>"; };
 		68B9B15517CF4D8F003ACAD0 /* FXPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXPageControl.h; path = External/FXPageControl/FXPageControl/FXPageControl.h; sourceTree = "<group>"; };
@@ -2900,6 +2906,8 @@
 				17D4277F4622416B208150E0 /* A3StandardLeft15Cell.h */,
 				17D42D3D707857C563B160A0 /* A3StandardTableViewCell.h */,
 				17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */,
+				687F928718F69C74006377B9 /* A3MoreTableViewCell.h */,
+				687F928818F69C74006377B9 /* A3MoreTableViewCell.m */,
 			);
 			path = TableViewController;
 			sourceTree = "<group>";
@@ -4107,6 +4115,8 @@
 				68B6A1E218CEC76C004084EF /* UIViewController+UnitConverter.h */,
 				68B6A1E318CEC76C004084EF /* UIViewController+UnitConverter.m */,
 				68B6A1E418CEC76C004084EF /* UnitConverterPhoneStoryboard.storyboard */,
+				687F928418F603F1006377B9 /* A3UnitConverterMoreTableViewController.h */,
+				687F928518F603F1006377B9 /* A3UnitConverterMoreTableViewController.m */,
 			);
 			path = UnitConverter;
 			sourceTree = "<group>";
@@ -4114,14 +4124,14 @@
 		68B6A1C818CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				68B6A4B218CF335E004084EF /* UnitHistoryItem.h */,
-				68B6A4B318CF335E004084EF /* UnitHistoryItem.m */,
+				687F928118F5FEE3006377B9 /* UnitHistory.h */,
+				687F928218F5FEE3006377B9 /* UnitHistory.m */,
+				687F927E18F5FEE3006377B9 /* UnitHistoryItem.h */,
+				687F927F18F5FEE3006377B9 /* UnitHistoryItem.m */,
+				687F927B18F5FEE3006377B9 /* UnitItem.h */,
+				687F927C18F5FEE3006377B9 /* UnitItem.m */,
 				68B6A4AF18CF335E004084EF /* UnitFavorite.h */,
 				68B6A4B018CF335E004084EF /* UnitFavorite.m */,
-				68B6A4AC18CF335E004084EF /* UnitHistory.h */,
-				68B6A4AD18CF335E004084EF /* UnitHistory.m */,
-				68B6A4A918CF335E004084EF /* UnitItem.h */,
-				68B6A4AA18CF335E004084EF /* UnitItem.m */,
 				68B6A4A618CF335E004084EF /* UnitType.h */,
 				68B6A4A718CF335E004084EF /* UnitType.m */,
 				68B6A4A318CF335D004084EF /* UnitConvertItem.h */,
@@ -5577,6 +5587,7 @@
 				68B6A45218CEE781004084EF /* PSTCollectionViewUpdateItem.m in Sources */,
 				68D0732018210B5100D34870 /* A3RoundedSideButton.m in Sources */,
 				68D61BD817F53FB400EF4B5E /* DKLiveBlurView.m in Sources */,
+				687F928618F603F1006377B9 /* A3UnitConverterMoreTableViewController.m in Sources */,
 				680D639A18CFF9D400938AD0 /* Calculation.m in Sources */,
 				68E2A65D18D0B1FC00E834D9 /* A3PercentCalcHeaderView.m in Sources */,
 				68ADE14817D83D28009618A7 /* MMDrawerController.m in Sources */,
@@ -5699,6 +5710,7 @@
 				6823F6FE1863294700E6E90D /* CurrencyHistory+handler.m in Sources */,
 				68B6A35918CEDDD1004084EF /* JVFloatLabeledTextView.m in Sources */,
 				68C1ABFA18B1C05200021001 /* NSDateFormatter+LunarDate.m in Sources */,
+				687F928318F5FEE3006377B9 /* UnitHistory.m in Sources */,
 				68D8F4FF1888345F008617C6 /* A3SettingsDropboxSelectBackupViewController.m in Sources */,
 				68143D0618E3EC1F00569691 /* A3NumberKeyboardViewController_iPad.m in Sources */,
 				68F1C8FC18D7FA41009FAE8A /* MPFoldNavPopSegue.m in Sources */,
@@ -5710,7 +5722,6 @@
 				68B6A2DC18CEC76D004084EF /* UnitConvertItem+initialize.m in Sources */,
 				6825365518A7AA4C00EAFB84 /* NSArray+MASAdditions.m in Sources */,
 				6829682218503B2100B70E13 /* NSManagedObjectContext+MagicalRecord.m in Sources */,
-				68B6A4AB18CF335E004084EF /* UnitItem.m in Sources */,
 				68E2A64A18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.m in Sources */,
 				68B6A2F418CEC76D004084EF /* A3UnitPriceMainTableController.m in Sources */,
 				68F1C8AB18D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.m in Sources */,
@@ -5726,7 +5737,6 @@
 				68B6A33918CEC76D004084EF /* A3WalletPhotoItemTitleView.m in Sources */,
 				6895347E178686AF007061CA /* UIImage+Reflection.m in Sources */,
 				68B6A30A18CEC76D004084EF /* WalletData.m in Sources */,
-				68B6A4B418CF335E004084EF /* UnitHistoryItem.m in Sources */,
 				6825365318A7AA4C00EAFB84 /* MASViewAttribute.m in Sources */,
 				6872DD3217B3D56600C1BF44 /* NSDate+TimeAgo.m in Sources */,
 				68E2A6AF18D0B22800E834D9 /* A3TipCalcCircle.m in Sources */,
@@ -5927,7 +5937,6 @@
 				68E2A64E18D0B1FC00E834D9 /* A3ExpenseListPreference.m in Sources */,
 				684D92BF18BC1EFE005016F7 /* A3BatteryStatusManager.m in Sources */,
 				68F1C8AD18D7F37D009FAE8A /* A3DaysCounterSlideshowTransitionSelectViewController.m in Sources */,
-				68B6A4AE18CF335E004084EF /* UnitHistory.m in Sources */,
 				680886D51891751B0093FD97 /* A3ClockFlipViewController.m in Sources */,
 				68F1C8FA18D7FA41009FAE8A /* MPFlipSegue.m in Sources */,
 				68B6A45A18CEE781004084EF /* NSData+GIF.m in Sources */,
@@ -6004,6 +6013,7 @@
 				685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */,
 				68B6A34618CEC76D004084EF /* A3WalletCateViewController.m in Sources */,
 				6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */,
+				687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
 				68E2A6CF18D0B46400E834D9 /* TipCalcRoundMethod.m in Sources */,
 				684D92F218BC1FBC005016F7 /* A3DateCalcDurationViewController.m in Sources */,
@@ -6136,6 +6146,7 @@
 				68E2A6C818D0B41E00E834D9 /* ExpenseListCategories.m in Sources */,
 				68B6A2C418CEC76D004084EF /* A3LoanCalcLoanInfo3Cell.m in Sources */,
 				68B6A46418CEE781004084EF /* UIImage+GIF.m in Sources */,
+				687F927D18F5FEE3006377B9 /* UnitItem.m in Sources */,
 				68E2A6D518D0B46500E834D9 /* TipCalcHistory.m in Sources */,
 				68F1C8CD18D7F37D009FAE8A /* A3LadyCalendarModelManager.m in Sources */,
 				68B6A48418CF3154004084EF /* LoanCalcComparisonHistory.m in Sources */,
@@ -6161,6 +6172,7 @@
 				68B6A2BD18CEC76D004084EF /* A3LoanCalcComparisonHistoryCell.m in Sources */,
 				68B6A34418CEC76D004084EF /* A3WalletCategorySelectViewController.m in Sources */,
 				68143D5518E3EC7C00569691 /* A3JHTableViewExpandableElement.m in Sources */,
+				687F928018F5FEE3006377B9 /* UnitHistoryItem.m in Sources */,
 				68143D6418E3EC7C00569691 /* A3TableViewExpandableElement.m in Sources */,
 				68B6A31118CEC76D004084EF /* WalletItem+initialize.m in Sources */,
 				17D42BE8FBF00830AA2C09E7 /* A3MainMenuTableViewController.m in Sources */,

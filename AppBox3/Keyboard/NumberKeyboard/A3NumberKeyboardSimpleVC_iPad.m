@@ -89,7 +89,7 @@
 		[self.clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];
 		[self.num0Button setFrame:CGRectMake(col_3, row_4, width_small, height_small)];
 	} else {
-		[self.clearButton setFrame:CGRectMake(col_5, row_2, width_small, height_small)];
+		[self.clearButton setFrame:CGRectMake(col_5, row_2, width_big, height_small)];
 		[self.num0Button setFrame:CGRectMake(col_2, row_4, width_extra, height_small)];
 	}
 }

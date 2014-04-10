@@ -1,0 +1,61 @@
+//
+//  A3MoreTableViewCell.m
+//  AppBox3
+//
+//  Created by A3 on 4/10/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3MoreTableViewCell.h"
+#import "UITableViewController+standardDimension.h"
+
+@implementation A3MoreTableViewCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+		self.backgroundColor = [UIColor clearColor];
+
+		_cellImageView = [UIImageView new];
+		[self addSubview:_cellImageView];
+
+		[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.centerY.equalTo(self.centerY);
+		}];
+		_cellTitleLabel = [UILabel new];
+		_cellTitleLabel.font = A3UITableViewTextLabelFont;
+		[self addSubview:_cellTitleLabel];
+
+		[_cellTitleLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(_cellImageView.right).with.offset(13);
+			make.centerY.equalTo(self.centerY);
+		}];
+
+		UIView *customSeparator = [UIView new];
+		customSeparator.backgroundColor = A3UITableViewSeparatorColor;
+		[self addSubview:customSeparator];
+		[customSeparator makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.top.equalTo(self.bottom).with.offset(-1);
+			make.right.equalTo(self.right);
+			make.height.equalTo(IS_RETINA? @0.5 : @1.0);
+		}];
+    }
+    return self;
+}
+
+- (void)awakeFromNib
+{
+    // Initialization code
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

@@ -39,8 +39,15 @@
 		}
 		self.textLabel.frame = frame;
 	} else {
+		CGFloat originX = IS_IPHONE ? 15 : 28;
+		if (self.imageView.bounds.size.width) {
+			CGRect frame = self.imageView.frame;
+			frame.origin.x = originX;
+			self.imageView.frame = frame;
+			originX += self.imageView.bounds.size.width + 13.0;
+		}
 		CGRect frame = self.textLabel.frame;
-		frame.origin.x = 15;
+		frame.origin.x = originX;
 		self.textLabel.frame = frame;
 	}
 }

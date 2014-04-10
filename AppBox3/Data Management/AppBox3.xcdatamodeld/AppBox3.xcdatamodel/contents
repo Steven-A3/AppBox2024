@@ -262,13 +262,13 @@
     <entity name="UnitHistory" representedClassName="UnitHistory" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="source" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistory" inverseEntity="UnitItem" syncable="YES"/>
-        <relationship name="targets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitHistoryItem" inverseName="history" inverseEntity="UnitHistoryItem" syncable="YES"/>
+        <relationship name="source" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistories" inverseEntity="UnitItem" syncable="YES"/>
+        <relationship name="targets" toMany="YES" deletionRule="Cascade" destinationEntity="UnitHistoryItem" inverseName="history" inverseEntity="UnitHistoryItem" syncable="YES"/>
     </entity>
     <entity name="UnitHistoryItem" representedClassName="UnitHistoryItem" syncable="YES">
-        <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistory" inverseName="targets" inverseEntity="UnitHistory" syncable="YES"/>
-        <relationship name="unit" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistoryItem" inverseEntity="UnitItem" syncable="YES"/>
+        <attribute name="order" attributeType="String" syncable="YES"/>
+        <relationship name="history" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistory" inverseName="targets" inverseEntity="UnitHistory" syncable="YES"/>
+        <relationship name="unit" maxCount="1" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="unitHistoryItems" inverseEntity="UnitItem" syncable="YES"/>
     </entity>
     <entity name="UnitItem" representedClassName="UnitItem" syncable="YES">
         <attribute name="conversionRate" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -277,8 +277,8 @@
         <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitFavorite" inverseName="item" inverseEntity="UnitFavorite" syncable="YES"/>
         <relationship name="type" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitType" inverseName="items" inverseEntity="UnitType" syncable="YES"/>
         <relationship name="unitConvertItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitConvertItem" inverseName="item" inverseEntity="UnitConvertItem" syncable="YES"/>
-        <relationship name="unitHistory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistory" inverseName="source" inverseEntity="UnitHistory" syncable="YES"/>
-        <relationship name="unitHistoryItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitHistoryItem" inverseName="unit" inverseEntity="UnitHistoryItem" syncable="YES"/>
+        <relationship name="unitHistories" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnitHistory" inverseName="source" inverseEntity="UnitHistory" syncable="YES"/>
+        <relationship name="unitHistoryItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnitHistoryItem" inverseName="unit" inverseEntity="UnitHistoryItem" syncable="YES"/>
         <relationship name="unitPriceFavorite" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UnitPriceFavorite" inverseName="item" inverseEntity="UnitPriceFavorite" syncable="YES"/>
         <relationship name="unitPriceHistories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitPriceHistoryItem" inverseName="unit" inverseEntity="UnitPriceHistoryItem" syncable="YES"/>
         <relationship name="unitPriceInfos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitPriceInfo" inverseName="unit" inverseEntity="UnitPriceInfo" syncable="YES"/>
@@ -354,8 +354,8 @@
         <relationship name="fieldItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="walletItem" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Calculation" positionX="-585" positionY="-405" width="128" height="90"/>
-        <element name="CurrencyFavorite" positionX="351" positionY="-549" width="128" height="120"/>
+        <element name="Calculation" positionX="-783" positionY="-441" width="128" height="90"/>
+        <element name="CurrencyFavorite" positionX="358" positionY="-549" width="128" height="120"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
@@ -364,35 +364,35 @@
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
-        <element name="ExpenseListCategories" positionX="540" positionY="-405" width="135" height="75"/>
+        <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="75"/>
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="73"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="163"/>
-        <element name="LadyCalendarAccount" positionX="-558" positionY="-369" width="128" height="148"/>
-        <element name="LadyCalendarPeriod" positionX="-567" positionY="-378" width="128" height="223"/>
-        <element name="LoanCalcComparisonHistory" positionX="115" positionY="593" width="128" height="135"/>
-        <element name="LoanCalcHistory" positionX="313" positionY="536" width="128" height="433"/>
-        <element name="PercentCalcHistory" positionX="-567" positionY="-378" width="128" height="75"/>
-        <element name="SalesCalcHistory" positionX="-576" positionY="-387" width="128" height="210"/>
-        <element name="TipCalcHistory" positionX="-540" positionY="-351" width="128" height="103"/>
-        <element name="TipCalcRecently" positionX="-558" positionY="-369" width="128" height="268"/>
-        <element name="TipCalcRoundMethod" positionX="-576" positionY="-387" width="128" height="148"/>
+        <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="148"/>
+        <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="223"/>
+        <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="135"/>
+        <element name="LoanCalcHistory" positionX="421" positionY="536" width="128" height="433"/>
+        <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="75"/>
+        <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="210"/>
+        <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>
+        <element name="TipCalcRecently" positionX="-774" positionY="-306" width="128" height="268"/>
+        <element name="TipCalcRoundMethod" positionX="-585" positionY="-189" width="128" height="148"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="75"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="105"/>
         <element name="TranslatorHistory" positionX="-207" positionY="-189" width="128" height="120"/>
-        <element name="UnitConvertItem" positionX="378" positionY="99" width="128" height="73"/>
-        <element name="UnitFavorite" positionX="-153" positionY="-36" width="128" height="73"/>
-        <element name="UnitHistory" positionX="531" positionY="149" width="128" height="103"/>
-        <element name="UnitHistoryItem" positionX="-792" positionY="9" width="128" height="88"/>
-        <element name="UnitItem" positionX="279" positionY="279" width="128" height="208"/>
-        <element name="UnitPriceFavorite" positionX="-369" positionY="92" width="128" height="73"/>
-        <element name="UnitPriceHistory" positionX="-551" positionY="137" width="128" height="73"/>
-        <element name="UnitPriceHistoryItem" positionX="-765" positionY="324" width="128" height="178"/>
-        <element name="UnitPriceInfo" positionX="-756" positionY="125" width="128" height="163"/>
-        <element name="UnitType" positionX="-596" positionY="348" width="128" height="88"/>
-        <element name="WalletCategory" positionX="-740" positionY="539" width="128" height="133"/>
-        <element name="WalletFavorite" positionX="-578" positionY="675" width="128" height="73"/>
-        <element name="WalletField" positionX="-576" positionY="539" width="128" height="133"/>
-        <element name="WalletFieldItem" positionX="-324" positionY="513" width="128" height="118"/>
-        <element name="WalletItem" positionX="-585" positionY="776" width="128" height="148"/>
+        <element name="UnitConvertItem" positionX="412" positionY="270" width="128" height="73"/>
+        <element name="UnitFavorite" positionX="7" positionY="90" width="128" height="73"/>
+        <element name="UnitHistory" positionX="-2" positionY="225" width="128" height="103"/>
+        <element name="UnitHistoryItem" positionX="-191" positionY="263" width="128" height="88"/>
+        <element name="UnitItem" positionX="205" positionY="198" width="128" height="210"/>
+        <element name="UnitPriceFavorite" positionX="412" positionY="360" width="128" height="73"/>
+        <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="73"/>
+        <element name="UnitPriceHistoryItem" positionX="-398" positionY="227" width="128" height="178"/>
+        <element name="UnitPriceInfo" positionX="-47" positionY="396" width="128" height="163"/>
+        <element name="UnitType" positionX="412" positionY="162" width="128" height="88"/>
+        <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="133"/>
+        <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
+        <element name="WalletField" positionX="-576" positionY="440" width="128" height="133"/>
+        <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="118"/>
+        <element name="WalletItem" positionX="-585" positionY="677" width="128" height="148"/>
     </elements>
 </model>

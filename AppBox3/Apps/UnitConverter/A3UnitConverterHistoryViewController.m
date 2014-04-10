@@ -45,36 +45,33 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.title = @"History";
     
 	[self rightBarButtonDoneButton];
-    
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Clear" style:UIBarButtonItemStylePlain target:self action:@selector(clearButtonAction:)];
-    
+
 	self.tableView.showsVerticalScrollIndicator = NO;
-    
+	self.tableView.separatorColor = [self tableViewSeparatorColor];
+	[self setupTableFooterView];
+
+	[self.tableView registerClass:[A3UnitConverterHistory3RowCell class] forCellReuseIdentifier:A3UnitConverterHistory3RowCellID];
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)setupTableFooterView {
 	UILabel *notice = [[UILabel alloc] init];
 	notice.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 	notice.textColor = [UIColor blackColor];
 	notice.text = @"Each history keeps max 4 units.";
 	notice.textAlignment = NSTextAlignmentCenter;
-    
+
 	CGRect frame = CGRectMake(0.0, 0.0, 320.0, 40.0);
 	UIView *footerView = [[UIView alloc] initWithFrame:frame];
-    footerView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
+	footerView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.1];
 	notice.frame = footerView.bounds;
 	[footerView addSubview:notice];
-    
+
 	self.tableView.tableFooterView = footerView;
-    
-    [self.tableView registerClass:[A3UnitConverterHistory3RowCell class] forCellReuseIdentifier:A3UnitConverterHistory3RowCellID];
-	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
@@ -105,15 +102,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
         
-        NSUInteger section = [self.tableView numberOfSections];
-        for (int i=0; i<section; i++) {
-            NSUInteger row = [self.tableView numberOfRowsInSection:i];
-            for (int j=0; j<row; j++) {
-                NSIndexPath *ip = [NSIndexPath indexPathForRow:j inSection:i];
-                UnitHistory *unitHistory = [_fetchedResultsController objectAtIndexPath:ip];
-                [self deleteHistory:unitHistory];
-            }
-        }
+		[UnitHistory MR_truncateAll];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
 		[self.tableView reloadData];
@@ -135,15 +124,6 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 		}
 	}
 	return _fetchedResultsController;
-}
-
-- (void)deleteHistory:(UnitHistory *)history
-{
-    [history.targets enumerateObjectsUsingBlock:^(UnitHistoryItem *obj, BOOL *stop) {
-        [obj MR_deleteEntity];
-    }];
-    history.targets = nil;
-    [history MR_deleteEntity];
 }
 
 - (NSMutableArray *)unitConverterItemsOfUnitType:(UnitType *)unitType
@@ -268,7 +248,7 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
         // Delete the row from the data source
         
         UnitHistory *history = [_fetchedResultsController objectAtIndexPath:indexPath];
-        [self deleteHistory:history];
+		[history MR_deleteEntity];
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 		_fetchedResultsController = nil;
         

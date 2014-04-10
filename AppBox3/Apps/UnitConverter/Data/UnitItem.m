@@ -2,7 +2,7 @@
 //  UnitItem.m
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by A3 on 4/10/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -25,8 +25,8 @@
 @dynamic favorite;
 @dynamic type;
 @dynamic unitConvertItem;
-@dynamic unitHistory;
-@dynamic unitHistoryItem;
+@dynamic unitHistories;
+@dynamic unitHistoryItems;
 @dynamic unitPriceFavorite;
 @dynamic unitPriceHistories;
 @dynamic unitPriceInfos;

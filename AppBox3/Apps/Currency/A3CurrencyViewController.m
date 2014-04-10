@@ -767,6 +767,8 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 
 			A3NumberKeyboardViewController *keyboardVC = [self simpleNumberKeyboard];
 			self.numberKeyboardViewController = keyboardVC;
+			CurrencyFavorite *currencyFavorite = self.favorites[0];
+			self.numberKeyboardViewController.currencyCode = currencyFavorite.currencyCode;
 			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
 			keyboardVC.textInputTarget = textField;
 			keyboardVC.delegate = self;

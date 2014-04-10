@@ -8,19 +8,10 @@
 
 #import "A3UnitConverterTabBarController.h"
 #import "A3UnitConverterConvertTableViewController.h"
-#import "UnitType.h"
 #import "UnitType+initialize.h"
-#import "UnitItem.h"
-#import "UnitItem+initialize.h"
-#import "common.h"
-#import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "NSUserDefaults+A3Defaults.h"
-#import "A3UIDevice.h"
-#import "UIViewController+MMDrawerController.h"
-#import "A3RootViewController_iPad.h"
-#import "NSString+conversion.h"
-#import "UIViewController+A3Addition.h"
+#import "A3UnitConverterMoreTableViewController.h"
 
 // NSUserDefaults key values:
 NSString *kWhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
@@ -75,10 +66,7 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
 
-//    self.selectedIndex = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
-    
     NSInteger vcIdx = [[NSUserDefaults standardUserDefaults] unitConverterCurrentUnitTap];
     
     if (vcIdx>=0 && vcIdx<self.viewControllers.count) {
@@ -115,7 +103,7 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
 - (NSMutableArray *)unitTypes {
 	if (nil == _unitTypes) {
-        if ([[UnitType MR_numberOfEntities] isEqualToNumber:@0 ]) {
+        if (![UnitType MR_countOfEntities]) {
             [UnitType resetUnitTypeLists];
         }
 		_unitTypes = [NSMutableArray arrayWithArray:[UnitType MR_findAllSortedBy:@"order" ascending:YES]];
@@ -160,47 +148,49 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
 - (void) setupTabBar
 {
-    NSMutableArray *marray = [[NSMutableArray alloc] init];
-    
-    for (int i=0; i<self.unitTypes.count; i++) {
-        UnitType *utype = _unitTypes[i];
+    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
+
+	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;
+    for (NSInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
+        UnitType *unitType = self.unitTypes[idx];
         
         A3UnitConverterConvertTableViewController *vc = [[A3UnitConverterConvertTableViewController alloc] init];
-        vc.unitType = utype;
-        vc.title = utype.unitTypeName;
+        vc.unitType = unitType;
+        vc.title = unitType.unitTypeName;
         
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
 
-        nav.tabBarItem.image = [UIImage imageNamed:utype.flagImagName];
-        nav.tabBarItem.selectedImage = [UIImage imageNamed:utype.selectedFlagImagName];
+        navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImagName];
+        navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImagName];
         
         NSDictionary *textAttributes = @{
                                          NSFontAttributeName : IS_IPAD ? [UIFont systemFontOfSize:12]:[UIFont systemFontOfSize:10]
                                          };
         [[UITabBarItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
         
-        NSArray *unitNameArray = [utype.unitTypeName componentsSeparatedByString:@" "];
-        if (unitNameArray.count>1) {
+        NSArray *unitNameArray = [unitType.unitTypeName componentsSeparatedByString:@" "];
+        if (unitNameArray.count > 1) {
             // khkim_131217 : Fuel Consumption, Electric Current에서 앞쪽 글자만 표시되도록
 //            nav.tabBarItem.title = unitNameArray[0];
             
             if (IS_IPHONE) {
-                nav.tabBarItem.title = unitNameArray[0];
+                navigationController.tabBarItem.title = unitNameArray[0];
                 vc.title = unitNameArray[0];
             }
         }
         else {
-            nav.tabBarItem.title = utype.unitTypeName;
+            navigationController.tabBarItem.title = unitType.unitTypeName;
         }
-        
-        [marray addObject:nav];
+
+		[viewControllers addObject:navigationController];
     }
-    
-    self.viewControllers = marray;
-    
-    [marray exchangeObjectAtIndex:0 withObjectAtIndex:1];
-    
-    self.customizableViewControllers = marray;
+
+	A3UnitConverterMoreTableViewController *moreViewController = [[A3UnitConverterMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	UINavigationController *moreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
+	moreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
+	[viewControllers addObject:moreNavigationController];
+
+    self.viewControllers = viewControllers;
 }
 
 @end

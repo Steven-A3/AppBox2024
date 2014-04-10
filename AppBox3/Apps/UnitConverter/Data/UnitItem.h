@@ -2,7 +2,7 @@
 //  UnitItem.h
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by A3 on 4/10/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -19,14 +19,24 @@
 @property (nonatomic, retain) UnitFavorite *favorite;
 @property (nonatomic, retain) UnitType *type;
 @property (nonatomic, retain) UnitConvertItem *unitConvertItem;
-@property (nonatomic, retain) UnitHistory *unitHistory;
-@property (nonatomic, retain) UnitHistoryItem *unitHistoryItem;
+@property (nonatomic, retain) NSSet *unitHistories;
+@property (nonatomic, retain) NSSet *unitHistoryItems;
 @property (nonatomic, retain) UnitPriceFavorite *unitPriceFavorite;
 @property (nonatomic, retain) NSSet *unitPriceHistories;
 @property (nonatomic, retain) NSSet *unitPriceInfos;
 @end
 
 @interface UnitItem (CoreDataGeneratedAccessors)
+
+- (void)addUnitHistoriesObject:(UnitHistory *)value;
+- (void)removeUnitHistoriesObject:(UnitHistory *)value;
+- (void)addUnitHistories:(NSSet *)values;
+- (void)removeUnitHistories:(NSSet *)values;
+
+- (void)addUnitHistoryItemsObject:(UnitHistoryItem *)value;
+- (void)removeUnitHistoryItemsObject:(UnitHistoryItem *)value;
+- (void)addUnitHistoryItems:(NSSet *)values;
+- (void)removeUnitHistoryItems:(NSSet *)values;
 
 - (void)addUnitPriceHistoriesObject:(UnitPriceHistoryItem *)value;
 - (void)removeUnitPriceHistoriesObject:(UnitPriceHistoryItem *)value;
