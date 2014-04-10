@@ -100,14 +100,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	[self makeBackButtonEmptyArrow];
 
-	// Uncomment the following line to preserve selection between presentations.
-	// self.clearsSelectionOnViewWillAppear = NO;
-
-	// Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-	// self.navigationItem.rightBarButtonItem = self.editButtonItem;
 
 	if (IS_IPHONE) {
-//            [self rightButtonMoreButton];
 		UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
 		UIBarButtonItem *history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
 
@@ -195,8 +189,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     
     self.title = self.vcTitle;
     
-    // left navi item보이기
-    [self showLeftNaviItems];
+	[self showLeftNavigationItems];
     
     [self refreshRightBarItems];
     
@@ -214,7 +207,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[super viewWillLayoutSubviews];
     
 	if (IS_IPAD) {
-        [self showLeftNaviItems];
+		[self showLeftNavigationItems];
 	}
 }
 
@@ -253,28 +246,18 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	}
 }
 
-- (void)showLeftNaviItems
+- (void)showLeftNavigationItems
 {
+	FNLOG(@"%@", self.tabBarController);
+
     // 현재 more탭바인지 여부 체크
-    if (self.navigationController == self.tabBarController.moreNavigationController) {
+    if (_isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
-        // more 탭바
 
         self.navigationItem.hidesBackButton = NO;
-        
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            }
-            else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-                self.navigationItem.leftBarButtonItem = appsItem;
-            }
-        }
-        else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-            self.navigationItem.leftBarButtonItem = appsItem;
-        }
+
+		UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
+		self.navigationItem.leftBarButtonItem = appsItem;
     } else {
         // 아님
         [self makeBackButtonEmptyArrow];
