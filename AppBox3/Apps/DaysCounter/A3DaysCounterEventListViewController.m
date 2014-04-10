@@ -27,6 +27,7 @@
 #import "A3DaysCounterEventListNameCell.h"
 #import "A3DaysCounterEventListSectionHeader.h"
 #import "A3WalletSegmentedControl.h"
+#import "NSDate+LunarConverter.h"
 
 @interface A3DaysCounterEventListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -465,6 +466,18 @@
         NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                       firstDate:[item startDate]
                                                                                        fromDate:[NSDate date]];
+        if ( [item.isLunar boolValue] ) {
+            NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
+            BOOL isResultLeapMonth = NO;
+            NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+                                                                gregorianToLunar:NO
+                                                                       leapMonth:NO
+                                                                          korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                                 resultLeapMonth:&isResultLeapMonth];
+            NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+            startDate = convertDate;
+        }
+        
 
         // textLabel
         textLabel.text = item.eventName;

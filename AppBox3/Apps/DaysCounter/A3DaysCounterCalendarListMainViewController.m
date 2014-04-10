@@ -21,6 +21,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
+#import "NSDate+LunarConverter.h"
 
 @interface A3DaysCounterCalendarListMainViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -342,6 +343,18 @@
         diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
         calcDate = nextDate;
     }
+    
+    if ( [event.isLunar boolValue] ) {
+        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:calcDate];
+        BOOL isResultLeapMonth = NO;
+        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+                                                            gregorianToLunar:NO
+                                                                   leapMonth:NO
+                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                             resultLeapMonth:&isResultLeapMonth];
+        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+        calcDate = convertDate;
+    }
 
     result = [A3DateHelper dateStringFromDate:calcDate
                                    withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
@@ -365,7 +378,6 @@
         }
     }
     
-    
     UITableViewCell *cell = nil;
     
     if (!item) {
@@ -378,7 +390,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
-    
     
     NSInteger cellType = [item.calendarType integerValue];
     NSString *CellIdentifier = (cellType == CalendarCellType_System) ? @"systemCalendarListCell" : @"userCalendarListCell";
@@ -394,9 +405,8 @@
     textLabel.textColor = [item color];
     countLabel.textColor = [item color];
     textLabel.text = item.calendarName;
-    
-//    [self adjustFontSizeOfCell:cell withCellType:cellType];
-    
+
+
     switch (cellType) {
         case CalendarCellType_User:
         {
