@@ -14,10 +14,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
-//        self.textLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//        self.detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        
         _textView = [UITextView new];
         [self addSubview:_textView];
         
@@ -35,10 +31,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
-//        self.textLabel.translatesAutoresizingMaskIntoConstraints = NO;
-//        self.detailTextLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        
         _textView = [UITextView new];
         [self addSubview:_textView];
         

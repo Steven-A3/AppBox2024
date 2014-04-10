@@ -21,6 +21,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
+#import "NSDate+LunarConverter.h"
 
 @interface A3DaysCounterCalendarListMainViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -122,16 +123,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+-(void)viewWillLayoutSubviews
 {
+    [super viewWillLayoutSubviews];
+    
     if ( IS_IPAD ) {
-        CGFloat barWidth = UIInterfaceOrientationIsPortrait(toInterfaceOrientation) ? 768 : 1024;
+        CGFloat barWidth = IS_PORTRAIT ? 768 : 1024;
         _headerView_view1_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view2_widthConst_iPad.constant = barWidth / 3.0;
         _headerView_view3_widthConst_iPad.constant = barWidth / 3.0;
-        [UIView animateWithDuration:duration animations:^{
-            [self.view layoutIfNeeded];
-        }];
     }
 }
 
@@ -142,7 +142,12 @@
     _numberOfCalendarLabel.text = [NSString stringWithFormat:@"%ld", (long)[[A3DaysCounterModelManager sharedManager] numberOfUserCalendarVisible]];
     _numberOfEventsLabel.text = [NSString stringWithFormat:@"%@", [NSString stringWithFormat:@"%ld", (long)eventNumber]];
     _updateDateLabel.text = ( latestDate ? [A3DateHelper dateStringFromDate:latestDate withFormat:@"dd/MM/yy"] : @"-");
-    _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+    if (IS_IPAD) {
+        _headerEventLabel_iPad.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+    }
+    else {
+        _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
+    }
 }
 
 #pragma mark Initialize FontSize
@@ -342,6 +347,18 @@
         diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
         calcDate = nextDate;
     }
+    
+    if ( [event.isLunar boolValue] ) {
+        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:calcDate];
+        BOOL isResultLeapMonth = NO;
+        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+                                                            gregorianToLunar:NO
+                                                                   leapMonth:NO
+                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                             resultLeapMonth:&isResultLeapMonth];
+        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+        calcDate = convertDate;
+    }
 
     result = [A3DateHelper dateStringFromDate:calcDate
                                    withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
@@ -365,7 +382,6 @@
         }
     }
     
-    
     UITableViewCell *cell = nil;
     
     if (!item) {
@@ -378,7 +394,6 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
-    
     
     NSInteger cellType = [item.calendarType integerValue];
     NSString *CellIdentifier = (cellType == CalendarCellType_System) ? @"systemCalendarListCell" : @"userCalendarListCell";
@@ -394,9 +409,8 @@
     textLabel.textColor = [item color];
     countLabel.textColor = [item color];
     textLabel.text = item.calendarName;
-    
-//    [self adjustFontSizeOfCell:cell withCellType:cellType];
-    
+
+
     switch (cellType) {
         case CalendarCellType_User:
         {

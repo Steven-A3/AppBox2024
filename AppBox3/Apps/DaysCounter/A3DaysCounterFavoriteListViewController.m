@@ -46,7 +46,7 @@
     [super viewDidLoad];
     
     self.title = @"Favorites";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    //self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:[[UIView alloc] init]];
     self.toolbarItems = _bottomToolbar.items;
     [self registerContentSizeCategoryDidChangeNotification];
@@ -64,7 +64,6 @@
     [self.navigationController setToolbarHidden:NO];
     self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] favoriteEventsList]];
     [self.tableView reloadData];
-    self.navigationItem.rightBarButtonItem.enabled = ([_itemArray count] > 0);
     
     [[NSUserDefaults standardUserDefaults] setInteger:4 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -157,8 +156,8 @@
         
         if (image) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
-            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
             ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 32;
         }
         else {
@@ -167,13 +166,12 @@
             ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 0;
         }
         
-        
         if ( diffDays > 0 ) {
-            markLabel.text = @"Until";
+            markLabel.text = @"until";
             markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
         }
         else {
-            markLabel.text = @"Since";
+            markLabel.text = @"since";
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         markLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
@@ -184,8 +182,12 @@
         
         if ( IS_IPAD ) {
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-            dateLabel.text = [item.isAllDay boolValue] ? [item.startDate a3FullStyleString] : [item.startDate a3FullStyleWithTimeString];
+            //dateLabel.text = [item.isAllDay boolValue] ? [item.startDate a3FullStyleString] : [item.startDate a3FullStyleWithTimeString];
+            dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate
+                                                   withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+
             dateLabel.hidden = NO;
+            ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
         }
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

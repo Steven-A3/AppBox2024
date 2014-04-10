@@ -30,7 +30,7 @@
 		dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"EEEE" withString:@"EEE"];
 	}
 	dateFormat = [dateFormat stringByReplacingOccurrencesOfString:@"MMMM" withString:@"MMM"];
-	[dateFormatter setDateFormat:[NSString stringWithFormat:@"%@  hh:mm a", dateFormat]];
+	[dateFormatter setDateFormat:[NSString stringWithFormat:@"%@ hh:mm a", dateFormat]];
 	return [dateFormatter stringFromDate:self];
 }
 

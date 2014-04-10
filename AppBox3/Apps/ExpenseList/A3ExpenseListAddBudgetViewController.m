@@ -568,11 +568,8 @@ static NSString *CellIdentifier = @"Cell";
         self.firstResponder = nil;
         self.textViewResponder = nil;
 
-        //[self.root setSectionsArray:@[self.section0_Array, [self tableDataSourceWithDatePicker:NO]]];
         [self.root setSectionsArray:@[[self tableDataSourceWithDatePicker:NO]]];
         [self.tableView beginUpdates];
-//        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
-//        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:3 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:6 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
         [self.tableView endUpdates];
@@ -590,24 +587,7 @@ static NSString *CellIdentifier = @"Cell";
     }
 
     // Row 6 Date
-    //if (indexPath.section == 1 && indexPath.row == 3) {
     if (indexPath.section == 0 && indexPath.row == 6) {
-        /*if( [_eventModel objectForKey:EventItem_Location]){
-            A3DaysCounterLocationDetailViewController *nextVC = [[A3DaysCounterLocationDetailViewController alloc] initWithNibName:@"A3DaysCounterLocationDetailViewController" bundle:nil];
-            nextVC.eventModel = self.eventModel;
-            nextVC.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:[_eventModel objectForKey:EventItem_Location]];
-            nextVC.isEditMode = YES;
-            [self.navigationController pushViewController:nextVC animated:YES];
-        }
-        else{*/
-		// TODO:
-//            A3DaysCounterSetupLocationViewController *nextVC = [[A3DaysCounterSetupLocationViewController alloc] initWithNibName:@"A3DaysCounterSetupLocationViewController" bundle:nil];
-//            //nextVC.eventModel = self.eventModel;
-//            UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:nextVC];
-//            navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-//            [self presentViewController:navCtrl animated:YES completion:nil];
-//        //}
-        
     }
     else if (element.identifier == AddBudgetCellID_Date) {
         _showDatePicker = !_showDatePicker;
@@ -672,7 +652,6 @@ static NSString *CellIdentifier = @"Cell";
 
     if (section == 0) {
         return 35;
-//        return IS_RETINA ? 35.5 : 36;   // 71 : 36
     }
     
     return section == 1 ? 0.01 : 0.0;
@@ -711,7 +690,7 @@ static NSString *CellIdentifier = @"Cell";
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
             element.value = textField.text;
-            //if ([textField.text length] > 0 || [weakSelf isBudgetModified]) {
+
             if ([weakSelf isBudgetModified]) {
                 weakSelf.navigationItem.rightBarButtonItem.enabled = YES;
             }
@@ -785,7 +764,6 @@ static NSString *CellIdentifier = @"Cell";
                 }
 
                 [weakSelf.tableView beginUpdates];
-//                [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:1]] withRowAnimation:UITableViewRowAnimationFade];
                 [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
                 [weakSelf.tableView endUpdates];
                 

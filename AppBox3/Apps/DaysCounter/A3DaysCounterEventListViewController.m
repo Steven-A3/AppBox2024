@@ -27,6 +27,7 @@
 #import "A3DaysCounterEventListNameCell.h"
 #import "A3DaysCounterEventListSectionHeader.h"
 #import "A3WalletSegmentedControl.h"
+#import "NSDate+LunarConverter.h"
 
 @interface A3DaysCounterEventListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -35,8 +36,6 @@
 @property (strong, nonatomic) NSString *changedCalendarID;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
 
-- (NSMutableArray*)sortedArrayByDateAscending:(BOOL)ascending;
-- (NSMutableArray*)sortedArrayByNameAscending:(BOOL)ascending;
 @end
 
 @implementation A3DaysCounterEventListViewController
@@ -183,7 +182,7 @@
         DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
         DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
         
-        return [item1.eventName compare:item2.eventName];
+        return [item1.eventName compare:item2.eventName options:NSCaseInsensitiveSearch];
     }];
     
     if ( !ascending ) {
@@ -247,10 +246,10 @@
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
             
             if (_isDateAscending) {
-                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+                _sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
-                _sortArrowImgView.transform = CGAffineTransformIdentity;
+                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             break;
         }
@@ -259,10 +258,10 @@
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 + segmentWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
             
             if (_isNameAscending) {
-                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+                _sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
-                _sortArrowImgView.transform = CGAffineTransformIdentity;
+                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             break;
         }
@@ -467,6 +466,18 @@
         NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                       firstDate:[item startDate]
                                                                                        fromDate:[NSDate date]];
+        if ( [item.isLunar boolValue] ) {
+            NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
+            BOOL isResultLeapMonth = NO;
+            NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+                                                                gregorianToLunar:NO
+                                                                       leapMonth:NO
+                                                                          korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                                 resultLeapMonth:&isResultLeapMonth];
+            NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
+            startDate = convertDate;
+        }
+        
 
         // textLabel
         textLabel.text = item.eventName;
@@ -478,7 +489,7 @@
                                                      allDayOption:[item.isAllDay boolValue]
                                                            repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
-        if ([markLabel.text isEqualToString:@"Since"]) {
+        if ([markLabel.text isEqualToString:@"since"]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
         else {
@@ -487,7 +498,7 @@
         
         // daysLabel
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
-            daysLabel.text = @"";
+            daysLabel.text = @" ";
         }
         else {
             daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
@@ -495,7 +506,6 @@
                                                                                                                           toDate:startDate //[item startDate]
                                                                                                                         isAllDay:[item.isAllDay boolValue]]];
         }
-        
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;
@@ -525,6 +535,7 @@
                 dateLabel.text = [A3DateHelper dateStringFromDate:startDate
                                                        withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 dateLabel.hidden = NO;
+                ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
             }
         }
         
@@ -591,7 +602,8 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [_sourceArray count] < 1 ) {
+    
+    if ([indexPath row] >= [_sourceArray count]) {
         return NO;
     }
     
@@ -652,14 +664,14 @@
         
         if ( _sortType == EventSortType_Name ) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
-            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 53 : 66;
-            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 53 : 66;
+            ((A3DaysCounterEventListNameCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 52 : 65;
+            ((A3DaysCounterEventListNameCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 52 : 65;
         }
         else {
             ((A3DaysCounterEventListDateCell *)cell).roundDateLeadingConst.constant = IS_IPHONE ? 15 : 28;
             ((A3DaysCounterEventListDateCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 52 : 65;
-            ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 90 : 103;
-            ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 90 : 103;
+            ((A3DaysCounterEventListDateCell *)cell).nameLeadingConst.constant = IS_IPHONE ? 89 : 102;
+            ((A3DaysCounterEventListDateCell *)cell).sinceLeadingConst.constant = IS_IPHONE ? 89 : 102;
         }
     }
     else {
