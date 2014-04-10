@@ -21,8 +21,8 @@
                             <constraint firstAttribute="width" constant="32" id="jyR-0T-Ak0"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Fo-Ne-hUa">
-                        <rect key="frame" x="58" y="2" width="229" height="18"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1Fo-Ne-hUa" userLabel="Label - Title">
+                        <rect key="frame" x="58" y="5" width="229" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -67,7 +67,7 @@
                     <constraint firstAttribute="trailing" secondItem="FSv-H1-Ld2" secondAttribute="trailing" id="fl2-QQ-KMo"/>
                     <constraint firstAttribute="centerY" secondItem="CAj-rj-Pk3" secondAttribute="centerY" id="hpU-XT-NxN"/>
                     <constraint firstAttribute="trailing" secondItem="1Fo-Ne-hUa" secondAttribute="trailing" id="mjJ-vj-4F7"/>
-                    <constraint firstAttribute="bottom" secondItem="1Fo-Ne-hUa" secondAttribute="bottom" constant="41" id="n6L-Yh-jBj"/>
+                    <constraint firstAttribute="bottom" secondItem="1Fo-Ne-hUa" secondAttribute="bottom" constant="38" id="n6L-Yh-jBj"/>
                     <constraint firstAttribute="trailing" secondItem="CAj-rj-Pk3" secondAttribute="trailing" id="qlw-OR-Jbp"/>
                     <constraint firstItem="cVW-rD-TDa" firstAttribute="leading" secondItem="5JQ-zP-85K" secondAttribute="leading" constant="58" id="zKN-EE-xnY"/>
                 </constraints>

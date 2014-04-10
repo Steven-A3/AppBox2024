@@ -25,8 +25,8 @@
     _dateLabelBottom.textAlignment = NSTextAlignmentCenter;
     _dateLabelBottom.textColor = [UIColor whiteColor];
     if ( IS_IPHONE ) {
-        _dateLabelTop.font = [UIFont systemFontOfSize:13.0];
-        _dateLabelBottom.font = [UIFont systemFontOfSize:13.0];
+        _dateLabelTop.font = [UIFont systemFontOfSize:12.0];
+        _dateLabelBottom.font = [UIFont systemFontOfSize:12.0];
     }
     else {
         _dateLabelTop.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];

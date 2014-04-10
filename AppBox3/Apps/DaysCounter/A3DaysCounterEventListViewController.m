@@ -35,8 +35,6 @@
 @property (strong, nonatomic) NSString *changedCalendarID;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
 
-- (NSMutableArray*)sortedArrayByDateAscending:(BOOL)ascending;
-- (NSMutableArray*)sortedArrayByNameAscending:(BOOL)ascending;
 @end
 
 @implementation A3DaysCounterEventListViewController
@@ -183,7 +181,7 @@
         DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
         DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
         
-        return [item1.eventName compare:item2.eventName];
+        return [item1.eventName compare:item2.eventName options:NSCaseInsensitiveSearch];
     }];
     
     if ( !ascending ) {
@@ -247,10 +245,10 @@
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
             
             if (_isDateAscending) {
-                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+                _sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
-                _sortArrowImgView.transform = CGAffineTransformIdentity;
+                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             break;
         }
@@ -259,10 +257,10 @@
             self.sortArrowImgView.center = CGPointMake(topViewWidth / 2.0 + segmentWidth / 2.0 - arrowRightMargin, self.sortTypeSegmentCtrl.center.y);
             
             if (_isNameAscending) {
-                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+                _sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
-                _sortArrowImgView.transform = CGAffineTransformIdentity;
+                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             break;
         }
@@ -591,7 +589,8 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [_sourceArray count] < 1 ) {
+    
+    if ([indexPath row] >= [_sourceArray count]) {
         return NO;
     }
     
