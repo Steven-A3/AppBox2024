@@ -498,9 +498,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     ciimg = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
+    /*
     CGRect sourceExtent = ciimg.extent;
     
-    /*
+
 
     if (bFlip == YES) {
         // horizontal flip
