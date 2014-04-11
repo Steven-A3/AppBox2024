@@ -1171,6 +1171,7 @@
                 return;
             }
         }
+        
         if ( _eventItem ) {
             [[A3DaysCounterModelManager sharedManager] modifyEvent:_eventItem withInfo:_eventModel];
         }

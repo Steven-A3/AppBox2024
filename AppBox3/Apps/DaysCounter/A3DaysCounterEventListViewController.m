@@ -151,7 +151,7 @@
         DaysCounterEvent *item1 = (DaysCounterEvent*)obj1;
         DaysCounterEvent *item2 = (DaysCounterEvent*)obj2;
         
-        return [item1.startDate compare:item2.startDate];
+        return [item1.effectiveStartDate compare:item2.effectiveStartDate];
     }];
     
     if ( !ascending ) {
@@ -161,12 +161,12 @@
     NSMutableArray *sectionArray = [NSMutableArray array];
     NSMutableDictionary *sectionDict = [NSMutableDictionary dictionary];
     for (DaysCounterEvent *event in array) {
-        NSString *sectionKey = [A3DateHelper dateStringFromDate:event.startDate withFormat:@"yyyy.MM"];
+        NSString *sectionKey = [A3DateHelper dateStringFromDate:event.effectiveStartDate withFormat:@"yyyy.MM"];
         NSMutableArray *items = [sectionDict objectForKey:sectionKey];
         if ( items == nil ) {
             items = [NSMutableArray arrayWithObject:event];
             [sectionDict setObject:items forKey:sectionKey];
-            [sectionArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:event.startDate,EventKey_Date,items,EventKey_Items, nil]];
+            [sectionArray addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:event.effectiveStartDate, EventKey_Date, items, EventKey_Items, nil]];
         }
         else {
             [items addObject:event];

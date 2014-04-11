@@ -24,14 +24,8 @@
     _dateLabelBottom.backgroundColor = [UIColor clearColor];
     _dateLabelBottom.textAlignment = NSTextAlignmentCenter;
     _dateLabelBottom.textColor = [UIColor whiteColor];
-    if ( IS_IPHONE ) {
-        _dateLabelTop.font = [UIFont systemFontOfSize:12.0];
-        _dateLabelBottom.font = [UIFont systemFontOfSize:12.0];
-    }
-    else {
-        _dateLabelTop.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-        _dateLabelBottom.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    }
+    _dateLabelTop.font = [UIFont systemFontOfSize:12.0];
+    _dateLabelBottom.font = [UIFont systemFontOfSize:12.0];
     _dateLabelTop.lineBreakMode = NSLineBreakByTruncatingTail;
     _dateLabelTop.adjustsFontSizeToFitWidth = YES;
     _dateLabelBottom.lineBreakMode = NSLineBreakByTruncatingTail;
