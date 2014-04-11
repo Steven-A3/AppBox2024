@@ -11,7 +11,10 @@
 #import "common.h"
 
 @interface A3UnitConverterTVDataCell ()
+
 @property (nonatomic, strong) UIView *menuView;
+@property (nonatomic, strong) MASConstraint *valueFieldWidthConstraint, *value2FieldWidthConstraint;
+
 @end
 
 @implementation A3UnitConverterTVDataCell
@@ -45,6 +48,9 @@
 	[super prepareForReuse];
     
 	[self useDynamicType];
+
+	_valueField.text = @"";
+	_value2Field.text = @"";
 }
 
 - (void)useDynamicType {
@@ -77,17 +83,20 @@
         _inputType = inputType;
         [self setupValueViews];
         [self addConstraints];
-        _value2Field.text = @"";
+		if (inputType != UnitInput_Normal) {
+			[self updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
+		}
+		[self layoutIfNeeded];
     }
 }
 
 - (UITextField *)valueField {
 	if (!_valueField) {
-		_valueField = [[UITextField alloc] initWithFrame:CGRectMake(7.0, 0.0, 187.0, 83.0)];
+		_valueField = [[UITextField alloc] initWithFrame:CGRectZero];
 		_valueField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
 		_valueField.adjustsFontSizeToFitWidth = YES;
 		_valueField.minimumFontSize = 10.0;
-		_valueField.translatesAutoresizingMaskIntoConstraints = NO;
+		_valueField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         _valueField.tag = 1;
 	}
 	return _valueField;
@@ -97,9 +106,6 @@
 	if (!_value2Field) {
 		_value2Field = [[UITextField alloc] initWithFrame:CGRectMake(7.0, 0.0, 187.0, 83.0)];
 		_value2Field.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
-		_value2Field.adjustsFontSizeToFitWidth = YES;
-		_value2Field.minimumFontSize = 10.0;
-		_value2Field.translatesAutoresizingMaskIntoConstraints = NO;
         _value2Field.tag = 2;
 	}
 	return _value2Field;
@@ -109,7 +115,6 @@
 	if (!_valueLabel) {
 		_valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(7.0, 0.0, 30.0, 83.0)];
 		_valueLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
-		_valueLabel.adjustsFontSizeToFitWidth = YES;
 		_valueLabel.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _valueLabel;
@@ -119,7 +124,6 @@
 	if (!_value2Label) {
 		_value2Label = [[UILabel alloc] initWithFrame:CGRectMake(7.0, 0.0, 30.0, 83.0)];
 		_value2Label.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65.0];
-		_value2Label.adjustsFontSizeToFitWidth = YES;
 		_value2Label.translatesAutoresizingMaskIntoConstraints = NO;
 	}
 	return _value2Label;
@@ -132,7 +136,7 @@
         _valueLabel.hidden = YES;
         _value2Field.hidden = YES;
         _value2Label.hidden = YES;
-        _valueField.placeholder = @"";
+        _valueField.placeholder = @"0";
     }
     else if (_inputType == UnitInput_Fraction) {
         _valueField.hidden = NO;
@@ -153,14 +157,17 @@
         _value2Label.text = @"in";
         _valueLabel.textAlignment = NSTextAlignmentLeft;
         _value2Label.textAlignment = NSTextAlignmentLeft;
-        _valueField.placeholder = @"";
-        _value2Field.placeholder = @"";
+        _valueField.placeholder = @"0";
+        _value2Field.placeholder = @"0";
     }
 }
 
 - (void)addConstraints {
     
     // reset constraints
+	[_valueFieldWidthConstraint uninstall];
+	[_value2FieldWidthConstraint uninstall];
+
     [self removeConstraints:self.constraints];
     [self.contentView removeConstraints:self.contentView.constraints];
     
@@ -175,422 +182,153 @@
     }
 }
 
+- (void)updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *)field {
+	[_valueFieldWidthConstraint uninstall];
+	[_value2FieldWidthConstraint uninstall];
+
+	CGFloat maxWidth = self.contentView.bounds.size.width * (IS_IPHONE ? 0.6 : 0.8);
+	CGFloat valueFieldWidth, value2FieldWidth;
+	UIFont *font;
+	if (_inputType != UnitInput_Normal) {
+		CGFloat fontSize = 66.0, minFontSize = 10.0;
+		CGFloat effectiveWidth = maxWidth;
+		CGFloat height;
+		NSStringDrawingContext *context = [NSStringDrawingContext new];
+		CGSize size = CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX);
+		while (effectiveWidth >= maxWidth && fontSize >= minFontSize) {
+			effectiveWidth = 0.0;
+			height = 0.0;
+			fontSize -= 1.0;
+			font = [UIFont fontWithName:@"HelveticaNeue-Light" size:fontSize];
+			NSString *text = [_valueField.text length] ? _valueField.text : _valueField.placeholder;
+			CGRect bounds = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context];
+			valueFieldWidth = bounds.size.width + 4.0;
+			height = MAX(height, bounds.size.height);
+			if (field == _valueField) {
+				valueFieldWidth += 10.0;
+			}
+			effectiveWidth += valueFieldWidth;
+			bounds = [_valueLabel.text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context];
+			effectiveWidth += bounds.size.width;
+			height = MAX(height, bounds.size.height);
+			text = [_value2Field.text length] ? _value2Field.text : _value2Field.placeholder;
+			bounds = [text boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context];
+			value2FieldWidth = bounds.size.width + 4.0;
+			height = MAX(height, bounds.size.height);
+			if (field == _value2Field) {
+				value2FieldWidth += 10.0;
+			}
+			effectiveWidth += value2FieldWidth;
+		}
+	} else {
+		valueFieldWidth = maxWidth;
+		value2FieldWidth = 0.0;
+		font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65];
+	}
+
+	[_valueField setFont:font];
+	[_valueLabel setFont:font];
+	[_value2Field setFont:font];
+	[_value2Label setFont:font];
+
+	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+		_valueFieldWidthConstraint = make.width.equalTo(@(valueFieldWidth));
+	}];
+	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
+		_value2FieldWidthConstraint = make.width.equalTo(@(value2FieldWidth));
+	}];
+	[self layoutIfNeeded];
+
+	NSString *text;
+	if (field != _valueField) {
+		text = _valueField.text;
+		_valueField.text = @"";
+		_valueField.text = text;
+	}
+	if (field != _value2Field) {
+		text = _value2Field.text;
+		_value2Field.text = @"";
+		_value2Field.text = text;
+	}
+	FNLOG("%f, %f, %f", _valueField.font.pointSize, _value2Field.font.pointSize, font.pointSize);
+}
 
 - (void)addNormalInputConstraints {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_valueField, _value2Field, _valueLabel, _value2Label, _codeLabel, _rateLabel, _flagImageView, _separatorLineView);
-	NSNumber *leftMargin = @(IS_IPHONE ? 15.0 : 28.0);
-	NSNumber *marginBetweenFlagCode = @(IS_IPHONE ? 2.0 : 10.0);
-	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 4.0 : 4.0);
-    
-	// Value Field
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:1.0
-                                                                  constant:leftMargin.floatValue]];
-    
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:IS_IPAD ? 0.8 : 0.6
-                                                                  constant:-leftMargin.floatValue]];
-    
-	// Flag image View
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_flagImageView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0  constant:0.0]];
-    
-	// Code Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel
-																 attribute:NSLayoutAttributeCenterY
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:self.contentView
-																 attribute:NSLayoutAttributeCenterY
-																multiplier:1.0 constant:0.0]];
-    
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-marginBetweenFlagCode-[_codeLabel]|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(marginBetweenFlagCode)
-																			   views:views]];
-    
-	// Rate Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel
-																 attribute:NSLayoutAttributeRight
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:_codeLabel
-																 attribute:NSLayoutAttributeRight
-																multiplier:1.0 constant:0.0]];
-    
-    // iphone에서는 code/rate label 크기 고정
-    if (IS_IPHONE) {
-        
-        [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_codeLabel
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:0.45
-                                                                      constant:-leftMargin.floatValue]];
-        
-        [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_rateLabel
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:_codeLabel
-                                                                     attribute:NSLayoutAttributeWidth
-                                                                    multiplier:1.0
-                                                                      constant:0.0]];
-    }
-    
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-VmarginBetweenCodeRate-[_rateLabel]-8-|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(VmarginBetweenCodeRate)
-																			   views:views]];
-    
-	// Separator Line
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeWidth
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeWidth
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													 relatedBy:NSLayoutRelationEqual
-														toItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeBottom
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeBottom
-													multiplier:1.0 constant:-1.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeHeight
-													 relatedBy:NSLayoutRelationEqual
-														toItem:nil
-													 attribute:NSLayoutAttributeNotAnAttribute
-													multiplier:0.0 constant:1.0]];
+	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.contentView.centerY);
+		make.right.equalTo(_codeLabel.left);
+	}];
+
+	[self setupConstraintsForRightSideViews];
 }
 
 - (void)addFractionInputConstraints {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_valueField, _value2Field, _valueLabel, _value2Label, _codeLabel, _rateLabel, _flagImageView, _separatorLineView);
-	NSNumber *leftMargin = @(IS_IPHONE ? 15.0 : 28.0);
-	NSNumber *marginBetweenFlagCode = @(IS_IPHONE ? 2.0 : 10.0);
-	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 4.0 : 4.0);
-    
-	// Value Field
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:1.0
-                                                                  constant:leftMargin.floatValue]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:IS_IPAD ? 0.4 : 0.3
-                                                                  constant:0.0]];
-    
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueLabel
-                                                     attribute:NSLayoutAttributeLeft
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_valueField
-                                                     attribute:NSLayoutAttributeRight
-                                                    multiplier:1.0  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueLabel
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Field
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Field
-                                                     attribute:NSLayoutAttributeLeft
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_valueLabel
-                                                     attribute:NSLayoutAttributeRight
-                                                    multiplier:1.0
-                                                      constant:0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Field
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:IS_IPAD ? 0.4 : 0.3
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_valueLabel(==30)]"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_valueLabel)]];
-    
-	// Flag image View
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_flagImageView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0  constant:0.0]];
-    
-	// Code Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel
-																 attribute:NSLayoutAttributeCenterY
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:self.contentView
-																 attribute:NSLayoutAttributeCenterY
-																multiplier:1.0 constant:0.0]];
-    
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-marginBetweenFlagCode-[_codeLabel]|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(marginBetweenFlagCode)
-																			   views:views]];
-    
-	// Rate Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel
-																 attribute:NSLayoutAttributeRight
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:_codeLabel
-																 attribute:NSLayoutAttributeRight
-																multiplier:1.0 constant:0.0]];
-    
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-VmarginBetweenCodeRate-[_rateLabel]-8-|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(VmarginBetweenCodeRate)
-																			   views:views]];
-    
-	// Separator Line
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeWidth
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeWidth
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													 relatedBy:NSLayoutRelationEqual
-														toItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeBottom
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeBottom
-													multiplier:1.0 constant:-1.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeHeight
-													 relatedBy:NSLayoutRelationEqual
-														toItem:nil
-													 attribute:NSLayoutAttributeNotAnAttribute
-													multiplier:0.0 constant:1.0]];
+	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.contentView.centerY);
+		_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+	}];
+
+	[_valueLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_valueField.right);
+		make.centerY.equalTo(self.contentView.centerY);
+	}];
+
+	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_valueLabel.right);
+		make.centerY.equalTo(self.contentView.centerY);
+		_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+	}];
+
+	[self setupConstraintsForRightSideViews];
 }
 
 - (void)addFeetInchInputConstraints {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_valueField, _value2Field, _valueLabel, _value2Label, _codeLabel, _rateLabel, _flagImageView, _separatorLineView);
-	NSNumber *leftMargin = @(IS_IPHONE ? 15.0 : 28.0);
-	NSNumber *marginBetweenFlagCode = @(IS_IPHONE ? 2.0 : 10.0);
-	NSNumber *VmarginBetweenCodeRate = @(IS_IPHONE ? 4.0 : 4.0);
-    
-	// Value Field
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                multiplier:1.0
-                                                                  constant:leftMargin.floatValue]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:0.17
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueLabel
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_valueField
-                                                                 attribute:NSLayoutAttributeRight
-                                                                multiplier:1.0
-                                                                  constant:0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_valueLabel
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Field
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Field
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_valueLabel
-                                                                 attribute:NSLayoutAttributeRight
-                                                                multiplier:1.0
-                                                                  constant:0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Field
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:0.17
-                                                                  constant:0.0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Label
-                                                                 attribute:NSLayoutAttributeLeft
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_value2Field
-                                                                 attribute:NSLayoutAttributeRight
-                                                                multiplier:1.0
-                                                                  constant:0]];
-    
-    [self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_value2Label
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0
-                                                                  constant:0.0]];
-    
-    /*
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_valueField
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_value2Field
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                multiplier:1
-                                                                  constant:0]];
-     */
-    
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_valueLabel(==25)]"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:NSDictionaryOfVariableBindings(_valueLabel)]];
-    
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_value2Label(==25)]"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:NSDictionaryOfVariableBindings(_value2Label)]];
-    
-	// Flag image View
-	[self.contentView addConstraint:[NSLayoutConstraint	constraintWithItem:_flagImageView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.contentView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0  constant:0.0]];
-    
-	// Code Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_codeLabel
-																 attribute:NSLayoutAttributeCenterY
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:self.contentView
-																 attribute:NSLayoutAttributeCenterY
-																multiplier:1.0 constant:0.0]];
-    
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_flagImageView]-marginBetweenFlagCode-[_codeLabel]|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(marginBetweenFlagCode)
-																			   views:views]];
-    
-	// Rate Label
-	[self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_rateLabel
-																 attribute:NSLayoutAttributeRight
-																 relatedBy:NSLayoutRelationEqual
-																	toItem:_codeLabel
-																 attribute:NSLayoutAttributeRight
-																multiplier:1.0 constant:0.0]];
-    
-	[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_codeLabel]-VmarginBetweenCodeRate-[_rateLabel]-8-|"
-																			 options:0
-																			 metrics:NSDictionaryOfVariableBindings(VmarginBetweenCodeRate)
-																			   views:views]];
-    
-	// Separator Line
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeWidth
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeWidth
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													 relatedBy:NSLayoutRelationEqual
-														toItem:_separatorLineView
-													 attribute:NSLayoutAttributeCenterX
-													multiplier:1.0 constant:0.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeBottom
-													 relatedBy:NSLayoutRelationEqual
-														toItem:self
-													 attribute:NSLayoutAttributeBottom
-													multiplier:1.0 constant:-1.0]];
-	[self addConstraint:[NSLayoutConstraint constraintWithItem:_separatorLineView
-													 attribute:NSLayoutAttributeHeight
-													 relatedBy:NSLayoutRelationEqual
-														toItem:nil
-													 attribute:NSLayoutAttributeNotAnAttribute
-													multiplier:0.0 constant:1.0]];
+	[_valueField makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.contentView.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.contentView.centerY).with.offset(-4);
+		_valueFieldWidthConstraint = make.width.equalTo(self.contentView.width).with.multipliedBy(0.17);
+	}];
+	[_valueLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_valueField.right);
+		make.centerY.equalTo(_valueField.centerY);
+	}];
+	[_value2Field makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_valueLabel.right).with.offset(15);
+		make.centerY.equalTo(_valueField.centerY);
+		_value2FieldWidthConstraint = make.width.lessThanOrEqualTo(self.contentView.width).with.multipliedBy(IS_IPAD ? 0.4 : 0.3);
+	}];
+	[_value2Label makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(_value2Field.right);
+		make.centerY.equalTo(_valueField.centerY);
+	}];
+
+	[self setupConstraintsForRightSideViews];
+}
+
+- (void)setupConstraintsForRightSideViews {
+	[_flagImageView makeConstraints:^(MASConstraintMaker *make) {
+		make.centerY.equalTo(self.contentView.centerY);
+		make.right.equalTo(_codeLabel.left).with.offset(IS_IPHONE ? 2.0 : 10.0);
+	}];
+
+	[_codeLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.centerY.equalTo(self.contentView.centerY);
+		make.right.equalTo(self.contentView.right);
+	}];
+
+	[_rateLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(_codeLabel.right);
+		make.bottom.equalTo(self.contentView.bottom).with.offset(-8);
+	}];
+
+	[_separatorLineView makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left);
+		make.right.equalTo(self.right);
+		make.height.equalTo(@1.0);
+		make.bottom.equalTo(self.bottom).with.offset(-1);
+	}];
 }
 
 - (UILabel *)codeLabel {

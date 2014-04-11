@@ -34,4 +34,5 @@ typedef NS_ENUM(NSInteger, UnitInputType) {
 @property (nonatomic, strong) UIView *separatorLineView;
 @property (nonatomic, weak) id<A3UnitConverterMenuDelegate>	menuDelegate;
 
+- (void)updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *)field;
 @end

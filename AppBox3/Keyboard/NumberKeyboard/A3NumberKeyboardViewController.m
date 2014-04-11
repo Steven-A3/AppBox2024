@@ -95,7 +95,7 @@
 				return;
 			}
 		} else {
-			NSUInteger maximumIntegerDigits = IS_IPHONE ? 11 : 16;
+			NSUInteger maximumIntegerDigits = IS_IPHONE ? 8 : 13;
 			if ([textField.text length] >= maximumIntegerDigits) {
 				return;
 			}

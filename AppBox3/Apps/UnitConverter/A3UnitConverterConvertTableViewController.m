@@ -169,9 +169,22 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    self.title = self.vcTitle;
+
+	[self showLeftNavigationItems];
+
+    [self refreshRightBarItems];
+
+    [_fmMoveTableView reloadData];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+	[super viewDidAppear:animated];
 
 	if ([self isMovingToParentViewController]) {
 		A3UnitConverterTabBarController *tabBar = (A3UnitConverterTabBarController *)self.navigationController.tabBarController;
@@ -181,19 +194,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		}
 		[self registerContentSizeCategoryDidChangeNotification];
 	}
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.title = self.vcTitle;
-    
-	[self showLeftNavigationItems];
-    
-    [self refreshRightBarItems];
-    
-    [_fmMoveTableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -239,11 +239,9 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)clearEverything {
-	@autoreleasepool {
-		[self.firstResponder resignFirstResponder];
-		[self setFirstResponder:nil];
-		[self dismissMoreMenu];
-	}
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+	[self dismissMoreMenu];
 }
 
 - (void)showLeftNavigationItems
@@ -321,16 +319,14 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)historyButtonAction:(UIButton *)button {
-		[self clearEverything];
-        
-        A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
-		[self presentSubViewController:viewController];
-        
-        _unitValue = nil;
-        
-        if (IS_IPAD) {
-            [self enableControls:NO];
-        }
+	[self clearEverything];
+
+	A3UnitConverterHistoryViewController *viewController = [[A3UnitConverterHistoryViewController alloc] initWithNibName:nil bundle:nil];
+	[self presentSubViewController:viewController];
+
+	if (IS_IPAD) {
+		[self enableControls:NO];
+	}
 }
 
 - (NSMutableArray *)convertItems {
@@ -753,7 +749,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
             dataCell.value2Label.textColor = [UIColor blackColor];
             dataCell.rateLabel.text = @"";
             
-            float convesionRate = 0;
+            float conversionRate = 0;
             
 			UnitConvertItem *convertItemZero = nil;
 			for (id object in self.convertItems) {
@@ -771,8 +767,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                 
             }
             else {
-                convesionRate = convertItemZero.item.conversionRate.floatValue / convertItem.item.conversionRate.floatValue;
-                value = @(value.floatValue * convesionRate);
+                conversionRate = convertItemZero.item.conversionRate.floatValue / convertItem.item.conversionRate.floatValue;
+                value = @(value.floatValue * conversionRate);
             }
             
             // code 및 rate 정보 표시
@@ -782,7 +778,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                 dataCell.rateLabel.text = [TemperatureConveter rateStringFromTemperUnit:convertItemZero.item.unitName toTemperUnit:convertItem.item.unitName];
             }
             else {
-                dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, rate = %@", convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(convesionRate)]];
+                dataCell.rateLabel.text = [NSString stringWithFormat:@"%@, rate = %@", convertItem.item.unitShortName, [self.decimalFormatter stringFromNumber:@(conversionRate)]];
             }
 		}
 
@@ -798,6 +794,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         else {
             dataCell.valueField.text = [self.decimalFormatter stringFromNumber:value];
         }
+		[dataCell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
 	}
 }
 
@@ -1093,14 +1090,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
 	self.firstResponder = textField;
-	if ([textField.text length]) {
-		self.textBeforeEditingTextField = textField.text;
-	}
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	if (!cell) return;
 
 	if (!_isSwitchingFractionMode && [textField.text length]) {
+		self.textBeforeEditingTextField = textField.text;
+
 		float value = [[self.decimalFormatter numberFromString:textField.text] floatValue];
 		if (value != 0.0) {
 			[self putHistoryWithValue:@(value)];
@@ -1128,6 +1124,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	} else {
 		textField.inputAccessoryView = nil;
 	}
+
+	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
@@ -1143,7 +1141,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 	UITextField *textField = [notification object];
 	[self updateTextFieldsWithSourceTextField:textField];
 
-	FNLOG(@"%@", textField.font);
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -1153,18 +1152,20 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 		[self setFirstResponder:nil];
 
-		if (_isSwitchingFractionMode) {
-			return;
-		}
-
-		if (![textField.text length]) {
+		if (!_isSwitchingFractionMode && ![textField.text length]) {
 			textField.text = _textBeforeEditingTextField;
 		}
 
-        // 숫자 입력 보정여부
-        double value = [textField.text doubleValue];
-        A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        
+		A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+
+		if (_isSwitchingFractionMode) {
+			[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
+			return;
+		}
+
+		// 숫자 입력 보정여부
+        double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
+
         if ((cell.inputType == UnitInput_FeetInch) && (textField.tag == 2)) {
             // UnitInput_FeetInch 에서 두번째 textField를 입력 보정을 하지 않는다.
         }
@@ -1179,9 +1180,10 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                 }
             }
         }
-        
+
         textField.text = [self.decimalFormatter stringFromNumber:@(value)];
         [self updateTextFieldsWithSourceTextField:textField];
+		[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	}
@@ -1200,16 +1202,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
         
         A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 
-		if (cell.inputType == UnitInput_FeetInch || cell.inputType == UnitInput_Fraction) {
-            // khkim_131217 : requirement 수정
-            // x/y의 x,y 사이의 간격 없애기 : textfield size 조절하기
-            NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:textField.font, NSFontAttributeName, nil];
-            CGSize txtFdSize = [textField.text sizeWithAttributes:attributes];
-            CGRect txtFdRect = textField.frame;
-            txtFdRect.size.width = txtFdSize.width;
-            textField.frame = txtFdRect;
-        }
-        
         float fromValue;
         
         if (cell.inputType == UnitInput_Normal) {
@@ -1281,6 +1273,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
                         targetTextField.text = [self.decimalFormatter stringFromNumber:@(fromValue*rate)];
                     }
                 }
+				targetTextField.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:65];
 			}
 		}
 	}
@@ -1441,6 +1434,8 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 		switch (cell.inputType) {
 			case UnitInput_Normal:
 				cell.inputType = UnitInput_Fraction;
+				cell.value2Field.text = @"";
+				[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
 				_isSwitchingFractionMode = YES;
 				[self addKeyboardAccessoryToTextField:textField];
 				FNLOG();
@@ -1486,6 +1481,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 				textField.text = [cell.valueField.text stringByReplacingCharactersInRange:NSMakeRange(0,0) withString:@"-"];
 			}
 			[self updateTextFieldsWithSourceTextField:textField];
+			[cell updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *) self.firstResponder];
 		}
 	}
 }
