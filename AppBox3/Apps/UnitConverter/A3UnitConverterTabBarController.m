@@ -21,6 +21,8 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
 @interface A3UnitConverterTabBarController ()
 
+@property (nonatomic, strong) UINavigationController *myMoreNavigationController;
+
 @end
 
 @implementation A3UnitConverterTabBarController
@@ -120,33 +122,16 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     self.title = tabBarController.selectedViewController.tabBarItem.title;
-    
-    if (self.moreNavigationController && (self.moreNavigationController.viewControllers.count>1)) {
-        [self.moreNavigationController popToRootViewControllerAnimated:NO];
-    }
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed
-{
-    if (changed) {
-        for (int i=0; i<viewControllers.count; i++) {
-            UINavigationController *navController = viewControllers[i];
-            UIViewController *viewController = navController.viewControllers[0];
-            if ([viewController isKindOfClass:[A3UnitConverterConvertTableViewController class]]) {
-                ((A3UnitConverterConvertTableViewController *)viewController).unitType.order = [NSNumber numberWithInt:i];
-            }
-        }
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    }
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController willBeginCustomizingViewControllers:(NSArray *)viewControllers
-{
+	if (viewController != _myMoreNavigationController) {
+		if ([_myMoreNavigationController.viewControllers count] > 1) {
+			[_myMoreNavigationController popToRootViewControllerAnimated:NO];
+		}
+	}
 }
 
 #pragma mark - Added Function
 
-- (void) setupTabBar
+- (void)setupTabBar
 {
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 
@@ -186,9 +171,9 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
     }
 
 	A3UnitConverterMoreTableViewController *moreViewController = [[A3UnitConverterMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
-	UINavigationController *moreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
-	moreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
-	[viewControllers addObject:moreNavigationController];
+	_myMoreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
+	_myMoreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
+	[viewControllers addObject:_myMoreNavigationController];
 
     self.viewControllers = viewControllers;
 }

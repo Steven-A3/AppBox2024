@@ -47,6 +47,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self rightBarButtonEditButton];
 
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+	self.tableView.showsVerticalScrollIndicator = NO;
 	[self.tableView registerClass:[A3MoreTableViewCell class] forCellReuseIdentifier:A3UnitConverterMoreTableViewCellIdentifier];
 }
 
@@ -61,6 +62,8 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	_isEditing = YES;
 	[self.tableView reloadData];
 	[self.tableView setEditing:YES animated:YES];
+
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 
 	self.navigationItem.leftBarButtonItem = nil;
 	[self rightBarButtonDoneButton];
@@ -81,6 +84,14 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+	[super viewDidDisappear:animated];
+
+	if (_isEditing) {
+		[self doneButtonAction:nil];
+	}
 }
 
 #pragma mark - Prepare Data
