@@ -351,13 +351,23 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     _captureSession = [AVCaptureSession new];
     
     // obtain the preset and validate the preset
+    /*
+    Preset                          4 back      4 front
     
+    AVCaptureSessionPresetHigh     1280x720    640x480
+    AVCaptureSessionPresetMedium   480x360     480x360
+    AVCaptureSessionPresetLow     192x144     192x144
+    AVCaptureSessionPreset640x480   640x480     640x480
+    AVCaptureSessionPreset1280x720  1280x720    NA
+    AVCaptureSessionPresetPhoto     NA          NA
+     */
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
+        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
+            [[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
             if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
                 [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
             } else {
-                [_captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+                [_captureSession setSessionPreset:AVCaptureSessionPresetLow];
             }
         } else {
             if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
