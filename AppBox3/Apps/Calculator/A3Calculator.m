@@ -1413,13 +1413,26 @@ typedef CMathParser<char, double> MathParser;
         NSString *lastChar = [mathexpression substringFromIndex:[mathexpression length] - 1];
         
         if ([lastChar isEqualToString:@")"]) {
-            NSString *temp = [mathexpression substringFromIndex:[mathexpression length] - 4];
-            if ([temp isEqualToString:@"(-0)"]) {
-                mathexpression = [mathexpression substringToIndex:[mathexpression length] - 4];
-                mathexpression = [mathexpression stringByAppendingString:[NSString stringWithFormat:@"(-%@)",num]];
-                [self convertMathExpressionToAttributedString];
-                [self evaluateAndSet];
-                return;
+            NSUInteger i=1;
+            NSRange range;
+            range.length = 1;
+            do {
+                i++;
+                range.location = [mathexpression length] - i;
+                lastChar = [mathexpression substringWithRange:range];
+            } while((![lastChar isEqualToString:@"-"]) &&
+                    i < [mathexpression length]);
+            if( [lastChar isEqualToString:@"-"]) {
+                i++;
+                range.location = [mathexpression length] - i;
+                lastChar = [mathexpression substringWithRange:range];
+                if ([lastChar isEqualToString:@"("]) {
+                    mathexpression = [mathexpression substringToIndex:[mathexpression length] - 1];
+                    mathexpression = [mathexpression stringByAppendingString:[NSString stringWithFormat:@"%@)",num]];
+                    [self convertMathExpressionToAttributedString];
+                    [self evaluateAndSet];
+                    return;
+                }
             } else {
                 mathexpression = [mathexpression stringByAppendingString:@"+"];
             }

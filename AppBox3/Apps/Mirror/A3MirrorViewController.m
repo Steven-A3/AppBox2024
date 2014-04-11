@@ -171,7 +171,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     //_videoPreviewViewBounds.size.height);
     originalsize = _videoPreviewViewBounds.size;
     bMultipleView = NO;
-    bFlip = NO;
+    bFlip = YES;
     bFiltersEnabled = NO;
     effectiveScale  = 1.0;
     nFilterIndex = A3MirrorNoFilter;
@@ -279,7 +279,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             transform = CGAffineTransformMakeRotation(M_PI_2);
         } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
                    curDeviceOrientation == UIDeviceOrientationFaceUp) {
-            transform = CGAffineTransformMakeRotation(0);
+            transform = CGAffineTransformIdentity;
             
         } else {
             transform = CGAffineTransformMakeRotation(M_PI);
@@ -298,7 +298,11 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         effectiveScale > 1) {
         [view setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
     } else {
-        [view setTransform:[self getTransform]];
+       if (bFlip) {
+            [view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-1.0, 1.0))];
+        } else {
+            [view setTransform:[self getTransform]];
+        }
     }
     
 }
@@ -347,13 +351,23 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     _captureSession = [AVCaptureSession new];
     
     // obtain the preset and validate the preset
+    /*
+    Preset                          4 back      4 front
     
+    AVCaptureSessionPresetHigh     1280x720    640x480
+    AVCaptureSessionPresetMedium   480x360     480x360
+    AVCaptureSessionPresetLow     192x144     192x144
+    AVCaptureSessionPreset640x480   640x480     640x480
+    AVCaptureSessionPreset1280x720  1280x720    NA
+    AVCaptureSessionPresetPhoto     NA          NA
+     */
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
+        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
+            [[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
             if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
                 [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
             } else {
-                [_captureSession setSessionPreset:AVCaptureSessionPreset640x480];
+                [_captureSession setSessionPreset:AVCaptureSessionPresetLow];
             }
         } else {
             if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
@@ -484,23 +498,24 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     ciimg = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
+    /*
     CGRect sourceExtent = ciimg.extent;
     
-    
 
-    if (bFlip == NO) {
+
+    if (bFlip == YES) {
         // horizontal flip
         if(IS_LANDSCAPE) {
-          CGAffineTransform t = CGAffineTransformMake(-1, 0, 0, 1, sourceExtent.size.width,0);
-         ciimg = [ciimg imageByApplyingTransform:t];
+          //CGAffineTransform t = CGAffineTransformMake(-1, 0, 0, 1, sourceExtent.size.width,0);
+         //ciimg = [ciimg imageByApplyingTransform:t];
         } else {
         CGAffineTransform t = CGAffineTransformMake(1, 0, 0, -1, 0, sourceExtent.size.height);
         ciimg = [ciimg imageByApplyingTransform:t];
         }
         
     }
+*/
 
-    
     if(_eaglContext != [EAGLContext currentContext]) {
         [EAGLContext setCurrentContext:_eaglContext];
     }
@@ -1089,6 +1104,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                        // }
                         [_captureSession stopRunning];
                         bFlip = !bFlip;
+                        [self setViewRotation:[self currentFilterView]];
                         [_captureSession startRunning];
                     }completion:^(BOOL finished) {
                         
@@ -1145,8 +1161,8 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                     CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
                     UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
 
-                    
-                    if (bFlip == NO) {
+
+                    if (bFlip == YES) {
                         if(IS_LANDSCAPE) {
                             CGAffineTransform f = CGAffineTransformMake(-1, 0, 0, 1, ciSaveImg.extent.size.width,0);
                             ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
@@ -1155,6 +1171,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                             ciSaveImg = [ciSaveImg imageByApplyingTransform:f];
                         }
                     }
+
                     CGAffineTransform t;
                     
                     if (orientation == UIDeviceOrientationPortrait) {
