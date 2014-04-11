@@ -2,7 +2,7 @@
 //  DaysCounterEvent.m
 //  AppBox3
 //
-//  Created by kimjeonghwan on 4/10/14.
+//  Created by kimjeonghwan on 4/11/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -16,6 +16,7 @@
 @dynamic alertDatetime;
 @dynamic calendarId;
 @dynamic durationOption;
+@dynamic effectiveStartDate;
 @dynamic endDate;
 @dynamic eventId;
 @dynamic eventKitId;
@@ -30,7 +31,7 @@
 @dynamic repeatEndDate;
 @dynamic repeatType;
 @dynamic startDate;
-@dynamic effectiveStartDate;
+@dynamic alertInterval;
 @dynamic calendar;
 @dynamic location;
 

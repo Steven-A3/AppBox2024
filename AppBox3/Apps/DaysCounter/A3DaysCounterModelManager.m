@@ -355,7 +355,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (NSString*)alertDateStringFromDate:(NSDate*)startDate alertDate:(id)date
 {
     NSInteger alertType = [self alertTypeIndexFromDate:startDate alertDate:date];
-    if ( alertType == AlertType_Custom ) {
+    if (alertType == AlertType_Custom) {
         return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
     }
     

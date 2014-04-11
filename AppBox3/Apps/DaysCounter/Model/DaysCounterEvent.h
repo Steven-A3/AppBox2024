@@ -2,7 +2,7 @@
 //  DaysCounterEvent.h
 //  AppBox3
 //
-//  Created by kimjeonghwan on 4/10/14.
+//  Created by kimjeonghwan on 4/11/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSDate * alertDatetime;
 @property (nonatomic, retain) NSString * calendarId;
 @property (nonatomic, retain) NSNumber * durationOption;
+@property (nonatomic, retain) NSDate * effectiveStartDate;
 @property (nonatomic, retain) NSDate * endDate;
 @property (nonatomic, retain) NSString * eventId;
 @property (nonatomic, retain) NSString * eventKitId;
@@ -30,7 +31,7 @@
 @property (nonatomic, retain) NSDate * repeatEndDate;
 @property (nonatomic, retain) NSNumber * repeatType;
 @property (nonatomic, retain) NSDate * startDate;
-@property (nonatomic, retain) NSDate * effectiveStartDate;
+@property (nonatomic, retain) NSNumber * alertInterval;
 @property (nonatomic, retain) DaysCounterCalendar *calendar;
 @property (nonatomic, retain) DaysCounterEventLocation *location;
 
