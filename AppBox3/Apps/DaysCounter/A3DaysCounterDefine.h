@@ -55,6 +55,7 @@
 #define EventItem_RepeatEndDate                 @"repeatEndDate"
 #define EventItem_AlertDatetime                 @"alertDatetime"
 #define EventItem_AlertDatetimeInterval         @"alertDatetimeInterval"
+#define EventItem_AlertDateType                 @"alertDateType"
 #define EventItem_DurationOption                @"durationOption"
 #define EventItem_Notes                         @"notes"
 #define EventItem_IsFavorite                    @"isFavorite"

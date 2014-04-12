@@ -248,6 +248,16 @@
         NSDate *effectiveAlertDate = [calendar dateByAddingComponents:addComponent toDate:effectiveStartDate options:0];
         [_eventModel setObject:effectiveAlertDate forKey:EventItem_AlertDatetime];
         [_eventModel setObject:@(alertTimeInterval) forKey:EventItem_AlertDatetimeInterval];
+        
+        // alertType 저장.
+        NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate] alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+        if (alertType == AlertType_Custom) {
+            [_eventModel setObject:@(1) forKey:EventItem_AlertDateType];
+        }
+        else {
+            [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+        }
+        
         [self doneButtonAction:nil];
     }
 }

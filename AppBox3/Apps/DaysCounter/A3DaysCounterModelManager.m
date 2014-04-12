@@ -703,12 +703,16 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     addItem.repeatType = [item objectForKey:EventItem_RepeatType];
     addItem.repeatEndDate = ( [[item objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_RepeatEndDate] );
     addItem.alertDatetime = ( [[item objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_AlertDatetime] );
+    addItem.alertInterval = [item objectForKey:EventItem_AlertDatetimeInterval];
+    addItem.alertType = [item objectForKey:EventItem_AlertDateType];
+    //addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
+    addItem.effectiveStartDate = [item objectForKey:EventItem_EffectiveStartDate];
     addItem.durationOption = [item objectForKey:EventItem_DurationOption];
     addItem.notes = [item objectForKey:EventItem_Notes];
     addItem.isFavorite = [item objectForKey:EventItem_IsFavorite];
     addItem.regDate = [NSDate date];
     addItem.calendar = [item objectForKey:EventItem_Calendar];
-    addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
+    
     
     NSDictionary *locItem = [item objectForKey:EventItem_Location];
     if ( locItem ) {
@@ -772,6 +776,11 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     eventItem.repeatType = [info objectForKey:EventItem_RepeatType];
     eventItem.repeatEndDate = ( [[info objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_RepeatEndDate] );
     eventItem.alertDatetime = ( [[info objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_AlertDatetime] );
+    eventItem.alertInterval = [info objectForKey:EventItem_AlertDatetimeInterval];
+    eventItem.alertType = [info objectForKey:EventItem_AlertDateType];
+    //addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
+    eventItem.effectiveStartDate = [info objectForKey:EventItem_EffectiveStartDate];
+    
     eventItem.durationOption = [info objectForKey:EventItem_DurationOption];
     eventItem.notes = [info objectForKey:EventItem_Notes];
     eventItem.isFavorite = [info objectForKey:EventItem_IsFavorite];
