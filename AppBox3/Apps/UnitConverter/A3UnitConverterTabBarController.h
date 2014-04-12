@@ -12,4 +12,5 @@
 
 @property (nonatomic, strong) NSMutableArray *unitTypes;
 
+- (void)setupTabBar;
 @end

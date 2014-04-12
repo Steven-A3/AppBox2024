@@ -174,6 +174,20 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     [super viewWillAppear:animated];
 
     self.title = self.vcTitle;
+	if (_isFromMoreTableViewController && IS_IPHONE) {
+		NSStringDrawingContext *context = [NSStringDrawingContext new];
+		CGRect bounds = [self.title boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17]} context:context];
+		if (bounds.size.width > 120) {
+			UILabel *titleLabel = [UILabel new];
+			titleLabel.numberOfLines = 2;
+			titleLabel.bounds = CGRectMake(0, 0, 130, 44);
+			titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+			titleLabel.text = self.title;
+			titleLabel.font = [UIFont boldSystemFontOfSize:17];
+			titleLabel.textAlignment = NSTextAlignmentCenter;
+			self.navigationItem.titleView = titleLabel;
+		}
+	}
 
 	[self showLeftNavigationItems];
 
@@ -385,22 +399,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
     
     return _addButton;
 }
-
-/*
-- (UnitHistory *)unitHistory {
-	if (!_unitHistory) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
-        NSArray *histories = [UnitHistory MR_findAllSortedBy:@"date" ascending:NO withPredicate:predicate];
-        if (histories.count > 0) {
-            _unitHistory = histories[0];
-        }
-        else {
-            [self putHistoryWithValue:@1.0];
-        }
-	}
-	return _unitHistory;
-}
- */
 
 - (NSNumber *)unitValue {
     if (!_unitValue) {
@@ -871,18 +869,26 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
 	@autoreleasepool {
-		NSInteger equalIndex;
 
-		equalIndex = [self.convertItems indexOfObject:self.equalItem];
+		[self.convertItems moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-		if (equalIndex != 1) {
-			FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
-			[self.convertItems moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
-			[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
-			if (equalIndex == 0) {
-				[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
+		dispatch_async(dispatch_get_main_queue(), ^{
+			NSInteger equalIndex;
+			equalIndex = [self.convertItems indexOfObject:self.equalItem];
+
+			if (equalIndex != 1) {
+				FNLOG(@"equal index %ld is not 1.", (long)equalIndex);
+				FNLOG(@"%@", _convertItems);
+				[self.convertItems moveItemInSortedArrayFromIndex:equalIndex toIndex:1];
+				FNLOG(@"%@", _convertItems);
+				[_fmMoveTableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:equalIndex inSection:0] toIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+				if (equalIndex == 0) {
+					[_fmMoveTableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]  withRowAnimation:UITableViewRowAnimationNone];
+				}
+				[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 			}
-		}
+		});
 
 		if ((_draggingFirstRow && (toIndexPath.row != 0)) || (toIndexPath.row == 0)) {
 			double delayInSeconds = 0.3;
@@ -922,10 +928,13 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (BOOL)moveTableView:(FMMoveTableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	return [[self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class]];
+	return indexPath.row != 1;
 }
 
 - (NSIndexPath *)moveTableView:(FMMoveTableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	if (proposedDestinationIndexPath.row == 1) {
+		return [NSIndexPath indexPathForRow:2 inSection:proposedDestinationIndexPath.section];
+	}
 	return proposedDestinationIndexPath;
 }
 

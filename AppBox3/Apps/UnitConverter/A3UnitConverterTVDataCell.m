@@ -7,8 +7,6 @@
 //
 
 #import "A3UnitConverterTVDataCell.h"
-#import "A3UIDevice.h"
-#import "common.h"
 
 @interface A3UnitConverterTVDataCell ()
 
@@ -54,20 +52,13 @@
 }
 
 - (void)useDynamicType {
-	self.codeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	self.rateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-}
-
-- (CGSize)sizeThatFits:(CGSize)size {
-	return [self intrinsicContentSize];
-}
-
-- (CGSize)intrinsicContentSize {
-	if (IS_IPAD) {
-		return CGSizeMake(714.0, 84.0);
+	if (IS_IPHONE) {
+		self.codeLabel.font = [UIFont systemFontOfSize:15];
+		self.rateLabel.font = [UIFont systemFontOfSize:13];
 	} else {
-        return CGSizeMake(320.0, 84.0);
-    }
+		self.codeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+		self.rateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+	}
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -250,7 +241,6 @@
 		_value2Field.text = @"";
 		_value2Field.text = text;
 	}
-	FNLOG("%f, %f, %f", _valueField.font.pointSize, _value2Field.font.pointSize, font.pointSize);
 }
 
 - (void)addNormalInputConstraints {
@@ -385,33 +375,35 @@
 }
 
 - (void)addMenuView:(BOOL)showDelete {
-	[self.superview insertSubview:self.menuView belowSubview:self];
+	[self.superview insertSubview:[self menuView:showDelete ] belowSubview:self];
 	if ([_menuDelegate respondsToSelector:@selector(menuAdded)]) {
 		[_menuDelegate menuAdded];
 	}
 }
 
 - (void)removeMenuView {
-	[self.menuView removeFromSuperview];
+	[_menuView removeFromSuperview];
 	_menuView = nil;
 }
 
 - (CGFloat)menuWidth:(BOOL)showDelete {
-	return 72.0 * 3;
+	return showDelete ? 72.0 * 3 : 72.0 * 2;
 }
 
-- (UIView *)menuView {
+- (UIView *)menuView:(BOOL)showDelete {
 	if (_menuView) {
 		return _menuView;
 	}
 	CGRect frame = self.frame;
-	frame.origin.x = frame.size.width - [self menuWidth:YES];
-	frame.size.width = [self menuWidth:YES];
+	frame.origin.x = frame.size.width - [self menuWidth:showDelete];
+	frame.size.width = [self menuWidth:showDelete];
 	_menuView = [[UIView alloc] initWithFrame:frame];
     
 	NSArray *menuTitles = @[@"Swap", @"Share", @"Delete"];
     
 	[menuTitles enumerateObjectsUsingBlock:^(NSString *title, NSUInteger idx, BOOL *stop) {
+		if (!showDelete && idx == 2) return;
+
 		UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
 		[button setTitle:title forState:UIControlStateNormal];
 		[button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
