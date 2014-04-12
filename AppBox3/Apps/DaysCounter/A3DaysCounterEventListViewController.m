@@ -418,7 +418,6 @@
     if ( widthConst ) {
         widthConst.constant = (imageView.image ? 32.0 : 0.0);
         [cell layoutIfNeeded];
-        NSLog(@"%s %@ %f",__FUNCTION__,indexPath,widthConst.constant);
     }
 }
 

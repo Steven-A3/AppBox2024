@@ -54,6 +54,7 @@
 #define EventItem_RepeatType                    @"repeatType"
 #define EventItem_RepeatEndDate                 @"repeatEndDate"
 #define EventItem_AlertDatetime                 @"alertDatetime"
+#define EventItem_AlertDatetimeInterval         @"alertDatetimeInterval"
 #define EventItem_DurationOption                @"durationOption"
 #define EventItem_Notes                         @"notes"
 #define EventItem_IsFavorite                    @"isFavorite"
@@ -69,6 +70,7 @@
 #define EventItem_Country                       @"country"
 #define EventItem_LocationName                  @"locationName"
 #define EventItem_Contact                       @"contact"
+#define EventItem_EffectiveStartDate            @"EffectiveStartDate"
 
 #define AlertMessage_NoPhoto                    @"No Photos\nYou can add photos into events."
 

@@ -696,7 +696,7 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
+            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
                                                                                             alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
             textLabel.textColor = [UIColor blackColor];
         }
@@ -960,8 +960,12 @@
                                                                   inSection:AddSection_Section_1];
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[[_eventModel objectForKey:EventItem_RepeatType] integerValue]];
-                
+
                 if ([[_eventModel objectForKey:EventItem_RepeatType] integerValue] == RepeatType_Never) {
+                    // EffectiveStartDate 갱신.
+                    [_eventModel setObject:[_eventModel objectForKey:EventItem_StartDate] forKey:EventItem_EffectiveStartDate];
+                    
+                    // EndRepeatRow 제거.
                     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
                     __block NSInteger endRepeatRowIndex = -1;
                     [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
@@ -970,17 +974,28 @@
                             *stop = YES;
                         }
                     }];
-                    
                     if (endRepeatRowIndex == -1) {
                         return;
                     }
-                    
                     [section1_items removeObjectAtIndex:endRepeatRowIndex];
                     [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:endRepeatRowIndex inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationMiddle];
                     
                     return;
                 }
+                
+                // EffectiveStartDate & EffectiveAlertDate 갱신.
+                [[A3DaysCounterModelManager sharedManager] reloadDatesOfEventModel:_eventModel];
+                // AlertCell 갱신.
+                NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+                                                                 inSection:AddSection_Section_1];
+                [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
+                cell = [tableView cellForRowAtIndexPath:alertIndexPath];
+                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
+                                                                                                alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+                
 
+                // EndRepeatDate 유무 확인.
                 __block NSInteger endRepeatRowIndex = -1;
                 [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
                     if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
@@ -990,6 +1005,7 @@
                 }];
                 
                 if (endRepeatRowIndex == -1) {
+                    // EndRepeatDate 추가.
                     __block NSInteger repeatTypeRowIndex = -1;
                     [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
                         if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_RepeatType)]) {
@@ -1053,8 +1069,9 @@
                 [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_StartDate]
+                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
                                                                                                 alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+                FNLOG(@"today: %@, FirstStartDate: %@, EffectiveDate: %@, AlertDate: %@", [NSDate date], [_eventModel objectForKey:EventItem_StartDate], [_eventModel objectForKey:EventItem_EffectiveStartDate], [_eventModel objectForKey:EventItem_AlertDatetime]);
             };
             
             if ( IS_IPHONE ) {
@@ -1178,6 +1195,10 @@
         else {
             [[A3DaysCounterModelManager sharedManager] addEvent:self.eventModel];
         }
+        
+        FNLOG(@"reloadAlertDateListForLocalNotification Start");
+        [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+        FNLOG(@"reloadAlertDateListForLocalNotification End");
     }
     // 창닫기
     [self cancelAction:nil];
@@ -1325,7 +1346,6 @@
     NSMutableArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     NSDate *prevDate = [_eventModel objectForKey:EventItem_StartDate];
     
-    //if ([[_eventModel objectForKey:EventItem_IsLunar] boolValue]) {
     if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue]) {
         [_eventModel setObject:datePicker.date forKey:self.inputDateKey];
         NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -1339,6 +1359,18 @@
         [_eventModel setObject:datePicker.date forKey:self.inputDateKey];
     }
     
+    // EffectiveStartDate & EffectiveAlertDate 갱신.
+    [[A3DaysCounterModelManager sharedManager] reloadDatesOfEventModel:_eventModel];
+    // AlertCell 갱신.
+    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+    NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+                                                     inSection:AddSection_Section_1];
+    [self.tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:alertIndexPath];
+    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+    detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
+                                                                                    alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+
     if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
         [self updateEndDateDiffFromStartDate:prevDate];
     }
