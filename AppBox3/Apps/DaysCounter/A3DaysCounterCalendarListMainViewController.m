@@ -49,7 +49,6 @@
     self.navigationItem.title = @"Days Counter";
 
     [self leftBarButtonAppsButton];
-
     [self makeBackButtonEmptyArrow];
     [self registerContentSizeCategoryDidChangeNotification];
     
@@ -369,22 +368,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DaysCounterCalendar *item;
+    DaysCounterCalendar *calendarItem;
     if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
-        item = nil;
+        calendarItem = nil;
     }
     else {
         if (tableView == self.tableView) {
-            item = [_itemArray objectAtIndex:[indexPath row]];
+            calendarItem = [_itemArray objectAtIndex:[indexPath row]];
         }
         else {
-            item = [_searchResultArray objectAtIndex:[indexPath row]];
+            calendarItem = [_searchResultArray objectAtIndex:[indexPath row]];
         }
     }
     
     UITableViewCell *cell = nil;
     
-    if (!item) {
+    if (!calendarItem) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"emptyCell"];
         if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"emptyCell"];
@@ -395,7 +394,7 @@
         return cell;
     }
     
-    NSInteger cellType = [item.calendarType integerValue];
+    NSInteger cellType = [calendarItem.calendarType integerValue];
     NSString *CellIdentifier = (cellType == CalendarCellType_System) ? @"systemCalendarListCell" : @"userCalendarListCell";
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -406,20 +405,20 @@
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
     UILabel *countLabel = (UILabel*)[cell viewWithTag:11];
-    textLabel.textColor = [item color];
-    countLabel.textColor = [item color];
-    textLabel.text = item.calendarName;
+    textLabel.textColor = [calendarItem color];
+    countLabel.textColor = [calendarItem color];
+    textLabel.text = calendarItem.calendarName;
 
 
     switch (cellType) {
         case CalendarCellType_User:
         {
-            countLabel.text = [NSString stringWithFormat:@"%ld", (long)[item.events count]];
+            countLabel.text = [NSString stringWithFormat:@"%ld", (long)[calendarItem.events count]];
             
             UILabel *eventDetailInfoLabel = (UILabel*)[cell viewWithTag:15];
             NSMutableAttributedString *eventDetailInfoString = [[NSMutableAttributedString alloc] initWithString:@""];
-            if ([item.events count] > 0) {
-                DaysCounterEvent *event = [item.events lastObject];
+            if ([calendarItem.events count] > 0) {
+                DaysCounterEvent *event = [[A3DaysCounterModelManager sharedManager] closestEventObjectOfCalendar:calendarItem];
                 
                 NSAttributedString *eventName;
                 NSAttributedString *period;
@@ -483,13 +482,13 @@
         case CalendarCellType_System:
         {
             NSInteger numberOfEvents = 0;
-            if ( [item.calendarId isEqualToString:SystemCalendarID_All] ) {
+            if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_All] ) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfAllEvents];
             }
-            else if ( [item.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
+            else if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_Upcoming]) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfUpcomingEventsWithDate:[NSDate date]];
             }
-            else if ( [item.calendarId isEqualToString:SystemCalendarID_Past] ) {
+            else if ( [calendarItem.calendarId isEqualToString:SystemCalendarID_Past] ) {
                 numberOfEvents = [[A3DaysCounterModelManager sharedManager] numberOfPastEventsWithDate:[NSDate date]];
             }
             

@@ -163,6 +163,7 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.font = [UIFont systemFontOfSize:17];
             textLabel.textColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
             break;
         case EventCellType_Notes:
@@ -212,10 +213,8 @@
             break;
         case EventCellType_Alert:
         {
-            UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-            UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-            textLabel.text = [itemDict objectForKey:EventRowTitle];
-            detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
+            cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
+            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
                                                                                             alertDate:_eventItem.alertDatetime];
         }
             break;
@@ -781,7 +780,7 @@
         }
     }
     
-    if ([markLabel.text isEqualToString:@"Since"]) {
+    if ([markLabel.text isEqualToString:@"since"]) {
         markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
     }
     else {

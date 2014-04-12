@@ -46,6 +46,8 @@
     </entity>
     <entity name="DaysCounterEvent" representedClassName="DaysCounterEvent" syncable="YES">
         <attribute name="alertDatetime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="alertInterval" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="alertType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="calendarId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="effectiveStartDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -361,7 +363,7 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="343"/>
+        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="373"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>

@@ -89,4 +89,16 @@
 - (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
 
+#pragma mark - Period
+- (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar;
+- (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar;
+- (void)renewAllEffectiveStartDates;
+- (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
+#pragma mark EventModel Dictionary
+- (NSDate *)effectiveDateForEventModel:(NSMutableDictionary *)event basisTime:(NSDate *)now;
+- (void)reloadDatesOfEventModel:(NSMutableDictionary *)event;
+
+#pragma mark - Alert
+- (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
+- (void)reloadAlertDateListForLocalNotification;
 @end
