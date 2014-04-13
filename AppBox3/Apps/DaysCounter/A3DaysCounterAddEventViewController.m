@@ -34,6 +34,7 @@
 #define ActionTag_DeleteEvent   102
 
 @interface A3DaysCounterAddEventViewController ()
+@property (strong, nonatomic) NSArray *cellIDArray;
 @property (strong, nonatomic) NSMutableArray *sectionTitleArray;
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
 @property (strong, nonatomic) NSString *inputDateKey;
@@ -74,6 +75,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.cellIDArray = @[@"titleCell",@"photoCell",@"switchCell",@"switchCell",@"switchCell",@"dateCell",@"dateCell",@"value1Cell",@"value1Cell",@"value1Cell",@"calendarCell",@"value1Cell",@"value1Cell",@"notesCell",@"dateInputCell",@"",@"",@"advancedCell"];
     
     if (_eventItem) {
         self.title = @"Edit Event";
@@ -399,16 +402,14 @@
 
 - (NSString*)cellIdentifierAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSArray *cellIDs = @[@"titleCell",@"photoCell",@"switchCell",@"switchCell",@"switchCell",@"dateCell",@"dateCell",@"value1Cell",@"value1Cell",@"value1Cell",@"calendarCell",@"value1Cell",@"value1Cell",@"notesCell",@"dateInputCell",@"",@"",@"advancedCell"];
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] )
         return @"normalCell";
     
     NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
-    
     NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
     
-    return [cellIDs objectAtIndex:itemType];
+    return [self.cellIDArray objectAtIndex:itemType];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -449,11 +450,10 @@
             cell.detailTextLabel.tag = 11;
         }
         else {
-            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
-            
             switch (itemType) {
-                case EventCellType_Title :{
-                    cell = [cellArray objectAtIndex:0];
+                case EventCellType_Title :
+                {
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventTitleCell" owner:nil options:nil] lastObject];
                     UITextField *textField = (UITextField*)[cell viewWithTag:10];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     textField.delegate = self;
@@ -461,8 +461,9 @@
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 }
                     break;
-                case EventCellType_Photo:{
-                    cell = [cellArray objectAtIndex:1];
+                case EventCellType_Photo:
+                {
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventPhotoCell" owner:nil options:nil] lastObject];
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
                     [button addTarget:self action:@selector(photoAction:) forControlEvents:UIControlEventTouchUpInside];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -470,8 +471,9 @@
                     break;
                 case EventCellType_IsLunar:
                 case EventCellType_IsAllDay:
-                case EventCellType_IsPeriod:{
-                    cell = [cellArray objectAtIndex:2];
+                case EventCellType_IsPeriod:
+                {
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventSwitchCell" owner:nil options:nil] lastObject];
                     UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
                     [swButton addTarget:self action:@selector(toggleSwitchAction:) forControlEvents:UIControlEventValueChanged];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -479,7 +481,7 @@
                     break;
                 case EventCellType_StartDate:
                 case EventCellType_EndDate:{
-                    cell = [cellArray objectAtIndex:3];
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateCell" owner:nil options:nil] lastObject];
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
                     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                     imageView.tintColor = [UIColor lightGrayColor];
@@ -487,13 +489,13 @@
                     break;
                 case EventCellType_Calendar:
                 {
-                    cell = [cellArray objectAtIndex:4];
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCalendarCell" owner:nil options:nil] lastObject];
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
                     imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 }
                     break;
                 case EventCellType_Notes:{
-                    cell = [cellArray objectAtIndex:5];
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventNotesCell" owner:nil options:nil] lastObject];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     UITextView *textView = (UITextView*)[cell viewWithTag:10];
                     textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
@@ -502,13 +504,13 @@
                 }
                     break;
                 case EventCellType_DateInput:{
-                    cell = [cellArray objectAtIndex:6];
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateInputCell" owner:nil options:nil] lastObject];
                     UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
                     [datePicker addTarget:self action:@selector(dateChangeAction:) forControlEvents:UIControlEventValueChanged];
                 }
                     break;
                 case EventCellType_Advanced:{
-                    cell = [cellArray objectAtIndex:12];
+                    cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventAdvancedCell" owner:nil options:nil] lastObject];
                     cell.contentView.backgroundColor = [UIColor colorWithRed:239.0/255.0 green:239.0/255.0 blue:244.0/255.0 alpha:1.0];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     UIButton *button = (UIButton*)[cell viewWithTag:11];
@@ -835,22 +837,22 @@
 }
 
 #pragma mark - Table view delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
-        cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
-    }
-    else {
-        NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
-        NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
-        NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
-        
-        switch (itemType) {
-            default:
-                break;
-        }
-    }
-}
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
+//        cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
+//    }
+//    else {
+//        NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
+//        NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
+//        NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
+//        
+//        switch (itemType) {
+//            default:
+//                break;
+//        }
+//    }
+//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

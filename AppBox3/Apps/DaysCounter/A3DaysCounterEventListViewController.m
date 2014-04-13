@@ -350,8 +350,9 @@
         return nil;
     }
     
-    NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-    UIView *headerView = [cellArray objectAtIndex:2];
+    //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
+    //UIView *headerView = [cellArray objectAtIndex:2];
+    UIView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListSectionHeader" owner:nil options:nil] lastObject];
     UILabel *monthLabel = (UILabel*)[headerView viewWithTag:10];
     UILabel *yearLabel = (UILabel*)[headerView viewWithTag:11];
     
@@ -406,22 +407,22 @@
     return 62.0;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
-    NSLayoutConstraint *widthConst = nil;
-    for (NSLayoutConstraint *layout in imageView.constraints ) {
-        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
-            widthConst = layout;
-            break;
-        }
-    }
-    
-    if ( widthConst ) {
-        widthConst.constant = (imageView.image ? 32.0 : 0.0);
-        [cell layoutIfNeeded];
-    }
-}
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
+//    NSLayoutConstraint *widthConst = nil;
+//    for (NSLayoutConstraint *layout in imageView.constraints ) {
+//        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
+//            widthConst = layout;
+//            break;
+//        }
+//    }
+//    
+//    if ( widthConst ) {
+//        widthConst.constant = (imageView.image ? 32.0 : 0.0);
+//        [cell layoutIfNeeded];
+//    }
+//}
 
 - (DaysCounterEvent *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
@@ -449,8 +450,20 @@
     NSString *CellIdentifier = (_sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:(_sortType == EventSortType_Name ? 0 : 3)];
+        //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
+        //cell = [cellArray objectAtIndex:(_sortType == EventSortType_Name ? 0 : 3)];
+        switch (_sortType) {
+            case EventSortType_Name:
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListNameCell" owner:nil options:nil] lastObject];
+                break;
+                
+            case EventSortType_Date:
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListDateCell" owner:nil options:nil] lastObject];
+                break;
+                
+            default:
+                break;
+        }
     }
     
     [self adjustFontSizeOfCell:cell];

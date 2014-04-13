@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="dateCell" id="tkN-Hv-7bW">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tkN-Hv-7bW" id="Xid-96-dSR">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Starts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cbe-Ml-6ce">
+                        <rect key="frame" x="20" y="11" width="53" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="53" id="JfF-lF-eaQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView hidden="YES" userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EHk-3v-8NA" userLabel="Image View - lunar_stroke">
+                        <rect key="frame" x="142" y="12" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="5U9-WY-i7e"/>
+                            <constraint firstAttribute="height" constant="20" id="G24-90-V6c"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tue, Mar 12, 1940" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jV8-tL-rpd">
+                        <rect key="frame" x="167" y="11" width="138" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" priority="805" constant="137" id="09T-Kv-FTa"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wf9-HD-kOa">
+                        <rect key="frame" x="309" y="13" width="0.0" height="18"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" id="3qg-Qc-q7n"/>
+                            <constraint firstAttribute="height" constant="18" id="za3-75-R2Z"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <state key="normal" image="arrow">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="Cbe-Ml-6ce" secondAttribute="centerY" id="9an-xY-Op1"/>
+                    <constraint firstAttribute="centerY" secondItem="Wf9-HD-kOa" secondAttribute="centerY" id="Lg2-8Q-Msf"/>
+                    <constraint firstAttribute="centerY" secondItem="EHk-3v-8NA" secondAttribute="centerY" id="Qdb-k0-3X2"/>
+                    <constraint firstAttribute="trailing" secondItem="Wf9-HD-kOa" secondAttribute="trailing" constant="11" id="UAK-fX-AeS"/>
+                    <constraint firstItem="jV8-tL-rpd" firstAttribute="baseline" secondItem="Cbe-Ml-6ce" secondAttribute="baseline" id="gWv-hh-Yxa"/>
+                    <constraint firstItem="Cbe-Ml-6ce" firstAttribute="leading" secondItem="Xid-96-dSR" secondAttribute="leading" constant="20" id="hbe-8i-5D4"/>
+                    <constraint firstItem="Wf9-HD-kOa" firstAttribute="leading" secondItem="jV8-tL-rpd" secondAttribute="trailing" constant="4" id="o0a-Fg-PAZ"/>
+                    <constraint firstItem="jV8-tL-rpd" firstAttribute="leading" secondItem="EHk-3v-8NA" secondAttribute="trailing" constant="5" id="xLu-zA-GLh"/>
+                </constraints>
+            </tableViewCellContentView>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="arrow" width="8" height="13"/>
+    </resources>
+</document>

@@ -12,6 +12,7 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
+#import "A3DaysCounterSetupCalendarCell.h"
 #import "SFKImage.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
@@ -73,8 +74,7 @@
     static NSString *CellIdentifier = @"calendarListCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:8];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterSetupCalendarCell" owner:nil options:nil] lastObject];
         UIImageView *imageView = (UIImageView*)[cell viewWithTag:10];
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
