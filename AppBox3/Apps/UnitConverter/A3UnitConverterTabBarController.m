@@ -133,34 +133,30 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
 - (void)setupTabBar
 {
+	NSDictionary *textAttributes = @{
+			NSFontAttributeName : IS_IPAD ? [UIFont systemFontOfSize:12]:[UIFont systemFontOfSize:10]
+	};
+	[[UITabBarItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
+
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 
+	_unitTypes = nil;
 	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;
     for (NSInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
         UnitType *unitType = self.unitTypes[idx];
         
-        A3UnitConverterConvertTableViewController *vc = [[A3UnitConverterConvertTableViewController alloc] init];
-        vc.unitType = unitType;
-        vc.title = unitType.unitTypeName;
+        A3UnitConverterConvertTableViewController *converterViewController = [[A3UnitConverterConvertTableViewController alloc] init];
+        converterViewController.unitType = unitType;
+        converterViewController.title = unitType.unitTypeName;
         
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-
-        navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImagName];
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:converterViewController];
+        navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
         navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImagName];
-        
-        NSDictionary *textAttributes = @{
-                                         NSFontAttributeName : IS_IPAD ? [UIFont systemFontOfSize:12]:[UIFont systemFontOfSize:10]
-                                         };
-        [[UITabBarItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
         
         NSArray *unitNameArray = [unitType.unitTypeName componentsSeparatedByString:@" "];
         if (unitNameArray.count > 1) {
-            // khkim_131217 : Fuel Consumption, Electric Current에서 앞쪽 글자만 표시되도록
-//            nav.tabBarItem.title = unitNameArray[0];
-            
             if (IS_IPHONE) {
                 navigationController.tabBarItem.title = unitNameArray[0];
-                vc.title = unitNameArray[0];
             }
         }
         else {
@@ -171,6 +167,7 @@ NSString *kTabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
     }
 
 	A3UnitConverterMoreTableViewController *moreViewController = [[A3UnitConverterMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	moreViewController.mainTabBarController = self;
 	_myMoreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
 	_myMoreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
 	[viewControllers addObject:_myMoreNavigationController];

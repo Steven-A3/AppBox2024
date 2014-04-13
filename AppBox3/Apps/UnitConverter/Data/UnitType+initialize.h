@@ -11,7 +11,7 @@
 @interface UnitType (initialize)
 
 + (void)resetUnitTypeLists;
-- (NSString *)flagImagName;
+- (NSString *)flagImageName;
 - (NSString *)selectedFlagImagName;
 
 @end

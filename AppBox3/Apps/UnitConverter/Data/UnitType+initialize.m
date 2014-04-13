@@ -18,7 +18,7 @@
 	}
     
     // unit type set : make and set to coredata
-    for (int i=0; i<numOfUnitType; i++) {
+    for (int i = 0; i < numOfUnitType; i++) {
         
         UnitType *utype = [UnitType MR_createEntity];
         NSString *unitType = [NSString stringWithCString:unitTypes[i] encoding:NSUTF8StringEncoding];
@@ -30,12 +30,12 @@
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
-- (NSString *)flagImagName
+- (NSString *)flagImageName
 {
     
     NSMutableArray *keys = [NSMutableArray array];
     
-    for (int i=0; i<numOfUnitType; i++) {
+    for (int i = 0; i < numOfUnitType; i++) {
         NSString *unitType = [NSString stringWithCString:unitTypes[i] encoding:NSUTF8StringEncoding];
         
         [keys addObject:unitType];

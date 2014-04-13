@@ -14,6 +14,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "UITableViewController+standardDimension.h"
 #import "A3MoreTableViewCell.h"
+#import "A3UnitConverterTabBarController.h"
 
 @interface A3UnitConverterMoreTableViewController ()
 
@@ -24,9 +25,7 @@
 
 NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
-@implementation A3UnitConverterMoreTableViewController {
-	BOOL _isEditing;
-}
+@implementation A3UnitConverterMoreTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -43,12 +42,16 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 	self.title = @"More";
 
-	[self leftBarButtonAppsButton];
-	[self rightBarButtonEditButton];
+	if (_isEditing) {
+		[self rightBarButtonDoneButton];
+	} else {
+		[self leftBarButtonAppsButton];
+		[self rightBarButtonEditButton];
+	}
 
+	[self.tableView registerClass:[A3MoreTableViewCell class] forCellReuseIdentifier:A3UnitConverterMoreTableViewCellIdentifier];
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
-	[self.tableView registerClass:[A3MoreTableViewCell class] forCellReuseIdentifier:A3UnitConverterMoreTableViewCellIdentifier];
 }
 
 - (void)rightBarButtonEditButton {
@@ -57,41 +60,23 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)editButtonAction:(UIBarButtonItem *)editButton {
-	_unitTypes = nil;
-	_sections = nil;
-	_isEditing = YES;
-	[self.tableView reloadData];
-	[self.tableView setEditing:YES animated:YES];
-
-	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-
-	self.navigationItem.leftBarButtonItem = nil;
-	[self rightBarButtonDoneButton];
+	A3UnitConverterMoreTableViewController *editingViewController = [[A3UnitConverterMoreTableViewController alloc] init];
+	editingViewController.mainTabBarController = self.mainTabBarController;
+	editingViewController.isEditing = YES;
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:editingViewController];
+	[self.mainTabBarController presentViewController:navigationController animated:YES completion:nil];
+	return;
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button {
-	_unitTypes = nil;
-	_sections = nil;
-	_isEditing = NO;
-	[self.tableView reloadData];
-	[self.tableView setEditing:NO animated:NO];
-
-	[self leftBarButtonAppsButton];
-	[self rightBarButtonEditButton];
+	[self.mainTabBarController setupTabBar];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-	[super viewDidDisappear:animated];
-
-	if (_isEditing) {
-		[self doneButtonAction:nil];
-	}
 }
 
 #pragma mark - Prepare Data
@@ -114,7 +99,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 		NSMutableArray *sections = [NSMutableArray new];
 
-		if (_isEditing) {
+		if (self.isEditing) {
 			NSMutableArray *section0 = [NSMutableArray new];
 			for (; idx < numberOfItemsOnTapBar; idx++) {
 				[section0 addObject:self.unitTypes[idx]];
@@ -148,15 +133,11 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-	if (_isEditing) {
+	if (self.isEditing) {
 		if (section == 0) return @"Units on the bar";
 		return @"Units in more";
 	}
 	return nil;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	FNLOG();
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -164,7 +145,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
     A3MoreTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterMoreTableViewCellIdentifier forIndexPath:indexPath];
 
 	UnitType *unitType = self.sections[indexPath.section][indexPath.row];
-	cell.cellImageView.image = [UIImage imageNamed:unitType.flagImagName];
+	cell.cellImageView.image = [UIImage imageNamed:unitType.flagImageName];
 	cell.cellTitleLabel.text = unitType.unitTypeName;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.separatorInset = A3UITableViewSeparatorInset;
@@ -188,7 +169,7 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-	FNLOG(@"%ld - %ld, %ld - %ld", fromIndexPath.section, fromIndexPath.row, toIndexPath.section, toIndexPath.row);
+	FNLOG(@"%ld - %ld, %ld - %ld", (long)fromIndexPath.section, (long)fromIndexPath.row, (long)toIndexPath.section, (long)toIndexPath.row);
 	if (fromIndexPath.section == toIndexPath.section) {
 		NSMutableArray *section = self.sections[fromIndexPath.section];
 		id movingObject = section[fromIndexPath.row];
@@ -229,26 +210,6 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 		unitType.order = @(numberOfItemsOnTabBar + idx);
 	}];
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-	FNLOG(@"%@, %@", section0, section1);
-
-	double delayInSeconds = 0.1;
-	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		[self refreshTabBarController];
-	});
-}
-
-- (void)refreshTabBarController {
-	NSArray *section0 = self.sections[0];
-	[section0 enumerateObjectsUsingBlock:^(UnitType *unitType, NSUInteger idx, BOOL *stop) {
-		UINavigationController *navigationController = self.tabBarController.viewControllers[idx];
-		navigationController.tabBarItem.title = unitType.unitTypeName;
-		navigationController.tabBarItem.image = [UIImage imageNamed:unitType.flagImagName];
-		navigationController.tabBarItem.selectedImage = [UIImage imageNamed:unitType.selectedFlagImagName];
-		A3UnitConverterConvertTableViewController *converterViewController = navigationController.viewControllers[0];
-		converterViewController.unitType = unitType;
-		converterViewController.title = unitType.unitTypeName;
-	}];
 }
 
 // Override to support conditional rearranging of the table view.

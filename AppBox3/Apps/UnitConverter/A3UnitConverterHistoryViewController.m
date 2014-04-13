@@ -155,29 +155,8 @@ NSString *const A3UnitConverterHistory3RowCellID = @"cell3Row";
 	}
     
 	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
-	NSArray *itemsTemp = [unitHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
+	NSArray *items = [unitHistory.targets sortedArrayUsingDescriptors:@[sortDescriptor]];
     
-    // 현재 unitType 에 존재하는  unitConverterItem 들만 보이도록 다시 sort 한다.
-    NSMutableArray *unitConverterItems = [self unitConverterItemsOfUnitType:unitHistory.source.type];
-    NSMutableArray *items = [[NSMutableArray alloc] initWithArray:itemsTemp];
-    NSMutableArray *toDeleteItems = [NSMutableArray new];
-    for (UnitHistoryItem *historyItem in items) {
-        for (int i=0; i<unitConverterItems.count; i++) {
-            UnitConvertItem *converterItem  = unitConverterItems[i];
-            if ([converterItem.item.unitName isEqualToString:historyItem.unit.unitName]) {
-                break;
-            }
-            if (i == unitConverterItems.count-1) {
-                // 현재의 unitConverterItem에는 없는 unitHistoryItem이므로 보여주지 않도록 리스트에서 삭제
-                [toDeleteItems addObject:historyItem];
-            }
-        }
-    }
-    if (toDeleteItems.count > 0) {
-        [items removeObjectsInArray:toDeleteItems];
-    }
-
-//	NSInteger numberOfLines = [unitHistory.targets count] + 1;
     NSInteger numberOfLines = [items count] + 1;
 	[cell setNumberOfLines:@(numberOfLines)];
     

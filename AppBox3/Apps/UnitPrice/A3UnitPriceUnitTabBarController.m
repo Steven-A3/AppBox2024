@@ -85,39 +85,6 @@
 	}
 }
 
-/*
-- (void)setupTapBar
-{
-    NSMutableArray *marray = [[NSMutableArray alloc] init];
-    
-    for (int i=0; i<self.unitTypes.count; i++) {
-        UnitType *utype = _unitTypes[i];
-        
-        A3UnitPriceSelectViewController *viewController = [self unitSelectViewControllerWithUnitType:utype];
-        
-        viewController.tabBarItem.image = [UIImage imageNamed:utype.flagImagName];
-        viewController.tabBarItem.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_on", utype.flagImagName]];
-        viewController.tabBarItem.title = utype.unitTypeName;
-        
-        [marray addObject:viewController];
-    }
-    
-    self.viewControllers = marray;
-    
-    // PriceInfo에 설정된 unitType에 해당한 탭바가 선택되도록 한다.
-    if (self.price.unit) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName==%@", self.price.unit.type.unitTypeName];
-        NSArray *types = [_unitTypes filteredArrayUsingPredicate:predicate];
-        if (types.count > 0) {
-            UnitType *type = types[0];
-            NSUInteger idx = [_unitTypes indexOfObject:type];
-            
-            self.selectedIndex = idx;
-        }
-    }
-}
- */
-
 - (void)setupTapBar
 {
     NSDictionary *textAttributes = @{
@@ -125,31 +92,31 @@
                                      };
     [[UITabBarItem appearance] setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
     
-    NSMutableArray *marray = [[NSMutableArray alloc] init];
+    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
     
-    for (int i=0; i<self.unitTypes.count; i++) {
-        UnitType *utype = _unitTypes[i];
+    for (NSInteger i = 0; i < self.unitTypes.count; i++) {
+        UnitType *unitType = _unitTypes[i];
         
-        A3UnitPriceSelectViewController *viewController = [self unitSelectViewControllerWithUnitType:utype];
+        A3UnitPriceSelectViewController *viewController = [self unitSelectViewControllerWithUnitType:unitType];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        nav.tabBarItem.image = [UIImage imageNamed:utype.flagImagName];
-        nav.tabBarItem.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_on", utype.flagImagName]];
-        nav.tabBarItem.title = utype.unitTypeName;
+        nav.tabBarItem.image = [UIImage imageNamed:unitType.flagImageName];
+        nav.tabBarItem.selectedImage = [UIImage imageNamed:[NSString stringWithFormat:@"%@_on", unitType.flagImageName]];
+        nav.tabBarItem.title = unitType.unitTypeName;
         
         [nav.navigationBar setShadowImage:[UIImage new]];
         [nav.navigationBar setBackgroundImage:[UIImage new]
                                forBarPosition:UIBarPositionAny
                                    barMetrics:UIBarMetricsDefault];
         
-        [marray addObject:nav];
+        [viewControllers addObject:nav];
     }
     
-    self.viewControllers = marray;
+    self.viewControllers = viewControllers;
     
     // PriceInfo에 설정된 unitType에 해당한 탭바가 선택되도록 한다.
     if (self.price.unit) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName==%@", self.price.unit.type.unitTypeName];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"unitTypeName == %@", self.price.unit.type.unitTypeName];
         NSArray *types = [_unitTypes filteredArrayUsingPredicate:predicate];
         if (types.count > 0) {
             UnitType *type = types[0];

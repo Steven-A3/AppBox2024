@@ -28,7 +28,7 @@
 		[UnitItem resetUnitItemLists];
 	}
     
-    NSMutableArray *unitConvertItems = [[NSMutableArray alloc] init];
+    NSMutableArray *allUnitTypeItems = [[NSMutableArray alloc] init];
 	NSArray *item;
     
 	// Angle
@@ -39,7 +39,7 @@
 			[NSNumber numberWithInt:11],
 			[NSNumber numberWithInt:14],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Area
 	item = [NSArray arrayWithObjects:
@@ -55,7 +55,7 @@
 			[NSNumber numberWithInt:13],
 			[NSNumber numberWithInt:16],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Bits
 	item = [NSArray arrayWithObjects:
@@ -68,7 +68,7 @@
 			[NSNumber numberWithInt:6],
 			[NSNumber numberWithInt:7],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
     
 	// Cooking
 	item = [NSArray arrayWithObjects:
@@ -90,7 +90,7 @@
 			[NSNumber numberWithInt:29],
 			[NSNumber numberWithInt:30],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Density
 	item = [NSArray arrayWithObjects:
@@ -103,7 +103,7 @@
 			[NSNumber numberWithInt:15],
 			[NSNumber numberWithInt:16],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Electric Currents
 	item = [NSArray arrayWithObjects:
@@ -112,7 +112,7 @@
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:22],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Energy
 	item = [NSArray arrayWithObjects:
@@ -122,7 +122,7 @@
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:26],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Force
 	item = [NSArray arrayWithObjects:
@@ -132,7 +132,7 @@
 			[NSNumber numberWithInt:10],
 			[NSNumber numberWithInt:11],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Fuel Consumption
 	item = [NSArray arrayWithObjects:
@@ -144,7 +144,7 @@
 			[NSNumber numberWithInt:5],
 			[NSNumber numberWithInt:6],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Length
 	item = [NSArray arrayWithObjects:
@@ -160,7 +160,7 @@
 			[NSNumber numberWithInt:24],
 			[NSNumber numberWithInt:30],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Power
 	item = [NSArray arrayWithObjects:
@@ -173,7 +173,7 @@
 			[NSNumber numberWithInt:21],
 			[NSNumber numberWithInt:22],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Pressure
 	item = [NSArray arrayWithObjects:
@@ -190,7 +190,7 @@
 			[NSNumber numberWithInt:23],
 			[NSNumber numberWithInt:33],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Speed
 	item = [NSArray arrayWithObjects:
@@ -202,7 +202,7 @@
 			[NSNumber numberWithInt:20],
 			[NSNumber numberWithInt:21],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Temperature
 	item = [NSArray arrayWithObjects:
@@ -212,7 +212,7 @@
 			[NSNumber numberWithInt:3],
 			[NSNumber numberWithInt:4],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Time
 	item = [NSArray arrayWithObjects:
@@ -224,7 +224,7 @@
 			[NSNumber numberWithInt:17],
 			[NSNumber numberWithInt:19],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Volume
 	item = [NSArray arrayWithObjects:
@@ -246,7 +246,7 @@
 			[NSNumber numberWithInt:27],
 			[NSNumber numberWithInt:28],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
 	
 	// Weight
 	item = [NSArray arrayWithObjects:
@@ -263,22 +263,20 @@
 			[NSNumber numberWithInt:15],
 			[NSNumber numberWithInt:16],
 			nil];
-	[unitConvertItems addObject:item];
+	[allUnitTypeItems addObject:item];
     
-    for (int i=0; i<unitConvertItems.count; i++) {
-        NSArray *typeConvertItems = unitConvertItems[i];
-        NSMutableArray *sortArray = [[NSMutableArray alloc] init];
-        for (int j=0; j<typeConvertItems.count; j++) {
-            NSNumber *unitIdx = typeConvertItems[j];
-            NSString *unitName = [NSString stringWithCString:unitNames[i][unitIdx.intValue] encoding:NSUTF8StringEncoding];
-            UnitItem *uitem = [UnitItem MR_findFirstByAttribute:@"unitName" withValue:unitName];
+    for (NSInteger idxType = 0; idxType < allUnitTypeItems.count; idxType++) {
+        NSArray *unitItems = allUnitTypeItems[idxType];
+        for (NSInteger idxUnit = 0; idxUnit < unitItems.count; idxUnit++) {
+            NSNumber *unitIdentifier = unitItems[idxUnit];
+            NSString *unitName = [NSString stringWithCString:unitNames[idxType][unitIdentifier.intValue] encoding:NSUTF8StringEncoding];
+            UnitItem *unitItem = [UnitItem MR_findFirstByAttribute:@"unitName" withValue:unitName];
             
-            if (!uitem) return;
+            if (!unitItem) return;
             
             UnitConvertItem *convertItem = [UnitConvertItem MR_createEntity];
-            convertItem.item = uitem;
-            
-            [sortArray addObjectToSortedArray:convertItem];
+            convertItem.item = unitItem;
+			convertItem.order = [NSString stringWithFormat:@"0%lu00000000", (unsigned long)idxUnit];
         }
     }
 

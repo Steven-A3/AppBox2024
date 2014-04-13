@@ -23,18 +23,26 @@
     if ([[UnitType MR_numberOfEntities] isEqualToNumber:@0]) {
 		[UnitType resetUnitTypeLists];
 	}
-    
-    for (int i=0; i<numOfUnitType; i++) {
-        NSString *unitType = [NSString stringWithCString:unitTypes[i] encoding:NSUTF8StringEncoding];
-        FNLOG(@"%@", unitType);
-        UnitType *utype = [UnitType MR_findFirstByAttribute:@"unitTypeName" withValue:unitType];
-        int numOfUnitOfType = numberOfUnits[i];
-        for (int j=0; j<numOfUnitOfType; j++) {
-            NSString *unitName = [NSString stringWithCString:unitNames[i][j] encoding:NSUTF8StringEncoding];
-            NSString *unitShortName = [NSString stringWithCString:unitShortNames[i][j] encoding:NSUTF8StringEncoding];
-            NSNumber *conversionRate = [NSNumber numberWithDouble:conversionTable[i][j]];
+
+	BOOL excludePyungFromArea = ![[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode] isEqualToString:@"KR"];
+
+	for (NSInteger typeIdx = 0; typeIdx < numOfUnitType; typeIdx++) {
+        NSString *unitTypeName = [NSString stringWithCString:unitTypes[typeIdx] encoding:NSUTF8StringEncoding];
+        UnitType *unitType = [UnitType MR_findFirstByAttribute:@"unitTypeName" withValue:unitTypeName];
+        NSInteger numOfUnitOfType = numberOfUnits[typeIdx];
+
+        for (NSInteger unitIdx = 0; unitIdx < numOfUnitOfType; unitIdx++) {
+            NSString *unitName = [NSString stringWithCString:unitNames[typeIdx][unitIdx] encoding:NSUTF8StringEncoding];
+
+			if (excludePyungFromArea && [unitTypeName isEqualToString:@"Area"] && [unitName isEqualToString:@"pyung"]) {
+				continue;
+			}
+
+            NSString *unitShortName = [NSString stringWithCString:unitShortNames[typeIdx][unitIdx] encoding:NSUTF8StringEncoding];
+            NSNumber *conversionRate = [NSNumber numberWithDouble:conversionTable[typeIdx][unitIdx]];
+
             UnitItem *unit = [UnitItem MR_createEntity];
-            unit.type = utype;
+            unit.type = unitType;
             unit.unitName = unitName;
             unit.unitShortName = unitShortName;
             unit.conversionRate = conversionRate;
