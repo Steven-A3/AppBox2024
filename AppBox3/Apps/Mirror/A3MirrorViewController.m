@@ -349,36 +349,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     // create the capture session
     _captureSession = [AVCaptureSession new];
-    
-    // obtain the preset and validate the preset
-    /*
-    Preset                          4 back      4 front
-    
-    AVCaptureSessionPresetHigh     1280x720    640x480
-    AVCaptureSessionPresetMedium   480x360     480x360
-    AVCaptureSessionPresetLow     192x144     192x144
-    AVCaptureSessionPreset640x480   640x480     640x480
-    AVCaptureSessionPreset1280x720  1280x720    NA
-    AVCaptureSessionPresetPhoto     NA          NA
-     */
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
-            [[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
-            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-            } else {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetLow];
-            }
-        } else {
-            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-            } else {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-            }
-        }
-    } else {
-        [_captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
-    }
+    // begin configure capture session
+    [_captureSession beginConfiguration];
+
+
     
     // CoreImage wants BGRA pixel format
     NSDictionary *outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithInteger:kCVPixelFormatType_32BGRA]};
@@ -390,9 +364,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
     [videoDataOutput setSampleBufferDelegate:self queue:_captureSessionQueue];
     
-    
-    // begin configure capture session
-    [_captureSession beginConfiguration];
     
     if (![_captureSession canAddOutput:videoDataOutput])
     {
@@ -412,6 +383,35 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     // connect the video device input and video data and still image outputs
     [_captureSession addInput:videoDeviceInput];
     [_captureSession addOutput:videoDataOutput];
+    // obtain the preset and validate the preset
+    /*
+     Preset                          4 back      4 front
+     
+     AVCaptureSessionPresetHigh     1280x720    640x480
+     AVCaptureSessionPresetMedium   480x360     480x360
+     AVCaptureSessionPresetLow     192x144     192x144
+     AVCaptureSessionPreset640x480   640x480     640x480
+     AVCaptureSessionPreset1280x720  1280x720    NA
+     AVCaptureSessionPresetPhoto     NA          NA
+     */
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
+            [[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+            } else {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetLow];
+            }
+        } else {
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+            } else {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+            }
+        }
+    } else {
+        [_captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+    }
     
     [_captureSession commitConfiguration];
     if([_videoDevice lockForConfiguration:&error] == NO) {
@@ -489,6 +489,14 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     });
     
     [_videoDevice unlockForConfiguration];
+    
+    for(AVCaptureInput *input in _captureSession.inputs) {
+        [_captureSession removeInput:input];
+    }
+    
+    for(AVCaptureOutput *output in _captureSession.outputs) {
+        [_captureSession removeOutput:output];
+    }
     
     _captureSession = nil;
     _videoDevice = nil;
@@ -1010,7 +1018,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     }
     
     [self _stop];
-    [_videoDevice unlockForConfiguration];
     
     previewNoFilterGestureRecognizer = nil;
     if (bFiltersEnabled == YES) {

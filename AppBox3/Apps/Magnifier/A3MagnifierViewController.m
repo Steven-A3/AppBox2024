@@ -637,6 +637,13 @@ static const int MAX_ZOOM_FACTOR = 6;
 - (void)cleanUp
 {
     [session stopRunning];
+    for(AVCaptureInput *input in session.inputs) {
+        [session removeInput:input];
+    }
+    
+    for(AVCaptureOutput *output in session.outputs) {
+        [session removeOutput:output];
+    }
     session = nil;
     [_device unlockForConfiguration];
     _device = nil;
