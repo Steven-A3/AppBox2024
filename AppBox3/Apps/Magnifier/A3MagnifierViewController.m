@@ -29,7 +29,6 @@ static const int MAX_ZOOM_FACTOR = 6;
     AVCaptureSession            *session;
 	dispatch_queue_t            videoDataOutputQueue;
 	AVCaptureStillImageOutput   *stillImageOutput;
-	BOOL                        isUsingFrontFacingCamera;
     CIImage                     *ciimg;
 	CGFloat                     effectiveScale;
     CGFloat                     brightFactor;
@@ -558,18 +557,8 @@ static const int MAX_ZOOM_FACTOR = 6;
 	
 	session = [AVCaptureSession new];
     [session beginConfiguration];
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([session canSetSessionPreset:AVCaptureSessionPreset1920x1080] == YES) {
-            [session setSessionPreset:AVCaptureSessionPreset1920x1080];
-        } else if([session canSetSessionPreset:AVCaptureSessionPreset1280x720] == YES) {
-            [session setSessionPreset:AVCaptureSessionPreset1280x720];
-        }
-        else {
-            [session setSessionPreset:AVCaptureSessionPreset640x480];
-        }
-    }
-	else
-	    [session setSessionPreset:AVCaptureSessionPresetPhoto];
+
+
 	
     // Select a video device, make an input
 	_device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -595,13 +584,25 @@ static const int MAX_ZOOM_FACTOR = 6;
     }
    // _device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionFar;
     FNLOG(@"FocusMode = %d, ExposureMode = %d, AVCaptureAutoFocusRangeRestriction = %d, smoothfocus = %d", (int)_device.focusMode, (int)_device.exposureMode, (int)_device.autoFocusRangeRestriction, _device.smoothAutoFocusEnabled);
+    FNLOG(@"Max FrameRate = %f Min FrameRate = %f", CMTimeGetSeconds(_device.activeVideoMaxFrameDuration), CMTimeGetSeconds(_device.activeVideoMinFrameDuration));
     
 	AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:&error];
 	
-    isUsingFrontFacingCamera = NO;
 	if ( [session canAddInput:deviceInput] )
 		[session addInput:deviceInput];
 	
+    if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"]) {
+            [session setSessionPreset:AVCaptureSessionPresetMedium];
+    } else {
+        if ([_device supportsAVCaptureSessionPreset:AVCaptureSessionPresetPhoto] == YES) {
+            [session setSessionPreset:AVCaptureSessionPresetPhoto];
+        } else if ([_device supportsAVCaptureSessionPreset:AVCaptureSessionPresetHigh] == YES) {
+            [session setSessionPreset:AVCaptureSessionPresetHigh];
+        } else {
+            [session setSessionPreset:AVCaptureSessionPresetMedium];
+        }
+    }
+    
     // Make a still image output
 	stillImageOutput = [AVCaptureStillImageOutput new];
     if (stillImageOutput.stillImageStabilizationSupported == YES) {
