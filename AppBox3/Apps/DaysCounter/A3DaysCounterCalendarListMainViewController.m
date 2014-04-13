@@ -92,6 +92,8 @@
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
         make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 21));
+        make.width.equalTo(@44);
+        make.height.equalTo(@44);
     }];
 }
 
