@@ -8,8 +8,8 @@
 
 #import "WalletCategory.h"
 
-#define kWalletAllCateKey @"kWallet_AllCateKey"
-#define kWalletFavCateKey @"kWallet_FavCateKey"
+extern NSString *const A3WalletUUIDAllCategory;
+extern NSString *const A3WalletUUIDFavoriteCategory;
 
 @interface WalletCategory (initialize)
 
@@ -18,7 +18,7 @@
 - (NSArray *)fieldsArray;
 
 + (WalletCategory *)allCategory;
-+ (WalletCategory *)favCategory;
++ (WalletCategory *)favoriteCategory;
 
 - (void)deleteAndClearRelated;
 

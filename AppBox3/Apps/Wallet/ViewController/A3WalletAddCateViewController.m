@@ -19,6 +19,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+A3Addition.h"
+#import "A3WalletMainTabBarController.h"
 
 @interface A3WalletAddCateViewController () <WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 {
@@ -174,8 +175,8 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
     // 카테고리 추가 노티 날리기
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryAdded" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
+
     [self.navigationController popViewControllerAnimated:YES];
     
     [self clearData];

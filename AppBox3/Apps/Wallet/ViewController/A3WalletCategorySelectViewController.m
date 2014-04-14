@@ -57,7 +57,7 @@
     if (!_allCategories) {
         _allCategories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
         
-        WalletCategory *favCate = [WalletCategory favCategory];
+        WalletCategory *favCate = [WalletCategory favoriteCategory];
         WalletCategory *allCate = [WalletCategory allCategory];
         
         if (favCate) {

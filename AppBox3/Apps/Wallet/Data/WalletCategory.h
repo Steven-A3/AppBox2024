@@ -2,7 +2,7 @@
 //  WalletCategory.h
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by A3 on 4/14/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSDate * modificationDate;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) NSSet *fields;
 @property (nonatomic, retain) NSSet *items;
 @end

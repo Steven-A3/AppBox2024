@@ -189,8 +189,7 @@ NSString *const A3WalletItemDateCellID3 = @"A3WalletItemFieldCell";
         
         NSArray *items = [self.selectedCategory fieldsArray];
         
-        for (int i=0; i<items.count; i++) {
-            WalletField *field = items[i];
+        for (WalletField *field in items) {
             // date타입은 nsdate 값을 갖는다.
             if ([field.type isEqualToString:WalletFieldTypeDate]) {
                 // 초기화는 현재시간으로 한다.

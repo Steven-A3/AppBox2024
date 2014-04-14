@@ -19,6 +19,7 @@
 #import "UIViewController+A3Addition.h"
 #import "NSMutableArray+A3Sort.h"
 #import "WalletField+initialize.h"
+#import "A3WalletMainTabBarController.h"
 
 @interface A3WalletCateEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
@@ -606,7 +607,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
         
         [self dismissViewControllerAnimated:YES completion:NULL];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryDeleted" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryDeleted object:nil];
 	}
 }
 

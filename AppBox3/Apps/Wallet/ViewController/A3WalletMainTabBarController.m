@@ -33,10 +33,14 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
 
 #define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in NSUserDefaults
 
+NSString *const A3WalletNotificationCategoryChanged = @"CategoryChanged";
+NSString *const A3WalletNotificationCategoryDeleted = @"CategoryDeleted";
+NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
+
 @interface A3WalletMainTabBarController ()
 
 @property (nonatomic, strong) NSMutableArray *categories;
-@property (nonatomic, strong) UINavigationController *addCateNav;
+
 @end
 
 @implementation A3WalletMainTabBarController
@@ -65,7 +69,7 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
         [self categories];
         
         [self setupTabBar];
-        [self addNotiListener];
+		[self startReceiveNotification];
 
     }
     return self;
@@ -94,8 +98,8 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
         }
         
         [self setupTabBar];
-        
-        [self addNotiListener];
+
+		[self startReceiveNotification];
     }
     
     return self;
@@ -127,76 +131,37 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
 }
 
 - (NSMutableArray *)categories {
-    
 	if (nil == _categories) {
         if ([[WalletCategory MR_numberOfEntities] isEqualToNumber:@0 ]) {
             [WalletCategory resetWalletCategory];
         }
 		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
-
-//        [_categories insertObject:self.allItem atIndex:0];
-//        [_categories insertObject:self.favorItem atIndex:0];
 	}
 	return _categories;
 }
-
-/*
-- (NSMutableDictionary *)allItem
-{
-    if (!_allItem) {
-        _allItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"All", @"icon":@"", @"order":@""}];
-    }
-    
-    return _allItem;
-}
-
-- (NSMutableDictionary *)favorItem
-{
-    if (!_favorItem) {
-        _favorItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Favorite", @"icon":@"", @"order":@""}];
-    }
-    
-    return _favorItem;
-}
- */
 
 - (BOOL)hidesNavigationBar {
     return YES;
 }
 
-- (void)addNotiListener
+- (void)startReceiveNotification
 {
     // 카테고리 이름/아이콘이 바뀌면 탭바의 표시되는 정보도 변경되어야 하므로 노티를 수신한다.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryChangeNotiRecived:) name:@"CategoryEdited" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryChangedNotification:) name:A3WalletNotificationCategoryChanged object:nil];
     
     // 카테고리가 추가되면 탭바도 추가되어야 하므로 노티를 수신한다.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryAddedNotiRecived:) name:@"CategoryAdded" object:nil];
-    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryAddedNotification:) name:A3WalletNotificationCategoryAdded object:nil];
+
     // 카테고리가 삭제되면 탭바도 삭제되어야 하므로 노티를 수신한다.
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categoryDeletedNotiRecived:) name:@"CategoryDeleted" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryDeletedNotification:) name:A3WalletNotificationCategoryDeleted object:nil];
 }
 
-- (void)categoryChangeNotiRecived:(NSNotification *)noti
+- (void)didReceiveCategoryChangedNotification:(NSNotification *)notification
 {
-    for (int i=0; i<self.categories.count; i++) {
-        /*
-        if (_categories[i] == self.allItem) {
-            
-        }
-        else if (_categories[i] == self.favorItem) {
-            
-        }
-        else {
-            UIViewController *viewController = self.viewControllers[i];
-            
-            WalletCategory *category = _categories[i];
-            viewController.tabBarItem.title = category.name;
-            viewController.tabBarItem.image = [UIImage imageNamed:category.icon];
-        }
-         */
-        UIViewController *viewController = self.viewControllers[i];
+    for (NSUInteger idx = 0; idx < self.categories.count; idx++) {
+        UIViewController *viewController = self.viewControllers[idx];
         
-        WalletCategory *category = _categories[i];
+        WalletCategory *category = _categories[idx];
         viewController.tabBarItem.title = category.name;
         viewController.tabBarItem.image = [UIImage imageNamed:category.icon];
         NSString *selected = [category.icon stringByAppendingString:@"_on"];
@@ -204,14 +169,14 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
     }
 }
 
-- (void)categoryAddedNotiRecived:(NSNotification *)noti
+- (void)didReceiveCategoryAddedNotification:(NSNotification *)notification
 {
     _categories = nil;
     
     [self setupTabBar];
 }
 
-- (void)categoryDeletedNotiRecived:(NSNotification *)noti
+- (void)didReceiveCategoryDeletedNotification:(NSNotification *)notification
 {
     _categories = nil;
     
@@ -257,10 +222,6 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
                 A3WalletFavoritesViewController *vc = (A3WalletFavoritesViewController *) viewController;
                 [tmp addObjectToSortedArray:vc.category];
             }
-            
-            if (navController == self.addCateNav) {
-                NSLog(@"1");
-            }
         }
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
@@ -269,29 +230,25 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
 
 #pragma mark - Added Function
 
-- (void) setupTabBar
+- (void)setupTabBar
 {
     NSMutableArray *totalArray = [[NSMutableArray alloc] init];
     NSMutableArray *configurableArray = [[NSMutableArray alloc] init];
     
-    NSString *allKey = [[NSUserDefaults standardUserDefaults] stringForKey:kWalletAllCateKey];
-    NSString *favKey = [[NSUserDefaults standardUserDefaults] stringForKey:kWalletFavCateKey];
-    
-    for (int i=0; i<self.categories.count; i++) {
+    for (NSUInteger idx = 0; idx < self.categories.count; idx++) {
 
-        WalletCategory *category = _categories[i];
-        NSString *cateKey = [category uriKey];
+        WalletCategory *category = _categories[idx];
         UIViewController *viewController;
         UIImage *selectedIcon;
         
-        if ([cateKey isEqualToString:allKey]) {
+        if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
             A3WalletAllViewController *vc = [[A3WalletAllViewController alloc] initWithNibName:nil bundle:nil];
             vc.category = category;
             viewController = vc;
             NSString *selected = [category.icon stringByAppendingString:@"_on"];
             selectedIcon = [UIImage imageNamed:selected];
         }
-        else if ([cateKey isEqualToString:favKey]) {
+        else if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
             A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] initWithStyle:UITableViewStylePlain];
             vc.category = category;
             viewController = vc;
@@ -299,8 +256,6 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
             selectedIcon = [UIImage imageNamed:selected];
         }
         else {
-            WalletCategory *category = _categories[i];
-            
             A3WalletCateViewController *vc = [[A3WalletCateViewController alloc] initWithNibName:nil bundle:nil];
             vc.category = category;
             viewController = vc;
@@ -337,41 +292,6 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
         
         [configurableArray addObject:nav];
         
-        /*
-        if (_categories[i] == self.allItem) {
-            A3WalletAllViewController *vc = [[A3WalletAllViewController alloc] initWithNibName:nil bundle:nil];
-            
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            
-            nav.tabBarItem.image = [UIImage imageNamed:_allItem[@"icon"]];
-            nav.tabBarItem.title = _allItem[@"title"];
-            
-            [configurableArray addObject:nav];
-        }
-        else if (_categories[i] == self.favorItem) {
-            A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] initWithStyle:UITableViewStylePlain];
-            
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            
-            nav.tabBarItem.image = [UIImage imageNamed:_favorItem[@"icon"]];
-            nav.tabBarItem.title = _favorItem[@"title"];
-            
-            [configurableArray addObject:nav];
-        }
-        else {
-            WalletCategory *category = _categories[i];
-            
-            A3WalletCateViewController *vc = [[A3WalletCateViewController alloc] initWithNibName:nil bundle:nil];
-            vc.category = category;
-            
-            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-            
-            nav.tabBarItem.image = [UIImage imageNamed:category.icon];
-            nav.tabBarItem.title = category.name;
-            
-            [configurableArray addObject:nav];
-        }
-         */
     }
     
     [totalArray addObjectsFromArray:configurableArray];
@@ -385,8 +305,7 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
     nav.tabBarItem.title = @"Add Category";
     nav.tabBarItem.image = [UIImage imageNamed:@"add01"];
     [totalArray addObject:nav];
-    self.addCateNav = nav;
-    
+
     self.viewControllers = totalArray;
     self.customizableViewControllers = configurableArray;
     

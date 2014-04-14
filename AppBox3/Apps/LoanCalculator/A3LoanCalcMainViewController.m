@@ -2283,13 +2283,28 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	FNLOG();
 	[self dismissMoreMenu];
 	[self dismissDatePicker];
 
 	currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 
-	FNLOG(@"IP : %ld-%ld", (long)currentIndexPath.section, (long)currentIndexPath.row);
+	if (currentIndexPath.section == 4) {
+		if (_advItems[currentIndexPath.row] == self.startDateItem) {
+			return NO;
+		}
+	}
+
+	return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+	[self setFirstResponder:textField];
+
+	_textFieldTextBeforeEditing = textField.text;
+
+    textField.text = @"";
+	textField.placeholder = @"";
 
 	if (currentIndexPath.section == 2) {
 
@@ -2352,23 +2367,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			[keyboardVC reloadPrevNextButtons];
 		}
 	}
-	else if (currentIndexPath.section == 4) {
-		if (_advItems[currentIndexPath.row] == self.startDateItem) {
-			return NO;
-		}
-	}
-
-	return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-	[self setFirstResponder:textField];
-
-	_textFieldTextBeforeEditing = textField.text;
-
-    textField.text = @"";
-	textField.placeholder = @"";
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -2415,9 +2413,9 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 			case A3LC_CalculationItemInterestRate: {
 				_loanData.showsInterestInYearly = @([self.numberKeyboardViewController.bigButton1 isSelected]);
 				if ([_loanData.showsInterestInYearly boolValue]) {
-					_loanData.annualInterestRate = inputNum;
+					_loanData.annualInterestRate = @(inputFloat / 100.0);
 				} else {
-					_loanData.annualInterestRate = @(inputFloat * 12.0);
+					_loanData.annualInterestRate = @(inputFloat / 100.0 * 12.0);
 				}
 				textField.text = [_loanData interestRateString];
 				break;

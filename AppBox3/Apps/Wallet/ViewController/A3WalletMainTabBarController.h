@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+extern NSString *const A3WalletNotificationCategoryChanged;
+extern NSString *const A3WalletNotificationCategoryDeleted;
+extern NSString *const A3WalletNotificationCategoryAdded;
+
 @interface A3WalletMainTabBarController : UITabBarController <UITabBarControllerDelegate>
 
+- (void)setupTabBar;
 @end

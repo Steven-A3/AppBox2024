@@ -17,6 +17,7 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
+#import "A3WalletMainTabBarController.h"
 
 @interface A3WalletCateInfoViewController ()
 
@@ -142,7 +143,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     _headerView.icon.image = [UIImage imageNamed:_category.icon];
     
     // 하단에 탭바에 표시되는 카테고리 정보 갱신을 위해 노티를 날린다.
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CategoryEdited" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryChanged object:nil];
 }
 
 #pragma mark - Table view data source

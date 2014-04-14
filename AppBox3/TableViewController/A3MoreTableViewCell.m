@@ -15,8 +15,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-		self.backgroundColor = [UIColor clearColor];
-
 		_cellImageView = [UIImageView new];
 		[self addSubview:_cellImageView];
 

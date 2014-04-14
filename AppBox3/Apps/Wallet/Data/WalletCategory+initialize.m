@@ -13,6 +13,9 @@
 #import "NSMutableArray+A3Sort.h"
 #import "NSManagedObject+Identify.h"
 
+NSString *const A3WalletUUIDAllCategory = @"10f30f9f-ff9d-43d4-ac69-020f61e016e0";
+NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c1feb5";
+
 @implementation WalletCategory (initialize)
 
 + (void)resetWalletCategory
@@ -21,57 +24,41 @@
 		[WalletCategory MR_truncateAll];
 	}
     
-    // unit type set : make and set to coredata
+    // unit type set : make and set to core data
     NSArray *categoryPresets = [WalletData categoryPresetData];
     
-    NSMutableArray *tmp = [NSMutableArray new];
-    
     // create all, favorite category
-    WalletCategory *favCate = [WalletCategory MR_createEntity];
-    favCate.name = @"Favorite";
-    favCate.icon = @"star01";
-	favCate.modificationDate = [NSDate date];
-    [tmp addObjectToSortedArray:favCate];
-    
-    WalletCategory *allCate = [WalletCategory MR_createEntity];
-    allCate.name = @"All";
-    allCate.icon = @"wallet_folder";
-	allCate.modificationDate = [NSDate date];
-    [tmp addObjectToSortedArray:allCate];
+    WalletCategory *favoriteCategory = [WalletCategory MR_createEntity];
+    favoriteCategory.name = @"Favorite";
+    favoriteCategory.icon = @"star01";
+	favoriteCategory.modificationDate = [NSDate date];
+	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 
-    for (int i=0; i<categoryPresets.count; i++) {
-        NSDictionary *preset = categoryPresets[i];
-        
+    WalletCategory *allCategory = [WalletCategory MR_createEntity];
+    allCategory.name = @"All";
+    allCategory.icon = @"wallet_folder";
+	allCategory.modificationDate = [NSDate date];
+	allCategory.uniqueID = A3WalletUUIDAllCategory;
+
+    for (NSDictionary *preset in categoryPresets) {
         WalletCategory *category = [WalletCategory MR_createEntity];
         category.name = preset[@"Name"];
         category.icon = preset[@"Icon"];
 		category.modificationDate = [NSDate date];
-        [tmp addObjectToSortedArray:category];
+		category.uniqueID = [[NSUUID UUID] UUIDString];
+
+		NSArray *fieldPresets = preset[@"Fields"];
         
-        NSArray *fieldPresets = preset[@"Fields"];
-        
-        NSMutableArray *tmp2 = [NSMutableArray new];
-        for (int j=0; j<fieldPresets.count; j++) {
-            NSDictionary *fieldPreset = fieldPresets[j];
-            
+		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createEntity];
             field.name = fieldPreset[@"Name"];
             field.category = category;
             field.type = fieldPreset[@"Type"];
             field.style = fieldPreset[@"Style"];
-            [tmp2 addObjectToSortedArray:field];
         }
     }
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    
-    NSString *favKey = [favCate uriKey];
-    [[NSUserDefaults standardUserDefaults] setObject:favKey forKey:kWalletFavCateKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSString *allKey = [allCate uriKey];
-    [[NSUserDefaults standardUserDefaults] setObject:allKey forKey:kWalletAllCateKey];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (NSArray *)fieldsArray
@@ -115,32 +102,18 @@
 
 + (WalletCategory *)allCategory
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name==%@", @"All"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDAllCategory];
     NSArray *array = [WalletCategory MR_findAllWithPredicate:predicate];
     
-    NSString *keyString = [[NSUserDefaults standardUserDefaults] stringForKey:kWalletAllCateKey];
-    
-    for (WalletCategory *cate in array) {
-        if ([cate.uriKey isEqualToString:keyString]) {
-            return cate;
-        }
-    }
-    return nil;
+    return [array count] ? array[0] : nil;
 }
 
-+ (WalletCategory *)favCategory
++ (WalletCategory *)favoriteCategory
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name==%@", @"Favorite"];
-    NSArray *array = [WalletCategory MR_findAllWithPredicate:predicate];
-    
-    NSString *keyString = [[NSUserDefaults standardUserDefaults] stringForKey:kWalletFavCateKey];
-    
-    for (WalletCategory *cate in array) {
-        if ([cate.uriKey isEqualToString:keyString]) {
-            return cate;
-        }
-    }
-    return nil;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueID == %@", A3WalletUUIDFavoriteCategory];
+	NSArray *array = [WalletCategory MR_findAllWithPredicate:predicate];
+
+	return [array count] ? array[0] : nil;
 }
 
 - (void)deleteAndClearRelated

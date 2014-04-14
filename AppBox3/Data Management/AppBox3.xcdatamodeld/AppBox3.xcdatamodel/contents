@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -325,6 +325,7 @@
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="fields" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletField" inverseName="category" inverseEntity="WalletField" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="category" inverseEntity="WalletItem" syncable="YES"/>
     </entity>
@@ -392,7 +393,7 @@
         <element name="UnitPriceHistoryItem" positionX="-398" positionY="227" width="128" height="178"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="396" width="128" height="163"/>
         <element name="UnitType" positionX="412" positionY="162" width="128" height="88"/>
-        <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="133"/>
+        <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="150"/>
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="133"/>
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="118"/>
