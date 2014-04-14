@@ -11,6 +11,7 @@
 #import "UIViewController+MMDrawerController.h"
 #import "A3AppDelegate.h"
 #import "common.h"
+#import "FrameRateCalculator.h"
 static const int MAX_ZOOM_FACTOR = 6;
 
 @interface A3MirrorViewController() {
@@ -55,7 +56,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     dispatch_queue_t _captureSessionQueue;
     UIBackgroundTaskIdentifier _backgroundRecordingID;
     CIImage *ciimg;
-    GLuint _renderBuffer;
+    //GLuint _renderBuffer;
     BOOL    bFlip;
     BOOL    bMultipleView;
     CGSize  originalsize;
@@ -67,7 +68,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     CMTime      currentMaxDuration;
     CMTime      currentMinDuration;
     AVFrameRateRange *slowFrameRateRange;
-    
+    FrameRateCalculator *frameCaculator;
 }
 
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
@@ -108,6 +109,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                                   @[@[@-1,@-2],@[@0,@-2],@[@1,@-2],@[@-1,@-1],@[@0,@-1],@[@1,@-1],@[@-1,@0],@[@0,@0], @[@1,@0]],
                                   @[@[@-2,@-2],@[@1,@-2],@[@0,@-2],@[@-2,@-1],@[@-1,@-1],@[@0,@-1],@[@-2,@0],@[@-1,@0], @[@0,@0]]
                                   ];
+        frameCaculator = [[FrameRateCalculator alloc] init];
     }
     return self;
 }
@@ -135,14 +137,15 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
     // create the CIContext instance, note that this must be done after _videoPreviewView is properly set up
-    glGenRenderbuffers(1, &_renderBuffer);
-    glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
-    _ciContext = [CIContext contextWithEAGLContext:_eaglContext options:@{kCIContextWorkingColorSpace : [NSNull null], kCIContextUseSoftwareRenderer:@YES} ];
+    //glGenRenderbuffers(1, &_renderBuffer);
+    //glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+    _ciContext = [CIContext contextWithEAGLContext:_eaglContext options:@{kCIContextWorkingColorSpace : [NSNull null]} ];
     
     _videoPreviewViewNoFilter = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
     [_videoPreviewViewNoFilter setDrawableDepthFormat:GLKViewDrawableDepthFormat24];
     [_videoPreviewViewNoFilter setDelegate:self];
     [_videoPreviewViewNoFilter setUserInteractionEnabled:YES];
+    [_videoPreviewViewNoFilter setEnableSetNeedsDisplay:NO];
     
     // because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
     [self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
@@ -349,36 +352,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     // create the capture session
     _captureSession = [AVCaptureSession new];
-    
-    // obtain the preset and validate the preset
-    /*
-    Preset                          4 back      4 front
-    
-    AVCaptureSessionPresetHigh     1280x720    640x480
-    AVCaptureSessionPresetMedium   480x360     480x360
-    AVCaptureSessionPresetLow     192x144     192x144
-    AVCaptureSessionPreset640x480   640x480     640x480
-    AVCaptureSessionPreset1280x720  1280x720    NA
-    AVCaptureSessionPresetPhoto     NA          NA
-     */
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
-            [[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
-            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-            } else {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetLow];
-            }
-        } else {
-            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
-            } else {
-                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
-            }
-        }
-    } else {
-        [_captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
-    }
+    // begin configure capture session
+    [_captureSession beginConfiguration];
+
+
     
     // CoreImage wants BGRA pixel format
     NSDictionary *outputSettings = @{ (id)kCVPixelBufferPixelFormatTypeKey : [NSNumber numberWithInteger:kCVPixelFormatType_32BGRA]};
@@ -390,9 +367,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     videoDataOutput.alwaysDiscardsLateVideoFrames = YES;
     [videoDataOutput setSampleBufferDelegate:self queue:_captureSessionQueue];
     
-    
-    // begin configure capture session
-    [_captureSession beginConfiguration];
     
     if (![_captureSession canAddOutput:videoDataOutput])
     {
@@ -412,6 +386,36 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     // connect the video device input and video data and still image outputs
     [_captureSession addInput:videoDeviceInput];
     [_captureSession addOutput:videoDataOutput];
+    // obtain the preset and validate the preset
+    /*
+     Preset                          4 back      4 front
+     
+     AVCaptureSessionPresetHigh     1280x720    640x480
+     AVCaptureSessionPresetMedium   480x360     480x360
+     AVCaptureSessionPresetLow     192x144     192x144
+     AVCaptureSessionPreset640x480   640x480     640x480
+     AVCaptureSessionPreset1280x720  1280x720    NA
+     AVCaptureSessionPresetPhoto     NA          NA
+     */
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        if ([[A3UIDevice platform] isEqualToString:@"iPhone 4"] ||
+            [[A3UIDevice platform] isEqualToString:@"iPhone 4s"]) {
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetMedium] == YES) {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+            } else {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetLow];
+            }
+        } else {
+            if ([_captureSession canSetSessionPreset:AVCaptureSessionPresetHigh] == YES) {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetHigh];
+            } else {
+                [_captureSession setSessionPreset:AVCaptureSessionPresetMedium];
+            }
+        }
+    } else {
+        [_captureSession setSessionPreset:AVCaptureSessionPresetPhoto];
+    }
     
     [_captureSession commitConfiguration];
     if([_videoDevice lockForConfiguration:&error] == NO) {
@@ -448,6 +452,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [self setupZoomSlider];
     
     // then start everything
+    [frameCaculator reset];
     [_captureSession startRunning];
     
     
@@ -459,6 +464,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     slowFrameRateRange = nil;
     
     for (AVFrameRateRange *range in _videoDevice.activeFormat.videoSupportedFrameRateRanges) {
+        FNLOG(@"%f", range.maxFrameRate);
         if (slowFrameRateRange == nil ) {
             slowFrameRateRange = range;
         }
@@ -490,6 +496,14 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     [_videoDevice unlockForConfiguration];
     
+    for(AVCaptureInput *input in _captureSession.inputs) {
+        [_captureSession removeInput:input];
+    }
+    
+    for(AVCaptureOutput *output in _captureSession.outputs) {
+        [_captureSession removeOutput:output];
+    }
+    
     _captureSession = nil;
     _videoDevice = nil;
 }
@@ -498,6 +512,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     
     CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
     ciimg = [CIImage imageWithCVPixelBuffer:(CVPixelBufferRef)imageBuffer options:nil];
+    
+    CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+    [frameCaculator calculateFramerateAtTimestamp:timestamp];
+    //FNLOG(@"%f fps",frameCaculator.frameRate);
     /*
     CGRect sourceExtent = ciimg.extent;
     
@@ -515,14 +533,15 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
         
     }
 */
-
+    
     if(_eaglContext != [EAGLContext currentContext]) {
         [EAGLContext setCurrentContext:_eaglContext];
     }
+
     //setup the blend mode to "source over" so that CI will use that
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-    
+    //glEnable(GL_BLEND);
+    //glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+
     if(bMultipleView == NO) {
         GLKView *currentFilter = [self currentFilterView];
         [currentFilter bindDrawable];
@@ -575,30 +594,32 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 #pragma GLKViewDelegate
 - (void) glkView:(GLKView *)view drawInRect:(CGRect)rect {
     @autoreleasepool {
-        CGRect sourceExtent = ciimg.extent;
+    CGRect sourceExtent = ciimg.extent;
+    
+    CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
+    CGFloat previewAspect = _videoPreviewViewBounds.size.width  / _videoPreviewViewBounds.size.height;
+    
+    // we want to maintain the aspect radio of the screen size, so we clip the video image
+    CGRect drawRect = sourceExtent;
+    if (sourceAspect > previewAspect)
+    {
+        // use full height of the video image, and center crop the width
+        drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0;
+        drawRect.size.width = drawRect.size.height * previewAspect;
         
-        CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
-        CGFloat previewAspect = _videoPreviewViewBounds.size.width  / _videoPreviewViewBounds.size.height;
+    }
+    else
+    {
+        // use full width of the video image, and center crop the height
+        drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
+        drawRect.size.height = drawRect.size.width / previewAspect;
         
-        // we want to maintain the aspect radio of the screen size, so we clip the video image
-        CGRect drawRect = sourceExtent;
-        if (sourceAspect > previewAspect)
-        {
-            // use full height of the video image, and center crop the width
-            drawRect.origin.x += (drawRect.size.width - drawRect.size.height * previewAspect) / 2.0;
-            drawRect.size.width = drawRect.size.height * previewAspect;
-            
-        }
-        else
-        {
-            // use full width of the video image, and center crop the height
-            drawRect.origin.y += (drawRect.size.height - drawRect.size.width / previewAspect) / 2.0;
-            drawRect.size.height = drawRect.size.width / previewAspect;
-            
-        }
-        
-        CIImage *filteredImage = nil;
-        
+    }
+    
+    
+    CIImage *filteredImage = nil;
+    
+    if (bFiltersEnabled == YES) {
         if ([view isEqual:_videoPreviewViewMonoFilter]) {
             filteredImage = [CIFilter filterWithName:@"CIPhotoEffectMono" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
         } else if ([view isEqual:_videoPreviewViewTonalFilter]) {
@@ -623,21 +644,22 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             filteredImage = [CIFilter filterWithName:@"CIPhotoEffectInstant" keysAndValues:kCIInputImageKey, ciimg, nil].outputImage;
             
         }
-        
-        glClearColor(0.0f, 0.0f, 0.1f,0.1f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glFlush();
-        
+    }
+    //glClearColor(0.0f, 0.0f, 0.1f,0.1f);
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glFlush();
+    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
         if (filteredImage != nil) {
             [_ciContext drawImage:filteredImage inRect:_videoPreviewViewBounds fromRect:drawRect];
         } else {
             [_ciContext drawImage:ciimg inRect:_videoPreviewViewBounds fromRect:drawRect];
         }
-        
-        
-        
-        glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
-        [_eaglContext presentRenderbuffer:GL_RENDERBUFFER];
+    });
+    
+    
+      //  glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+        //[_eaglContext presentRenderbuffer:GL_RENDERBUFFER];
     }
     
 }
@@ -1010,7 +1032,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     }
     
     [self _stop];
-    [_videoDevice unlockForConfiguration];
     
     previewNoFilterGestureRecognizer = nil;
     if (bFiltersEnabled == YES) {
@@ -1062,14 +1083,19 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 {
     GLKView *currentView = [self currentFilterView];
 
+    if (bFlip) {
+            [currentView setTransform:CGAffineTransformScale([self getTransform], -1*effectiveScale, effectiveScale)];
+    } else {
+        
     [currentView setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
+    }
 
 }
 
 #pragma mark - IB Action Buttons
 - (IBAction)zoomIng:(id)sender {
     UISlider *zoomFactor = (UISlider *) sender;
-    
+
     if (bLosslessZoom == YES) {
         
         if (!_videoDevice.isRampingVideoZoom) {

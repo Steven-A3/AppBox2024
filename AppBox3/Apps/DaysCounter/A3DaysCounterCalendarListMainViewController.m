@@ -92,6 +92,8 @@
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
         make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 21));
+        make.width.equalTo(@44);
+        make.height.equalTo(@44);
     }];
 }
 
@@ -399,8 +401,19 @@
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:cellType];
+        //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
+        switch (cellType) {
+            case CalendarCellType_System:
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarListMainSystemCell" owner:nil options:nil] lastObject];
+                break;
+                
+            case CalendarCellType_User:
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarListMainUserCell" owner:nil options:nil] lastObject];                
+                break;
+                
+            default:
+                break;
+        }
     }
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];

@@ -706,7 +706,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     addItem.alertInterval = [item objectForKey:EventItem_AlertDatetimeInterval];
     addItem.alertType = [item objectForKey:EventItem_AlertDateType];
     //addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
-    addItem.effectiveStartDate = [item objectForKey:EventItem_EffectiveStartDate];
+    addItem.effectiveStartDate = [item objectForKey:EventItem_EffectiveStartDate] == nil ? [item objectForKey:EventItem_StartDate] : [item objectForKey:EventItem_EffectiveStartDate];
     addItem.durationOption = [item objectForKey:EventItem_DurationOption];
     addItem.notes = [item objectForKey:EventItem_Notes];
     addItem.isFavorite = [item objectForKey:EventItem_IsFavorite];
@@ -779,7 +779,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     eventItem.alertInterval = [info objectForKey:EventItem_AlertDatetimeInterval];
     eventItem.alertType = [info objectForKey:EventItem_AlertDateType];
     //addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
-    eventItem.effectiveStartDate = [info objectForKey:EventItem_EffectiveStartDate];
+    eventItem.effectiveStartDate = [info objectForKey:EventItem_EffectiveStartDate] == nil ? [info objectForKey:EventItem_StartDate] : [info objectForKey:EventItem_EffectiveStartDate];
     
     eventItem.durationOption = [info objectForKey:EventItem_DurationOption];
     eventItem.notes = [info objectForKey:EventItem_Notes];
@@ -1077,7 +1077,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (DaysCounterCalendar*)defaultCalendar
 {
     
-    DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@",[NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
+    DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@", [NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
     if ( defaultCalendar == nil ) {
         NSArray *calendarList = [self visibleCalendarList];
         if ( [calendarList count] < 1 )

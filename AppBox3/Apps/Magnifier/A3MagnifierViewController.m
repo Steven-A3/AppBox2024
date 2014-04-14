@@ -15,6 +15,7 @@
 #import <ImageIO/ImageIO.h>
 #import <AssertMacros.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "FrameRateCalculator.h"
 
 static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCaptureStillImageIsCapturingStillImageContext";
 static const int MAX_ZOOM_FACTOR = 6;
@@ -29,7 +30,6 @@ static const int MAX_ZOOM_FACTOR = 6;
     AVCaptureSession            *session;
 	dispatch_queue_t            videoDataOutputQueue;
 	AVCaptureStillImageOutput   *stillImageOutput;
-	BOOL                        isUsingFrontFacingCamera;
     CIImage                     *ciimg;
 	CGFloat                     effectiveScale;
     CGFloat                     brightFactor;
@@ -37,6 +37,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     BOOL                        bLightOn;
     BOOL                        bLosslessZoom;
     CGFloat                     beginGestureScale;
+        FrameRateCalculator *frameCaculator;
 }
 
 @property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
@@ -53,6 +54,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        frameCaculator = [[FrameRateCalculator alloc] init];
     }
     return self;
 }
@@ -147,8 +149,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     previewLayer = [[GLKView alloc] initWithFrame:self.view.bounds context:_eaglContext];
     previewLayer.drawableDepthFormat = GLKViewDrawableDepthFormat24;
-    previewLayer.delegate = self;
-    //_videoPreviewView.enableSetNeedsDisplay = NO;
+    previewLayer.enableSetNeedsDisplay = NO;
     previewLayer.userInteractionEnabled = YES;
     
     // because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
@@ -553,23 +554,34 @@ static const int MAX_ZOOM_FACTOR = 6;
 }
 
 #pragma mark - AVCapture Setup
+- (void)configureCameraForHighestFrameRate:(AVCaptureDevice *)device
+{
+    AVCaptureDeviceFormat *bestFormat = nil;
+    AVFrameRateRange *bestFrameRateRange = nil;
+    for ( AVCaptureDeviceFormat *format in [device formats] ) {
+        for ( AVFrameRateRange *range in format.videoSupportedFrameRateRanges ) {
+            if ( range.maxFrameRate > bestFrameRateRange.maxFrameRate ) {
+                bestFormat = format;
+                bestFrameRateRange = range;
+            }
+        }
+    }
+    if ( bestFormat ) {
+            device.activeFormat = bestFormat;
+            device.activeVideoMinFrameDuration = bestFrameRateRange.minFrameDuration;
+            device.activeVideoMaxFrameDuration = bestFrameRateRange.maxFrameDuration;
+
+    }
+}
+
+
 - (void)setupAVCapture {
     NSError *error = nil;
 	
 	session = [AVCaptureSession new];
     [session beginConfiguration];
-	if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        if ([session canSetSessionPreset:AVCaptureSessionPreset1920x1080] == YES) {
-            [session setSessionPreset:AVCaptureSessionPreset1920x1080];
-        } else if([session canSetSessionPreset:AVCaptureSessionPreset1280x720] == YES) {
-            [session setSessionPreset:AVCaptureSessionPreset1280x720];
-        }
-        else {
-            [session setSessionPreset:AVCaptureSessionPreset640x480];
-        }
-    }
-	else
-	    [session setSessionPreset:AVCaptureSessionPresetPhoto];
+
+
 	
     // Select a video device, make an input
 	_device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
@@ -582,27 +594,37 @@ static const int MAX_ZOOM_FACTOR = 6;
         [self.lightButton setImage:nil];
         [self.lightButton  setEnabled:NO];
     }
-    if (_device.isAdjustingFocus == YES) {
-        _device.focusMode = AVCaptureFocusModeAutoFocus;
-    }
+
     
-    if (_device.isAdjustingExposure == YES) {
-        _device.exposureMode = AVCaptureExposureModeAutoExpose;
-    }
-    
-    if (_device.smoothAutoFocusSupported == YES) {
-        _device.smoothAutoFocusEnabled = YES;
-    }
-   // _device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionFar;
-    FNLOG(@"FocusMode = %d, ExposureMode = %d, AVCaptureAutoFocusRangeRestriction = %d, smoothfocus = %d", (int)_device.focusMode, (int)_device.exposureMode, (int)_device.autoFocusRangeRestriction, _device.smoothAutoFocusEnabled);
     
 	AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:_device error:&error];
-	
-    isUsingFrontFacingCamera = NO;
-	if ( [session canAddInput:deviceInput] )
+    if ( [session canAddInput:deviceInput] )
 		[session addInput:deviceInput];
-	
+    
+    if ([_device supportsAVCaptureSessionPreset:AVCaptureSessionPresetHigh] == YES) {
+        [session setSessionPreset:AVCaptureSessionPresetHigh];
+    } else {
+        [session setSessionPreset:AVCaptureSessionPresetMedium];
+    }
+  
+     if (_device.isAdjustingFocus == YES) {
+     _device.focusMode = AVCaptureFocusModeAutoFocus;
+     }
+     
+     if (_device.isAdjustingExposure == YES) {
+     _device.exposureMode = AVCaptureExposureModeAutoExpose;
+     }
+     
+     if (_device.smoothAutoFocusSupported == YES) {
+     _device.smoothAutoFocusEnabled = YES;
+     }
+     // _device.autoFocusRangeRestriction = AVCaptureAutoFocusRangeRestrictionFar;
+     FNLOG(@"FocusMode = %d, ExposureMode = %d, AVCaptureAutoFocusRangeRestriction = %d, smoothfocus = %d", (int)_device.focusMode, (int)_device.exposureMode, (int)_device.autoFocusRangeRestriction, _device.smoothAutoFocusEnabled);
+    
+    //	  [self configureCameraForHighestFrameRate:_device];
+    
     // Make a still image output
+    
 	stillImageOutput = [AVCaptureStillImageOutput new];
     if (stillImageOutput.stillImageStabilizationSupported == YES) {
         stillImageOutput.automaticallyEnablesStillImageStabilizationWhenAvailable = YES;
@@ -624,18 +646,27 @@ static const int MAX_ZOOM_FACTOR = 6;
     // see the header doc for setSampleBufferDelegate:queue: for more information
 	videoDataOutputQueue = dispatch_queue_create("VideoDataOutputQueue", DISPATCH_QUEUE_SERIAL);
 	[videoDataOutput setSampleBufferDelegate:self queue:videoDataOutputQueue];
-	
+
+    
     if ( [session canAddOutput:videoDataOutput] )
 		[session addOutput:videoDataOutput];
 	[session commitConfiguration];
 	effectiveScale = 1.0;
     
+    [frameCaculator reset];
 	[session startRunning];
 }
 
 - (void)cleanUp
 {
     [session stopRunning];
+    for(AVCaptureInput *input in session.inputs) {
+        [session removeInput:input];
+    }
+    
+    for(AVCaptureOutput *output in session.outputs) {
+        [session removeOutput:output];
+    }
     session = nil;
     [_device unlockForConfiguration];
     _device = nil;
@@ -660,13 +691,10 @@ static const int MAX_ZOOM_FACTOR = 6;
     CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, sampleBuffer, kCMAttachmentMode_ShouldPropagate);
     ciimg = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:CFBridgingRelease(attachments)];
 
-    [previewLayer display];
+    CMTime timestamp = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
+    [frameCaculator calculateFramerateAtTimestamp:timestamp];
+    //FNLOG(@"%f fps",frameCaculator.frameRate);
 
-}
-
-#pragma mark - AVCapture Setup End
-#pragma GLKViewDelegate
-- (void) glkView:(GLKView *)view drawInRect:(CGRect)rect {
     CGRect sourceExtent = ciimg.extent;
     
     CGFloat sourceAspect = sourceExtent.size.width / sourceExtent.size.height;
@@ -688,13 +716,17 @@ static const int MAX_ZOOM_FACTOR = 6;
         drawRect.size.height = drawRect.size.width / previewAspect;
         
     }
+        ciimg = [self ApplyFilters:ciimg];
+    //dispatch_async(dispatch_get_main_queue(), ^(void) {
 
-    ciimg = [self ApplyFilters:ciimg];
-    
-    
-    [_ciContext drawImage:ciimg inRect:_videoPreviewViewBounds fromRect:drawRect];
-    
+        [_ciContext drawImage:ciimg inRect:_videoPreviewViewBounds fromRect:drawRect];
+           [previewLayer display];
+   // });
+
+
 }
+
+#pragma mark - AVCapture Setup End
 
 #pragma mark - MWPhotoBrowserDelegate
 

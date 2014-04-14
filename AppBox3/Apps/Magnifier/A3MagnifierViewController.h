@@ -10,7 +10,7 @@
 #import <GLKit/GLKit.h>
 #import "MWPhotoBrowser.h"
 
-@interface A3MagnifierViewController : UIViewController <MWPhotoBrowserDelegate, AVCaptureVideoDataOutputSampleBufferDelegate,GLKViewDelegate, UIGestureRecognizerDelegate>
+@interface A3MagnifierViewController : UIViewController <MWPhotoBrowserDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, UIGestureRecognizerDelegate>
 - (IBAction)appsButton:(id)sender;
 - (IBAction)invertButton:(id)sender;
 - (IBAction)lightButton:(id)sender;
