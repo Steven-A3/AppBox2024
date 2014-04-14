@@ -148,7 +148,7 @@
         imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
         NSDate *today = [NSDate date];
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
-        NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate isAllDay:[item.isAllDay boolValue]];
+//        NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate isAllDay:[item.isAllDay boolValue]];
         daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
                                                                                   fromDate:today
                                                                                     toDate:nextDate
@@ -166,7 +166,12 @@
             ((A3DaysCounterEventListNameCell *)cell).photoWidthConst.constant = 0;
         }
         
-        if ( diffDays > 0 ) {
+        NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
+                                                                       toDate:nextDate
+                                                                 allDayOption:[item.isAllDay boolValue]
+                                                                       repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
+
+        if ( [untilSinceString isEqualToString:@"until"] ) {
             markLabel.text = @"until";
             markLabel.textColor = [UIColor colorWithRed:76.0/255.0 green:217.0/255.0 blue:100.0/255.0 alpha:1.0];
         }
@@ -174,6 +179,8 @@
             markLabel.text = @"since";
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];
         }
+        
+        
         markLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:11] : [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
         markLabel.layer.masksToBounds = YES;

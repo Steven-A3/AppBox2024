@@ -717,14 +717,15 @@
 - (IBAction)changeSortAction:(id)sender
 {
     UISegmentedControl *segCtrl = (UISegmentedControl*)sender;
-    _sortType = segCtrl.selectedSegmentIndex;
     
-    if ( _sortType == EventSortType_Date ) {
+    if ( _sortType == EventSortType_Date && _sortType == segCtrl.selectedSegmentIndex ) {
         _isDateAscending = !_isDateAscending;
     }
-    else {
+    else if ( _sortType == EventSortType_Name && _sortType == segCtrl.selectedSegmentIndex ) {
         _isNameAscending = !_isNameAscending;
     }
+    
+    _sortType = segCtrl.selectedSegmentIndex;
     
     [self loadEventDatas];
     [self setupSegmentSortArrow];

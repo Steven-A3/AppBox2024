@@ -122,8 +122,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         if ( indexPath.row == ([_itemArray count] -1) ) {
-            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
-            cell = [cellArray objectAtIndex:7];
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;

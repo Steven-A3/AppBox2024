@@ -95,6 +95,8 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
+    
+    [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated

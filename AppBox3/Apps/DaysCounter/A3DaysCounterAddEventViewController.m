@@ -246,6 +246,18 @@
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationFade];
 }
 
+- (void)reloadItems:(NSArray*)items withType:(NSInteger)cellType section:(NSInteger)section animation:(UITableViewRowAnimation)animation
+{
+    NSMutableArray *indexPaths = [NSMutableArray array];
+    
+    for(NSInteger i=0; i < [items count]; i++) {
+        NSDictionary *itemDict = [items objectAtIndex:i];
+        if ( [[itemDict objectForKey:EventRowType] integerValue] == cellType )
+            [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:section]];
+    }
+    [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
+}
+
 - (void)removeDateInputCellWithItems:(NSMutableArray*)items indexPath:(NSIndexPath*)indexPath
 {
     NSInteger type = 0;
@@ -1073,7 +1085,7 @@
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
                                                                                                 alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
-                FNLOG(@"today: %@, FirstStartDate: %@, EffectiveDate: %@, AlertDate: %@", [NSDate date], [_eventModel objectForKey:EventItem_StartDate], [_eventModel objectForKey:EventItem_EffectiveStartDate], [_eventModel objectForKey:EventItem_AlertDatetime]);
+                FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [_eventModel objectForKey:EventItem_StartDate], [_eventModel objectForKey:EventItem_EffectiveStartDate], [_eventModel objectForKey:EventItem_AlertDatetime]);
             };
             
             if ( IS_IPHONE ) {
@@ -1268,9 +1280,9 @@
     }
     else if ( rowItemType == EventCellType_IsAllDay ) {
         [_eventModel setObject:[NSNumber numberWithBool:swButton.on] forKey:EventItem_IsAllDay];
-        [self reloadItems:sectionRow_items withType:EventCellType_DateInput section:indexPath.section];
-        [self reloadItems:sectionRow_items withType:EventCellType_StartDate section:indexPath.section];
-        [self reloadItems:sectionRow_items withType:EventCellType_EndDate section:indexPath.section];
+        [self reloadItems:sectionRow_items withType:EventCellType_DateInput section:indexPath.section animation:UITableViewRowAnimationNone];
+        [self reloadItems:sectionRow_items withType:EventCellType_StartDate section:indexPath.section animation:UITableViewRowAnimationNone];
+        [self reloadItems:sectionRow_items withType:EventCellType_EndDate section:indexPath.section animation:UITableViewRowAnimationNone];
     }
     else if ( rowItemType == EventCellType_IsPeriod ) {
         [_eventModel setObject:[NSNumber numberWithBool:swButton.on] forKey:EventItem_IsPeriod];
@@ -1337,7 +1349,6 @@
 #pragma mark DatePicker
 - (void)dateChangeAction:(id)sender
 {
-    NSLog(@"%s",__FUNCTION__);
     [self resignAllAction];
     UIDatePicker *datePicker = (UIDatePicker*)sender;
     
@@ -1358,7 +1369,10 @@
         [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:self.inputDateKey];
     }
     else {
-        [_eventModel setObject:datePicker.date forKey:self.inputDateKey];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
+        dateComp.second = 0;
+        [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:self.inputDateKey];
     }
     
     // EffectiveStartDate & EffectiveAlertDate 갱신.
@@ -1503,7 +1517,11 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
      if ( actionSheet.tag == ActionTag_Location ) {
-        [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:2] animated:YES];
+//        [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:2] animated:YES];
+         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+         NSIndexPath *locationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Location atSectionArray:section1_items]
+                                                             inSection:AddSection_Section_1];
+         [self.tableView deselectRowAtIndexPath:locationIndexPath animated:YES];
      }
 }
 
