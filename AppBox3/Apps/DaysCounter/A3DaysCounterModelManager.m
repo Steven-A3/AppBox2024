@@ -1573,7 +1573,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSDate *alertDate = [eventModel objectForKey:EventItem_AlertDatetime];
     if (alertDate && ![alertDate isKindOfClass:[NSNull class]]) {
         NSDateComponents *alertIntervalComp = [NSDateComponents new];
-        alertIntervalComp.minute = -abs([[eventModel objectForKey:EventItem_AlertDatetimeInterval] integerValue]);
+        alertIntervalComp.minute = -labs([[eventModel objectForKey:EventItem_AlertDatetimeInterval] integerValue]);
         NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertIntervalComp toDate:effectiveDate options:0];
         [eventModel setObject:alertDate forKey:EventItem_AlertDatetime];
     }

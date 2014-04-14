@@ -350,8 +350,6 @@
         return nil;
     }
     
-    //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-    //UIView *headerView = [cellArray objectAtIndex:2];
     UIView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListSectionHeader" owner:nil options:nil] lastObject];
     UILabel *monthLabel = (UILabel*)[headerView viewWithTag:10];
     UILabel *yearLabel = (UILabel*)[headerView viewWithTag:11];
@@ -370,13 +368,6 @@
     NSDate *date = [dict objectForKey:EventKey_Date];
     yearLabel.text = [NSString stringWithFormat:@"%ld", (long)[A3DateHelper yearFromDate:date]];
     monthLabel.text = [A3DateHelper dateStringFromDate:date withFormat:@"MMMM"];
-    
-//    CGRect rect = headerView.frame;
-//    rect.origin.y = -10;
-//    headerView.frame = rect;
-    
-//    UIView *header2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 23)];
-//    header2.backgroundColor = [UIColor redColor];
     
     return headerView;
 }
@@ -450,8 +441,6 @@
     NSString *CellIdentifier = (_sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-        //cell = [cellArray objectAtIndex:(_sortType == EventSortType_Name ? 0 : 3)];
         switch (_sortType) {
             case EventSortType_Name:
                 cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListNameCell" owner:nil options:nil] lastObject];
