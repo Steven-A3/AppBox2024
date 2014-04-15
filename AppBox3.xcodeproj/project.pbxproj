@@ -670,14 +670,6 @@
 		68B6A46618CEE781004084EF /* UIImage+WebP.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43B18CEE781004084EF /* UIImage+WebP.m */; };
 		68B6A46718CEE781004084EF /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */; };
 		68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */; };
-		68B6A47418CEE938004084EF /* back_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A46B18CEE938004084EF /* back_icon.png */; };
-		68B6A47518CEE938004084EF /* back_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A46C18CEE938004084EF /* back_icon@2x.png */; };
-		68B6A47618CEE938004084EF /* forward_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A46D18CEE938004084EF /* forward_icon.png */; };
-		68B6A47718CEE938004084EF /* forward_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A46E18CEE938004084EF /* forward_icon@2x.png */; };
-		68B6A47818CEE938004084EF /* reload_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A46F18CEE938004084EF /* reload_icon.png */; };
-		68B6A47918CEE938004084EF /* reload_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A47018CEE938004084EF /* reload_icon@2x.png */; };
-		68B6A47A18CEE938004084EF /* TSMiniWebBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A47218CEE938004084EF /* TSMiniWebBrowser.m */; };
-		68B6A47B18CEE938004084EF /* TSMiniWebBrowser.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A47318CEE938004084EF /* TSMiniWebBrowser.xib */; };
 		68B6A48418CF3154004084EF /* LoanCalcComparisonHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48318CF3154004084EF /* LoanCalcComparisonHistory.m */; };
 		68B6A48718CF3154004084EF /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48618CF3154004084EF /* LoanCalcHistory.m */; };
 		68B6A49018CF31B5004084EF /* UnitPriceFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48F18CF31B5004084EF /* UnitPriceFavorite.m */; };
@@ -2093,15 +2085,6 @@
 		68B6A43C18CEE781004084EF /* UIImageView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		68B6A43D18CEE781004084EF /* UIImageView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+WebCache.m"; sourceTree = "<group>"; };
 		68B6A43E18CEE781004084EF /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = MWPhotoBrowser.bundle; path = External/MWPhotoBrowser/MWPhotoBrowser/MWPhotoBrowser.bundle; sourceTree = "<group>"; };
-		68B6A46B18CEE938004084EF /* back_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_icon.png; sourceTree = "<group>"; };
-		68B6A46C18CEE938004084EF /* back_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_icon@2x.png"; sourceTree = "<group>"; };
-		68B6A46D18CEE938004084EF /* forward_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = forward_icon.png; sourceTree = "<group>"; };
-		68B6A46E18CEE938004084EF /* forward_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "forward_icon@2x.png"; sourceTree = "<group>"; };
-		68B6A46F18CEE938004084EF /* reload_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = reload_icon.png; sourceTree = "<group>"; };
-		68B6A47018CEE938004084EF /* reload_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "reload_icon@2x.png"; sourceTree = "<group>"; };
-		68B6A47118CEE938004084EF /* TSMiniWebBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSMiniWebBrowser.h; sourceTree = "<group>"; };
-		68B6A47218CEE938004084EF /* TSMiniWebBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSMiniWebBrowser.m; sourceTree = "<group>"; };
-		68B6A47318CEE938004084EF /* TSMiniWebBrowser.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TSMiniWebBrowser.xib; sourceTree = "<group>"; };
 		68B6A48218CF3154004084EF /* LoanCalcComparisonHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcComparisonHistory.h; sourceTree = "<group>"; };
 		68B6A48318CF3154004084EF /* LoanCalcComparisonHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcComparisonHistory.m; sourceTree = "<group>"; };
 		68B6A48518CF3154004084EF /* LoanCalcHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoanCalcHistory.h; sourceTree = "<group>"; };
@@ -4584,31 +4567,6 @@
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		68B6A46918CEE938004084EF /* TSMiniWebBrowser */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A46A18CEE938004084EF /* images */,
-				68B6A47118CEE938004084EF /* TSMiniWebBrowser.h */,
-				68B6A47218CEE938004084EF /* TSMiniWebBrowser.m */,
-				68B6A47318CEE938004084EF /* TSMiniWebBrowser.xib */,
-			);
-			name = TSMiniWebBrowser;
-			path = External/TSMiniWebBrowser/TSMiniWebBrowser;
-			sourceTree = "<group>";
-		};
-		68B6A46A18CEE938004084EF /* images */ = {
-			isa = PBXGroup;
-			children = (
-				68B6A46B18CEE938004084EF /* back_icon.png */,
-				68B6A46C18CEE938004084EF /* back_icon@2x.png */,
-				68B6A46D18CEE938004084EF /* forward_icon.png */,
-				68B6A46E18CEE938004084EF /* forward_icon@2x.png */,
-				68B6A46F18CEE938004084EF /* reload_icon.png */,
-				68B6A47018CEE938004084EF /* reload_icon@2x.png */,
-			);
-			path = images;
-			sourceTree = "<group>";
-		};
 		68B9B15217CF4D6B003ACAD0 /* FXPageControl */ = {
 			isa = PBXGroup;
 			children = (
@@ -4652,7 +4610,6 @@
 				686FCF331775CD1300F19332 /* NYXImagesKit */,
 				686FCF421775CD1300F19332 /* Reachability */,
 				68CC1595174F76530000870F /* SymbolFontKit */,
-				68B6A46918CEE938004084EF /* TSMiniWebBrowser */,
 				6831EBFF1861C5F600BAF15B /* UbiquityStoreManager */,
 				689C9A3A1839CD7F007C97EE /* UIKit+AFNetworking */,
 			);
@@ -5432,7 +5389,6 @@
 				68B6A33E18CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib in Resources */,
 				68F1C8C018D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib in Resources */,
 				68B6A30918CEC76D004084EF /* WalletCategoryPreset.plist in Resources */,
-				68B6A47418CEE938004084EF /* back_icon.png in Resources */,
 				8076BC9518FA86E200613E70 /* A3DaysCounterAddEventSwitchCell.xib in Resources */,
 				68B6A33518CEC76D004084EF /* A3WalletListTextCell.xib in Resources */,
 				6831EBFC18619CC800BAF15B /* AppBoxCacheStore.sqlite in Resources */,
@@ -5443,7 +5399,6 @@
 				684D92EF18BC1FBC005016F7 /* A3DateCalcAddSubCell1.xib in Resources */,
 				684E9EFC188A211000FAA48E /* A3Settings.storyboard in Resources */,
 				6825367418A7B89F00EAFB84 /* LunarConverterCell.xib in Resources */,
-				68B6A47B18CEE938004084EF /* TSMiniWebBrowser.xib in Resources */,
 				80187FF318FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib in Resources */,
 				8076BC9318FA86C500613E70 /* A3DaysCounterAddEventPhotoCell.xib in Resources */,
 				6829685E18503B2100B70E13 /* InfoPlist.strings in Resources */,
@@ -5464,8 +5419,6 @@
 				6825367318A7B89F00EAFB84 /* LunarConverter.sqlite in Resources */,
 				68F1C87818D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib in Resources */,
 				68F1C88318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib in Resources */,
-				68B6A47618CEE938004084EF /* forward_icon.png in Resources */,
-				68B6A47518CEE938004084EF /* back_icon@2x.png in Resources */,
 				68B6A30518CEC76D004084EF /* UnitPriceStoryboard.storyboard in Resources */,
 				680D639E18CFF9D400938AD0 /* A3MagnifierViewController.xib in Resources */,
 				68B6A32618CEC76D004084EF /* A3WalletCateTitleView.xib in Resources */,
@@ -5545,14 +5498,12 @@
 				68B6A33B18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib in Resources */,
 				68F1C89A18D7F37D009FAE8A /* A3DaysCounterReminderListViewController.xib in Resources */,
 				68143CF718E3EC1F00569691 /* appbox.ttf in Resources */,
-				68B6A47918CEE938004084EF /* reload_icon@2x.png in Resources */,
 				68F1C88518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib in Resources */,
 				68F1C8BD18D7F37D009FAE8A /* A3LadyCalendarAccountListCell.xib in Resources */,
 				68F1C8D818D7F37D009FAE8A /* CalendarViewCell.xib in Resources */,
 				68236CE0186C22E5006F442B /* StringsDict.strings in Resources */,
 				68F1C8C418D7F37D009FAE8A /* A3LadyCalendarAddPeriodViewController.xib in Resources */,
 				680D638F18CFF9D400938AD0 /* A3CalculatorButtonsInBasicViewController_iPad.xib in Resources */,
-				68B6A47818CEE938004084EF /* reload_icon.png in Resources */,
 				68F1C87B18D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib in Resources */,
 				68F1C8C218D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.xib in Resources */,
 				8076BCB318FA8D8900613E70 /* A3DaysCounterEventListSectionHeader.xib in Resources */,
@@ -5567,7 +5518,6 @@
 				68B6A30618CEC76D004084EF /* UnitPriceStoryboard_iPad.storyboard in Resources */,
 				68F1C88F18D7F37D009FAE8A /* A3DaysCounterSlideshowEventSummaryView.xib in Resources */,
 				6825367118A7B89F00EAFB84 /* A3LunarConverterViewController.xib in Resources */,
-				68B6A47718CEE938004084EF /* forward_icon@2x.png in Resources */,
 				68CC1599174F76930000870F /* LigatureSymbols.ttf in Resources */,
 				8076BC9D18FA876600613E70 /* A3DaysCounterAddEventNotesCell.xib in Resources */,
 				68F1C89318D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib in Resources */,
@@ -6055,7 +6005,6 @@
 				68B6A2D618CEC76D004084EF /* A3UnitConverterTVDataCell.m in Sources */,
 				689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */,
 				684D92F718BC1FBC005016F7 /* A3DateCalcFooterViewCell.m in Sources */,
-				68B6A47A18CEE938004084EF /* TSMiniWebBrowser.m in Sources */,
 				68F1C89F18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.m in Sources */,
 				68E2A6AA18D0B22800E834D9 /* A3TextViewElement.m in Sources */,
 				68B6A4A818CF335E004084EF /* UnitType.m in Sources */,

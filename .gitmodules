@@ -46,9 +46,6 @@
 [submodule "External/MWPhotoBrowser"]
 	path = External/MWPhotoBrowser
 	url = https://github.com/Steven-Gwug/MWPhotoBrowser.git
-[submodule "External/TSMiniWebBrowser"]
-	path = External/TSMiniWebBrowser
-	url = https://github.com/Steven-Gwug/TSMiniWebBrowser.git
 [submodule "External/MPFoldTransition"]
 	path = External/MPFoldTransition
 	url = https://github.com/Steven-Gwug/MPFoldTransition.git
