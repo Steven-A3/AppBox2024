@@ -10,5 +10,8 @@
 
 
 @interface A3BasicWebViewController : UIViewController
+
 @property (nonatomic, strong) NSURL *url;
+@property (nonatomic, assign) BOOL showDoneButton;
+
 @end

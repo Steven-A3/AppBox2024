@@ -45,7 +45,7 @@
     self.title = @"Information";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(shareAction)];
 
-	if (IS_IPAD) {
+	if (IS_IPAD || _showDoneButton) {
 		self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneAction)];
 	}
 

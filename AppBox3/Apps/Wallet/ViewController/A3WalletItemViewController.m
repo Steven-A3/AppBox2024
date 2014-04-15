@@ -23,14 +23,14 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3Addition.h"
 #import "MWPhotoBrowser.h"
-#import "TSMiniWebBrowser.h"
 #import "UIViewController+A3AppCategory.h"
 #import "WalletField.h"
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
+#import "A3BasicWebViewController.h"
 
 
-@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, TSMiniWebBrowserDelegate>
+@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) A3WalletItemTitleView *headerView;
 @property (nonatomic, strong) NSMutableArray *fieldItems;
@@ -331,10 +331,11 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				}
 				case 1:
 				{
-					// i message
+					MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
+					viewController.messageComposeDelegate = self;
 					NSString *mailAddress = [urlString substringWithRange:range];
-					NSString *urlString = [NSString stringWithFormat:@"sms:%@", mailAddress];
-					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+					viewController.recipients = @[mailAddress];
+					[self presentViewController:viewController animated:YES completion:NULL];
 					break;
 				}
 				default:
@@ -344,27 +345,12 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		else {
 			// just web address
 			if (actionIdx == 0) {
-				// open in-browser
-                
-				TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:result.URL];
-				webBrowser.delegate = self;
-				[webBrowser setFixedTitleBarText:@""];
-				webBrowser.modalDismissButtonTitle = @"Done";
-				//    webBrowser.showURLStringOnActionSheetTitle = YES;
-				//    webBrowser.showPageTitleOnTitleBar = YES;
-				//    webBrowser.showActionButton = YES;
-				//    webBrowser.showReloadButton = YES;
-				//    [webBrowser setFixedTitleBarText:@"Test Title Text"]; // This has priority over "showPageTitleOnTitleBar".
-				webBrowser.mode = TSMiniWebBrowserModeModal;
-                
-				webBrowser.barStyle = UIBarStyleDefault;
-                
-				if (webBrowser.mode == TSMiniWebBrowserModeModal) {
-					webBrowser.modalDismissButtonTitle = @"Home";
-					[self presentViewController:webBrowser animated:YES completion:NULL];
-				} else if(webBrowser.mode == TSMiniWebBrowserModeNavigation) {
-					[self.navigationController pushViewController:webBrowser animated:YES];
-				}
+				A3BasicWebViewController *viewController = [A3BasicWebViewController new];
+				viewController.url = result.URL;
+				viewController.showDoneButton = YES;
+
+				UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+				[self presentViewController:navigationController animated:YES completion:nil];
 			}
 		}
 	}
@@ -378,11 +364,11 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
 				break;
 			}
-			case 1:
-			{
-				// message
-				NSString *urlString = [NSString stringWithFormat:@"sms:%@", result.phoneNumber];
-				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+			case 1: {
+				MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
+				viewController.messageComposeDelegate = self;
+				viewController.recipients = @[result.phoneNumber];
+				[self presentViewController:viewController animated:YES completion:NULL];
 				break;
 			}
 			default:
@@ -391,6 +377,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	}
 }
 
+- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result {
+	[controller dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void)actionCellContentButtonAction:(UIButton *)sender
 {
@@ -499,6 +488,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
+	FNLOG();
 	[self showCopyMenuWithView:textField];
 
 	return NO;
@@ -754,6 +744,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	}
 
 	dispatch_async(dispatch_get_main_queue(), ^{
+		[self becomeFirstResponder];
+
 		CGRect frame = view.frame;
 
 		UIMenuController *copyMenu = [UIMenuController sharedMenuController];
