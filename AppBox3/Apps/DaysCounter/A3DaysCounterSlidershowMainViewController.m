@@ -100,7 +100,24 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.delegate = self;
+    __block NSUInteger indexOfTodayPhoto = -1;
     self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
+    NSDate *now = [NSDate date];
+    [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
+        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
+            indexOfTodayPhoto = (idx == 0) ? 0 : (idx - 1);
+            *stop = YES;
+            return;
+        }
+        indexOfTodayPhoto = idx;
+    }];
+    
+    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]
+                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                    animated:NO];
+    currentIndex = indexOfTodayPhoto;
+    [self updateNavigationTitle];
+    
     
     if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ) {
         if ( !_isShowMoreMenu ) {

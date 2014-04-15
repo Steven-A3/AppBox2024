@@ -1101,7 +1101,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)allEventsListContainedImage
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"imageFilename.length > 0"] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"imageFilename.length > 0"]];
 }
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
