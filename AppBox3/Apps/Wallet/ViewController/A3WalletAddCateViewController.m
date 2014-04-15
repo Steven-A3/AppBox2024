@@ -53,28 +53,22 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    
-    [self makeBackButtonEmptyArrow];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
-    self.navigationItem.title = @"Add Category";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
+	self.navigationItem.title = @"Add Category";
+
+	[self makeBackButtonEmptyArrow];
+
+	[self leftBarButtonCancelButton];
+	[self rightBarButtonDoneButton];
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
+
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletAddCateFieldCellID];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletAddCatePlusCellID];
 
-    
     self.tableView.allowsSelectionDuringEditing = YES;
     [self setEditing:YES animated:NO];
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
+	self.tableView.showsVerticalScrollIndicator = NO;
     
     [self registerContentSizeCategoryDidChangeNotification];
 }
@@ -146,10 +140,9 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 {
     // category 만들었던것 취소하기
     [self cancelCreateCategory];
-    
-    [self.navigationController popViewControllerAnimated:YES];
-    
     [self clearData];
+
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)doneButtonAction:(id)sender
@@ -176,10 +169,9 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 
     // 카테고리 추가 노티 날리기
     [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
+	[self clearData];
 
-    [self.navigationController popViewControllerAnimated:YES];
-    
-    [self clearData];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)cancelCreateCategory
@@ -207,8 +199,7 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 - (void)addWalletField
 {
     self.toAddField = [WalletField MR_createEntity];
-    [_toAddField initTypeAndStyle];
-    
+
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletEditFieldViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
     viewController.isAddMode = YES;

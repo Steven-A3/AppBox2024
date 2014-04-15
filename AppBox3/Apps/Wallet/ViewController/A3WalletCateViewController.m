@@ -103,7 +103,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
             
         }
         else {
-            [self showLeftNaviItems];
+			[self showLeftNavigationBarItems];
         }
 	}
     
@@ -146,8 +146,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     
     // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item이 되고,나머지는 공백.
     // viewwillAppear에서 공백으로 초기화해줌 (테이블 항목 선택시, 타이틀을 카테고리 이름으로 함)
-    
-    [self showLeftNaviItems];
+
+	[self showLeftNavigationBarItems];
     
     // 항목 갱신
     [self refreshItems];
@@ -187,10 +187,10 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     [self.tableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
 }
 
-- (void)showLeftNaviItems
+- (void)showLeftNavigationBarItems
 {
     // 현재 more탭바인지 여부 체크
-    if (self.navigationController == self.tabBarController.moreNavigationController) {
+    if (_isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
         // more 탭바
         
@@ -219,21 +219,14 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (void)addButtonConstraints
 {
-    float fromBottom = IS_IPAD ? 89.0:82.0;
+	CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
 
-    _addButton.translatesAutoresizingMaskIntoConstraints = NO;
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:_addButton
-														  attribute:NSLayoutAttributeCenterX
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeCenterX
-														 multiplier:1.0 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_addButton
-														  attribute:NSLayoutAttributeCenterY
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeBottom
-														 multiplier:1.0 constant:-fromBottom]];
+	[_addButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.centerY.equalTo(self.view.bottom).with.offset(-fromBottom);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
 }
 
 - (void)itemCountCheck
@@ -275,7 +268,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
         _addButton.frame = CGRectMake(0, 0, 44, 44);
-        [_addButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
+		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _addButton;
@@ -422,8 +415,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
             self.navigationItem.leftBarButtonItem = nil;
         }
          */
-        
-        [self showLeftNaviItems];
+
+		[self showLeftNavigationBarItems];
         
         self.navigationItem.rightBarButtonItem = nil;
         self.navigationItem.rightBarButtonItems = [self rightBarItems];
@@ -668,21 +661,10 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     return viewController;
 }
 
-- (void)addUnitAction {
-	@autoreleasepool {
-        A3WalletAddItemViewController *viewController = [self itemAddViewController];
-        [self presentSubViewController:viewController];
-	}
-}
-
-- (void)presentSubViewController:(UIViewController *)viewController {
-	if (IS_IPAD) {
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else {
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        [self.navigationController presentViewController:nav animated:YES completion:NULL];
-    }
+- (void)addWalletItemAction {
+	A3WalletAddItemViewController *viewController = [self itemAddViewController];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:nav animated:YES completion:NULL];
 }
 
 - (void)refreshItems

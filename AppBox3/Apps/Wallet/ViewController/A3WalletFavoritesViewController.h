@@ -13,5 +13,6 @@
 @interface A3WalletFavoritesViewController : UITableViewController
 
 @property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, assign) BOOL isFromMoreTableViewController;
 
 @end

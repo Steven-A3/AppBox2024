@@ -18,6 +18,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSNumber * doNotShow;
 @property (nonatomic, retain) NSSet *fields;
 @property (nonatomic, retain) NSSet *items;
 @end

@@ -18,6 +18,7 @@
 @dynamic name;
 @dynamic order;
 @dynamic uniqueID;
+@dynamic doNotShow;
 @dynamic fields;
 @dynamic items;
 

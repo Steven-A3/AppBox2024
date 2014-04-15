@@ -15,6 +15,7 @@
 #import "A3YahooCurrency.h"
 #import "Reachability.h"
 #import "A3AppDelegate.h"
+#import "NSString+conversion.h"
 
 NSString *const A3KeyCurrencyCode = @"currencyCode";
 NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRatesUdpated";
@@ -71,7 +72,7 @@ NSString *const A3NotificationCurrencyRatesUpdated = @"A3NotificationCurrencyRat
 	for (NSString *code in favorites) {
 		CurrencyFavorite *favorite = [CurrencyFavorite MR_createEntity];
 		CurrencyRateItem *item = [CurrencyRateItem MR_findFirstByAttribute:A3KeyCurrencyCode withValue:code inContext:[A3AppDelegate instance].cacheStoreManager.context];
-		favorite.order = [NSString stringWithFormat:@"0%lu00000000", (unsigned long)idx];
+		favorite.order = [NSString orderStringWithOrder:idx * 1000000];
 		[A3CurrencyDataManager copyCurrencyFrom:item to:favorite];
 		FNLOG(@"%@, %@", item, favorite);
 		idx++;

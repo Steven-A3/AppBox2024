@@ -27,7 +27,6 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
-#import "NSManagedObject+Identify.h"
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
 
@@ -294,11 +293,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     //fieldItem.date = sender.date;
     
     // 이전 임시 fieldItem이 있으면 지운다.
-    if (self.editTempItems[fieldItem.field.uriKey]) {
-        WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uriKey];
+    if (self.editTempItems[fieldItem.field.uniqueID]) {
+        WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uniqueID];
         [preEditedFieldItem deleteAndClearRelated];
         
-        [self.editTempItems removeObjectForKey:fieldItem.field.uriKey];
+        [self.editTempItems removeObjectForKey:fieldItem.field.uniqueID];
     }
     
     // editTempItem에 새로운 값을 만들어서 저장한다.
@@ -306,7 +305,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     editFieldItem.field = fieldItem.field;
     editFieldItem.walletItem = self.item;
     editFieldItem.date = sender.date;
-    [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uriKey];
+    [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uniqueID];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -461,18 +460,18 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         WalletFieldItem *fieldItem = _fieldItems[index];
         
         // 이전 임시 fieldItem이 있으면 지운다.
-        if (self.editTempItems[fieldItem.field.uriKey]) {
-            WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uriKey];
+        if (self.editTempItems[fieldItem.field.uniqueID]) {
+            WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uniqueID];
             [preEditedFieldItem deleteAndClearRelated];
             
-            [self.editTempItems removeObjectForKey:fieldItem.field.uriKey];
+            [self.editTempItems removeObjectForKey:fieldItem.field.uniqueID];
         }
         
         // editTempItem에 새로운 값을 만들어서 저장한다.
         WalletFieldItem *editFieldItem = [WalletFieldItem MR_createEntity];
         editFieldItem.field = fieldItem.field;
         editFieldItem.walletItem = self.item;
-        [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uriKey];
+        [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uniqueID];
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         
@@ -726,7 +725,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     editFieldItem.field = cateField;
                     editFieldItem.walletItem = self.item;
                     editFieldItem.date = tempFieldItem.date;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uriKey];
+                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
 					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
                     
                     [addedItems addObject:tempFieldItem];
@@ -740,7 +739,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     editFieldItem.field = cateField;
                     editFieldItem.walletItem = self.item;
                     editFieldItem.filePath = tempFieldItem.filePath;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uriKey];
+                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
 					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
                     
                     [addedItems addObject:tempFieldItem];
@@ -754,7 +753,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     editFieldItem.field = cateField;
                     editFieldItem.walletItem = self.item;
                     editFieldItem.filePath = tempFieldItem.filePath;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uriKey];
+                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
 					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
                     
                     [addedItems addObject:tempFieldItem];
@@ -768,7 +767,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                     editFieldItem.field = cateField;
                     editFieldItem.walletItem = self.item;
                     editFieldItem.value = tempFieldItem.value;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uriKey];
+                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
 					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
                     
                     [addedItems addObject:tempFieldItem];
@@ -780,7 +779,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             WalletFieldItem *madeFieldItem = [WalletFieldItem MR_createEntity];
             madeFieldItem.field = cateField;
             madeFieldItem.walletItem = self.item;
-            [cateNewEditTempItems setObject:madeFieldItem forKey:cateField.uriKey];
+            [cateNewEditTempItems setObject:madeFieldItem forKey:cateField.uniqueID];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
     }
@@ -964,11 +963,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     WalletFieldItem *fieldItem = currentItem;
     
     // 이전 임시 fieldItem이 있으면 지운다.
-    if (self.editTempItems[fieldItem.field.uriKey]) {
-        WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uriKey];
+    if (self.editTempItems[fieldItem.field.uniqueID]) {
+        WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uniqueID];
         [preEditedFieldItem deleteAndClearRelated];
         
-        [self.editTempItems removeObjectForKey:fieldItem.field.uriKey];
+        [self.editTempItems removeObjectForKey:fieldItem.field.uniqueID];
     }
     
     // editTempItem에 새로운 값을 만들어서 저장한다.
@@ -976,7 +975,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     editFieldItem.field = fieldItem.field;
     editFieldItem.walletItem = self.item;
     editFieldItem.filePath = filePath;
-    [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uriKey];
+    [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uniqueID];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -1001,11 +1000,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     WalletFieldItem *fieldItem = currentItem;
     
     // 이전 임시 fieldItem이 있으면 지운다.
-    if (self.editTempItems[fieldItem.field.uriKey]) {
-        WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uriKey];
+    if (self.editTempItems[fieldItem.field.uniqueID]) {
+        WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uniqueID];
         [preEditedFieldItem deleteAndClearRelated];
         
-        [self.editTempItems removeObjectForKey:fieldItem.field.uriKey];
+        [self.editTempItems removeObjectForKey:fieldItem.field.uniqueID];
     }
     
     // editTempItem에 새로운 값을 만들어서 저장한다.
@@ -1013,7 +1012,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     editFieldItem.field = fieldItem.field;
     editFieldItem.walletItem = self.item;
     editFieldItem.filePath = imageFilePath;
-    [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uriKey];
+    [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uniqueID];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -1340,11 +1339,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             }
             
             // 이전 임시 fieldItem이 있으면 지운다.
-            if (self.editTempItems[fieldItem.field.uriKey]) {
-                WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uriKey];
+            if (self.editTempItems[fieldItem.field.uniqueID]) {
+                WalletFieldItem *preEditedFieldItem = _editTempItems[fieldItem.field.uniqueID];
                 [preEditedFieldItem deleteAndClearRelated];
                 
-                [self.editTempItems removeObjectForKey:fieldItem.field.uriKey];
+                [self.editTempItems removeObjectForKey:fieldItem.field.uniqueID];
             }
             
             // editTempItem에 새로운 값을 만들어서 저장한다.
@@ -1352,7 +1351,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             editFieldItem.field = fieldItem.field;
             editFieldItem.walletItem = self.item;
             editFieldItem.value = textField.text;
-            [self.editTempItems setObject:editFieldItem forKey:fieldItem.field.uriKey];
+            [self.editTempItems setObject:editFieldItem forKey:editFieldItem.field.uniqueID];
 
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
@@ -1669,8 +1668,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 WalletFieldItem *fieldItem;
                 
                 WalletFieldItem *orgFieldItem = [_fieldItems objectAtIndex:indexPath.row];
-                if (self.editTempItems[orgFieldItem.field.uriKey]) {
-                    fieldItem = _editTempItems[orgFieldItem.field.uriKey];
+                if (self.editTempItems[orgFieldItem.field.uniqueID]) {
+                    fieldItem = _editTempItems[orgFieldItem.field.uniqueID];
                 }
                 else {
                     fieldItem = orgFieldItem;

@@ -10,13 +10,19 @@
 #import "WalletItem+initialize.h"
 #import "WalletField.h"
 #import "WalletData.h"
-#import "NSMutableArray+A3Sort.h"
-#import "NSManagedObject+Identify.h"
+#import "NSString+conversion.h"
 
 NSString *const A3WalletUUIDAllCategory = @"10f30f9f-ff9d-43d4-ac69-020f61e016e0";
 NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c1feb5";
 
 @implementation WalletCategory (initialize)
+
+- (void)awakeFromInsert {
+	[super awakeFromInsert];
+
+	self.uniqueID = [[NSUUID UUID] UUIDString];
+	self.doNotShow = @NO;
+}
 
 + (void)resetWalletCategory
 {
@@ -40,21 +46,23 @@ NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c
 	allCategory.modificationDate = [NSDate date];
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
 
+	NSUInteger categoryIdx = 1;
     for (NSDictionary *preset in categoryPresets) {
         WalletCategory *category = [WalletCategory MR_createEntity];
         category.name = preset[@"Name"];
         category.icon = preset[@"Icon"];
 		category.modificationDate = [NSDate date];
-		category.uniqueID = [[NSUUID UUID] UUIDString];
+		category.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
 		NSArray *fieldPresets = preset[@"Fields"];
-        
+        NSUInteger fieldIdx = 1;
 		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createEntity];
             field.name = fieldPreset[@"Name"];
             field.category = category;
             field.type = fieldPreset[@"Type"];
             field.style = fieldPreset[@"Style"];
+			field.order = [NSString orderStringWithOrder:fieldIdx++ * 1000000];
         }
     }
 

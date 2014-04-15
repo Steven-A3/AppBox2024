@@ -10,9 +10,10 @@
 
 @interface A3WalletMoreTableViewCell : UITableViewCell
 
-@property (nonatomic, strong) UIButton *checkButton;
+@property (nonatomic, strong) UIImageView *checkImageView;
 @property (nonatomic, strong) UILabel *cellTitleLabel;
 @property (nonatomic, strong) UIImageView *cellImageView;
+@property (nonatomic, assign) BOOL showCheckImageView;
 
-@property (nonatomic, assign) BOOL showCheckButton;
+- (void)setShowCheckMark:(BOOL)showCheckMark;
 @end

@@ -11,21 +11,11 @@
 #import "A3WalletAllViewController.h"
 #import "A3WalletFavoritesViewController.h"
 #import "A3WalletAddCateViewController.h"
-#import "A3WalletAddCateWrapViewController.h"
 #import "WalletCategory+initialize.h"
-#import "WalletData.h"
-#import "common.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
-#import "NSUserDefaults+A3Defaults.h"
-#import "A3UIDevice.h"
-#import "UIViewController+MMDrawerController.h"
-#import "A3RootViewController_iPad.h"
-#import "NSString+conversion.h"
-#import "UIViewController+A3Addition.h"
-#import "NSManagedObject+Identify.h"
-#import "SFKImage.h"
+#import "A3WalletMoreTableViewController.h"
 
 // NSUserDefaults key values:
 NSString *kWallet_WhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
@@ -40,6 +30,7 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
 @interface A3WalletMainTabBarController ()
 
 @property (nonatomic, strong) NSMutableArray *categories;
+@property (nonatomic, strong) UINavigationController *myMoreNavigationController;
 
 @end
 
@@ -104,7 +95,6 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
     
     return self;
 }
-
 
 
 - (void)viewDidLoad
@@ -195,49 +185,23 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
     [[NSUserDefaults standardUserDefaults] setInteger:self.selectedIndex forKey:kWallet_WhichTabPrefKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    if (self.moreNavigationController && (self.moreNavigationController.viewControllers.count>1)) {
-        [self.moreNavigationController popToRootViewControllerAnimated:NO];
+    if (_myMoreNavigationController && (_myMoreNavigationController.viewControllers.count>1)) {
+        [_myMoreNavigationController popToRootViewControllerAnimated:NO];
     }
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed
-{
-    if (changed) {
-        
-        NSMutableArray *tmp = [NSMutableArray new];
-
-        for (int i=0; i<viewControllers.count; i++) {
-            
-            UINavigationController *navController = viewControllers[i];
-            UIViewController *viewController = navController.viewControllers[0];
-            if ([viewController isKindOfClass:[A3WalletCateViewController class]]) {
-                A3WalletCateViewController *vc = (A3WalletCateViewController *) viewController;
-                [tmp addObjectToSortedArray:vc.category];
-            }
-            else if ([viewController isKindOfClass:[A3WalletAllViewController class]]) {
-                A3WalletAllViewController *vc = (A3WalletAllViewController *) viewController;
-                [tmp addObjectToSortedArray:vc.category];
-            }
-            else if ([viewController isKindOfClass:[A3WalletFavoritesViewController class]]) {
-                A3WalletFavoritesViewController *vc = (A3WalletFavoritesViewController *) viewController;
-                [tmp addObjectToSortedArray:vc.category];
-            }
-        }
-
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-	}
 }
 
 #pragma mark - Added Function
 
 - (void)setupTabBar
 {
-    NSMutableArray *totalArray = [[NSMutableArray alloc] init];
-    NSMutableArray *configurableArray = [[NSMutableArray alloc] init];
-    
-    for (NSUInteger idx = 0; idx < self.categories.count; idx++) {
+	_categories = nil;
 
-        WalletCategory *category = _categories[idx];
+    NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
+
+	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;
+    for (NSUInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
+
+        WalletCategory *category = self.categories[idx];
         UIViewController *viewController;
         UIImage *selectedIcon;
         
@@ -290,25 +254,17 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
         NSDictionary *textAttributes = @{NSFontAttributeName : titleFont};
         [nav.tabBarItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
         
-        [configurableArray addObject:nav];
-        
+        [viewControllers addObject:nav];
     }
-    
-    [totalArray addObjectsFromArray:configurableArray];
-    
-    // 카테고리 추가하기 화면
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-    A3WalletAddCateViewController *vc = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletAddCateViewController"];
-    vc.hidesBottomBarWhenPushed = YES;
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-    nav.tabBarItem.title = @"Add Category";
-    nav.tabBarItem.image = [UIImage imageNamed:@"add01"];
-    [totalArray addObject:nav];
 
-    self.viewControllers = totalArray;
-    self.customizableViewControllers = configurableArray;
-    
+	A3WalletMoreTableViewController *moreViewController = [[A3WalletMoreTableViewController alloc] initWithStyle:UITableViewStylePlain];
+	moreViewController.mainTabBarController = self;
+	_myMoreNavigationController = [[UINavigationController alloc] initWithRootViewController:moreViewController];
+	_myMoreNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTabBarSystemItem:UITabBarSystemItemMore tag:0];
+	[viewControllers addObject:_myMoreNavigationController];
+
+    self.viewControllers = viewControllers;
+
     self.selectedIndex = [[NSUserDefaults standardUserDefaults] integerForKey:kWallet_WhichTabPrefKey];
 
 }

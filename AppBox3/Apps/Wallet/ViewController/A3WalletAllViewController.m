@@ -38,7 +38,7 @@
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, readwrite) NSUInteger sortingMode;
-@property (nonatomic, readwrite) BOOL isAcsendingSort;
+@property (nonatomic, readwrite) BOOL isAscendingSort;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
 
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -63,12 +63,6 @@ enum SortingKind {
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.navigationItem.title = @"All Items";
@@ -82,7 +76,7 @@ enum SortingKind {
     [self initializeViews];
     
     self.sortingMode = kSortingDate;
-    self.isAcsendingSort = YES;
+    self.isAscendingSort = YES;
     
     [self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
@@ -104,16 +98,16 @@ enum SortingKind {
             
         }
         else {
-            [self showLeftNaviItems];
+			[self showLeftNavigationBarItems];
         }
 	}
     
 }
 
-- (void)showLeftNaviItems
+- (void)showLeftNavigationBarItems
 {
-    // 현재 more탭바인지 여부 체크
-    if (self.navigationController == self.tabBarController.moreNavigationController) {
+    // 현재 more 탭바인지 여부 체크
+    if (_isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
         // more 탭바
         
@@ -166,21 +160,14 @@ enum SortingKind {
 
 - (void)addButtonConstraints
 {
-    float fromBottom = IS_IPAD ? 89.0:82.0;
-    
-    _addButton.translatesAutoresizingMaskIntoConstraints = NO;
-	[self.view addConstraint:[NSLayoutConstraint constraintWithItem:_addButton
-														  attribute:NSLayoutAttributeCenterX
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeCenterX
-														 multiplier:1.0 constant:0.0]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_addButton
-														  attribute:NSLayoutAttributeCenterY
-														  relatedBy:NSLayoutRelationEqual
-															 toItem:self.view
-														  attribute:NSLayoutAttributeBottom
-														 multiplier:1.0 constant:-fromBottom]];
+    CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
+
+	[_addButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.centerY.equalTo(self.view.bottom).with.offset(-fromBottom);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -193,7 +180,7 @@ enum SortingKind {
 {
     [super viewWillAppear:animated];
 
-    [self showLeftNaviItems];
+	[self showLeftNavigationBarItems];
 
     // 데이타 갱신
     [self refreshItems];
@@ -215,7 +202,7 @@ enum SortingKind {
 {
     if (!_items) {
         NSString *sortValue = (_sortingMode == kSortingDate) ? @"modificationDate" : @"name";
-        _items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAcsendingSort]];
+        _items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
         
         [_items insertObject:self.topItem atIndex:0];
         
@@ -271,7 +258,7 @@ enum SortingKind {
         _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
         _addButton.frame = CGRectMake(0, 0, 44, 44);
-        [_addButton addTarget:self action:@selector(addUnitAction) forControlEvents:UIControlEventTouchUpInside];
+		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
     }
     
     return _addButton;
@@ -286,29 +273,6 @@ enum SortingKind {
     
     return _sortArrowImgView;
 }
-
-/*
-- (A3WalletAllTopView *)topHeaderView
-{
-    if (!_topHeaderView) {
-        _topHeaderView = [[[NSBundle mainBundle] loadNibNamed:@"A3WalletAllTopView"
-                                                        owner:nil
-                                                      options:nil] lastObject];
-        
-        _topHeaderView.frame = CGRectMake(0, 64, self.view.bounds.size.width, TopHeaderHeight);
-        _topHeaderView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        
-        [_topHeaderView.sortingSegment addTarget:self action:@selector(sortingSegTapped:) forControlEvents:UIControlEventValueChanged];
-        
-        [_topHeaderView addSubview:self.sortArrowImgView];
-        
-        [_topHeaderView.sortingSegment setTitle:@"Date" forSegmentAtIndex:0];
-        [_topHeaderView.sortingSegment setTitle:@"Name" forSegmentAtIndex:1];
-    }
-    
-    return _topHeaderView;
-}
- */
 
 - (void)topView:(A3WalletAllTopView *)topView enabledSet:(BOOL)enable
 {
@@ -436,7 +400,7 @@ enum SortingKind {
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth/2.0-arrowRightMargin, topView.sortingSegment.center.y);
             
-            if (_isAcsendingSort) {
+            if (_isAscendingSort) {
                 _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             else {
@@ -448,7 +412,7 @@ enum SortingKind {
         {
             self.sortArrowImgView.center = CGPointMake(topViewWidth/2.0+segmentWidth/2.0-arrowRightMargin, topView.sortingSegment.center.y);
             
-            if (_isAcsendingSort) {
+            if (_isAscendingSort) {
                 _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             else {
@@ -467,7 +431,7 @@ enum SortingKind {
         case 0:
         {
             if (_sortingMode == kSortingDate) {
-                self.isAcsendingSort = !_isAcsendingSort;
+                self.isAscendingSort = !_isAscendingSort;
             }
             else {
                 self.sortingMode = kSortingDate;
@@ -481,7 +445,7 @@ enum SortingKind {
                 self.sortingMode = kSortingName;
             }
             else {
-                self.isAcsendingSort = !_isAcsendingSort;
+                self.isAscendingSort = !_isAscendingSort;
             }
             
             break;
@@ -520,22 +484,11 @@ enum SortingKind {
     return viewController;
 }
 
-- (void)addUnitAction {
-	@autoreleasepool {
-        A3WalletAddItemViewController *viewController = [self itemAddViewController];
-        
-        [self presentSubViewController:viewController];
-	}
-}
+- (void)addWalletItemAction {
+	A3WalletAddItemViewController *viewController = [self itemAddViewController];
 
-- (void)presentSubViewController:(UIViewController *)viewController {
-	if (IS_IPAD) {
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else {
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        [self.navigationController presentViewController:nav animated:YES completion:NULL];
-    }
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:nav animated:YES completion:NULL];
 }
 
 #pragma mark - Search relative

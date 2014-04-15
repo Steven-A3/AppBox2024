@@ -2,7 +2,7 @@
 //  WalletField.m
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by A3 on 4/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,7 +17,8 @@
 @dynamic order;
 @dynamic style;
 @dynamic type;
+@dynamic uniqueID;
 @dynamic category;
-@dynamic fieldItem;
+@dynamic fieldItems;
 
 @end

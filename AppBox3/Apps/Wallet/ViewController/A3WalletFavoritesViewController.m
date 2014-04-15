@@ -86,10 +86,10 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
     [self.tableView reloadData];
 }
 
-- (void)showLeftNaviItems
+- (void)showLeftNavigationBarItems
 {
     // 현재 more탭바인지 여부 체크
-    if (self.navigationController == self.tabBarController.moreNavigationController) {
+    if (_isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
         // more 탭바
         
@@ -121,7 +121,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
 {
     [super viewWillAppear:animated];
 
-    [self showLeftNaviItems];
+	[self showLeftNavigationBarItems];
     
     // 페이지 들어올때마다 갱신한다.
     [self refreshItems];
@@ -140,7 +140,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
             
         }
         else {
-            [self showLeftNaviItems];
+			[self showLeftNavigationBarItems];
         }
 	}
 }

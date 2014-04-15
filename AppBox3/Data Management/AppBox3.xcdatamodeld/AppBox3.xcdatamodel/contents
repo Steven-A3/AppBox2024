@@ -321,11 +321,12 @@
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UnitItem" inverseName="type" inverseEntity="UnitItem" syncable="YES"/>
     </entity>
     <entity name="WalletCategory" representedClassName="WalletCategory" syncable="YES">
+        <attribute name="doNotShow" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="fields" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletField" inverseName="category" inverseEntity="WalletField" syncable="YES"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="category" inverseEntity="WalletItem" syncable="YES"/>
     </entity>
@@ -338,14 +339,15 @@
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="style" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletCategory" inverseName="fields" inverseEntity="WalletCategory" syncable="YES"/>
-        <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="field" inverseEntity="WalletFieldItem" syncable="YES"/>
+        <relationship name="fieldItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="field" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
     <entity name="WalletFieldItem" representedClassName="WalletFieldItem" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletField" inverseName="fieldItem" inverseEntity="WalletField" syncable="YES"/>
+        <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletField" inverseName="fieldItems" inverseEntity="WalletField" syncable="YES"/>
         <relationship name="walletItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="fieldItems" inverseEntity="WalletItem" syncable="YES"/>
     </entity>
     <entity name="WalletItem" representedClassName="WalletItem" syncable="YES">
@@ -393,9 +395,9 @@
         <element name="UnitPriceHistoryItem" positionX="-398" positionY="227" width="128" height="178"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="396" width="128" height="163"/>
         <element name="UnitType" positionX="412" positionY="162" width="128" height="88"/>
-        <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="150"/>
+        <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="163"/>
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
-        <element name="WalletField" positionX="-576" positionY="440" width="128" height="133"/>
+        <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="118"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="148"/>
     </elements>

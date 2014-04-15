@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, assign) BOOL isFromMoreTableViewController;
 
 @end

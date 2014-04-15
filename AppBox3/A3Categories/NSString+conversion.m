@@ -83,22 +83,8 @@
 	return result;
 }
 
-- (NSString *)stringByPaddingZeroLength10 {
-	if ([self length] >= 10) {
-		return self;
-	}
-	NSString *string;
-
-	NSString *padding = @"0000000000";
-	padding = [padding substringToIndex:10 - [self length]];
-	string = [NSString stringWithFormat:@"%@%@", padding, self];
-
-	return string;
-}
-
 + (NSString *)orderStringWithOrder:(NSInteger)order {
-	NSString *string = [NSString stringWithFormat:@"%ld", (long)order];
-	return [string stringByPaddingZeroLength10];
+	return [NSString stringWithFormat:@"%016ld", (long)order];
 }
 
 - (NSMutableString *)extendedSearchPatternForKoreanString {
