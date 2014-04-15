@@ -41,6 +41,7 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) UIPopoverController *imagePopover;
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
+@property (assign, nonatomic) BOOL isDurationIntialized;//temp...
 
 - (void)alertMessage:(NSString*)message;
 - (BOOL)isExistsEndDateCellInItems:(NSArray*)items;
@@ -1280,15 +1281,22 @@
     
     NSInteger rowItemType = [[rowItemData objectForKey:EventRowType] integerValue];
     if ( rowItemType == EventCellType_IsLunar ) {
-        [_eventModel setObject:[NSNumber numberWithBool:swButton.on] forKey:EventItem_IsLunar];
+        [_eventModel setObject:@(swButton.on) forKey:EventItem_IsLunar];
         NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
         [self updateEndDateDiffFromStartDate:startDate];
     }
     else if ( rowItemType == EventCellType_IsAllDay ) {
-        [_eventModel setObject:[NSNumber numberWithBool:swButton.on] forKey:EventItem_IsAllDay];
+        [_eventModel setObject:@(swButton.on) forKey:EventItem_IsAllDay];
+        
+        if (!_eventItem && [swButton isOn] == NO && !_isDurationIntialized) {
+            _isDurationIntialized = YES;
+            [_eventModel setObject:@(DurationOption_Day|DurationOption_Hour|DurationOption_Minutes) forKey:EventItem_DurationOption];
+        }
+        
         [self reloadItems:sectionRow_items withType:EventCellType_DateInput section:indexPath.section animation:UITableViewRowAnimationNone];
         [self reloadItems:sectionRow_items withType:EventCellType_StartDate section:indexPath.section animation:UITableViewRowAnimationNone];
         [self reloadItems:sectionRow_items withType:EventCellType_EndDate section:indexPath.section animation:UITableViewRowAnimationNone];
+        [self reloadItems:sectionRow_items withType:EventCellType_DurationOption section:indexPath.section animation:UITableViewRowAnimationNone];
     }
     else if ( rowItemType == EventCellType_IsPeriod ) {
         [_eventModel setObject:[NSNumber numberWithBool:swButton.on] forKey:EventItem_IsPeriod];

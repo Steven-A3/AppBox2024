@@ -16,6 +16,7 @@
 @interface A3DaysCounterSetupDurationViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSNumber *originalValue;
+@property (assign, nonatomic) NSInteger selectedOptionFlag;
 
 - (NSString*)exampleString;
 - (void)cancelAction:(id)sender;
@@ -33,8 +34,9 @@
     for (NSInteger i=0; i < [optionArray count]; i++) {
         NSInteger flag = [[optionArray objectAtIndex:i] integerValue];
         if ( optionValue & flag ) {
-            if ( [retStr length] > 0 )
+            if ( [retStr length] > 0 ) {
                 retStr = [retStr stringByAppendingString:@" "];
+            }
             retStr = [retStr stringByAppendingString:[valueArray objectAtIndex:i]];
         }
     }
@@ -61,12 +63,18 @@
     self.title = @"Duration Options";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     self.itemArray = @[
-  @{EventRowTitle : @"Years",EventRowType : @(DurationOption_Year)},
-  @{EventRowTitle : @"Months",EventRowType : @(DurationOption_Month)},
-  @{EventRowTitle : @"Weeks",EventRowType : @(DurationOption_Week)},
-  @{EventRowTitle : @"Days",EventRowType : @(DurationOption_Day)},
-  @{EventRowTitle : @"Hours",EventRowType : @(DurationOption_Hour)},
-  @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)}];
+                       @{EventRowTitle : @"Years",EventRowType : @(DurationOption_Year)},
+                       @{EventRowTitle : @"Months",EventRowType : @(DurationOption_Month)},
+                       @{EventRowTitle : @"Weeks",EventRowType : @(DurationOption_Week)},
+                       @{EventRowTitle : @"Days",EventRowType : @(DurationOption_Day)},
+                       @{EventRowTitle : @"Hours",EventRowType : @(DurationOption_Hour)},
+                       @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)}];
+
+    self.selectedOptionFlag = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+    
+    if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue]) {
+        self.selectedOptionFlag = self.selectedOptionFlag & ~(DurationOption_Hour|DurationOption_Minutes|DurationOption_Seconds);
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,8 +137,8 @@
         cell.userInteractionEnabled = YES;
         cell.textLabel.textColor = [UIColor blackColor];
         cell.selectionStyle = UITableViewCellSelectionStyleGray;
-        NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
-        cell.accessoryType = ( optionValue & itemRowType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+        
+        cell.accessoryType = ( self.selectedOptionFlag & itemRowType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
     }
     
     return cell;
@@ -158,14 +166,17 @@
         return;
     }
     
-    [_eventModel setObject:[NSNumber numberWithInteger:optionValue] forKey:EventItem_DurationOption];
+    self.selectedOptionFlag = optionValue;
     self.examLabel.text = [self exampleString];
+    
+    if (IS_IPHONE) {
+        [_eventModel setObject:@(self.selectedOptionFlag) forKey:EventItem_DurationOption];
+    }
 }
 
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    [_eventModel setObject:self.originalValue forKey:EventItem_DurationOption];
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
@@ -178,6 +189,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     if ( IS_IPAD ) {
+        [_eventModel setObject:@(self.selectedOptionFlag) forKey:EventItem_DurationOption];
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }

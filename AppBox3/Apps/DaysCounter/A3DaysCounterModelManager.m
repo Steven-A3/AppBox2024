@@ -1101,7 +1101,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)allEventsListContainedImage
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"imageFilename.length > 0"] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"imageFilename.length > 0"]];
 }
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
@@ -1385,7 +1385,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
         dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
-        daysLabel.text = [item.isAllDay boolValue] ? @" Today " : @" Now ";
+        daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
         
