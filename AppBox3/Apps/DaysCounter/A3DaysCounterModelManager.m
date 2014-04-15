@@ -1385,7 +1385,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
         dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
-        daysLabel.text = [item.isAllDay boolValue] ? @" Today " : @" Now ";
+        daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
         
