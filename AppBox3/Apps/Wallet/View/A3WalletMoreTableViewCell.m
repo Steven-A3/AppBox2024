@@ -11,7 +11,8 @@
 
 @interface A3WalletMoreTableViewCell ()
 
-@property (nonatomic, strong) MASConstraint *checkButtonWidthConstraint;
+@property (nonatomic, strong) MASConstraint *imageViewLeftConstraint;
+@property (nonatomic, strong) UIView *customSeparator;
 
 @end
 
@@ -21,9 +22,8 @@
 {
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	if (self) {
-		_checkButton = [UIButton buttonWithType:UIButtonTypeCustom];
-		[_checkButton setImage:[UIImage imageNamed:@"check_02"] forState:UIControlStateNormal];
-		[self addSubview:_checkButton];
+		_checkImageView = [UIImageView new];
+		[self addSubview:_checkImageView];
 
 		_cellImageView = [UIImageView new];
 		[self addSubview:_cellImageView];
@@ -41,15 +41,14 @@
 
 - (void)setupConstraints {
 
-	[_checkButton makeConstraints:^(MASConstraintMaker *make) {
+	[_checkImageView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.width.equalTo(@15);
 		make.centerY.equalTo(self.centerY);
-		make.height.equalTo(@40);
-		_checkButtonWidthConstraint = make.width.equalTo(_showCheckButton ? @40 : @0);
 	}];
 
 	[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(_checkButton.right);
+		_imageViewLeftConstraint = make.left.equalTo(_checkImageView.right);
 		make.centerY.equalTo(self.centerY);
 	}];
 
@@ -60,25 +59,35 @@
 }
 
 - (void)setupSeparator {
-	UIView *customSeparator = [UIView new];
-	customSeparator.backgroundColor = A3UITableViewSeparatorColor;
-	[self addSubview:customSeparator];
-	[customSeparator makeConstraints:^(MASConstraintMaker *make) {
-			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-			make.top.equalTo(self.bottom).with.offset(-1);
-			make.right.equalTo(self.right);
-			make.height.equalTo(IS_RETINA? @0.5 : @1.0);
-		}];
+	_customSeparator = [UIView new];
+	_customSeparator.backgroundColor = A3UITableViewSeparatorColor;
+	[self addSubview:_customSeparator];
+	[_customSeparator makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.top.equalTo(self.bottom).with.offset(-1);
+		make.right.equalTo(self.right);
+		make.height.equalTo(IS_RETINA? @0.5 : @1.0);
+	}];
 }
 
-- (void)setShowCheckButton:(BOOL)showCheckButton {
-	_showCheckButton = showCheckButton;
-	[_checkButtonWidthConstraint uninstall];
-	[_checkButton makeConstraints:^(MASConstraintMaker *make) {
-		_checkButtonWidthConstraint = make.width.equalTo(_showCheckButton ? @40 : @0);
+- (void)setShowCheckImageView:(BOOL)show {
+	_showCheckImageView = show;
+	[_checkImageView setHidden:!show];
+	[_imageViewLeftConstraint uninstall];
+
+	[_cellImageView makeConstraints:^(MASConstraintMaker *make) {
+		if (show) {
+			_imageViewLeftConstraint = make.left.equalTo(_checkImageView.right).with.offset(10);
+		} else {
+			_imageViewLeftConstraint = make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		}
 	}];
 
 	[self layoutIfNeeded];
+}
+
+- (void)setShowCheckMark:(BOOL)showCheckMark {
+	_checkImageView.image = showCheckMark ? [UIImage imageNamed:@"check_02"] : nil;
 }
 
 @end

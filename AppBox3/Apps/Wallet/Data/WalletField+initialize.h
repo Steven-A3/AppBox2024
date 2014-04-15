@@ -10,6 +10,4 @@
 
 @interface WalletField (initialize)
 
-- (void)initTypeAndStyle;
-
 @end

@@ -2,7 +2,7 @@
 //  WalletField.h
 //  AppBox3
 //
-//  Created by A3 on 3/11/14.
+//  Created by A3 on 4/15/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,7 +17,16 @@
 @property (nonatomic, retain) NSString * order;
 @property (nonatomic, retain) NSString * style;
 @property (nonatomic, retain) NSString * type;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) WalletCategory *category;
-@property (nonatomic, retain) WalletFieldItem *fieldItem;
+@property (nonatomic, retain) NSSet *fieldItems;
+@end
+
+@interface WalletField (CoreDataGeneratedAccessors)
+
+- (void)addFieldItemsObject:(WalletFieldItem *)value;
+- (void)removeFieldItemsObject:(WalletFieldItem *)value;
+- (void)addFieldItems:(NSSet *)values;
+- (void)removeFieldItems:(NSSet *)values;
 
 @end

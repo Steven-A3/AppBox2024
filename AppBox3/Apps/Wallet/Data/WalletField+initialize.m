@@ -12,10 +12,12 @@
 
 @implementation WalletField (initialize)
 
-- (void)initTypeAndStyle
-{
-    self.type = @"Text";
-    self.style = @"Normal";
+- (void)awakeFromInsert {
+	[super awakeFromInsert];
+
+	self.uniqueID = [[NSUUID UUID] UUIDString];
+	self.type = @"Text";
+	self.style = @"Normal";
 }
 
 @end

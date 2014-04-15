@@ -3,7 +3,7 @@
 //  AppBox3
 //
 //  Created by A3 on 4/13/14.
-//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.j
 //
 
 #import "A3WalletMoreTableViewController.h"
@@ -13,6 +13,11 @@
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
 #import "UITableViewController+standardDimension.h"
+#import "A3WalletAllViewController.h"
+#import "A3WalletFavoritesViewController.h"
+#import "A3WalletCateViewController.h"
+#import "NSString+conversion.h"
+#import "A3WalletAddCateViewController.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
@@ -41,6 +46,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	self.title = @"More";
 
 	if (_isEditing) {
+		[self leftBarButtonAddButton];
 		[self rightBarButtonDoneButton];
 	} else {
 		[self leftBarButtonAppsButton];
@@ -50,6 +56,12 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView registerClass:[A3WalletMoreTableViewCell class] forCellReuseIdentifier:A3WalletMoreTableViewCellIdentifier];
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
+	self.tableView.allowsSelectionDuringEditing = YES;
+}
+
+- (void)leftBarButtonAddButton {
+	UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCategoryButtonAction)];
+	self.navigationItem.leftBarButtonItem = addButton;
 }
 
 - (void)rightBarButtonEditButton {
@@ -71,6 +83,15 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)addCategoryButtonAction {
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
+	A3WalletAddCateViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletAddCateViewController"];
+	viewController.hidesBottomBarWhenPushed = YES;
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self presentViewController:navigationController animated:YES completion:nil];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -84,7 +105,12 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		if ([[WalletCategory MR_numberOfEntities] isEqualToNumber:@0 ]) {
 			[WalletCategory resetWalletCategory];
 		}
-		_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
+		if (_isEditing) {
+			_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES]];
+		} else {
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"doNotShow == NO"];
+			_categories = [NSMutableArray arrayWithArray:[WalletCategory MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+		}
 	}
 	return _categories;
 }
@@ -107,7 +133,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			}
 			[sections addObject:section0];
 		} else {
-			idx = numberOfItemsOnTapBar;
+			idx = numberOfItemsOnTapBar - 1;
 		}
 
 		NSMutableArray *section1 = [NSMutableArray new];
@@ -133,68 +159,150 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	return [self.sections[section] count];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	if (self.isEditing) {
+		if (section == 0) return @"Categories on the bar";
+		return @"Categories in more";
+	}
+	return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	A3WalletMoreTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3WalletMoreTableViewCellIdentifier forIndexPath:indexPath];
 
 	WalletCategory *walletCategory = self.sections[indexPath.section][indexPath.row];
-	cell.cellImageView.image = [UIImage imageNamed:walletCategory.icon];
+	cell.cellImageView.image = [[UIImage imageNamed:walletCategory.icon] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+	cell.cellImageView.tintColor = [UIColor colorWithRed:146.0/255.0 green:146.0/255.0 blue:146.0/255.0 alpha:1.0];
 	[cell.cellImageView sizeToFit];
 	cell.cellTitleLabel.text = walletCategory.name;
 	cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 	cell.separatorInset = A3UITableViewSeparatorInset;
-	[cell setShowCheckButton:indexPath.section == 1];
+	[cell setShowCheckImageView:indexPath.section == 1];
+	if (_isEditing) {
+		cell.selectionStyle = indexPath.section == 1 ? UITableViewCellSelectionStyleDefault : UITableViewCellSelectionStyleNone;
+	} else {
+		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+	}
+	[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
 
 	return cell;
 }
 
-/*
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return UITableViewCellEditingStyleNone;
+}
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+	// Return NO if you do not want the specified item to be editable.
+	return YES;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	FNLOG(@"%ld - %ld, %ld - %ld", (long)fromIndexPath.section, (long)fromIndexPath.row, (long)toIndexPath.section, (long)toIndexPath.row);
+	if (fromIndexPath.section == toIndexPath.section) {
+		NSMutableArray *section = self.sections[fromIndexPath.section];
+		id movingObject = section[fromIndexPath.row];
+		[section removeObjectAtIndex:fromIndexPath.row];
+		[section insertObject:movingObject atIndex:toIndexPath.row];
+	} else {
+		NSMutableArray *fromSection = self.sections[fromIndexPath.section];
+		id movingObject = fromSection[fromIndexPath.row];
+		[fromSection removeObjectAtIndex:fromIndexPath.row];
+		NSMutableArray *toSection = self.sections[toIndexPath.section];
+		[toSection insertObject:movingObject atIndex:toIndexPath.row];
+
+		if (fromIndexPath.section == 0) {
+			WalletCategory *category = movingObject;
+			category.doNotShow = @NO;
+		}
+
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.tableView reloadRowsAtIndexPaths:@[toIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+			id movingObject;
+			NSIndexPath *adjustedIndexPath;
+			if (fromIndexPath.section == 0) {
+				movingObject = toSection[0];
+				[toSection removeObjectAtIndex:0];
+				[fromSection addObject:movingObject];
+				adjustedIndexPath = [NSIndexPath indexPathForRow:[fromSection count] - 1 inSection:0];
+				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] toIndexPath:adjustedIndexPath];
+			} else {
+				NSUInteger movingRow = [toSection count] - 1;
+				movingObject = toSection[movingRow];
+				[toSection removeObjectAtIndex:movingRow];
+				[fromSection insertObject:movingObject atIndex:0];
+				adjustedIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
+			}
+			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+		});
+	}
+
+	// Update order and save to persistent store
+	NSArray *section0 = self.sections[0];
+	[section0 enumerateObjectsUsingBlock:^(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+		category.order = [NSString orderStringWithOrder:(idx +1) * 1000000];
+	}];
+	NSInteger numberOfItemsOnTabBar = [self numberOfItemsOnTapBar];
+	NSArray *section1 = self.sections[1];
+	[section1 enumerateObjectsUsingBlock:^(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+		category.order = [NSString orderStringWithOrder:(numberOfItemsOnTabBar + idx + 1) * 1000000];
+	}];
+	// Update order and save to persistent store
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+	// Return NO if you do not want the item to be re-orderable.
+	return YES;
 }
-*/
 
-/*
-#pragma mark - Navigation
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+	if (_isEditing) {
+		WalletCategory *walletCategory = self.sections[indexPath.section][indexPath.row];
+		walletCategory.doNotShow = @(![walletCategory.doNotShow boolValue]);
+
+		[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+		A3WalletMoreTableViewCell *cell = (A3WalletMoreTableViewCell *) [self.tableView cellForRowAtIndexPath:indexPath];
+		[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
+
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+		return;
+	}
+
+	[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+	WalletCategory *category = self.sections[indexPath.section][indexPath.row];
+
+	UIViewController *viewController;
+	if ([category.uniqueID isEqualToString:A3WalletUUIDAllCategory]) {
+		A3WalletAllViewController *vc = [[A3WalletAllViewController alloc] initWithNibName:nil bundle:nil];
+		vc.isFromMoreTableViewController = YES;
+		vc.category = category;
+		viewController = vc;
+	}
+	else if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
+		A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] initWithStyle:UITableViewStylePlain];
+		vc.isFromMoreTableViewController = YES;
+		vc.category = category;
+		viewController = vc;
+	}
+	else {
+		A3WalletCateViewController *vc = [[A3WalletCateViewController alloc] initWithNibName:nil bundle:nil];
+		vc.category = category;
+		vc.isFromMoreTableViewController = YES;
+		viewController = vc;
+	}
+
+	[self.navigationController pushViewController:viewController animated:YES];
 }
-*/
 
 @end

@@ -223,8 +223,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 {
     self.toAddField = [WalletField MR_createEntity];
     _toAddField.category = self.category;
-    [_toAddField initTypeAndStyle];
-    
+
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletEditFieldViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
     viewController.isAddMode = YES;

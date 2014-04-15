@@ -165,6 +165,8 @@
 	NSLog(@"%@", log);
 }
 
-
+- (void)testStringWithFormat {
+	NSLog(@"%@", [NSString stringWithFormat:@"%010lu", (unsigned long)123]);
+}
 
 @end
