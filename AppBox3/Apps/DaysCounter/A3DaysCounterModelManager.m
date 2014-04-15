@@ -1183,7 +1183,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retDate;
 }
 
-- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay
+- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle
 {
     if ( toDate == nil || fromDate == nil) {
 		return @" ";
@@ -1198,26 +1198,37 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     
     NSUInteger flag = 0;
+    NSUInteger flagCount = 0;
     if ( option & DurationOption_Seconds) {
         flag |= NSSecondCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Minutes) {
         flag |= NSMinuteCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Hour ) {
         flag |= NSHourCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Day ) {
         flag |= NSDayCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Week ) {
         flag |= NSWeekCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Month ) {
         flag |= NSMonthCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Year ) {
         flag |= NSYearCalendarUnit;
+        flagCount++;
+    }
+    if (flagCount == 1) {
+        isShortStyle = NO;
     }
     
     // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
@@ -1255,30 +1266,59 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
     NSMutableArray * resultArray = [NSMutableArray new];
-    if ( option & DurationOption_Year && [diffComponent year] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
-    }
-    if ( option & DurationOption_Month && [diffComponent month] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)labs([diffComponent month]), (labs([diffComponent month]) > 1 ? @"s" : @"")]];
-    }
-    if ( option & DurationOption_Week && [diffComponent week] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)labs([diffComponent week]), (labs([diffComponent week]) > 1 ? @"s" : @"")]];
-    }
-    if (option & DurationOption_Day && [diffComponent day] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)labs([diffComponent day]), (labs([diffComponent day]) > 1 ? @"s" : @"")]];
-    }
-    
-    if (!isAllDay) {
-        if (option & DurationOption_Hour && [diffComponent hour] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)labs([diffComponent hour]), (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
+    if (!isShortStyle) {
+        if ( option & DurationOption_Year && [diffComponent year] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
         }
-        if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
+        if ( option & DurationOption_Month && [diffComponent month] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)labs([diffComponent month]), (labs([diffComponent month]) > 1 ? @"s" : @"")]];
         }
-        if (option & DurationOption_Seconds && [diffComponent second] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
+        if ( option & DurationOption_Week && [diffComponent week] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)labs([diffComponent week]), (labs([diffComponent week]) > 1 ? @"s" : @"")]];
+        }
+        if (option & DurationOption_Day && [diffComponent day] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)labs([diffComponent day]), (labs([diffComponent day]) > 1 ? @"s" : @"")]];
+        }
+        
+        if (!isAllDay) {
+            if (option & DurationOption_Hour && [diffComponent hour] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)labs([diffComponent hour]), (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
+            }
+            if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
+            }
+            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
+            }
         }
     }
+    else {
+        if ( option & DurationOption_Year && [diffComponent year] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld y", (long)labs([diffComponent year])]];
+        }
+        if ( option & DurationOption_Month && [diffComponent month] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent month])]];
+        }
+        if ( option & DurationOption_Week && [diffComponent week] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld w", (long)labs([diffComponent week])]];
+        }
+        if (option & DurationOption_Day && [diffComponent day] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld d", (long)labs([diffComponent day])]];
+        }
+        
+        if (!isAllDay) {
+            if (option & DurationOption_Hour && [diffComponent hour] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld h", (long)labs([diffComponent hour])]];
+            }
+            if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent minute])]];
+            }
+            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld s", (long)labs([diffComponent second])]];
+            }
+        }
+    }
+
     
     NSString *result = [resultArray componentsJoinedByString:@" "];
     if ([result isEqualToString:@""]) {

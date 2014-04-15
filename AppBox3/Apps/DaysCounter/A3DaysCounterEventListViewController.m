@@ -504,10 +504,11 @@
             daysLabel.text = @" ";
         }
         else {
-            daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [item.durationOption integerValue]
+            daysLabel.text = [NSString stringWithFormat:@"%@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
                                                                                                                         fromDate:now
                                                                                                                           toDate:startDate //[item startDate]
-                                                                                                                        isAllDay:[item.isAllDay boolValue]]];
+                                                                                                                        isAllDay:[item.isAllDay boolValue]
+                                                                                                                    isShortStyle:IS_IPHONE ? YES : NO]];
         }
         
         markLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;

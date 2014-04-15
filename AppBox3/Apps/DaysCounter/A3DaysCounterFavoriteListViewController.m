@@ -148,11 +148,11 @@
         imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
         NSDate *today = [NSDate date];
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
-//        NSInteger diffDays = [A3DateHelper diffDaysFromDate:today toDate:nextDate isAllDay:[item.isAllDay boolValue]];
         daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
                                                                                   fromDate:today
                                                                                     toDate:nextDate
-                                                                                  isAllDay:[item.isAllDay boolValue]];
+                                                                                  isAllDay:[item.isAllDay boolValue]
+                                                                              isShortStyle:IS_IPHONE ? YES : NO];
         
         if (image) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;

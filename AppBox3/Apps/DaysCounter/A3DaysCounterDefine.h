@@ -85,15 +85,6 @@ typedef NS_ENUM(NSInteger, A3DaysCounterDurationOption) {
     DurationOption_Month    = 0x00000001 << 5,
     DurationOption_Year     = 0x00000001 << 6,
 };
-//enum A3DaysCounterDurationOption{
-//    DurationOption_Seconds  = 0x00000001,
-//    DurationOption_Minutes  = 0x00000001 << 1,
-//    DurationOption_Hour     = 0x00000001 << 2,
-//    DurationOption_Day      = 0x00000001 << 3,
-//    DurationOption_Week     = 0x00000001 << 4,
-//    DurationOption_Month    = 0x00000001 << 5,
-//    DurationOption_Year     = 0x00000001 << 6,
-//};
 
 enum A3DaysCounterRepeatType{
     RepeatType_EveryYear = -5,

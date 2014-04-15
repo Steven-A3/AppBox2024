@@ -61,13 +61,12 @@
     self.title = @"Duration Options";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     self.itemArray = @[
-  @{EventRowTitle : @"Year",EventRowType : @(DurationOption_Year)},
-  @{EventRowTitle : @"Month",EventRowType : @(DurationOption_Month)},
-  @{EventRowTitle : @"Week",EventRowType : @(DurationOption_Week)},
-  @{EventRowTitle : @"Day",EventRowType : @(DurationOption_Day)},
-  @{EventRowTitle : @"Hour",EventRowType : @(DurationOption_Hour)},
-  @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)},
-  @{EventRowTitle : @"Seconds",EventRowType : @(DurationOption_Seconds)}];
+  @{EventRowTitle : @"Years",EventRowType : @(DurationOption_Year)},
+  @{EventRowTitle : @"Months",EventRowType : @(DurationOption_Month)},
+  @{EventRowTitle : @"Weeks",EventRowType : @(DurationOption_Week)},
+  @{EventRowTitle : @"Days",EventRowType : @(DurationOption_Day)},
+  @{EventRowTitle : @"Hours",EventRowType : @(DurationOption_Hour)},
+  @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)}];
 }
 
 - (void)viewWillAppear:(BOOL)animated

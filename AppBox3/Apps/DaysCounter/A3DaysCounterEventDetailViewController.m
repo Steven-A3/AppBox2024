@@ -374,7 +374,8 @@
                      daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                        fromDate:now
                                                                                          toDate:startDate
-                                                                                       isAllDay:[info.isAllDay boolValue]]
+                                                                                       isAllDay:[info.isAllDay boolValue]
+                                                                                   isShortStyle:NO]
                     dateText1:dateText1
                     dateText2:dateText2
                       isLunar:[info.isLunar boolValue]
@@ -407,7 +408,8 @@
                      daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                        fromDate:now
                                                                                          toDate:nextDate
-                                                                                       isAllDay:[info.isAllDay boolValue]]
+                                                                                       isAllDay:[info.isAllDay boolValue]
+                                                                                   isShortStyle:NO]
                     dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate
                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
      
@@ -430,7 +432,8 @@
                          daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                            fromDate:startDate
                                                                                              toDate:now
-                                                                                           isAllDay:[info.isAllDay boolValue]]
+                                                                                           isAllDay:[info.isAllDay boolValue]
+                                                                                       isShortStyle:NO]
                         dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate
                                                                                          withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
                         dateText2:@"first date"
@@ -606,7 +609,8 @@
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                       fromDate:now
                                                                                         toDate:startDate
-                                                                                      isAllDay:[info.isAllDay boolValue]];
+                                                                                      isAllDay:[info.isAllDay boolValue]
+                                                                                  isShortStyle:NO];
         }
         
         if (hasEndDate) {
@@ -669,14 +673,16 @@
                 daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                           fromDate:now
                                                                                             toDate:hasSince ? nextDate : startDate
-                                                                                          isAllDay:[info.isAllDay boolValue]];
+                                                                                          isAllDay:[info.isAllDay boolValue]
+                                                                                      isShortStyle:NO];
             }
         }
         else {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                       fromDate:startDate
                                                                                         toDate:now
-                                                                                      isAllDay:[info.isAllDay boolValue]];
+                                                                                      isAllDay:[info.isAllDay boolValue]
+                                                                                  isShortStyle:NO];
         }
         
         // from / to string / repeat

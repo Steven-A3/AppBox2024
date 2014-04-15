@@ -319,17 +319,21 @@
                                                                  repeat:YES];
             
             daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
-            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[event.durationOption integerValue]
                                                                                                                    fromDate:today
                                                                                                                      toDate:nextDate
-                                                                                                                   isAllDay:[event.isAllDay boolValue]], untilSinceString];
+                                                                                                                   isAllDay:[event.isAllDay boolValue]
+                                                                                                               isShortStyle:IS_IPHONE ? YES : NO]
+                                                        , untilSinceString];
         }
         else {
             daysGap = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
-            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:IS_IPHONE ? DurationOption_Day : [event.durationOption integerValue]
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[event.durationOption integerValue]
                                                                                                                    fromDate:today
                                                                                                                      toDate:startDate
-                                                                                                                   isAllDay:[event.isAllDay boolValue]], untilSinceString];
+                                                                                                                   isAllDay:[event.isAllDay boolValue]
+                                                                                                               isShortStyle:IS_IPHONE ? YES : NO]
+                                                        , untilSinceString];
         }
     }
 
