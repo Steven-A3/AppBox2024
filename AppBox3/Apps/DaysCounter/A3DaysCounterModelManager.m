@@ -1183,7 +1183,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retDate;
 }
 
-- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay
+- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle
 {
     if ( toDate == nil || fromDate == nil) {
 		return @" ";
@@ -1198,26 +1198,37 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     
     NSUInteger flag = 0;
+    NSUInteger flagCount = 0;
     if ( option & DurationOption_Seconds) {
         flag |= NSSecondCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Minutes) {
         flag |= NSMinuteCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Hour ) {
         flag |= NSHourCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Day ) {
         flag |= NSDayCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Week ) {
         flag |= NSWeekCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Month ) {
         flag |= NSMonthCalendarUnit;
+        flagCount++;
     }
     if ( option & DurationOption_Year ) {
         flag |= NSYearCalendarUnit;
+        flagCount++;
+    }
+    if (flagCount == 1) {
+        isShortStyle = NO;
     }
     
     // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
@@ -1255,30 +1266,59 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
     NSMutableArray * resultArray = [NSMutableArray new];
-    if ( option & DurationOption_Year && [diffComponent year] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
-    }
-    if ( option & DurationOption_Month && [diffComponent month] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)labs([diffComponent month]), (labs([diffComponent month]) > 1 ? @"s" : @"")]];
-    }
-    if ( option & DurationOption_Week && [diffComponent week] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)labs([diffComponent week]), (labs([diffComponent week]) > 1 ? @"s" : @"")]];
-    }
-    if (option & DurationOption_Day && [diffComponent day] != 0) {
-        [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)labs([diffComponent day]), (labs([diffComponent day]) > 1 ? @"s" : @"")]];
-    }
-    
-    if (!isAllDay) {
-        if (option & DurationOption_Hour && [diffComponent hour] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)labs([diffComponent hour]), (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
+    if (!isShortStyle) {
+        if ( option & DurationOption_Year && [diffComponent year] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld year%@", (long)labs([diffComponent year]), (labs([diffComponent year]) > 1 ? @"s" : @"")]];
         }
-        if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
+        if ( option & DurationOption_Month && [diffComponent month] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld month%@", (long)labs([diffComponent month]), (labs([diffComponent month]) > 1 ? @"s" : @"")]];
         }
-        if (option & DurationOption_Seconds && [diffComponent second] != 0) {
-            [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
+        if ( option & DurationOption_Week && [diffComponent week] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld week%@", (long)labs([diffComponent week]), (labs([diffComponent week]) > 1 ? @"s" : @"")]];
+        }
+        if (option & DurationOption_Day && [diffComponent day] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld day%@", (long)labs([diffComponent day]), (labs([diffComponent day]) > 1 ? @"s" : @"")]];
+        }
+        
+        if (!isAllDay) {
+            if (option & DurationOption_Hour && [diffComponent hour] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld hour%@", (long)labs([diffComponent hour]), (labs([diffComponent hour]) > 1 ? @"s" : @"")]];
+            }
+            if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
+            }
+            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
+            }
         }
     }
+    else {
+        if ( option & DurationOption_Year && [diffComponent year] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld y", (long)labs([diffComponent year])]];
+        }
+        if ( option & DurationOption_Month && [diffComponent month] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent month])]];
+        }
+        if ( option & DurationOption_Week && [diffComponent week] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld w", (long)labs([diffComponent week])]];
+        }
+        if (option & DurationOption_Day && [diffComponent day] != 0) {
+            [resultArray addObject:[NSString stringWithFormat:@"%ld d", (long)labs([diffComponent day])]];
+        }
+        
+        if (!isAllDay) {
+            if (option & DurationOption_Hour && [diffComponent hour] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld h", (long)labs([diffComponent hour])]];
+            }
+            if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent minute])]];
+            }
+            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
+                [resultArray addObject:[NSString stringWithFormat:@"%ld s", (long)labs([diffComponent second])]];
+            }
+        }
+    }
+
     
     NSString *result = [resultArray componentsJoinedByString:@" "];
     if ([result isEqualToString:@""]) {
@@ -1331,41 +1371,51 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     markLabel.shadowOffset = CGSizeMake(0,1);
     markLabel.shadowBlur = 2;
+    markLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13.0 : 14.0)];
     
     dateLabel.shadowOffset = CGSizeMake(0,1);
     dateLabel.shadowBlur = 2;
-
     dateLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 18.0 : 21.0)];
-    dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+
     
-    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate isAllDay:YES];//[A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate];
-    if ( diffDays > 0 ) {
-        markLabel.text = @"Days\nUntil";
-    }
-    else if ( diffDays < 0 ) {
-        markLabel.text = @"Days\nSince";
-    }
-    markLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13.0 : 14.0)];
+    NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                   toDate:item.effectiveStartDate
+                                                             allDayOption:[item.isAllDay boolValue]
+                                                                   repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
     
-    if ( IS_IPHONE ) {
-        if ( ABS(diffDays) > 9999 ) {
-            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:84.0];
+    if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
+        dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        daysLabel.text = [item.isAllDay boolValue] ? @" Today " : @" Now ";
+        markLabel.text = @"";
+        daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
+        
+    }
+    else {
+        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        
+        NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
+        if ( diffDays > 0 ) {
+            markLabel.text = @"Days\nUntil";
+        }
+        else if ( diffDays < 0 ) {
+            markLabel.text = @"Days\nSince";
+        }
+        
+        daysLabel.text = [NSString stringWithFormat:@"%ld", labs(diffDays)];
+        
+        if ( IS_IPHONE ) {
+            if ( labs(diffDays) > 9999 ) {
+                daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:84.0];
+            }
+            else {
+                daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0];
+            }
         }
         else {
-            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0];
+            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
         }
     }
-    else {
-        daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
-    }
     
-    if (diffDays == 0) {
-        daysLabel.text = [NSString stringWithFormat:@"%@", [item.isAllDay boolValue] ? @" Today " : @" Now "];
-        markLabel.text = @"";
-    }
-    else {
-        daysLabel.text = [NSString stringWithFormat:@"%ld", (long)ABS(diffDays)];
-    }
     [daysLabel sizeToFit];
     
     if ( [item.imageFilename length] > 0 ) {

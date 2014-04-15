@@ -78,7 +78,7 @@
 - (NSArray*)reminderList;
 
 - (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate;
-- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay;
+- (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;

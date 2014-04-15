@@ -94,7 +94,6 @@ static const CGFloat kSideViewWidth = 319.0;
 - (void)bringUpCenterCoverView {
 	[_centerCoverView setHidden:NO];
 	_centerCoverView.frame = _centerNavigationController.view.bounds;
-//    [_centerNavigationController.view bringSubviewToFront:_centerCoverView];
 
     // KJH
     A3NavigationController *presentedViewController = [_presentViewControllers lastObject];

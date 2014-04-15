@@ -374,7 +374,8 @@
                      daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                        fromDate:now
                                                                                          toDate:startDate
-                                                                                       isAllDay:[info.isAllDay boolValue]]
+                                                                                       isAllDay:[info.isAllDay boolValue]
+                                                                                   isShortStyle:NO]
                     dateText1:dateText1
                     dateText2:dateText2
                       isLunar:[info.isLunar boolValue]
@@ -407,7 +408,8 @@
                      daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                        fromDate:now
                                                                                          toDate:nextDate
-                                                                                       isAllDay:[info.isAllDay boolValue]]
+                                                                                       isAllDay:[info.isAllDay boolValue]
+                                                                                   isShortStyle:NO]
                     dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:nextDate
                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
      
@@ -430,7 +432,8 @@
                          daysText:[[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                            fromDate:startDate
                                                                                              toDate:now
-                                                                                           isAllDay:[info.isAllDay boolValue]]
+                                                                                           isAllDay:[info.isAllDay boolValue]
+                                                                                       isShortStyle:NO]
                         dateText1:[NSString stringWithFormat:@"%@",[A3DateHelper dateStringFromDate:info.startDate
                                                                                          withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]]
                         dateText2:@"first date"
@@ -565,6 +568,8 @@
         hasSince = [now timeIntervalSince1970] > [_eventItem.startDate timeIntervalSince1970] ? YES : NO;
     }
     
+    lunarImageView.hidden = !isLunar;
+    
     if (!hasRepeat) {
         NSDate *startDate = info.startDate;
         NSDate *endDate = info.endDate;
@@ -601,12 +606,18 @@
 
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
             daysLabel.text = @"";
+            
+            dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[NSDate date]
+                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+            dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+            goto EXIT_FUCTION;
         }
         else {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                       fromDate:now
                                                                                         toDate:startDate
-                                                                                      isAllDay:[info.isAllDay boolValue]];
+                                                                                      isAllDay:[info.isAllDay boolValue]
+                                                                                  isShortStyle:NO];
         }
         
         if (hasEndDate) {
@@ -622,7 +633,6 @@
             dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:endDate
                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
             dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
-            lunarImageView.hidden = !isLunar;
         }
         else {
             //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
@@ -635,8 +645,6 @@
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
             dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             dateLabel3.text = @"";
-            
-            lunarImageView.hidden = !isLunar;
         }
     }
 
@@ -664,19 +672,25 @@
         if (isTypeA) {
             if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
                 daysLabel.text = @"";
+                dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[NSDate date]
+                                                                                          withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+                dateLabel2.text = [NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+                goto EXIT_FUCTION;
             }
             else {
                 daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                           fromDate:now
                                                                                             toDate:hasSince ? nextDate : startDate
-                                                                                          isAllDay:[info.isAllDay boolValue]];
+                                                                                          isAllDay:[info.isAllDay boolValue]
+                                                                                      isShortStyle:NO];
             }
         }
         else {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                                       fromDate:startDate
                                                                                         toDate:now
-                                                                                      isAllDay:[info.isAllDay boolValue]];
+                                                                                      isAllDay:[info.isAllDay boolValue]
+                                                                                  isShortStyle:NO];
         }
         
         // from / to string / repeat
@@ -711,8 +725,6 @@
                                                                                                    withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                     dateLabel3.text = [NSString stringWithFormat:@"first date"];
                 }
-
-                lunarImageView.hidden = !isLunar;
             }
             else {
                 //* case 2. 162pt  (start 안 지남, end있음)
@@ -729,7 +741,6 @@
                 dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:info.endDate
                                                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
-                lunarImageView.hidden = !isLunar;
             }
         }
         else {  // ! hasEnd
@@ -758,8 +769,6 @@
                     dateLabel2.text = [NSString stringWithFormat:@"first date"];
                     dateLabel3.text = @"";
                 }
-                
-                lunarImageView.hidden = !isLunar;
             }
             else {
                 //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
@@ -773,11 +782,11 @@
                                                                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                 dateLabel3.text = @"";
-                
-                lunarImageView.hidden = !isLunar;
             }
         }
     }
+    
+EXIT_FUCTION:
     
     if ([markLabel.text isEqualToString:@"since"]) {
         markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];

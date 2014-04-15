@@ -26,7 +26,7 @@
 {
     NSString *retStr = @"";
     NSArray *valueArray = @[@"2 years", @"3 months", @"4 weeks",@"15 days" ,@"4 hours", @"30 minutes",@"13 seconds"];
-    NSArray *optionArray = @[@(DurationOption_Year),@(DurationOption_Month),@(DurationOption_Week),@(DurationOption_Day),@(DurationOption_Hour),@(DurationOption_Minutes),@(DurationOption_Seconds)];
+    NSArray *optionArray = @[@(DurationOption_Year), @(DurationOption_Month), @(DurationOption_Week), @(DurationOption_Day), @(DurationOption_Hour), @(DurationOption_Minutes), @(DurationOption_Seconds)];
     
     NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
     
@@ -61,13 +61,12 @@
     self.title = @"Duration Options";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     self.itemArray = @[
-  @{EventRowTitle : @"Year",EventRowType : @(DurationOption_Year)},
-  @{EventRowTitle : @"Month",EventRowType : @(DurationOption_Month)},
-  @{EventRowTitle : @"Week",EventRowType : @(DurationOption_Week)},
-  @{EventRowTitle : @"Day",EventRowType : @(DurationOption_Day)},
-  @{EventRowTitle : @"Hour",EventRowType : @(DurationOption_Hour)},
-  @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)},
-  @{EventRowTitle : @"Seconds",EventRowType : @(DurationOption_Seconds)}];
+  @{EventRowTitle : @"Years",EventRowType : @(DurationOption_Year)},
+  @{EventRowTitle : @"Months",EventRowType : @(DurationOption_Month)},
+  @{EventRowTitle : @"Weeks",EventRowType : @(DurationOption_Week)},
+  @{EventRowTitle : @"Days",EventRowType : @(DurationOption_Day)},
+  @{EventRowTitle : @"Hours",EventRowType : @(DurationOption_Hour)},
+  @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)}];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -94,11 +93,6 @@
     return [_itemArray count];
 }
 
-//- (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    return self.infoView;
-//}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 35;
@@ -120,10 +114,24 @@
     }
     
     NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-    // Configure the cell...
+    NSInteger itemRowType = [[item objectForKey:EventRowType] integerValue];
+
     cell.textLabel.text = [item objectForKey:EventRowTitle];
-    NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
-    cell.accessoryType = ( optionValue & [[item objectForKey:EventRowType] integerValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    
+    if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue] &&
+        (itemRowType == DurationOption_Hour || itemRowType == DurationOption_Minutes || itemRowType == DurationOption_Seconds)) {
+        cell.userInteractionEnabled = NO;
+        cell.textLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    else {
+        cell.userInteractionEnabled = YES;
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleGray;
+        NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+        cell.accessoryType = ( optionValue & itemRowType ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    }
     
     return cell;
 }
@@ -131,19 +139,27 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
     NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
     NSInteger flag = [[item objectForKey:EventRowType] integerValue];
+
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryType = (optionValue & flag) ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
     
     optionValue ^= flag;
     if ( optionValue == 0 ) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:@"To show results, need one option." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                            message:@"To show results, need one option."
+                                                           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertView show];
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
         return;
     }
+    
     [_eventModel setObject:[NSNumber numberWithInteger:optionValue] forKey:EventItem_DurationOption];
     self.examLabel.text = [self exampleString];
-    [self.tableView reloadData];
 }
 
 #pragma mark - action method
