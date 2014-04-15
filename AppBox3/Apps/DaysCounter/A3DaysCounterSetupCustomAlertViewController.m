@@ -90,8 +90,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         if ( cellType == CustomAlertCell_TimeInput ) {
-            NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
-            cell = [cellArray objectAtIndex:6];
+            //NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateInputCell" owner:nil options:nil] lastObject];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
@@ -296,9 +296,10 @@
 	NSDateComponents *alertTimeComp = [NSDateComponents new];
     alertTimeComp.day = -_days;
     NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertTimeComp toDate:effectiveStartDate options:0];
-    alertTimeComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:alertDate];
+    alertTimeComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:alertDate];
     alertTimeComp.hour = _hours;
     alertTimeComp.minute = _minutes;
+    alertTimeComp.second = 0;
     alertDate = [[NSCalendar currentCalendar] dateFromComponents:alertTimeComp];
     [_eventModel setObject:alertDate forKey:EventItem_AlertDatetime];
     

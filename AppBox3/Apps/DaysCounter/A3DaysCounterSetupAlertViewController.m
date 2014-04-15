@@ -29,7 +29,7 @@
 @implementation A3DaysCounterSetupAlertViewController
 - (void)showDatePicker
 {
-    id alarmDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+    NSDate *alarmDate = [_eventModel objectForKey:EventItem_AlertDatetime];
     _datePickerView.date = ( [alarmDate isKindOfClass:[NSDate class]] ? [_eventModel objectForKey:EventItem_AlertDatetime] : [NSDate date] );
     //[_eventModel setObject:_datePickerView.date forKey:EventItem_AlertDatetime];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
@@ -274,7 +274,10 @@
         return;
     }
     
-    [_eventModel setObject:datePicker.date forKey:EventItem_AlertDatetime];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:datePicker.date];
+    dateComp.second = 0;
+    [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:EventItem_AlertDatetime];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 

@@ -131,11 +131,10 @@
 - (UITableViewCell*)createCellWithType:(NSInteger)cellType cellIdentifier:(NSString*)cellID
 {
     UITableViewCell *cell = nil;
-//    NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCell" owner:nil options:nil];
+
     switch (cellType) {
         case EventCellType_Title:
         {
-//            cell = [cellArray objectAtIndex:9];
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventEventInfoCell" owner:nil options:nil] lastObject];
             [self initializeEventInfoCell:(A3DaysCounterEventInfoCell *)cell];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -152,7 +151,6 @@
             break;
         case EventCellType_Calendar:
         {
-//            cell = [cellArray objectAtIndex:10];
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventCalendarInfoCell" owner:nil options:nil] lastObject];
             UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
             imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -161,7 +159,6 @@
             break;
         case EventCellType_Location:
         {
-//            cell = [cellArray objectAtIndex:13];
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDefaultCell" owner:nil options:nil] lastObject];
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.font = [UIFont systemFontOfSize:17];
@@ -171,7 +168,6 @@
             break;
         case EventCellType_Notes:
         {
-//            cell = [cellArray objectAtIndex:15];
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventNotesDisplayCell" owner:nil options:nil] lastObject];
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.font = [UIFont systemFontOfSize:17];
@@ -183,7 +179,6 @@
         case EventCellType_Share:
         case EventCellType_Favorites:
         {
-//            cell = [cellArray objectAtIndex:13];
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDefaultCell" owner:nil options:nil] lastObject];
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.textColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
@@ -192,7 +187,6 @@
     }
     
     if ( cell && cellType != EventCellType_DateInput) {
-        //UIView *leftView = [cell viewWithTag:([cellID isEqualToString:@"eventInfoCelliPad"] ? 13 : 10)];
         UIView *leftView = [cell viewWithTag:10];
         for (NSLayoutConstraint *layout in cell.contentView.constraints ) {
             if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
