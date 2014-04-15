@@ -65,9 +65,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
     [super viewDidLoad];
 
-    [self makeBackButtonEmptyArrow];
-    self.navigationItem.title = self.item.category.name;
-    
+	self.title = @"Details";
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     
     self.tableView.tableHeaderView = self.headerView;

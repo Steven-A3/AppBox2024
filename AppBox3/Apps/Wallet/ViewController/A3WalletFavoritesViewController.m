@@ -52,21 +52,16 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.title = @"Favorites";
-    
+
+	[self makeBackButtonEmptyArrow];
+
     // more tabBar 안에서도 좌측barItem을 Apps로 유지한다.
     self.navigationItem.hidesBackButton = YES;
     [self leftBarButtonAppsButton];
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
-    
+
 	self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.rowHeight = 48.0;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
@@ -74,7 +69,6 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
         self.tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
     }
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"A3WalletListTextCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletTextCellID2];
     [self.tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID2];
     [self.tableView registerClass:[A3WalletListVideoCell class] forCellReuseIdentifier:A3WalletVideoCellID2];
     
@@ -109,8 +103,6 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
             self.navigationItem.leftBarButtonItem = appsItem;
         }
     } else {
-        // 아님
-        [self makeBackButtonEmptyArrow];
         self.navigationItem.hidesBackButton = YES;
 
 		[self leftBarButtonAppsButton];
@@ -183,9 +175,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
 {
     WalletFavorite *favorite = _favorites[indexPath.row];
     WalletItem *item = favorite.item;
-    
-    self.navigationItem.backBarButtonItem.title = @"Favorites";
-    
+
     if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
         NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];

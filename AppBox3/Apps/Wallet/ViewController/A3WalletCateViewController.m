@@ -58,30 +58,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     [self makeBackButtonEmptyArrow];
-    
-    // more tabBar 안에서도 좌측barItem을 Apps로 유지한다.
-    self.navigationItem.hidesBackButton = YES;
-    [self leftBarButtonAppsButton];
-    
-    /*
-    if (IS_IPHONE) {
-        [self rightButtonMoreButton];
-    }
-    else {
-        self.navigationItem.rightBarButtonItems = [self rightBarItems];
-    }
-     */
-    
-//    NSDictionary *size = [NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:@"Arial" size:12.0],NSFontAttributeName, nil];
-//    self.navigationController.navigationBar.titleTextAttributes = size;
-    
+
     self.navigationItem.rightBarButtonItems = [self rightBarItems];
     
     [self initializeViews];
@@ -211,7 +189,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         }
     } else {
         // 아님
-        self.navigationItem.hidesBackButton = YES;
+//        self.navigationItem.hidesBackButton = YES;
 
 		[self leftBarButtonAppsButton];
     }
@@ -813,9 +791,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     }
     
     WalletItem *item = _items[indexPath.row];
-    
-//    self.navigationItem.backBarButtonItem.title = _category.name;
-    
+
     if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
         NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
@@ -838,7 +814,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         A3WalletItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
         viewController.hidesBottomBarWhenPushed = YES;
         viewController.item = item;
-        [self.navigationController pushViewController:viewController animated:YES];
+		[self.navigationController pushViewController:viewController animated:YES];
     }
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];

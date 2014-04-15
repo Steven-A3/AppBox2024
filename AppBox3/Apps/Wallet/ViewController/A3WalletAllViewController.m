@@ -66,7 +66,8 @@ enum SortingKind {
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.navigationItem.title = @"All Items";
-    
+
+	[self makeBackButtonEmptyArrow];
     // more tabBar 안에서도 좌측barItem을 Apps로 유지한다.
     self.navigationItem.hidesBackButton = YES;
     [self leftBarButtonAppsButton];
@@ -608,9 +609,7 @@ enum SortingKind {
     }
     
     WalletItem *item = itemContainArray[indexPath.row];
-    
-    self.navigationItem.backBarButtonItem.title = @"All Items";
-    
+
     if ((tableView == self.tableView) && ([_items objectAtIndex:indexPath.row] == self.topItem)) {
         
     }
