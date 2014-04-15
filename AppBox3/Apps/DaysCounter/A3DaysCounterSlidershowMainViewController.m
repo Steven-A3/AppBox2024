@@ -37,6 +37,7 @@
 @property (assign, nonatomic) BOOL isShowMoreMenu;
 @property (strong, nonatomic) UIButton *infoButton;
 @property (strong, nonatomic) UIButton *shareButton;
+@property (strong, nonatomic) NSTimer *timer;
 
 - (void)showTopToolbarAnimated:(BOOL)animated;
 - (void)hideTopToolbarAnimated:(BOOL)animated;
@@ -118,6 +119,10 @@
     currentIndex = indexOfTodayPhoto;
     [self updateNavigationTitle];
     
+    // Start Timer 화면 갱신.
+    NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
+    [self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
+    
     
     if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ) {
         if ( !_isShowMoreMenu ) {
@@ -166,6 +171,8 @@
     if ( _isShowMoreMenu ) {
         [self hideTopToolbarAnimated:YES];
     }
+    
+    [self stopTimer];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -394,6 +401,26 @@
 - (BOOL)prefersStatusBarHidden
 {
     return self.navigationController.navigationBarHidden;
+}
+
+- (void)startTimer
+{
+    if ([self.timer isValid]) {
+        [self stopTimer];
+    }
+    
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+}
+
+- (void)timerFireMethod:(NSTimer *)timer
+{
+    [_collectionView reloadData];
+}
+
+- (void)stopTimer
+{
+    [self.timer invalidate];
+    self.timer = nil;
 }
 
 #pragma mark - UIPopoverControllerDelegate
