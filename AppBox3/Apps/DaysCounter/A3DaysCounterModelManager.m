@@ -1371,41 +1371,51 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     markLabel.shadowOffset = CGSizeMake(0,1);
     markLabel.shadowBlur = 2;
+    markLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13.0 : 14.0)];
     
     dateLabel.shadowOffset = CGSizeMake(0,1);
     dateLabel.shadowBlur = 2;
-
     dateLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 18.0 : 21.0)];
-    dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+
     
-    NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate isAllDay:YES];//[A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.startDate];
-    if ( diffDays > 0 ) {
-        markLabel.text = @"Days\nUntil";
-    }
-    else if ( diffDays < 0 ) {
-        markLabel.text = @"Days\nSince";
-    }
-    markLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13.0 : 14.0)];
+    NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                   toDate:item.effectiveStartDate
+                                                             allDayOption:[item.isAllDay boolValue]
+                                                                   repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
     
-    if ( IS_IPHONE ) {
-        if ( ABS(diffDays) > 9999 ) {
-            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:84.0];
+    if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
+        dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        daysLabel.text = [item.isAllDay boolValue] ? @" Today " : @" Now ";
+        markLabel.text = @"";
+        daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
+        
+    }
+    else {
+        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        
+        NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
+        if ( diffDays > 0 ) {
+            markLabel.text = @"Days\nUntil";
+        }
+        else if ( diffDays < 0 ) {
+            markLabel.text = @"Days\nSince";
+        }
+        
+        daysLabel.text = [NSString stringWithFormat:@"%ld", labs(diffDays)];
+        
+        if ( IS_IPHONE ) {
+            if ( labs(diffDays) > 9999 ) {
+                daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:84.0];
+            }
+            else {
+                daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0];
+            }
         }
         else {
-            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0];
+            daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
         }
     }
-    else {
-        daysLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
-    }
     
-    if (diffDays == 0) {
-        daysLabel.text = [NSString stringWithFormat:@"%@", [item.isAllDay boolValue] ? @" Today " : @" Now "];
-        markLabel.text = @"";
-    }
-    else {
-        daysLabel.text = [NSString stringWithFormat:@"%ld", (long)ABS(diffDays)];
-    }
     [daysLabel sizeToFit];
     
     if ( [item.imageFilename length] > 0 ) {
