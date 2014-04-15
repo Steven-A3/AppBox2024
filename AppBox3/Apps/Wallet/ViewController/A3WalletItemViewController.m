@@ -37,6 +37,7 @@
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
 @property (nonatomic, strong) NSMutableDictionary *categoryItem;
 @property (nonatomic, strong) NSMutableArray *alBumPhotos;
+@property (nonatomic, weak) id copyingSourceView;
 
 @end
 
@@ -78,7 +79,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.backgroundColor = [UIColor whiteColor];
-    
+
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -126,338 +127,338 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)updateTopInfo
 {
-    _headerView.titleTextField.text = _item.name;
-    CGSize textSize = [_item.name sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
-    CGRect frame = _headerView.titleTextField.frame;
-    frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
-    _headerView.titleTextField.frame = frame;
+	_headerView.titleTextField.text = _item.name;
+	CGSize textSize = [_item.name sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
+	CGRect frame = _headerView.titleTextField.frame;
+	frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
+	_headerView.titleTextField.frame = frame;
     
-    _headerView.favorButton.selected = [self.item isFavored];
-    _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+	_headerView.favorButton.selected = [self.item isFavored];
+	_headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 }
 
 - (NSMutableArray *)fieldItems
 {
-    if (!_fieldItems) {
-        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-        _fieldItems = [[NSMutableArray alloc] initWithArray:[_item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]]];
+	if (!_fieldItems) {
+		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+		_fieldItems = [[NSMutableArray alloc] initWithArray:[_item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]]];
         
-        // 데이타 없는 item은 표시하지 않는다.
-        NSMutableArray *deleteTmp = [NSMutableArray new];
-        for (WalletFieldItem *fieldItem in _fieldItems) {
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                if (fieldItem.date == nil) {
-                    [deleteTmp addObject:fieldItem];
-                }
-            }
-            else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                if (fieldItem.filePath.length == 0) {
-                    [deleteTmp addObject:fieldItem];
-                }
-            }
-            else {
-                if (fieldItem.value == 0) {
-                    [deleteTmp addObject:fieldItem];
-                }
-            }
-        }
-        [_fieldItems removeObjectsInArray:deleteTmp];
+		// 데이타 없는 item은 표시하지 않는다.
+		NSMutableArray *deleteTmp = [NSMutableArray new];
+		for (WalletFieldItem *fieldItem in _fieldItems) {
+			if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+				if (fieldItem.date == nil) {
+					[deleteTmp addObject:fieldItem];
+				}
+			}
+			else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+				if (fieldItem.filePath.length == 0) {
+					[deleteTmp addObject:fieldItem];
+				}
+			}
+			else {
+				if (fieldItem.value == 0) {
+					[deleteTmp addObject:fieldItem];
+				}
+			}
+		}
+		[_fieldItems removeObjectsInArray:deleteTmp];
         
-        if (_showCategory) {
-            [_fieldItems insertObject:self.categoryItem atIndex:0];
-        }
+		if (_showCategory) {
+			[_fieldItems insertObject:self.categoryItem atIndex:0];
+		}
         
-        // note가 있을때만 표시한다.
-        if (_item.note.length > 0) {
-            [_fieldItems addObject:self.noteItem];
-        }
-    }
+		// note가 있을때만 표시한다.
+		if (_item.note.length > 0) {
+			[_fieldItems addObject:self.noteItem];
+		}
+	}
     
-    return _fieldItems;
+	return _fieldItems;
 }
 
 - (NSMutableDictionary *)noteItem
 {
-    if (!_noteItem) {
-        _noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
-    }
+	if (!_noteItem) {
+		_noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
+	}
     
-    return _noteItem;
+	return _noteItem;
 }
 
 - (NSMutableDictionary *)categoryItem
 {
-    if (!_categoryItem) {
-        _categoryItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Category", @"order":@""}];
-    }
+	if (!_categoryItem) {
+		_categoryItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Category", @"order":@""}];
+	}
     
-    return _categoryItem;
+	return _categoryItem;
 }
 
 - (NSMutableArray *)alBumPhotos
 {
-    if (!_alBumPhotos) {
-        _alBumPhotos = [[NSMutableArray alloc] init];
+	if (!_alBumPhotos) {
+		_alBumPhotos = [[NSMutableArray alloc] init];
         
-        for (int i=0; i<self.fieldItems.count; i++) {
-            if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
-                WalletFieldItem *fieldItem = _fieldItems[i];
-                if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length>0)) {
-                    MWPhoto *photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:fieldItem.filePath]];
-                    [_alBumPhotos addObject:photo];
-                }
-            }
-        }
-    }
+		for (int i=0; i<self.fieldItems.count; i++) {
+			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
+				WalletFieldItem *fieldItem = _fieldItems[i];
+				if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length>0)) {
+					MWPhoto *photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+					[_alBumPhotos addObject:photo];
+				}
+			}
+		}
+	}
     
-    return _alBumPhotos;
+	return _alBumPhotos;
 }
 
 - (void)favorButtonAction:(UIButton *)favorButton
 {
-    [_item setFavor:![_item isFavored]];
-    _headerView.favorButton.selected = [_item isFavored];
+	[_item setFavor:![_item isFavored]];
+	_headerView.favorButton.selected = [_item isFavored];
 }
 
 - (void)photoButtonAction:(UIButton *)sender
 {
-    WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
     
-    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-        if (fieldItem.filePath.length > 0) {
-            MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:fieldItem.filePath]];
-            [self presentViewController:pvc animated:YES completion:^{
-                [pvc.moviePlayer play];
-            }];
-        }
-    }
-    else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-        // Create browser
-        MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
-        browser.displayActionButton = YES;
-        browser.displayNavArrows = NO;
-        browser.zoomPhotosToFill = YES;
-        [browser setCurrentPhotoIndex:sender.tag];
+	if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+		if (fieldItem.filePath.length > 0) {
+			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+			[self presentViewController:pvc animated:YES completion:^{
+				[pvc.moviePlayer play];
+			}];
+		}
+	}
+	else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+		// Create browser
+		MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
+		browser.displayActionButton = YES;
+		browser.displayNavArrows = NO;
+		browser.zoomPhotosToFill = YES;
+		[browser setCurrentPhotoIndex:sender.tag];
         
-        UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
+		UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:browser];
         
-        [self.navigationController presentViewController:nc animated:YES completion:NULL];
-    }
+		[self.navigationController presentViewController:nc animated:YES completion:NULL];
+	}
 }
 
 - (void)editButtonAction:(id)sender
 {
-    NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
-    A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
-    viewController.delegate = self;
-    viewController.item = self.item;
-    viewController.hidesBottomBarWhenPushed = YES;
+	NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+	A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
+	viewController.delegate = self;
+	viewController.item = self.item;
+	viewController.hidesBottomBarWhenPushed = YES;
     
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-    nav.modalPresentationStyle = UIModalPresentationCurrentContext;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:nav animated:YES completion:NULL];
+	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+	nav.modalPresentationStyle = UIModalPresentationCurrentContext;
+	nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+	[self presentViewController:nav animated:YES completion:NULL];
 }
 
 
 - (void)configureFloatingTextField:(JVFloatLabeledTextField *)txtFd
 {
-    txtFd.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-    txtFd.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
-    txtFd.font = [UIFont systemFontOfSize:17.0];
-    txtFd.floatingLabelFont = [UIFont systemFontOfSize:14];
-    txtFd.floatingLabelYPadding = @(-6);
-    txtFd.delegate = self;
+	txtFd.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+	txtFd.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
+	txtFd.font = [UIFont systemFontOfSize:17.0];
+	txtFd.floatingLabelFont = [UIFont systemFontOfSize:14];
+	txtFd.floatingLabelYPadding = @(-6);
+	txtFd.delegate = self;
 }
 
 - (BOOL)detectDataText:(NSString *) text
 {
-    BOOL hasTextAction = NO;
-    if (text) {
-        NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink | NSTextCheckingTypePhoneNumber error:nil];
-        NSUInteger numberOfMatch = [detector numberOfMatchesInString:text options:0 range:NSMakeRange(0, text.length)];
-        if (numberOfMatch > 0) {
-            hasTextAction = YES;
-        }
-    }
+	BOOL hasTextAction = NO;
+	if (text) {
+		NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeLink | NSTextCheckingTypePhoneNumber error:nil];
+		NSUInteger numberOfMatch = [detector numberOfMatchesInString:text options:0 range:NSMakeRange(0, text.length)];
+		if (numberOfMatch > 0) {
+			hasTextAction = YES;
+		}
+	}
     
-    return hasTextAction;
+	return hasTextAction;
 }
 
 - (BOOL)shouldCheckTextDataOfItem:(WalletFieldItem *) fieldItem
 {
-    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-        return NO;
-    }
-    else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-        return NO;
-    }
-    else {
-        return YES;
-    }
+	if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+		return NO;
+	}
+	else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+		return NO;
+	}
+	else {
+		return YES;
+	}
 }
 
 - (void)doActionForTextData:(WalletFieldItem *)fieldItem andActionIndex:(NSUInteger)actionIdx
 {
-    NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress|NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
-    NSTextCheckingResult *result = [detector firstMatchInString:fieldItem.value options:0 range:NSMakeRange(0, fieldItem.value.length)];
+	NSDataDetector *detector = [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress|NSTextCheckingTypeLink|NSTextCheckingTypePhoneNumber error:nil];
+	NSTextCheckingResult *result = [detector firstMatchInString:fieldItem.value options:0 range:NSMakeRange(0, fieldItem.value.length)];
     
-    if (result.resultType == NSTextCheckingTypeLink) {
-        NSString *urlString = result.URL.absoluteString;
+	if (result.resultType == NSTextCheckingTypeLink) {
+		NSString *urlString = result.URL.absoluteString;
         
-        NSString *myRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
-        NSRange range = [urlString rangeOfString:myRegex options:NSRegularExpressionSearch];
+		NSString *myRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+		NSRange range = [urlString rangeOfString:myRegex options:NSRegularExpressionSearch];
         
-        if (range.location != NSNotFound) {
-            // email
-            switch (actionIdx) {
-                case 0:
-                {
-                    // mail
-                    if ([MFMailComposeViewController canSendMail])
-                    {
-                        NSString *mailAddress = [urlString substringWithRange:range];
-                        MFMailComposeViewController *picker = [[MFMailComposeViewController alloc]init];
-                        picker.mailComposeDelegate = self;
-                        [picker setToRecipients:@[mailAddress]];  //받는 사람(배열의 형태로 넣어도 됩니다. )
-                        [picker setSubject:nil];  //제목
-                        [picker setMessageBody:nil isHTML:NO];     //내용
-                        [self presentViewController:picker animated:YES completion:NULL];
-                    }
+		if (range.location != NSNotFound) {
+			// email
+			switch (actionIdx) {
+				case 0:
+				{
+					// mail
+					if ([MFMailComposeViewController canSendMail])
+					{
+						NSString *mailAddress = [urlString substringWithRange:range];
+						MFMailComposeViewController *picker = [[MFMailComposeViewController alloc]init];
+						picker.mailComposeDelegate = self;
+						[picker setToRecipients:@[mailAddress]];  //받는 사람(배열의 형태로 넣어도 됩니다. )
+						[picker setSubject:nil];  //제목
+						[picker setMessageBody:nil isHTML:NO];     //내용
+						[self presentViewController:picker animated:YES completion:NULL];
+					}
                     
-                    break;
-                }
-                case 1:
-                {
-                    // i message
-                    NSString *mailAddress = [urlString substringWithRange:range];
-                    NSString *urlString = [NSString stringWithFormat:@"sms:%@", mailAddress];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        else {
-            // just web address
-            if (actionIdx == 0) {
-                // open in-browser
+					break;
+				}
+				case 1:
+				{
+					// i message
+					NSString *mailAddress = [urlString substringWithRange:range];
+					NSString *urlString = [NSString stringWithFormat:@"sms:%@", mailAddress];
+					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+					break;
+				}
+				default:
+					break;
+			}
+		}
+		else {
+			// just web address
+			if (actionIdx == 0) {
+				// open in-browser
                 
-                TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:result.URL];
-                webBrowser.delegate = self;
-                [webBrowser setFixedTitleBarText:@""];
-                webBrowser.modalDismissButtonTitle = @"Done";
-                //    webBrowser.showURLStringOnActionSheetTitle = YES;
-                //    webBrowser.showPageTitleOnTitleBar = YES;
-                //    webBrowser.showActionButton = YES;
-                //    webBrowser.showReloadButton = YES;
-                //    [webBrowser setFixedTitleBarText:@"Test Title Text"]; // This has priority over "showPageTitleOnTitleBar".
-                webBrowser.mode = TSMiniWebBrowserModeModal;
+				TSMiniWebBrowser *webBrowser = [[TSMiniWebBrowser alloc] initWithUrl:result.URL];
+				webBrowser.delegate = self;
+				[webBrowser setFixedTitleBarText:@""];
+				webBrowser.modalDismissButtonTitle = @"Done";
+				//    webBrowser.showURLStringOnActionSheetTitle = YES;
+				//    webBrowser.showPageTitleOnTitleBar = YES;
+				//    webBrowser.showActionButton = YES;
+				//    webBrowser.showReloadButton = YES;
+				//    [webBrowser setFixedTitleBarText:@"Test Title Text"]; // This has priority over "showPageTitleOnTitleBar".
+				webBrowser.mode = TSMiniWebBrowserModeModal;
                 
-                webBrowser.barStyle = UIBarStyleDefault;
+				webBrowser.barStyle = UIBarStyleDefault;
                 
-                if (webBrowser.mode == TSMiniWebBrowserModeModal) {
-                    webBrowser.modalDismissButtonTitle = @"Home";
-                    [self presentViewController:webBrowser animated:YES completion:NULL];
-                } else if(webBrowser.mode == TSMiniWebBrowserModeNavigation) {
-                    [self.navigationController pushViewController:webBrowser animated:YES];
-                }
-            }
-        }
-    }
-    else if (result.resultType == NSTextCheckingTypePhoneNumber) {
-        // phone
-        switch (actionIdx) {
-            case 0:
-            {
-                // call
-                NSString *urlString = [NSString stringWithFormat:@"tel:%@", result.phoneNumber];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-                break;
-            }
-            case 1:
-            {
-                // message
-                NSString *urlString = [NSString stringWithFormat:@"sms:%@", result.phoneNumber];
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
-                break;
-            }
-            default:
-                break;
-        }
-    }
+				if (webBrowser.mode == TSMiniWebBrowserModeModal) {
+					webBrowser.modalDismissButtonTitle = @"Home";
+					[self presentViewController:webBrowser animated:YES completion:NULL];
+				} else if(webBrowser.mode == TSMiniWebBrowserModeNavigation) {
+					[self.navigationController pushViewController:webBrowser animated:YES];
+				}
+			}
+		}
+	}
+	else if (result.resultType == NSTextCheckingTypePhoneNumber) {
+		// phone
+		switch (actionIdx) {
+			case 0:
+			{
+				// call
+				NSString *urlString = [NSString stringWithFormat:@"tel:%@", result.phoneNumber];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+				break;
+			}
+			case 1:
+			{
+				// message
+				NSString *urlString = [NSString stringWithFormat:@"sms:%@", result.phoneNumber];
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+				break;
+			}
+			default:
+				break;
+		}
+	}
 }
 
 
 - (void)actionCellContentButtonAction:(UIButton *)sender
 {
-    if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
-        WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
+		WalletFieldItem *fieldItem = _fieldItems[sender.tag];
         
-        if ([self shouldCheckTextDataOfItem:fieldItem]) {
-            // 텍스트 액션 여부 확인
-            BOOL hasTextAction = [self detectDataText:fieldItem.value];
-            if (hasTextAction) {
-                [self doActionForTextData:fieldItem andActionIndex:0];
-            }
-        }
-    }
+		if ([self shouldCheckTextDataOfItem:fieldItem]) {
+			// 텍스트 액션 여부 확인
+			BOOL hasTextAction = [self detectDataText:fieldItem.value];
+			if (hasTextAction) {
+				[self doActionForTextData:fieldItem andActionIndex:0];
+			}
+		}
+	}
 }
 
 - (void)actionCellRight1ButtonAction:(UIButton *)sender
 {
-    if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
-        WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
+		WalletFieldItem *fieldItem = _fieldItems[sender.tag];
         
-        if ([self shouldCheckTextDataOfItem:fieldItem]) {
-            // 텍스트 액션 여부 확인
-            BOOL hasTextAction = [self detectDataText:fieldItem.value];
-            if (hasTextAction) {
-                [self doActionForTextData:fieldItem andActionIndex:0];
-            }
-        }
-    }
+		if ([self shouldCheckTextDataOfItem:fieldItem]) {
+			// 텍스트 액션 여부 확인
+			BOOL hasTextAction = [self detectDataText:fieldItem.value];
+			if (hasTextAction) {
+				[self doActionForTextData:fieldItem andActionIndex:0];
+			}
+		}
+	}
 }
 
 - (void)actionCellRight2ButtonAction:(UIButton *)sender
 {
-    if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
-        WalletFieldItem *fieldItem = _fieldItems[sender.tag];
+	if ([_fieldItems[sender.tag] isKindOfClass:[WalletFieldItem class]]) {
+		WalletFieldItem *fieldItem = _fieldItems[sender.tag];
         
-        if ([self shouldCheckTextDataOfItem:fieldItem]) {
-            // 텍스트 액션 여부 확인
-            BOOL hasTextAction = [self detectDataText:fieldItem.value];
-            if (hasTextAction) {
-                [self doActionForTextData:fieldItem andActionIndex:1];
-            }
-        }
-    }
+		if ([self shouldCheckTextDataOfItem:fieldItem]) {
+			// 텍스트 액션 여부 확인
+			BOOL hasTextAction = [self detectDataText:fieldItem.value];
+			if (hasTextAction) {
+				[self doActionForTextData:fieldItem andActionIndex:1];
+			}
+		}
+	}
 }
 
 #pragma mark - MailComposerDelegate
 
--(void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    //상태 결과 값에 따라 처리
-    switch (result) {
-        case MFMailComposeResultCancelled:  // 취소.
-        {
-            break;
-        }
-        case MFMailComposeResultFailed: // 실패.
-        {
-            break;
-        }
-        case MFMailComposeResultSent:   //성공.
-        {
-            break;
-        }
-        default:
-            break;
-    }
-    [self dismissViewControllerAnimated:YES completion:NULL];
+	//상태 결과 값에 따라 처리
+	switch (result) {
+		case MFMailComposeResultCancelled:  // 취소.
+		{
+			break;
+		}
+		case MFMailComposeResultFailed: // 실패.
+		{
+			break;
+		}
+		case MFMailComposeResultSent:   //성공.
+		{
+			break;
+		}
+		default:
+			break;
+	}
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 #pragma mark - MWPhotoBrowserDelegate
@@ -490,21 +491,24 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    return self.editing;
+	[self showCopyMenuWithView:textView];
+    return NO;
 }
 
 #pragma mark - textField delegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	[self showCopyMenuWithView:textField];
+
+	return NO;
+}
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	FNLOG(@"current text field indexpath : %@", [currentIndexPath description]);
     firstResponder = textField;
-}
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return self.editing;
 }
 
 #pragma mark - Table view data source
@@ -739,6 +743,81 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
     // Return NO if you do not want the specified item to be editable.
     return NO;
+}
+
+#pragma mark - UIResponder
+
+- (void)showCopyMenuWithView:(UIView *)view {
+	NSString *text = [view valueForKey:@"text"];
+	if (![text length]) {
+		return;
+	}
+
+	dispatch_async(dispatch_get_main_queue(), ^{
+		CGRect frame = view.frame;
+
+		UIMenuController *copyMenu = [UIMenuController sharedMenuController];
+		if (view == self.headerView.titleTextField) {
+			UITextField *textField = self.headerView.titleTextField;
+			NSStringDrawingContext *context = [NSStringDrawingContext new];
+			CGRect bounds = [self.headerView.titleTextField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textField.font} context:context];
+			frame.size.width = bounds.size.width;
+			[copyMenu setTargetRect:frame inView:self.headerView];
+			copyMenu.arrowDirection = UIMenuControllerArrowLeft;
+		} else {
+			UITableViewCell *cell = [self.tableView cellForCellSubview:view];
+			if ([view isKindOfClass:[UITextField class]]) {
+				UITextField *textField = (UITextField *) view;
+				NSStringDrawingContext *context = [NSStringDrawingContext new];
+				CGRect bounds = [textField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textField.font} context:context];
+				frame.size.width = bounds.size.width;
+				frame.size.height += 10.0;
+				[copyMenu setTargetRect:frame inView:cell];
+				copyMenu.arrowDirection = UIMenuControllerArrowLeft;
+			} else {
+				frame.size.width = 20;
+				[copyMenu setTargetRect:frame inView:cell];
+				copyMenu.arrowDirection = UIMenuControllerArrowDown;
+			}
+		}
+		[copyMenu setMenuVisible:YES animated:YES];
+
+		_copyingSourceView = view;
+	});
+}
+
+- (BOOL)canBecomeFirstResponder
+{
+	return YES;
+}
+
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
+{
+	BOOL retValue = NO;
+
+	if (action == @selector(copy:))
+	{
+		retValue = YES;
+	}
+	else
+	{
+		// Pass the canPerformAction:withSender: message to the superclass
+		// and possibly up the responder chain.
+		retValue = [super canPerformAction:action withSender:sender];
+	}
+
+	return retValue;
+}
+
+- (void)copy:(id)sender {
+	if (!_copyingSourceView) {
+		return;
+	}
+	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+	NSString *stringToCopy;
+	stringToCopy = [_copyingSourceView valueForKey:@"text"];
+
+	[pasteboard setString:stringToCopy];
 }
 
 @end

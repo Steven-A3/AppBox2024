@@ -136,7 +136,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YC1-kv-TZZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1085" y="-749"/>
+            <point key="canvasLocation" x="-1085" y="-771"/>
         </scene>
         <!--Wallet Photo Item View Controller-->
         <scene sceneID="4SG-Cw-hAR">
