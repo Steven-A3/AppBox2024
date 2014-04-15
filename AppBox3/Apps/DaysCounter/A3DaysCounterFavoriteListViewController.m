@@ -111,7 +111,7 @@
         daysLabel.textColor = [UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0];
         UIView *leftView = [cell viewWithTag:13];
         NSLayoutConstraint *leftConst = nil;
-        for(NSLayoutConstraint *layout in cell.contentView.constraints) {
+        for (NSLayoutConstraint *layout in cell.contentView.constraints) {
             if ( layout.firstAttribute == NSLayoutAttributeLeading && layout.firstItem == leftView ) {
                 leftConst = layout;
                 break;

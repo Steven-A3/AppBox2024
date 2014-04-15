@@ -792,7 +792,7 @@
 		68F163AD18E91537007B425B /* UITableView+utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F163AC18E91537007B425B /* UITableView+utility.m */; };
 		68F1C87618D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */; };
 		68F1C87718D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */; };
-		68F1C87818D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */; };
+		68F1C87818D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7D318D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib */; };
 		68F1C87918D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C7D518D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m */; };
 		68F1C87A18D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7D618D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib */; };
 		68F1C87B18D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */; };
@@ -2310,7 +2310,7 @@
 		68F1C7D018D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterAddAndEditCalendarViewController.h; sourceTree = "<group>"; };
 		68F1C7D118D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterAddAndEditCalendarViewController.m; sourceTree = "<group>"; };
 		68F1C7D218D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddAndEditCalendarViewController.xib; sourceTree = "<group>"; };
-		68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddEventCell.xib; sourceTree = "<group>"; };
+		68F1C7D318D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = _old_A3DaysCounterAddEventCell.xib; sourceTree = "<group>"; };
 		68F1C7D418D7F37D009FAE8A /* A3DaysCounterAddEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterAddEventViewController.h; sourceTree = "<group>"; };
 		68F1C7D518D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterAddEventViewController.m; sourceTree = "<group>"; };
 		68F1C7D618D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddEventViewController.xib; sourceTree = "<group>"; };
@@ -5243,7 +5243,7 @@
 				804A405F18E070C500556029 /* A3DaysCounterEventListDateCell.h */,
 				804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */,
 				8076BCB018FA8CA400613E70 /* A3DaysCounterEventListDateCell.xib */,
-				68F1C7D318D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib */,
+				68F1C7D318D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib */,
 				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
 				57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */,
@@ -5472,7 +5472,7 @@
 				685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */,
 				6874892F1854430C008972CC /* NationalFlags.xcassets in Resources */,
 				6825367318A7B89F00EAFB84 /* LunarConverter.sqlite in Resources */,
-				68F1C87818D7F37D009FAE8A /* A3DaysCounterAddEventCell.xib in Resources */,
+				68F1C87818D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib in Resources */,
 				68F1C88318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib in Resources */,
 				68B6A47618CEE938004084EF /* forward_icon.png in Resources */,
 				68B6A47518CEE938004084EF /* back_icon@2x.png in Resources */,

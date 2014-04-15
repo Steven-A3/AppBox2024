@@ -1221,7 +1221,13 @@
 - (void)cancelAction:(UIBarButtonItem *)button
 {
     [self resignAllAction];
-    [self dismissViewControllerAnimated:YES completion:nil];
+
+    if (IS_IPAD) {
+        [self.A3RootViewController dismissCenterViewController];
+    }
+    else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 - (void)toggleFavorite:(id)sender
