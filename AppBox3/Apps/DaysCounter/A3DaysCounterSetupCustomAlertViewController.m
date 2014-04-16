@@ -50,13 +50,19 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
     if ([self isCustomAlertType:_eventModel]) {
-        _days = [A3DateHelper diffDaysFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                        toDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+        _days = [A3DateHelper diffDaysFromDate:[_eventModel objectForKey:EventItem_AlertDatetime]
+                                        toDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]];
         _customAlertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+        NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:_customAlertDate];
+        _hours = comp.hour;
+        _minutes = comp.minute;
     }
     else {
         _days = 0;
         _customAlertDate = [NSDate date];
+        NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:_customAlertDate];
+        _hours = comp.hour;
+        _minutes = comp.minute;
     }
 }
 
@@ -167,7 +173,7 @@
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
             NSDate *alertDate;
             if ([[_eventModel objectForKey:EventItem_AlertDateType] isEqualToNumber:@1]) {
-                alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+                alertDate = _customAlertDate;   //[_eventModel objectForKey:EventItem_AlertDatetime];
             }
             else {
                 alertDate = [NSDate date];
@@ -282,9 +288,11 @@
         NSDate *effectiveStartDate = [_eventModel objectForKey:EventItem_EffectiveStartDate];
         // AlertTime 구하기. (days, hour, minute 반영)
         NSDateComponents *alertTimeComp = [NSDateComponents new];
+        NSDate *alertDate;
         alertTimeComp.day = -[textField.text integerValue];
-        NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertTimeComp
-                                                                          toDate:effectiveStartDate options:0];
+        
+        alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertTimeComp
+                                                                  toDate:effectiveStartDate options:0];
         alertTimeComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit
                                                         fromDate:alertDate];
         alertTimeComp.hour = _hours;        // 지정된 시간으로 설정.
