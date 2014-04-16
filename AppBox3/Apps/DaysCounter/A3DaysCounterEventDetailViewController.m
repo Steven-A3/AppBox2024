@@ -285,7 +285,7 @@
 - (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent*)info
 {
     if ( IS_IPHONE ) {
-        cell.eventTitleLabel.font = [UIFont systemFontOfSize:17.0];
+        cell.eventTitleLabel.font = [UIFont boldSystemFontOfSize:17.0];
     }
     else {
         cell.eventTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
