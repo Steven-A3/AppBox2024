@@ -57,13 +57,11 @@
         NSLog(@"ori Y: %f", self.frame.origin.y);
         
         rect = self.addModeButton.frame;
-//        rect.origin.y = 20.0;
         rect.size.height = 50.0;
         self.addModeButton.frame = rect;
         self.addModeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         rect = self.subModeButton.frame;
-//        rect.origin.y = 20.0;
         rect.size.height = 50.0;
         self.subModeButton.frame = rect;
         self.subModeButton.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -80,7 +78,6 @@
         
         rect = self.addModeButton.frame;
         rect.origin.x = 0.0;
-//        rect.origin.y = 36.0;
         rect.size.width = self.bounds.size.width / 2.0;
         rect.size.height = 50.0;
         self.addModeButton.frame = rect;
@@ -88,7 +85,6 @@
         
         rect = self.subModeButton.frame;
         rect.origin.x = self.bounds.size.width / 2.0;
-//        rect.origin.y = 36.0;
         rect.size.width = self.bounds.size.width / 2.0;
         rect.size.height = 50.0;
         self.subModeButton.frame = rect;
@@ -146,15 +142,12 @@
         CGRect rect;
         rect = _yearTextField.frame;
         rect.size.width = width / 3;
-        //rect.size.height = _outputBackView.frame.size.height/2;
         _yearTextField.frame = rect;
         rect = _monthTextField.frame;
         rect.size.width = width / 3;
-        //rect.size.height = _outputBackView.frame.size.height/2;
         _monthTextField.frame = rect;
         rect = _dayTextField.frame;
         rect.size.width = width / 3;
-        //rect.size.height = _outputBackView.frame.size.height/2;
         _dayTextField.frame = rect;
         
         [_yearTextField setCenter:CGPointMake(ceilf(width / 3 / 2), ceilf(_outputBackView.bounds.size.height / 2))];
@@ -179,15 +172,6 @@
     _dayLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
-
 -(void)setOffsetDate:(NSDate *)aDate
 {
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
@@ -202,9 +186,5 @@
     self.yearTextField.text = aDateComp.year == 0 ? @"" : [NSString stringWithFormat:@"%ld", labs( (long)aDateComp.year )];
     self.monthTextField.text = aDateComp.month == 0 ? @"" : [NSString stringWithFormat:@"%ld", labs( (long)aDateComp.month )];
     self.dayTextField.text = aDateComp.day == 0 ? @"" : [NSString stringWithFormat:@"%ld", labs( (long)aDateComp.day )];
-    
-//    self.yearTextField.text = aDateComp.year==0? @"" : [NSString stringWithFormat:@"%ld", (long)aDateComp.year];
-//    self.monthTextField.text = aDateComp.month==0? @"" : [NSString stringWithFormat:@"%ld", (long)aDateComp.month];
-//    self.dayTextField.text = aDateComp.day==0? @"" : [NSString stringWithFormat:@"%ld", (long)aDateComp.day];
 }
 @end

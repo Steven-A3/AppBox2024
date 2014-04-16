@@ -546,6 +546,7 @@
         daysLabel.font = [UIFont systemFontOfSize:15.0];
         dateLabel1.font = [UIFont systemFontOfSize:13.0];
         dateLabel2.font = [UIFont systemFontOfSize:13.0];
+        dateLabel3.font = [UIFont systemFontOfSize:13.0];
     }
     else {
         markLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption2];

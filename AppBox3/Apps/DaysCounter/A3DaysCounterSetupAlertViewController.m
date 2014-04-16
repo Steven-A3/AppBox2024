@@ -145,8 +145,9 @@
     
     if (cell == nil) {
         //if (rowType == AlertType_Custom) {
-        if ((indexPath.row == ([_itemArray count]-1))) {
+        if ((indexPath.row == ([_itemArray count] - 1))) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
