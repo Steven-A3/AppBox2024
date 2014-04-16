@@ -511,7 +511,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     [item setObject:[NSNumber numberWithBool:NO] forKey:EventItem_IsPeriod];
     [item setObject:[NSDate date] forKey:EventItem_StartDate];
     [item setObject:[NSNull null] forKey:EventItem_EndDate];
-    [item setObject:[NSNumber numberWithInteger:0] forKey:EventItem_RepeatType];
+    [item setObject:[NSDate date] forKey:EventItem_EffectiveStartDate];
+//    [item setObject:[NSNumber numberWithInteger:0] forKey:EventItem_RepeatType];
     [item setObject:[NSNull null] forKey:EventItem_RepeatEndDate];
     [item setObject:[NSNull null] forKey:EventItem_AlertDatetime];
     [item setObject:(defaultCal ? defaultCal.calendarId : @"") forKey:EventItem_CalendarId];
@@ -890,6 +891,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( item.effectiveStartDate ) {
         [dict setObject:item.effectiveStartDate forKey:EventItem_EffectiveStartDate];
+    }
+    else {
+        [dict setObject:item.startDate forKey:EventItem_EffectiveStartDate];
     }
     
     return dict;

@@ -123,7 +123,7 @@
         _tableViewTopBlurView = [A3GradientView new];
         _tableViewTopBlurView.gradientColors = @[
                                                  (id) [UIColor colorWithWhite:0.0 alpha:0.0].CGColor,
-                                                 (id) [UIColor colorWithWhite:0.0 alpha:0.18].CGColor
+                                                 (id) [UIColor colorWithWhite:0.0 alpha:0.09].CGColor
                                                  ];
     }
     
