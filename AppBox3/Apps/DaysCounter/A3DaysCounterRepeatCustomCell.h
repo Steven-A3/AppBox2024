@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet UIImageView *checkImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *checkImageTrailingConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *daysLabelTrailingConst;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *daysLabelWidthConst;
 @end

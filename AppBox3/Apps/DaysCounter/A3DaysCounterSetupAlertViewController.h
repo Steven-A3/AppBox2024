@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3DaysCounterSetupAlertViewController : UITableViewController<UITextFieldDelegate>
+@interface A3DaysCounterSetupAlertViewController : UITableViewController
 
 @property (strong, nonatomic) NSMutableDictionary *eventModel;
 @property (strong, nonatomic) IBOutlet UIDatePicker *datePickerView;

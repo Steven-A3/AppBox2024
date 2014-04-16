@@ -863,7 +863,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( item.endDate ) {
         [dict setObject:item.endDate forKey:EventItem_EndDate];
     }
-    [dict setObject:item.repeatType forKey:EventItem_RepeatType];
+    if (item.repeatType) {
+        [dict setObject:item.repeatType forKey:EventItem_RepeatType];
+    }
     
     if ( item.repeatEndDate ) {
         [dict setObject:item.repeatEndDate forKey:EventItem_RepeatEndDate];
