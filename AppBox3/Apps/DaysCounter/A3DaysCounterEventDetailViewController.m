@@ -21,6 +21,7 @@
 #import "NSDate+LunarConverter.h"
 #import "A3DaysCounterEventInfoCell.h"
 #import "SFKImage.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterEventDetailViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -269,14 +270,14 @@
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = @"Share Event";
-            textLabel.textColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
+            textLabel.textColor = [A3AppDelegate instance].themeColor;
         }
             break;
         case EventCellType_Favorites:
         {
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = ([_eventItem.isFavorite boolValue] ? @"Remove from Favorites" : @"Add to Favorites");
-            textLabel.textColor = [UIColor colorWithRed:0.0 green:122/255.0 blue:1.0 alpha:1.0];
+            textLabel.textColor = [A3AppDelegate instance].themeColor;
         }
             break;
     }

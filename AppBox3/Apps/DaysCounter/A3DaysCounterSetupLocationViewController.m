@@ -23,7 +23,7 @@
 #import "A3DaysCounterLocationPopupViewController.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import "A3GradientView.h"
-
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterSetupLocationViewController ()
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -338,7 +338,8 @@
         
         cell.textLabel.text = @"Add this place?";
         cell.detailTextLabel.text = @"We Couldn't find that";
-        cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+        //cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
         cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
     }
     else if ( [self.nearbyVenues count] < 1 ) {
@@ -383,7 +384,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
         cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
         cell.textLabel.font = [UIFont systemFontOfSize:17];
-        cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
+        //cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
+        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
