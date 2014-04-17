@@ -22,6 +22,7 @@
 #import "DaysCounterEvent.h"
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterCalendarListMainViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -113,6 +114,7 @@
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
+    self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
     
     [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];

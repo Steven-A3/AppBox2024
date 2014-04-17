@@ -49,6 +49,7 @@
 #define EventItem_IsLunar                       @"isLunar"
 #define EventItem_IsAllDay                      @"isAllDay"
 #define EventItem_IsPeriod                      @"isPeriod"
+#define EventItem_IsLeapMonth                   @"isLeapMonth"
 #define EventItem_StartDate                     @"startDate"
 #define EventItem_EndDate                       @"endDate"
 #define EventItem_RepeatType                    @"repeatType"
@@ -114,19 +115,23 @@ typedef NS_ENUM(NSInteger, A3DaysCounterAddEventCellType) {
     EventCellType_IsLunar,
     EventCellType_IsAllDay,
     EventCellType_IsPeriod,
+    
     EventCellType_StartDate,
     EventCellType_EndDate,
     EventCellType_RepeatType,
     EventCellType_EndRepeatDate,
     EventCellType_Alert,
+    
     EventCellType_Calendar,
     EventCellType_DurationOption,
     EventCellType_Location,
     EventCellType_Notes,
     EventCellType_DateInput,
+    
     EventCellType_Share,
     EventCellType_Favorites,
     EventCellType_Advanced,
+    EventCellType_IsLeapMonth
 };
 
 typedef NS_ENUM(NSInteger, A3DaysCounterCalendarCellType) {

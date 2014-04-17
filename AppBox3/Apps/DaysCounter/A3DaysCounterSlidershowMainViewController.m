@@ -56,7 +56,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+
     }
     return self;
 }
@@ -64,7 +64,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+
     @autoreleasepool {
         UIView *rightButtonView = nil;
         if ( IS_IPHONE ) {
@@ -77,7 +77,9 @@
             rightButtonView = _naviRightButtonView;
         }
         self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];        
+        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+        self.infoButton.tintColor = [A3AppDelegate instance].themeColor;
+        self.shareButton.tintColor = [A3AppDelegate instance].themeColor;
         [self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
         [self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
@@ -187,15 +189,11 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    //    if ( [_eventsArray count] > 0 ) {
-    //        [[A3DaysCounterModelManager sharedManager] setupEventSummaryInfo:[_eventsArray objectAtIndex:currentIndex] toView:self.visibleView];
-    //    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -334,8 +332,7 @@
     }
     
     _isShowMoreMenu = NO;
-    
-//    [self rightButtonMoreButton];
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_naviRightButtonViewiPhone];
     [self dismissMoreMenuView];
 }
@@ -412,7 +409,7 @@
         [self stopTimer];
     }
     
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:30 target:self selector:@selector(timerFireMethod:) userInfo:nil repeats:YES];
 }
 
 - (void)timerFireMethod:(NSTimer *)timer

@@ -130,27 +130,6 @@
 	return _sectionHeaderView;
 }
 
-//-(void)viewWillLayoutSubviews
-//{
-//    [super viewWillLayoutSubviews];
-//    
-//    CGRect rect;
-//    if (IS_IPHONE) {
-//        //rect = _headerView.frame;
-//        
-//    } else {
-//        if (IS_LANDSCAPE) {
-//            rect = _headerView.frame;
-//            rect.size.height = 275.0;
-//            _headerView.frame = rect;
-//        } else {
-//            rect = _headerView.frame;
-//            rect.size.height = 322.0;
-//            _headerView.frame = rect;
-//        }
-//    }
-//}
-
 - (void)cleanUp {
 	[self removeObserver];
 	[UIDevice currentDevice].batteryMonitoringEnabled = NO;

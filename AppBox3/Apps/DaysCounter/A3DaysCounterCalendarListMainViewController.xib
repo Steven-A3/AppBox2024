@@ -384,13 +384,10 @@
                 <outlet property="searchResultsDelegate" destination="-1" id="0VU-fi-AKl"/>
             </connections>
         </searchDisplayController>
-        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="PbB-Oj-YOd" userLabel="Button - add">
+        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PbB-Oj-YOd" userLabel="Button - add">
             <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-            <state key="normal" image="add01">
-                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-            </state>
+            <state key="normal" image="add01"/>
             <connections>
                 <action selector="addEventAction:" destination="-1" eventType="touchUpInside" id="6uc-Jt-odq"/>
             </connections>

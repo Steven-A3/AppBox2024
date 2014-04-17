@@ -696,6 +696,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     addItem.calendarId = [item objectForKey:EventItem_CalendarId];
     addItem.eventName = [item objectForKey:EventItem_Name];
     addItem.isLunar = [item objectForKey:EventItem_IsLunar];
+    addItem.isLeapMonth = [item objectForKey:EventItem_IsLeapMonth];
     addItem.imageFilename = imageFilename;
     addItem.isAllDay = [item objectForKey:EventItem_IsAllDay];
     addItem.isPeriod = [item objectForKey:EventItem_IsPeriod];
@@ -770,6 +771,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     eventItem.calendarId = [info objectForKey:EventItem_CalendarId];
     eventItem.calendar = [info objectForKey:EventItem_Calendar];
     eventItem.isLunar = [info objectForKey:EventItem_IsLunar];
+    eventItem.isLeapMonth = [info objectForKey:EventItem_IsLeapMonth];
     eventItem.isAllDay = [info objectForKey:EventItem_IsAllDay];
     eventItem.isPeriod = [info objectForKey:EventItem_IsPeriod];
     eventItem.startDate = [info objectForKey:EventItem_StartDate];
@@ -856,6 +858,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         }
     }
     [dict setObject:item.isLunar forKey:EventItem_IsLunar];
+    if ([item.isLunar boolValue]) {
+        [dict setObject:item.isLeapMonth forKey:EventItem_IsLeapMonth];
+    }
     [dict setObject:item.isAllDay forKey:EventItem_IsAllDay];
     [dict setObject:item.isPeriod forKey:EventItem_IsPeriod];
     [dict setObject:item.startDate forKey:EventItem_StartDate];
@@ -1392,7 +1397,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                                    repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
-        dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+//        dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
         daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];

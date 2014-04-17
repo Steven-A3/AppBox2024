@@ -28,6 +28,7 @@
 #import "A3DaysCounterEventListSectionHeader.h"
 #import "A3WalletSegmentedControl.h"
 #import "NSDate+LunarConverter.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterEventListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -77,6 +78,7 @@
     _segmentControlWidthConst.constant = ( IS_IPHONE ? 171 : 300.0);
     
     [self.view addSubview:_addEventButton];
+    _addEventButton.tintColor = [A3AppDelegate instance].themeColor;
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
         make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 21));

@@ -874,8 +874,11 @@ EXIT_FUCTION:
     if ( indexPath.section == 0 ) {
         NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
         NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
-        NSArray *cellIDs = @[@"eventInfoCell",@"",@"",@"",@"",@"",@"",@"value1Cell",@"value1Cell",@"value1Cell",@"calendarInfoCell",@"value1Cell",@"value1Cell",@"multilineCell",@"",@"defaultCell",@"defalutCell"];
-        
+        NSArray *cellIDs = @[@"eventInfoCell", @"", @"", @"", @"",      // 0 ~ 4
+                             @"", @"", @"value1Cell", @"value1Cell", @"value1Cell",     // 5 ~ 9
+                             @"calendarInfoCell", @"value1Cell", @"value1Cell", @"multilineCell", @"",      // 10 ~ 14
+                             @"defaultCell", @"defalutCell", @""];      // 15 ~ 17
+
         NSString *CellIdentifier = [cellIDs objectAtIndex:cellType];
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
@@ -885,13 +888,13 @@ EXIT_FUCTION:
         [self updateTableViewCell:cell indexPath:indexPath];
     }
     else {
-        NSString *cellID = @"normalCell";
+        NSString *cellID = @"normalCell";       // 18
         cell = [tableView dequeueReusableCellWithIdentifier:cellID];
         if ( cell == nil ) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
         }
         
-        cell.textLabel.text = @"Delete Event";
+        cell.textLabel.text = @"Delete Event";      // 19 (20)
         cell.textLabel.font = [UIFont systemFontOfSize:17];
         cell.textLabel.textColor = [UIColor colorWithRed:1.0 green:59/255.0 blue:48.0/255.0 alpha:1.0];
         cell.textLabel.textAlignment = NSTextAlignmentCenter;

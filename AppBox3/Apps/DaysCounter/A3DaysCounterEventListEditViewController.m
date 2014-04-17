@@ -14,6 +14,8 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "A3DaysCounterEventChangeCalendarViewController.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+JHExtension.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -108,8 +110,9 @@
         UIButton *button = (UIButton*)[cell viewWithTag:11];
         [button setImage:self.checkNormalImage forState:UIControlStateNormal];
         [button addTarget:self action:@selector(toggleSelectAction:) forControlEvents:UIControlEventTouchUpInside];
+        button.tintColor = [A3AppDelegate instance].themeColor;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
+    }   
     
     // Configure the cell...
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
@@ -210,6 +213,14 @@
         return;
     
     button.selected = !button.selected;
+    
+    if (button.selected) {
+        [button setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
+    }
+    else {
+        [button setBackgroundImage:self.checkNormalImage forState:UIControlStateNormal];
+    }
+    
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     [_checkStatusDict setObject:[NSNumber numberWithBool:button.selected] forKey:item.eventId];
     if( button.selected )

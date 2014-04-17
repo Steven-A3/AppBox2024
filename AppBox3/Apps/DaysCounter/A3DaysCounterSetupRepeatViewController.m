@@ -15,6 +15,7 @@
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "SFKImage.h"
 #import "A3DaysCounterRepeatCustomCell.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterSetupRepeatViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -126,6 +127,8 @@
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
         }
         else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
