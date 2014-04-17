@@ -12,6 +12,4 @@
 
 - (NSArray *)fieldItemsArray;
 
-- (void)deleteAndClearRelated;
-
 @end

@@ -2,7 +2,7 @@
 //  WalletCategory.m
 //  AppBox3
 //
-//  Created by A3 on 4/14/14.
+//  Created by A3 on 4/17/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -13,12 +13,12 @@
 
 @implementation WalletCategory
 
+@dynamic doNotShow;
 @dynamic icon;
 @dynamic modificationDate;
 @dynamic name;
 @dynamic order;
 @dynamic uniqueID;
-@dynamic doNotShow;
 @dynamic fields;
 @dynamic items;
 

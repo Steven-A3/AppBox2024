@@ -28,9 +28,10 @@
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
 #import "A3BasicWebViewController.h"
+#import "WalletFieldItem+initialize.h"
 
 
-@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
+	@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) A3WalletItemTitleView *headerView;
 @property (nonatomic, strong) NSMutableArray *fieldItems;
@@ -132,7 +133,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
 	_headerView.titleTextField.frame = frame;
     
-	_headerView.favorButton.selected = [self.item isFavored];
+	_headerView.favorButton.selected = self.item.favorite != nil;
 	_headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 }
 
@@ -151,12 +152,12 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				}
 			}
 			else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				if (fieldItem.filePath.length == 0) {
+				if (!fieldItem.image && ![fieldItem.hasVideo boolValue]) {
 					[deleteTmp addObject:fieldItem];
 				}
 			}
 			else {
-				if (fieldItem.value == 0) {
+				if ([fieldItem.value length] == 0) {
 					[deleteTmp addObject:fieldItem];
 				}
 			}
@@ -202,8 +203,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		for (int i=0; i<self.fieldItems.count; i++) {
 			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
 				WalletFieldItem *fieldItem = _fieldItems[i];
-				if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length>0)) {
-					MWPhoto *photo = [MWPhoto photoWithURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+				if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
+					MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image];
 					[_alBumPhotos addObject:photo];
 				}
 			}
@@ -215,8 +216,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)favorButtonAction:(UIButton *)favorButton
 {
-	[_item setFavor:![_item isFavored]];
-	_headerView.favorButton.selected = [_item isFavored];
+	[_item changeFavorite:_item.favorite == nil];
+	_headerView.favorButton.selected = _item.favorite != nil;
 }
 
 - (void)photoButtonAction:(UIButton *)sender
@@ -224,8 +225,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
     
 	if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-		if (fieldItem.filePath.length > 0) {
-			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+		if ([fieldItem.hasVideo boolValue]) {
+			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePath]]];
 			[self presentViewController:pvc animated:YES completion:^{
 				[pvc.moviePlayer play];
 			}];
@@ -561,24 +562,15 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             
             photoCell.valueTxtFd.placeholder = fieldItem.field.name;
             
-            if (fieldItem.filePath.length > 0) {
+            if (fieldItem.image || [fieldItem.hasVideo boolValue]) {
                 photoCell.valueTxtFd.text = @" ";
                 photoCell.photoButton.hidden = NO;
                 
-                NSString *thumbFilePath = @"";
-                if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-                    thumbFilePath = [WalletData thumbImgPathOfImgPath:fieldItem.filePath];
-                }
-                else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                    thumbFilePath = [WalletData thumbImgPathOfVideoPath:fieldItem.filePath];
-                }
-                NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
-                UIImage *photo = [UIImage imageWithData:img];
+                UIImage *photo = fieldItem.thumbnailImage;
                 photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
                 [photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
                 [photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
                 photoCell.photoButton.tag = indexPath.row;
-                
             }
             else {
                 photoCell.valueTxtFd.text = @"None";

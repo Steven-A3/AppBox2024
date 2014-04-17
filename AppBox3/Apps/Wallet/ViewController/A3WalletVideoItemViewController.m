@@ -24,11 +24,12 @@
 #import "UIViewController+A3AppCategory.h"
 #import "WalletFieldItem.h"
 #import "UIImage+Extension2.h"
+#import "WalletFieldItem+initialize.h"
 
 @interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *photoFieldItems;
-@property (nonatomic, strong) NSMutableArray *normaleFieldItems;
+@property (nonatomic, strong) NSMutableArray *normalFieldItems;
 @property (nonatomic, strong) UIScrollView *photoScrollView;
 @property (nonatomic, strong) A3WalletVideoItemTitleView *headerView;
 @property (nonatomic, strong) NSMutableArray *photoThumbs;
@@ -124,7 +125,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         NSArray *fieldItems = [_item fieldItemsArray];
         for (int i=0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && (fieldItem.filePath.length>0)) {
+            if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.hasVideo) {
                 [_photoFieldItems addObject:fieldItem];
             }
         }
@@ -133,44 +134,49 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     return _photoFieldItems;
 }
 
-- (NSMutableArray *)normaleFieldItems
+- (NSMutableArray *)normalFieldItems
 {
-    if (!_normaleFieldItems) {
-        _normaleFieldItems = [[NSMutableArray alloc] init];
+    if (!_normalFieldItems) {
+        _normalFieldItems = [[NSMutableArray alloc] init];
         
         NSArray *fieldItems = [_item fieldItemsArray];
         for (int i=0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
             if (![fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                [_normaleFieldItems addObject:fieldItem];
+                [_normalFieldItems addObject:fieldItem];
             }
         }
         
         // 데이타 없는 item은 표시하지 않는다.
-        NSMutableArray *deleteTmp = [NSMutableArray new];
-        for (WalletFieldItem *fieldItem in _normaleFieldItems) {
+        NSMutableArray *deletingObjects = [NSMutableArray new];
+        for (WalletFieldItem *fieldItem in _normalFieldItems) {
             if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
                 if (fieldItem.date == nil) {
-                    [deleteTmp addObject:fieldItem];
+                    [deletingObjects addObject:fieldItem];
                 }
             }
-            else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                if (fieldItem.filePath.length == 0) {
-                    [deleteTmp addObject:fieldItem];
-                }
+            else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+				if (!fieldItem.image) {
+					[deletingObjects addObject:fieldItem];
+				}
             }
+			else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+				if (![fieldItem.hasVideo boolValue]) {
+					[deletingObjects addObject:fieldItem];
+				}
+			}
             else {
-                if (fieldItem.value == 0) {
-                    [deleteTmp addObject:fieldItem];
+                if (![fieldItem.value length]) {
+                    [deletingObjects addObject:fieldItem];
                 }
             }
         }
-        [_normaleFieldItems removeObjectsInArray:deleteTmp];
+		[_normalFieldItems removeObjectsInArray:deletingObjects];
         
-        [_normaleFieldItems addObject:self.noteItem];
+        [_normalFieldItems addObject:self.noteItem];
     }
     
-    return _normaleFieldItems;
+    return _normalFieldItems;
 }
 
 - (NSMutableDictionary *)noteItem
@@ -238,7 +244,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (void)refreshViews
 {
     _photoFieldItems = nil;
-    _normaleFieldItems = nil;
+    _normalFieldItems = nil;
     
     [self.photoScrollView removeFromSuperview];
     [self.toolBar removeFromSuperview];
@@ -263,7 +269,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
     _headerView.titleTextField.frame = frame;
     
-    _headerView.favorButton.selected = [self.item isFavored];
+    _headerView.favorButton.selected = _item.favorite != nil;
     _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 }
 
@@ -277,11 +283,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     WalletFieldItem *fieldItem = _photoFieldItems[index];
     
-    float duration = [WalletData getDurationOfMovie:fieldItem.filePath];
+    float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePath]];
     NSInteger dur = round(duration);
     _headerView.durationLB.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
     
-    NSDate *createDate = [WalletData getCreateDateOfMovie:fieldItem.filePath];
+    NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePath]];
     if (createDate) {
         _headerView.dateLB.text = [createDate timeAgo];
     }
@@ -308,7 +314,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             WalletFieldItem *photoFieldItem = _photoFieldItems[i];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth*i, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            UIImage *photoImg = [WalletData videoPreviewImageOfURL:[NSURL fileURLWithPath:photoFieldItem.filePath]];
+            UIImage *photoImg = [WalletData videoPreviewImageOfURL:[NSURL fileURLWithPath:[photoFieldItem videoFilePath]]];
             photoImg = [photoImg imageByScalingProportionallyToMinimumSize:CGSizeMake(rectWidth*2, rectWidth*2)];
             photoImgView.image = photoImg;
             
@@ -345,7 +351,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             WalletFieldItem *photoFieldItem = _photoFieldItems[i];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 ,24, 16)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            NSString *thumbFilePath = [WalletData thumbImgPathOfVideoPath:photoFieldItem.filePath];
+            NSString *thumbFilePath = [photoFieldItem videoThumbnailPath];
             UIImage *photoImg = [UIImage imageWithContentsOfFile:thumbFilePath];
             photoImgView.image = photoImg;
             [_photoThumbs addObject:photoImgView];
@@ -357,8 +363,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)favorButtonAction:(UIButton *)favorButton
 {
-    [_item setFavor:![_item isFavored]];
-    _headerView.favorButton.selected = [_item isFavored];
+	[_item changeFavorite:_item.favorite == nil];
+    _headerView.favorButton.selected = _item.favorite != nil;
 }
 
 -(void)videoFinished:(NSNotification*)aNotification{
@@ -408,8 +414,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     WalletFieldItem *fieldItem = _photoFieldItems[index];
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-        if (fieldItem.filePath.length > 0) {
-            MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:fieldItem.filePath]];
+        if ([[fieldItem hasVideo] boolValue]) {
+            MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePath]]];
             
             // 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
             [[NSNotificationCenter defaultCenter] removeObserver:pvc  name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
@@ -501,14 +507,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return self.normaleFieldItems.count;
+    return self.normalFieldItems.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
     
-    if (_normaleFieldItems[indexPath.row] == self.noteItem) {
+    if (_normalFieldItems[indexPath.row] == self.noteItem) {
         
         // note
         A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID2 forIndexPath:indexPath];
@@ -524,8 +530,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         
         cell = noteCell;
     }
-    else if ([_normaleFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
-        WalletFieldItem *fieldItem = _normaleFieldItems[indexPath.row];
+    else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+        WalletFieldItem *fieldItem = _normalFieldItems[indexPath.row];
         
         if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
             
@@ -535,31 +541,24 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             [self configureFloatingTextField:photoCell.valueTxtFd];
             
             photoCell.valueTxtFd.placeholder = fieldItem.field.name;
-            
-            if (fieldItem.filePath.length > 0) {
-                photoCell.valueTxtFd.text = @" ";
-                photoCell.photoButton.hidden = NO;
-                
-                NSString *thumbFilePath = @"";
-                if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-                    thumbFilePath = [WalletData thumbImgPathOfImgPath:fieldItem.filePath];
-                }
-                else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                    thumbFilePath = [WalletData thumbImgPathOfVideoPath:fieldItem.filePath];
-                }
-                NSData *img = [NSData dataWithContentsOfFile:thumbFilePath];
-                UIImage *photo = [UIImage imageWithData:img];
-                photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
-                [photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
-                [photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                photoCell.photoButton.tag = indexPath.row;
-                
-            }
-            else {
-                photoCell.valueTxtFd.text = @"None";
-                photoCell.photoButton.hidden = YES;
-            }
-            
+
+			if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+				photoCell.valueTxtFd.text = @" ";
+				photoCell.photoButton.hidden = NO;
+
+				[self setImageToCell:photoCell imagePath:fieldItem.imageThumbnailPath];
+				photoCell.photoButton.tag = indexPath.row;
+			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+				photoCell.valueTxtFd.text = @" ";
+				photoCell.photoButton.hidden = NO;
+
+				[self setImageToCell:photoCell imagePath:fieldItem.videoThumbnailPath];
+				photoCell.photoButton.tag = indexPath.row;
+			} else {
+				photoCell.valueTxtFd.text = @"None";
+				photoCell.photoButton.hidden = YES;
+			}
+
             cell = photoCell;
         }
         else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
@@ -607,13 +606,21 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     return cell;
 }
 
+- (void)setImageToCell:(A3WalletItemPhotoFieldCell *)photoCell imagePath:(NSString *)path {
+	NSData *img = [NSData dataWithContentsOfFile:path];
+	UIImage *photo = [UIImage imageWithData:img];
+	photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
+	[photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
+	[photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
 - (void)photoButtonAction:(UIButton *)photoButtonAction {
 	// TODO:
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.normaleFieldItems objectAtIndex:indexPath.row] == self.noteItem) {
+    if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.noteItem) {
         NSDictionary *textAttributes = @{
                                          NSFontAttributeName : [UIFont systemFontOfSize:17]
                                          };

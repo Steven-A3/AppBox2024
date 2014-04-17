@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class WalletItem;
+@class WalletCategory;
 
 @protocol WalletItemEditDelegate <NSObject>
 
@@ -20,7 +21,12 @@
 
 @interface A3WalletItemEditViewController : UITableViewController
 
+/*! isAddNewItem == YES, item will be created. WalletCategory must have data.
+ *  isAddNewItem == NO, item must have data, walletCategory must be nil.
+ */
+@property (nonatomic, assign) BOOL isAddNewItem;
 @property (nonatomic, strong) WalletItem *item;
+@property (nonatomic, strong) WalletCategory *walletCategory;
 @property (nonatomic, assign) id<WalletItemEditDelegate> delegate;
 
 @end

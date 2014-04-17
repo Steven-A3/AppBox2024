@@ -390,14 +390,18 @@
 		68515229187FF97800092C0F /* A3SettingsFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68515228187FF97800092C0F /* A3SettingsFavoritesViewController.m */; };
 		68521A3B17E1EBB200E08FB1 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */; };
 		68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68521A4517E1FF2E00E08FB1 /* FXLabel.m */; };
+		6852296418FE2FA5002D3C0E /* A3ImageToDataTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852296318FE2FA5002D3C0E /* A3ImageToDataTransformer.m */; };
+		6852297118FF5CE3002D3C0E /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297018FF5CE3002D3C0E /* WalletFavorite.m */; };
+		6852297418FF5CE3002D3C0E /* WalletCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297318FF5CE3002D3C0E /* WalletCategory.m */; };
+		6852297718FF5CE3002D3C0E /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297618FF5CE3002D3C0E /* WalletField.m */; };
+		6852297A18FF5CE3002D3C0E /* WalletItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297918FF5CE3002D3C0E /* WalletItem.m */; };
+		6852297D18FF5CE4002D3C0E /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 6852297C18FF5CE4002D3C0E /* WalletFieldItem.m */; };
 		685560061670448D00F200B7 /* A3Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 685560051670448D00F200B7 /* A3Utilities.m */; };
 		685946D118C371C800528190 /* A3SpeechTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 685946D018C371C800528190 /* A3SpeechTest.m */; };
 		685E319A1791694E001A0EC8 /* A3CurrencyTVActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 685E31991791694E001A0EC8 /* A3CurrencyTVActionCell.xib */; };
 		685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */; };
 		685F723C16A64ADD004C7222 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723B16A64ADD004C7222 /* SystemConfiguration.framework */; };
 		685F723E16A64C91004C7222 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685F723D16A64C91004C7222 /* MobileCoreServices.framework */; };
-		6861FE1918FC14FF00AE3E78 /* WalletCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6861FE1818FC14FF00AE3E78 /* WalletCategory.m */; };
-		6861FE1C18FCE82300AE3E78 /* WalletField.m in Sources */ = {isa = PBXBuildFile; fileRef = 6861FE1B18FCE82300AE3E78 /* WalletField.m */; };
 		6864D60017BBBA6300A215D7 /* AppIcons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */; };
 		6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */; };
 		686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */; };
@@ -612,7 +616,6 @@
 		68B6A33D18CEC76D004084EF /* A3WalletVideoItemTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */; };
 		68B6A33E18CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */; };
 		68B6A33F18CEC76D004084EF /* A3WalletAddCateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28518CEC76D004084EF /* A3WalletAddCateViewController.m */; };
-		68B6A34118CEC76D004084EF /* A3WalletAddItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28918CEC76D004084EF /* A3WalletAddItemViewController.m */; };
 		68B6A34218CEC76D004084EF /* A3WalletAllViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */; };
 		68B6A34318CEC76D004084EF /* A3WalletCateEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28D18CEC76D004084EF /* A3WalletCateEditViewController.m */; };
 		68B6A34418CEC76D004084EF /* A3WalletCategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28F18CEC76D004084EF /* A3WalletCategorySelectViewController.m */; };
@@ -673,9 +676,6 @@
 		68B6A48418CF3154004084EF /* LoanCalcComparisonHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48318CF3154004084EF /* LoanCalcComparisonHistory.m */; };
 		68B6A48718CF3154004084EF /* LoanCalcHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48618CF3154004084EF /* LoanCalcHistory.m */; };
 		68B6A49018CF31B5004084EF /* UnitPriceFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A48F18CF31B5004084EF /* UnitPriceFavorite.m */; };
-		68B6A49918CF3311004084EF /* WalletFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A49818CF3311004084EF /* WalletFavorite.m */; };
-		68B6A49F18CF3311004084EF /* WalletItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A49E18CF3311004084EF /* WalletItem.m */; };
-		68B6A4A218CF3311004084EF /* WalletFieldItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A118CF3311004084EF /* WalletFieldItem.m */; };
 		68B6A4A518CF335D004084EF /* UnitConvertItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A418CF335D004084EF /* UnitConvertItem.m */; };
 		68B6A4A818CF335E004084EF /* UnitType.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4A718CF335E004084EF /* UnitType.m */; };
 		68B6A4B118CF335E004084EF /* UnitFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A4B018CF335E004084EF /* UnitFavorite.m */; };
@@ -1542,6 +1542,18 @@
 		68521A3A17E1EBB200E08FB1 /* NSDate-Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate-Utilities.m"; path = "External/NSDate-Extensions/NSDate-Utilities.m"; sourceTree = "<group>"; };
 		68521A4417E1FF2E00E08FB1 /* FXLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FXLabel.h; path = External/FXLabel/FXLabel/FXLabel.h; sourceTree = "<group>"; };
 		68521A4517E1FF2E00E08FB1 /* FXLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FXLabel.m; path = External/FXLabel/FXLabel/FXLabel.m; sourceTree = "<group>"; };
+		6852296218FE2FA5002D3C0E /* A3ImageToDataTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3ImageToDataTransformer.h; path = "Data Transformer/A3ImageToDataTransformer.h"; sourceTree = "<group>"; };
+		6852296318FE2FA5002D3C0E /* A3ImageToDataTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3ImageToDataTransformer.m; path = "Data Transformer/A3ImageToDataTransformer.m"; sourceTree = "<group>"; };
+		6852296F18FF5CE3002D3C0E /* WalletFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFavorite.h; sourceTree = "<group>"; };
+		6852297018FF5CE3002D3C0E /* WalletFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFavorite.m; sourceTree = "<group>"; };
+		6852297218FF5CE3002D3C0E /* WalletCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletCategory.h; sourceTree = "<group>"; };
+		6852297318FF5CE3002D3C0E /* WalletCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletCategory.m; sourceTree = "<group>"; };
+		6852297518FF5CE3002D3C0E /* WalletField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletField.h; sourceTree = "<group>"; };
+		6852297618FF5CE3002D3C0E /* WalletField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletField.m; sourceTree = "<group>"; };
+		6852297818FF5CE3002D3C0E /* WalletItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletItem.h; sourceTree = "<group>"; };
+		6852297918FF5CE3002D3C0E /* WalletItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletItem.m; sourceTree = "<group>"; };
+		6852297B18FF5CE4002D3C0E /* WalletFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItem.h; sourceTree = "<group>"; };
+		6852297C18FF5CE4002D3C0E /* WalletFieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItem.m; sourceTree = "<group>"; };
 		685560041670448D00F200B7 /* A3Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3Utilities.h; sourceTree = "<group>"; };
 		685560051670448D00F200B7 /* A3Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3Utilities.m; sourceTree = "<group>"; };
 		685946D018C371C800528190 /* A3SpeechTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3SpeechTest.m; sourceTree = "<group>"; };
@@ -1550,10 +1562,6 @@
 		685E319E17917879001A0EC8 /* A3CurrencyTVActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVActionCell.m; path = Apps/Currency/A3CurrencyTVActionCell.m; sourceTree = "<group>"; };
 		685F723B16A64ADD004C7222 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		685F723D16A64C91004C7222 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
-		6861FE1718FC14FF00AE3E78 /* WalletCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletCategory.h; sourceTree = "<group>"; };
-		6861FE1818FC14FF00AE3E78 /* WalletCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletCategory.m; sourceTree = "<group>"; };
-		6861FE1A18FCE82300AE3E78 /* WalletField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletField.h; sourceTree = "<group>"; };
-		6861FE1B18FCE82300AE3E78 /* WalletField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletField.m; sourceTree = "<group>"; };
 		6864D5FE17BBBA6300A215D7 /* AppIcons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = AppIcons.xcassets; path = "AppBox3/Asset Catalogs/AppIcons.xcassets"; sourceTree = "<group>"; };
 		6866956418839B8C00BABFA5 /* A3AppDelegate+keyValueStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "A3AppDelegate+keyValueStore.h"; path = "AppDelegate/A3AppDelegate+keyValueStore.h"; sourceTree = "<group>"; };
 		6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "A3AppDelegate+keyValueStore.m"; path = "AppDelegate/A3AppDelegate+keyValueStore.m"; sourceTree = "<group>"; };
@@ -1964,8 +1972,6 @@
 		68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletVideoItemTitleView_iPad.xib; sourceTree = "<group>"; };
 		68B6A28418CEC76D004084EF /* A3WalletAddCateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAddCateViewController.h; sourceTree = "<group>"; };
 		68B6A28518CEC76D004084EF /* A3WalletAddCateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAddCateViewController.m; sourceTree = "<group>"; };
-		68B6A28818CEC76D004084EF /* A3WalletAddItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAddItemViewController.h; sourceTree = "<group>"; };
-		68B6A28918CEC76D004084EF /* A3WalletAddItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAddItemViewController.m; sourceTree = "<group>"; };
 		68B6A28A18CEC76D004084EF /* A3WalletAllViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAllViewController.h; sourceTree = "<group>"; };
 		68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAllViewController.m; sourceTree = "<group>"; };
 		68B6A28C18CEC76D004084EF /* A3WalletCateEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCateEditViewController.h; sourceTree = "<group>"; };
@@ -2091,12 +2097,6 @@
 		68B6A48618CF3154004084EF /* LoanCalcHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoanCalcHistory.m; sourceTree = "<group>"; };
 		68B6A48E18CF31B5004084EF /* UnitPriceFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitPriceFavorite.h; sourceTree = "<group>"; };
 		68B6A48F18CF31B5004084EF /* UnitPriceFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitPriceFavorite.m; sourceTree = "<group>"; };
-		68B6A49718CF3311004084EF /* WalletFavorite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFavorite.h; sourceTree = "<group>"; };
-		68B6A49818CF3311004084EF /* WalletFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFavorite.m; sourceTree = "<group>"; };
-		68B6A49D18CF3311004084EF /* WalletItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletItem.h; sourceTree = "<group>"; };
-		68B6A49E18CF3311004084EF /* WalletItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletItem.m; sourceTree = "<group>"; };
-		68B6A4A018CF3311004084EF /* WalletFieldItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalletFieldItem.h; sourceTree = "<group>"; };
-		68B6A4A118CF3311004084EF /* WalletFieldItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalletFieldItem.m; sourceTree = "<group>"; };
 		68B6A4A318CF335D004084EF /* UnitConvertItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitConvertItem.h; sourceTree = "<group>"; };
 		68B6A4A418CF335D004084EF /* UnitConvertItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnitConvertItem.m; sourceTree = "<group>"; };
 		68B6A4A618CF335E004084EF /* UnitType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UnitType.h; sourceTree = "<group>"; };
@@ -3598,6 +3598,7 @@
 		683B954515EB233500575377 /* Data Management */ = {
 			isa = PBXGroup;
 			children = (
+				6852296118FE2F65002D3C0E /* Data Transformer */,
 				6831EBF618619CC800BAF15B /* AppBox3.xcdatamodeld */,
 				6831EBF818619CC800BAF15B /* AppBoxCacheStore.sqlite */,
 				6831EBF918619CC800BAF15B /* AppBoxCacheStore.sqlite-shm */,
@@ -3753,6 +3754,15 @@
 				68521A4517E1FF2E00E08FB1 /* FXLabel.m */,
 			);
 			name = FXLabel;
+			sourceTree = "<group>";
+		};
+		6852296118FE2F65002D3C0E /* Data Transformer */ = {
+			isa = PBXGroup;
+			children = (
+				6852296218FE2FA5002D3C0E /* A3ImageToDataTransformer.h */,
+				6852296318FE2FA5002D3C0E /* A3ImageToDataTransformer.m */,
+			);
+			name = "Data Transformer";
 			sourceTree = "<group>";
 		};
 		686FCF331775CD1300F19332 /* NYXImagesKit */ = {
@@ -4275,29 +4285,29 @@
 		68B6A21E18CEC76C004084EF /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				6861FE1A18FCE82300AE3E78 /* WalletField.h */,
-				6861FE1B18FCE82300AE3E78 /* WalletField.m */,
-				6861FE1718FC14FF00AE3E78 /* WalletCategory.h */,
-				6861FE1818FC14FF00AE3E78 /* WalletCategory.m */,
+				6852297B18FF5CE4002D3C0E /* WalletFieldItem.h */,
+				6852297C18FF5CE4002D3C0E /* WalletFieldItem.m */,
+				6852297818FF5CE3002D3C0E /* WalletItem.h */,
+				6852297918FF5CE3002D3C0E /* WalletItem.m */,
+				6852297518FF5CE3002D3C0E /* WalletField.h */,
+				6852297618FF5CE3002D3C0E /* WalletField.m */,
+				6852297218FF5CE3002D3C0E /* WalletCategory.h */,
+				6852297318FF5CE3002D3C0E /* WalletCategory.m */,
+				6852296F18FF5CE3002D3C0E /* WalletFavorite.h */,
+				6852297018FF5CE3002D3C0E /* WalletFavorite.m */,
 				68B6A21F18CEC76C004084EF /* WalletCategory+initialize.h */,
 				68B6A22018CEC76C004084EF /* WalletCategory+initialize.m */,
 				68B6A22318CEC76C004084EF /* WalletCategoryPreset.plist */,
 				68B6A22418CEC76C004084EF /* WalletData.h */,
 				68B6A22518CEC76C004084EF /* WalletData.m */,
-				68B6A49718CF3311004084EF /* WalletFavorite.h */,
-				68B6A49818CF3311004084EF /* WalletFavorite.m */,
 				68B6A22818CEC76C004084EF /* WalletField+initialize.h */,
 				68B6A22918CEC76C004084EF /* WalletField+initialize.m */,
 				68B6A22C18CEC76C004084EF /* WalletFieldItem+initialize.h */,
 				68B6A22D18CEC76C004084EF /* WalletFieldItem+initialize.m */,
-				68B6A4A018CF3311004084EF /* WalletFieldItem.h */,
-				68B6A4A118CF3311004084EF /* WalletFieldItem.m */,
 				68B6A23018CEC76C004084EF /* WalletItem+Favorite.h */,
 				68B6A23118CEC76C004084EF /* WalletItem+Favorite.m */,
 				68B6A23218CEC76C004084EF /* WalletItem+initialize.h */,
 				68B6A23318CEC76C004084EF /* WalletItem+initialize.m */,
-				68B6A49D18CF3311004084EF /* WalletItem.h */,
-				68B6A49E18CF3311004084EF /* WalletItem.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -4377,8 +4387,6 @@
 			children = (
 				68B6A28418CEC76D004084EF /* A3WalletAddCateViewController.h */,
 				68B6A28518CEC76D004084EF /* A3WalletAddCateViewController.m */,
-				68B6A28818CEC76D004084EF /* A3WalletAddItemViewController.h */,
-				68B6A28918CEC76D004084EF /* A3WalletAddItemViewController.m */,
 				68B6A28A18CEC76D004084EF /* A3WalletAllViewController.h */,
 				68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */,
 				68B6A28C18CEC76D004084EF /* A3WalletCateEditViewController.h */,
@@ -5690,11 +5698,9 @@
 				683308FC18C06D730082524E /* TranslatorGroup.m in Sources */,
 				6830C7871851A26E0075010F /* NSUserDefaults+A3Addition.m in Sources */,
 				804A406118E070C500556029 /* A3DaysCounterEventListDateCell.m in Sources */,
-				68B6A49F18CF3311004084EF /* WalletItem.m in Sources */,
 				6829687A18503C3300B70E13 /* NSString+MagicalDataImport.m in Sources */,
 				6829684218503B2100B70E13 /* MagicalRecord+Setup.m in Sources */,
 				6829683C18503B2100B70E13 /* MagicalMigrationManager.m in Sources */,
-				68B6A34118CEC76D004084EF /* A3WalletAddItemViewController.m in Sources */,
 				68B6A35818CEDDD1004084EF /* JVFloatLabeledTextField.m in Sources */,
 				68F1C8A918D7F37D009FAE8A /* A3DaysCounterSlideshowOptionViewController.m in Sources */,
 				689C9A4F1839CD7F007C97EE /* AFURLConnectionOperation.m in Sources */,
@@ -5745,11 +5751,11 @@
 				68B6A31018CEC76D004084EF /* WalletItem+Favorite.m in Sources */,
 				68B6A34918CEC76D004084EF /* A3WalletFieldStyleSelectViewController.m in Sources */,
 				68B6A34F18CEC76D004084EF /* A3WalletPhotoItemViewController.m in Sources */,
-				6861FE1918FC14FF00AE3E78 /* WalletCategory.m in Sources */,
 				6829682C18503B2100B70E13 /* NSPersistentStoreCoordinator+MagicaliCloudAdditions.m in Sources */,
 				68F1C8B718D7F37D009FAE8A /* A3RoundDateView.m in Sources */,
 				6829681E18503B2100B70E13 /* NSManagedObject+MagicalRequests.m in Sources */,
 				68F1C8F918D7FA41009FAE8A /* MPTransition.m in Sources */,
+				6852297D18FF5CE4002D3C0E /* WalletFieldItem.m in Sources */,
 				68F1C8D318D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m in Sources */,
 				68E2A6C518D0B41E00E834D9 /* ExpenseListHistory.m in Sources */,
 				68B6A33618CEC76D004084EF /* A3WalletListVideoCell.m in Sources */,
@@ -5831,17 +5837,18 @@
 				68E2A6B118D0B22800E834D9 /* A3TipCalcHeaderView.m in Sources */,
 				68F1C87C18D7F37D009FAE8A /* A3DaysCounterCalendarListMainViewController.m in Sources */,
 				68B6A2C218CEC76D004084EF /* A3LoanCalcLoanHistoryCell.m in Sources */,
-				68B6A4A218CF3311004084EF /* WalletFieldItem.m in Sources */,
 				68B6A4B718CF34A1004084EF /* UnitPriceHistory.m in Sources */,
 				68953486178686AF007061CA /* UIScrollView+Screenshot.m in Sources */,
 				68B6A30C18CEC76D004084EF /* WalletField+initialize.m in Sources */,
 				68E2A6AE18D0B22800E834D9 /* A3PopoverTableViewController.m in Sources */,
 				68C9E3FE1882EF1B007E4697 /* A3AppDelegate+mainMenu.m in Sources */,
+				6852296418FE2FA5002D3C0E /* A3ImageToDataTransformer.m in Sources */,
 				6831DF0B16C3D30100EABB2A /* A3ActionMenuBackgroundView.m in Sources */,
 				68B6A2C118CEC76D004084EF /* A3LoanCalcLoanGraphCell.m in Sources */,
 				68EC80D616E1ADF800CF672E /* A3Formatter.m in Sources */,
 				68B9B15C17D01EB6003ACAD0 /* A3HolidaysCountryViewController.m in Sources */,
 				68B6A45018CEE781004084EF /* PSTCollectionViewItemKey.m in Sources */,
+				6852297718FF5CE3002D3C0E /* WalletField.m in Sources */,
 				6829681218503B2100B70E13 /* NSFetchedResultsController+MagicalFetching.m in Sources */,
 				8076BC8E18FA842100613E70 /* A3DaysCounterSetupCalendarCell.m in Sources */,
 				680886E51891751B0093FD97 /* SBTickerView.m in Sources */,
@@ -5872,6 +5879,7 @@
 				68F1C8AF18D7F37D009FAE8A /* A3DaysCounterSlideshowViewController.m in Sources */,
 				68B6A2AA18CEC76D004084EF /* A3LoanCalcExtraPaymentViewController.m in Sources */,
 				68F1C8C118D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m in Sources */,
+				6852297418FF5CE3002D3C0E /* WalletCategory.m in Sources */,
 				68F32E51188AC3C600248F16 /* UITableViewController+standardDimension.m in Sources */,
 				680D639918CFF9D400938AD0 /* A3CalculatorViewController_iPhone.m in Sources */,
 				689C9A4E1839CD7F007C97EE /* AFSecurityPolicy.m in Sources */,
@@ -5886,6 +5894,7 @@
 				68B6A46118CEE781004084EF /* SDWebImageManager.m in Sources */,
 				68143D5C18E3EC7C00569691 /* A3TableViewCell.m in Sources */,
 				687F45D417E747DF005AEB0D /* A3HolidaysFlickrDownloadManager.m in Sources */,
+				6852297A18FF5CE3002D3C0E /* WalletItem.m in Sources */,
 				68E2A6A418D0B22800E834D9 /* A3SalesCalcHistoryCell.m in Sources */,
 				68B6A2FF18CEC76D004084EF /* UnitPriceFavorite+initialize.m in Sources */,
 				68B6A2F018CEC76D004084EF /* A3UnitPriceInputCell.m in Sources */,
@@ -5924,7 +5933,6 @@
 				68F1C88418D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m in Sources */,
 				684D92F318BC1FBC005016F7 /* A3DateCalcEditEventViewController.m in Sources */,
 				68E2A6A218D0B22800E834D9 /* A3SalesCalcDetailInfoPopOverView.m in Sources */,
-				6861FE1C18FCE82300AE3E78 /* WalletField.m in Sources */,
 				680D639C18CFF9D400938AD0 /* UILabel+Boldify.m in Sources */,
 				6835659418FA663100C3494C /* A3WalletMoreTableViewController.m in Sources */,
 				68B6A2EF18CEC76D004084EF /* A3UnitPriceInfoCell.m in Sources */,
@@ -6012,7 +6020,6 @@
 				68ADE14917D83D28009618A7 /* MMDrawerVisualState.m in Sources */,
 				6829684018503B2100B70E13 /* MagicalRecord+Options.m in Sources */,
 				68CC1593174F763E0000870F /* SFKImage.m in Sources */,
-				68B6A49918CF3311004084EF /* WalletFavorite.m in Sources */,
 				68F1C89918D7F37D009FAE8A /* A3DaysCounterReminderListViewController.m in Sources */,
 				684D92EE18BC1FBC005016F7 /* A3DateCalcAddSubCell1.m in Sources */,
 				68B6A31C18CEC76D004084EF /* A3WalletAllTopCell.m in Sources */,
@@ -6241,6 +6248,7 @@
 				17D42522378AC9FE782E35CC /* A3AppDelegate+property.m in Sources */,
 				68B6A2E218CEC76D004084EF /* UnitItem+initialize.m in Sources */,
 				68E2A64718D0B1FC00E834D9 /* A3ExpenseListAddBudgetViewController.m in Sources */,
+				6852297118FF5CE3002D3C0E /* WalletFavorite.m in Sources */,
 				17D42D3AD62EA698BD5E6A9B /* JNJProgressButton.m in Sources */,
 				17D4237EB40E1456E494D076 /* TranslatorHistory+manager.m in Sources */,
 				68B6A2EB18CEC76D004084EF /* A3UnitPriceDetailTableController.m in Sources */,

@@ -7,7 +7,6 @@
 //
 
 #import "A3WalletAllViewController.h"
-#import "A3WalletAddItemViewController.h"
 #import "A3WalletItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
 #import "A3WalletListPhotoCell.h"
@@ -25,13 +24,13 @@
 #import "UIViewController+A3AppCategory.h"
 #import "WalletCategory.h"
 #import "A3WalletVideoItemViewController.h"
+#import "A3WalletItemEditViewController.h"
+#import "WalletFieldItem+initialize.h"
 
 
 #define TopHeaderHeight 96
 
-@interface A3WalletAllViewController () <WalletItemAddDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
-{
-}
+@interface A3WalletAllViewController () <UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *searchItem;
 @property (nonatomic, strong) NSMutableDictionary *topItem;
@@ -463,30 +462,29 @@ enum SortingKind {
     [self.searchBar becomeFirstResponder];
 }
 
-- (A3WalletAddItemViewController *)itemAddViewController
+- (A3WalletItemEditViewController *)itemAddViewController
 {
     NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
-    A3WalletAddItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletAddItemViewController"];
-    
-    viewController.delegate = self;
+    A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
+    viewController.isAddNewItem = YES;
     viewController.hidesBottomBarWhenPushed = YES;
     
     // 마지막으로 추가되었던 walletItem의 카테고리가 선택되도록 한다.
     WalletItem *lastItem = [WalletItem MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
     if (lastItem) {
-        viewController.selectedCategory = lastItem.category;
+        viewController.walletCategory = lastItem.category;
     }
     else {
         WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"name" ascending:YES];
-        viewController.selectedCategory = category;
+        viewController.walletCategory = category;
     }
     
     return viewController;
 }
 
 - (void)addWalletItemAction {
-	A3WalletAddItemViewController *viewController = [self itemAddViewController];
+	A3WalletItemEditViewController *viewController = [self itemAddViewController];
 
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self presentViewController:nav animated:YES completion:NULL];
@@ -722,7 +720,7 @@ enum SortingKind {
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length > 0)) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
                         [photoPick addObject:fieldItem];
                     }
                 }
@@ -734,7 +732,7 @@ enum SortingKind {
 
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[WalletData thumbImgPathOfImgPath:fieldItem.filePath]];
+                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPath]];
                     
                     [photoCell addThumbImage:thumbImg];
                 }
@@ -758,7 +756,7 @@ enum SortingKind {
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && (fieldItem.filePath.length > 0)) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
                         [photoPick addObject:fieldItem];
                     }
                 }
@@ -769,7 +767,7 @@ enum SortingKind {
                 [videoCell resetThumbImages];
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[WalletData thumbImgPathOfVideoPath:fieldItem.filePath]];
+                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPath]];
                     [videoCell addThumbImage:thumbImg];
                 }
                 
@@ -912,18 +910,6 @@ enum SortingKind {
     return cell;
 }
 
-/*
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return self.topHeaderView;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 96;
-}
- */
-
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -938,7 +924,7 @@ enum SortingKind {
         // Delete the row from the data source
         WalletItem *item = _items[indexPath.row];
         [_items removeObject:item];
-        [item deleteAndClearRelated];
+        [item MR_deleteEntity];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
@@ -951,33 +937,5 @@ enum SortingKind {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
 }
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

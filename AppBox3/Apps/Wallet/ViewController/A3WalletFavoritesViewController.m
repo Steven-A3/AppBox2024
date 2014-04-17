@@ -25,6 +25,7 @@
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+A3Addition.h"
 #import "NSDate+TimeAgo.h"
+#import "WalletFieldItem+initialize.h"
 
 
 @interface A3WalletFavoritesViewController ()
@@ -241,7 +242,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length > 0)) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
                         [photoPick addObject:fieldItem];
                     }
                 }
@@ -253,8 +254,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
 
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[WalletData thumbImgPathOfImgPath:fieldItem.filePath]];
-                    [photoCell addThumbImage:thumbImg];
+                    [photoCell addThumbImage:fieldItem.thumbnailImage];
                 }
                 
                 cell = photoCell;
@@ -270,7 +270,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && (fieldItem.filePath.length > 0)) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.hasVideo) {
                         [photoPick addObject:fieldItem];
                     }
                 }
@@ -281,8 +281,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
                 [videoCell resetThumbImages];
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[WalletData thumbImgPathOfVideoPath:fieldItem.filePath]];
-                    [videoCell addThumbImage:thumbImg];
+                    [videoCell addThumbImage:fieldItem.thumbnailImage];
                 }
                 
                 cell = videoCell;
@@ -397,7 +396,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
         WalletFavorite *favorite = _favorites[indexPath.row];
         [_favorites removeObject:favorite];
         
-        [favorite.item deleteAndClearRelated];
+        [favorite.item MR_deleteEntity];
         
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 

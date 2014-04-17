@@ -21,6 +21,7 @@
 #import "A3KeychainUtils.h"
 #import "A3LaunchViewController.h"
 #import "A3MainViewController.h"
+#import "A3ImageToDataTransformer.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -41,6 +42,9 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	A3ImageToDataTransformer *transformer = [[A3ImageToDataTransformer alloc] init];
+	[NSValueTransformer setValueTransformer:transformer forName:@"A3ImageToDataTransformer"];
+
 	_previousVersion = [[NSUserDefaults standardUserDefaults] objectForKey:kA3ApplicationVersion];
 	if (!_previousVersion) {
 		[A3KeychainUtils removePassword];

@@ -8,7 +8,6 @@
 
 #import "A3WalletCateViewController.h"
 #import "A3WalletCateInfoViewController.h"
-#import "A3WalletAddItemViewController.h"
 #import "A3WalletItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
 #import "A3WalletListBigVideoCell.h"
@@ -27,9 +26,11 @@
 #import "WalletItem+initialize.h"
 #import "A3WalletVideoItemViewController.h"
 #import "NSMutableArray+A3Sort.h"
+#import "A3WalletItemEditViewController.h"
+#import "WalletFieldItem+initialize.h"
 
 
-@interface A3WalletCateViewController () <WalletItemAddDelegate, UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate>
+@interface A3WalletCateViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate>
 {
     BOOL		_isShowMoreMenu;
 }
@@ -627,20 +628,20 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 	}
 }
 
-- (A3WalletAddItemViewController *)itemAddViewController
+- (A3WalletItemEditViewController *)itemEditViewController
 {
     NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
-    A3WalletAddItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletAddItemViewController"];
-    viewController.delegate = self;
+    A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
+	viewController.isAddNewItem = YES;
     viewController.hidesBottomBarWhenPushed = YES;
-    viewController.selectedCategory = self.category;
+    viewController.walletCategory = self.category;
     
     return viewController;
 }
 
 - (void)addWalletItemAction {
-	A3WalletAddItemViewController *viewController = [self itemAddViewController];
+	A3WalletItemEditViewController *viewController = [self itemEditViewController];
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self presentViewController:nav animated:YES completion:NULL];
 }
@@ -712,8 +713,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                     
                     WalletItem *item = _items[i];
                     [_items removeObject:item];
-                    [item deleteAndClearRelated];
-                }
+					[item MR_deleteEntity];
+				}
             }
             
             [self.tableView reloadData];
@@ -739,7 +740,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 if ([_items[indexPath.row] isKindOfClass:[WalletItem class]]) {
                     
                     WalletItem *item = _items[indexPath.row];
-                    [item deleteAndClearRelated];
+                    [item MR_deleteEntity];
                 }
             }
             
@@ -871,7 +872,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && (fieldItem.filePath.length > 0)) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
                         [photoPick addObject:fieldItem];
                     }
                 }
@@ -883,9 +884,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[WalletData thumbImgPathOfImgPath:fieldItem.filePath]];
-                    
-                    [photoCell addThumbImage:thumbImg];
+                    [photoCell addThumbImage:fieldItem.thumbnailImage];
                 }
                 
                 cell = photoCell;
@@ -907,7 +906,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && (fieldItem.filePath.length > 0)) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.image) {
                         [photoPick addObject:fieldItem];
                     }
                 }
@@ -918,8 +917,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 [videoCell resetThumbImages];
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[WalletData thumbImgPathOfVideoPath:fieldItem.filePath]];
-                    float duration = [WalletData getDurationOfMovie:fieldItem.filePath];
+                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPath]];
+                    float duration = [WalletData getDurationOfMovie:fieldItem.videoFilePath];
                     [videoCell addThumbImage:thumbImg withDuration:duration];
                 }
                 
@@ -1036,7 +1035,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
             
             WalletItem *item = _items[indexPath.row];
             [_items removeObject:item];
-            [item deleteAndClearRelated];
+            [item MR_deleteEntity];
             
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
