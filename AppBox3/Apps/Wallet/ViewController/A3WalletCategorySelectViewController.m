@@ -136,9 +136,6 @@
     if (IS_IPHONE) {
         [self.navigationController popViewControllerAnimated:YES];
 	}
-    else {
-		[self.A3RootViewController dismissRightSideViewController];
-	}
 }
 
 /*

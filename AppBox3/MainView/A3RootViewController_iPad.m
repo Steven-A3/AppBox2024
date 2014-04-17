@@ -67,6 +67,7 @@
 static const CGFloat kSideViewWidth = 319.0;
 
 - (void)layoutSubviews {
+	FNLOG();
 	CGRect bounds = [self screenBoundsAdjustedWithOrientation];
 
 	self.centerNavigationController.view.frame = bounds;
@@ -92,7 +93,7 @@ static const CGFloat kSideViewWidth = 319.0;
 }
 
 - (void)bringUpCenterCoverView {
-	[_centerCoverView setHidden:NO];
+	[self.centerCoverView setHidden:NO];
 	_centerCoverView.frame = _centerNavigationController.view.bounds;
 
     // KJH
@@ -246,8 +247,8 @@ static const CGFloat kSideViewWidth = 319.0;
 	frame.origin.x = screenBounds.size.width;
 	frame.size.width = kSideViewWidth;
 	_rightNavigationController.view.frame = frame;
-	[self addChildViewController:_rightNavigationController];
 	[self.view addSubview:_rightNavigationController.view];
+	[self addChildViewController:_rightNavigationController];
 
 	[UIView animateWithDuration:0.3 animations:^{
 		if (IS_LANDSCAPE) {

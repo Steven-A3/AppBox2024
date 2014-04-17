@@ -28,6 +28,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
@@ -53,15 +54,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 @property (nonatomic, strong) NSMutableDictionary *categoryItem;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
-@property (nonatomic, strong) NSString *nameBackupText;
-@property (nonatomic, strong) NSString *noteBackupText;
-
 @property (nonatomic, strong) WalletCategory *originalCategory;
 
 @property (nonatomic, strong) WalletFieldItem *currentFieldItem;
 @property (nonatomic, strong) NSIndexPath *dateInputIndexPath;
 @property (nonatomic, strong) NSDate *preDate;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
+@property (nonatomic, strong) UIViewController *rightSideViewController;
 
 @end
 
@@ -107,7 +106,15 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
 
-    [self registerContentSizeCategoryDidChangeNotification];
+	[self registerContentSizeCategoryDidChangeNotification];
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewDidDismissed object:nil];
+	}
+}
+
+- (void)rightSideViewDidDismiss {
+	[_rightSideViewController removeFromParentViewController];
+	_rightSideViewController = nil;
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -128,6 +135,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (NSMutableArray *)sectionItems
@@ -493,7 +504,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 }
 
-- (void)changeCategory:(WalletCategory *)toCategorry
+- (void)changeCategory:(WalletCategory *)toCategory
 {
     // 카테고리 변경
     // 같은 이름 필드는 값 입력
@@ -501,116 +512,53 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     
     // 일반 필드는 item에 입력하고, walletFieldItem은 _editTempItems 에 저장한다.
     
-    /*
-     @property (nonatomic, retain) NSDate * modificationDate;
-     @property (nonatomic, retain) NSString * name;
-     @property (nonatomic, retain) NSString * note;
-     @property (nonatomic, retain) NSString * order;
-     @property (nonatomic, retain) WalletCategory *category;
-     @property (nonatomic, retain) NSSet *fieldItems;
-     */
-    
-    
-    
     // name, order 변경안됨
     // category를 바꾼걸로
-    _item.category = toCategorry;
-    
+    _item.category = toCategory;
+	
     // 현재 변경중인 field item 정보를, 새로운 카테고리에 해당하는 field item으로 바꾼다.
-    
-    
-    NSArray *cateFields = [toCategorry fieldsArray];
-    NSMutableDictionary *cateNewEditTempItems = [NSMutableDictionary new];
-    
-    NSMutableArray *orgItems = [[NSMutableArray alloc] initWithArray:self.item.fieldItems.allObjects];
+	NSArray *fieldsOfTargetCategory = [toCategory fieldsArray];
+
+    NSMutableArray *originalFieldItems = [[NSMutableArray alloc] initWithArray:_item.fieldItems.allObjects];
     NSMutableArray *addedItems = [NSMutableArray new];
-    
-    for (int i=0; i < cateFields.count; i++) {
-        WalletField *cateField = cateFields[i];
-        
-        // items에 동일한 이름의 값이 있는지 체크하고, 타입을 비교하여, 데이타를 옮길수 잇는 아이템들을 뽑아낸다.
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"field.name==%@", cateField.name];
-        NSArray *tmp = [orgItems filteredArrayUsingPredicate:predicate];
-        if (tmp.count>0) {
-            WalletFieldItem *tempFieldItem = tmp[0];
-            if ([cateField.type isEqualToString:WalletFieldTypeDate]) {
-                if ([tempFieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                    
-                    // editTempItem에 새로운 값을 만들어서 저장한다.
-                    WalletFieldItem *editFieldItem = [WalletFieldItem MR_createEntity];
-                    editFieldItem.field = cateField;
-                    editFieldItem.walletItem = self.item;
-                    editFieldItem.date = tempFieldItem.date;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
-					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-                    
-                    [addedItems addObject:tempFieldItem];
-                }
-            }
-            else if ([cateField.type isEqualToString:WalletFieldTypeImage]) {
-                if ([tempFieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-                    
-                    // editTempItem에 새로운 값을 만들어서 저장한다.
-                    WalletFieldItem *editFieldItem = [WalletFieldItem MR_createEntity];
-                    editFieldItem.field = cateField;
-                    editFieldItem.walletItem = self.item;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
-					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-                    
-                    [addedItems addObject:tempFieldItem];
-                }
-            }
-            else if ([cateField.type isEqualToString:WalletFieldTypeVideo]) {
-                if ([tempFieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                    
-                    // editTempItem에 새로운 값을 만들어서 저장한다.
-                    WalletFieldItem *editFieldItem = [WalletFieldItem MR_createEntity];
-                    editFieldItem.field = cateField;
-                    editFieldItem.walletItem = self.item;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
-					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-                    
-                    [addedItems addObject:tempFieldItem];
-                }
-            }
-            else {
-                if (![tempFieldItem.field.type isEqualToString:WalletFieldTypeDate] && ![tempFieldItem.field.type isEqualToString:WalletFieldTypeImage] && ![tempFieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                    
-                    // editTempItem에 새로운 값을 만들어서 저장한다.
-                    WalletFieldItem *editFieldItem = [WalletFieldItem MR_createEntity];
-                    editFieldItem.field = cateField;
-                    editFieldItem.walletItem = self.item;
-                    editFieldItem.value = tempFieldItem.value;
-                    [cateNewEditTempItems setObject:editFieldItem forKey:cateField.uniqueID];
-					[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-                    
-                    [addedItems addObject:tempFieldItem];
-                }
-            }
-        }
-        else {
-            // 기존에 item이 없으면 새로이 fieldItem을 만들고 초기화하여 editTempItems에 저장한다
-            WalletFieldItem *madeFieldItem = [WalletFieldItem MR_createEntity];
-            madeFieldItem.field = cateField;
-            madeFieldItem.walletItem = self.item;
-            [cateNewEditTempItems setObject:madeFieldItem forKey:cateField.uniqueID];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        }
+
+	for (WalletField *fieldOfTargetCategory in fieldsOfTargetCategory) {
+		// items에 동일한 이름의 값이 있는지 체크하고, 타입을 비교하여, 데이타를 옮길수 잇는 아이템들을 뽑아낸다.
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"field.name==%@", fieldOfTargetCategory.name];
+		NSArray *filteredResults = [originalFieldItems filteredArrayUsingPredicate:predicate];
+
+		if (!filteredResults.count) continue;
+
+		WalletFieldItem *originalFieldItem = filteredResults[0];	// 같은 이름의 필드를 찾았다.
+
+		if ([originalFieldItem.field.type isEqualToString:fieldOfTargetCategory.type]) {
+			originalFieldItem.field = fieldOfTargetCategory;
+			[addedItems addObject:originalFieldItem];
+		}
+		else if (![originalFieldItem.field.type isEqualToString:WalletFieldTypeDate] && ![originalFieldItem.field.type isEqualToString:WalletFieldTypeImage] && ![originalFieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+			originalFieldItem.field = fieldOfTargetCategory;
+			[addedItems addObject:originalFieldItem];
+		}
     }
     
-    // 데이타가 있는 item들중에 옮겨지지 않은 데이타는 note에 텍스트로 기록한다.
-    [orgItems removeObjectsInArray:addedItems];
+    [originalFieldItems removeObjectsInArray:addedItems];
     
-    NSMutableString *mString = [NSMutableString new];
-    for (int i = 0; i<orgItems.count; i++) {
-        WalletFieldItem *remainItem = orgItems[i];
+    NSMutableString *moveToNoteString = [NSMutableString new];
+	[moveToNoteString appendFormat:@"%@\n", _item.note];
+
+	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	for (WalletFieldItem *remainItem in originalFieldItems) {
+		if ([remainItem.field.type isEqualToString:WalletFieldTypeDate] && remainItem.date) {
+			[moveToNoteString appendFormat:@"%@ : %@\n", remainItem.field.name, [dateFormatter stringFromDate:remainItem.date]];
+		} else
         if (remainItem.value.length > 0) {
-            NSString *tmpText = [NSString stringWithFormat:@"%@ : %@\n", remainItem.field.name, remainItem.value];
-            [mString appendString:tmpText];
+            NSString *movingText = [NSString stringWithFormat:@"%@ : %@\n", remainItem.field.name, remainItem.value];
+			[moveToNoteString appendString:movingText];
         }
+		[remainItem MR_deleteEntity];
     }
-    if (mString.length > 0) {
-        self.item.note = mString;
+    if (moveToNoteString.length > 0) {
+        self.item.note = moveToNoteString;
     }
     
     // 정보 불러오기
@@ -875,7 +823,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)walletCategorySelected:(WalletCategory *) category
 {
     FNLOG(@"walletCategorySelected : %@", category.name);
-    
+
+	if (IS_IPAD) {
+		[self dismissRightSideView];
+	}
+
     if (_item.category != category) {
         FNLOG(@"Change category");
         
@@ -884,82 +836,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 #pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    // 다음 텍스트 필드로 이동.
-    [textField resignFirstResponder];
-    
-    NSUInteger startIdx;
-    if (textField == self.headerView.titleTextField) {
-        startIdx = 0;
-    }
-    else {
-        startIdx = (NSUInteger) (_currentIndexPath.row + 1);
-    }
-    
-    if ([_sectionItems objectAtIndex:startIdx] == self.noteItem) {
-        NSIndexPath *ip = [NSIndexPath indexPathForRow:startIdx inSection:0];
-        A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:ip];
-        [noteCell.textView becomeFirstResponder];
-    }
-    else {
-        for (NSUInteger idx = startIdx; idx < _sectionItems.count; idx++) {
-            if ([_sectionItems[idx] isKindOfClass:[WalletField class]]) {
-                WalletField *field = _sectionItems[idx];
-                
-                if (![field.type isEqualToString:WalletFieldTypeDate]
-					&& ![field.type isEqualToString:WalletFieldTypeImage]
-					&& ![field.type isEqualToString:WalletFieldTypeVideo])
-                {
-                    NSIndexPath *ip = [NSIndexPath indexPathForRow:idx inSection:0];
-                    A3WalletItemFieldCell *inputCell = (A3WalletItemFieldCell* )[self.tableView cellForRowAtIndexPath:ip];
-                    [inputCell.valueTextField becomeFirstResponder];
-                    break;
-                }
-            }
-        }
-    }
-    
-    return YES;
-}
-
-- (void)textFieldDidChange:(NSNotification *)notification {
-	UITextField *textField = notification.object;
-    self.navigationItem.rightBarButtonItem.enabled = [self hasChanges] || [textField.text length];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    self.firstResponder = nil;
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-
-    // update
-    if (textField == _headerView.titleTextField) {
-		_item.name = textField.text;
-    }
-    else {
-        if ([_sectionItems[_currentIndexPath.row] isKindOfClass:[WalletField class]]) {
-            WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:YES];
-
-            // 변경사항이 없으면, 무시한다.
-            if ([fieldItem.value isEqualToString:textField.text]) {
-                return;
-            }
-			fieldItem.value = textField.text;
-        }
-    }
-    
-    self.navigationItem.rightBarButtonItem.enabled = [self hasChanges];
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    self.firstResponder = textField;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
-}
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
@@ -999,9 +875,80 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     return YES;
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    return YES;
+	self.firstResponder = textField;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+}
+
+- (void)textFieldDidChange:(NSNotification *)notification {
+	UITextField *textField = notification.object;
+	self.navigationItem.rightBarButtonItem.enabled = [self hasChanges] || [textField.text length];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+	self.firstResponder = nil;
+
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+
+	// update
+	if (textField == _headerView.titleTextField) {
+		_item.name = textField.text;
+	}
+	else {
+		if ([_sectionItems[_currentIndexPath.row] isKindOfClass:[WalletField class]]) {
+			WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:YES];
+
+			// 변경사항이 없으면, 무시한다.
+			if ([fieldItem.value isEqualToString:textField.text]) {
+				return;
+			}
+			fieldItem.value = textField.text;
+		}
+	}
+
+	self.navigationItem.rightBarButtonItem.enabled = [self hasChanges];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+	// 다음 텍스트 필드로 이동.
+	[textField resignFirstResponder];
+
+	NSUInteger startIdx;
+	if (textField == self.headerView.titleTextField) {
+		startIdx = 0;
+	}
+	else {
+		startIdx = (NSUInteger) (_currentIndexPath.row + 1);
+	}
+
+	if ([_sectionItems objectAtIndex:startIdx] == self.noteItem) {
+		NSIndexPath *ip = [NSIndexPath indexPathForRow:startIdx inSection:0];
+		A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:ip];
+		[noteCell.textView becomeFirstResponder];
+	}
+	else {
+		for (NSUInteger idx = startIdx; idx < _sectionItems.count; idx++) {
+			if ([_sectionItems[idx] isKindOfClass:[WalletField class]]) {
+				WalletField *field = _sectionItems[idx];
+
+				if (![field.type isEqualToString:WalletFieldTypeDate]
+						&& ![field.type isEqualToString:WalletFieldTypeImage]
+						&& ![field.type isEqualToString:WalletFieldTypeVideo])
+				{
+					NSIndexPath *ip = [NSIndexPath indexPathForRow:idx inSection:0];
+					A3WalletItemFieldCell *inputCell = (A3WalletItemFieldCell* )[self.tableView cellForRowAtIndexPath:ip];
+					[inputCell.valueTextField becomeFirstResponder];
+					break;
+				}
+			}
+		}
+	}
+
+	return YES;
 }
 
 #pragma mark - UITextViewDelegate
@@ -1011,6 +958,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     [self dismissDatePicker];
     
     return YES;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+	self.firstResponder = textView;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
@@ -1028,9 +979,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
-    self.noteBackupText = textView.text;
-    
-    self.navigationItem.rightBarButtonItem.enabled = [self hasChanges];
+	self.firstResponder = nil;
+	_item.note = textView.text;
+
+    [self updateDoneButtonEnabled];
 }
 
 #pragma mark - tableView delegate
@@ -1053,11 +1005,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             if (IS_IPHONE) {
                 [self.navigationController pushViewController:viewController animated:YES];
             } else {
-                A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-                [rootViewController presentRightSideViewController:viewController];
+				_rightSideViewController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+				[self presentRightSideView:_rightSideViewController.view];
+				[self.navigationController addChildViewController:_rightSideViewController];
             }
-            
-            
         }
         else if ([[self.sectionItems objectAtIndex:indexPath.row] isKindOfClass:[WalletField class]]) {
             
@@ -1379,11 +1330,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 	noteCell.textView.font = [UIFont systemFontOfSize:17];
 
-	if (self.noteBackupText) {
-		noteCell.textView.text = _noteBackupText;
-	} else {
-		noteCell.textView.text = _item.note;
-	}
+	noteCell.textView.text = _item.note;
 	return noteCell;
 }
 
