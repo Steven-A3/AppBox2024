@@ -231,7 +231,6 @@
                                           self.nearbyVenues = [converter convertToObjects:venues];
                                           [self proccessAnnotations];
                                           [_infoTableView reloadData];
-                                          //            [self.searchDisplayController.searchResultsTableView reloadData];
                                           
                                           if ( [self.nearbyVenues count] > 2 ) {
                                               _tableViewHeightConstraint.constant = 229.0;
@@ -275,10 +274,6 @@
     if ( tableView == _currentLocationTableView )
         return 1;
     
-    //    if ( [self.searchDisplayController isActive] && isInputing )
-    //        return 0;
-    
-    //return ([self.nearbyVenues count] > 0) ? [self.nearbyVenues count] + (tableView != _infoTableView ? 1 : 0) : (tableView == _infoTableView ? 1 : 1) ;
     if ([self.nearbyVenues count] > 0) {
         if (tableView != _infoTableView) {
             return [self.nearbyVenues count] + 1;
@@ -364,10 +359,6 @@
             }
         }
     }
-    //    if ( [self.nearbyVenues count] > 0 )
-    //        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    //    else
-    //        cell.accessoryType = UITableViewCellAccessoryNone;
     
     if ( tableView != _infoTableView ) {
         cell.imageView.image = self.searchIcon;
@@ -383,8 +374,7 @@
     if ( cell == nil ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
         cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
-        cell.textLabel.font = [UIFont systemFontOfSize:17];
-        //cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
+        cell.textLabel.font = [UIFont systemFontOfSize:17]; 
         cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
@@ -434,11 +424,7 @@
         [actionSheet showInView:self.view];
     }
     else {
-        //        if ( [self.searchDisplayController isActive] ) {
-        //            [self.searchDisplayController setActive:NO animated:YES];
-        //        }
         FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];
-        //        [self moveToLocationDetailWithItem:item];
         NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
         [locItem setObject:[_eventModel objectForKey:EventItem_ID] forKey:EventItem_ID];
         [locItem setObject:@(item.location.coordinate.latitude) forKey:EventItem_Latitude];
@@ -451,11 +437,9 @@
         [locItem setObject:([item.contact length] > 0 ? item.contact : @"") forKey:EventItem_Contact];
         [_eventModel setObject:locItem forKey:EventItem_Location];
         [tableView reloadData];
-        //        [self.navigationController popViewControllerAnimated:YES];
+
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    //    [_mapView showAnnotations:@[item] animated:YES];
-    //    [_mapView selectAnnotation:item animated:YES];
 }
 
 - (void)registerVenueForPlacemark:(NSArray*)placemarks
@@ -577,11 +561,6 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 {
-//    NSInteger index = [self.nearbyVenues indexOfObject:view.annotation];
-//    if ( index != NSNotFound ) {
-//        [_infoTableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//    }
-    
     if ( IS_IPAD ) {
         [mapView deselectAnnotation:view.annotation animated:NO];
         
@@ -603,7 +582,6 @@
             [locItem setObject:([locationItem.contact length] > 0 ? locationItem.contact : @"") forKey:EventItem_Contact];
             [_eventModel setObject:locItem forKey:EventItem_Location];
             [self.navigationController popViewControllerAnimated:YES];
-            //[self dismissViewControllerAnimated:YES completion:nil];
         };
         
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -613,7 +591,6 @@
         self.popoverVC.delegate = self;
         viewCtrl.popoverVC = self.popoverVC;
         [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44.0) animated:NO];
-//        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
@@ -655,45 +632,6 @@
     }
 }
 
-/*
- #pragma mark - UISearchDisplayDelegate
- - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption
- {
- NSLog(@"%s",__FUNCTION__);
- return YES;
- }
- 
- - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString
- {
- NSLog(@"%s",__FUNCTION__);
- return YES;
- }
- 
- - (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView
- {
- 
- }
- 
- - (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView
- {
- 
- }
- 
- - (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView
- {
- [self showCurrentLocationTableView];
- }
- 
- - (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView
- {
- [self hideCurrentLocationTableView];
- }
- 
- - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
- {
- [self hideCurrentLocationTableView];
- }
- */
 #pragma mark - UISearchBarDelegate
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {

@@ -28,6 +28,8 @@
 #import "SFKImage.h"
 #import "A3AppDelegate.h"
 #import "Reachability.h"
+#import "A3AppDelegate+appearance.h"
+
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
@@ -666,7 +668,7 @@
             }
             
             if ( [keyName isEqualToString:self.inputDateKey] && itemType == inputType ) {
-                dateLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+                dateLabel.textColor = [A3AppDelegate instance].themeColor;
             }
             else {
                 dateLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
@@ -829,7 +831,7 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             UILabel *button = (UILabel*)[cell viewWithTag:11];
             if (_isAdvancedCellOpen) {
-                textLabel.textColor = [UIColor colorWithRed:3.0/255.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+                textLabel.textColor = [A3AppDelegate instance].themeColor;
             }
             else {
                 textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
@@ -1532,7 +1534,7 @@
         [advancedRows addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
         [advancedRows addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
         
-        textLabel.textColor = [UIColor colorWithRed:3.0/255.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+        textLabel.textColor = [A3AppDelegate instance].themeColor;
         NSMutableArray *indexPathsToAdd = [NSMutableArray array];
         for (NSInteger row = [section1_items count]; row < ([section1_items count] + [advancedRows count]); row++) {
             [indexPathsToAdd addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];

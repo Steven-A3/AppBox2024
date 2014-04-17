@@ -34,7 +34,7 @@
 {
     NSDate *alarmDate = [_eventModel objectForKey:EventItem_AlertDatetime];
     _datePickerView.date = ( [alarmDate isKindOfClass:[NSDate class]] ? [_eventModel objectForKey:EventItem_AlertDatetime] : [NSDate date] );
-    //[_eventModel setObject:_datePickerView.date forKey:EventItem_AlertDatetime];
+
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView setTableFooterView:self.datePickerView];
     [self.tableView scrollRectToVisible:CGRectMake(0, self.tableView.contentSize.height - _datePickerView.frame.size.height, self.tableView.frame.size.width, _datePickerView.frame.size.height) animated:YES];
@@ -61,7 +61,7 @@
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+
     }
     return self;
 }
@@ -70,11 +70,6 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.title = @"Alert";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
@@ -97,7 +92,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -110,13 +104,11 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
     return [_itemArray count];
 }
 
@@ -144,15 +136,14 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     if (cell == nil) {
-        //if (rowType == AlertType_Custom) {
         if ((indexPath.row == ([_itemArray count] - 1))) {
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
             UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
-            detailLabel.text = @"day before";
-
+            detailLabel.text = @"day(s) before";
+            ((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 100;
             [self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
         }
         else {
@@ -161,31 +152,22 @@
     }
     
     // Configure the cell...
-    //if (rowType == AlertType_Custom && alertType == AlertType_Custom ) {
     if ((indexPath.row == ([_itemArray count]-1))) {
         UITextField *textField = (UITextField*)[cell viewWithTag:12];
         if ([[_eventModel objectForKey:EventItem_AlertDateType] isEqualToNumber:@1]) {  // Custom Type
             NSInteger days = (long)[A3DateHelper diffDaysFromDate:[_eventModel objectForKey:EventItem_AlertDatetime]
                                                            toDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]];
             textField.text = [NSString stringWithFormat:@"%ld", (long)days];
-            
-            UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
+
             if (days > 1) {
                 [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];
-                detailLabel.text = @"days before";
-                ((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 95;
             }
             else {
                 [self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
-                detailLabel.text = @"day before";
-                ((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 85;
             }
         }
         else {
             textField.text = @"0";
-            UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
-            detailLabel.text = @"day before";
-            ((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 85;
             [self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
         }
     }
@@ -230,6 +212,7 @@
         case 0:
             // None
             value = [NSNull null];
+            alertTimeInterval = -1;
             break;
         case 1:
             // at time of event
@@ -281,6 +264,15 @@
         [textField becomeFirstResponder];
     }
     else {
+        if (alertTimeInterval == -1) {
+            // none, 얼럿 제거.
+            [_eventModel setObject:[NSNull null] forKey:EventItem_AlertDatetime];
+            [_eventModel setObject:@(alertTimeInterval) forKey:EventItem_AlertDatetimeInterval];
+            [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+            [self doneButtonAction:nil];
+            return;
+        }
+        
         UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prevIndex inSection:0]];
         UITableViewCell *curCell = [self.tableView cellForRowAtIndexPath:indexPath];
         prevCell.accessoryType = UITableViewCellAccessoryNone;
@@ -356,8 +348,6 @@
 #pragma mark - UITextFieldDelegate
 - (void)textFieldDidChange:(NSNotification*)noti
 {
-    UITextField *textField = noti.object;
-    [_eventModel setObject:[NSNumber numberWithInteger:[textField.text integerValue]] forKey:EventItem_RepeatType];
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {

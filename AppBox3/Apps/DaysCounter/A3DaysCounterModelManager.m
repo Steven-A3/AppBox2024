@@ -374,7 +374,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)alertTypeIndexFromDate:(NSDate*)date alertDate:(id)alertDate
 {
-    if ( [alertDate isKindOfClass:[NSNull class]] || !date) {
+    if ( [alertDate isKindOfClass:[NSNull class]] || !date || !alertDate) {
         return AlertType_None;
     }
     
@@ -872,6 +872,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     if ( item.alertDatetime ) {
         [dict setObject:item.alertDatetime forKey:EventItem_AlertDatetime];
+        [dict setObject:item.alertInterval forKey:EventItem_AlertDatetimeInterval];
+        [dict setObject:item.alertType forKey:EventItem_AlertDateType];
     }
     if ( [item.calendarId length] > 0 ) {
         [dict setObject:item.calendarId forKey:EventItem_CalendarId];

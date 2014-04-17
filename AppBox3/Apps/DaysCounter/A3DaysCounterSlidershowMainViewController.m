@@ -77,7 +77,7 @@
             rightButtonView = _naviRightButtonView;
         }
         self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
+        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];        
         [self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
         [self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
