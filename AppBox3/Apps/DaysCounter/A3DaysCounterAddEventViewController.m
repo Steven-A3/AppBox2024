@@ -29,6 +29,7 @@
 #import "A3AppDelegate.h"
 #import "Reachability.h"
 #import "A3AppDelegate+appearance.h"
+#import "A3DateHelper.h"
 
 
 #define ActionTag_Location      100
@@ -45,20 +46,6 @@
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
 @property (assign, nonatomic) BOOL isDurationIntialized;//temp...
 
-- (void)alertMessage:(NSString*)message;
-- (BOOL)isExistsEndDateCellInItems:(NSArray*)items;
-- (void)reloadItems:(NSArray*)items withType:(NSInteger)cellType section:(NSInteger)section;
-- (void)removeDateInputCellWithItems:(NSMutableArray*)items indexPath:(NSIndexPath*)indexPath;
-- (void)showPhotoSelector;
-- (void)updateEndDateDiffFromStartDate:(NSDate*)startDate;
-
-- (void)resignAllAction;
-- (void)cancelAction:(UIBarButtonItem *)button;
-- (void)toggleFavorite:(id)sender;
-- (void)photoAction:(id)sender;
-- (void)toggleSwitchAction:(id)sender;
-- (void)dateChangeAction:(id)sender;
-- (void)toggleDateInputAction:(id)sender;
 @end
 
 @implementation A3DaysCounterAddEventViewController
@@ -79,7 +66,10 @@
 {
     [super viewDidLoad];
     
-    self.cellIDArray = @[@"titleCell",@"photoCell",@"switchCell",@"switchCell",@"switchCell",@"dateCell",@"dateCell",@"value1Cell",@"value1Cell",@"value1Cell",@"calendarCell",@"value1Cell",@"value1Cell",@"notesCell",@"dateInputCell",@"",@"",@"advancedCell"];
+    self.cellIDArray = @[@"titleCell", @"photoCell", @"switchCell", @"switchCell", @"switchCell",       // 0 ~ 4
+                         @"dateCell", @"dateCell", @"value1Cell", @"value1Cell", @"value1Cell",         // 5 ~ 9
+                         @"calendarCell", @"value1Cell", @"value1Cell", @"notesCell", @"dateInputCell", // 10 ~ 14
+                         @"", @"", @"advancedCell", @"", @"switchCell"];    // 15 ~ 19
     
     if (_eventItem) {
         self.title = @"Edit Event";
@@ -100,23 +90,36 @@
         [self setupSectionTemplateWithInfo:_eventItem];
     }
     else {
-        self.sectionTitleArray = [NSMutableArray arrayWithObjects:
-                                  // section 0
-                                  @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},
-                                                                                                                @{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
-                                  // section 1
-                                  @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:@{EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)},
-                                                                                                                @{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},
-                                                                                                                @{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},
-                                                                                                                @{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)},
-                                                                                                                @{EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
+        if ([[A3DaysCounterModelManager sharedManager] isSupportLunar]) {
+            self.sectionTitleArray = [NSMutableArray arrayWithObjects:
+                                      // section 0
+                                      @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:
+                                                                                    @{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},
+                                                                                    @{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
+                                      // section 1
+                                      @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:
+                                                                                   @{EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)},
+                                                                                   @{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)},
+                                                                                   @{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},
+                                                                                   @{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},
+                                                                                   @{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)},
+                                                                                   @{EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
+        }
+        else {
+            self.sectionTitleArray = [NSMutableArray arrayWithObjects:
+                                      // section 0
+                                      @{AddEventSectionName : @"", AddEventItems : [NSMutableArray arrayWithObjects:
+                                                                                    @{EventRowTitle : @"Title", EventRowType : @(EventCellType_Title)},
+                                                                                    @{EventRowTitle : @"Photo", EventRowType : @(EventCellType_Photo)}, nil]},
+                                      // section 1
+                                      @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:
+                                                                                   @{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},
+                                                                                   @{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},
+                                                                                   @{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)},
+                                                                                   @{EventRowTitle : @"ADVANCED", EventRowType : @(EventCellType_Advanced)}, nil]}, nil];
+        }
     }
-    
-    if ( ![[A3DaysCounterModelManager sharedManager] isSupportLunar] ) {
-        NSMutableArray *items = [[self.sectionTitleArray objectAtIndex:1] objectForKey:AddEventItems];
-        [items removeObjectAtIndex:0];
-    }
-    
+        
     [self.navigationController setToolbarHidden:YES];
     isFirstAppear = YES;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
@@ -286,66 +289,17 @@
     [self.tableView endUpdates];
 }
 
-- (void)showPhotoSelector
-{
-    A3PhotoSelectViewController *viewCtrl = [[A3PhotoSelectViewController alloc] initWithNibName:@"A3PhotoSelectViewController" bundle:nil];
-    viewCtrl.delegate = self;
-
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:navCtrl animated:YES completion:nil];
-}
-
-- (BOOL)isExistsCellType:(NSInteger)cellType section:(NSInteger)section
-{
-    if ( section >= [_sectionTitleArray count] )
-        return NO;
-    
-    NSArray *items = [[_sectionTitleArray objectAtIndex:section] objectForKey:AddEventItems];
-    BOOL isExists = NO;
-    for(NSDictionary *item in items) {
-        if ( [[item objectForKey:EventRowType] integerValue] == cellType ) {
-            isExists = YES;
-            break;
-        }
-    }
-    
-    return isExists;
-}
-
-- (void)insertCellType:(NSInteger)cellType row:(NSInteger)row section:(NSInteger)section
-{
-    if ( section >= [_sectionTitleArray count] )
-        return;
-    
-    NSMutableArray *items = [[_sectionTitleArray objectAtIndex:section] objectForKey:AddEventItems];
-    if ( row >= ([items count]+1) )
-        return;
-    
-    [items insertObject:@{EventRowTitle : [[A3DaysCounterModelManager sharedManager] titleForCellType:cellType],EventRowType : @(cellType)} atIndex:row];
-}
-
-- (void)removeCellType:(NSInteger)cellType section:(NSInteger)section
-{
-    if ( section >= [_sectionTitleArray count] )
-        return;
-    
-    NSMutableArray *items = [[_sectionTitleArray objectAtIndex:section] objectForKey:AddEventItems];
-    NSMutableArray *removeItems = [NSMutableArray array];
-    for(NSDictionary *item in items) {
-        if ( [[item objectForKey:EventRowType] integerValue] == cellType ) {
-            [removeItems addObject:item];
-        }
-    }
-    [items removeObjectsInArray:removeItems];
-    [removeItems removeAllObjects];
-    
-}
-
 - (void)setupSectionTemplateWithInfo:(DaysCounterEvent*)info
 {
     NSMutableArray *section1_Items = [NSMutableArray array];
-    [section1_Items addObject:@{ EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)}];
+    
+    if ([[A3DaysCounterModelManager sharedManager] isSupportLunar]) {
+        [section1_Items addObject:@{ EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)}];
+        if ([info.isLunar boolValue]) {
+            [section1_Items addObject:@{ EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
+        }
+    }
+    
     [section1_Items addObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
     [section1_Items addObject:@{ EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)}];
     [section1_Items addObject:@{ EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)}];
@@ -485,6 +439,7 @@
                 case EventCellType_IsLunar:
                 case EventCellType_IsAllDay:
                 case EventCellType_IsPeriod:
+                case EventCellType_IsLeapMonth:
                 {
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventSwitchCell" owner:nil options:nil] lastObject];
                     UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
@@ -604,6 +559,25 @@
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
             swButton.on = [[_eventModel objectForKey:EventItem_IsPeriod] boolValue];
+        }
+            break;
+        case EventCellType_IsLeapMonth:
+        {
+            UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
+            UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
+            titleLabel.text = [itemDict objectForKey:EventRowTitle];
+            swButton.on = [[_eventModel objectForKey:EventItem_IsLeapMonth] boolValue];
+            NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
+            NSDateComponents *startComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:startDate];
+            BOOL isLeapMonth = [NSDate isLunarLeapMonthAtDate:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            if (isLeapMonth) {
+                swButton.enabled = YES;
+            }
+            else {
+                swButton.enabled = NO;
+                swButton.on = NO;
+                [_eventModel setObject:@(NO) forKey:EventItem_IsLeapMonth];
+            }
         }
             break;
         case EventCellType_StartDate:
@@ -856,23 +830,6 @@
 }
 
 #pragma mark - Table view delegate
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
-//        cell.textLabel.frame = CGRectMake(cell.textLabel.frame.origin.x, cell.textLabel.frame.origin.y, cell.contentView.frame.size.width, cell.textLabel.frame.size.height);
-//    }
-//    else {
-//        NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
-//        NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
-//        NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
-//        
-//        switch (itemType) {
-//            default:
-//                break;
-//        }
-//    }
-//}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CGFloat retHeight = 0.0;
@@ -889,13 +846,8 @@
             case EventCellType_DateInput:
                 retHeight = 236.0;
                 break;
-            case EventCellType_Notes:{
-//                NSString *str = [_eventModel objectForKey:EventItem_Notes];
-//                CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, 99999.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
-//                retHeight = strBounds.size.height + 24.0;
-//                if ( retHeight < 180.0 )
-//                    retHeight = 180.0;
-                
+            case EventCellType_Notes:
+            {
                 NSString *str = [_eventModel objectForKey:EventItem_Notes];
                 NSDictionary *textAttributes = @{
                                                  NSFontAttributeName : [UIFont systemFontOfSize:17]
@@ -907,7 +859,6 @@
                 [txtView setAttributedText:attributedString];
                 float margin = IS_IPAD ? 49:31;
                 CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
-                //float cellHeight = txtViewSize.height + 20;
                 float cellHeight = txtViewSize.height;
                 
                 // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
@@ -1177,7 +1128,7 @@
                                                                      delegate:self
                                                             cancelButtonTitle:@"Cancel"
                                                        destructiveButtonTitle:([_eventModel objectForKey:EventItem_Location] ? @"Delete Location" : nil)
-                                                            otherButtonTitles:@"Use My Location",@"Search Location", nil];
+                                                            otherButtonTitles:@"Use My Location", @"Search Location", nil];
             actionSheet.tag = ActionTag_Location;
             [actionSheet showInView:self.view];
             [self closeDatePickerCell];
@@ -1262,7 +1213,7 @@
 {
     [self resignAllAction];
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:( [_eventModel objectForKey:EventItem_Image] ? @"Delete photo" : nil) otherButtonTitles:@"Take Photo",@"Choose Existing", nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:( [_eventModel objectForKey:EventItem_Image] ? @"Delete photo" : nil) otherButtonTitles:@"Take Photo", @"Choose Existing", nil];
     actionSheet.tag = ActionTag_Photo;
     [actionSheet showInView:self.view];
 }
@@ -1302,6 +1253,17 @@
     NSInteger rowItemType = [[rowItemData objectForKey:EventRowType] integerValue];
     if ( rowItemType == EventCellType_IsLunar ) {
         [_eventModel setObject:@(swButton.on) forKey:EventItem_IsLunar];
+        if ([swButton isOn]) {
+            NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsLunar atSectionArray:sectionRow_items];
+            [sectionRow_items insertObject:@{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)} atIndex:leapMonthRowIndex + 1];
+            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
+        }
+        else {
+            NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
+            [sectionRow_items removeObjectAtIndex:leapMonthRowIndex];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
+        }
+        
         NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
         [self updateEndDateDiffFromStartDate:startDate];
     }
@@ -1432,6 +1394,12 @@
 
     if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
         [self updateEndDateDiffFromStartDate:prevDate];
+        
+        if ([[_eventModel objectForKey:EventItem_IsLunar] boolValue]) {
+            NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
+                                                             inSection:AddSection_Section_1];
+            [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
     else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
         [self reloadItems:items withType:EventCellType_EndDate section:indexPath.section];

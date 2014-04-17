@@ -856,6 +856,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         }
     }
     [dict setObject:item.isLunar forKey:EventItem_IsLunar];
+    if ([item.isLunar boolValue]) {
+        [dict setObject:@(NO) forKey:EventItem_IsLeapMonth];
+    }
     [dict setObject:item.isAllDay forKey:EventItem_IsAllDay];
     [dict setObject:item.isPeriod forKey:EventItem_IsPeriod];
     [dict setObject:item.startDate forKey:EventItem_StartDate];

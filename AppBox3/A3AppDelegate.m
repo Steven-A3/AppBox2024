@@ -180,12 +180,12 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    NSString *type = [notification.userInfo objectForKey:@"type"];
+    NSString *notificationType = [notification.userInfo objectForKey:@"type"];
     
     // DaysCounter
-    if ([type isEqualToString:@"dc"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[notification.userInfo objectForKey:@"alert"]
-                                                        message:@""
+    if ([notificationType isEqualToString:@"dc"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:[notification.userInfo objectForKey:@"alert"]
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil, nil];
