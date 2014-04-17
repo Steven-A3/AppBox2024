@@ -13,24 +13,12 @@
 
 @implementation WalletItem (Favorite)
 
-- (BOOL)isFavored
+- (void)changeFavorite:(BOOL)isAdd
 {
-    NSArray *favors = [WalletFavorite MR_findByAttribute:@"item" withValue:self];
-    
-    if (favors.count > 0) {
-        return YES;
-    }
-    else {
-        return NO;
-    }
-}
-
-- (void)setFavor:(BOOL)onoff
-{
-    if (onoff) {
-        if (![self isFavored]) {
+    if (isAdd) {
+        if (self.favorite == nil) {
             WalletFavorite *favorite = [WalletFavorite MR_createEntity];
-            favorite.item = self;
+            self.favorite = favorite;
             
             // order set
             NSArray *favors = [WalletFavorite MR_findAllSortedBy:@"order" ascending:YES];
@@ -41,7 +29,7 @@
         }
     }
     else {
-        if ([self isFavored]) {
+        if (self.favorite != nil) {
             NSArray *favors = [WalletFavorite MR_findByAttribute:@"item" withValue:self];
             for (WalletFavorite *favor in favors) {
                 [favor MR_deleteEntity];

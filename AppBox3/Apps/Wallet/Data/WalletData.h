@@ -33,10 +33,6 @@
 + (NSDictionary *)styleList;
 + (NSArray *)categoryPresetData;
 
-+ (NSString *)thumbImgPathOfImgPath:(NSString *)imagePath;
-+ (NSString *)thumbImgPathOfVideoPath:(NSString *)videoPath;
-+ (void)deleteFileAtPath:(NSString *)filePath;
-
 + (float)getDurationOfMovie:(NSString *)filePath;
 + (NSDate *)getCreateDateOfMovie:(NSString *)filePath;
 + (UIImage *)videoPreviewImageOfURL:(NSURL *)videoUrl;

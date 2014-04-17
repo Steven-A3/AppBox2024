@@ -601,10 +601,9 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 	if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        
-        [self.category deleteAndClearRelated];
-        
-        [self dismissViewControllerAnimated:YES completion:NULL];
+		[self.category MR_deleteEntity];
+
+		[self dismissViewControllerAnimated:YES completion:NULL];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryDeleted object:nil];
 	}

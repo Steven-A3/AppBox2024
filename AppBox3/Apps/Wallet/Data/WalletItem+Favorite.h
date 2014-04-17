@@ -10,7 +10,6 @@
 
 @interface WalletItem (Favorite)
 
-- (BOOL)isFavored;
-- (void)setFavor:(BOOL)onoff;
+- (void)changeFavorite:(BOOL)isAdd;
 
 @end

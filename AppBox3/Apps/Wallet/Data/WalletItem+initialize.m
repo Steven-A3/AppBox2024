@@ -19,26 +19,4 @@
     return [self.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
-- (void)deleteAndClearRelated
-{
-    NSArray *fieldItems = [self fieldItemsArray];
-    for (int i=0; i<fieldItems.count; i++) {
-        WalletFieldItem *fieldItem = fieldItems[i];
-        [fieldItem deleteAndClearRelated];
-    }
-    
-    if ([self isFavored]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"item==%@", self];
-        NSArray *favors = [WalletFavorite MR_findAllWithPredicate:predicate];
-        
-        for (WalletFavorite *favor in favors) {
-            [favor MR_deleteEntity];
-        }
-    }
-    
-    [self MR_deleteEntity];
-
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-}
-
 @end

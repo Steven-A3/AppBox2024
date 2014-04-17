@@ -7,31 +7,53 @@
 //
 
 #import "WalletFieldItem+initialize.h"
-#import "WalletField.h"
+#import "WalletField+initialize.h"
 #import "WalletData.h"
 
 @implementation WalletFieldItem (initialize)
 
-- (void)deleteAndClearRelated
-{
-    if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
-        if (self.filePath.length > 0) {
-            NSString *thumbPath = [WalletData thumbImgPathOfImgPath:self.filePath];
-            [WalletData deleteFileAtPath:self.filePath];
-            [WalletData deleteFileAtPath:thumbPath];
-        }
-    }
-    else if ([self.field.type isEqualToString:WalletFieldTypeVideo]) {
-        if (self.filePath.length > 0) {
-            NSString *thumbPath = [WalletData thumbImgPathOfVideoPath:self.filePath];
-            [WalletData deleteFileAtPath:self.filePath];
-            [WalletData deleteFileAtPath:thumbPath];
-        }
-    }
-    
-    [self MR_deleteEntity];
+- (void)prepareForDeletion {
+	[super prepareForDeletion];
+}
 
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+- (void)awakeFromInsert {
+	[super awakeFromInsert];
+
+	self.uniqueID = [[NSUUID UUID] UUIDString];
+}
+
+- (NSString *)imageThumbnailPath {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	NSString *cachesDirectory = [paths objectAtIndex:0];
+	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-imageThumbnail", self.uniqueID];
+	return [cachesDirectory stringByAppendingPathComponent:imageThumbnail];
+}
+
+- (NSString *)videoThumbnailPath {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+	NSString *cachesDirectory = [paths objectAtIndex:0];
+	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-videoThumbnail", self.uniqueID];
+	return [cachesDirectory stringByAppendingPathComponent:imageThumbnail];
+}
+
+- (NSString *)videoFilePath {
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+	NSString *libraryDirectory = [paths objectAtIndex:0];
+	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-video", self.uniqueID];
+	return [libraryDirectory stringByAppendingPathComponent:imageThumbnail];
+}
+
+- (UIImage *)thumbnailImage {
+	NSString *thumbnailPath = nil;
+	if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
+		thumbnailPath = self.imageThumbnailPath;
+	} else if ([self.field.type isEqualToString:WalletFieldTypeVideo]) {
+		thumbnailPath = self.videoThumbnailPath;
+	}
+	if (thumbnailPath) {
+		return [[UIImage alloc] initWithContentsOfFile:thumbnailPath];
+	}
+	return nil;
 }
 
 @end

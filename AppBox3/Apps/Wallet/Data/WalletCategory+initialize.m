@@ -124,26 +124,4 @@ NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c
 	return [array count] ? array[0] : nil;
 }
 
-- (void)deleteAndClearRelated
-{
-    NSPredicate *predicate1 = [NSPredicate predicateWithFormat:@"category==%@", self];
-    NSArray *items1 = [WalletItem MR_findAllWithPredicate:predicate1];
-    
-    for (int i=0; i<items1.count; i++) {
-        WalletItem *item = items1[i];
-        [item deleteAndClearRelated];
-    }
-    NSPredicate *predicate2 = [NSPredicate predicateWithFormat:@"category==%@", self];
-    NSArray *items2 = [WalletField MR_findAllWithPredicate:predicate2];
-    
-    for (int i=0; i<items2.count; i++) {
-        WalletField *item = items2[i];
-        [item MR_deleteEntity];
-    }
-    
-    [self MR_deleteEntity];
-
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-}
-
 @end

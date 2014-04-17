@@ -345,7 +345,9 @@
     </entity>
     <entity name="WalletFieldItem" representedClassName="WalletFieldItem" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasVideo" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="A3ImageToDataTransformer" storedInTruthFile="YES" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletField" inverseName="fieldItems" inverseEntity="WalletField" syncable="YES"/>
         <relationship name="walletItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="fieldItems" inverseEntity="WalletItem" syncable="YES"/>
@@ -398,7 +400,7 @@
         <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="163"/>
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
-        <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="118"/>
+        <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="148"/>
     </elements>
 </model>

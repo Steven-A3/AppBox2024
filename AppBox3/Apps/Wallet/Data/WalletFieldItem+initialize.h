@@ -10,6 +10,10 @@
 
 @interface WalletFieldItem (initialize)
 
-- (void)deleteAndClearRelated;
+- (NSString *)imageThumbnailPath;
+- (NSString *)videoThumbnailPath;
 
+- (NSString *)videoFilePath;
+
+- (UIImage *)thumbnailImage;
 @end

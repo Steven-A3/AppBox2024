@@ -20,6 +20,4 @@ extern NSString *const A3WalletUUIDFavoriteCategory;
 + (WalletCategory *)allCategory;
 + (WalletCategory *)favoriteCategory;
 
-- (void)deleteAndClearRelated;
-
 @end

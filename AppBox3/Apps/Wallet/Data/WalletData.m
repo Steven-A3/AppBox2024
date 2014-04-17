@@ -39,30 +39,6 @@
     return [[NSArray alloc] initWithContentsOfFile:filePath];
 }
 
-+ (NSString *)thumbImgPathOfImgPath:(NSString *)imagePath
-{
-    NSString *extenstion = [imagePath pathExtension];
-    imagePath = [[[imagePath stringByDeletingPathExtension] stringByAppendingString:@"_thumb"] stringByAppendingPathExtension:extenstion];
-    
-    return imagePath;
-}
-
-+ (NSString *)thumbImgPathOfVideoPath:(NSString *)videoPath
-{
-    NSString *imagePath = [[[videoPath stringByDeletingPathExtension] stringByAppendingString:@"_thumb"] stringByAppendingPathExtension:@"jpg"];
-    
-    return imagePath;
-}
-
-+ (void)deleteFileAtPath:(NSString *)filePath
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    
-    if (filePath && [fm fileExistsAtPath:filePath]) {
-        [fm removeItemAtPath:filePath error:nil];
-    }
-}
-
 + (float)getDurationOfMovie:(NSString *)filePath
 {
     AVURLAsset* audioAsset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:filePath] options:nil];
