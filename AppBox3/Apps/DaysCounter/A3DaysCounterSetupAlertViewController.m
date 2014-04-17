@@ -17,6 +17,7 @@
 #import "A3DateHelper.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3DaysCounterRepeatCustomCell.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -144,6 +145,8 @@
             UILabel *detailLabel = (UILabel*)[cell viewWithTag:11];
             detailLabel.text = @"day(s) before";
             ((A3DaysCounterRepeatCustomCell *)cell).daysLabelWidthConst.constant = 100;
+            ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
             [self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
         }
         else {

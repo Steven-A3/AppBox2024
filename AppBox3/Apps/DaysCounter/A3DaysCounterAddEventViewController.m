@@ -192,16 +192,14 @@
         return YES;
     }
     
-//    DaysCounterCalendar *calendar = [_eventModel objectForKey:EventItem_Calendar];
-//    if (calendar && calendar.calendarName) {
-//        return YES;
-//    }
-    
-//    NSString *durationString = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
-//    if ([durationString length] > 0) {
-//        return YES;
-//    }
-    
+    NSInteger durationType = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+    if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue] &&  durationType != DurationOption_Day) {
+        return YES;
+    }
+    if (![[_eventModel objectForKey:EventItem_IsAllDay] boolValue] &&  durationType != (DurationOption_Day|DurationOption_Hour|DurationOption_Minutes)) {
+        return YES;
+    }
+
     NSMutableDictionary *location = [_eventModel objectForKey:EventItem_Location];
     if ( location ) {
         return YES;

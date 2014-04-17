@@ -14,6 +14,7 @@
 #import "SFKImage.h"
 #import "A3DaysCounterAddAndEditCalendarViewController.h"
 #import "DaysCounterCalendar.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterEditCalendarListViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -94,11 +95,10 @@
     static NSString *CellIdentifier = @"calendarEditCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:2];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterCalendarListMainEditCell" owner:nil options:nil] lastObject];
         UIButton *checkButton = (UIButton*)[cell viewWithTag:10];
         [SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:18.0]];
-        [SFKImage setDefaultColor:[UIColor colorWithRed:0.0 green:108.0/255.0 blue:1.0 alpha:1.0]];
+        [SFKImage setDefaultColor:[A3AppDelegate instance].themeColor];
         UIImage *image = [SFKImage imageNamed:@"check"];
         [checkButton setImage:image forState:UIControlStateSelected];
         [checkButton setImage:nil forState:UIControlStateNormal];

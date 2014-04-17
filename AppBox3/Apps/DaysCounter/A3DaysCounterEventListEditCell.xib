@@ -20,9 +20,6 @@
                             <constraint firstAttribute="height" constant="22" id="sdX-cd-VTS"/>
                             <constraint firstAttribute="width" constant="22" id="sy2-y8-7tD"/>
                         </constraints>
-                        <state key="normal" image="check">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
                         <state key="selected" image="check"/>
                     </button>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="y3A-86-D80">
