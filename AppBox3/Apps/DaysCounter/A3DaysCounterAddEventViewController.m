@@ -99,7 +99,6 @@
                                       // section 1
                                       @{AddEventSectionName : @"",AddEventItems : [NSMutableArray arrayWithObjects:
                                                                                    @{EventRowTitle : @"Lunar", EventRowType : @(EventCellType_IsLunar)},
-                                                                                   @{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)},
                                                                                    @{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)},
                                                                                    @{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)},
                                                                                    @{EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)},
@@ -542,6 +541,7 @@
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
             swButton.on = [[_eventModel objectForKey:EventItem_IsLunar] boolValue];
+            swButton.enabled = YES;
             break;
         }
             break;
@@ -551,6 +551,7 @@
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
             swButton.on = [[_eventModel objectForKey:EventItem_IsAllDay] boolValue];
+            swButton.enabled = YES;
         }
             break;
         case EventCellType_IsPeriod:
@@ -559,6 +560,7 @@
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
             swButton.on = [[_eventModel objectForKey:EventItem_IsPeriod] boolValue];
+            swButton.enabled = YES;
         }
             break;
         case EventCellType_IsLeapMonth:
@@ -566,12 +568,13 @@
             UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
             UISwitch *swButton = (UISwitch*)[cell viewWithTag:11];
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
-            swButton.on = [[_eventModel objectForKey:EventItem_IsLeapMonth] boolValue];
+            
             NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
             NSDateComponents *startComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:startDate];
             BOOL isLeapMonth = [NSDate isLunarLeapMonthAtDate:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (isLeapMonth) {
                 swButton.enabled = YES;
+                swButton.on = [[_eventModel objectForKey:EventItem_IsLeapMonth] boolValue];
             }
             else {
                 swButton.enabled = NO;
@@ -1266,6 +1269,9 @@
         
         NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
         [self updateEndDateDiffFromStartDate:startDate];
+    }
+    else if ( rowItemType == EventCellType_IsLeapMonth ) {
+        [_eventModel setObject:@(swButton.on) forKey:EventItem_IsLeapMonth];
     }
     else if ( rowItemType == EventCellType_IsAllDay ) {
         [_eventModel setObject:@(swButton.on) forKey:EventItem_IsAllDay];
