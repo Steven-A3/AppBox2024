@@ -374,7 +374,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)alertTypeIndexFromDate:(NSDate*)date alertDate:(id)alertDate
 {
-    if ( [alertDate isKindOfClass:[NSNull class]] || !date) {
+    if ( [alertDate isKindOfClass:[NSNull class]] || !date || !alertDate) {
         return AlertType_None;
     }
     
@@ -511,7 +511,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     [item setObject:[NSNumber numberWithBool:NO] forKey:EventItem_IsPeriod];
     [item setObject:[NSDate date] forKey:EventItem_StartDate];
     [item setObject:[NSNull null] forKey:EventItem_EndDate];
-    [item setObject:[NSNumber numberWithInteger:0] forKey:EventItem_RepeatType];
+    [item setObject:[NSDate date] forKey:EventItem_EffectiveStartDate];
+//    [item setObject:[NSNumber numberWithInteger:0] forKey:EventItem_RepeatType];
     [item setObject:[NSNull null] forKey:EventItem_RepeatEndDate];
     [item setObject:[NSNull null] forKey:EventItem_AlertDatetime];
     [item setObject:(defaultCal ? defaultCal.calendarId : @"") forKey:EventItem_CalendarId];
@@ -862,13 +863,17 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if ( item.endDate ) {
         [dict setObject:item.endDate forKey:EventItem_EndDate];
     }
-    [dict setObject:item.repeatType forKey:EventItem_RepeatType];
+    if (item.repeatType) {
+        [dict setObject:item.repeatType forKey:EventItem_RepeatType];
+    }
     
     if ( item.repeatEndDate ) {
         [dict setObject:item.repeatEndDate forKey:EventItem_RepeatEndDate];
     }
     if ( item.alertDatetime ) {
         [dict setObject:item.alertDatetime forKey:EventItem_AlertDatetime];
+        [dict setObject:item.alertInterval forKey:EventItem_AlertDatetimeInterval];
+        [dict setObject:item.alertType forKey:EventItem_AlertDateType];
     }
     if ( [item.calendarId length] > 0 ) {
         [dict setObject:item.calendarId forKey:EventItem_CalendarId];
@@ -890,6 +895,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( item.effectiveStartDate ) {
         [dict setObject:item.effectiveStartDate forKey:EventItem_EffectiveStartDate];
+    }
+    else {
+        [dict setObject:item.startDate forKey:EventItem_EffectiveStartDate];
     }
     
     return dict;
@@ -1661,10 +1669,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             UILocalNotification *notification = [UILocalNotification new];
             notification.fireDate = [event alertDatetime];
             notification.alertBody = [event eventName];
-            notification.userInfo = @{ @"aps" : @{ @"alert" : [event.eventName length] > 20 ? [event.eventName substringWithRange:NSMakeRange(0, 20)] : [event eventName] },
-                                       @"type" : @"dc",
-                                       @"notes" : [event.notes length] > 40 ? [event.notes substringWithRange:NSMakeRange(0, 40)] : [event notes]
-                                       };
+            notification.userInfo = @{ @"alert" : [event eventName],
+                                       @"type" : @"dc" };
             
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
             [localNotifications addObject:notification];

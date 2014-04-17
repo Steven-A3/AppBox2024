@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -18,7 +18,6 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="30" id="GGb-kV-oXz"/>
-                            <constraint firstAttribute="width" constant="139" id="viv-8k-3FF"/>
                         </constraints>
                         <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -52,19 +51,21 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="CHj-Sx-cyX" secondAttribute="trailing" constant="15" id="2CZ-qn-eyP"/>
+                    <constraint firstItem="8BK-Ol-4Fw" firstAttribute="leading" relation="lessThanOrEqual" secondItem="aOJ-W5-WPE" secondAttribute="trailing" constant="56" id="Bum-GP-INh"/>
+                    <constraint firstItem="xya-rQ-JY7" firstAttribute="leading" secondItem="8BK-Ol-4Fw" secondAttribute="trailing" id="HVw-gO-g67"/>
                     <constraint firstAttribute="centerY" secondItem="aOJ-W5-WPE" secondAttribute="centerY" id="HbW-sK-zRR"/>
                     <constraint firstAttribute="trailing" secondItem="xya-rQ-JY7" secondAttribute="trailing" id="IFL-Qj-ta1"/>
                     <constraint firstAttribute="centerY" secondItem="CHj-Sx-cyX" secondAttribute="centerY" id="Otc-an-8IF"/>
                     <constraint firstAttribute="centerY" secondItem="8BK-Ol-4Fw" secondAttribute="centerY" id="mOx-g6-P8l"/>
                     <constraint firstAttribute="centerY" secondItem="xya-rQ-JY7" secondAttribute="centerY" id="pB1-1G-rcR"/>
                     <constraint firstItem="aOJ-W5-WPE" firstAttribute="leading" secondItem="ggt-yX-K2m" secondAttribute="leading" constant="15" id="rW3-Al-ovk"/>
-                    <constraint firstItem="xya-rQ-JY7" firstAttribute="leading" secondItem="8BK-Ol-4Fw" secondAttribute="trailing" id="znT-wb-kv3"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="checkImageTrailingConst" destination="2CZ-qn-eyP" id="wWK-6c-rAH"/>
                 <outlet property="checkImageView" destination="CHj-Sx-cyX" id="c1N-tE-DTU"/>
                 <outlet property="daysLabelTrailingConst" destination="IFL-Qj-ta1" id="WYg-Ou-lVW"/>
+                <outlet property="daysLabelWidthConst" destination="F33-GS-GJ6" id="sxm-uO-a5j"/>
             </connections>
         </tableViewCell>
     </objects>

@@ -189,24 +189,12 @@
                  [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
             return @"Now";
         }
-        
-        fromComp.second = 0;
-        toComp.second = 0;
-        
-        NSDateComponents *daysGapComp = [calendar components:NSSecondCalendarUnit
-                                                    fromDate:[calendar dateFromComponents:fromComp]
-                                                      toDate:[calendar dateFromComponents:toComp]
-                                                     options:0];
-        if ([daysGapComp second] == 0) {
-            return @"Now";
+
+        if ([toDate timeIntervalSince1970] > [fromDate timeIntervalSince1970]) {
+            return @"until";
         }
         else {
-            if ([daysGapComp second] > 0) {
-                return @"until";
-            }
-            else {
-                return @"since";
-            }
+            return @"since";
         }
     }
 }

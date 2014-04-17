@@ -102,7 +102,7 @@ typedef CMathParser<char, double> MathParser;
     NSUInteger numLen = [[NSString stringWithFormat:@"%f", value] length];
     NSString *resultString = nil;
     
-    if (1 > value) maxSignificantDigits = 15; // why app's default calculator like this??
+   // if (1 > value) maxSignificantDigits = 15; // why app's default calculator like this??
     
     if (isShort  == YES) {
         maxFractionDigt = 9;
@@ -1441,6 +1441,20 @@ typedef CMathParser<char, double> MathParser;
             mathexpression = num;
         }
         
+        NSUInteger i = 1;
+        NSRange range;
+        range.length = 1;
+        do {
+            range.location = [mathexpression length] - i++;
+            range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] options:0 range:range];
+        } while (range.location != NSNotFound &&
+                 i < [mathexpression length]);
+        
+        if (IS_IPHONE && IS_PORTRAIT) {
+            if (i >= 9) return;
+        } else {
+            if (i >= 15) return;
+        }
         mathexpression = [mathexpression stringByAppendingString:num];
         [self convertMathExpressionToAttributedString];
         [self evaluateAndSet];

@@ -17,14 +17,12 @@
 @property (strong, nonatomic) IBOutlet UILabel *numberOfCalendarLabel;
 @property (strong, nonatomic) IBOutlet UILabel *numberOfEventsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *updateDateLabel;
-@property (strong, nonatomic) IBOutlet UIButton *editButton;
 @property (strong, nonatomic) IBOutlet UIView *iPadheaderView;
 @property (strong, nonatomic) IBOutlet UILabel *numberOfCalendarLabeliPad;
 @property (strong, nonatomic) IBOutlet UILabel *numberOfEventsLabeliPad;
 @property (strong, nonatomic) IBOutlet UILabel *updateDateLabeliPad;
 @property (strong, nonatomic) IBOutlet UIButton *addEventButton;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIButton *searchButton;
 @property (strong, nonatomic) IBOutlet UILabel *headerEventLabel;
 @property (weak, nonatomic) IBOutlet UILabel *headerEventLabel_iPad;
 

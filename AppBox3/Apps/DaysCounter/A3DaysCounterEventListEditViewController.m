@@ -47,7 +47,6 @@
     [super viewDidLoad];
 
     self.title = _calendarItem.calendarName;
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(cancelAction:)];
     [self rightBarButtonDoneButton];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
     self.toolbarItems = _bottomToolbar.items;
@@ -105,8 +104,7 @@
     static NSString *CellIdentifier = @"eventListEditCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:1];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListEditCell" owner:nil options:nil] lastObject];
         UIButton *button = (UIButton*)[cell viewWithTag:11];
         [button setImage:self.checkNormalImage forState:UIControlStateNormal];
         [button addTarget:self action:@selector(toggleSelectAction:) forControlEvents:UIControlEventTouchUpInside];

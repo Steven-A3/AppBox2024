@@ -26,6 +26,7 @@
 #import "UIImage+JHExtension.h"
 #import "A3DefaultColorDefines.h"
 #import "A3DaysCounterSlideshowViewController.h"
+#import "A3AppDelegate+appearance.h"
 
 #define VISIBLE_INDEX_INTERVAL      2
 
@@ -76,8 +77,7 @@
             rightButtonView = _naviRightButtonView;
         }
         self.infoButton = (UIButton*)[rightButtonView viewWithTag:10];
-        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];
-        
+        self.shareButton = (UIButton*)[rightButtonView viewWithTag:11];        
         [self.infoButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"information"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
         [self.shareButton setImage:[UIImage getImageToGreyImage:[UIImage imageNamed:@"share"] grayColor:COLOR_DISABLE_POPOVER] forState:UIControlStateDisabled];
     }
@@ -101,7 +101,7 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.delegate = self;
-    __block NSUInteger indexOfTodayPhoto = -1;
+    __block NSInteger indexOfTodayPhoto = -1;
     self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
     NSDate *now = [NSDate date];
     [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
@@ -113,10 +113,13 @@
         indexOfTodayPhoto = idx;
     }];
     
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]
-                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                    animated:NO];
-    currentIndex = indexOfTodayPhoto;
+    if (indexOfTodayPhoto != -1) {
+        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                        animated:NO];
+        currentIndex = indexOfTodayPhoto;
+    }
+
     [self updateNavigationTitle];
     
     // Start Timer 화면 갱신.

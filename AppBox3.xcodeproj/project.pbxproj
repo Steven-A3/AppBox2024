@@ -56,6 +56,7 @@
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
+		579B81AC18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */; };
 		57D31ACE18E95C120081A810 /* A3DaysCounterEventInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */; };
 		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
@@ -1042,6 +1043,7 @@
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
 		577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListSectionHeader.h; sourceTree = "<group>"; };
 		577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListSectionHeader.m; sourceTree = "<group>"; };
+		579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterEventListEditCell.xib; sourceTree = "<group>"; };
 		57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventInfoCell.h; sourceTree = "<group>"; };
 		57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventInfoCell.m; sourceTree = "<group>"; };
 		6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3EmptyActionMenuViewController_iPad.xib; path = ViewControllers/A3EmptyActionMenuViewController_iPad.xib; sourceTree = "<group>"; };
@@ -5043,9 +5045,6 @@
 				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
 				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
 				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
-				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
-				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
-				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
 			);
 			name = "Event Related";
 			sourceTree = "<group>";
@@ -5117,6 +5116,9 @@
 				68F1C7F218D7F37D009FAE8A /* A3DaysCounterEventListViewController.h */,
 				68F1C7F318D7F37D009FAE8A /* A3DaysCounterEventListViewController.m */,
 				68F1C7F418D7F37D009FAE8A /* A3DaysCounterEventListViewController.xib */,
+				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
+				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
+				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
 				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
 				68F1C7E918D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.m */,
 				68F1C7EA18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib */,
@@ -5198,6 +5200,7 @@
 				804A405F18E070C500556029 /* A3DaysCounterEventListDateCell.h */,
 				804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */,
 				8076BCB018FA8CA400613E70 /* A3DaysCounterEventListDateCell.xib */,
+				579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */,
 				68F1C7D318D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib */,
 				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
@@ -5484,6 +5487,7 @@
 				68F1C8B318D7F37D009FAE8A /* A3PhotoSelectCell.xib in Resources */,
 				68143D0118E3EC1F00569691 /* A3NumberKeyboardSimplePrevNextVC_iPhone.xib in Resources */,
 				684D92F118BC1FBC005016F7 /* A3DateCalcAddSubCell2.xib in Resources */,
+				579B81AC18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib in Resources */,
 				6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */,
 				6831EBFE18619CC800BAF15B /* AppBoxCacheStore.sqlite-wal in Resources */,
 				68F1C8C718D7F37D009FAE8A /* A3LadyCalendarChartViewController.xib in Resources */,

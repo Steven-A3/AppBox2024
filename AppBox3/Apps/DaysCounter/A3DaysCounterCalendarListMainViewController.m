@@ -52,7 +52,10 @@
     [self makeBackButtonEmptyArrow];
     [self registerContentSizeCategoryDidChangeNotification];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightTopButtonView];
+    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
+    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    self.navigationItem.rightBarButtonItems = @[edit, search];
+
     [self setToolbarItems:_bottomToolbar.items];
     
     if ( IS_IPHONE ) {
@@ -105,7 +108,8 @@
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
     
-    _searchButton.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
+    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
