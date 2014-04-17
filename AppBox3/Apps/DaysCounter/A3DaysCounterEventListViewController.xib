@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -8,12 +8,9 @@
             <connections>
                 <outlet property="addEventButton" destination="1yj-jE-SCC" id="AUB-Nq-Vzr"/>
                 <outlet property="bottomToolbar" destination="S3u-7Y-Yjq" id="kzk-zt-0mB"/>
-                <outlet property="editButton" destination="c85-mX-z3r" id="kkj-p7-CFz"/>
                 <outlet property="headerSeperatorView" destination="uWa-Al-TvQ" id="aji-RM-t5j"/>
                 <outlet property="headerView" destination="rtE-zw-6ea" id="XKW-Vo-8PF"/>
                 <outlet property="headerViewSeparatorHeightConst" destination="hIe-Q4-k75" id="j24-M5-hDh"/>
-                <outlet property="rightButtonsView" destination="1x4-LW-hvp" id="i6Y-Ee-1cf"/>
-                <outlet property="searchButton" destination="BQK-6w-vHW" id="GLY-Wy-Gxl"/>
                 <outlet property="searchDisplayController" destination="dwC-tC-hWB" id="hvZ-AF-qKg"/>
                 <outlet property="segmentControlWidthConst" destination="9uX-E1-UZf" id="kae-Dr-HDV"/>
                 <outlet property="sortTypeSegmentCtrl" destination="S9q-hc-7Mt" id="OQb-3T-ZGR"/>
@@ -86,47 +83,6 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="1x4-LW-hvp" userLabel="View - top button">
-            <rect key="frame" x="0.0" y="0.0" width="69" height="33"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c85-mX-z3r">
-                    <rect key="frame" x="32" y="2" width="37" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="2v0-Oq-RKC"/>
-                        <constraint firstAttribute="width" priority="800" constant="37" id="bOl-Ed-BRs"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <state key="normal" title="Edit">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="editAction:" destination="-1" eventType="touchUpInside" id="CjP-nY-Gul"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQK-6w-vHW">
-                    <rect key="frame" x="0.0" y="2" width="24" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="9rX-1Q-QAS"/>
-                        <constraint firstAttribute="width" priority="800" constant="24" id="umV-6D-7uM"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <state key="normal" image="search"/>
-                    <connections>
-                        <action selector="searchAction:" destination="-1" eventType="touchUpInside" id="cpE-57-bfo"/>
-                    </connections>
-                </button>
-            </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <constraints>
-                <constraint firstItem="c85-mX-z3r" firstAttribute="leading" secondItem="BQK-6w-vHW" secondAttribute="trailing" constant="8" id="Fnk-c5-6pD"/>
-                <constraint firstAttribute="centerY" secondItem="BQK-6w-vHW" secondAttribute="centerY" id="HjP-7v-aNa"/>
-                <constraint firstAttribute="centerY" secondItem="c85-mX-z3r" secondAttribute="centerY" id="aPd-uD-oi0"/>
-                <constraint firstAttribute="trailing" secondItem="c85-mX-z3r" secondAttribute="trailing" id="x9o-NI-gdC"/>
-            </constraints>
-        </view>
         <searchBar contentMode="redraw" id="AWt-jT-k3r">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -189,7 +145,6 @@
         <image name="listbox_on" width="30" height="30"/>
         <image name="photoview" width="30" height="30"/>
         <image name="reminder" width="30" height="30"/>
-        <image name="search" width="16" height="16"/>
         <image name="star01" width="26" height="26"/>
     </resources>
 </document>

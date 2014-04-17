@@ -54,7 +54,9 @@
     [super viewDidLoad];
 
     self.title = [NSString stringWithFormat:@"%@%@",_calendarItem.calendarName,([_calendarItem.calendarType integerValue] == CalendarCellType_User ? @"" : @" Events")];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_rightButtonsView];
+    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
+    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    self.navigationItem.rightBarButtonItems = @[edit, search];
     [self makeBackButtonEmptyArrow];
     [self registerContentSizeCategoryDidChangeNotification];
     _sortType = EventSortType_Name;
@@ -222,8 +224,10 @@
     _sortTypeSegmentCtrl.enabled = ([_sourceArray count] > 0);
     _sortTypeSegmentCtrl.tintColor =(_sortTypeSegmentCtrl.enabled ? nil : [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0]);
     
-    _searchButton.enabled = ([_sourceArray count] > 0);
-    _editButton.enabled = ([_sourceArray count] > 0);
+    UIBarButtonItem *edit = [self.navigationItem.rightBarButtonItems objectAtIndex:0];
+    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    edit.enabled = ([_sourceArray count] > 0);
+    search.enabled = ([_sourceArray count] > 0);
 }
 
 - (UIImageView *)sortArrowImgView

@@ -18,11 +18,8 @@
 }
 
 @property (strong, nonatomic) DaysCounterCalendar *calendarItem;
-@property (weak, nonatomic) IBOutlet UIView *rightButtonsView;
 @property (weak, nonatomic) IBOutlet A3WalletSegmentedControl *sortTypeSegmentCtrl;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet UIButton *searchButton;
-@property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (weak, nonatomic) IBOutlet UIButton *addEventButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;

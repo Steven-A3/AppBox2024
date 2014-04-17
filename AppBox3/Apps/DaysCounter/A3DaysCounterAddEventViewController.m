@@ -1050,6 +1050,7 @@
                         [indexPathsToReload addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
                     }
                     [self.tableView beginUpdates];
+                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeRowIndex inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationNone];
                     [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeRowIndex + 1 inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationMiddle];
                     [self.tableView endUpdates];
                 }
@@ -1097,7 +1098,7 @@
                 NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
                 NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
                                                                  inSection:AddSection_Section_1];
-//                [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
+
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
                                                                                                 alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
