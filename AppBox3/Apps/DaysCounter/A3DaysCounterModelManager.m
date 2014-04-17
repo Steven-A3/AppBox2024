@@ -1669,10 +1669,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             UILocalNotification *notification = [UILocalNotification new];
             notification.fireDate = [event alertDatetime];
             notification.alertBody = [event eventName];
-            notification.userInfo = @{ @"aps" : @{ @"alert" : [event.eventName length] > 20 ? [event.eventName substringWithRange:NSMakeRange(0, 20)] : [event eventName] },
-                                       @"type" : @"dc",
-                                       @"notes" : [event.notes length] > 40 ? [event.notes substringWithRange:NSMakeRange(0, 40)] : [event notes]
-                                       };
+            notification.userInfo = @{ @"alert" : [event eventName],
+                                       @"type" : @"dc" };
             
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
             [localNotifications addObject:notification];

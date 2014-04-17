@@ -150,7 +150,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-    NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+    NSInteger optionValue = self.selectedOptionFlag;//[[_eventModel objectForKey:EventItem_DurationOption] integerValue];
     NSInteger flag = [[item objectForKey:EventRowType] integerValue];
 
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];

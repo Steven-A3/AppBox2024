@@ -172,6 +172,25 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 	return NO;
 }
 
+#pragma mark Notification
+
+-(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    NSString *type = [notification.userInfo objectForKey:@"type"];
+    
+    // DaysCounter
+    if ([type isEqualToString:@"dc"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[notification.userInfo objectForKey:@"alert"]
+                                                        message:@""
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil, nil];
+        [alert show];
+    }
+}
+
+#pragma mark
+
 - (MMDrawerControllerDrawerVisualStateBlock)slideAndScaleVisualStateBlock{
 	MMDrawerControllerDrawerVisualStateBlock visualStateBlock =
 			^(MMDrawerController * drawerController, MMDrawerSide drawerSide, CGFloat percentVisible){

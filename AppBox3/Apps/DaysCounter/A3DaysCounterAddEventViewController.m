@@ -1159,7 +1159,7 @@
                 NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
                 NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_DurationOption atSectionArray:section1_items]
                                                                     inSection:AddSection_Section_1];
-//                [tableView deselectRowAtIndexPath:durationIndexPath animated:YES];
+                self.isDurationIntialized = YES;
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[[_eventModel objectForKey:EventItem_DurationOption] integerValue]];
@@ -1313,6 +1313,15 @@
         if (!_eventItem && [swButton isOn] == NO && !_isDurationIntialized) {
             _isDurationIntialized = YES;
             [_eventModel setObject:@(DurationOption_Day|DurationOption_Hour|DurationOption_Minutes) forKey:EventItem_DurationOption];
+        }
+        else if (!_eventItem && [swButton isOn]) {
+            NSInteger durationFlag = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+            durationFlag = durationFlag & ~(DurationOption_Hour|DurationOption_Minutes|DurationOption_Seconds);
+            if (durationFlag == 0) {
+                durationFlag = DurationOption_Day;
+            }
+            
+            [_eventModel setObject:@(durationFlag) forKey:EventItem_DurationOption];
         }
         
         [self reloadItems:sectionRow_items withType:EventCellType_DateInput section:indexPath.section animation:UITableViewRowAnimationNone];
