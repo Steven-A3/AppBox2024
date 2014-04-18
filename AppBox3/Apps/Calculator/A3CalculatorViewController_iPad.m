@@ -83,7 +83,7 @@
 
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
 	_textFieldForPlayInputClick.delegate = self;
-	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 0.1)];
 	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
 	[self.view addSubview:_textFieldForPlayInputClick];
 
@@ -137,7 +137,19 @@
     
     [self.view layoutIfNeeded];
 
-    [self setupBasicKeyPad];
+    [self checkRightButtonDisable];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"]){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"] isEqualToString:@"scientifc"]) {
+            [self setupScientifcKeyPad];
+            [self changeCalculatorKindString];
+        } else {
+            [self setupBasicKeyPad];
+        }
+    }
+    else {
+        [self setupBasicKeyPad];
+    }
+
 }
 
 - (void) setupBasicKeyPad {
@@ -186,6 +198,8 @@
         
     }
     
+    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? @"scientifc":@"basic" forKey:@"CalculatorMode"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self changeCalculatorKindString];
     
 }

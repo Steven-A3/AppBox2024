@@ -134,7 +134,7 @@
     current_x+=buttonwidth;
     [self.number3button setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight+1)];
     current_x+=buttonwidth;
-    [self.operationendbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight*2)];
+    [self.operationendbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1, buttonheight*2+1)];
     
     current_x = start_x, current_y += buttonheight;
     [self.enumberbutton setFrame:CGRectMake(current_x, current_y,buttonwidth+1+1, buttonheight+1)];
