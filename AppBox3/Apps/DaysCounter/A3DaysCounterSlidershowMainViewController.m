@@ -39,6 +39,7 @@
 @property (strong, nonatomic) UIButton *infoButton;
 @property (strong, nonatomic) UIButton *shareButton;
 @property (strong, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) BOOL isRotating;
 
 - (void)showTopToolbarAnimated:(BOOL)animated;
 - (void)hideTopToolbarAnimated:(BOOL)animated;
@@ -102,33 +103,16 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.isRotating = NO;
     self.navigationController.delegate = self;
-    __block NSInteger indexOfTodayPhoto = -1;
+//    __block NSInteger indexOfTodayPhoto = -1;
     self.eventsArray = [[A3DaysCounterModelManager sharedManager] allEventsListContainedImage];
     NSDate *now = [NSDate date];
-    [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
-        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
-            indexOfTodayPhoto = (idx == 0) ? 0 : (idx - 1);
-            *stop = YES;
-            return;
-        }
-        indexOfTodayPhoto = idx;
-    }];
-    
-    if (indexOfTodayPhoto != -1) {
-        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]
-                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                        animated:NO];
-        currentIndex = indexOfTodayPhoto;
-    }
-
-    [self updateNavigationTitle];
     
     // Start Timer 화면 갱신.
     NSDateComponents *nowComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:now];
     [self performSelector:@selector(startTimer) withObject:nil afterDelay:60 - [nowComp second]];
-    
-    
+
     if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] > 0 ) {
         if ( !_isShowMoreMenu ) {
             self.navigationController.navigationBarHidden = YES;
@@ -166,6 +150,31 @@
 
     [_collectionView reloadData];
     
+//    [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
+//        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
+//            indexOfTodayPhoto = (idx == 0) ? 0 : (idx - 1);
+//            *stop = YES;
+//            return;
+//        }
+//        indexOfTodayPhoto = idx;
+//    }];
+//    
+//    if (indexOfTodayPhoto != -1) {
+//        UICollectionViewLayoutAttributes * cell = [_collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]];
+//        
+////        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]
+////                                atScrollPosition:UICollectionViewScrollPositionCenteredVertically
+////                                        animated:NO];
+//        CGRect rect = cell.frame;
+//        rect.origin.y = 0;
+//        rect.size = CGSizeMake(1, 1);
+//        [_collectionView scrollRectToVisible:rect animated:NO];
+//        
+//        currentIndex = indexOfTodayPhoto;
+//    }
+//    
+//    [self updateNavigationTitle];
+    
     [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -189,6 +198,46 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    if (_isRotating) {
+        return;
+    }
+    
+    __block NSInteger indexOfTodayPhoto = -1;
+
+    NSDate *now = [NSDate date];
+    [self.eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
+        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
+            indexOfTodayPhoto = (idx == 0) ? 0 : (idx - 1);
+            *stop = YES;
+            return;
+        }
+        indexOfTodayPhoto = idx;
+    }];
+    
+    if (indexOfTodayPhoto != -1) {
+//        UICollectionViewLayoutAttributes * cell = [_collectionView layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]];
+        
+        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:indexOfTodayPhoto inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                        animated:NO];
+//        CGRect rect;
+//        rect.origin.x = cell.frame.origin.x + cell.frame.size.width - 1;
+//        rect.origin.y = 0;
+//        rect.size = CGSizeMake(1, 1);
+//        [_collectionView scrollRectToVisible:rect animated:NO];
+        
+        currentIndex = indexOfTodayPhoto;
+    }
+    
+    [self updateNavigationTitle];
+    
+    
+//    CGRect rect;
+//    rect.origin.x = 1900;
+//    rect.origin.y = 0;
+//    rect.size = CGSizeMake(1, 1);
+//    [_collectionView scrollRectToVisible:rect animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -196,8 +245,15 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    _isRotating = YES;
+}
+
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
+    _isRotating = YES;
+    
     [_collectionView reloadData];
     [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
                             atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
@@ -414,6 +470,7 @@
 
 - (void)timerFireMethod:(NSTimer *)timer
 {
+    FNLOG(@"");
     [_collectionView reloadData];
 }
 
