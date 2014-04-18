@@ -174,20 +174,20 @@
         NSDateComponents *fromComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:fromDate];
         NSDateComponents *toComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:toDate];
         
+        if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
+            [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
+            return @"now";
+        }
+        else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
+                 [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
+            return @"now";
+        }
+        
         if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
             return @"today";
         }
         else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
             return @"today";
-        }
-        
-        if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
-            [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
-            return @"Now";
-        }
-        else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day] &&
-                 [fromComp hour] == [toComp hour] && [fromComp minute] == [toComp minute]) {
-            return @"Now";
         }
 
         if ([toDate timeIntervalSince1970] > [fromDate timeIntervalSince1970]) {

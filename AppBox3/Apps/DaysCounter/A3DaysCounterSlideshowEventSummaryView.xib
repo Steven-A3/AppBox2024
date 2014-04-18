@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -58,7 +58,7 @@ Since</string>
                         <nil key="highlightedColor"/>
                         <color key="shadowColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="14" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Release AppBox" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="lWv-jq-Rqh" customClass="FXLabel">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="14" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Release AppBox" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="19" translatesAutoresizingMaskIntoConstraints="NO" id="lWv-jq-Rqh" customClass="FXLabel">
                         <rect key="frame" x="76" y="519" width="169" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
