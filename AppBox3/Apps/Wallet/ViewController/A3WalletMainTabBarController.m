@@ -21,7 +21,7 @@
 NSString *kWallet_WhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
 NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the tabs
 
-#define kDefaultTabSelection    0	// default tab value is 0 (tab #1), stored in NSUserDefaults
+#define kDefaultTabSelection    1	// default tab value is 0 (tab #1), stored in NSUserDefaults
 
 NSString *const A3WalletNotificationCategoryChanged = @"CategoryChanged";
 NSString *const A3WalletNotificationCategoryDeleted = @"CategoryDeleted";

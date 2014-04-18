@@ -983,6 +983,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     textView.frame = frame;
 
     [self.tableView endUpdates];
+	NSUInteger lastRow = [self.tableView numberOfRowsInSection:0] - 1;
+	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastRow inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -1120,13 +1122,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             float margin = IS_IPAD ? 49:31;
             CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
             float cellHeight = txtViewSize.height + 20;
-            
-            if (cellHeight < 180) {
-                return 180;
-            }
-            else {
-                return cellHeight;
-            }
+
+			return MAX(cellHeight, 180.0);
         }
         else if ([self.sectionItems objectAtIndex:indexPath.row] == self.dateInputItem) {
             
@@ -1331,8 +1328,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (A3WalletNoteCell *)getNoteCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
 	A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemNoteCellID4 forIndexPath:indexPath];
 
-	GCPlaceholderTextView *textView = noteCell.textView;
 	noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+	GCPlaceholderTextView *textView = noteCell.textView;
+	textView.backgroundColor = [UIColor clearColor];
 	textView.delegate = self;
 	textView.bounces = NO;
 	textView.placeholder = @"Notes";
@@ -1343,7 +1341,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	CGRect frame = noteCell.textView.frame;
 	[textView.layoutManager ensureLayoutForTextContainer:textView.textContainer];
-	frame.size.height = [textView.layoutManager usedRectForTextContainer:textView.textContainer].size.height + 25.0;
+	frame.size.height = MAX(180, [textView.layoutManager usedRectForTextContainer:textView.textContainer].size.height + 25.0);
 	noteCell.textView.frame = frame;
 
 	return noteCell;

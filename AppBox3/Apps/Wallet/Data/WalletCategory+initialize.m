@@ -32,21 +32,23 @@ NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c
     
     // unit type set : make and set to core data
     NSArray *categoryPresets = [WalletData categoryPresetData];
-    
+	NSUInteger categoryIdx = 1;
+
     // create all, favorite category
     WalletCategory *favoriteCategory = [WalletCategory MR_createEntity];
     favoriteCategory.name = @"Favorite";
     favoriteCategory.icon = @"star01";
 	favoriteCategory.modificationDate = [NSDate date];
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
+	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
     WalletCategory *allCategory = [WalletCategory MR_createEntity];
     allCategory.name = @"All";
     allCategory.icon = @"wallet_folder";
 	allCategory.modificationDate = [NSDate date];
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
+	allCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
-	NSUInteger categoryIdx = 1;
     for (NSDictionary *preset in categoryPresets) {
         WalletCategory *category = [WalletCategory MR_createEntity];
         category.name = preset[@"Name"];
