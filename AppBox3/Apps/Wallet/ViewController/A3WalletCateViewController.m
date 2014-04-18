@@ -141,7 +141,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (void)initializeViews
 {
-    self.tableView = [UITableView new];
+	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	_tableView.frame = self.view.bounds;
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
@@ -161,7 +161,6 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     [self.view addSubview:self.addButton];
     [self addButtonConstraints];
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"A3WalletListTextCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletTextCellID1];
     [self.tableView registerClass:[A3WalletListBigVideoCell class] forCellReuseIdentifier:A3WalletBigVideoCellID1];
     [self.tableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
 }

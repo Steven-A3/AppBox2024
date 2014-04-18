@@ -544,7 +544,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     [originalFieldItems removeObjectsInArray:addedItems];
     
     NSMutableString *moveToNoteString = [NSMutableString new];
-	[moveToNoteString appendFormat:@"%@\n", _item.note];
+	if ([[_item.note stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t "]] length]) {
+		[moveToNoteString appendFormat:@"%@\n", _item.note];
+	}
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 	for (WalletFieldItem *remainItem in originalFieldItems) {
@@ -558,11 +560,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[remainItem MR_deleteEntity];
     }
     if (moveToNoteString.length > 0) {
-        self.item.note = moveToNoteString;
+        self.item.note = [moveToNoteString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t "]];
     }
     
     // 정보 불러오기
     _sectionItems = nil;
+	[self sectionItems];
     [self.tableView reloadData];
 }
 
@@ -837,9 +840,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 #pragma mark - UITextFieldDelegate
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    [self dismissDatePicker];
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+	if (textField == _headerView.titleTextField) {
+		textField.keyboardType = UIKeyboardTypeDefault;
+		textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+		return YES;
+	}
+
+	[self dismissDatePicker];
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	FNLOG(@"current text field indexpath : %@", [_currentIndexPath description]);
@@ -872,7 +880,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 		}
 	}
-    return YES;
+	return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
@@ -1323,14 +1331,21 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (A3WalletNoteCell *)getNoteCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
 	A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemNoteCellID4 forIndexPath:indexPath];
 
+	GCPlaceholderTextView *textView = noteCell.textView;
 	noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
-	noteCell.textView.delegate = self;
-	noteCell.textView.bounces = NO;
-	noteCell.textView.placeholder = @"Notes";
-	noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+	textView.delegate = self;
+	textView.bounces = NO;
+	textView.placeholder = @"Notes";
+	textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 	noteCell.textView.font = [UIFont systemFontOfSize:17];
 
 	noteCell.textView.text = _item.note;
+
+	CGRect frame = noteCell.textView.frame;
+	[textView.layoutManager ensureLayoutForTextContainer:textView.textContainer];
+	frame.size.height = [textView.layoutManager usedRectForTextContainer:textView.textContainer].size.height + 25.0;
+	noteCell.textView.frame = frame;
+
 	return noteCell;
 }
 

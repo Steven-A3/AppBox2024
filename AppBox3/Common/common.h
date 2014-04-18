@@ -21,4 +21,6 @@
 #define DegreesToRadians(degrees)	((degrees) * M_PI / 180.0)
 #define RadiansToDegrees(radians)	((radians) * 180.0/M_PI)
 
+#define SEGMENTED_CONTROL_DISABLED_TINT_COLOR	[UIColor colorWithRed:138.0/255.0 green:138.0/255.0 blue:138.0/255.0 alpha:1.0]
+
 #endif

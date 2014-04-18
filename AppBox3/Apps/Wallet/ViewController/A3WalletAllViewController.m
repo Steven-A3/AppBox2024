@@ -137,8 +137,7 @@ enum SortingKind {
 
 - (void)initializeViews
 {
-    self.tableView = [UITableView new];
-	_tableView.frame = self.view.bounds;
+	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
@@ -148,7 +147,8 @@ enum SortingKind {
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     if (IS_IPAD) {
         _tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
-    }	[self.view addSubview:_tableView];
+    }
+	[self.view addSubview:_tableView];
     
     [self.view addSubview:self.addButton];
     [self addButtonConstraints];
@@ -280,9 +280,8 @@ enum SortingKind {
     
     if (topView.sortingSegment.enabled) {
         topView.sortingSegment.tintColor = nil;
-    }
-    else {
-        topView.sortingSegment.tintColor = [UIColor colorWithRed:196.0/255.0 green:196.0/255.0 blue:196.0/255.0 alpha:1.0];
+    } else {
+        topView.sortingSegment.tintColor = SEGMENTED_CONTROL_DISABLED_TINT_COLOR;
     }
 }
 
@@ -650,21 +649,6 @@ enum SortingKind {
     else {
         return 48;
     }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    // This will create a "invisible" footer
-    if (self.items.count > 1) {
-        return 0;
-    }
-    else {
-        return 0.01f;
-    }
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return [UIView new];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
