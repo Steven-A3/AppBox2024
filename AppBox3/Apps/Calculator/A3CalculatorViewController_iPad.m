@@ -137,7 +137,19 @@
     
     [self.view layoutIfNeeded];
 
-    [self setupBasicKeyPad];
+    [self checkRightButtonDisable];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"]){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:@"CalculatorMode"] isEqualToString:@"scientifc"]) {
+            [self setupScientifcKeyPad];
+            [self changeCalculatorKindString];
+        } else {
+            [self setupBasicKeyPad];
+        }
+    }
+    else {
+        [self setupBasicKeyPad];
+    }
+
 }
 
 - (void) setupBasicKeyPad {
@@ -186,6 +198,8 @@
         
     }
     
+    [[NSUserDefaults standardUserDefaults] setValue:scientific == YES ? @"scientifc":@"basic" forKey:@"CalculatorMode"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [self changeCalculatorKindString];
     
 }
