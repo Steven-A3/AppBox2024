@@ -101,6 +101,12 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+    
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local noti" message:@"asdfasdf" delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+        [alert show];
+    }
 
 	return YES;
 }

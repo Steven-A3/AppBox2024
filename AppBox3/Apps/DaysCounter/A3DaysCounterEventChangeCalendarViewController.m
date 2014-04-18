@@ -40,11 +40,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
     
     self.navigationController.navigationBar.topItem.prompt = @"Move these events to a new calendar.";
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
+    
     NSMutableArray *array = [[A3DaysCounterModelManager sharedManager] allUserCalendarList];
     self.itemArray = [array filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId != %@",_currentCalendar.calendarId]];
     [self.tableView reloadData];

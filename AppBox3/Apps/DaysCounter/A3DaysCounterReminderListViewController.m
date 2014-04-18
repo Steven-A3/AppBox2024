@@ -141,14 +141,31 @@
         DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
         cell.textLabel.text = item.eventName;
         
-        if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
-            cell.detailTextLabel.text = [item.alertDatetime timeAgo];
-            unreadMarkView.hidden = NO;
+        NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                       toDate:item.effectiveStartDate
+                                                                 allDayOption:[item.isAllDay boolValue]
+                                                                       repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
+            
+            NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
+                                                                                                          firstDate:item.startDate
+                                                                                                           fromDate:[NSDate date]];
+            
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:repeatDate
+                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+            
+            unreadMarkView.hidden = YES;
         }
         else {
-            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
-                                                              withFormat:IS_IPHONE ? @"EEEE, MMM dd, yyyy hh:mm a" : @"EEEE, MMMM dd, yyyy hh:mm a"];
-            unreadMarkView.hidden = YES;
+            if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
+                cell.detailTextLabel.text = [item.alertDatetime timeAgo];
+                unreadMarkView.hidden = NO;
+            }
+            else {
+                cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
+                                                                  withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                unreadMarkView.hidden = YES;
+            }
         }
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -180,15 +197,17 @@
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     if (!item.repeatType || [item.repeatType isEqualToNumber:@(RepeatType_Never)]) {
         if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
-            item.alertDatetime = nil;
+            item.isReminder = @(NO);
             [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
     }
     else {
-        if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
-            [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-            self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
+        if ([item.endDate isKindOfClass:[NSDate class]] && [item.endDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
+            item.isReminder = @(NO);
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
+        [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+        self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
     }
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];

@@ -2,7 +2,7 @@
 //  DaysCounterEvent.h
 //  AppBox3
 //
-//  Created by kimjeonghwan on 4/17/14.
+//  Created by dotnetguy83 on 4/18/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -26,6 +26,7 @@
 @property (nonatomic, retain) NSString * imageFilename;
 @property (nonatomic, retain) NSNumber * isAllDay;
 @property (nonatomic, retain) NSNumber * isFavorite;
+@property (nonatomic, retain) NSNumber * isLeapMonth;
 @property (nonatomic, retain) NSNumber * isLunar;
 @property (nonatomic, retain) NSNumber * isPeriod;
 @property (nonatomic, retain) NSString * notes;
@@ -33,7 +34,7 @@
 @property (nonatomic, retain) NSDate * repeatEndDate;
 @property (nonatomic, retain) NSNumber * repeatType;
 @property (nonatomic, retain) NSDate * startDate;
-@property (nonatomic, retain) NSNumber * isLeapMonth;
+@property (nonatomic, retain) NSNumber * isReminder;
 @property (nonatomic, retain) DaysCounterCalendar *calendar;
 @property (nonatomic, retain) DaysCounterEventLocation *location;
 
