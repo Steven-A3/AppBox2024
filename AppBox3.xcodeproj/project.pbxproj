@@ -58,7 +58,6 @@
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
 		579B81AC18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */; };
 		57D31ACE18E95C120081A810 /* A3DaysCounterEventInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */; };
-		57D9F9EC19000AE50048B205 /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D9F9EB19000AE50048B205 /* DaysCounterEvent.m */; };
 		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
 		68024AD81631637600D396F0 /* A3UIDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 68024AD71631637600D396F0 /* A3UIDevice.m */; };
 		68030ABC17F063D100B04487 /* HTCopyableLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 68030ABB17F063D100B04487 /* HTCopyableLabel.m */; };
@@ -905,6 +904,7 @@
 		68F9391917D0DDBB0082234C /* FMMoveTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391617D0DDBB0082234C /* FMMoveTableView.m */; };
 		68F9391A17D0DDBB0082234C /* FMMoveTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */; };
 		68F967BF1818D74300D64A0A /* NSArray+validation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F967BE1818D74300D64A0A /* NSArray+validation.m */; };
+		8016504D1901141A00238F9B /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 8016504C1901141A00238F9B /* DaysCounterEvent.m */; };
 		80187FF318FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80187FF218FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib */; };
 		80187FF518FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 80187FF418FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib */; };
 		804A405E18E070A200556029 /* A3DaysCounterEventListNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */; };
@@ -1047,8 +1047,6 @@
 		579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterEventListEditCell.xib; sourceTree = "<group>"; };
 		57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventInfoCell.h; sourceTree = "<group>"; };
 		57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventInfoCell.m; sourceTree = "<group>"; };
-		57D9F9EA19000AE50048B205 /* DaysCounterEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEvent.h; sourceTree = "<group>"; };
-		57D9F9EB19000AE50048B205 /* DaysCounterEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEvent.m; sourceTree = "<group>"; };
 		6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = A3EmptyActionMenuViewController_iPad.xib; path = ViewControllers/A3EmptyActionMenuViewController_iPad.xib; sourceTree = "<group>"; };
 		68024AD61631637600D396F0 /* A3UIDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UIDevice.h; sourceTree = "<group>"; };
 		68024AD71631637600D396F0 /* A3UIDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = A3UIDevice.m; sourceTree = "<group>"; };
@@ -2489,6 +2487,8 @@
 		68F9391817D0DDBB0082234C /* FMMoveTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMMoveTableViewCell.m; sourceTree = "<group>"; };
 		68F967BD1818D74300D64A0A /* NSArray+validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+validation.h"; sourceTree = "<group>"; };
 		68F967BE1818D74300D64A0A /* NSArray+validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+validation.m"; sourceTree = "<group>"; };
+		8016504B1901141A00238F9B /* DaysCounterEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEvent.h; sourceTree = "<group>"; };
+		8016504C1901141A00238F9B /* DaysCounterEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEvent.m; sourceTree = "<group>"; };
 		80187FF218FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddEventRepeatCell.xib; sourceTree = "<group>"; };
 		80187FF418FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterAddEventCalendarListCell.xib; sourceTree = "<group>"; };
 		804A405C18E070A200556029 /* A3DaysCounterEventListNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListNameCell.h; sourceTree = "<group>"; };
@@ -4877,8 +4877,8 @@
 				68F1C83518D7F37D009FAE8A /* DaysCounterCalendar.m */,
 				68F1C83818D7F37D009FAE8A /* DaysCounterEventLocation.h */,
 				68F1C83918D7F37D009FAE8A /* DaysCounterEventLocation.m */,
-				57D9F9EA19000AE50048B205 /* DaysCounterEvent.h */,
-				57D9F9EB19000AE50048B205 /* DaysCounterEvent.m */,
+				8016504B1901141A00238F9B /* DaysCounterEvent.h */,
+				8016504C1901141A00238F9B /* DaysCounterEvent.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5870,7 +5870,6 @@
 				68B6A2AC18CEC76D004084EF /* A3LoanCalcLoanDetailViewController.m in Sources */,
 				68F1C8F718D7FA41009FAE8A /* MPFlipTransition.m in Sources */,
 				680886D41891751B0093FD97 /* A3ClockDataManager.m in Sources */,
-				57D9F9EC19000AE50048B205 /* DaysCounterEvent.m in Sources */,
 				68143D5618E3EC7C00569691 /* A3JHTableViewExpandableHeaderCell.m in Sources */,
 				68B6A33118CEC76D004084EF /* A3WalletListBigPhotoCell.m in Sources */,
 				68B6A2C818CEC76D004084EF /* A3LoanCalcPaymentInfoCell.m in Sources */,
@@ -5915,6 +5914,7 @@
 				680D639118CFF9D400938AD0 /* A3CalculatorButtonsInScientificViewController_iPad.m in Sources */,
 				680886DB1891751B0093FD97 /* A3ClockMainViewController.m in Sources */,
 				68236CDD186AA7B4006F442B /* A3AppDelegate+passcode.m in Sources */,
+				8016504D1901141A00238F9B /* DaysCounterEvent.m in Sources */,
 				689C9A571839CD7F007C97EE /* UIImageView+AFNetworking.m in Sources */,
 				680886E21891751B0093FD97 /* A3ClockWaveViewController.m in Sources */,
 				689C9A541839CD7F007C97EE /* UIActivityIndicatorView+AFNetworking.m in Sources */,

@@ -214,8 +214,22 @@
         case EventCellType_Alert:
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
-            cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
-                                                                                            alertDate:_eventItem.alertDatetime];
+            
+            NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                           toDate:[itemDict objectForKey:EventItem_EffectiveStartDate]
+                                                                     allDayOption:[[itemDict objectForKey:EventItem_IsAllDay] boolValue]
+                                                                           repeat:[[itemDict objectForKey:EventItem_RepeatType] integerValue] != RepeatType_Never ? YES : NO];
+            if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
+                NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[_eventItem.repeatType integerValue]
+                                                                                                              firstDate:_eventItem.startDate
+                                                                                                               fromDate:[NSDate date]];
+                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:repeatDate
+                                                                                                     alertDate:_eventItem.alertDatetime];
+            }
+            else {
+                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.startDate
+                                                                                                     alertDate:_eventItem.alertDatetime];
+            }
         }
             break;
         case EventCellType_DurationOption:

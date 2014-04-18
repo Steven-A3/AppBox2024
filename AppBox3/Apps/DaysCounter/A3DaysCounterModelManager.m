@@ -704,10 +704,17 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     addItem.endDate = ( [[item objectForKey:EventItem_EndDate] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_EndDate] );
     addItem.repeatType = [item objectForKey:EventItem_RepeatType];
     addItem.repeatEndDate = ( [[item objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_RepeatEndDate] );
-    addItem.alertDatetime = ( [[item objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_AlertDatetime] );
+    if (![item objectForKey:EventItem_AlertDatetime] || [[item objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]]) {
+        addItem.alertDatetime = nil;
+        addItem.isReminder = @(NO);
+    }
+    else {
+        addItem.alertDatetime = [item objectForKey:EventItem_AlertDatetime];
+        addItem.isReminder = ([addItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) ? @(YES) : @(NO);
+    }
+
     addItem.alertInterval = [item objectForKey:EventItem_AlertDatetimeInterval];
     addItem.alertType = [item objectForKey:EventItem_AlertDateType];
-    //addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
     addItem.effectiveStartDate = [item objectForKey:EventItem_EffectiveStartDate] == nil ? [item objectForKey:EventItem_StartDate] : [item objectForKey:EventItem_EffectiveStartDate];
     addItem.durationOption = [item objectForKey:EventItem_DurationOption];
     addItem.notes = [item objectForKey:EventItem_Notes];
@@ -778,10 +785,18 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     eventItem.endDate = ( [[info objectForKey:EventItem_EndDate] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_EndDate] );
     eventItem.repeatType = [info objectForKey:EventItem_RepeatType];
     eventItem.repeatEndDate = ( [[info objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_RepeatEndDate] );
-    eventItem.alertDatetime = ( [[info objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_AlertDatetime] );
+    
+    if (![info objectForKey:EventItem_AlertDatetime] || [[info objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]]) {
+        eventItem.alertDatetime = nil;
+        eventItem.isReminder = @(NO);
+    }
+    else {
+        eventItem.alertDatetime = [info objectForKey:EventItem_AlertDatetime];
+        eventItem.isReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) ? @(YES) : @(NO);
+    }
+
     eventItem.alertInterval = [info objectForKey:EventItem_AlertDatetimeInterval];
     eventItem.alertType = [info objectForKey:EventItem_AlertDateType];
-    //addItem.effectiveStartDate = [self effectiveDateForEvent:addItem basisTime:[NSDate date]];
     eventItem.effectiveStartDate = [info objectForKey:EventItem_EffectiveStartDate] == nil ? [info objectForKey:EventItem_StartDate] : [info objectForKey:EventItem_EffectiveStartDate];
     
     eventItem.durationOption = [info objectForKey:EventItem_DurationOption];
@@ -1138,8 +1153,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)reminderList
 {
-    //return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"alertDatetime !=  %@ && ",[NSNull null]] inContext:[self managedObjectContext]];
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(alertDatetime != %@ && startDate > %@) || (alertDatetime != %@ && repeatType != %@ && alertDatetime > %@)", [NSNull null], [NSDate date], [NSNull null], @(RepeatType_Never), [NSDate date]] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isReminder == %@", @(YES)] inContext:[self managedObjectContext]];
 }
 
 
@@ -1190,6 +1204,63 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
             NSInteger remainNum = days % dayUnit;
             retDate = [A3DateHelper dateByAddingDays:days+(dayUnit-remainNum) fromDate:firstDate];
+        }
+            break;
+    }
+    return retDate;
+}
+
+- (NSDate*)repeatDateOfCurrentYearWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
+{
+    NSDate *retDate = nil;
+    
+    NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+    if ( days < 0 ) {
+        return firstDate;
+    }
+    // 시작일로부터 오늘까지 각 설정에 맞는 주수를 계산
+    switch (repeatType) {
+        case RepeatType_Never:
+            retDate = firstDate;
+            break;
+            
+        case RepeatType_EveryDay:
+        {
+            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+            retDate = [A3DateHelper dateByAddingDays:days fromDate:firstDate];
+        }
+            break;
+            
+        case RepeatType_EveryWeek:
+        {
+            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
+            retDate = [A3DateHelper dateByAddingWeeks:weeks fromDate:firstDate];
+        }
+            break;
+        case RepeatType_Every2Week:
+        {
+            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
+            NSInteger remainNum = weeks % 2;
+            retDate = [A3DateHelper dateByAddingWeeks:weeks + remainNum fromDate:firstDate];
+        }
+            break;
+        case RepeatType_EveryMonth:
+        {
+            NSInteger month = [A3DateHelper diffMonthsFromDate:firstDate toDate:fromDate];
+            retDate = [A3DateHelper dateByAddingMonth:month fromDate:firstDate];
+        }
+            break;
+        case RepeatType_EveryYear:{
+            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate toDate:fromDate];
+            retDate = [A3DateHelper dateByAddingYears:year fromDate:firstDate];
+        }
+            break;
+            
+        default:{
+            NSInteger dayUnit = repeatType;
+            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+            NSInteger remainNum = days % dayUnit;
+            retDate = [A3DateHelper dateByAddingDays:days + (dayUnit - remainNum) fromDate:firstDate];
         }
             break;
     }
@@ -1401,8 +1472,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                                    repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
-//        dateLabel.text = [A3DateHelper dateStringFromDate:[NSDate date] withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
-        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
+                                                                                                      firstDate:item.startDate
+                                                                                                       fromDate:[NSDate date]];
+        
+        dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
+                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+        
+        
         daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
@@ -1591,7 +1668,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         // 종료된 Event의 경우.
         now = [event repeatEndDate];
     }
-    
+
     NSDate *nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now];
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
     return nextDate;

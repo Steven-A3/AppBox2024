@@ -182,6 +182,19 @@
         // daysLabel
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
             daysLabel.text = @" ";
+
+            if ( IS_IPAD ) {
+                UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
+                NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
+                                                                                                              firstDate:item.startDate
+                                                                                                               fromDate:[NSDate date]];
+                
+                dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
+                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                
+                dateLabel.hidden = NO;
+                ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
+            }
         }
         else {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
@@ -189,16 +202,15 @@
                                                                                         toDate:nextDate
                                                                                       isAllDay:[item.isAllDay boolValue]
                                                                                   isShortStyle:IS_IPHONE ? YES : NO];
-        }
-        
-        if ( IS_IPAD ) {
-            UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-            //dateLabel.text = [item.isAllDay boolValue] ? [item.startDate a3FullStyleString] : [item.startDate a3FullStyleWithTimeString];
-            dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
-                                                   withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
-
-            dateLabel.hidden = NO;
-            ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
+            
+            if ( IS_IPAD ) {
+                UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
+                dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
+                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                
+                dateLabel.hidden = NO;
+                ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
+            }
         }
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
