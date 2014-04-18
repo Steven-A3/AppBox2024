@@ -99,9 +99,10 @@
     
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
 	_textFieldForPlayInputClick.delegate = self;
-	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 1)];
+	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 0.1)];
 	_textFieldForPlayInputClick.inputView = _inputViewForPlayInputClick;
 	[self.view addSubview:_textFieldForPlayInputClick];
+
 
 	[_textFieldForPlayInputClick becomeFirstResponder];
      
