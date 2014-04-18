@@ -133,8 +133,26 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     
     // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
     NSString *cateTitle = [NSString stringWithFormat:@"%@(%d)", _category.name, (int)_items.count];
-    self.navigationItem.title = cateTitle;
-    
+	if (_isFromMoreTableViewController && IS_IPHONE) {
+		NSStringDrawingContext *context = [NSStringDrawingContext new];
+		CGRect bounds = [cateTitle boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:17]} context:context];
+		if (bounds.size.width > 120) {
+			UILabel *titleLabel = [UILabel new];
+			titleLabel.numberOfLines = 2;
+			titleLabel.bounds = CGRectMake(0, 0, 130, 44);
+			titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+			titleLabel.text = cateTitle;
+			titleLabel.font = [UIFont boldSystemFontOfSize:17];
+			titleLabel.textAlignment = NSTextAlignmentCenter;
+			self.navigationItem.title = @"";
+			self.navigationItem.titleView = titleLabel;
+		} else {
+			self.navigationItem.title = cateTitle;
+		}
+	} else {
+		self.navigationItem.title = cateTitle;
+	}
+
     // more button 활성화여부
     [self itemCountCheck];
 }
