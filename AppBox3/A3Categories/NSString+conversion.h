@@ -15,6 +15,9 @@
 - (NSMutableString *)extendedSearchPatternForKoreanString;
 - (NSString *)componentsSeparatedByKorean;
 - (NSString *)pathInLibraryDirectory;
+
+- (NSString *)stringByTrimmingSpaceCharacters;
+
 - (NSString *)stringGroupByFirstInitial;
 - (float)floatValueEx;
 - (NSString *)stringByDecimalConversion;

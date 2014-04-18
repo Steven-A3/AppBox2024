@@ -12,6 +12,7 @@
 #define RIGHT_SIDE_VIEW_TAG	43895
 #define CENTER_VIEW_TAG		54232
 
+NSString *const A3NotificationRightSideViewWillDismiss = @"A3NotificationRightSideViewWillDismiss";
 NSString *const A3NotificationRightSideViewDidDismissed = @"A3NotificationRightSideViewDidDismissed";
 
 @implementation UIViewController (iPad_rightSideView)
@@ -48,6 +49,9 @@ NSString *const A3NotificationRightSideViewDidDismissed = @"A3NotificationRightS
 }
 
 - (void)dismissRightSideView {
+	FNLOG();
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewWillDismiss object:nil];
+
 	UIView *centerView = [self.navigationController.view viewWithTag:CENTER_VIEW_TAG];
 	[centerView removeFromSuperview];
 

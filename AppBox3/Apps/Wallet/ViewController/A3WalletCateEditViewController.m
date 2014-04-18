@@ -20,6 +20,7 @@
 #import "NSMutableArray+A3Sort.h"
 #import "WalletField+initialize.h"
 #import "A3WalletMainTabBarController.h"
+#import "NSString+conversion.h"
 
 @interface A3WalletCateEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
@@ -27,10 +28,14 @@
 @property (nonatomic, strong) NSMutableDictionary *plusItem;
 @property (nonatomic, strong) WalletField *toAddField;
 @property (nonatomic, strong) NSMutableArray *addedFieldArray;
+@property (nonatomic, copy) NSString *originalCategoryName;
+@property (nonatomic, strong) MBProgressHUD *alertHUD;
 
 @end
 
-@implementation A3WalletCateEditViewController
+@implementation A3WalletCateEditViewController{
+	BOOL _sameCategoryNameExists;
+}
 
 NSString *const A3WalletCateEditTitleCellID = @"A3WalletCateEditTitleCell";
 NSString *const A3WalletCateEditIconCellID = @"A3WalletCateEditIconCell";
@@ -52,13 +57,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.title = @"Edit Category";
+	self.originalCategoryName = _category.name;
     
     [self makeBackButtonEmptyArrow];
     [self rightBarButtonDoneButton];
@@ -334,13 +334,25 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSString *tobe = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    
-    if (tobe.length>0) {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    } else {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-    }
+	NSString *changed = [textField.text stringByReplacingCharactersInRange:range withString:string];
+	changed = [changed stringByTrimmingSpaceCharacters];
+
+	if (![_originalCategoryName isEqualToString:changed]) {
+		if ([changed length]) {
+			_sameCategoryNameExists = [[WalletCategory MR_findByAttribute:@"name" withValue:changed] count] > 0;
+		} else {
+			_sameCategoryNameExists = NO;
+		}
+	} else {
+		_sameCategoryNameExists = NO;
+	}
+	if (_sameCategoryNameExists) {
+		[self.alertHUD show:YES];
+	} else {
+		[self.alertHUD hide:YES];
+	}
+
+	self.navigationItem.rightBarButtonItem.enabled = [changed length] > 0 && !_sameCategoryNameExists;
     
     return YES;
 }
@@ -522,23 +534,12 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
-    if (sourceIndexPath.section != proposedDestinationIndexPath.section) {
-        NSInteger row = 0;
-        if (sourceIndexPath.section < proposedDestinationIndexPath.section) {
-            row = [tableView numberOfRowsInSection:sourceIndexPath.section] - 2;
-        }
-        return [NSIndexPath indexPathForRow:row inSection:sourceIndexPath.section];
-    }
-    else {
-        NSInteger row = 0;
-        if (proposedDestinationIndexPath.row == ([tableView numberOfRowsInSection:proposedDestinationIndexPath.section]-1)) {
-            row = proposedDestinationIndexPath.row-1;
-            
-            return [NSIndexPath indexPathForRow:row inSection:sourceIndexPath.section];
-        }
-    }
-    
-    
+	NSUInteger lastRowInSection1 = [tableView numberOfRowsInSection:1] - 2;
+	if (proposedDestinationIndexPath.section == 0) {
+		proposedDestinationIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	} else if (proposedDestinationIndexPath.row > lastRowInSection1) {
+		proposedDestinationIndexPath = [NSIndexPath indexPathForRow:lastRowInSection1 inSection:1];
+	}
     return proposedDestinationIndexPath;
 }
 

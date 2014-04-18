@@ -15,12 +15,18 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
+#import "UIViewController+iPad_rightSideView.h"
+#import "NSString+conversion.h"
+#import "WalletCategory.h"
 
 @interface A3WalletEditFieldViewController () <WalletFieldTypeSelectDelegate, WalletFieldStyleSelectDelegate, UITextFieldDelegate>
-
+@property (nonatomic, strong) MBProgressHUD *alertHUD;
+@property (nonatomic, copy) NSString *originalFieldName;
 @end
 
-@implementation A3WalletEditFieldViewController
+@implementation A3WalletEditFieldViewController {
+	BOOL _sameFieldNameExists;
+}
 
 NSString *const A3WalletFieldEditTitleCellID = @"A3WalletCateEditTitleCell";
 NSString *const A3WalletFieldEditTypeCellID = @"A3WalletFieldEditTypeCell";
@@ -39,25 +45,30 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.title = _isAddMode ? @"Add Field" : @"Edit Field";
-    
+	if (!_isAddMode) {
+		self.originalFieldName = _field.name;
+	}
+
     [self makeBackButtonEmptyArrow];
     
     self.tableView.separatorColor = [self tableViewSeparatorColor];
     self.tableView.showsVerticalScrollIndicator = NO;
     
-    // keyboard up
-    if (_isAddMode) {
-        [self performSelector:@selector(titlekeyboardUp) withObject:nil afterDelay:0.8f];
-    }
-    
     [self registerContentSizeCategoryDidChangeNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewWillDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)viewWillDismiss {
+	[self removeObserver];
+	[self closeEditing];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -65,7 +76,19 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     [self.tableView reloadData];
 }
 
-- (void)titlekeyboardUp
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (_isAddMode) {
+		double delayInSeconds = 0.1;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[self titleKeyboardUp];
+		});
+	}
+}
+
+- (void)titleKeyboardUp
 {
     A3WalletCateEditTitleCell *titleCell = (A3WalletCateEditTitleCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     [titleCell.textField becomeFirstResponder];
@@ -77,18 +100,24 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     
     if (![self.navigationController.viewControllers containsObject:self]) {
         if (IS_IPHONE) {
-            if (_field.name.length > 0) {
-                [self updateEditedInfo];
-            }
-            else {
-                [_field MR_deleteEntity];
-            }
-            
-            if (_delegate && [_delegate respondsToSelector:@selector(dismissedViewController:)]) {
-                [_delegate dismissedViewController:self];
-            }
+			[self closeEditing];
         }
     }
+}
+
+- (void)closeEditing {
+	[self.firstResponder resignFirstResponder];
+
+	if (_field.name.length > 0 && !_sameFieldNameExists) {
+		[self updateEditedInfo];
+	}
+	else {
+		[_field MR_deleteEntity];
+	}
+
+	if (_delegate && [_delegate respondsToSelector:@selector(dismissedViewController:)]) {
+		[_delegate dismissedViewController:self];
+	}
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,7 +133,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
     if (IS_IPAD) {
         
-        if (_field.name.length > 0) {
+        if (_field.name.length > 0 && !_sameFieldNameExists) {
             [self updateEditedInfo];
         }
         else {
@@ -175,6 +204,49 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 {
 	[self setFirstResponder:textField];
 	textField.returnKeyType = UIReturnKeyDefault;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+	NSString *changed = [textField.text stringByReplacingCharactersInRange:range withString:string];
+	changed = [changed stringByTrimmingSpaceCharacters];
+
+	if (![_originalFieldName isEqualToString:changed]) {
+		if ([changed length]) {
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"name == %@ AND category.uniqueID == %@", changed, _field.category.uniqueID];
+			_sameFieldNameExists = [[WalletField MR_findAllWithPredicate:predicate] count] > 0;
+		} else {
+			_sameFieldNameExists = NO;
+		}
+	} else {
+		_sameFieldNameExists = NO;
+	}
+	if (_sameFieldNameExists) {
+		[self.alertHUD show:YES];
+	} else {
+		[self.alertHUD hide:YES];
+	}
+	return YES;
+}
+
+- (MBProgressHUD *)alertHUD {
+	if (!_alertHUD) {
+		_alertHUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+
+		// Configure for text only and offset down
+		_alertHUD.mode = MBProgressHUDModeText;
+		_alertHUD.margin = 2.0;
+		_alertHUD.cornerRadius = 10.0;
+		_alertHUD.labelText = @" Field name already exists. ";
+		_alertHUD.labelFont = [UIFont fontWithName:@"Avenir-Light" size:14.0];
+		_alertHUD.labelColor = [UIColor whiteColor];
+		_alertHUD.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
+		_alertHUD.userInteractionEnabled = NO;
+
+		[self.navigationController.view addSubview:_alertHUD];
+	}
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	_alertHUD.yOffset = -(screenBounds.size.height/2.0 - 64 - 18.0);
+	return _alertHUD;
 }
 
 #pragma mark - Table view delegate

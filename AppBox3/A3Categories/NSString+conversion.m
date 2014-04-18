@@ -187,4 +187,8 @@
 	return [[paths objectAtIndex:0] stringByAppendingPathComponent:self];
 }
 
+- (NSString *)stringByTrimmingSpaceCharacters {
+	return [self stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t "]];
+}
+
 @end

@@ -28,7 +28,9 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
 @end
 
-@implementation A3WalletMoreTableViewController
+@implementation A3WalletMoreTableViewController {
+	BOOL _isAddingCategoryInProgress;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -57,6 +59,33 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.allowsSelectionDuringEditing = YES;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextObjectsDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (![self isMovingToParentViewController]) {
+		if (_isAddingCategoryInProgress) {
+			_isAddingCategoryInProgress = NO;
+			NSIndexPath *indexPath;
+			if (_isEditing) {
+				NSUInteger lastRow = [self.tableView numberOfRowsInSection:1] - 1;
+				indexPath = [NSIndexPath indexPathForRow:lastRow inSection:1];
+			} else {
+				NSUInteger lastRow = [self.tableView numberOfRowsInSection:0] - 1;
+				indexPath = [NSIndexPath indexPathForRow:lastRow inSection:0];
+			}
+			[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+		}
+	}
+}
+
+- (void)managedObjectContextObjectsDidChange:(NSNotification *)notification {
+	_categories = nil;
+	_sections = nil;
+	[self.tableView reloadData];
 }
 
 - (void)leftBarButtonAddButton {
@@ -84,6 +113,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)addCategoryButtonAction {
+	_isAddingCategoryInProgress = YES;
+
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 	A3WalletAddCateViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletAddCateViewController"];
 	viewController.hidesBottomBarWhenPushed = YES;

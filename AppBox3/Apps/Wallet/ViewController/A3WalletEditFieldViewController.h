@@ -23,7 +23,7 @@
 
 @interface A3WalletEditFieldViewController : UITableViewController
 
-@property (nonatomic, assign) id<WalletEditFieldDelegate> delegate;
+@property (nonatomic, weak) id<WalletEditFieldDelegate> delegate;
 @property (nonatomic, strong) WalletField *field;
 @property (readwrite) BOOL isAddMode;
 

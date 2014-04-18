@@ -19,20 +19,23 @@
 #import "NSMutableArray+A3Sort.h"
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
+#import "UIViewController+iPad_rightSideView.h"
+#import "NSString+conversion.h"
 
 @interface A3WalletAddCateViewController () <WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
-{
-    
-}
 
 @property (nonatomic, strong) WalletCategory *category;
 @property (nonatomic, strong) NSMutableArray *fields;
 @property (nonatomic, strong) NSMutableDictionary *plusItem;
+@property (nonatomic, strong) UIViewController *rightSideViewController;
 @property (nonatomic, strong) WalletField *toAddField;
+@property (nonatomic, strong) MBProgressHUD *alertHUD;
 
 @end
 
-@implementation A3WalletAddCateViewController
+@implementation A3WalletAddCateViewController {
+	BOOL _sameCategoryNameExists;
+}
 
 NSString *const A3WalletAddCateTitleCellID = @"A3WalletCateEditTitleCell";
 NSString *const A3WalletAddCateIconCellID = @"A3WalletCateEditIconCell";
@@ -87,9 +90,11 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     A3WalletCateEditTitleCell *titleCell = (A3WalletCateEditTitleCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    [titleCell.textField becomeFirstResponder];
+	if (![titleCell.textField.text length]) {
+		[titleCell.textField becomeFirstResponder];
+	}
 }
 
 - (WalletCategory *)category
@@ -190,14 +195,21 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 	if (IS_IPHONE) {
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		[rootViewController presentRightSideViewController:viewController];
+		_rightSideViewController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+		[self presentRightSideView:_rightSideViewController.view];
+		[self.navigationController addChildViewController:_rightSideViewController];
 	}
+}
+
+- (void)rightSideViewDidDismiss {
+	[_rightSideViewController removeFromParentViewController];
+	_rightSideViewController = nil;
 }
 
 - (void)addWalletField
 {
     self.toAddField = [WalletField MR_createEntity];
+	self.toAddField.category = _category;
 
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletEditFieldViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletEditFieldViewController"];
@@ -289,19 +301,49 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
 {
 	[self setFirstResponder:textField];
 	textField.returnKeyType = UIReturnKeyDefault;
+	textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSString *tobe = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    
-    if (tobe.length>0) {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    } else {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-    }
-    
+    NSString *changed = [textField.text stringByReplacingCharactersInRange:range withString:string];
+	changed = [changed stringByTrimmingSpaceCharacters];
+
+	if ([changed length]) {
+		_sameCategoryNameExists = [[WalletCategory MR_findByAttribute:@"name" withValue:changed] count] > 0;
+	} else {
+		_sameCategoryNameExists = NO;
+	}
+	if (_sameCategoryNameExists) {
+		[self.alertHUD show:YES];
+	} else {
+		[self.alertHUD hide:YES];
+	}
+
+	self.navigationItem.rightBarButtonItem.enabled = [changed length] > 0 && !_sameCategoryNameExists;
+
     return YES;
+}
+
+- (MBProgressHUD *)alertHUD {
+	if (!_alertHUD) {
+		_alertHUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+
+		// Configure for text only and offset down
+		_alertHUD.mode = MBProgressHUDModeText;
+		_alertHUD.margin = 2.0;
+		_alertHUD.cornerRadius = 10.0;
+		_alertHUD.labelText = @" Category name already exists. ";
+		_alertHUD.labelFont = [UIFont fontWithName:@"Avenir-Light" size:14.0];
+		_alertHUD.labelColor = [UIColor whiteColor];
+		_alertHUD.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
+		_alertHUD.userInteractionEnabled = NO;
+
+		[self.navigationController.view addSubview:_alertHUD];
+	}
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	_alertHUD.yOffset = -(screenBounds.size.height/2.0 - 64 - 18.0);
+	return _alertHUD;
 }
 
 #pragma mark - UITableViewDelegate
@@ -341,7 +383,7 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
         }
     }
     
-    //[self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Table view data source
@@ -500,17 +542,15 @@ NSString *const A3WalletAddCatePlusCellID = @"A3WalletCateEditPlusCell";
     }
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
-{
-    if (sourceIndexPath.section != proposedDestinationIndexPath.section) {
-        NSInteger row = 0;
-        if (sourceIndexPath.section < proposedDestinationIndexPath.section) {
-            row = [tableView numberOfRowsInSection:sourceIndexPath.section] - 2;
-        }
-        return [NSIndexPath indexPathForRow:row inSection:sourceIndexPath.section];
-    }
-    
-    return proposedDestinationIndexPath;
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	NSUInteger lastRowInSection1 = [tableView numberOfRowsInSection:1] - 2;
+	if (proposedDestinationIndexPath.section == 0) {
+		proposedDestinationIndexPath = [NSIndexPath indexPathForRow:0 inSection:1];
+	} else if (proposedDestinationIndexPath.row > lastRowInSection1) {
+		proposedDestinationIndexPath = [NSIndexPath indexPathForRow:lastRowInSection1 inSection:1];
+	}
+
+	return proposedDestinationIndexPath;
 }
 
 /*
