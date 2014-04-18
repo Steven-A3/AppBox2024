@@ -26,6 +26,7 @@
 @property (strong, nonatomic) NSMutableDictionary *checkStatusDict;
 @property (strong, nonatomic) NSMutableArray *selectedArray;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
+@property (strong, nonatomic) UINavigationController *modalVC;
 
 - (void)cancelAction:(id)sender;
 - (void)deleteAllAction:(id)sender;
@@ -87,6 +88,14 @@
 - (void)dealloc
 {
     self.checkNormalImage = nil;
+}
+
+#pragma mark
+- (void)willDismissFromRightSide
+{
+    if (_modalVC) {
+        [_modalVC dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 #pragma mark - Table view data source
@@ -245,9 +254,24 @@
     A3DaysCounterEventChangeCalendarViewController *viewCtrl = [[A3DaysCounterEventChangeCalendarViewController alloc] initWithNibName:@"A3DaysCounterEventChangeCalendarViewController" bundle:nil];
     viewCtrl.currentCalendar = _calendarItem;
     viewCtrl.eventArray = _selectedArray;
+    
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    [self presentViewController:navCtrl animated:YES completion:nil];
+    if (IS_IPAD) {
+        // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
+        UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
+        leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+        [navCtrl.view addSubview:leftLineView];
+//        CGRect rect = navCtrl.view.frame;
+//        rect.size.width = self.view.frame.size.width;
+//        navCtrl.view.frame = rect;
+        [self presentViewController:navCtrl animated:YES completion:^{
+            _modalVC = navCtrl;
+        }];
+    }
+    else {
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
 }
 
 - (IBAction)shareAction:(id)sender {
@@ -261,15 +285,22 @@
     for(DaysCounterEvent *event in _selectedArray){
         [activityItems addObject:[NSString stringWithFormat:@"%@",[[A3DaysCounterModelManager sharedManager] stringForShareEvent:event]]];
     }
-    
+
     self.popoverVC = [self presentActivityViewControllerWithActivityItems:activityItems fromBarButtonItem:sender];
-    if( self.popoverVC )
+    if ( self.popoverVC ) {
         self.popoverVC.delegate = self;
+        _trashBarButton.enabled = NO;
+        _calendarBarButton.enabled = NO;
+        _shareBarButton.enabled = NO;
+    }
 }
 
 #pragma mark - UIPopoverControllerDelegate
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
+    _trashBarButton.enabled = YES;
+    _calendarBarButton.enabled = YES;
+    _shareBarButton.enabled = YES;
     self.popoverVC = nil;
 }
 @end

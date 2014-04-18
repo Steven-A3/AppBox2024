@@ -13,6 +13,9 @@
 
 @property (strong, nonatomic) DaysCounterCalendar *calendarItem;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *trashBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *calendarBarButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *shareBarButton;
 
 - (IBAction)removeAction:(id)sender;
 - (IBAction)changeCalendarAction:(id)sender;

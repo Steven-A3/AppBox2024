@@ -5044,9 +5044,6 @@
 		804C330818DAE0E500DBCE83 /* Event Related */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C7E218D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.h */,
-				68F1C7E318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.m */,
-				68F1C7E418D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib */,
 				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
 				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
 				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
@@ -5124,6 +5121,9 @@
 				68F1C7EF18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.h */,
 				68F1C7F018D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m */,
 				68F1C7F118D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.xib */,
+				68F1C7E218D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.h */,
+				68F1C7E318D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.m */,
+				68F1C7E418D7F37D009FAE8A /* A3DaysCounterEventChangeCalendarViewController.xib */,
 				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
 				68F1C7E918D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.m */,
 				68F1C7EA18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib */,
