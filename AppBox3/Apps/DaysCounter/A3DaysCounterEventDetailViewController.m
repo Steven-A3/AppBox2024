@@ -376,7 +376,7 @@
                                                                                        fromDate:now
                                                                                          toDate:startDate
                                                                                        isAllDay:[info.isAllDay boolValue]
-                                                                                   isShortStyle:NO]
+                                                                                   isShortStyle:IS_IPHONE ? YES : NO]
                     dateText1:dateText1
                     dateText2:dateText2
                       isLunar:[info.isLunar boolValue]
@@ -684,6 +684,7 @@
                 daysLabel.text = @"";
                 dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[NSDate date]
                                                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+                
                 if (info.repeatType) {
                     dateLabel2.text = [NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                 }
@@ -695,7 +696,7 @@
                                                                                           fromDate:now
                                                                                             toDate:hasSince ? nextDate : startDate
                                                                                           isAllDay:[info.isAllDay boolValue]
-                                                                                      isShortStyle:NO];
+                                                                                      isShortStyle:IS_IPHONE ? YES : NO];
             }
         }
         else {
@@ -703,7 +704,7 @@
                                                                                       fromDate:startDate
                                                                                         toDate:now
                                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                                  isShortStyle:NO];
+                                                                                  isShortStyle:IS_IPHONE ? YES : NO];
         }
         
         // from / to string / repeat

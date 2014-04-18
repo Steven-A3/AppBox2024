@@ -325,7 +325,7 @@
                                                                  repeat:YES];
             
             daysGap = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
-            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[event.durationOption integerValue]
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day // [event.durationOption integerValue]
                                                                                                                    fromDate:today
                                                                                                                      toDate:nextDate
                                                                                                                    isAllDay:[event.isAllDay boolValue]
@@ -334,7 +334,7 @@
         }
         else {
             daysGap = [A3DateHelper diffDaysFromDate:today toDate:event.startDate isAllDay:[event.isAllDay boolValue]];
-            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[event.durationOption integerValue]
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day // [event.durationOption integerValue]
                                                                                                                    fromDate:today
                                                                                                                      toDate:startDate
                                                                                                                    isAllDay:[event.isAllDay boolValue]

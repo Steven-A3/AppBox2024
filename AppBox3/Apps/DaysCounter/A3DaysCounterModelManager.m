@@ -1139,7 +1139,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (NSArray*)reminderList
 {
     //return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"alertDatetime !=  %@ && ",[NSNull null]] inContext:[self managedObjectContext]];
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(alertDatetime != %@ && startDate > %@) || (alertDatetime != %@ && repeatType != %@)", [NSNull null], [NSDate date], [NSNull null], @(RepeatType_Never)] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(alertDatetime != %@ && startDate > %@) || (alertDatetime != %@ && repeatType != %@ && alertDatetime > %@)", [NSNull null], [NSDate date], [NSNull null], @(RepeatType_Never), [NSDate date]] inContext:[self managedObjectContext]];
 }
 
 
@@ -1240,9 +1240,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         flag |= NSYearCalendarUnit;
         flagCount++;
     }
-    if (flagCount == 1) {
+    if (IS_IPHONE && flagCount < 3) {
         isShortStyle = NO;
     }
+    else if (IS_IPAD && IS_PORTRAIT && flagCount == 6) {
+        isShortStyle = YES;
+    }
+    
     
     // DurationOption 이 day 이상인 경우에 대한 예외처리. (하루가 안 되는 기간은 0day가 아닌 시분초를 출력함), (또한 hms 에 대한 옵션이 없는 경우만 해당함.)
     if ( (([largeDate timeIntervalSince1970] - [smallDate timeIntervalSince1970]) < 86400) &&

@@ -101,8 +101,7 @@
     static NSString *CellIdentifier = @"eventListNameCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListCell" owner:nil options:nil];
-        cell = [cellArray objectAtIndex:0];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListNameCell" owner:nil options:nil] lastObject];
         
         UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
         UILabel *daysLabel = (UILabel*)[cell viewWithTag:11];
@@ -195,7 +194,7 @@
         if ( IS_IPAD ) {
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
             //dateLabel.text = [item.isAllDay boolValue] ? [item.startDate a3FullStyleString] : [item.startDate a3FullStyleWithTimeString];
-            dateLabel.text = [A3DateHelper dateStringFromDate:item.startDate
+            dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
                                                    withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
 
             dateLabel.hidden = NO;

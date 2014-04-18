@@ -178,9 +178,17 @@
     }
     
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-    if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
-        item.alertDatetime = nil;
-        [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    if (!item.repeatType || [item.repeatType isEqualToNumber:@(RepeatType_Never)]) {
+        if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
+            item.alertDatetime = nil;
+            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+        }
+    }
+    else {
+        if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
+            [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+            self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
+        }
     }
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];

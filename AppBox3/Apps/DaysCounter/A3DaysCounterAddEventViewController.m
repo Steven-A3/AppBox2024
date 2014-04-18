@@ -45,7 +45,7 @@
 @property (strong, nonatomic) UIPopoverController *imagePopover;
 @property (assign, nonatomic) BOOL isAdvancedCellOpen;
 @property (assign, nonatomic) BOOL isDurationIntialized;//temp...
-
+@property (weak, nonatomic) UITextView *textViewResponder;
 @end
 
 @implementation A3DaysCounterAddEventViewController
@@ -75,6 +75,7 @@
         self.title = @"Edit Event";
         self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
         _isAdvancedCellOpen = [self hasAdvancedData];
+        _isDurationIntialized = YES;
     }
     else {
         self.title = @"Add Event";
@@ -1147,6 +1148,7 @@
 - (void)resignAllAction
 {
     [[self firstResponder] resignFirstResponder];
+    [self.textViewResponder resignFirstResponder];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
@@ -1277,7 +1279,6 @@
         [_eventModel setObject:@(swButton.on) forKey:EventItem_IsAllDay];
         
         if (!_eventItem && [swButton isOn] == NO && !_isDurationIntialized) {
-            _isDurationIntialized = YES;
             [_eventModel setObject:@(DurationOption_Day|DurationOption_Hour|DurationOption_Minutes) forKey:EventItem_DurationOption];
         }
         else if (!_eventItem && [swButton isOn]) {
@@ -1745,6 +1746,9 @@
     if ( [[_eventModel objectForKey:EventItem_Notes] length] < 1 ) {
         textView.text = @"";
     }
+    
+    self.textViewResponder = textView;
+    
     return YES;
 }
 
@@ -1760,8 +1764,7 @@
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
-	[self setFirstResponder:nil];
-	[self.tableView setContentOffset:CGPointMake(0, -self.tableView.contentInset.top) animated:YES];
+    self.textViewResponder = nil;
 }
 
 - (void)textViewDidChange:(UITextView *)textView
