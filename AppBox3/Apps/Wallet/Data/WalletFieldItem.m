@@ -2,7 +2,7 @@
 //  WalletFieldItem.m
 //  AppBox3
 //
-//  Created by A3 on 4/17/14.
+//  Created by A3 on 4/19/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -14,10 +14,11 @@
 @implementation WalletFieldItem
 
 @dynamic date;
-@dynamic value;
-@dynamic uniqueID;
-@dynamic image;
 @dynamic hasVideo;
+@dynamic image;
+@dynamic uniqueID;
+@dynamic value;
+@dynamic videoExtension;
 @dynamic field;
 @dynamic walletItem;
 

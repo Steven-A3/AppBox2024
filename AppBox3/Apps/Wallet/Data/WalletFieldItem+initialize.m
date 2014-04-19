@@ -39,8 +39,9 @@
 - (NSString *)videoFilePath {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
 	NSString *libraryDirectory = [paths objectAtIndex:0];
-	NSString *imageThumbnail = [NSString stringWithFormat:@"%@-video", self.uniqueID];
-	return [libraryDirectory stringByAppendingPathComponent:imageThumbnail];
+	NSString *filename = [NSString stringWithFormat:@"%@-video", self.uniqueID];
+	filename = [filename stringByAppendingPathExtension:self.videoExtension];
+	return [libraryDirectory stringByAppendingPathComponent:filename];
 }
 
 - (UIImage *)thumbnailImage {

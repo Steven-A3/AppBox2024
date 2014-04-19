@@ -148,15 +148,9 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
 
 - (void)didReceiveCategoryChangedNotification:(NSNotification *)notification
 {
-    for (NSUInteger idx = 0; idx < self.categories.count; idx++) {
-        UIViewController *viewController = self.viewControllers[idx];
-        
-        WalletCategory *category = _categories[idx];
-        viewController.tabBarItem.title = category.name;
-        viewController.tabBarItem.image = [UIImage imageNamed:category.icon];
-        NSString *selected = [category.icon stringByAppendingString:@"_on"];
-        viewController.tabBarItem.selectedImage = [UIImage imageNamed:selected];
-    }
+	_categories = nil;
+
+	[self setupTabBar];
 }
 
 - (void)didReceiveCategoryAddedNotification:(NSNotification *)notification

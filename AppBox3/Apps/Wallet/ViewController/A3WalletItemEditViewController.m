@@ -29,6 +29,7 @@
 #import "UIImage+Extension2.h"
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UITableViewController+standardDimension.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
@@ -641,12 +642,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
 }
 
-- (void)copyVideoFrom:(NSString *)sourcePath to:(NSString *)targetPath
-{
-    NSFileManager *fm = [NSFileManager defaultManager];
-    [fm copyItemAtPath:sourcePath toPath:targetPath error:NULL];
-}
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)imageEditInfo {
 	if (IS_IPAD && self.popOverController) {
 		[self.popOverController dismissPopoverAnimated:YES];
@@ -658,19 +653,18 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	NSString *mediaType = imageEditInfo[UIImagePickerControllerMediaType];
 	if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
-
 		//get the videoURL
 		NSURL *movieURL = imageEditInfo[UIImagePickerControllerMediaURL];
-		[self copyVideoFrom:movieURL.path to:_currentFieldItem.videoFilePath];
+		_currentFieldItem.videoExtension = movieURL.pathExtension;
+		_currentFieldItem.hasVideo = @YES;
+		NSURL *destinationMovieURL = [NSURL fileURLWithPath:_currentFieldItem.videoFilePath];
+		[[NSFileManager defaultManager] moveItemAtURL:movieURL toURL:destinationMovieURL error:NULL];
 
-		FNLOG(@"%@", movieURL.path);
-
-		UIImage *originalImage = [WalletData videoPreviewImageOfURL:movieURL];
+		UIImage *originalImage = [WalletData videoPreviewImageOfURL:destinationMovieURL];
 		CGSize boundsSize = CGSizeMake(160, 160);
 		UIImage *thumbImage = [originalImage imageByScalingProportionallyToMinimumSize:boundsSize];
 		[self saveImage:thumbImage withFilePath:_currentFieldItem.videoThumbnailPath];
 
-		_currentFieldItem.hasVideo = @YES;
 	}
 	else {
 		UIImage *originalImage = [imageEditInfo objectForKey:UIImagePickerControllerEditedImage];;
@@ -856,7 +850,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		// note
 		textField.keyboardType = UIKeyboardTypeDefault;
 	}
-	else if ([[self.sectionItems objectAtIndex:_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+	else if ([[self.sectionItems objectAtIndex:_currentIndexPath.row] isKindOfClass:[WalletField class]]) {
 
 		WalletField *field = _sectionItems[_currentIndexPath.row];
 		if ([field.type isEqualToString:WalletFieldTypeText]) {
@@ -985,6 +979,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     [self.tableView endUpdates];
 	NSUInteger lastRow = [self.tableView numberOfRowsInSection:0] - 1;
 	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastRow inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+	[self updateDoneButtonEnabled];
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -1111,6 +1106,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (indexPath.section == 0) {
         if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
+			if (!_item.note) return 180.0;
             
             NSDictionary *textAttributes = @{
                                              NSFontAttributeName : [UIFont systemFontOfSize:17]
@@ -1139,7 +1135,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     else {
         
         // delete
-        return IS_RETINA ? 36.5 : 37;
+        return 44.0;
     }
 }
 
@@ -1369,29 +1365,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     return NO;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    NSUInteger numberSection = [tableView numberOfSections];
-    
-    float lastFooterHeight = 38.0;
-    
-    if (section == (numberSection-1)) {
-        return lastFooterHeight;
-    }
-    else {
-        return IS_RETINA ? 34.0 : 34.0;
-    }
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if (section == 0) {
         return 0;
     }
     else {
-        return 1.0;
+        return [self standardHeightForHeaderInSection:section];
     }
 }
 
-@end
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+	return [self standardHeightForFooterInSection:section];
+}
 
+@end

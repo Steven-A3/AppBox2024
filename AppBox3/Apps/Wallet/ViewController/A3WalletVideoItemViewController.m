@@ -28,7 +28,7 @@
 
 @interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, strong) NSMutableArray *photoFieldItems;
+@property (nonatomic, strong) NSMutableArray *videoFieldItems;
 @property (nonatomic, strong) NSMutableArray *normalFieldItems;
 @property (nonatomic, strong) UIScrollView *photoScrollView;
 @property (nonatomic, strong) A3WalletVideoItemTitleView *headerView;
@@ -66,6 +66,10 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     [self initializeViews];
     
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -117,21 +121,21 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     [self makeThumbSelected:0];
 }
 
-- (NSMutableArray *)photoFieldItems
+- (NSMutableArray *)videoFieldItems
 {
-    if (!_photoFieldItems) {
-        _photoFieldItems = [[NSMutableArray alloc] init];
+    if (!_videoFieldItems) {
+        _videoFieldItems = [[NSMutableArray alloc] init];
         
         NSArray *fieldItems = [_item fieldItemsArray];
         for (int i=0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
             if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.hasVideo) {
-                [_photoFieldItems addObject:fieldItem];
+                [_videoFieldItems addObject:fieldItem];
             }
         }
     }
     
-    return _photoFieldItems;
+    return _videoFieldItems;
 }
 
 - (NSMutableArray *)normalFieldItems
@@ -243,7 +247,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)refreshViews
 {
-    _photoFieldItems = nil;
+    _videoFieldItems = nil;
     _normalFieldItems = nil;
     
     [self.photoScrollView removeFromSuperview];
@@ -277,11 +281,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     NSUInteger index = _photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
     
-    if (self.photoFieldItems.count <= index) {
+    if (self.videoFieldItems.count <= index) {
         return;
     }
     
-    WalletFieldItem *fieldItem = _photoFieldItems[index];
+    WalletFieldItem *fieldItem = _videoFieldItems[index];
     
     float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePath]];
     NSInteger dur = round(duration);
@@ -310,11 +314,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         _photoScrollView.bounces = NO;
         _photoScrollView.delegate = self;
         
-        for (int i=0; i<self.photoFieldItems.count; i++) {
-            WalletFieldItem *photoFieldItem = _photoFieldItems[i];
+        for (int i=0; i<self.videoFieldItems.count; i++) {
+            WalletFieldItem *videoFieldItem = _videoFieldItems[i];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth*i, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            UIImage *photoImg = [WalletData videoPreviewImageOfURL:[NSURL fileURLWithPath:[photoFieldItem videoFilePath]]];
+            UIImage *photoImg = [UIImage imageWithContentsOfFile:[videoFieldItem videoThumbnailPath]];
             photoImg = [photoImg imageByScalingProportionallyToMinimumSize:CGSizeMake(rectWidth*2, rectWidth*2)];
             photoImgView.image = photoImg;
             
@@ -337,7 +341,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         tap.numberOfTapsRequired = 1;
         [_photoScrollView addGestureRecognizer:tap];
         
-        _photoScrollView.contentSize = CGSizeMake(rectWidth*_photoFieldItems.count, 0);
+        _photoScrollView.contentSize = CGSizeMake(rectWidth* _videoFieldItems.count, 0);
     }
     
     return _photoScrollView;
@@ -347,8 +351,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 {
     if (!_photoThumbs) {
         _photoThumbs = [[NSMutableArray alloc] init];
-        for (int i=0; i<self.photoFieldItems.count; i++) {
-            WalletFieldItem *photoFieldItem = _photoFieldItems[i];
+        for (int i=0; i<self.videoFieldItems.count; i++) {
+            WalletFieldItem *photoFieldItem = _videoFieldItems[i];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 ,24, 16)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
             NSString *thumbFilePath = [photoFieldItem videoThumbnailPath];
@@ -411,15 +415,16 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (void)photoTapped:(UITapGestureRecognizer *)tap
 {
     NSUInteger index = _photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
-    WalletFieldItem *fieldItem = _photoFieldItems[index];
+    WalletFieldItem *fieldItem = _videoFieldItems[index];
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
         if ([[fieldItem hasVideo] boolValue]) {
-            MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePath]]];
-            
+			NSString *filePath = [fieldItem videoFilePath];
+			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:filePath]];
+
             // 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
             [[NSNotificationCenter defaultCenter] removeObserver:pvc  name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
-            
+
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
             
             NSError *_error = nil;
@@ -621,6 +626,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.noteItem) {
+		if (!_item.note) return 74.0;
         NSDictionary *textAttributes = @{
                                          NSFontAttributeName : [UIFont systemFontOfSize:17]
                                          };

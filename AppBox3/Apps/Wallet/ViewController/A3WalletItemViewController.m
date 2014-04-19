@@ -316,26 +316,27 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				case 0:
 				{
 					// mail
-					if ([MFMailComposeViewController canSendMail])
-					{
-						NSString *mailAddress = [urlString substringWithRange:range];
-						MFMailComposeViewController *picker = [[MFMailComposeViewController alloc]init];
+					MFMailComposeViewController *picker = [[MFMailComposeViewController alloc]init];
+					if (picker) {
 						picker.mailComposeDelegate = self;
+						NSString *mailAddress = [urlString substringWithRange:range];
 						[picker setToRecipients:@[mailAddress]];  //받는 사람(배열의 형태로 넣어도 됩니다. )
 						[picker setSubject:nil];  //제목
 						[picker setMessageBody:nil isHTML:NO];     //내용
 						[self presentViewController:picker animated:YES completion:NULL];
 					}
-                    
+
 					break;
 				}
 				case 1:
 				{
 					MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
-					viewController.messageComposeDelegate = self;
-					NSString *mailAddress = [urlString substringWithRange:range];
-					viewController.recipients = @[mailAddress];
-					[self presentViewController:viewController animated:YES completion:NULL];
+					if (viewController) {
+						viewController.messageComposeDelegate = self;
+						NSString *mailAddress = [urlString substringWithRange:range];
+						viewController.recipients = @[mailAddress];
+						[self presentViewController:viewController animated:YES completion:NULL];
+					}
 					break;
 				}
 				default:
@@ -366,9 +367,11 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			}
 			case 1: {
 				MFMessageComposeViewController *viewController = [[MFMessageComposeViewController alloc] init];
-				viewController.messageComposeDelegate = self;
-				viewController.recipients = @[result.phoneNumber];
-				[self presentViewController:viewController animated:YES completion:NULL];
+				if (viewController) {
+					viewController.messageComposeDelegate = self;
+					viewController.recipients = @[result.phoneNumber];
+					[self presentViewController:viewController animated:YES completion:NULL];
+				}
 				break;
 			}
 			default:
@@ -675,6 +678,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.fieldItems objectAtIndex:indexPath.row] == self.noteItem) {
+		if (!_item.note) return 74.0;
         
         NSDictionary *textAttributes = @{
                                          NSFontAttributeName : [UIFont systemFontOfSize:17]

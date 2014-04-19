@@ -67,10 +67,10 @@
 }
 
 - (void)doneAction {
-	if (IS_IPAD) {
-		[self.navigationController popViewControllerAnimated:YES];
+	if ([self.navigationController.viewControllers count] == 1) {
+		[self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 	} else {
-		[self dismissViewControllerAnimated:YES completion:NULL];
+		[self.navigationController popViewControllerAnimated:YES];
 	}
 }
 

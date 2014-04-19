@@ -861,6 +861,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.noteItem) {
+		if (!_item.note) return 74.0;
+
         NSDictionary *textAttributes = @{NSFontAttributeName : [UIFont systemFontOfSize:17]};
 
 		UITextView *txtView = [[UITextView alloc] init];
