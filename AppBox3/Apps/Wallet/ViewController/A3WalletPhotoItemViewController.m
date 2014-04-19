@@ -253,7 +253,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         NSString *nibName = IS_IPAD ? @"A3WalletPhotoItemTitleView_iPad":@"A3WalletPhotoItemTitleView";
         _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
         
-        [_headerView.favorButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_headerView.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         _headerView.titleTextField.delegate = self;
     }
@@ -289,7 +289,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
     _headerView.titleTextField.frame = frame;
     
-    _headerView.favorButton.selected = self.item.favorite != nil;
+    _headerView.favoriteButton.selected = self.item.favorite != nil;
     _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 }
 
@@ -551,7 +551,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 - (void)favorButtonAction:(UIButton *)favorButton
 {
 	[_item changeFavorite:_item.favorite == nil];
-    _headerView.favorButton.selected = _item.favorite != nil;
+    _headerView.favoriteButton.selected = _item.favorite != nil;
 }
 
 - (void)editButtonAction:(id)sender

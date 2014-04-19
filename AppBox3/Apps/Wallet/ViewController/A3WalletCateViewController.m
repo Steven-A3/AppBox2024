@@ -61,10 +61,9 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
     [self makeBackButtonEmptyArrow];
 
-    self.navigationItem.rightBarButtonItems = [self rightBarItems];
-    
-    [self initializeViews];
-    
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
+
+	[self initializeViews];
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -309,6 +308,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_infoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
         [_infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		_infoButton.bounds = CGRectMake(0, 0, 30, 40);
     }
     
     return _infoButton;

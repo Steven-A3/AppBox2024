@@ -30,10 +30,12 @@
 #import "UITableView+utility.h"
 #import "UIViewController+iPad_rightSideView.h"
 #import "UITableViewController+standardDimension.h"
+#import "A3WalletItemTitleCell.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
 
+NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
 NSString *const A3WalletItemFieldCellID4 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemPhotoFieldCellID4 = @"A3WalletItemPhotoFieldCell";
 NSString *const A3WalletItemFieldTwoValueCellID4 = @"A3WalletItemFieldTwoValueCell";
@@ -47,11 +49,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 @interface A3WalletItemEditViewController () <WalletCatogerySelectDelegate, UITextFieldDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *sectionItems;
+@property (nonatomic, strong) NSMutableDictionary *titleItem;
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
 @property (nonatomic, strong) NSMutableDictionary *deleteItem;
 @property (nonatomic, strong) NSMutableDictionary *dateInputItem;
 @property (nonatomic, strong) UIPopoverController *popOverController;
-@property (nonatomic, strong) A3WalletItemTitleView *headerView;
 @property (nonatomic, strong) NSMutableDictionary *categoryItem;
 @property (nonatomic, strong) NSIndexPath *currentIndexPath;
 
@@ -99,7 +101,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     
-	self.tableView.tableHeaderView = self.headerView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -120,16 +121,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
-	_headerView = nil;
-	self.tableView.tableHeaderView = [self headerView];
     [self.tableView reloadData];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-	[self updateTopInfo];
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,12 +139,20 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     if (!_sectionItems) {
         NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"order" ascending:YES];
         _sectionItems = [[NSMutableArray alloc] initWithArray:[_item.category.fields.allObjects sortedArrayUsingDescriptors:@[sortDescriptor]]];
-        
-        [_sectionItems insertObject:self.categoryItem atIndex:0];
+
+		[_sectionItems insertObject:self.titleItem atIndex:0];
+		[_sectionItems insertObject:self.categoryItem atIndex:1];
         [_sectionItems addObject:self.noteItem];
     }
     
     return _sectionItems;
+}
+
+- (NSMutableDictionary *)titleItem {
+	if (!_titleItem) {
+		_titleItem = [@{@"title" : @"title", @"order" : @""} mutableCopy];
+	}
+	return _titleItem;
 }
 
 - (NSMutableDictionary *)dateInputItem
@@ -190,35 +190,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	return _categoryItem;
 }
 
-- (A3WalletItemTitleView *)headerView
-{
-    if (!_headerView) {
-        NSString *nibName = IS_IPAD ? @"A3WalletItemTitleView_iPad":@"A3WalletItemTitleView";
-        _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
-        _headerView.isEditMode = YES;
-        _headerView.titleTextField.delegate = self;
-        _headerView.titleTextField.placeholder = @"Title";
-        _headerView.titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-		[_headerView.favorButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    return _headerView;
-}
-
 - (void)favoriteButtonAction:(UIButton *)button
 {
 	[_item changeFavorite:_item.favorite == nil];
-    _headerView.favorButton.selected = _item.favorite != nil;
+    button.selected = _item.favorite != nil;
 }
 
 - (void)updateTopInfo
 {
-    _headerView.titleTextField.text = _item.name;
-    
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    df.dateStyle = NSDateFormatterFullStyle;
-    NSDate *current = [NSDate date];
-    _headerView.timeLabel.text = [NSString stringWithFormat:@"Current %@",  [df stringFromDate:current]];
 }
 
 - (WalletFieldItem *)fieldItemForIndexPath:(NSIndexPath *)indexPath create:(BOOL)create {
@@ -835,17 +814,16 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	if (textField == _headerView.titleTextField) {
-		textField.keyboardType = UIKeyboardTypeDefault;
-		textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-		return YES;
-	}
 
 	[self dismissDatePicker];
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 	FNLOG(@"current text field indexpath : %@", [_currentIndexPath description]);
 
+	if ([self.sectionItems objectAtIndex:_currentIndexPath.row] == self.titleItem) {
+		textField.keyboardType = UIKeyboardTypeDefault;
+		textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+	} else
 	if ([self.sectionItems objectAtIndex:_currentIndexPath.row] == self.noteItem) {
 		// note
 		textField.keyboardType = UIKeyboardTypeDefault;
@@ -896,7 +874,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
 	// update
-	if (textField == _headerView.titleTextField) {
+	if (_sectionItems[_currentIndexPath.row] == self.titleItem) {
 		_item.name = textField.text;
 	}
 	else {
@@ -920,12 +898,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	[textField resignFirstResponder];
 
 	NSUInteger startIdx;
-	if (textField == self.headerView.titleTextField) {
-		startIdx = 0;
-	}
-	else {
-		startIdx = (NSUInteger) (_currentIndexPath.row + 1);
-	}
+	startIdx = (NSUInteger) (_currentIndexPath.row + 1);
 
 	if ([_sectionItems objectAtIndex:startIdx] == self.noteItem) {
 		NSIndexPath *ip = [NSIndexPath indexPathForRow:startIdx inSection:0];
@@ -1143,16 +1116,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     UITableViewCell *cell=nil;
 	if (indexPath.section == 0) {
-		NSArray *items = @[self.categoryItem, self.noteItem, self.dateInputItem];
+		NSArray *items = @[self.titleItem, self.categoryItem, self.noteItem, self.dateInputItem];
 		NSUInteger itemIndex = [items indexOfObject:self.sectionItems[indexPath.row]];
 		switch (itemIndex) {
 			case 0:
-				cell = [self getCategoryCell:tableView indexPath:indexPath];
+				cell = [self getTitleCell:tableView indexPath:indexPath];
 				break;
 			case 1:
-				cell = [self getNoteCell:tableView indexPath:indexPath];
+				cell = [self getCategoryCell:tableView indexPath:indexPath];
 				break;
 			case 2:
+				cell = [self getNoteCell:tableView indexPath:indexPath];
+				break;
+			case 3:
 				cell = [self getDateInputCell:tableView indexPath:indexPath];
 				break;
 			default:
@@ -1336,6 +1312,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	noteCell.textView.text = _item.note;
 
 	CGRect frame = noteCell.textView.frame;
+	frame.origin.x = IS_IPHONE ? 10 : 23;
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	frame.size.width = screenBounds.size.width - (IS_IPHONE ? 10 : 23) * 2;
 	[textView.layoutManager ensureLayoutForTextContainer:textView.textContainer];
 	frame.size.height = MAX(180, [textView.layoutManager usedRectForTextContainer:textView.textContainer].size.height + 25.0);
 	noteCell.textView.frame = frame;
@@ -1358,6 +1337,26 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	return inputCell;
 }
 
+- (A3WalletItemTitleCell *)getTitleCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+	A3WalletItemTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemTitleCellID forIndexPath:indexPath];
+
+	titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+	titleCell.titleTextField.delegate = self;
+	titleCell.titleTextField.placeholder = @"Title";
+	titleCell.titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	[titleCell.favoriteButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+	titleCell.titleTextField.text = _item.name;
+
+	NSDateFormatter *df = [[NSDateFormatter alloc] init];
+	df.dateStyle = NSDateFormatterFullStyle;
+	NSDate *date = _item.modificationDate ? _item.modificationDate : [NSDate date];
+	titleCell.timeLabel.text = [NSString stringWithFormat:@"Current %@", [df stringFromDate:date]];
+
+	return titleCell;
+}
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1367,12 +1366,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return 0;
-    }
-    else {
-        return [self standardHeightForHeaderInSection:section];
-    }
+	return [self standardHeightForHeaderInSection:section];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

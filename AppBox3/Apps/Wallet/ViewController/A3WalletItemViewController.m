@@ -29,15 +29,15 @@
 #import "UITableView+utility.h"
 #import "A3BasicWebViewController.h"
 #import "WalletFieldItem+initialize.h"
+#import "A3WalletItemTitleCell.h"
 
 
-@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
+	@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
 
-@property (nonatomic, strong) A3WalletItemTitleView *headerView;
 @property (nonatomic, strong) NSMutableArray *fieldItems;
-@property (nonatomic, strong) NSMutableDictionary *noteItem;
+@property (nonatomic, strong) NSMutableDictionary *titleItem, *noteItem;
 @property (nonatomic, strong) NSMutableDictionary *categoryItem;
-@property (nonatomic, strong) NSMutableArray *alBumPhotos;
+@property (nonatomic, strong) NSMutableArray *albumPhotos;
 @property (nonatomic, weak) id copyingSourceView;
 
 @end
@@ -48,6 +48,7 @@
     UITextField *firstResponder;
 }
 
+extern NSString *const A3WalletItemTitleCellID;
 NSString *const A3WalletItemFieldCellID = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemPhotoFieldCellID = @"A3WalletItemPhotoFieldCell";
 NSString *const A3WalletItemFieldActionCellID = @"A3WalletItemFieldActionCell";
@@ -70,7 +71,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     
-    self.tableView.tableHeaderView = self.headerView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -88,53 +88,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     [self.tableView reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self updateTopInfo];
-}
-
-- (void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-    if (IS_IPAD) {
-        // 아이패드의 경우 화면 넓이가 변하므로, titleView의 텍스트필드 크기를 재설정하기 위해서 호출한다.
-        [self updateTopInfo];
-    }
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (A3WalletItemTitleView *)headerView
-{
-    if (!_headerView) {
-        NSString *nibName = IS_IPAD ? @"A3WalletItemTitleView_iPad":@"A3WalletItemTitleView";
-        _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
-        
-        _headerView.isEditMode = NO;
-        _headerView.titleTextField.delegate = self;
-        [_headerView.favorButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    return _headerView;
-}
-
-- (void)updateTopInfo
-{
-	_headerView.titleTextField.text = _item.name;
-	CGSize textSize = [_item.name sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
-	CGRect frame = _headerView.titleTextField.frame;
-	frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
-	_headerView.titleTextField.frame = frame;
-    
-	_headerView.favorButton.selected = self.item.favorite != nil;
-	_headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 }
 
 - (NSMutableArray *)fieldItems
@@ -163,9 +120,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			}
 		}
 		[_fieldItems removeObjectsInArray:deleteTmp];
-        
+
+		[_fieldItems insertObject:self.titleItem atIndex:0];
 		if (_showCategory) {
-			[_fieldItems insertObject:self.categoryItem atIndex:0];
+			[_fieldItems insertObject:self.categoryItem atIndex:1];
 		}
         
 		// note가 있을때만 표시한다.
@@ -177,12 +135,21 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	return _fieldItems;
 }
 
+- (NSMutableDictionary *)titleItem
+{
+	if (!_titleItem) {
+		_titleItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Title", @"order":@""}];
+	}
+    
+	return _titleItem;
+}
+
 - (NSMutableDictionary *)noteItem
 {
 	if (!_noteItem) {
 		_noteItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Note", @"order":@""}];
 	}
-    
+
 	return _noteItem;
 }
 
@@ -195,29 +162,29 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	return _categoryItem;
 }
 
-- (NSMutableArray *)alBumPhotos
+- (NSMutableArray *)albumPhotos
 {
-	if (!_alBumPhotos) {
-		_alBumPhotos = [[NSMutableArray alloc] init];
+	if (!_albumPhotos) {
+		_albumPhotos = [[NSMutableArray alloc] init];
         
 		for (int i=0; i<self.fieldItems.count; i++) {
 			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
 				WalletFieldItem *fieldItem = _fieldItems[i];
 				if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
 					MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image];
-					[_alBumPhotos addObject:photo];
+					[_albumPhotos addObject:photo];
 				}
 			}
 		}
 	}
     
-	return _alBumPhotos;
+	return _albumPhotos;
 }
 
-- (void)favorButtonAction:(UIButton *)favorButton
+- (void)favorButtonAction:(UIButton *)button
 {
 	[_item changeFavorite:_item.favorite == nil];
-	_headerView.favorButton.selected = _item.favorite != nil;
+	button.selected = _item.favorite != nil;
 }
 
 - (void)photoButtonAction:(UIButton *)sender
@@ -456,12 +423,12 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
-    return self.alBumPhotos.count;
+    return self.albumPhotos.count;
 }
 
 - (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
-    if (index < _alBumPhotos.count)
-        return [_alBumPhotos objectAtIndex:index];
+    if (index < _albumPhotos.count)
+        return [_albumPhotos objectAtIndex:index];
     return nil;
 }
 
@@ -471,7 +438,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 {
     _fieldItems = nil;
     [self.tableView reloadData];
-    [self updateTopInfo];
 }
 
 - (void)WalletItemDeleted
@@ -521,7 +487,19 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    
+
+	if (_fieldItems[indexPath.row] == self.titleItem) {
+		A3WalletItemTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemTitleCellID forIndexPath:indexPath];
+		titleCell.titleTextField.text = _item.name;
+		titleCell.titleTextField.delegate = self;
+		titleCell.favoriteButton.selected = self.item.favorite != nil;
+		titleCell.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+		// To prevent adding multiple times
+		[titleCell.favoriteButton removeTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		[titleCell.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+		cell = titleCell;
+	} else
     if (_fieldItems[indexPath.row] == self.noteItem) {
         
         // note
@@ -740,28 +718,19 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		CGRect frame = view.frame;
 
 		UIMenuController *copyMenu = [UIMenuController sharedMenuController];
-		if (view == self.headerView.titleTextField) {
-			UITextField *textField = self.headerView.titleTextField;
+		UITableViewCell *cell = [self.tableView cellForCellSubview:view];
+		if ([view isKindOfClass:[UITextField class]]) {
+			UITextField *textField = (UITextField *) view;
 			NSStringDrawingContext *context = [NSStringDrawingContext new];
-			CGRect bounds = [self.headerView.titleTextField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textField.font} context:context];
+			CGRect bounds = [textField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textField.font} context:context];
 			frame.size.width = bounds.size.width;
-			[copyMenu setTargetRect:frame inView:self.headerView];
+			frame.size.height += 10.0;
+			[copyMenu setTargetRect:frame inView:cell];
 			copyMenu.arrowDirection = UIMenuControllerArrowLeft;
 		} else {
-			UITableViewCell *cell = [self.tableView cellForCellSubview:view];
-			if ([view isKindOfClass:[UITextField class]]) {
-				UITextField *textField = (UITextField *) view;
-				NSStringDrawingContext *context = [NSStringDrawingContext new];
-				CGRect bounds = [textField.text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:textField.font} context:context];
-				frame.size.width = bounds.size.width;
-				frame.size.height += 10.0;
-				[copyMenu setTargetRect:frame inView:cell];
-				copyMenu.arrowDirection = UIMenuControllerArrowLeft;
-			} else {
-				frame.size.width = 20;
-				[copyMenu setTargetRect:frame inView:cell];
-				copyMenu.arrowDirection = UIMenuControllerArrowDown;
-			}
+			frame.size.width = 20;
+			[copyMenu setTargetRect:frame inView:cell];
+			copyMenu.arrowDirection = UIMenuControllerArrowDown;
 		}
 		[copyMenu setMenuVisible:YES animated:YES];
 

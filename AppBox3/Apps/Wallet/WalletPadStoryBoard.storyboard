@@ -13,8 +13,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCell" rowHeight="74" id="st8-4c-F38" customClass="A3WalletItemFieldCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletTitleCell" rowHeight="74" id="asB-1B-2h7" customClass="A3WalletItemTitleCell">
                                 <rect key="frame" x="0.0" y="86" width="768" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="asB-1B-2h7" id="nZM-t0-8hY">
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCell" rowHeight="74" id="st8-4c-F38" customClass="A3WalletItemFieldCell">
+                                <rect key="frame" x="0.0" y="160" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="st8-4c-F38" id="XTF-pf-pxz">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -34,7 +42,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletNoteCell" rowHeight="180" id="l3s-yr-mpV" customClass="A3WalletNoteCell">
-                                <rect key="frame" x="0.0" y="160" width="768" height="180"/>
+                                <rect key="frame" x="0.0" y="234" width="768" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l3s-yr-mpV" id="YTY-R1-PWg">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="179"/>
@@ -55,7 +63,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemPhotoFieldCell" rowHeight="74" id="L8d-BY-sie" customClass="A3WalletItemPhotoFieldCell">
-                                <rect key="frame" x="0.0" y="340" width="768" height="74"/>
+                                <rect key="frame" x="0.0" y="414" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="L8d-BY-sie" id="bFh-3N-455">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -83,7 +91,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldActionCell" rowHeight="74" id="cfi-6e-068" customClass="A3WalletItemFieldActionCell">
-                                <rect key="frame" x="0.0" y="414" width="768" height="74"/>
+                                <rect key="frame" x="0.0" y="488" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cfi-6e-068" id="pLh-r5-l6v">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -365,8 +373,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="separatorColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCell" rowHeight="74" id="TP8-YR-vdQ" customClass="A3WalletItemFieldCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletTitleCell" rowHeight="74" id="Dm8-rr-VZG" customClass="A3WalletItemTitleCell">
                                 <rect key="frame" x="0.0" y="86" width="768" height="74"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Dm8-rr-VZG" id="9Q3-cO-JWt">
+                                    <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCell" rowHeight="74" id="TP8-YR-vdQ" customClass="A3WalletItemFieldCell">
+                                <rect key="frame" x="0.0" y="160" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TP8-YR-vdQ" id="JBS-A3-mZP">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -386,7 +402,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldDateCell" rowHeight="74" id="3EZ-59-Six" customClass="A3WalletItemFieldCell">
-                                <rect key="frame" x="0.0" y="160" width="768" height="74"/>
+                                <rect key="frame" x="0.0" y="234" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3EZ-59-Six" id="uWR-Ax-Qud">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -406,7 +422,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCateCell" rowHeight="74" id="SPw-WA-i4V" customClass="A3WalletItemFieldCateCell">
-                                <rect key="frame" x="0.0" y="234" width="768" height="74"/>
+                                <rect key="frame" x="0.0" y="308" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SPw-WA-i4V" id="hUA-Ro-qGv">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -430,7 +446,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemPhotoFieldCell" rowHeight="74" id="gsI-jY-Glq" customClass="A3WalletItemPhotoFieldCell">
-                                <rect key="frame" x="0.0" y="308" width="768" height="74"/>
+                                <rect key="frame" x="0.0" y="382" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gsI-jY-Glq" id="9Od-Xy-aLP">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -458,7 +474,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3WalletItemFieldDeleteCell" rowHeight="36" id="fBZ-EL-hw9">
-                                <rect key="frame" x="0.0" y="382" width="768" height="36"/>
+                                <rect key="frame" x="0.0" y="456" width="768" height="36"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fBZ-EL-hw9" id="zqf-S5-ln4">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="35"/>
@@ -475,7 +491,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemRightIconCell" rowHeight="74" id="wkz-kx-SzJ" customClass="A3WalletItemRightIconCell">
-                                <rect key="frame" x="0.0" y="418" width="768" height="74"/>
+                                <rect key="frame" x="0.0" y="492" width="768" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wkz-kx-SzJ" id="x45-dP-u86">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
@@ -500,7 +516,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletDateInputCell" rowHeight="218" id="YAS-UY-8nV" customClass="A3WalletDateInputCell">
-                                <rect key="frame" x="0.0" y="492" width="768" height="218"/>
+                                <rect key="frame" x="0.0" y="566" width="768" height="218"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YAS-UY-8nV" id="m2K-aU-Mvl">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="217"/>
@@ -541,7 +557,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletNoteCell" rowHeight="180" id="JAd-jP-jAa" customClass="A3WalletNoteCell">
-                                <rect key="frame" x="0.0" y="710" width="768" height="180"/>
+                                <rect key="frame" x="0.0" y="784" width="768" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JAd-jP-jAa" id="bc5-Fd-407">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="179"/>
