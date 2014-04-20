@@ -83,8 +83,6 @@
     [Foursquare2 setupFoursquareWithClientId:FOURSQUARE_CLIENTID
                                       secret:FOURSQUARE_CLIENTSECRET
                                  callbackURL:FOURSQUARE_REDIRECTURI];
-    //    [self.searchDisplayController setActive:NO];
-    
 
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 66;

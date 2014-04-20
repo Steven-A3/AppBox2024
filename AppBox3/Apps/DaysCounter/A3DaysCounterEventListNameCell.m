@@ -22,8 +22,10 @@
 - (void)awakeFromNib
 {
     // Initialization code
-    self.titleBottomConst.constant = IS_RETINA ? 37.5 : 37;
-    self.sinceBottomConst.constant = IS_RETINA ? 20.5 : 20;
+//    self.titleBottomConst.constant = IS_RETINA ? 37.5 : 37;
+//    self.sinceBottomConst.constant = IS_RETINA ? 20.5 : 20;
+    self.titleBottomConst.constant = IS_RETINA ? 35.5 : 35;
+    self.sinceBottomConst.constant = IS_RETINA ? 18.5 : 18;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

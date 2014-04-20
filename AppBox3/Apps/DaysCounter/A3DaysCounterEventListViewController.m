@@ -120,12 +120,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc
-{
-    self.sourceArray = nil;
-    self.itemArray = nil;
-}
-
+//- (void)dealloc
+//{
+//    self.sourceArray = nil;
+//    self.itemArray = nil;
+//}
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
     [self.tableView reloadData];
@@ -381,7 +380,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ( tableView != self.tableView) {
-        return 0.01;
+        return 0;
+        //return 0.01;
     }
     
     NSDictionary *dict = [_itemArray objectAtIndex:section];
@@ -395,6 +395,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if ( tableView != self.tableView) {
+        return 0;
+    }
+    
     return 0.01;
 }
 
@@ -403,23 +407,6 @@
 {
     return 62.0;
 }
-
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
-//    NSLayoutConstraint *widthConst = nil;
-//    for (NSLayoutConstraint *layout in imageView.constraints ) {
-//        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
-//            widthConst = layout;
-//            break;
-//        }
-//    }
-//    
-//    if ( widthConst ) {
-//        widthConst.constant = (imageView.image ? 32.0 : 0.0);
-//        [cell layoutIfNeeded];
-//    }
-//}
 
 - (DaysCounterEvent *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
@@ -623,7 +610,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    FNLOG(@"");
     if ([indexPath row] >= [_sourceArray count]) {
         return NO;
     }
@@ -728,6 +715,8 @@
 {
     self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
     NSLog(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
+    self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
@@ -752,6 +741,7 @@
 - (IBAction)searchAction:(id)sender {
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     [self.searchDisplayController setActive:YES animated:YES];
+    [self.searchDisplayController.searchBar becomeFirstResponder];
 }
 
 - (IBAction)editAction:(id)sender {

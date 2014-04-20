@@ -18,6 +18,8 @@
 #import "NSString+conversion.h"
 #import <AddressBookUI/AddressBookUI.h>
 #import <CoreLocation/CoreLocation.h>
+#import "A3AppDelegate+appearance.h"
+
 
 @interface A3DaysCounterChangeLocationViewController ()
 @property (strong, nonatomic) NSMutableArray *resultArray;
@@ -75,7 +77,7 @@
     
     if ( indexPath.row == 0 ) {
         cell.textLabel.text = @"Current Location";
-        cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:105.0/255.0 blue:1.0 alpha:1.0];
+        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
     }
     else {
         cell.textLabel.textColor = [UIColor darkTextColor];

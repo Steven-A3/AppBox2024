@@ -11,7 +11,7 @@
 @class DaysCounterEvent;
 
 @protocol A3DaysCounterEventDetailViewControllerDelegate;
-@interface A3DaysCounterEventDetailViewController : UITableViewController<UIAlertViewDelegate,UIPopoverControllerDelegate,UIActionSheetDelegate>
+@interface A3DaysCounterEventDetailViewController : UITableViewController
 
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) id<A3DaysCounterEventDetailViewControllerDelegate> delegate;

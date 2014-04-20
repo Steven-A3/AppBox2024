@@ -266,6 +266,7 @@
 - (IBAction)searchAction:(id)sender {
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     [self.searchDisplayController setActive:YES animated:YES];
+    [self.searchDisplayController.searchBar becomeFirstResponder];
 }
 
 #pragma mark - Table view data source
@@ -293,11 +294,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (tableView != self.tableView) {
+        return 0;
+    }
+        
     return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (tableView != self.tableView) {
+        return 0;
+    }
+    
     return 0.01;
 }
 
@@ -569,10 +578,20 @@
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG(@"indexPath: %@, _itemArray count: %d", indexPath, [_itemArray count]);
     if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
         return NO;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
+    if (!item) {
+        NSLog(@"asdf");
+        return NO;
+    }
+    
+    if (!item.calendarType || [item.calendarType isKindOfClass:[NSNull class]]) {
+        NSLog(@"asdf2");
+        return NO;
+    }
     
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }
@@ -610,7 +629,9 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_itemArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarName contains[cd] %@",searchText]];
+    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
     [self.searchDisplayController.searchResultsTableView reloadData];
+    self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsZero;
 }
 
 @end
