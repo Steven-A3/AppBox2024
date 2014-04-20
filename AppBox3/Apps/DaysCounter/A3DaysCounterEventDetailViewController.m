@@ -299,6 +299,9 @@
 
 - (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell withInfo:(DaysCounterEvent*)info
 {
+    cell.favoriteStarImageView.image = [[UIImage imageNamed:@"star02_on"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    cell.favoriteStarImageView.tintColor = [A3AppDelegate instance].themeColor;
+    
     if ( IS_IPHONE ) {
         cell.eventTitleLabel.font = [UIFont boldSystemFontOfSize:17.0];
     }

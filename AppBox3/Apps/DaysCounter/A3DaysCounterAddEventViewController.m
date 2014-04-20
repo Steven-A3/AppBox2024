@@ -515,7 +515,10 @@
             UITextField *textField = (UITextField*)[cell viewWithTag:10];
             UIButton *button = (UIButton*)[cell viewWithTag:11];
             textField.text = [_eventModel objectForKey:EventItem_Name];
-            button.selected = [[_eventModel objectForKey:EventItem_IsFavorite] boolValue];
+            
+            BOOL isSelected = [[_eventModel objectForKey:EventItem_IsFavorite] boolValue];
+            [button setImage:[UIImage imageNamed:isSelected ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
+            button.tintColor = [A3AppDelegate instance].themeColor;
         }
             break;
         case EventCellType_Photo:
@@ -1209,9 +1212,12 @@
 
 - (void)toggleFavorite:(id)sender
 {
-    UIButton *button = (UIButton*)sender;
-    button.selected = !button.selected;
-    [_eventModel setObject:[NSNumber numberWithBool:button.selected] forKey:EventItem_IsFavorite];
+    BOOL isSelected = [[_eventModel objectForKey:EventItem_IsFavorite] boolValue];
+    isSelected = !isSelected;
+    [_eventModel setObject:@(isSelected) forKey:EventItem_IsFavorite];
+
+    [((UIButton *)sender) setImage:[UIImage imageNamed:isSelected ? @"star02_on" : @"star02"] forState:UIControlStateNormal];
+    ((UIButton *)sender).tintColor = [A3AppDelegate instance].themeColor;
 }
 
 - (void)photoAction:(id)sender
