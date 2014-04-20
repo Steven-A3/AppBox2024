@@ -120,12 +120,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)dealloc
-{
-    self.sourceArray = nil;
-    self.itemArray = nil;
-}
-
+//- (void)dealloc
+//{
+//    self.sourceArray = nil;
+//    self.itemArray = nil;
+//}
 
 - (void)contentSizeDidChange:(NSNotification *)notification {
     [self.tableView reloadData];

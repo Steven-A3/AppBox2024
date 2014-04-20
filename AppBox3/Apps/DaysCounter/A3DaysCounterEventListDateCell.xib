@@ -23,14 +23,14 @@
                         </constraints>
                     </imageView>
                     <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yW-1F-APj" userLabel="Label - forTitleAlign">
-                        <rect key="frame" x="20" y="2" width="42" height="21"/>
+                        <rect key="frame" x="20" y="4" width="42" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="sX5-w1-qyX" userLabel="Label - Title">
-                        <rect key="frame" x="95" y="9" width="38" height="18"/>
+                        <rect key="frame" x="95" y="11" width="38" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -102,7 +102,7 @@
                     <constraint firstItem="2QL-TM-Cvu" firstAttribute="leading" secondItem="IZs-6J-QsC" secondAttribute="trailing" constant="5" id="bBD-OS-uxz"/>
                     <constraint firstItem="LHi-wW-f67" firstAttribute="leading" secondItem="DbN-xC-ltI" secondAttribute="leading" constant="20" id="bsi-B2-W9d"/>
                     <constraint firstItem="xeA-rM-gJf" firstAttribute="bottom" secondItem="2QL-TM-Cvu" secondAttribute="baseline" id="gx0-Vi-u3p"/>
-                    <constraint firstAttribute="bottom" secondItem="0yW-1F-APj" secondAttribute="bottom" constant="38" id="oHw-xo-eES"/>
+                    <constraint firstAttribute="bottom" secondItem="0yW-1F-APj" secondAttribute="bottom" constant="36" id="oHw-xo-eES"/>
                     <constraint firstItem="IZs-6J-QsC" firstAttribute="leading" secondItem="DbN-xC-ltI" secondAttribute="leading" constant="95" id="r9v-Dy-Dsn"/>
                     <constraint firstItem="0yW-1F-APj" firstAttribute="leading" secondItem="LHi-wW-f67" secondAttribute="leading" id="x44-eh-IAc"/>
                     <constraint firstItem="DAN-qi-dv0" firstAttribute="leading" secondItem="sX5-w1-qyX" secondAttribute="trailing" constant="8" id="zx1-3O-I3T"/>
@@ -112,7 +112,9 @@
                 <outlet property="nameLeadingConst" destination="GEB-rp-yNi" id="Xg3-jE-VDB"/>
                 <outlet property="photoLeadingConst" destination="G9I-tt-Se8" id="qyg-k2-zlj"/>
                 <outlet property="roundDateLeadingConst" destination="bsi-B2-W9d" id="VWJ-Mm-3gt"/>
+                <outlet property="sinceBottomConst" destination="3HA-Q7-f8c" id="5mk-r6-yjh"/>
                 <outlet property="sinceLeadingConst" destination="r9v-Dy-Dsn" id="Qj0-Ee-O6z"/>
+                <outlet property="titleBottomConst" destination="oHw-xo-eES" id="8RG-hp-lce"/>
                 <outlet property="untilRoundWidthConst" destination="Pe3-CB-SSR" id="RJL-89-44I"/>
             </connections>
         </tableViewCell>
