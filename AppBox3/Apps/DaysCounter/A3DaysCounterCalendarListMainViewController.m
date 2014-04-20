@@ -294,11 +294,19 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (tableView != self.tableView) {
+        return 0;
+    }
+        
     return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    if (tableView != self.tableView) {
+        return 0;
+    }
+    
     return 0.01;
 }
 
@@ -621,7 +629,9 @@
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_itemArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarName contains[cd] %@",searchText]];
+    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
     [self.searchDisplayController.searchResultsTableView reloadData];
+    self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsZero;
 }
 
 @end

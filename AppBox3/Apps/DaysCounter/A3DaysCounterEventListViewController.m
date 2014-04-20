@@ -408,23 +408,6 @@
     return 62.0;
 }
 
-//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
-//    NSLayoutConstraint *widthConst = nil;
-//    for (NSLayoutConstraint *layout in imageView.constraints ) {
-//        if ( layout.firstAttribute == NSLayoutAttributeWidth && layout.firstItem == imageView ) {
-//            widthConst = layout;
-//            break;
-//        }
-//    }
-//    
-//    if ( widthConst ) {
-//        widthConst.constant = (imageView.image ? 32.0 : 0.0);
-//        [cell layoutIfNeeded];
-//    }
-//}
-
 - (DaysCounterEvent *)itemForTableView:(UITableView *)tableView atIndexPath:(NSIndexPath *)indexPath
 {
     // Configure the cell...
