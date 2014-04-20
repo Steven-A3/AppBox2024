@@ -545,7 +545,6 @@
                                            inView:self.view
                          permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         activityController.completionHandler = ^(NSString* activityType, BOOL completed) {
-            NSLog(@"%s %@",__FUNCTION__,activityType);
             if ( completed && [activityType isEqualToString:@"Slideshow"] ) {
                 A3DaysCounterSlideshowOptionViewController *viewCtrl = [[A3DaysCounterSlideshowOptionViewController alloc] initWithNibName:@"A3DaysCounterSlideshowOptionViewController" bundle:nil];
                 [self presentSubViewController:viewCtrl];

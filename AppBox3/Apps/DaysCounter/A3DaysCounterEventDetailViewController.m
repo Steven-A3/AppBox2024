@@ -958,10 +958,10 @@ EXIT_FUCTION:
         return retHeight;
     }
     
-    BOOL isiPadFullMode = NO;
-    if (IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1)) {
-        isiPadFullMode = YES;
-    }
+//    BOOL isiPadFullMode = NO;
+//    if (IS_IPAD && (_eventItem.location == nil && [_eventItem.imageFilename length] < 1)) {
+//        isiPadFullMode = YES;
+//    }
 
     NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
@@ -1111,11 +1111,24 @@ EXIT_FUCTION:
         }
             break;
             
-        default:
+        case EventCellType_Alert:
+        case EventCellType_Location:
+        case EventCellType_DurationOption:
+        case EventCellType_Calendar:
         {
-            if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) ) {
+            if (IS_IPAD) {
                 retHeight = 74.0;
             }
+        }
+            break;
+            
+        case EventCellType_Share:
+        case EventCellType_Favorites:
+        default:
+        {
+//            if ( isiPadFullMode && ((cellType != EventCellType_Share) && (cellType != EventCellType_Favorites)) ) {
+//                retHeight = 74.0;
+//            }
         }
             break;
     }

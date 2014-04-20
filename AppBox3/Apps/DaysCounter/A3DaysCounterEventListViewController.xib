@@ -83,18 +83,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <searchBar contentMode="redraw" id="AWt-jT-k3r">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-            <textInputTraits key="textInputTraits"/>
-            <connections>
-                <outlet property="delegate" destination="-1" id="GSW-gl-WNq"/>
-            </connections>
-        </searchBar>
         <searchDisplayController id="dwC-tC-hWB">
             <connections>
                 <outlet property="delegate" destination="-1" id="rKr-wR-Pjw"/>
-                <outlet property="searchBar" destination="AWt-jT-k3r" id="6ac-VE-FTm"/>
                 <outlet property="searchContentsController" destination="-1" id="Wbq-CY-dlj"/>
                 <outlet property="searchResultsDataSource" destination="-1" id="SiF-f7-ozw"/>
                 <outlet property="searchResultsDelegate" destination="-1" id="Giw-lU-wSf"/>
