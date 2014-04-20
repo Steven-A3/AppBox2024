@@ -266,6 +266,7 @@
 - (IBAction)searchAction:(id)sender {
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     [self.searchDisplayController setActive:YES animated:YES];
+    [self.searchDisplayController.searchBar becomeFirstResponder];
 }
 
 #pragma mark - Table view data source
