@@ -131,6 +131,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			[_fieldItems addObject:self.noteItem];
 		}
 	}
+	FNLOG(@"%ld", (long)[_fieldItems count]);
     
 	return _fieldItems;
 }
@@ -693,7 +694,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *foot = [[UIView alloc] initWithFrame:CGRectZero];
+    UIView *foot = [UIView new];
     return foot;
 }
 

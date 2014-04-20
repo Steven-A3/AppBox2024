@@ -328,17 +328,16 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
                     dataCell = [[UITableViewCell alloc] initWithStyle:IS_IPAD ? UITableViewCellStyleValue1:UITableViewCellStyleSubtitle reuseIdentifier:A3WalletTextCellID2];
                     dataCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     dataCell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                    
-                    if (IS_IPHONE) {
-                        dataCell.textLabel.font = [UIFont systemFontOfSize:15];
-                        dataCell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-                    }
-                    else {
-                        dataCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-                        dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                    }
                 }
-                
+				if (IS_IPHONE) {
+					dataCell.textLabel.font = [UIFont systemFontOfSize:15];
+					dataCell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+				}
+				else {
+					dataCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+					dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+				}
+
                 if (item.name && item.name.length>0) {
                     dataCell.textLabel.text = item.name;
                 }

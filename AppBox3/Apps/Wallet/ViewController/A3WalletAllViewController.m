@@ -758,70 +758,22 @@ enum SortingKind {
                 cell = videoCell;
             }
             else {
-                
-                /*
-                A3WalletListTextCell *dataCell;
-                dataCell = [tableView dequeueReusableCellWithIdentifier:A3WalletTextCellID forIndexPath:indexPath];
-                
-                 // label font
-                 if (IS_IPHONE) {
-                 dataCell.titleLabel.font = [UIFont systemFontOfSize:15];
-                 dataCell.detailLabel.font = [UIFont systemFontOfSize:12];
-                 }
-                 else {
-                 dataCell.titleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-                 dataCell.detailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                 }
-                 
-                dataCell.titleLabel.text = item.name;
-                
-                NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-                NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-                if (fieldItems.count>0) {
-                    WalletFieldItem *fieldItem = fieldItems[0];
-                    NSString *itemValue = @"";
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                        [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
-                        itemValue = [df stringFromDate:fieldItem.date];
-                    }
-                    else {
-                        itemValue = fieldItem.value;
-                    }
-                    
-                    if (itemValue && (itemValue.length>0)) {
-                        NSString *styleValue = [itemValue stringForStyle:fieldItem.field.style];
-                        dataCell.detailLabel.text = styleValue;
-                    }
-                    else {
-                        dataCell.detailLabel.text = @"";
-                    }
-                }
-                else {
-                    dataCell.detailLabel.text = @"";
-                }
-                
-                cell = dataCell;
-                */
-                
-
                 UITableViewCell *dataCell;
                 dataCell = [tableView dequeueReusableCellWithIdentifier:A3WalletTextCellID];
                 if (dataCell == nil) {
                     dataCell = [[UITableViewCell alloc] initWithStyle:IS_IPAD ? UITableViewCellStyleValue1:UITableViewCellStyleSubtitle reuseIdentifier:A3WalletTextCellID];
                     dataCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     dataCell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                    
-                    if (IS_IPHONE) {
-                        dataCell.textLabel.font = [UIFont systemFontOfSize:15];
-                        dataCell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-                    }
-                    else {
-                        dataCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-                        dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                    }
                 }
-                
+				if (IS_IPHONE) {
+					dataCell.textLabel.font = [UIFont systemFontOfSize:15];
+					dataCell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+				}
+				else {
+					dataCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+					dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+				}
+
                 if (item.name && item.name.length>0) {
                     dataCell.textLabel.text = item.name;
                 }
@@ -831,35 +783,7 @@ enum SortingKind {
                 
                 // all 에서는 오른쪽 필드에 시간을 표시하도록 변경
                 dataCell.detailTextLabel.text = [item.modificationDate timeAgo];
-                
-                /*
-                NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-                NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-                if (fieldItems.count>0) {
-                    WalletFieldItem *fieldItem = fieldItems[0];
-                    NSString *itemValue = @"";
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                        [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
-                        itemValue = [df stringFromDate:fieldItem.date];
-                    }
-                    else {
-                        itemValue = fieldItem.value;
-                    }
-                    
-                    if (itemValue && (itemValue.length>0)) {
-                        NSString *styleValue = [itemValue stringForStyle:fieldItem.field.style];
-                        dataCell.detailTextLabel.text = styleValue;
-                    }
-                    else {
-                        dataCell.detailTextLabel.text = @"";
-                    }
-                }
-                else {
-                    dataCell.detailTextLabel.text = @"";
-                }
-                 */
-                
+
                 cell = dataCell;
             }
 		}

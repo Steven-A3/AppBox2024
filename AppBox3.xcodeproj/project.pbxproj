@@ -585,7 +585,6 @@
 		68B6A31C18CEC76D004084EF /* A3WalletAllTopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A24B18CEC76C004084EF /* A3WalletAllTopCell.m */; };
 		68B6A31D18CEC76D004084EF /* A3WalletAllTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A24C18CEC76C004084EF /* A3WalletAllTopCell.xib */; };
 		68B6A31E18CEC76D004084EF /* A3WalletAllTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A24E18CEC76C004084EF /* A3WalletAllTopView.m */; };
-		68B6A31F18CEC76D004084EF /* A3WalletAllTopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A24F18CEC76C004084EF /* A3WalletAllTopView.xib */; };
 		68B6A32018CEC76D004084EF /* A3WalletCateEditIconCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A25118CEC76C004084EF /* A3WalletCateEditIconCell.m */; };
 		68B6A32118CEC76D004084EF /* A3WalletCateEditTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A25318CEC76C004084EF /* A3WalletCateEditTitleCell.m */; };
 		68B6A32218CEC76D004084EF /* A3WalletCateInfoFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A25518CEC76C004084EF /* A3WalletCateInfoFieldCell.m */; };
@@ -601,8 +600,6 @@
 		68B6A32C18CEC76D004084EF /* A3WalletItemPhotoFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26518CEC76C004084EF /* A3WalletItemPhotoFieldCell.m */; };
 		68B6A32D18CEC76D004084EF /* A3WalletItemRightIconCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26718CEC76C004084EF /* A3WalletItemRightIconCell.m */; };
 		68B6A32E18CEC76D004084EF /* A3WalletItemTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26918CEC76C004084EF /* A3WalletItemTitleView.m */; };
-		68B6A32F18CEC76D004084EF /* A3WalletItemTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A26A18CEC76C004084EF /* A3WalletItemTitleView.xib */; };
-		68B6A33018CEC76D004084EF /* A3WalletItemTitleView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A26B18CEC76C004084EF /* A3WalletItemTitleView_iPad.xib */; };
 		68B6A33118CEC76D004084EF /* A3WalletListBigPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26D18CEC76C004084EF /* A3WalletListBigPhotoCell.m */; };
 		68B6A33218CEC76D004084EF /* A3WalletListBigVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26F18CEC76C004084EF /* A3WalletListBigVideoCell.m */; };
 		68B6A33318CEC76D004084EF /* A3WalletListPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27118CEC76D004084EF /* A3WalletListPhotoCell.m */; };
@@ -1924,7 +1921,6 @@
 		68B6A24C18CEC76C004084EF /* A3WalletAllTopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletAllTopCell.xib; sourceTree = "<group>"; };
 		68B6A24D18CEC76C004084EF /* A3WalletAllTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAllTopView.h; sourceTree = "<group>"; };
 		68B6A24E18CEC76C004084EF /* A3WalletAllTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAllTopView.m; sourceTree = "<group>"; };
-		68B6A24F18CEC76C004084EF /* A3WalletAllTopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletAllTopView.xib; sourceTree = "<group>"; };
 		68B6A25018CEC76C004084EF /* A3WalletCateEditIconCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCateEditIconCell.h; sourceTree = "<group>"; };
 		68B6A25118CEC76C004084EF /* A3WalletCateEditIconCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCateEditIconCell.m; sourceTree = "<group>"; };
 		68B6A25218CEC76C004084EF /* A3WalletCateEditTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCateEditTitleCell.h; sourceTree = "<group>"; };
@@ -1951,8 +1947,6 @@
 		68B6A26718CEC76C004084EF /* A3WalletItemRightIconCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemRightIconCell.m; sourceTree = "<group>"; };
 		68B6A26818CEC76C004084EF /* A3WalletItemTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemTitleView.h; sourceTree = "<group>"; };
 		68B6A26918CEC76C004084EF /* A3WalletItemTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemTitleView.m; sourceTree = "<group>"; };
-		68B6A26A18CEC76C004084EF /* A3WalletItemTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletItemTitleView.xib; sourceTree = "<group>"; };
-		68B6A26B18CEC76C004084EF /* A3WalletItemTitleView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletItemTitleView_iPad.xib; sourceTree = "<group>"; };
 		68B6A26C18CEC76C004084EF /* A3WalletListBigPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletListBigPhotoCell.h; sourceTree = "<group>"; };
 		68B6A26D18CEC76C004084EF /* A3WalletListBigPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletListBigPhotoCell.m; sourceTree = "<group>"; };
 		68B6A26E18CEC76C004084EF /* A3WalletListBigVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletListBigVideoCell.h; sourceTree = "<group>"; };
@@ -4332,7 +4326,6 @@
 				68B6A24C18CEC76C004084EF /* A3WalletAllTopCell.xib */,
 				68B6A24D18CEC76C004084EF /* A3WalletAllTopView.h */,
 				68B6A24E18CEC76C004084EF /* A3WalletAllTopView.m */,
-				68B6A24F18CEC76C004084EF /* A3WalletAllTopView.xib */,
 				68B6A25018CEC76C004084EF /* A3WalletCateEditIconCell.h */,
 				68B6A25118CEC76C004084EF /* A3WalletCateEditIconCell.m */,
 				68B6A25218CEC76C004084EF /* A3WalletCateEditTitleCell.h */,
@@ -4359,8 +4352,6 @@
 				68B6A26718CEC76C004084EF /* A3WalletItemRightIconCell.m */,
 				68B6A26818CEC76C004084EF /* A3WalletItemTitleView.h */,
 				68B6A26918CEC76C004084EF /* A3WalletItemTitleView.m */,
-				68B6A26A18CEC76C004084EF /* A3WalletItemTitleView.xib */,
-				68B6A26B18CEC76C004084EF /* A3WalletItemTitleView_iPad.xib */,
 				68B6A26C18CEC76C004084EF /* A3WalletListBigPhotoCell.h */,
 				68B6A26D18CEC76C004084EF /* A3WalletListBigPhotoCell.m */,
 				68B6A26E18CEC76C004084EF /* A3WalletListBigVideoCell.h */,
@@ -5446,7 +5437,6 @@
 				68143D0418E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */,
 				68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */,
 				68F1C87F18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib in Resources */,
-				68B6A32F18CEC76D004084EF /* A3WalletItemTitleView.xib in Resources */,
 				68F1C8BF18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.xib in Resources */,
 				682B37C318AB365D00C6BD66 /* Calculator.xcassets in Resources */,
 				682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */,
@@ -5475,7 +5465,6 @@
 				68F1C87A18D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib in Resources */,
 				68B6A2B818CEC76D004084EF /* LoanCalculatorPadStoryBoard.storyboard in Resources */,
 				8076BC9718FA86F300613E70 /* A3DaysCounterAddEventDateCell.xib in Resources */,
-				68B6A33018CEC76D004084EF /* A3WalletItemTitleView_iPad.xib in Resources */,
 				686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */,
 				681614061709B7AB00CBC6FE /* A3ActionMenuViewController_iPad.xib in Resources */,
 				8076BCA118FA87E800613E70 /* A3DaysCounterAddEventEventInfoCell.xib in Resources */,
@@ -5551,7 +5540,6 @@
 				68F1C8BC18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib in Resources */,
 				68F1C8B518D7F37D009FAE8A /* A3PhotoSelectViewController.xib in Resources */,
 				8076BCAB18FA8B4E00613E70 /* A3DaysCounterAddEventDefaultCell.xib in Resources */,
-				68B6A31F18CEC76D004084EF /* A3WalletAllTopView.xib in Resources */,
 				17D42CC05C00D47B63A1491C /* FSWebLogin.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
