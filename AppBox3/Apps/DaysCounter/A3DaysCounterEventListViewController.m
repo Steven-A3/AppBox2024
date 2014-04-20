@@ -36,6 +36,8 @@
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (strong, nonatomic) NSString *changedCalendarID;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 
 @end
 
@@ -85,9 +87,13 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
+    
     if (![self.headerView.subviews containsObject:self.sortArrowImgView]) {
         [self.headerView addSubview:self.sortArrowImgView];
     }
+    
+    [self.view addSubview:self.searchBar];
+    [self mySearchDisplayController];
 
     [self.view layoutIfNeeded];
 }
@@ -704,20 +710,82 @@
 }
 
 #pragma mark - UISearchDisplayDelegate
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
-{
-    self.searchResultArray = nil;
-    self.tableView.tableHeaderView = _headerView;
+- (UISearchDisplayController *)mySearchDisplayController {
+	if (!_mySearchDisplayController) {
+		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+		_mySearchDisplayController.delegate = self;
+		_mySearchDisplayController.searchBar.delegate = self;
+		_mySearchDisplayController.searchResultsTableView.delegate = self;
+		_mySearchDisplayController.searchResultsTableView.dataSource = self;
+        //		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2f];
+		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
+        _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
+        _mySearchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+	}
+	return _mySearchDisplayController;
 }
 
-#pragma mark - UISearchBarDelegate
+- (UISearchBar *)searchBar {
+	if (!_searchBar) {
+		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
+		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+		_searchBar.delegate = self;
+	}
+	return _searchBar;
+}
+
+#pragma mark- UISearchDisplayControllerDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
+	[self.tableView setHidden:YES];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+	[self.tableView setHidden:NO];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+    
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
+    
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+	CGRect frame = _searchBar.frame;
+	frame.origin.y = 20.0;
+	_searchBar.frame = frame;
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+	CGRect frame = _searchBar.frame;
+	frame.origin.y = 0.0;
+	_searchBar.frame = frame;
+}
+
+#pragma mark - SearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+	_searchBar.text = @"";
+}
+
+// called when cancel button pressed
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+}
+
+// called when Search (in our case "Done") button pressed
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+	[searchBar resignFirstResponder];
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     self.searchResultArray = [_sourceArray filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"eventName contains[cd] %@",searchText]];
     NSLog(@"%s %@ : %ld",__FUNCTION__,searchText, (long)[_searchResultArray count]);
-    self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-    self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
-    [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
 #pragma mark - action method
@@ -738,10 +806,9 @@
     [self setupSegmentSortArrow];
 }
 
-- (IBAction)searchAction:(id)sender {
-    self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
-    [self.searchDisplayController setActive:YES animated:YES];
-    [self.searchDisplayController.searchBar becomeFirstResponder];
+- (IBAction)searchAction:(id)sender
+{
+    [self.searchBar becomeFirstResponder];
 }
 
 - (IBAction)editAction:(id)sender {

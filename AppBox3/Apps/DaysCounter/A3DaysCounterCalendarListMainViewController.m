@@ -24,9 +24,11 @@
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
 
-@interface A3DaysCounterCalendarListMainViewController ()
+@interface A3DaysCounterCalendarListMainViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 
 - (void)setupHeaderInfo;
 @end
@@ -99,6 +101,9 @@
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];
+    
+    [self.view addSubview:self.searchBar];
+    [self mySearchDisplayController];
     
     [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
 }
@@ -264,9 +269,10 @@
 }
 
 - (IBAction)searchAction:(id)sender {
-    self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
-    [self.searchDisplayController setActive:YES animated:YES];
-    [self.searchDisplayController.searchBar becomeFirstResponder];
+    //self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+    [self.searchBar becomeFirstResponder];
+//    [self.searchDisplayController setActive:YES animated:YES];
+//    [self.searchDisplayController.searchBar becomeFirstResponder];
 }
 
 #pragma mark - Table view data source
@@ -614,15 +620,75 @@
 }
 
 #pragma mark - UISearchDisplayDelegate
-- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller
+- (UISearchDisplayController *)mySearchDisplayController {
+	if (!_mySearchDisplayController) {
+		_mySearchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+		_mySearchDisplayController.delegate = self;
+		_mySearchDisplayController.searchBar.delegate = self;
+		_mySearchDisplayController.searchResultsTableView.delegate = self;
+		_mySearchDisplayController.searchResultsTableView.dataSource = self;
+//		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2f];
+		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
+        _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
+	}
+	return _mySearchDisplayController;
+}
+
+- (UISearchBar *)searchBar {
+	if (!_searchBar) {
+		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, kSearchBarHeight)];
+		_searchBar.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+		_searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
+		_searchBar.delegate = self;
+	}
+	return _searchBar;
+}
+
+#pragma mark- UISearchDisplayControllerDelegate
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willShowSearchResultsTableView:(UITableView *)tableView {
+	[self.tableView setHidden:YES];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller willHideSearchResultsTableView:(UITableView *)tableView {
+	[self.tableView setHidden:NO];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+    
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didHideSearchResultsTableView:(UITableView *)tableView {
+    
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+	CGRect frame = _searchBar.frame;
+	frame.origin.y = 20.0;
+	_searchBar.frame = frame;
+}
+
+- (void)searchDisplayControllerWillEndSearch:(UISearchDisplayController *)controller {
+	CGRect frame = _searchBar.frame;
+	frame.origin.y = 0.0;
+	_searchBar.frame = frame;
+}
+
+#pragma mark - SearchBarDelegate
+
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+	_searchBar.text = @"";
+}
+
+// called when cancel button pressed
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+}
+
+// called when Search (in our case "Done") button pressed
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    self.searchResultArray = nil;
-    if ( IS_IPHONE ) {
-        self.tableView.tableHeaderView = _headerView;
-    }
-    else {
-        self.tableView.tableHeaderView = _iPadheaderView;
-    }
+	[searchBar resignFirstResponder];
 }
 
 #pragma mark - UISearchBarDelegate
@@ -632,6 +698,7 @@
     self.searchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
     [self.searchDisplayController.searchResultsTableView reloadData];
     self.searchDisplayController.searchResultsTableView.separatorInset = UIEdgeInsetsZero;
+    self.searchDisplayController.searchBar.backgroundColor = self.navigationController.navigationBar.backgroundColor;
 }
 
 @end
