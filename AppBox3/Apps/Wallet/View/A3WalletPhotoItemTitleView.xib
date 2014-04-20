@@ -55,10 +55,10 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="fileNameLB" destination="Nde-Sg-dFc" id="v3Z-5e-xho"/>
-                <outlet property="fileSizeLB" destination="uhE-5y-rl0" id="vXW-7u-XNo"/>
-                <outlet property="imgSizeLB" destination="QfL-H0-iIk" id="LnE-JA-FzM"/>
-                <outlet property="takenDateLB" destination="YEk-Vv-iWh" id="xEV-fb-aOe"/>
+                <outlet property="fileNameLabel" destination="Nde-Sg-dFc" id="v3Z-5e-xho"/>
+                <outlet property="fileSizeLabel" destination="uhE-5y-rl0" id="vXW-7u-XNo"/>
+                <outlet property="imgSizeLabel" destination="QfL-H0-iIk" id="LnE-JA-FzM"/>
+                <outlet property="takenDateLabel" destination="YEk-Vv-iWh" id="xEV-fb-aOe"/>
                 <outlet property="timeLabel" destination="nat-Op-G99" id="g2g-xm-y7a"/>
                 <outlet property="titleTextField" destination="63N-Hv-scZ" id="IqZ-Xi-o36"/>
             </connections>

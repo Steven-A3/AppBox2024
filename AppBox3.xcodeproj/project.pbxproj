@@ -614,12 +614,12 @@
 		68B6A33C18CEC76D004084EF /* A3WalletVideoItemTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28018CEC76D004084EF /* A3WalletVideoItemTitleView.m */; };
 		68B6A33D18CEC76D004084EF /* A3WalletVideoItemTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */; };
 		68B6A33E18CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */; };
-		68B6A33F18CEC76D004084EF /* A3WalletAddCateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28518CEC76D004084EF /* A3WalletAddCateViewController.m */; };
+		68B6A33F18CEC76D004084EF /* A3WalletAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28518CEC76D004084EF /* A3WalletAddCategoryViewController.m */; };
 		68B6A34218CEC76D004084EF /* A3WalletAllViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */; };
-		68B6A34318CEC76D004084EF /* A3WalletCateEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28D18CEC76D004084EF /* A3WalletCateEditViewController.m */; };
+		68B6A34318CEC76D004084EF /* A3WalletCategoryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28D18CEC76D004084EF /* A3WalletCategoryEditViewController.m */; };
 		68B6A34418CEC76D004084EF /* A3WalletCategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28F18CEC76D004084EF /* A3WalletCategorySelectViewController.m */; };
-		68B6A34518CEC76D004084EF /* A3WalletCateInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29118CEC76D004084EF /* A3WalletCateInfoViewController.m */; };
-		68B6A34618CEC76D004084EF /* A3WalletCateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29318CEC76D004084EF /* A3WalletCateViewController.m */; };
+		68B6A34518CEC76D004084EF /* A3WalletCategoryInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29118CEC76D004084EF /* A3WalletCategoryInfoViewController.m */; };
+		68B6A34618CEC76D004084EF /* A3WalletCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29318CEC76D004084EF /* A3WalletCategoryViewController.m */; };
 		68B6A34718CEC76D004084EF /* A3WalletEditFieldViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29518CEC76D004084EF /* A3WalletEditFieldViewController.m */; };
 		68B6A34818CEC76D004084EF /* A3WalletFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29718CEC76D004084EF /* A3WalletFavoritesViewController.m */; };
 		68B6A34918CEC76D004084EF /* A3WalletFieldStyleSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A29918CEC76D004084EF /* A3WalletFieldStyleSelectViewController.m */; };
@@ -1970,18 +1970,18 @@
 		68B6A28018CEC76D004084EF /* A3WalletVideoItemTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletVideoItemTitleView.m; sourceTree = "<group>"; };
 		68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletVideoItemTitleView.xib; sourceTree = "<group>"; };
 		68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletVideoItemTitleView_iPad.xib; sourceTree = "<group>"; };
-		68B6A28418CEC76D004084EF /* A3WalletAddCateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAddCateViewController.h; sourceTree = "<group>"; };
-		68B6A28518CEC76D004084EF /* A3WalletAddCateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAddCateViewController.m; sourceTree = "<group>"; };
+		68B6A28418CEC76D004084EF /* A3WalletAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAddCategoryViewController.h; sourceTree = "<group>"; };
+		68B6A28518CEC76D004084EF /* A3WalletAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAddCategoryViewController.m; sourceTree = "<group>"; };
 		68B6A28A18CEC76D004084EF /* A3WalletAllViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAllViewController.h; sourceTree = "<group>"; };
 		68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAllViewController.m; sourceTree = "<group>"; };
-		68B6A28C18CEC76D004084EF /* A3WalletCateEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCateEditViewController.h; sourceTree = "<group>"; };
-		68B6A28D18CEC76D004084EF /* A3WalletCateEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCateEditViewController.m; sourceTree = "<group>"; };
+		68B6A28C18CEC76D004084EF /* A3WalletCategoryEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryEditViewController.h; sourceTree = "<group>"; };
+		68B6A28D18CEC76D004084EF /* A3WalletCategoryEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryEditViewController.m; sourceTree = "<group>"; };
 		68B6A28E18CEC76D004084EF /* A3WalletCategorySelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategorySelectViewController.h; sourceTree = "<group>"; };
 		68B6A28F18CEC76D004084EF /* A3WalletCategorySelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategorySelectViewController.m; sourceTree = "<group>"; };
-		68B6A29018CEC76D004084EF /* A3WalletCateInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCateInfoViewController.h; sourceTree = "<group>"; };
-		68B6A29118CEC76D004084EF /* A3WalletCateInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCateInfoViewController.m; sourceTree = "<group>"; };
-		68B6A29218CEC76D004084EF /* A3WalletCateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCateViewController.h; sourceTree = "<group>"; };
-		68B6A29318CEC76D004084EF /* A3WalletCateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCateViewController.m; sourceTree = "<group>"; };
+		68B6A29018CEC76D004084EF /* A3WalletCategoryInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryInfoViewController.h; sourceTree = "<group>"; };
+		68B6A29118CEC76D004084EF /* A3WalletCategoryInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryInfoViewController.m; sourceTree = "<group>"; };
+		68B6A29218CEC76D004084EF /* A3WalletCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryViewController.h; sourceTree = "<group>"; };
+		68B6A29318CEC76D004084EF /* A3WalletCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryViewController.m; sourceTree = "<group>"; };
 		68B6A29418CEC76D004084EF /* A3WalletEditFieldViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletEditFieldViewController.h; sourceTree = "<group>"; };
 		68B6A29518CEC76D004084EF /* A3WalletEditFieldViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletEditFieldViewController.m; sourceTree = "<group>"; };
 		68B6A29618CEC76D004084EF /* A3WalletFavoritesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletFavoritesViewController.h; sourceTree = "<group>"; };
@@ -4388,18 +4388,18 @@
 		68B6A28318CEC76D004084EF /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				68B6A28418CEC76D004084EF /* A3WalletAddCateViewController.h */,
-				68B6A28518CEC76D004084EF /* A3WalletAddCateViewController.m */,
+				68B6A28418CEC76D004084EF /* A3WalletAddCategoryViewController.h */,
+				68B6A28518CEC76D004084EF /* A3WalletAddCategoryViewController.m */,
 				68B6A28A18CEC76D004084EF /* A3WalletAllViewController.h */,
 				68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */,
-				68B6A28C18CEC76D004084EF /* A3WalletCateEditViewController.h */,
-				68B6A28D18CEC76D004084EF /* A3WalletCateEditViewController.m */,
+				68B6A28C18CEC76D004084EF /* A3WalletCategoryEditViewController.h */,
+				68B6A28D18CEC76D004084EF /* A3WalletCategoryEditViewController.m */,
 				68B6A28E18CEC76D004084EF /* A3WalletCategorySelectViewController.h */,
 				68B6A28F18CEC76D004084EF /* A3WalletCategorySelectViewController.m */,
-				68B6A29018CEC76D004084EF /* A3WalletCateInfoViewController.h */,
-				68B6A29118CEC76D004084EF /* A3WalletCateInfoViewController.m */,
-				68B6A29218CEC76D004084EF /* A3WalletCateViewController.h */,
-				68B6A29318CEC76D004084EF /* A3WalletCateViewController.m */,
+				68B6A29018CEC76D004084EF /* A3WalletCategoryInfoViewController.h */,
+				68B6A29118CEC76D004084EF /* A3WalletCategoryInfoViewController.m */,
+				68B6A29218CEC76D004084EF /* A3WalletCategoryViewController.h */,
+				68B6A29318CEC76D004084EF /* A3WalletCategoryViewController.m */,
 				68B6A29418CEC76D004084EF /* A3WalletEditFieldViewController.h */,
 				68B6A29518CEC76D004084EF /* A3WalletEditFieldViewController.m */,
 				68B6A29618CEC76D004084EF /* A3WalletFavoritesViewController.h */,
@@ -5964,7 +5964,7 @@
 				17D4236A30D866AEE7D3F6B2 /* UIView+A3Drawing.m in Sources */,
 				68B6A45318CEE781004084EF /* PSTGridLayoutInfo.m in Sources */,
 				68B6A2FE18CEC76D004084EF /* A3UnitPriceUnitTabBarController.m in Sources */,
-				68B6A33F18CEC76D004084EF /* A3WalletAddCateViewController.m in Sources */,
+				68B6A33F18CEC76D004084EF /* A3WalletAddCategoryViewController.m in Sources */,
 				68B6A31718CEC76D004084EF /* A3WalletSegmentedControl.m in Sources */,
 				684D92FD18BC1FBC005016F7 /* A3DateCalcStateManager.m in Sources */,
 				68B6A2AF18CEC76D004084EF /* A3LoanCalcSelectFrequencyViewController.m in Sources */,
@@ -6037,7 +6037,7 @@
 				68F1C8B418D7F37D009FAE8A /* A3PhotoSelectViewController.m in Sources */,
 				684D92BB18BC1EFE005016F7 /* A3BatterStatusChooseColorCell.m in Sources */,
 				68F1C87618D7F37D009FAE8A /* A3DaysCounterAddAndEditCalendarViewController.m in Sources */,
-				68B6A34518CEC76D004084EF /* A3WalletCateInfoViewController.m in Sources */,
+				68B6A34518CEC76D004084EF /* A3WalletCategoryInfoViewController.m in Sources */,
 				680D639F18CFF9D400938AD0 /* A3MirrorViewController.m in Sources */,
 				68B6A2C618CEC76D004084EF /* A3LoanCalcMonthlyTableTitleView.m in Sources */,
 				680D638C18CFF9D400938AD0 /* A3CalcKeyboardView_iPhone.m in Sources */,
@@ -6069,7 +6069,7 @@
 				68B6A2F818CEC76D004084EF /* A3UnitPriceNote2Cell.m in Sources */,
 				68F1C8CB18D7F37D009FAE8A /* A3LadyCalendarListViewController.m in Sources */,
 				685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */,
-				68B6A34618CEC76D004084EF /* A3WalletCateViewController.m in Sources */,
+				68B6A34618CEC76D004084EF /* A3WalletCategoryViewController.m in Sources */,
 				6823F702186329DC00E6E90D /* A3CurrencyDataManager.m in Sources */,
 				687F928918F69C74006377B9 /* A3MoreTableViewCell.m in Sources */,
 				687D0D1017CAE519005AB571 /* HolidayData.m in Sources */,
@@ -6196,7 +6196,7 @@
 				68143D6218E3EC7C00569691 /* A3TableViewExpandableCell.m in Sources */,
 				17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */,
 				68B6A44018CEE781004084EF /* MWGridCell.m in Sources */,
-				68B6A34318CEC76D004084EF /* A3WalletCateEditViewController.m in Sources */,
+				68B6A34318CEC76D004084EF /* A3WalletCategoryEditViewController.m in Sources */,
 				17D42D573FAB2BFE604A808F /* A3TranslatorFavoriteDataSource.m in Sources */,
 				68143D5F18E3EC7C00569691 /* A3TableViewElement.m in Sources */,
 				682126861843902A009A7964 /* NSNumberExtensions.m in Sources */,

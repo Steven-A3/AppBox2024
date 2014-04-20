@@ -34,6 +34,7 @@
 
 @property (nonatomic, strong) UIBarButtonItem *searchItem;
 @property (nonatomic, strong) NSMutableDictionary *topItem;
+@property (nonatomic, strong) NSMutableDictionary *emptyItem;		// 데이터가 없는 경우, 빈 셀 간격을 유지하기 위한 특별한 아이템
 @property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, readwrite) NSUInteger sortingMode;
@@ -52,6 +53,7 @@ NSString *const A3WalletTextCellID = @"A3WalletListTextCell";
 NSString *const A3WalletPhotoCellID = @"A3WalletListPhotoCell";
 NSString *const A3WalletVideoCellID = @"A3WalletListVideoCell";
 NSString *const A3WalletAllTopCellID = @"A3WalletAllTopCell";
+NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 
 enum SortingKind {
     kSortingDate = 0,
@@ -156,6 +158,7 @@ enum SortingKind {
     [self.tableView registerNib:[UINib nibWithNibName:@"A3WalletAllTopCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletAllTopCellID];
     [self.tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
     [self.tableView registerClass:[A3WalletListVideoCell class] forCellReuseIdentifier:A3WalletVideoCellID];
+	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
 }
 
 - (void)addButtonConstraints
@@ -203,9 +206,10 @@ enum SortingKind {
     if (!_items) {
         NSString *sortValue = (_sortingMode == kSortingDate) ? @"modificationDate" : @"name";
         _items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
-        
+        if (![_items count]) {
+			[_items addObject:self.emptyItem];
+		}
         [_items insertObject:self.topItem atIndex:0];
-        
     }
     
     return _items;
@@ -219,6 +223,14 @@ enum SortingKind {
     
     return _topItem;
 }
+
+- (NSMutableDictionary *)emptyItem {
+	if (!_emptyItem) {
+		_emptyItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"empty", @"order":@""}];
+	}
+	return _emptyItem;
+}
+
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
@@ -331,6 +343,9 @@ enum SortingKind {
     
     // item
     NSInteger itemCount = _items.count - 1;
+	if (_items && _items[1] == self.emptyItem) {
+		itemCount = 0;
+	}
     
     nameText = [[NSAttributedString alloc] initWithString:(itemCount > 1) ? @"ITEMS" : @"ITEM"
                                                                    attributes:textAttributes];
@@ -644,7 +659,7 @@ enum SortingKind {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ((tableView == self.tableView) && ([self.items objectAtIndex:indexPath.row] == self.topItem)) {
-        return 96;
+        return 104;
     }
     else {
         return 48;
@@ -682,7 +697,7 @@ enum SortingKind {
         else {
             itemContainArray = self.items;
         }
-        
+
 		if ([[itemContainArray objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
             
             WalletItem *item = itemContainArray[indexPath.row];
@@ -810,9 +825,16 @@ enum SortingKind {
             
             BOOL itemHave = (self.items.count>1) ? YES:NO;
             [self topView:topCell.topView enabledSet:itemHave];
-            
+
+			topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
             cell = topCell;
-        }
+        } else if ([_items objectAtIndex:indexPath.row] == self.emptyItem) {
+			UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:A3WalletNormalCellID forIndexPath:indexPath];
+			emptyCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			emptyCell.userInteractionEnabled = NO;
+			cell = emptyCell;
+		}
 	}
     
     return cell;
@@ -833,8 +855,13 @@ enum SortingKind {
         WalletItem *item = _items[indexPath.row];
         [_items removeObject:item];
         [item MR_deleteEntity];
-        
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+		if ([_items count] == 1) {
+			[_items addObject:self.emptyItem];
+			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		} else {
+			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
 
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         

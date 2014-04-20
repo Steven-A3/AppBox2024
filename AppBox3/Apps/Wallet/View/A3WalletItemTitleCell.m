@@ -24,11 +24,9 @@
 	_titleTextField = [UITextField new];
 	_titleTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
 	_titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-	_titleTextField.font = [UIFont systemFontOfSize:17];
 	[self addSubview:_titleTextField];
 
 	_timeLabel = [UILabel new];
-	_timeLabel.font = [UIFont systemFontOfSize:13];
 	_timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	[self addSubview:_timeLabel];
 
@@ -53,6 +51,12 @@
 		make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
 		make.baseline.equalTo(self.bottom).offset(-21);
 	}];
+	[self setupFonts];
+}
+
+- (void)setupFonts {
+	_titleTextField.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont boldSystemFontOfSize:17.0];
+	_timeLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] : [UIFont systemFontOfSize:13.0];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -60,6 +64,12 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+- (void)prepareForReuse {
+	[super prepareForReuse];
+
+	[self setupFonts];
 }
 
 @end

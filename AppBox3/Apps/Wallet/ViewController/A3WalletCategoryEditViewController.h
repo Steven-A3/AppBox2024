@@ -1,5 +1,5 @@
 //
-//  A3WalletCateEditViewController.h
+//  A3WalletCategoryEditViewController.h
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 11. 15..
@@ -20,7 +20,7 @@
 
 @end
 
-@interface A3WalletCateEditViewController : UITableViewController
+@interface A3WalletCategoryEditViewController : UITableViewController
 
 @property (nonatomic, assign) id<WalletCategoryEditDelegate> delegate;
 @property (nonatomic, strong) WalletCategory *category;

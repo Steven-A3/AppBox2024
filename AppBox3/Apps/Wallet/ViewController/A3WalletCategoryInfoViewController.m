@@ -1,12 +1,12 @@
 //
-//  A3WalletCateInfoViewController.m
+//  A3WalletCategoryInfoViewController.m
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 11. 15..
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3WalletCateInfoViewController.h"
+#import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletCateTitleView.h"
 #import "A3WalletCateInfoFieldCell.h"
 #import "WalletCategory.h"
@@ -19,13 +19,13 @@
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
 
-@interface A3WalletCateInfoViewController ()
+@interface A3WalletCategoryInfoViewController ()
 
 @property (nonatomic, strong) A3WalletCateTitleView *headerView;
 
 @end
 
-@implementation A3WalletCateInfoViewController
+@implementation A3WalletCategoryInfoViewController
 
 NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
@@ -70,6 +70,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
+	[self setupHeaderViewFont];
     [self.tableView reloadData];
 }
 
@@ -78,9 +79,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     if (!_headerView) {
         NSString *nibName = IS_IPAD ? @"A3WalletCateTitleView_iPad" : @"A3WalletCateTitleView";
         _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
-        
-        _headerView.nameLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont boldSystemFontOfSize:17.0];
-        _headerView.timeLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] : [UIFont systemFontOfSize:13.0];
+		[self setupHeaderViewFont];
         _headerView.nameLabel.text = _category.name;
         _headerView.icon.image = [UIImage imageNamed:_category.icon];
         _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_category.modificationDate timeAgo]];
@@ -89,10 +88,15 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     return _headerView;
 }
 
+- (void)setupHeaderViewFont {
+	_headerView.nameLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont boldSystemFontOfSize:17.0];
+	_headerView.timeLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] : [UIFont systemFontOfSize:13.0];
+}
+
 - (void)editButtonAction:(id)sender
 {
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-    A3WalletCateEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCateEditViewController"];
+    A3WalletCategoryEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCategoryEditViewController"];
 
     viewController.delegate = self;
     viewController.category = _category;
@@ -198,56 +202,5 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     
     return 74.0;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

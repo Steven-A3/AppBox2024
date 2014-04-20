@@ -1,5 +1,5 @@
 //
-//  A3WalletCateViewController.h
+//  A3WalletCategoryViewController.h
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 11. 11..
@@ -10,7 +10,7 @@
 
 @class WalletCategory;
 
-@interface A3WalletCateViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface A3WalletCategoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WalletCategory *category;

@@ -7,10 +7,10 @@
 //
 
 #import "A3WalletMainTabBarController.h"
-#import "A3WalletCateViewController.h"
+#import "A3WalletCategoryViewController.h"
 #import "A3WalletAllViewController.h"
 #import "A3WalletFavoritesViewController.h"
-#import "A3WalletAddCateViewController.h"
+#import "A3WalletAddCategoryViewController.h"
 #import "WalletCategory+initialize.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3AppDelegate.h"
@@ -214,7 +214,7 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
             selectedIcon = [UIImage imageNamed:selected];
         }
         else {
-            A3WalletCateViewController *vc = [[A3WalletCateViewController alloc] initWithNibName:nil bundle:nil];
+            A3WalletCategoryViewController *vc = [[A3WalletCategoryViewController alloc] initWithNibName:nil bundle:nil];
             vc.category = category;
             viewController = vc;
             NSString *selected = [category.icon stringByAppendingString:@"_on"];

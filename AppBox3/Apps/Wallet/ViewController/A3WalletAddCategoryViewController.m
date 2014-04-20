@@ -1,12 +1,12 @@
 //
-//  A3WalletAddCateViewController.m
+//  A3WalletAddCategoryViewController.m
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 11. 23..
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3WalletAddCateViewController.h"
+#import "A3WalletAddCategoryViewController.h"
 #import "A3WalletIconSelectViewController.h"
 #import "A3WalletEditFieldViewController.h"
 #import "A3WalletCateEditTitleCell.h"
@@ -22,7 +22,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
 
-@interface A3WalletAddCateViewController () <WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
+@interface A3WalletAddCategoryViewController () <WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
 @property (nonatomic, strong) WalletCategory *category;
 @property (nonatomic, strong) NSMutableArray *fields;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation A3WalletAddCateViewController {
+@implementation A3WalletAddCategoryViewController {
 	BOOL _sameCategoryNameExists;
 }
 

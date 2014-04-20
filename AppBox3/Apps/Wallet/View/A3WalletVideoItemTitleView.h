@@ -8,9 +8,13 @@
 
 #import "A3WalletItemTitleView.h"
 
-@interface A3WalletVideoItemTitleView : A3WalletItemTitleView
+@interface A3WalletVideoItemTitleView : UIView
 
-@property (strong, nonatomic) IBOutlet UILabel *durationLB;
-@property (strong, nonatomic) IBOutlet UILabel *dateLB;
+@property (strong, nonatomic) IBOutlet UITextField *titleTextField;
+@property (strong, nonatomic) IBOutlet UILabel *timeLabel;
+@property (strong, nonatomic) UIButton *favoriteButton;
+@property (strong, nonatomic) IBOutlet UILabel *durationLabel;
+@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
 
+- (void)setupFonts;
 @end

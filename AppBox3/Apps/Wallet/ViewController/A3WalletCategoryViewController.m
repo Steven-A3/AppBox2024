@@ -1,13 +1,13 @@
 //
-//  A3WalletCateViewController.m
+//  A3WalletCategoryViewController.m
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 11. 11..
 //  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3WalletCateViewController.h"
-#import "A3WalletCateInfoViewController.h"
+#import "A3WalletCategoryViewController.h"
+#import "A3WalletCategoryInfoViewController.h"
 #import "A3WalletItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
 #import "A3WalletListBigVideoCell.h"
@@ -30,7 +30,7 @@
 #import "WalletFieldItem+initialize.h"
 
 
-@interface A3WalletCateViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate>
+@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate>
 {
     BOOL		_isShowMoreMenu;
 }
@@ -49,7 +49,7 @@
 
 @end
 
-@implementation A3WalletCateViewController
+@implementation A3WalletCategoryViewController
 
 NSString *const A3WalletTextCellID1 = @"A3WalletListTextCell";
 NSString *const A3WalletBigVideoCellID1 = @"A3WalletListBigVideoCell";
@@ -314,9 +314,9 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     return _infoButton;
 }
 
-- (A3WalletCateInfoViewController *)cateInfoViewController
+- (A3WalletCategoryInfoViewController *)cateInfoViewController
 {
-    A3WalletCateInfoViewController *viewController = [[A3WalletCateInfoViewController alloc] initWithStyle:UITableViewStylePlain];
+    A3WalletCategoryInfoViewController *viewController = [[A3WalletCategoryInfoViewController alloc] initWithStyle:UITableViewStylePlain];
     viewController.hidesBottomBarWhenPushed = YES;
     viewController.category = _category;
     return viewController;

@@ -41,8 +41,8 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="dateLB" destination="a71-mM-Idw" id="ers-iJ-EaL"/>
-                <outlet property="durationLB" destination="nr2-SN-Tkz" id="ubI-ic-yNs"/>
+                <outlet property="dateLabel" destination="a71-mM-Idw" id="ers-iJ-EaL"/>
+                <outlet property="durationLabel" destination="nr2-SN-Tkz" id="ubI-ic-yNs"/>
                 <outlet property="timeLabel" destination="RZk-Gg-Tll" id="d9k-Gz-Q1f"/>
                 <outlet property="titleTextField" destination="znQ-a2-qZv" id="1fl-qO-R5M"/>
             </connections>

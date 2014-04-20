@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *itemsLabel;
 @property (strong, nonatomic) IBOutlet UILabel *updatedLabel;
 @property (strong, nonatomic) IBOutlet A3WalletSegmentedControl *sortingSegment;
+@property (weak, nonatomic) IBOutlet UIView *infoView;
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *horLines;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *vertLines;

@@ -57,12 +57,13 @@
 - (void)make1LinePixel
 {
     if (IS_RETINA) {
+		CGRect frame = _infoView.frame;
+		frame.size.height = 55.5;
+		_infoView.frame = frame;
         for (UIView *line in _horLines) {
             CGRect rect = line.frame;
+			rect.origin.y = 55.5;
             rect.size.height = 0.5f;
-            if (line.tag == 1000) {
-                rect.origin.y = 95.5;
-            }
             line.frame = rect;
         }
         
@@ -70,7 +71,7 @@
             CGRect rect = line.frame;
             rect.origin.y = 0.5;
             rect.size.width = 0.5;
-            rect.size.height = 54.5;
+            rect.size.height = 55;
             line.frame = rect;
         }
     }

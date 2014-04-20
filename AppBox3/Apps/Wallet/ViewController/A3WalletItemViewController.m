@@ -1,4 +1,4 @@
-    //
+//
 //  A3WalletItemViewController.m
 //  A3TeamWork
 //
@@ -491,7 +491,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 	if (_fieldItems[indexPath.row] == self.titleItem) {
 		A3WalletItemTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemTitleCellID forIndexPath:indexPath];
-		titleCell.titleTextField.text = _item.name;
+		titleCell.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
 		titleCell.titleTextField.delegate = self;
 		titleCell.favoriteButton.selected = self.item.favorite != nil;
 		titleCell.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];

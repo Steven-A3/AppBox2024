@@ -74,7 +74,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
-    [self.tableView reloadData];
+	[self.headerView setupFonts];
+	[self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -267,8 +268,8 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)updateTopInfo
 {
-    _headerView.titleTextField.text = _item.name;
-    CGSize textSize = [_item.name sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
+    _headerView.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
+    CGSize textSize = [_headerView.titleTextField.text sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
     CGRect frame = _headerView.titleTextField.frame;
     frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
     _headerView.titleTextField.frame = frame;
@@ -289,14 +290,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePath]];
     NSInteger dur = round(duration);
-    _headerView.durationLB.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
+    _headerView.durationLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
     
     NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePath]];
     if (createDate) {
-        _headerView.dateLB.text = [createDate timeAgo];
+        _headerView.dateLabel.text = [createDate timeAgo];
     }
     else {
-        _headerView.dateLB.text = @"";
+        _headerView.dateLabel.text = @"";
     }
 }
 

@@ -1,5 +1,5 @@
 //
-//  A3WalletCateInfoViewController.h
+//  A3WalletCategoryInfoViewController.h
 //  A3TeamWork
 //
 //  Created by kihyunkim on 2013. 11. 15..
@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "A3WalletCateEditViewController.h"
+#import "A3WalletCategoryEditViewController.h"
 
 @class WalletCategory;
 
-@interface A3WalletCateInfoViewController : UITableViewController <WalletCategoryEditDelegate>
+@interface A3WalletCategoryInfoViewController : UITableViewController <WalletCategoryEditDelegate>
 
 @property (nonatomic, strong) WalletCategory *category;
 

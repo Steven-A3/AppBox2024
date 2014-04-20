@@ -75,6 +75,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
+	[self.headerView setupFonts];
     [self.tableView reloadData];
 }
 
@@ -283,8 +284,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)updateTopInfo
 {
-    _headerView.titleTextField.text = _item.name;
-    CGSize textSize = [_item.name sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
+    _headerView.titleTextField.text = [_item.name length] ?  _item.name : @"New Item";
+    CGSize textSize = [_headerView.titleTextField.text sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
     CGRect frame = _headerView.titleTextField.frame;
     frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
     _headerView.titleTextField.frame = frame;
@@ -455,14 +456,14 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
                 }
             }
             
-            _headerView.fileNameLB.hidden = NO;
-            _headerView.imgSizeLB.hidden = NO;
-            _headerView.fileSizeLB.hidden = NO;
-            _headerView.takenDateLB.hidden = NO;
+            _headerView.fileNameLabel.hidden = NO;
+            _headerView.imgSizeLabel.hidden = NO;
+            _headerView.fileSizeLabel.hidden = NO;
+            _headerView.takenDateLabel.hidden = NO;
             
-            _headerView.imgSizeLB.text = [NSString stringWithFormat:@"%@ x %@ (%@MP)", widthTxt, heightTxt, photoResolTxt];
-            _headerView.fileSizeLB.text = fileSizeText;
-            _headerView.takenDateLB.text = [orgDate timeAgo];
+            _headerView.imgSizeLabel.text = [NSString stringWithFormat:@"%@ x %@ (%@MP)", widthTxt, heightTxt, photoResolTxt];
+            _headerView.fileSizeLabel.text = fileSizeText;
+            _headerView.takenDateLabel.text = [orgDate timeAgo];
             
             CGRect rect = _headerView.frame;
             rect.size.height = 148.0;
@@ -471,10 +472,10 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             self.tableView.tableHeaderView = self.headerView;
         }
         else {
-            _headerView.fileNameLB.hidden = YES;
-            _headerView.imgSizeLB.hidden = YES;
-            _headerView.fileSizeLB.hidden = YES;
-            _headerView.takenDateLB.hidden = YES;
+            _headerView.fileNameLabel.hidden = YES;
+            _headerView.imgSizeLabel.hidden = YES;
+            _headerView.fileSizeLabel.hidden = YES;
+            _headerView.takenDateLabel.hidden = YES;
             
             CGRect rect = _headerView.frame;
             rect.size.height = 84.0;
