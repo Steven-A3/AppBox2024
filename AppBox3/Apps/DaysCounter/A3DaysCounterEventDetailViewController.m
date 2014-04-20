@@ -23,7 +23,7 @@
 #import "SFKImage.h"
 #import "A3AppDelegate+appearance.h"
 
-@interface A3DaysCounterEventDetailViewController ()
+@interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSString *initialCalendarID;
@@ -1179,7 +1179,8 @@ EXIT_FUCTION:
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == EventCellType_Share ) {
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[_eventItem.eventName] applicationActivities:nil];
+//        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[_eventItem.eventName] applicationActivities:nil];
+		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
         if (IS_IPHONE) {
             [self presentViewController:activityController animated:YES completion:NULL];
         } else {
@@ -1286,5 +1287,71 @@ EXIT_FUCTION:
                                                     otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 }
+
+#pragma mark - UIActivityItemSource
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+    
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+        return [NSString stringWithFormat:@"%@ using AppBox Pro", _eventItem.eventName];
+	}
+    
+	return _eventItem.eventName;
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return @"Share Days Counter Data";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+        
+		NSMutableString *txt = [NSMutableString new];
+		[txt appendString:@"<html><body>I'd like to share a days count with you.<br/><br/>"];
+
+        // 7 days until (계산된 날짜)
+        NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[_eventItem.durationOption integerValue]
+                                                                                        fromDate:[NSDate date]
+                                                                                          toDate:_eventItem.effectiveStartDate
+                                                                                        isAllDay:[_eventItem.isAllDay boolValue]
+                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+        NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                       toDate:_eventItem.effectiveStartDate
+                                                                 allDayOption:[_eventItem.isAllDay boolValue]
+                                                                       repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
+
+        //         Friday, April 11, 2014 (사용자가 입력한 날)
+        [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:_eventItem.startDate
+                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[_eventItem.isAllDay boolValue]]] ];
+        
+		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon76.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
+        
+		return txt;
+	}
+	else {
+		NSMutableString *txt = [NSMutableString new];
+        // 7 days until (계산된 날짜)
+        NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[_eventItem.durationOption integerValue]
+                                                                                        fromDate:[NSDate date]
+                                                                                          toDate:_eventItem.effectiveStartDate
+                                                                                        isAllDay:[_eventItem.isAllDay boolValue]
+                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+        NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                       toDate:_eventItem.effectiveStartDate
+                                                                 allDayOption:[_eventItem.isAllDay boolValue]
+                                                                       repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
+        
+        //         Friday, April 11, 2014 (사용자가 입력한 날)
+        [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:_eventItem.startDate
+                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[_eventItem.isAllDay boolValue]]] ];
+        
+		return txt;
+	}
+}
+
 
 @end
