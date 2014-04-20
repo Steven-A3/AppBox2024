@@ -569,10 +569,20 @@
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG(@"indexPath: %@, _itemArray count: %d", indexPath, [_itemArray count]);
     if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
         return NO;
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
+    if (!item) {
+        NSLog(@"asdf");
+        return NO;
+    }
+    
+    if (!item.calendarType || [item.calendarType isKindOfClass:[NSNull class]]) {
+        NSLog(@"asdf2");
+        return NO;
+    }
     
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }

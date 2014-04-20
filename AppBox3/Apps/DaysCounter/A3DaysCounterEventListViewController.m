@@ -623,7 +623,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    FNLOG(@"");
     if ([indexPath row] >= [_sourceArray count]) {
         return NO;
     }
