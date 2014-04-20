@@ -25,7 +25,7 @@
     if( self ){
         [SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:48.0]];
         [SFKImage setDefaultColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0]];
-        self.playImage = [SFKImage imageNamed:@"play"];
+        self.playImage = [SFKImage imageNamed:IS_IPHONE ? @"share_slideshow" : @"share_slideshow_iPad"];
     }
     
     return self;
