@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;
-@property (strong, nonatomic) UIButton *favorButton;
+@property (strong, nonatomic) UIButton *favoriteButton;
 
 @property (nonatomic, assign) BOOL isEditMode;
 

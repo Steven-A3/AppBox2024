@@ -8,6 +8,12 @@
 
 #import "A3WalletItemTitleView.h"
 
+@interface A3WalletItemTitleView ()
+
+@property (nonatomic, strong) MASConstraint *favoriteButtonWidth;
+
+@end
+
 @implementation A3WalletItemTitleView
 
 - (id)initWithFrame:(CGRect)frame
@@ -37,50 +43,42 @@
         _timeLabel.font = [UIFont systemFontOfSize:13];
         _timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
     }
-    else {
-        
-        
-    }
-    
+
     if (IS_RETINA) {
         CGRect frame = self.frame;
         frame.size.height = 73.5;
         self.frame = frame;
     }
+	[self addSubview:self.favoriteButton];
+
+	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
+		make.baseline.equalTo(self.bottom).with.offset(-39);
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.right.equalTo(_favoriteButton.left).with.offset(5);
+	}];
+	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
+		self.favoriteButtonWidth = make.width.equalTo(@40);
+		make.height.equalTo(@40);
+		make.right.equalTo(self.right).with.offset(-5);
+		make.centerY.equalTo(_titleTextField.centerY);
+	}];
 }
 
-- (UIButton *)favorButton
+- (UIButton *)favoriteButton
 {
-    if (!_favorButton) {
-        _favorButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-        [_favorButton setContentMode:UIViewContentModeRight];
-        [_favorButton setImage:[UIImage imageNamed:@"star02"] forState:UIControlStateNormal];
-        [_favorButton setImage:[UIImage imageNamed:@"star02_on"] forState:UIControlStateSelected];
+    if (!_favoriteButton) {
+        _favoriteButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+        [_favoriteButton setContentMode:UIViewContentModeRight];
+        [_favoriteButton setImage:[UIImage imageNamed:@"star02"] forState:UIControlStateNormal];
+        [_favoriteButton setImage:[UIImage imageNamed:@"star02_on"] forState:UIControlStateSelected];
     }
     
-    return _favorButton;
+    return _favoriteButton;
 }
 
 - (void)setIsEditMode:(BOOL)isEditMode
 {
     _isEditMode = isEditMode;
-    
-    if (_isEditMode) {
-        CGRect frame = _titleTextField.frame;
-        [self addSubview:self.favorButton];
-        _favorButton.layer.anchorPoint = CGPointMake(1.0, 0.5);
-        _favorButton.center = CGPointMake(self.bounds.size.width-3, _titleTextField.center.y);
-        _favorButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-        
-        frame.size.width = frame.size.width - 22;
-        _titleTextField.frame = frame;
-        
-        _titleTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    }
-    else {
-        _titleTextField.rightView = self.favorButton;
-        _titleTextField.rightViewMode = UITextFieldViewModeAlways;
-    }
 }
 
 @end
