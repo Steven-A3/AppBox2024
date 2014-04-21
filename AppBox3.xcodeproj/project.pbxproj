@@ -5153,9 +5153,6 @@
 		804C330E18DAE33D00DBCE83 /* SubDetails */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C7DB18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.h */,
-				68F1C7DC18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.m */,
-				68F1C7DD18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib */,
 				68F1C82A18D7F37D009FAE8A /* A3PhotoSelectCell.xib */,
 				68F1C82B18D7F37D009FAE8A /* A3PhotoSelectViewController.h */,
 				68F1C82C18D7F37D009FAE8A /* A3PhotoSelectViewController.m */,
@@ -5246,6 +5243,9 @@
 				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
 				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
 				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
+				68F1C7DB18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.h */,
+				68F1C7DC18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.m */,
+				68F1C7DD18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib */,
 			);
 			name = "Location SubDetail";
 			sourceTree = "<group>";

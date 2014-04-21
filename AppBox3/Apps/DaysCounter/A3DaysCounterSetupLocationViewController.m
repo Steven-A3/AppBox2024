@@ -493,7 +493,8 @@
         [_eventModel setObject:locItem forKey:EventItem_Location];
         [tableView reloadData];
 
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self.navigationController popViewControllerAnimated:YES];
+//        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -581,6 +582,16 @@
     [_infoTableView reloadData];
     self.searchCenterCoord = coord;
     FNLOG(@"location updated");
+
+	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	self.progressHud.labelText = @"Searching";
+	self.progressHud.minShowTime = 2;
+	self.progressHud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.progressHud.completionBlock = ^{
+		weakSelf.progressHud = nil;
+	};
+    
     [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:nil atTableView:_infoTableView completion:nil];
     
     self.isInitializedLocation = YES;
