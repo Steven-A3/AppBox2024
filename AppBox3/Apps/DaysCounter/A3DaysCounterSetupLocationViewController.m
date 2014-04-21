@@ -189,6 +189,7 @@
         [UIView animateWithDuration:0.35 animations:^{
             _searchResultBaseView.frame = CGRectMake(_searchResultBaseView.frame.origin.x, 64.0, _searchResultBaseView.frame.size.width, contentHeight);
         } completion:^(BOOL finished) {
+            _searchResultsTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
             [_searchResultsTableView reloadData];
         }];
     }
@@ -321,7 +322,7 @@
         }
         cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
-        cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
+        cell.indentationWidth = 0;
     }
     
     
@@ -331,7 +332,6 @@
         
         cell.textLabel.text = @"Add this place?";
         cell.detailTextLabel.text = @"We Couldn't find that";
-        //cell.textLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
         cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
         cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
     }
@@ -371,7 +371,6 @@
     
     if ( cell == nil ) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"currentLocationCell"];
-        cell.indentationWidth = (IS_IPHONE ? 15.0 : 28.0) - tableView.separatorInset.left;
         cell.textLabel.font = [UIFont systemFontOfSize:17]; 
         cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
         cell.accessoryType = UITableViewCellAccessoryNone;
