@@ -455,7 +455,8 @@
         {
             countLabel.text = [NSString stringWithFormat:@"%ld", (long)[calendarItem.events count]];
             
-            UILabel *eventDetailInfoLabel = (UILabel*)[cell viewWithTag:15];
+            UILabel *eventDetailInfoLabel1 = (UILabel*)[cell viewWithTag:14];
+            UILabel *eventDetailInfoLabel2 = (UILabel*)[cell viewWithTag:15];
             NSMutableAttributedString *eventDetailInfoString = [[NSMutableAttributedString alloc] initWithString:@""];
             if ([calendarItem.events count] > 0) {
                 DaysCounterEvent *event = [[A3DaysCounterModelManager sharedManager] closestEventObjectOfCalendar:calendarItem];
@@ -508,13 +509,17 @@
                 }
                 
                 
-                [eventDetailInfoString appendAttributedString:eventName];
+//                [eventDetailInfoString appendAttributedString:eventName];
                 [eventDetailInfoString appendAttributedString:period];
                 [eventDetailInfoString appendAttributedString:date];
-                eventDetailInfoLabel.attributedText = eventDetailInfoString;
+//                eventDetailInfoLabel.attributedText = eventDetailInfoString;
+                eventDetailInfoLabel1.attributedText = eventName;
+                eventDetailInfoLabel2.attributedText = eventDetailInfoString;
             }
             else {
-                eventDetailInfoLabel.text = @"";
+//                eventDetailInfoLabel.text = @"";
+                eventDetailInfoLabel1.text = @"";
+                eventDetailInfoLabel2.text = @"";
             }
         }
             break;
