@@ -24,8 +24,9 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import "A3GradientView.h"
 #import "A3AppDelegate+appearance.h"
+#import "MBProgressHUD.h"
 
-@interface A3DaysCounterSetupLocationViewController ()
+@interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
 @property (nonatomic, strong) NSArray *nearbyVenues;
 @property (strong, nonatomic) NSString *searchText;
@@ -35,6 +36,7 @@
 @property (assign, nonatomic) CLLocationCoordinate2D searchCenterCoord;
 @property (nonatomic) BOOL isInitializedLocation;
 @property (nonatomic, strong) A3GradientView *tableViewTopBlurView;
+@property (strong, nonatomic) MBProgressHUD *hud;
 
 
 - (A3LocationPlacemarkView *)placemarkView;
@@ -222,6 +224,8 @@
                                     radius:@(radius)
                                 categoryId:nil
                                   callback:^(BOOL success, id result) {
+                                      [self.hud hide:YES];
+                                      
                                       if (success) {
                                           isLoading = NO;
                                           NSDictionary *dic = result;
@@ -247,7 +251,7 @@
                                           }];
                                       }
                                       else {
-                                          NSLog(@"장소 검색 실패.");
+                                          FNLOG(@"장소 검색 실패.");
                                       }
                                   }];
 }
@@ -655,6 +659,16 @@
     isInputing = NO;
     self.searchText = searchBar.text;
     [searchBar resignFirstResponder];
+    
+	self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	self.hud.labelText = @"Searching";
+	self.hud.minShowTime = 2;
+	self.hud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.hud.completionBlock = ^{
+		weakSelf.hud = nil;
+	};
+    
     [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:searchBar.text completion:^{
         [self showSearchResultView];
     }];
@@ -663,7 +677,10 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
-    
+    if (self.hud) {
+        [self.hud hide:YES];
+    }
+
     if ( !isSearchActive ) {
         [self hideSearchResultView];
         [self hideCurrentLocationTableView];
