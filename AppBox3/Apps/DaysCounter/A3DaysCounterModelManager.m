@@ -356,7 +356,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     NSInteger alertType = [self alertTypeIndexFromDate:startDate alertDate:date];
     if (alertType == AlertType_Custom) {
-        return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
+        //return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
+        NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:date toDate:startDate options:0];
+        return [NSString stringWithFormat:@"%d %@", comp.day, comp.day > 1 ? @"days before" : @"day before"];
     }
     
     return [self alertStringForType:alertType];
