@@ -605,7 +605,6 @@
 		68B6A33318CEC76D004084EF /* A3WalletListPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27118CEC76D004084EF /* A3WalletListPhotoCell.m */; };
 		68B6A33418CEC76D004084EF /* A3WalletListTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27318CEC76D004084EF /* A3WalletListTextCell.m */; };
 		68B6A33518CEC76D004084EF /* A3WalletListTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A27418CEC76D004084EF /* A3WalletListTextCell.xib */; };
-		68B6A33618CEC76D004084EF /* A3WalletListVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27618CEC76D004084EF /* A3WalletListVideoCell.m */; };
 		68B6A33718CEC76D004084EF /* A3WalletMapCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27818CEC76D004084EF /* A3WalletMapCell.m */; };
 		68B6A33818CEC76D004084EF /* A3WalletNoteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27A18CEC76D004084EF /* A3WalletNoteCell.m */; };
 		68B6A33918CEC76D004084EF /* A3WalletPhotoItemTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27C18CEC76D004084EF /* A3WalletPhotoItemTitleView.m */; };
@@ -1956,8 +1955,6 @@
 		68B6A27218CEC76D004084EF /* A3WalletListTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletListTextCell.h; sourceTree = "<group>"; };
 		68B6A27318CEC76D004084EF /* A3WalletListTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletListTextCell.m; sourceTree = "<group>"; };
 		68B6A27418CEC76D004084EF /* A3WalletListTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletListTextCell.xib; sourceTree = "<group>"; };
-		68B6A27518CEC76D004084EF /* A3WalletListVideoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletListVideoCell.h; sourceTree = "<group>"; };
-		68B6A27618CEC76D004084EF /* A3WalletListVideoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletListVideoCell.m; sourceTree = "<group>"; };
 		68B6A27718CEC76D004084EF /* A3WalletMapCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletMapCell.h; sourceTree = "<group>"; };
 		68B6A27818CEC76D004084EF /* A3WalletMapCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMapCell.m; sourceTree = "<group>"; };
 		68B6A27918CEC76D004084EF /* A3WalletNoteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletNoteCell.h; sourceTree = "<group>"; };
@@ -4361,8 +4358,6 @@
 				68B6A27218CEC76D004084EF /* A3WalletListTextCell.h */,
 				68B6A27318CEC76D004084EF /* A3WalletListTextCell.m */,
 				68B6A27418CEC76D004084EF /* A3WalletListTextCell.xib */,
-				68B6A27518CEC76D004084EF /* A3WalletListVideoCell.h */,
-				68B6A27618CEC76D004084EF /* A3WalletListVideoCell.m */,
 				68B6A27718CEC76D004084EF /* A3WalletMapCell.h */,
 				68B6A27818CEC76D004084EF /* A3WalletMapCell.m */,
 				68B6A27918CEC76D004084EF /* A3WalletNoteCell.h */,
@@ -5759,7 +5754,6 @@
 				68F1C8F918D7FA41009FAE8A /* MPTransition.m in Sources */,
 				68F1C8D318D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m in Sources */,
 				68E2A6C518D0B41E00E834D9 /* ExpenseListHistory.m in Sources */,
-				68B6A33618CEC76D004084EF /* A3WalletListVideoCell.m in Sources */,
 				68E2A6A318D0B22800E834D9 /* A3SalesCalcHeaderView.m in Sources */,
 				68B6A32018CEC76D004084EF /* A3WalletCateEditIconCell.m in Sources */,
 				680886D21891751B0093FD97 /* A3ChooseColorPad.m in Sources */,

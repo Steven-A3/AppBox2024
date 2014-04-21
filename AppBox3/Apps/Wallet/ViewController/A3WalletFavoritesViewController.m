@@ -11,7 +11,6 @@
 #import "A3WalletPhotoItemViewController.h"
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletListPhotoCell.h"
-#import "A3WalletListVideoCell.h"
 #import "WalletData.h"
 #import "WalletCategory.h"
 #import "WalletItem.h"
@@ -38,7 +37,6 @@
 
 NSString *const A3WalletTextCellID2 = @"A3WalletListTextCell";
 NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
-NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -71,8 +69,7 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
     }
     
     [self.tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID2];
-    [self.tableView registerClass:[A3WalletListVideoCell class] forCellReuseIdentifier:A3WalletVideoCellID2];
-    
+
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
@@ -260,8 +257,8 @@ NSString *const A3WalletVideoCellID2 = @"A3WalletListVideoCell";
                 cell = photoCell;
             }
             else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
-                A3WalletListVideoCell *videoCell;
-                videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletVideoCellID2 forIndexPath:indexPath];
+                A3WalletListPhotoCell *videoCell;
+                videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID2 forIndexPath:indexPath];
                 
                 videoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
                 videoCell.rightLabel.text = [item.modificationDate timeAgo];

@@ -51,13 +51,18 @@
     [_rightLabel sizeToFit];
     _rightLabel.center = CGPointMake(self.contentView.bounds.size.width, self.contentView.center.y);
     
-    float leftMargin = (IS_IPHONE) ? 15:28;
-    
-    for (int i=0; i<_thumbImgViews.count; i++) {
-        UIImageView *thumbImgView = _thumbImgViews[i];
-        
-        thumbImgView.center = CGPointMake(leftMargin+i*(thumbImgView.bounds.size.width + 10), self.contentView.center.y);
+    CGFloat leftMargin = IS_IPHONE ? 15 : 28;
+	CGFloat centerY = self.contentView.center.y;
+
+    if (!IS_RETINA) {
+		centerY = (CGFloat) floor(centerY);
+	}
+    for (NSInteger idx = 0; idx < _thumbImgViews.count; idx++) {
+        UIImageView *thumbImgView = _thumbImgViews[idx];
+        CGFloat width = thumbImgView.bounds.size.width;
+        thumbImgView.center = CGPointMake(leftMargin + idx * (width + 10) + width/2.0, centerY);
     }
+	FNLOG(@"%f", self.contentView.center.y);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -85,7 +90,7 @@
         
         for (int i=0; i<maxNum; i++) {
             UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 32, 32)];
-            imgView.layer.anchorPoint = CGPointMake(0, 0.5);
+//            imgView.layer.anchorPoint = CGPointMake(0, 0.5);
             imgView.layer.cornerRadius = 16;
             imgView.layer.masksToBounds = YES;
             [_thumbImgViews addObject:imgView];

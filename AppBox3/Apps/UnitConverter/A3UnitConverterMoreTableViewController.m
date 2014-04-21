@@ -52,6 +52,13 @@ NSString *const A3UnitConverterMoreTableViewCellIdentifier = @"Cell";
 	[self.tableView registerClass:[A3MoreTableViewCell class] forCellReuseIdentifier:A3UnitConverterMoreTableViewCellIdentifier];
 	[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 	self.tableView.showsVerticalScrollIndicator = NO;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
+}
+
+- (void)managedObjectContextDidSave:(NSNotification *)notification {
+	_unitTypes = nil;
+	[self.tableView reloadData];
 }
 
 - (void)rightBarButtonEditButton {

@@ -14,6 +14,8 @@
 
 NSString *const A3WalletUUIDAllCategory = @"10f30f9f-ff9d-43d4-ac69-020f61e016e0";
 NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c1feb5";
+NSString *const A3WalletUUIDPhotoCategory = @"d840a875-9c99-481e-a592-4059def7a248";
+NSString *const A3WalletUUIDVideoCategory = @"7fe1693f-76da-42fc-a0a7-1c2e7f6346d9";
 
 @implementation WalletCategory (initialize)
 
@@ -51,6 +53,12 @@ NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c
 
     for (NSDictionary *preset in categoryPresets) {
         WalletCategory *category = [WalletCategory MR_createEntity];
+		if ([preset[@"Name"] isEqualToString:@"Photos"]) {
+			category.uniqueID = A3WalletUUIDPhotoCategory;
+		} else if ([preset[@"Name"] isEqualToString:@"Video"]) {
+			category.uniqueID = A3WalletUUIDVideoCategory;
+		}
+
         category.name = preset[@"Name"];
         category.icon = preset[@"Icon"];
 		category.modificationDate = [NSDate date];
@@ -60,7 +68,7 @@ NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c
         NSUInteger fieldIdx = 1;
 		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createEntity];
-            field.name = fieldPreset[@"Name"];
+			field.name = fieldPreset[@"Name"];
             field.category = category;
             field.type = fieldPreset[@"Type"];
             field.style = fieldPreset[@"Style"];

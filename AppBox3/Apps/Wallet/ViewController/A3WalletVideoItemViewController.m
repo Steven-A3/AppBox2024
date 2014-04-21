@@ -288,11 +288,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     WalletFieldItem *fieldItem = _videoFieldItems[index];
     
-    float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePath]];
+    float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
     NSInteger dur = round(duration);
     _headerView.durationLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
     
-    NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePath]];
+    NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
     if (createDate) {
         _headerView.dateLabel.text = [createDate timeAgo];
     }
@@ -319,7 +319,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             WalletFieldItem *videoFieldItem = _videoFieldItems[i];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth*i, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            UIImage *photoImg = [UIImage imageWithContentsOfFile:[videoFieldItem videoThumbnailPath]];
+            UIImage *photoImg = [UIImage imageWithContentsOfFile:[videoFieldItem videoThumbnailPathInTemporary:NO ]];
             photoImg = [photoImg imageByScalingProportionallyToMinimumSize:CGSizeMake(rectWidth*2, rectWidth*2)];
             photoImgView.image = photoImg;
             
@@ -356,7 +356,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             WalletFieldItem *photoFieldItem = _videoFieldItems[i];
             UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 ,24, 16)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            NSString *thumbFilePath = [photoFieldItem videoThumbnailPath];
+            NSString *thumbFilePath = [photoFieldItem videoThumbnailPathInTemporary:NO ];
             UIImage *photoImg = [UIImage imageWithContentsOfFile:thumbFilePath];
             photoImgView.image = photoImg;
             [_photoThumbs addObject:photoImgView];
@@ -372,7 +372,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     _headerView.favoriteButton.selected = _item.favorite != nil;
 }
 
--(void)videoFinished:(NSNotification*)aNotification{
+- (void)videoFinished:(NSNotification*)aNotification{
     int value = [[aNotification.userInfo valueForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] intValue];
     if (value == MPMovieFinishReasonUserExited) {
         [self dismissMoviePlayerViewControllerAnimated];
@@ -420,13 +420,13 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
         if ([[fieldItem hasVideo] boolValue]) {
-			NSString *filePath = [fieldItem videoFilePath];
+			NSString *filePath = [fieldItem videoFilePathInTemporary:NO ];
 			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:filePath]];
 
-            // 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
-            [[NSNotificationCenter defaultCenter] removeObserver:pvc  name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
+//            // 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
+//            [[NSNotificationCenter defaultCenter] removeObserver:pvc  name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
 
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
+//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
             
             NSError *_error = nil;
             [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
@@ -552,13 +552,13 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 				photoCell.valueTxtFd.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
-				[self setImageToCell:photoCell imagePath:fieldItem.imageThumbnailPath];
+				[self setImageToCell:photoCell imagePath:[fieldItem imageThumbnailPathInTemporary:NO ]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
 				photoCell.valueTxtFd.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
-				[self setImageToCell:photoCell imagePath:fieldItem.videoThumbnailPath];
+				[self setImageToCell:photoCell imagePath:[fieldItem videoThumbnailPathInTemporary:NO ]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else {
 				photoCell.valueTxtFd.text = @"None";

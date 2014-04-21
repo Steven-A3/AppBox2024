@@ -934,8 +934,8 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 [videoCell resetThumbImages];
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPath]];
-                    float duration = [WalletData getDurationOfMovie:fieldItem.videoFilePath];
+                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
+                    float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
                     [videoCell addThumbImage:thumbImg withDuration:duration];
                 }
                 

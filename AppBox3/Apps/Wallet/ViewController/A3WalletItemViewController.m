@@ -194,7 +194,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     
 	if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
 		if ([fieldItem.hasVideo boolValue]) {
-			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePath]]];
+			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInTemporary:NO ]]];
 			[self presentViewController:pvc animated:YES completion:^{
 				[pvc.moviePlayer play];
 			}];
@@ -502,7 +502,6 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		cell = titleCell;
 	} else
     if (_fieldItems[indexPath.row] == self.noteItem) {
-        
         // note
         A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
         

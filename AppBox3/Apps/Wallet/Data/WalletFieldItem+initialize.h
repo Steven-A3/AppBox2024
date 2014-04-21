@@ -10,10 +10,11 @@
 
 @interface WalletFieldItem (initialize)
 
-- (NSString *)imageThumbnailPath;
-- (NSString *)videoThumbnailPath;
+- (NSString *)imageThumbnailPathInTemporary:(BOOL)temporary;
 
-- (NSString *)videoFilePath;
+- (NSString *)videoThumbnailPathInTemporary:(BOOL)temporary;
+
+- (NSString *)videoFilePathInTemporary:(BOOL)temporary;
 
 - (UIImage *)thumbnailImage;
 @end

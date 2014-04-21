@@ -60,7 +60,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	self.tableView.showsVerticalScrollIndicator = NO;
 	self.tableView.allowsSelectionDuringEditing = YES;
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextObjectsDidChange:) name:NSManagedObjectContextObjectsDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:[MagicalRecordStack defaultStack].context];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -82,7 +82,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	}
 }
 
-- (void)managedObjectContextObjectsDidChange:(NSNotification *)notification {
+- (void)managedObjectContextDidSave:(NSNotification *)notification {
+	FNLOG();
 	_categories = nil;
 	_sections = nil;
 	[self.tableView reloadData];
@@ -164,7 +165,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 			}
 			[sections addObject:section0];
 		} else {
-			idx = numberOfItemsOnTapBar - 1;
+			idx = numberOfItemsOnTapBar;
 		}
 
 		NSMutableArray *section1 = [NSMutableArray new];
@@ -279,6 +280,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 }
 
 - (void)rewriteOrder {
+	FNLOG();
 	// Update order and save to persistent store
 	NSArray *section0 = self.sections[0];
 	[section0 enumerateObjectsUsingBlock:^(WalletCategory *category, NSUInteger idx, BOOL *stop) {

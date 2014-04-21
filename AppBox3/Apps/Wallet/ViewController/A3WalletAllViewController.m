@@ -10,7 +10,6 @@
 #import "A3WalletItemViewController.h"
 #import "A3WalletPhotoItemViewController.h"
 #import "A3WalletListPhotoCell.h"
-#import "A3WalletListVideoCell.h"
 #import "A3WalletAllTopView.h"
 #import "A3WalletAllTopCell.h"
 #import "WalletData.h"
@@ -157,7 +156,6 @@ enum SortingKind {
     
     [self.tableView registerNib:[UINib nibWithNibName:@"A3WalletAllTopCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletAllTopCellID];
     [self.tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
-    [self.tableView registerClass:[A3WalletListVideoCell class] forCellReuseIdentifier:A3WalletVideoCellID];
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
 }
 
@@ -258,8 +256,8 @@ enum SortingKind {
 - (UIBarButtonItem *)searchItem
 {
     if (!_searchItem) {
-        _searchItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"search"] style:UIBarButtonItemStylePlain target:self action:@selector(searchButtonAction:)];
-    }
+        _searchItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchButtonAction:)];
+	}
     
     return _searchItem;
 }
@@ -518,8 +516,7 @@ enum SortingKind {
         _mySearchDisplayController.searchResultsTableView.rowHeight = 48;
         
         [_mySearchDisplayController.searchResultsTableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
-        [_mySearchDisplayController.searchResultsTableView registerClass:[A3WalletListVideoCell class] forCellReuseIdentifier:A3WalletVideoCellID];
-        
+
 	}
 	return _mySearchDisplayController;
 }
@@ -731,7 +728,7 @@ enum SortingKind {
 
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPath]];
+                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPathInTemporary:NO ]];
                     
                     [photoCell addThumbImage:thumbImg];
                 }
@@ -739,8 +736,8 @@ enum SortingKind {
                 cell = photoCell;
             }
             else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
-                A3WalletListVideoCell *videoCell;
-                videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletVideoCellID forIndexPath:indexPath];
+                A3WalletListPhotoCell *videoCell;
+                videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
                 
                 videoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
                 videoCell.rightLabel.text = [item.modificationDate timeAgo];
@@ -766,7 +763,7 @@ enum SortingKind {
                 [videoCell resetThumbImages];
                 for (int i=0; i<showPhotoCount; i++) {
                     WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPath]];
+                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
                     [videoCell addThumbImage:thumbImg];
                 }
                 

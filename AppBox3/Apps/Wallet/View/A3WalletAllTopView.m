@@ -56,25 +56,24 @@
 
 - (void)make1LinePixel
 {
-    if (IS_RETINA) {
-		CGRect frame = _infoView.frame;
-		frame.size.height = 55.5;
-		_infoView.frame = frame;
-        for (UIView *line in _horLines) {
-            CGRect rect = line.frame;
-			rect.origin.y = 55.5;
-            rect.size.height = 0.5f;
-            line.frame = rect;
-        }
-        
-        for (UIView *line in _vertLines) {
-            CGRect rect = line.frame;
-            rect.origin.y = 0.5;
-            rect.size.width = 0.5;
-            rect.size.height = 55;
-            line.frame = rect;
-        }
-    }
+	BOOL isRetina = IS_RETINA;
+	CGRect frame = _infoView.frame;
+	frame.size.height = isRetina ? 55.5 : 55;
+	_infoView.frame = frame;
+	for (UIView *line in _horLines) {
+		CGRect rect = line.frame;
+		rect.origin.y = isRetina ? 55.5 : 55;
+		rect.size.height = isRetina ? 0.5f : 1.0;
+		line.frame = rect;
+	}
+
+	for (UIView *line in _vertLines) {
+		CGRect rect = line.frame;
+		rect.origin.y = isRetina ? 0.5 : 1.0;
+		rect.size.width = isRetina ? 0.5 : 1.0;
+		rect.size.height = isRetina ? 55 : 55;
+		line.frame = rect;
+	}
 }
 
 - (void)layoutSubviews
