@@ -238,6 +238,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		id movingObject = section[fromIndexPath.row];
 		[section removeObjectAtIndex:fromIndexPath.row];
 		[section insertObject:movingObject atIndex:toIndexPath.row];
+
+		[self rewriteOrder];
 	} else {
 		NSMutableArray *fromSection = self.sections[fromIndexPath.section];
 		id movingObject = fromSection[fromIndexPath.row];
@@ -270,9 +272,13 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 				[self.tableView moveRowAtIndexPath:[NSIndexPath indexPathForRow:movingRow inSection:0] toIndexPath:adjustedIndexPath];
 			}
 			[self.tableView reloadRowsAtIndexPaths:@[adjustedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+			[self rewriteOrder];
 		});
 	}
+}
 
+- (void)rewriteOrder {
 	// Update order and save to persistent store
 	NSArray *section0 = self.sections[0];
 	[section0 enumerateObjectsUsingBlock:^(WalletCategory *category, NSUInteger idx, BOOL *stop) {
