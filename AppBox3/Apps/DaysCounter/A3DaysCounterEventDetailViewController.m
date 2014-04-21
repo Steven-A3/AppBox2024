@@ -118,7 +118,9 @@
     if ( event.durationOption ) {
         [_itemArray addObject:@{ EventRowTitle : @"Duration Option", EventRowType : @(EventCellType_DurationOption)}];
     }
-    [_itemArray addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
+    if ( event.location ) {
+        [_itemArray addObject:@{ EventRowTitle : @"Location", EventRowType : @(EventCellType_Location)}];
+    }
     
     if ( [event.notes length] > 0 ) {
         [_itemArray addObject:@{ EventRowTitle : @"Notes", EventRowType : @(EventCellType_Notes)}];
@@ -856,7 +858,7 @@ EXIT_FUCTION:
 
 
     [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:24.0]];
-	[SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
+	[SFKImage setDefaultColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0]];
     eventInfoCell.lunar1AImageView.image = [SFKImage imageNamed:@"f"];
     eventInfoCell.lunar1BImageView.image = [SFKImage imageNamed:@"f"];
     

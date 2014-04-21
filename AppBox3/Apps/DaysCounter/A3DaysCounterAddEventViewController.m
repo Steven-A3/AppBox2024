@@ -698,7 +698,7 @@
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
             cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                            alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+                                                                                                 alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
 
             cell.textLabel.textColor = [UIColor blackColor];
         }

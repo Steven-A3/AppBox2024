@@ -22,7 +22,7 @@
 
 
 @interface A3DaysCounterChangeLocationViewController ()
-@property (strong, nonatomic) NSMutableArray *resultArray;
+@property (strong, nonatomic) NSArray *tableDataSource;
 @end
 
 @implementation A3DaysCounterChangeLocationViewController
@@ -44,7 +44,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
-    self.searchBarTopConst.constant = CGRectGetHeight(self.navigationController.navigationBar.frame) + CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+    self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 20, 0, 0, 0);
+    self.tableDataSource = @[@"Current Location"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -61,7 +62,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_resultArray count] + 1;
+    return [_tableDataSource count];
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -81,7 +82,7 @@
     }
     else {
         cell.textLabel.textColor = [UIColor darkTextColor];
-        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.resultArray objectAtIndex:indexPath.row - 1]];
+        NSString *address = [[A3DaysCounterModelManager sharedManager] addressFromPlacemark:[self.tableDataSource objectAtIndex:indexPath.row]];
         cell.textLabel.text = address;
     }
     
@@ -91,7 +92,7 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_resultArray objectAtIndex:indexPath.row-1]);
+    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_tableDataSource objectAtIndex:indexPath.row-1]);
     if ( self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:)] ) {
         [self.delegate changeLocationViewController:self didSelectLocation:placemark];
     }
@@ -108,8 +109,6 @@
     
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
-        self.resultArray = [NSMutableArray array];
-        
         if (!placemarks || [error code] == kCLErrorGeocodeFoundNoResult) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@""
                                                                 message:@"No Results Found"
@@ -120,10 +119,15 @@
             return;
         }
 
+        NSMutableArray *resultArray = [NSMutableArray new];
+        [resultArray addObject:@"Current Location"];
         for (CLPlacemark *placemark in placemarks) {
             NSLog(@"%s %@/%@",__FUNCTION__,placemark.name,placemark.addressDictionary);
-            [self.resultArray addObject:placemark];
+            [resultArray addObject:placemark];
         }
+        
+        self.tableDataSource = resultArray;
+        
         [self.tableView reloadData];
     }];
 }

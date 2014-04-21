@@ -53,6 +53,8 @@
 
 	[self leftBarButtonAppsButton];
     [self makeBackButtonEmptyArrow];
+    
+    [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -146,7 +148,6 @@
                                                                  allDayOption:[item.isAllDay boolValue]
                                                                        repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
-            
             NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
                                                                                                           firstDate:item.startDate
                                                                                                            fromDate:[NSDate date]];
@@ -206,7 +207,7 @@
             item.isReminder = @(NO);
             [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
         }
-        [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+//        [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
         self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
     }
 

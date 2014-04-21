@@ -356,7 +356,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     NSInteger alertType = [self alertTypeIndexFromDate:startDate alertDate:date];
     if (alertType == AlertType_Custom) {
-        return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
+        //return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
+        NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSDayCalendarUnit fromDate:date toDate:startDate options:0];
+        return [NSString stringWithFormat:@"%d %@", comp.day, comp.day > 1 ? @"days before" : @"day before"];
     }
     
     return [self alertStringForType:alertType];
@@ -710,7 +712,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     else {
         addItem.alertDatetime = [item objectForKey:EventItem_AlertDatetime];
-        addItem.isReminder = ([addItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) ? @(YES) : @(NO);
+        addItem.isReminder = ([addItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![addItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
     addItem.alertInterval = [item objectForKey:EventItem_AlertDatetimeInterval];
@@ -792,7 +794,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     else {
         eventItem.alertDatetime = [info objectForKey:EventItem_AlertDatetime];
-        eventItem.isReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) ? @(YES) : @(NO);
+        eventItem.isReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
     eventItem.alertInterval = [info objectForKey:EventItem_AlertDatetimeInterval];

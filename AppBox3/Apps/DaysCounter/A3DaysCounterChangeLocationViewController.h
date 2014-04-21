@@ -11,12 +11,11 @@
 
 @protocol A3DaysCounterChangeLocationViewControllerDelegate;
 
-@interface A3DaysCounterChangeLocationViewController : UIViewController<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface A3DaysCounterChangeLocationViewController : UIViewController<UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) id<A3DaysCounterChangeLocationViewControllerDelegate> delegate;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchBarTopConst;
 
 @end
 
