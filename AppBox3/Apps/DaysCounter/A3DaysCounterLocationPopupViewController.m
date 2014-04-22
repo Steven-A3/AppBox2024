@@ -40,14 +40,23 @@
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     if (IS_IPAD) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"information"]
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(detailInfoButtonTouchUp:)];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(doneButtonAction:)];
+//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+//                                                                                  style:UIBarButtonItemStylePlain
+//                                                                                 target:self
+//                                                                                 action:@selector(doneButtonAction:)];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (_shrinkPopoverViewBlock) {
+        _shrinkPopoverViewBlock(self.view.frame.size);
     }
 }
 
@@ -125,17 +134,6 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ( indexPath.row == 1 ) {
-//        CGSize size = [self.addressStr sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]}];
-//        CGSize textSize = [@"Address" sizeWithAttributes:@{NSFontAttributeName : [UIFont systemFontOfSize:15.0]}];
-//        return size.height + textSize.height + 14.0;
-//        //        return 122.0;
-//    }
-//    return 44.0;
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

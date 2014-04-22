@@ -90,6 +90,7 @@
     
     if ( [_mapView.annotations count] < 1 ) {
         [_mapView addAnnotation:self.locationItem];
+        [_mapView selectAnnotation:self.locationItem animated:YES];
     }
     
     [_mapView setRegion:MKCoordinateRegionMakeWithDistance(_locationItem.coordinate, 2000.0, 2000.0) animated:YES];
@@ -274,17 +275,24 @@
         [self.navigationController popViewControllerAnimated:YES];
     }
     else {
-        if ( IS_IPHONE ) {
-            [self dismissViewControllerAnimated:YES completion:nil];
+//        if ( IS_IPHONE ) {
+//            [self dismissViewControllerAnimated:YES completion:nil];
+//        }
+//        else {
+//            if ( [self.navigationController.viewControllers count] > 2 ) {
+//                UIViewController *viewCtrl = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+//                [self.navigationController popToViewController:viewCtrl animated:YES];
+//            }
+//            else {
+//                [self dismissViewControllerAnimated:YES completion:nil];
+//            }
+//        }
+        if ( [self.navigationController.viewControllers count] > 2 ) {
+            UIViewController *viewCtrl = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
+            [self.navigationController popToViewController:viewCtrl animated:YES];
         }
         else {
-            if ( [self.navigationController.viewControllers count] > 2 ) {
-                UIViewController *viewCtrl = [self.navigationController.viewControllers objectAtIndex:[self.navigationController.viewControllers count]-3];
-                [self.navigationController popToViewController:viewCtrl animated:YES];
-            }
-            else {
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
     }
 }

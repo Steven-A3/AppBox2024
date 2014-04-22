@@ -16,4 +16,5 @@
 @property (assign, nonatomic) BOOL showDoneButton;
 @property (strong, nonatomic) void (^resizeFrameBlock)(CGSize size);
 @property (strong, nonatomic) void (^dismissCompletionBlock)(FSVenue *locationItem);
+@property (strong, nonatomic) void (^shrinkPopoverViewBlock)(CGSize size);
 @end
