@@ -29,6 +29,7 @@
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
 @property (nonatomic, strong) NSArray *nearbyVenues;
+@property (nonatomic, strong) NSArray *nearbyVenuesOfSearchResults;
 @property (strong, nonatomic) NSString *searchText;
 @property (strong, nonatomic) UIImage *searchIcon;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
@@ -157,10 +158,10 @@
 	[self.mapView removeAnnotations:annForRemove];
 }
 
-- (void)proccessAnnotations
+- (void)reloadMapAnnotations:(NSArray *)annotations
 {
 	[self removeAllAnnotationExceptOfCurrentUser];
-	[self.mapView addAnnotations:self.nearbyVenues];
+	[self.mapView addAnnotations:annotations];
 }
 
 - (void)updatePlacemarkViewWithVenue:(FSVenue *)venue
@@ -218,12 +219,16 @@
                                           NSDictionary *dic = result;
                                           NSArray *venues = [dic valueForKeyPath:@"response.venues"];
                                           FSConverter *converter = [[FSConverter alloc] init];
-                                          self.nearbyVenues = [converter convertToObjects:venues];
                                           
                                           // 맵 annotation 추가.
                                           if (tableView == _infoTableView) {
-                                              [self proccessAnnotations];
+                                              self.nearbyVenues = [converter convertToObjects:venues];
+                                              [self reloadMapAnnotations:self.nearbyVenues];
                                           }
+                                          else if (tableView == _searchResultsTableView) {
+                                              self.nearbyVenuesOfSearchResults = [converter convertToObjects:venues];
+                                          }
+                                          
 
                                           // 결과 목록 갱신.
                                           [tableView reloadData];
@@ -331,17 +336,17 @@
     if ( tableView == _currentLocationTableView )
         return 1;
     
-    if ([self.nearbyVenues count] > 0) {
-        if (tableView != _infoTableView) {
-            return [self.nearbyVenues count] + 1;
+    if (tableView == _infoTableView) {
+        if ([self.nearbyVenues count] > 0) {
+            return [self.nearbyVenues count];
         }
         else {
-            return [self.nearbyVenues count];
+            return 1;
         }
     }
     else {
-        if (tableView == _infoTableView) {
-            return 1;
+        if ([self.nearbyVenuesOfSearchResults count] > 0) {
+            return [self.nearbyVenuesOfSearchResults count] + 1;
         }
         else {
             return 1;
@@ -359,6 +364,7 @@
     return 0.01;
 }
 
+#pragma mark Cell Related
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
@@ -384,16 +390,24 @@
     }
     
     
-    if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
-        
-        cell.textLabel.text = @"Add this place?";
-        cell.detailTextLabel.text = @"We Couldn't find that";
-        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
-        cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+    if (tableView == _infoTableView) {
+        cell = [self cellOfInfoTableView:cell AtIndexPath:indexPath];
     }
-    else if ( [self.nearbyVenues count] < 1 ) {
+    else {
+        cell = [self cellOfSearchResultTableView:cell AtIndexPath:indexPath];
+    }
+    
+    if ( tableView != _infoTableView ) {
+        cell.imageView.image = self.searchIcon;
+        cell.imageView.tintColor = [UIColor lightGrayColor];
+    }
+    
+    return cell;
+}
+
+- (UITableViewCell *)cellOfInfoTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [self.nearbyVenues count] < 1 ) {
         cell.textLabel.text = (isLoading ? @"Loading locations...." : @"");
         cell.detailTextLabel.text = @"";
         cell.textLabel.textColor = [UIColor blackColor];
@@ -416,11 +430,42 @@
         }
     }
     
-    if ( tableView != _infoTableView ) {
-        cell.imageView.image = self.searchIcon;
-        cell.imageView.tintColor = [UIColor lightGrayColor];
+    return cell;
+}
+
+- (UITableViewCell *)cellOfSearchResultTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    if ( [self.nearbyVenuesOfSearchResults count] < 1 ) {
+        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"");
+        cell.detailTextLabel.text = @"";
+        cell.textLabel.textColor = [UIColor blackColor];
     }
-    
+    else if (indexPath.row >= [self.nearbyVenuesOfSearchResults count]) {
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
+        cell.detailTextLabel.font = [UIFont systemFontOfSize:14.0];
+        cell.textLabel.text = @"Add this place?";
+        cell.detailTextLabel.text = @"We Couldn't find that";
+        cell.textLabel.textColor = [A3AppDelegate instance].themeColor;
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+    }
+    else {
+        FSVenue *item = [self.nearbyVenuesOfSearchResults objectAtIndex:indexPath.row];
+        
+        cell.textLabel.text = item.name;
+        cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:item isDetail:NO];
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.detailTextLabel.textColor = [UIColor colorWithRed:123.0/255.0 green:123.0/255.0 blue:123.0/255.0 alpha:1.0];
+        
+        if (self.searchText && [self.searchText length] > 0) {
+            NSRange matchRange = [cell.textLabel.text rangeOfString:self.searchText options:NSCaseInsensitiveSearch];
+            if (matchRange.location != NSNotFound) {
+                NSMutableAttributedString *attrText = [[NSMutableAttributedString alloc] initWithAttributedString:cell.textLabel.attributedText];
+                [attrText addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:17] range:matchRange];
+                cell.textLabel.attributedText = attrText;
+            }
+        }
+    }
+
     return cell;
 }
 
@@ -496,7 +541,6 @@
         [tableView reloadData];
 
         [self.navigationController popViewControllerAnimated:YES];
-//        [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
