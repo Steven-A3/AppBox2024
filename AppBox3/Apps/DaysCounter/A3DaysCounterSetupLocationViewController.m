@@ -657,7 +657,21 @@
         self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:navCtrl];
         self.popoverVC.delegate = self;
         viewCtrl.popoverVC = self.popoverVC;
-        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44.0) animated:NO];
+        
+        viewCtrl.shrinkPopoverViewBlock = ^(CGSize size) {
+            [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44) animated:NO];
+        };
+
+        CGFloat height = 44 + 44 + 44;
+        UILabel *heightMeasure = [UILabel new];
+        heightMeasure.font = [UIFont systemFontOfSize:17];
+        heightMeasure.numberOfLines = 0;
+        heightMeasure.text = viewCtrl.locationItem.contact;
+        height += [heightMeasure sizeThatFits:CGSizeMake(320, 480)].height;
+        heightMeasure.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:viewCtrl.locationItem isDetail:YES];
+        height += [heightMeasure sizeThatFits:CGSizeMake(320, 480)].height;
+        [view convertPoint:view.frame.origin fromView:self.view];
+        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, height) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
