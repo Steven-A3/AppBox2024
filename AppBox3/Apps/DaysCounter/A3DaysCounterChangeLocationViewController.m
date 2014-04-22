@@ -50,6 +50,12 @@
     self.tableDataSource = @[@"Current Location"];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView setContentOffset:CGPointMake(0, -(self.navigationController.navigationBar.frame.size.height + 20)) animated:NO];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -94,9 +100,9 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_tableDataSource objectAtIndex:indexPath.row-1]);
-    if ( self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:)] ) {
-        [self.delegate changeLocationViewController:self didSelectLocation:placemark];
+    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_tableDataSource objectAtIndex:indexPath.row]);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:searchText:)] ) {
+        [self.delegate changeLocationViewController:self didSelectLocation:placemark searchText:self.searchBar.text];
     }
 }
 

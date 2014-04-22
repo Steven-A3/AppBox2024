@@ -743,22 +743,22 @@
 }
 
 #pragma mark - A3DaysCounterChangeLocationViewControllerDelegate
-- (void)changeLocationViewController:(A3DaysCounterChangeLocationViewController *)ctrl didSelectLocation:(CLPlacemark *)placemark
+- (void)changeLocationViewController:(A3DaysCounterChangeLocationViewController *)ctrl didSelectLocation:(CLPlacemark *)placemark searchText:(NSString *)searchText
 {
     [self.searchBar resignFirstResponder];
     self.isInitializedLocation = NO;
-    
+
     if ( placemark == nil ) {
         [self moveCurrentLocationAction:nil];
         self.changedPlace = nil;
         self.searchCenterCoord = _mapView.userLocation.coordinate;
-        [self forsqareSearchCoordinate:_mapView.userLocation.coordinate radius:20000.0 searchString:self.searchText atTableView:_infoTableView completion:nil];
+        [self forsqareSearchCoordinate:_mapView.userLocation.coordinate radius:20000.0 searchString:searchText atTableView:_infoTableView completion:nil];
     }
     else {
         self.searchCenterCoord = placemark.location.coordinate;
         self.changedPlace = placemark;
         [_mapView setCenterCoordinate:_searchCenterCoord animated:YES];
-        [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:self.searchText atTableView:_infoTableView completion:nil];
+        [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:searchText atTableView:_infoTableView completion:nil];
     }
     [self.currentLocationTableView reloadData];
     [ctrl.navigationController popViewControllerAnimated:YES];

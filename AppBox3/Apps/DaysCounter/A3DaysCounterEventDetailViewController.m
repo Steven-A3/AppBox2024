@@ -631,7 +631,7 @@
             
             dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[NSDate date]
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-            if (info.repeatType) {
+            if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
             
