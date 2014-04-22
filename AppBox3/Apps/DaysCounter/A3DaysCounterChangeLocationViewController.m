@@ -19,10 +19,12 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import <CoreLocation/CoreLocation.h>
 #import "A3AppDelegate+appearance.h"
+#import "MBProgressHUD.h"
 
 
-@interface A3DaysCounterChangeLocationViewController ()
+@interface A3DaysCounterChangeLocationViewController () <MBProgressHUDDelegate>
 @property (strong, nonatomic) NSArray *tableDataSource;
+@property (strong, nonatomic) MBProgressHUD *progressHud;
 @end
 
 @implementation A3DaysCounterChangeLocationViewController
@@ -107,6 +109,16 @@
         return;
     }
     
+    
+	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	self.progressHud.labelText = @"Searching";
+	self.progressHud.minShowTime = 2;
+	self.progressHud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.progressHud.completionBlock = ^{
+		weakSelf.progressHud = nil;
+	};
+    
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
         if (!placemarks || [error code] == kCLErrorGeocodeFoundNoResult) {
@@ -129,6 +141,9 @@
         self.tableDataSource = resultArray;
         
         [self.tableView reloadData];
+        if (self.progressHud) {
+            [self.progressHud setHidden:YES];
+        }
     }];
 }
 
