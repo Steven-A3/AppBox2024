@@ -25,6 +25,7 @@
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletItemEditViewController.h"
 #import "WalletFieldItem+initialize.h"
+#import "NSString+WalletStyle.h"
 
 
 #define TopHeaderHeight 96
@@ -703,15 +704,6 @@ enum SortingKind {
                 A3WalletListPhotoCell *photoCell;
                 photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
                 
-                photoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                photoCell.rightLabel.text = [item.modificationDate timeAgo];
-                if (IS_IPHONE) {
-                    photoCell.rightLabel.font = [UIFont systemFontOfSize:12];
-                }
-                else {
-                    photoCell.rightLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                }
-                
                 NSMutableArray *photoPick = [[NSMutableArray alloc] init];
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
@@ -726,8 +718,8 @@ enum SortingKind {
                 
                 [photoCell resetThumbImages];
 
-                for (int i=0; i<showPhotoCount; i++) {
-                    WalletFieldItem *fieldItem = photoPick[i];
+                for (NSUInteger idx = 0; idx < showPhotoCount; idx++) {
+                    WalletFieldItem *fieldItem = photoPick[idx];
                     UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPathInTemporary:NO ]];
                     
                     [photoCell addThumbImage:thumbImg];
@@ -739,19 +731,10 @@ enum SortingKind {
                 A3WalletListPhotoCell *videoCell;
                 videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
                 
-                videoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                videoCell.rightLabel.text = [item.modificationDate timeAgo];
-                if (IS_IPHONE) {
-                    videoCell.rightLabel.font = [UIFont systemFontOfSize:12];
-                }
-                else {
-                    videoCell.rightLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                }
-                
                 NSMutableArray *photoPick = [[NSMutableArray alloc] init];
                 NSArray *fieldItems = [item fieldItemsArray];
-                for (int i=0; i<fieldItems.count; i++) {
-                    WalletFieldItem *fieldItem = fieldItems[i];
+                for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
+                    WalletFieldItem *fieldItem = fieldItems[idx];
                     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
                         [photoPick addObject:fieldItem];
                     }
@@ -786,17 +769,40 @@ enum SortingKind {
 					dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 				}
 
-                if (item.name && item.name.length>0) {
+                if (item.name && item.name.length > 0) {
                     dataCell.textLabel.text = item.name;
                 }
                 else {
                     dataCell.textLabel.text = @"New Item";
                 }
-                
-                // all 에서는 오른쪽 필드에 시간을 표시하도록 변경
-                dataCell.detailTextLabel.text = [item.modificationDate timeAgo];
 
-                cell = dataCell;
+				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+				NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
+				if (fieldItems.count > 0) {
+					WalletFieldItem *fieldItem = fieldItems[0];
+					NSString *itemValue = @"";
+					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+						NSDateFormatter *df = [[NSDateFormatter alloc] init];
+						[df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+						itemValue = [df stringFromDate:fieldItem.date];
+					}
+					else {
+						itemValue = fieldItem.value;
+					}
+
+					if (itemValue && (itemValue.length>0)) {
+						NSString *styleValue = [itemValue stringForStyle:fieldItem.field.style];
+						dataCell.detailTextLabel.text = styleValue;
+					}
+					else {
+						dataCell.detailTextLabel.text = @"";
+					}
+				}
+				else {
+					dataCell.detailTextLabel.text = @"";
+				}
+
+				cell = dataCell;
             }
 		}
         else if ((tableView == self.tableView) && ([_items objectAtIndex:indexPath.row] == self.topItem)) {

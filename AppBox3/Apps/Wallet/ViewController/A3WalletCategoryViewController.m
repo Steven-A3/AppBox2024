@@ -965,9 +965,9 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                     dataCell.textLabel.text = @"New Item";
                 }
                 
-                NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
                 NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-                if (fieldItems.count>0) {
+                if (fieldItems.count > 0) {
                     WalletFieldItem *fieldItem = fieldItems[0];
                     NSString *itemValue = @"";
                     if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
