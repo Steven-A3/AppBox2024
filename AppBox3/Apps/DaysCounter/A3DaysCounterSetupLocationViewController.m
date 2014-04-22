@@ -83,6 +83,8 @@
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 66;
     self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.infoTableView.frame) - 66, 0, 0, 0);
     self.infoTableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+    self.infoTableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
+    self.infoTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     self.searchResultsTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
 
     [self.view addSubview:self.tableViewTopBlurView];
