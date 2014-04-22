@@ -250,6 +250,8 @@
                                           }];
                                       }
                                       else {
+                                          UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:@"장소 검색 실패" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+                                          [alert show];
                                           FNLOG(@"장소 검색 실패.");
                                       }
                                   }];
@@ -680,7 +682,7 @@
         A3DaysCounterLocationPopupViewController *viewCtrl = [[A3DaysCounterLocationPopupViewController alloc] initWithNibName:@"A3DaysCounterLocationPopupViewController" bundle:nil];
         viewCtrl.locationItem = view.annotation;
         viewCtrl.resizeFrameBlock = ^(CGSize size) {
-            [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height + 44) animated:YES];
+            [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 274) animated:YES];
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
             NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
@@ -708,16 +710,16 @@
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44) animated:NO];
         };
 
-        CGFloat height = 44 + 44 + 44;
-        UILabel *heightMeasure = [UILabel new];
-        heightMeasure.font = [UIFont systemFontOfSize:17];
-        heightMeasure.numberOfLines = 0;
-        heightMeasure.text = viewCtrl.locationItem.contact;
-        height += [heightMeasure sizeThatFits:CGSizeMake(320, 480)].height;
-        heightMeasure.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:viewCtrl.locationItem isDetail:YES];
-        height += [heightMeasure sizeThatFits:CGSizeMake(320, 480)].height;
-        [view convertPoint:view.frame.origin fromView:self.view];
-        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, height) animated:NO];
+//        CGFloat height = 44 + 44 + 44;
+//        UILabel *heightMeasure = [UILabel new];
+//        heightMeasure.font = [UIFont systemFontOfSize:17];
+//        heightMeasure.numberOfLines = 0;
+//        heightMeasure.text = viewCtrl.locationItem.contact;
+//        height += [heightMeasure sizeThatFits:CGSizeMake(320, 274)].height;
+//        heightMeasure.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:viewCtrl.locationItem isDetail:YES];
+//        height += [heightMeasure sizeThatFits:CGSizeMake(320, 274)].height;
+//        [view convertPoint:view.frame.origin fromView:self.view];
+        [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 274) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }

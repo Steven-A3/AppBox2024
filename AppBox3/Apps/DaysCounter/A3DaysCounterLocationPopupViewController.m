@@ -44,11 +44,8 @@
                                                                                   style:UIBarButtonItemStylePlain
                                                                                  target:self
                                                                                  action:@selector(detailInfoButtonTouchUp:)];
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
-//                                                                                  style:UIBarButtonItemStylePlain
-//                                                                                 target:self
-//                                                                                 action:@selector(doneButtonAction:)];
     }
+    self.tableView.tableFooterView = [UIView new];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -111,6 +108,7 @@
     
     if ( cell == nil ) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterLocationDetailCell" owner:nil options:nil] lastObject];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
@@ -119,12 +117,16 @@
     if ( indexPath.row == 0 ) {
         textLabel.text = @"Phone";
         detailTextLabel.text = _locationItem.contact;
-        cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+        cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     }
     else {
         textLabel.text = @"Address";
         detailTextLabel.text = _addressStr;
         cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
+    }
+    
+    if ([detailTextLabel.text length] == 0) {
+        detailTextLabel.text = @" ";
     }
     
     return cell;
@@ -137,8 +139,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( indexPath.section == 0 ) {
-        NSString *str = (indexPath.row == 0 ? _locationItem.contact : _addressStr);
+    if (indexPath.row == 0) {
+        return 58;
+    }
+    else {
+        NSString *str = _addressStr;
         CGRect rect = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width - 35.0, CGFLOAT_MAX)
                                         options:NSStringDrawingUsesLineFragmentOrigin
                                      attributes:@{ NSFontAttributeName : [UIFont systemFontOfSize:17.0] }
@@ -147,8 +152,6 @@
         
         return retHeight;
     }
-    
-    return 44.0;
 }
 
 
