@@ -532,7 +532,8 @@
             }
         }
     }
-    cell.titleBottomSpaceConst.constant = rowHeight - 31;
+
+    cell.titleBottomSpaceConst.constant = rowHeight - 37;
 }
 
 - (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell isSince:(BOOL)isSince daysText:(NSString*)daysText dateText1:(NSString*)dateText1 dateText2:(NSString*)dateText2 isLunar:(BOOL)isLunasr isTypeA:(BOOL)isTypeA eventInfo:(DaysCounterEvent*)info
