@@ -4843,7 +4843,6 @@
 				8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars & EventList) */,
 				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
 				8094E0DF18E6D04800CB03BC /* Location SubDetail */,
-				804C330818DAE0E500DBCE83 /* Event Related */,
 				804C330E18DAE33D00DBCE83 /* SubDetails */,
 				68F1C7DE18D7F37D009FAE8A /* A3DaysCounterDefine.h */,
 				68F1C7F918D7F37D009FAE8A /* A3DaysCounterHeaderFooterView.xib */,
@@ -5035,16 +5034,6 @@
 			path = External/FMMoveTableView/FMFramework;
 			sourceTree = "<group>";
 		};
-		804C330818DAE0E500DBCE83 /* Event Related */ = {
-			isa = PBXGroup;
-			children = (
-				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
-				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
-				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
-			);
-			name = "Event Related";
-			sourceTree = "<group>";
-		};
 		804C330918DAE11900DBCE83 /* Setup (rightSubViews) */ = {
 			isa = PBXGroup;
 			children = (
@@ -5121,6 +5110,9 @@
 				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
 				68F1C7E918D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.m */,
 				68F1C7EA18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib */,
+				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
+				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
+				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
 				68F1C7D418D7F37D009FAE8A /* A3DaysCounterAddEventViewController.h */,
 				68F1C7D518D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m */,
 				68F1C7D618D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib */,
