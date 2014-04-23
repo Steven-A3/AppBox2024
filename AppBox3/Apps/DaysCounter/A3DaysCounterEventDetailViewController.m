@@ -1336,6 +1336,7 @@ EXIT_FUCTION:
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
                                                                        repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@<br/>", _eventItem.eventName];
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
 
         //         Friday, April 11, 2014 (사용자가 입력한 날)
@@ -1358,6 +1359,7 @@ EXIT_FUCTION:
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
                                                                        repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@\n", _eventItem.eventName];
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
