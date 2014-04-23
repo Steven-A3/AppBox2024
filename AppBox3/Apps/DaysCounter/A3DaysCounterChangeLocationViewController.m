@@ -56,6 +56,13 @@
     [self.tableView setContentOffset:CGPointMake(0, -(self.navigationController.navigationBar.frame.size.height + 20)) animated:NO];
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.searchBar becomeFirstResponder];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

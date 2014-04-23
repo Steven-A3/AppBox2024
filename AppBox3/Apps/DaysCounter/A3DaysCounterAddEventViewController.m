@@ -333,40 +333,6 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return [_sectionTitleArray count] + (_eventItem ? 1 : 0);
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if ( section == [_sectionTitleArray count] && _eventItem ) {
-        return 1;
-    }
-    NSArray *items = [[_sectionTitleArray objectAtIndex:section] objectForKey:AddEventItems];
-    return [items count];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if ( (_eventItem && section == [_sectionTitleArray count]) || (section < AddSection_Section_2) ) {
-        return 35.0;
-    }
-    if ( section == 0 ) {
-        return 36.0;
-    }
-    else if ( section == 1 ) {
-        return 35.0;
-    }
-
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return (_eventItem && section == [_sectionTitleArray count]) ? 37.0 : 0.01;
-}
-
 - (NSString*)cellIdentifierAtIndexPath:(NSIndexPath*)indexPath
 {
     if ( _eventItem && indexPath.section == [_sectionTitleArray count] )
@@ -837,60 +803,6 @@
 }
 
 #pragma mark - Table view delegate
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CGFloat retHeight = 0.0;
-    
-    if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
-        retHeight = 44.0;
-    }
-    else {
-        NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
-        NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
-        
-        NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
-        switch (itemType) {
-            case EventCellType_DateInput:
-                retHeight = 236.0;
-                break;
-            case EventCellType_Notes:
-            {
-                NSString *str = [_eventModel objectForKey:EventItem_Notes];
-                NSDictionary *textAttributes = @{
-                                                 NSFontAttributeName : [UIFont systemFontOfSize:17]
-                                                 };
-                
-                NSString *testText = str ? str : @"";
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:testText attributes:textAttributes];
-                UITextView *txtView = [[UITextView alloc] init];
-                [txtView setAttributedText:attributedString];
-                float margin = IS_IPAD ? 49:31;
-                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
-                float cellHeight = txtViewSize.height;
-                
-                // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
-                float defaultCellHeight = 180.0;
-                
-                if (cellHeight < defaultCellHeight) {
-                    return defaultCellHeight;
-                }
-                else {
-                    return cellHeight;
-                }
-            }
-                break;
-            case EventCellType_Advanced:
-                retHeight = IS_RETINA ? 55.5 : 56.0;
-                break;
-            default:
-                retHeight = 44.0;
-                break;
-        }
-    }
-    
-    return retHeight;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self resignAllAction];
@@ -945,7 +857,7 @@
                                                                   inSection:AddSection_Section_1];
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
-
+                
                 if ([repeatType integerValue] == RepeatType_Never) {
                     // EffectiveStartDate 갱신.
                     [_eventModel setObject:[_eventModel objectForKey:EventItem_StartDate] forKey:EventItem_EffectiveStartDate];
@@ -979,7 +891,7 @@
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
                                                                                                 alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
                 
-
+                
                 // EndRepeatDate 유무 확인.
                 __block NSInteger endRepeatRowIndex = -1;
                 [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
@@ -1049,15 +961,15 @@
             
             A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
             nextVC.eventModel = self.eventModel;
-
+            
             nextVC.dismissCompletionBlock = ^{
                 NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
                 NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
                                                                  inSection:AddSection_Section_1];
-
+                
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
                 cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                                alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+                                                                                                     alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
                 FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [_eventModel objectForKey:EventItem_StartDate], [_eventModel objectForKey:EventItem_EffectiveStartDate], [_eventModel objectForKey:EventItem_AlertDatetime]);
             };
             
@@ -1080,7 +992,7 @@
                 NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
                 NSIndexPath *calendarIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Calendar atSectionArray:section1_items]
                                                                     inSection:AddSection_Section_1];
-//                [tableView deselectRowAtIndexPath:calendarIndexPath animated:YES];
+                //                [tableView deselectRowAtIndexPath:calendarIndexPath animated:YES];
                 UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
                 UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
                 UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
@@ -1095,7 +1007,7 @@
                 
                 colorImageView.hidden = ([nameLabel.text length] < 1 );
             };
-
+            
             if ( IS_IPHONE ) {
                 [self.navigationController pushViewController:nextVC animated:YES];
             }
@@ -1145,6 +1057,104 @@
             [self advancedRowTouchedUp:indexPath];
             break;
     }
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [_sectionTitleArray count] + (_eventItem ? 1 : 0);
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if ( section == [_sectionTitleArray count] && _eventItem ) {
+        return 1;
+    }
+    NSArray *items = [[_sectionTitleArray objectAtIndex:section] objectForKey:AddEventItems];
+    return [items count];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+//    if ( (_eventItem && section == [_sectionTitleArray count]) || (section < AddSection_Section_2) ) {
+//        return 35.0;
+//    }
+//    if ( section == 0 ) {
+//        return 36.0;
+//    }
+//    else if ( section == 1 ) {
+//        //return 35.0;
+//        return 38.0;
+//    }
+    if ( section == 2 ) {
+        return IS_RETINA ? 38.5 : 39;
+    }
+    else if ( section == 1 ) {
+        return IS_RETINA ? 36.5 : 36;
+    }
+    else {
+        return 35.0;
+    }
+    
+    return 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return (_eventItem && section == [_sectionTitleArray count]) ? 38.0 : 0.01;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CGFloat retHeight = 0.0;
+    
+    if ( _eventItem && indexPath.section == [_sectionTitleArray count] ) {
+        retHeight = 44.0;
+    }
+    else {
+        NSArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
+        NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
+        
+        NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
+        switch (itemType) {
+            case EventCellType_DateInput:
+                retHeight = 236.0;
+                break;
+            case EventCellType_Notes:
+            {
+                NSString *str = [_eventModel objectForKey:EventItem_Notes];
+                NSDictionary *textAttributes = @{
+                                                 NSFontAttributeName : [UIFont systemFontOfSize:17]
+                                                 };
+                
+                NSString *testText = str ? str : @"";
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:testText attributes:textAttributes];
+                UITextView *txtView = [[UITextView alloc] init];
+                [txtView setAttributedText:attributedString];
+                float margin = IS_IPAD ? 49:31;
+                CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, CGFLOAT_MAX)];
+                float cellHeight = txtViewSize.height;
+                
+                // memo카테고리에서는 화면의 가장 아래까지 노트필드가 채워진다.
+                float defaultCellHeight = 180.0;
+                
+                if (cellHeight < defaultCellHeight) {
+                    return defaultCellHeight;
+                }
+                else {
+                    return cellHeight;
+                }
+            }
+                break;
+            case EventCellType_Advanced:
+                retHeight = IS_RETINA ? 55.5 : 56.0;
+                break;
+            default:
+                retHeight = 44.0;
+                break;
+        }
+    }
+    
+    return retHeight;
 }
 
 #pragma mark - action method
