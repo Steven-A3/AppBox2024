@@ -69,6 +69,7 @@
     _currentLocationButton.layer.borderColor = [[UIColor colorWithRed:236.0/255.0 green:236.0/255.0 blue:236.0/255.0 alpha:1.0] CGColor];
     _currentLocationButton.layer.cornerRadius = 6.0;
     _currentLocationButton.layer.masksToBounds = YES;
+    isLoading = YES;
     
     [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:18.0]];
 	[SFKImage setDefaultColor:[UIColor blackColor]];
@@ -83,8 +84,8 @@
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
     [self initializeSelectedLocation];
     
-    self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 66;
-    self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.infoTableView.frame) - 66, 0, 0, 0);
+    self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 88;
+    self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88, 0, 0, 0);
     self.infoTableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     self.infoTableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     self.infoTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
@@ -164,13 +165,13 @@
 {
 	[self removeAllAnnotationExceptOfCurrentUser];
 	[self.mapView addAnnotations:annotations];
-    [annotations enumerateObjectsUsingBlock:^(id <MKAnnotation> annotation, NSUInteger idx, BOOL *stop) {
-        if ([annotation coordinate].longitude == _searchCenterCoord.longitude && [annotation coordinate].latitude == _searchCenterCoord.latitude) {
-            [self.mapView selectAnnotation:annotation animated:YES];
-            *stop = YES;
-            return;
-        }
-    }];
+//    [annotations enumerateObjectsUsingBlock:^(id <MKAnnotation> annotation, NSUInteger idx, BOOL *stop) {
+//        if ([annotation coordinate].longitude == _searchCenterCoord.longitude && [annotation coordinate].latitude == _searchCenterCoord.latitude) {
+//            [self.mapView selectAnnotation:annotation animated:YES];
+//            *stop = YES;
+//            return;
+//        }
+//    }];
 }
 
 - (void)updatePlacemarkViewWithVenue:(FSVenue *)venue
@@ -224,8 +225,8 @@
     _searchCenterCoord = CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue]);
     [self.mapView setCenterCoordinate:_searchCenterCoord animated:YES];
     [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(_searchCenterCoord, 500.0, 500.0) animated:YES];
-
-    isLoading = YES;
+    
+    [_infoTableView reloadData];
 
 	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 	self.progressHud.labelText = @"Searching";
@@ -452,6 +453,7 @@
         cell.textLabel.text = (isLoading ? @"Loading locations...." : @"");
         cell.detailTextLabel.text = @"";
         cell.textLabel.textColor = [UIColor blackColor];
+        cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     }
     else {
         FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];
@@ -557,6 +559,7 @@
     }
     
     if ( tableView == _infoTableView && [self.nearbyVenues count] < 1 ) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
