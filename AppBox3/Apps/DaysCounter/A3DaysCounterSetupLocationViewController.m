@@ -81,6 +81,8 @@
                                  callbackURL:FOURSQUARE_REDIRECTURI];
 
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
+    [self initializeSelectedLocation];
+    
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 66;
     self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.infoTableView.frame) - 66, 0, 0, 0);
     self.infoTableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
@@ -162,6 +164,13 @@
 {
 	[self removeAllAnnotationExceptOfCurrentUser];
 	[self.mapView addAnnotations:annotations];
+    [annotations enumerateObjectsUsingBlock:^(id <MKAnnotation> annotation, NSUInteger idx, BOOL *stop) {
+        if ([annotation coordinate].longitude == _searchCenterCoord.longitude && [annotation coordinate].latitude == _searchCenterCoord.latitude) {
+            [self.mapView selectAnnotation:annotation animated:YES];
+            *stop = YES;
+            return;
+        }
+    }];
 }
 
 - (void)updatePlacemarkViewWithVenue:(FSVenue *)venue
@@ -202,6 +211,36 @@
 }
 
 #pragma mark Search
+- (void)initializeSelectedLocation
+{
+    NSDictionary *locationInfo = [self.eventModel objectForKey:EventItem_Location];
+    if (!locationInfo) {
+        return;
+    }
+    
+    NSNumber *longitude = [locationInfo objectForKey:EventItem_Longitude];
+    NSNumber *latitude = [locationInfo objectForKey:EventItem_Latitude];
+    NSString *locationName = [locationInfo objectForKey:EventItem_LocationName];
+    _searchCenterCoord = CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue]);
+    [self.mapView setCenterCoordinate:_searchCenterCoord animated:YES];
+    [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(_searchCenterCoord, 500.0, 500.0) animated:YES];
+
+    isLoading = YES;
+
+	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	self.progressHud.labelText = @"Searching";
+	self.progressHud.minShowTime = 2;
+	self.progressHud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.progressHud.completionBlock = ^{
+		weakSelf.progressHud = nil;
+	};
+    
+    [self forsqareSearchCoordinate:_searchCenterCoord radius:20000.0 searchString:locationName atTableView:_infoTableView completion:nil];
+    
+    self.isInitializedLocation = YES;
+}
+
 - (void)forsqareSearchCoordinate:(CLLocationCoordinate2D)coord radius:(CGFloat)radius searchString:(NSString*)searchString atTableView:(UITableView *)tableView completion:(void (^)(void))completionBlock
 {
     [Foursquare2 venueSearchNearByLatitude:@(coord.latitude)
@@ -356,15 +395,15 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 0.01;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0.01;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 0.01;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return 0.01;
+//}
 
 #pragma mark Cell Related
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -682,7 +721,7 @@
         A3DaysCounterLocationPopupViewController *viewCtrl = [[A3DaysCounterLocationPopupViewController alloc] initWithNibName:@"A3DaysCounterLocationPopupViewController" bundle:nil];
         viewCtrl.locationItem = view.annotation;
         viewCtrl.resizeFrameBlock = ^(CGSize size) {
-            [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 274) animated:YES];
+            [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height == 0 ? 44 : 274) animated:YES];
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
             NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
@@ -710,15 +749,6 @@
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44) animated:NO];
         };
 
-//        CGFloat height = 44 + 44 + 44;
-//        UILabel *heightMeasure = [UILabel new];
-//        heightMeasure.font = [UIFont systemFontOfSize:17];
-//        heightMeasure.numberOfLines = 0;
-//        heightMeasure.text = viewCtrl.locationItem.contact;
-//        height += [heightMeasure sizeThatFits:CGSizeMake(320, 274)].height;
-//        heightMeasure.text = [[A3DaysCounterModelManager sharedManager] addressFromVenue:viewCtrl.locationItem isDetail:YES];
-//        height += [heightMeasure sizeThatFits:CGSizeMake(320, 274)].height;
-//        [view convertPoint:view.frame.origin fromView:self.view];
         [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 274) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
