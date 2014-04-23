@@ -13,10 +13,10 @@
 @property (strong, nonatomic) IBOutlet UITextField *titleTextField;
 @property (strong, nonatomic) IBOutlet UILabel *timeLabel;
 @property (strong, nonatomic) UIButton *favoriteButton;
-@property (strong, nonatomic) IBOutlet UILabel *fileNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *imgSizeLabel;
-@property (strong, nonatomic) IBOutlet UILabel *fileSizeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *mediaSizeLabel;
 @property (strong, nonatomic) IBOutlet UILabel *takenDateLabel;
 
 - (void)setupFonts;
+- (CGFloat)calculatedHeight;
+
 @end

@@ -735,7 +735,7 @@ enum SortingKind {
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
                     WalletFieldItem *fieldItem = fieldItems[idx];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
                         [photoPick addObject:fieldItem];
                     }
                 }

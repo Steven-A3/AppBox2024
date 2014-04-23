@@ -59,7 +59,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 {
     [super viewDidLoad];
 
-    [self makeBackButtonEmptyArrow];
+	self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_category.name style:UIBarButtonItemStylePlain target:nil action:nil];
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
 
@@ -923,7 +923,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && [fieldItem.hasVideo boolValue]) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
                         [photoPick addObject:fieldItem];
                     }
                 }

@@ -267,7 +267,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
                 NSArray *fieldItems = [item fieldItemsArray];
                 for (int i=0; i<fieldItems.count; i++) {
                     WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.hasVideo) {
+                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
                         [photoPick addObject:fieldItem];
                     }
                 }

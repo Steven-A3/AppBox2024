@@ -25,23 +25,27 @@
 #import "WalletFieldItem.h"
 #import "UIImage+Extension2.h"
 #import "WalletFieldItem+initialize.h"
+#import "A3WalletPhotoItemTitleView.h"
 
 @interface A3WalletVideoItemViewController () <WalletItemEditDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray *videoFieldItems;
 @property (nonatomic, strong) NSMutableArray *normalFieldItems;
 @property (nonatomic, strong) UIScrollView *photoScrollView;
-@property (nonatomic, strong) A3WalletVideoItemTitleView *headerView;
+@property (nonatomic, strong) A3WalletPhotoItemTitleView *metadataView;
 @property (nonatomic, strong) NSMutableArray *photoThumbs;
 @property (strong, nonatomic) UIToolbar *toolBar;
 @property (strong, nonatomic) UIView *thumbListContainView;
 
 @property (nonatomic, strong) NSMutableDictionary *noteItem;
+@property (nonatomic, strong) NSMutableDictionary *photoItem;
+@property (nonatomic, strong) NSMutableDictionary *metadataItem;
 
 @end
 
 @implementation A3WalletVideoItemViewController
 
+extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemFieldCellID2 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemPhotoFieldCellID2 = @"A3WalletItemPhotoFieldCell";
 NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
@@ -74,16 +78,15 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
-	[self.headerView setupFonts];
+	[self.metadataView setupFonts];
 	[self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self updateTopInfo];
-    [self updateVideoInfo];
+
+	[self updateMetadataView];
 }
 
 - (void)initializeViews
@@ -91,35 +94,38 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     self.navigationItem.rightBarButtonItem = editItem;
     
-    [self.view addSubview:self.photoScrollView];
-    
-    float scrollHeight = (IS_IPAD) ? 506:300;
-    
-    float tbvHeight = self.view.bounds.size.height - (64+4+scrollHeight+44+1);
+    CGFloat tbvHeight = self.view.bounds.size.height - 44;
     if (self.photoThumbs.count < 2) {
         tbvHeight += 44;
     }
     
-	_tableView.frame = CGRectMake(0, 64+4+scrollHeight, self.view.bounds.size.width, tbvHeight);
+	_tableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, tbvHeight);
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-    _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView.tableHeaderView = self.headerView;
-    _tableView.contentOffset = CGPointZero;
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    
-    [self.view insertSubview:self.toolBar belowSubview:_tableView];
-    _toolBar.layer.anchorPoint = CGPointMake(0.5, 1);
-    _toolBar.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height);
-    
-    float offsetX = (self.photoThumbs.count*(24+4))/2;
-    for (int i=0; i<self.photoThumbs.count; i++) {
-        UIImageView *thumbImgView = _photoThumbs[i];
-        [self.thumbListContainView addSubview:thumbImgView];
-        float centerX = 2+12+(24+4)*i;
-        thumbImgView.center = CGPointMake(_thumbListContainView.bounds.size.width/2 + centerX - offsetX, _thumbListContainView.bounds.size.height/2);
-    }
-    [self makeThumbSelected:0];
+	_tableView.contentOffset = CGPointMake(0, 0);
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+	if (![_item.note length]) {
+		UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 38)];
+		_tableView.tableFooterView = footerView;
+	} else {
+		_tableView.tableFooterView = nil;
+	}
+
+	if ([self.videoFieldItems count] > 1) {
+		[self.view insertSubview:self.toolBar belowSubview:_tableView];
+		_toolBar.layer.anchorPoint = CGPointMake(0.5, 1);
+		_toolBar.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height);
+
+		CGFloat offsetX = (self.photoThumbs.count*(24+4))/2;
+		for (NSUInteger idx = 0; idx < self.photoThumbs.count; idx++) {
+			UIImageView *thumbImgView = _photoThumbs[idx];
+			[self.thumbListContainView addSubview:thumbImgView];
+			float centerX = 2+12+(24+4)* idx;
+			thumbImgView.center = CGPointMake(_thumbListContainView.bounds.size.width/2 + centerX - offsetX, _thumbListContainView.bounds.size.height/2);
+		}
+		[self makeThumbSelected:0];
+	}
 }
 
 - (NSMutableArray *)videoFieldItems
@@ -130,7 +136,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         NSArray *fieldItems = [_item fieldItemsArray];
         for (int i=0; i<fieldItems.count; i++) {
             WalletFieldItem *fieldItem = fieldItems[i];
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.hasVideo) {
+            if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
                 [_videoFieldItems addObject:fieldItem];
             }
         }
@@ -142,46 +148,43 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (NSMutableArray *)normalFieldItems
 {
     if (!_normalFieldItems) {
-        _normalFieldItems = [[NSMutableArray alloc] init];
-        
-        NSArray *fieldItems = [_item fieldItemsArray];
-        for (int i=0; i<fieldItems.count; i++) {
-            WalletFieldItem *fieldItem = fieldItems[i];
-            if (![fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-                [_normalFieldItems addObject:fieldItem];
-            }
-        }
-        
-        // 데이타 없는 item은 표시하지 않는다.
-        NSMutableArray *deletingObjects = [NSMutableArray new];
-        for (WalletFieldItem *fieldItem in _normalFieldItems) {
-            if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                if (fieldItem.date == nil) {
-                    [deletingObjects addObject:fieldItem];
-                }
-            }
-            else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-				if (!fieldItem.image) {
-					[deletingObjects addObject:fieldItem];
-				}
-            }
-			else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				if (![fieldItem.hasVideo boolValue]) {
-					[deletingObjects addObject:fieldItem];
-				}
+		_normalFieldItems = [[NSMutableArray alloc] init];
+
+		[_normalFieldItems addObject:self.photoItem];
+		[_normalFieldItems addObject:self.metadataItem];
+
+		NSArray *fieldItems = [_item fieldItemsArray];
+		for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
+			WalletFieldItem *fieldItem = fieldItems[idx];
+			if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate] && !fieldItem.date) {
+				continue;
 			}
-            else {
-                if (![fieldItem.value length]) {
-                    [deletingObjects addObject:fieldItem];
-                }
-            }
-        }
-		[_normalFieldItems removeObjectsInArray:deletingObjects];
-        
-        [_normalFieldItems addObject:self.noteItem];
+			if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] || ![fieldItem.value length]) {
+				continue;
+			}
+			[_normalFieldItems addObject:fieldItem];
+		}
+
+		if ([_item.note length]) {
+			[_normalFieldItems addObject:self.noteItem];
+		}
     }
     
     return _normalFieldItems;
+}
+
+- (NSMutableDictionary *)photoItem {
+	if (!_photoItem) {
+		_photoItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"Photo", @"order":@""}];
+	}
+	return _photoItem;
+}
+
+- (NSMutableDictionary *)metadataItem {
+	if (!_metadataItem) {
+		_metadataItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title":@"metadata", @"order":@""}];
+	}
+	return _metadataItem;
 }
 
 - (NSMutableDictionary *)noteItem
@@ -229,21 +232,21 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     return _thumbListContainView;
 }
 
-- (A3WalletVideoItemTitleView *)headerView
+- (A3WalletPhotoItemTitleView *)metadataView
 {
-    if (!_headerView) {
-        NSString *nibName = IS_IPAD ? @"A3WalletVideoItemTitleView_iPad":@"A3WalletVideoItemTitleView";
-        _headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
-        CGRect frame = _headerView.frame;
+    if (!_metadataView) {
+        NSString *nibName = IS_IPAD ? @"A3WalletPhotoItemTitleView_iPad":@"A3WalletPhotoItemTitleView";
+        _metadataView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:Nil options:nil] lastObject];
+        CGRect frame = _metadataView.frame;
         frame.size.height = 115;
-        _headerView.frame = frame;
+        _metadataView.frame = frame;
         
-        [_headerView.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_metadataView.favoriteButton addTarget:self action:@selector(favorButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
-        _headerView.titleTextField.delegate = self;
+        _metadataView.titleTextField.delegate = self;
     }
     
-    return _headerView;
+    return _metadataView;
 }
 
 - (void)refreshViews
@@ -260,27 +263,21 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     _thumbListContainView = nil;
     
     [self initializeViews];
-    [self updateTopInfo];
-    
-    [self.tableView reloadData];
-    [self updateVideoInfo];
+	[self updateMetadataView];
+	[self.tableView reloadData];
 }
 
-- (void)updateTopInfo
-{
-    _headerView.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
-    CGSize textSize = [_headerView.titleTextField.text sizeWithAttributes:@{NSFontAttributeName:_headerView.titleTextField.font}];
-    CGRect frame = _headerView.titleTextField.frame;
-    frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
-    _headerView.titleTextField.frame = frame;
-    
-    _headerView.favoriteButton.selected = _item.favorite != nil;
-    _headerView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
-}
+- (void)updateMetadataView {
+	self.metadataView.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
+	CGSize textSize = [_metadataView.titleTextField.text sizeWithAttributes:@{NSFontAttributeName: _metadataView.titleTextField.font}];
+	CGRect frame = _metadataView.titleTextField.frame;
+	frame.size.width = MIN(self.view.bounds.size.width- 30, textSize.width + 50);
+	_metadataView.titleTextField.frame = frame;
 
-- (void)updateVideoInfo {
-    
-    NSUInteger index = _photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
+	_metadataView.favoriteButton.selected = _item.favorite != nil;
+	_metadataView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
+
+    NSUInteger index = self.photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
     
     if (self.videoFieldItems.count <= index) {
         return;
@@ -288,26 +285,27 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     WalletFieldItem *fieldItem = _videoFieldItems[index];
     
-    float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
+    CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
     NSInteger dur = round(duration);
-    _headerView.durationLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
+    _metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
     
     NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
     if (createDate) {
-        _headerView.dateLabel.text = [createDate timeAgo];
+        _metadataView.takenDateLabel.text = [createDate timeAgo];
     }
     else {
-        _headerView.dateLabel.text = @"";
+        _metadataView.takenDateLabel.text = @"";
     }
+	[_metadataView layoutIfNeeded];
 }
 
 - (UIScrollView *)photoScrollView
 {
-    float rectWidth = (IS_IPAD) ? 576:320;
-    float rectHeight = (IS_IPAD) ? 506:300;
+    CGFloat rectWidth = IS_IPAD ? 576 : 320;
+    CGFloat rectHeight = IS_IPAD ? 506 : 300;
     
     if (!_photoScrollView) {
-        CGRect photoFrame = CGRectMake((self.view.bounds.size.width-rectWidth)/2, 64+4, rectWidth, rectHeight);
+        CGRect photoFrame = CGRectMake((self.view.bounds.size.width-rectWidth)/2, 4, rectWidth, rectHeight);
         _photoScrollView = [[UIScrollView alloc] initWithFrame:photoFrame];
         _photoScrollView.showsHorizontalScrollIndicator = NO;
         _photoScrollView.showsVerticalScrollIndicator = NO;
@@ -315,9 +313,9 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         _photoScrollView.bounces = NO;
         _photoScrollView.delegate = self;
         
-        for (int i=0; i<self.videoFieldItems.count; i++) {
-            WalletFieldItem *videoFieldItem = _videoFieldItems[i];
-            UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth*i, 0, rectWidth, rectHeight)];
+        for (NSUInteger idx = 0; idx < self.videoFieldItems.count; idx++) {
+            WalletFieldItem *videoFieldItem = _videoFieldItems[idx];
+            UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(rectWidth* idx, 0, rectWidth, rectHeight)];
             photoImgView.contentMode = UIViewContentModeScaleAspectFill;
             UIImage *photoImg = [UIImage imageWithContentsOfFile:[videoFieldItem videoThumbnailPathInTemporary:NO ]];
             photoImg = [photoImg imageByScalingProportionallyToMinimumSize:CGSizeMake(rectWidth*2, rectWidth*2)];
@@ -330,7 +328,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             
             UIButton *playBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             playBtn.frame = CGRectMake(0, 0, 70, 70);
-            playBtn.tag = i;
+            playBtn.tag = idx;
             [playBtn setImage:[UIImage imageNamed:@"play"] forState:UIControlStateNormal];
             [photoImgView addSubview:playBtn];
             playBtn.center = CGPointMake(rectWidth/2.0, rectHeight/2.0);
@@ -369,7 +367,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (void)favorButtonAction:(UIButton *)favorButton
 {
 	[_item changeFavorite:_item.favorite == nil];
-    _headerView.favoriteButton.selected = _item.favorite != nil;
+    _metadataView.favoriteButton.selected = _item.favorite != nil;
 }
 
 - (void)videoFinished:(NSNotification*)aNotification{
@@ -419,14 +417,14 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     WalletFieldItem *fieldItem = _videoFieldItems[index];
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-        if ([[fieldItem hasVideo] boolValue]) {
+        if (fieldItem.video) {
 			NSString *filePath = [fieldItem videoFilePathInTemporary:NO ];
 			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:filePath]];
 
-//            // 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
-//            [[NSNotificationCenter defaultCenter] removeObserver:pvc  name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
+            // 재생후에 자동으로 닫히는 것 방지하고, 사용자가 닫을수있도록 함.
+            [[NSNotificationCenter defaultCenter] removeObserver:pvc  name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
 
-//            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:pvc.moviePlayer];
             
             NSError *_error = nil;
             [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &_error];
@@ -480,7 +478,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         NSUInteger page = floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
         
         [self makeThumbSelected:page];
-        [self updateVideoInfo];
+		[self updateMetadataView];
     }
 }
 
@@ -490,7 +488,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         if (!decelerate) {
             NSUInteger page = floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
             [self makeThumbSelected:page];
-            [self updateVideoInfo];
+			[self updateMetadataView];
         }
     }
 }
@@ -519,7 +517,18 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
-    
+
+	if (_normalFieldItems[indexPath.row] == self.photoItem) {
+		UITableViewCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
+		[photoCell addSubview:self.photoScrollView];
+
+		cell = photoCell;
+	} else if (_normalFieldItems[indexPath.row] == self.metadataItem) {
+		UITableViewCell *metadataCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
+		[metadataCell addSubview:self.metadataView];
+
+		cell = metadataCell;
+	} else
     if (_normalFieldItems[indexPath.row] == self.noteItem) {
         
         // note
@@ -531,9 +540,9 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         noteCell.textView.placeholder = @"Notes";
         noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
         noteCell.textView.font = [UIFont systemFontOfSize:17];
-        
-        noteCell.textView.text = _item.note;
-        
+
+		[noteCell setNoteText:_item.note];
+
         cell = noteCell;
     }
     else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
@@ -626,6 +635,13 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.photoItem) {
+		return IS_IPAD ? 510 : 304;
+	} else
+	if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.metadataItem) {
+		[self updateMetadataView];
+		return [self.metadataView calculatedHeight];
+	}
     if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.noteItem) {
 		if (!_item.note) return 74.0;
         NSDictionary *textAttributes = @{
@@ -652,18 +668,6 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     return 74.0;
 }
 
-/*
- - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
- {
- return self.topHeaderView;
- }
- 
- - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
- {
- return 96;
- }
- */
-
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -682,33 +686,5 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
 }
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a story board-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
- {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- 
- */
 
 @end

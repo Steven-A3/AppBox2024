@@ -13,4 +13,7 @@
 
 @property (strong, nonatomic) IBOutlet GCPlaceholderTextView *textView;
 
+- (void)setNoteText:(NSString *)text;
+
+- (CGFloat)calculatedHeight;
 @end

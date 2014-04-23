@@ -9,6 +9,7 @@
 #import "WalletFieldItem+initialize.h"
 #import "WalletField+initialize.h"
 #import "WalletData.h"
+#import "WalletFieldItemVideo.h"
 
 @implementation WalletFieldItem (initialize)
 
@@ -20,7 +21,7 @@
 		[fileManager removeItemAtPath:[self imageThumbnailPathInTemporary:NO] error:NULL];
 		return;
 	}
-	if ([self.field.type isEqualToString:WalletFieldTypeVideo]) {
+	if ([self.field.type isEqualToString:WalletFieldTypeVideo] && self.video)  {
 		[fileManager removeItemAtPath:[self videoFilePathInTemporary:NO] error:NULL];
 		[fileManager removeItemAtPath:[self videoThumbnailPathInTemporary:NO] error:NULL];
 	}
@@ -65,7 +66,7 @@
 		directory = [paths objectAtIndex:0];
 	}
 	NSString *filename = [NSString stringWithFormat:@"%@-video", self.uniqueID];
-	filename = [filename stringByAppendingPathExtension:self.videoExtension];
+	filename = [filename stringByAppendingPathExtension:self.video.extension];
 	return [directory stringByAppendingPathComponent:filename];
 }
 

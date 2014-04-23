@@ -245,6 +245,23 @@
                                             <outlet property="mapView" destination="ivH-I5-JGR" id="yhp-MI-EVq"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="defaultCellID" textLabel="85G-sF-nLE" rowHeight="140" style="IBUITableViewCellStyleDefault" id="gur-pe-GvZ">
+                                        <rect key="frame" x="0.0" y="554" width="768" height="140"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gur-pe-GvZ" id="i3H-Dm-YKx">
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="139"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="85G-sF-nLE">
+                                                    <rect key="frame" x="15" y="0.0" width="738" height="139"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="Y41-Wz-0sG" id="sMB-ee-LW5"/>
@@ -344,6 +361,23 @@
                                             <outlet property="photoButton" destination="9uI-Yc-V2e" id="4zw-Fb-Fgj"/>
                                             <outlet property="valueTxtFd" destination="jqJ-bV-Z7H" id="MeV-Sn-D8T"/>
                                         </connections>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="defaultCellID" textLabel="Wi3-hk-U1j" rowHeight="74" style="IBUITableViewCellStyleDefault" id="N4S-Yh-5BX">
+                                        <rect key="frame" x="0.0" y="414" width="768" height="74"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="N4S-Yh-5BX" id="jkx-Q2-tD7">
+                                            <rect key="frame" x="0.0" y="0.0" width="768" height="73"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Wi3-hk-U1j">
+                                                    <rect key="frame" x="15" y="0.0" width="738" height="73"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>

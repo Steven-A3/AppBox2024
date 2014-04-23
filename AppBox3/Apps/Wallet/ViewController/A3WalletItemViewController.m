@@ -30,9 +30,10 @@
 #import "A3BasicWebViewController.h"
 #import "WalletFieldItem+initialize.h"
 #import "A3WalletItemTitleCell.h"
+#import "WalletFieldItemImage.h"
 
 
-	@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
+@interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) NSMutableArray *fieldItems;
 @property (nonatomic, strong) NSMutableDictionary *titleItem, *noteItem;
@@ -109,7 +110,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				}
 			}
 			else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				if (!fieldItem.image && ![fieldItem.hasVideo boolValue]) {
+				if (!fieldItem.image && !fieldItem.video) {
 					[deleteTmp addObject:fieldItem];
 				}
 			}
@@ -172,7 +173,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
 				WalletFieldItem *fieldItem = _fieldItems[i];
 				if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
-					MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image];
+					MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image.image];
 					[_albumPhotos addObject:photo];
 				}
 			}
@@ -193,7 +194,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
     
 	if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-		if ([fieldItem.hasVideo boolValue]) {
+		if (fieldItem.video) {
 			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInTemporary:NO ]]];
 			[self presentViewController:pvc animated:YES completion:^{
 				[pvc.moviePlayer play];
@@ -512,8 +513,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
         noteCell.textView.font = [UIFont systemFontOfSize:17];
 
-        noteCell.textView.text = _item.note;
-        
+		[noteCell setNoteText:_item.note];
+
         cell = noteCell;
     }
     else if (_fieldItems[indexPath.row] == self.categoryItem) {
@@ -543,7 +544,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             
             photoCell.valueTxtFd.placeholder = fieldItem.field.name;
             
-            if (fieldItem.image || [fieldItem.hasVideo boolValue]) {
+            if (fieldItem.image || fieldItem.video) {
                 photoCell.valueTxtFd.text = @" ";
                 photoCell.photoButton.hidden = NO;
                 

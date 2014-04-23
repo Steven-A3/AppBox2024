@@ -27,7 +27,7 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
 NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
-@interface A3AppDelegate () <CLLocationManagerDelegate>
+@interface A3AppDelegate ()
 
 @property (nonatomic, strong) NSString *previousVersion;
 

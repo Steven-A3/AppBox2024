@@ -347,13 +347,21 @@
     </entity>
     <entity name="WalletFieldItem" representedClassName="WalletFieldItem" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="hasVideo" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Transformable" valueTransformerName="A3ImageToDataTransformer" storedInTruthFile="YES" syncable="YES"/>
         <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="videoExtension" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="field" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletField" inverseName="fieldItems" inverseEntity="WalletField" syncable="YES"/>
+        <relationship name="image" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WalletFieldItemImage" inverseName="fieldItem" inverseEntity="WalletFieldItemImage" syncable="YES"/>
+        <relationship name="video" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WalletFieldItemVideo" inverseName="fieldItem" inverseEntity="WalletFieldItemVideo" syncable="YES"/>
         <relationship name="walletItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletItem" inverseName="fieldItems" inverseEntity="WalletItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletFieldItemImage" representedClassName="WalletFieldItemImage" syncable="YES">
+        <attribute name="image" attributeType="Transformable" valueTransformerName="A3ImageToDataTransformer" storedInTruthFile="YES" syncable="YES"/>
+        <attribute name="metadata" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="image" inverseEntity="WalletFieldItem" syncable="YES"/>
+    </entity>
+    <entity name="WalletFieldItemVideo" representedClassName="WalletFieldItemVideo" syncable="YES">
+        <attribute name="extension" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="fieldItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletFieldItem" inverseName="video" inverseEntity="WalletFieldItem" syncable="YES"/>
     </entity>
     <entity name="WalletItem" representedClassName="WalletItem" syncable="YES">
         <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -403,7 +411,9 @@
         <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="165"/>
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
-        <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="165"/>
+        <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="150"/>
+        <element name="WalletFieldItemImage" positionX="-576" positionY="-396" width="128" height="88"/>
+        <element name="WalletFieldItemVideo" positionX="-567" positionY="-387" width="128" height="73"/>
     </elements>
 </model>
