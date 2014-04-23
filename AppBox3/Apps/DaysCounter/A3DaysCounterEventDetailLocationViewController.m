@@ -45,7 +45,6 @@
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventLocationModel:_location];
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
-    _tableView.separatorInset = UIEdgeInsetsMake(0, 44.0, 0, 0);
     _tableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     
     [self.view addSubview:self.tableViewTopBlurView];
@@ -127,7 +126,7 @@
     if ( indexPath.row == 0 ) {
         textLabel.text = @"Phone";
         detailTextLabel.text = _locationItem.contact;
-        cell.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
+        cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     }
     else {
         textLabel.text = @"Address";
