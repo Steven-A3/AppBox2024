@@ -71,7 +71,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 @end
 
-@implementation A3WalletItemEditViewController
+@implementation A3WalletItemEditViewController {
+	BOOL _isMemoCategory;
+	CGFloat _keyboardHeight;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -98,6 +101,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 		[self copyThumbnailImagesToTemporaryPath];
 	}
+	_isMemoCategory = [_item.category.uniqueID isEqualToString:A3WalletUUIDMemoCategory];
 
 	[self makeBackButtonEmptyArrow];
     [self rightBarButtonDoneButton];
@@ -116,6 +120,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	if (IS_IPAD) {
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewDidDismissed object:nil];
 	}
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+	CGRect keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+	FNLOGRECT(keyboardFrame);
+	self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, keyboardFrame.size.height, 0);
+	_keyboardHeight = keyboardFrame.size.height;
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+	self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, 0, 0);
 }
 
 - (void)copyThumbnailImagesToTemporaryPath {
@@ -592,7 +609,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     // name, order 변경안됨
     // category를 바꾼걸로
     _item.category = toCategory;
-	
+
+	_isMemoCategory = [_item.category.uniqueID isEqualToString:A3WalletUUIDMemoCategory];
+
     // 현재 변경중인 field item 정보를, 새로운 카테고리에 해당하는 field item으로 바꾼다.
 	NSArray *fieldsOfTargetCategory = [toCategory fieldsArray];
 
@@ -1083,8 +1102,25 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     textView.frame = frame;
 
     [self.tableView endUpdates];
-	NSUInteger lastRow = [self.tableView numberOfRowsInSection:0] - 1;
-	[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:lastRow inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
+	NSRange selectedRange = [textView selectedRange];
+	if (selectedRange.location != NSNotFound) {
+		UITableViewCell *cell = [self.tableView cellForCellSubview:textView];
+		CGRect rect = [textView.layoutManager boundingRectForGlyphRange:textView.selectedRange inTextContainer:textView.textContainer];
+
+		CGFloat currentY = cell.frame.origin.y + rect.origin.y;
+		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+		CGFloat visibleY = screenBounds.size.height - _keyboardHeight - 64;
+		if (currentY < self.tableView.contentOffset.y) {
+			[self.tableView setContentOffset:CGPointMake(0, currentY)];
+		} else if (currentY > self.tableView.contentOffset.y + visibleY) {
+			[self.tableView setContentOffset:CGPointMake(0, currentY - visibleY + 20.0)];
+		}
+//		FNLOG(@"%f, %f", currentY, visibleY);
+//		FNLOG(@"%f, %f", self.tableView.contentSize.height, self.tableView.contentOffset.y);
+//		FNLOG(@"%f, %f", cell.frame.origin.y, textView.frame.origin.y);
+	}
+
 	[self updateDoneButtonEnabled];
 }
 
@@ -1211,7 +1247,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (indexPath.section == 0) {
         if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
-			if (!_item.note) return 180.0;
+			CGFloat minHeight = _isMemoCategory ? [self noteHeight] : 180.0;
+
+			if (!_item.note) return minHeight;
             
             NSDictionary *textAttributes = @{
                                              NSFontAttributeName : [UIFont systemFontOfSize:17]
@@ -1220,11 +1258,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_item.note ? _item.note : @"" attributes:textAttributes];
             UITextView *txtView = [[UITextView alloc] init];
             [txtView setAttributedText:attributedString];
-            float margin = IS_IPAD ? 49:31;
+            CGFloat margin = IS_IPAD ? 49:31;
             CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
             float cellHeight = txtViewSize.height + 20;
 
-			return MAX(cellHeight, 180.0);
+			return MAX(cellHeight, minHeight);
         }
         else if ([self.sectionItems objectAtIndex:indexPath.row] == self.dateInputItem) {
             
@@ -1242,6 +1280,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
         // delete
         return 44.0;
     }
+}
+
+- (float)noteHeight {
+	CGFloat noteCellStartY = 247;
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	return screenBounds.size.height - noteCellStartY - (IS_RETINA ? 36.5 : 37);
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

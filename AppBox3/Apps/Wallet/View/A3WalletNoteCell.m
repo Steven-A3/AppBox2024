@@ -19,11 +19,10 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
+- (void)awakeFromNib {
+	[super awakeFromNib];
 
-    // Configure the view for the selected state
+	_textView.font = [UIFont systemFontOfSize:17];
 }
 
 - (void)setNoteText:(NSString *)text {
@@ -34,6 +33,7 @@
 
 - (CGFloat)calculatedHeight {
 	CGRect frame = _textView.frame;
+	frame.origin.y = 3.0;
 	frame.origin.x = IS_IPHONE ? 10 : 23;
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 	frame.size.width = screenBounds.size.width - (IS_IPHONE ? 10 : 23) * 2;
