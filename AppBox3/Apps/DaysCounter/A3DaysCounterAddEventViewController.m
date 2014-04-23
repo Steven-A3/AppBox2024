@@ -1075,16 +1075,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-//    if ( (_eventItem && section == [_sectionTitleArray count]) || (section < AddSection_Section_2) ) {
-//        return 35.0;
-//    }
-//    if ( section == 0 ) {
-//        return 36.0;
-//    }
-//    else if ( section == 1 ) {
-//        //return 35.0;
-//        return 38.0;
-//    }
     if ( section == 2 ) {
         return IS_RETINA ? 38.5 : 39;
     }

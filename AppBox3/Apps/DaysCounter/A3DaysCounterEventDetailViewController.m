@@ -1195,7 +1195,6 @@ EXIT_FUCTION:
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == EventCellType_Share ) {
-//        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[_eventItem.eventName] applicationActivities:nil];
 		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
         if (IS_IPHONE) {
             [self presentViewController:activityController animated:YES completion:NULL];
