@@ -264,6 +264,7 @@
                                           if (tableView == _infoTableView) {
                                               self.nearbyVenues = [converter convertToObjects:venues];
                                               [self reloadMapAnnotations:self.nearbyVenues];
+                                              [_infoTableView setContentOffset:CGPointMake(0, -(CGRectGetHeight([UIScreen mainScreen].bounds) - 229)) animated:YES];
                                           }
                                           else if (tableView == _searchResultsTableView) {
                                               self.nearbyVenuesOfSearchResults = [converter convertToObjects:venues];
