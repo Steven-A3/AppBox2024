@@ -288,9 +288,17 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             transform = CGAffineTransformMakeRotation(M_PI);
             
         }
-        [label setTransform:transform];
+        if (bFlip) {
+            [label setTransform:CGAffineTransformScale(transform, -1, 1)];
+        } else {
+            [label setTransform:transform];
+        }
     } else {
-        label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        if (bFlip) {
+               label.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), -1, 1);
+        } else {
+            label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        }
         
     }
 }
