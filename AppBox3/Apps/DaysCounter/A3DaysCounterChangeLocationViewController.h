@@ -21,6 +21,6 @@
 
 @protocol A3DaysCounterChangeLocationViewControllerDelegate <NSObject>
 @optional
-- (void)changeLocationViewController:(A3DaysCounterChangeLocationViewController*)ctrl didSelectLocation:(CLPlacemark*)placemark;
+- (void)changeLocationViewController:(A3DaysCounterChangeLocationViewController*)ctrl didSelectLocation:(CLPlacemark*)placemark searchText:(NSString *)searchText;
 
 @end

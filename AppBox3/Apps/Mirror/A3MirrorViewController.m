@@ -288,9 +288,17 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
             transform = CGAffineTransformMakeRotation(M_PI);
             
         }
-        [label setTransform:transform];
+        if (bFlip) {
+            [label setTransform:CGAffineTransformScale(transform, -1, 1)];
+        } else {
+            [label setTransform:transform];
+        }
     } else {
-        label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        if (bFlip) {
+               label.transform = CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), -1, 1);
+        } else {
+            label.transform = CGAffineTransformMakeRotation(-M_PI_2);
+        }
         
     }
 }
@@ -649,13 +657,13 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     //glFlush();
     
-    dispatch_async(dispatch_get_main_queue(), ^(void) {
+   // dispatch_async(dispatch_get_main_queue(), ^(void) {
         if (filteredImage != nil) {
             [_ciContext drawImage:filteredImage inRect:_videoPreviewViewBounds fromRect:drawRect];
         } else {
             [_ciContext drawImage:ciimg inRect:_videoPreviewViewBounds fromRect:drawRect];
         }
-    });
+   // });
     
     
       //  glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);

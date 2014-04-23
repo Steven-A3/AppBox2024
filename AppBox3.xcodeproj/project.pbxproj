@@ -56,6 +56,7 @@
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
+		57874C35190684AF00491485 /* A3DaysCounterLocationDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */; };
 		579B81AC18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */; };
 		57D31ACE18E95C120081A810 /* A3DaysCounterEventInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */; };
 		6801AB2417490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6801AB2317490F3C00B162DB /* A3EmptyActionMenuViewController_iPad.xib */; };
@@ -1043,6 +1044,8 @@
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
 		577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListSectionHeader.h; sourceTree = "<group>"; };
 		577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListSectionHeader.m; sourceTree = "<group>"; };
+		57874C33190684AF00491485 /* A3DaysCounterLocationDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterLocationDetailCell.h; sourceTree = "<group>"; };
+		57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterLocationDetailCell.m; sourceTree = "<group>"; };
 		579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterEventListEditCell.xib; sourceTree = "<group>"; };
 		57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventInfoCell.h; sourceTree = "<group>"; };
 		57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventInfoCell.m; sourceTree = "<group>"; };
@@ -4850,7 +4853,6 @@
 				8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars & EventList) */,
 				804C330918DAE11900DBCE83 /* Setup (rightSubViews) */,
 				8094E0DF18E6D04800CB03BC /* Location SubDetail */,
-				804C330818DAE0E500DBCE83 /* Event Related */,
 				804C330E18DAE33D00DBCE83 /* SubDetails */,
 				68F1C7DE18D7F37D009FAE8A /* A3DaysCounterDefine.h */,
 				68F1C7F918D7F37D009FAE8A /* A3DaysCounterHeaderFooterView.xib */,
@@ -5042,16 +5044,6 @@
 			path = External/FMMoveTableView/FMFramework;
 			sourceTree = "<group>";
 		};
-		804C330818DAE0E500DBCE83 /* Event Related */ = {
-			isa = PBXGroup;
-			children = (
-				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
-				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
-				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
-			);
-			name = "Event Related";
-			sourceTree = "<group>";
-		};
 		804C330918DAE11900DBCE83 /* Setup (rightSubViews) */ = {
 			isa = PBXGroup;
 			children = (
@@ -5128,6 +5120,9 @@
 				68F1C7E818D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.h */,
 				68F1C7E918D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.m */,
 				68F1C7EA18D7F37D009FAE8A /* A3DaysCounterEventDetailViewController.xib */,
+				68F1C7E518D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.h */,
+				68F1C7E618D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.m */,
+				68F1C7E718D7F37D009FAE8A /* A3DaysCounterEventDetailLocationViewController.xib */,
 				68F1C7D418D7F37D009FAE8A /* A3DaysCounterAddEventViewController.h */,
 				68F1C7D518D7F37D009FAE8A /* A3DaysCounterAddEventViewController.m */,
 				68F1C7D618D7F37D009FAE8A /* A3DaysCounterAddEventViewController.xib */,
@@ -5162,7 +5157,6 @@
 				68F1C82B18D7F37D009FAE8A /* A3PhotoSelectViewController.h */,
 				68F1C82C18D7F37D009FAE8A /* A3PhotoSelectViewController.m */,
 				68F1C82D18D7F37D009FAE8A /* A3PhotoSelectViewController.xib */,
-				68F1C7FA18D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib */,
 			);
 			name = SubDetails;
 			sourceTree = "<group>";
@@ -5248,6 +5242,9 @@
 				68F1C7FE18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.h */,
 				68F1C7FF18D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.m */,
 				68F1C80018D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib */,
+				57874C33190684AF00491485 /* A3DaysCounterLocationDetailCell.h */,
+				57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */,
+				68F1C7FA18D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib */,
 				68F1C7DB18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.h */,
 				68F1C7DC18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.m */,
 				68F1C7DD18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib */,
@@ -5676,6 +5673,7 @@
 				6817825316253640008A6E4B /* A3SegmentedControl.m in Sources */,
 				68143D0A18E3EC1F00569691 /* A3PasscodeKeyboard_iPad.m in Sources */,
 				688257B117D37D37006429D3 /* A3HolidaysEditCell.m in Sources */,
+				57874C35190684AF00491485 /* A3DaysCounterLocationDetailCell.m in Sources */,
 				68B6A2F118CEC76D004084EF /* A3UnitPriceInputView.m in Sources */,
 				68B6A30418CEC76D004084EF /* UILabel+BaseAlignment.m in Sources */,
 				6825365718A7AA4C00EAFB84 /* View+MASAdditions.m in Sources */,

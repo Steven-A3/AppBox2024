@@ -532,7 +532,8 @@
             }
         }
     }
-    cell.titleBottomSpaceConst.constant = rowHeight - 31;
+
+    cell.titleBottomSpaceConst.constant = rowHeight - 37;
 }
 
 - (void)updateEventInfoCell:(A3DaysCounterEventInfoCell *)cell isSince:(BOOL)isSince daysText:(NSString*)daysText dateText1:(NSString*)dateText1 dateText2:(NSString*)dateText2 isLunar:(BOOL)isLunasr isTypeA:(BOOL)isTypeA eventInfo:(DaysCounterEvent*)info
@@ -630,7 +631,7 @@
             
             dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[NSDate date]
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-            if (info.repeatType) {
+            if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
             
@@ -1194,7 +1195,6 @@ EXIT_FUCTION:
         [self.navigationController pushViewController:viewCtrl animated:YES];
     }
     else if ( cellType == EventCellType_Share ) {
-//        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[_eventItem.eventName] applicationActivities:nil];
 		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
         if (IS_IPHONE) {
             [self presentViewController:activityController animated:YES completion:NULL];
@@ -1336,6 +1336,7 @@ EXIT_FUCTION:
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
                                                                        repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@<br/>", _eventItem.eventName];
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
 
         //         Friday, April 11, 2014 (사용자가 입력한 날)
@@ -1358,6 +1359,7 @@ EXIT_FUCTION:
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
                                                                        repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@\n", _eventItem.eventName];
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)

@@ -7,7 +7,6 @@
 //
 
 #import "A3SlideshowActivity.h"
-#import "SFKImage.h"
 #import "A3DaysCounterSlideshowOptionViewController.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterSlideshowViewController.h"
@@ -23,9 +22,7 @@
 {
     self = [super init];
     if( self ){
-        [SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:48.0]];
-        [SFKImage setDefaultColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0]];
-        self.playImage = [SFKImage imageNamed:IS_IPHONE ? @"share_slideshow" : @"share_slideshow_iPad"];
+        self.playImage = [UIImage imageNamed:IS_IPHONE ? @"share_slideshow" : @"share_slideshow_iPad"];
     }
     
     return self;

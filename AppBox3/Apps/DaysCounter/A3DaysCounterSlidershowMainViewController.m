@@ -30,7 +30,7 @@
 
 #define VISIBLE_INDEX_INTERVAL      2
 
-@interface A3DaysCounterSlidershowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate>
+@interface A3DaysCounterSlidershowMainViewController () <A3DaysCounterEventDetailViewControllerDelegate, UIActivityItemSource>
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSArray *eventsArray;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
@@ -517,8 +517,8 @@
     [self popToRootAndPushViewController:viewCtrl animate:NO];
 }
 
-- (IBAction)shareOtherAction:(id)sender {
-
+- (IBAction)shareOtherAction:(id)sender
+{
     A3SlideshowActivity *slideActivity = [[A3SlideshowActivity alloc] init];
     slideActivity.completionBlock = ^(NSDictionary *userInfo, UIActivity *activity) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
@@ -529,9 +529,9 @@
             [self presentViewController:viewCtrl animated:YES completion:nil];
         }];
     };
+
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:@[slideActivity]];
     
-    NSString *shareString = ( [_eventsArray count] > 0 ? [[A3DaysCounterModelManager sharedManager] stringForShareEvent:[_eventsArray objectAtIndex:currentIndex]] : @"");
-    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[shareString] applicationActivities:@[slideActivity]];
     activityController.excludedActivityTypes = @[UIActivityTypeCopyToPasteboard];
 	if (IS_IPHONE) {
 		[self presentViewController:activityController animated:YES completion:NULL];
@@ -610,6 +610,77 @@
     else {
         self.navigationItem.title = [NSString stringWithFormat:@"%ld of %ld", (long)currentIndex + 1, (long)[_eventsArray count]];
     }
+}
+
+#pragma mark - UIActivityItemSource
+- (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
+{
+    DaysCounterEvent *eventItem = [_eventsArray objectAtIndex:currentIndex];
+    
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+        return [NSString stringWithFormat:@"%@ using AppBox Pro", eventItem.eventName];
+	}
+    
+	return eventItem.eventName;
+}
+
+- (id)activityViewControllerPlaceholderItem:(UIActivityViewController *)activityViewController
+{
+	return @"Share Days Counter Data";
+}
+
+- (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
+{
+    DaysCounterEvent *eventItem = [_eventsArray objectAtIndex:currentIndex];
+    if (!eventItem) {
+        return nil;
+    }
+    
+	if ([activityType isEqualToString:UIActivityTypeMail]) {
+        
+		NSMutableString *txt = [NSMutableString new];
+		[txt appendString:@"<html><body>I'd like to share a days count with you.<br/><br/>"];
+        
+        // 7 days until (계산된 날짜)
+        NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[eventItem.durationOption integerValue]
+                                                                                        fromDate:[NSDate date]
+                                                                                          toDate:eventItem.effectiveStartDate
+                                                                                        isAllDay:[eventItem.isAllDay boolValue]
+                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+        NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                       toDate:eventItem.effectiveStartDate
+                                                                 allDayOption:[eventItem.isAllDay boolValue]
+                                                                       repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
+        
+        //         Friday, April 11, 2014 (사용자가 입력한 날)
+        [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:eventItem.startDate
+                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
+        
+		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
+        
+		return txt;
+	}
+	else {
+		NSMutableString *txt = [NSMutableString new];
+        // 7 days until (계산된 날짜)
+        NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[eventItem.durationOption integerValue]
+                                                                                        fromDate:[NSDate date]
+                                                                                          toDate:eventItem.effectiveStartDate
+                                                                                        isAllDay:[eventItem.isAllDay boolValue]
+                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+        NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+                                                                       toDate:eventItem.effectiveStartDate
+                                                                 allDayOption:[eventItem.isAllDay boolValue]
+                                                                       repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
+        
+        //         Friday, April 11, 2014 (사용자가 입력한 날)
+        [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:eventItem.startDate
+                                                         withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
+        
+		return txt;
+	}
 }
 
 @end

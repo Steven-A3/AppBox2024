@@ -19,10 +19,12 @@
 #import <AddressBookUI/AddressBookUI.h>
 #import <CoreLocation/CoreLocation.h>
 #import "A3AppDelegate+appearance.h"
+#import "MBProgressHUD.h"
 
 
-@interface A3DaysCounterChangeLocationViewController ()
+@interface A3DaysCounterChangeLocationViewController () <MBProgressHUDDelegate>
 @property (strong, nonatomic) NSArray *tableDataSource;
+@property (strong, nonatomic) MBProgressHUD *progressHud;
 @end
 
 @implementation A3DaysCounterChangeLocationViewController
@@ -46,6 +48,19 @@
     self.tableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
     self.tableView.contentInset = UIEdgeInsetsMake(self.navigationController.navigationBar.frame.size.height + 20, 0, 0, 0);
     self.tableDataSource = @[@"Current Location"];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView setContentOffset:CGPointMake(0, -(self.navigationController.navigationBar.frame.size.height + 20)) animated:NO];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self.searchBar becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,9 +107,9 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_tableDataSource objectAtIndex:indexPath.row-1]);
-    if ( self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:)] ) {
-        [self.delegate changeLocationViewController:self didSelectLocation:placemark];
+    CLPlacemark *placemark = (indexPath.row == 0 ? nil : [_tableDataSource objectAtIndex:indexPath.row]);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(changeLocationViewController:didSelectLocation:searchText:)] ) {
+        [self.delegate changeLocationViewController:self didSelectLocation:placemark searchText:self.searchBar.text];
     }
 }
 
@@ -106,6 +121,16 @@
     if ( [searchText length] < 1 ) {
         return;
     }
+    
+    
+	self.progressHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+	self.progressHud.labelText = @"Searching";
+	self.progressHud.minShowTime = 2;
+	self.progressHud.removeFromSuperViewOnHide = YES;
+	__typeof(self) __weak weakSelf = self;
+	self.progressHud.completionBlock = ^{
+		weakSelf.progressHud = nil;
+	};
     
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder geocodeAddressString:searchText completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -129,6 +154,9 @@
         self.tableDataSource = resultArray;
         
         [self.tableView reloadData];
+        if (self.progressHud) {
+            [self.progressHud setHidden:YES];
+        }
     }];
 }
 
