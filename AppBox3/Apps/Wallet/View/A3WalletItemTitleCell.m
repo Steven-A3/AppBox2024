@@ -7,6 +7,8 @@
 //
 
 #import "A3WalletItemTitleCell.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @implementation A3WalletItemTitleCell
 
@@ -33,8 +35,8 @@
 	[self addSubview:_timeLabel];
 
 	_favoriteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-	[_favoriteButton setImage:[UIImage imageNamed:@"star02"] forState:UIControlStateNormal];
-	[_favoriteButton setImage:[UIImage imageNamed:@"star02_on"] forState:UIControlStateSelected];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
 	[self addSubview:_favoriteButton];
 
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {

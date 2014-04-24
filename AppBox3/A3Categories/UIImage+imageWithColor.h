@@ -13,4 +13,6 @@
 + (UIImage *)imageWithColor:(UIColor *)color;
 
 + (UIImage *)imageWithColor:(UIColor *)color size:(CGSize)size;
+
+- (UIImage *)tintedImageWithColor:(UIColor *)tintColor;
 @end

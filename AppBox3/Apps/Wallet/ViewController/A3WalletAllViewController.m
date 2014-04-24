@@ -266,7 +266,7 @@ enum SortingKind {
 - (UIButton *)addButton
 {
     if (!_addButton) {
-        _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _addButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
         _addButton.frame = CGRectMake(0, 0, 44, 44);
 		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
@@ -414,10 +414,10 @@ enum SortingKind {
             self.sortArrowImgView.center = CGPointMake(topViewWidth/2.0-arrowRightMargin, topView.sortingSegment.center.y);
             
             if (_isAscendingSort) {
-                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+				_sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
-                _sortArrowImgView.transform = CGAffineTransformIdentity;
+				_sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             break;
         }
@@ -426,10 +426,10 @@ enum SortingKind {
             self.sortArrowImgView.center = CGPointMake(topViewWidth/2.0+segmentWidth/2.0-arrowRightMargin, topView.sortingSegment.center.y);
             
             if (_isAscendingSort) {
-                _sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
+				_sortArrowImgView.transform = CGAffineTransformIdentity;
             }
             else {
-                _sortArrowImgView.transform = CGAffineTransformIdentity;
+				_sortArrowImgView.transform = CGAffineTransformMakeRotation(DegreesToRadians(180));
             }
             break;
         }

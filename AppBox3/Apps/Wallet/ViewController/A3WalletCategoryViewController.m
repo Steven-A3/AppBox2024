@@ -256,7 +256,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 - (UIButton *)addButton
 {
     if (!_addButton) {
-        _addButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _addButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
         _addButton.frame = CGRectMake(0, 0, 44, 44);
 		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
@@ -301,7 +301,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 - (UIButton *)infoButton
 {
     if (!_infoButton) {
-        _infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _infoButton = [UIButton buttonWithType:UIButtonTypeSystem];
         [_infoButton setImage:[UIImage imageNamed:@"information"] forState:UIControlStateNormal];
         [_infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 		_infoButton.bounds = CGRectMake(0, 0, 30, 40);
