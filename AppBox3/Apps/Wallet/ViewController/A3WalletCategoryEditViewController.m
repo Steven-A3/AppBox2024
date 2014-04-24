@@ -91,6 +91,14 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	[super viewDidAppear:animated];
 
 	[self setupDoneButtonEnabled];
+
+	if (_isAddingCategory && [self isMovingToParentViewController]) {
+		double delayInSeconds = 0.1;
+		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+			[_titleTextField becomeFirstResponder];
+		});
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -170,10 +178,14 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 }
 
 - (void)dismissViewController {
+	if (_isAddingCategory) {
+		[self dismissViewControllerAnimated:YES completion:NULL];
+		return;
+	}
 	if (IS_IPAD) {
 		// custom cross dissolve animation
 		self.view.alpha = 1.0;
-		[UIView animateWithDuration: 0.3
+		[UIView animateWithDuration:0.3
 						 animations:^{
 							 self.view.alpha = 0.0;
 						 }

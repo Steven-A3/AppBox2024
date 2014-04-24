@@ -116,6 +116,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     self.tableView.rowHeight = 74.0;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.separatorColor = [self tableViewSeparatorColor];
+	self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	[self registerContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
@@ -125,18 +126,21 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification {
-	CGRect keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-	FNLOGRECT(keyboardFrame);
-	self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, keyboardFrame.size.height, 0);
-	_keyboardHeight = keyboardFrame.size.height;
-}
-
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
 	if (_isAddNewItem) {
 		[_titleTextField becomeFirstResponder];
+	}
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+	CGRect keyboardFrame = [[notification.userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue];
+	FNLOGRECT(keyboardFrame);
+	if (IS_PORTRAIT) {
+		_keyboardHeight = keyboardFrame.size.height;
+	} else {
+		_keyboardHeight = keyboardFrame.size.width;
 	}
 }
 
@@ -971,7 +975,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-
+	FNLOG();
 	[self dismissDatePicker];
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
@@ -1014,6 +1018,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+	FNLOG();
 	self.firstResponder = textField;
 
 	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
@@ -1032,11 +1037,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	FNLOG();
 	self.firstResponder = nil;
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
 	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+	FNLOG(@"%ld, %ld", (long)indexPath.section, (long)indexPath.row);
 	// update
 	if (_sectionItems[indexPath.row] == self.titleItem) {
 		_item.name = textField.text;
@@ -1056,6 +1063,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+	FNLOG();
 	// 다음 텍스트 필드로 이동.
 	[textField resignFirstResponder];
 
@@ -1126,9 +1134,9 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		} else if (currentY > self.tableView.contentOffset.y + visibleY) {
 			[self.tableView setContentOffset:CGPointMake(0, currentY - visibleY + 20.0)];
 		}
-//		FNLOG(@"%f, %f", currentY, visibleY);
-//		FNLOG(@"%f, %f", self.tableView.contentSize.height, self.tableView.contentOffset.y);
-//		FNLOG(@"%f, %f", cell.frame.origin.y, textView.frame.origin.y);
+		FNLOG(@"%f, %f, %f", currentY, visibleY, _keyboardHeight);
+		FNLOG(@"%f, %f", self.tableView.contentSize.height, self.tableView.contentOffset.y);
+		FNLOG(@"%f, %f", cell.frame.origin.y, textView.frame.origin.y);
 	}
 
 	[self updateDoneButtonEnabled];

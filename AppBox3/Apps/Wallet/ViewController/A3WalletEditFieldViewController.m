@@ -9,7 +9,6 @@
 #import "A3WalletEditFieldViewController.h"
 #import "A3WalletFieldTypeSelectViewController.h"
 #import "A3WalletFieldStyleSelectViewController.h"
-#import "A3WalletCateEditTitleCell.h"
 #import "WalletData.h"
 #import "WalletField.h"
 #import "A3AppDelegate.h"
@@ -18,6 +17,7 @@
 #import "UIViewController+iPad_rightSideView.h"
 #import "NSString+conversion.h"
 #import "WalletCategory.h"
+#import "A3WalletFieldEditTitleCell.h"
 
 @interface A3WalletEditFieldViewController () <WalletFieldTypeSelectDelegate, WalletFieldStyleSelectDelegate, UITextFieldDelegate>
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
@@ -28,7 +28,7 @@
 	BOOL _sameFieldNameExists;
 }
 
-NSString *const A3WalletFieldEditTitleCellID = @"A3WalletCateEditTitleCell";
+NSString *const A3WalletFieldEditTitleCellID = @"A3WalletFieldEditTitleCell";
 NSString *const A3WalletFieldEditTypeCellID = @"A3WalletFieldEditTypeCell";
 NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
@@ -87,7 +87,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 	double delayInSeconds = 0.1;
 	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-		A3WalletCateEditTitleCell *titleCell = (A3WalletCateEditTitleCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		A3WalletFieldEditTitleCell *titleCell = (A3WalletFieldEditTitleCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 		if (![titleCell.textField.text length]) {
 			[titleCell.textField becomeFirstResponder];
 		}
@@ -324,7 +324,7 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     UITableViewCell *cell=nil;
 
 	if (indexPath.section == 0) {
-		A3WalletCateEditTitleCell *titleCell;
+		A3WalletFieldEditTitleCell *titleCell;
 		titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditTitleCellID forIndexPath:indexPath];
 
 		titleCell.selectionStyle = UITableViewCellSelectionStyleNone;

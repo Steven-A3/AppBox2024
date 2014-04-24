@@ -413,6 +413,7 @@
 		6866956618839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 6866956518839B8C00BABFA5 /* A3AppDelegate+keyValueStore.m */; };
 		686BB86119092D94009163F2 /* A3WalletCategoryEditFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */; };
 		686BB864190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB863190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m */; };
+		686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */; };
 		686BC1D31846343100FA5C94 /* A3CurrencySettings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1D51846343100FA5C94 /* A3CurrencySettings.storyboard */; };
 		686BC1DB184639CA00FA5C94 /* A3CurrencyChartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 686BC1DD184639CA00FA5C94 /* A3CurrencyChartViewController.xib */; };
 		686FCF6D1775CEFE00F19332 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 686FCF6C1775CEFE00F19332 /* CoreImage.framework */; };
@@ -1587,6 +1588,8 @@
 		686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryEditFieldCell.m; sourceTree = "<group>"; };
 		686BB862190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryEditAddNewFieldCell.h; sourceTree = "<group>"; };
 		686BB863190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletCategoryEditAddNewFieldCell.m; sourceTree = "<group>"; };
+		686BB8651909676A009163F2 /* A3WalletFieldEditTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletFieldEditTitleCell.h; sourceTree = "<group>"; };
+		686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletFieldEditTitleCell.m; sourceTree = "<group>"; };
 		686BC1D91846343900FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/A3CurrencySettings.storyboard; sourceTree = "<group>"; };
 		686BC1DC184639CA00FA5C94 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/A3CurrencyChartViewController.xib; sourceTree = "<group>"; };
 		686BC1E61846F8E200FA5C94 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/A3CurrencyChartViewController.strings; sourceTree = "<group>"; };
@@ -4351,6 +4354,8 @@
 				68B6A25118CEC76C004084EF /* A3WalletCateEditIconCell.m */,
 				68B6A25218CEC76C004084EF /* A3WalletCateEditTitleCell.h */,
 				68B6A25318CEC76C004084EF /* A3WalletCateEditTitleCell.m */,
+				686BB862190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.h */,
+				686BB863190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m */,
 				686BB85F19092D94009163F2 /* A3WalletCategoryEditFieldCell.h */,
 				686BB86019092D94009163F2 /* A3WalletCategoryEditFieldCell.m */,
 				68B6A25418CEC76C004084EF /* A3WalletCateInfoFieldCell.h */,
@@ -4363,6 +4368,8 @@
 				68B6A25B18CEC76C004084EF /* A3WalletCateTitleView_iPad.xib */,
 				68B6A25C18CEC76C004084EF /* A3WalletDateInputCell.h */,
 				68B6A25D18CEC76C004084EF /* A3WalletDateInputCell.m */,
+				686BB8651909676A009163F2 /* A3WalletFieldEditTitleCell.h */,
+				686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */,
 				68B6A25E18CEC76C004084EF /* A3WalletItemFieldActionCell.h */,
 				68B6A25F18CEC76C004084EF /* A3WalletItemFieldActionCell.m */,
 				68B6A26018CEC76C004084EF /* A3WalletItemFieldCateCell.h */,
@@ -4402,8 +4409,6 @@
 				68B6A28018CEC76D004084EF /* A3WalletVideoItemTitleView.m */,
 				68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */,
 				68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */,
-				686BB862190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.h */,
-				686BB863190937F4009163F2 /* A3WalletCategoryEditAddNewFieldCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -6271,6 +6276,7 @@
 				68B6A2C718CEC76D004084EF /* A3LoanCalcNoteCell.m in Sources */,
 				68F1C89818D7F37D009FAE8A /* A3DaysCounterModelManager.m in Sources */,
 				68B6A44E18CEE781004084EF /* PSTCollectionViewData.m in Sources */,
+				686BB8671909676A009163F2 /* A3WalletFieldEditTitleCell.m in Sources */,
 				68B6A2E618CEC76D004084EF /* UIViewController+UnitConverter.m in Sources */,
 				17D42522378AC9FE782E35CC /* A3AppDelegate+property.m in Sources */,
 				68B6A2E218CEC76D004084EF /* UnitItem+initialize.m in Sources */,

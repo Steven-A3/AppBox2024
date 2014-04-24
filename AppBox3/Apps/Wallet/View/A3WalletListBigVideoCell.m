@@ -98,7 +98,8 @@
             [bottomView.layer insertSublayer:gradient atIndex:0];
             [imgView addSubview:bottomView];
             
-            UIImageView *markView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"video"]];
+            UIImageView *markView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"video"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+			markView.tintColor = [UIColor whiteColor];
             markView.frame = CGRectMake(0, 0, 15, 9);
             [imgView addSubview:markView];
             markView.center = CGPointMake(12, 71);
