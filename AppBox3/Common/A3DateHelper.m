@@ -134,6 +134,20 @@
 	return [diffComponent day];
 }
 
++ (NSDateComponents *)diffCompFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate calendarUnit:(NSCalendarUnit)calendarUnit
+{
+	if( toDate == nil || fromDate == nil || [fromDate isKindOfClass:[NSNull class]] || [toDate isKindOfClass:[NSNull class]])
+		return 0;
+    
+	NSCalendar *calendar = [NSCalendar currentCalendar];
+	NSDateComponents *diffComponent = [calendar components:calendarUnit
+												  fromDate:fromDate
+													toDate:toDate options:0];
+    
+	return diffComponent;
+}
+
+
 // KJH
 + (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat
 {
@@ -354,6 +368,7 @@
 	return [calendar dateByAddingComponents:addComponent toDate:month options:0];
 }
 
+#pragma mark Specific Date
 + (NSInteger)firstDayPositionOfMonth:(NSDate*)month
 {
 	NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -423,4 +438,14 @@
     return [[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]	isEqualToString:@"KR"];
 }
 
++ (NSDate *)midnightForDate:(NSDate *)date
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                                             fromDate:date];
+    comp.hour = 0;
+    comp.minute = 0;
+    comp.second = 0;
+    date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    return date;
+}
 @end

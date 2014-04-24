@@ -24,6 +24,7 @@
 + (NSInteger)weekdayFromDate:(NSDate*)date;
 + (NSInteger)getDaysFromTodayToDate:(NSDate*)goalDate;
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
++ (NSDateComponents *)diffCompFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate calendarUnit:(NSCalendarUnit)calendarUnit;
 + (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat;      // KJH
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay;     // KJH
 + (NSInteger)diffWeeksFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
@@ -38,6 +39,7 @@
 + (NSDate*)dateByAddingMonth:(NSInteger)month fromDate:(NSDate*)date;
 + (NSDate*)dateByAddingWeeks:(NSInteger)weeks fromDate:(NSDate*)date;
 + (NSDate*)dateByDiffMonth:(NSInteger)diff atMonth:(NSDate*)month;
+#pragma mark Specific Date
 + (NSInteger)firstDayPositionOfMonth:(NSDate*)month;
 + (NSInteger)numberOfWeeksOfMonth:(NSDate*)month;
 + (NSInteger)lastDaysOfMonth:(NSDate*)month;
@@ -47,4 +49,5 @@
 + (NSDate*)dateMakeDate:(NSDate*)date Hour:(NSInteger)hour minute:(NSInteger)minute;
 + (NSDateComponents*)dateComponentsFromDate:(NSDate*)date unitFlags:(NSUInteger)unitFlags;
 + (BOOL)isCurrentLocaleIsKorea;
++ (NSDate *)midnightForDate:(NSDate *)date;
 @end

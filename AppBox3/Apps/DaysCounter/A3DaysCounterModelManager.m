@@ -1159,11 +1159,20 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 }
 
 
-- (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
+- (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay
 {
     NSDate *retDate = nil;
+    if (isAllDay) {
+        fromDate = [A3DateHelper midnightForDate:fromDate];
+        firstDate = [A3DateHelper midnightForDate:firstDate];
+    }
+    if ([self isTodayEventForDate:firstDate fromDate:fromDate repeatType:repeatType]) {
+        retDate = [self repeatDateOfCurrentWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
+        return retDate;
+    }
     
     NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+    
     if ( days < 0 ) {
         return firstDate;
     }
@@ -1212,14 +1221,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retDate;
 }
 
-- (NSDate*)repeatDateOfCurrentYearWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
+- (NSDate*)repeatDateOfCurrentWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
 {
     NSDate *retDate = nil;
-    
     NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
     if ( days < 0 ) {
         return firstDate;
     }
+
     // 시작일로부터 오늘까지 각 설정에 맞는 주수를 계산
     switch (repeatType) {
         case RepeatType_Never:
@@ -1474,9 +1483,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                                    repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
-        NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
-                                                                                                      firstDate:item.startDate
-                                                                                                       fromDate:[NSDate date]];
+        NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
+                                                                                                  firstDate:item.startDate
+                                                                                                   fromDate:[NSDate date]];
         
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
@@ -1670,10 +1679,54 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         // 종료된 Event의 경우.
         now = [event repeatEndDate];
     }
-
-    NSDate *nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now];
+    
+//    NSDate *nextDate;
+//    // isToday
+//    if ([self isTodayEvent:event fromDate:now]) {
+//        nextDate = [self repeatDateOfCurrentWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now];
+//    }
+//    else {
+//        nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
+//    }
+    NSDate *nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
+    
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
     return nextDate;
+}
+
+//- (BOOL)isTodayEvent:(DaysCounterEvent *)event fromDate:(NSDate *)now
+- (BOOL)isTodayEventForDate:(NSDate *)eventDate fromDate:(NSDate *)now repeatType:(NSInteger)repeatType
+{
+    NSCalendarUnit calendarUnit = NSDayCalendarUnit;
+    switch (repeatType) {
+        case RepeatType_EveryYear:
+            calendarUnit |= NSYearCalendarUnit;
+            break;
+        case RepeatType_EveryMonth:
+            calendarUnit |= NSMonthCalendarUnit;
+            break;
+        case RepeatType_Every2Week:
+        case RepeatType_EveryWeek:
+            calendarUnit |= NSWeekCalendarUnit;
+            break;
+        case RepeatType_EveryDay:
+            break;
+        case RepeatType_Never:
+            calendarUnit |= NSYearCalendarUnit|NSMonthCalendarUnit;
+            break;
+        default:
+            break;
+    }
+    
+    NSDateComponents *daysComp = [A3DateHelper diffCompFromDate:eventDate toDate:now calendarUnit:calendarUnit];
+    if (repeatType == RepeatType_EveryDay) {
+        return YES;
+    }
+    if (daysComp.day == 0) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark EventModel Dictionary
@@ -1705,7 +1758,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         now = [event objectForKey:EventItem_RepeatEndDate];
     }
     
-    NSDate *nextDate = [self nextDateWithRepeatOption:[[event objectForKey:EventItem_RepeatType] integerValue] firstDate:startDate fromDate:now];
+    NSDate *nextDate = [self nextDateWithRepeatOption:[[event objectForKey:EventItem_RepeatType] integerValue] firstDate:startDate fromDate:now isAllDay:[[event objectForKey:EventItem_IsAllDay] boolValue]];
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", now, [event objectForKey:EventItem_StartDate], nextDate, [event objectForKey:EventItem_AlertDatetime]);
     return nextDate;
 }

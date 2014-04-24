@@ -148,9 +148,9 @@
                                                                  allDayOption:[item.isAllDay boolValue]
                                                                        repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
-            NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
-                                                                                                          firstDate:item.startDate
-                                                                                                           fromDate:[NSDate date]];
+            NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
+                                                                                                      firstDate:item.startDate
+                                                                                                       fromDate:[NSDate date]];
             
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
