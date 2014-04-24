@@ -10,8 +10,21 @@
 #import "WalletItem+Favorite.h"
 #import "WalletFavorite.h"
 #import "WalletFieldItem+initialize.h"
+#import "NSString+conversion.h"
 
 @implementation WalletItem (initialize)
+
+- (void)awakeFromInsert {
+	[super awakeFromInsert];
+
+	WalletItem *item = [WalletItem MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	if (item) {
+		NSInteger latestOrder = [item.order integerValue];
+		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];
+	} else {
+		self.order = [NSString orderStringWithOrder:1000000];
+	}
+}
 
 - (NSArray *)fieldItemsArray
 {

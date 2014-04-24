@@ -28,13 +28,12 @@
 #import "NSMutableArray+A3Sort.h"
 #import "A3WalletItemEditViewController.h"
 #import "WalletFieldItem+initialize.h"
+#import "FMMoveTableView.h"
+#import "UITableViewController+standardDimension.h"
 
 
-@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate>
-{
-    BOOL		_isShowMoreMenu;
-}
-
+@interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource>
+@property (nonatomic, strong) FMMoveTableView *tableView;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIView *footerView;
 @property (nonatomic, strong) UIButton *addButton;
@@ -158,21 +157,18 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (void)initializeViews
 {
-	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-	_tableView.frame = self.view.bounds;
+	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
 	_tableView.delegate = self;
 	_tableView.dataSource = self;
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-    _tableView.rowHeight = 48.0;
+	_tableView.rowHeight = 48.0;
 	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    self.tableView.separatorColor = [self tableViewSeparatorColor];
-    if (IS_IPAD) {
-        _tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
-    }
-    if ([_category.name isEqualToString:WalletCategoryTypePhoto] || [_category.name isEqualToString:WalletCategoryTypeVideo]) {
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    }
+	self.tableView.separatorColor = [self tableViewSeparatorColor];
+	_tableView.separatorInset = A3UITableViewSeparatorInset;
+	if ([_category.name isEqualToString:WalletCategoryTypePhoto] || [_category.name isEqualToString:WalletCategoryTypeVideo]) {
+		_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+	}
 	[self.view addSubview:_tableView];
     
     [self.view addSubview:self.addButton];
@@ -1038,11 +1034,15 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    @autoreleasepool {
-		[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-	}
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+}
+
+- (void)moveTableView:(FMMoveTableView *)tableView moveRowFromIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
+	[self.items moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 // Override to support conditional rearranging of the table view.

@@ -10,9 +10,8 @@
 
 @class WalletCategory;
 
-@interface A3WalletCategoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface A3WalletCategoryViewController : UIViewController
 
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) WalletCategory *category;
 @property (nonatomic, assign) BOOL isFromMoreTableViewController;
 

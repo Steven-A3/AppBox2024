@@ -25,6 +25,13 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 
 	self.uniqueID = [[NSUUID UUID] UUIDString];
 	self.doNotShow = @NO;
+	WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	if (category) {
+		NSInteger latestOrder = [category.order integerValue];
+		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];
+	} else {
+		self.order = [NSString orderStringWithOrder:1000000];
+	}
 }
 
 + (void)resetWalletCategory

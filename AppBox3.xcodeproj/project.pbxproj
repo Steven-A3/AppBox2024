@@ -469,6 +469,7 @@
 		6897918E1865C57600F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
 		689791911865C68200F74826 /* CurrencyHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 689791901865C68200F74826 /* CurrencyHistory.m */; };
 		689791921865C75100F74826 /* CurrencyFavorite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6897918D1865C57600F74826 /* CurrencyFavorite.m */; };
+		6898A6E71908AEA50099C09E /* WalletFavorite+initialize.m in Sources */ = {isa = PBXBuildFile; fileRef = 6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */; };
 		689AE26D17EC69CB0097ABB5 /* FlickrRecommendation.json in Resources */ = {isa = PBXBuildFile; fileRef = 689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */; };
 		689C9A4A1839CD7F007C97EE /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */; };
 		689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 689C9A2A1839CD7F007C97EE /* AFHTTPRequestOperationManager.m */; };
@@ -1705,6 +1706,8 @@
 		6897918D1865C57600F74826 /* CurrencyFavorite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyFavorite.m; path = Apps/Currency/Model/CurrencyFavorite.m; sourceTree = "<group>"; };
 		6897918F1865C68200F74826 /* CurrencyHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CurrencyHistory.h; path = Apps/Currency/Model/CurrencyHistory.h; sourceTree = "<group>"; };
 		689791901865C68200F74826 /* CurrencyHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CurrencyHistory.m; path = Apps/Currency/Model/CurrencyHistory.m; sourceTree = "<group>"; };
+		6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WalletFavorite+initialize.h"; sourceTree = "<group>"; };
+		6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WalletFavorite+initialize.m"; sourceTree = "<group>"; };
 		689AE26C17EC69CB0097ABB5 /* FlickrRecommendation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = FlickrRecommendation.json; path = Holidays/FlickrRecommendation.json; sourceTree = "<group>"; };
 		689C9A271839CD7F007C97EE /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
 		689C9A281839CD7F007C97EE /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
@@ -4305,6 +4308,8 @@
 				680DFA0F1906702300754D81 /* WalletFieldItem.m */,
 				680DFA0B1906702300754D81 /* WalletFavorite.h */,
 				680DFA0C1906702300754D81 /* WalletFavorite.m */,
+				6898A6E51908AEA50099C09E /* WalletFavorite+initialize.h */,
+				6898A6E61908AEA50099C09E /* WalletFavorite+initialize.m */,
 				680DFA081906702300754D81 /* WalletCategory.h */,
 				680DFA091906702300754D81 /* WalletCategory.m */,
 				680DFA051906702300754D81 /* WalletItem.h */,
@@ -5749,6 +5754,7 @@
 				6886791918F3D34500DF1B19 /* UnitPriceHistoryItem.m in Sources */,
 				684D92F018BC1FBC005016F7 /* A3DateCalcAddSubCell2.m in Sources */,
 				680886DF1891751B0093FD97 /* A3ClockWaveCircleSmallView.m in Sources */,
+				6898A6E71908AEA50099C09E /* WalletFavorite+initialize.m in Sources */,
 				689C9A521839CD7F007C97EE /* AFURLSessionManager.m in Sources */,
 				687D0D0C17CAE519005AB571 /* HolidayData+Asia.m in Sources */,
 				6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */,
