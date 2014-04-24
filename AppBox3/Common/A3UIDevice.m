@@ -241,7 +241,7 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 		AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
 		if (!deviceInput) {
 			dispatch_async(dispatch_get_main_queue(), ^{
-				NSString *message = [NSString stringWithFormat:NSLocalizedString(@"microphone access denied", @"microphone access denied"), [UIDevice currentDevice] model];
+				NSString *message = [NSString stringWithFormat:NSLocalizedString(@"microphone access denied", @"microphone access denied"), [[UIDevice currentDevice] model ] ];
 				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Alert" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
 				[alertView show];
 			});

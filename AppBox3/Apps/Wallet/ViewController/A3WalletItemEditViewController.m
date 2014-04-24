@@ -876,6 +876,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     // video
     else if (actionSheet.tag == 2){
         _imagePickerController.mediaTypes = @[(NSString *) kUTTypeMovie];
+		[A3UIDevice verifyAndAlertMicrophoneAvailability];
     }
     
     _imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
