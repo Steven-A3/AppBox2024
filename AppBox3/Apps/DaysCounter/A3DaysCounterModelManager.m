@@ -13,6 +13,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
+#import "DaysCounterReminder.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
@@ -1136,14 +1137,12 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@",date] inContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
                                            inContext:[self managedObjectContext]];
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate < %@",date] inContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
                                            inContext:[self managedObjectContext]];
 }
@@ -1155,9 +1154,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)reminderList
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isReminder == %@", @(YES)] inContext:[self managedObjectContext]];
+    //return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isReminder == %@", @(YES)] inContext:[self managedObjectContext]];
+    return [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
 }
-
 
 - (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay
 {
@@ -1639,6 +1638,26 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     [calendar.events enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
         event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
+        if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] > 0) {
+            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event == %@", event]];
+            if (!reminders || [reminders count] == 0) {
+                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
+                reminder.startDate = event.effectiveStartDate;
+                reminder.alertDate = event.alertDatetime;
+                reminder.isOn = @(YES);
+                reminder.isUnread = @(YES);
+                reminder.event = event;
+            }
+            else {
+                DaysCounterReminder *reminder = [reminders lastObject];
+                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
+                    reminder.startDate = event.effectiveStartDate;
+                    reminder.alertDate = event.alertDatetime;
+                    reminder.isOn = @(YES);
+                    reminder.isUnread = @(YES);
+                }
+            }
+        }
     }];
 }
 
@@ -1649,6 +1668,26 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     [allEvents enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
         event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
+        if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] > 0) {
+            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event == %@", event]];
+            if (!reminders || [reminders count] == 0) {
+                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
+                reminder.startDate = event.effectiveStartDate;
+                reminder.alertDate = event.alertDatetime;
+                reminder.isOn = @(YES);
+                reminder.isUnread = @(YES);
+                reminder.event = event;
+            }
+            else {
+                DaysCounterReminder *reminder = [reminders lastObject];
+                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
+                    reminder.startDate = event.effectiveStartDate;
+                    reminder.alertDate = event.alertDatetime;
+                    reminder.isOn = @(YES);
+                    reminder.isUnread = @(YES);
+                }
+            }
+        }
     }];
 }
 
@@ -1680,14 +1719,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         now = [event repeatEndDate];
     }
     
-//    NSDate *nextDate;
-//    // isToday
-//    if ([self isTodayEvent:event fromDate:now]) {
-//        nextDate = [self repeatDateOfCurrentWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now];
-//    }
-//    else {
-//        nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
-//    }
     NSDate *nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
     
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
@@ -1803,8 +1834,30 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         if (event.repeatEndDate && [event.repeatEndDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             return;
         }
-        
+
+        event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
+        if ([event.isReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
+//        if (([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] >= 0)) {
+            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event.objectID == %@", [event objectID]]];
+            if (!reminders || [reminders count] == 0) {
+                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
+                reminder.isOn = @(YES);
+                reminder.isUnread = @(YES);
+                reminder.startDate = event.effectiveStartDate;
+                reminder.alertDate = event.alertDatetime;
+                reminder.event = event;
+            }
+            else {
+                DaysCounterReminder *reminder = [reminders lastObject];
+                if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
+                    reminder.startDate = event.effectiveStartDate;
+                    reminder.alertDate = event.alertDatetime;
+                    reminder.isOn = @(YES);
+                    reminder.isUnread = @(YES);
+                }
+            }
+        }
         
         if ([event.alertDatetime timeIntervalSince1970] > [now timeIntervalSince1970]) {
             // 현재 이후의 시간에 대하여 등록.
@@ -1818,6 +1871,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             [localNotifications addObject:notification];
         }
     }];
+    
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event

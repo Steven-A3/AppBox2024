@@ -69,6 +69,7 @@
         <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="calendar" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterCalendar" inverseName="events" inverseEntity="DaysCounterCalendar" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterEventLocation" inverseName="event" inverseEntity="DaysCounterEventLocation" syncable="YES"/>
+        <relationship name="reminder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterReminder" inverseName="event" inverseEntity="DaysCounterReminder" syncable="YES"/>
     </entity>
     <entity name="DaysCounterEventLocation" representedClassName="DaysCounterEventLocation" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -81,6 +82,13 @@
         <attribute name="longitude" optional="YES" attributeType="Float" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="location" inverseEntity="DaysCounterEvent" syncable="YES"/>
+    </entity>
+    <entity name="DaysCounterReminder" representedClassName="DaysCounterReminder" syncable="YES">
+        <attribute name="alertDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="isOn" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isUnread" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="reminder" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
     <entity name="ExpenseListBudget" representedClassName="ExpenseListBudget" syncable="YES">
         <attribute name="budgetId" optional="YES" attributeType="String" syncable="YES"/>
@@ -379,7 +387,7 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="403"/>
+        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="418"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
@@ -397,7 +405,7 @@
         <element name="TipCalcRoundMethod" positionX="-585" positionY="-189" width="128" height="148"/>
         <element name="TranslatorFavorite" positionX="304" positionY="-36" width="128" height="75"/>
         <element name="TranslatorGroup" positionX="-396" positionY="-63" width="128" height="105"/>
-        <element name="TranslatorHistory" positionX="-207" positionY="-189" width="128" height="120"/>
+        <element name="TranslatorHistory" positionX="-216" positionY="-84" width="128" height="120"/>
         <element name="UnitConvertItem" positionX="412" positionY="270" width="128" height="73"/>
         <element name="UnitFavorite" positionX="7" positionY="90" width="128" height="73"/>
         <element name="UnitHistory" positionX="-2" positionY="225" width="128" height="103"/>
@@ -412,8 +420,9 @@
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
-        <element name="WalletItem" positionX="-585" positionY="677" width="128" height="150"/>
         <element name="WalletFieldItemImage" positionX="-576" positionY="-396" width="128" height="88"/>
         <element name="WalletFieldItemVideo" positionX="-567" positionY="-387" width="128" height="73"/>
+        <element name="WalletItem" positionX="-585" positionY="677" width="128" height="150"/>
+        <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
     </elements>
 </model>
