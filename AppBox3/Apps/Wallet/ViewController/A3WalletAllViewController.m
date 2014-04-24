@@ -44,10 +44,13 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) NSArray *filteredResults;
+@property (nonatomic, weak) UISegmentedControl *segmentedControl;
 
 @end
 
-@implementation A3WalletAllViewController
+@implementation A3WalletAllViewController {
+	BOOL _dataEmpty;
+}
 
 NSString *const A3WalletTextCellID = @"A3WalletListTextCell";
 NSString *const A3WalletPhotoCellID = @"A3WalletListPhotoCell";
@@ -93,17 +96,11 @@ enum SortingKind {
 
 - (void)viewWillLayoutSubviews {
 	[super viewWillLayoutSubviews];
-    
+
+	[self itemCountCheck];
     if (IS_IPAD) {
-        
-        if (self.editing) {
-            
-        }
-        else {
-			[self showLeftNavigationBarItems];
-        }
+		[self showLeftNavigationBarItems];
 	}
-    
 }
 
 - (void)showLeftNavigationBarItems
@@ -192,12 +189,11 @@ enum SortingKind {
 }
 
 - (void)itemCountCheck {
-    BOOL itemHave = (self.items.count>1) ? YES:NO;
-    self.editButtonItem.enabled = itemHave;
-    self.searchItem.enabled = itemHave;
-    
-    NSIndexPath *firstIP = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView reloadRowsAtIndexPaths:@[firstIP] withRowAnimation:UITableViewRowAnimationAutomatic];
+	BOOL enable = !_dataEmpty;
+	if (_segmentedControl) {
+		[_segmentedControl setEnabled:enable];
+	}
+	self.navigationItem.rightBarButtonItem.enabled = enable;
 }
 
 - (NSMutableArray *)items
@@ -205,7 +201,8 @@ enum SortingKind {
     if (!_items) {
         NSString *sortValue = (_sortingMode == kSortingDate) ? @"modificationDate" : @"name";
         _items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
-        if (![_items count]) {
+		_dataEmpty = ![_items count];
+		if (_dataEmpty) {
 			[_items addObject:self.emptyItem];
 		}
         [_items insertObject:self.topItem atIndex:0];
@@ -229,7 +226,6 @@ enum SortingKind {
 	}
 	return _emptyItem;
 }
-
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
@@ -831,6 +827,8 @@ enum SortingKind {
 
 			topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
+			_segmentedControl = topCell.topView.sortingSegment;
+
             cell = topCell;
         } else if ([_items objectAtIndex:indexPath.row] == self.emptyItem) {
 			UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:A3WalletNormalCellID forIndexPath:indexPath];
@@ -856,19 +854,19 @@ enum SortingKind {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         WalletItem *item = _items[indexPath.row];
-        [_items removeObject:item];
-        [item MR_deleteEntity];
+		[_items removeObject:item];
+		[item MR_deleteEntity];
 
 		if ([_items count] == 1) {
 			[_items addObject:self.emptyItem];
-			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 		} else {
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
-
+		
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        
-        // 버튼 기능 활성화 여부
+
+		// 버튼 기능 활성화 여부
         [self itemCountCheck];
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {

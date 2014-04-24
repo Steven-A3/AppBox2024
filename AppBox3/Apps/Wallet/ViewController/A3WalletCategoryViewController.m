@@ -424,9 +424,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 }
 
 - (void)infoButtonAction:(id)sender {
-	@autoreleasepool {
-        [self.navigationController pushViewController:[self cateInfoViewController] animated:YES];
-	}
+	[self.navigationController pushViewController:[self cateInfoViewController] animated:YES];
 }
 
 - (void)editCancelAction:(id)sender {

@@ -21,14 +21,18 @@
 #import "WalletField+initialize.h"
 #import "A3WalletMainTabBarController.h"
 #import "NSString+conversion.h"
+#import "UIViewController+iPad_rightSideView.h"
+#import "UITableViewController+standardDimension.h"
+#import "A3WalletCategoryEditAddNewFieldCell.h"
 
 @interface A3WalletCategoryEditViewController () <UIActionSheetDelegate, WalletIconSelectDelegate, WalletEditFieldDelegate,  UITextFieldDelegate>
 
 @property (nonatomic, strong) NSMutableArray *fields;
 @property (nonatomic, strong) NSMutableDictionary *plusItem;
 @property (nonatomic, strong) WalletField *toAddField;
-@property (nonatomic, strong) NSMutableArray *addedFieldArray;
 @property (nonatomic, copy) NSString *originalCategoryName;
+@property (nonatomic, strong) UIViewController *rightSideViewController;
+@property (nonatomic, weak) UITextField *titleTextField;
 @property (nonatomic, strong) MBProgressHUD *alertHUD;
 
 @end
@@ -57,22 +61,36 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 {
     [super viewDidLoad];
 
-    self.navigationItem.title = @"Edit Category";
+	if (_isAddingCategory) {
+		self.navigationItem.title = @"Add Category";
+		_category = [WalletCategory MR_createEntity];
+		_category.icon = [WalletCategory iconList][0];
+	} else {
+		self.navigationItem.title = @"Edit Category";
+	}
 	self.originalCategoryName = _category.name;
     
     [self makeBackButtonEmptyArrow];
     [self rightBarButtonDoneButton];
-    
+	self.navigationItem.rightBarButtonItem.enabled = NO;
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletCateEditPlusCellID];
+    [self.tableView registerClass:[A3WalletCategoryEditAddNewFieldCell class] forCellReuseIdentifier:A3WalletCateEditPlusCellID];
     
-    self.tableView.separatorColor = [self tableViewSeparatorColor];
+    self.tableView.separatorColor = A3UITableViewSeparatorColor;
+	self.tableView.separatorInset = A3UITableViewSeparatorInset;
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.showsVerticalScrollIndicator = NO;
     [self.tableView setEditing:YES animated:NO];
     
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	[self setupDoneButtonEnabled];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -106,15 +124,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     // Dispose of any resources that can be recreated.
 }
 
-- (NSMutableArray *)addedFieldArray
-{
-    if (!_addedFieldArray) {
-        _addedFieldArray = [[NSMutableArray alloc] init];
-    }
-    
-    return _addedFieldArray;
-}
-
 - (void)doneButtonAction:(id)sender
 {
 	[self.firstResponder resignFirstResponder];
@@ -130,71 +139,51 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
         [alert show];
         return;
     }
-    
-    // managed object 변화를 저장하기
-	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
-        [_delegate walletCategoryEdited:_category];
-    }
-    
-    if (IS_IPAD) {
-        
-        // custom cross dissolve animation
-        self.view.alpha = 1.0;
-        [UIView animateWithDuration: 0.3
-                         animations:^{
-                             self.view.alpha = 0.0;
-                         }
-                         completion:^(BOOL finished) {
-                             [self.navigationController popViewControllerAnimated:NO];
-                         }];
-    }
-    else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-    }
+
+	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	if ([context hasChanges]) {
+		[context MR_saveToPersistentStoreAndWait];
+
+		if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
+			[_delegate walletCategoryEdited:_category];
+		}
+
+		if (_isAddingCategory) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
+		}
+	}
+
+	[self dismissViewController];
 }
 
 - (void)cancelButtonAction:(id)sender
 {
-    // managed object 변화를 원상태로 돌리기
-    if ([_category hasChanges]) {
-        [_category.managedObjectContext refreshObject:_category mergeChanges:NO];
-    }
-    
-    // wallet field 변경된것도 초기화하기
-    NSArray *walletFields = [_category fieldsArray];
-    for (int i=0; i<walletFields.count; i++) {
-        WalletField *walletField = walletFields[i];
-        if ([walletField hasChanges]) {
-            [walletField.managedObjectContext refreshObject:walletField mergeChanges:NO];
-        }
-    }
-    
-    // 추가된 filed는 삭제하기
-    for (int i=0; i<self.addedFieldArray.count; i++) {
-        WalletField *addField = _addedFieldArray[i];
-        [addField MR_deleteEntity];
-    }
-    
-    if (_delegate && [_delegate respondsToSelector:@selector(walletCateEditCanceled)]) {
-        [_delegate walletCateEditCanceled];
-    }
-    
-    if (IS_IPAD) {
-        // custom cross dissolve animation
-        self.view.alpha = 1.0;
-        [UIView animateWithDuration: 0.3
-                         animations:^{
-                             self.view.alpha = 0.0;
-                         }
-                         completion:^(BOOL finished) {
-                             [self.navigationController popViewControllerAnimated:NO];
-                         }];
-    }
-    else {
-        [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
-    }
+	[self.firstResponder resignFirstResponder];
+	[self setFirstResponder:nil];
+
+	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	if ([context hasChanges]) {
+		[context rollback];
+	}
+
+	[self dismissViewController];
+}
+
+- (void)dismissViewController {
+	if (IS_IPAD) {
+		// custom cross dissolve animation
+		self.view.alpha = 1.0;
+		[UIView animateWithDuration: 0.3
+						 animations:^{
+							 self.view.alpha = 0.0;
+						 }
+						 completion:^(BOOL finished) {
+							 [self.navigationController popViewControllerAnimated:NO];
+						 }];
+	}
+	else {
+		[self dismissViewControllerAnimated:YES completion:NULL];
+	}
 }
 
 - (UIViewController *)iconSelectViewController
@@ -241,8 +230,14 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	if (IS_IPHONE) {
 		[self.navigationController pushViewController:viewController animated:YES];
 	} else {
-		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
-		[rootViewController presentRightSideViewController:viewController];
+		if (_isAddingCategory) {
+			_rightSideViewController = [[A3NavigationController alloc] initWithRootViewController:viewController];
+			[self presentRightSideView:_rightSideViewController.view];
+			[self.navigationController addChildViewController:_rightSideViewController];
+		} else {
+			A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
+			[rootViewController presentRightSideViewController:viewController];
+		}
 	}
 }
 
@@ -250,17 +245,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 {
     self.navigationItem.leftBarButtonItem.enabled = NO;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-}
-
-- (void)enableBarItems
-{
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    if (_category.name.length>0) {
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-    }
-    else {
-        self.navigationItem.rightBarButtonItem.enabled = NO;
-    }
 }
 
 #pragma mark - WalletEditFieldDelegate
@@ -271,6 +255,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     NSIndexPath *ip = [NSIndexPath indexPathForRow:index inSection:1];
     
     [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationFade];
+	[self setupDoneButtonEnabled];
 }
 
 - (void)walletFieldAdded:(WalletField *)field
@@ -282,9 +267,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationFade];
         
         [_category addFieldsObject:field];
-        
-        [self.addedFieldArray addObject:field];
     }
+	[self setupDoneButtonEnabled];
 }
 
 - (void)dismissedViewController:(UIViewController *)viewController
@@ -292,7 +276,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     NSIndexPath *sip = [self.tableView indexPathForSelectedRow];
     [self.tableView deselectRowAtIndexPath:sip animated:YES];
     
-    [self enableBarItems];
+	[self setupDoneButtonEnabled];
 }
 
 #pragma mark - WalletIconSelectDelegate
@@ -303,6 +287,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     
     NSIndexPath *ip = [NSIndexPath indexPathForRow:1 inSection:0];
     [self.tableView reloadRowsAtIndexPaths:@[ip] withRowAnimation:UITableViewRowAnimationFade];
+
+	[self setupDoneButtonEnabled];
 }
 
 - (void)dismissedWalletIconController:(UIViewController *)viewController
@@ -310,10 +296,11 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
     NSIndexPath *sip = [self.tableView indexPathForSelectedRow];
     [self.tableView deselectRowAtIndexPath:sip animated:YES];
     
-    [self enableBarItems];
+	[self setupDoneButtonEnabled];
 }
 
 #pragma mark - UITextFieldDelegate
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
@@ -352,9 +339,20 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 		[self.alertHUD hide:YES];
 	}
 
-	self.navigationItem.rightBarButtonItem.enabled = [changed length] > 0 && !_sameCategoryNameExists;
-    
+	_category.name = changed;
+
+	[self setupDoneButtonEnabled];
+
     return YES;
+}
+
+- (void)setupDoneButtonEnabled {
+	self.navigationItem.leftBarButtonItem.enabled = YES;
+	BOOL enable = [[[MagicalRecordStack defaultStack] context] hasChanges];
+	if (_titleTextField) {
+		enable = enable && [_titleTextField.text length] && !_sameCategoryNameExists;
+	}
+	self.navigationItem.rightBarButtonItem.enabled = enable;
 }
 
 #pragma mark - Table view data source
@@ -387,80 +385,79 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 3;
+    return _isAddingCategory ? 2 : 3;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    
-    if (section == 0) {
-        return 2;
-    }
-    else if (section == 2) {
-        return 1;
-    }
-    else {
-        return self.fields.count;
-    }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	switch (section) {
+		case 0:
+			return 2;
+		case 1:
+			return self.fields.count;
+		case 2:
+			return 1;
+		default:
+			return 0;
+	}
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-		if (indexPath.section == 0) {
-            if (indexPath.row == 0) {
-                A3WalletCateEditTitleCell *titleCell;
-                titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditTitleCellID forIndexPath:indexPath];
-                
-                titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                titleCell.textField.text = _category.name;
-                titleCell.textField.delegate = self;
-                titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-                
-                cell = titleCell;
-            }
-            else if (indexPath.row == 1) {
-                A3WalletCateEditIconCell *iconCell;
-                iconCell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditIconCellID forIndexPath:indexPath];
-                
-                iconCell.iconImageView.image = [UIImage imageNamed:_category.icon];
-                
-                cell = iconCell;
-            }
+
+	if (indexPath.section == 0) {
+		if (indexPath.row == 0) {
+			A3WalletCateEditTitleCell *titleCell;
+			titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditTitleCellID forIndexPath:indexPath];
+
+			titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			titleCell.textField.text = _category.name;
+			titleCell.textField.placeholder = @"Category Name";
+			titleCell.textField.delegate = self;
+			titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+			titleCell.textField.font = [UIFont systemFontOfSize:17.0];
+
+			_titleTextField = titleCell.textField;
+			cell = titleCell;
 		}
-        else if (indexPath.section == 2) {
-            cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditDeleteCellID forIndexPath:indexPath];
-        }
-        else if (indexPath.section == 1) {
-            if (_fields[indexPath.row] == _plusItem) {
-                cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditPlusCellID forIndexPath:indexPath];
-                cell.textLabel.text = @"add new field";
-            }
-            else if ([_fields[indexPath.row] isKindOfClass:[WalletField class]]) {
-                cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditFieldCellID forIndexPath:indexPath];
-                
-                if (IS_RETINA) {
-                    UIView *rightLine = [cell.contentView viewWithTag:100];
-                    CGRect rect = rightLine.frame;
-                    rect.size.width = 0.5f;
-                    rightLine.frame = rect;
-                }
-                
-                UIView *arrow = [cell.contentView viewWithTag:1000];
-                [cell.textLabel addSubview:arrow];
-                arrow.center = CGPointMake(cell.textLabel.frame.size.width-10, 22);
-                
-                cell.textLabel.font = [UIFont systemFontOfSize:17.0];
-                WalletField *field = _fields[indexPath.row];
-                cell.textLabel.text = field.name;
-            }
-        }
+		else if (indexPath.row == 1) {
+			A3WalletCateEditIconCell *iconCell;
+			iconCell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditIconCellID forIndexPath:indexPath];
+
+			iconCell.iconImageView.image = [UIImage imageNamed:_category.icon];
+
+			cell = iconCell;
+		}
 	}
-    
+	else if (indexPath.section == 2) {
+		cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditDeleteCellID forIndexPath:indexPath];
+	}
+	else if (indexPath.section == 1) {
+		if (_fields[indexPath.row] == _plusItem) {
+			cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditPlusCellID forIndexPath:indexPath];
+			cell.textLabel.text = @"add new field";
+			cell.textLabel.font = [UIFont systemFontOfSize:17.0];
+		}
+		else if ([_fields[indexPath.row] isKindOfClass:[WalletField class]]) {
+			cell = [tableView dequeueReusableCellWithIdentifier:A3WalletCateEditFieldCellID forIndexPath:indexPath];
+
+			if (IS_RETINA) {
+				UIView *rightLine = [cell.contentView viewWithTag:100];
+				CGRect rect = rightLine.frame;
+				rect.size.width = 0.5f;
+				rightLine.frame = rect;
+			}
+
+			UIView *arrow = [cell.contentView viewWithTag:1000];
+			[cell.textLabel addSubview:arrow];
+			arrow.center = CGPointMake(cell.textLabel.frame.size.width-10, 22);
+
+			WalletField *field = _fields[indexPath.row];
+			cell.textLabel.font = [UIFont systemFontOfSize:17.0];
+			cell.textLabel.text = field.name;
+		}
+	}
+
     return cell;
 }
 
@@ -483,18 +480,22 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
         // Delete the row from the data source
 
         WalletField *field = [_fields objectAtIndex:indexPath.row];
+
         NSMutableSet *tmp = [[NSMutableSet alloc] initWithArray:[_category fieldsArray]];
         [tmp removeObject:field];
         _category.fields = tmp;
         [_fields removeObject:field];
-        
+
+		[field MR_deleteEntity];
+
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         
         [self addWalletField];
-    }   
+    }
+	[self setupDoneButtonEnabled];
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -510,9 +511,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    @autoreleasepool {
-        [self.fields moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
-	}
+	[self.fields moveItemInSortedArrayFromIndex:fromIndexPath.row toIndex:toIndexPath.row];
 }
 
 // Override to support conditional rearranging of the table view.
@@ -585,18 +584,6 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
         [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 #pragma mark - UIActionSheetDelegate
 

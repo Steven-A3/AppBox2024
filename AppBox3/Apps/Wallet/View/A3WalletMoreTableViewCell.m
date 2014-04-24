@@ -8,6 +8,7 @@
 
 #import "A3WalletMoreTableViewCell.h"
 #import "UITableViewController+standardDimension.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3WalletMoreTableViewCell ()
 
@@ -23,6 +24,7 @@
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	if (self) {
 		_checkImageView = [UIImageView new];
+		_checkImageView.tintColor = [A3AppDelegate instance].themeColor;
 		[self addSubview:_checkImageView];
 
 		_cellImageView = [UIImageView new];
@@ -87,7 +89,7 @@
 }
 
 - (void)setShowCheckMark:(BOOL)showCheckMark {
-	_checkImageView.image = showCheckMark ? [UIImage imageNamed:@"check_02"] : nil;
+	_checkImageView.image = showCheckMark ? [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] : nil;
 }
 
 @end

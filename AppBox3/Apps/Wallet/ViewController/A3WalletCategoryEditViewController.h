@@ -24,5 +24,6 @@
 
 @property (nonatomic, assign) id<WalletCategoryEditDelegate> delegate;
 @property (nonatomic, strong) WalletCategory *category;
+@property (nonatomic, assign) BOOL isAddingCategory;
 
 @end

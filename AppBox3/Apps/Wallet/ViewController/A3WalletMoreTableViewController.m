@@ -17,7 +17,7 @@
 #import "A3WalletFavoritesViewController.h"
 #import "A3WalletCategoryViewController.h"
 #import "NSString+conversion.h"
-#import "A3WalletAddCategoryViewController.h"
+#import "A3WalletCategoryEditViewController.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
@@ -117,8 +117,8 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 	_isAddingCategoryInProgress = YES;
 
 	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-	A3WalletAddCategoryViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletAddCategoryViewController"];
-	viewController.hidesBottomBarWhenPushed = YES;
+	A3WalletCategoryEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletCategoryEditViewController"];
+	viewController.isAddingCategory = YES;
 
 	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
 	[self presentViewController:navigationController animated:YES completion:nil];

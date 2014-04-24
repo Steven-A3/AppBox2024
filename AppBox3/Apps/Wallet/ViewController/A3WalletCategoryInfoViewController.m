@@ -19,15 +19,17 @@
 #import "UIViewController+A3Addition.h"
 #import "A3WalletMainTabBarController.h"
 
+NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
+
 @interface A3WalletCategoryInfoViewController ()
 
 @property (nonatomic, strong) A3WalletCateTitleView *headerView;
 
 @end
 
-@implementation A3WalletCategoryInfoViewController
-
-NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
+@implementation A3WalletCategoryInfoViewController {
+	BOOL _categoryContentsChanged;
+}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -42,17 +44,11 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.navigationItem.title = @"Category Info";
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
-    
-    NSString *nibName = IS_IPAD ? @"A3WalletCateInfoFieldCell_iPad" : @"A3WalletCateInfoFieldCell";
+
+	NSString *nibName = IS_IPAD ? @"A3WalletCateInfoFieldCell_iPad" : @"A3WalletCateInfoFieldCell";
     [self.tableView registerNib:[UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletCateInfoFieldCellID];
     
     self.tableView.tableHeaderView = self.headerView;
@@ -66,6 +62,17 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     _headerView.icon.image = [UIImage imageNamed:_category.icon];
     
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+
+	if ([self isMovingFromParentViewController]) {
+		// 하단에 탭바에 표시되는 카테고리 정보 갱신을 위해 노티를 날린다.
+		if (_categoryContentsChanged) {
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryChanged object:nil];
+		}
+	}
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -122,7 +129,7 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     }
     else {
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
-        [self.navigationController presentViewController:nav animated:YES completion:NULL];
+        [self presentViewController:nav animated:YES completion:NULL];
     }
 }
 
@@ -145,9 +152,8 @@ NSString *const A3WalletCateInfoFieldCellID = @"A3WalletCateInfoFieldCell";
     
     _headerView.nameLabel.text = _category.name;
     _headerView.icon.image = [UIImage imageNamed:_category.icon];
-    
-    // 하단에 탭바에 표시되는 카테고리 정보 갱신을 위해 노티를 날린다.
-    [[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryChanged object:nil];
+
+	_categoryContentsChanged = YES;
 }
 
 #pragma mark - Table view data source

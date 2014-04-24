@@ -26,4 +26,14 @@
     // Configure the view for the selected state
 }
 
+- (void)awakeFromNib {
+	[super awakeFromNib];
+
+	[_textField makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.centerY);
+		make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
+	}];
+}
+
 @end

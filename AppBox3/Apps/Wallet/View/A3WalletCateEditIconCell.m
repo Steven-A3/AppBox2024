@@ -8,6 +8,12 @@
 
 #import "A3WalletCateEditIconCell.h"
 
+@interface A3WalletCateEditIconCell ()
+
+@property (nonatomic, weak) IBOutlet UILabel *titleLabel;
+
+@end
+
 @implementation A3WalletCateEditIconCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -22,7 +28,11 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
+	[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.centerY);
+	}];
     self.accessoryView = self.iconImageView;
 }
 
