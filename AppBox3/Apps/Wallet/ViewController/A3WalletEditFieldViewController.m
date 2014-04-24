@@ -79,19 +79,19 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 
-	if (_isAddMode) {
-		double delayInSeconds = 0.1;
-		dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-		dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-			[self titleKeyboardUp];
-		});
-	}
+	[self titleKeyboardUp];
 }
 
 - (void)titleKeyboardUp
 {
-    A3WalletCateEditTitleCell *titleCell = (A3WalletCateEditTitleCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    [titleCell.textField becomeFirstResponder];
+	double delayInSeconds = 0.1;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		A3WalletCateEditTitleCell *titleCell = (A3WalletCateEditTitleCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+		if (![titleCell.textField.text length]) {
+			[titleCell.textField becomeFirstResponder];
+		}
+	});
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -194,16 +194,16 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
     return YES;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    _field.name = textField.text;
-	[self setFirstResponder:nil];
-}
-
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
 	[self setFirstResponder:textField];
 	textField.returnKeyType = UIReturnKeyDefault;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    _field.name = textField.text;
+	[self setFirstResponder:nil];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -253,6 +253,8 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	[self.firstResponder resignFirstResponder];
+
     if (indexPath.section == 1) {
         // field type
         A3WalletFieldTypeSelectViewController *viewController = [[A3WalletFieldTypeSelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -320,103 +322,49 @@ NSString *const A3WalletFieldEditStyleCellID = @"A3WalletFieldEditStyleCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-		if (indexPath.section == 0) {
-            A3WalletCateEditTitleCell *titleCell;
-            titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditTitleCellID forIndexPath:indexPath];
 
-            titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            titleCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
-            titleCell.textField.font = [UIFont systemFontOfSize:17];
-            titleCell.textField.text = _field.name;
-            titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-            titleCell.textField.placeholder = @"Field Name";
-            titleCell.textField.delegate = self;
-            
-            cell = titleCell;
-		}
-        else if (indexPath.section == 1) {
-            cell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditTypeCellID];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:A3WalletFieldEditTypeCellID];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                cell.textLabel.font = [UIFont systemFontOfSize:17];
-                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-            }
-            
-            cell.textLabel.text = @"Type";
-            cell.detailTextLabel.text = _field.type;
-        }
-        else if (indexPath.section == 2) {
-            cell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditStyleCellID];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:A3WalletFieldEditStyleCellID];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                cell.textLabel.font = [UIFont systemFontOfSize:17];
-                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-            }
-            
-            cell.textLabel.text = @"Style";
-            cell.detailTextLabel.text = _field.style;
-        }
+	if (indexPath.section == 0) {
+		A3WalletCateEditTitleCell *titleCell;
+		titleCell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditTitleCellID forIndexPath:indexPath];
+
+		titleCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		titleCell.textField.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
+		titleCell.textField.font = [UIFont systemFontOfSize:17];
+		titleCell.textField.text = _field.name;
+		titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		titleCell.textField.placeholder = @"Field Name";
+		titleCell.textField.delegate = self;
+
+		cell = titleCell;
 	}
-    
+	else if (indexPath.section == 1) {
+		cell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditTypeCellID];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:A3WalletFieldEditTypeCellID];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			cell.textLabel.font = [UIFont systemFontOfSize:17];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+		}
+
+		cell.textLabel.text = @"Type";
+		cell.detailTextLabel.text = _field.type;
+	}
+	else if (indexPath.section == 2) {
+		cell = [tableView dequeueReusableCellWithIdentifier:A3WalletFieldEditStyleCellID];
+		if (cell == nil) {
+			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:A3WalletFieldEditStyleCellID];
+			cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			cell.textLabel.font = [UIFont systemFontOfSize:17];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+		}
+
+		cell.textLabel.text = @"Style";
+		cell.detailTextLabel.text = _field.style;
+	}
+
     return cell;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end

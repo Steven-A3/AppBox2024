@@ -68,6 +68,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 @property (nonatomic, strong) CLLocation *myLocation;
 @property (nonatomic, strong) NSDictionary *imageMetadata;
 @property (nonatomic, weak) UIDatePicker *datePicker;
+@property (nonatomic, weak) UITextField *titleTextField;
 
 @end
 
@@ -129,6 +130,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	FNLOGRECT(keyboardFrame);
 	self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, keyboardFrame.size.height, 0);
 	_keyboardHeight = keyboardFrame.size.height;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+
+	if (_isAddNewItem) {
+		[_titleTextField becomeFirstResponder];
+	}
 }
 
 - (void)keyboardDidHide:(NSNotification *)notification {
@@ -1519,6 +1528,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	[titleCell.favoriteButton addTarget:self action:@selector(favoriteButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
 	titleCell.titleTextField.text = _item.name;
+
+	_titleTextField = titleCell.titleTextField;
 
 	NSDateFormatter *df = [[NSDateFormatter alloc] init];
 	df.dateStyle = NSDateFormatterFullStyle;

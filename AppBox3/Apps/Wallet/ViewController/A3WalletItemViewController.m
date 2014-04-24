@@ -38,6 +38,7 @@
 @property (nonatomic, strong) NSMutableArray *fieldItems;
 @property (nonatomic, strong) NSMutableDictionary *titleItem, *noteItem;
 @property (nonatomic, strong) NSMutableDictionary *categoryItem;
+@property (nonatomic, strong) NSMutableDictionary *emptyItem;
 @property (nonatomic, strong) NSMutableArray *albumPhotos;
 @property (nonatomic, weak) id copyingSourceView;
 
@@ -50,6 +51,7 @@
 }
 
 extern NSString *const A3WalletItemTitleCellID;
+extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemFieldCellID = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemPhotoFieldCellID = @"A3WalletItemPhotoFieldCell";
 NSString *const A3WalletItemFieldActionCellID = @"A3WalletItemFieldActionCell";
@@ -133,6 +135,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		}
 	}
 	FNLOG(@"%ld", (long)[_fieldItems count]);
+	if ([_fieldItems count] == 1) {
+		[_fieldItems addObject:self.emptyItem];
+	}
     
 	return _fieldItems;
 }
@@ -163,6 +168,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     
 	return _categoryItem;
 }
+
+- (NSMutableDictionary *)emptyItem {
+	if (!_emptyItem) {
+		_emptyItem = [NSMutableDictionary dictionaryWithDictionary:@{@"title" : @"Empty", @"order" : @""}];
+	}
+	return _emptyItem;
+}
+
 
 - (NSMutableArray *)albumPhotos
 {
@@ -649,7 +662,11 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
                 cell = textCell;
             }
         }
-    }
+    } else if (_fieldItems[indexPath.row] == self.emptyItem) {
+		UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
+		emptyCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell = emptyCell;
+	}
     
     return cell;
 }
