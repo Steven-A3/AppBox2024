@@ -19,6 +19,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
+#import "DaysCounterReminder.h"
 #import "A3DateHelper.h"
 #import "NSDate+TimeAgo.h"
 #import "A3AppDelegate+appearance.h"
@@ -140,7 +141,8 @@
     UIView *unreadMarkView = [cell viewWithTag:UNREADVIEW_TAG];
     
     if ( [_itemArray count] > 0 ) {
-        DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+        DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
+        DaysCounterEvent *item = reminder.event;
         cell.textLabel.text = item.eventName;
         
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
@@ -148,26 +150,19 @@
                                                                  allDayOption:[item.isAllDay boolValue]
                                                                        repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
-            NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
-                                                                                                      firstDate:item.startDate
-                                                                                                       fromDate:[NSDate date]];
-            
-            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:repeatDate
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
                                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
-            
-            unreadMarkView.hidden = YES;
         }
         else {
-            if ([[NSDate date] compare:item.alertDatetime] == NSOrderedDescending) {
-                cell.detailTextLabel.text = [item.alertDatetime timeAgo];
-                unreadMarkView.hidden = NO;
+            if ([[NSDate date] compare:reminder.startDate] == NSOrderedDescending) {
+                cell.detailTextLabel.text = [reminder.startDate timeAgo];
             }
             else {
-                cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:item.alertDatetime
+                cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
                                                                   withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
-                unreadMarkView.hidden = YES;
             }
         }
+        unreadMarkView.hidden = [reminder.isUnread boolValue] ? NO : YES;
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
@@ -195,21 +190,21 @@
         return;
     }
     
-    DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
-    if (!item.repeatType || [item.repeatType isEqualToNumber:@(RepeatType_Never)]) {
-        if ([item.alertDatetime timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
-            item.isReminder = @(NO);
-            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        }
+    DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
+    reminder.isUnread = @(NO);
+    if ([reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
+        reminder.isOn = @(NO);
     }
-    else {
-        if ([item.endDate isKindOfClass:[NSDate class]] && [item.endDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
+    
+    DaysCounterEvent *item = reminder.event;
+    // 미반복의 경우 더이상 Reminder에 올라오지 않도록 함.
+    if (item.repeatType && [item.repeatType isEqualToNumber:@(RepeatType_Never)] &&
+        [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             item.isReminder = @(NO);
-            [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        }
-//        [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-        self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
     }
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+    
+    self.itemArray = [NSMutableArray arrayWithArray:[[A3DaysCounterModelManager sharedManager] reminderList]];
 
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
@@ -255,7 +250,9 @@
         return;
     }
     
-    DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterReminder *reminder = [_itemArray objectAtIndex:indexPath.row];
+    DaysCounterEvent *item = reminder.event;
+    
     item.alertDatetime = nil;
     [item.managedObjectContext MR_saveToPersistentStoreAndWait];
     self.clearIndexPath = nil;

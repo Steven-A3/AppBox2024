@@ -27,7 +27,7 @@ NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
 NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
-@interface A3AppDelegate ()
+@interface A3AppDelegate () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
 
@@ -105,6 +105,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local noti" message:@"asdfasdf" delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
+        alert.tag = 10;
         [alert show];
     }
 
@@ -192,10 +193,19 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
     if ([notificationType isEqualToString:@"dc"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:[notification.userInfo objectForKey:@"alert"]
-                                                       delegate:nil
+                                                       delegate:self
                                               cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil, nil];
+                                              otherButtonTitles:@"Details", nil];
+        alert.tag = 11;
         [alert show];
+    }
+}
+
+#pragma mark - UIAlertViewDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ((alertView.tag == 10 && buttonIndex == 0) || (alertView.tag == 11 && buttonIndex == 1)) {
+        NSLog(@"asdf");
     }
 }
 
