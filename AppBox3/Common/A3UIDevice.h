@@ -71,4 +71,6 @@
 + (NSString *)usedDiskSpace;
 
 + (NSString *)capacity;
+
++ (void)verifyAndAlertMicrophoneAvailability;
 @end
