@@ -416,6 +416,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 			titleCell.textField.delegate = self;
 			titleCell.textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 			titleCell.textField.font = [UIFont systemFontOfSize:17.0];
+			titleCell.textField.returnKeyType = UIReturnKeyDefault;
 
 			_titleTextField = titleCell.textField;
 			cell = titleCell;

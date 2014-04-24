@@ -191,6 +191,12 @@ enum SortingKind {
 - (void)itemCountCheck {
 	BOOL enable = !_dataEmpty;
 	if (_segmentedControl) {
+		if (enable) {
+			[self.segmentedControl setTintColor:nil];
+		} else {
+			[self.segmentedControl setTintColor:[UIColor colorWithRed:138.0 / 255.0 green:138.0 / 255.0 blue:138.0 / 255.0 alpha:1.0]];
+		}
+
 		[_segmentedControl setEnabled:enable];
 	}
 	self.navigationItem.rightBarButtonItem.enabled = enable;
@@ -858,6 +864,7 @@ enum SortingKind {
 		[item MR_deleteEntity];
 
 		if ([_items count] == 1) {
+			_dataEmpty = YES;
 			[_items addObject:self.emptyItem];
 			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 		} else {
