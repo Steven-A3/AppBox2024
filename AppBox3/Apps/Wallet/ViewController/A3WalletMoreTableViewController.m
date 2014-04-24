@@ -329,7 +329,7 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		viewController = vc;
 	}
 	else if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
-		A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] initWithStyle:UITableViewStylePlain];
+		A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] init];
 		vc.isFromMoreTableViewController = YES;
 		vc.category = category;
 		viewController = vc;

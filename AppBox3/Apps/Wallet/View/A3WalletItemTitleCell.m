@@ -20,6 +20,8 @@
 
 - (void)awakeFromNib
 {
+	self.selectionStyle = UITableViewCellSelectionStyleNone;
+
 	// Initialization code
 	_titleTextField = [UITextField new];
 	_titleTextField.autocapitalizationType = UITextAutocapitalizationTypeSentences;

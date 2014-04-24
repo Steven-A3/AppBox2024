@@ -16,6 +16,7 @@ NSString *const A3WalletUUIDAllCategory = @"10f30f9f-ff9d-43d4-ac69-020f61e016e0
 NSString *const A3WalletUUIDFavoriteCategory = @"9da24468-83c1-41e1-b355-4ab245c1feb5";
 NSString *const A3WalletUUIDPhotoCategory = @"d840a875-9c99-481e-a592-4059def7a248";
 NSString *const A3WalletUUIDVideoCategory = @"7fe1693f-76da-42fc-a0a7-1c2e7f6346d9";
+NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f2";
 
 @implementation WalletCategory (initialize)
 
@@ -24,6 +25,13 @@ NSString *const A3WalletUUIDVideoCategory = @"7fe1693f-76da-42fc-a0a7-1c2e7f6346
 
 	self.uniqueID = [[NSUUID UUID] UUIDString];
 	self.doNotShow = @NO;
+	WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	if (category) {
+		NSInteger latestOrder = [category.order integerValue];
+		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];
+	} else {
+		self.order = [NSString orderStringWithOrder:1000000];
+	}
 }
 
 + (void)resetWalletCategory
@@ -57,6 +65,8 @@ NSString *const A3WalletUUIDVideoCategory = @"7fe1693f-76da-42fc-a0a7-1c2e7f6346
 			category.uniqueID = A3WalletUUIDPhotoCategory;
 		} else if ([preset[@"Name"] isEqualToString:@"Video"]) {
 			category.uniqueID = A3WalletUUIDVideoCategory;
+		} else if ([preset[@"Name"] isEqualToString:@"Memo"]) {
+			category.uniqueID = A3WalletUUIDMemoCategory;
 		}
 
         category.name = preset[@"Name"];

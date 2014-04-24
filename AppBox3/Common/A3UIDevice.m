@@ -14,6 +14,7 @@
 #import "common.h"
 #import <sys/types.h>
 #import <sys/sysctl.h>
+#import <AVFoundation/AVFoundation.h>
 
 @implementation A3UIDevice
 
@@ -228,6 +229,24 @@ https://github.com/andrealufino/ALSystemUtilities/blob/develop/ALSystemUtilities
 		return @"16GB";
 	}
 	return @"8GB";
+}
+
++ (void)verifyAndAlertMicrophoneAvailability {
+	AVCaptureDevice *audioDevice;
+	NSArray *audioDevices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio];
+	if ([audioDevices count])
+		audioDevice = [audioDevices objectAtIndex:0];  // use the first audio device
+	if (audioDevice) {
+		NSError *error;
+		AVCaptureDeviceInput *deviceInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&error];
+		if (!deviceInput) {
+			dispatch_async(dispatch_get_main_queue(), ^{
+				NSString *message = [NSString stringWithFormat:NSLocalizedString(@"microphone access denied", @"microphone access denied"), [[UIDevice currentDevice] model ] ];
+				UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Alert" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+				[alertView show];
+			});
+		}
+	}
 }
 
 @end

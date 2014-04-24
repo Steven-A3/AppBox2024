@@ -27,15 +27,10 @@
 		self.timeLabel.textColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
 	}
 
-	if (IS_RETINA) {
-		CGRect frame = self.frame;
-		frame.size.height = 73.5;
-		self.frame = frame;
-	}
 	[self addSubview:self.favoriteButton];
 
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
-		make.baseline.equalTo(self.top).with.offset(39);
+		make.top.equalTo(self.top).with.offset(22);
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 		make.right.equalTo(_favoriteButton.left).with.offset(5);
 	}];
@@ -49,20 +44,12 @@
 		make.right.equalTo(self.right).with.offset(-5);
 		make.centerY.equalTo(_titleTextField.centerY);
 	}];
-	[_fileNameLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_timeLabel.bottom).with.offset(10);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-	}];
-	[_imgSizeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_fileNameLabel.bottom);
-		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-	}];
-	[_fileSizeLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_imgSizeLabel.bottom);
+	[_mediaSizeLabel makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(_timeLabel.bottom).with.offset(11);
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 	}];
 	[_takenDateLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.top.equalTo(_fileSizeLabel.bottom);
+		make.top.equalTo(_mediaSizeLabel.bottom);
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 	}];
 
@@ -84,10 +71,26 @@
 - (void)setupFonts {
 	_titleTextField.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline] : [UIFont boldSystemFontOfSize:17.0];
 	_timeLabel.font = IS_IPAD ? [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote] : [UIFont systemFontOfSize:13.0];
-	_fileNameLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	_imgSizeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-	_fileSizeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+	_mediaSizeLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
 	_takenDateLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
+}
+
+- (CGFloat)calculatedHeight {
+	CGFloat height = 22.0;
+	NSStringDrawingContext *context = [NSStringDrawingContext new];
+	height += [self heightOfObject:_titleTextField context:context];
+	height += [self heightOfObject:_timeLabel context:context];
+	height += [self heightOfObject:_mediaSizeLabel context:context];
+	height += [self heightOfObject:_takenDateLabel context:context];
+	height += [_mediaSizeLabel.text length] ? 11 + 13 : 18;
+	return height;
+}
+
+- (CGFloat)heightOfObject:(id)object context:(NSStringDrawingContext *)context {
+	NSString *text = [object valueForKey:@"text"];
+	if (![text length]) return 0.0;
+	UIFont *font = [object valueForKey:@"font"];
+	return [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:context].size.height;
 }
 
 @end

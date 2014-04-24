@@ -207,7 +207,7 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
             selectedIcon = [UIImage imageNamed:selected];
         }
         else if ([category.uniqueID isEqualToString:A3WalletUUIDFavoriteCategory]) {
-            A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] initWithStyle:UITableViewStylePlain];
+            A3WalletFavoritesViewController *vc = [[A3WalletFavoritesViewController alloc] init];
             vc.category = category;
             viewController = vc;
             NSString *selected = [category.icon stringByAppendingString:@"_on"];
