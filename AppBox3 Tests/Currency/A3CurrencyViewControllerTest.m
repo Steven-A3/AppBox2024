@@ -52,10 +52,10 @@
 	static NSUInteger maximumFractionDigits = 0;
 	[[NSLocale ISOCurrencyCodes] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		[numberFormatter setCurrencyCode:obj];
-		[log appendFormat:@"%@, %ld\n", obj, numberFormatter.maximumFractionDigits];
+		[log appendFormat:@"%@, %ld\n", obj, (unsigned long)numberFormatter.maximumFractionDigits];
 		maximumFractionDigits = MAX(maximumFractionDigits, numberFormatter.maximumFractionDigits);
 	}];
-	NSLog(@"%@\n%ld", log, maximumFractionDigits);
+	NSLog(@"%@\n%ld", log, (unsigned long)maximumFractionDigits);
 }
 
 @end

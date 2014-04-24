@@ -467,7 +467,8 @@
     if ( item ) {
         NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                       firstDate:[item startDate]
-                                                                                       fromDate:[NSDate date]];
+                                                                                       fromDate:[NSDate date]
+                                                                                       isAllDay:[item.isAllDay boolValue]];
         if ( [item.isLunar boolValue] ) {
             NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
             BOOL isResultLeapMonth = NO;
@@ -537,9 +538,9 @@
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 
                 if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
-                    NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
-                                                                                                                  firstDate:item.startDate
-                                                                                                                   fromDate:[NSDate date]];
+                    NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
+                                                                                                              firstDate:item.startDate
+                                                                                                               fromDate:[NSDate date]];
                     dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 }
@@ -637,7 +638,8 @@
     else {
         NSDate *nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                                 firstDate:item.startDate
-                                                                                                 fromDate:today];
+                                                                                                 fromDate:today
+                                                                                                 isAllDay:[item.isAllDay boolValue]];
         resultDaysGap = [A3DateHelper diffDaysFromDate:today
                                                 toDate:nextRepeatStartDate
                                               isAllDay:[item.isAllDay boolValue]];
@@ -660,7 +662,8 @@
     else {
         nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
                                                                                         firstDate:item.startDate
-                                                                                         fromDate:today];
+                                                                                         fromDate:today
+                                                                                         isAllDay:[item.isAllDay boolValue]];
         daysGap = [A3DateHelper diffDaysFromDate:today
                                           toDate:nextRepeatStartDate
                                         isAllDay:[item.isAllDay boolValue]];

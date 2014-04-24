@@ -146,7 +146,7 @@
         UIImage *image = [item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
         imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
         NSDate *today = [NSDate date];
-        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today];
+        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:item.startDate fromDate:today isAllDay:[item.isAllDay boolValue]];
         
         if (image) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
@@ -185,9 +185,9 @@
 
             if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentYearWithRepeatOption:[item.repeatType integerValue]
-                                                                                                              firstDate:item.startDate
-                                                                                                               fromDate:[NSDate date]];
+                NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
+                                                                                                          firstDate:item.startDate
+                                                                                                           fromDate:[NSDate date]];
                 
                 dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                        withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];

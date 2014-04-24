@@ -333,7 +333,8 @@
         if ( [event.repeatType integerValue] != RepeatType_Never ) {
             NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                                          firstDate:event.startDate
-                                                                                          fromDate:today];
+                                                                                          fromDate:today
+                                                                                          isAllDay:[event.isAllDay boolValue]];
             untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
                                                                  toDate:nextDate
                                                            allDayOption:[event.isAllDay boolValue]
@@ -371,7 +372,8 @@
     if ( [event.repeatType integerValue] != RepeatType_Never ) {
         NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                                      firstDate:event.startDate
-                                                                                      fromDate:today];
+                                                                                      fromDate:today
+                                                                                      isAllDay:[event.isAllDay boolValue]];
         diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
         calcDate = nextDate;
     }
@@ -469,7 +471,8 @@
                 if ( [event.repeatType integerValue] != RepeatType_Never ) {
                     startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
                                                                                           firstDate:[event startDate]
-                                                                                           fromDate:now];
+                                                                                           fromDate:now
+                                                                                           isAllDay:[event.isAllDay boolValue]];
                 }
                 
                 if (IS_IPHONE) {
