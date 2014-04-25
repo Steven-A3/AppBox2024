@@ -12,4 +12,5 @@
 
 - (NSArray *)fieldItemsArray;
 
+- (void)assignOrder;
 @end

@@ -86,11 +86,16 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 {
     [super viewWillAppear:animated];
 
-	[self updateMetadataView];
+	if (![self isMovingToParentViewController]) {
+		[self refreshViews];
+	}
+	FNLOG();
+	[self updateMetadataViewWithPage:0];
 }
 
 - (void)initializeViews
 {
+	FNLOG();
     UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     self.navigationItem.rightBarButtonItem = editItem;
     
@@ -153,7 +158,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		[_normalFieldItems addObject:self.photoItem];
 		[_normalFieldItems addObject:self.metadataItem];
 
-		[self updateMetadataView];
+		[self updateMetadataViewWithPage:self.currentPageAtPhotoScrollView];
 
 		if (self.gpsMetaInfo) {
 			[_normalFieldItems addObject:self.mapItem];
@@ -278,6 +283,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)refreshViews
 {
+	FNLOG();
     _photoFieldItems = nil;
     _normalFieldItems = nil;
     
@@ -290,23 +296,21 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     
     [self initializeViews];
 
-	[self updateMetadataView];
+	[self updateMetadataViewWithPage:0];
     [self.tableView reloadData];
 }
 
-- (void)updateMetadataView
-{
+- (void)updateMetadataViewWithPage:(NSUInteger)page {
+	FNLOG(@"%ld", (long)page);
 	self.metadataView.titleTextField.text = [_item.name length] ?  _item.name : @"New Item";
 	_metadataView.favoriteButton.selected = self.item.favorite != nil;
 	_metadataView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 
-    NSUInteger index = self.photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
-    
-    if (self.photoFieldItems.count <= index) {
+    if (self.photoFieldItems.count <= page) {
         return;
     }
     
-    WalletFieldItem *fieldItem = _photoFieldItems[index];
+    WalletFieldItem *fieldItem = _photoFieldItems[page];
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
         NSDictionary *metadata;
 		if (fieldItem.image.metadata) {
@@ -409,6 +413,10 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     return _photoScrollView;
 }
 
+- (NSInteger)currentPageAtPhotoScrollView {
+	return (NSInteger)floorf(_photoScrollView.contentOffset.x / _photoScrollView.bounds.size.width);
+}
+
 - (NSMutableArray *)photoThumbs
 {
     if (!_photoThumbs) {
@@ -465,7 +473,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     [self presentViewController:nav animated:YES completion:NULL];
 }
 
-- (void)makeThumbSelected:(NSUInteger) selectedIndex
+- (void)makeThumbSelected:(NSInteger) selectedIndex
 {
     if (_photoThumbs.count <= selectedIndex) {
         return;
@@ -486,7 +494,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)photoTapped:(UITapGestureRecognizer *)tap
 {
-    NSUInteger index = _photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
+    NSInteger index = floorf(_photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width);
     WalletFieldItem *fieldItem = _photoFieldItems[index];
     
     if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
@@ -568,16 +576,15 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         if (!decelerate) {
             NSUInteger page = floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
             [self makeThumbSelected:page];
-			[self updateMetadataView];
+			[self updateMetadataViewWithPage:page];
         }
     }
 }
 
-- (void)gotoPage:(NSUInteger)page {
+- (void)gotoPage:(NSInteger)page {
 	[self makeThumbSelected:page];
-	[self updateMetadataView];
+	[self updateMetadataViewWithPage:page];
 
-	[_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 	NSUInteger mapItemIndex = [self.normalFieldItems indexOfObject:self.mapItem];
 	if (self.gpsMetaInfo && mapItemIndex == NSNotFound) {
 		[self.normalFieldItems insertObject:self.mapItem atIndex:2];
@@ -585,13 +592,12 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	} else if (!self.gpsMetaInfo && mapItemIndex != NSNotFound) {
 		[self.normalFieldItems removeObjectAtIndex:mapItemIndex];
 		[_tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+	} else{
+		[_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 	}
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == 0) {
-		FNLOGRECT(_photoScrollView.frame);
-	}
 }
 
 #pragma mark - Table view data source
@@ -627,24 +633,16 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		cell = photoCell;
 
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 	} else if (_normalFieldItems[indexPath.row] == self.metadataItem) {
 		UITableViewCell *metadataCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
 		[metadataCell addSubview:self.metadataView];
 
 		cell = metadataCell;
 
-		if (self.gpsMetaInfo) {
-			cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-		} else {
-			cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
-		}
 		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else
     if (_normalFieldItems[indexPath.row] == self.noteItem) {
-        
-        // note
-        A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID1 forIndexPath:indexPath];
+		A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID1 forIndexPath:indexPath];
         
         noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
         noteCell.textView.editable = NO;
@@ -654,13 +652,11 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         noteCell.textView.font = [UIFont systemFontOfSize:17];
 
 		[noteCell setNoteText:_item.note];
+		[noteCell showTopSeparator:!_gpsMetaInfo];
 
         cell = noteCell;
-
-		cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     else if (_normalFieldItems[indexPath.row] == self.mapItem) {
-        
         A3WalletMapCell *mapCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemMapCellID1 forIndexPath:indexPath];
 
         /*
@@ -716,14 +712,11 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
                        }];
         
         cell = mapCell;
-
-		cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
     }
     else if ([_normalFieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
         WalletFieldItem *fieldItem = _normalFieldItems[indexPath.row];
         
         if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-            
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID1 forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -748,10 +741,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             }
             
             cell = photoCell;
-			cell.separatorInset = A3UITableViewSeparatorInset;
         }
         else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-            
             A3WalletItemFieldCell *dateCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID1 forIndexPath:indexPath];
             
             dateCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -769,10 +760,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             }
             
             cell = dateCell;
-			cell.separatorInset = A3UITableViewSeparatorInset;
         }
         else {
-            
             A3WalletItemFieldCell *textCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCellID1 forIndexPath:indexPath];
             
             textCell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -788,9 +777,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
                     textCell.valueTextField.floatingLabelTextColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1];
                 }
             }
-            
-            cell = textCell;
-			cell.separatorInset = A3UITableViewSeparatorInset;
+
+			cell = textCell;
         }
     }
     
@@ -807,7 +795,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		return IS_IPAD ? 510 : 304;
 	} else
 	if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.metadataItem) {
-		[self updateMetadataView];
 		return [self.metadataView calculatedHeight];
 	}
 	if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.noteItem) {

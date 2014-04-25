@@ -725,7 +725,7 @@ enum SortingKind {
                     WalletFieldItem *fieldItem = photoPick[idx];
                     UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPathInTemporary:NO ]];
                     
-                    [photoCell addThumbImage:thumbImg];
+                    [photoCell addThumbImage:thumbImg isVideo:NO ];
                 }
                 
                 cell = photoCell;
@@ -747,10 +747,10 @@ enum SortingKind {
                 NSInteger showPhotoCount = MIN(maxPhotoCount, photoPick.count);
 
                 [videoCell resetThumbImages];
-                for (int i=0; i<showPhotoCount; i++) {
-                    WalletFieldItem *fieldItem = photoPick[i];
+                for (NSUInteger idx =0; idx < showPhotoCount; idx++) {
+                    WalletFieldItem *fieldItem = photoPick[idx];
                     UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
-                    [videoCell addThumbImage:thumbImg];
+                    [videoCell addThumbImage:thumbImg isVideo:YES ];
                 }
                 
                 cell = videoCell;

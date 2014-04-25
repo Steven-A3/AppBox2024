@@ -14,6 +14,7 @@
 @property (nonatomic, strong) UILabel *rightLabel;
 
 - (void)resetThumbImages;
-- (void)addThumbImage:(UIImage *)thumb;
+
+- (void)addThumbImage:(UIImage *)thumb isVideo:(BOOL)isVideo;
 
 @end

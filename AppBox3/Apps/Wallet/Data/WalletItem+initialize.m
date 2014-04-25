@@ -14,9 +14,13 @@
 
 @implementation WalletItem (initialize)
 
-- (void)awakeFromInsert {
-	[super awakeFromInsert];
+- (NSArray *)fieldItemsArray
+{
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+    return [self.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
+}
 
+- (void)assignOrder {
 	WalletItem *item = [WalletItem MR_findFirstOrderedByAttribute:@"order" ascending:NO];
 	if (item) {
 		NSInteger latestOrder = [item.order integerValue];
@@ -24,12 +28,6 @@
 	} else {
 		self.order = [NSString orderStringWithOrder:1000000];
 	}
-}
-
-- (NSArray *)fieldItemsArray
-{
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-    return [self.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
 }
 
 @end

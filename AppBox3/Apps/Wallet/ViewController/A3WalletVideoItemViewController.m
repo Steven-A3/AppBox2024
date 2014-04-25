@@ -19,7 +19,6 @@
 #import "WalletItem+Favorite.h"
 #import "WalletField.h"
 #import "NSDate+TimeAgo.h"
-#import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "WalletFieldItem.h"
 #import "UIImage+Extension2.h"
@@ -283,18 +282,23 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     }
     
     WalletFieldItem *fieldItem = _videoFieldItems[index];
-    
-    CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
-    NSInteger dur = round(duration);
-    _metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
-    
-    NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
-    if (createDate) {
-        _metadataView.takenDateLabel.text = [createDate timeAgo];
-    }
-    else {
-        _metadataView.takenDateLabel.text = @"";
-    }
+
+	if (fieldItem.video) {
+		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
+		NSInteger dur = round(duration);
+		_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"Duration Time %lds", (long)dur];
+
+		NSDate *createDate = [WalletData getCreateDateOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
+		if (createDate) {
+			_metadataView.takenDateLabel.text = [createDate timeAgo];
+		}
+		else {
+			_metadataView.takenDateLabel.text = @"";
+		}
+	} else {
+		_metadataView.mediaSizeLabel.text = @"";
+		_metadataView.takenDateLabel.text = @"";
+	}
 	[_metadataView layoutIfNeeded];
 }
 
@@ -521,12 +525,23 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 		UITableViewCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
 		[photoCell addSubview:self.photoScrollView];
 
+		[_photoScrollView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(photoCell.centerX);
+			make.top.equalTo(photoCell.top);
+			make.width.equalTo(IS_IPAD ? @576 : @320);
+			make.height.equalTo(IS_IPAD ? @506 : @300);
+		}];
+
+		[photoCell layoutIfNeeded];
 		cell = photoCell;
+
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else if (_normalFieldItems[indexPath.row] == self.metadataItem) {
 		UITableViewCell *metadataCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
 		[metadataCell addSubview:self.metadataView];
 
 		cell = metadataCell;
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else
     if (_normalFieldItems[indexPath.row] == self.noteItem) {
         
@@ -541,6 +556,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         noteCell.textView.font = [UIFont systemFontOfSize:17];
 
 		[noteCell setNoteText:_item.note];
+		[noteCell showTopSeparator:YES];
 
         cell = noteCell;
     }

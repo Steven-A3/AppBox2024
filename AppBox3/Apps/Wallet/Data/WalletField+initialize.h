@@ -10,4 +10,6 @@
 
 @interface WalletField (initialize)
 
+- (void)initValues;
+
 @end

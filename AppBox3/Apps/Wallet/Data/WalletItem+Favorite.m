@@ -9,6 +9,7 @@
 #import "WalletItem+Favorite.h"
 #import "WalletFavorite.h"
 #import "NSMutableArray+A3Sort.h"
+#import "WalletFavorite+initialize.h"
 
 
 @implementation WalletItem (Favorite)
@@ -18,7 +19,8 @@
     if (isAdd) {
         if (self.favorite == nil) {
             WalletFavorite *favorite = [WalletFavorite MR_createEntity];
-            self.favorite = favorite;
+			[favorite assignOrder];
+			self.favorite = favorite;
             
             // order set
             NSArray *favors = [WalletFavorite MR_findAllSortedBy:@"order" ascending:YES];

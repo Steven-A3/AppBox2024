@@ -64,6 +64,8 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	if (_isAddingCategory) {
 		self.navigationItem.title = @"Add Category";
 		_category = [WalletCategory MR_createEntity];
+		[_category initValues];
+		[_category assignOrder];
 		_category.icon = [WalletCategory iconList][0];
 	} else {
 		self.navigationItem.title = @"Edit Category";
@@ -223,6 +225,7 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 - (void)addWalletField
 {
     self.toAddField = [WalletField MR_createEntity];
+	[self.toAddField initValues];
     _toAddField.category = self.category;
 
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];

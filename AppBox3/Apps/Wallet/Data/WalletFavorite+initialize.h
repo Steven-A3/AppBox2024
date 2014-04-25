@@ -10,4 +10,5 @@
 
 @interface WalletFavorite (initialize)
 
+- (void)assignOrder;
 @end

@@ -20,18 +20,9 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 
 @implementation WalletCategory (initialize)
 
-- (void)awakeFromInsert {
-	[super awakeFromInsert];
-
+- (void)initValues {
 	self.uniqueID = [[NSUUID UUID] UUIDString];
 	self.doNotShow = @NO;
-	WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"order" ascending:NO];
-	if (category) {
-		NSInteger latestOrder = [category.order integerValue];
-		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];
-	} else {
-		self.order = [NSString orderStringWithOrder:1000000];
-	}
 }
 
 + (void)resetWalletCategory
@@ -46,14 +37,16 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 
     // create all, favorite category
     WalletCategory *favoriteCategory = [WalletCategory MR_createEntity];
-    favoriteCategory.name = @"Favorite";
+	[favoriteCategory initValues];
+	favoriteCategory.name = @"Favorite";
     favoriteCategory.icon = @"star01";
 	favoriteCategory.modificationDate = [NSDate date];
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
     WalletCategory *allCategory = [WalletCategory MR_createEntity];
-    allCategory.name = @"All";
+	[allCategory initValues];
+	allCategory.name = @"All";
     allCategory.icon = @"wallet_folder";
 	allCategory.modificationDate = [NSDate date];
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
@@ -61,6 +54,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 
     for (NSDictionary *preset in categoryPresets) {
         WalletCategory *category = [WalletCategory MR_createEntity];
+		[category initValues];
 		if ([preset[@"Name"] isEqualToString:@"Photos"]) {
 			category.uniqueID = A3WalletUUIDPhotoCategory;
 		} else if ([preset[@"Name"] isEqualToString:@"Video"]) {
@@ -78,6 +72,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
         NSUInteger fieldIdx = 1;
 		for (NSDictionary *fieldPreset in fieldPresets) {
             WalletField *field = [WalletField MR_createEntity];
+			field.uniqueID = [[NSUUID UUID] UUIDString];
 			field.name = fieldPreset[@"Name"];
             field.category = category;
             field.type = fieldPreset[@"Type"];
@@ -142,6 +137,16 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 	NSArray *array = [WalletCategory MR_findAllWithPredicate:predicate];
 
 	return [array count] ? array[0] : nil;
+}
+
+- (void)assignOrder {
+	WalletCategory *category = [WalletCategory MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+	if (category) {
+		NSInteger latestOrder = [category.order integerValue];
+		self.order = [NSString orderStringWithOrder:latestOrder + 1000000];
+	} else {
+		self.order = [NSString orderStringWithOrder:1000000];
+	}
 }
 
 @end

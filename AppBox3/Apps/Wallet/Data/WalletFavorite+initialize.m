@@ -11,9 +11,7 @@
 
 @implementation WalletFavorite (initialize)
 
-- (void)awakeFromInsert {
-	[super awakeFromInsert];
-
+- (void)assignOrder {
 	WalletFavorite *favorite = [WalletFavorite MR_findFirstOrderedByAttribute:@"order" ascending:NO];
 	if (favorite) {
 		NSInteger latestOrder = [favorite.order integerValue];

@@ -119,12 +119,22 @@
     }
 }
 
-- (void)addThumbImage:(UIImage *)thumb
-{
-    for (int i=0; i<_thumbImgViews.count; i++) {
-        UIImageView *thumbImgView = _thumbImgViews[i];
+- (void)addThumbImage:(UIImage *)thumb isVideo:(BOOL)isVideo {
+    for (NSUInteger idx = 0; idx < _thumbImgViews.count; idx++) {
+        UIImageView *thumbImgView = _thumbImgViews[idx];
         if (thumbImgView.image == nil) {
             thumbImgView.image = thumb;
+
+			if (isVideo) {
+				UIImageView *markView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"video"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+				markView.tintColor = [UIColor whiteColor];
+				[thumbImgView addSubview:markView];
+				[markView makeConstraints:^(MASConstraintMaker *make) {
+					make.center.equalTo(thumbImgView);
+					make.width.equalTo(@15);
+					make.height.equalTo(@9);
+				}];
+			}
             break;
         }
     }

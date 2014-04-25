@@ -244,7 +244,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 			for (int i=0; i<showPhotoCount; i++) {
 				WalletFieldItem *fieldItem = photoPick[i];
-				[photoCell addThumbImage:fieldItem.thumbnailImage];
+				[photoCell addThumbImage:fieldItem.thumbnailImage isVideo:NO ];
 			}
 
 			cell = photoCell;
@@ -271,7 +271,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 			[videoCell resetThumbImages];
 			for (int i=0; i<showPhotoCount; i++) {
 				WalletFieldItem *fieldItem = photoPick[i];
-				[videoCell addThumbImage:fieldItem.thumbnailImage];
+				[videoCell addThumbImage:fieldItem.thumbnailImage isVideo:NO ];
 			}
 
 			cell = videoCell;

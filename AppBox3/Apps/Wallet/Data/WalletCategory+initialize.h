@@ -16,9 +16,13 @@ extern NSString *const A3WalletUUIDMemoCategory;
 
 @interface WalletCategory (initialize)
 
+- (void)initValues;
+
 + (void)resetWalletCategory;
 + (NSArray *)iconList;
 - (NSArray *)fieldsArray;
+
+- (void)assignOrder;
 
 + (WalletCategory *)allCategory;
 + (WalletCategory *)favoriteCategory;

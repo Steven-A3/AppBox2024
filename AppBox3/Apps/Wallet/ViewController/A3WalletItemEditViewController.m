@@ -32,6 +32,7 @@
 #import "A3WalletItemTitleCell.h"
 #import "WalletFieldItemVideo.h"
 #import "WalletFieldItemImage.h"
+#import "WalletItem+initialize.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
@@ -93,6 +94,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		self.navigationItem.title = @"Add Item";
 
 		_item = [WalletItem MR_createEntity];
+		[_item assignOrder];
 		_item.category = _walletCategory;
 	} else {
 		self.navigationItem.title = @"Edit Item";
@@ -169,21 +171,25 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
 		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
-			NSString *thumbnailImagePath = [fieldItem imageThumbnailPathInTemporary:NO];
 			NSString *thumbnailImageInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
+			if (![fileManager fileExistsAtPath:thumbnailImageInTemp]) continue;
+
+			NSString *thumbnailImagePath = [fieldItem imageThumbnailPathInTemporary:NO];
 			[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
 			[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
 			continue;
 		}
 		if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
+			NSString *videoFilePathInTemp = [fieldItem videoFilePathInTemporary:YES];
+
+			if (![fileManager fileExistsAtPath:videoFilePathInTemp]) continue;
+
 			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInTemporary:NO];
 			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInTemporary:YES];
 			[fileManager removeItemAtPath:thumbnailImagePath error:NULL];
 			[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
 
-			NSString *videoFilePathInTemp = [fieldItem videoFilePathInTemporary:YES];
 			NSString *videoFilePath = [fieldItem videoFilePathInTemporary:NO];
-
 			[fileManager removeItemAtPath:videoFilePath error:NULL];
 			[fileManager moveItemAtPath:videoFilePathInTemp toPath:videoFilePath error:NULL];
 			continue;
@@ -303,6 +309,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 	if (create) {
 		WalletFieldItem *fieldItem = [WalletFieldItem MR_createEntity];
+		fieldItem.uniqueID = [[NSUUID UUID] UUIDString];
 		fieldItem.field = field;
 		[_item addFieldItemsObject:fieldItem];
 		return fieldItem;

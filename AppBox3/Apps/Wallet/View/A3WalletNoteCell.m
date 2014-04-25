@@ -7,6 +7,7 @@
 //
 
 #import "A3WalletNoteCell.h"
+#import "UITableViewController+standardDimension.h"
 
 @implementation A3WalletNoteCell
 
@@ -42,6 +43,23 @@
 	_textView.frame = frame;
 
 	return _textView.frame.size.height;
+}
+
+- (void)showTopSeparator:(BOOL)show {
+	if (!_topSeparator) {
+		_topSeparator = [UIView new];
+		_topSeparator.backgroundColor = A3UITableViewSeparatorColor;
+		[self addSubview:_topSeparator];
+
+		[_topSeparator makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.right.equalTo(self.right);
+			make.top.equalTo(self.top);
+			make.height.equalTo(IS_RETINA ? @0.5 : @1.0);
+		}];
+		[self layoutIfNeeded];
+	}
+	[_topSeparator setHidden:!show];
 }
 
 @end

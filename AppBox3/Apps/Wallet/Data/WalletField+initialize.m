@@ -13,9 +13,7 @@
 
 @implementation WalletField (initialize)
 
-- (void)awakeFromInsert {
-	[super awakeFromInsert];
-
+- (void)initValues {
 	self.uniqueID = [[NSUUID UUID] UUIDString];
 	self.type = @"Text";
 	self.style = @"Normal";

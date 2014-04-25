@@ -13,24 +13,19 @@
 
 @implementation WalletFieldItem (initialize)
 
-- (void)prepareForDeletion {
-	[super prepareForDeletion];
-
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
-		[fileManager removeItemAtPath:[self imageThumbnailPathInTemporary:NO] error:NULL];
-		return;
+- (void)didSave {
+	if (self.isDeleted) {
+		FNLOG();
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
+			[fileManager removeItemAtPath:[self imageThumbnailPathInTemporary:NO] error:NULL];
+			return;
+		}
+		if ([self.field.type isEqualToString:WalletFieldTypeVideo] && self.video)  {
+			[fileManager removeItemAtPath:[self videoFilePathInTemporary:NO] error:NULL];
+			[fileManager removeItemAtPath:[self videoThumbnailPathInTemporary:NO] error:NULL];
+		}
 	}
-	if ([self.field.type isEqualToString:WalletFieldTypeVideo] && self.video)  {
-		[fileManager removeItemAtPath:[self videoFilePathInTemporary:NO] error:NULL];
-		[fileManager removeItemAtPath:[self videoThumbnailPathInTemporary:NO] error:NULL];
-	}
-}
-
-- (void)awakeFromInsert {
-	[super awakeFromInsert];
-
-	self.uniqueID = [[NSUUID UUID] UUIDString];
 }
 
 - (NSString *)imageThumbnailPathInTemporary:(BOOL)temporary {
@@ -58,6 +53,8 @@
 }
 
 - (NSString *)videoFilePathInTemporary:(BOOL)temporary {
+	if (!self.video) return nil;
+
 	NSString *directory;
 	if (temporary) {
 		directory = NSTemporaryDirectory();
