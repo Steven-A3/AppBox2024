@@ -47,13 +47,13 @@
 
 @end
 
-@implementation A3WalletPhotoItemViewController
-
 NSString *const A3TableViewCellDefaultCellID = @"defaultCellID";
 NSString *const A3WalletItemFieldCellID1 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemPhotoFieldCellID1 = @"A3WalletItemPhotoFieldCell";
 NSString *const A3WalletItemMapCellID1 = @"A3WalletMapCell";
 NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
+
+@implementation A3WalletPhotoItemViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -74,12 +74,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     [self initializeViews];
     
     [self registerContentSizeCategoryDidChangeNotification];
-
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(managedObjectContextDidSave:) name:NSManagedObjectContextDidSaveNotification object:nil];
-}
-
-- (void)managedObjectContextDidSave:(NSNotification *)notification {
-	[self refreshViews];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -109,8 +103,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
 	_tableView.contentOffset = CGPointMake(0, 0);
-	_tableView.separatorColor = A3UITableViewSeparatorColor;
-	_tableView.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+	_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 	if (![_item.note length]) {
 		UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 38)];
@@ -382,10 +375,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     CGFloat rectHeight = (IS_IPAD) ? 506:300;
 
     if (!_photoScrollView) {
-        
         CGRect photoFrame = CGRectMake((self.view.bounds.size.width-rectWidth)/2, 4, rectWidth, rectHeight);
         _photoScrollView = [[UIScrollView alloc] initWithFrame:photoFrame];
-        _photoScrollView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
         _photoScrollView.showsHorizontalScrollIndicator = NO;
         _photoScrollView.showsVerticalScrollIndicator = NO;
         _photoScrollView.pagingEnabled = YES;
@@ -619,8 +610,16 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		UITableViewCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
 		[photoCell addSubview:self.photoScrollView];
 
-		cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+		[_photoScrollView makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(photoCell.centerX);
+			make.centerY.equalTo(photoCell.centerY);
+		}];
+		[photoCell layoutIfNeeded];
+
 		cell = photoCell;
+
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
+		cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 	} else if (_normalFieldItems[indexPath.row] == self.metadataItem) {
 		UITableViewCell *metadataCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
 		[metadataCell addSubview:self.metadataView];
@@ -632,6 +631,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 		} else {
 			cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
 		}
+		cell.selectionStyle = UITableViewCellSelectionStyleNone;
 	} else
     if (_normalFieldItems[indexPath.row] == self.noteItem) {
         

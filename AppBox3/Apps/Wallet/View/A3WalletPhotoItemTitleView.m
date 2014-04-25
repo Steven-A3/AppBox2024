@@ -37,17 +37,16 @@
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(22);
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-		make.right.equalTo(_favoriteButton.left).with.offset(5);
 	}];
 	[_timeLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(_titleTextField.bottom);
 		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 	}];
 	[_favoriteButton makeConstraints:^(MASConstraintMaker *make) {
-		make.width.equalTo(@40);
-		make.height.equalTo(@40);
-		make.right.equalTo(self.right).with.offset(-5);
-		make.centerY.equalTo(_titleTextField.centerY);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+		make.left.equalTo(_titleTextField.right).with.offset(-7);
+		make.centerY.equalTo(_titleTextField.centerY).with.offset(-3);
 	}];
 	[_mediaSizeLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(_timeLabel.bottom).with.offset(11);

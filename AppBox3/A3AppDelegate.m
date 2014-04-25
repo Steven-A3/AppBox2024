@@ -112,6 +112,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 	return YES;
 }
 
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -199,6 +200,17 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
         alert.tag = 11;
         [alert show];
     }
+
+	// Days Counter Item인지 확인하고
+	// Item을 생성하셔서 아래의 커멘트 부분에 뷰 컨트롤러를 만들어서 넘겨 주시면 됩니다.
+	if (IS_IPHONE) {
+		[self.drawerController closeDrawerAnimated:NO completion:NULL];
+
+		UINavigationController *navigationController = (UINavigationController *) self.drawerController.centerViewController;
+//		[navigationController presentViewController: animated:<#(BOOL)flag#> completion:<#(void (^)(void))completion#>];
+	} else {
+//		[self.rootViewController.centerNavigationController presentViewController:<#(UIViewController *)viewControllerToPresent#> animated:<#(BOOL)flag#> completion:<#(void (^)(void))completion#>];
+	}
 }
 
 #pragma mark - UIAlertViewDelegate
