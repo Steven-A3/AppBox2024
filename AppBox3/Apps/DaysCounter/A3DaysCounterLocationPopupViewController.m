@@ -70,13 +70,11 @@
 
 #pragma mark
 - (void)detailInfoButtonTouchUp:(UIBarButtonItem *)item {
-    self.isFullPrint = !_isFullPrint;
     if (self.resizeFrameBlock) {
-        if (_isFullPrint) {
+        if (!_isFullPrint) {
             _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), self.tableView.contentSize.height));
-        }
-        else {
-            _resizeFrameBlock(CGSizeMake(CGRectGetWidth(self.view.frame), 0));
+            self.isFullPrint = YES;
+            self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
         }
     }
 }
