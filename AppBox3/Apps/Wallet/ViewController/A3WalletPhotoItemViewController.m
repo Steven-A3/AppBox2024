@@ -371,8 +371,8 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (UIScrollView *)photoScrollView
 {
-    CGFloat rectWidth = (IS_IPAD) ? 576:320;
-    CGFloat rectHeight = (IS_IPAD) ? 506:300;
+    CGFloat rectWidth = (IS_IPAD) ? 576 : 320;
+    CGFloat rectHeight = (IS_IPAD) ? 506 : 300;
 
     if (!_photoScrollView) {
         CGRect photoFrame = CGRectMake((self.view.bounds.size.width-rectWidth)/2, 4, rectWidth, rectHeight);
@@ -588,6 +588,12 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	}
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 0) {
+		FNLOGRECT(_photoScrollView.frame);
+	}
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -612,7 +618,9 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 		[_photoScrollView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(photoCell.centerX);
-			make.centerY.equalTo(photoCell.centerY);
+			make.top.equalTo(photoCell.top);
+			make.width.equalTo(IS_IPAD ? @576 : @320);
+			make.height.equalTo(IS_IPAD ? @506 : @300);
 		}];
 		[photoCell layoutIfNeeded];
 

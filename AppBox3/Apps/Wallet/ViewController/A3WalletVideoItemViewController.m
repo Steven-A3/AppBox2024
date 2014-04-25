@@ -10,7 +10,6 @@
 #import <AVFoundation/AVFoundation.h>
 #import "A3WalletVideoItemViewController.h"
 #import "A3WalletItemEditViewController.h"
-#import "A3WalletVideoItemTitleView.h"
 #import "A3WalletItemFieldCell.h"
 #import "A3WalletItemPhotoFieldCell.h"
 #import "A3WalletNoteCell.h"

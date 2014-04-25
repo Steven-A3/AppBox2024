@@ -53,7 +53,6 @@
 		17D42E23FC78EEE74D1E160D /* A3TranslatorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4290B326C03E3DAF080A7 /* A3TranslatorViewController.m */; };
 		17D42E4EE3830FB7CC709BC8 /* FSOAuth.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42A98847F44914C3F8F2B /* FSOAuth.m */; };
 		17D42F37E672CCF7D71978C9 /* NSManagedObject+Clone.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DA2DACEFCA29645708D /* NSManagedObject+Clone.m */; };
-		17D42FD80A9B743896266194 /* A3WalletPhotoItemViewPhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421329897F2F0FB5995D5 /* A3WalletPhotoItemViewPhotoCell.m */; };
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
@@ -620,9 +619,6 @@
 		68B6A33918CEC76D004084EF /* A3WalletPhotoItemTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A27C18CEC76D004084EF /* A3WalletPhotoItemTitleView.m */; };
 		68B6A33A18CEC76D004084EF /* A3WalletPhotoItemTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A27D18CEC76D004084EF /* A3WalletPhotoItemTitleView.xib */; };
 		68B6A33B18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A27E18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib */; };
-		68B6A33C18CEC76D004084EF /* A3WalletVideoItemTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28018CEC76D004084EF /* A3WalletVideoItemTitleView.m */; };
-		68B6A33D18CEC76D004084EF /* A3WalletVideoItemTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */; };
-		68B6A33E18CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */; };
 		68B6A34218CEC76D004084EF /* A3WalletAllViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */; };
 		68B6A34318CEC76D004084EF /* A3WalletCategoryEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28D18CEC76D004084EF /* A3WalletCategoryEditViewController.m */; };
 		68B6A34418CEC76D004084EF /* A3WalletCategorySelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A28F18CEC76D004084EF /* A3WalletCategorySelectViewController.m */; };
@@ -955,7 +951,6 @@
 		17D421064EA823E51FA60A9B /* TranslatorHistory+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TranslatorHistory+manager.m"; sourceTree = "<group>"; };
 		17D4212186C952FA6368C647 /* A3CurrencyTVDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTVDataCell.h; path = Apps/Currency/A3CurrencyTVDataCell.h; sourceTree = "<group>"; };
 		17D4212AA5D840ED553C3647 /* UITableViewCell+accessory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+accessory.m"; sourceTree = "<group>"; };
-		17D421329897F2F0FB5995D5 /* A3WalletPhotoItemViewPhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletPhotoItemViewPhotoCell.m; sourceTree = "<group>"; };
 		17D421A21CDA99AB58E8DDAD /* A3TranslatorCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorCircleView.h; path = Translator/A3TranslatorCircleView.h; sourceTree = "<group>"; };
 		17D421EBC1891737E21BB3BE /* FSWebLogin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSWebLogin.m; sourceTree = "<group>"; };
 		17D421FB49C681FC776EFDF4 /* A3CurrencyTVDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3CurrencyTVDataCell.m; path = Apps/Currency/A3CurrencyTVDataCell.m; sourceTree = "<group>"; };
@@ -1013,7 +1008,6 @@
 		17D429465C11ACC574B89369 /* A3CalculatorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorDelegate.h; sourceTree = "<group>"; };
 		17D429E235298A15262EEEDB /* A3WalletMoreTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletMoreTableViewCell.m; sourceTree = "<group>"; };
 		17D42A98847F44914C3F8F2B /* FSOAuth.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSOAuth.m; sourceTree = "<group>"; };
-		17D42AA7637C2E0F33B57905 /* A3WalletPhotoItemViewPhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletPhotoItemViewPhotoCell.h; sourceTree = "<group>"; };
 		17D42B28914A1D7FD233EC49 /* JNJProgressButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNJProgressButton.h; sourceTree = "<group>"; };
 		17D42B2B3CE8DE055680771A /* FSRequester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSRequester.h; sourceTree = "<group>"; };
 		17D42B3BE8DDD4EBEBCA10BE /* A3BackgroundWithPatternView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BackgroundWithPatternView.h; sourceTree = "<group>"; };
@@ -1991,10 +1985,6 @@
 		68B6A27C18CEC76D004084EF /* A3WalletPhotoItemTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletPhotoItemTitleView.m; sourceTree = "<group>"; };
 		68B6A27D18CEC76D004084EF /* A3WalletPhotoItemTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletPhotoItemTitleView.xib; sourceTree = "<group>"; };
 		68B6A27E18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletPhotoItemTitleView_iPad.xib; sourceTree = "<group>"; };
-		68B6A27F18CEC76D004084EF /* A3WalletVideoItemTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletVideoItemTitleView.h; sourceTree = "<group>"; };
-		68B6A28018CEC76D004084EF /* A3WalletVideoItemTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletVideoItemTitleView.m; sourceTree = "<group>"; };
-		68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletVideoItemTitleView.xib; sourceTree = "<group>"; };
-		68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3WalletVideoItemTitleView_iPad.xib; sourceTree = "<group>"; };
 		68B6A28A18CEC76D004084EF /* A3WalletAllViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletAllViewController.h; sourceTree = "<group>"; };
 		68B6A28B18CEC76D004084EF /* A3WalletAllViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletAllViewController.m; sourceTree = "<group>"; };
 		68B6A28C18CEC76D004084EF /* A3WalletCategoryEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletCategoryEditViewController.h; sourceTree = "<group>"; };
@@ -4408,12 +4398,6 @@
 				68B6A27E18CEC76D004084EF /* A3WalletPhotoItemTitleView_iPad.xib */,
 				68B6A23F18CEC76C004084EF /* A3WalletSegmentedControl.h */,
 				68B6A24018CEC76C004084EF /* A3WalletSegmentedControl.m */,
-				68B6A27F18CEC76D004084EF /* A3WalletVideoItemTitleView.h */,
-				68B6A28018CEC76D004084EF /* A3WalletVideoItemTitleView.m */,
-				68B6A28118CEC76D004084EF /* A3WalletVideoItemTitleView.xib */,
-				68B6A28218CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib */,
-				17D421329897F2F0FB5995D5 /* A3WalletPhotoItemViewPhotoCell.m */,
-				17D42AA7637C2E0F33B57905 /* A3WalletPhotoItemViewPhotoCell.h */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -5425,7 +5409,6 @@
 				68B6A31D18CEC76D004084EF /* A3WalletAllTopCell.xib in Resources */,
 				68B6A2E718CEC76D004084EF /* UnitConverterPhoneStoryboard.storyboard in Resources */,
 				68F1C8A418D7F37D009FAE8A /* A3DaysCounterSetupEndRepeatViewController.xib in Resources */,
-				68B6A33E18CEC76D004084EF /* A3WalletVideoItemTitleView_iPad.xib in Resources */,
 				68F1C8C018D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib in Resources */,
 				68B6A30918CEC76D004084EF /* WalletCategoryPreset.plist in Resources */,
 				8076BC9518FA86E200613E70 /* A3DaysCounterAddEventSwitchCell.xib in Resources */,
@@ -5561,7 +5544,6 @@
 				68F1C89318D7F37D009FAE8A /* A3DaysCounterLocationDetailCell.xib in Resources */,
 				680D63A018CFF9D400938AD0 /* A3MirrorViewController.xib in Resources */,
 				68F1C89518D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib in Resources */,
-				68B6A33D18CEC76D004084EF /* A3WalletVideoItemTitleView.xib in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
 				68F1C89718D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib in Resources */,
 				68F1C8BC18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib in Resources */,
@@ -5749,7 +5731,6 @@
 				68F1C8BE18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.m in Sources */,
 				689791911865C68200F74826 /* CurrencyHistory.m in Sources */,
 				6830C78A1851BD480075010F /* A3SettingsBackupRestoreViewController.m in Sources */,
-				68B6A33C18CEC76D004084EF /* A3WalletVideoItemTitleView.m in Sources */,
 				68F1C88B18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m in Sources */,
 				68B6A32918CEC76D004084EF /* A3WalletItemFieldActionCell.m in Sources */,
 				68024AD81631637600D396F0 /* A3UIDevice.m in Sources */,
@@ -6305,7 +6286,6 @@
 				17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */,
 				17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */,
 				17D424CF600CB7D3A03DA0EE /* A3WalletMoreTableViewCell.m in Sources */,
-				17D42FD80A9B743896266194 /* A3WalletPhotoItemViewPhotoCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
