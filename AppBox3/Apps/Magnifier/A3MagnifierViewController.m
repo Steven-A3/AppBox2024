@@ -96,7 +96,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     
     bInvertedColor = NO;
     bLightOn = NO;
-    self.flashbrightslider.value = 0.0;
+    self.flashbrightslider.value = 0.5;
 }
 
 - (BOOL)usesFullScreenInLandscape {
