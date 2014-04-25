@@ -81,15 +81,16 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredByFoursquare_gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ay7-9g-ReT">
-                    <rect key="frame" x="42" y="-8" width="236" height="60"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="poweredByFoursquare_gray" translatesAutoresizingMaskIntoConstraints="NO" id="Ay7-9g-ReT">
+                    <rect key="frame" x="42" y="8" width="236" height="36"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" red="0.96862745098039216" green="0.96862745098039216" blue="0.96862745098039216" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="centerX" secondItem="Ay7-9g-ReT" secondAttribute="centerX" id="Wdu-6I-qJC"/>
-                <constraint firstAttribute="centerY" secondItem="Ay7-9g-ReT" secondAttribute="centerY" id="rwI-Ad-qAt"/>
+                <constraint firstItem="Ay7-9g-ReT" firstAttribute="top" secondItem="RxG-Ft-3fg" secondAttribute="top" constant="8" id="VID-ys-6Kf"/>
+                <constraint firstAttribute="centerX" secondItem="Ay7-9g-ReT" secondAttribute="centerX" id="Zuw-EE-JMT"/>
+                <constraint firstAttribute="bottom" secondItem="Ay7-9g-ReT" secondAttribute="bottom" id="lQo-cc-cvZ"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

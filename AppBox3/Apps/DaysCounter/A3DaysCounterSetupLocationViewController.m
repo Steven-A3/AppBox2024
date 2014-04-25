@@ -62,6 +62,7 @@
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     [self makeBackButtonEmptyArrow];
     [self.infoTableView setTableFooterView:_tableFooterView];
+    
     self.searchIcon = [[UIImage imageNamed:@"search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
     _currentLocationButton.layer.backgroundColor = [[UIColor whiteColor] CGColor];
@@ -82,7 +83,7 @@
                                  callbackURL:FOURSQUARE_REDIRECTURI];
 
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
-    [self initializeSelectedLocation];
+//    [self initializeSelectedLocation];
     
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 88;
     self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88, 0, 0, 0);
@@ -104,6 +105,13 @@
 {
     [super viewWillDisappear:animated];
     [self hideCurrentLocationTableView];
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    
+    self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight(self.view.frame) - 88, 0, 0, 0);
 }
 
 - (void)didReceiveMemoryWarning
@@ -264,7 +272,7 @@
                                           if (tableView == _infoTableView) {
                                               self.nearbyVenues = [converter convertToObjects:venues];
                                               [self reloadMapAnnotations:self.nearbyVenues];
-                                              [_infoTableView setContentOffset:CGPointMake(0, -(CGRectGetHeight([UIScreen mainScreen].bounds) - 229)) animated:YES];
+                                              [_infoTableView setContentOffset:CGPointMake(0, -(CGRectGetHeight(self.view.frame) - 229)) animated:YES];
                                           }
                                           else if (tableView == _searchResultsTableView) {
                                               self.nearbyVenuesOfSearchResults = [converter convertToObjects:venues];
