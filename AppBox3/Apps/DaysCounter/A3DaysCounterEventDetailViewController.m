@@ -49,7 +49,13 @@
     [super viewDidLoad];
     
     self.title = @"Event Details";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    if (_isModal) {
+        [self removeBackAndEditButton];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+    }
+
     [self.navigationController setToolbarHidden:YES];
     [self makeBackButtonEmptyArrow];
     [self registerContentSizeCategoryDidChangeNotification];
@@ -128,6 +134,17 @@
     [_itemArray addObject:@{ EventRowTitle : @"Share Event", EventRowType : @(EventCellType_Share)}];
     [_itemArray addObject:@{ EventRowTitle : @"", EventRowType : @(EventCellType_Favorites)}];
     [self.tableView reloadData];
+}
+
+- (void)removeBackAndEditButton
+{
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonAction:)];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button
+{
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - cell

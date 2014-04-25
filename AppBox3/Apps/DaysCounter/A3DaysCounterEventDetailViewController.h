@@ -15,8 +15,10 @@
 
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) id<A3DaysCounterEventDetailViewControllerDelegate> delegate;
+@property (assign, nonatomic) BOOL isModal;
 
 - (IBAction)deleteEventAction:(id)sender;
+- (void)removeBackAndEditButton;
 
 @end
 

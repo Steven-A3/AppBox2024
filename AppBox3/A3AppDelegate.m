@@ -22,6 +22,8 @@
 #import "A3LaunchViewController.h"
 #import "A3MainViewController.h"
 #import "A3ImageToDataTransformer.h"
+#import "DaysCounterEvent.h"
+#import "A3DaysCounterEventDetailViewController.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -30,6 +32,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 @interface A3AppDelegate () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
+@property (nonatomic, strong) NSString *daysCounterEventID;
 
 @end
 
@@ -42,6 +45,17 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotification) {
+        // DaysCounter
+        if ([[localNotification.userInfo objectForKey:@"type"] isEqualToString:@"dc"]) {
+            _daysCounterEventID = [localNotification.userInfo objectForKey:@"eventID"];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"daysCounterNotification" object:nil];
+            //[self showDaysCounterDetail];
+        }
+    }
+    
 	A3ImageToDataTransformer *transformer = [[A3ImageToDataTransformer alloc] init];
 	[NSValueTransformer setValueTransformer:transformer forName:@"A3ImageToDataTransformer"];
 
@@ -69,8 +83,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 		UIViewController *viewController = [A3MainViewController new];
 		A3NavigationController *navigationController = [[A3NavigationController alloc] initWithRootViewController:viewController];
 
-		_drawerController = [[MMDrawerController alloc]
-				initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
+		_drawerController = [[MMDrawerController alloc] initWithCenterViewController:navigationController leftDrawerViewController:menuNavigationController];
 		[_drawerController setOpenDrawerGestureModeMask:MMOpenDrawerGestureModeBezelPanningCenterView];
 		[_drawerController setCloseDrawerGestureModeMask:MMCloseDrawerGestureModeAll];
 		[_drawerController setDrawerVisualStateBlock:[self slideAndScaleVisualStateBlock]];
@@ -87,6 +100,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:[NSUbiquitousKeyValueStore defaultStore]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showDaysCounterDetail:) name:@"daysCounterNotification" object:nil];
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = rootViewController;
@@ -101,13 +115,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 	[[NSUserDefaults standardUserDefaults] setObject:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] forKey:kA3ApplicationVersion];
 	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-    UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotification) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"local noti" message:@"asdfasdf" delegate:self cancelButtonTitle:@"ok" otherButtonTitles:nil, nil];
-        alert.tag = 10;
-        [alert show];
-    }
 
 	return YES;
 }
@@ -192,24 +199,44 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
     
     // DaysCounter
     if ([notificationType isEqualToString:@"dc"]) {
+        _daysCounterEventID = [notification.userInfo objectForKey:@"eventID"];
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
                                                         message:[notification.userInfo objectForKey:@"alert"]
                                                        delegate:self
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:@"Details", nil];
         alert.tag = 11;
+        
         [alert show];
     }
+}
 
+-(void)showDaysCounterDetail:(NSNotification *)notification
+{
+    if (!_daysCounterEventID) {
+        return;
+    }
+    FNLOG(@"%@", _daysCounterEventID);
 	// Days Counter Item인지 확인하고
 	// Item을 생성하셔서 아래의 커멘트 부분에 뷰 컨트롤러를 만들어서 넘겨 주시면 됩니다.
+    DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"eventId" withValue:_daysCounterEventID];
+    A3DaysCounterEventDetailViewController *vc = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:[NSBundle mainBundle]];
+    vc.isModal = YES;
+    vc.eventItem = eventItem;
 	if (IS_IPHONE) {
 		[self.drawerController closeDrawerAnimated:NO completion:NULL];
 
 		UINavigationController *navigationController = (UINavigationController *) self.drawerController.centerViewController;
-//		[navigationController presentViewController: animated:<#(BOOL)flag#> completion:<#(void (^)(void))completion#>];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        [navigationController presentViewController:nav animated:YES completion:^{
+//            [vc removeBackAndEditButton];
+        }];
 	} else {
-//		[self.rootViewController.centerNavigationController presentViewController:<#(UIViewController *)viewControllerToPresent#> animated:<#(BOOL)flag#> completion:<#(void (^)(void))completion#>];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        [self.rootViewController.centerNavigationController presentViewController:nav animated:YES completion:^{
+//            [vc removeBackAndEditButton];
+        }];
 	}
 }
 
@@ -217,7 +244,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if ((alertView.tag == 10 && buttonIndex == 0) || (alertView.tag == 11 && buttonIndex == 1)) {
-        NSLog(@"asdf");
+        [self showDaysCounterDetail:nil];
     }
 }
 

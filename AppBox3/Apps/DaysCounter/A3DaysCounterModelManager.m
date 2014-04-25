@@ -1839,7 +1839,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
         if ([event.isReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
 //        if (([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] >= 0)) {
-            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event.objectID == %@", [event objectID]]];
+            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event.eventId == %@", [event eventId]]];
             if (!reminders || [reminders count] == 0) {
                 DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
                 reminder.isOn = @(YES);
@@ -1865,8 +1865,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             notification.fireDate = [event alertDatetime];
             notification.alertBody = [event eventName];
             notification.userInfo = @{ @"alert" : [event eventName],
-                                       @"type" : @"dc" };
-            
+                                       @"type" : @"dc",
+                                       @"eventID" : [event eventId]};
+
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
             [localNotifications addObject:notification];
         }
