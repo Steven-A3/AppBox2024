@@ -322,23 +322,34 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 			metadata = [NSPropertyListSerialization propertyListFromData:fieldItem.image.metadata mutabilityOption:NSPropertyListImmutable format:&format errorDescription:&errorDescription];
 		}
         if (metadata) {
+			NSDictionary *exifMetadata = [metadata objectForKey:(id)kCGImagePropertyExifDictionary];
+
             NSNumber *width, *height;
             NSNumber *orientation = metadata[@"Orientation"];
-            if (orientation.intValue<5) {
-                // width -> widht
-                width = metadata[@"PixelWidth"];
-                height = metadata[@"PixelHeight"];
-            } else {
-                // width -> height
-                width = metadata[@"PixelHeight"];
-                height = metadata[@"PixelWidth"];
-            }
-            NSString *widthTxt = [self.decimalFormatter stringFromNumber:width];
-            NSString *heightTxt = [self.decimalFormatter stringFromNumber:height];
-            NSUInteger photoResol = width.intValue * height.intValue;
-            NSString *photoResolTxt = [NSString stringWithFormat:@"%.1f", (((float)photoResol)/1000000)];
-            
-            NSDictionary *exifMetadata = [metadata objectForKey:(id)kCGImagePropertyExifDictionary];
+			if (exifMetadata && exifMetadata[@"PixelXDimension"] && exifMetadata[@"PixelXDimension"]) {
+				width = exifMetadata[@"PixelXDimension"];
+				height = exifMetadata[@"PixelYDimension"];
+			} else if (metadata[@"PixelWidth"] && metadata[@"PixelHeight"]) {
+				if (orientation.intValue < 5) {
+					width = metadata[@"PixelWidth"];
+					height = metadata[@"PixelHeight"];
+				} else {
+					width = metadata[@"PixelHeight"];
+					height = metadata[@"PixelWidth"];
+				}
+			}
+
+			if (width && height) {
+				NSString *widthTxt = [self.decimalFormatter stringFromNumber:width];
+				NSString *heightTxt = [self.decimalFormatter stringFromNumber:height];
+				NSInteger photoResolution = width.intValue * height.intValue;
+				NSString *photoResolutionText;
+				photoResolutionText = [NSString stringWithFormat:@"%.1f", (((float) photoResolution)/1000000)];
+				_metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"%@ x %@ (%@MP)", widthTxt, heightTxt, photoResolutionText];
+			} else {
+				_metadataView.mediaSizeLabel.text = @"";
+			}
+
             NSString *orgDateText = exifMetadata[@"DateTimeOriginal"];
             NSDateFormatter *df = [[NSDateFormatter alloc] init];
 			NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
@@ -352,7 +363,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             _metadataView.mediaSizeLabel.hidden = NO;
             _metadataView.takenDateLabel.hidden = NO;
             
-            _metadataView.mediaSizeLabel.text = [NSString stringWithFormat:@"%@ x %@ (%@MP)", widthTxt, heightTxt, photoResolTxt];
 			[df setLocale:[NSLocale currentLocale]];
 			[df setDateStyle:NSDateFormatterFullStyle];
 			[df setTimeStyle:NSDateFormatterShortStyle];

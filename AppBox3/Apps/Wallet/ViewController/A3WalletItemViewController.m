@@ -132,13 +132,11 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		// note가 있을때만 표시한다.
 		if (_item.note.length > 0) {
 			[_fieldItems addObject:self.noteItem];
+		} else {
+			[_fieldItems addObject:self.emptyItem];
 		}
 	}
-	FNLOG(@"%ld", (long)[_fieldItems count]);
-	if ([_fieldItems count] == 1) {
-		[_fieldItems addObject:self.emptyItem];
-	}
-    
+
 	return _fieldItems;
 }
 

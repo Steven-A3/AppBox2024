@@ -89,6 +89,7 @@ enum SortingKind {
     [self registerContentSizeCategoryDidChangeNotification];
 }
 
+
 - (void)contentSizeDidChange:(NSNotification *) notification
 {
     [self.tableView reloadData];
@@ -834,6 +835,7 @@ enum SortingKind {
 			topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
 			_segmentedControl = topCell.topView.sortingSegment;
+			[self itemCountCheck];
 
             cell = topCell;
         } else if ([_items objectAtIndex:indexPath.row] == self.emptyItem) {

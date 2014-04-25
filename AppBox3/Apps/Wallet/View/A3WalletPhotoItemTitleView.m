@@ -7,6 +7,8 @@
 //
 
 #import "A3WalletPhotoItemTitleView.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @implementation A3WalletPhotoItemTitleView
 
@@ -28,6 +30,9 @@
 	}
 
 	[self addSubview:self.favoriteButton];
+
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+	[_favoriteButton setImage:[[UIImage imageNamed:@"star02_on"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
 
 	[_titleTextField makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(22);

@@ -8,7 +8,6 @@
 
 #import "A3WalletItemEditViewController.h"
 #import "A3WalletCategorySelectViewController.h"
-#import "A3WalletItemTitleView.h"
 #import "A3WalletItemFieldCell.h"
 #import "A3WalletItemPhotoFieldCell.h"
 #import "A3WalletItemFieldCateCell.h"
@@ -23,7 +22,7 @@
 #import "WalletFieldItem+initialize.h"
 #import "WalletCategory+initialize.h"
 #import "WalletField.h"
-#import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
 #import "UIImage+Extension2.h"
@@ -871,6 +870,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		case 0:
 			_imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
 			_imagePickerController.allowsEditing = NO;
+
+			_locationManager = [CLLocationManager new];
+			_locationManager.delegate = self;
+			[_locationManager startMonitoringSignificantLocationChanges];
 			break;
 		case 1:
 			_imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -895,14 +898,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     _imagePickerController.videoQuality = UIImagePickerControllerQualityTypeHigh;
 	_imagePickerController.navigationBar.barStyle = UIBarStyleDefault;
 	_imagePickerController.delegate = self;
-    
+
     if (IS_IPAD) {
         if (_imagePickerController.sourceType == UIImagePickerControllerSourceTypeCamera) {
 			_imagePickerController.showsCameraControls = YES;
 			[self presentViewController:_imagePickerController animated:YES completion:NULL];
-			_locationManager = [CLLocationManager new];
-			_locationManager.delegate = self;
-			[_locationManager startMonitoringSignificantLocationChanges];
 		}
         else {
             self.popOverController = [[UIPopoverController alloc] initWithContentViewController:_imagePickerController];
@@ -1474,7 +1474,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 
 	if ([indexPath compare:self.dateInputIndexPath] == NSOrderedSame) {
-		inputCell.valueTextField.textColor = [UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1.0];
+		inputCell.valueTextField.textColor = [[A3AppDelegate instance] themeColor];
 	} else {
 		inputCell.valueTextField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 	}
