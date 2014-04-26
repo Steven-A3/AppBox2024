@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) WalletItem *item;
 @property (nonatomic, readwrite) BOOL showCategory;
+@property (nonatomic, assign) BOOL alwaysReturnToOriginalCategory;
 
 @end

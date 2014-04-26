@@ -14,5 +14,6 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) WalletItem *item;
+@property (nonatomic, assign) BOOL alwaysReturnToOriginalCategory;
 
 @end

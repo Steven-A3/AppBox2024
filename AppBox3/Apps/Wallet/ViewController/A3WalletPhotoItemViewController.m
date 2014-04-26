@@ -89,7 +89,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	if (![self isMovingToParentViewController]) {
 		[self refreshViews];
 	}
-	FNLOG();
 	[self updateMetadataViewWithPage:0];
 }
 
@@ -107,7 +106,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	_tableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, tbvHeight);
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-	_tableView.contentOffset = CGPointMake(0, 0);
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 	if (![_item.note length]) {
@@ -466,6 +464,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
     viewController.delegate = self;
     viewController.item = self.item;
     viewController.hidesBottomBarWhenPushed = YES;
+	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     nav.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -597,9 +596,6 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 	}
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -624,7 +620,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 		[_photoScrollView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(photoCell.centerX);
-			make.top.equalTo(photoCell.top);
+			make.top.equalTo(photoCell.top).with.offset(4);
 			make.width.equalTo(IS_IPAD ? @576 : @320);
 			make.height.equalTo(IS_IPAD ? @506 : @300);
 		}];
@@ -649,6 +645,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
         noteCell.textView.bounces = NO;
         noteCell.textView.placeholder = @"Notes";
         noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+		noteCell.textView.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         noteCell.textView.font = [UIFont systemFontOfSize:17];
 
 		[noteCell setNoteText:_item.note];

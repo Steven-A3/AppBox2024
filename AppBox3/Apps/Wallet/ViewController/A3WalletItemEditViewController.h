@@ -28,5 +28,6 @@
 @property (nonatomic, strong) WalletItem *item;
 @property (nonatomic, strong) WalletCategory *walletCategory;
 @property (nonatomic, assign) id<WalletItemEditDelegate> delegate;
+@property (nonatomic, assign) BOOL alwaysReturnToOriginalCategory;
 
 @end

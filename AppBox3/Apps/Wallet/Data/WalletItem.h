@@ -2,7 +2,7 @@
 //  WalletItem.h
 //  AppBox3
 //
-//  Created by A3 on 4/22/14.
+//  Created by A3 on 4/27/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * note;
 @property (nonatomic, retain) NSString * order;
+@property (nonatomic, retain) NSString * uniqueID;
 @property (nonatomic, retain) WalletCategory *category;
 @property (nonatomic, retain) WalletFavorite *favorite;
 @property (nonatomic, retain) NSSet *fieldItems;

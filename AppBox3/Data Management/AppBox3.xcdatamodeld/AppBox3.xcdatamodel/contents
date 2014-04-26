@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -376,6 +376,7 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="uniqueID" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WalletCategory" inverseName="items" inverseEntity="WalletCategory" syncable="YES"/>
         <relationship name="favorite" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WalletFavorite" inverseName="item" inverseEntity="WalletFavorite" syncable="YES"/>
         <relationship name="fieldItems" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WalletFieldItem" inverseName="walletItem" inverseEntity="WalletFieldItem" syncable="YES"/>
@@ -389,6 +390,7 @@
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
         <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="418"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
+        <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
         <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="75"/>
@@ -422,7 +424,6 @@
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
         <element name="WalletFieldItemImage" positionX="-576" positionY="-396" width="128" height="88"/>
         <element name="WalletFieldItemVideo" positionX="-567" positionY="-387" width="128" height="73"/>
-        <element name="WalletItem" positionX="-585" positionY="677" width="128" height="150"/>
-        <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
+        <element name="WalletItem" positionX="-585" positionY="677" width="128" height="165"/>
     </elements>
 </model>

@@ -64,6 +64,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	// Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor whiteColor];
+	self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self initializeViews];
     
@@ -84,7 +85,10 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 {
     [super viewWillAppear:animated];
 
-	[self updateMetadataView];
+	if (![self isMovingToParentViewController]) {
+		[self refreshViews];
+	}
+	[self updateMetadataViewWithPage:0];
 }
 
 - (void)initializeViews
@@ -97,10 +101,9 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         tbvHeight += 44;
     }
     
-	_tableView.frame = CGRectMake(0, 0, self.view.bounds.size.width, tbvHeight);
+	_tableView.frame = CGRectMake(0, 64, self.view.bounds.size.width, tbvHeight);
 	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 	_tableView.showsVerticalScrollIndicator = NO;
-	_tableView.contentOffset = CGPointMake(0, 0);
 	_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 	if (![_item.note length]) {
@@ -115,11 +118,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 		_toolBar.layer.anchorPoint = CGPointMake(0.5, 1);
 		_toolBar.center = CGPointMake(self.view.bounds.size.width/2, self.view.bounds.size.height);
 
-		CGFloat offsetX = (self.photoThumbs.count*(24+4))/2;
+		CGFloat offsetX = (self.photoThumbs.count*(14 + 1))/2;
 		for (NSUInteger idx = 0; idx < self.photoThumbs.count; idx++) {
 			UIImageView *thumbImgView = _photoThumbs[idx];
 			[self.thumbListContainView addSubview:thumbImgView];
-			float centerX = 2+12+(24+4)* idx;
+			float centerX = 7 + (14 + 1)* idx;
 			thumbImgView.center = CGPointMake(_thumbListContainView.bounds.size.width/2 + centerX - offsetX, _thumbListContainView.bounds.size.height/2);
 		}
 		[self makeThumbSelected:0];
@@ -261,11 +264,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     _thumbListContainView = nil;
     
     [self initializeViews];
-	[self updateMetadataView];
+	[self updateMetadataViewWithPage:0];
 	[self.tableView reloadData];
 }
 
-- (void)updateMetadataView {
+- (void)updateMetadataViewWithPage:(NSInteger)page {
 	self.metadataView.titleTextField.text = [_item.name length] ? _item.name : @"New Item";
 	CGSize textSize = [_metadataView.titleTextField.text sizeWithAttributes:@{NSFontAttributeName: _metadataView.titleTextField.font}];
 	CGRect frame = _metadataView.titleTextField.frame;
@@ -275,13 +278,11 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 	_metadataView.favoriteButton.selected = _item.favorite != nil;
 	_metadataView.timeLabel.text = [NSString stringWithFormat:@"Updated %@",  [_item.modificationDate timeAgo]];
 
-    NSUInteger index = self.photoScrollView.contentOffset.x/_photoScrollView.bounds.size.width;
-    
-    if (self.videoFieldItems.count <= index) {
+    if (self.videoFieldItems.count <= page) {
         return;
     }
     
-    WalletFieldItem *fieldItem = _videoFieldItems[index];
+    WalletFieldItem *fieldItem = _videoFieldItems[page];
 
 	if (fieldItem.video) {
 		CGFloat duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
@@ -351,20 +352,38 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (NSMutableArray *)photoThumbs
 {
-    if (!_photoThumbs) {
-        _photoThumbs = [[NSMutableArray alloc] init];
-        for (int i=0; i<self.videoFieldItems.count; i++) {
-            WalletFieldItem *photoFieldItem = _videoFieldItems[i];
-            UIImageView *photoImgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 ,24, 16)];
-            photoImgView.contentMode = UIViewContentModeScaleAspectFill;
-            NSString *thumbFilePath = [photoFieldItem videoThumbnailPathInTemporary:NO ];
-            UIImage *photoImg = [UIImage imageWithContentsOfFile:thumbFilePath];
-            photoImgView.image = photoImg;
-            [_photoThumbs addObject:photoImgView];
-        }
-    }
-    
-    return _photoThumbs;
+	if (!_photoThumbs) {
+		_photoThumbs = [[NSMutableArray alloc] init];
+		for (NSUInteger idx = 0; idx < self.videoFieldItems.count; idx++) {
+			WalletFieldItem *photoFieldItem = _videoFieldItems[idx];
+			UIImageView *photoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0 ,34, 25)];
+			photoImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+			photoImageView.layer.borderWidth = 1.0;
+			photoImageView.layer.masksToBounds = YES;
+			photoImageView.contentMode = UIViewContentModeScaleAspectFill;
+			photoImageView.tag = idx;
+			UIImage *photoImg = [UIImage imageWithContentsOfFile:[photoFieldItem videoThumbnailPathInTemporary:NO]];
+			photoImageView.image = photoImg;
+			photoImageView.userInteractionEnabled = YES;
+
+			UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(thumbImageTapped:)];
+			[photoImageView addGestureRecognizer:tapGestureRecognizer];
+			[_photoThumbs addObject:photoImageView];
+		}
+	}
+
+	return _photoThumbs;
+}
+
+- (void)thumbImageTapped:(UITapGestureRecognizer *)gestureRecognizer {
+	NSInteger page = (NSInteger) floorf(_photoScrollView.contentOffset.x / _photoScrollView.frame.size.width);
+	if (page == gestureRecognizer.view.tag) return;
+
+	page = gestureRecognizer.view.tag;
+	CGFloat x = page * _photoScrollView.bounds.size.width;
+	[self.photoScrollView setContentOffset:CGPointMake(x, 0) animated:YES];
+	[self makeThumbSelected:page];
+	[self updateMetadataViewWithPage:page];
 }
 
 - (void)favorButtonAction:(UIButton *)favorButton
@@ -388,6 +407,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     viewController.delegate = self;
     viewController.item = self.item;
     viewController.hidesBottomBarWhenPushed = YES;
+	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     nav.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -403,13 +423,13 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     
     for (UIImageView *imgView in _photoThumbs) {
         CGPoint center = imgView.center;
-        imgView.frame = CGRectMake(0, 0, 24, 16);
+        imgView.frame = CGRectMake(0, 0, 14, 11);
         imgView.center = center;
     }
     
     UIImageView *selectThumbImgView = _photoThumbs[selectedIndex];
     CGPoint center = selectThumbImgView.center;
-    selectThumbImgView.frame = CGRectMake(0, 0, 36, 24);
+    selectThumbImgView.frame = CGRectMake(0, 0, 36, 25);
     selectThumbImgView.center = center;
     [self.thumbListContainView bringSubviewToFront:selectThumbImgView];
 }
@@ -478,10 +498,10 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     if (scrollView == self.photoScrollView) {
-        NSUInteger page = floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
+        NSInteger page = (NSInteger) floor(scrollView.contentOffset.x / scrollView.frame.size.width);
         
         [self makeThumbSelected:page];
-		[self updateMetadataView];
+		[self updateMetadataViewWithPage:page];
     }
 }
 
@@ -489,9 +509,9 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 {
     if (scrollView == self.photoScrollView) {
         if (!decelerate) {
-            NSUInteger page = floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
+            NSInteger page = (NSInteger) floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
             [self makeThumbSelected:page];
-			[self updateMetadataView];
+			[self updateMetadataViewWithPage:page];
         }
     }
 }
@@ -527,7 +547,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 		[_photoScrollView makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(photoCell.centerX);
-			make.top.equalTo(photoCell.top);
+			make.top.equalTo(photoCell.top).with.offset(4);
 			make.width.equalTo(IS_IPAD ? @576 : @320);
 			make.height.equalTo(IS_IPAD ? @506 : @300);
 		}];
@@ -553,6 +573,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         noteCell.textView.bounces = NO;
         noteCell.textView.placeholder = @"Notes";
         noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+		noteCell.textView.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         noteCell.textView.font = [UIFont systemFontOfSize:17];
 
 		[noteCell setNoteText:_item.note];
@@ -654,7 +675,6 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 		return IS_IPAD ? 510 : 304;
 	} else
 	if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.metadataItem) {
-		[self updateMetadataView];
 		return [self.metadataView calculatedHeight];
 	}
     if ([self.normalFieldItems objectAtIndex:indexPath.row] == self.noteItem) {
@@ -666,7 +686,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
         NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_item.note attributes:textAttributes];
         UITextView *txtView = [[UITextView alloc] init];
         [txtView setAttributedText:attributedString];
-        float margin = IS_IPAD ? 49:31;
+		CGFloat margin = IS_IPAD ? 28 + 15 : 15 + 15;
         CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
         float cellHeight = txtViewSize.height + 20;
         

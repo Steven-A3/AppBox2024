@@ -188,7 +188,7 @@
 }
 
 - (NSString *)stringByTrimmingSpaceCharacters {
-	return [self stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t "]];
+	return [self stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t\r "]];
 }
 
 @end

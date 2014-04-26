@@ -13,6 +13,9 @@
 #import "WalletCategory+initialize.h"
 #import "UIViewController+A3AppCategory.h"
 #import "A3WalletMoreTableViewController.h"
+#import "A3WalletCategoryInfoViewController.h"
+#import "A3WalletItemViewController.h"
+#import "WalletItem.h"
 
 // NSUserDefaults key values:
 NSString *kWallet_WhichTabPrefKey		= @"kWhichTab";     // which tab to select at launch
@@ -23,6 +26,7 @@ NSString *kWallet_TabBarOrderPrefKey	= @"kTabBarOrder";  // the ordering of the 
 NSString *const A3WalletNotificationCategoryChanged = @"CategoryChanged";
 NSString *const A3WalletNotificationCategoryDeleted = @"CategoryDeleted";
 NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
+NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMoved";
 
 @interface A3WalletMainTabBarController ()
 
@@ -141,30 +145,106 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
 
     // 카테고리가 삭제되면 탭바도 삭제되어야 하므로 노티를 수신한다.
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveCategoryDeletedNotification:) name:A3WalletNotificationCategoryDeleted object:nil];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveItemCategoryMovedNotification:) name:A3WalletNotificationItemCategoryMoved object:nil];
 }
 
-- (void)didReceiveCategoryChangedNotification:(NSNotification *)notification
-{
-	_categories = nil;
+- (void)didReceiveItemCategoryMovedNotification:(NSNotification *)notification {
+	if (notification.userInfo) {
+		NSString *categoryID = [notification.userInfo valueForKey:@"categoryID"];
+		NSString *itemID = [notification.userInfo valueForKey:@"itemID"];
 
+		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+			BOOL match = [category.uniqueID isEqualToString:categoryID];
+			if (match) *stop = YES;
+			return match;
+		}];
+		NSUInteger numberOfCategoriesInTabBar = [self numberOfCategoriesInTabBar];
+		UINavigationController *categoryNavigationController;
+		if (indexOfSelectedCategory < numberOfCategoriesInTabBar) {
+			[self setSelectedIndex:indexOfSelectedCategory];
+
+			UINavigationController *navigationController = self.viewControllers[indexOfSelectedCategory];
+			[navigationController popToRootViewControllerAnimated:NO];
+			[navigationController.viewControllers[0] view];
+
+			categoryNavigationController = navigationController;
+		} else {
+			[self setSelectedIndex:numberOfCategoriesInTabBar];
+
+			[_myMoreNavigationController popToRootViewControllerAnimated:NO];
+			[_myMoreNavigationController.viewControllers[0] view];
+
+			A3WalletCategoryViewController *categoryViewController = [[A3WalletCategoryViewController alloc] initWithNibName:nil bundle:nil];
+			categoryViewController.category = self.categories[indexOfSelectedCategory];
+			categoryViewController.isFromMoreTableViewController = YES;
+			[categoryViewController view];
+			[_myMoreNavigationController pushViewController:categoryViewController animated:NO];
+
+			categoryNavigationController = _myMoreNavigationController;
+		}
+
+		NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
+		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
+		A3WalletItemViewController *itemViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
+		itemViewController.hidesBottomBarWhenPushed = YES;
+		WalletItem *item = [WalletItem MR_findByAttribute:@"uniqueID" withValue:itemID][0];
+		itemViewController.item = item;
+		itemViewController.showCategory = YES;
+		itemViewController.alwaysReturnToOriginalCategory = YES;
+		[categoryNavigationController pushViewController:itemViewController animated:NO];
+	}
+}
+
+- (void)didReceiveCategoryChangedNotification:(NSNotification *)notification {
+	_categories = nil;
 	[self setupTabBar];
+	if (notification.userInfo) {
+		NSString *categoryID = [notification.userInfo valueForKey:@"uniqueID"];
+		NSUInteger indexOfSelectedCategory = [self.categories indexOfObjectPassingTest:^BOOL(WalletCategory *category, NSUInteger idx, BOOL *stop) {
+			BOOL match = [category.uniqueID isEqualToString:categoryID];
+			if (match) *stop = YES;
+			return match;
+		}];
+		NSUInteger numberOfCategoriesInTabBar = [self numberOfCategoriesInTabBar];
+		if (indexOfSelectedCategory < numberOfCategoriesInTabBar) {
+			[self setSelectedIndex:indexOfSelectedCategory];
+
+			UINavigationController *navigationController = self.viewControllers[indexOfSelectedCategory];
+			[navigationController.viewControllers[0] view];
+			A3WalletCategoryInfoViewController *infoViewController = [[A3WalletCategoryInfoViewController alloc] initWithStyle:UITableViewStylePlain];
+			infoViewController.category = self.categories[indexOfSelectedCategory];
+			[infoViewController view];
+			[navigationController pushViewController:infoViewController animated:NO];
+		} else {
+			[self setSelectedIndex:numberOfCategoriesInTabBar];
+
+			[_myMoreNavigationController.viewControllers[0] view];
+
+			A3WalletCategoryViewController *viewController = [[A3WalletCategoryViewController alloc] initWithNibName:nil bundle:nil];
+			viewController.category = self.categories[indexOfSelectedCategory];
+			viewController.isFromMoreTableViewController = YES;
+			[viewController view];
+			[_myMoreNavigationController pushViewController:viewController animated:NO];
+
+			A3WalletCategoryInfoViewController *infoViewController = [[A3WalletCategoryInfoViewController alloc] initWithStyle:UITableViewStylePlain];
+			infoViewController.category = self.categories[indexOfSelectedCategory];
+			[viewController view];
+			[_myMoreNavigationController pushViewController:infoViewController animated:NO];
+		}
+	}
 }
 
 - (void)didReceiveCategoryAddedNotification:(NSNotification *)notification
 {
-    _categories = nil;
-    
-    [self setupTabBar];
+	_categories = nil;
+	[self setupTabBar];
 }
 
 - (void)didReceiveCategoryDeletedNotification:(NSNotification *)notification
 {
-    _categories = nil;
-    
-    [self setupTabBar];
-    
-    // All화면으로 띄우고 초기화한다. (더이상 삭제된 카테고리 화면이 없음)
-    self.selectedIndex = 0;
+	_categories = nil;
+	[self setupTabBar];
 }
 
 #pragma mark - UITabBarControllerDelegate
@@ -181,6 +261,10 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
     }
 }
 
+- (NSUInteger)numberOfCategoriesInTabBar {
+	return IS_IPHONE ? 4 : 7;
+}
+
 #pragma mark - Added Function
 
 - (void)setupTabBar
@@ -189,8 +273,8 @@ NSString *const A3WalletNotificationCategoryAdded = @"CategoryAdded";
 
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];
 
-	NSUInteger numberOfItemsOnTapBar = IS_IPHONE ? 4 : 7;
-    for (NSUInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
+	NSUInteger numberOfItemsOnTapBar = [self numberOfCategoriesInTabBar];
+	for (NSUInteger idx = 0; idx < numberOfItemsOnTapBar; idx++) {
 
         WalletCategory *category = self.categories[idx];
         UIViewController *viewController;

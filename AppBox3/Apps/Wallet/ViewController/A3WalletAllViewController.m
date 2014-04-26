@@ -649,6 +649,7 @@ enum SortingKind {
         viewController.hidesBottomBarWhenPushed = YES;
         viewController.item = item;
         viewController.showCategory = YES;
+		viewController.alwaysReturnToOriginalCategory = YES;
         [self.navigationController pushViewController:viewController animated:YES];
     }
     

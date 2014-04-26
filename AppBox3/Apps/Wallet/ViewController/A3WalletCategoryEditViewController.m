@@ -158,12 +158,19 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 			[_delegate walletCategoryEdited:_category];
 		}
 
+		[self.navigationController popToRootViewControllerAnimated:NO];
+
 		if (_isAddingCategory) {
 			[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
+		} else {
+			NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationCategoryChanged
+																		 object:self
+																	   userInfo:@{@"uniqueID":_category.uniqueID}];
+			[[NSNotificationCenter defaultCenter] postNotification:notification];
 		}
+	} else {
+		[self dismissViewControllerAnimated:YES completion:NULL];
 	}
-
-	[self dismissViewController];
 }
 
 - (void)cancelButtonAction:(id)sender

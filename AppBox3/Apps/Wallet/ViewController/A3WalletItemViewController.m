@@ -234,6 +234,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 	viewController.delegate = self;
 	viewController.item = self.item;
 	viewController.hidesBottomBarWhenPushed = YES;
+	viewController.alwaysReturnToOriginalCategory = self.alwaysReturnToOriginalCategory;
     
 	UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:viewController];
 	nav.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -522,6 +523,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
         noteCell.textView.bounces = NO;
         noteCell.textView.placeholder = @"Notes";
         noteCell.textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+		noteCell.textView.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
         noteCell.textView.font = [UIFont systemFontOfSize:17];
 
 		[noteCell setNoteText:_item.note];
