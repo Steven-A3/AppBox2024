@@ -29,7 +29,13 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
+	[_valueTextField makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.centerY);
+		make.right.equalTo(self.right).with.offset(IS_IPHONE ? 15 : 28);
+		make.height.equalTo(@50);
+	}];
 }
 
 @end

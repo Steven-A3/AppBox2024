@@ -44,7 +44,8 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UISearchDisplayController *mySearchDisplayController;
 @property (nonatomic, strong) NSArray *filteredResults;
-@property (nonatomic, weak) UISegmentedControl *segmentedControl;
+@property (nonatomic, weak) UISegmentedControl *segmentedControlRef;
+@property (nonatomic, weak) A3WalletAllTopView *topViewRef;
 
 @end
 
@@ -187,18 +188,22 @@ enum SortingKind {
     
     // 버튼 기능 활성화 여부
     [self itemCountCheck];
+
+	if (![self isMovingToParentViewController] && _topViewRef) {
+		[self updateTopViewInfo:_topViewRef];
+	}
 }
 
 - (void)itemCountCheck {
 	BOOL enable = !_dataEmpty;
-	if (_segmentedControl) {
+	if (_segmentedControlRef) {
 		if (enable) {
-			[self.segmentedControl setTintColor:nil];
+			[self.segmentedControlRef setTintColor:nil];
 		} else {
-			[self.segmentedControl setTintColor:[UIColor colorWithRed:138.0 / 255.0 green:138.0 / 255.0 blue:138.0 / 255.0 alpha:1.0]];
+			[self.segmentedControlRef setTintColor:[UIColor colorWithRed:138.0 / 255.0 green:138.0 / 255.0 blue:138.0 / 255.0 alpha:1.0]];
 		}
 
-		[_segmentedControl setEnabled:enable];
+		[_segmentedControlRef setEnabled:enable];
 	}
 	self.navigationItem.rightBarButtonItem.enabled = enable;
 }
@@ -317,15 +322,8 @@ enum SortingKind {
                                      NSFontAttributeName : numberFont,
                                      NSForegroundColorAttributeName:[UIColor colorWithRed:77.0/255.0 green:77.0/255.0 blue:77.0/255.0 alpha:1.0]
                                      };
-    
-    // cate
-    NSMutableArray *tmp = [NSMutableArray new];
-    for (WalletItem *item in self.items) {
-        if (([item isKindOfClass:[WalletItem class]]) && ![tmp containsObject:item.category]) {
-            [tmp addObject:item.category];
-        }
-    }
-    NSUInteger cateCount = tmp.count;
+
+    NSUInteger cateCount = [WalletCategory MR_countOfEntities];
     
     NSAttributedString *nameText = [[NSAttributedString alloc] initWithString:(cateCount > 1) ? @"CATEGORIES" : @"CATEGORY"
                                                                    attributes:textAttributes];
@@ -480,8 +478,7 @@ enum SortingKind {
 
 - (A3WalletItemEditViewController *)itemAddViewController
 {
-    NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
     viewController.isAddNewItem = YES;
     viewController.hidesBottomBarWhenPushed = YES;
@@ -643,8 +640,7 @@ enum SortingKind {
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
+		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
         A3WalletItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
         viewController.hidesBottomBarWhenPushed = YES;
         viewController.item = item;
@@ -835,7 +831,9 @@ enum SortingKind {
 
 			topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
 
-			_segmentedControl = topCell.topView.sortingSegment;
+			_segmentedControlRef = topCell.topView.sortingSegment;
+			_topViewRef = topCell.topView;
+
 			[self itemCountCheck];
 
             cell = topCell;
@@ -878,6 +876,9 @@ enum SortingKind {
 
 		// 버튼 기능 활성화 여부
         [self itemCountCheck];
+		if (_topViewRef) {
+			[self updateTopViewInfo:_topViewRef];
+		}
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view

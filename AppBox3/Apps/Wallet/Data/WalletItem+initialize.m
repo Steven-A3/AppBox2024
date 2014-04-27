@@ -30,4 +30,25 @@
 	}
 }
 
+- (void)verifyNULLField {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItem.uniqueID == %@ AND field == NULL", self.uniqueID];
+	NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem MR_findAllWithPredicate:predicate];
+	NSDateFormatter *dateFormatter = [NSDateFormatter new];
+	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+	NSMutableString *collectedTexts = [NSMutableString new];
+	for (WalletFieldItem *fieldItem in fieldItemsFieldEqualsNULL) {
+		if (fieldItem.date) {
+			[collectedTexts appendFormat:@"%@\n", [dateFormatter stringFromDate:fieldItem.date]];
+			[fieldItem MR_deleteEntity];
+		} else if ([fieldItem.value length]) {
+			[collectedTexts appendFormat:@"%@\n", fieldItem.value];
+			[fieldItem MR_deleteEntity];
+		}
+	}
+	if ([collectedTexts length]) {
+		self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n",self.note] : @"", collectedTexts];
+	}
+	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];
+}
+
 @end

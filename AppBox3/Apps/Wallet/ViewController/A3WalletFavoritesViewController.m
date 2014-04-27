@@ -186,8 +186,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
+		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
         A3WalletItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
         viewController.hidesBottomBarWhenPushed = YES;
         viewController.item = item;

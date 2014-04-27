@@ -184,8 +184,7 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 			categoryNavigationController = _myMoreNavigationController;
 		}
 
-		NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
+		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 		A3WalletItemViewController *itemViewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
 		itemViewController.hidesBottomBarWhenPushed = YES;
 		WalletItem *item = [WalletItem MR_findByAttribute:@"uniqueID" withValue:itemID][0];

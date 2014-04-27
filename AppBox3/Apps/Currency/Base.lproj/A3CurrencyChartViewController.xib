@@ -9,7 +9,7 @@
                 <outlet property="chartView" destination="xV6-wu-1m2" id="4fU-or-Ihy"/>
                 <outlet property="line1" destination="Ukk-Z6-Jsj" id="BpM-97-n0W"/>
                 <outlet property="line2" destination="WgZ-84-AYt" id="ziW-B6-d6r"/>
-                <outlet property="segmentedControl" destination="7k9-Yw-aZ1" id="9l8-R1-zRq"/>
+                <outlet property="segmentedControlRef" destination="7k9-Yw-aZ1" id="9l8-R1-zRq"/>
                 <outlet property="tableView" destination="g4S-ZW-4BT" id="3C7-ag-LxI"/>
                 <outlet property="titleView" destination="reF-rx-dxl" id="jaX-uC-ImL"/>
                 <outlet property="valueView" destination="5Rv-gj-VEg" id="fLa-iT-gGC"/>

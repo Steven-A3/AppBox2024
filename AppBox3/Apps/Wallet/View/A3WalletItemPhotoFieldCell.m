@@ -32,6 +32,20 @@
     
     _photoButton.layer.cornerRadius = _photoButton.frame.size.width/2.0;
     _photoButton.clipsToBounds = YES;
+
+	[_photoButton makeConstraints:^(MASConstraintMaker *make) {
+		make.right.equalTo(self.right).with.offset(-15);
+		make.width.equalTo(@60);
+		make.height.equalTo(@60);
+		make.centerY.equalTo(self.centerY);
+	}];
+
+	[_valueTextField makeConstraints:^(MASConstraintMaker *make) {
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+		make.centerY.equalTo(self.centerY);
+		make.right.equalTo(_photoButton.left);
+		make.height.equalTo(@50);
+	}];
 }
 
 @end

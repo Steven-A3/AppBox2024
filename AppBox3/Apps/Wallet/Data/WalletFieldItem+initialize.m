@@ -69,9 +69,9 @@
 
 - (UIImage *)thumbnailImage {
 	NSString *thumbnailPath = nil;
-	if ([self.field.type isEqualToString:WalletFieldTypeImage]) {
+	if (self.image) {
 		thumbnailPath = [self imageThumbnailPathInTemporary:NO ];
-	} else if ([self.field.type isEqualToString:WalletFieldTypeVideo]) {
+	} else if (self.video) {
 		thumbnailPath = [self videoThumbnailPathInTemporary:NO ];
 	}
 	if (thumbnailPath) {

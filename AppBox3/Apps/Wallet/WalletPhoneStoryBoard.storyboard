@@ -110,7 +110,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="photoButton" destination="GBZ-pZ-Njk" id="nYa-24-Bnl"/>
-                                    <outlet property="valueTxtFd" destination="hSt-91-7Hb" id="VJc-lA-RPs"/>
+                                    <outlet property="valueTextField" destination="hSt-91-7Hb" id="VJc-lA-RPs"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletNoteCell" rowHeight="180" id="OGt-m2-Rtd" customClass="A3WalletNoteCell">
@@ -439,7 +439,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="photoButton" destination="fbS-TH-9ok" id="qVa-9D-y2I"/>
-                                            <outlet property="valueTxtFd" destination="7fT-nY-Vdd" id="s66-3X-sYd"/>
+                                            <outlet property="valueTextField" destination="7fT-nY-Vdd" id="s66-3X-sYd"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="defaultCellID" textLabel="DVA-j5-hLe" rowHeight="74" style="IBUITableViewCellStyleDefault" id="saN-Ic-xY5">
@@ -555,7 +555,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="photoButton" destination="w0M-LA-Lha" id="Q5d-vi-RHs"/>
-                                            <outlet property="valueTxtFd" destination="Dge-8Z-8OE" id="RXl-AR-Tzd"/>
+                                            <outlet property="valueTextField" destination="Dge-8Z-8OE" id="RXl-AR-Tzd"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="defaultCellID" textLabel="WWY-Yu-jec" rowHeight="74" style="IBUITableViewCellStyleDefault" id="S5f-43-dsc">
@@ -676,7 +676,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="photoButton" destination="1SK-ZZ-O4P" id="le4-2X-vEM"/>
-                                    <outlet property="valueTxtFd" destination="HnC-cR-8SN" id="RcC-aj-1Cy"/>
+                                    <outlet property="valueTextField" destination="HnC-cR-8SN" id="WOD-Tr-751"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldDateCell" rowHeight="74" id="mpj-t7-vv2" customClass="A3WalletItemFieldCell">
@@ -716,11 +716,11 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCateCell" rowHeight="74" id="aKb-Qn-niN" customClass="A3WalletItemFieldCateCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="A3WalletItemFieldCateCell" rowHeight="74" id="aKb-Qn-niN" customClass="A3WalletItemFieldCell">
                                 <rect key="frame" x="0.0" y="595" width="320" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aKb-Qn-niN" id="G4w-T2-ZAk">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="73"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="73"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Number, Account" minimumFontSize="17" id="zeq-Wy-2qk" userLabel="value text field" customClass="JVFloatLabeledTextField">
@@ -730,10 +730,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                         </textField>
-                                        <imageView userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow" id="lXl-jz-JLx">
-                                            <rect key="frame" x="282" y="18" width="23" height="37"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
@@ -805,6 +801,22 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                                 <connections>
                                     <outlet property="textView" destination="roA-T1-aZh" id="4KB-5O-W3a"/>
                                 </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="defaultCellID" textLabel="Wjg-qG-PuB" rowHeight="180" style="IBUITableViewCellStyleDefault" id="IbZ-mk-5qC">
+                                <rect key="frame" x="0.0" y="997" width="320" height="180"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IbZ-mk-5qC" id="cWN-PA-w8a">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="179"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Wjg-qG-PuB">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
                         <connections>

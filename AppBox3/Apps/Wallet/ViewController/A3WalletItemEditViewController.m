@@ -10,7 +10,6 @@
 #import "A3WalletCategorySelectViewController.h"
 #import "A3WalletItemFieldCell.h"
 #import "A3WalletItemPhotoFieldCell.h"
-#import "A3WalletItemFieldCateCell.h"
 #import "A3WalletItemRightIconCell.h"
 #import "A3WalletNoteCell.h"
 #import "A3WalletDateInputCell.h"
@@ -33,12 +32,12 @@
 #import "WalletFieldItemVideo.h"
 #import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
-#import "NSString+conversion.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+extern NSString *const A3TableViewCellDefaultCellID;
 NSString *const A3WalletItemTitleCellID = @"A3WalletTitleCell";
 NSString *const A3WalletItemFieldCellID4 = @"A3WalletItemFieldCell";
 NSString *const A3WalletItemPhotoFieldCellID4 = @"A3WalletItemPhotoFieldCell";
@@ -105,7 +104,10 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		_walletCategory = _item.category;
 
 		[self copyThumbnailImagesToTemporaryPath];
+
+		[_item verifyNULLField];
 	}
+
 	_originalCategoryUniqueID = _walletCategory.uniqueID;
 	_isMemoCategory = [_item.category.uniqueID isEqualToString:A3WalletUUIDMemoCategory];
 
@@ -156,13 +158,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)copyThumbnailImagesToTemporaryPath {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
+		if (fieldItem.image) {
 			NSString *thumbnailImagePath = [fieldItem imageThumbnailPathInTemporary:NO];
 			NSString *thumbnailImageInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
 			[fileManager copyItemAtPath:thumbnailImagePath toPath:thumbnailImageInTemp error:NULL];
 			continue;
 		}
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
+		if (fieldItem.video) {
 			NSString *thumbnailImagePath = [fieldItem videoThumbnailPathInTemporary:NO];
 			NSString *thumbnailImageInTemp = [fieldItem videoThumbnailPathInTemporary:YES];
 			[fileManager copyItemAtPath:thumbnailImagePath toPath:thumbnailImageInTemp error:NULL];
@@ -174,7 +176,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)moveMediaFilesToNormalPath {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
+		if (fieldItem.image) {
 			NSString *thumbnailImageInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
 			if (![fileManager fileExistsAtPath:thumbnailImageInTemp]) continue;
 
@@ -183,7 +185,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			[fileManager moveItemAtPath:thumbnailImageInTemp toPath:thumbnailImagePath error:NULL];
 			continue;
 		}
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
+		if (fieldItem.video) {
 			NSString *videoFilePathInTemp = [fieldItem videoFilePathInTemporary:YES];
 
 			if (![fileManager fileExistsAtPath:videoFilePathInTemp]) continue;
@@ -204,12 +206,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)removeTempFiles {
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 	for (WalletFieldItem *fieldItem in _item.fieldItems) {
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+		if (fieldItem.image) {
 			NSString *thumbnailImagePathInTemp = [fieldItem imageThumbnailPathInTemporary:YES];
 			[fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
 			continue;
 		}
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+		if (fieldItem.video) {
 			NSString *thumbnailImagePathInTemp = [fieldItem videoThumbnailPathInTemporary:YES];
 			[fileManager removeItemAtPath:thumbnailImagePathInTemp error:NULL];
 			NSString *videoFilePathInTemp = [fieldItem videoFilePathInTemporary:YES];
@@ -246,7 +248,16 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 		[_sectionItems insertObject:self.titleItem atIndex:0];
 		[_sectionItems insertObject:self.categoryItem atIndex:1];
-        [_sectionItems addObject:self.noteItem];
+
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItem.uniqueID == %@ AND field == NULL", _item.uniqueID];
+		NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem MR_findAllWithPredicate:predicate];
+		for (WalletFieldItem *fieldItem in fieldItemsFieldEqualsNULL) {
+			if (fieldItem.image || fieldItem.video) {
+				[_sectionItems addObject:fieldItem];
+			}
+		}
+
+		[_sectionItems addObject:self.noteItem];
     }
     
     return _sectionItems;
@@ -423,23 +434,55 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     [self tableView:self.tableView didSelectRowAtIndexPath:ip];
 }
 
-- (void)deleteMediaItem
-{
-	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:NO];
-	if (fieldItem) {
-		if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem imageThumbnailPathInTemporary:YES ] error:NULL];
-			[fieldItem.image MR_deleteEntity];
-			fieldItem.image = nil;
-		} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoFilePathInTemporary:YES ] error:NULL];
-			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInTemporary:YES ] error:NULL];
-			[fieldItem.video MR_deleteEntity];
-			fieldItem.video = nil;
+- (void)deleteMediaItem {
+	if ([self.sectionItems[_currentIndexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+		WalletFieldItem *fieldItem = _sectionItems[_currentIndexPath.row];
+		if (fieldItem.image) {
+			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem imageThumbnailPathInTemporary:YES] error:NULL];
+		} else {
+			[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInTemporary:YES] error:NULL];
 		}
-		[self.tableView reloadRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+		[fieldItem MR_deleteEntity];
+
+		[_sectionItems removeObjectAtIndex:_currentIndexPath.row];
+		[self.tableView deleteRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+	} else {
+		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:NO];
+		if (fieldItem) {
+			if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem imageThumbnailPathInTemporary:YES ] error:NULL];
+				[fieldItem.image MR_deleteEntity];
+				fieldItem.image = nil;
+			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoFilePathInTemporary:YES ] error:NULL];
+				[[NSFileManager defaultManager] removeItemAtPath:[fieldItem videoThumbnailPathInTemporary:YES ] error:NULL];
+				[fieldItem.video MR_deleteEntity];
+				fieldItem.video = nil;
+			}
+			[self.tableView reloadRowsAtIndexPaths:@[_currentIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+		}
 	}
 	[self updateDoneButtonEnabled];
+}
+
+- (void)askDeleteImage {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															 delegate:self
+													cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+											   destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Photo", @"common", nil)
+													otherButtonTitles:nil];
+	actionSheet.tag = 1;
+	[actionSheet showInView:self.view];
+}
+
+- (void)askDeleteVideo {
+	UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+															 delegate:self
+													cancelButtonTitle:NSLocalizedStringFromTable(@"Cancel", @"common", nil)
+											   destructiveButtonTitle:NSLocalizedStringFromTable(@"Delete Video", @"common", nil)
+													otherButtonTitles:nil];
+	actionSheet.tag = 1;
+	[actionSheet showInView:self.view];
 }
 
 - (void)askImagePickupWithDelete:(BOOL)deleteEnable
@@ -681,6 +724,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	}
 
 	NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+	[dateFormatter setDateStyle:NSDateFormatterFullStyle];
 	for (WalletFieldItem *remainItem in originalFieldItems) {
 		if ([remainItem.field.type isEqualToString:WalletFieldTypeDate] && remainItem.date) {
 			[moveToNoteString appendFormat:@"%@ : %@\n", remainItem.field.name, [dateFormatter stringFromDate:remainItem.date]];
@@ -689,7 +733,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
             NSString *movingText = [NSString stringWithFormat:@"%@ : %@\n", remainItem.field.name, remainItem.value];
 			[moveToNoteString appendString:movingText];
         }
-		[remainItem MR_deleteEntity];
+		if (![remainItem.field.type isEqualToString:WalletFieldTypeImage] && ![remainItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+			[remainItem MR_deleteEntity];
+		} else {
+			remainItem.field = nil;
+		}
     }
     if (moveToNoteString.length > 0) {
         self.item.note = [moveToNoteString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n\t "]];
@@ -1182,7 +1230,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
     }
     
     if (indexPath.section == 0) {
-        if ([self.sectionItems objectAtIndex:indexPath.row] == self.categoryItem) {
+	    if ([self.sectionItems objectAtIndex:indexPath.row] == self.categoryItem) {
             // category
             A3WalletCategorySelectViewController *viewController = [[A3WalletCategorySelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
             viewController.selectedCategory = _item.category;
@@ -1231,7 +1279,14 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
                 A3WalletItemFieldCell *inputCell = (A3WalletItemFieldCell *)[tableView cellForRowAtIndexPath:indexPath];
                 [inputCell.valueTextField becomeFirstResponder];
             }
-        }
+        } else if ([self.sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+			WalletFieldItem *fieldItem = _sectionItems[indexPath.row];
+			if (fieldItem.image) {
+				[self askDeleteImage];
+			} else if (fieldItem.video) {
+				[self askDeleteVideo];
+			}
+		}
     }
     else {
         // delete category
@@ -1362,6 +1417,20 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 }
 
 - (UITableViewCell *)getFieldTypeCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+	if ([_sectionItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
+		UITableViewCell *cell;
+		WalletFieldItem *fieldItem = _sectionItems[indexPath.row];
+		if (fieldItem.image) {
+			cell = [self getImageCell:tableView indexPath:indexPath fieldItem:fieldItem];
+		} else if (fieldItem.video) {
+			cell = [self getVideoCell:tableView indexPath:indexPath fieldItem:fieldItem];
+		} else {
+			FNLOG(@"Invalid Data has been found. WalletFieldItem field == NULL, image == NULL, video == NULL");
+			UITableViewCell *defaultCell = [tableView dequeueReusableCellWithIdentifier:A3TableViewCellDefaultCellID forIndexPath:indexPath];
+			cell = defaultCell;
+		}
+		return cell;
+	}
 	WalletField *field = [_sectionItems objectAtIndex:indexPath.row];
 	if (![field isKindOfClass:[WalletField class]]) return nil;
 
@@ -1374,13 +1443,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 			cell = [self getDateCell:tableView indexPath:indexPath fieldItem:fieldItem];
 			break;
 		case 1:
-			cell= [self getImageCell:tableView indexPath:indexPath fieldItem:fieldItem];
+			cell = [self getImageCell:tableView indexPath:indexPath fieldItem:fieldItem];
 			break;
 		case 2:
-			cell= [self getVideoCell:tableView indexPath:indexPath fieldItem:fieldItem];
+			cell = [self getVideoCell:tableView indexPath:indexPath fieldItem:fieldItem];
 			break;
 		default:
-			cell= [self getNormalCell:tableView indexPath:indexPath field:field fieldItem:fieldItem];
+			cell = [self getNormalCell:tableView indexPath:indexPath field:field fieldItem:fieldItem];
 			break;
 	}
 	return cell;
@@ -1409,12 +1478,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID4 forIndexPath:indexPath];
 
 		photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self configureFloatingTextField:photoCell.valueTxtFd];
+		[self configureFloatingTextField:photoCell.valueTextField];
 
-		photoCell.valueTxtFd.placeholder = fieldItem.field.name;
-		photoCell.valueTxtFd.enabled = NO;
+		photoCell.valueTextField.placeholder = fieldItem.field.name;
+		photoCell.valueTextField.enabled = NO;
 
-		photoCell.valueTxtFd.text = @" ";
+		photoCell.valueTextField.text = @" ";
 		photoCell.photoButton.hidden = NO;
 
 		NSString *thumbFilePath = [fieldItem videoThumbnailPathInTemporary:YES ];
@@ -1446,12 +1515,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID4 forIndexPath:indexPath];
 
 		photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-		[self configureFloatingTextField:photoCell.valueTxtFd];
+		[self configureFloatingTextField:photoCell.valueTextField];
 
-		photoCell.valueTxtFd.placeholder = fieldItem.field.name;
-		photoCell.valueTxtFd.enabled = NO;
+		photoCell.valueTextField.placeholder = fieldItem.field.name;
+		photoCell.valueTextField.enabled = NO;
 
-		photoCell.valueTxtFd.text = @" ";
+		photoCell.valueTextField.text = @" ";
 		photoCell.photoButton.hidden = NO;
 
 		NSString *thumbFilePath = [fieldItem imageThumbnailPathInTemporary:YES ];
@@ -1533,8 +1602,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	return noteCell;
 }
 
-- (A3WalletItemFieldCateCell *)getCategoryCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
-	A3WalletItemFieldCateCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCateCellID4 forIndexPath:indexPath];
+- (A3WalletItemFieldCell *)getCategoryCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+	A3WalletItemFieldCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldCateCellID4 forIndexPath:indexPath];
 
 	inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	[self configureFloatingTextField:inputCell.valueTextField];

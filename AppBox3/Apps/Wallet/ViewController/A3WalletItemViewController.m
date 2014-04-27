@@ -31,6 +31,7 @@
 #import "WalletFieldItem+initialize.h"
 #import "A3WalletItemTitleCell.h"
 #import "WalletFieldItemImage.h"
+#import "WalletItem+initialize.h"
 
 
 @interface A3WalletItemViewController () <UITextFieldDelegate, WalletItemEditDelegate, MWPhotoBrowserDelegate, MFMailComposeViewControllerDelegate, UITextViewDelegate, MFMessageComposeViewControllerDelegate>
@@ -100,8 +101,10 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (NSMutableArray *)fieldItems
 {
 	if (!_fieldItems) {
-		NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-		_fieldItems = [[NSMutableArray alloc] initWithArray:[_item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]]];
+		[_item verifyNULLField];
+
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItem.uniqueID == %@", _item.uniqueID];
+		_fieldItems = [[NSMutableArray alloc] initWithArray:[WalletFieldItem MR_findAllSortedBy:@"field.order" ascending:YES withPredicate:predicate] ];
         
 		// 데이타 없는 item은 표시하지 않는다.
 		NSMutableArray *deleteTmp = [NSMutableArray new];
@@ -117,7 +120,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 				}
 			}
 			else {
-				if ([fieldItem.value length] == 0) {
+				if ([fieldItem.value length] == 0 && fieldItem.image && fieldItem.video) {
 					[deleteTmp addObject:fieldItem];
 				}
 			}
@@ -183,7 +186,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 		for (int i=0; i<self.fieldItems.count; i++) {
 			if ([_fieldItems[i] isKindOfClass:[WalletFieldItem class]]) {
 				WalletFieldItem *fieldItem = _fieldItems[i];
-				if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
+				if (fieldItem.image) {
 					MWPhoto *photo = [MWPhoto photoWithImage:fieldItem.image.image];
 					[_albumPhotos addObject:photo];
 				}
@@ -203,16 +206,14 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 - (void)photoButtonAction:(UIButton *)sender
 {
 	WalletFieldItem *fieldItem = _fieldItems[sender.tag];
-    
-	if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-		if (fieldItem.video) {
-			MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInTemporary:NO ]]];
-			[self presentViewController:pvc animated:YES completion:^{
-				[pvc.moviePlayer play];
-			}];
-		}
+
+	if (fieldItem.video) {
+		MPMoviePlayerViewController *pvc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:[fieldItem videoFilePathInTemporary:NO ]]];
+		[self presentViewController:pvc animated:YES completion:^{
+			[pvc.moviePlayer play];
+		}];
 	}
-	else if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+	else if (fieldItem.image) {
 		// Create browser
 		MWPhotoBrowser *browser = [[MWPhotoBrowser alloc] initWithDelegate:self];
 		browser.displayActionButton = YES;
@@ -228,8 +229,7 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 
 - (void)editButtonAction:(id)sender
 {
-	NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
-	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
 	A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
 	viewController.delegate = self;
 	viewController.item = self.item;
@@ -547,31 +547,23 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
     }
     else if ([_fieldItems[indexPath.row] isKindOfClass:[WalletFieldItem class]]) {
         WalletFieldItem *fieldItem = _fieldItems[indexPath.row];
-        
-        if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] || [fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-            
+        if (fieldItem.image || fieldItem.video) {
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [self configureFloatingTextField:photoCell.valueTxtFd];
+			[self configureFloatingTextField:photoCell.valueTextField];
             
-            photoCell.valueTxtFd.placeholder = fieldItem.field.name;
-            
-            if (fieldItem.image || fieldItem.video) {
-                photoCell.valueTxtFd.text = @" ";
-                photoCell.photoButton.hidden = NO;
-                
-                UIImage *photo = fieldItem.thumbnailImage;
-                photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
-                [photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
-                [photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-                photoCell.photoButton.tag = indexPath.row;
-            }
-            else {
-                photoCell.valueTxtFd.text = @"None";
-                photoCell.photoButton.hidden = YES;
-            }
-            
+            photoCell.valueTextField.placeholder = fieldItem.field.name;
+
+			photoCell.valueTextField.text = @" ";
+			photoCell.photoButton.hidden = NO;
+
+			UIImage *photo = fieldItem.thumbnailImage;
+			photo = [photo imageByScalingProportionallyToSize:CGSizeMake(120, 120)];
+			[photoCell.photoButton setBackgroundImage:photo forState:UIControlStateNormal];
+			[photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+			photoCell.photoButton.tag = indexPath.row;
+
             cell = photoCell;
         }
         else if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {

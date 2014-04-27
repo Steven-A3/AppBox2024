@@ -625,8 +625,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (A3WalletItemEditViewController *)itemEditViewController
 {
-    NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
 	viewController.isAddNewItem = YES;
     viewController.hidesBottomBarWhenPushed = YES;
@@ -805,8 +804,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
+		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
         A3WalletItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
         viewController.hidesBottomBarWhenPushed = YES;
         viewController.item = item;

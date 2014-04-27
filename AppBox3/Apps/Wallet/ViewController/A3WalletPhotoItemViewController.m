@@ -458,8 +458,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
 
 - (void)editButtonAction:(id)sender
 {
-    NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
     viewController.delegate = self;
     viewController.item = self.item;
@@ -717,12 +716,12 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID1 forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [self configureFloatingTextField:photoCell.valueTxtFd];
+			[self configureFloatingTextField:photoCell.valueTextField];
             
-            photoCell.valueTxtFd.placeholder = fieldItem.field.name;
+            photoCell.valueTextField.placeholder = fieldItem.field.name;
             
             if (fieldItem.image) {
-                photoCell.valueTxtFd.text = @" ";
+                photoCell.valueTextField.text = @" ";
                 photoCell.photoButton.hidden = NO;
                 
                 UIImage *photo = fieldItem.thumbnailImage;
@@ -733,7 +732,7 @@ NSString *const A3WalletItemFieldNoteCellID1 = @"A3WalletNoteCell";
                 
             }
             else {
-                photoCell.valueTxtFd.text = @"None";
+                photoCell.valueTextField.text = @"None";
                 photoCell.photoButton.hidden = YES;
             }
             

@@ -508,7 +508,7 @@ NSString *const kA3AppsDoNotKeepAsRecent = @"DoNotKeepAsRecent";
 		if (!recentlyUsed) {
 			recentlyUsed = [NSMutableDictionary new];
 			recentlyUsed[kA3AppsMenuName] = @"Recent";
-			recentlyUsed[kA3AppsMenuCollapsed] = @YES;
+			recentlyUsed[kA3AppsMenuCollapsed] = @NO;
 			recentlyUsed[kA3AppsMenuExpandable] = @YES;
 		}
 		NSMutableArray *appsList = [recentlyUsed[kA3AppsExpandableChildren] mutableCopy];

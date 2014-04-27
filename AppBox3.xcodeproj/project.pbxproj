@@ -604,7 +604,6 @@
 		68B6A32718CEC76D004084EF /* A3WalletCateTitleView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A25B18CEC76C004084EF /* A3WalletCateTitleView_iPad.xib */; };
 		68B6A32818CEC76D004084EF /* A3WalletDateInputCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A25D18CEC76C004084EF /* A3WalletDateInputCell.m */; };
 		68B6A32918CEC76D004084EF /* A3WalletItemFieldActionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A25F18CEC76C004084EF /* A3WalletItemFieldActionCell.m */; };
-		68B6A32A18CEC76D004084EF /* A3WalletItemFieldCateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26118CEC76C004084EF /* A3WalletItemFieldCateCell.m */; };
 		68B6A32B18CEC76D004084EF /* A3WalletItemFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26318CEC76C004084EF /* A3WalletItemFieldCell.m */; };
 		68B6A32C18CEC76D004084EF /* A3WalletItemPhotoFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26518CEC76C004084EF /* A3WalletItemPhotoFieldCell.m */; };
 		68B6A32D18CEC76D004084EF /* A3WalletItemRightIconCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A26718CEC76C004084EF /* A3WalletItemRightIconCell.m */; };
@@ -1958,8 +1957,6 @@
 		68B6A25D18CEC76C004084EF /* A3WalletDateInputCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletDateInputCell.m; sourceTree = "<group>"; };
 		68B6A25E18CEC76C004084EF /* A3WalletItemFieldActionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemFieldActionCell.h; sourceTree = "<group>"; };
 		68B6A25F18CEC76C004084EF /* A3WalletItemFieldActionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemFieldActionCell.m; sourceTree = "<group>"; };
-		68B6A26018CEC76C004084EF /* A3WalletItemFieldCateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemFieldCateCell.h; sourceTree = "<group>"; };
-		68B6A26118CEC76C004084EF /* A3WalletItemFieldCateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemFieldCateCell.m; sourceTree = "<group>"; };
 		68B6A26218CEC76C004084EF /* A3WalletItemFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemFieldCell.h; sourceTree = "<group>"; };
 		68B6A26318CEC76C004084EF /* A3WalletItemFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletItemFieldCell.m; sourceTree = "<group>"; };
 		68B6A26418CEC76C004084EF /* A3WalletItemPhotoFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletItemPhotoFieldCell.h; sourceTree = "<group>"; };
@@ -4365,8 +4362,6 @@
 				686BB8661909676A009163F2 /* A3WalletFieldEditTitleCell.m */,
 				68B6A25E18CEC76C004084EF /* A3WalletItemFieldActionCell.h */,
 				68B6A25F18CEC76C004084EF /* A3WalletItemFieldActionCell.m */,
-				68B6A26018CEC76C004084EF /* A3WalletItemFieldCateCell.h */,
-				68B6A26118CEC76C004084EF /* A3WalletItemFieldCateCell.m */,
 				68B6A26218CEC76C004084EF /* A3WalletItemFieldCell.h */,
 				68B6A26318CEC76C004084EF /* A3WalletItemFieldCell.m */,
 				68B6A26418CEC76C004084EF /* A3WalletItemPhotoFieldCell.h */,
@@ -5661,7 +5656,6 @@
 				68143D5918E3EC7C00569691 /* A3JHTableViewSections.m in Sources */,
 				689C9A501839CD7F007C97EE /* AFURLRequestSerialization.m in Sources */,
 				68B6A2FA18CEC76D004084EF /* A3UnitPriceSelectViewController.m in Sources */,
-				68B6A32A18CEC76D004084EF /* A3WalletItemFieldCateCell.m in Sources */,
 				68E2A6B418D0B22800E834D9 /* A3TipCalcMainTableViewController.m in Sources */,
 				68B6A45118CEE781004084EF /* PSTCollectionViewLayout.m in Sources */,
 				68B6A46318CEE781004084EF /* UIButton+WebCache.m in Sources */,

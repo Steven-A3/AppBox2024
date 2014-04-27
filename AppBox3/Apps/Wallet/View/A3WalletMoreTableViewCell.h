@@ -14,6 +14,10 @@
 @property (nonatomic, strong) UILabel *cellTitleLabel;
 @property (nonatomic, strong) UIImageView *cellImageView;
 @property (nonatomic, assign) BOOL showCheckImageView;
+@property (nonatomic, strong) UILabel *rightSideLabel;
+
+@property (nonatomic, strong) MASConstraint *rightSideLabelConstraint;
 
 - (void)setShowCheckMark:(BOOL)showCheckMark;
+
 @end

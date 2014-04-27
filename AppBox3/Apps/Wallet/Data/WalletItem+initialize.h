@@ -13,4 +13,6 @@
 - (NSArray *)fieldItemsArray;
 
 - (void)assignOrder;
+
+- (void)verifyNULLField;
 @end

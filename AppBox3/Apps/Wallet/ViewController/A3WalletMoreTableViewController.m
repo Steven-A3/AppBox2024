@@ -18,6 +18,7 @@
 #import "A3WalletCategoryViewController.h"
 #import "NSString+conversion.h"
 #import "A3WalletCategoryEditViewController.h"
+#import "UIViewController+A3AppCategory.h"
 
 NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 
@@ -217,6 +218,11 @@ NSString *const A3WalletMoreTableViewCellIdentifier = @"Cell";
 		cell.selectionStyle = UITableViewCellSelectionStyleDefault;
 	}
 	[cell setShowCheckMark:![walletCategory.doNotShow boolValue]];
+	cell.rightSideLabel.text = [self.decimalFormatter stringFromNumber:@([walletCategory.items count])];
+	if (_isEditing) {
+		cell.rightSideLabelConstraint.with.offset(-15);
+		[cell layoutIfNeeded];
+	}
 
 	return cell;
 }

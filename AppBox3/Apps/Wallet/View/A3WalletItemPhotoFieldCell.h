@@ -12,7 +12,7 @@
 @interface A3WalletItemPhotoFieldCell : UITableViewCell
 
 
-@property (strong, nonatomic) IBOutlet JVFloatLabeledTextField *valueTxtFd;
+@property (strong, nonatomic) IBOutlet JVFloatLabeledTextField *valueTextField;
 @property (strong, nonatomic) IBOutlet UIButton *photoButton;
 
 @end

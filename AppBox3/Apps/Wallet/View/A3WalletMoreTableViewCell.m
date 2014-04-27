@@ -34,6 +34,11 @@
 		_cellTitleLabel.font = A3UITableViewTextLabelFont;
 		[self addSubview:_cellTitleLabel];
 
+		_rightSideLabel = [UILabel new];
+		_rightSideLabel.font = [UIFont systemFontOfSize:17];
+		_rightSideLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
+		[self addSubview:_rightSideLabel];
+
 		[self setupConstraints];
 
 		[self setupSeparator];
@@ -56,6 +61,11 @@
 
 	[_cellTitleLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(_cellImageView.right).with.offset(13);
+		make.centerY.equalTo(self.centerY);
+	}];
+
+	[_rightSideLabel makeConstraints:^(MASConstraintMaker *make) {
+		_rightSideLabelConstraint = make.right.equalTo(self.contentView.right).with.offset(self.editing ? -15 : 0);
 		make.centerY.equalTo(self.centerY);
 	}];
 }
@@ -90,6 +100,12 @@
 
 - (void)setShowCheckMark:(BOOL)showCheckMark {
 	_checkImageView.image = showCheckMark ? [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate] : nil;
+}
+
+- (void)setEditing:(BOOL)editing {
+	[super setEditing:editing];
+	_rightSideLabelConstraint.with.offset(editing ? -15 : 0);
+	[self layoutIfNeeded];
 }
 
 @end

@@ -116,6 +116,9 @@
 {
     for (UIImageView *thumbImgView in _thumbImgViews) {
         thumbImgView.image = nil;
+		for (UIView *markView in thumbImgView.subviews) {
+			[markView removeFromSuperview];
+		}
     }
 }
 

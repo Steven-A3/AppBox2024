@@ -96,7 +96,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
     UIBarButtonItem *editItem = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(editButtonAction:)];
     self.navigationItem.rightBarButtonItem = editItem;
     
-    CGFloat tbvHeight = self.view.bounds.size.height - 44;
+    CGFloat tbvHeight = self.view.bounds.size.height - 44 - 64;
     if (self.photoThumbs.count < 2) {
         tbvHeight += 44;
     }
@@ -401,8 +401,7 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
 
 - (void)editButtonAction:(id)sender
 {
-    NSString *nibName = (IS_IPHONE) ? @"WalletPhoneStoryBoard" : @"WalletPadStoryBoard";
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:nibName bundle:nil];
+	UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
     A3WalletItemEditViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemEditViewController"];
     viewController.delegate = self;
     viewController.item = self.item;
@@ -589,24 +588,24 @@ NSString *const A3WalletItemFieldNoteCellID2 = @"A3WalletNoteCell";
             A3WalletItemPhotoFieldCell *photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemPhotoFieldCellID2 forIndexPath:indexPath];
             
             photoCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            [self configureFloatingTextField:photoCell.valueTxtFd];
+			[self configureFloatingTextField:photoCell.valueTextField];
             
-            photoCell.valueTxtFd.placeholder = fieldItem.field.name;
+            photoCell.valueTextField.placeholder = fieldItem.field.name;
 
 			if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
-				photoCell.valueTxtFd.text = @" ";
+				photoCell.valueTextField.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
 				[self setImageToCell:photoCell imagePath:[fieldItem imageThumbnailPathInTemporary:NO ]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
-				photoCell.valueTxtFd.text = @" ";
+				photoCell.valueTextField.text = @" ";
 				photoCell.photoButton.hidden = NO;
 
 				[self setImageToCell:photoCell imagePath:[fieldItem videoThumbnailPathInTemporary:NO ]];
 				photoCell.photoButton.tag = indexPath.row;
 			} else {
-				photoCell.valueTxtFd.text = @"None";
+				photoCell.valueTextField.text = @"None";
 				photoCell.photoButton.hidden = YES;
 			}
 
