@@ -51,38 +51,38 @@ NSString *kA3CalcButtonTitleiPad = @"kA3CalcButtonTitle_iPad";
 NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 - (NSArray *)buttonTitlesLevel1 {
 	return @[
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_01_1_p"], kA3CalcButtonIDiPad:@1},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_02_1_p"], kA3CalcButtonIDiPad:@2},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_03_1_p"], kA3CalcButtonIDiPad:@3},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_04_p"], kA3CalcButtonIDiPad:@4},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_06_1_p"], kA3CalcButtonIDiPad:@9},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_07_1_p"], kA3CalcButtonIDiPad:@10},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_08_1_p"], kA3CalcButtonIDiPad:@11},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_09_1_p"], kA3CalcButtonIDiPad:@12},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_01_1"], kA3CalcButtonIDiPad:@1},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_02_1"], kA3CalcButtonIDiPad:@2},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_03_1"], kA3CalcButtonIDiPad:@3},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_04"], kA3CalcButtonIDiPad:@4},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_06_1"], kA3CalcButtonIDiPad:@9},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_07_1"], kA3CalcButtonIDiPad:@10},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_08_1"], kA3CalcButtonIDiPad:@11},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_09_1"], kA3CalcButtonIDiPad:@12},
              @{kA3CalcButtonTitleiPad:@"ln", kA3CalcButtonIDiPad:@28},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_20_1_p"], kA3CalcButtonIDiPad:@36},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_20_1"], kA3CalcButtonIDiPad:@36},
              
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_10_p"], kA3CalcButtonIDiPad:@17},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_11_p"], kA3CalcButtonIDiPad:@18},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_12_p"], kA3CalcButtonIDiPad:@19},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_13_1_p"], kA3CalcButtonIDiPad:@20},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_10"], kA3CalcButtonIDiPad:@17},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_11"], kA3CalcButtonIDiPad:@18},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_12"], kA3CalcButtonIDiPad:@19},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_13_1"], kA3CalcButtonIDiPad:@20},
 
              ];
 }
 
 - (NSArray *)buttonTitlesLevel2 {
 	return @[
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_01_2_p"], kA3CalcButtonIDiPad:@1},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_02_2_p"], kA3CalcButtonIDiPad:@2},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_03_2_p"], kA3CalcButtonIDiPad:@3},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_01_2"], kA3CalcButtonIDiPad:@1},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_02_2"], kA3CalcButtonIDiPad:@2},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_03_2"], kA3CalcButtonIDiPad:@3},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_04_p"], kA3CalcButtonIDiPad:@4},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_06_2_p"], kA3CalcButtonIDiPad:@9},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_07_2_p"], kA3CalcButtonIDiPad:@10},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_08_2_p"], kA3CalcButtonIDiPad:@11},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_09_2_p"], kA3CalcButtonIDiPad:@12},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_13_2_p"], kA3CalcButtonIDiPad:@20},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_17_2_p"], kA3CalcButtonIDiPad:@28},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_20_2_p"], kA3CalcButtonIDiPad:@36},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_06_2"], kA3CalcButtonIDiPad:@9},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_07_2"], kA3CalcButtonIDiPad:@10},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_08_2"], kA3CalcButtonIDiPad:@11},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_09_2"], kA3CalcButtonIDiPad:@12},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_13_2"], kA3CalcButtonIDiPad:@20},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_17_2"], kA3CalcButtonIDiPad:@28},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_20_2"], kA3CalcButtonIDiPad:@36},
              ];
 }
 

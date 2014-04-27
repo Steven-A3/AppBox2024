@@ -478,7 +478,7 @@
                     <color key="backgroundColor" red="0.98823529409999999" green="0.98823529409999999" blue="0.99215686270000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" image="c_05_p">
+                    <state key="normal" image="c_05">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" red="0.51372549019607838" green="0.52156862745098043" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
@@ -545,6 +545,6 @@
     </objects>
     <resources>
         <image name="backspace_p" width="30" height="22"/>
-        <image name="c_05_p" width="25" height="19"/>
+        <image name="c_05" width="34" height="23"/>
     </resources>
 </document>
