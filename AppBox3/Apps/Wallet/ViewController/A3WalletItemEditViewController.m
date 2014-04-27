@@ -1223,13 +1223,13 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	_currentIndexPath = indexPath;
-
     if (self.firstResponder) {
         [self.firstResponder resignFirstResponder];
     }
-    
-    if (indexPath.section == 0) {
+
+	_currentIndexPath = indexPath;
+
+	if (indexPath.section == 0) {
 	    if ([self.sectionItems objectAtIndex:indexPath.row] == self.categoryItem) {
             // category
             A3WalletCategorySelectViewController *viewController = [[A3WalletCategorySelectViewController alloc] initWithStyle:UITableViewStyleGrouped];
