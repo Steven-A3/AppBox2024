@@ -40,48 +40,48 @@
 NSString *kA3CalcButtonTitle = @"kA3CalcButtonItle";
 NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 
-- (NSArray *)buttonTitlesLevel1 {
+- (NSArray *)buttonTitlesLevel1_h {
 	return @[
-			@{kA3CalcButtonTitle:@"sin", kA3CalcButtonID:@(A3E_SIN)},
-			@{kA3CalcButtonTitle:@"cos", kA3CalcButtonID:@(A3E_COS)},
-			@{kA3CalcButtonTitle:@"tan", kA3CalcButtonID:@(A3E_TAN)},
-			@{kA3CalcButtonTitle:[calutil stringSecond], kA3CalcButtonID:@(A3E_2ND)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_01_1_h"], kA3CalcButtonID:@(A3E_SIN)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_02_1_h"], kA3CalcButtonID:@(A3E_COS)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_03_1_h"], kA3CalcButtonID:@(A3E_TAN)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_04_h"], kA3CalcButtonID:@(A3E_2ND)},
 			@{kA3CalcButtonTitle:@"C", kA3CalcButtonID:@(A3E_CLEAR)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_6_i"], kA3CalcButtonID:@(A3E_SIGN)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_05_h"], kA3CalcButtonID:@(A3E_SIGN)},
 			@{kA3CalcButtonTitle:@"%", kA3CalcButtonID:@(A3E_PERCENT)},
 			@{kA3CalcButtonTitle:@"÷", kA3CalcButtonID:@(A3E_DIVIDE)},
 
-			@{kA3CalcButtonTitle:@"sinh", kA3CalcButtonID:@(A3E_SINH)},
-			@{kA3CalcButtonTitle:@"cosh", kA3CalcButtonID:@(A3E_COSH)},
-			@{kA3CalcButtonTitle:@"tanh", kA3CalcButtonID:@(A3E_TANH)},
-			@{kA3CalcButtonTitle:@"cot", kA3CalcButtonID:@(A3E_COT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_06_1_h"], kA3CalcButtonID:@(A3E_SINH)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_07_1_h"], kA3CalcButtonID:@(A3E_COSH)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_08_1_h"], kA3CalcButtonID:@(A3E_TANH)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_09_1_h"], kA3CalcButtonID:@(A3E_COT)},
 			@{kA3CalcButtonTitle:[UIImage imageNamed:@"backspace"], kA3CalcButtonID:@(A3E_BACKSPACE)},
 			@{kA3CalcButtonTitle:@"(", kA3CalcButtonID:@(A3E_LEFT_PARENTHESIS)},
 			@{kA3CalcButtonTitle:@")", kA3CalcButtonID:@(A3E_RIGHT_PARENTHESIS)},
 			@{kA3CalcButtonTitle:@"×", kA3CalcButtonID:@(A3E_MULTIPLY)},
 
-			@{kA3CalcButtonTitle:[calutil stringX2], kA3CalcButtonID:@(A3E_SQUARE)},
-			@{kA3CalcButtonTitle:[calutil stringX3], kA3CalcButtonID:@(A3E_CUBE)},
-			@{kA3CalcButtonTitle:[calutil stringXY], kA3CalcButtonID:@(A3E_POWER_XY)},
-			@{kA3CalcButtonTitle:[calutil string10X], kA3CalcButtonID:@(A3E_POWER_10)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_10_h"], kA3CalcButtonID:@(A3E_SQUARE)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_11_h"], kA3CalcButtonID:@(A3E_CUBE)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_12_h"], kA3CalcButtonID:@(A3E_POWER_XY)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_13_1_h"], kA3CalcButtonID:@(A3E_POWER_10)},
 			@{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_7)},
 			@{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_8)},
 			@{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_9)},
 			@{kA3CalcButtonTitle:@"−", kA3CalcButtonID:@(A3E_MINUS)},
 
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_1_i"], kA3CalcButtonID:@(A3E_SQUAREROOT)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_2_i"], kA3CalcButtonID:@(A3E_CUBEROOT)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_3_i"], kA3CalcButtonID:@(A3E_NTHROOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_14_h"], kA3CalcButtonID:@(A3E_SQUAREROOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_15_h"], kA3CalcButtonID:@(A3E_CUBEROOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_16_h"], kA3CalcButtonID:@(A3E_NTHROOT)},
 			@{kA3CalcButtonTitle:@"ln", kA3CalcButtonID:@(A3E_LN)},
 			@{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_4)},
 			@{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_5)},
 			@{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_6)},
 			@{kA3CalcButtonTitle:@"+", kA3CalcButtonID:@(A3E_PLUS)},
 
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_4_i"], kA3CalcButtonID:@(A3E_DIVIDE_X)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_18_h"], kA3CalcButtonID:@(A3E_DIVIDE_X)},
 			@{kA3CalcButtonTitle:@"x!", kA3CalcButtonID:@(A3E_FACTORIAL)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_5_i"], kA3CalcButtonID:@(A3E_PI)},
-			@{kA3CalcButtonTitle:[calutil stringLog10], kA3CalcButtonID:@(A3E_LOG_10)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_19_h"], kA3CalcButtonID:@(A3E_PI)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_20_1_h"], kA3CalcButtonID:@(A3E_LOG_10)},
 			@{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_1)},
 			@{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_2)},
 			@{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_3)},
@@ -98,48 +98,48 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 	];
 }
 
-- (NSArray *)buttonTitlesLevel2 {
+- (NSArray *)buttonTitlesLevel2_h {
 	return @[
-			@{kA3CalcButtonTitle:[calutil stringArcSin], kA3CalcButtonID:@(A3E_ASIN)},
-			@{kA3CalcButtonTitle:[calutil stringArcCos], kA3CalcButtonID:@(A3E_ACOS)},
-			@{kA3CalcButtonTitle:[calutil stringArcTan], kA3CalcButtonID:@(A3E_ATAN)},
-			@{kA3CalcButtonTitle:[calutil stringSecond], kA3CalcButtonID:@(A3E_2ND)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_01_2_h"], kA3CalcButtonID:@(A3E_ASIN)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_02_2_h"], kA3CalcButtonID:@(A3E_ACOS)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_03_2_h"], kA3CalcButtonID:@(A3E_ATAN)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_04_h"], kA3CalcButtonID:@(A3E_2ND)},
 			@{kA3CalcButtonTitle:@"C", kA3CalcButtonID:@(A3E_CLEAR)},
-			@{kA3CalcButtonTitle:@"+/-", kA3CalcButtonID:@(A3E_SIGN)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_05_h"], kA3CalcButtonID:@(A3E_SIGN)},
 			@{kA3CalcButtonTitle:@"%", kA3CalcButtonID:@(A3E_PERCENT)},
 			@{kA3CalcButtonTitle:@"÷", kA3CalcButtonID:@(A3E_DIVIDE)},
 
-			@{kA3CalcButtonTitle:[calutil stringArcSinh], kA3CalcButtonID:@(A3E_ASINH)},
-			@{kA3CalcButtonTitle:[calutil stringArcCosh], kA3CalcButtonID:@(A3E_ACOSH)},
-			@{kA3CalcButtonTitle:[calutil stringArcTanh], kA3CalcButtonID:@(A3E_ATANH)},
-			@{kA3CalcButtonTitle:[calutil stringArcCot], kA3CalcButtonID:@(A3E_ACOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_06_2_h"], kA3CalcButtonID:@(A3E_ASINH)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_07_2_h"], kA3CalcButtonID:@(A3E_ACOSH)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_08_2_h"], kA3CalcButtonID:@(A3E_ATANH)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_09_2_h"], kA3CalcButtonID:@(A3E_ACOT)},
 			@{kA3CalcButtonTitle:[UIImage imageNamed:@"backspace"], kA3CalcButtonID:@(A3E_BACKSPACE)},
 			@{kA3CalcButtonTitle:@"(", kA3CalcButtonID:@(A3E_LEFT_PARENTHESIS)},
 			@{kA3CalcButtonTitle:@")", kA3CalcButtonID:@(A3E_RIGHT_PARENTHESIS)},
 			@{kA3CalcButtonTitle:@"×", kA3CalcButtonID:@(A3E_MULTIPLY)},
 
-			@{kA3CalcButtonTitle:[calutil stringX2], kA3CalcButtonID:@(A3E_SQUARE)},
-			@{kA3CalcButtonTitle:[calutil stringX3], kA3CalcButtonID:@(A3E_CUBE)},
-			@{kA3CalcButtonTitle:[calutil stringXY], kA3CalcButtonID:@(A3E_POWER_XY)},
-			@{kA3CalcButtonTitle:[calutil string2X], kA3CalcButtonID:@(A3E_POWER_2)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_10_h"], kA3CalcButtonID:@(A3E_SQUARE)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_11_h"], kA3CalcButtonID:@(A3E_CUBE)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_12_h"], kA3CalcButtonID:@(A3E_POWER_XY)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_13_2_h"], kA3CalcButtonID:@(A3E_POWER_2)},
 			@{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_7)},
 			@{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_8)},
 			@{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_9)},
 			@{kA3CalcButtonTitle:@"−", kA3CalcButtonID:@(A3E_MINUS)},
 
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_1_i"], kA3CalcButtonID:@(A3E_SQUAREROOT)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_2_i"], kA3CalcButtonID:@(A3E_CUBEROOT)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_3_i"], kA3CalcButtonID:@(A3E_NTHROOT)},
-			@{kA3CalcButtonTitle:[calutil stringLogy], kA3CalcButtonID:@(A3E_LOG_Y)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_14_h"], kA3CalcButtonID:@(A3E_SQUAREROOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_15_h"], kA3CalcButtonID:@(A3E_CUBEROOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_16_h"], kA3CalcButtonID:@(A3E_NTHROOT)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_17_2_h"], kA3CalcButtonID:@(A3E_LOG_Y)},
 			@{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_4)},
 			@{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_5)},
 			@{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_6)},
 			@{kA3CalcButtonTitle:@"+", kA3CalcButtonID:@(A3E_PLUS)},
 
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_4_i"], kA3CalcButtonID:@(A3E_DIVIDE_X)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_18_h"], kA3CalcButtonID:@(A3E_DIVIDE_X)},
 			@{kA3CalcButtonTitle:@"x!", kA3CalcButtonID:@(A3E_FACTORIAL)},
-			@{kA3CalcButtonTitle:[UIImage imageNamed:@"k_5_i"], kA3CalcButtonID:@(A3E_PI)},
-			@{kA3CalcButtonTitle:[calutil stringLog2], kA3CalcButtonID:@(A3E_LOG_2)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_19_h"], kA3CalcButtonID:@(A3E_PI)},
+			@{kA3CalcButtonTitle:[UIImage imageNamed:@"c_20_2_h"], kA3CalcButtonID:@(A3E_LOG_2)},
 			@{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_1)},
 			@{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_2)},
 			@{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_3)},
@@ -154,6 +154,122 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 			@{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR)},
 			@{kA3CalcButtonTitle:@""},
 	];
+}
+
+- (NSArray *)buttonTitlesLevel1_p {
+	return @[
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_01_1_p"], kA3CalcButtonID:@(A3E_SIN)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_02_1_p"], kA3CalcButtonID:@(A3E_COS)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_03_1_p"], kA3CalcButtonID:@(A3E_TAN)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_04_p"], kA3CalcButtonID:@(A3E_2ND)},
+             @{kA3CalcButtonTitle:@"C", kA3CalcButtonID:@(A3E_CLEAR)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_05_p"], kA3CalcButtonID:@(A3E_SIGN)},
+             @{kA3CalcButtonTitle:@"%", kA3CalcButtonID:@(A3E_PERCENT)},
+             @{kA3CalcButtonTitle:@"÷", kA3CalcButtonID:@(A3E_DIVIDE)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_06_1_p"], kA3CalcButtonID:@(A3E_SINH)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_07_1_p"], kA3CalcButtonID:@(A3E_COSH)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_08_1_p"], kA3CalcButtonID:@(A3E_TANH)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_09_1_p"], kA3CalcButtonID:@(A3E_COT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"backspace"], kA3CalcButtonID:@(A3E_BACKSPACE)},
+             @{kA3CalcButtonTitle:@"(", kA3CalcButtonID:@(A3E_LEFT_PARENTHESIS)},
+             @{kA3CalcButtonTitle:@")", kA3CalcButtonID:@(A3E_RIGHT_PARENTHESIS)},
+             @{kA3CalcButtonTitle:@"×", kA3CalcButtonID:@(A3E_MULTIPLY)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_10_p"], kA3CalcButtonID:@(A3E_SQUARE)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_11_p"], kA3CalcButtonID:@(A3E_CUBE)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_12_p"], kA3CalcButtonID:@(A3E_POWER_XY)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_13_1_p"], kA3CalcButtonID:@(A3E_POWER_10)},
+             @{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_7)},
+             @{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_8)},
+             @{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_9)},
+             @{kA3CalcButtonTitle:@"−", kA3CalcButtonID:@(A3E_MINUS)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_14_p"], kA3CalcButtonID:@(A3E_SQUAREROOT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_15_p"], kA3CalcButtonID:@(A3E_CUBEROOT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_16_p"], kA3CalcButtonID:@(A3E_NTHROOT)},
+             @{kA3CalcButtonTitle:@"ln", kA3CalcButtonID:@(A3E_LN)},
+             @{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_4)},
+             @{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_5)},
+             @{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_6)},
+             @{kA3CalcButtonTitle:@"+", kA3CalcButtonID:@(A3E_PLUS)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_18_p"], kA3CalcButtonID:@(A3E_DIVIDE_X)},
+             @{kA3CalcButtonTitle:@"x!", kA3CalcButtonID:@(A3E_FACTORIAL)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_19_p"], kA3CalcButtonID:@(A3E_PI)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_20_1_p"], kA3CalcButtonID:@(A3E_LOG_10)},
+             @{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_1)},
+             @{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_2)},
+             @{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_3)},
+             @{kA3CalcButtonTitle:@"=", kA3CalcButtonID:@(A3E_CALCULATE)},
+             
+             @{kA3CalcButtonTitle:@"e", kA3CalcButtonID:@(A3E_BASE_E)},
+             @{kA3CalcButtonTitle:@"EE", kA3CalcButtonID:@(A3E_E_Number)},
+             @{kA3CalcButtonTitle:@"Rand", kA3CalcButtonID:@(A3E_RANDOM)},
+             @{kA3CalcButtonTitle:@"Deg", kA3CalcButtonID:@(A3E_RADIAN_DEGREE)},
+             @{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0)},
+             @{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00)},
+             @{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR)},
+             @{kA3CalcButtonTitle:@""},
+             ];
+}
+
+- (NSArray *)buttonTitlesLevel2_p {
+	return @[
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_01_2_p"], kA3CalcButtonID:@(A3E_ASIN)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_02_2_p"], kA3CalcButtonID:@(A3E_ACOS)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_03_2_p"], kA3CalcButtonID:@(A3E_ATAN)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_04_p"], kA3CalcButtonID:@(A3E_2ND)},
+             @{kA3CalcButtonTitle:@"C", kA3CalcButtonID:@(A3E_CLEAR)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_05_p"], kA3CalcButtonID:@(A3E_SIGN)},
+             @{kA3CalcButtonTitle:@"%", kA3CalcButtonID:@(A3E_PERCENT)},
+             @{kA3CalcButtonTitle:@"÷", kA3CalcButtonID:@(A3E_DIVIDE)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_06_2_p"], kA3CalcButtonID:@(A3E_ASINH)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_07_2_p"], kA3CalcButtonID:@(A3E_ACOSH)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_08_2_p"], kA3CalcButtonID:@(A3E_ATANH)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_09_2_p"], kA3CalcButtonID:@(A3E_ACOT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"backspace"], kA3CalcButtonID:@(A3E_BACKSPACE)},
+             @{kA3CalcButtonTitle:@"(", kA3CalcButtonID:@(A3E_LEFT_PARENTHESIS)},
+             @{kA3CalcButtonTitle:@")", kA3CalcButtonID:@(A3E_RIGHT_PARENTHESIS)},
+             @{kA3CalcButtonTitle:@"×", kA3CalcButtonID:@(A3E_MULTIPLY)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_10_p"], kA3CalcButtonID:@(A3E_SQUARE)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_11_p"], kA3CalcButtonID:@(A3E_CUBE)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_12_p"], kA3CalcButtonID:@(A3E_POWER_XY)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_13_2_p"], kA3CalcButtonID:@(A3E_POWER_2)},
+             @{kA3CalcButtonTitle:@"7", kA3CalcButtonID:@(A3E_7)},
+             @{kA3CalcButtonTitle:@"8", kA3CalcButtonID:@(A3E_8)},
+             @{kA3CalcButtonTitle:@"9", kA3CalcButtonID:@(A3E_9)},
+             @{kA3CalcButtonTitle:@"−", kA3CalcButtonID:@(A3E_MINUS)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_14_p"], kA3CalcButtonID:@(A3E_SQUAREROOT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_15_p"], kA3CalcButtonID:@(A3E_CUBEROOT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_16_p"], kA3CalcButtonID:@(A3E_NTHROOT)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_17_2_p"], kA3CalcButtonID:@(A3E_LOG_Y)},
+             @{kA3CalcButtonTitle:@"4", kA3CalcButtonID:@(A3E_4)},
+             @{kA3CalcButtonTitle:@"5", kA3CalcButtonID:@(A3E_5)},
+             @{kA3CalcButtonTitle:@"6", kA3CalcButtonID:@(A3E_6)},
+             @{kA3CalcButtonTitle:@"+", kA3CalcButtonID:@(A3E_PLUS)},
+             
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_18_p"], kA3CalcButtonID:@(A3E_DIVIDE_X)},
+             @{kA3CalcButtonTitle:@"x!", kA3CalcButtonID:@(A3E_FACTORIAL)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_19_p"], kA3CalcButtonID:@(A3E_PI)},
+             @{kA3CalcButtonTitle:[UIImage imageNamed:@"c_20_2_p"], kA3CalcButtonID:@(A3E_LOG_2)},
+             @{kA3CalcButtonTitle:@"1", kA3CalcButtonID:@(A3E_1)},
+             @{kA3CalcButtonTitle:@"2", kA3CalcButtonID:@(A3E_2)},
+             @{kA3CalcButtonTitle:@"3", kA3CalcButtonID:@(A3E_3)},
+             @{kA3CalcButtonTitle:@"=", kA3CalcButtonID:@(A3E_CALCULATE)},
+             
+             @{kA3CalcButtonTitle:@"e", kA3CalcButtonID:@(A3E_BASE_E)},
+             @{kA3CalcButtonTitle:@"EE", kA3CalcButtonID:@(A3E_E_Number)},
+             @{kA3CalcButtonTitle:@"Rand", kA3CalcButtonID:@(A3E_RANDOM)},
+             @{kA3CalcButtonTitle:@"Deg", kA3CalcButtonID:@(A3E_RADIAN_DEGREE)},
+             @{kA3CalcButtonTitle:@"0", kA3CalcButtonID:@(A3E_0)},
+             @{kA3CalcButtonTitle:@"00", kA3CalcButtonID:@(A3E_00)},
+             @{kA3CalcButtonTitle:@".", kA3CalcButtonID:@(A3E_DECIMAL_SEPARATOR)},
+             @{kA3CalcButtonTitle:@""},
+             ];
 }
 
 #define KBD_BUTTON_TAG_BASE     1000
@@ -161,13 +277,15 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 - (void)setupSubviews {
 
 	// Dimension 320 X 2 / 348, 80 x 54 cell, 8 column, 6 row
-	NSArray *buttonTitle = [self buttonTitlesLevel1];
+	NSArray *buttonTitle = nil;
 
 	CGFloat x, y, width, height;
     if(IS_PORTRAIT) {
        width = 80, height = 54;
+        buttonTitle = [self buttonTitlesLevel1_p];
     } else {
        width = 60, height = 40;
+        buttonTitle = [self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {
 		for (NSUInteger column = 0; column < 8; column++) {
@@ -219,12 +337,14 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 - (void)layoutSubviews {
     CGFloat x, y, width, height;
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+    NSArray *buttonTitle = nil;
     
     if(IS_PORTRAIT) {
         width = 80, height = 54;
+        buttonTitle = [self buttonTitlesLevel1_p];
     } else {
-        
         width = (screenBounds.size.width == 480 ? 60: 71), height = 40;
+        buttonTitle = [self buttonTitlesLevel1_h];
     }
 	for (NSUInteger row = 0; row < 6; row++) {
 		for (NSUInteger column = 0; column < 8; column++) {
@@ -240,9 +360,11 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
             if (idx == 46) {
                 frame.size.width = width + 0.5;
             }
-            idx += KBD_BUTTON_TAG_BASE;
-            A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx];
+            A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx+KBD_BUTTON_TAG_BASE];
             [button setFrame:frame];
+            id title = buttonTitle[idx];
+            
+			[self setTitle:title forButton:button];
         }
     }
 }
@@ -286,13 +408,19 @@ NSString *kA3CalcButtonID = @"kA3CalcButtonID";
 			}
 		}
 	} completion:^(BOOL finished) {
-		NSArray *buttonTitles = level ? [self buttonTitlesLevel1] : [self buttonTitlesLevel2];
+		NSArray *buttonTitles = nil;
+        if (IS_PORTRAIT) {
+            buttonTitles =  level ? [self buttonTitlesLevel1_p] : [self buttonTitlesLevel2_p];
+        } else {
+            buttonTitles =  level ? [self buttonTitlesLevel1_h] : [self buttonTitlesLevel2_h];
+        }
 		for (NSUInteger row = 0; row < 5; row++) {
 			for (NSUInteger column = 0; column < 4; column++) {
 				if (row < 2 || column == 3) {
 					NSUInteger idx = row * 8 + column;
 					A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx + KBD_BUTTON_TAG_BASE];
 					id title = buttonTitles[idx];
+                                [button setImage:nil forState:UIControlStateNormal];
 					[self setTitle:title forButton:button];
 				}
 			}
