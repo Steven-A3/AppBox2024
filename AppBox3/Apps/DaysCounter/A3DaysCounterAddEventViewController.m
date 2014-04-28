@@ -645,11 +645,11 @@
             UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
             textLabel.text = [itemDict objectForKey:EventRowTitle];
             NSNumber *repeatType = [_eventModel objectForKey:EventItem_RepeatType];
-            if (repeatType) {
-                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
+            if (!repeatType || [repeatType isEqualToNumber:@(RepeatType_Never)]) {
+                cell.detailTextLabel.text = @"";
             }
             else {
-                cell.detailTextLabel.text = @"";
+                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
             }
             
             textLabel.textColor = [UIColor blackColor];
