@@ -93,8 +93,6 @@ NSString *const A3MainMenuResignFirstResponder = @"A3MainMenuResignFirstResponde
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive) name:UIApplicationWillResignActiveNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataAvailable) name:A3CoreDataReadyNotification object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuContentsChanged) name:A3AppsMainMenuContentsChangedNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"daysCounterNotification" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -55,10 +55,11 @@
     [self makeBackButtonEmptyArrow];
     [self registerContentSizeCategoryDidChangeNotification];
     
-    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
+//    UIBarButtonItem *search = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(searchAction:)];
+//    UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+//    self.navigationItem.rightBarButtonItems = @[edit, search];
     UIBarButtonItem *edit = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-    self.navigationItem.rightBarButtonItems = @[edit, search];
-
+    self.navigationItem.rightBarButtonItems = @[edit];
     [self setToolbarItems:_bottomToolbar.items];
     
     if ( IS_IPHONE ) {
@@ -114,8 +115,8 @@
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
     
-    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
+//    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+//    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
@@ -399,6 +400,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG();
     DaysCounterCalendar *calendarItem;
     if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
         calendarItem = nil;
@@ -417,7 +419,7 @@
     if (!calendarItem) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"emptyCell"];
         if ( cell == nil ) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"emptyCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"emptyCell"];
         }
         cell.textLabel.text = @"";
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -577,6 +579,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG();
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
         if ( [item.calendarType integerValue] == CalendarCellType_System ) {

@@ -31,7 +31,7 @@
 #import "A3AppDelegate+appearance.h"
 
 @interface A3DaysCounterEventListViewController ()
-@property (strong, nonatomic) NSMutableArray *itemArray;
+@property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *sourceArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (strong, nonatomic) NSString *changedCalendarID;
@@ -437,6 +437,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG();
     NSString *CellIdentifier = (_sortType == EventSortType_Name ? @"eventListNameCell" : @"eventListDateCell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -602,6 +603,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG();
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         NSDictionary *dict = [_itemArray objectAtIndex:indexPath.section];
         NSArray *items = [dict objectForKey:EventKey_Items];
@@ -617,7 +619,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG(@"");
+    FNLOG();
     if ([indexPath row] >= [_sourceArray count]) {
         return NO;
     }

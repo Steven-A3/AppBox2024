@@ -1152,9 +1152,23 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isFavorite ==  %@",[NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
 }
 
+- (void)arrangeReminderList
+{
+    NSDate *now = [NSDate date];
+    NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
+    [reminders enumerateObjectsUsingBlock:^(DaysCounterReminder *reminder, NSUInteger idx, BOOL *stop) {
+        if ([reminder.isUnread isEqualToNumber:@(NO)]) {
+            if ([reminder.startDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
+                reminder.isOn = @(NO);
+            }
+        }
+    }];
+}
+
 - (NSArray*)reminderList
 {
     //return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isReminder == %@", @(YES)] inContext:[self managedObjectContext]];
+    [self arrangeReminderList];
     return [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
 }
 
@@ -1616,13 +1630,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
 {
-    NSSortDescriptor *event = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:NO];
+    NSSortDescriptor *event = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:YES];
     NSArray *sortedArray = [calendar.events sortedArrayUsingDescriptors:@[event]];
     NSDate *now = [NSDate date];
     __block NSInteger closestIndex;
     [sortedArray enumerateObjectsUsingBlock:^(DaysCounterEvent * event, NSUInteger idx, BOOL *stop) {
-        if ([event.effectiveStartDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
-            closestIndex = (idx > 0) ? (idx - 1) : idx;
+        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
+            closestIndex = (idx == 0) ? 0 : (idx - 1);
             *stop = YES;
             return;
         }
@@ -1639,9 +1653,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
         if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] > 0) {
-            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event == %@", event]];
-            if (!reminders || [reminders count] == 0) {
-                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
+            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event" withValue:event];
+            if (!reminder) {
+                reminder = [DaysCounterReminder MR_createEntity];
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
                 reminder.isOn = @(YES);
@@ -1649,7 +1663,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                 reminder.event = event;
             }
             else {
-                DaysCounterReminder *reminder = [reminders lastObject];
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
                     reminder.startDate = event.effectiveStartDate;
                     reminder.alertDate = event.alertDatetime;
@@ -1669,9 +1682,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
         if ([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] > 0) {
-            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event == %@", event]];
-            if (!reminders || [reminders count] == 0) {
-                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
+            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event" withValue:event];
+            if (!reminder) {
+                reminder = [DaysCounterReminder MR_createEntity];
                 reminder.startDate = event.effectiveStartDate;
                 reminder.alertDate = event.alertDatetime;
                 reminder.isOn = @(YES);
@@ -1679,7 +1692,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                 reminder.event = event;
             }
             else {
-                DaysCounterReminder *reminder = [reminders lastObject];
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
                     reminder.startDate = event.effectiveStartDate;
                     reminder.alertDate = event.alertDatetime;

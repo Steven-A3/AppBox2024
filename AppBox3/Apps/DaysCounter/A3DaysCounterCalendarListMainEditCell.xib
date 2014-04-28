@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -32,24 +32,36 @@
                             <constraint firstAttribute="height" constant="12" id="RHO-S7-uh6"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGn-bL-obQ">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hGn-bL-obQ" userLabel="Label - title">
                         <rect key="frame" x="59" y="9" width="196" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="13" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pma-FN-5Yw">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="13" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pma-FN-5Yw" userLabel="Label - count">
                         <rect key="frame" x="271" y="9" width="29" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.62352941179999999" green="0.62352941179999999" blue="0.62352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dnW-82-hWS" userLabel="Button - Add/Edit Calendar">
+                        <rect key="frame" x="260" y="0.0" width="60" height="39"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <state key="normal">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="dnW-82-hWS" firstAttribute="leading" secondItem="hGn-bL-obQ" secondAttribute="trailing" constant="5" id="1z3-KS-R6c"/>
+                    <constraint firstItem="dnW-82-hWS" firstAttribute="top" secondItem="1e6-Nn-dMM" secondAttribute="top" id="5kZ-hn-5jY"/>
                     <constraint firstAttribute="centerY" secondItem="sPY-1e-pnc" secondAttribute="centerY" id="6sF-fE-0rq"/>
+                    <constraint firstAttribute="bottom" secondItem="dnW-82-hWS" secondAttribute="bottom" id="AUp-VB-JEY"/>
                     <constraint firstItem="sPY-1e-pnc" firstAttribute="leading" secondItem="1e6-Nn-dMM" secondAttribute="leading" constant="39" id="D0Y-Pi-Gu5"/>
                     <constraint firstItem="hGn-bL-obQ" firstAttribute="leading" secondItem="sPY-1e-pnc" secondAttribute="trailing" constant="8" id="DnG-k8-TEt"/>
+                    <constraint firstAttribute="trailing" secondItem="dnW-82-hWS" secondAttribute="trailing" id="SfP-LJ-Q1N"/>
                     <constraint firstAttribute="centerY" secondItem="mSY-IW-JRM" secondAttribute="centerY" id="UsQ-OT-TQv"/>
                     <constraint firstAttribute="trailing" secondItem="Pma-FN-5Yw" secondAttribute="trailing" constant="20" id="XeQ-Hx-ebF"/>
                     <constraint firstItem="Pma-FN-5Yw" firstAttribute="leading" secondItem="hGn-bL-obQ" secondAttribute="trailing" constant="16" id="cK0-e4-VgS"/>

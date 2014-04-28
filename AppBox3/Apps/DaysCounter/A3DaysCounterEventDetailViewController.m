@@ -22,6 +22,7 @@
 #import "A3DaysCounterEventInfoCell.h"
 #import "SFKImage.h"
 #import "A3AppDelegate+appearance.h"
+#import "DaysCounterReminder.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -136,6 +137,7 @@
     [self.tableView reloadData];
 }
 
+#pragma mark only modal
 - (void)removeBackAndEditButton
 {
     self.navigationItem.leftBarButtonItem = nil;
@@ -144,6 +146,9 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
+    self.eventItem.reminder.isUnread = @(NO);
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -813,8 +818,8 @@
                 
                 dateLabel1.text = dateText1;
                 if (isTypeA) {
-                    dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:nextDate
-                                                                                                   withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+                    dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:nextDate
+                                                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                     if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                         dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                     }
@@ -836,8 +841,8 @@
                 //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
                 //            (until일 경우 - repeats 옵션) (since 일 경우 to)
                 //* case 1, repeat only until
-                dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:info.startDate
-                                                                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+                dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:info.startDate
+                                                                                          withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                     dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                 }
@@ -875,8 +880,8 @@ EXIT_FUCTION:
     eventInfoCell.sinceRoundLabel.layer.cornerRadius = 9.0;
 
 
-    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:24.0]];
-	[SFKImage setDefaultColor:[UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0]];
+    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:46.0]];
+	[SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
     eventInfoCell.lunar1AImageView.image = [SFKImage imageNamed:@"f"];
     eventInfoCell.lunar1BImageView.image = [SFKImage imageNamed:@"f"];
     
@@ -892,7 +897,6 @@ EXIT_FUCTION:
 }
 
 #pragma mark - Table view data source
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;

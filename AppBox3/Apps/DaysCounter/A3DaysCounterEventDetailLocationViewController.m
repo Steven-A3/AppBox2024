@@ -185,21 +185,21 @@
     
 	annotationView.animatesDrop = YES;
     
-    UILabel *titleLabel = (UILabel*)[annotationView viewWithTag:100];
-    if ( titleLabel == nil ) {
-        CGRect txtRect = [[annotation title] boundingRectWithSize:CGSizeMake(self.view.frame.size.width*0.5, self.view.frame.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]} context:nil];
-        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(annotationView.frame.size.width, 0, ceilf(txtRect.size.width), ceilf(txtRect.size.height))];
-        titleLabel.text = [annotation title];
-        titleLabel.textAlignment = NSTextAlignmentLeft;
-        titleLabel.backgroundColor = [UIColor clearColor];
-        titleLabel.numberOfLines = 0;
-        [annotationView addSubview:titleLabel];
-    }
-    else {
-        titleLabel.text = [annotation title];
-        CGRect txtRect = [[annotation title] boundingRectWithSize:CGSizeMake(self.view.frame.size.width*0.5, self.view.frame.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]} context:nil];
-        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, ceilf(txtRect.size.width), ceilf(txtRect.size.height));
-    }
+//    UILabel *titleLabel = (UILabel*)[annotationView viewWithTag:100];
+//    if ( titleLabel == nil ) {
+//        CGRect txtRect = [[annotation title] boundingRectWithSize:CGSizeMake(self.view.frame.size.width*0.5, self.view.frame.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]} context:nil];
+//        titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(annotationView.frame.size.width, 0, ceilf(txtRect.size.width), ceilf(txtRect.size.height))];
+//        titleLabel.text = [annotation title];
+//        titleLabel.textAlignment = NSTextAlignmentLeft;
+//        titleLabel.backgroundColor = [UIColor clearColor];
+//        titleLabel.numberOfLines = 0;
+//        [annotationView addSubview:titleLabel];
+//    }
+//    else {
+//        titleLabel.text = [annotation title];
+//        CGRect txtRect = [[annotation title] boundingRectWithSize:CGSizeMake(self.view.frame.size.width*0.5, self.view.frame.size.height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: [UIFont systemFontOfSize:17.0]} context:nil];
+//        titleLabel.frame = CGRectMake(titleLabel.frame.origin.x, titleLabel.frame.origin.y, ceilf(txtRect.size.width), ceilf(txtRect.size.height));
+//    }
     
 	return annotationView;
 }

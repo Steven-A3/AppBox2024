@@ -62,6 +62,15 @@
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     [self makeBackButtonEmptyArrow];
     [self.infoTableView setTableFooterView:_tableFooterView];
+    UIView *footerSeparator = [UIView new];
+    footerSeparator.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+    [_tableFooterView addSubview:footerSeparator];
+    [footerSeparator makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(_tableFooterView.left);
+        make.trailing.equalTo(_tableFooterView.right);
+        make.bottom.equalTo(_tableFooterView.top);
+        make.height.equalTo(IS_RETINA ? @(0.5) : @(1.0));
+    }];
     
     self.searchIcon = [[UIImage imageNamed:@"search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
@@ -759,8 +768,10 @@
         
         viewCtrl.shrinkPopoverViewBlock = ^(CGSize size) {
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44) animated:NO];
+            self.popoverVC.contentViewController.view.hidden = NO;
         };
 
+        self.popoverVC.contentViewController.view.hidden = YES;
         [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 274) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
