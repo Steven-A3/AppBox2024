@@ -399,6 +399,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG();
     DaysCounterCalendar *calendarItem;
     if (tableView == self.tableView && (indexPath.row >= [_itemArray count])) {
         calendarItem = nil;
@@ -417,7 +418,7 @@
     if (!calendarItem) {
         cell = [tableView dequeueReusableCellWithIdentifier:@"emptyCell"];
         if ( cell == nil ) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault  reuseIdentifier:@"emptyCell"];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"emptyCell"];
         }
         cell.textLabel.text = @"";
         cell.accessoryType = UITableViewCellAccessoryNone;
@@ -577,6 +578,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    FNLOG();
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
         if ( [item.calendarType integerValue] == CalendarCellType_System ) {

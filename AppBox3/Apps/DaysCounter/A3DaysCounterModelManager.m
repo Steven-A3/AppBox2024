@@ -1630,13 +1630,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar
 {
-    NSSortDescriptor *event = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:NO];
+    NSSortDescriptor *event = [[NSSortDescriptor alloc] initWithKey:@"effectiveStartDate" ascending:YES];
     NSArray *sortedArray = [calendar.events sortedArrayUsingDescriptors:@[event]];
     NSDate *now = [NSDate date];
     __block NSInteger closestIndex;
     [sortedArray enumerateObjectsUsingBlock:^(DaysCounterEvent * event, NSUInteger idx, BOOL *stop) {
-        if ([event.effectiveStartDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
-            closestIndex = (idx > 0) ? (idx - 1) : idx;
+        if ([event.effectiveStartDate timeIntervalSince1970] >= [now timeIntervalSince1970]) {
+            closestIndex = (idx == 0) ? 0 : (idx - 1);
             *stop = YES;
             return;
         }

@@ -41,6 +41,7 @@
 @property (strong, nonatomic) NSTimer *timer;
 @property (assign, nonatomic) BOOL isRotating;
 @property (assign, nonatomic) BOOL isFirstViewLoad;
+@property (strong, nonatomic) NSString *prevShownEventID;
 
 - (void)showTopToolbarAnimated:(BOOL)animated;
 - (void)hideTopToolbarAnimated:(BOOL)animated;
@@ -154,6 +155,18 @@
     
     [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    if (_prevShownEventID) {
+        [_eventsArray enumerateObjectsUsingBlock:^(DaysCounterEvent *item, NSUInteger idx, BOOL *stop) {
+            if ([item.eventId isEqualToString:_prevShownEventID]) {
+                [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:idx inSection:0]
+                                        atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                                animated:NO];
+                currentIndex = idx;
+                [self updateNavigationTitle];
+            }
+        }];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -482,6 +495,7 @@
     }
     [self hideTopToolbarAnimated:NO];
     DaysCounterEvent *item = [_eventsArray objectAtIndex:currentIndex];
+    _prevShownEventID = item.eventId;
     
     A3DaysCounterEventDetailViewController *viewCtrl = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:nil];
     viewCtrl.eventItem = item;
