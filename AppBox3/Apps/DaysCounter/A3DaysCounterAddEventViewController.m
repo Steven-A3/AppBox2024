@@ -417,8 +417,12 @@
                 case EventCellType_EndDate:{
                     cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateCell" owner:nil options:nil] lastObject];
                     UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
-                    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-                    imageView.tintColor = [UIColor lightGrayColor];
+//                    imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//                    imageView.tintColor = [UIColor lightGrayColor];
+                    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:46.0]];
+                    [SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
+                    imageView.image = [SFKImage imageNamed:@"f"];
+                    imageView.tintColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
                 }
                     break;
                 case EventCellType_Calendar:
