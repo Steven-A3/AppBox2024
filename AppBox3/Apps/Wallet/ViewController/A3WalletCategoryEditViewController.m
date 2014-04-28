@@ -153,24 +153,23 @@ NSString *const A3WalletCateEditPlusCellID = @"A3WalletCateEditPlusCell";
 	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
 	if ([context hasChanges]) {
 		[context MR_saveToPersistentStoreAndWait];
+	}
 
-		if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
-			[_delegate walletCategoryEdited:_category];
-		}
+	if (_delegate && [_delegate respondsToSelector:@selector(walletCategoryEdited:)]) {
+		[_delegate walletCategoryEdited:_category];
+	}
 
+	if (_isAddingCategory) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
+	} else {
 		[self.navigationController popToRootViewControllerAnimated:NO];
 
-		if (_isAddingCategory) {
-			[[NSNotificationCenter defaultCenter] postNotificationName:A3WalletNotificationCategoryAdded object:nil];
-		} else {
-			NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationCategoryChanged
-																		 object:self
-																	   userInfo:@{@"uniqueID":_category.uniqueID}];
-			[[NSNotificationCenter defaultCenter] postNotification:notification];
-		}
-	} else {
-		[self dismissViewControllerAnimated:YES completion:NULL];
+		NSNotification *notification = [[NSNotification alloc] initWithName:A3WalletNotificationCategoryChanged
+																	 object:self
+																   userInfo:@{@"uniqueID":_category.uniqueID}];
+		[[NSNotificationCenter defaultCenter] postNotification:notification];
 	}
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 - (void)cancelButtonAction:(id)sender

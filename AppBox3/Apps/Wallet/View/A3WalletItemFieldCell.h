@@ -11,6 +11,8 @@
 
 @interface A3WalletItemFieldCell : UITableViewCell
 
-@property (strong, nonatomic) IBOutlet JVFloatLabeledTextField *valueTextField;
+@property (weak, nonatomic) IBOutlet JVFloatLabeledTextField *valueTextField;
+@property (strong, nonatomic) UIButton *deleteButton;
 
+- (void)addDeleteButton;
 @end

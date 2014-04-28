@@ -11,6 +11,8 @@
 #import "WalletFavorite.h"
 #import "WalletFieldItem+initialize.h"
 #import "NSString+conversion.h"
+#import "WalletField.h"
+#import "WalletData.h"
 
 @implementation WalletItem (initialize)
 
@@ -31,6 +33,16 @@
 }
 
 - (void)verifyNULLField {
+	for (WalletFieldItem *fieldItem in self.fieldItems.allObjects) {
+		if (fieldItem.image && ![fieldItem.field.type isEqualToString:WalletFieldTypeImage]) {
+			fieldItem.field = nil;
+			continue;
+		}
+		if (fieldItem.video && ![fieldItem.field.type isEqualToString:WalletFieldTypeVideo]) {
+			fieldItem.field = nil;
+		}
+	}
+
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"walletItem.uniqueID == %@ AND field == NULL", self.uniqueID];
 	NSArray *fieldItemsFieldEqualsNULL = [WalletFieldItem MR_findAllWithPredicate:predicate];
 	NSDateFormatter *dateFormatter = [NSDateFormatter new];
@@ -46,7 +58,7 @@
 		}
 	}
 	if ([collectedTexts length]) {
-		self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n",self.note] : @"", collectedTexts];
+		self.note = [NSString stringWithFormat:@"%@%@", [self.note length] ? [NSString stringWithFormat:@"%@\n", self.note] : @"", collectedTexts];
 	}
 	[[self managedObjectContext] MR_saveToPersistentStoreAndWait];
 }

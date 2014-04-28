@@ -7,11 +7,12 @@
 //
 
 #import "A3WalletIconSelectViewController.h"
-#import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "WalletCategory.h"
 #import "WalletCategory+initialize.h"
+#import "UIImage+imageWithColor.h"
 
 @interface A3WalletIconSelectViewController ()
 {
@@ -60,17 +61,17 @@
 
 - (void)addIconImages
 {
-    for (int i=0; i<self.iconList.count; i++) {
-
-        NSString *iconName = _iconList[i];
-        UIImage *icon = [UIImage imageNamed:iconName];
+    for (NSUInteger idx = 0; idx < self.iconList.count; idx++) {
+        NSString *iconName = _iconList[idx];
+        UIImage *icon = [[UIImage imageNamed:iconName] tintedImageWithColor:[UIColor colorWithRed:146.0/255.0 green:146.0/255.0 blue:146.0/255.0 alpha:1.0]];
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(0, 0, 30, 30);
-        button.tag = i;
+        button.tag = idx;
         [button setImage:icon forState:UIControlStateNormal];
         NSString *onImgName = [iconName stringByAppendingString:@"_on"];
-        [button setImage:[UIImage imageNamed:onImgName] forState:UIControlStateSelected];
-        [button setImage:[UIImage imageNamed:onImgName] forState:UIControlStateHighlighted];
+		UIImage *selectedIcon = [[UIImage imageNamed:onImgName] tintedImageWithColor:[A3AppDelegate instance].themeColor];
+		[button setImage:selectedIcon forState:UIControlStateSelected];
+        [button setImage:selectedIcon forState:UIControlStateHighlighted];
         
         [button addTarget:self action:@selector(iconButtonTouchUpAction:) forControlEvents:UIControlEventTouchUpInside];
         [button addTarget:self action:@selector(iconButtonTouchDownAction:) forControlEvents:UIControlEventTouchDown];
@@ -78,9 +79,9 @@
         
         button.layer.anchorPoint = CGPointMake(0, 0);
 
-        int xIdx, yIdx;
-        yIdx = i/5;
-        xIdx = i%5;
+        NSUInteger xIdx, yIdx;
+        yIdx = idx / 5;
+        xIdx = idx % 5;
         
         button.center = CGPointMake(xIdx*(35+30)+15, yIdx*(20+30)+20);
         

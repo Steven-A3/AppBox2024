@@ -32,6 +32,7 @@
 #import "WalletFieldItemVideo.h"
 #import "WalletFieldItemImage.h"
 #import "WalletItem+initialize.h"
+#import "NSString+conversion.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <ImageIO/ImageIO.h>
@@ -337,8 +338,18 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	fieldItem.date = sender.date;
 
     [self.tableView reloadRowsAtIndexPaths:@[self.dateInputIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-    
+
     [self updateDoneButtonEnabled];
+}
+
+- (void)deleteDate:(UIButton *)sender {
+	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:sender];
+	WalletFieldItem *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
+	fieldItem.date = nil;
+
+	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+	[self updateDoneButtonEnabled];
 }
 
 - (void)updateDoneButtonEnabled {
@@ -1056,6 +1067,11 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	if ([self.sectionItems objectAtIndex:indexPath.row] == self.titleItem) {
 		textField.keyboardType = UIKeyboardTypeDefault;
 		textField.autocapitalizationType = UITextAutocapitalizationTypeSentences;
+		if ([self isMediaCategory]) {
+			textField.returnKeyType = UIReturnKeyDefault;
+		} else {
+			textField.returnKeyType = UIReturnKeyNext;
+		}
 	} else if ([[self.sectionItems objectAtIndex:indexPath.row] isKindOfClass:[WalletField class]]) {
 
 		WalletField *field = _sectionItems[indexPath.row];
@@ -1094,8 +1110,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)textFieldDidChange:(NSNotification *)notification {
 	UITextField *textField = notification.object;
-	if ([_item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] ||
-			[_item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory]) {
+	if ([self isMediaCategory]) {
 		[self updateDoneButtonEnabled];
 	} else {
 		self.navigationItem.rightBarButtonItem.enabled = [self hasChanges] || [textField.text length];
@@ -1109,29 +1124,34 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
+	NSString *text = [textField.text stringByTrimmingSpaceCharacters];
 	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
 	FNLOG(@"%ld, %ld", (long)indexPath.section, (long)indexPath.row);
 	// update
 	if (_sectionItems[indexPath.row] == self.titleItem) {
-		_item.name = textField.text;
+		_item.name = [text length] ? text : nil;
 	}
-	else {
-		if ([_sectionItems[indexPath.row] isKindOfClass:[WalletField class]]) {
-			WalletFieldItem *fieldItem = [self fieldItemForIndexPath:_currentIndexPath create:YES];
+	else if ([_sectionItems[indexPath.row] isKindOfClass:[WalletField class]]) {
+		WalletFieldItem *fieldItem = [self fieldItemForIndexPath:indexPath create:YES];
 
-			// 변경사항이 없으면, 무시한다.
-			if ([fieldItem.value isEqualToString:textField.text]) {
-				return;
-			}
-			fieldItem.value = textField.text;
-		}
+		fieldItem.value = [text length] ? text : nil;
 	}
+}
+
+- (BOOL)isMediaCategory {
+	return [_item.category.uniqueID isEqualToString:A3WalletUUIDPhotoCategory] || [_item.category.uniqueID isEqualToString:A3WalletUUIDVideoCategory];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+	if (_sectionItems[indexPath.row] == _titleItem && [self isMediaCategory]) {
+		[textField resignFirstResponder];
+		return YES;
+	}
+
 	NSUInteger startIdx;
-	startIdx = (NSUInteger) (_currentIndexPath.row + 1);
+	startIdx = (NSUInteger) (indexPath.row + 1);
 
 	if ([_sectionItems objectAtIndex:startIdx] == self.noteItem) {
 		dispatch_async(dispatch_get_main_queue(), ^{
@@ -1177,15 +1197,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-    _item.note = textView.text;
-    
-    [self.tableView beginUpdates];
-    
-    CGRect frame = textView.frame;
-    frame.size.height = textView.contentSize.height+25;
-    textView.frame = frame;
-
-    [self.tableView endUpdates];
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
 
 	[self makeCursorVisibleForTextView:textView];
 	[self updateDoneButtonEnabled];
@@ -1194,7 +1207,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
 	self.firstResponder = nil;
-	_item.note = textView.text;
+	NSString *text = [textView.text stringByTrimmingSpaceCharacters];
+	_item.note = [text length] ? text : nil;
 
     [self updateDoneButtonEnabled];
 }
@@ -1223,6 +1237,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	FNLOG();
     if (self.firstResponder) {
         [self.firstResponder resignFirstResponder];
     }
@@ -1341,20 +1356,28 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (indexPath.section == 0) {
         if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
+			UITextView *textView;
+			NSString *text;
+			if ([self.firstResponder isKindOfClass:[UITextView class]]) {
+				textView = (UITextView *) self.firstResponder;
+				text = [textView.text length] ? textView.text : @"";
+			} else {
+				textView = [[UITextView alloc] init];
+				text = [_item.note length] ? _item.note : @"";
+			}
 			CGFloat minHeight = _isMemoCategory ? [self noteHeight] : 180.0;
 
-			if (!_item.note) return minHeight;
+			if (![text length]) return minHeight;
             
             NSDictionary *textAttributes = @{
                                              NSFontAttributeName : [UIFont systemFontOfSize:17]
                                              };
             
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:_item.note ? _item.note : @"" attributes:textAttributes];
-            UITextView *txtView = [[UITextView alloc] init];
-            [txtView setAttributedText:attributedString];
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text attributes:textAttributes];
+            [textView setAttributedText:attributedString];
             CGFloat margin = IS_IPAD ? 49:31;
-            CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
-            float cellHeight = txtViewSize.height + 20;
+            CGSize textViewSize = [textView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
+            float cellHeight = textViewSize.height + 20;
 
 			return MAX(cellHeight, minHeight);
         }
@@ -1552,12 +1575,16 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	[self configureFloatingTextField:inputCell.valueTextField];
 
+	[inputCell addDeleteButton];
+	[inputCell.deleteButton setHidden:fieldItem.date == nil];
+	[inputCell.deleteButton addTarget:self action:@selector(deleteDate:) forControlEvents:UIControlEventTouchUpInside];
+
 	inputCell.valueTextField.enabled = NO;
 	inputCell.valueTextField.placeholder = fieldItem.field.name;
 
 	if ([fieldItem.date isKindOfClass:[NSDate class]]) {
 		NSDateFormatter *df = [[NSDateFormatter alloc] init];
-		[df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+		[df setDateStyle:NSDateFormatterFullStyle];
 		inputCell.valueTextField.text = [df stringFromDate:fieldItem.date];
 	}
 	else {
@@ -1587,16 +1614,16 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 - (A3WalletNoteCell *)getNoteCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
 	A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemNoteCellID4 forIndexPath:indexPath];
 
-	noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	GCPlaceholderTextView *textView = noteCell.textView;
+	noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
 	textView.backgroundColor = [UIColor clearColor];
 	textView.delegate = self;
 	textView.bounces = NO;
-	textView.placeholder = @"Notes";
 	textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 	textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 	noteCell.textView.font = [UIFont systemFontOfSize:17];
 
+	textView.placeholder = @"Notes";
 	[noteCell setNoteText:_item.note];
 
 	return noteCell;

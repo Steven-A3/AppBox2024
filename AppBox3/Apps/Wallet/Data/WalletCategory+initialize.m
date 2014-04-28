@@ -23,6 +23,7 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 - (void)initValues {
 	self.uniqueID = [[NSUUID UUID] UUIDString];
 	self.doNotShow = @NO;
+	self.modificationDate = [NSDate date];
 }
 
 + (void)resetWalletCategory
@@ -40,7 +41,6 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 	[favoriteCategory initValues];
 	favoriteCategory.name = @"Favorite";
     favoriteCategory.icon = @"star01";
-	favoriteCategory.modificationDate = [NSDate date];
 	favoriteCategory.uniqueID = A3WalletUUIDFavoriteCategory;
 	favoriteCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
@@ -48,7 +48,6 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 	[allCategory initValues];
 	allCategory.name = @"All";
     allCategory.icon = @"wallet_folder";
-	allCategory.modificationDate = [NSDate date];
 	allCategory.uniqueID = A3WalletUUIDAllCategory;
 	allCategory.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
@@ -65,7 +64,6 @@ NSString *const A3WalletUUIDMemoCategory = @"2bd209c3-9cb5-4229-aa68-0e08bcb6c6f
 
         category.name = preset[@"Name"];
         category.icon = preset[@"Icon"];
-		category.modificationDate = [NSDate date];
 		category.order = [NSString orderStringWithOrder:categoryIdx++ * 1000000];
 
 		NSArray *fieldPresets = preset[@"Fields"];
