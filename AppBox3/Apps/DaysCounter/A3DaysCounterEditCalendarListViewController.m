@@ -105,6 +105,8 @@
         [checkButton addTarget:self action:@selector(checkAction:) forControlEvents:UIControlEventTouchUpInside];
         UIImageView *imageView = (UIImageView*)[cell viewWithTag:11];
         imageView.image = [imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+        UIButton *addEditCalendarButton = (UIButton*)[cell viewWithTag:14];
+        [addEditCalendarButton addTarget:self action:@selector(editCalendarAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
     UIButton *checkButton = (UIButton*)[cell viewWithTag:10];
@@ -184,24 +186,28 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
+//    if ( [item.calendarType integerValue] == CalendarCellType_System )
+//        return;
+//    
+//    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+//    viewCtrl.isEditMode = YES;
+//    viewCtrl.calendarItem = [[A3DaysCounterModelManager sharedManager] dictionaryFromCalendarEntity:item];
+//    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+//    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+//    self.modalVC = navCtrl;
+//    
+//    // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
+//    UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
+//    leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+//    [navCtrl.view addSubview:leftLineView];
+//    
+//    [self presentViewController:navCtrl animated:YES completion:nil];
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-    if ( [item.calendarType integerValue] == CalendarCellType_System )
-        return;
-    
-    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
-    viewCtrl.isEditMode = YES;
-    viewCtrl.calendarItem = [[A3DaysCounterModelManager sharedManager] dictionaryFromCalendarEntity:item];
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
-    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-    self.modalVC = navCtrl;
-    
-    // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
-    UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
-    leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
-    [navCtrl.view addSubview:leftLineView];
-    
-    [self presentViewController:navCtrl animated:YES completion:nil];
-    
+    BOOL checkState = [item.isShow boolValue];
+    item.isShow = @(!checkState);
+    [_itemArray replaceObjectAtIndex:indexPath.row withObject:item];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
  
 #pragma mark - action method
@@ -256,6 +262,32 @@
     [navCtrl.view addSubview:leftLineView];
 
     self.modalVC = navCtrl;
+    [self presentViewController:navCtrl animated:YES completion:nil];
+}
+
+- (void)editCalendarAction:(id)sender
+{
+    UIButton *button = (UIButton*)sender;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
+    if ( indexPath == nil )
+        return;
+
+    DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
+    if ( [item.calendarType integerValue] == CalendarCellType_System )
+        return;
+    
+    A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
+    viewCtrl.isEditMode = YES;
+    viewCtrl.calendarItem = [[A3DaysCounterModelManager sharedManager] dictionaryFromCalendarEntity:item];
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+    navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+    self.modalVC = navCtrl;
+    
+    // 왼쪽 바운드 라인이 사라지는 버그 수정을 위하여 추가.
+    UIView *leftLineView = [[UIView alloc] initWithFrame:CGRectMake(-(IS_RETINA ? 0.5 : 1), 0, (IS_RETINA ? 0.5 : 1), CGRectGetHeight(navCtrl.view.frame))];
+    leftLineView.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+    [navCtrl.view addSubview:leftLineView];
+    
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 @end

@@ -52,8 +52,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
         // DaysCounter
         if ([[localNotification.userInfo objectForKey:@"type"] isEqualToString:@"dc"]) {
             _daysCounterEventID = [localNotification.userInfo objectForKey:@"eventID"];
-            //[[NSNotificationCenter defaultCenter] postNotificationName:@"daysCounterNotification" object:nil];
-            //[self showDaysCounterDetail];
         }
     }
     
