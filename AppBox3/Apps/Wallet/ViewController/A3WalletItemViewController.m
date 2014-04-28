@@ -119,10 +119,8 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 					[deleteTmp addObject:fieldItem];
 				}
 			}
-			else {
-				if ([fieldItem.value length] == 0 && fieldItem.image && fieldItem.video) {
-					[deleteTmp addObject:fieldItem];
-				}
+			else if ([fieldItem.value length] == 0 && !fieldItem.image && !fieldItem.video) {
+				[deleteTmp addObject:fieldItem];
 			}
 		}
 		[_fieldItems removeObjectsInArray:deleteTmp];

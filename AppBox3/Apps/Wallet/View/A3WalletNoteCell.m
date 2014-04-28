@@ -24,6 +24,12 @@
 	[super awakeFromNib];
 
 	_textView.font = [UIFont systemFontOfSize:17];
+	[_textView makeConstraints:^(MASConstraintMaker *make) {
+		make.top.equalTo(self.top).with.offset(3);
+		make.bottom.equalTo(self.bottom).with.offset(-3);
+		make.left.equalTo(self.left).with.offset(IS_IPHONE ? 10 : 23);
+		make.right.equalTo(self.right).with.offset(IS_IPHONE ? -10 : -23);
+	}];
 }
 
 - (void)setNoteText:(NSString *)text {

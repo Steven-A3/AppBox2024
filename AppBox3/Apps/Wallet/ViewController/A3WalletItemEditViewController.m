@@ -117,7 +117,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	self.navigationItem.rightBarButtonItem.enabled = NO;
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonAction:)];
-    
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -131,7 +131,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewDidDismissed object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -150,10 +149,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	} else {
 		_keyboardHeight = keyboardFrame.size.width;
 	}
-}
-
-- (void)keyboardDidHide:(NSNotification *)notification {
-	self.tableView.contentInset = UIEdgeInsetsMake(self.tableView.contentInset.top, 0, 0, 0);
 }
 
 - (void)copyThumbnailImagesToTemporaryPath {
@@ -1192,15 +1187,12 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
 	self.firstResponder = textView;
-	[self makeCursorVisibleForTextView:textView];
 }
 
 - (void)textViewDidChange:(UITextView *)textView
 {
-	[self.tableView beginUpdates];
-	[self.tableView endUpdates];
-
-	[self makeCursorVisibleForTextView:textView];
+	NSString *text = [textView.text stringByTrimmingSpaceCharacters];
+	_item.note = [text length] ? text : nil;
 	[self updateDoneButtonEnabled];
 }
 
@@ -1211,26 +1203,6 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 	_item.note = [text length] ? text : nil;
 
     [self updateDoneButtonEnabled];
-}
-
-- (void)makeCursorVisibleForTextView:(UITextView *)textView {
-	NSRange selectedRange = [textView selectedRange];
-	if (selectedRange.location != NSNotFound) {
-		UITableViewCell *cell = [self.tableView cellForCellSubview:textView];
-		CGRect rect = [textView.layoutManager boundingRectForGlyphRange:textView.selectedRange inTextContainer:textView.textContainer];
-
-		CGFloat currentY = cell.frame.origin.y + rect.origin.y;
-		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-		CGFloat visibleY = screenBounds.size.height - _keyboardHeight - 64;
-		if (currentY < self.tableView.contentOffset.y) {
-			[self.tableView setContentOffset:CGPointMake(0, currentY) animated:YES];
-		} else if (currentY > self.tableView.contentOffset.y + visibleY) {
-			[self.tableView setContentOffset:CGPointMake(0, currentY - visibleY + 20.0) animated:YES];
-		}
-		FNLOG(@"%f, %f, %f", currentY, visibleY, _keyboardHeight);
-		FNLOG(@"%f, %f", self.tableView.contentSize.height, self.tableView.contentOffset.y);
-		FNLOG(@"%f, %f", cell.frame.origin.y, textView.frame.origin.y);
-	}
 }
 
 #pragma mark - tableView delegate
@@ -1356,30 +1328,19 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (indexPath.section == 0) {
         if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
-			UITextView *textView;
-			NSString *text;
-			if ([self.firstResponder isKindOfClass:[UITextView class]]) {
-				textView = (UITextView *) self.firstResponder;
-				text = [textView.text length] ? textView.text : @"";
+			CGFloat cellHeight = CGFLOAT_MAX;
+			if (IS_IPHONE) {
+				cellHeight = MIN(cellHeight, 568 - 216 - 64);
+			} else if (IS_IPHONE35) {
+				cellHeight = MIN(cellHeight, 480 - 216 - 64);
 			} else {
-				textView = [[UITextView alloc] init];
-				text = [_item.note length] ? _item.note : @"";
+				if (IS_PORTRAIT) {
+					cellHeight = MIN(cellHeight, 1024 - 264 - 64);
+				} else {
+					cellHeight = MIN(cellHeight, 768 - 352 - 64);
+				}
 			}
-			CGFloat minHeight = _isMemoCategory ? [self noteHeight] : 180.0;
-
-			if (![text length]) return minHeight;
-            
-            NSDictionary *textAttributes = @{
-                                             NSFontAttributeName : [UIFont systemFontOfSize:17]
-                                             };
-            
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:text attributes:textAttributes];
-            [textView setAttributedText:attributedString];
-            CGFloat margin = IS_IPAD ? 49:31;
-            CGSize textViewSize = [textView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
-            float cellHeight = textViewSize.height + 20;
-
-			return MAX(cellHeight, minHeight);
+			return cellHeight;
         }
         else if ([self.sectionItems objectAtIndex:indexPath.row] == self.dateInputItem) {
             
