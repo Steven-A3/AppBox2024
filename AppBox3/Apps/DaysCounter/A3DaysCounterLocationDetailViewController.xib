@@ -17,14 +17,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="dif-8n-4PQ">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="239"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="339"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="WPv-nq-he9"/>
                     </connections>
                 </mapView>
                 <tableView clipsSubviews="YES" alpha="0.94999999999999996" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3wr-pT-j1S">
-                    <rect key="frame" x="0.0" y="239" width="320" height="329"/>
+                    <rect key="frame" x="0.0" y="339" width="320" height="229"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="1" colorSpace="calibratedRGB"/>
@@ -43,7 +43,7 @@
                 <constraint firstItem="dif-8n-4PQ" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="DzO-Fk-inK"/>
                 <constraint firstAttribute="centerX" secondItem="3wr-pT-j1S" secondAttribute="centerX" id="JIv-g3-l7L"/>
                 <constraint firstItem="dif-8n-4PQ" firstAttribute="top" secondItem="1" secondAttribute="top" id="gVC-nG-thZ"/>
-                <constraint firstAttribute="bottom" secondItem="3wr-pT-j1S" secondAttribute="top" constant="329" id="hI1-nT-kLP"/>
+                <constraint firstAttribute="bottom" secondItem="3wr-pT-j1S" secondAttribute="top" constant="229" id="hI1-nT-kLP"/>
                 <constraint firstAttribute="trailing" secondItem="dif-8n-4PQ" secondAttribute="trailing" id="kxE-ZZ-GZx"/>
                 <constraint firstItem="3wr-pT-j1S" firstAttribute="top" secondItem="dif-8n-4PQ" secondAttribute="bottom" id="lfg-JO-DGo"/>
                 <constraint firstAttribute="trailing" secondItem="3wr-pT-j1S" secondAttribute="trailing" id="uIk-CQ-TCb"/>
