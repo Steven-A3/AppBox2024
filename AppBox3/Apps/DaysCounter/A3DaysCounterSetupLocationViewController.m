@@ -759,8 +759,10 @@
         
         viewCtrl.shrinkPopoverViewBlock = ^(CGSize size) {
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 44) animated:NO];
+            self.popoverVC.contentViewController.view.hidden = NO;
         };
 
+        self.popoverVC.contentViewController.view.hidden = YES;
         [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, 274) animated:NO];
         [self.popoverVC presentPopoverFromRect:view.frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }

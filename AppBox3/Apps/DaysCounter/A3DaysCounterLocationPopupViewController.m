@@ -15,7 +15,8 @@
 
 @interface A3DaysCounterLocationPopupViewController ()
 @property (strong, nonatomic) NSString *addressStr;
-@property (nonatomic) BOOL isFullPrint;
+@property (assign, nonatomic) BOOL isFullPrint;
+@property (assign, nonatomic) BOOL isInitialized;
 @end
 
 @implementation A3DaysCounterLocationPopupViewController
@@ -48,12 +49,17 @@
     self.tableView.tableFooterView = [UIView new];
 }
 
--(void)viewWillAppear:(BOOL)animated
+-(void)viewWillLayoutSubviews
 {
-    [super viewWillAppear:animated];
+    [super viewWillLayoutSubviews];
+
+    if (_isInitialized) {
+        return;
+    }
     
     if (_shrinkPopoverViewBlock) {
         _shrinkPopoverViewBlock(self.view.frame.size);
+        _isInitialized = YES;
     }
 }
 
