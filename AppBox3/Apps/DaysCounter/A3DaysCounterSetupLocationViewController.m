@@ -62,6 +62,15 @@
     [self setAutomaticallyAdjustsScrollViewInsets:NO];
     [self makeBackButtonEmptyArrow];
     [self.infoTableView setTableFooterView:_tableFooterView];
+    UIView *footerSeparator = [UIView new];
+    footerSeparator.backgroundColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
+    [_tableFooterView addSubview:footerSeparator];
+    [footerSeparator makeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(_tableFooterView.left);
+        make.trailing.equalTo(_tableFooterView.right);
+        make.bottom.equalTo(_tableFooterView.top);
+        make.height.equalTo(IS_RETINA ? @(0.5) : @(1.0));
+    }];
     
     self.searchIcon = [[UIImage imageNamed:@"search"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     
