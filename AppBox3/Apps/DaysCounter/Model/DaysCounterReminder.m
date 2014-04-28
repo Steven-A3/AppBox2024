@@ -2,7 +2,7 @@
 //  DaysCounterReminder.m
 //  AppBox3
 //
-//  Created by kimjeonghwan on 4/24/14.
+//  Created by kimjeonghwan on 4/28/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -12,10 +12,10 @@
 
 @implementation DaysCounterReminder
 
-@dynamic isOn;
 @dynamic alertDate;
-@dynamic startDate;
+@dynamic isOn;
 @dynamic isUnread;
+@dynamic startDate;
 @dynamic event;
 
 @end

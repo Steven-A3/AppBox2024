@@ -22,6 +22,7 @@
 #import "A3DaysCounterEventInfoCell.h"
 #import "SFKImage.h"
 #import "A3AppDelegate+appearance.h"
+#import "DaysCounterReminder.h"
 
 @interface A3DaysCounterEventDetailViewController () <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, UIActivityItemSource>
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -136,6 +137,7 @@
     [self.tableView reloadData];
 }
 
+#pragma mark only modal
 - (void)removeBackAndEditButton
 {
     self.navigationItem.leftBarButtonItem = nil;
@@ -144,6 +146,9 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
+    self.eventItem.reminder.isUnread = @(NO);
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 

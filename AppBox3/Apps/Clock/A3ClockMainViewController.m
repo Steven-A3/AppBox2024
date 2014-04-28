@@ -129,6 +129,10 @@
 	[self.scrollView addGestureRecognizer:tapGestureRecognizer];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(drawerStateChanged) name:A3DrawerStateChanged object:nil];
+
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"daysCounterNotification" object:nil];
+    });
 }
 
 - (void)drawerStateChanged {
@@ -138,7 +142,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	FNLOG();
 	if ([self isMovingToParentViewController]) {
 		[self layoutSubviews];
 		[self.clockDataManager startTimer];

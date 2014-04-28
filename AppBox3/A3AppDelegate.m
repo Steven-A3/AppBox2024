@@ -24,6 +24,7 @@
 #import "A3ImageToDataTransformer.h"
 #import "DaysCounterEvent.h"
 #import "A3DaysCounterEventDetailViewController.h"
+#import "A3DaysCounterModelManager.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -45,13 +46,13 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+	FNLOG();
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
         // DaysCounter
         if ([[localNotification.userInfo objectForKey:@"type"] isEqualToString:@"dc"]) {
             _daysCounterEventID = [localNotification.userInfo objectForKey:@"eventID"];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"daysCounterNotification" object:nil];
+            //[[NSNotificationCenter defaultCenter] postNotificationName:@"daysCounterNotification" object:nil];
             //[self showDaysCounterDetail];
         }
     }
@@ -178,6 +179,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    FNLOG();
 	if ([[DBSession sharedSession] handleOpenURL:url]) {
 		if ([[DBSession sharedSession] isLinked]) {
 			NSLog(@"App linked successfully!");
@@ -195,6 +197,7 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 -(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
+	FNLOG();
     NSString *notificationType = [notification.userInfo objectForKey:@"type"];
     
     // DaysCounter
@@ -214,9 +217,13 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 -(void)showDaysCounterDetail:(NSNotification *)notification
 {
+    //TODO
+    //중복처리
     if (!_daysCounterEventID) {
         return;
     }
+    
+    [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
     FNLOG(@"%@", _daysCounterEventID);
 	// Days Counter Item인지 확인하고
 	// Item을 생성하셔서 아래의 커멘트 부분에 뷰 컨트롤러를 만들어서 넘겨 주시면 됩니다.
@@ -229,14 +236,10 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 		UINavigationController *navigationController = (UINavigationController *) self.drawerController.centerViewController;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController presentViewController:nav animated:YES completion:^{
-//            [vc removeBackAndEditButton];
-        }];
+        [navigationController presentViewController:nav animated:YES completion:nil];
 	} else {
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        [self.rootViewController.centerNavigationController presentViewController:nav animated:YES completion:^{
-//            [vc removeBackAndEditButton];
-        }];
+        [self.rootViewController.centerNavigationController presentViewController:nav animated:YES completion:nil];
 	}
 }
 
