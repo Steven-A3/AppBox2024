@@ -336,15 +336,21 @@ typedef CMathParser<char, double> MathParser;
 }
 
 - (void) convertMathExpressionToAttributedString {
-    _expressionLabel.attributedText = [self getExpressionWith:mathexpression];
+    _expressionLabel.attributedText = [self getExpressionWith:mathexpression isDefault:YES];
 }
 
 - (void) setMathExpression:(NSString *) mathExpr {
     mathexpression = mathExpr;
-    _expressionLabel.attributedText = [self getExpressionWith:mathexpression];
+    _expressionLabel.attributedText = [self getExpressionWith:mathexpression isDefault:YES];
     [self evaluateAndSet];
 }
+
 - (NSAttributedString *) getExpressionWith:(NSString *) mExpression {
+    return [self getExpressionWith:mExpression isDefault:NO];
+}
+
+
+- (NSAttributedString *) getExpressionWith:(NSString *) mExpression isDefault:(BOOL)bDefault{
     FNLOG(@"mExpression = %@",mExpression);
     NSAttributedString *temp = [[NSAttributedString alloc] init];
     NSUInteger i, length = [mExpression length];
@@ -407,7 +413,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"sinh-1"]) {
-                    temp = [temp appendWith:[calutil stringArcSinh]];
+                    temp = [temp appendWith:bDefault == YES ?[calutil stringArcSinh] : [calutil stringArcSinh_h]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -415,7 +421,7 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"sin-1"]){
-                        temp = [temp appendWith:[calutil stringArcSin]];
+                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcSin]:[calutil stringArcSin_h]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -453,7 +459,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"cosh-1"]) {
-                    temp = [temp appendWith:[calutil stringArcCosh]];
+                    temp = [temp appendWith:bDefault == YES ?[calutil stringArcCosh]:[calutil stringArcCosh_h]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -461,10 +467,10 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"cos-1"]){
-                        temp = [temp appendWith:[calutil stringArcCos]];
+                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcCos]:[calutil stringArcCos_h]];
                     } else if((length >= (i+5)) &&
                               [currentString isEqualToString:@"cot-1"]){
-                        temp = [temp appendWith:[calutil stringArcCot]];
+                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcCot]:[calutil stringArcCot_h]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -505,7 +511,7 @@ typedef CMathParser<char, double> MathParser;
                 }
                 if((length >= (i + 6)) > 0 &&
                    [currentString isEqualToString:@"tanh-1"]) {
-                    temp = [temp appendWith:[calutil stringArcTanh]];
+                    temp = [temp appendWith:bDefault == YES ?[calutil stringArcTanh]:[calutil stringArcTanh_h]];
                 } else {
                     if(length >= (i+5)) {
                         range.length = 5;
@@ -513,7 +519,7 @@ typedef CMathParser<char, double> MathParser;
                     }
                     if((length >= (i+5)) &&
                        [currentString isEqualToString:@"tan-1"]){
-                        temp = [temp appendWith:[calutil stringArcTan]];
+                        temp = [temp appendWith:bDefault == YES ?[calutil stringArcTan]:[calutil stringArcTan_h]];
                     } else {
                         if(length >= (i+4)) {
                             range.length = 4;
@@ -578,16 +584,19 @@ typedef CMathParser<char, double> MathParser;
                         if(length > range.location) {
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             NSString *num = [mExpression substringWithRange:range];
-                            temp = [temp appendWith:[[calutil stringWithSuperscript:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
+                                                     [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
                             temp = [temp appendWithString:num];
                             i = range.location + range.length;
                         } else {
-                            temp = [temp appendWith:[[calutil stringWithSuperscript:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
+                                                     [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
                             i = range.location;
                         }
                         break;
                     } else if([currentString isEqualToString:@"LOG2("]) {
-                        temp = [temp appendWith:[[calutil stringWithSuperscript:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] appendWithString:@"("]];
+                        temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] :
+                                                 [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] appendWithString:@"("]];
                         i+= 5;
                         if(length > i) {
                             range.location = i;
@@ -606,7 +615,7 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 4;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"LOG("]) {
-                        temp = [[temp appendWith:[calutil stringLog10]] appendWithString:@"("];
+                        temp = [[temp appendWith:bDefault == YES? [calutil stringLog10] :[calutil stringLog10_h]] appendWithString:@"("];
                         i+=4;
                         if(length > i) {
                             range.location = i;
@@ -655,11 +664,13 @@ typedef CMathParser<char, double> MathParser;
                         if(length > range.location) {
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             NSString *num = [mExpression substringWithRange:range];
-                            temp = [temp appendWith:[[calutil stringWithSuperscript:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] appendWithString:@"("]];
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
+                                                     [calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1]  appendWithString:@"("]];
                             temp = [temp appendWithString:num];
                             i = range.location + range.length;
                         } else {
-                            temp = [temp appendWith:[[calutil stringWithSuperscript:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] appendWithString:@"("]];
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
+                                                     [calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] appendWithString:@"("]];
                             i = range.location;
                         }
                         break;
@@ -674,7 +685,8 @@ typedef CMathParser<char, double> MathParser;
                     range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                     if(range.length > 0 ){
                         currentString = [mExpression substringWithRange:range];
-                        temp = [temp appendWith:[calutil stringWithSuperscriptMiddleFont:currentString location:0 length:[currentString length] value:@(1)]];
+                        temp = bDefault == YES ? [temp appendWith:[calutil stringWithSuperscriptMiddleFont:currentString location:0 length:[currentString length] value:@(1)]] :
+                                                [temp appendWith:[calutil stringWithSuperscriptSystemFont:currentString location:0 length:[currentString length] value:@(1)]];
                         i+=[currentString length];
                     }
                 } else {
@@ -689,7 +701,7 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 5;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"SQRT("]) {
-                        temp = [temp appendWith:[calutil stringSquareroot]];
+                        temp = [temp appendWith:bDefault == YES ? [calutil stringSquareroot] :[calutil stringSquareroot_h]];
                         i+=5;
                         if(length > i) {
                             range.location = i;
@@ -711,7 +723,7 @@ typedef CMathParser<char, double> MathParser;
                     range.length = 5;
                     currentString = [mExpression substringWithRange:range];
                     if([currentString isEqualToString:@"CBRT("]) {
-                        temp = [temp appendWith:[calutil stringCuberoot]];
+                        temp = [temp appendWith:bDefault == YES ? [calutil stringCuberoot] : [calutil stringCuberoot_h]];
                         i+=5;
                         if(length > i) {
                             range.location = i;
