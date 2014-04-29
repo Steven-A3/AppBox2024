@@ -242,7 +242,7 @@
 
 	[self.view addSubview:self.evaluatedResultLabel];
 	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
-		make.left.equalTo(self.view.left).with.offset(30);
+		make.left.equalTo(self.view.left).with.offset(14);
         self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
 		self.resultLabelBaselineConstraint = make.baseline.equalTo(self.view.top).with.offset([self getResultLabelBaselineOffSet:screenBounds]);
 	}];
