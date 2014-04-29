@@ -10,5 +10,6 @@
 
 @interface A3DaysCounterLocationDetailCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftInsetSpaceConst;
 
 @end
