@@ -35,8 +35,6 @@
 @property (nonatomic, strong) UIBarButtonItem *searchItem;
 @property (nonatomic, strong) NSMutableDictionary *topItem;
 @property (nonatomic, strong) NSMutableDictionary *emptyItem;		// 데이터가 없는 경우, 빈 셀 간격을 유지하기 위한 특별한 아이템
-@property (nonatomic, strong) UIButton *addButton;
-@property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, readwrite) NSUInteger sortingMode;
 @property (nonatomic, readwrite) BOOL isAscendingSort;
 @property (nonatomic, strong) UIImageView *sortArrowImgView;
@@ -53,12 +51,6 @@
 	BOOL _dataEmpty;
 }
 
-NSString *const A3WalletTextCellID = @"A3WalletListTextCell";
-NSString *const A3WalletPhotoCellID = @"A3WalletListPhotoCell";
-NSString *const A3WalletVideoCellID = @"A3WalletListVideoCell";
-NSString *const A3WalletAllTopCellID = @"A3WalletAllTopCell";
-NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
-
 enum SortingKind {
     kSortingDate = 0,
     kSortingName,
@@ -68,26 +60,16 @@ enum SortingKind {
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    self.navigationItem.title = @"All Items";
-
-	[self makeBackButtonEmptyArrow];
-    // more tabBar 안에서도 좌측barItem을 Apps로 유지한다.
-    self.navigationItem.hidesBackButton = YES;
-    [self leftBarButtonAppsButton];
-    
     self.navigationItem.rightBarButtonItem = self.searchItem;
     
-    [self initializeViews];
-    
+	self.navigationItem.title = @"All Items";
+	self.showCategoryInDetailViewController = YES;
+
     self.sortingMode = kSortingDate;
     self.isAscendingSort = YES;
     
     [self.view addSubview:self.searchBar];
 	[self mySearchDisplayController];
-    
-    [self registerContentSizeCategoryDidChangeNotification];
 }
 
 
@@ -108,7 +90,7 @@ enum SortingKind {
 - (void)showLeftNavigationBarItems
 {
     // 현재 more 탭바인지 여부 체크
-    if (_isFromMoreTableViewController) {
+    if (self.isFromMoreTableViewController) {
         self.navigationItem.leftItemsSupplementBackButton = YES;
         // more 탭바
         
@@ -138,37 +120,12 @@ enum SortingKind {
 
 - (void)initializeViews
 {
-	_tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-	_tableView.delegate = self;
-	_tableView.dataSource = self;
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	_tableView.showsVerticalScrollIndicator = NO;
-	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    _tableView.rowHeight = 48.0;
-    self.tableView.separatorColor = [self tableViewSeparatorColor];
-    if (IS_IPAD) {
-        _tableView.separatorInset = UIEdgeInsetsMake(0, 28, 0, 0);
-    }
-	[self.view addSubview:_tableView];
-    
+	[super initializeViews];
+
     [self.view addSubview:self.addButton];
     [self addButtonConstraints];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"A3WalletAllTopCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:A3WalletAllTopCellID];
-    [self.tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID];
-	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3WalletNormalCellID];
-}
-
-- (void)addButtonConstraints
-{
-    CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
-
-	[_addButton makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX);
-		make.centerY.equalTo(self.view.bottom).with.offset(-fromBottom);
-		make.width.equalTo(@44);
-		make.height.equalTo(@44);
-	}];
 }
 
 - (void)didReceiveMemoryWarning
@@ -210,17 +167,19 @@ enum SortingKind {
 
 - (NSMutableArray *)items
 {
-    if (!_items) {
+    if (!super.items) {
+		NSMutableArray *items;
         NSString *sortValue = (_sortingMode == kSortingDate) ? @"modificationDate" : @"name";
-        _items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
-		_dataEmpty = ![_items count];
+        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:sortValue ascending:_isAscendingSort]];
+		_dataEmpty = ![items count];
 		if (_dataEmpty) {
-			[_items addObject:self.emptyItem];
+			[items addObject:self.emptyItem];
 		}
-        [_items insertObject:self.topItem atIndex:0];
+        [items insertObject:self.topItem atIndex:0];
+		[super setItems:items];
     }
     
-    return _items;
+    return super.items;
 }
 
 - (NSMutableDictionary *)topItem
@@ -269,18 +228,6 @@ enum SortingKind {
 	}
     
     return _searchItem;
-}
-
-- (UIButton *)addButton
-{
-    if (!_addButton) {
-        _addButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
-        _addButton.frame = CGRectMake(0, 0, 44, 44);
-		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-    
-    return _addButton;
 }
 
 - (UIImageView *)sortArrowImgView
@@ -342,8 +289,8 @@ enum SortingKind {
     topView.cateLabel.attributedText = cateAttrString;
     
     // item
-    NSInteger itemCount = _items.count - 1;
-	if (_items && _items[1] == self.emptyItem) {
+    NSInteger itemCount = self.items.count - 1;
+	if (self.items && self.items[1] == self.emptyItem) {
 		itemCount = 0;
 	}
     
@@ -399,7 +346,7 @@ enum SortingKind {
 
 - (void)refreshItems
 {
-    _items = nil;
+    self.items = nil;
     [self.tableView reloadData];
 }
 
@@ -610,46 +557,19 @@ enum SortingKind {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSArray *itemContainArray;
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
-        itemContainArray = _filteredResults;
-    }
-    else {
-        itemContainArray = self.items;
-    }
-    
-    WalletItem *item = itemContainArray[indexPath.row];
+    if (!((tableView == self.tableView) && (indexPath.row == 0))) {
+		NSArray *itemContainingArray;
+		if (tableView == self.searchDisplayController.searchResultsTableView) {
+			itemContainingArray = _filteredResults;
+		}
+		else {
+			itemContainingArray = self.items;
+		}
 
-    if ((tableView == self.tableView) && ([_items objectAtIndex:indexPath.row] == self.topItem)) {
-        
-    }
-    else if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
-        A3WalletPhotoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletPhotoItemViewController"];
-        viewController.hidesBottomBarWhenPushed = YES;
-        viewController.item = item;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
-        A3WalletVideoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletVideoItemViewController"];
-        viewController.hidesBottomBarWhenPushed = YES;
-        viewController.item = item;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else {
-		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-        A3WalletItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
-        viewController.hidesBottomBarWhenPushed = YES;
-        viewController.item = item;
-        viewController.showCategory = YES;
-		viewController.alwaysReturnToOriginalCategory = YES;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+		WalletItem *item = itemContainingArray[indexPath.row];
+
+		[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:item];
+	}
 }
 
 #pragma mark - Table view data source
@@ -664,188 +584,74 @@ enum SortingKind {
     }
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    
-    if (tableView == self.searchDisplayController.searchResultsTableView) {
+	FNLOG(@"%ld", (long)[self.items count]);
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
 		return [_filteredResults count];
 	}
     else {
-        return self.items.count;
+	    return self.items.count;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        NSArray *itemContainArray;
-        if (tableView == self.searchDisplayController.searchResultsTableView) {
-            itemContainArray = _filteredResults;
-        }
-        else {
-            itemContainArray = self.items;
-        }
+	FNLOG(@"%ld, %ld", (long)indexPath.section, (long)indexPath.row);
 
-		if ([[itemContainArray objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
-            
-            WalletItem *item = itemContainArray[indexPath.row];
-
-            if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
-                A3WalletListPhotoCell *photoCell;
-                photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
-                
-                NSMutableArray *photoPick = [[NSMutableArray alloc] init];
-                NSArray *fieldItems = [item fieldItemsArray];
-                for (int i=0; i<fieldItems.count; i++) {
-                    WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
-                        [photoPick addObject:fieldItem];
-                    }
-                }
-                
-                NSInteger maxPhotoCount = (IS_IPAD) ? 5 : 2;
-                NSInteger showPhotoCount = MIN(maxPhotoCount, photoPick.count);
-                
-                [photoCell resetThumbImages];
-
-                for (NSUInteger idx = 0; idx < showPhotoCount; idx++) {
-                    WalletFieldItem *fieldItem = photoPick[idx];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem imageThumbnailPathInTemporary:NO ]];
-                    
-                    [photoCell addThumbImage:thumbImg isVideo:NO ];
-                }
-                
-                cell = photoCell;
-            }
-            else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
-                A3WalletListPhotoCell *videoCell;
-                videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletPhotoCellID forIndexPath:indexPath];
-                
-                NSMutableArray *photoPick = [[NSMutableArray alloc] init];
-                NSArray *fieldItems = [item fieldItemsArray];
-                for (NSUInteger idx = 0; idx < fieldItems.count; idx++) {
-                    WalletFieldItem *fieldItem = fieldItems[idx];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
-                        [photoPick addObject:fieldItem];
-                    }
-                }
-                
-                NSInteger maxPhotoCount = (IS_IPAD) ? 5 : 2;
-                NSInteger showPhotoCount = MIN(maxPhotoCount, photoPick.count);
-
-                [videoCell resetThumbImages];
-                for (NSUInteger idx =0; idx < showPhotoCount; idx++) {
-                    WalletFieldItem *fieldItem = photoPick[idx];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
-                    [videoCell addThumbImage:thumbImg isVideo:YES ];
-                }
-                
-                cell = videoCell;
-            }
-            else {
-                UITableViewCell *dataCell;
-                dataCell = [tableView dequeueReusableCellWithIdentifier:A3WalletTextCellID];
-                if (dataCell == nil) {
-                    dataCell = [[UITableViewCell alloc] initWithStyle:IS_IPAD ? UITableViewCellStyleValue1:UITableViewCellStyleSubtitle reuseIdentifier:A3WalletTextCellID];
-                    dataCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    dataCell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                }
-				if (IS_IPHONE) {
-					dataCell.textLabel.font = [UIFont systemFontOfSize:15];
-					dataCell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-				}
-				else {
-					dataCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-					dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-				}
-
-                if (item.name && item.name.length > 0) {
-                    dataCell.textLabel.text = item.name;
-                }
-                else {
-                    dataCell.textLabel.text = @"New Item";
-                }
-
-				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-				NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-				if (fieldItems.count > 0) {
-					WalletFieldItem *fieldItem = fieldItems[0];
-					NSString *itemValue = @"";
-					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-						NSDateFormatter *df = [[NSDateFormatter alloc] init];
-						[df setDateFormat:@"MMM dd, YYYY hh:mm a"];
-						itemValue = [df stringFromDate:fieldItem.date];
-					}
-					else {
-						itemValue = fieldItem.value;
-					}
-
-					if (itemValue && (itemValue.length>0)) {
-						NSString *styleValue = [itemValue stringForStyle:fieldItem.field.style];
-						dataCell.detailTextLabel.text = styleValue;
-					}
-					else {
-						dataCell.detailTextLabel.text = @"";
-					}
-				}
-				else {
-					dataCell.detailTextLabel.text = @"";
-				}
-
-				cell = dataCell;
-            }
-		}
-        else if ((tableView == self.tableView) && ([_items objectAtIndex:indexPath.row] == self.topItem)) {
-            A3WalletAllTopCell *topCell = [tableView dequeueReusableCellWithIdentifier:A3WalletAllTopCellID forIndexPath:indexPath];
-            topCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            topCell.topView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-            
-            [topCell.topView.sortingSegment addTarget:self action:@selector(sortingSegTapped:) forControlEvents:UIControlEventValueChanged];
-            if (![topCell.topView.subviews containsObject:self.sortArrowImgView]) {
-                [topCell.topView addSubview:self.sortArrowImgView];
-            }
-            [topCell.topView.sortingSegment setTitle:@"Date" forSegmentAtIndex:0];
-            [topCell.topView.sortingSegment setTitle:@"Name" forSegmentAtIndex:1];
-            
-            UIFont *segFont = [UIFont systemFontOfSize:13];
-            NSDictionary *segTextAttributes = @{
-                                            NSFontAttributeName : segFont
-                                            };
-            [topCell.topView.sortingSegment setTitleTextAttributes:segTextAttributes forState:UIControlStateNormal];
-            
-            [self updateTopViewInfo:topCell.topView];
-            [self segmentTitleSet:topCell.topView];
-            
-            BOOL itemHave = (self.items.count>1) ? YES:NO;
-            [self topView:topCell.topView enabledSet:itemHave];
-
-			topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
-
-			_segmentedControlRef = topCell.topView.sortingSegment;
-			_topViewRef = topCell.topView;
-
-			[self itemCountCheck];
-
-            cell = topCell;
-        } else if ([_items objectAtIndex:indexPath.row] == self.emptyItem) {
-			UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:A3WalletNormalCellID forIndexPath:indexPath];
-			emptyCell.selectionStyle = UITableViewCellSelectionStyleNone;
-			emptyCell.userInteractionEnabled = NO;
-			cell = emptyCell;
-		}
+	UITableViewCell *cell = nil;
+	NSArray *itemContainArray;
+	if (tableView == self.searchDisplayController.searchResultsTableView) {
+		itemContainArray = _filteredResults;
 	}
-    
-    return cell;
+	else {
+		itemContainArray = self.items;
+	}
+
+	if ([[itemContainArray objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
+		WalletItem *item = itemContainArray[indexPath.row];
+		cell = [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
+	}
+	else if ((tableView == self.tableView) && ([self.items objectAtIndex:indexPath.row] == self.topItem)) {
+		A3WalletAllTopCell *topCell = [tableView dequeueReusableCellWithIdentifier:A3WalletAllTopCellID forIndexPath:indexPath];
+		topCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		topCell.topView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+
+		[topCell.topView.sortingSegment addTarget:self action:@selector(sortingSegTapped:) forControlEvents:UIControlEventValueChanged];
+		if (![topCell.topView.subviews containsObject:self.sortArrowImgView]) {
+			[topCell.topView addSubview:self.sortArrowImgView];
+		}
+		[topCell.topView.sortingSegment setTitle:@"Date" forSegmentAtIndex:0];
+		[topCell.topView.sortingSegment setTitle:@"Name" forSegmentAtIndex:1];
+
+		UIFont *segFont = [UIFont systemFontOfSize:13];
+		NSDictionary *segTextAttributes = @{
+				NSFontAttributeName : segFont
+		};
+		[topCell.topView.sortingSegment setTitleTextAttributes:segTextAttributes forState:UIControlStateNormal];
+
+		[self updateTopViewInfo:topCell.topView];
+		[self segmentTitleSet:topCell.topView];
+
+		BOOL itemHave = (self.items.count>1) ? YES:NO;
+		[self topView:topCell.topView enabledSet:itemHave];
+
+		topCell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+
+		_segmentedControlRef = topCell.topView.sortingSegment;
+		_topViewRef = topCell.topView;
+
+		[self itemCountCheck];
+
+		cell = topCell;
+	} else {
+		UITableViewCell *emptyCell = [tableView dequeueReusableCellWithIdentifier:A3WalletNormalCellID forIndexPath:indexPath];
+		emptyCell.selectionStyle = UITableViewCellSelectionStyleNone;
+		emptyCell.userInteractionEnabled = NO;
+		cell = emptyCell;
+	}
+
+	return cell;
 }
 
 // Override to support conditional editing of the table view.
@@ -860,18 +666,18 @@ enum SortingKind {
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        WalletItem *item = _items[indexPath.row];
-		[_items removeObject:item];
+        WalletItem *item = self.items[indexPath.row];
+		[self.items removeObject:item];
 		[item MR_deleteEntity];
 
-		if ([_items count] == 1) {
+		if ([self.items count] == 1) {
 			_dataEmpty = YES;
-			[_items addObject:self.emptyItem];
+			[self.items addObject:self.emptyItem];
 			[tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 		} else {
 			[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 		}
-		
+
 		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 		// 버튼 기능 활성화 여부
@@ -882,7 +688,14 @@ enum SortingKind {
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
+}
+
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	// Return NO if you do not want the item to be re-orderable.
+	return NO;
 }
 
 @end

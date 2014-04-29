@@ -595,7 +595,7 @@
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FNLOG(@"indexPath: %@, _itemArray count: %d", indexPath, [_itemArray count]);
+    FNLOG(@"indexPath: %@, _itemArray count: %ld", indexPath, (long)[_itemArray count]);
     if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
         return NO;
     

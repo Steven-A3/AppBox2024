@@ -39,6 +39,7 @@
 		17D42A4A49204D56E526E117 /* A3TranslatorListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CAFDD0B11EF0C713D0E /* A3TranslatorListCell.m */; };
 		17D42AE1F680213C832FB44C /* A3CurrencyHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D424F615E2893830803825 /* A3CurrencyHistoryCell.m */; };
 		17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */; };
+		17D42B763E8AA60C7A8A80BB /* A3WalletListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4233991A86CE87914D84B /* A3WalletListViewController.m */; };
 		17D42B8113D2415FDF33A0DB /* A3CurrencyTVDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D421FB49C681FC776EFDF4 /* A3CurrencyTVDataCell.m */; };
 		17D42BAD7D2B6C3853B466B5 /* A3LocationPlacemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42B499881D16DDFA95D6E /* A3LocationPlacemarkView.m */; };
 		17D42BE8FBF00830AA2C09E7 /* A3MainMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42C744692C76C892CBBCC /* A3MainMenuTableViewController.m */; };
@@ -962,6 +963,7 @@
 		17D422F17E6A37A2E93CD352 /* A3BarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3BarButton.m; sourceTree = "<group>"; };
 		17D42302F11861C375A0D627 /* A3TranslatorLanguage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorLanguage.m; path = Translator/A3TranslatorLanguage.m; sourceTree = "<group>"; };
 		17D42335F0EAF9428BAC7BBD /* Foursquare2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Foursquare2.m; sourceTree = "<group>"; };
+		17D4233991A86CE87914D84B /* A3WalletListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3WalletListViewController.m; sourceTree = "<group>"; };
 		17D42350A81B9496024B86B7 /* A3KeyboardDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3KeyboardDelegate.h; sourceTree = "<group>"; };
 		17D42357892038841C42B47C /* FSOAuth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSOAuth.h; sourceTree = "<group>"; };
 		17D4236125BF62298D2D0D15 /* A3CalculatorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalculatorViewController.h; sourceTree = "<group>"; };
@@ -979,6 +981,7 @@
 		17D425363271B74082FD8477 /* A3LanguagePickerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3LanguagePickerController.m; path = Translator/A3LanguagePickerController.m; sourceTree = "<group>"; };
 		17D42540FDF81A08CF1E081E /* A3MainMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3MainMenuTableViewController.h; sourceTree = "<group>"; };
 		17D4255AEBE358EED319031E /* NSDateFormatter+A3Addition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDateFormatter+A3Addition.m"; sourceTree = "<group>"; };
+		17D425D2CD53AD013BC0A0D5 /* A3WalletListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3WalletListViewController.h; sourceTree = "<group>"; };
 		17D425DE3A3E4C299A8A0D06 /* MathParser.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = MathParser.h; sourceTree = "<group>"; };
 		17D4261CD5E1463A7D7053FF /* FSWebLogin.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FSWebLogin.xib; sourceTree = "<group>"; };
 		17D42632666AC2368C10B1BA /* A3CurrencyTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3CurrencyTableViewCell.h; path = Apps/Currency/A3CurrencyTableViewCell.h; sourceTree = "<group>"; };
@@ -4435,6 +4438,8 @@
 				68B6A2A718CEC76D004084EF /* A3WalletVideoItemViewController.m */,
 				6835659218FA663100C3494C /* A3WalletMoreTableViewController.h */,
 				6835659318FA663100C3494C /* A3WalletMoreTableViewController.m */,
+				17D4233991A86CE87914D84B /* A3WalletListViewController.m */,
+				17D425D2CD53AD013BC0A0D5 /* A3WalletListViewController.h */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -6291,6 +6296,7 @@
 				17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */,
 				17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */,
 				17D424CF600CB7D3A03DA0EE /* A3WalletMoreTableViewCell.m in Sources */,
+				17D42B763E8AA60C7A8A80BB /* A3WalletListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
