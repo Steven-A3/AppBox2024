@@ -91,6 +91,8 @@
             [self.delegate didChangedCalendarEventDetailViewController:self];
         }
     }
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -585,6 +587,7 @@
             dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:startDate
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
             dateLabel2.text = @"";
+            dateLabel3.text = @"";
             
             goto EXIT_FUCTION;
         }
@@ -611,6 +614,9 @@
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
+            else {
+                dateLabel3.text = @"";
+            }
         }
         else {
             //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
@@ -623,6 +629,9 @@
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+            }
+            else {
+                dateLabel2.text = @"";
             }
             
             dateLabel3.text = @"";
