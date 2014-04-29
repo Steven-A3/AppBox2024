@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3WalletListViewController.h"
 
 @class WalletCategory;
 
-@interface A3WalletFavoritesViewController : UIViewController
-
-@property (nonatomic, strong) WalletCategory *category;
-@property (nonatomic, assign) BOOL isFromMoreTableViewController;
+@interface A3WalletFavoritesViewController : A3WalletListViewController
 
 @end

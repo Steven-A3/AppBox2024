@@ -8,8 +8,6 @@
 
 #import "A3WalletCategoryViewController.h"
 #import "A3WalletCategoryInfoViewController.h"
-#import "A3WalletItemViewController.h"
-#import "A3WalletPhotoItemViewController.h"
 #import "A3WalletListBigVideoCell.h"
 #import "A3WalletListBigPhotoCell.h"
 #import "WalletData.h"
@@ -20,22 +18,13 @@
 #import "A3AppDelegate.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+A3Addition.h"
-#import "NSDate+TimeAgo.h"
 #import "NSString+WalletStyle.h"
-#import "WalletItem+initialize.h"
-#import "A3WalletVideoItemViewController.h"
 #import "NSMutableArray+A3Sort.h"
 #import "A3WalletItemEditViewController.h"
-#import "WalletFieldItem+initialize.h"
-#import "FMMoveTableView.h"
-#import "UITableViewController+standardDimension.h"
 
 
 @interface A3WalletCategoryViewController () <UIActionSheetDelegate, UIActivityItemSource, UIPopoverControllerDelegate, FMMoveTableViewDelegate, FMMoveTableViewDataSource>
-@property (nonatomic, strong) FMMoveTableView *tableView;
-@property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIView *footerView;
-@property (nonatomic, strong) UIButton *addButton;
 @property (nonatomic, strong) NSArray *moreMenuButtons;
 @property (nonatomic, strong) UIView *moreMenuView;
 @property (nonatomic, strong) UIButton *infoButton;
@@ -49,10 +38,6 @@
 
 @implementation A3WalletCategoryViewController
 
-NSString *const A3WalletTextCellID1 = @"A3WalletListTextCell";
-NSString *const A3WalletBigVideoCellID1 = @"A3WalletListBigVideoCell";
-NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -60,72 +45,18 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 	if (IS_IPHONE) {
 		[self makeBackButtonEmptyArrow];
 	} else {
-		self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:_category.name style:UIBarButtonItemStylePlain target:nil action:nil];
+		self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.category.name style:UIBarButtonItemStylePlain target:nil action:nil];
 	}
 
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.infoButton];
-
-	[self initializeViews];
-    [self registerContentSizeCategoryDidChangeNotification];
-}
-
-- (void)contentSizeDidChange:(NSNotification *) notification
-{
-	[self.tableView reloadData];
-}
-
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
-
-	if (IS_IPAD) {
-
-        if (self.editing) {
-
-        }
-        else {
-			[self showLeftNavigationBarItems];
-        }
-	}
-
-    if (self.editing) {
-        float tabBarHeight = self.tabBarController.tabBar.frame.size.height;
-        CGRect rect = self.tabBarController.view.frame;
-        if (IS_IPHONE) {
-            rect.size.height = [UIScreen mainScreen].bounds.size.height + tabBarHeight;
-        }
-        else {
-            if (IS_LANDSCAPE) {
-                rect.size.height = [UIScreen mainScreen].bounds.size.width + tabBarHeight;
-            }
-            else {
-                rect.size.height = [UIScreen mainScreen].bounds.size.height + tabBarHeight;
-            }
-        }
-        self.tabBarController.view.frame = rect;
-    }
-    else {
-        CGRect rect = self.tabBarController.view.frame;
-        if (IS_IPHONE) {
-            rect.size.height = [UIScreen mainScreen].bounds.size.height;
-        }
-        else {
-            if (IS_LANDSCAPE) {
-                rect.size.height = [UIScreen mainScreen].bounds.size.width;
-            }
-            else {
-                rect.size.height = [UIScreen mainScreen].bounds.size.height;
-            }
-        }
-        self.tabBarController.view.frame = rect;
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item이 되고,나머지는 공백.
-    // viewwillAppear에서 공백으로 초기화해줌 (테이블 항목 선택시, 타이틀을 카테고리 이름으로 함)
+    // 테이블 항목을 선택시에는 카테고리 이름이 backBar Item 이 되고,나머지는 공백.
+    // viewWillAppear 에서 공백으로 초기화해줌 (테이블 항목 선택시, 타이틀을 카테고리 이름으로 함)
 
 	[self showLeftNavigationBarItems];
 
@@ -133,7 +64,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     [self refreshItems];
 
 	// 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-	self.navigationItem.title = [NSString stringWithFormat:@"%@(%d)", _category.name, (int)_items.count];
+	self.navigationItem.title = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
 
     // more button 활성화여부
     [self itemCountCheck];
@@ -141,19 +72,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (void)initializeViews
 {
-	_tableView = [[FMMoveTableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-	_tableView.delegate = self;
-	_tableView.dataSource = self;
-	_tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-	_tableView.showsVerticalScrollIndicator = NO;
-	_tableView.rowHeight = 48.0;
-	_tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
-	self.tableView.separatorColor = [self tableViewSeparatorColor];
-	_tableView.separatorInset = A3UITableViewSeparatorInset;
-	if ([_category.name isEqualToString:WalletCategoryTypePhoto] || [_category.name isEqualToString:WalletCategoryTypeVideo]) {
-		_tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-	}
-	[self.view addSubview:_tableView];
+	[super initializeViews];
 
     [self.view addSubview:self.addButton];
     [self addButtonConstraints];
@@ -162,70 +81,31 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     [self.tableView registerClass:[A3WalletListBigPhotoCell class] forCellReuseIdentifier:A3WalletBigPhotoCellID1];
 }
 
-- (void)showLeftNavigationBarItems
-{
-    // 현재 more탭바인지 여부 체크
-    if (_isFromMoreTableViewController) {
-        self.navigationItem.leftItemsSupplementBackButton = YES;
-        // more 탭바
-
-        self.navigationItem.hidesBackButton = NO;
-
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            }
-            else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-                self.navigationItem.leftBarButtonItem = appsItem;
-            }
-        }
-        else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-            self.navigationItem.leftBarButtonItem = appsItem;
-        }
-    } else {
-        // 아님
-//        self.navigationItem.hidesBackButton = YES;
-
-		[self leftBarButtonAppsButton];
-    }
-}
-
-- (void)addButtonConstraints
-{
-	CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
-
-	[_addButton makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX);
-		make.centerY.equalTo(self.view.bottom).with.offset(-fromBottom);
-		make.width.equalTo(@44);
-		make.height.equalTo(@44);
-	}];
-}
-
 - (void)itemCountCheck
 {
     BOOL itemHave = (self.items.count>0) ? YES:NO;
     self.editButtonItem.enabled = itemHave;
+
+	NSUInteger maxCellInWindow = IS_IPHONE ? 8 : 14;
+	if (self.items.count > maxCellInWindow) {
+		self.tableView.tableFooterView = self.footerView;
+	}
+	else {
+		self.tableView.tableFooterView = nil;
+	}
 }
 
 - (NSMutableArray *)items
 {
-    if (!_items) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category==%@", _category];
-        _items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
-
-        NSUInteger maxCellInWindow = IS_IPHONE ? 8 : 14;
-        if (_items.count > maxCellInWindow) {
-            self.tableView.tableFooterView = self.footerView;
-        }
-        else {
-            self.tableView.tableFooterView = nil;
-        }
+    if (!super.items) {
+		FNLOG();
+		NSMutableArray *items;
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"category==%@", self.category];
+        items = [NSMutableArray arrayWithArray:[WalletItem MR_findAllSortedBy:@"order" ascending:YES withPredicate:predicate]];
+		[super setItems:items];
     }
 
-    return _items;
+    return super.items;
 }
 
 - (UIView *)footerView
@@ -235,18 +115,6 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     }
 
     return _footerView;
-}
-
-- (UIButton *)addButton
-{
-    if (!_addButton) {
-        _addButton = [UIButton buttonWithType:UIButtonTypeSystem];
-        [_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
-        _addButton.frame = CGRectMake(0, 0, 44, 44);
-		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
-    }
-
-    return _addButton;
 }
 
 - (UIBarButtonItem *)deleteBarItem
@@ -298,7 +166,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 {
     A3WalletCategoryInfoViewController *viewController = [[A3WalletCategoryInfoViewController alloc] initWithStyle:UITableViewStylePlain];
     viewController.hidesBottomBarWhenPushed = YES;
-    viewController.category = _category;
+    viewController.category = self.category;
     return viewController;
 }
 
@@ -306,101 +174,6 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated
-{
-    [super setEditing:editing animated:animated];
-
-    if (editing) {
-        // editing에서는 멀티 선택 가능하도록
-        _tableView.allowsMultipleSelectionDuringEditing = YES;
-    } else {
-        // editing이 아닐때는 멀티 선택 안되도록 (안되도록 해야, 오른쪽 끝 swipe시에 delete버튼이 나온다.)
-        _tableView.allowsMultipleSelectionDuringEditing = NO;
-    }
-
-    [self.tableView setEditing:editing animated:animated];
-
-    // 뷰 레이아웃 조정
-    if (editing) {
-
-        self.navigationItem.title = _category.name;
-
-        float tabBarHeight = self.tabBarController.tabBar.frame.size.height;
-
-        self.addButton.hidden = YES;
-        CGRect rect = self.tabBarController.view.frame;
-        if (IS_IPHONE) {
-            rect.size.height = [UIScreen mainScreen].bounds.size.height + tabBarHeight;
-        }
-        else {
-            if (IS_LANDSCAPE) {
-                rect.size.height = [UIScreen mainScreen].bounds.size.width + tabBarHeight;
-            }
-            else {
-                rect.size.height = [UIScreen mainScreen].bounds.size.height + tabBarHeight;
-            }
-        }
-        self.tabBarController.view.frame = rect;
-
-        [self setToolbarItems:[self toolItems] animated:YES];
-        self.deleteBarItem.enabled = NO;
-        self.shareBarItem.enabled = NO;
-        [self.navigationController setToolbarHidden:NO animated:NO];
-
-        self.navigationItem.rightBarButtonItems = nil;
-
-        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(editDoneAction:)];
-        self.navigationItem.rightBarButtonItem = cancel;
-
-        UIBarButtonItem *deleteAll = [[UIBarButtonItem alloc] initWithTitle:@"Delete All" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllAction:)];
-        self.navigationItem.leftBarButtonItem = deleteAll;
-
-        self.navigationItem.hidesBackButton = YES;
-    }
-    else {
-
-        NSString *cateTitle = [NSString stringWithFormat:@"%@(%d)", _category.name, (int)_items.count];
-        self.navigationItem.title = cateTitle;
-
-        self.addButton.hidden = NO;
-
-        CGRect rect = self.tabBarController.view.frame;
-        if (IS_IPHONE) {
-            rect.size.height = [UIScreen mainScreen].bounds.size.height;
-        }
-        else {
-            if (IS_LANDSCAPE) {
-                rect.size.height = [UIScreen mainScreen].bounds.size.width;
-            }
-            else {
-                rect.size.height = [UIScreen mainScreen].bounds.size.height;
-            }
-        }
-        self.tabBarController.view.frame = rect;
-
-        [self setToolbarItems:nil animated:YES];
-        [self.navigationController setToolbarHidden:YES animated:NO];
-
-        /*
-        if (IS_IPHONE) {
-            [self leftBarButtonAppsButton];
-        }
-        else {
-            self.navigationItem.leftBarButtonItem = nil;
-        }
-         */
-
-		[self showLeftNavigationBarItems];
-
-        self.navigationItem.rightBarButtonItem = nil;
-        self.navigationItem.rightBarButtonItems = [self rightBarItems];
-
-        // editing을 종료하면, item 숫자와 버튼 활성화여부를 결정한다.
-        [self itemCountCheck];
-
-    }
 }
 
 - (void)shareButtonAction:(id)sender {
@@ -425,7 +198,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         return;
     }
 
-    if (_items.count > 0) {
+    if (self.items.count > 0) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
                                                         cancelButtonTitle:@"Cancel"
@@ -469,18 +242,18 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
         for (NSInteger index = 0; index < ips.count; index++) {
             NSIndexPath *ip = ips[index];
-            if ([_items[ip.row] isKindOfClass:[WalletItem class]]) {
+            if ([self.items[ip.row] isKindOfClass:[WalletItem class]]) {
 
-                WalletItem *item = _items[ip.row];
+                WalletItem *item = self.items[ip.row];
                 NSString *convertInfoText = @"";
 
-                if ([_category.name isEqualToString:WalletCategoryTypePhoto]) {
+                if ([self.category.name isEqualToString:WalletCategoryTypePhoto]) {
                     NSString *itemName = item.name;
                     NSString *firstFieldItemValue = @"Photo";
 
                     convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
                 }
-                else if ([_category.name isEqualToString:WalletCategoryTypeVideo]) {
+                else if ([self.category.name isEqualToString:WalletCategoryTypeVideo]) {
                     NSString *itemName = item.name;
                     NSString *firstFieldItemValue = @"Video";
 
@@ -495,7 +268,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                     NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
                     if (fieldItems.count>0) {
                         WalletFieldItem *fieldItem = fieldItems[0];
-                        NSString *itemValue = @"";
+                        NSString *itemValue;
                         if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
                             NSDateFormatter *df = [[NSDateFormatter alloc] init];
                             [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
@@ -544,82 +317,72 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 }
 
 - (void)shareAll:(id)sender {
-	@autoreleasepool {
+	self.shareTextList = [NSMutableArray new];
 
-        self.shareTextList = [NSMutableArray new];
+	for (NSUInteger index = 0; index < self.items.count; index++) {
+		if ([self.items[index] isKindOfClass:[WalletItem class]]) {
 
-        for (NSInteger index = 0; index < _items.count; index++) {
-            if ([_items[index] isKindOfClass:[WalletItem class]]) {
+			WalletItem *item = self.items[index];
+			NSString *convertInfoText = @"";
 
-                WalletItem *item = _items[index];
-                NSString *convertInfoText = @"";
+			if ([self.category.name isEqualToString:WalletCategoryTypePhoto]) {
+				NSString *itemName = item.name;
+				NSString *firstFieldItemValue = @"Photo";
 
-                if ([_category.name isEqualToString:WalletCategoryTypePhoto]) {
-                    NSString *itemName = item.name;
-                    NSString *firstFieldItemValue = @"Photo";
+				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
+			}
+			else if ([self.category.name isEqualToString:WalletCategoryTypeVideo]) {
+				NSString *itemName = item.name;
+				NSString *firstFieldItemValue = @"Video";
 
-                    convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
-                }
-                else if ([_category.name isEqualToString:WalletCategoryTypeVideo]) {
-                    NSString *itemName = item.name;
-                    NSString *firstFieldItemValue = @"Video";
+				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
+			}
+			else {
 
-                    convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
-                }
-                else {
+				NSString *itemName = item.name;
+				NSString *firstFieldItemValue = @"";
 
-                    NSString *itemName = item.name;
-                    NSString *firstFieldItemValue = @"";
+				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
+				NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
+				if (fieldItems.count>0) {
+					WalletFieldItem *fieldItem = fieldItems[0];
+					NSString *itemValue = @"";
+					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
+						NSDateFormatter *df = [[NSDateFormatter alloc] init];
+						[df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+						itemValue = [df stringFromDate:fieldItem.date];
+					}
+					else {
+						itemValue = fieldItem.value;
+					}
 
-                    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-                    NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-                    if (fieldItems.count>0) {
-                        WalletFieldItem *fieldItem = fieldItems[0];
-                        NSString *itemValue = @"";
-                        if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                            NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                            [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
-                            itemValue = [df stringFromDate:fieldItem.date];
-                        }
-                        else {
-                            itemValue = fieldItem.value;
-                        }
+					if (itemValue && (itemValue.length>0)) {
+						firstFieldItemValue = [itemValue stringForStyle:fieldItem.field.style];
+					}
+				}
 
-                        if (itemValue && (itemValue.length>0)) {
-                            firstFieldItemValue = [itemValue stringForStyle:fieldItem.field.style];
-                        }
-                    }
+				convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
+			}
 
-                    convertInfoText = [NSString stringWithFormat:@"%@ - %@", itemName, firstFieldItemValue];
-                }
-
-                [_shareTextList addObject:convertInfoText];
-            }
-        }
-
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-        [activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
-            NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
-
-            [self editCancelAction:nil];
-        }];
-
-        [activityController setValue:@"My Subject Text" forKey:@"subject"];
-        if (IS_IPHONE) {
-            [self presentViewController:activityController animated:YES completion:NULL];
-        } else {
-            UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
-            [popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-            _sharePopoverController = popoverController;
-            _sharePopoverController.delegate = self;
-        }
-
-        /*
-        _sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
-        if (IS_IPAD) {
-			_sharePopoverController.delegate = self;
+			[_shareTextList addObject:convertInfoText];
 		}
-         */
+	}
+
+	UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+	[activityController setCompletionHandler:^(NSString *activityType, BOOL completed) {
+		NSLog(@"completed dialog - activity: %@ - finished flag: %d", activityType, completed);
+
+		[self editCancelAction:nil];
+	}];
+
+	[activityController setValue:@"My Subject Text" forKey:@"subject"];
+	if (IS_IPHONE) {
+		[self presentViewController:activityController animated:YES completion:NULL];
+	} else {
+		UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:activityController];
+		[popoverController presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+		_sharePopoverController = popoverController;
+		_sharePopoverController.delegate = self;
 	}
 }
 
@@ -642,7 +405,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (void)refreshItems
 {
-    _items = nil;
+    self.items = nil;
     [self.tableView reloadData];
 }
 
@@ -702,11 +465,11 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         // delete all
         if (buttonIndex == actionSheet.destructiveButtonIndex) {
 
-            for (NSInteger i=_items.count-1; i>=0; i--) {
-                if ([_items[i] isKindOfClass:[WalletItem class]]) {
+            for (NSInteger idx = self.items.count-1; idx >= 0; idx--) {
+                if ([self.items[idx] isKindOfClass:[WalletItem class]]) {
 
-                    WalletItem *item = _items[i];
-                    [_items removeObject:item];
+                    WalletItem *item = self.items[idx];
+                    [self.items removeObject:item];
 					[item MR_deleteEntity];
 				}
             }
@@ -731,20 +494,20 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
                 NSIndexPath *indexPath = ips[i];
                 [mis addIndex:indexPath.row];
 
-                if ([_items[indexPath.row] isKindOfClass:[WalletItem class]]) {
+                if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
 
-                    WalletItem *item = _items[indexPath.row];
+                    WalletItem *item = self.items[indexPath.row];
                     [item MR_deleteEntity];
                 }
             }
 
-            [_items removeObjectsAtIndexes:mis];
+            [self.items removeObjectsAtIndexes:mis];
 
             [self.tableView deleteRowsAtIndexPaths:ips withRowAnimation:UITableViewRowAnimationFade];
 			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
-            // 만약 남아있는 _items이 없다면 edit화면을 나간다.
-            if (_items.count == 0) {
+            // 만약 남아있는 _items 이 없다면 edit 화면을 나간다.
+            if (self.items.count == 0) {
                 [self editDoneAction:nil];
             }
         }
@@ -768,9 +531,9 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (tableView.editing) {
-        NSArray *selecteds = [tableView indexPathsForSelectedRows];
+        NSArray *selectedItems = [tableView indexPathsForSelectedRows];
 
-        if (selecteds.count == 0) {
+        if (selectedItems.count == 0) {
             self.deleteBarItem.enabled = NO;
             self.shareBarItem.enabled = NO;
         }
@@ -785,33 +548,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
         return;
     }
 
-    WalletItem *item = _items[indexPath.row];
-
-    if ([item.category.name isEqualToString:WalletCategoryTypePhoto]) {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
-        A3WalletPhotoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletPhotoItemViewController"];
-        viewController.hidesBottomBarWhenPushed = YES;
-        viewController.item = item;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else if ([item.category.name isEqualToString:WalletCategoryTypeVideo]) {
-        NSString *boardName = IS_IPAD ? @"WalletPadStoryBoard":@"WalletPhoneStoryBoard";
-        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:boardName bundle:nil];
-        A3WalletVideoItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletVideoItemViewController"];
-        viewController.hidesBottomBarWhenPushed = YES;
-        viewController.item = item;
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else {
-		UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"WalletPhoneStoryBoard" bundle:nil];
-        A3WalletItemViewController *viewController = [storyBoard instantiateViewControllerWithIdentifier:@"A3WalletItemViewController"];
-        viewController.hidesBottomBarWhenPushed = YES;
-        viewController.item = item;
-		[self.navigationController pushViewController:viewController animated:YES];
-    }
-
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+	[super tableView:tableView didSelectRowAtIndexPath:indexPath withItem:self.items[indexPath.row]];
 }
 
 #pragma mark - Table view data source
@@ -830,7 +567,7 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([_category.name isEqualToString:WalletCategoryTypePhoto] || [_category.name isEqualToString:WalletCategoryTypeVideo]) {
+    if ([self.category.name isEqualToString:WalletCategoryTypePhoto] || [self.category.name isEqualToString:WalletCategoryTypeVideo]) {
         return 84;
     }
     else {
@@ -840,139 +577,12 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
+	if ([[self.items objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
 
-		if ([[self.items objectAtIndex:indexPath.row] isKindOfClass:[WalletItem class]]) {
-
-            WalletItem *item = _items[indexPath.row];
-
-            if ([_category.name isEqualToString:WalletCategoryTypePhoto]) {
-                A3WalletListBigPhotoCell *photoCell;
-                photoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletBigPhotoCellID1 forIndexPath:indexPath];
-
-                photoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                photoCell.rightLabel.text = [item.modificationDate timeAgo];
-                if (IS_IPHONE) {
-                    photoCell.rightLabel.font = [UIFont systemFontOfSize:12];
-                }
-                else {
-                    photoCell.rightLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                }
-
-                NSMutableArray *photoPick = [[NSMutableArray alloc] init];
-                NSArray *fieldItems = [item fieldItemsArray];
-                for (int i=0; i<fieldItems.count; i++) {
-                    WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeImage] && fieldItem.image) {
-                        [photoPick addObject:fieldItem];
-                    }
-                }
-
-                int maxPhotoCount = (IS_IPAD) ? 5 : 2;
-                int showPhotoCount = MIN(maxPhotoCount, (int)photoPick.count);
-
-                [photoCell resetThumbImages];
-
-                for (int i=0; i<showPhotoCount; i++) {
-                    WalletFieldItem *fieldItem = photoPick[i];
-                    [photoCell addThumbImage:fieldItem.thumbnailImage];
-                }
-
-                cell = photoCell;
-            }
-            else if ([_category.name isEqualToString:WalletCategoryTypeVideo]) {
-                A3WalletListBigVideoCell *videoCell;
-                videoCell = [tableView dequeueReusableCellWithIdentifier:A3WalletBigVideoCellID1 forIndexPath:indexPath];
-
-                videoCell.rightLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                videoCell.rightLabel.text = [item.modificationDate timeAgo];
-                if (IS_IPHONE) {
-                    videoCell.rightLabel.font = [UIFont systemFontOfSize:12];
-                }
-                else {
-                    videoCell.rightLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-                }
-
-                NSMutableArray *photoPick = [[NSMutableArray alloc] init];
-                NSArray *fieldItems = [item fieldItemsArray];
-                for (int i=0; i<fieldItems.count; i++) {
-                    WalletFieldItem *fieldItem = fieldItems[i];
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeVideo] && fieldItem.video) {
-                        [photoPick addObject:fieldItem];
-                    }
-                }
-
-                int maxPhotoCount = (IS_IPAD) ? 5 : 2;
-                int showPhotoCount = MIN(maxPhotoCount, (int)photoPick.count);
-
-                [videoCell resetThumbImages];
-                for (int i=0; i<showPhotoCount; i++) {
-                    WalletFieldItem *fieldItem = photoPick[i];
-                    UIImage *thumbImg = [UIImage imageWithContentsOfFile:[fieldItem videoThumbnailPathInTemporary:NO ]];
-                    float duration = [WalletData getDurationOfMovie:[fieldItem videoFilePathInTemporary:NO ]];
-                    [videoCell addThumbImage:thumbImg withDuration:duration];
-                }
-
-                cell = videoCell;
-            }
-            else {
-                UITableViewCell *dataCell;
-                dataCell = [tableView dequeueReusableCellWithIdentifier:A3WalletTextCellID1];
-                if (dataCell == nil) {
-                    dataCell = [[UITableViewCell alloc] initWithStyle:IS_IPAD ? UITableViewCellStyleValue1:UITableViewCellStyleSubtitle reuseIdentifier:A3WalletTextCellID1];
-                    dataCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    dataCell.detailTextLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
-                }
-				if (IS_IPHONE) {
-					dataCell.textLabel.font = [UIFont systemFontOfSize:15];
-					dataCell.detailTextLabel.font = [UIFont systemFontOfSize:12];
-				}
-				else {
-					dataCell.textLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
-					dataCell.detailTextLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-				}
-
-                if (item.name && item.name.length>0) {
-                    dataCell.textLabel.text = item.name;
-                }
-                else {
-                    dataCell.textLabel.text = @"New Item";
-                }
-
-				NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"field.order" ascending:YES];
-                NSArray *fieldItems = [item.fieldItems sortedArrayUsingDescriptors:@[sortDescriptor]];
-                if (fieldItems.count > 0) {
-                    WalletFieldItem *fieldItem = fieldItems[0];
-                    NSString *itemValue = @"";
-                    if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
-                        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                        [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
-                        itemValue = [df stringFromDate:fieldItem.date];
-                    }
-                    else {
-                        itemValue = fieldItem.value;
-                    }
-
-                    if (itemValue && (itemValue.length>0)) {
-                        NSString *styleValue = [itemValue stringForStyle:fieldItem.field.style];
-                        dataCell.detailTextLabel.text = styleValue;
-                    }
-                    else {
-                        dataCell.detailTextLabel.text = @"";
-                    }
-                }
-                else {
-                    dataCell.detailTextLabel.text = @"";
-                }
-
-                cell = dataCell;
-            }
-		}
+		WalletItem *item = self.items[indexPath.row];
+		return [self tableView:tableView cellForRowAtIndexPath:indexPath walletItem:item];
 	}
-
-    return cell;
+	return nil;
 }
 
 // Override to support conditional editing of the table view.
@@ -988,10 +598,10 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
 
-        if ([_items[indexPath.row] isKindOfClass:[WalletItem class]]) {
+        if ([self.items[indexPath.row] isKindOfClass:[WalletItem class]]) {
 
-            WalletItem *item = _items[indexPath.row];
-            [_items removeObject:item];
+            WalletItem *item = self.items[indexPath.row];
+            [self.items removeObject:item];
             [item MR_deleteEntity];
 
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -1002,12 +612,9 @@ NSString *const A3WalletBigPhotoCellID1 = @"A3WalletListBigPhotoCell";
             [self itemCountCheck];
 
             // 타이틀 표시 (갯수가 있으므로 페이지 진입시 갱신한다.)
-            NSString *cateTitle = [NSString stringWithFormat:@"%@(%d)", _category.name, (int)_items.count];
+            NSString *cateTitle = [NSString stringWithFormat:@"%@(%ld)", self.category.name, (long)self.items.count];
             self.navigationItem.title = cateTitle;
         }
-    }
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }
 }
 

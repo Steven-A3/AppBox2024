@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3WalletListViewController.h"
 
 @class WalletCategory;
 
-@interface A3WalletAllViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface A3WalletAllViewController : A3WalletListViewController
 
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) WalletCategory *category;
-@property (nonatomic, assign) BOOL isFromMoreTableViewController;
+- (void)addWalletItemAction;
 
 @end
