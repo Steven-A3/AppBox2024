@@ -10,13 +10,11 @@
 #import "A3Calculator.h"
 #import "A3ExpressionComponent.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
-#import "A3CalculatorUtil.h"
 @interface A3CalculatorButtonsViewController_iPad ()
 
 @end
 
 @implementation A3CalculatorButtonsViewController_iPad {
-    A3CalculatorUtil *calutil;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -24,7 +22,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        calutil = [A3CalculatorUtil new];
     }
     return self;
 }

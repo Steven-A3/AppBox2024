@@ -9,11 +9,11 @@
 #import "A3CalcKeyboardView_iPhone.h"
 #import "A3KeyboardButton_iOS7_iPhone.h"
 #import "A3ExpressionComponent.h"
-#import "A3CalculatorUtil.h"
+
 #import "A3AppDelegate+appearance.h"
 
 @implementation A3CalcKeyboardView_iPhone {
-    A3CalculatorUtil *calutil;
+
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -21,7 +21,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        calutil = [A3CalculatorUtil new];
 		[self setupSubviews];
     }
     return self;
