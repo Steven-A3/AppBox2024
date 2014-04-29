@@ -648,7 +648,7 @@ static NSString *CellIdentifier = @"Cell";
     }
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 
     if (section == 0) {
         return 35;
@@ -657,7 +657,7 @@ static NSString *CellIdentifier = @"Cell";
     return section == 1 ? 0.01 : 0.0;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return section == 0 ? 0.01 : 0.0;
 }
 
@@ -668,7 +668,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 #pragma mark - Input Related
--(CellTextInputBlock)cellTextInputBeginBlock {
+- (CellTextInputBlock)cellTextInputBeginBlock {
     if (!_cellTextInputBeginBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputBeginBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
@@ -685,7 +685,7 @@ static NSString *CellIdentifier = @"Cell";
     return _cellTextInputBeginBlock;
 }
 
--(CellTextInputBlock)cellTextInputChangedBlock {
+- (CellTextInputBlock)cellTextInputChangedBlock {
     if (!_cellTextInputChangedBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputChangedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
@@ -703,7 +703,7 @@ static NSString *CellIdentifier = @"Cell";
     return _cellTextInputChangedBlock;
 }
 
--(CellTextInputBlock)cellTextInputFinishedBlock {
+- (CellTextInputBlock)cellTextInputFinishedBlock {
     if (!_cellTextInputFinishedBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellTextInputFinishedBlock = ^(A3TableViewInputElement *element, UITextField *textField) {
@@ -722,7 +722,7 @@ static NSString *CellIdentifier = @"Cell";
     return _cellTextInputFinishedBlock;
 }
 
--(BasicBlock)cellInputDoneButtonPressed {
+- (BasicBlock)cellInputDoneButtonPressed {
     if (!_cellInputDoneButtonPressed) {
         _cellInputDoneButtonPressed = ^(id sender){
         };
@@ -731,7 +731,7 @@ static NSString *CellIdentifier = @"Cell";
     return _cellInputDoneButtonPressed;
 }
 
--(CellExpandedBlock)cellExpandedBlock {
+- (CellExpandedBlock)cellExpandedBlock {
     if (!_cellExpandedBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellExpandedBlock = ^(A3JHTableViewExpandableElement *element) {
@@ -742,7 +742,7 @@ static NSString *CellIdentifier = @"Cell";
     return _cellExpandedBlock;
 }
 
--(CellValueChangedBlock)cellValueChangedBlock {
+- (CellValueChangedBlock)cellValueChangedBlock {
     if (!_cellValueChangedBlock) {
         __weak A3ExpenseListAddBudgetViewController * weakSelf = self;
         _cellValueChangedBlock = ^(A3JHTableViewElement *element) {
@@ -810,6 +810,7 @@ static NSString *CellIdentifier = @"Cell";
 
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationExpenseListCurrencyCodeChanged object:nil];
 
+	_section0_Array = nil;
 	[self setCurrencyFormatter:nil];
 	[self configureTableData];
 	[self.tableView reloadData];

@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, A3NumberKeyboardSimpleLayout) {
 @property (nonatomic, weak) IBOutlet UIButton *plusMinusButton;
 
 @property (nonatomic, strong) NSNumber *simpleKeyboardLayout;
+@property (nonatomic, assign) BOOL useDotAsClearButton;
 
 - (void)reloadPrevNextButtons;
 - (void)rotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;

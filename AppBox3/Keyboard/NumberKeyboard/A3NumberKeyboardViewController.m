@@ -45,6 +45,10 @@
 - (IBAction)keyboardInputAction:(UIButton *)button {
 	[[UIDevice currentDevice] playInputClick];
 
+	if (_useDotAsClearButton && button == _dotButton) {
+		[self clearButtonAction];
+		return;
+	}
 	NSString *inputString = [button titleForState:UIControlStateNormal];
 	if (![inputString length]) {
 		return;
@@ -193,6 +197,11 @@
 
 - (void)setupLocale {
 	@autoreleasepool {
+		if (_useDotAsClearButton) {
+			[self.dotButton setTitle:IS_IPHONE ? @"C" : @"Clear" forState:UIControlStateNormal];
+			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
+			return;
+		}
 		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
 		if ([_currencyCode length]) {
 			[numberFormatter setCurrencyCode:_currencyCode];
@@ -202,15 +211,14 @@
 		_currencySymbol = [numberFormatter currencySymbol];
 
 		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-		if (   (A3NumberKeyboardTypeMonthYear == self.keyboardType)
+		if ((A3NumberKeyboardTypeMonthYear == self.keyboardType)
 				|| (A3NumberKeyboardTypeInteger == self.keyboardType)
 				|| (A3NumberKeyboardTypeFraction == self.keyboardType)
 				|| (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0)
-				|| (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected]))
-		{
+				|| (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected])) {
 			[self.dotButton setTitle:nil forState:UIControlStateNormal];
 			[self.dotButton setEnabled:NO];
-		} else  {
+		} else {
 			[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
 			[self.dotButton setEnabled:YES];
 		}

@@ -83,7 +83,11 @@
 	[self.nextButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 	[self.plusMinusButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
 
-	[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 33 : 28]];
+	if (self.useDotAsClearButton) {
+		[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 25 : 18]];
+	} else {
+		[self.dotButton.titleLabel setFont:[UIFont systemFontOfSize:isLandscape ? 33 : 28]];
+	}
 
 	if ([self.simpleKeyboardLayout unsignedIntegerValue] == A3NumberKeyboardSimpleLayoutHasPrevNextClear) {
 		[self.clearButton setFrame:CGRectMake(col_2, row_4, width_small, height_small)];

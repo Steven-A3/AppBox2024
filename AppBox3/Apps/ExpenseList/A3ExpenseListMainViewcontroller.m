@@ -1117,15 +1117,12 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		item.itemName = textField.text;
 	}
 	else if (textField == aCell.priceTextField) {
-		item.price = [self.priceNumberFormatter numberFromString:textField.text];
+		item.price = [self.decimalFormatter numberFromString:textField.text];
 		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {
-		@autoreleasepool {
-			NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
-			[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-			item.qty = [decimalFormatter numberFromString:textField.text];
-		}
+		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		item.qty = [self.decimalFormatter numberFromString:textField.text];
 	}
 
     // price * qty 계산

@@ -754,6 +754,7 @@ NSString *kCalculationString;
             if (IS_IPHONE) {
                 ((A3NumberKeyboardViewController_iPhone *)_simpleNormalNumberKeyboard).needButtonsReload = NO;
             }
+			_simpleNormalNumberKeyboard.useDotAsClearButton = YES;
         }
 
 		_simpleNormalNumberKeyboard.textInputTarget = textField;
