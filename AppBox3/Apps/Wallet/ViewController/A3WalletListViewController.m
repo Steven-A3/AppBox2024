@@ -85,6 +85,88 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	[_tableView registerClass:[A3WalletListPhotoCell class] forCellReuseIdentifier:A3WalletPhotoCellID2];
 }
 
+- (void)viewWillLayoutSubviews {
+	[super viewWillLayoutSubviews];
+
+	if (IS_IPAD) {
+		[self showLeftNavigationBarItems];
+	}
+
+	self.tabBarController.tabBar.translucent = NO;
+}
+
+- (void)showLeftNavigationBarItems
+{
+    // 현재 more탭바인지 여부 체크
+    if (self.isFromMoreTableViewController) {
+        self.navigationItem.leftItemsSupplementBackButton = YES;
+        // more 탭바
+
+        self.navigationItem.hidesBackButton = NO;
+
+        if (IS_IPAD) {
+            if (IS_LANDSCAPE) {
+                self.navigationItem.leftBarButtonItem = nil;
+            }
+            else {
+                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
+                self.navigationItem.leftBarButtonItem = appsItem;
+            }
+        }
+        else {
+            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
+            self.navigationItem.leftBarButtonItem = appsItem;
+        }
+    } else {
+        // 아님
+//        self.navigationItem.hidesBackButton = YES;
+
+		[self leftBarButtonAppsButton];
+    }
+}
+
+- (UIButton *)addButton
+{
+	if (!_addButton) {
+		_addButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
+		_addButton.frame = CGRectMake(0, 0, 44, 44);
+		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
+	}
+
+	return _addButton;
+}
+
+- (void)addButtonConstraints
+{
+    CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
+
+	[_addButton makeConstraints:^(MASConstraintMaker *make) {
+		make.centerX.equalTo(self.view.centerX);
+		make.centerY.equalTo(self.view.bottom).with.offset(-fromBottom);
+		make.width.equalTo(@44);
+		make.height.equalTo(@44);
+	}];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+	// Return the number of sections.
+	return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	// Return the number of rows in the section.
+	return self.items.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	// This class is a wrapper class for Wallet List View Controllers and each sub classes
+	// MUST implement this member for its own.
+	return nil;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath walletItem:(WalletItem *)item {
 	UITableViewCell *cell;
 	if ([_category.name isEqualToString:WalletCategoryTypePhoto]) {
@@ -261,118 +343,6 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	}
 
 	return cell;
-}
-
-- (void)viewWillLayoutSubviews {
-	[super viewWillLayoutSubviews];
-
-	if (IS_IPAD) {
-		[self showLeftNavigationBarItems];
-	}
-
-    if (self.editing) {
-        float tabBarHeight = self.tabBarController.tabBar.frame.size.height;
-        CGRect rect = self.tabBarController.view.frame;
-        if (IS_IPHONE) {
-            rect.size.height = [UIScreen mainScreen].bounds.size.height + tabBarHeight;
-        }
-        else {
-            if (IS_LANDSCAPE) {
-                rect.size.height = [UIScreen mainScreen].bounds.size.width + tabBarHeight;
-            }
-            else {
-                rect.size.height = [UIScreen mainScreen].bounds.size.height + tabBarHeight;
-            }
-        }
-        self.tabBarController.view.frame = rect;
-    }
-    else {
-        CGRect rect = self.tabBarController.view.frame;
-        if (IS_IPHONE) {
-            rect.size.height = [UIScreen mainScreen].bounds.size.height;
-        }
-        else {
-            if (IS_LANDSCAPE) {
-                rect.size.height = [UIScreen mainScreen].bounds.size.width;
-            }
-            else {
-                rect.size.height = [UIScreen mainScreen].bounds.size.height;
-            }
-        }
-        self.tabBarController.view.frame = rect;
-    }
-}
-
-- (void)showLeftNavigationBarItems
-{
-    // 현재 more탭바인지 여부 체크
-    if (self.isFromMoreTableViewController) {
-        self.navigationItem.leftItemsSupplementBackButton = YES;
-        // more 탭바
-
-        self.navigationItem.hidesBackButton = NO;
-
-        if (IS_IPAD) {
-            if (IS_LANDSCAPE) {
-                self.navigationItem.leftBarButtonItem = nil;
-            }
-            else {
-                UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-                self.navigationItem.leftBarButtonItem = appsItem;
-            }
-        }
-        else {
-            UIBarButtonItem *appsItem = [[UIBarButtonItem alloc] initWithTitle:@"Apps" style:UIBarButtonItemStylePlain target:self action:@selector(appsButtonAction:)];
-            self.navigationItem.leftBarButtonItem = appsItem;
-        }
-    } else {
-        // 아님
-//        self.navigationItem.hidesBackButton = YES;
-
-		[self leftBarButtonAppsButton];
-    }
-}
-
-- (UIButton *)addButton
-{
-	if (!_addButton) {
-		_addButton = [UIButton buttonWithType:UIButtonTypeSystem];
-		[_addButton setImage:[UIImage imageNamed:@"add01"] forState:UIControlStateNormal];
-		_addButton.frame = CGRectMake(0, 0, 44, 44);
-		[_addButton addTarget:self action:@selector(addWalletItemAction) forControlEvents:UIControlEventTouchUpInside];
-	}
-
-	return _addButton;
-}
-
-- (void)addButtonConstraints
-{
-    CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
-
-	[_addButton makeConstraints:^(MASConstraintMaker *make) {
-		make.centerX.equalTo(self.view.centerX);
-		make.centerY.equalTo(self.view.bottom).with.offset(-fromBottom);
-		make.width.equalTo(@44);
-		make.height.equalTo(@44);
-	}];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-	// Return the number of sections.
-	return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-	// Return the number of rows in the section.
-	return self.items.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	// This class is a wrapper class for Wallet List View Controllers and each sub classes
-	// MUST implement this member for its own.
-	return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath withItem:(WalletItem *)item {
