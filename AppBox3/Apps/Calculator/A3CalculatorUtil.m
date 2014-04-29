@@ -21,6 +21,11 @@
 - (UIFont *)superscriptMiddleFont {
 	return [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:IS_IPAD?15:12];
 }
+
+- (UIFont *)superscriptSystemFont {
+	return [UIFont systemFontOfSize:11];
+}
+
 - (id)stringWithSuperscript:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
 	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
@@ -39,6 +44,13 @@
 	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
 	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
 	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptMiddleFont] range:NSMakeRange(loc,len)];
+	return string;
+}
+
+- (id)stringWithSuperscriptSystemFont:(NSString *)input location:(NSUInteger)loc length:(NSUInteger)len value:(id) index{
+	NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:input];
+	[string addAttribute:(NSString *)kCTSuperscriptAttributeName value:index   range:NSMakeRange(loc,len)];
+	[string addAttribute:(NSString *)kCTFontAttributeName value:[self superscriptSystemFont] range:NSMakeRange(loc,len)];
 	return string;
 }
 
@@ -136,5 +148,93 @@
 
 - (id) stringSquareroot{
     return [self stringWithSuperscript:@"2√(" location:0 length:1 value:@1];
+}
+
+- (id)stringArcTanh_h {
+	return [self stringWithSuperscriptSystemFont:@"tanh-1" location:4 length:2 value:@1];
+}
+
+- (id)stringArcCosh_h {
+	return [self stringWithSuperscriptSystemFont:@"cosh-1" location:4 length:2 value:@1];
+}
+
+- (id)stringArcSinh_h {
+	return [self stringWithSuperscriptSystemFont:@"sinh-1" location:4 length:2 value:@1];
+}
+
+- (id)stringArcTan_h {
+	return [self stringWithSuperscriptSystemFont:@"tan-1" location:3 length:2 value:@1];
+}
+
+- (id)stringArcCos_h {
+	return [self stringWithSuperscriptSystemFont:@"cos-1" location:3 length:2 value:@1];
+}
+
+- (id)stringArcSin_h {
+	return [self stringWithSuperscriptSystemFont:@"sin-1" location:3 length:2 value:@1];
+}
+
+- (id)stringArcCot_h {
+    return [self stringWithSuperscriptSystemFont:@"cot-1" location:3 length:2 value:@1];
+}
+
+- (id)stringEx_h {
+	return [self stringWithSuperscriptSystemFont:@"ex" location:1 length:1 value:@1];
+}
+
+- (id)stringLog2_h {
+	return [self stringWithSuperscriptSystemFont:@"log2" location:3 length:1 value:@-1];
+}
+
+- (id)stringLogy_h {
+	return [self stringWithSuperscriptSystemFont:@"logy" location:3 length:1 value:@-1];
+}
+
+- (id)string2X_h {
+	return [self stringWithSuperscriptSystemFont:@"2x" location:1 length:1 value:@1];
+}
+
+- (id)stringYX_h {
+	return [self stringWithSuperscriptSystemFont:@"yx" location:1 length:1 value:@1];
+}
+
+- (id)stringLog10_h {
+	return [self stringWithSuperscriptSystemFont:@"log10" location:3 length:2 value:@-1];
+}
+
+- (id)string10X_h {
+	return [self stringWithSuperscriptSystemFont:@"10x" location:2 length:1 value:@1];
+}
+
+- (id)string10XBigFont_h {
+	return [self stringWithSuperscriptSystemFont:@"10x" location:2 length:1 value:@1];
+}
+
+- (id)stringXY_h {
+	return [self stringWithSuperscriptSystemFont:@"xy" location:1 length:1 value:@1];
+}
+
+- (id)stringX3_h {
+	return [self stringWithSuperscriptSystemFont:@"x3" location:1 length:1 value:@1];
+}
+
+- (id)stringX2_h {
+	return [self stringWithSuperscriptMiddleFont:@"x2" location:1 length:1 value:@1];
+}
+
+- (id)stringSquare_h {
+    return [self stringWithSuperscriptSystemFont:@"2" location:0 length:1 value:@1];
+}
+
+- (id)stringCube_h {
+    return [self stringWithSuperscriptSystemFont:@"3" location:0 length:1 value:@1];
+}
+
+- (id) stringCuberoot_h {
+    return [self stringWithSuperscriptSystemFont:@"3√(" location:0 length:1 value:@1];
+}
+
+- (id) stringSquareroot_h{
+    return [self stringWithSuperscriptSystemFont:@"2√(" location:0 length:1 value:@1];
 }
 @end

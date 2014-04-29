@@ -1180,7 +1180,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         firstDate = [A3DateHelper midnightForDate:firstDate];
     }
     if ([self isTodayEventForDate:firstDate fromDate:fromDate repeatType:repeatType]) {
-        retDate = [self repeatDateOfCurrentWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
+        retDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
         return retDate;
     }
     
@@ -1234,7 +1234,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retDate;
 }
 
-- (NSDate*)repeatDateOfCurrentWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
+- (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
 {
     NSDate *retDate = nil;
     NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
@@ -1496,7 +1496,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                                    repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
-        NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
+        NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
                                                                                                   firstDate:item.startDate
                                                                                                    fromDate:[NSDate date]];
         

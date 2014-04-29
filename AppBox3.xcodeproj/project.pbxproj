@@ -932,6 +932,7 @@
 		8076BCB518FA969300613E70 /* A3DaysCounterCalendarListMainUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8076BCB418FA969300613E70 /* A3DaysCounterCalendarListMainUserCell.xib */; };
 		8076BCB718FA96AB00613E70 /* A3DaysCounterCalendarListMainSystemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8076BCB618FA96AB00613E70 /* A3DaysCounterCalendarListMainSystemCell.xib */; };
 		8076BCB918FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8076BCB818FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib */; };
+		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */; };
 /* End PBXBuildFile section */
 
@@ -2527,6 +2528,7 @@
 		8076BCB418FA969300613E70 /* A3DaysCounterCalendarListMainUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterCalendarListMainUserCell.xib; sourceTree = "<group>"; };
 		8076BCB618FA96AB00613E70 /* A3DaysCounterCalendarListMainSystemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterCalendarListMainSystemCell.xib; sourceTree = "<group>"; };
 		8076BCB818FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3DaysCounterCalendarListMainEditCell.xib; sourceTree = "<group>"; };
+		8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateLunarTest.m; sourceTree = "<group>"; };
 		80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3814,6 +3816,7 @@
 		6876D6FE17A75DAE00E16991 /* AppBox3 Tests */ = {
 			isa = PBXGroup;
 			children = (
+				8079DFBA190F93B90084BD89 /* DateLunar */,
 				6819A86A18A6084600E63C8B /* Formatter */,
 				68DBF04717CB8831009CAC33 /* Holidays */,
 				6888090C17C63F20008B2856 /* FlickrTest */,
@@ -5239,6 +5242,14 @@
 			name = "Cells (AddEvents & Calendars & EventList)";
 			sourceTree = "<group>";
 		};
+		8079DFBA190F93B90084BD89 /* DateLunar */ = {
+			isa = PBXGroup;
+			children = (
+				8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */,
+			);
+			path = DateLunar;
+			sourceTree = "<group>";
+		};
 		8094E0DF18E6D04800CB03BC /* Location SubDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -6300,6 +6311,7 @@
 				68E6D12018A48C0F00109183 /* A3FormatterTest.m in Sources */,
 				685946D118C371C800528190 /* A3SpeechTest.m in Sources */,
 				68DBF05017CB8AA0009CAC33 /* HolidayData.m in Sources */,
+				8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */,
 				68DBF05417CB8AAB009CAC33 /* HolidayData+Asia.m in Sources */,
 				68DBF04B17CB884F009CAC33 /* A3HolidaysTest.m in Sources */,
 				68DBF05717CB8AAB009CAC33 /* HolidayData+MiddleEast.m in Sources */,

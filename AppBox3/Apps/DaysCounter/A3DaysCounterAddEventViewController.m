@@ -215,6 +215,15 @@
     return NO;
 }
 
+- (void)leapMonthCellEnable:(BOOL)isLeapMonth
+{
+    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+    NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
+                                                         inSection:AddSection_Section_1];
+    [_eventModel setObject:@(isLeapMonth) forKey:EventItem_IsLeapMonth];
+    [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 #pragma mark -
 
 - (void)alertMessage:(NSString*)message
@@ -1187,6 +1196,26 @@
             }
         }
         
+        if ([[_eventModel objectForKey:EventItem_IsLunar] boolValue]) {
+            BOOL isLunarStartDate = [NSDate isLunarDate:[_eventModel objectForKey:EventItem_StartDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            if (!isLunarStartDate) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"startDate is not a Lunar Date", @"startDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil, nil] ;
+                [alert show];
+                return;
+            }
+            
+            if ( [[_eventModel objectForKey:EventItem_IsPeriod] boolValue] ) {
+                BOOL isLunarEndDate = [NSDate isLunarDate:[_eventModel objectForKey:EventItem_EndDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+                if (!isLunarEndDate) {
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"endDate is not a Lunar Date", @"endDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil, nil] ;
+                    [alert show];
+                    return;
+                }
+            }
+        }
+        
         if ( _eventItem ) {
             [[A3DaysCounterModelManager sharedManager] modifyEvent:_eventItem withInfo:_eventModel];
         }
@@ -1248,8 +1277,8 @@
         }
     }
     [self.tableView beginUpdates];
-    [self reloadItems:items withType:EventCellType_StartDate section:AddSection_Section_1];
-    [self reloadItems:items withType:EventCellType_EndDate section:AddSection_Section_1];
+    [self reloadItems:items withType:EventCellType_StartDate section:AddSection_Section_1 animation:UITableViewRowAnimationNone];
+    [self reloadItems:items withType:EventCellType_EndDate section:AddSection_Section_1 animation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
 }
 
@@ -1380,22 +1409,39 @@
     
     NSMutableArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     NSDate *prevDate = [_eventModel objectForKey:EventItem_StartDate];
-    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *dateComp;
     if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue]) {
-        [_eventModel setObject:datePicker.date forKey:self.inputDateKey];
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[datePicker date]];
+        dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[datePicker date]];
         dateComp.hour = 0;
         dateComp.minute = 0;
         dateComp.second = 0;
-        [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:self.inputDateKey];
     }
     else {
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
+        dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
         dateComp.second = 0;
+    }
+    
+    if ([[_eventModel objectForKey:EventItem_IsLunar] boolValue]) {
+        BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComp] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        BOOL isResultLeapMonth;
+        [NSDate dateOfSolarFromLunarDate:[calendar dateFromComponents:dateComp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+        [self leapMonthCellEnable:isResultLeapMonth];
+
+        if (isLunarDate) {
+            [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:self.inputDateKey];
+        }
+        else {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
+            [alert show];
+            datePicker.date = [_eventModel objectForKey:self.inputDateKey];
+            return;
+        }
+    }
+    else {
         [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:self.inputDateKey];
     }
+    
     
     // EffectiveStartDate & EffectiveAlertDate 갱신.
     [[A3DaysCounterModelManager sharedManager] reloadDatesOfEventModel:_eventModel];

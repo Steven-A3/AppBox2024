@@ -17,6 +17,7 @@
 #import "FSConverter.h"
 #import "NSString+conversion.h"
 #import "A3GradientView.h"
+#import "A3DaysCounterLocationDetailCell.h"
 
 
 @interface A3DaysCounterEventDetailLocationViewController ()
@@ -46,7 +47,7 @@
     self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventLocationModel:_location];
     self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
     _tableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
-    
+    self.tableView.tableFooterView = [UIView new];
     [self.view addSubview:self.tableViewTopBlurView];
     [self.tableViewTopBlurView makeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(self.tableView.left);
@@ -109,6 +110,7 @@
     if ( cell == nil ) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterLocationDetailCell" owner:nil options:nil] lastObject];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        ((A3DaysCounterLocationDetailCell *)cell).leftInsetSpaceConst.constant = IS_IPHONE ? 15 : 28;
     }
     
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
@@ -122,7 +124,6 @@
     cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
     cell.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     
-    
     if ( indexPath.row == 0 ) {
         textLabel.text = @"Phone";
         detailTextLabel.text = _locationItem.contact;
@@ -131,7 +132,7 @@
     else {
         textLabel.text = @"Address";
         detailTextLabel.text = _addressStr;
-        cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(cell.contentView.frame), 0, 0);
+        cell.separatorInset = UIEdgeInsetsMake(0, CGRectGetWidth(self.tableView.frame), 0, 0);
     }
     
     if ([detailTextLabel.text length] == 0) {
