@@ -589,4 +589,31 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
     return lunMonthDay;
 }
 
++ (NSDate *)dateOfLunarFromSolarDate:(NSDate *)date leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth
+{
+    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:YES leapMonth:isLeapMonth korean:isKorean resultLeapMonth:resultLeapMonth];
+    NSDate *result = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+    return result;
+}
+
++ (NSDate *)dateOfSolarFromLunarDate:(NSDate *)date leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth
+{
+    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:isLeapMonth korean:isKorean resultLeapMonth:resultLeapMonth];
+    NSDate *result = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
+    return result;
+}
+
++ (BOOL)isLunarDate:(NSDate *)date isKorean:(BOOL)isKorean
+{
+    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    NSInteger lastMonthDay = [self lastMonthDayForLunarYear:dateComp.year month:dateComp.month isKorean:isKorean];
+    if (dateComp.day <= lastMonthDay) {
+        return YES;
+    }
+    
+    return NO;
+}
+
 @end

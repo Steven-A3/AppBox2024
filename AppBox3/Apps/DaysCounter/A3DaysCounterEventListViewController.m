@@ -539,9 +539,9 @@
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
                 
                 if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
-                    NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentWithRepeatOption:[item.repeatType integerValue]
-                                                                                                              firstDate:item.startDate
-                                                                                                               fromDate:[NSDate date]];
+                    NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
+                                                                                                                     firstDate:item.startDate
+                                                                                                                      fromDate:[NSDate date]];
                     dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 }
