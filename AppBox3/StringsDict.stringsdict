@@ -57,7 +57,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>None</string>
+			<string>0 months</string>
 			<key>one</key>
 			<string>1 month</string>
 			<key>few</key>
@@ -79,7 +79,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>ld</string>
 			<key>zero</key>
-			<string>None</string>
+			<string>0 years</string>
 			<key>one</key>
 			<string>1 year</string>
 			<key>few</key>
