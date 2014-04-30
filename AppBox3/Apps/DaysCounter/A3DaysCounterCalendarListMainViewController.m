@@ -339,18 +339,29 @@
     }
     else {
         if ( [event.repeatType integerValue] != RepeatType_Never ) {
-            NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
-                                                                                         firstDate:[event.isLunar boolValue] ? startDateOnLunar : event.startDate
-                                                                                          fromDate:today
-                                                                                          isAllDay:[event.isAllDay boolValue]];
+            NSDate *nextDate;
             if ([event.isLunar boolValue]) {
-                BOOL isResultLeapMonth;
-                BOOL isLeapMonth = NO;
-                if ([event.isStartDateLeapMonth boolValue]) {
-                    isLeapMonth = [NSDate isLunarLeapMonthDate:nextDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-                }
-                nextDate = [NSDate dateOfSolarFromLunarDate:nextDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+                nextDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[event.repeatType integerValue]
+                                                                                             firstDate:event.startDate
+                                                                                              fromDate:today
+                                                                                              isAllDay:[event.isAllDay boolValue]
+                                                                                           isLeapMonth:[event.isLeapMonthOn boolValue]];
             }
+            else {
+                nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
+                                                                                     firstDate:[event.isLunar boolValue] ? startDateOnLunar : event.startDate
+                                                                                      fromDate:today
+                                                                                      isAllDay:[event.isAllDay boolValue]];
+            }
+
+//            if ([event.isLunar boolValue]) {
+//                BOOL isResultLeapMonth;
+//                BOOL isLeapMonth = NO;
+//                if ([event.isStartDateLeapMonth boolValue]) {
+//                    isLeapMonth = [NSDate isLunarLeapMonthDate:nextDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+//                }
+//                nextDate = [NSDate dateOfSolarFromLunarDate:nextDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+//            }
             untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
                                                                  toDate:nextDate
                                                            allDayOption:[event.isAllDay boolValue]

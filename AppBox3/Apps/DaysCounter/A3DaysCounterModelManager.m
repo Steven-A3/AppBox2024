@@ -1828,16 +1828,16 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     NSDate *startDate = [event startDate];
     
-    if ( [event.isLunar boolValue] ) {
-        // Lunar -> Solar
-        BOOL isResultLeapMonth = NO;
-        BOOL isLeapMonth = NO;
-        if ([event.isLeapMonthOn boolValue]) {
-            isLeapMonth = [NSDate isLunarLeapMonthDate:startDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-        }
-        startDate = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    }
-    
+//    if ( [event.isLunar boolValue] ) {
+//        // Lunar -> Solar
+//        BOOL isResultLeapMonth = NO;
+//        BOOL isLeapMonth = NO;
+//        if ([event.isLeapMonthOn boolValue]) {
+//            isLeapMonth = [NSDate isLunarLeapMonthDate:startDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+//        }
+//        startDate = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+//    }
+   
     if ([event repeatEndDate] &&
         ![event.repeatEndDate isKindOfClass:[NSNull class]] &&
         [event.repeatEndDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
@@ -1845,7 +1845,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         now = [event repeatEndDate];
     }
     
-    NSDate *nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
+    NSDate *nextDate;
+    if ( [event.isLunar boolValue] ) {
+        nextDate = [self nextDateForLunarWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue] isLeapMonth:[event.isLeapMonthOn boolValue]];
+    }
+    else {
+        nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
+    }
     
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
     return nextDate;

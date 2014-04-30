@@ -466,15 +466,20 @@
     A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
     
     if ( item ) {
-        NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                      firstDate:[item startDate]
-                                                                                       fromDate:[NSDate date]
-                                                                                       isAllDay:[item.isAllDay boolValue]];
+        NSDate *startDate;
         if ( [item.isLunar boolValue] ) {
-            BOOL isResultLeapMonth = NO;
-            startDate = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[item.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+            startDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[item.repeatType integerValue]
+                                                                                          firstDate:[item startDate]
+                                                                                           fromDate:[NSDate date]
+                                                                                           isAllDay:[item.isAllDay boolValue]
+                                                                                        isLeapMonth:[item.isLeapMonthOn boolValue]];
         }
-        
+        else {
+            startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                  firstDate:[item startDate]
+                                                                                   fromDate:[NSDate date]
+                                                                                   isAllDay:[item.isAllDay boolValue]];
+        }
 
         // textLabel
         textLabel.text = item.eventName;
@@ -535,6 +540,9 @@
                     NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
                                                                                                                      firstDate:item.startDate
                                                                                                                       fromDate:[NSDate date]];
+                    if ( [item.isLunar boolValue] ) {
+                        repeatDate = startDate;
+                    }
                     dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 }
