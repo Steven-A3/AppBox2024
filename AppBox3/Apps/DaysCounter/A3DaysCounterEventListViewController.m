@@ -471,15 +471,8 @@
                                                                                        fromDate:[NSDate date]
                                                                                        isAllDay:[item.isAllDay boolValue]];
         if ( [item.isLunar boolValue] ) {
-            NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
             BOOL isResultLeapMonth = NO;
-            NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
-                                                                gregorianToLunar:NO
-                                                                       leapMonth:NO
-                                                                          korean:[A3DateHelper isCurrentLocaleIsKorea]
-                                                                 resultLeapMonth:&isResultLeapMonth];
-            NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
-            startDate = convertDate;
+            startDate = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[item.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
         }
         
 

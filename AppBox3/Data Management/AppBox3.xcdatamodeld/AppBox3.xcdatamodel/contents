@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -57,11 +57,13 @@
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageFilename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="isEndDateLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isLeapMonthOn" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isReminder" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isStartDateLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="repeatEndDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -388,7 +390,7 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="418"/>
+        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="448"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
         <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
@@ -399,7 +401,7 @@
         <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="148"/>
         <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="223"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="135"/>
-        <element name="LoanCalcHistory" positionX="421" positionY="536" width="128" height="433"/>
+        <element name="LoanCalcHistory" positionX="441" positionY="531" width="128" height="433"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="75"/>
         <element name="SalesCalcHistory" positionX="-407" positionY="-327" width="128" height="210"/>
         <element name="TipCalcHistory" positionX="-587" positionY="-310" width="128" height="103"/>
@@ -423,7 +425,7 @@
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
         <element name="WalletFieldItemImage" positionX="-576" positionY="-396" width="128" height="88"/>
-        <element name="WalletFieldItemVideo" positionX="-567" positionY="-387" width="128" height="73"/>
+        <element name="WalletFieldItemVideo" positionX="-605" positionY="-10" width="128" height="73"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="165"/>
     </elements>
 </model>

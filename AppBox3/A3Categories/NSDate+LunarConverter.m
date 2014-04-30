@@ -591,7 +591,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 
 + (NSDate *)dateOfLunarFromSolarDate:(NSDate *)date leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth
 {
-    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
     dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:YES leapMonth:isLeapMonth korean:isKorean resultLeapMonth:resultLeapMonth];
     NSDate *result = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
     return result;
@@ -599,7 +599,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 
 + (NSDate *)dateOfSolarFromLunarDate:(NSDate *)date leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth
 {
-    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:date];
     dateComp = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:NO leapMonth:isLeapMonth korean:isKorean resultLeapMonth:resultLeapMonth];
     NSDate *result = [[NSCalendar currentCalendar] dateFromComponents:dateComp];
     return result;
@@ -614,6 +614,28 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
     }
     
     return NO;
+}
+
++ (BOOL)isLunarLeapMonthDate:(NSDate *)date isKorean:(BOOL)isKorean
+{
+    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+
+    arrayOfMonths *lunarMonthTable = isKorean ? lunarMonthTable_Korean:lunarMonthTable_Chinese;
+    
+    NSInteger lunIndex;
+	
+	NSInteger year = [dateComponents year];
+	NSInteger month = [dateComponents month];
+    
+	/* range check */
+	if ((year < 1900) || (year > 2043))
+	{
+		//		alert('1900년부터 2043년까지만 지원합니다');
+		return NO;
+	}
+    
+    lunIndex = year - 1899;
+    return (lunarMonthTable[lunIndex][month-1] > 2);
 }
 
 @end

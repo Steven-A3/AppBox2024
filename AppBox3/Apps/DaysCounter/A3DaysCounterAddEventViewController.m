@@ -220,7 +220,7 @@
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
     NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
-    [_eventModel setObject:@(isLeapMonth) forKey:EventItem_IsLeapMonth];
+    [_eventModel setObject:@(isLeapMonth) forKey:EventItem_IsLeapMonthOn];
     [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -553,16 +553,24 @@
             titleLabel.text = [itemDict objectForKey:EventRowTitle];
             
             NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
+            NSDate *endDate = [_eventModel objectForKey:EventItem_EndDate];
             NSDateComponents *startComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:startDate];
-            BOOL isLeapMonth = [NSDate isLunarLeapMonthAtDate:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-            if (isLeapMonth) {
+
+            BOOL isStartDateLeapMonth = [NSDate isLunarLeapMonthAtDate:startComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            BOOL isEndDateLeapMonth;
+            if (endDate && ![endDate isKindOfClass:[NSNull class]]) {
+                NSDateComponents *endComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit fromDate:endDate];
+                isEndDateLeapMonth = [NSDate isLunarLeapMonthAtDate:endComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            }
+            
+            if (isStartDateLeapMonth || isEndDateLeapMonth) {
                 swButton.enabled = YES;
-                swButton.on = [[_eventModel objectForKey:EventItem_IsLeapMonth] boolValue];
+                swButton.on = [[_eventModel objectForKey:EventItem_IsLeapMonthOn] boolValue];
             }
             else {
                 swButton.enabled = NO;
                 swButton.on = NO;
-                [_eventModel setObject:@(NO) forKey:EventItem_IsLeapMonth];
+                [_eventModel setObject:@(NO) forKey:EventItem_IsLeapMonthOn];
             }
         }
             break;
@@ -1312,7 +1320,7 @@
         [self updateEndDateDiffFromStartDate:startDate];
     }
     else if ( rowItemType == EventCellType_IsLeapMonth ) {
-        [_eventModel setObject:@(swButton.on) forKey:EventItem_IsLeapMonth];
+        [_eventModel setObject:@(swButton.on) forKey:EventItem_IsLeapMonthOn];
     }
     else if ( rowItemType == EventCellType_IsAllDay ) {
         [_eventModel setObject:@(swButton.on) forKey:EventItem_IsAllDay];
