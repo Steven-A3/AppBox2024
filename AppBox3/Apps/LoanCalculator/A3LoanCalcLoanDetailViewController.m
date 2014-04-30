@@ -679,15 +679,15 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
                 
                 break;
             }
-            case A3LC_CalculationItemInterestRate:
-            {
-                if ([textField.text length] > 0) {
-                    _loanData.annualInterestRate = inputNum;
-                    textField.text = [_loanData interestRateString];
+            case A3LC_CalculationItemInterestRate: {
+				A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+				_loanData.showsInterestInYearly = @([keyboardViewController.bigButton1 isSelected]);
+				if ([_loanData.showsInterestInYearly boolValue]) {
+					_loanData.annualInterestRate = @(inputFloat / 100.0);
+				} else {
+					_loanData.annualInterestRate = @(inputFloat / 100.0 * 12.0);
 				}
-                else {
-                    textField.text = [_loanData interestRateString];
-                }
+				textField.text = [_loanData interestRateString];
                 break;
             }
             case A3LC_CalculationItemPrincipal:
@@ -714,19 +714,18 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
                 
                 break;
             }
-            case A3LC_CalculationItemTerm:
-            {
-                if ([textField.text length] > 0) {
-                    _loanData.monthOfTerms = @(inputNum.integerValue * 12);
-                    int years = inputNum.intValue;
-                    textField.text = [NSString stringWithFormat:@"%d years", years];
-                }
-                else {
-                    textField.text = [NSString stringWithFormat:@"%d years", [_loanData.monthOfTerms intValue] / 12];
-                }
-
-                break;
-            }
+            case A3LC_CalculationItemTerm: {
+				A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+				_loanData.showsTermInMonths = @([keyboardViewController.bigButton2 isSelected]);
+				if ([_loanData.showsTermInMonths boolValue]) {
+					_loanData.monthOfTerms = inputNum;
+				} else {
+					NSInteger years = [inputNum integerValue];
+					_loanData.monthOfTerms = @(years * 12);
+				}
+				textField.text = [_loanData termValueString];
+				break;
+			}
             default:
                 break;
         }

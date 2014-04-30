@@ -38,7 +38,7 @@
 	for (NSString *localeID in localeIdentifiers) {
 		NSLocale *locale = [NSLocale localeWithLocaleIdentifier:localeID];
 		[df setLocale:locale];
-		[df setDateStyle:NSDateFormatterLongStyle];
+		[df setDateStyle:NSDateFormatterMediumStyle];
 		NSString *originalFormat = df.dateFormat;
 		[log appendFormat:@"%@\t[ %@ ]\t[ %@ ]\n", localeID,  originalFormat, [df stringFromDate:today]];
 		
@@ -167,6 +167,19 @@
 
 - (void)testStringWithFormat {
 	NSLog(@"%@", [NSString stringWithFormat:@"%010lu", (unsigned long)123]);
+}
+
+- (void)testDateFormat {
+	NSDateFormatter *formatter = [NSDateFormatter new];
+	[formatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"ko_KR"]];
+	NSMutableString *log = [NSMutableString new];
+	[formatter setDateStyle:NSDateFormatterFullStyle];
+	[log appendFormat:@"%@\n", [formatter stringFromDate:[NSDate date] ] ];
+	[formatter setDateStyle:NSDateFormatterLongStyle];
+	[log appendFormat:@"%@\n", [formatter stringFromDate:[NSDate date] ] ];
+	[formatter setDateStyle:NSDateFormatterMediumStyle];
+	[log appendFormat:@"%@\n", [formatter stringFromDate:[NSDate date] ] ];
+	NSLog(@"%@", log);
 }
 
 @end

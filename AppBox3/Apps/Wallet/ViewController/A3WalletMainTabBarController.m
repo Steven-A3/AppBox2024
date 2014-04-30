@@ -267,6 +267,8 @@ NSString *const A3WalletNotificationItemCategoryMoved = @"WalletItemCategoryMove
 
 - (void)setupTabBar
 {
+	self.tabBarController.tabBar.translucent = NO;
+
 	_categories = nil;
 
     NSMutableArray *viewControllers = [[NSMutableArray alloc] init];

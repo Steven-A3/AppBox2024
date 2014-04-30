@@ -36,9 +36,6 @@ NSString *const A3WalletAllTopCellID = @"A3WalletAllTopCell";
 NSString *const A3WalletNormalCellID = @"A3WalletNormalCellID";
 NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
-@interface A3WalletListViewController ()
-@end
-
 @implementation A3WalletListViewController
 
 - (void)viewDidLoad
@@ -55,6 +52,8 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	[self initializeViews];
 
 	[self registerContentSizeCategoryDidChangeNotification];
+
+	self.tabBarController.tabBar.translucent = NO;
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -91,8 +90,6 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 	if (IS_IPAD) {
 		[self showLeftNavigationBarItems];
 	}
-
-	self.tabBarController.tabBar.translucent = NO;
 }
 
 - (void)showLeftNavigationBarItems
@@ -139,7 +136,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 - (void)addButtonConstraints
 {
-    CGFloat fromBottom = IS_IPAD ? 89.0:82.0;
+    CGFloat fromBottom = (IS_IPAD ? 89.0:82.0) - 44.0;
 
 	[_addButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
@@ -320,7 +317,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 			NSString *itemValue = @"";
 			if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
 				NSDateFormatter *df = [[NSDateFormatter alloc] init];
-				[df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+				[df setDateStyle:NSDateFormatterFullStyle];
 				itemValue = [df stringFromDate:fieldItem.date];
 			}
 			else {

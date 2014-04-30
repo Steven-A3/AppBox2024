@@ -582,10 +582,9 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
             
             dateCell.valueTextField.placeholder = fieldItem.field.name;
             if (fieldItem.date) {
-                
-                NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
-                dateCell.valueTextField.text = [df stringFromDate:fieldItem.date];
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+				[dateFormatter setDateStyle:NSDateFormatterFullStyle];
+                dateCell.valueTextField.text = [dateFormatter stringFromDate:fieldItem.date];
             }
             else {
                 dateCell.valueTextField.text = @"";

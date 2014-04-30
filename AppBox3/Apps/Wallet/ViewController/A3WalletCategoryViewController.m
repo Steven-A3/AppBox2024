@@ -271,7 +271,7 @@
                         NSString *itemValue;
                         if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
                             NSDateFormatter *df = [[NSDateFormatter alloc] init];
-                            [df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+							[df setDateStyle:NSDateFormatterFullStyle];
                             itemValue = [df stringFromDate:fieldItem.date];
                         }
                         else {
@@ -349,7 +349,7 @@
 					NSString *itemValue = @"";
 					if ([fieldItem.field.type isEqualToString:WalletFieldTypeDate]) {
 						NSDateFormatter *df = [[NSDateFormatter alloc] init];
-						[df setDateFormat:@"MMM dd, YYYY hh:mm a"];
+						[df setDateStyle:NSDateFormatterFullStyle];
 						itemValue = [df stringFromDate:fieldItem.date];
 					}
 					else {

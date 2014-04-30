@@ -9,6 +9,7 @@
 #import "LoanCalcData+Calculation.h"
 #import "common.h"
 #import "NSString+conversion.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @implementation LoanCalcData (Calculation)
 
@@ -474,7 +475,9 @@
             date = [df stringFromDate:data[@"Date"]];
         }
         else {
-            [df setDateFormat:@"MMM yyyy"];
+			[df setDateStyle:NSDateFormatterMediumStyle];
+			NSString *dateFormat = [df formatStringByRemovingDayComponent:df.dateFormat];
+            [df setDateFormat:dateFormat];
             date = [df stringFromDate:data[@"Date"]];
         }
         

@@ -317,7 +317,7 @@ enum SortingKind {
     WalletItem *recentItem = [WalletItem MR_findFirstOrderedByAttribute:@"modificationDate" ascending:NO];
     if (recentItem) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM/dd/yy"];
+		[formatter setDateStyle:NSDateFormatterShortStyle];
         dateText = [formatter stringFromDate:recentItem.modificationDate];
     }
     
