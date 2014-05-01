@@ -23,11 +23,13 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
+#import "UITableView+utility.h"
+#import "NSDateFormatter+A3Addition.h"
 
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
     BOOL _isTotalMode;
-    NSIndexPath *currentIndexPath;
+    NSIndexPath *_currentIndexPath, *_scrollToIndexPath;
     BOOL _isLoanCalcEdited;
 }
 
@@ -56,12 +58,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     [self makeBackButtonEmptyArrow];
 
     // init loan
@@ -81,6 +77,10 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onKeyboardHide:) name:UIKeyboardWillHideNotification object:nil];
  
     [self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -256,14 +256,16 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     else {
         currencyText = [self.loanFormatter stringFromNumber:@(0)];
     }
-    NSString *dateText = @"";
-    
-    if (_loanData.extraPaymentYearlyDate) {
-        NSDate *pickDate = _loanData.extraPaymentYearlyDate;
+    NSString *dateText;
+
+	NSDate *dateData = _loanData.extraPaymentYearlyDate;
+	if (_loanData.extraPaymentYearly && !dateData) {
+		dateData = [NSDate date];
+	}
+    if (dateData) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterMediumStyle];
         [formatter setDateFormat:@"MMM"];
-        dateText = [formatter stringFromDate:pickDate];
+        dateText = [formatter stringFromDate:dateData];
     }
     else {
         dateText = @"None";
@@ -282,14 +284,18 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     else {
         currencyText = [self.loanFormatter stringFromNumber:@(0)];
     }
-    NSString *dateText = @"";
-    if (_loanData.extraPaymentOneTimeDate) {
-        NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
-        
+    NSString *dateText;
+
+	NSDate *dateData = _loanData.extraPaymentOneTimeDate;
+	if (_loanData.extraPaymentOneTime && !dateData) {
+		dateData = [NSDate date];
+	}
+    if (dateData) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateStyle:NSDateFormatterMediumStyle];
-        [formatter setDateFormat:@"MMM, yyyy"];
-        dateText = [formatter stringFromDate:pickDate];
+		NSString *dateFormat = [formatter formatStringByRemovingDayComponent:formatter.dateFormat];
+        [formatter setDateFormat:dateFormat];
+        dateText = [formatter stringFromDate:dateData];
     }
     else {
         dateText = @"None";
@@ -315,8 +321,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (UITextField *)previousTextField:(UITextField *) current
 {
     NSUInteger section, row;
-    section = currentIndexPath.section;
-    row = currentIndexPath.row;
+    section = _currentIndexPath.section;
+    row = _currentIndexPath.row;
     NSIndexPath *selectedIP = nil;
     UITableViewCell *prevCell = nil;
     BOOL exit = false;
@@ -354,8 +360,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (UITextField *)nextTextField:(UITextField *) current
 {
     NSUInteger section, row;
-    section = currentIndexPath.section;
-    row = currentIndexPath.row;
+    section = _currentIndexPath.section;
+    row = _currentIndexPath.row;
     NSIndexPath *selectedIP = nil;
     UITableViewCell *nextCell = nil;
     BOOL exit = false;
@@ -629,28 +635,77 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     self.firstResponder = textField;
     
     textField.text = @"";
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
+	textField.placeholder = @"";
+
+	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
+	NSLog(@"End IP : %ld - %ld", (long)_currentIndexPath.section, (long)_currentIndexPath.row);
+
+	A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
+	textField.inputView = [keyboardVC view];
+	self.numberKeyboardViewController = keyboardVC;
+
+	if (_currentIndexPath.section == 1) {
+		// calculation items
+		NSNumber *calcItemNum = _calcItems[_currentIndexPath.row];
+		A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
+
+		switch (calcItem) {
+			case A3LC_CalculationItemDownPayment:
+			case A3LC_CalculationItemPrincipal:
+			case A3LC_CalculationItemRepayment:
+			{
+				NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+				if ([customCurrencyCode length]) {
+					[self.numberKeyboardViewController setCurrencyCode:customCurrencyCode];
+				}
+				self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+				break;
+			}
+			case A3LC_CalculationItemInterestRate:
+			{
+				self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
+				if (!_loanData.showsInterestInYearly || ![_loanData.showsInterestInYearly boolValue]) {
+					[keyboardVC.bigButton1 setSelected:NO];
+					[keyboardVC.bigButton2 setSelected:YES];
+				}
+				break;
+			}
+			case A3LC_CalculationItemTerm:
+			{
+				self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
+				if ([_loanData.showsTermInMonths boolValue]) {
+					[keyboardVC.bigButton1 setSelected:NO];
+					[keyboardVC.bigButton2 setSelected:YES];
+				}
+				break;
+			}
+			default:
+				break;
+		}
+	}
+	else if (_currentIndexPath.section == 2) {
+		// extra payment
+		NSNumber *exPaymentItemNum = _extraPaymentItems[_currentIndexPath.row];
+		A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
+
+		if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
+			keyboardVC.currencyCode = [self defaultCurrencyCode];
+			self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
+		}
+	}
+
+	keyboardVC.textInputTarget = textField;
+	keyboardVC.delegate = self;
+	self.numberKeyboardViewController = keyboardVC;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-    
-    UITableViewCell *cell;
-    UIView *testView = textField;
-    while (testView.superview) {
-        if ([testView.superview isKindOfClass:[UITableViewCell class]]) {
-            cell = (UITableViewCell *)testView.superview;
-            break;
-        }
-        else {
-            testView = testView.superview;
-        }
-    }
-    
-    NSIndexPath *endIndexPath = [self.tableView indexPathForCell:cell];
+
+    NSIndexPath *endIndexPath = _currentIndexPath;
     
     NSLog(@"End IP : %ld - %ld", (long)endIndexPath.section, (long)endIndexPath.row);
 
@@ -659,46 +714,40 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
     // update
     if (endIndexPath.section == 1) {
         // calculation item
-        NSNumberFormatter *formatter = [NSNumberFormatter new];
-        [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
         NSNumber *calcItemNum = _calcItems[endIndexPath.row];
         A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
-        double inputFloat = [textField.text doubleValue];
-        NSNumber *inputNum = @(inputFloat);
-        
-        switch (calcItem) {
+		NSNumber *inputNum = [self.decimalFormatter numberFromString:textField.text];
+        double inputFloat = [inputNum doubleValue];
+
+		switch (calcItem) {
             case A3LC_CalculationItemDownPayment:
             {
                 if ([textField.text length] > 0) {
                     _loanData.downPayment = inputNum;
-                    textField.text = [self.loanFormatter stringFromNumber:inputNum];
                 }
-                else {
-                    textField.text = [self.loanFormatter stringFromNumber:_loanData.downPayment];
-                }
-                
+				textField.text = [self.loanFormatter stringFromNumber:_loanData.downPayment];
+
                 break;
             }
             case A3LC_CalculationItemInterestRate: {
-				A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
-				_loanData.showsInterestInYearly = @([keyboardViewController.bigButton1 isSelected]);
-				if ([_loanData.showsInterestInYearly boolValue]) {
-					_loanData.annualInterestRate = @(inputFloat / 100.0);
-				} else {
-					_loanData.annualInterestRate = @(inputFloat / 100.0 * 12.0);
+				if ([textField.text length]) {
+					A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+					_loanData.showsInterestInYearly = @([keyboardViewController.bigButton1 isSelected]);
+					if ([_loanData.showsInterestInYearly boolValue]) {
+						_loanData.annualInterestRate = @(inputFloat / 100.0);
+					} else {
+						_loanData.annualInterestRate = @(inputFloat / 100.0 * 12.0);
+					}
 				}
 				textField.text = [_loanData interestRateString];
-                break;
-            }
+				break;
+			}
             case A3LC_CalculationItemPrincipal:
             {
                 if ([textField.text length] > 0) {
                     _loanData.principal = inputNum;
-                    textField.text = [self.loanFormatter stringFromNumber:inputNum];
                 }
-                else {
-                    textField.text = [self.loanFormatter stringFromNumber:_loanData.principal];
-                }
+				textField.text = [self.loanFormatter stringFromNumber:_loanData.principal];
 
                 break;
             }
@@ -706,22 +755,21 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
             {
                 if ([textField.text length] > 0) {
                     _loanData.repayment = inputNum;
-                    textField.text = [self.loanFormatter stringFromNumber:inputNum];
                 }
-                else {
-                    textField.text = [self.loanFormatter stringFromNumber:_loanData.repayment];
-                }
-                
+				textField.text = [self.loanFormatter stringFromNumber:_loanData.repayment];
+
                 break;
             }
             case A3LC_CalculationItemTerm: {
-				A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
-				_loanData.showsTermInMonths = @([keyboardViewController.bigButton2 isSelected]);
-				if ([_loanData.showsTermInMonths boolValue]) {
-					_loanData.monthOfTerms = inputNum;
-				} else {
-					NSInteger years = [inputNum integerValue];
-					_loanData.monthOfTerms = @(years * 12);
+				if ([textField.text length]) {
+					A3NumberKeyboardViewController *keyboardViewController = self.numberKeyboardViewController;
+					_loanData.showsTermInMonths = @([keyboardViewController.bigButton2 isSelected]);
+					if ([_loanData.showsTermInMonths boolValue]) {
+						_loanData.monthOfTerms = inputNum;
+					} else {
+						NSInteger years = [inputNum integerValue];
+						_loanData.monthOfTerms = @(years * 12);
+					}
 				}
 				textField.text = [_loanData termValueString];
 				break;
@@ -734,17 +782,13 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         // extra payment
         NSNumber *exPayItemNum = _extraPaymentItems[endIndexPath.row];
         A3LoanCalcExtraPaymentType exPayType = exPayItemNum.integerValue;
-        float inputFloat = [textField.text doubleValue];
-        NSNumber *inputNum = @(inputFloat);
-        
-        if (exPayType == A3LC_ExtraPaymentMonthly) {
+		NSNumber *inputNum = [self.decimalFormatter numberFromString:textField.text];
+
+		if (exPayType == A3LC_ExtraPaymentMonthly) {
             if ([textField.text length] > 0) {
                 _loanData.extraPaymentMonthly = inputNum;
-                textField.text = [self.loanFormatter stringFromNumber:inputNum];
             }
-            else {
-                textField.text = [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly];
-            }
+			textField.text = [self.loanFormatter stringFromNumber:_loanData.extraPaymentMonthly];
         }
     }
     
@@ -753,82 +797,7 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    UITableViewCell *cell;
-    UIView *testView = textField;
-    while (testView.superview) {
-        if ([testView.superview isKindOfClass:[UITableViewCell class]]) {
-            cell = (UITableViewCell *)testView.superview;
-            break;
-        }
-        else {
-            testView = testView.superview;
-        }
-    }
-    
-    currentIndexPath = [self.tableView indexPathForCell:cell];
-    
-    A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
-    textField.inputView = [keyboardVC view];
-    self.numberKeyboardViewController = keyboardVC;
-    
-    if (currentIndexPath.section == 1) {
-        // calculation items
-        NSNumber *calcItemNum = _calcItems[currentIndexPath.row];
-        A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
-        
-        switch (calcItem) {
-            case A3LC_CalculationItemDownPayment:
-            case A3LC_CalculationItemPrincipal:
-            case A3LC_CalculationItemRepayment:
-            {
-				NSString *customCurrencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
-				if ([customCurrencyCode length]) {
-					[self.numberKeyboardViewController setCurrencyCode:customCurrencyCode];
-				}
-                self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-                break;
-            }
-            case A3LC_CalculationItemInterestRate:
-            {
-                self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeInterestRate;
-                break;
-            }
-            case A3LC_CalculationItemTerm:
-            {
-                self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    else if (currentIndexPath.section == 2) {
-        // extra payment
-        NSNumber *exPaymentItemNum = _extraPaymentItems[currentIndexPath.row];
-        A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
-        
-        if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
-            self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeCurrency;
-        }
-    }
-    
-    keyboardVC.textInputTarget = textField;
-    keyboardVC.delegate = self;
-    self.numberKeyboardViewController = keyboardVC;
-    
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self.firstResponder resignFirstResponder];
-	[self setFirstResponder:nil];
-    
+	_scrollToIndexPath = [self.tableView indexPathForCellSubview:textField];
     return YES;
 }
 
@@ -1180,6 +1149,42 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
 	}
+	if (_currentIndexPath.section == 1) {
+		// calculation item
+		NSNumber *calcItemNum = _calcItems[_currentIndexPath.row];
+		A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
+
+		switch (calcItem) {
+			case A3LC_CalculationItemDownPayment:
+				_loanData.downPayment = @0;
+				break;
+			case A3LC_CalculationItemInterestRate:
+				_loanData.showsInterestInYearly = @YES;
+				_loanData.annualInterestRate = @0;
+				break;
+			case A3LC_CalculationItemPrincipal:
+				_loanData.principal = @0;
+				break;
+			case A3LC_CalculationItemRepayment:
+				_loanData.repayment = @0;
+				break;
+			case A3LC_CalculationItemTerm:
+				_loanData.showsTermInMonths = @NO;
+				_loanData.monthOfTerms = @0;
+				break;
+			default:
+				break;
+		}
+	}
+	else if (_currentIndexPath.section == 2) {
+		// extra payment
+		NSNumber *exPayItemNum = _extraPaymentItems[_currentIndexPath.row];
+		A3LoanCalcExtraPaymentType exPayType = exPayItemNum.integerValue;
+
+		if (exPayType == A3LC_ExtraPaymentMonthly) {
+			_loanData.extraPaymentMonthly = @0;
+		}
+	}
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
@@ -1202,6 +1207,14 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (id <A3SearchViewControllerDelegate>)delegateForCurrencySelector {
 	return self;
+}
+
+- (NSString *)defaultCurrencyCode {
+	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
+	if (!currencyCode) {
+		currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+	}
+	return currencyCode;
 }
 
 #pragma mark --- Calculator View Delegate

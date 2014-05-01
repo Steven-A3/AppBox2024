@@ -67,16 +67,13 @@
 	_pageControl.hidden = YES;
 	[_pageControl makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);
-		[self.cellHeightConstraints addObject:make.top.equalTo(self.view.top).with.offset(IS_IPHONE35 ? 310 : 315)];
+		[self.cellHeightConstraints addObject:make.top.equalTo(self.view.top).with.offset(IS_IPHONE35 ? 234.5 : 315)];
 	}];
 
 	_dbManager = [[SQLiteWrapper alloc] initWithPath:[[NSBundle mainBundle] pathForResource:@"LunarConverter" ofType:@"sqlite"]];
 	[self setAutomaticallyAdjustsScrollViewInsets:NO];
 
 	CGFloat viewHeight = 84 * 3 + 1;
-//	if(IS_IPHONE35) {
-//		viewHeight = 176;
-//	}
 
 	[_mainScrollView makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left);

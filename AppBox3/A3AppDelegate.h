@@ -10,11 +10,11 @@
 #import "UbiquityStoreManager.h"
 #import "MBProgressHUD.h"
 #import "A3PasscodeViewControllerProtocol.h"
+#import "A3CacheStoreManager.h"
 
 @class MMDrawerController;
 @protocol A3PasscodeViewControllerProtocol;
 @class Reachability;
-@class A3CacheStoreManager;
 
 extern NSString *const kA3ApplicationVersion;
 extern NSString *const kA3AppsMenuName;

@@ -136,7 +136,7 @@ NSString *const A3WalletPhotoCellID2 = @"A3WalletListPhotoCell";
 
 - (void)addButtonConstraints
 {
-    CGFloat fromBottom = (IS_IPAD ? 89.0:82.0) - 44.0;
+    CGFloat fromBottom = 33;
 
 	[_addButton makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.view.centerX);

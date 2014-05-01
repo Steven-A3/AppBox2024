@@ -562,14 +562,16 @@ NSString *const A3WalletItemFieldNoteCellID = @"A3WalletNoteCell";
 			[photoCell.photoButton addTarget:self action:@selector(photoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 			photoCell.photoButton.tag = indexPath.row;
 
-			UIImageView *markView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"video"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
-			markView.tintColor = [UIColor whiteColor];
-			[photoCell.photoButton addSubview:markView];
-			[markView makeConstraints:^(MASConstraintMaker *make) {
-				make.center.equalTo(photoCell.photoButton);
-				make.width.equalTo(@15);
-				make.height.equalTo(@9);
-			}];
+			if (fieldItem.video) {
+				UIImageView *markView = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"video"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+				markView.tintColor = [UIColor whiteColor];
+				[photoCell.photoButton addSubview:markView];
+				[markView makeConstraints:^(MASConstraintMaker *make) {
+					make.center.equalTo(photoCell.photoButton);
+					make.width.equalTo(@15);
+					make.height.equalTo(@9);
+				}];
+			}
 
 			cell = photoCell;
         }

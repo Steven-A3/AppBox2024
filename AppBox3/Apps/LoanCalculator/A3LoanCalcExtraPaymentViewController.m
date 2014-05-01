@@ -33,7 +33,7 @@
 
 @interface A3LoanCalcExtraPaymentViewController () <A3KeyboardDelegate, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
-    NSIndexPath *currentIndexPath;
+    NSIndexPath *_currentIndexPath;
     
     BOOL _isExtraPaymentEdited;
 }
@@ -46,7 +46,6 @@
 @property (nonatomic, strong) NSMutableDictionary *dateItem;
 @property (nonatomic, strong) NSMutableDictionary *dateInputItem;
 @property (nonatomic, weak) UITextField *calculatorOutputTargetTextField;
-@property (nonatomic, copy) NSString *textBeforeEditingTextField;
 
 @end
 
@@ -194,8 +193,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (UITextField *)previousTextField:(UITextField *) current
 {
     NSUInteger section, row;
-    section = currentIndexPath.section;
-    row = currentIndexPath.row;
+    section = _currentIndexPath.section;
+    row = _currentIndexPath.row;
     UITableViewCell *prevCell;
     BOOL exit = false;
     do {
@@ -231,8 +230,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 - (UITextField *)nextTextField:(UITextField *) current
 {
     NSUInteger section, row;
-    section = currentIndexPath.section;
-    row = currentIndexPath.row;
+    section = _currentIndexPath.section;
+    row = _currentIndexPath.row;
     UITableViewCell *nextCell;
     BOOL exit = false;
     do {
@@ -351,10 +350,10 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 {
     self.firstResponder = textField;
 
-	_textBeforeEditingTextField = textField.text;
-
     textField.text = @"";
 	textField.placeholder = @"";
+
+	_currentIndexPath = [self.tableView indexPathForCellSubview:textField];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
@@ -363,24 +362,24 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
     
     // update
     _isExtraPaymentEdited = YES;
-    
-    double inputFloat = [textField.text doubleValue];
-    NSNumber *inputNum = @(inputFloat);
 
-	if (inputFloat == 0.0) {
-		textField.text = _textBeforeEditingTextField;
-		return;
-	}
+	NSNumber *inputNum = [self.decimalFormatter numberFromString:textField.text];
 
-    if (currentIndexPath.row == 0) {
+    if (_currentIndexPath.row == 0) {
         if (_exPaymentType == A3LC_ExtraPaymentYearly) {
-            self.loanCalcData.extraPaymentYearly = inputNum;
-        }
+			if ([textField.text length]) {
+				self.loanCalcData.extraPaymentYearly = inputNum;
+			}
+			NSNumber *data = self.loanCalcData.extraPaymentYearly;
+			textField.text = [self.loanFormatter stringFromNumber:data ? data : @0];
+		}
         else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
-            self.loanCalcData.extraPaymentOneTime = inputNum;
-        }
-        
-        textField.text = [self.loanFormatter stringFromNumber:inputNum];
+			if ([textField.text length]) {
+				self.loanCalcData.extraPaymentOneTime = inputNum;
+			}
+			NSNumber *data = self.loanCalcData.extraPaymentOneTime;
+			textField.text = [self.loanFormatter stringFromNumber:data ? data : @0];
+		}
 
 		if (IS_IPAD && _delegate && [_delegate respondsToSelector:@selector(didChangedLoanCalcExtraPayment:)]) {
 			[_delegate didChangedLoanCalcExtraPayment:_loanCalcData];
@@ -406,9 +405,8 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
         _dateTextField = nil;
     }
 
-    currentIndexPath = [self.tableView indexPathForCellSubview:textField];
-
-	if (currentIndexPath.row == 0) {
+	NSIndexPath *indexPath = [self.tableView indexPathForCellSubview:textField];
+	if (indexPath.row == 0) {
         // amount
         A3NumberKeyboardViewController *keyboardVC = [self normalNumberKeyboard];
         textField.inputView = [keyboardVC view];
@@ -723,6 +721,14 @@ NSString *const A3LoanCalcDatePickerCellID1 = @"A3LoanCalcDateInputCell";
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
+	}
+	if (_currentIndexPath.row == 0) {
+		if (_exPaymentType == A3LC_ExtraPaymentYearly) {
+			self.loanCalcData.extraPaymentYearly = @0;
+		}
+		else if (_exPaymentType == A3LC_ExtraPaymentOnetime) {
+			self.loanCalcData.extraPaymentOneTime = @0;
+		}
 	}
 }
 

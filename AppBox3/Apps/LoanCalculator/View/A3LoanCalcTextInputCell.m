@@ -35,6 +35,9 @@
 	[super prepareForReuse];
 
 	[self.textField setUserInteractionEnabled:YES];
+
+	_textField.placeholder = nil;
+	_textField.attributedPlaceholder = nil;
 }
 
 @end

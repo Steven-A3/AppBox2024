@@ -599,6 +599,7 @@ typedef NS_ENUM(NSInteger, RowElementID) {
                 case RowElementID_Split:
                 {
                     [weakSelf.dataManager setTipCalcDataSplit:value];
+					element.value = [weakSelf.decimalFormatter stringFromNumber:weakSelf.dataManager.tipCalcData.split];
 					break;
 				}
 
