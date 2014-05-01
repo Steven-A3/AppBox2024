@@ -22,6 +22,8 @@
 
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSNumberFormatter *currencyFormatter;
+@property (nonatomic, strong) NSNumberFormatter *percentFormatter;
+@property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 
 @end
 
@@ -155,6 +157,8 @@
 			break;
 		case A3TableViewEntryTypePercent:
 			_inputViewController.keyboardType = A3NumberKeyboardTypePercent;
+			[_inputViewController.bigButton1 setSelected:_valueType == A3TableViewValueTypePercent];
+			[_inputViewController.bigButton2 setSelected:_valueType == A3TableViewValueTypeCurrency];
 			break;
 		case A3TableViewEntryTypeYears:
 			_inputViewController.keyboardType = A3NumberKeyboardTypeMonthYear;
@@ -269,8 +273,12 @@
         }
 		case A3TableViewEntryTypeCurrency: {
 			if ([self.value doubleValue] == 0.0) {
-				textField.text = @"";
-				textField.placeholder = self.placeholder;
+				if ([self.placeholder length]) {
+					textField.text = @"";
+					textField.placeholder = self.placeholder;
+				} else {
+					textField.text = [self.currencyFormatter stringFromNumber:@0];
+				}
 			} else {
 				textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
 			}
@@ -279,18 +287,18 @@
 		case A3TableViewEntryTypePercent:
 		{
             if ((![self value] || [textField.text length] == 0) && [self.placeholder length] > 0) {
-                textField.text = @"";
-                textField.placeholder = self.placeholder;
+				if ([self.placeholder length]) {
+					textField.text = @"";
+					textField.placeholder = self.placeholder;
+				} else {
+					textField.text = [self.percentFormatter stringFromNumber:@0];
+				}
             }
             else {
-				NSNumberFormatter *formatter = [NSNumberFormatter new];
-
 				if (self.value == nil && textField.text.length == 0) {
                     self.value = @"0";
-                    //textField.placeholder = self.title;
                     if (_valueType == A3TableViewValueTypePercent) {
-                        [formatter setNumberStyle:NSNumberFormatterPercentStyle];
-                        textField.text = [formatter stringFromNumber:@(0)];
+                        textField.text = [self.percentFormatter stringFromNumber:@(0)];
                     }
                     else {
                         textField.text = [self.currencyFormatter stringFromNumber:@(0)];
@@ -299,13 +307,9 @@
                 }
                 
                 if (_valueType == A3TableViewValueTypePercent) {
-					[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-					NSNumber *value = [formatter numberFromString:self.value];
+					NSNumber *value = [self.decimalFormatter numberFromString:self.value];
 
-                    [formatter setNumberStyle:NSNumberFormatterPercentStyle];
-                    [formatter setRoundingMode:NSNumberFormatterRoundDown];
-					[formatter setMaximumFractionDigits:3];
-                    textField.text = [formatter stringFromNumber:@([value doubleValue] / 100.0)];
+                    textField.text = [self.percentFormatter stringFromNumber:@([value doubleValue] / 100.0)];
                 }
                 else {
                     textField.text = [self.currencyFormatter stringFromNumber:@([self.value doubleValue])];
@@ -358,10 +362,6 @@
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
-    if ([self.title isEqualToString:@"Split"]) {
-        return;
-    }
-    
     self.value = @"0";
     ((UITextField *)keyInputDelegate).text = @"";
     
@@ -533,6 +533,24 @@
 		}
 	}
 	return _currencyFormatter;
+}
+
+- (NSNumberFormatter *)percentFormatter {
+	if (!_percentFormatter) {
+		_percentFormatter = [NSNumberFormatter new];
+		[_percentFormatter setNumberStyle:NSNumberFormatterPercentStyle];
+		[_percentFormatter setRoundingMode:NSNumberFormatterRoundDown];
+		[_percentFormatter setMaximumFractionDigits:3];
+	}
+	return _percentFormatter;
+}
+
+- (NSNumberFormatter *)decimalFormatter {
+	if (!_decimalFormatter) {
+		_decimalFormatter = [NSNumberFormatter new];
+		[_decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+	}
+	return _decimalFormatter;
 }
 
 @end

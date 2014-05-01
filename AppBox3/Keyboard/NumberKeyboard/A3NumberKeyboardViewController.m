@@ -12,6 +12,9 @@
 #import "A3CurrencySelectViewController.h"
 #import "A3NumberKeyboardViewController_iPhone.h"
 #import "A3NumberKeyboardViewController.h"
+#import "A3AppDelegate.h"
+#import "A3CacheStoreManager.h"
+#import "CurrencyRateItem.h"
 
 @interface A3NumberKeyboardViewController ()
 
@@ -185,32 +188,27 @@
 
 - (void)setCurrencyCode:(NSString *)currencyCode {
 	_currencyCode = currencyCode;
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setCurrencyCode:currencyCode];
-	_currencySymbol = nf.currencySymbol;
+	NSManagedObjectContext *context = [A3AppDelegate instance].cacheStoreManager.context;
+	CurrencyRateItem *currencyInfo = [CurrencyRateItem MR_findFirstByAttribute:@"currencyCode" withValue:currencyCode inContext:context];
+	_currencySymbol = currencyInfo.currencySymbol;
 	FNLOG(@"%@, %@", _currencyCode, _currencySymbol);
 
 	[self setupLocale];
-
-	[self.bigButton1 setTitle:self.currencyCode forState:UIControlStateNormal];
 }
 
 - (void)setupLocale {
-	@autoreleasepool {
-		if (_useDotAsClearButton) {
-			[self.dotButton setTitle:IS_IPHONE ? @"C" : @"Clear" forState:UIControlStateNormal];
-			self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
-			return;
-		}
-		NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-		if ([_currencyCode length]) {
-			[numberFormatter setCurrencyCode:_currencyCode];
-		} else {
-			_currencyCode = [numberFormatter currencyCode];
-		}
-		_currencySymbol = [numberFormatter currencySymbol];
+	NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+	[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	if ([_currencyCode length]) {
+		[numberFormatter setCurrencyCode:_currencyCode];
+	} else {
+		_currencyCode = [numberFormatter currencyCode];
+	}
 
-		[numberFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+	if (_useDotAsClearButton) {
+		[self.dotButton setTitle:IS_IPHONE ? @"C" : @"Clear" forState:UIControlStateNormal];
+		self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
+	} else {
 		if ((A3NumberKeyboardTypeMonthYear == self.keyboardType)
 				|| (A3NumberKeyboardTypeInteger == self.keyboardType)
 				|| (A3NumberKeyboardTypeFraction == self.keyboardType)
@@ -222,6 +220,18 @@
 			[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
 			[self.dotButton setEnabled:YES];
 		}
+	}
+	switch (_keyboardType) {
+		case A3NumberKeyboardTypeInteger:
+		case A3NumberKeyboardTypeReal:
+		case A3NumberKeyboardTypeCurrency:
+			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@""];
+			break;
+		case A3NumberKeyboardTypePercent:
+			[self fillBigButtonTitleWith:@"%" bigButton2Title:_currencySymbol];
+			break;
+		default:
+			break;
 	}
 }
 
@@ -257,7 +267,6 @@
 		case A3NumberKeyboardTypeInteger:
 		case A3NumberKeyboardTypeReal:
 		case A3NumberKeyboardTypeCurrency: {
-			[self fillBigButtonTitleWith:self.currencyCode bigButton2Title:@""];
 			[self setBigButton2CalculatorImage];
 			if (IS_IPHONE) {
 				[self.bigButton1.titleLabel setFont:[UIFont systemFontOfSize:18.0]];
