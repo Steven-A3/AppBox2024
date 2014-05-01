@@ -753,7 +753,7 @@ NSString *kCalculationString;
 	self.textBeforeEditingText = textField.text;
 	self.placeholderBeforeEditingText = textField.placeholder;
 	textField.text = @"";
-	textField.placeholder = @"";
+	textField.placeholder = @"0";
 
 	if ([_footerCell hasEqualTextField:_selectedTextField]) {
 		if (_simpleNormalNumberKeyboard==nil) {
@@ -985,6 +985,19 @@ NSString *kCalculationString;
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
     _selectedTextField.text = @"";
 	_textBeforeEditingText = nil;
+	if ([_footerCell hasEqualTextField:_selectedTextField]) {
+		if (_selectedTextField == _footerCell.yearTextField) {
+			self.offsetComp.year = 0;
+		}
+		else if (_selectedTextField==_footerCell.monthTextField) {
+			self.offsetComp.month = 0;
+		}
+		else if (_selectedTextField==_footerCell.dayTextField) {
+			self.offsetComp.day = 0;
+		}
+
+		[_footerCell saveInputedTextField:_selectedTextField];
+	}
 }
 
 #pragma mark - UITableView Related
