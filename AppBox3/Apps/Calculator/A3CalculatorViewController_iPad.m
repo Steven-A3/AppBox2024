@@ -61,26 +61,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.title = @"Calculator";
+
     // Do any additional setup after loading the view from its nib.
-    [self leftBarButtonAppsButton];
-    
-    self.navigationItem.hidesBackButton = YES;
-    
-    share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
-    history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    space.width = 24.0;
-    
-    self.navigationItem.rightBarButtonItems = @[history, space, share];
-    [self checkRightButtonDisable];
+	if (!_modalPresentingParentViewController) {
+		[self leftBarButtonAppsButton];
+		[self rightBarButtons];
+	} else {
+		[self leftBarButtonCancelButton];
+		[self rightBarButtonDoneButton];
+	}
+	self.navigationItem.hidesBackButton = YES;
+
     radian = YES;
     [self setupSubViews];
+
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]){
         [_calculator setMathExpression:[[NSUserDefaults standardUserDefaults] objectForKey:@"savedTheLastExpressionInCalculator"]];
         [_calculator evaluateAndSet];
         [self checkRightButtonDisable];
     }
 
+	[self addTextFieldForPlayInputClick];
+}
+
+- (void)addTextFieldForPlayInputClick {
 	_textFieldForPlayInputClick = [[UITextField alloc] initWithFrame:CGRectZero];
 	_textFieldForPlayInputClick.delegate = self;
 	_inputViewForPlayInputClick = [[A3KeyboardView alloc] initWithFrame:CGRectMake(0, 0, 1, 0.1)];
@@ -88,6 +94,16 @@
 	[self.view addSubview:_textFieldForPlayInputClick];
 
 	[_textFieldForPlayInputClick becomeFirstResponder];
+}
+
+- (void)rightBarButtons {
+	share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"] style:UIBarButtonItemStylePlain target:self action:@selector(shareButtonAction:)];
+	history = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"history"] style:UIBarButtonItemStylePlain target:self action:@selector(historyButtonAction:)];
+	UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+	space.width = 24.0;
+
+	self.navigationItem.rightBarButtonItems = @[history, space, share];
+	[self checkRightButtonDisable];
 }
 
 - (BOOL)usesFullScreenInLandscape {
@@ -99,7 +115,7 @@
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
 
     [self.view addSubview:self.evaluatedResultLabel];
-	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
+	[self.evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(85);
 		make.right.equalTo(self.view.right).with.offset(-15);
         self.calctopconstraint =  make.bottom.equalTo(self.view.top).with.offset(screenBounds.size.height == 768 ? 389:566);
@@ -117,7 +133,7 @@
     [self.view addSubview:self.degreeandradianLabel];
     [_degreeandradianLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(15);
-        make.bottom.equalTo(_evaluatedResultLabel.bottom).with.offset(-9.5);
+        make.bottom.equalTo(self.evaluatedResultLabel.bottom).with.offset(-9.5);
     }];
     
     
@@ -131,7 +147,7 @@
     [_basicandscientificLabel addGestureRecognizer:basicscientificTapped];
     
     
-    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:_evaluatedResultLabel];
+    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
     _calculator.delegate = self;
     
     
@@ -217,17 +233,18 @@
 }
 
 - (HTCopyableLabel *)evaluatedResultLabel {
-	if (!_evaluatedResultLabel) {
-		_evaluatedResultLabel = [HTCopyableLabel new];
-		_evaluatedResultLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
-		_evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:110];
-		_evaluatedResultLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
-		_evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
-		_evaluatedResultLabel.text = @"0";
-		_evaluatedResultLabel.adjustsFontSizeToFitWidth = YES;
-		_evaluatedResultLabel.minimumScaleFactor = 0.2;
+	if (!super.evaluatedResultLabel) {
+		HTCopyableLabel *evaluatedResultLabel = [HTCopyableLabel new];
+		evaluatedResultLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
+		evaluatedResultLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:110];
+		evaluatedResultLabel.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:1.0];
+		evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
+		evaluatedResultLabel.text = @"0";
+		evaluatedResultLabel.adjustsFontSizeToFitWidth = YES;
+		evaluatedResultLabel.minimumScaleFactor = 0.2;
+		super.evaluatedResultLabel = evaluatedResultLabel;
 	}
-	return _evaluatedResultLabel;
+	return super.evaluatedResultLabel;
 }
 
 - (HTCopyableLabel *)expressionLabel {
@@ -444,7 +461,7 @@
 		Calculation *calculation = [Calculation MR_createEntity];
 		NSDate *keyDate = [NSDate date];
         calculation.expression = mathExpression;
-        calculation.result = _evaluatedResultLabel.text;
+        calculation.result = self.evaluatedResultLabel.text;
         calculation.date = keyDate;
 
         [[[MagicalRecordStack defaultStack] context] MR_saveOnlySelfAndWait];

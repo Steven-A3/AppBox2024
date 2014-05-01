@@ -569,7 +569,6 @@
 		68B6A2F218CEC76D004084EF /* A3UnitPriceInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A1F918CEC76C004084EF /* A3UnitPriceInputView.xib */; };
 		68B6A2F318CEC76D004084EF /* A3UnitPriceInputView_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68B6A1FA18CEC76C004084EF /* A3UnitPriceInputView_iPad.xib */; };
 		68B6A2F418CEC76D004084EF /* A3UnitPriceMainTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A1FC18CEC76C004084EF /* A3UnitPriceMainTableController.m */; };
-		68B6A2F818CEC76D004084EF /* A3UnitPriceNote2Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A20218CEC76C004084EF /* A3UnitPriceNote2Cell.m */; };
 		68B6A2F918CEC76D004084EF /* A3UnitPriceNoteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A20418CEC76C004084EF /* A3UnitPriceNoteCell.m */; };
 		68B6A2FA18CEC76D004084EF /* A3UnitPriceSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A20618CEC76C004084EF /* A3UnitPriceSelectViewController.m */; };
 		68B6A2FB18CEC76D004084EF /* A3UnitPriceSliderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B6A20818CEC76C004084EF /* A3UnitPriceSliderCell.m */; };
@@ -1899,8 +1898,6 @@
 		68B6A1FB18CEC76C004084EF /* A3UnitPriceMainTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceMainTableController.h; sourceTree = "<group>"; };
 		68B6A1FC18CEC76C004084EF /* A3UnitPriceMainTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceMainTableController.m; sourceTree = "<group>"; };
 		68B6A1FD18CEC76C004084EF /* A3UnitPriceMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceMainViewController.h; sourceTree = "<group>"; };
-		68B6A20118CEC76C004084EF /* A3UnitPriceNote2Cell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceNote2Cell.h; sourceTree = "<group>"; };
-		68B6A20218CEC76C004084EF /* A3UnitPriceNote2Cell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceNote2Cell.m; sourceTree = "<group>"; };
 		68B6A20318CEC76C004084EF /* A3UnitPriceNoteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceNoteCell.h; sourceTree = "<group>"; };
 		68B6A20418CEC76C004084EF /* A3UnitPriceNoteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3UnitPriceNoteCell.m; sourceTree = "<group>"; };
 		68B6A20518CEC76C004084EF /* A3UnitPriceSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3UnitPriceSelectViewController.h; sourceTree = "<group>"; };
@@ -4246,8 +4243,6 @@
 				68B6A1FB18CEC76C004084EF /* A3UnitPriceMainTableController.h */,
 				68B6A1FC18CEC76C004084EF /* A3UnitPriceMainTableController.m */,
 				68B6A1FD18CEC76C004084EF /* A3UnitPriceMainViewController.h */,
-				68B6A20118CEC76C004084EF /* A3UnitPriceNote2Cell.h */,
-				68B6A20218CEC76C004084EF /* A3UnitPriceNote2Cell.m */,
 				68B6A20318CEC76C004084EF /* A3UnitPriceNoteCell.h */,
 				68B6A20418CEC76C004084EF /* A3UnitPriceNoteCell.m */,
 				68B6A20518CEC76C004084EF /* A3UnitPriceSelectViewController.h */,
@@ -6093,7 +6088,6 @@
 				68E2A66418D0B1FC00E834D9 /* A3PercentCalculator.m in Sources */,
 				6825367018A7B89F00EAFB84 /* A3LunarConverterViewController.m in Sources */,
 				68521A4617E1FF2E00E08FB1 /* FXLabel.m in Sources */,
-				68B6A2F818CEC76D004084EF /* A3UnitPriceNote2Cell.m in Sources */,
 				68F1C8CB18D7F37D009FAE8A /* A3LadyCalendarListViewController.m in Sources */,
 				685E319F17917879001A0EC8 /* A3CurrencyTVActionCell.m in Sources */,
 				68B6A34618CEC76D004084EF /* A3WalletCategoryViewController.m in Sources */,

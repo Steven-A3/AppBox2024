@@ -23,7 +23,6 @@
 @interface A3CalculatorViewController_iPhone () <UIScrollViewDelegate, A3CalcKeyboardViewDelegate,MBProgressHUDDelegate, A3CalcMessagShowDelegate, UITextFieldDelegate>
 
 @property (nonatomic, strong) HTCopyableLabel *expressionLabel;
-@property (nonatomic, strong) HTCopyableLabel *evaluatedResultLabel;
 @property (nonatomic, strong) UILabel *degreeandradianLabel;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) FXPageControl *pageControl;
@@ -112,24 +111,6 @@
 	[super viewWillAppear:animated];
 
 	_scrollView.contentOffset = CGPointMake(320, 0);
-}
-
-- (void)doneButtonAction:(UIBarButtonItem *)button {
-	[self dismissViewControllerAnimated:YES completion:nil];
-	id <A3CalculatorDelegate> delegate = self.delegate;
-	if ([delegate respondsToSelector:@selector(calculatorViewController:didDismissWithValue:)]) {
-		NSNumberFormatter *nf = [NSNumberFormatter new];
-		[nf setNumberStyle:NSNumberFormatterDecimalStyle];
-		NSNumber *resultNumber = [nf numberFromString:self.evaluatedResultLabel.text];
-		if ([resultNumber doubleValue] != 0.0) {
-			[nf setUsesGroupingSeparator:NO];
-			[delegate calculatorViewController:self didDismissWithValue:[nf stringFromNumber:resultNumber]];
-		}
-	}
-}
-
-- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)setupGestureRecognizer {
@@ -241,7 +222,7 @@
 	}];
 
 	[self.view addSubview:self.evaluatedResultLabel];
-	[_evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
+	[self.evaluatedResultLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.left.equalTo(self.view.left).with.offset(14);
         self.resultLabelRightConstraint = make.right.equalTo(self.view.right).with.offset([self getResultLabelRightOffSet:screenBounds]);
 		self.resultLabelBaselineConstraint = make.baseline.equalTo(self.view.top).with.offset([self getResultLabelBaselineOffSet:screenBounds]);
@@ -258,7 +239,7 @@
 
     [self setDegAndRad:YES];
 
-    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:_evaluatedResultLabel];
+    _calculator = [[A3Calculator alloc] initWithLabel:_expressionLabel result:self.evaluatedResultLabel];
     _calculator.delegate = self;
 
 	[self.view layoutIfNeeded];
@@ -300,17 +281,19 @@
 }
 
 - (HTCopyableLabel *)evaluatedResultLabel {
-	if (!_evaluatedResultLabel) {
+	if (!super.evaluatedResultLabel) {
 		CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-		_evaluatedResultLabel = [HTCopyableLabel new];
-		_evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
-		_evaluatedResultLabel.textColor = [UIColor blackColor];
-		_evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
-		_evaluatedResultLabel.text = @"0";
-		_evaluatedResultLabel.adjustsFontSizeToFitWidth = YES;
-		_evaluatedResultLabel.minimumScaleFactor = 0.2;
+		HTCopyableLabel *evaluatedResultLabel = [HTCopyableLabel new];
+		evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
+		evaluatedResultLabel.textColor = [UIColor blackColor];
+		evaluatedResultLabel.textAlignment = NSTextAlignmentRight;
+		evaluatedResultLabel.text = @"0";
+		evaluatedResultLabel.adjustsFontSizeToFitWidth = YES;
+		evaluatedResultLabel.minimumScaleFactor = 0.2;
+
+		super.evaluatedResultLabel = evaluatedResultLabel;
 	}
-	return _evaluatedResultLabel;
+	return super.evaluatedResultLabel;
 }
 
 - (UILabel *)degreeandradianLabel {
@@ -414,7 +397,7 @@
         
         
     }
-    _evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
+    self.evaluatedResultLabel.font = [self getResultLabelFont:screenBounds];
     self.svbottomconstraint.offset([self getSVbottomOffSet:screenBounds]);
     self.expressionTopconstraint.offset([self getExpressionLabelTopOffSet:screenBounds]);
     self.expressionLabelRightConstraint.offset([self getExpressionLabelRightOffSet:screenBounds]);

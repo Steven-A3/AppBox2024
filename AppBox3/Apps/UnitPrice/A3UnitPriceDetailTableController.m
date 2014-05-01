@@ -15,7 +15,6 @@
 #import "A3UnitPriceSliderCell.h"
 #import "A3UnitPriceInputCell.h"
 #import "A3UnitPriceActionCell.h"
-#import "A3UnitPriceNote2Cell.h"
 
 #import "A3AppDelegate.h"
 #import "A3NumberKeyboardViewController.h"
@@ -61,8 +60,6 @@ NSString *const A3UnitPriceSliderCellID = @"A3UnitPriceSliderCell";
 NSString *const A3UnitPriceInputCellID = @"A3UnitPriceInputCell";
 NSString *const A3UnitPriceActionCellID = @"A3UnitPriceActionCell";
 NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
-NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
-
 
 @implementation A3UnitPriceDetailTableController
 
@@ -627,7 +624,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         }
         else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
             NSUInteger index = [self.items indexOfObject:self.noteItem];
-            A3UnitPriceNote2Cell *noteCell = (A3UnitPriceNote2Cell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
+            A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:1]];
             [noteCell.textView becomeFirstResponder];
         }
     }
@@ -677,7 +674,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         }
         else {
             if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-                A3UnitPriceNote2Cell *noteCell = (A3UnitPriceNote2Cell *)[tableView cellForRowAtIndexPath:indexPath];
+                A3WalletNoteCell *noteCell = (A3WalletNoteCell *)[tableView cellForRowAtIndexPath:indexPath];
                 [noteCell.textView becomeFirstResponder];
             }
             else if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
@@ -759,7 +756,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 cell = actionCell;
             }
             else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-                A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNote2CellID forIndexPath:indexPath];
+                A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNoteCellID forIndexPath:indexPath];
                 
                 noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
                 noteCell.textView.delegate = self;
