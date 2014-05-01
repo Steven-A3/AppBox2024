@@ -20,6 +20,8 @@
 #import "FXLabel.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "NSDate+LunarConverter.h"
+#import "NSDateFormatter+LunarDate.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 
@@ -1687,7 +1689,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (BOOL)isSupportLunar
 {
     NSString *locale = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
-    if ( [locale	isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] )
+    if ( [locale isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] )
         return YES;
     
     return NO;
@@ -1700,7 +1702,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( IS_IPHONE ) {
         if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 (EEE)" : @"yyyy. MM. d (EEE) a h:mm");
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. MM. d EEEE a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEE, MMM d, yyyy" : @"EEE, MMM d, yyyy h:mm a");
@@ -1725,7 +1727,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( IS_IPHONE ) {
         if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일(EEE)" : @"yyyy년 MMMM d일(EEE) a h:mm");
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEEE, MMM d, yyyy" : @"EEEE, MMM d, yyyy h:mm a");
@@ -2034,5 +2036,20 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return effectiveAlertDate;
 }
 
+#pragma mark - Lunar
++ (NSDateComponents *)dateComponentsFromLunarDate:(NSDate *)date   // for Test
+{
+     NSDateComponents * dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+    return dateComp;
+}
+
++ (NSDateComponents *)dateComponentsFromLunarDateObject:(NSManagedObject *)lunarDateObject
+{
+    NSDateComponents * dateComp = [NSDateComponents new];
+    dateComp.year = 2006;
+    dateComp.month = 7;
+    dateComp.day = 1;
+    return dateComp;
+}
 
 @end

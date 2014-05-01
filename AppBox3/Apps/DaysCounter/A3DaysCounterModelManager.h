@@ -103,4 +103,8 @@
 #pragma mark - Alert
 - (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
 - (void)reloadAlertDateListForLocalNotification;
+
+#pragma mark - Lunar
++ (NSDateComponents *)dateComponentsFromLunarDate:(NSDate *)date;   // for Test
++ (NSDateComponents *)dateComponentsFromLunarDateObject:(NSManagedObject *)lunarDateObject;
 @end

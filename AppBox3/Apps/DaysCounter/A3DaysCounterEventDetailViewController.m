@@ -154,6 +154,23 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark factory
+- (NSString *)dateStringFromDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
+{
+    NSString *dateString;
+    if (!isLunar) {
+        dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]]];
+    }
+    else {
+        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
+                      [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]],
+                      [A3DateHelper dateStringOfSolarFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromLunarDate:date] isLeapMonth:isLeapMonth]
+                      ];
+    }
+    
+    return dateString;
+}
+
 #pragma mark - cell
 - (UITableViewCell*)createCellWithType:(NSInteger)cellType cellIdentifier:(NSString*)cellID
 {
@@ -582,8 +599,10 @@
         
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
             daysLabel.text = @"";
-            dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:startDate
-                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+            dateLabel1.text = [NSString stringWithFormat:@"%@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
+                                                                                 isLunar:[info.isLunar boolValue]
+                                                                                isAllDay:[info.isAllDay boolValue]
+                                                                             isLeapMonth:[info.isLeapMonthOn boolValue]]];
             dateLabel2.text = @"";
             dateLabel3.text = @"";
             
@@ -605,10 +624,15 @@
             //            from 선택날짜/시간
             //            to 선택날짜/시간
             //            repeats 옵션
-            dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
-                                                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-            dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
-                                                                                         withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+            dateLabel1.text = [NSString stringWithFormat:@"from %@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
+                                                                                 isLunar:[info.isLunar boolValue]
+                                                                                isAllDay:[info.isAllDay boolValue]
+                                                                             isLeapMonth:[info.isLeapMonthOn boolValue]]];
+            dateLabel2.text = [NSString stringWithFormat:@"to %@", [self dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
+                                                                                 isLunar:[info.isLunar boolValue]
+                                                                                isAllDay:[info.isAllDay boolValue]
+                                                                             isLeapMonth:[info.isLeapMonthOn boolValue]]];
+            
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
@@ -623,8 +647,10 @@
             //            until(since) 계산값
             //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
             //            (until일 경우 - repeats 옵션) (since 일 경우 to)
-            dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
-                                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+            dateLabel1.text = [NSString stringWithFormat:@"%@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
+                                                                                      isLunar:[info.isLunar boolValue]
+                                                                                     isAllDay:[info.isAllDay boolValue]
+                                                                                  isLeapMonth:[info.isLeapMonthOn boolValue]]];
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
@@ -671,6 +697,7 @@
                                                                                                                            //fromDate:[info.isLunar boolValue] ? nowOnLunar : now];
             dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:repeatDateOnCurrentTime
                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+
             
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
@@ -713,15 +740,6 @@
                     diff = [endDate timeIntervalSince1970] - [startDate timeIntervalSince1970];
                 }
                 NSDate *nextEndDate;
-//                NSDate *nextLunarEndDate;
-//                BOOL isResultLeapMonth = NO;
-//                if ([info.isLunar boolValue]) {
-//                    nextLunarEndDate = [NSDate dateWithTimeInterval:diff sinceDate:nextLunarDate];
-//                    nextEndDate = [NSDate dateOfSolarFromLunarDate:nextLunarDate leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-//                }
-//                else {
-//                    nextEndDate = [NSDate dateWithTimeInterval:diff sinceDate:nextDate];
-//                }
                 nextEndDate = [NSDate dateWithTimeInterval:diff sinceDate:nextDate];
                 dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:nextEndDate
                                                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
@@ -737,7 +755,6 @@
                 //            from 선택날짜/시간
                 //            to 선택날짜/시간
                 //            repeats 옵션
-                
                 dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
                                                                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
                 dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
@@ -761,6 +778,17 @@
                 //            first date
                 dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:nextDate
                                                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+                
+                
+//                NSDateComponents *dateComponents = [[A3AppDelegate instance].calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSWeekdayCalendarUnit fromDate:date];
+//                NSDateComponents *lunarComponents = [NSDate lunarCalcWithComponents:dateComponents
+//                                                                   gregorianToLunar:YES
+//                                                                          leapMonth:NO
+//                                                                             korean:[[NSUserDefaults standardUserDefaults] useKoreanLunarCalendar]
+//                                                                    resultLeapMonth:NULL];
+//                [self.dateFormatter setDateFormat:_dateFormat];
+//                return [_dateFormatter stringFromDateComponents:lunarComponents];
+                
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                     dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                 }
@@ -877,10 +905,14 @@ EXIT_FUCTION:
         //            from 선택날짜/시간
         //            to 선택날짜/시간
         //            repeats 옵션
-        dateLabel1.text = [NSString stringWithFormat:@"from %@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
-                                                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
-        dateLabel2.text = [NSString stringWithFormat:@"to %@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
-                                                                                     withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+        dateLabel1.text = [NSString stringWithFormat:@"from %@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
+                                                                                  isLunar:[info.isLunar boolValue]
+                                                                                 isAllDay:[info.isAllDay boolValue]
+                                                                              isLeapMonth:[info.isLeapMonthOn boolValue]]];
+        dateLabel2.text = [NSString stringWithFormat:@"to %@", [self dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
+                                                                                  isLunar:[info.isLunar boolValue]
+                                                                                 isAllDay:[info.isAllDay boolValue]
+                                                                              isLeapMonth:[info.isLeapMonthOn boolValue]]];
         if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
             dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
         }
@@ -893,8 +925,11 @@ EXIT_FUCTION:
         //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
         //            (until일 경우 - repeats 옵션) (since 일 경우 to)
         //* case 1, repeat only until
-        dateLabel1.text = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
-                                                                                  withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[info.isAllDay boolValue]]]];
+        dateLabel1.text = [NSString stringWithFormat:@"%@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
+                                                                                isLunar:[info.isLunar boolValue]
+                                                                               isAllDay:[info.isAllDay boolValue]
+                                                                            isLeapMonth:[info.isLeapMonthOn boolValue]]];
+        
         if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
             dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
         }
@@ -1240,11 +1275,12 @@ EXIT_FUCTION:
     eventInfoCell.sinceRoundLabel.layer.borderWidth = IS_RETINA ? 0.5 : 1.0;
     eventInfoCell.sinceRoundLabel.layer.cornerRadius = 9.0;
 
-
-    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:46.0]];
-	[SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
-    eventInfoCell.lunar1AImageView.image = [SFKImage imageNamed:@"f"];
-    eventInfoCell.lunar1BImageView.image = [SFKImage imageNamed:@"f"];
+//    [SFKImage setDefaultFont:[UIFont fontWithName:@"appbox" size:46.0]];
+//	[SFKImage setDefaultColor:[UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0]];
+//    eventInfoCell.lunar1AImageView.image = [SFKImage imageNamed:@"f"];
+//    eventInfoCell.lunar1BImageView.image = [SFKImage imageNamed:@"f"];
+    eventInfoCell.lunar1AImageView.hidden = YES;
+    eventInfoCell.lunar1BImageView.hidden = YES;
     
     eventInfoCell.durationALabel.text = @"";
     eventInfoCell.startEnd1ALabel.text = @"";
