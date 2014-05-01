@@ -13,6 +13,7 @@
 @class DaysCounterCalendar;
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
+@class DaysCounterLunarDate;
 @interface A3DaysCounterModelManager : NSObject{
     NSManagedObjectContext *managedContext;
 }
@@ -106,5 +107,5 @@
 
 #pragma mark - Lunar
 + (NSDateComponents *)dateComponentsFromLunarDate:(NSDate *)date;   // for Test
-+ (NSDateComponents *)dateComponentsFromLunarDateObject:(NSManagedObject *)lunarDateObject;
++ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject;
 @end

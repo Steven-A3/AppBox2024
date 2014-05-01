@@ -71,6 +71,7 @@
         <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="calendar" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterCalendar" inverseName="events" inverseEntity="DaysCounterCalendar" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterEventLocation" inverseName="event" inverseEntity="DaysCounterEventLocation" syncable="YES"/>
+        <relationship name="lunarDates" optional="YES" toMany="YES" maxCount="2" deletionRule="Nullify" destinationEntity="DaysCounterLunarDate" inverseName="event" inverseEntity="DaysCounterLunarDate" syncable="YES"/>
         <relationship name="reminder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterReminder" inverseName="event" inverseEntity="DaysCounterReminder" syncable="YES"/>
     </entity>
     <entity name="DaysCounterEventLocation" representedClassName="DaysCounterEventLocation" syncable="YES">
@@ -84,6 +85,13 @@
         <attribute name="longitude" optional="YES" attributeType="Float" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="location" inverseEntity="DaysCounterEvent" syncable="YES"/>
+    </entity>
+    <entity name="DaysCounterLunarDate" representedClassName="DaysCounterLunarDate" syncable="YES">
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="lunarDates" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
     <entity name="DaysCounterReminder" representedClassName="DaysCounterReminder" syncable="YES">
         <attribute name="alertDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -390,7 +398,7 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="448"/>
+        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="463"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
         <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
@@ -424,8 +432,9 @@
         <element name="WalletFavorite" positionX="-560" positionY="584" width="128" height="73"/>
         <element name="WalletField" positionX="-576" positionY="440" width="128" height="148"/>
         <element name="WalletFieldItem" positionX="-369" positionY="512" width="128" height="148"/>
-        <element name="WalletFieldItemImage" positionX="-576" positionY="-396" width="128" height="88"/>
+        <element name="WalletFieldItemImage" positionX="-594" positionY="-414" width="128" height="88"/>
         <element name="WalletFieldItemVideo" positionX="-605" positionY="-10" width="128" height="73"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="165"/>
+        <element name="DaysCounterLunarDate" positionX="-578" positionY="-540" width="128" height="118"/>
     </elements>
 </model>

@@ -14,6 +14,7 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
+#import "DaysCounterLunarDate.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
@@ -2043,12 +2044,12 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return dateComp;
 }
 
-+ (NSDateComponents *)dateComponentsFromLunarDateObject:(NSManagedObject *)lunarDateObject
++ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject
 {
     NSDateComponents * dateComp = [NSDateComponents new];
-    dateComp.year = 2006;
-    dateComp.month = 7;
-    dateComp.day = 1;
+    dateComp.year = [lunarDateObject.year integerValue];
+    dateComp.month = [lunarDateObject.month integerValue];
+    dateComp.day = [lunarDateObject.day integerValue];
     return dateComp;
 }
 
