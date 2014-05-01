@@ -76,6 +76,11 @@
         self.eventModel = [[A3DaysCounterModelManager sharedManager] dictionaryFromEventEntity:_eventItem];
         _isAdvancedCellOpen = [self hasAdvancedData];
         _isDurationIntialized = YES;
+        _eventItem.eventName = @"test";
+        NSLog(@"%@", _eventItem.eventName);
+//        [_eventItem MR_refresh];
+        [[_eventItem managedObjectContext] refreshObject:_eventItem mergeChanges:NO];
+        NSLog(@"%@", _eventItem.eventName);
     }
     else {
         self.title = @"Add Event";

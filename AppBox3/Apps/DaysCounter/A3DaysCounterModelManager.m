@@ -1148,7 +1148,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (DaysCounterCalendar*)defaultCalendar
 {
-    
     DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@", [NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
     if ( defaultCalendar == nil ) {
         NSArray *calendarList = [self visibleCalendarList];
@@ -2052,5 +2051,79 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     dateComp.day = [lunarDateObject.day integerValue];
     return dateComp;
 }
+
+- (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
+{
+    BOOL isResultLeapMonth;
+    if (isLeapMonth) {
+        isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:YES];
+    }
+    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    NSDateComponents *resultComp;
+    if (fromComp.year == startComp.year && fromComp.month > startComp.month) {
+        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:NO leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
+    }
+    else {
+        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:YES leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
+    }
+    
+    return resultComp;
+}
+
+- (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType
+{
+    BOOL isResultLeapMonth;
+    NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    NSDateComponents *calcComp = [NSDateComponents new];
+    
+    switch (repeatType) {
+        case RepeatType_EveryYear:
+        {
+            calcComp.year = isAboutNextTime ? fromComp.year + 1 : fromComp.year;
+            calcComp.month = lunarComponents.month;
+            calcComp.day = lunarComponents.day;
+            calcComp = [self validLunarDateComponents:calcComp];
+        }
+            break;
+        case RepeatType_EveryMonth:
+        case RepeatType_Every2Week:
+        case RepeatType_EveryWeek:
+        case RepeatType_EveryDay:
+        {
+            
+        }
+            break;
+        default:
+            break;
+    }
+    
+    // 존재하지 않는 반복 음력날짜에 대한 검증
+    if (isLeapMonth) {
+        isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:YES];
+    }
+    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:calcComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDate *resultDate = [[NSCalendar currentCalendar] dateFromComponents:resultDateComponents];
+    if (!resultDateComponents || !resultDate || [resultDate timeIntervalSince1970] < [fromDate timeIntervalSince1970]) {
+        return nil;
+    }
+    
+    return calcComp;
+}
+
+- (NSDateComponents *)validLunarDateComponents:(NSDateComponents *)comp
+{
+    BOOL result = [NSDate isLunarDateComponents:comp isKorean:YES];
+    if (result) {
+        return comp;
+    }
+    else {
+        comp.year += 1;
+        comp = [self validLunarDateComponents:comp];
+    }
+    
+    return comp;
+}
+
 
 @end

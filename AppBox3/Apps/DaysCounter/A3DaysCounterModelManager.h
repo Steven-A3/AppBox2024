@@ -83,6 +83,7 @@
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
 - (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
 
+
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
 - (NSString*)stringForShareEvent:(DaysCounterEvent*)event;
@@ -108,4 +109,8 @@
 #pragma mark - Lunar
 + (NSDateComponents *)dateComponentsFromLunarDate:(NSDate *)date;   // for Test
 + (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject;
+- (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
+- (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
+- (NSDateComponents *)validLunarDateComponents:(NSDateComponents *)comp;
+
 @end

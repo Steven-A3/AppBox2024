@@ -48,6 +48,18 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSDateComponents *dateComp = [NSDateComponents new];
+    dateComp.year = 2014;
+    dateComp.month = 4;
+    dateComp.day = 31;
+    BOOL isResultLeapMonth;
+    NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:YES leapMonth:NO korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSLog(@"%@", resultComponents);
+    //        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+    //                                                            gregorianToLunar:NO
+    //                                                                   leapMonth:NO
+    //                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
+    //                                                             resultLeapMonth:&isResultLeapMonth];
 	FNLOG();
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
