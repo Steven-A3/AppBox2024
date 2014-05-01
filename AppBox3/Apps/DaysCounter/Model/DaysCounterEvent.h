@@ -2,14 +2,14 @@
 //  DaysCounterEvent.h
 //  AppBox3
 //
-//  Created by dotnetguy83 on 4/30/14.
+//  Created by dotnetguy83 on 5/1/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class DaysCounterCalendar, DaysCounterEventLocation, DaysCounterReminder;
+@class DaysCounterCalendar, DaysCounterEventLocation, DaysCounterLunarDate, DaysCounterReminder;
 
 @interface DaysCounterEvent : NSManagedObject
 
@@ -25,20 +25,29 @@
 @property (nonatomic, retain) NSString * eventName;
 @property (nonatomic, retain) NSString * imageFilename;
 @property (nonatomic, retain) NSNumber * isAllDay;
+@property (nonatomic, retain) NSNumber * isEndDateLeapMonth;
 @property (nonatomic, retain) NSNumber * isFavorite;
-@property (nonatomic, retain) NSNumber * isStartDateLeapMonth;
+@property (nonatomic, retain) NSNumber * isLeapMonthOn;
 @property (nonatomic, retain) NSNumber * isLunar;
 @property (nonatomic, retain) NSNumber * isPeriod;
 @property (nonatomic, retain) NSNumber * isReminder;
+@property (nonatomic, retain) NSNumber * isStartDateLeapMonth;
 @property (nonatomic, retain) NSString * notes;
 @property (nonatomic, retain) NSDate * regDate;
 @property (nonatomic, retain) NSDate * repeatEndDate;
 @property (nonatomic, retain) NSNumber * repeatType;
 @property (nonatomic, retain) NSDate * startDate;
-@property (nonatomic, retain) NSNumber * isEndDateLeapMonth;
-@property (nonatomic, retain) NSNumber * isLeapMonthOn;
 @property (nonatomic, retain) DaysCounterCalendar *calendar;
 @property (nonatomic, retain) DaysCounterEventLocation *location;
+@property (nonatomic, retain) NSSet *lunarDates;
 @property (nonatomic, retain) DaysCounterReminder *reminder;
+@end
+
+@interface DaysCounterEvent (CoreDataGeneratedAccessors)
+
+- (void)addLunarDatesObject:(DaysCounterLunarDate *)value;
+- (void)removeLunarDatesObject:(DaysCounterLunarDate *)value;
+- (void)addLunarDates:(NSSet *)values;
+- (void)removeLunarDates:(NSSet *)values;
 
 @end

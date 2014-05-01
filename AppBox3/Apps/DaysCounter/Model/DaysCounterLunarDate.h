@@ -13,10 +13,11 @@
 
 @interface DaysCounterLunarDate : NSManagedObject
 
-@property (nonatomic, retain) NSNumber * year;
-@property (nonatomic, retain) NSNumber * month;
 @property (nonatomic, retain) NSNumber * day;
 @property (nonatomic, retain) NSNumber * isLeapMonth;
+@property (nonatomic, retain) NSNumber * month;
+@property (nonatomic, retain) NSNumber * year;
+@property (nonatomic, retain) NSNumber * isEndDate;
 @property (nonatomic, retain) DaysCounterEvent *event;
 
 @end

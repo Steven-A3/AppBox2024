@@ -12,10 +12,11 @@
 
 @implementation DaysCounterLunarDate
 
-@dynamic year;
-@dynamic month;
 @dynamic day;
 @dynamic isLeapMonth;
+@dynamic month;
+@dynamic year;
+@dynamic isEndDate;
 @dynamic event;
 
 @end
