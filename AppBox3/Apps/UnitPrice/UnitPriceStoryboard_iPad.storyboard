@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="h9A-7R-BYe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="h9A-7R-BYe">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -162,18 +162,17 @@
                                     <outlet property="textFd" destination="U9s-DE-E6o" id="fYC-NT-hs9"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3UnitPriceNote2Cell" rowHeight="180" id="IPc-Zd-F93" customClass="A3UnitPriceNote2Cell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3UnitPriceNote2Cell" rowHeight="180" id="IPc-Zd-F93" customClass="A3WalletNoteCell">
                                 <rect key="frame" x="0.0" y="409" width="768" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IPc-Zd-F93" id="odC-04-nTz">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="179"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="JZ4-A5-dZr" customClass="GCPlaceholderTextView">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="The text displayed in the text view" id="JZ4-A5-dZr" customClass="GCPlaceholderTextView">
                                             <rect key="frame" x="24" y="10" width="733" height="160"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <string key="text">sdkjfksdjflksdjkfjsldkjflksjdlfjskldjflsjkfdlsjdlkfsdkjfksdjflksdjkfjsldkjflksjdlfjskldjflsjkfdlsjdlkfsdkjfksdjflksdjkfjsldkjflksjdlfjskldjflsjkfdlsjdlkfsdkjfksdjflksdjkfjsldkjflksjdlfjskldjflsjkfdlsjdlkf</string>
                                             <color key="textColor" red="0.62352941179999999" green="0.62352941179999999" blue="0.62352941179999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
