@@ -227,9 +227,11 @@
 
 -(void)setOffsetDateComp:(NSDateComponents *)aDateComp
 {
-    self.yearTextField.text = aDateComp.year==0? @"" : [NSString stringWithFormat:@"%ld", labs( (long)aDateComp.year )];
-    self.monthTextField.text = aDateComp.month==0? @"" : [NSString stringWithFormat:@"%ld", labs( (long)aDateComp.month )];
-    self.dayTextField.text = aDateComp.day==0? @"" : [NSString stringWithFormat:@"%ld", labs( (long)aDateComp.day )];
+	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
+	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    self.yearTextField.text = [decimalFormatter stringFromNumber:@(aDateComp.year)];
+    self.monthTextField.text = [decimalFormatter stringFromNumber:@(aDateComp.month)];
+    self.dayTextField.text = [decimalFormatter stringFromNumber:@(aDateComp.day)];
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

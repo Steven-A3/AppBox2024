@@ -142,28 +142,8 @@
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="A3UnitPriceNoteCell" id="Bxi-Ye-Gd0" customClass="A3UnitPriceNoteCell">
-                                <rect key="frame" x="0.0" y="365" width="768" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bxi-Ye-Gd0" id="yTI-nS-dh3">
-                                    <rect key="frame" x="0.0" y="0.0" width="768" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Notes" minimumFontSize="17" id="U9s-DE-E6o" userLabel="note_txtFd">
-                                            <rect key="frame" x="28" y="7" width="725" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                            <color key="textColor" red="0.45098039220000002" green="0.45098039220000002" blue="0.45098039220000002" alpha="1" colorSpace="deviceRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits" returnKeyType="done"/>
-                                        </textField>
-                                    </subviews>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="textFd" destination="U9s-DE-E6o" id="fYC-NT-hs9"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3UnitPriceNote2Cell" rowHeight="180" id="IPc-Zd-F93" customClass="A3WalletNoteCell">
-                                <rect key="frame" x="0.0" y="409" width="768" height="180"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="A3UnitPriceNoteCell" rowHeight="180" id="IPc-Zd-F93" customClass="A3WalletNoteCell">
+                                <rect key="frame" x="0.0" y="365" width="768" height="180"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IPc-Zd-F93" id="odC-04-nTz">
                                     <rect key="frame" x="0.0" y="0.0" width="768" height="179"/>
