@@ -25,6 +25,8 @@
 #import "A3GradientView.h"
 #import "A3AppDelegate+appearance.h"
 #import "MBProgressHUD.h"
+#import "DaysCounterEvent.h"
+#import "DaysCounterEventLocation.h"
 
 @interface A3DaysCounterSetupLocationViewController () <MBProgressHUDDelegate>
 @property (nonatomic, strong) A3LocationPlacemarkView *placemarkView;
@@ -231,14 +233,14 @@
 #pragma mark Search
 - (void)initializeSelectedLocation
 {
-    NSDictionary *locationInfo = [self.eventModel objectForKey:EventItem_Location];
+    DaysCounterEventLocation *locationInfo  = _eventModel.location;
     if (!locationInfo) {
         return;
     }
     
-    NSNumber *longitude = [locationInfo objectForKey:EventItem_Longitude];
-    NSNumber *latitude = [locationInfo objectForKey:EventItem_Latitude];
-    NSString *locationName = [locationInfo objectForKey:EventItem_LocationName];
+    NSNumber *longitude = locationInfo.longitude;
+    NSNumber *latitude = locationInfo.latitude;
+    NSString *locationName = locationInfo.locationName;
     _searchCenterCoord = CLLocationCoordinate2DMake([latitude doubleValue], [longitude doubleValue]);
     [self.mapView setCenterCoordinate:_searchCenterCoord animated:YES];
     [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(_searchCenterCoord, 500.0, 500.0) animated:YES];
@@ -589,17 +591,18 @@
     }
     else {
         FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];
-        NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
-        [locItem setObject:[_eventModel objectForKey:EventItem_ID] forKey:EventItem_ID];
-        [locItem setObject:@(item.location.coordinate.latitude) forKey:EventItem_Latitude];
-        [locItem setObject:@(item.location.coordinate.longitude) forKey:EventItem_Longitude];
-        [locItem setObject:item.name forKey:EventItem_LocationName];
-        [locItem setObject:([item.location.country length] > 0 ? item.location.country : @"") forKey:EventItem_Country];
-        [locItem setObject:([item.location.state length] > 0 ? item.location.state : @"") forKey:EventItem_State];
-        [locItem setObject:([item.location.city length] > 0 ? item.location.city : @"") forKey:EventItem_City];
-        [locItem setObject:([item.location.address length] > 0 ? item.location.address : @"") forKey:EventItem_Address];
-        [locItem setObject:([item.contact length] > 0 ? item.contact : @"") forKey:EventItem_Contact];
-        [_eventModel setObject:locItem forKey:EventItem_Location];
+        DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
+        locItem.eventId = _eventModel.eventId;
+        locItem.latitude = @(item.location.coordinate.latitude);
+        locItem.latitude = @(item.location.coordinate.longitude);
+        locItem.locationName = item.name;
+        locItem.country = ([item.location.country length] > 0 ? item.location.country : @"");
+        locItem.state = ([item.location.state length] > 0 ? item.location.state : @"");
+        locItem.city = ([item.location.city length] > 0 ? item.location.city : @"");
+        locItem.address = ([item.location.address length] > 0 ? item.location.address : @"");
+        locItem.contact = ([item.contact length] > 0 ? item.contact : @"");
+        _eventModel.location = locItem;
+        
         [tableView reloadData];
 
         [self.navigationController popViewControllerAnimated:YES];
@@ -745,17 +748,17 @@
             [self.popoverVC setPopoverContentSize:CGSizeMake(size.width, size.height == 0 ? 44 : 274) animated:YES];
         };
         viewCtrl.dismissCompletionBlock = ^(FSVenue *locationItem) {
-            NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
-            [locItem setObject:[_eventModel objectForKey:EventItem_ID] forKey:EventItem_ID];
-            [locItem setObject:@(locationItem.location.coordinate.latitude) forKey:EventItem_Latitude];
-            [locItem setObject:@(locationItem.location.coordinate.longitude) forKey:EventItem_Longitude];
-            [locItem setObject:locationItem.name forKey:EventItem_LocationName];
-            [locItem setObject:([locationItem.location.country length] > 0 ? locationItem.location.country : @"") forKey:EventItem_Country];
-            [locItem setObject:([locationItem.location.state length] > 0 ? locationItem.location.state : @"") forKey:EventItem_State];
-            [locItem setObject:([locationItem.location.city length] > 0 ? locationItem.location.city : @"") forKey:EventItem_City];
-            [locItem setObject:([locationItem.location.address length] > 0 ? locationItem.location.address : @"") forKey:EventItem_Address];
-            [locItem setObject:([locationItem.contact length] > 0 ? locationItem.contact : @"") forKey:EventItem_Contact];
-            [_eventModel setObject:locItem forKey:EventItem_Location];
+            DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
+            locItem.eventId = _eventModel.eventId;
+            locItem.latitude = @(locationItem.location.coordinate.latitude);
+            locItem.latitude = @(locationItem.location.coordinate.longitude);
+            locItem.locationName = locationItem.name;
+            locItem.country = ([locationItem.location.country length] > 0 ? locationItem.location.country : @"");
+            locItem.state = ([locationItem.location.state length] > 0 ? locationItem.location.state : @"");
+            locItem.city = ([locationItem.location.city length] > 0 ? locationItem.location.city : @"");
+            locItem.address = ([locationItem.location.address length] > 0 ? locationItem.location.address : @"");
+            locItem.contact = ([locationItem.contact length] > 0 ? locationItem.contact : @"");
+            _eventModel.location = locItem;
             [self.navigationController popViewControllerAnimated:YES];
         };
         

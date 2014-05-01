@@ -19,6 +19,8 @@
 #import "NSString+conversion.h"
 #import "A3DaysCounterLocationPopupViewController.h"
 #import "A3GradientView.h"
+#import "DaysCounterEvent.h"
+#import "DaysCounterEventLocation.h"
 
 @interface A3DaysCounterLocationDetailViewController ()
 @property (strong, nonatomic) NSString *addressStr;
@@ -76,15 +78,15 @@
     [super viewDidAppear:animated];
     
     if ( _isEditMode ) {
-        NSDictionary *locItem = [_eventModel objectForKey:EventItem_Location];
-        if (([[locItem objectForKey:EventItem_Latitude] isKindOfClass:[NSNumber class]] && [[locItem objectForKey:EventItem_Longitude] isKindOfClass:[NSNumber class]]) &&
-            ([[locItem objectForKey:EventItem_Latitude] doubleValue] != _locationItem.location.coordinate.latitude ||
-             [[locItem objectForKey:EventItem_Longitude] doubleValue] != _locationItem.location.coordinate.longitude )) {
-            [_mapView removeAnnotation:self.locationItem];
-            self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:locItem];
-            self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
-            
-            [_tableView reloadData];
+        DaysCounterEventLocation *locItem = _eventModel.location;
+        if ( (locItem.latitude && locItem.longitude) &&
+            ([locItem.latitude doubleValue] != _locationItem.location.coordinate.latitude ||
+             [locItem.longitude doubleValue] != _locationItem.location.coordinate.longitude) ) {
+                [_mapView removeAnnotation:self.locationItem];
+                self.locationItem = [[A3DaysCounterModelManager sharedManager] fsvenueFromEventModel:locItem];
+                self.addressStr = [[A3DaysCounterModelManager sharedManager] addressFromVenue:_locationItem isDetail:YES];
+                
+                [_tableView reloadData];
         }
     }
     
@@ -259,17 +261,17 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    NSMutableDictionary *locItem = [[A3DaysCounterModelManager sharedManager] emptyEventLocationModel];
-    [locItem setObject:[_eventModel objectForKey:EventItem_ID] forKey:EventItem_ID];
-    [locItem setObject:@(_locationItem.location.coordinate.latitude) forKey:EventItem_Latitude];
-    [locItem setObject:@(_locationItem.location.coordinate.longitude) forKey:EventItem_Longitude];
-    [locItem setObject:_locationItem.name forKey:EventItem_LocationName];
-    [locItem setObject:([_locationItem.location.country length] > 0 ? _locationItem.location.country : @"") forKey:EventItem_Country];
-    [locItem setObject:([_locationItem.location.state length] > 0 ? _locationItem.location.state : @"") forKey:EventItem_State];
-    [locItem setObject:([_locationItem.location.city length] > 0 ? _locationItem.location.city : @"") forKey:EventItem_City];
-    [locItem setObject:([_locationItem.location.address length] > 0 ? _locationItem.location.address : @"") forKey:EventItem_Address];
-    [locItem setObject:([_locationItem.contact length] > 0 ? _locationItem.contact : @"") forKey:EventItem_Contact];
-    [_eventModel setObject:locItem forKey:EventItem_Location];
+    DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
+    locItem.eventId = _eventModel.eventId;
+    locItem.latitude = @(_locationItem.location.coordinate.latitude);
+    locItem.longitude = @(_locationItem.location.coordinate.longitude);
+    locItem.locationName = _locationItem.name;
+    locItem.country = ([_locationItem.location.country length] > 0 ? _locationItem.location.country : @"");
+    locItem.state = ([_locationItem.location.state length] > 0 ? _locationItem.location.state : @"");
+    locItem.city = ([_locationItem.location.city length] > 0 ? _locationItem.location.city : @"");
+    locItem.address = ([_locationItem.location.address length] > 0 ? _locationItem.location.address : @"");
+    locItem.contact = ([_locationItem.contact length] > 0 ? _locationItem.contact : @"");
+    _eventModel.location = locItem;
     
     if ( _isEditMode ) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -298,7 +300,7 @@
 }
 
 - (IBAction)deleteLocationAction:(id)sender {
-    [_eventModel removeObjectForKey:EventItem_Location];
+    [_eventModel.location MR_deleteEntity];
     
     if ( _isEditMode ) {
         [self.navigationController popViewControllerAnimated:YES];

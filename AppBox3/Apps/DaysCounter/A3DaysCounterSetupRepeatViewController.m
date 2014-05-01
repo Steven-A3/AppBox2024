@@ -16,6 +16,7 @@
 #import "SFKImage.h"
 #import "A3DaysCounterRepeatCustomCell.h"
 #import "A3AppDelegate+appearance.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupRepeatViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -66,7 +67,7 @@
     self.title = @"Repeat";
     self.itemArray = @[@"Never",@"Every Day",@"Every Week", @"Every 2 Weeks",@"Every Month",@"Every Year",@"Custom"];
     self.numberKeyboardVC = [self simpleNumberKeyboard];
-    self.originalValue = [_eventModel objectForKey:EventItem_RepeatType];
+    self.originalValue = _eventModel.repeatType;
 }
 
 - (void)didReceiveMemoryWarning
@@ -137,7 +138,7 @@
     }
     
     // Configure the cell...
-    NSInteger value = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
+    NSInteger value = [_eventModel.repeatType integerValue];
     NSInteger index = 0;
     if ( value < 0 ) {
         index = ABS(value);
@@ -177,10 +178,11 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger prevValue = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
+    NSInteger prevValue = [_eventModel.repeatType integerValue];
     NSInteger prevIndex = ( prevValue < 0 ? prevValue * -1 : (prevValue > 0 ? [_itemArray count]-1 : 0));
     NSInteger value = (prevValue <= 0 && (indexPath.row == ([_itemArray count]-1))) ? 1 : indexPath.row * -1;
-    [_eventModel setObject:[NSNumber numberWithInteger:value] forKey:EventItem_RepeatType];
+    _eventModel.repeatType = @(value);
+    
     [tableView beginUpdates];
     if ( prevIndex != indexPath.row ) {
         [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
@@ -202,7 +204,7 @@
 - (void)textFieldDidChange:(NSNotification*)noti
 {
     UITextField *textField = noti.object;
-    [_eventModel setObject:[NSNumber numberWithInteger:[textField.text integerValue]] forKey:EventItem_RepeatType];
+    _eventModel.repeatType = @([textField.text integerValue]);
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -242,7 +244,7 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    [_eventModel setObject:self.originalValue forKey:EventItem_RepeatType];
+    _eventModel.repeatType = self.originalValue;
     
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];

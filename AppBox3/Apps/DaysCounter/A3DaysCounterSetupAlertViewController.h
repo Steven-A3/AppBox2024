@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class DaysCounterEvent;
 @interface A3DaysCounterSetupAlertViewController : UITableViewController
 
-@property (strong, nonatomic) NSMutableDictionary *eventModel;
+@property (strong, nonatomic) DaysCounterEvent *eventModel;
 @property (strong, nonatomic) IBOutlet UIDatePicker *datePickerView;
 @property (strong, nonatomic) void (^dismissCompletionBlock)();
 

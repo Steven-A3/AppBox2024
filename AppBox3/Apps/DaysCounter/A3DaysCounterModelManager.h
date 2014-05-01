@@ -40,17 +40,18 @@
 - (NSString*)titleForCellType:(NSInteger)cellType;
 - (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail;\
 - (NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
-- (FSVenue*)fsvenueFromEventModel:(id)locationItem;
+- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-- (id)emptyEventModel;
-- (id)emptyEventLocationModel;
+//- (id)emptyEventModel;
+//- (id)emptyEventLocationModel;
 - (id)eventItemByID:(NSString*)eventId;
-- (BOOL)addEvent:(id)eventModel;
-- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info;
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image;
+//- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info;
+- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image;
 - (BOOL)removeEvent:(DaysCounterEvent*)eventItem;
-- (NSMutableDictionary *)dictionaryFromEventEntity:(DaysCounterEvent*)item;
-- (NSMutableDictionary *)dictionaryFromEventLocationEntity:(DaysCounterEventLocation*)location;
+//- (NSMutableDictionary *)dictionaryFromEventEntity:(DaysCounterEvent*)item;
+//- (NSMutableDictionary *)dictionaryFromEventLocationEntity:(DaysCounterEventLocation*)location;
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item;
 - (NSMutableArray*)visibleCalendarList;
@@ -99,8 +100,8 @@
 - (void)renewAllEffectiveStartDates;
 - (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
-- (NSDate *)effectiveDateForEventModel:(NSMutableDictionary *)event basisTime:(NSDate *)now;
-- (void)reloadDatesOfEventModel:(NSMutableDictionary *)event;
+//- (NSDate *)effectiveDateForEventModel:(NSMutableDictionary *)event basisTime:(NSDate *)now;
+- (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
 #pragma mark - Alert
 - (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;

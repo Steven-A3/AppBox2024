@@ -258,10 +258,14 @@
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
             
+//            NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
+//                                                                           toDate:[itemDict objectForKey:EventItem_EffectiveStartDate]
+//                                                                     allDayOption:[[itemDict objectForKey:EventItem_IsAllDay] boolValue]
+//                                                                           repeat:[[itemDict objectForKey:EventItem_RepeatType] integerValue] != RepeatType_Never ? YES : NO];
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
-                                                                           toDate:[itemDict objectForKey:EventItem_EffectiveStartDate]
-                                                                     allDayOption:[[itemDict objectForKey:EventItem_IsAllDay] boolValue]
-                                                                           repeat:[[itemDict objectForKey:EventItem_RepeatType] integerValue] != RepeatType_Never ? YES : NO];
+                                                                           toDate:_eventItem.effectiveStartDate
+                                                                     allDayOption:[_eventItem.isAllDay boolValue]
+                                                                           repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
             if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
                 NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[_eventItem.repeatType integerValue]
                                                                                                           firstDate:_eventItem.startDate

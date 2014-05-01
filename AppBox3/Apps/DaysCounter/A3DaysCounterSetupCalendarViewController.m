@@ -14,6 +14,7 @@
 #import "DaysCounterCalendar.h"
 #import "A3DaysCounterSetupCalendarCell.h"
 #import "SFKImage.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupCalendarViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -38,7 +39,7 @@
     [super viewDidLoad];
 
     if( IS_IPAD ){
-        self.originalValue = [_eventModel objectForKey:EventItem_Calendar];
+        self.originalValue = self.eventModel.calendar;
     }
     self.title = @"Calendar";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
@@ -93,7 +94,7 @@
     }
     
     imageView.tintColor = [item color];
-    cell.accessoryType = ( [item.calendarId isEqualToString:[_eventModel objectForKey:EventItem_CalendarId]] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    cell.accessoryType = [item.calendarId isEqualToString:_eventModel.calendarId] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     
     return cell;
 }
@@ -103,8 +104,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
-    [_eventModel setObject:item.calendarId forKey:EventItem_CalendarId];
-    [_eventModel setObject:item forKey:EventItem_Calendar];
+    _eventModel.calendarId = item.calendarId;
+    _eventModel.calendar = [[A3DaysCounterModelManager sharedManager] calendarItemByID:item.calendarId];
+    
     [tableView reloadData];
     [self doneButtonAction:nil];
     
@@ -116,13 +118,14 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    [_eventModel setObject:self.originalValue forKey:EventItem_Calendar];
-    [_eventModel setObject:self.originalValue.calendarId forKey:EventItem_CalendarId];
-    if( IS_IPAD ){
+    _eventModel.calendar = self.originalValue;
+    _eventModel.calendarId = self.originalValue.calendarId;
+
+    if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }
-    else{
+    else {
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

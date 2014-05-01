@@ -18,6 +18,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "A3DaysCounterRepeatCustomCell.h"
 #import "A3AppDelegate+appearance.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupAlertViewController () <A3KeyboardDelegate, UITextFieldDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
@@ -33,8 +34,8 @@
 @implementation A3DaysCounterSetupAlertViewController
 - (void)showDatePicker
 {
-    NSDate *alarmDate = [_eventModel objectForKey:EventItem_AlertDatetime];
-    _datePickerView.date = ( [alarmDate isKindOfClass:[NSDate class]] ? [_eventModel objectForKey:EventItem_AlertDatetime] : [NSDate date] );
+    NSDate *alarmDate = _eventModel.alertDatetime;
+    _datePickerView.date = ( [alarmDate isKindOfClass:[NSDate class]] ? _eventModel.alertDatetime : [NSDate date] );
 
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView setTableFooterView:self.datePickerView];
@@ -86,7 +87,7 @@
                        @{EventRowTitle : @"1 week before", EventRowType : @(AlertType_1WeekBefore)},
                        @{EventRowTitle : @"Custom", EventRowType : @(AlertType_Custom)}];
 
-    self.originalValue = [_eventModel objectForKey:EventItem_AlertDatetime];
+    self.originalValue = _eventModel.alertDatetime;
     self.numberKeyboardVC = [self simpleNumberKeyboard];
 }
 
@@ -129,8 +130,8 @@
     NSString *CellIdentifier = (indexPath.row == ([_itemArray count]-1) ? @"customInputCell" : @"Cell");
     
     NSDictionary *item = [_itemArray objectAtIndex:indexPath.row];
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                  alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                                                  alertDate:_eventModel.alertDatetime];
     NSInteger rowType = [[item objectForKey:EventRowType] integerValue];
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -157,9 +158,10 @@
     // Configure the cell...
     if ((indexPath.row == ([_itemArray count]-1))) {
         UITextField *textField = (UITextField*)[cell viewWithTag:12];
-        if ([[_eventModel objectForKey:EventItem_AlertDateType] isEqualToNumber:@1]) {  // Custom Type
-            NSInteger days = (long)[A3DateHelper diffDaysFromDate:[_eventModel objectForKey:EventItem_AlertDatetime]
-                                                           toDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]];
+        
+        if ([_eventModel.alertType isEqualToNumber:@1]) {  // Custom Type
+            NSInteger days = (long)[A3DateHelper diffDaysFromDate:_eventModel.alertDatetime
+                                                           toDate:_eventModel.effectiveStartDate];
             textField.text = [NSString stringWithFormat:@"%ld", (long)days];
 
             if (days > 1) {
@@ -204,10 +206,10 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id prevValue = [_eventModel objectForKey:EventItem_AlertDatetime];
+    id prevValue = _eventModel.alertDatetime;
     id value = nil;
     
-    NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
+    NSDate *startDate = _eventModel.startDate;
     NSInteger prevIndex = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:startDate alertDate:prevValue];
     double alertTimeInterval;
     
@@ -269,9 +271,9 @@
     else {
         if (alertTimeInterval == -1) {
             // none, 얼럿 제거.
-            [_eventModel setObject:[NSNull null] forKey:EventItem_AlertDatetime];
-            [_eventModel setObject:@(alertTimeInterval) forKey:EventItem_AlertDatetimeInterval];
-            [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+            _eventModel.alertDatetime = nil;
+            _eventModel.alertInterval = @(alertTimeInterval);
+            _eventModel.alertType = @(0);
             [self doneButtonAction:nil];
             return;
         }
@@ -281,22 +283,22 @@
         prevCell.accessoryType = UITableViewCellAccessoryNone;
         curCell.accessoryType = UITableViewCellAccessoryCheckmark;
 
-        NSDate *effectiveStartDate = [_eventModel objectForKey:EventItem_EffectiveStartDate];
+        NSDate *effectiveStartDate = _eventModel.effectiveStartDate;
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSDateComponents *addComponent = [[NSDateComponents alloc] init];
         addComponent.minute = -alertTimeInterval;
         NSDate *effectiveAlertDate = [calendar dateByAddingComponents:addComponent toDate:effectiveStartDate options:0];
-        [_eventModel setObject:effectiveAlertDate forKey:EventItem_AlertDatetime];
-        [_eventModel setObject:@(alertTimeInterval) forKey:EventItem_AlertDatetimeInterval];
+        _eventModel.alertDatetime = effectiveAlertDate;
+        _eventModel.alertInterval = @(alertTimeInterval);
         
         // alertType 저장.
-        NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                      alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+        NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                                                      alertDate:_eventModel.alertDatetime];
         if (alertType == AlertType_Custom) {
-            [_eventModel setObject:@(1) forKey:EventItem_AlertDateType];
+            _eventModel.alertType = @(1);
         }
         else {
-            [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+            _eventModel.alertType = @(0);
         }
         
         [self doneButtonAction:nil];
@@ -305,8 +307,8 @@
 
 - (IBAction)dateChangedAction:(id)sender {
     UIDatePicker *datePicker = (UIDatePicker*)sender;
-    
-    NSDate *startDate = [_eventModel objectForKey:EventItem_StartDate];
+
+    NSDate *startDate = _eventModel.startDate;
     NSDate *today = [NSDate date];
     
     if ( [today timeIntervalSince1970] > [startDate timeIntervalSince1970] && [datePicker.date timeIntervalSince1970] < [today timeIntervalSince1970] ) {
@@ -318,13 +320,14 @@
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     NSDateComponents *dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:datePicker.date];
     dateComp.second = 0;
-    [_eventModel setObject:[calendar dateFromComponents:dateComp] forKey:EventItem_AlertDatetime];
+    _eventModel.alertDatetime = [calendar dateFromComponents:dateComp];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)cancelAction:(id)sender
 {
-    [_eventModel setObject:self.originalValue forKey:EventItem_AlertDatetime];
+    _eventModel.alertDatetime = self.originalValue;
+
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
@@ -372,25 +375,25 @@
     
     NSInteger days = [textField.text integerValue];
     if (days > 0) {
-        NSDate *alertDate = [A3DateHelper dateByAddingDays:-days fromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]];
-        NSDateComponents *alertIntervalComp = [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
+        NSDate *alertDate = [A3DateHelper dateByAddingDays:-days fromDate:_eventModel.effectiveStartDate];
+        NSDateComponents *alertIntervalComp = [[NSCalendar currentCalendar] components:NSMinuteCalendarUnit fromDate:_eventModel.effectiveStartDate
                                                                                 toDate:alertDate
                                                                                options:0];
-        [_eventModel setObject:alertDate forKey:EventItem_AlertDatetime];
-        [_eventModel setObject:@(labs([alertIntervalComp minute])) forKey:EventItem_AlertDatetimeInterval];
+        _eventModel.alertDatetime = alertDate;
+        _eventModel.alertInterval = @(labs([alertIntervalComp minute]));
     }
     else {
-        [_eventModel removeObjectForKey:EventItem_AlertDatetime];
-        [_eventModel removeObjectForKey:EventItem_AlertDatetimeInterval];
+        _eventModel.alertDatetime = nil;
+        _eventModel.alertInterval = nil;
     }
     
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                  alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                                                  alertDate:_eventModel.alertDatetime];
     if (alertType == AlertType_Custom) {
-        [_eventModel setObject:@(1) forKey:EventItem_AlertDateType];
+        _eventModel.alertType = @(1);
     }
     else {
-        [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+        _eventModel.alertType = @(0);
     }
     
     [self.tableView reloadData];

@@ -13,7 +13,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "A3NumberKeyboardViewController.h"
 #import "A3DateHelper.h"
-
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupCustomAlertViewController ()
 @property (strong, nonatomic) NSMutableArray *tableRowArray;
@@ -50,9 +50,9 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
     
     if ([self isCustomAlertType:_eventModel]) {
-        _days = [A3DateHelper diffDaysFromDate:[_eventModel objectForKey:EventItem_AlertDatetime]
-                                        toDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]];
-        _customAlertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+        _days = [A3DateHelper diffDaysFromDate:_eventModel.alertDatetime
+                                        toDate:_eventModel.effectiveStartDate];
+        _customAlertDate = _eventModel.alertDatetime;
         NSDateComponents *comp = [[NSCalendar currentCalendar] components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:_customAlertDate];
         _hours = comp.hour;
         _minutes = comp.minute;
@@ -72,9 +72,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)isCustomAlertType:(NSDictionary *)eventModel
+- (BOOL)isCustomAlertType:(DaysCounterEvent *)eventModel
 {
-    if ([[_eventModel objectForKey:EventItem_AlertDateType] isEqualToNumber:@1]) {
+    if ([eventModel.alertType isEqualToNumber:@1]) {
         return YES;
     }
     
@@ -172,7 +172,7 @@
         {
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
             NSDate *alertDate;
-            if ([[_eventModel objectForKey:EventItem_AlertDateType] isEqualToNumber:@1]) {
+            if ( [self isCustomAlertType:_eventModel] ) {
                 alertDate = _customAlertDate;   //[_eventModel objectForKey:EventItem_AlertDatetime];
             }
             else {
@@ -274,18 +274,18 @@
     if ([textField.text length] == 0) {
         NSDate *alertDate;
         if ([self isCustomAlertType:_eventModel]) {
-            alertDate = [_eventModel objectForKey:EventItem_AlertDatetime];
+            alertDate = _eventModel.alertDatetime;
         }
         if (!alertDate) {
             NSLog(@"alertTime이 없던 상황.");
         }
         
-        NSDate *startDate = [_eventModel objectForKey:EventItem_EffectiveStartDate];
+        NSDate *startDate = _eventModel.effectiveStartDate;
         _days = labs((long)[A3DateHelper diffDaysFromDate:alertDate toDate:startDate]);
         textField.text = [NSString stringWithFormat:@"%ld", (long)_days];
     }
     else {
-        NSDate *effectiveStartDate = [_eventModel objectForKey:EventItem_EffectiveStartDate];
+        NSDate *effectiveStartDate = _eventModel.effectiveStartDate;
         // AlertTime 구하기. (days, hour, minute 반영)
         NSDateComponents *alertTimeComp = [NSDateComponents new];
         NSDate *alertDate;
@@ -310,18 +310,18 @@
         
         
         _days = labs((long)[A3DateHelper diffDaysFromDate:self.customAlertDate toDate:effectiveStartDate]);
-        [_eventModel setObject:self.customAlertDate forKey:EventItem_AlertDatetime];
-        [_eventModel setObject:@(self.customAlertInterval) forKey:EventItem_AlertDatetimeInterval];
+        _eventModel.alertDatetime = self.customAlertDate;
+        _eventModel.alertInterval = @(self.customAlertInterval);
     }
     
     // 커스텀 얼럿 여부 설정.
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                  alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                                                  alertDate:_eventModel.alertDatetime];
     if (alertType == AlertType_Custom) {
-        [_eventModel setObject:@(1) forKey:EventItem_AlertDateType];
+        _eventModel.alertType = @(1);
     }
     else {
-        [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+        _eventModel.alertType = @(0);
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
@@ -345,7 +345,7 @@
     _minutes = comp.minute;
     
     // alert 저장 (Effective)
-    NSDate *effectiveStartDate = [_eventModel objectForKey:EventItem_EffectiveStartDate];
+    NSDate *effectiveStartDate = _eventModel.effectiveStartDate;
 	NSDateComponents *alertTimeComp = [NSDateComponents new];
     alertTimeComp.day = -_days;
     NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertTimeComp
@@ -366,17 +366,17 @@
                                                                            options:0];
     self.customAlertInterval = [alertIntervalComp minute];
 
-    [_eventModel setObject:self.customAlertDate forKey:EventItem_AlertDatetime];
-    [_eventModel setObject:@(self.customAlertInterval) forKey:EventItem_AlertDatetimeInterval];
+    _eventModel.alertDatetime = self.customAlertDate;
+    _eventModel.alertInterval = @(self.customAlertInterval);
     
     // alertType 저장.
-    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:[_eventModel objectForKey:EventItem_EffectiveStartDate]
-                                                                                  alertDate:[_eventModel objectForKey:EventItem_AlertDatetime]];
+    NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
+                                                                                  alertDate:_eventModel.alertDatetime];
     if (alertType == AlertType_Custom) {
-        [_eventModel setObject:@(1) forKey:EventItem_AlertDateType];
+        _eventModel.alertType = @(1);
     }
     else {
-        [_eventModel setObject:@(0) forKey:EventItem_AlertDateType];
+        _eventModel.alertType = @(0);
     }
 
     if ( indexPath ) {

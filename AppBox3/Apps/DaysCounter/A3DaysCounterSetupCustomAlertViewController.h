@@ -8,9 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "A3KeyboardDelegate.h"
-
+@class DaysCounterEvent;
 @interface A3DaysCounterSetupCustomAlertViewController : UITableViewController<UITextFieldDelegate,A3KeyboardDelegate>
 
-@property (strong, nonatomic) NSMutableDictionary *eventModel;
+@property (strong, nonatomic) DaysCounterEvent *eventModel;
 
 @end
