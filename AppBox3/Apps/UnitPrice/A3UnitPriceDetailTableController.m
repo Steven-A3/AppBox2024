@@ -26,6 +26,8 @@
 #import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 #import "UITableView+utility.h"
+#import "A3WalletNoteCell.h"
+#import "NSString+conversion.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
     Price_Amount = 0,
@@ -51,6 +53,7 @@ typedef NS_ENUM(NSInteger, PriceDiscountType) {
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSNumberFormatter *decimalFormatter;
 @property (nonatomic, copy) NSString *textBeforeEditingTextField;
+@property (nonatomic, copy) NSString *placeholderBeforeEditingTextField;
 
 @end
 
@@ -97,6 +100,16 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     [self.tableView addSubview:lineView];
     
     [self registerContentSizeCategoryDidChangeNotification];
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+	[self.tableView setContentOffset:CGPointMake(0, - self.tableView.contentInset.top) animated:YES];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)contentSizeDidChange:(NSNotification *) notification
@@ -318,7 +331,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     
     UnitPriceInfo *priceInfo = self.price;
     
-    priceTxt = [self.currencyFormatter stringFromNumber:priceInfo.price];
+    priceTxt = [self.currencyFormatter stringFromNumber:priceInfo.price ? priceInfo.price : @0];
 
     // 할인값
     NSString *discountText = [self.currencyFormatter stringFromNumber:@0];
@@ -334,9 +347,6 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         }
     }
 
-	NSNumberFormatter *decimalFormatter = [NSNumberFormatter new];
-	[decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-
     if ([self.items objectAtIndex:indexPath.row] == self.priceItem) {
         inputCell.titleLB.text = @"Price";
         inputCell.textField.text = priceTxt;
@@ -344,11 +354,11 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     else if ([self.items objectAtIndex:indexPath.row] == self.sizeItem) {
         inputCell.titleLB.text = @"Size";
         inputCell.textField.placeholder = @"Optional";
-        inputCell.textField.text = priceInfo.size.doubleValue != 0.0 ? [decimalFormatter stringFromNumber:priceInfo.size] : @"";
+        inputCell.textField.text = priceInfo.size.doubleValue != 0.0 ? [self.decimalFormatter stringFromNumber:priceInfo.size] : @"";
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.quantityItem) {
         inputCell.titleLB.text = @"Quantity";
-        inputCell.textField.text = priceInfo.quantity ? [decimalFormatter stringFromNumber:priceInfo.quantity]:[decimalFormatter stringFromNumber:@0];
+        inputCell.textField.text = priceInfo.quantity ? [self.decimalFormatter stringFromNumber:priceInfo.quantity]:[self.decimalFormatter stringFromNumber:@0];
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.discountItem) {
         inputCell.titleLB.text = @"Discount";
@@ -369,8 +379,8 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         self.price.note = textField.text;
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.priceItem) {
-        self.price.price = [self.decimalFormatter numberFromString:textField.text];
-        textField.text = [self.currencyFormatter stringFromNumber:self.price.price];
+        self.price.price = @([textField.text floatValueEx]);
+        textField.text = [self.currencyFormatter stringFromNumber:self.price.price ? self.price.price : @0];
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
         if (textField.text.length > 0) {
@@ -378,7 +388,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 			switch (_discountType) {
                 case Price_Amount:
                 {
-                    double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
+                    double value = [textField.text floatValueEx];
                     value = MAX(0, value);
                     self.price.discountPrice = @(value);
                     self.price.discountPercent = @0;
@@ -392,7 +402,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 }
                 case Price_Percent:
                 {
-                    double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
+                    double value = [textField.text floatValueEx];
                     value = MAX(0, value);
                     value /= 100.0;
                     self.price.discountPercent = @(value);
@@ -417,6 +427,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.quantityItem) {
         self.price.quantity = [self.decimalFormatter numberFromString:textField.text];
+		textField.text = self.price.quantity ? [self.decimalFormatter stringFromNumber:self.price.quantity]:[self.decimalFormatter stringFromNumber:@0];
     }
     else if ([self.items objectAtIndex:_currentIndexPath.row] == self.sizeItem) {
         if (textField.text.length > 0) {
@@ -425,6 +436,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
         else {
             self.price.size = nil;
         }
+		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]:[self.decimalFormatter stringFromNumber:@0];
     }
 }
 
@@ -491,7 +503,9 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
 	_textBeforeEditingTextField = textField.text;
+	_placeholderBeforeEditingTextField = textField.placeholder;
 	textField.text = @"";
+	textField.placeholder = @"";
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 
@@ -510,6 +524,8 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 	}
 	else if ([self.items objectAtIndex:_currentIndexPath.row] == self.discountItem) {
 		[self setupCurrencyKeyboardForTextField:textField usePercent:YES ];
+		[self.numberKeyboardViewController.bigButton1 setSelected:_discountType == Price_Percent];
+		[self.numberKeyboardViewController.bigButton2 setSelected:_discountType == Price_Amount];
 	}
 }
 
@@ -537,12 +553,13 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 
 	[self setFirstResponder:nil];
 
-	if ([textField.text length] > 0) {
-		[self updateValueTextField:textField];
-		[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
-	} else {
+	textField.placeholder = _placeholderBeforeEditingTextField;
+
+	if (![textField.text length]) {
 		textField.text = _textBeforeEditingTextField;
 	}
+	[self updateValueTextField:textField];
+	[self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - A3KeyboardDelegate
@@ -620,6 +637,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
+		_textBeforeEditingTextField = @"";
 	}
 }
 
@@ -741,19 +759,7 @@ NSString *const A3UnitPriceNote2CellID = @"A3UnitPriceNote2Cell";
                 cell = actionCell;
             }
             else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-                /*
-                A3UnitPriceNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNoteCellID forIndexPath:indexPath];
-                noteCell.delegate = self;
-                noteCell.textFd.delegate = self;
-                noteCell.textFd.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                noteCell.textFd.font = [UIFont systemFontOfSize:17];
-                noteCell.textFd.placeholder = @"Notes";
-                noteCell.textFd.text = self.price.note;
-                
-                cell = noteCell;
-                 */
-                // note
-                A3UnitPriceNote2Cell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNote2CellID forIndexPath:indexPath];
+                A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNote2CellID forIndexPath:indexPath];
                 
                 noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
                 noteCell.textView.delegate = self;
