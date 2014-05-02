@@ -746,6 +746,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSString *imageFilename = @"";
 
     if ( image ) {
+        // TODO 이상함
         NSData *imageData = UIImagePNGRepresentation(image);
         imageFilename = [NSString stringWithFormat:@"%@.png",eventItem.eventId];
         [imageData writeToFile:[[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename] atomically:YES];

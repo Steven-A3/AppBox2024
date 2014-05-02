@@ -97,6 +97,11 @@
     
     if ( _eventItem ) {
         [self setupSectionTemplateWithInfo:_eventItem];
+        if (_eventItem.imageFilename) {
+            _thumnailImage = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
+            _photoImage = [A3DaysCounterModelManager photoImageFromFilename:_eventItem.imageFilename];
+            _thumnailImage = [A3DaysCounterModelManager circularScaleNCrop:_thumnailImage rect:CGRectMake(0, 0, _thumnailImage.size.width, _thumnailImage.size.height)];
+        }
     }
     else {
         if ([[A3DaysCounterModelManager sharedManager] isSupportLunar]) {
@@ -498,9 +503,10 @@
         case EventCellType_Photo:
         {
             UIButton *button = (UIButton*)[cell viewWithTag:11];
-            UIImage *image = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
-            if (image) {
-                [button setImage:[A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, image.size.width, image.size.height)] forState:UIControlStateNormal];
+            //UIImage *image = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
+            //if (image) {
+            if (_thumnailImage) {
+                [button setImage:_thumnailImage forState:UIControlStateNormal];
             }
             else {
                 NSMutableArray *array = [NSMutableArray array];
@@ -1175,7 +1181,7 @@
 {
     [self resignAllAction];
     // 디비추가 처리
-    if ( [_eventItem hasChanges] ) {
+//    if ( [_eventItem hasChanges] ) {
         // 입력값이 있어야 하는것들에 대한 체크
         if ( [_eventItem.eventName length] < 1 ) {
             _eventItem.eventName = @"Untitled";
@@ -1204,7 +1210,7 @@
             BOOL isLunarStartDate = [NSDate isLunarDate:[_eventItem startDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
             if (!isLunarStartDate) {
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"startDate is not a Lunar Date", @"startDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil, nil] ;
+                                                      otherButtonTitles:nil, nil];
                 [alert show];
                 return;
             }
@@ -1230,7 +1236,7 @@
         FNLOG(@"reloadAlertDateListForLocalNotification Start");
         [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
         FNLOG(@"reloadAlertDateListForLocalNotification End");
-    }
+//    }
     // 창닫기
     [self cancelAction:nil];
 }
@@ -1630,9 +1636,8 @@
     if ( actionSheet.tag == ActionTag_Photo ) {
         if ( buttonIndex == actionSheet.destructiveButtonIndex ) {
             _eventItem.imageFilename = nil;
-//            [_eventModel removeObjectForKey:EventItem_Image];
-//            [_eventModel removeObjectForKey:EventItem_Thumbnail];
-//            [_eventModel removeObjectForKey:EventItem_ImageFilename];
+            _thumnailImage = nil;
+            _photoImage = nil;
             [self.tableView reloadData];
         }
         else if ( buttonIndex != actionSheet.cancelButtonIndex ) {
