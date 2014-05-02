@@ -56,6 +56,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_07_1"], kA3CalcButtonIDiPad:@10},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_08_1"], kA3CalcButtonIDiPad:@11},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_09_1"], kA3CalcButtonIDiPad:@12},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_13_1"], kA3CalcButtonIDiPad:@20},
              @{kA3CalcButtonTitleiPad:@"ln", kA3CalcButtonIDiPad:@28},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_20_1"], kA3CalcButtonIDiPad:@36},
              
@@ -141,8 +142,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)sinaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"sin"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_SIN];
         }
         else  {
@@ -153,8 +153,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)cosaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"cos"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_COS];
         } else {
             [_delegate keyboardButtonPressed:A3E_ACOS];
@@ -166,8 +165,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)tanaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"tan"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_TAN];
         } else {
             [_delegate keyboardButtonPressed:A3E_ATAN];
@@ -210,8 +208,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)sinhaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"sinh"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_SINH];
         } else {
             [_delegate keyboardButtonPressed:A3E_ASINH];
@@ -221,8 +218,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)coshaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"cosh"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_COSH];
         } else {
             [_delegate keyboardButtonPressed:A3E_ACOSH];
@@ -232,8 +228,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)tanhaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"tanh"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_TANH];
         } else {
             [_delegate keyboardButtonPressed:A3E_ATANH];
@@ -243,8 +238,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)cotaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"cot"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_COT];
         } else {
             [_delegate keyboardButtonPressed:A3E_ACOT];
@@ -296,8 +290,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)power10xaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"10x"]){
+        if(!self.secondbutton.isSelected){
             [_delegate keyboardButtonPressed:A3E_POWER_10];
         } else {
             [_delegate keyboardButtonPressed:A3E_POWER_2];
@@ -349,11 +342,10 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)logaction:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if(![button.titleLabel.text isEqualToString:@"ln"]) {
-            [_delegate keyboardButtonPressed:A3E_LOG_Y];
-        } else {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_LN];
+        } else {
+            [_delegate keyboardButtonPressed:A3E_LOG_Y];
         }
     }
 }
@@ -402,8 +394,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
 
 - (IBAction)log10action:(id)sender {
     if ([_delegate respondsToSelector:@selector(keyboardButtonPressed:)]) {
-        UIButton *button = sender;
-        if([button.titleLabel.text isEqualToString:@"log10"]) {
+        if(!self.secondbutton.isSelected) {
             [_delegate keyboardButtonPressed:A3E_LOG_10];
         } else {
             [_delegate keyboardButtonPressed:A3E_LOG_2];
