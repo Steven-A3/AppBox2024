@@ -13,7 +13,7 @@
 @class DaysCounterCalendar;
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
-@class DaysCounterLunarDate;
+@class DaysCounterDateModel;
 @interface A3DaysCounterModelManager : NSObject{
     NSManagedObjectContext *managedContext;
 }
@@ -75,7 +75,7 @@
 - (NSArray*)reminderList;
 
 - (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay;
-- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
+//- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
 - (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
 
@@ -102,12 +102,11 @@
 - (void)reloadAlertDateListForLocalNotification;
 
 #pragma mark - Lunar
-+ (NSDateComponents *)dateComponentsFromLunarDate:(NSDate *)date;   // for Test
 - (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
+- (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
 - (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
-- (NSDateComponents *)validLunarDateComponents:(NSDateComponents *)comp;
 
-#pragma mark - Manipulate DaysCounterLunarDate Object
-+ (void)setLunarDateComponents:(NSDateComponents *)dateComponents atEventModel:(DaysCounterEvent *)eventModel isEndDate:(BOOL)isEndDate;
-+ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject;
+#pragma mark - Manipulate DaysCounterDateModel Object
++ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject isLunar:(BOOL)isLunar;
 @end
