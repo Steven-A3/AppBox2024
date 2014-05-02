@@ -20,6 +20,7 @@
 #import "A3DaysCounterFavoriteListViewController.h"
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
+#import "DaysCounterDateModel.h"
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
@@ -326,7 +327,7 @@
     
     if ([event.isLunar boolValue]) {
         BOOL isResultLeapMonth;
-        startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[event.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+        startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[event.startDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
     }
     
     
@@ -345,7 +346,7 @@
                                                                                              firstDate:event.startDate
                                                                                               fromDate:today
                                                                                               isAllDay:[event.isAllDay boolValue]
-                                                                                           isLeapMonth:[event.isLeapMonthOn boolValue]];
+                                                                                           isLeapMonth:[event.useLeapMonth boolValue]];
             }
             else {
                 nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
@@ -405,7 +406,7 @@
     
     if ( [event.isLunar boolValue] ) {
         BOOL isResultLeapMonth = NO;
-        calcDate = [NSDate dateOfSolarFromLunarDate:calcDate leapMonth:[event.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+        calcDate = [NSDate dateOfSolarFromLunarDate:calcDate leapMonth:[event.startDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
     }
 
     result = [A3DateHelper dateStringFromDate:calcDate

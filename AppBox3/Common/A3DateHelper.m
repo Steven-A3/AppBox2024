@@ -462,12 +462,12 @@
                                                         resultLeapMonth:NULL];
     
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    if (IS_IPHONE) {
-        [dateFormatter setDateFormat:[dateFormatter customFullStyleFormat]];
-    } else {
-        [dateFormatter setDateStyle:NSDateFormatterFullStyle];
-    }
-    
+//    if (IS_IPHONE) {
+//        [dateFormatter setDateFormat:[dateFormatter customFullStyleFormat]];
+//    } else {
+//        [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+//    }
+    [dateFormatter setDateFormat:[dateFormatter customFullStyleFormat]];
     return [dateFormatter stringFromDateComponents:lunarComponents];
 }
 @end

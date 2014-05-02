@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5063" systemVersion="13C1021" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Calculation" representedClassName="Calculation" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="expression" optional="YES" attributeType="String" syncable="YES"/>
@@ -44,6 +44,16 @@
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="DaysCounterEvent" inverseName="calendar" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
+    <entity name="DaysCounterDateModel" representedClassName="DaysCounterDateModel" syncable="YES">
+        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isLunar" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="solarDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="endDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="endDate" inverseEntity="DaysCounterEvent" syncable="YES"/>
+        <relationship name="startDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="startDate" inverseEntity="DaysCounterEvent" syncable="YES"/>
+    </entity>
     <entity name="DaysCounterEvent" representedClassName="DaysCounterEvent" syncable="YES">
         <attribute name="alertDatetime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="alertInterval" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
@@ -51,28 +61,25 @@
         <attribute name="calendarId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="durationOption" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="effectiveStartDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="endDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="eventId" attributeType="String" syncable="YES"/>
         <attribute name="eventKitId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="eventName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="hasReminder" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="imageFilename" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isAllDay" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isEndDateLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isLeapMonthOn" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLunar" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPeriod" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="isReminder" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isStartDateLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="repeatEndDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="repeatType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="useLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
         <relationship name="calendar" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterCalendar" inverseName="events" inverseEntity="DaysCounterCalendar" syncable="YES"/>
+        <relationship name="endDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterDateModel" inverseName="endDate" inverseEntity="DaysCounterDateModel" syncable="YES"/>
         <relationship name="location" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DaysCounterEventLocation" inverseName="event" inverseEntity="DaysCounterEventLocation" syncable="YES"/>
-        <relationship name="lunarDates" optional="YES" toMany="YES" maxCount="2" deletionRule="Nullify" destinationEntity="DaysCounterLunarDate" inverseName="event" inverseEntity="DaysCounterLunarDate" syncable="YES"/>
         <relationship name="reminder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterReminder" inverseName="event" inverseEntity="DaysCounterReminder" syncable="YES"/>
+        <relationship name="startDate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterDateModel" inverseName="startDate" inverseEntity="DaysCounterDateModel" syncable="YES"/>
     </entity>
     <entity name="DaysCounterEventLocation" representedClassName="DaysCounterEventLocation" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -85,14 +92,6 @@
         <attribute name="longitude" optional="YES" attributeType="Float" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="location" inverseEntity="DaysCounterEvent" syncable="YES"/>
-    </entity>
-    <entity name="DaysCounterLunarDate" representedClassName="DaysCounterLunarDate" syncable="YES">
-        <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="isEndDate" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="year" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="event" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DaysCounterEvent" inverseName="lunarDates" inverseEntity="DaysCounterEvent" syncable="YES"/>
     </entity>
     <entity name="DaysCounterReminder" representedClassName="DaysCounterReminder" syncable="YES">
         <attribute name="alertDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -399,9 +398,8 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterEvent" positionX="-234" positionY="-549" width="128" height="463"/>
+        <element name="DaysCounterEvent" positionX="-243" positionY="-549" width="128" height="418"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
-        <element name="DaysCounterLunarDate" positionX="-578" positionY="-540" width="128" height="133"/>
         <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
@@ -437,5 +435,6 @@
         <element name="WalletFieldItemImage" positionX="-594" positionY="-414" width="128" height="88"/>
         <element name="WalletFieldItemVideo" positionX="-605" positionY="-10" width="128" height="73"/>
         <element name="WalletItem" positionX="-585" positionY="677" width="128" height="165"/>
+        <element name="DaysCounterDateModel" positionX="-567" positionY="-387" width="128" height="163"/>
     </elements>
 </model>

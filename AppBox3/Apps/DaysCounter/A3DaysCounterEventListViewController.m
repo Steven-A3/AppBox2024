@@ -472,7 +472,7 @@
                                                                                           firstDate:[item startDate]
                                                                                            fromDate:[NSDate date]
                                                                                            isAllDay:[item.isAllDay boolValue]
-                                                                                        isLeapMonth:[item.isLeapMonthOn boolValue]];
+                                                                                        isLeapMonth:[item.useLeapMonth boolValue]];
         }
         else {
             startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]

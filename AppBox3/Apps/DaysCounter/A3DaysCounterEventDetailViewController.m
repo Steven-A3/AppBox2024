@@ -15,6 +15,7 @@
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
+#import "DaysCounterDateModel.h"
 #import "FSVenue.h"
 #import "A3DaysCounterEventDetailLocationViewController.h"
 #import "A3DaysCounterAddEventViewController.h"
@@ -442,7 +443,7 @@
     
     if ( isLunar ) {
         BOOL isLeapMonth = NO;
-        if ([info.isLeapMonthOn boolValue]) {
+        if ([info.useLeapMonth boolValue]) {
             isLeapMonth = [NSDate isLunarLeapMonthDate:startDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         }
         
@@ -591,10 +592,10 @@
         
         if ( [info.isLunar boolValue] ) {
             BOOL isResultLeapMonth = NO;
-            startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[_eventItem.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+            startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[_eventItem.startDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
             
             if ( endDate ) {
-                endDateOnLunar = [NSDate dateOfSolarFromLunarDate:endDate leapMonth:[_eventItem.isEndDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+                endDateOnLunar = [NSDate dateOfSolarFromLunarDate:endDate leapMonth:[_eventItem.endDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
             }
         }
         
@@ -606,7 +607,7 @@
             dateLabel1.text = [NSString stringWithFormat:@"%@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
                                                                                  isLunar:[info.isLunar boolValue]
                                                                                 isAllDay:[info.isAllDay boolValue]
-                                                                             isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                             isLeapMonth:[info.useLeapMonth boolValue]]];
             dateLabel2.text = @"";
             dateLabel3.text = @"";
             
@@ -631,11 +632,11 @@
             dateLabel1.text = [NSString stringWithFormat:@"from %@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
                                                                                  isLunar:[info.isLunar boolValue]
                                                                                 isAllDay:[info.isAllDay boolValue]
-                                                                             isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                             isLeapMonth:[info.useLeapMonth boolValue]]];
             dateLabel2.text = [NSString stringWithFormat:@"to %@", [self dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
                                                                                  isLunar:[info.isLunar boolValue]
                                                                                 isAllDay:[info.isAllDay boolValue]
-                                                                             isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                             isLeapMonth:[info.useLeapMonth boolValue]]];
             
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
@@ -654,7 +655,7 @@
             dateLabel1.text = [NSString stringWithFormat:@"%@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
                                                                                       isLunar:[info.isLunar boolValue]
                                                                                      isAllDay:[info.isAllDay boolValue]
-                                                                                  isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                                  isLeapMonth:[info.useLeapMonth boolValue]]];
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
@@ -675,8 +676,8 @@
         
         if ( [info.isLunar boolValue] ) {
             BOOL isResultLeapMonth = NO;
-            startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[_eventItem.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-            nextDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[info.isAllDay boolValue] isLeapMonth:[info.isLeapMonthOn boolValue]];
+            startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[_eventItem.startDate. boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+            nextDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[info.isAllDay boolValue] isLeapMonth:[info.useLeapMonth boolValue]];
             endDateOnLunar = [NSDate dateOfSolarFromLunarDate:endDate leapMonth:[_eventItem.isEndDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
         }
         else {
@@ -880,9 +881,9 @@ EXIT_FUCTION:
     
     if ( [info.isLunar boolValue] ) {
         BOOL isResultLeapMonth = NO;
-        startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[_eventItem.isStartDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-        nextDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[info.isAllDay boolValue] isLeapMonth:[info.isLeapMonthOn boolValue]];
-        endDateOnLunar = [NSDate dateOfSolarFromLunarDate:endDate leapMonth:[_eventItem.isEndDateLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+        startDateOnLunar = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:[_eventItem.startDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+        nextDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[info.isAllDay boolValue] isLeapMonth:[info.useLeapMonth boolValue]];
+        endDateOnLunar = [NSDate dateOfSolarFromLunarDate:endDate leapMonth:[_eventItem.endDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
     }
     else {
         nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[info.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[info.isAllDay boolValue]];
@@ -912,11 +913,11 @@ EXIT_FUCTION:
         dateLabel1.text = [NSString stringWithFormat:@"from %@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
                                                                                   isLunar:[info.isLunar boolValue]
                                                                                  isAllDay:[info.isAllDay boolValue]
-                                                                              isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                              isLeapMonth:[info.useLeapMonth boolValue]]];
         dateLabel2.text = [NSString stringWithFormat:@"to %@", [self dateStringFromDate:[info.isLunar boolValue] ? endDateOnLunar : endDate
                                                                                   isLunar:[info.isLunar boolValue]
                                                                                  isAllDay:[info.isAllDay boolValue]
-                                                                              isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                              isLeapMonth:[info.useLeapMonth boolValue]]];
         if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
             dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
         }
@@ -932,7 +933,7 @@ EXIT_FUCTION:
         dateLabel1.text = [NSString stringWithFormat:@"%@", [self dateStringFromDate:[info.isLunar boolValue] ? startDateOnLunar : startDate
                                                                                 isLunar:[info.isLunar boolValue]
                                                                                isAllDay:[info.isAllDay boolValue]
-                                                                            isLeapMonth:[info.isLeapMonthOn boolValue]]];
+                                                                            isLeapMonth:[info.useLeapMonth boolValue]]];
         
         if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
             dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];

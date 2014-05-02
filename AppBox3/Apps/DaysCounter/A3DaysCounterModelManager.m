@@ -14,7 +14,6 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
-#import "DaysCounterLunarDate.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
@@ -654,7 +653,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
     eventModel.imageFilename = imageFilename;
-    if ( [eventModel.isLeapMonthOn boolValue] ) {
+    if ( [eventModel.useLeapMonth boolValue] ) {
         NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventModel.startDate];
         eventModel.isStartDateLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
         
@@ -718,7 +717,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         eventItem.imageFilename = nil;
     }
     
-    if ( [eventItem.isLeapMonthOn boolValue] ) {
+    if ( [eventItem.useLeapMonth boolValue] ) {
         NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.startDate];
         eventItem.isStartDateLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
         
@@ -1619,16 +1618,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 //        // Lunar -> Solar
 //        BOOL isResultLeapMonth = NO;
 //        BOOL isLeapMonth = NO;
-//        if ([event.isLeapMonthOn boolValue]) {
+//        if ([event.useLeapMonth boolValue]) {
 //            isLeapMonth = [NSDate isLunarLeapMonthDate:startDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
 //        }
 //        startDate = [NSDate dateOfSolarFromLunarDate:startDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
 //    }
    
-    if ([event repeatEndDate] &&
-        ![event.repeatEndDate isKindOfClass:[NSNull class]] &&
-        [event.repeatEndDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
-        // 종료된 Event의 경우.
+    // 종료된 Event의 경우.
+    if ([event repeatEndDate] && [event.repeatEndDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
         now = [event repeatEndDate];
     }
     
@@ -1638,7 +1635,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                 firstDate:startDate
                                                  fromDate:now
                                                  isAllDay:[event.isLunar boolValue] ? YES : [event.isAllDay boolValue]
-                                              isLeapMonth:[event.isLeapMonthOn boolValue]];
+                                              isLeapMonth:[event.useLeapMonth boolValue]];
     }
     else {
         nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue]
@@ -1859,17 +1856,22 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 #pragma mark - Manipulate DaysCounterLunarDate Object
 + (void)setLunarDateComponents:(NSDateComponents *)dateComponents atEventModel:(DaysCounterEvent *)eventModel isEndDate:(BOOL)isEndDate
 {
-    DaysCounterLunarDate *lunarDate = [[eventModel.lunarDates filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"isEndDate == %@", @(isEndDate)]] anyObject];
+    DaysCounterLunarDate *lunarDate = isEndDate ? eventModel.endLunarDate : eventModel.startLunarDate;
     if (!lunarDate) {
         lunarDate = [DaysCounterLunarDate MR_createEntity];
-        [eventModel addLunarDatesObject:lunarDate];
+        if (isEndDate) {
+            eventModel.endLunarDate = lunarDate;
+        }
+        else {
+            eventModel.startLunarDate = lunarDate;
+        }
     }
     
     lunarDate.year = @(dateComponents.year);
     lunarDate.month = @(dateComponents.month);
     lunarDate.day = @(dateComponents.day);
     lunarDate.isEndDate = @(isEndDate);
-    if ([eventModel.isLeapMonthOn boolValue]) {
+    if ([eventModel.useLeapMonth boolValue]) {
         lunarDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComponents isKorean:YES]);
     }
     else {
