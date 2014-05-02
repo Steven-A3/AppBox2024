@@ -82,6 +82,16 @@
         self.title = @"Add Event";
         _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntity];
+        _eventItem.startDate = [NSDate date];
+        _eventItem.effectiveStartDate = [NSDate date];
+        _eventItem.isAllDay = @(YES);
+        _eventItem.isLunar = @(NO);
+        _eventItem.isPeriod = @(NO);
+        _eventItem.durationOption = @(DurationOption_Day);
+        _eventItem.isFavorite = @(NO);
+        _eventItem.repeatType = @(RepeatType_Never);
+        _eventItem.repeatEndDate = nil;
+        
         if (self.calendarId) {
             DaysCounterCalendar *selectedCalendar = [[[[A3DaysCounterModelManager sharedManager] allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@", self.calendarId]] lastObject];
             if (selectedCalendar) {
@@ -732,7 +742,7 @@
 - (void)repeatTypeTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
 {
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-    textLabel.text = title;
+    cell.textLabel.text = title;
     NSNumber *repeatType = _eventItem.repeatType;
     if (!repeatType || [repeatType isEqualToNumber:@(RepeatType_Never)]) {
         cell.detailTextLabel.text = @"";
@@ -746,11 +756,11 @@
 
 - (void)endRepeatDateTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
 {
-    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-    textLabel.text = title;
-    detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
-    textLabel.textColor = [UIColor blackColor];
+//    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
+//    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+    cell.textLabel.text = title;
+    cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
+    cell.textLabel.textColor = [UIColor blackColor];
 }
 
 - (void)alertTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
@@ -937,6 +947,7 @@
             
             [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
             A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
+            nextVC.eventModel = _eventItem;
             nextVC.dismissCompletionBlock = ^{
                 NSNumber *repeatType = _eventItem.repeatType;
                 if (!repeatType) {
@@ -952,6 +963,7 @@
                 if ([repeatType integerValue] == RepeatType_Never) {
                     // EffectiveStartDate 갱신.
                     _eventItem.effectiveStartDate =_eventItem.startDate;
+                    _eventItem.repeatEndDate = nil;
                     
                     // EndRepeatRow 제거.
                     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
@@ -981,8 +993,6 @@
                 UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
                 detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
                                                                                                 alertDate:_eventItem.alertDatetime];
-                
-                
                 // EndRepeatDate 유무 확인.
                 __block NSInteger endRepeatRowIndex = -1;
                 [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
@@ -1249,68 +1259,68 @@
 {
     [self resignAllAction];
     // 디비추가 처리
-//    if ( [_eventItem hasChanges] ) {
-        // 입력값이 있어야 하는것들에 대한 체크
-        if ( [_eventItem.eventName length] < 1 ) {
-            _eventItem.eventName = @"Untitled";
+    // 입력값이 있어야 하는것들에 대한 체크
+    if ( [_eventItem.eventName length] < 1 ) {
+        _eventItem.eventName = @"Untitled";
+    }
+    if ( [_eventItem.isPeriod boolValue] && !_eventItem.endDate ) {
+        [self alertMessage:@"Please enter the end date."];
+        return;
+    }
+    
+    if ( [_eventItem.isPeriod boolValue] ) {
+        NSDate *startDate = _eventItem.startDate;
+        NSDate *endDate = _eventItem.endDate;
+        
+        if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970]) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                                message:@"Cannot Save Event\nThe start date must be before the end date."
+                                                               delegate:nil
+                                                      cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil];
+            [alertView show];
+            return;
         }
-        if ( [_eventItem.isPeriod boolValue] && !_eventItem.endDate ) {
-            [self alertMessage:@"Please enter the end date."];
+    }
+    
+    if ( [_eventItem.isLunar boolValue]) {
+        BOOL isLunarStartDate = [NSDate isLunarDate:[_eventItem startDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        if (!isLunarStartDate) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"startDate is not a Lunar Date", @"startDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil, nil];
+            [alert show];
             return;
         }
         
         if ( [_eventItem.isPeriod boolValue] ) {
-            NSDate *startDate = _eventItem.startDate;
-            NSDate *endDate = _eventItem.endDate;
-            
-            if ( [endDate timeIntervalSince1970] < [startDate timeIntervalSince1970]) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                                    message:@"Cannot Save Event\nThe start date must be before the end date."
-                                                                   delegate:nil
-                                                          cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil];
-                [alertView show];
-                return;
-            }
-        }
-        
-        if ( [_eventItem.isLunar boolValue]) {
-            BOOL isLunarStartDate = [NSDate isLunarDate:[_eventItem startDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-            if (!isLunarStartDate) {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"startDate is not a Lunar Date", @"startDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
-                                                      otherButtonTitles:nil, nil];
+            BOOL isLunarEndDate = [NSDate isLunarDate:[_eventItem endDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+            if (!isLunarEndDate) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"endDate is not a Lunar Date", @"endDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
+                                                      otherButtonTitles:nil, nil] ;
                 [alert show];
                 return;
             }
-            
-            if ( [_eventItem.isPeriod boolValue] ) {
-                BOOL isLunarEndDate = [NSDate isLunarDate:[_eventItem endDate] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-                if (!isLunarEndDate) {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"endDate is not a Lunar Date", @"endDate is not a Lunar Date") delegate:nil cancelButtonTitle:@"OK"
-                                                          otherButtonTitles:nil, nil] ;
-                    [alert show];
-                    return;
-                }
-            }
         }
-        
-        if ( !_eventItem.eventId ) {
-            [[A3DaysCounterModelManager sharedManager] addEvent:_eventItem image:_photoImage];
-        }
-        else {
-            [[A3DaysCounterModelManager sharedManager] modifyEvent:_eventItem image:_photoImage];
-        }
-        
-        FNLOG(@"reloadAlertDateListForLocalNotification Start");
-        [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-        FNLOG(@"reloadAlertDateListForLocalNotification End");
-//    }
+    }
+    
+    if ( !_eventItem.eventId ) {
+        [[A3DaysCounterModelManager sharedManager] addEvent:_eventItem image:_photoImage];
+    }
+    else {
+        [[A3DaysCounterModelManager sharedManager] modifyEvent:_eventItem image:_photoImage];
+    }
+    
+    FNLOG(@"reloadAlertDateListForLocalNotification Start");
+    [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+    FNLOG(@"reloadAlertDateListForLocalNotification End");
+    
     // 창닫기
     [self cancelAction:nil];
 }
 
 - (void)cancelAction:(UIBarButtonItem *)button
 {
+    [[_eventItem managedObjectContext] refreshObject:_eventItem mergeChanges:NO];
     [self resignAllAction];
 
     if (IS_IPAD) {
@@ -1396,6 +1406,15 @@
     NSMutableArray *sectionRow_items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     
     if ([switchButton isOn]) {
+        if ([_eventItem.repeatType integerValue] != RepeatType_EveryYear) {
+            _eventItem.repeatType = @(RepeatType_Never);
+            NSInteger repeatTypeIndex = [self indexOfRowItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+            NSInteger endRepeatIndex = [self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:sectionRow_items];
+            [sectionRow_items removeObjectAtIndex:endRepeatIndex];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:endRepeatIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
+        }
+        
         NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
         [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];

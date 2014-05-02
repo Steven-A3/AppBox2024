@@ -43,15 +43,10 @@
 - (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-//- (id)emptyEventModel;
-//- (id)emptyEventLocationModel;
 - (id)eventItemByID:(NSString*)eventId;
 - (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image;
-//- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info;
 - (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image;
 - (BOOL)removeEvent:(DaysCounterEvent*)eventItem;
-//- (NSMutableDictionary *)dictionaryFromEventEntity:(DaysCounterEvent*)item;
-//- (NSMutableDictionary *)dictionaryFromEventLocationEntity:(DaysCounterEventLocation*)location;
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item;
 - (NSMutableArray*)visibleCalendarList;
@@ -100,7 +95,6 @@
 - (void)renewAllEffectiveStartDates;
 - (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
-//- (NSDate *)effectiveDateForEventModel:(NSMutableDictionary *)event basisTime:(NSDate *)now;
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
 #pragma mark - Alert

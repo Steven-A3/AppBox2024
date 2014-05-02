@@ -470,7 +470,6 @@
     countLabel.textColor = [calendarItem color];
     textLabel.text = calendarItem.calendarName;
 
-
     switch (cellType) {
         case CalendarCellType_User:
         {
@@ -481,19 +480,10 @@
             NSMutableAttributedString *eventDetailInfoString = [[NSMutableAttributedString alloc] initWithString:@""];
             if ([calendarItem.events count] > 0) {
                 DaysCounterEvent *event = [[A3DaysCounterModelManager sharedManager] closestEventObjectOfCalendar:calendarItem];
-                
                 NSAttributedString *eventName;
                 NSAttributedString *period;
                 NSAttributedString *date;
-//                NSDate *now = [NSDate date];
-//                NSDate *startDate = [event startDate];
-//                if ( [event.repeatType integerValue] != RepeatType_Never ) {
-//                    startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
-//                                                                                          firstDate:[event startDate]
-//                                                                                           fromDate:now
-//                                                                                           isAllDay:[event.isAllDay boolValue]];
-//                }
-                
+
                 if (IS_IPHONE) {
                     eventName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@, ", [event eventName]]
                                                                 attributes:@{
@@ -531,15 +521,12 @@
                 }
                 
                 
-//                [eventDetailInfoString appendAttributedString:eventName];
                 [eventDetailInfoString appendAttributedString:period];
                 [eventDetailInfoString appendAttributedString:date];
-//                eventDetailInfoLabel.attributedText = eventDetailInfoString;
                 eventDetailInfoLabel1.attributedText = eventName;
                 eventDetailInfoLabel2.attributedText = eventDetailInfoString;
             }
             else {
-//                eventDetailInfoLabel.text = @"";
                 eventDetailInfoLabel1.text = @"";
                 eventDetailInfoLabel2.text = @"";
             }
@@ -588,7 +575,6 @@
     }
     
     DaysCounterCalendar *item = [(tableView == self.tableView ?_itemArray : _searchResultArray) objectAtIndex:indexPath.row];
-    
     A3DaysCounterEventListViewController *viewCtrl = [[A3DaysCounterEventListViewController alloc] initWithNibName:@"A3DaysCounterEventListViewController" bundle:nil];
     viewCtrl.calendarItem = item;
     [self.navigationController pushViewController:viewCtrl animated:YES];
@@ -655,7 +641,6 @@
 		_mySearchDisplayController.searchBar.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.delegate = self;
 		_mySearchDisplayController.searchResultsTableView.dataSource = self;
-//		_mySearchDisplayController.searchResultsTableView.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.2f];
 		_mySearchDisplayController.searchResultsTableView.showsVerticalScrollIndicator = NO;
         _mySearchDisplayController.searchResultsTableView.tableFooterView = [UIView new];
 	}
