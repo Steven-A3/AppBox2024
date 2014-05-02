@@ -679,13 +679,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image
 {
-    NSAssert(eventModel.eventId, @"eventModel.eventId error");
+    NSAssert(!eventModel.eventId, @"eventModel.eventId error");
     if ( !eventModel.eventId ) {
-        eventModel.eventId = [[NSUUID UUID] stringValue];
+        eventModel.eventId = [[NSUUID UUID] UUIDString];
     }
     
     // 이미지 저장
-    NSString *imageFilename = @"";
+    NSString *imageFilename;
     if ( image ) {
         NSData *imageData = UIImagePNGRepresentation(image);
         imageFilename = [NSString stringWithFormat:@"%@.png", eventModel.eventId];
@@ -1769,10 +1769,17 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     NSDate *nextDate;
     if ( [event.isLunar boolValue] ) {
-        nextDate = [self nextDateForLunarWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue] isLeapMonth:[event.isLeapMonthOn boolValue]];
+        nextDate = [self nextDateForLunarWithRepeatOption:[event.repeatType integerValue]
+                                                firstDate:startDate
+                                                 fromDate:now
+                                                 isAllDay:[event.isLunar boolValue] ? YES : [event.isAllDay boolValue]
+                                              isLeapMonth:[event.isLeapMonthOn boolValue]];
     }
     else {
-        nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
+        nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue]
+                                        firstDate:startDate
+                                         fromDate:now
+                                         isAllDay:[event.isLunar boolValue] ? YES : [event.isAllDay boolValue]];
     }
     
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
@@ -1962,15 +1969,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return dateComp;
 }
 
-+ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject
-{
-    NSDateComponents * dateComp = [NSDateComponents new];
-    dateComp.year = [lunarDateObject.year integerValue];
-    dateComp.month = [lunarDateObject.month integerValue];
-    dateComp.day = [lunarDateObject.day integerValue];
-    return dateComp;
-}
-
 - (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
 {
     BOOL isResultLeapMonth;
@@ -2044,5 +2042,34 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return comp;
 }
 
+#pragma mark - Manipulate DaysCounterLunarDate Object
++ (void)setLunarDateComponents:(NSDateComponents *)dateComponents atEventModel:(DaysCounterEvent *)eventModel isEndDate:(BOOL)isEndDate
+{
+    DaysCounterLunarDate *lunarDate = [[eventModel.lunarDates filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"isEndDate == %@", @(isEndDate)]] anyObject];
+    if (!lunarDate) {
+        lunarDate = [DaysCounterLunarDate MR_createEntity];
+        [eventModel addLunarDatesObject:lunarDate];
+    }
+    
+    lunarDate.year = @(dateComponents.year);
+    lunarDate.month = @(dateComponents.month);
+    lunarDate.day = @(dateComponents.day);
+    lunarDate.isEndDate = @(isEndDate);
+    if ([eventModel.isLeapMonthOn boolValue]) {
+        lunarDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComponents isKorean:YES]);
+    }
+    else {
+        lunarDate.isLeapMonth = @(NO);
+    }
+}
+
++ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject
+{
+    NSDateComponents * dateComp = [NSDateComponents new];
+    dateComp.year = [lunarDateObject.year integerValue];
+    dateComp.month = [lunarDateObject.month integerValue];
+    dateComp.day = [lunarDateObject.day integerValue];
+    return dateComp;
+}
 
 @end

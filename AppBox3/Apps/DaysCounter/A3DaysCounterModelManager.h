@@ -109,9 +109,11 @@
 
 #pragma mark - Lunar
 + (NSDateComponents *)dateComponentsFromLunarDate:(NSDate *)date;   // for Test
-+ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject;
 - (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
 - (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
 - (NSDateComponents *)validLunarDateComponents:(NSDateComponents *)comp;
 
+#pragma mark - Manipulate DaysCounterLunarDate Object
++ (void)setLunarDateComponents:(NSDateComponents *)dateComponents atEventModel:(DaysCounterEvent *)eventModel isEndDate:(BOOL)isEndDate;
++ (NSDateComponents *)dateComponentsFromLunarDateObject:(DaysCounterLunarDate *)lunarDateObject;
 @end
