@@ -940,223 +940,257 @@
             break;
         case EventCellType_RepeatType:
         {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-            A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
-            nextVC.eventModel = _eventItem;
-            nextVC.dismissCompletionBlock = ^{
-                NSNumber *repeatType = _eventItem.repeatType;
-                if (!repeatType) {
-                    return;
-                }
-                
-                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                NSIndexPath *repeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_RepeatType atSectionArray:section1_items]
-                                                                  inSection:AddSection_Section_1];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
-                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
-                
-                if ([repeatType integerValue] == RepeatType_Never) {
-                    // EffectiveStartDate 갱신.
-                    _eventItem.effectiveStartDate =[_eventItem.startDate solarDate];
-                    _eventItem.repeatEndDate = nil;
-                    
-                    // EndRepeatRow 제거.
-                    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                    __block NSInteger endRepeatRowIndex = -1;
-                    [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
-                        if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
-                            endRepeatRowIndex = (NSInteger)idx;
-                            *stop = YES;
-                        }
-                    }];
-                    if (endRepeatRowIndex == -1) {
-                        return;
-                    }
-                    [section1_items removeObjectAtIndex:endRepeatRowIndex];
-                    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:endRepeatRowIndex inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationMiddle];
-                    
-                    return;
-                }
-                
-                // EffectiveStartDate & EffectiveAlertDate 갱신.
-                [[A3DaysCounterModelManager sharedManager] recalculateEventDatesForEvent:_eventItem];
-                // AlertCell 갱신.
-                NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
-                                                                 inSection:AddSection_Section_1];
-                [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
-                cell = [tableView cellForRowAtIndexPath:alertIndexPath];
-                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
-                                                                                                alertDate:_eventItem.alertDatetime];
-                // EndRepeatDate 유무 확인.
-                __block NSInteger endRepeatRowIndex = -1;
-                [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
-                    if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
-                        endRepeatRowIndex = (NSInteger)idx;
-                        *stop = YES;
-                    }
-                }];
-                
-                if (endRepeatRowIndex == -1) {
-                    // EndRepeatDate 추가.
-                    __block NSInteger repeatTypeRowIndex = -1;
-                    [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
-                        if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_RepeatType)]) {
-                            repeatTypeRowIndex = (NSInteger)idx;
-                            *stop = YES;
-                        }
-                    }];
-                    
-                    // EndRepeat Row 추가 & Reload
-                    [section1_items insertObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)} atIndex:repeatTypeRowIndex + 1];
-                    NSMutableArray *indexPathsToReload = [NSMutableArray new];
-                    for (NSInteger row = repeatTypeRowIndex + 2; row < [section1_items count]; row++) {
-                        [indexPathsToReload addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
-                    }
-                    [self.tableView beginUpdates];
-                    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeRowIndex inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationNone];
-                    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeRowIndex + 1 inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationMiddle];
-                    [self.tableView endUpdates];
-                }
-            };
-            
-            if ( IS_IPHONE ) {
-                [self.navigationController pushViewController:nextVC animated:YES];
-            }
-            else {
-                [self.A3RootViewController presentRightSideViewController:nextVC];
-            }
-            
-            [self closeDatePickerCell];
+            [self didSelectRepeatTypeRowAtIndexPath:indexPath tableView:tableView];
         }
             break;
         case EventCellType_EndRepeatDate:
         {
-            A3DaysCounterSetupEndRepeatViewController *nextVC = [[A3DaysCounterSetupEndRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupEndRepeatViewController" bundle:nil];
-            nextVC.eventModel = self.eventItem;
-            nextVC.dismissCompletionBlock = ^{
-                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                NSIndexPath *endRepeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:section1_items]
-                                                                     inSection:AddSection_Section_1];
-                [tableView deselectRowAtIndexPath:endRepeatIndexPath animated:YES];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:endRepeatIndexPath];
-                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
-            };
-            
-            if ( IS_IPHONE )
-                [self.navigationController pushViewController:nextVC animated:YES];
-            else
-                [self.A3RootViewController presentRightSideViewController:nextVC];
-            [self closeDatePickerCell];
+            [self didSelectEndRepeatDateCellAtTableView:tableView];
         }
             break;
         case EventCellType_Alert:
         {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
-            nextVC.eventModel = self.eventItem;
-            
-            nextVC.dismissCompletionBlock = ^{
-                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
-                                                                 inSection:AddSection_Section_1];
-                
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
-                cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
-                                                                                                     alertDate:_eventItem.alertDatetime];
-                //FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], _eventItem.startDate, _eventItem.effectiveStartDate, _eventItem.alertDatetime);
-            };
-            
-            if ( IS_IPHONE ) {
-                [self.navigationController pushViewController:nextVC animated:YES];
-            }
-            else {
-                [self.A3RootViewController presentRightSideViewController:nextVC];
-            }
-            [self closeDatePickerCell];
+            [self didSelectAlertCellAtIndexPath:indexPath tableView:tableView];
         }
             break;
         case EventCellType_Calendar:
         {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
-            nextVC.eventModel = self.eventItem;
-            nextVC.dismissCompletionBlock = ^{
-                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                NSIndexPath *calendarIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Calendar atSectionArray:section1_items]
-                                                                    inSection:AddSection_Section_1];
-                //                [tableView deselectRowAtIndexPath:calendarIndexPath animated:YES];
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
-                UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
-                UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
-                DaysCounterCalendar *calendar = _eventItem.calendar;
-                if (calendar) {
-                    nameLabel.text = calendar.calendarName;
-                    colorImageView.tintColor = [calendar color];
-                }
-                else {
-                    nameLabel.text = @"";
-                }
-                
-                colorImageView.hidden = ([nameLabel.text length] < 1 );
-            };
-            
-            if ( IS_IPHONE ) {
-                [self.navigationController pushViewController:nextVC animated:YES];
-            }
-            else {
-                [self.A3RootViewController presentRightSideViewController:nextVC];
-            }
-            [self closeDatePickerCell];
+            [self didSelectCalendarCellAtIndexPath:indexPath tableView:tableView];
         }
             break;
         case EventCellType_DurationOption:
         {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            A3DaysCounterSetupDurationViewController *nextVC = [[A3DaysCounterSetupDurationViewController alloc] initWithNibName:@"A3DaysCounterSetupDurationViewController" bundle:nil];
-            nextVC.eventModel = self.eventItem;
-            nextVC.dismissCompletionBlock = ^{
-                NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_DurationOption atSectionArray:section1_items]
-                                                                    inSection:AddSection_Section_1];
-                self.isDurationIntialized = YES;
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
-                UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-                detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
-            };
-            
-            if ( IS_IPHONE )
-                [self.navigationController pushViewController:nextVC animated:YES];
-            else
-                [self.A3RootViewController presentRightSideViewController:nextVC];
-            [self closeDatePickerCell];
+            [self didSelectDurationOptionCellAtIndexPath:indexPath tableView:tableView];
         }
             break;
-        case EventCellType_Location:{
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                                     delegate:self
-                                                            cancelButtonTitle:@"Cancel"
-                                                       destructiveButtonTitle:_eventItem.location ? @"Delete Location" : nil
-                                                            otherButtonTitles:@"Use My Location", @"Search Location", nil];
-            actionSheet.tag = ActionTag_Location;
-            [actionSheet showInView:self.view];
-            [self closeDatePickerCell];
+        case EventCellType_Location:
+        {
+            [self didSelectLocationCellAtIndexPath:indexPath tableView:tableView];
         }
             break;
         case EventCellType_Advanced:
+        {
             [self advancedRowTouchedUp:indexPath];
+        }
             break;
     }
 }
+#pragma mark didSelect spectific row
+- (void)didSelectRepeatTypeRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+    A3DaysCounterSetupRepeatViewController *nextVC = [[A3DaysCounterSetupRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupRepeatViewController" bundle:nil];
+    nextVC.eventModel = _eventItem;
+    nextVC.dismissCompletionBlock = ^{
+        NSNumber *repeatType = _eventItem.repeatType;
+        if (!repeatType) {
+            return;
+        }
+        
+        NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+        NSIndexPath *repeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_RepeatType atSectionArray:section1_items]
+                                                          inSection:AddSection_Section_1];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
+        cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
+        
+        if ([repeatType integerValue] == RepeatType_Never) {
+            // EffectiveStartDate 갱신.
+            _eventItem.effectiveStartDate =[_eventItem.startDate solarDate];
+            _eventItem.repeatEndDate = nil;
+            
+            // EndRepeatRow 제거.
+            NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+            __block NSInteger endRepeatRowIndex = -1;
+            [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
+                if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
+                    endRepeatRowIndex = (NSInteger)idx;
+                    *stop = YES;
+                }
+            }];
+            if (endRepeatRowIndex == -1) {
+                return;
+            }
+            [section1_items removeObjectAtIndex:endRepeatRowIndex];
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:endRepeatRowIndex inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationMiddle];
+            
+            return;
+        }
+        
+        // EffectiveStartDate & EffectiveAlertDate 갱신.
+        [[A3DaysCounterModelManager sharedManager] recalculateEventDatesForEvent:_eventItem];
+        // AlertCell 갱신.
+        NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+                                                         inSection:AddSection_Section_1];
+        [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
+        cell = [tableView cellForRowAtIndexPath:alertIndexPath];
+        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+        detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
+                                                                                        alertDate:_eventItem.alertDatetime];
+        // EndRepeatDate 유무 확인.
+        __block NSInteger endRepeatRowIndex = -1;
+        [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
+            if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
+                endRepeatRowIndex = (NSInteger)idx;
+                *stop = YES;
+            }
+        }];
+        
+        if (endRepeatRowIndex == -1) {
+            // EndRepeatDate 추가.
+            __block NSInteger repeatTypeRowIndex = -1;
+            [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
+                if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_RepeatType)]) {
+                    repeatTypeRowIndex = (NSInteger)idx;
+                    *stop = YES;
+                }
+            }];
+            
+            // EndRepeat Row 추가 & Reload
+            [section1_items insertObject:@{ EventRowTitle : @"End Repeat", EventRowType : @(EventCellType_EndRepeatDate)} atIndex:repeatTypeRowIndex + 1];
+            NSMutableArray *indexPathsToReload = [NSMutableArray new];
+            for (NSInteger row = repeatTypeRowIndex + 2; row < [section1_items count]; row++) {
+                [indexPathsToReload addObject:[NSIndexPath indexPathForRow:row inSection:AddSection_Section_1]];
+            }
+            [self.tableView beginUpdates];
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeRowIndex inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeRowIndex + 1 inSection:AddSection_Section_1]] withRowAnimation:UITableViewRowAnimationMiddle];
+            [self.tableView endUpdates];
+        }
+    };
+    
+    if ( IS_IPHONE ) {
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else {
+        [self.A3RootViewController presentRightSideViewController:nextVC];
+    }
+    
+    [self closeDatePickerCell];
+}
 
+- (void)didSelectEndRepeatDateCellAtTableView:(UITableView *)tableView
+{
+    A3DaysCounterSetupEndRepeatViewController *nextVC = [[A3DaysCounterSetupEndRepeatViewController alloc] initWithNibName:@"A3DaysCounterSetupEndRepeatViewController" bundle:nil];
+    nextVC.eventModel = self.eventItem;
+    nextVC.dismissCompletionBlock = ^{
+        NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+        NSIndexPath *endRepeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:section1_items]
+                                                             inSection:AddSection_Section_1];
+        [tableView deselectRowAtIndexPath:endRepeatIndexPath animated:YES];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:endRepeatIndexPath];
+        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+        detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
+    };
+    
+    if ( IS_IPHONE )
+        [self.navigationController pushViewController:nextVC animated:YES];
+    else
+        [self.A3RootViewController presentRightSideViewController:nextVC];
+    [self closeDatePickerCell];
+}
+
+- (void)didSelectAlertCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
+    nextVC.eventModel = self.eventItem;
+    
+    nextVC.dismissCompletionBlock = ^{
+        NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+        NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+                                                         inSection:AddSection_Section_1];
+        
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
+        cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
+                                                                                             alertDate:_eventItem.alertDatetime];
+        //FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], _eventItem.startDate, _eventItem.effectiveStartDate, _eventItem.alertDatetime);
+    };
+    
+    if ( IS_IPHONE ) {
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else {
+        [self.A3RootViewController presentRightSideViewController:nextVC];
+    }
+    [self closeDatePickerCell];
+}
+
+- (void)didSelectCalendarCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    A3DaysCounterSetupCalendarViewController *nextVC = [[A3DaysCounterSetupCalendarViewController alloc] initWithNibName:@"A3DaysCounterSetupCalendarViewController" bundle:nil];
+    nextVC.eventModel = self.eventItem;
+    nextVC.dismissCompletionBlock = ^{
+        NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+        NSIndexPath *calendarIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Calendar atSectionArray:section1_items]
+                                                            inSection:AddSection_Section_1];
+        //                [tableView deselectRowAtIndexPath:calendarIndexPath animated:YES];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
+        UILabel *nameLabel = (UILabel*)[cell viewWithTag:12];
+        UIImageView *colorImageView = (UIImageView*)[cell viewWithTag:11];
+        DaysCounterCalendar *calendar = _eventItem.calendar;
+        if (calendar) {
+            nameLabel.text = calendar.calendarName;
+            colorImageView.tintColor = [calendar color];
+        }
+        else {
+            nameLabel.text = @"";
+        }
+        
+        colorImageView.hidden = ([nameLabel.text length] < 1 );
+    };
+    
+    if ( IS_IPHONE ) {
+        [self.navigationController pushViewController:nextVC animated:YES];
+    }
+    else {
+        [self.A3RootViewController presentRightSideViewController:nextVC];
+    }
+    [self closeDatePickerCell];
+}
+
+- (void)didSelectDurationOptionCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    A3DaysCounterSetupDurationViewController *nextVC = [[A3DaysCounterSetupDurationViewController alloc] initWithNibName:@"A3DaysCounterSetupDurationViewController" bundle:nil];
+    nextVC.eventModel = self.eventItem;
+    nextVC.dismissCompletionBlock = ^{
+        NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+        NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_DurationOption atSectionArray:section1_items]
+                                                            inSection:AddSection_Section_1];
+        self.isDurationIntialized = YES;
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
+        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+        detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] durationOptionStringFromValue:[_eventItem.durationOption integerValue]];
+    };
+    
+    if ( IS_IPHONE )
+        [self.navigationController pushViewController:nextVC animated:YES];
+    else
+        [self.A3RootViewController presentRightSideViewController:nextVC];
+    [self closeDatePickerCell];
+}
+
+- (void)didSelectLocationCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:@"Cancel"
+                                               destructiveButtonTitle:_eventItem.location ? @"Delete Location" : nil
+                                                    otherButtonTitles:@"Use My Location", @"Search Location", nil];
+    actionSheet.tag = ActionTag_Location;
+    [actionSheet showInView:self.view];
+    [self closeDatePickerCell];
+}
+
+#pragma mark etc
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return [_sectionTitleArray count] + (_eventItem ? 1 : 0);

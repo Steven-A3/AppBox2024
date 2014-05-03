@@ -1649,7 +1649,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:YES leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
     }
     
-    return resultComp;
+    NSAssert(resultComp, @"Not Exist Lunar Date");
+    if (!resultComp) {
+        return nil;
+    }
+
+    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:resultComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    return resultDateComponents;
 }
 
 - (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
@@ -1695,7 +1701,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if (!resultDateComponents || !resultDate || [resultDate timeIntervalSince1970] < [fromDate timeIntervalSince1970]) {
         return nil;
     }
-    
+
     return calcComp;
 }
 
