@@ -1747,6 +1747,11 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     else {
         dateModel.solarDate = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+        dateModel.year = @(dateComponents.year);
+        dateModel.month = @(dateComponents.month);
+        dateModel.day = @(dateComponents.day);
+        dateModel.hour = @(dateComponents.hour);
+        dateModel.minute = @(dateComponents.minute);
     }
 }
 
@@ -1763,9 +1768,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         dateComp.second = 0;
     }
     else {
-        dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit
-                    |NSSecondCalendarUnit
-                                                   fromDate:dateObject.solarDate];
+        dateComp = [NSDateComponents new];
+        dateComp.year = [dateObject.year integerValue];
+        dateComp.month = [dateObject.month integerValue];
+        dateComp.day = [dateObject.day integerValue];
+        dateComp.hour = [dateObject.hour integerValue];
+        dateComp.minute = [dateObject.minute integerValue];
+        dateComp.second = 0;
     }
 
     return dateComp;

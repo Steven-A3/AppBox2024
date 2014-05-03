@@ -1387,7 +1387,7 @@
         [self toggleLunarSwitchButton:swButton indexPath:indexPath];
     }
     else if ( rowItemType == EventCellType_IsLeapMonth ) {
-        _eventItem.useLeapMonth = @(swButton.on);
+        [self toggleLeapMonthSwitchButton:swButton indexPath:indexPath];
     }
     else if ( rowItemType == EventCellType_IsAllDay ) {
         [self toggleIsAllDaySwitchButton:swButton indexPath:indexPath sectionRow_items:sectionRow_items];
@@ -1419,26 +1419,73 @@
         NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
         [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-
-        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[_eventItem.startDate solarDate]]
+        
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:YES]
                                                         withEventModel:_eventItem
                                                                endDate:NO];
         if (_eventItem.endDate) {
-            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:[_eventItem.endDate solarDate]]
+            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:YES]
                                                             withEventModel:_eventItem
                                                                    endDate:YES];
         }
     }
     else {
-        NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
-        [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        // Reload All-Day
+        NSInteger reloadRowIndex = [self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
+        [sectionRow_items replaceObjectAtIndex:reloadRowIndex withObject:@{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        
+        // Reload StartDate
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:NO]
+                                                        withEventModel:_eventItem
+                                                               endDate:NO];
+        reloadRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
+        if (reloadRowIndex != -1) {
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+
+        // Reload EndDate
+        if (_eventItem.endDate) {
+            [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:NO]
+                                                            withEventModel:_eventItem
+                                                                   endDate:YES];
+            if (reloadRowIndex != -1) {
+                reloadRowIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+                [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+            }
+        }
         _eventItem.startDate.isLunar = @(NO);
         _eventItem.endDate.isLunar = @(NO);
     }
     
     NSDate *startDate = [_eventItem.startDate solarDate];
     [self updateEndDateDiffFromStartDate:startDate];
+}
+
+- (void)toggleLeapMonthSwitchButton:(UISwitch*)switchButton indexPath:(NSIndexPath *)indexPath
+{
+    _eventItem.useLeapMonth = @(switchButton.on);
+    NSMutableArray *sectionRow_items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
+
+    // Reload StartDate
+    [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:NO]
+                                                    withEventModel:_eventItem
+                                                           endDate:NO];
+    NSInteger reloadRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
+    if (reloadRowIndex != -1) {
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    
+    // Reload EndDate
+    if (_eventItem.endDate) {
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.endDate toLunar:NO]
+                                                        withEventModel:_eventItem
+                                                               endDate:YES];
+        if (reloadRowIndex != -1) {
+            reloadRowIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+    }
 }
 
 - (void)toggleIsAllDaySwitchButton:(UISwitch *)swButton indexPath:(NSIndexPath *)indexPath sectionRow_items:(NSMutableArray *)sectionRow_items
