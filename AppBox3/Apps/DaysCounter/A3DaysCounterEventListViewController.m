@@ -469,7 +469,7 @@
     if ( item ) {
         NSDate *startDate;
         if ( [item.isLunar boolValue] ) {
-            [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] isLunar:[item.isLunar boolValue]]
+            [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
                                                                                   leapMonth:[item.useLeapMonth boolValue]
                                                                                    fromDate:[NSDate date]];
 //            startDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[item.repeatType integerValue]

@@ -108,5 +108,5 @@
 
 #pragma mark - Manipulate DaysCounterDateModel Object
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
-+ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject isLunar:(BOOL)isLunar;
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar;
 @end

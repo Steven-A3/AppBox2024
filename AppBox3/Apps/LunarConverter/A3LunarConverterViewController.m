@@ -671,7 +671,7 @@
 
 - (void)calculateDate
 {
-    BOOL isInputLeapMonth = ( _isLunarInput ? [NSDate isLunarLeapMonthAtDate:self.inputDateComponents isKorean:[A3DateHelper isCurrentLocaleIsKorea]] : NO );
+    BOOL isInputLeapMonth = ( _isLunarInput ? [NSDate isLunarLeapMonthAtDateComponents:self.inputDateComponents isKorean:[A3DateHelper isCurrentLocaleIsKorea]] : NO );
     BOOL isResultLeapMonth = ( _isLunarInput ? NO : [self isLeapMonthAtDateComponents:self.inputDateComponents gregorianToLunar:!_isLunarInput]);
     
     if( self.inputDateComponents ){

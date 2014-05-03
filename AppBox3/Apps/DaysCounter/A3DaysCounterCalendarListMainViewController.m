@@ -336,7 +336,7 @@
             NSDate *nextDate;
             if ([event.isLunar boolValue]) {
                 nextDate = [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[event startDate]
-                                                                                                                                                                isLunar:[event.isLunar boolValue]]
+                                                                                                                                                                toLunar:[event.isLunar boolValue]]
                                                                                                  leapMonth:[event.useLeapMonth boolValue]
                                                                                                   fromDate:today];
             }

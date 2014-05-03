@@ -11,7 +11,7 @@
 @interface NSDate (LunarConverter)
 
 + (NSDateComponents *)lunarCalcWithComponents:(NSDateComponents *)components gregorianToLunar:(BOOL)isGregorianToLunar leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth;
-+ (BOOL)isLunarLeapMonthAtDate:(NSDateComponents *)dateComponents isKorean:(BOOL)isKorean;
++ (BOOL)isLunarLeapMonthAtDateComponents:(NSDateComponents *)dateComponents isKorean:(BOOL)isKorean;
 + (NSInteger)lastMonthDayForLunarYear:(NSInteger)year month:(NSInteger)month isKorean:(BOOL)isKorean;
 + (NSDate *)dateOfLunarFromSolarDate:(NSDate *)date leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth;
 + (NSDate *)dateOfSolarFromLunarDate:(NSDate *)date leapMonth:(BOOL)isLeapMonth korean:(BOOL)isKorean resultLeapMonth:(BOOL*)resultLeapMonth;

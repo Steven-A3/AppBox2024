@@ -768,12 +768,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfUserCalendarVisible
@@ -1479,7 +1481,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     // Lunar
     if ([event.isLunar boolValue]) {
         NSDateComponents *solarComp;
-        solarComp = [self nextSolarDateComponentsFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:event.startDate isLunar:YES]
+        solarComp = [self nextSolarDateComponentsFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:event.startDate toLunar:YES]
                                                               leapMonth:[event.useLeapMonth boolValue]
                                                                fromDate:now];
         nextDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
@@ -1558,7 +1560,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         eventModel.alertDatetime = [[NSCalendar currentCalendar] dateFromComponents:alertDateComp];
     }
     
-    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], eventModel.startDate, eventModel.effectiveStartDate, eventModel.alertDatetime);
+    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
 }
 
 #pragma mark - Alert
@@ -1731,7 +1733,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         dateModel.month = @(dateComponents.month);
         dateModel.day = @(dateComponents.day);
         if ([eventModel.useLeapMonth boolValue]) {
-            dateModel.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComponents isKorean:YES]);
+            dateModel.isLeapMonth = @([NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]);
         }
         else {
             dateModel.isLeapMonth = @(NO);
@@ -1748,7 +1750,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 }
 
-+ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject isLunar:(BOOL)isLunar
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar
 {
     NSDateComponents * dateComp;
     if (isLunar) {

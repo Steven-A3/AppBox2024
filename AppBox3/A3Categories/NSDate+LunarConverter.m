@@ -533,7 +533,7 @@ static arrayOfMonths lunarMonthTable_Chinese[] = {
 }
 
 // 음력날짜일 경우 해당일이 윤달인지 확인
-+ (BOOL)isLunarLeapMonthAtDate:(NSDateComponents *)dateComponents isKorean:(BOOL)isKorean
++ (BOOL)isLunarLeapMonthAtDateComponents:(NSDateComponents *)dateComponents isKorean:(BOOL)isKorean
 {
     arrayOfMonths *lunarMonthTable = isKorean ? lunarMonthTable_Korean:lunarMonthTable_Chinese;
 

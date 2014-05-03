@@ -165,7 +165,7 @@
     else {
         dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
                       [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]],
-                      [A3DateHelper dateStringOfSolarFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel isLunar:isLunar] isLeapMonth:isLeapMonth]];
+                      [A3DateHelper dateStringOfSolarFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] isLeapMonth:isLeapMonth]];
     }
     
     return dateString;
