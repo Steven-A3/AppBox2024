@@ -2,7 +2,7 @@
 //  DaysCounterEvent.m
 //  AppBox3
 //
-//  Created by kimjeonghwan on 5/2/14.
+//  Created by dotnetguy83 on 5/4/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -24,17 +24,17 @@
 @dynamic eventId;
 @dynamic eventKitId;
 @dynamic eventName;
+@dynamic hasReminder;
 @dynamic imageFilename;
 @dynamic isAllDay;
 @dynamic isFavorite;
-@dynamic useLeapMonth;
 @dynamic isLunar;
 @dynamic isPeriod;
-@dynamic hasReminder;
 @dynamic notes;
 @dynamic regDate;
 @dynamic repeatEndDate;
 @dynamic repeatType;
+@dynamic useLeapMonth;
 @dynamic calendar;
 @dynamic endDate;
 @dynamic location;
