@@ -1069,8 +1069,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 {
     return YES;
 }
-
-
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // makes the UI more Camera.app like
@@ -1080,6 +1078,15 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     }
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        [UIView setAnimationsEnabled:YES];
+        [UIView beginAnimations:@"reappear" context:NULL];
+        [UIView setAnimationDuration:0.75];
+        [UIView commitAnimations];
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {

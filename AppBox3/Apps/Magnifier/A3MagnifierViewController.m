@@ -123,7 +123,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     previewLayer.frame = screenBounds;
 }
 
-- (void)viewWillLayoutSubviews {
+- (void)viewWillLayoutSubviews_ {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(IS_IPAD) {
         [self setPreviewRotation:screenBounds];
@@ -829,7 +829,29 @@ static const int MAX_ZOOM_FACTOR = 6;
      ];
     
 }
+#pragma mark - set view rotate
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    // makes the UI more Camera.app like
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone)
+    {
+        [UIView setAnimationsEnabled:NO];
+    }
+}
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        [UIView setAnimationsEnabled:YES];
+        [UIView beginAnimations:@"reappear" context:NULL];
+        [UIView setAnimationDuration:0.75];
+        [UIView commitAnimations];
+    }
+}
 #pragma mark - set image icon
 - (void) setImageOnCameraRollButton:(UIImage *)image {
     [lastimageButton setBackgroundImage:[self cropImageWithSquare:image] forState:UIControlStateNormal];
