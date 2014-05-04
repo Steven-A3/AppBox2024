@@ -8,12 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3LadyCalendarAccountViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>{
-    NSInteger numberOfCellInPage;
-}
+@class A3LadyCalendarModelManager;
 
-@property (strong, nonatomic) IBOutlet UIButton *addButton;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@interface A3LadyCalendarAccountViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
-- (IBAction)addAccountAction;
+@property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
+
 @end

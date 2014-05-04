@@ -43,18 +43,39 @@
 
 @end
 
-@implementation A3CalendarView
+@interface A3CalendarView ()
+@property (assign, nonatomic) UIFont *dateFont;
+@property (strong, nonatomic) UIColor *dateTextColor;
+@property (strong, nonatomic) UIColor *weekendTextColor;
+@property (readonly, nonatomic) NSInteger year;
+@property (readonly, nonatomic) NSInteger month;
+@end
+
+@implementation A3CalendarView {
+	NSInteger numberOfWeeks;
+	NSInteger firstDayStartIndex;
+	NSInteger lastDayIndex;
+	NSInteger lastWeekday;
+	NSInteger lastDay;
+
+	NSInteger dateBGHeight;
+	NSArray *periods;
+	__strong NSMutableArray *redLines;
+	__strong NSMutableArray *greenLines;
+	__strong NSMutableArray *yellowLines;
+	__strong NSMutableArray *circleArray;
+	__block dispatch_queue_t dQueue;
+	BOOL isCurrentMonth;
+	NSInteger today;
+}
 
 - (void)awakeFromNib
 {
-    self.outlineColor = nil;
-    self.dateFont = [UIFont systemFontOfSize:(IS_IPHONE ? 14.0 : 18.0)];
+	self.dateFont = [UIFont systemFontOfSize:(IS_IPHONE ? 14.0 : 18.0)];
     self.dateTextColor = [UIColor blackColor];
     self.weekendTextColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-    self.seperatorSize = CGSizeMake(0, 0.5);
-    self.showHorizontalSeperator = YES;
-    self.showVerticalSeperator = NO;
-    redLines = [NSMutableArray array];
+    CGSizeMake(0, 0.5);
+	redLines = [NSMutableArray array];
     greenLines = [NSMutableArray array];
     yellowLines = [NSMutableArray array];
     circleArray = [NSMutableArray array];
@@ -234,7 +255,7 @@
     NSLog(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)firstDayStartIndex,array);
 }
 
-- (void)addCirclAtDay:(NSDate*)date color:(UIColor*)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow  alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array
+- (void)addCircleAtDay:(NSDate *)date color:(UIColor *)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array
 {
     NSInteger day = [A3DateHelper dayFromDate:date];
 //    if( [A3DateHelper monthFromDate:date] != _month )
@@ -264,86 +285,68 @@
 
 - (void)reload
 {
-//    if( dQueue != NULL ){
-//        dispatch_suspend(dQueue);
-//    }
-    if( dQueue)
-        return;
-    
     if( _dateMonth == nil ){
         _dateMonth = [NSDate date];
     }
     [self updateDates];
-    
-    dQueue = dispatch_queue_create("reload", 0);
-    dispatch_barrier_async(dQueue, ^{
-        numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:_dateMonth];
-//        _cellSize = CGSizeMake( floorf(self.frame.size.width / 7), floorf(self.frame.size.height / numberOfWeeks));
-        NSInteger weekday = [A3DateHelper weekdayFromDate:[A3DateHelper dateMakeMonthFirstDayAtDate:_dateMonth]];
-        firstDayStartIndex = weekday-1;
-        lastDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
-        lastDayIndex = firstDayStartIndex + lastDay - 1;
-        NSDate *lastDate = [A3DateHelper dateByAddingDays:(lastDay-1) fromDate:_dateMonth];
-        lastWeekday = [A3DateHelper weekdayFromDate:lastDate];
+	numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:_dateMonth];
+	NSInteger weekday = [A3DateHelper weekdayFromDate:[A3DateHelper dateMakeMonthFirstDayAtDate:_dateMonth]];
+	firstDayStartIndex = weekday-1;
+	lastDay = [A3DateHelper lastDaysOfMonth:_dateMonth];
+	lastDayIndex = firstDayStartIndex + lastDay - 1;
+	NSDate *lastDate = [A3DateHelper dateByAddingDays:(lastDay-1) fromDate:_dateMonth];
+	lastWeekday = [A3DateHelper weekdayFromDate:lastDate];
 
-        dateBGHeight = (IS_IPHONE ? 25.0 : 36.0);
-        periods = [[A3LadyCalendarModelManager sharedManager] periodListInRangeWithMonth:_dateMonth accountID:_account.accountID];
-        NSLog(@"%s %@",__FUNCTION__,periods);
-        [redLines removeAllObjects];
-        [greenLines removeAllObjects];
-        [yellowLines removeAllObjects];
-        [circleArray removeAllObjects];
-        NSDate *dateToday = [A3DateHelper dateMakeDate:[NSDate date] Hour:0 minute:0];
-        for(LadyCalendarPeriod *period in periods){
-            NSLog(@"%s cur month:%@ period %@ / %@",__FUNCTION__,_dateMonth,period.startDate,period.endDate);
-            LadyCalendarPeriod *nextPeriod = [[A3LadyCalendarModelManager sharedManager] nextPeriodFromDate:period.startDate accountID:_account.accountID];
-            NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
-            NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
-            
-            NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
-            NSDate *pregEdDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
-            NSDate *prevOvuDate = [A3DateHelper dateByAddingDays:-1 fromDate:ovulationDate];
-            NSDate *nextOvDate = [A3DateHelper dateByAddingDays:1 fromDate:ovulationDate];
-            
-            UIColor *redColor = [UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:([period.startDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)];
-            UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:([pregStDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)];
-            UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:230.0/255.0 blue:87.0/255.0 alpha:([ovulationDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)];
-            
-            NSLog(@"%s menstural date %@",__FUNCTION__,_dateMonth);
-            if( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ){
-                [self addLineFromDate:period.startDate endDate:period.endDate toArray:redLines withColor:redColor isStartMargin:YES isEndMargin:YES];
-                if( [A3DateHelper monthFromDate:period.startDate] == _month )
-                    [self addCirclAtDay:period.startDate color:[UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:([period.startDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
-                if( [A3DateHelper monthFromDate:period.endDate] == _month )
-                    [self addCirclAtDay:period.endDate color:[UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:([period.startDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
-            }
+	dateBGHeight = (IS_IPHONE ? 25.0 : 36.0);
+	periods = [_dataManager periodListInRangeWithMonth:_dateMonth accountID:self.dataManager.currentAccount.uniqueID];
+	NSLog(@"%s %@",__FUNCTION__,periods);
+	[redLines removeAllObjects];
+	[greenLines removeAllObjects];
+	[yellowLines removeAllObjects];
+	[circleArray removeAllObjects];
+	NSDate *dateToday = [A3DateHelper dateMakeDate:[NSDate date] Hour:0 minute:0];
+	for(LadyCalendarPeriod *period in periods){
+		NSLog(@"%s cur month:%@ period %@ / %@",__FUNCTION__,_dateMonth,period.startDate,period.endDate);
+		LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate accountID:_dataManager.currentAccount.uniqueID];
+		NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
+		NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
 
-            
-            
-            NSLog(@"%s preg date %@",__FUNCTION__,_dateMonth);
-            if( [A3DateHelper monthFromDate:pregStDate] == _month || [A3DateHelper monthFromDate:prevOvuDate] == _month ){
-                [self addLineFromDate:pregStDate endDate:prevOvuDate toArray:greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
-                if( [A3DateHelper monthFromDate:pregStDate] == _month )
-                    [self addCirclAtDay:pregStDate color:[UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:([pregStDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
-            }
-            if( [A3DateHelper monthFromDate:nextOvDate] == _month || [A3DateHelper monthFromDate:pregEdDate] == _month ){
-                [self addLineFromDate:nextOvDate endDate:pregEdDate toArray:greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
-                if( [A3DateHelper monthFromDate:pregEdDate] == _month )
-                    [self addCirclAtDay:pregEdDate color:[UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:([pregStDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
-            }
-            NSLog(@"%s ovulation date %@/%@",__FUNCTION__,_dateMonth,ovulationDate);
-            if( [A3DateHelper monthFromDate:ovulationDate] == _month ){
-                [self addLineFromDate:ovulationDate endDate:ovulationDate toArray:yellowLines withColor:yellowColor isStartMargin:NO isEndMargin:NO];
-                [self addCirclAtDay:ovulationDate color:[UIColor colorWithRed:238.0/255.0 green:230.0/255.0 blue:87.0/255.0 alpha:([ovulationDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:circleArray];
-            }
-        }
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            dQueue = NULL;
-            [self setNeedsDisplay];
-        });
-        
-    });
+		NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
+		NSDate *pregEdDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
+		NSDate *prevOvuDate = [A3DateHelper dateByAddingDays:-1 fromDate:ovulationDate];
+		NSDate *nextOvDate = [A3DateHelper dateByAddingDays:1 fromDate:ovulationDate];
+
+		UIColor *redColor = [UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:([period.startDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)];
+		UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:([pregStDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)];
+		UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:230.0/255.0 blue:87.0/255.0 alpha:([ovulationDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)];
+
+		NSLog(@"%s menstural date %@",__FUNCTION__,_dateMonth);
+		if( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ){
+			[self addLineFromDate:period.startDate endDate:period.endDate toArray:redLines withColor:redColor isStartMargin:YES isEndMargin:YES];
+			if( [A3DateHelper monthFromDate:period.startDate] == _month )
+				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:([period.startDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
+			if( [A3DateHelper monthFromDate:period.endDate] == _month )
+				[self addCircleAtDay:period.endDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:([period.startDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+		}
+
+		NSLog(@"%s preg date %@",__FUNCTION__,_dateMonth);
+		if( [A3DateHelper monthFromDate:pregStDate] == _month || [A3DateHelper monthFromDate:prevOvuDate] == _month ){
+			[self addLineFromDate:pregStDate endDate:prevOvuDate toArray:greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
+			if( [A3DateHelper monthFromDate:pregStDate] == _month )
+				[self addCircleAtDay:pregStDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:([pregStDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
+		}
+		if( [A3DateHelper monthFromDate:nextOvDate] == _month || [A3DateHelper monthFromDate:pregEdDate] == _month ){
+			[self addLineFromDate:nextOvDate endDate:pregEdDate toArray:greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
+			if( [A3DateHelper monthFromDate:pregEdDate] == _month )
+				[self addCircleAtDay:pregEdDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:([pregStDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+		}
+		NSLog(@"%s ovulation date %@/%@",__FUNCTION__,_dateMonth,ovulationDate);
+		if( [A3DateHelper monthFromDate:ovulationDate] == _month ){
+			[self addLineFromDate:ovulationDate endDate:ovulationDate toArray:yellowLines withColor:yellowColor isStartMargin:NO isEndMargin:NO];
+			[self addCircleAtDay:ovulationDate color:[UIColor colorWithRed:238.0 / 255.0 green:230.0 / 255.0 blue:87.0 / 255.0 alpha:([ovulationDate timeIntervalSince1970] > [dateToday timeIntervalSince1970] ? 0.4 : 1.0)] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:circleArray];
+		}
+	}
+	[self setNeedsDisplay];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

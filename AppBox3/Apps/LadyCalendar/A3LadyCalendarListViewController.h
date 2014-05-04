@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3LadyCalendarModelManager;
+
 @interface A3LadyCalendarListViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIButton *addButton;
+
+@property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
 
 - (IBAction)addPeriodAction:(id)sender;
 @end

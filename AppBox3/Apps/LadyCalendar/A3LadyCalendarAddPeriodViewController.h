@@ -11,12 +11,14 @@
 
 @class LadyCalendarPeriod;
 @class LadyCalendarAccount;
-@interface A3LadyCalendarAddPeriodViewController : UITableViewController<UITextViewDelegate,A3KeyboardDelegate,UITextFieldDelegate,UIAlertViewDelegate,UIActionSheetDelegate>{
-    LadyCalendarAccount *currentAccount;
-}
+@class A3LadyCalendarModelManager;
+
+@interface A3LadyCalendarAddPeriodViewController : UITableViewController<UITextViewDelegate,A3KeyboardDelegate,UITextFieldDelegate,UIAlertViewDelegate,UIActionSheetDelegate>
 
 @property (assign, nonatomic) UINavigationController *parentNavigationCtrl;
 @property (strong, nonatomic) LadyCalendarPeriod *periodItem;
 @property (strong, nonatomic) NSMutableArray *items;
 @property (assign, nonatomic) BOOL isEditMode;
+@property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
+
 @end

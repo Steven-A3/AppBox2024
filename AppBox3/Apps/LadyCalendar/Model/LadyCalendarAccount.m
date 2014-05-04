@@ -1,22 +1,23 @@
 //
 //  LadyCalendarAccount.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 18..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 5/3/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "LadyCalendarAccount.h"
+#import "LadyCalendarPeriod.h"
 
 
 @implementation LadyCalendarAccount
 
-@dynamic accountID;
-@dynamic accountName;
+@dynamic uniqueID;
+@dynamic name;
+@dynamic notes;
 @dynamic birthDay;
-@dynamic accountNotes;
 @dynamic order;
-@dynamic regDate;
+@dynamic modificationDate;
 @dynamic periods;
 
 @end

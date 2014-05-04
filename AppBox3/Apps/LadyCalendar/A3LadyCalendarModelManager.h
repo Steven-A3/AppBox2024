@@ -10,15 +10,12 @@
 
 @class LadyCalendarAccount;
 @class LadyCalendarPeriod;
-@interface A3LadyCalendarModelManager : NSObject{
-    NSManagedObjectContext *managedContext;
-}
 
-+ (A3LadyCalendarModelManager*)sharedManager;
+@interface A3LadyCalendarModelManager : NSObject
+
+@property (nonatomic, strong) LadyCalendarAccount *currentAccount;
+
 + (void)alertMessage:(NSString*)message title:(NSString*)title;
-+ (UIImage*)createTripleCircleImageSize:(CGSize)size lineColor:(UIColor*)lineColor centerColor:(UIColor*)centerColor outCircleColor:(UIColor*)outCircleColor;
-
-- (NSManagedObjectContext*)managedObjectContext;
 
 - (void)prepare;
 - (void)savePredictItemBeforeNow;
@@ -29,22 +26,17 @@
 - (BOOL)addAccount:(NSDictionary*)item;
 - (BOOL)removeAccount:(NSString*)accountID;
 - (BOOL)modifyAccount:(NSDictionary*)item;
-- (NSArray*)accountListSortedByNameIsAscending:(BOOL)ascending;
+
 - (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending;
 - (NSMutableDictionary*)dictionaryFromAccount:(LadyCalendarAccount*)account;
 - (LadyCalendarAccount*)currentAccount;
 
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID;
 - (LadyCalendarPeriod*)periodForID:(NSString*)periodID;
-- (NSMutableDictionary*)emptyPeriod;
-- (BOOL)addPeriod:(NSDictionary*)item;
-- (void)autosavePredictPeriodToReal:(LadyCalendarPeriod*)item;
+- (void)autoSavePredictPeriodToReal:(LadyCalendarPeriod*)item;
 - (BOOL)removePeriod:(NSString*)periodID;
-- (BOOL)modifyPeriod:(NSDictionary*)item;
-- (NSMutableDictionary*)dictionaryFromPeriod:(LadyCalendarPeriod*)period;
 - (NSArray*)periodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID;
 - (NSArray*)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID;
-- (NSArray*)fullPeriodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID;
 
 - (NSArray*)periodListWithMonth:(NSDate*)month accountID:(NSString*)accountID containPredict:(BOOL)containPredict;
 - (NSArray*)periodListWithMonth:(NSDate*)month period:(NSInteger)period accountID:(NSString*)accountID;
@@ -60,4 +52,8 @@
 - (void)recalculateDates;
 - (NSString*)dateStringForDate:(NSDate*)date;
 - (NSString*)dateStringExceptYearForDate:(NSDate*)date;
+
+- (NSDate *)startDateForCurrentAccount;
+- (NSDate *)endDateForCurrentAccount;
+
 @end

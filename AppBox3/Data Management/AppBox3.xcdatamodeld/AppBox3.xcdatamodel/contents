@@ -135,26 +135,25 @@
         <relationship name="budget" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExpenseListBudget" inverseName="expenseItems" inverseEntity="ExpenseListBudget" syncable="YES"/>
     </entity>
     <entity name="LadyCalendarAccount" representedClassName="LadyCalendarAccount" syncable="YES">
-        <attribute name="accountID" attributeType="String" syncable="YES"/>
-        <attribute name="accountName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="accountNotes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="birthDay" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="periods" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="LadyCalendarPeriod" inverseName="account" inverseEntity="LadyCalendarPeriod" syncable="YES"/>
     </entity>
     <entity name="LadyCalendarPeriod" representedClassName="LadyCalendarPeriod" syncable="YES">
-        <attribute name="accountID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="calendarID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="cycleLength" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="endDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="cycleLength" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="endDate" attributeType="Date" syncable="YES"/>
         <attribute name="isAutoSave" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="isPredict" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="modificationDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="notes" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="ovulation" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="periodID" attributeType="String" syncable="YES"/>
-        <attribute name="periodNotes" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="regDate" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="startDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="periodEnds" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="startDate" attributeType="Date" syncable="YES"/>
+        <attribute name="uniqueID" attributeType="String" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LadyCalendarAccount" inverseName="periods" inverseEntity="LadyCalendarAccount" syncable="YES"/>
     </entity>
     <entity name="LoanCalcComparisonHistory" representedClassName="LoanCalcComparisonHistory" syncable="YES">
@@ -397,7 +396,7 @@
         <element name="ExpenseListHistory" positionX="196" positionY="-342" width="128" height="73"/>
         <element name="ExpenseListItem" positionX="196" positionY="-235" width="128" height="163"/>
         <element name="LadyCalendarAccount" positionX="-765" positionY="950" width="128" height="148"/>
-        <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="223"/>
+        <element name="LadyCalendarPeriod" positionX="-585" positionY="873" width="128" height="238"/>
         <element name="LoanCalcComparisonHistory" positionX="198" positionY="837" width="128" height="135"/>
         <element name="LoanCalcHistory" positionX="421" positionY="536" width="128" height="433"/>
         <element name="PercentCalcHistory" positionX="-783" positionY="15" width="128" height="75"/>

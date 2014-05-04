@@ -9,6 +9,7 @@
 #import "A3LadyCalendarSettingViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "A3LadyCalendarModelManager.h"
 #import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3UserDefaults.h"
@@ -49,7 +50,7 @@
                        @{ItemKey_Title  : @"",ItemKey_Description : @"Notify about estimated next starting date.",ItemKey_Items : @[@{ItemKey_Title: @"Alert",ItemKey_Type : @(SettingCell_Alert)}]}];
     self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
     if( self.settingDict == nil )
-        self.settingDict = [[A3LadyCalendarModelManager sharedManager] createDefaultSetting];
+        self.settingDict = [_dataManager createDefaultSetting];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -206,7 +207,7 @@
         cell.textLabel.text = [item objectForKey:ItemKey_Title];
         NSInteger alertType = [[_settingDict objectForKey:SettingItem_AlertType] integerValue];
         if( alertType != AlertType_Custom )
-            cell.detailTextLabel.text = [[A3LadyCalendarModelManager sharedManager] stringForAlertType:alertType];
+            cell.detailTextLabel.text = [_dataManager stringForAlertType:alertType];
         else
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld days before %@",(long)[[_settingDict objectForKey:SettingItem_CustomAlertDays] integerValue],[A3DateHelper dateStringFromDate:[_settingDict objectForKey:SettingItem_CustomAlertTime] withFormat:@"h:mm a"]];
     }
@@ -234,6 +235,7 @@
         
         if( [[item objectForKey:ItemKey_Type] integerValue] == SettingCell_Alert ){
             A3LadyCalendarSetupAlertViewController *viewCtrl = [[A3LadyCalendarSetupAlertViewController alloc] initWithNibName:@"A3LadyCalendarSetupAlertViewController" bundle:nil];
+			viewCtrl.dataManager = _dataManager;
             viewCtrl.settingDict = self.settingDict;
             [self.navigationController pushViewController:viewCtrl animated:YES];
         }
@@ -246,7 +248,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[A3LadyCalendarModelManager sharedManager] recalculateDates];
+    [_dataManager recalculateDates];
     if( IS_IPHONE )
         [self dismissViewControllerAnimated:YES completion:nil];
     else
@@ -276,7 +278,7 @@
     [[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    [[A3LadyCalendarModelManager sharedManager] recalculateDates];
+    [_dataManager recalculateDates];
 }
 
 @end

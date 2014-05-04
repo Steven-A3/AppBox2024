@@ -20,21 +20,25 @@
 
 
 @interface A3LadyCalendarAccountViewController ()
+
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) UIImage *checkImage;
+@property (strong, nonatomic) IBOutlet UIButton *addButton;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-- (void)editAction:(id)sender;
-- (void)reorderingItems;
 @end
 
-@implementation A3LadyCalendarAccountViewController
+@implementation A3LadyCalendarAccountViewController {
+	NSInteger numberOfCellInPage;
+}
+
 - (void)reorderingItems
 {
     for(NSInteger i=0; i < [_itemArray count]; i++){
         LadyCalendarAccount *item = [_itemArray objectAtIndex:i];
         item.order = [NSNumber numberWithInteger:i+1];
     }
-    [[[A3LadyCalendarModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -51,7 +55,7 @@
     [super viewDidLoad];
 
     self.title = @"Accounts";
-    if( [[A3LadyCalendarModelManager sharedManager] numberOfAccount] > 0 )
+    if( [_dataManager numberOfAccount] > 0 )
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
     [self makeBackButtonEmptyArrow];
     
@@ -78,7 +82,7 @@
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES];
     
-    self.itemArray = [NSMutableArray arrayWithArray:[[A3LadyCalendarModelManager sharedManager] accountListSortedByOrderIsAscending:YES]];
+    self.itemArray = [NSMutableArray arrayWithArray:[_dataManager accountListSortedByOrderIsAscending:YES]];
     numberOfCellInPage = (NSInteger)floor((self.tableView.frame.size.height-self.tableView.contentInset.top) / 60.0);
 //    NSLog(@"%s %d / %f ",__FUNCTION__,numberOfCellInPage,(self.tableView.frame.size.height-self.tableView.contentInset.top));
     [self.tableView reloadData];
@@ -177,10 +181,10 @@
     if( indexPath.row < [_itemArray count] ){
         LadyCalendarAccount *item = [_itemArray objectAtIndex:indexPath.row];
         
-        nameLabel.text = item.accountName;
+        nameLabel.text = item.name;
         dateLabel.text = (item.birthDay ? [A3DateHelper dateStringFromDate:item.birthDay withFormat:@"MMM dd yyyy"] : @"");
-        notesLabel.text = [A3DateHelper dateStringFromDate:item.regDate withFormat:@"MMM dd yyyy"];
-        imageView.hidden = ![[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:item.accountID];
+        notesLabel.text = [A3DateHelper dateStringFromDate:item.modificationDate withFormat:@"MMM dd yyyy"];
+        imageView.hidden = ![[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:item.uniqueID];
     }
     else{
         nameLabel.text = @"";
@@ -188,9 +192,9 @@
         notesLabel.text = @"";
         imageView.hidden = YES;
     }
-//    cell.textLabel.text = item.accountName;
+//    cell.textLabel.text = item.name;
 //    cell.detailTextLabel.text = (item.birthDay ? [A3DateHelper dateStringFromDate:item.birthDay withFormat:@"MMM dd yyyy"] : @"" );
-//    cell.accessoryView = ( [[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:item.accountID] ? [[UIImageView alloc] initWithImage:self.checkImage] : nil);
+//    cell.accessoryView = ( [[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:item.uniqueID] ? [[UIImageView alloc] initWithImage:self.checkImage] : nil);
     
     return cell;
 }
@@ -211,7 +215,7 @@
         return;
     
     LadyCalendarAccount *item = [_itemArray objectAtIndex:indexPath.row];
-    [[NSUserDefaults standardUserDefaults] setObject:item.accountID forKey:A3LadyCalendarCurrentAccountID];
+	[[NSUserDefaults standardUserDefaults] setObject:item.uniqueID forKey:A3LadyCalendarCurrentAccountID];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [tableView reloadData];
 }
@@ -221,14 +225,14 @@
     if( indexPath.row >= [_itemArray count] )
         return NO;
     LadyCalendarAccount *account = [_itemArray objectAtIndex:indexPath.row];
-    return ![[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:account.accountID];
+    return ![[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:account.uniqueID];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if( editingStyle == UITableViewCellEditingStyleDelete ){
         LadyCalendarAccount *account = [_itemArray objectAtIndex:indexPath.row];
-        [[A3LadyCalendarModelManager sharedManager] removeAccount:account.accountID];
+		[_dataManager removeAccount:account.uniqueID];
         [_itemArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         [self reorderingItems];
@@ -240,6 +244,7 @@
 - (IBAction)addAccountAction
 {
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     if( IS_IPHONE ){
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -253,6 +258,7 @@
 - (void)editAction:(id)sender
 {
     A3LadyCalendarAccountEditViewController *viewCtrl = [[A3LadyCalendarAccountEditViewController alloc] initWithNibName:@"A3LadyCalendarAccountEditViewController" bundle:nil];
+	viewCtrl.dataManager = self.dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     if( IS_IPHONE ){
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;

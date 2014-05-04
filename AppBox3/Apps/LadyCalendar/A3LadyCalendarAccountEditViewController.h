@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3LadyCalendarModelManager;
+
 @interface A3LadyCalendarAccountEditViewController : UITableViewController
+
+@property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
 
 @end

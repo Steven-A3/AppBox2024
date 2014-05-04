@@ -19,6 +19,7 @@
 #import "A3ColoredCircleView.h"
 
 @interface A3LadyCalendarListViewController ()
+
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) NSMutableDictionary *groupDict;
 @property (strong, nonatomic) NSArray *sourceArray;
@@ -33,6 +34,7 @@
 @end;
 
 @implementation A3LadyCalendarListViewController
+
 - (void)groupingPeriodByYearInArray:(NSArray*)array
 {
     NSMutableArray *groupedArray = [NSMutableArray array];
@@ -139,9 +141,9 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES];
-    self.currentAccount = [[A3LadyCalendarModelManager sharedManager] currentAccount];
-    self.sourceArray = [[A3LadyCalendarModelManager sharedManager] periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.accountID];
-    self.predictArray = [[A3LadyCalendarModelManager sharedManager] predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.accountID];
+    self.currentAccount = [_dataManager currentAccount];
+    self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+    self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
     self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
     [self groupingPeriodByYearInArray:_fullArray];
     [self.tableView reloadData];
@@ -255,7 +257,7 @@
     if( item ){
         NSLog(@"%s %ld/%ld %@",__FUNCTION__, (long)indexPath.section, (long)indexPath.row,item);
         circleView.hidden = NO;
-        textLabel.text = (IS_IPHONE ? [[A3LadyCalendarModelManager sharedManager] dateStringExceptYearForDate:item.startDate] : [NSString stringWithFormat:@"%@ - %@",[[A3LadyCalendarModelManager sharedManager] dateStringExceptYearForDate:item.startDate],[[A3LadyCalendarModelManager sharedManager] dateStringExceptYearForDate:item.endDate]]);
+        textLabel.text = (IS_IPHONE ? [_dataManager dateStringExceptYearForDate:item.startDate] : [NSString stringWithFormat:@"%@ - %@",[_dataManager dateStringExceptYearForDate:item.startDate],[_dataManager dateStringExceptYearForDate:item.endDate]]);
 //        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
         LadyCalendarPeriod *nextPeriod = [self nextPeriodFromIndexPath:indexPath];
 //        BOOL isRealLast = ( (![item.isPredict boolValue] && nextPeriod == nil) || (nextPeriod && [nextPeriod.isPredict boolValue]) );
@@ -307,10 +309,10 @@
         LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
         
         if( item ){
-            if( [[A3LadyCalendarModelManager sharedManager] removePeriod:item.periodID] ){
-                [[A3LadyCalendarModelManager sharedManager] recalculateDates];
-                self.sourceArray = [[A3LadyCalendarModelManager sharedManager] periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.accountID];
-                self.predictArray = [[A3LadyCalendarModelManager sharedManager] predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.accountID];
+            if([_dataManager removePeriod:item.uniqueID] ){
+                [_dataManager recalculateDates];
+                self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+                self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
                 self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
                 [self groupingPeriodByYearInArray:_fullArray];
                 [self.tableView reloadData];
@@ -338,6 +340,7 @@
     NSString *monthStr = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"MMMM"];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStylePlain target:nil action:nil];
     A3LadyCalendarDetailViewController *viewCtrl = [[A3LadyCalendarDetailViewController alloc] initWithNibName:@"A3LadyCalendarDetailViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     viewCtrl.month = item.startDate;
     viewCtrl.periodItems = [self sameMonthItemFromIndexPath:indexPath];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStyleBordered target:nil action:nil];
@@ -348,6 +351,7 @@
 - (IBAction)addPeriodAction:(id)sender
 {
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];

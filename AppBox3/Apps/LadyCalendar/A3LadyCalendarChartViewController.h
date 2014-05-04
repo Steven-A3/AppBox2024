@@ -8,19 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3LadyCalendarChartViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>{
-    NSInteger minCycleLength;
-    NSInteger maxCycleLength;
-    NSInteger minMensPeriod;
-    NSInteger maxMensPeriod;
-    NSInteger xLabelDisplayInterval;
-}
+@class A3LadyCalendarModelManager;
+
+@interface A3LadyCalendarChartViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *periodSegmentCtrl;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentLeftConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentRightConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *seperatorHeightConst;
+
+@property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
 
 - (IBAction)periodChangedAction:(id)sender;
 @end

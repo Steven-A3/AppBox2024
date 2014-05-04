@@ -30,7 +30,10 @@
 
 @end
 
-@implementation A3LadyCalendarDetailViewController
+@implementation A3LadyCalendarDetailViewController {
+	LadyCalendarAccount *currentAccount;
+	BOOL isEditNavigationBar;
+}
 
 - (NSArray*)templateForItemIsPredict:(BOOL)isPredict startDate:(NSDate*)startDate endDate:(NSDate*)endDate notes:(NSString*)notes
 {
@@ -63,19 +66,19 @@
 {
     NSMutableArray *retArray = [NSMutableArray array];
     NSDate *today = [NSDate date];
-    NSDate *monthFirstday = [A3DateHelper dateFromYear:[A3DateHelper yearFromDate:_month] month:[A3DateHelper monthFromDate:_month] day:1 hour:0 minute:0 second:0];
-    NSDate *nextMonth = [A3DateHelper dateByAddingMonth:1 fromDate:monthFirstday];
+    NSDate *monthFirstDay = [A3DateHelper dateFromYear:[A3DateHelper yearFromDate:_month] month:[A3DateHelper monthFromDate:_month] day:1 hour:0 minute:0 second:0];
+    NSDate *nextMonth = [A3DateHelper dateByAddingMonth:1 fromDate:monthFirstDay];
     self.dataArray = [NSMutableArray array];
     NSInteger editableCount = 0;
     for( LadyCalendarPeriod *item in array ){
-        NSArray *tmpArray = [self templateForItemIsPredict:[item.isPredict boolValue] startDate:item.startDate endDate:item.endDate notes:item.periodNotes];
+        NSArray *tmpArray = [self templateForItemIsPredict:[item.isPredict boolValue] startDate:item.startDate endDate:item.endDate notes:item.notes];
         [retArray addObject:tmpArray];
-        [_dataArray addObject:@{PeriodItem_CycleLength: item.cycleLength,PeriodItem_StartDate : item.startDate, PeriodItem_EndDate : item.endDate,PeriodItem_IsPerdict : item.isPredict,PeriodItem_RegDate : item.regDate,PeriodItem_Notes : (item.periodNotes ? item.periodNotes : @""), PeriodItem_ID : item.periodID}];
+        [_dataArray addObject:@{PeriodItem_CycleLength: item.cycleLength,PeriodItem_StartDate : item.startDate, PeriodItem_EndDate : item.endDate,PeriodItem_IsPerdict : item.isPredict,PeriodItem_RegDate : item.modificationDate,PeriodItem_Notes : (item.notes ? item.notes : @""), PeriodItem_ID : item.uniqueID}];
         if( ![item.isPredict boolValue] || [item.startDate timeIntervalSince1970] < [today timeIntervalSince1970] )
             editableCount++;
         
         if( item == [array lastObject] ){
-            LadyCalendarPeriod *nextPeriod = [[A3LadyCalendarModelManager sharedManager] nextPeriodFromDate:item.startDate accountID:currentAccount.accountID];
+            LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:item.startDate accountID:_dataManager.currentAccount.uniqueID];
 
             NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[item.cycleLength integerValue] fromDate:item.startDate] );
             NSDate *nextEndDate = ( nextPeriod ? nextPeriod.endDate : [A3DateHelper dateByAddingDays:4 fromDate:nextStartDate] );
@@ -119,12 +122,6 @@
 
     self.title = @"";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-//    CGRect appFrame = [[UIScreen mainScreen] applicationFrame];
-//    UIView *removeView = [[UIView alloc] initWithFrame:CGRectMake(0, 73.5+self.tableView.contentInset.top, appFrame.size.width, 1.0 / [[UIScreen mainScreen] scale])];
-//    removeView.backgroundColor = [UIColor whiteColor];
-//    [self.tableView addSubview:removeView];
-    
-    currentAccount = [[A3LadyCalendarModelManager sharedManager] currentAccount];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -132,11 +129,6 @@
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES];
 
-//    LadyCalendarPeriod *period = [_periodItems objectAtIndex:0];
-//    if( ![period.isPredict boolValue] && ([_periodItems count] == 1)){
-//        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-//        self.navigationItem.rightBarButtonItem.width = 44.0;
-//    }
     [self setupTemplateWithItems:_periodItems];
     [self.tableView reloadData];
 }
@@ -175,7 +167,6 @@
     NSArray *items = [_templateArray objectAtIndex:indexPath.section];
     NSDictionary *dict = [items objectAtIndex:indexPath.row];
     NSInteger cellType = [[dict objectForKey:ItemKey_Type] integerValue];
-//    LadyCalendarPeriod *periodItem = [_periodItems objectAtIndex:indexPath.section];
     NSDictionary *item = [_dataArray objectAtIndex:indexPath.section];
     
     NSString *CellIdentifier = ( cellType == DetailCellType_Title ? CELLID_TITLE : CELLID_SUBITEM);
@@ -199,11 +190,6 @@
         for(NSLayoutConstraint *layout in cell.contentView.constraints){
             if( layout.firstAttribute == NSLayoutAttributeLeading && (layout.firstItem == leftView1 || layout.firstItem == leftView2) ){
                 layout.constant = (IS_IPHONE ? 15.0 : 28.0);
-//                if( [CellIdentifier isEqualToString:CELLID_TITLE] )
-//                    layout.constant = (IS_IPHONE ? 15.0 : 28.0);
-//                else {
-//                    layout.constant = (IS_IPHONE ? 15.0 : 28.0);
-//                }
             }
         }
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -232,7 +218,7 @@
         
         sectionTitleLabel.text = [dict objectForKey:ItemKey_Title];
         if( !isPredict ){
-            sectionDetailLabel.text = [NSString stringWithFormat:@"Updated %@",[[A3LadyCalendarModelManager sharedManager] dateStringForDate:[item objectForKey:PeriodItem_RegDate]]];
+            sectionDetailLabel.text = [NSString stringWithFormat:@"Updated %@",[_dataManager dateStringForDate:[item objectForKey:PeriodItem_RegDate]]];
         }
         else{
             sectionDetailLabel.text = @"";
@@ -244,10 +230,10 @@
             NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
             NSDate *pregEdDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
             
-            detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[[A3LadyCalendarModelManager sharedManager] dateStringForDate:pregStDate],[[A3LadyCalendarModelManager sharedManager] dateStringForDate:pregEdDate]];
+            detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[_dataManager dateStringForDate:pregStDate],[_dataManager dateStringForDate:pregEdDate]];
         }
         else{
-            detailTextLabel.text = [[A3LadyCalendarModelManager sharedManager] dateStringForDate:startDate];
+            detailTextLabel.text = [_dataManager dateStringForDate:startDate];
         }
     }
     else{
@@ -257,14 +243,8 @@
         textLabel.text = [dict objectForKey:ItemKey_Title];
         
         switch (cellType) {
-//            case DetailCellType_DescTitle:
-//                detailTextLabel.text = @"";
-//                break;
-//            case DetailCellType_StartDate:
-//                detailTextLabel.text = [[A3LadyCalendarModelManager sharedManager] dateStringForDate:startDate];
-//                break;
             case DetailCellType_EndDate:
-                detailTextLabel.text = [[A3LadyCalendarModelManager sharedManager] dateStringForDate:endDate];
+                detailTextLabel.text = [_dataManager dateStringForDate:endDate];
                 break;
             case DetailCellType_CycleLength:{
                 NSInteger cycleLength = [[item objectForKey:PeriodItem_CycleLength] integerValue];
@@ -282,22 +262,13 @@
                 detailTextLabel.text = notes;
             }
                 break;
-//            case DetailCellType_Pregnancy:{
-//                NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:startDate];
-//                NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
-//                NSDate *pregEdDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
-//                
-//                detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[[A3LadyCalendarModelManager sharedManager] dateStringForDate:pregStDate],[[A3LadyCalendarModelManager sharedManager] dateStringForDate:pregEdDate]];
-//
-//            }
-//                break;
             case DetailCellType_Ovulation:{
                 NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:startDate];
-                detailTextLabel.text = [[A3LadyCalendarModelManager sharedManager] dateStringForDate:ovulationDate];
+                detailTextLabel.text = [_dataManager dateStringForDate:ovulationDate];
             }
                 break;
             case DetailCellType_MenstrualPeriod:{
-                detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[[A3LadyCalendarModelManager sharedManager] dateStringForDate:startDate],[[A3LadyCalendarModelManager sharedManager] dateStringForDate:endDate]];
+                detailTextLabel.text = [NSString stringWithFormat:@"%@ - %@",[_dataManager dateStringForDate:startDate],[_dataManager dateStringForDate:endDate]];
             }
                 break;
         }
@@ -316,11 +287,7 @@
     if( cellType == DetailCellType_Title ){
         retHeight = 154.0;
     }
-//    else if( cellType == DetailCellType_DescTitle ){
-//        retHeight = 44.0;
-//    }
     else if( cellType == DetailCellType_Notes ){
-//        LadyCalendarPeriod *periodItem = [_periodItems objectAtIndex:indexPath.section];
         NSDictionary *item = [_dataArray objectAtIndex:indexPath.section];
         NSString *str = ( [[item objectForKey:PeriodItem_Notes] length] > 0 ? [item objectForKey:PeriodItem_Notes] : @"" );
         CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, 99999.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
@@ -334,15 +301,6 @@
     
     return retHeight;
 }
-
-//- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if( indexPath.row > 0 )
-//        return 2;
-//    
-//    return 0;
-//}
-
 
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -412,15 +370,6 @@
                 detailTextLabel.adjustsFontSizeToFitWidth = NO;
                 detailTextLabel.minimumScaleFactor = 1.0;
                 break;
-//            case DetailCellType_Pregnancy:
-//                textLabel.font = [UIFont systemFontOfSize:14.0];
-//                textLabel.textColor = [UIColor colorWithRGBRed:44 green:201 blue:144 alpha:255];
-//                detailTextLabel.font = [UIFont systemFontOfSize:17.0];
-//                detailTextLabel.textColor = [UIColor colorWithRGBRed:159 green:159 blue:159 alpha:255];
-//                detailTextLabel.numberOfLines = 1;
-//                detailTextLabel.adjustsFontSizeToFitWidth = YES;
-//                detailTextLabel.minimumScaleFactor = 0.5;
-//                break;
             case DetailCellType_Ovulation:
                 textLabel.font = [UIFont systemFontOfSize:14.0];
                 textLabel.textColor = [UIColor colorWithRGBRed:238 green:230 blue:87 alpha:255];
@@ -439,10 +388,6 @@
                 detailTextLabel.adjustsFontSizeToFitWidth = YES;
                 detailTextLabel.minimumScaleFactor = 0.5;
                 break;
-//            case DetailCellType_DescTitle:
-//                textLabel.font = [UIFont boldSystemFontOfSize:17.0];
-//                detailTextLabel.numberOfLines = 1;
-//                break;
         }
     }
 }
@@ -455,6 +400,7 @@
 - (void)editAction:(id)sender
 {
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = [_periodItems objectAtIndex:0];
     viewCtrl.items = _periodItems;
@@ -474,11 +420,12 @@
     if( [[dict objectForKey:PeriodItem_ID] length] < 1 )
         return;
     
-    LadyCalendarPeriod *item = [[A3LadyCalendarModelManager sharedManager] periodForID:[dict objectForKey:PeriodItem_ID]];
+    LadyCalendarPeriod *item = [_dataManager periodForID:[dict objectForKey:PeriodItem_ID]];
     if( item == nil )
         return;
     
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = item;
     viewCtrl.items = _periodItems;

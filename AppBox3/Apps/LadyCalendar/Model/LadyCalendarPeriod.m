@@ -1,9 +1,9 @@
 //
 //  LadyCalendarPeriod.m
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 18..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 5/3/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import "LadyCalendarPeriod.h"
@@ -12,17 +12,16 @@
 
 @implementation LadyCalendarPeriod
 
-@dynamic periodID;
-@dynamic startDate;
-@dynamic endDate;
 @dynamic cycleLength;
-//@dynamic ovulation;
-@dynamic periodNotes;
-@dynamic regDate;
-@dynamic isPredict;
-@dynamic calendarID;
+@dynamic endDate;
 @dynamic isAutoSave;
-@dynamic accountID;
+@dynamic isPredict;
+@dynamic ovulation;
+@dynamic periodEnds;
+@dynamic uniqueID;
+@dynamic notes;
+@dynamic modificationDate;
+@dynamic startDate;
 @dynamic account;
 
 @end

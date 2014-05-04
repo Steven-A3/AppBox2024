@@ -10,11 +10,11 @@
 
 @class LadyCalendarPeriod;
 @class LadyCalendarAccount;
-@interface A3LadyCalendarDetailViewController : UITableViewController{
-    LadyCalendarAccount *currentAccount;
-    BOOL isEditNavigationBar;
-}
+@class A3LadyCalendarModelManager;
 
+@interface A3LadyCalendarDetailViewController : UITableViewController
+
+@property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) NSMutableArray *periodItems;
 @property (strong, nonatomic) NSDate *month;
 

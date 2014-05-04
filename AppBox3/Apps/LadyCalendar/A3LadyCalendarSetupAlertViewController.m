@@ -58,7 +58,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-
     return 1;
 }
 
@@ -86,7 +85,7 @@
     }
     
     NSInteger type = [[_itemArray objectAtIndex:indexPath.row] integerValue];
-    cell.textLabel.text = [[A3LadyCalendarModelManager sharedManager] stringForAlertType:type];
+    cell.textLabel.text = [self.dataManager stringForAlertType:type];
     
     if( type == AlertType_Custom ){
         NSInteger currentType = [[_settingDict objectForKey:SettingItem_AlertType] integerValue];

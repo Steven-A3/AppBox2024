@@ -1,9 +1,9 @@
 //
 //  LadyCalendarPeriod.h
-//  A3TeamWork
+//  AppBox3
 //
-//  Created by coanyaa on 2013. 11. 18..
-//  Copyright (c) 2013년 ALLABOUTAPPS. All rights reserved.
+//  Created by A3 on 5/3/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -11,21 +11,18 @@
 
 @class LadyCalendarAccount;
 
-@interface LadyCalendarPeriod : NSManagedObject{
-    BOOL _isPredict;
-}
+@interface LadyCalendarPeriod : NSManagedObject
 
-@property (nonatomic, retain) NSString * periodID;
-@property (nonatomic, retain) NSDate * startDate;
-@property (nonatomic, retain) NSDate * endDate;
 @property (nonatomic, retain) NSNumber * cycleLength;
-//@property (nonatomic, retain) NSDate * ovulation;
-@property (nonatomic, retain) NSString * periodNotes;
-@property (nonatomic, retain) NSDate * regDate;
-@property (nonatomic, retain) NSNumber * isPredict;
-@property (nonatomic, retain) NSString * calendarID;
+@property (nonatomic, retain) NSDate * endDate;
 @property (nonatomic, retain) NSNumber * isAutoSave;
-@property (nonatomic, retain) NSString * accountID;
+@property (nonatomic, retain) NSNumber * isPredict;
+@property (nonatomic, retain) NSDate * ovulation;
+@property (nonatomic, retain) NSDate * periodEnds;
+@property (nonatomic, retain) NSString * uniqueID;
+@property (nonatomic, retain) NSString * notes;
+@property (nonatomic, retain) NSDate * modificationDate;
+@property (nonatomic, retain) NSDate * startDate;
 @property (nonatomic, retain) LadyCalendarAccount *account;
 
 @end

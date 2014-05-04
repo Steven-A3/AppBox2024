@@ -16,13 +16,10 @@
 #import "A3UserDefaults.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
+
 @property (strong, nonatomic) NSMutableArray *itemArray;
 @property (strong, nonatomic) NSMutableDictionary *accountModel;
 
-- (void)cancelAction:(id)sender;
-- (void)dateChangeAction:(id)sender;
-- (void)reloadItemAtCellType:(NSInteger)cellType;
-- (void)closeDateInputCell;
 @end
 
 @implementation A3LadyCalendarAddAccountViewController
@@ -79,9 +76,9 @@
     
     self.itemArray = [NSMutableArray arrayWithArray:@[@{ ItemKey_Title : @"Name", ItemKey_Type : @( AccountCell_Name )},@{ ItemKey_Title : @"Birthday", ItemKey_Type : @( AccountCell_Birthday )},@{ ItemKey_Title : @"Notes", ItemKey_Type : @( AccountCell_Notes )}]];
     if( _isEditMode )
-        self.accountModel = [[A3LadyCalendarModelManager sharedManager] dictionaryFromAccount:_accountItem];
+        self.accountModel = [_dataManager dictionaryFromAccount:_accountItem];
     else
-        self.accountModel = [[A3LadyCalendarModelManager sharedManager] emptyAccount];
+        self.accountModel = [_dataManager emptyAccount];
     self.navigationItem.rightBarButtonItem.enabled = _isEditMode;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
 }
@@ -282,7 +279,7 @@
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.selected = NO;
         
-        if( [[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem.accountID]){
+        if([[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID] isEqualToString:_accountItem.uniqueID]){
             [A3LadyCalendarModelManager alertMessage:@"Cannot remove current account" title:nil];
             return;
         }
@@ -295,7 +292,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
-        [[A3LadyCalendarModelManager sharedManager] removeAccount:_accountItem.accountID];
+		[_dataManager removeAccount:_accountItem.uniqueID];
         [self cancelAction:nil];
     }
 }
@@ -406,22 +403,17 @@
 {
     // 입력값 체크
     [self resignAllAction];
+
     if( [[_accountModel objectForKey:AccountItem_Name] length] < 1 ){
         NSInteger totalUser = [LadyCalendarAccount MR_countOfEntities];
         [_accountModel setObject:[NSString stringWithFormat:@"User%02ld", (long)totalUser+1] forKey:AccountItem_Name];
-//        [A3LadyCalendarModelManager alertMessage:@"Please input name" title:nil];
-//        return;
     }
-//    if( [_accountModel objectForKey:AccountItem_Birthday] == nil ){
-//        [A3LadyCalendarModelManager alertMessage:@"Please input birthday" title:nil];
-//        return;
-//    }
-    
+
     if( _isEditMode ){
-        [[A3LadyCalendarModelManager sharedManager] modifyAccount:_accountModel];
+        [_dataManager modifyAccount:_accountModel];
     }
     else{
-        [[A3LadyCalendarModelManager sharedManager] addAccount:_accountModel];
+        [_dataManager addAccount:_accountModel];
     }
     [self cancelAction:nil];
 }

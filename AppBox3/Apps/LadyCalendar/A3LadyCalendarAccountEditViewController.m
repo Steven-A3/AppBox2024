@@ -26,13 +26,14 @@
 @end
 
 @implementation A3LadyCalendarAccountEditViewController
+
 - (void)reorderingItems
 {
     for(NSInteger i=0; i < [_itemArray count]; i++){
         LadyCalendarAccount *item = [_itemArray objectAtIndex:i];
         item.order = [NSNumber numberWithInteger:i+1];
     }
-    [[[A3LadyCalendarModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
+    [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -62,7 +63,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.itemArray = [NSMutableArray arrayWithArray:[[A3LadyCalendarModelManager sharedManager] accountListSortedByOrderIsAscending:YES]];
+    self.itemArray = [NSMutableArray arrayWithArray:[_dataManager accountListSortedByOrderIsAscending:YES]];
     [self.tableView reloadData];
 }
 
@@ -100,13 +101,13 @@
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:12];
     
-    textLabel.text = item.accountName;
+    textLabel.text = item.name;
     detailTextLabel.text = (item.birthDay ? [A3DateHelper dateStringFromDate:item.birthDay withFormat:@"MMM dd yyyy"] : @"");
 //    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.editingAccessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     NSString *defaulID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
-    imageView.hidden = ![item.accountID isEqualToString:defaulID];
+    imageView.hidden = ![item.uniqueID isEqualToString:defaulID];
     
     return cell;
 }
@@ -140,10 +141,10 @@
         // Delete the row from the data source
         LadyCalendarAccount *account = [_itemArray objectAtIndex:indexPath.row];
         NSString *defaulID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
-        if( [account.accountID isEqualToString:defaulID] )
+        if( [account.uniqueID isEqualToString:defaulID] )
             return;
-        
-        [[A3LadyCalendarModelManager sharedManager] removeAccount:account.accountID];
+
+		[_dataManager removeAccount:account.uniqueID];
         [_itemArray removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }   [self reorderingItems];
@@ -169,6 +170,7 @@
 {
     LadyCalendarAccount *item = [_itemArray objectAtIndex:indexPath.row];
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.accountItem = item;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -196,6 +198,7 @@
 - (void)addAction:(id)sender
 {
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
+	viewCtrl.dataManager = _dataManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];

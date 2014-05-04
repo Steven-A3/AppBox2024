@@ -37,6 +37,7 @@
 		17D42A333EA60B3995BBAAC3 /* FSVenue.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D428FC38E495D26DF640DC /* FSVenue.m */; };
 		17D42A39FA849C645CB674DD /* A3TranslatorFavoriteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D426503D335516CC3EFD93 /* A3TranslatorFavoriteCell.m */; };
 		17D42A4A49204D56E526E117 /* A3TranslatorListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42CAFDD0B11EF0C713D0E /* A3TranslatorListCell.m */; };
+		17D42AD4B40AD05375208131 /* LadyCalendarPeriod+extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42F730914FF3D6F379281 /* LadyCalendarPeriod+extension.m */; };
 		17D42AE1F680213C832FB44C /* A3CurrencyHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D424F615E2893830803825 /* A3CurrencyHistoryCell.m */; };
 		17D42B5255C77BCC6928C271 /* A3StandardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4283E196270552D6283A1 /* A3StandardTableViewCell.m */; };
 		17D42B763E8AA60C7A8A80BB /* A3WalletListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D4233991A86CE87914D84B /* A3WalletListViewController.m */; };
@@ -223,6 +224,8 @@
 		6825367A18A7BBF600EAFB84 /* NSDate+LunarConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367918A7BBF600EAFB84 /* NSDate+LunarConverter.m */; };
 		6825367D18A7BD4E00EAFB84 /* SQLiteWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */; };
 		6825367F18A7C1B800EAFB84 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */; };
+		682636561914F3D9002E72CA /* LadyCalendarAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 682636551914F3D9002E72CA /* LadyCalendarAccount.m */; };
+		682636591914F3D9002E72CA /* LadyCalendarPeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 682636581914F3D9002E72CA /* LadyCalendarPeriod.m */; };
 		68295B171851FE5300C34552 /* A3SettingsPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68295B161851FE5300C34552 /* A3SettingsPasscodeViewController.m */; };
 		682961D2174267C6008D025E /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 682961D1174267C6008D025E /* MapKit.framework */; };
 		6829681218503B2100B70E13 /* NSFetchedResultsController+MagicalFetching.m in Sources */ = {isa = PBXBuildFile; fileRef = 682967A918503B2100B70E13 /* NSFetchedResultsController+MagicalFetching.m */; };
@@ -883,8 +886,6 @@
 		68F1C8DA18D7F37D009FAE8A /* A3ColoredCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86B18D7F37D009FAE8A /* A3ColoredCircleView.m */; };
 		68F1C8DB18D7F37D009FAE8A /* A3LineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86D18D7F37D009FAE8A /* A3LineChartView.m */; };
 		68F1C8DC18D7F37D009FAE8A /* A3LinedSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86F18D7F37D009FAE8A /* A3LinedSlider.m */; };
-		68F1C8DD18D7F37D009FAE8A /* LadyCalendarAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C87218D7F37D009FAE8A /* LadyCalendarAccount.m */; };
-		68F1C8DE18D7F37D009FAE8A /* LadyCalendarPeriod.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C87418D7F37D009FAE8A /* LadyCalendarPeriod.m */; };
 		68F1C8F618D7FA41009FAE8A /* MPAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C8E118D7FA41009FAE8A /* MPAnimation.m */; };
 		68F1C8F718D7FA41009FAE8A /* MPFlipTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C8E418D7FA41009FAE8A /* MPFlipTransition.m */; };
 		68F1C8F818D7FA41009FAE8A /* MPFoldTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C8E718D7FA41009FAE8A /* MPFoldTransition.m */; };
@@ -1041,7 +1042,9 @@
 		17D42F0BDA7A76B8845AB764 /* HolidayData+Country.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "HolidayData+Country.h"; path = "Holidays/HolidayData+Country.h"; sourceTree = "<group>"; };
 		17D42F1A9B3BDE588908AA93 /* UIViewController+A3AppCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+A3AppCategory.h"; sourceTree = "<group>"; };
 		17D42F64418FD4FA28719114 /* A3BarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3BarButton.h; sourceTree = "<group>"; };
+		17D42F730914FF3D6F379281 /* LadyCalendarPeriod+extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LadyCalendarPeriod+extension.m"; sourceTree = "<group>"; };
 		17D42FE2C4AD09E611D37298 /* A3TranslatorMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3TranslatorMessageViewController.h; path = Translator/A3TranslatorMessageViewController.h; sourceTree = "<group>"; };
+		17D42FE39BA656A96951C52E /* LadyCalendarPeriod+extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LadyCalendarPeriod+extension.h"; sourceTree = "<group>"; };
 		17D42FEEE5D02AC4D6E1CB7A /* A3TranslatorMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3TranslatorMessageViewController.m; path = Translator/A3TranslatorMessageViewController.m; sourceTree = "<group>"; };
 		3E21D15318FB1BF100B88D62 /* FrameRateCalculator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameRateCalculator.h; sourceTree = "<group>"; };
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
@@ -1321,6 +1324,10 @@
 		6825367B18A7BD4E00EAFB84 /* SQLiteWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLiteWrapper.h; sourceTree = "<group>"; };
 		6825367C18A7BD4E00EAFB84 /* SQLiteWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SQLiteWrapper.m; sourceTree = "<group>"; };
 		6825367E18A7C1B800EAFB84 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		682636541914F3D9002E72CA /* LadyCalendarAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarAccount.h; sourceTree = "<group>"; };
+		682636551914F3D9002E72CA /* LadyCalendarAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarAccount.m; sourceTree = "<group>"; };
+		682636571914F3D9002E72CA /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
+		682636581914F3D9002E72CA /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
 		68295B151851FE5300C34552 /* A3SettingsPasscodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = A3SettingsPasscodeViewController.h; path = Settings/A3SettingsPasscodeViewController.h; sourceTree = "<group>"; };
 		68295B161851FE5300C34552 /* A3SettingsPasscodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = A3SettingsPasscodeViewController.m; path = Settings/A3SettingsPasscodeViewController.m; sourceTree = "<group>"; };
 		682961D1174267C6008D025E /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -2448,10 +2455,6 @@
 		68F1C86D18D7F37D009FAE8A /* A3LineChartView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LineChartView.m; sourceTree = "<group>"; };
 		68F1C86E18D7F37D009FAE8A /* A3LinedSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LinedSlider.h; sourceTree = "<group>"; };
 		68F1C86F18D7F37D009FAE8A /* A3LinedSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LinedSlider.m; sourceTree = "<group>"; };
-		68F1C87118D7F37D009FAE8A /* LadyCalendarAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarAccount.h; sourceTree = "<group>"; };
-		68F1C87218D7F37D009FAE8A /* LadyCalendarAccount.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarAccount.m; sourceTree = "<group>"; };
-		68F1C87318D7F37D009FAE8A /* LadyCalendarPeriod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LadyCalendarPeriod.h; sourceTree = "<group>"; };
-		68F1C87418D7F37D009FAE8A /* LadyCalendarPeriod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LadyCalendarPeriod.m; sourceTree = "<group>"; };
 		68F1C8E018D7FA41009FAE8A /* MPAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPAnimation.h; sourceTree = "<group>"; };
 		68F1C8E118D7FA41009FAE8A /* MPAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPAnimation.m; sourceTree = "<group>"; };
 		68F1C8E218D7FA41009FAE8A /* MPFlipEnumerations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPFlipEnumerations.h; sourceTree = "<group>"; };
@@ -4964,10 +4967,12 @@
 		68F1C87018D7F37D009FAE8A /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C87118D7F37D009FAE8A /* LadyCalendarAccount.h */,
-				68F1C87218D7F37D009FAE8A /* LadyCalendarAccount.m */,
-				68F1C87318D7F37D009FAE8A /* LadyCalendarPeriod.h */,
-				68F1C87418D7F37D009FAE8A /* LadyCalendarPeriod.m */,
+				682636571914F3D9002E72CA /* LadyCalendarPeriod.h */,
+				682636581914F3D9002E72CA /* LadyCalendarPeriod.m */,
+				682636541914F3D9002E72CA /* LadyCalendarAccount.h */,
+				682636551914F3D9002E72CA /* LadyCalendarAccount.m */,
+				17D42F730914FF3D6F379281 /* LadyCalendarPeriod+extension.m */,
+				17D42FE39BA656A96951C52E /* LadyCalendarPeriod+extension.h */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5730,6 +5735,7 @@
 				68F1C8C818D7F37D009FAE8A /* A3LadyCalendarDetailViewController.m in Sources */,
 				68B6A35018CEC76D004084EF /* A3WalletVideoItemViewController.m in Sources */,
 				68143D5718E3EC7C00569691 /* A3JHTableViewMonthEntryElement.m in Sources */,
+				682636591914F3D9002E72CA /* LadyCalendarPeriod.m in Sources */,
 				68B6A44618CEE781004084EF /* MWZoomingScrollView.m in Sources */,
 				68B6A2E818CEC76D004084EF /* A3UnitPriceActionCell.m in Sources */,
 				680DFA131906702400754D81 /* WalletFieldItemImage.m in Sources */,
@@ -5959,7 +5965,6 @@
 				68B6A2AD18CEC76D004084EF /* A3LoanCalcMainViewController.m in Sources */,
 				682E07DE17191D65007112B9 /* A3ActionMenuViewController_iPhone.m in Sources */,
 				68B6A2EE18CEC76D004084EF /* A3UnitPriceHistoryViewController.m in Sources */,
-				68F1C8DE18D7F37D009FAE8A /* LadyCalendarPeriod.m in Sources */,
 				682E07EA171968A8007112B9 /* ATSDragToReorderTableViewController.m in Sources */,
 				68143D5418E3EC7C00569691 /* A3JHTableViewEntryElement.m in Sources */,
 				683308FF18C06D740082524E /* TranslatorHistory.m in Sources */,
@@ -5989,7 +5994,6 @@
 				68E2A66118D0B1FC00E834D9 /* A3PercentCalcHistoryViewController.m in Sources */,
 				684D92BC18BC1EFE005016F7 /* A3BatterStatusChooseColorViewController.m in Sources */,
 				6831EC051861C5F600BAF15B /* UbiquityStoreManager.m in Sources */,
-				68F1C8DD18D7F37D009FAE8A /* LadyCalendarAccount.m in Sources */,
 				68B6A44C18CEE781004084EF /* PSTCollectionViewCell.m in Sources */,
 				6829684618503B2100B70E13 /* MagicalRecord.m in Sources */,
 				680886E41891751B0093FD97 /* SBGradientOverlayLayer.m in Sources */,
@@ -6030,6 +6034,7 @@
 				689C9A591839CD7F007C97EE /* UIWebView+AFNetworking.m in Sources */,
 				684D92F718BC1FBC005016F7 /* A3DateCalcFooterViewCell.m in Sources */,
 				68F1C89F18D7F37D009FAE8A /* A3DaysCounterSetupCustomAlertViewController.m in Sources */,
+				682636561914F3D9002E72CA /* LadyCalendarAccount.m in Sources */,
 				68E2A6AA18D0B22800E834D9 /* A3TextViewElement.m in Sources */,
 				68B6A4A818CF335E004084EF /* UnitType.m in Sources */,
 				687D0D0E17CAE519005AB571 /* HolidayData+Europe.m in Sources */,
@@ -6291,6 +6296,7 @@
 				17D426431E7AC7B8D2D21A72 /* A3CalculatorViewController.m in Sources */,
 				17D424CF600CB7D3A03DA0EE /* A3WalletMoreTableViewCell.m in Sources */,
 				17D42B763E8AA60C7A8A80BB /* A3WalletListViewController.m in Sources */,
+				17D42AD4B40AD05375208131 /* LadyCalendarPeriod+extension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

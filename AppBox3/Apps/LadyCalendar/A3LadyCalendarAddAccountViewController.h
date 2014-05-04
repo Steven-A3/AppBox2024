@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class LadyCalendarAccount;
+@class A3LadyCalendarModelManager;
+
 @interface A3LadyCalendarAddAccountViewController : UITableViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate>
 
 @property (strong, nonatomic) LadyCalendarAccount *accountItem;
 @property (assign,nonatomic) BOOL isEditMode;
+@property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
+
 @end
