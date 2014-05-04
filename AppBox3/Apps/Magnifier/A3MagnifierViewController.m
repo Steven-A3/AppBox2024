@@ -103,15 +103,15 @@ static const int MAX_ZOOM_FACTOR = 6;
     return YES;
 }
 
+
 - (void) setPreviewRotation:(CGRect)screenBounds {
     if (IS_IPAD) {
-        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
-        if (curDeviceOrientation == UIDeviceOrientationPortrait) {
+        UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+        if (curInterfaceOrientation == UIDeviceOrientationPortrait) {
             previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        } else if (curInterfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
             previewLayer.transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight||
-                   curDeviceOrientation == UIDeviceOrientationFaceUp) {
+        } else if (curInterfaceOrientation == UIDeviceOrientationLandscapeRight) {
             previewLayer.transform = CGAffineTransformMakeRotation(M_PI);
         } else {
             previewLayer.transform = CGAffineTransformMakeRotation(0);
@@ -123,7 +123,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     previewLayer.frame = screenBounds;
 }
 
-- (void)viewWillLayoutSubviews_ {
+- (void)viewWillLayoutSubviews {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
     if(IS_IPAD) {
         [self setPreviewRotation:screenBounds];
@@ -256,7 +256,7 @@ static const int MAX_ZOOM_FACTOR = 6;
             [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
         }
         else {
-            UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+            UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
             if (curDeviceOrientation == UIDeviceOrientationPortrait) {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
             } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
@@ -394,7 +394,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 
 }
 
-- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
+- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIInterfaceOrientation)deviceOrientation
 {
 	AVCaptureVideoOrientation result = (AVCaptureVideoOrientation)deviceOrientation;
 	if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
@@ -465,7 +465,7 @@ static const int MAX_ZOOM_FACTOR = 6;
     @autoreleasepool {
         
 	AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
-	UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+	UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 	AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
 	[stillImageConnection setVideoOrientation:avcaptureOrientation];
         if (bLosslessZoom == NO) {

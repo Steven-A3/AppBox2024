@@ -252,15 +252,14 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 - (CGAffineTransform) getTransform {
     CGAffineTransform   transform;
-    UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
     
     if (IS_IPAD) {
+        UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (curDeviceOrientation == UIDeviceOrientationPortrait) {
             transform = CGAffineTransformMakeRotation(M_PI_2);
         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
             transform = CGAffineTransformMakeRotation(-M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
-                   curDeviceOrientation == UIDeviceOrientationFaceUp) {
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
             transform = CGAffineTransformMakeRotation(0);
         } else {
             transform = CGAffineTransformMakeRotation(M_PI);
@@ -275,13 +274,12 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (void)setLabelRotation:(UILabel *)label {
     if (IS_IPAD) {
         CGAffineTransform   transform;
-        UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+        UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (curDeviceOrientation == UIDeviceOrientationPortrait) {
             transform = CGAffineTransformMakeRotation(-M_PI_2);
         } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
             transform = CGAffineTransformMakeRotation(M_PI_2);
-        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
-                   curDeviceOrientation == UIDeviceOrientationFaceUp) {
+        } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
             transform = CGAffineTransformIdentity;
             
         } else {
@@ -1200,7 +1198,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
                 {
                     NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
                     CIImage *ciSaveImg = [[CIImage alloc] initWithData:imageData];
-                    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+                    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];;
 
 
                     if (bFlip == YES) {
