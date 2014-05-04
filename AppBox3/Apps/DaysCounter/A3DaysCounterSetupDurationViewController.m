@@ -12,6 +12,7 @@
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "SFKImage.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupDurationViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -29,7 +30,7 @@
     NSArray *valueArray = @[@"2 years", @"3 months", @"4 weeks",@"15 days" ,@"4 hours", @"30 minutes",@"13 seconds"];
     NSArray *optionArray = @[@(DurationOption_Year), @(DurationOption_Month), @(DurationOption_Week), @(DurationOption_Day), @(DurationOption_Hour), @(DurationOption_Minutes), @(DurationOption_Seconds)];
     
-    NSInteger optionValue = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+    NSInteger optionValue = [_eventModel.durationOption integerValue];
     
     for (NSInteger i=0; i < [optionArray count]; i++) {
         NSInteger flag = [[optionArray objectAtIndex:i] integerValue];
@@ -58,7 +59,7 @@
     [super viewDidLoad];
 
     if ( IS_IPAD ) {
-        self.originalValue = [_eventModel objectForKey:EventItem_DurationOption];
+        self.originalValue = _eventModel.durationOption;
     }
     self.title = @"Duration Options";
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
@@ -70,9 +71,9 @@
                        @{EventRowTitle : @"Hours",EventRowType : @(DurationOption_Hour)},
                        @{EventRowTitle : @"Minutes",EventRowType : @(DurationOption_Minutes)}];
 
-    self.selectedOptionFlag = [[_eventModel objectForKey:EventItem_DurationOption] integerValue];
+    self.selectedOptionFlag = [_eventModel.durationOption integerValue];
     
-    if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue]) {
+    if ([_eventModel.isAllDay boolValue]) {
         self.selectedOptionFlag = self.selectedOptionFlag & ~(DurationOption_Hour|DurationOption_Minutes|DurationOption_Seconds);
     }
 }
@@ -126,7 +127,7 @@
 
     cell.textLabel.text = [item objectForKey:EventRowTitle];
     
-    if ([[_eventModel objectForKey:EventItem_IsAllDay] boolValue] &&
+    if ([_eventModel.isAllDay boolValue] &&
         (itemRowType == DurationOption_Hour || itemRowType == DurationOption_Minutes || itemRowType == DurationOption_Seconds)) {
         cell.userInteractionEnabled = NO;
         cell.textLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
@@ -170,7 +171,7 @@
     self.examLabel.text = [self exampleString];
     
     if (IS_IPHONE) {
-        [_eventModel setObject:@(self.selectedOptionFlag) forKey:EventItem_DurationOption];
+        _eventModel.durationOption = @(self.selectedOptionFlag);
     }
 }
 
@@ -189,7 +190,7 @@
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
     if ( IS_IPAD ) {
-        [_eventModel setObject:@(self.selectedOptionFlag) forKey:EventItem_DurationOption];
+        _eventModel.durationOption = @(self.selectedOptionFlag);
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
     }

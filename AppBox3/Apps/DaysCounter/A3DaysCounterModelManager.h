@@ -13,6 +13,7 @@
 @class DaysCounterCalendar;
 @class DaysCounterEvent;
 @class DaysCounterEventLocation;
+@class DaysCounterDateModel;
 @interface A3DaysCounterModelManager : NSObject{
     NSManagedObjectContext *managedContext;
 }
@@ -39,17 +40,13 @@
 - (NSString*)titleForCellType:(NSInteger)cellType;
 - (NSString*)addressFromVenue:(FSVenue*)venue isDetail:(BOOL)isDetail;\
 - (NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
-- (FSVenue*)fsvenueFromEventModel:(id)locationItem;
+- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem;
 - (FSVenue*)fsvenueFromEventLocationModel:(id)location;
 
-- (id)emptyEventModel;
-- (id)emptyEventLocationModel;
 - (id)eventItemByID:(NSString*)eventId;
-- (BOOL)addEvent:(id)eventModel;
-- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info;
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image;
+- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image;
 - (BOOL)removeEvent:(DaysCounterEvent*)eventItem;
-- (NSMutableDictionary *)dictionaryFromEventEntity:(DaysCounterEvent*)item;
-- (NSMutableDictionary *)dictionaryFromEventLocationEntity:(DaysCounterEventLocation*)location;
 
 - (NSMutableDictionary *)dictionaryFromCalendarEntity:(DaysCounterCalendar*)item;
 - (NSMutableArray*)visibleCalendarList;
@@ -78,8 +75,10 @@
 - (NSArray*)reminderList;
 
 - (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay;
+//- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
 - (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
+
 
 - (NSString*)stringForSlideshowTransitionType:(NSInteger)type;
 - (void)setupEventSummaryInfo:(DaysCounterEvent*)item toView:(UIView*)toView;
@@ -96,10 +95,18 @@
 - (void)renewAllEffectiveStartDates;
 - (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now;
 #pragma mark EventModel Dictionary
-- (NSDate *)effectiveDateForEventModel:(NSMutableDictionary *)event basisTime:(NSDate *)now;
-- (void)reloadDatesOfEventModel:(NSMutableDictionary *)event;
+- (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
 #pragma mark - Alert
 - (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
 - (void)reloadAlertDateListForLocalNotification;
+
+#pragma mark - Lunar
+- (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
+- (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate;
+- (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType;
+
+#pragma mark - Manipulate DaysCounterDateModel Object
++ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar;
 @end

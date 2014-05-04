@@ -48,58 +48,18 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
-    BOOL isResultLeapMonth = NO;
-    NSDateComponents *comp = [NSDateComponents new];
-    comp.year = 2014;
-    comp.month = 4;
-    comp.day = 16;
-    NSDate *lunarDate = [NSDate dateOfLunarFromSolarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    NSInteger lastLeapMonthDay = [NSDate lastMonthDayForLunarYear:comp.year month:comp.month isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    BOOL isLunarDate = [NSDate isLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    NSLog(@"solarDate: %@", [[NSCalendar currentCalendar] dateFromComponents:comp]);
-    NSLog(@"lunarDate: %@", lunarDate);
-    NSLog(@"lastLeapMonthDay: %@", @(lastLeapMonthDay));
-    NSLog(@"isLunarDate: %@", isLunarDate ? @"YES":@"NO");
-    NSLog(@"isResultLeapMonth: %@", isResultLeapMonth ? @"YES":@"NO");
-    
-    comp.year = 2014;
-    comp.month = 3;
-    comp.day = 17;
-    lunarDate = [NSDate dateOfSolarFromLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    lastLeapMonthDay = [NSDate lastMonthDayForLunarYear:comp.year month:comp.month isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    isLunarDate = [NSDate isLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    NSLog(@"solarDate: %@", lunarDate);
-    NSLog(@"lunarDate: %@", [[NSCalendar currentCalendar] dateFromComponents:comp]);
-    NSLog(@"lastLeapMonthDay: %@", @(lastLeapMonthDay));
-    NSLog(@"isLunarDate: %@", isLunarDate ? @"YES":@"NO");
-    NSLog(@"isResultLeapMonth: %@", isResultLeapMonth ? @"YES":@"NO");
-    
-    comp.year = 2013;
-    comp.month = 7;
-    comp.day = 31;
-    lunarDate = [NSDate dateOfLunarFromSolarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    lastLeapMonthDay = [NSDate lastMonthDayForLunarYear:comp.year month:comp.month isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    isLunarDate = [NSDate isLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    NSLog(@"solarDate: %@", [[NSCalendar currentCalendar] dateFromComponents:comp]);
-    NSLog(@"lunarDate: %@", lunarDate);
-    NSLog(@"lastLeapMonthDay: %@", @(lastLeapMonthDay));
-    NSLog(@"isLunarDate: %@", isLunarDate ? @"YES":@"NO");
-    NSLog(@"isResultLeapMonth: %@", isResultLeapMonth ? @"YES":@"NO");
-    
-    comp.year = 2013;
-    comp.month = 7;
-    comp.day = 1;
-    lunarDate = [NSDate dateOfLunarFromSolarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] leapMonth:NO korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-    lastLeapMonthDay = [NSDate lastMonthDayForLunarYear:comp.year month:comp.month isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    isLunarDate = [NSDate isLunarDate:[[NSCalendar currentCalendar] dateFromComponents:comp] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-    NSLog(@"solarDate: %@", [[NSCalendar currentCalendar] dateFromComponents:comp]);
-    NSLog(@"lunarDate: %@", lunarDate);
-    NSLog(@"lastLeapMonthDay: %@", @(lastLeapMonthDay));
-    NSLog(@"isLunarDate: %@", isLunarDate ? @"YES":@"NO");
-    NSLog(@"isResultLeapMonth: %@", isResultLeapMonth ? @"YES":@"NO");
-    
-    
+//    NSDateComponents *dateComp = [NSDateComponents new];
+//    dateComp.year = 2014;
+//    dateComp.month = 4;
+//    dateComp.day = 31;
+//    BOOL isResultLeapMonth;
+//    NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:YES leapMonth:NO korean:YES resultLeapMonth:&isResultLeapMonth];
+//    NSLog(@"%@", resultComponents);
+//    //        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
+//    //                                                            gregorianToLunar:NO
+//    //                                                                   leapMonth:NO
+//    //                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
+//    //                                                             resultLeapMonth:&isResultLeapMonth];
 	FNLOG();
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {

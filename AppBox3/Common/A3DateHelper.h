@@ -50,4 +50,6 @@
 + (NSDateComponents*)dateComponentsFromDate:(NSDate*)date unitFlags:(NSUInteger)unitFlags;
 + (BOOL)isCurrentLocaleIsKorea;
 + (NSDate *)midnightForDate:(NSDate *)date;
+#pragma mark Lunar
++ (NSString *)dateStringOfSolarFromLunarDateComponents:(NSDateComponents *)dateComp isLeapMonth:(BOOL)isLeapMonth;
 @end

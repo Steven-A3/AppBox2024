@@ -7,6 +7,9 @@
 //
 
 #import "A3DateHelper.h"
+#import "NSDateFormatter+A3Addition.h"
+#import "NSDateFormatter+LunarDate.h"
+#import "NSDate+LunarConverter.h"
 
 @implementation A3DateHelper
 
@@ -447,5 +450,24 @@
     comp.second = 0;
     date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     return date;
+}
+
+#pragma mark Lunar
++ (NSString *)dateStringOfSolarFromLunarDateComponents:(NSDateComponents *)dateComp isLeapMonth:(BOOL)isLeapMonth
+{
+    NSDateComponents *lunarComponents = [NSDate lunarCalcWithComponents:dateComp
+                                                       gregorianToLunar:YES
+                                                              leapMonth:NO
+                                                                 korean:[A3DateHelper isCurrentLocaleIsKorea]
+                                                        resultLeapMonth:NULL];
+    
+    NSDateFormatter *dateFormatter = [NSDateFormatter new];
+//    if (IS_IPHONE) {
+//        [dateFormatter setDateFormat:[dateFormatter customFullStyleFormat]];
+//    } else {
+//        [dateFormatter setDateStyle:NSDateFormatterFullStyle];
+//    }
+    [dateFormatter setDateFormat:[dateFormatter customFullStyleFormat]];
+    return [dateFormatter stringFromDateComponents:lunarComponents];
 }
 @end

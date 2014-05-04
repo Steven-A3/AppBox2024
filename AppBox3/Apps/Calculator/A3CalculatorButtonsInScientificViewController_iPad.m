@@ -158,5 +158,11 @@
     [self.plusbutton setBackgroundColor:themeColor];
     [self.operationendbutton setBackgroundColor:themeColor];
 
+    self.dividebutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.multiplybutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.minusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.plusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.operationendbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
 }
+
 @end

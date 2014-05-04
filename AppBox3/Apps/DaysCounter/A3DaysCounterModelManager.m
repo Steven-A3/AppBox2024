@@ -14,12 +14,15 @@
 #import "DaysCounterEvent.h"
 #import "DaysCounterEventLocation.h"
 #import "DaysCounterReminder.h"
+#import "DaysCounterDateModel.h"
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
 #import "FXLabel.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "NSDate+LunarConverter.h"
+#import "NSDateFormatter+LunarDate.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 
@@ -27,14 +30,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 @interface A3DaysCounterModelManager ()
 @property (strong, nonatomic) NSMutableArray *calendarColorArray;
-//@property (strong, nonatomic) EKEventStore *eventStore;
 
-- (void)checkAndAddSystemCalendarItems;
-- (void)addDefaultUserCalendarItems;
-- (EKAlarm*)createAlarmWithEvent:(DaysCounterEvent*)event;
-- (EKRecurrenceRule*)createRecurrenceRuleWithEvent:(DaysCounterEvent*)event;
-- (EKEvent*)registerToEventStore:(DaysCounterEvent*)event;
-- (EKReminder*)registerToReminder:(DaysCounterEvent*)event;
 @end
 
 @implementation A3DaysCounterModelManager
@@ -347,8 +343,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSString*)repeatEndDateStringFromDate:(id)date
 {
-    if ( [date isKindOfClass:[NSDate class]] )
+    if ( date ) {
         return [A3Formatter stringFromDate:date format:DaysCounterDefaultDateFormat];
+    }
     
     return @"Never";
 }
@@ -472,17 +469,18 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return address;
 }
 
-- (FSVenue*)fsvenueFromEventModel:(id)locationItem
+- (FSVenue*)fsvenueFromEventModel:(DaysCounterEventLocation *)locationItem
 {
     FSVenue *venue = [[FSVenue alloc] init];
-    venue.name = [locationItem objectForKey:EventItem_LocationName];
-    venue.contact = [locationItem objectForKey:EventItem_Contact];
-    if ( [[locationItem objectForKey:EventItem_Latitude] isKindOfClass:[NSNumber class]] && [[locationItem objectForKey:EventItem_Longitude] isKindOfClass:[NSNumber class]])
-        venue.location.coordinate = CLLocationCoordinate2DMake([[locationItem objectForKey:EventItem_Latitude] doubleValue], [[locationItem objectForKey:EventItem_Longitude] doubleValue]);
-    venue.location.address = [locationItem objectForKey:EventItem_Address];
-    venue.location.city = [locationItem objectForKey:EventItem_City];
-    venue.location.state = [locationItem objectForKey:EventItem_State];
-    venue.location.country = [locationItem objectForKey:EventItem_Country];
+    venue.name = locationItem.locationName;
+    venue.contact = locationItem.contact;
+    if ( locationItem.latitude && locationItem.locationName ) {
+        venue.location.coordinate = CLLocationCoordinate2DMake([locationItem.latitude doubleValue], [locationItem.longitude doubleValue]);
+    }
+    venue.location.address = locationItem.address;
+    venue.location.city = locationItem.city;
+    venue.location.state = locationItem.state;
+    venue.location.country = locationItem.country;
     
     return venue;
 }
@@ -502,191 +500,24 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return venue;
 }
 
-- (id)emptyEventModel
-{
-    DaysCounterCalendar *defaultCal = [self defaultCalendar];
-    NSMutableDictionary *item = [NSMutableDictionary dictionary];
-    [item setObject:[[NSUUID UUID] UUIDString] forKey:EventItem_ID];
-    [item setObject:@"" forKey:EventItem_Name];
-    [item setObject:@"" forKey:EventItem_ImageFilename];
-    [item setObject:[NSNumber numberWithBool:NO] forKey:EventItem_IsLunar];
-    [item setObject:[NSNumber numberWithBool:YES] forKey:EventItem_IsAllDay];
-    [item setObject:[NSNumber numberWithBool:NO] forKey:EventItem_IsPeriod];
-    [item setObject:[NSDate date] forKey:EventItem_StartDate];
-    [item setObject:[NSNull null] forKey:EventItem_EndDate];
-    [item setObject:[NSDate date] forKey:EventItem_EffectiveStartDate];
-//    [item setObject:[NSNumber numberWithInteger:0] forKey:EventItem_RepeatType];
-    [item setObject:[NSNull null] forKey:EventItem_RepeatEndDate];
-    [item setObject:[NSNull null] forKey:EventItem_AlertDatetime];
-    [item setObject:(defaultCal ? defaultCal.calendarId : @"") forKey:EventItem_CalendarId];
-    if ( defaultCal )
-        [item setObject:defaultCal forKey:EventItem_Calendar];
-    [item setObject:[NSNumber numberWithInteger:DurationOption_Day] forKey:EventItem_DurationOption];
-    [item setObject:@"" forKey:EventItem_Notes];
-    [item setObject:[NSNumber numberWithBool:NO] forKey:EventItem_IsFavorite];
-    [item setObject:[NSNull null] forKey:EventItem_RegDate];
-    
-    return item;
-}
-
-- (id)emptyEventLocationModel
-{
-    NSMutableDictionary *item = [NSMutableDictionary dictionary];
-    [item setObject:@"" forKey:EventItem_ID];
-    [item setObject:[NSNull null] forKey:EventItem_Latitude];
-    [item setObject:[NSNull null] forKey:EventItem_Longitude];
-    [item setObject:@"" forKey:EventItem_Country];
-    [item setObject:@"" forKey:EventItem_State];
-    [item setObject:@"" forKey:EventItem_City];
-    [item setObject:@"" forKey:EventItem_Address];
-    [item setObject:@"" forKey:EventItem_LocationName];
-    [item setObject:@"" forKey:EventItem_Contact];
-    
-    return item;
-}
-
-
 - (id)eventItemByID:(NSString*)eventId
 {
     DaysCounterEvent *item = [DaysCounterEvent MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"eventId == %@",eventId] inContext:[self managedObjectContext]];
     return item;
 }
 
-- (EKAlarm*)createAlarmWithEvent:(DaysCounterEvent*)event
+- (BOOL)addEvent:(DaysCounterEvent *)eventModel image:(UIImage *)image
 {
-    NSTimeInterval interval = 0.0;
-    NSInteger intervalType = [self alertTypeIndexFromDate:event.startDate alertDate:event.alertDatetime];
-    switch (intervalType) {
-        case AlertType_AtTimeOfEvent:
-            interval = 0.0;
-            break;
-        case AlertType_5MinutesBefore:
-            interval = 60.0 * 5;
-            break;
-        case AlertType_15MinutesBefore:
-            interval = 60.0 * 15;
-            break;
-        case AlertType_30MinutesBefore:
-            interval = 60.0 * 30;
-            break;
-        case AlertType_1HourBefore:
-            interval = 60.0 * 60;
-            break;
-        case AlertType_2HoursBefore:
-            interval = 60.0 * 120;
-            break;
-        case AlertType_1DayBefore:
-            interval = 60.0 * 60 * 24;
-            break;
-        case AlertType_2DaysBefore:
-            interval = 60.0 * 60 * 48;
-            break;
-        case AlertType_1WeekBefore:
-            interval = 60.0 * 60 * 24 * 7;
-            break;
+    NSAssert(!eventModel.eventId, @"eventModel.eventId error");
+    if ( !eventModel.eventId ) {
+        eventModel.eventId = [[NSUUID UUID] UUIDString];
     }
-    
-    EKAlarm *alarm = nil;
-    if ( intervalType == AlertType_Custom )
-        alarm = [EKAlarm alarmWithAbsoluteDate:event.alertDatetime];
-    else
-        alarm = [EKAlarm alarmWithRelativeOffset:-interval];
-    return alarm;
-}
-
-- (EKRecurrenceRule*)createRecurrenceRuleWithEvent:(DaysCounterEvent*)event
-{
-    EKRecurrenceRule *rule = nil;
-    if ( [event.repeatType integerValue] != RepeatType_Never ) {
-        EKRecurrenceFrequency frequency;
-        NSInteger interval = 1;
-        switch ([event.repeatType integerValue]) {
-            case RepeatType_EveryDay:
-                frequency = EKRecurrenceFrequencyDaily;
-                break;
-            case RepeatType_EveryWeek:
-                frequency = EKRecurrenceFrequencyWeekly;
-                interval = 1;
-                break;
-            case RepeatType_Every2Week:
-                frequency = EKRecurrenceFrequencyWeekly;
-                interval = 2;
-                break;
-            case RepeatType_EveryMonth:
-                frequency = EKRecurrenceFrequencyMonthly;
-                break;
-            case RepeatType_EveryYear:
-                frequency = EKRecurrenceFrequencyYearly;
-                break;
-        }
-        EKRecurrenceEnd *end = ( event.repeatEndDate ? [EKRecurrenceEnd recurrenceEndWithEndDate:event.repeatEndDate] : nil);
-        rule = [[EKRecurrenceRule alloc] initRecurrenceWithFrequency:frequency interval:interval end:end];
-    }
-    
-    return rule;
-}
-
-- (EKEvent*)registerToEventStore:(DaysCounterEvent*)event
-{
-//    EKAlarm *alarm = [self createAlarmWithEvent:event];
-//    EKEvent *calEvent = [EKEvent eventWithEventStore:_eventStore];
-//    calEvent.calendar = [_eventStore defaultCalendarForNewEvents];
-//    calEvent.title = event.eventName;
-//    calEvent.startDate = event.startDate;
-//    calEvent.endDate = (event.endDate ? event.endDate : event.startDate);
-//    calEvent.allDay = [event.isAllDay boolValue];
-//    [calEvent addAlarm:alarm];
-//    
-//    EKRecurrenceRule *rule = [self createRecurrenceRuleWithEvent:event];
-//    
-//    if ( rule )
-//        [calEvent addRecurrenceRule:rule];
-//    
-//    NSError *error = nil;
-//    if ( [_eventStore saveEvent:calEvent span:EKSpanThisEvent error:&error] )
-//        return calEvent;
-//    
-//    NSLog(@"%s %@",__FUNCTION__,[error localizedDescription]);
-    return nil;
-}
-
-- (EKReminder*)registerToReminder:(DaysCounterEvent*)event
-{
-//    EKAlarm *alarm = [self createAlarmWithEvent:event];
-//    EKReminder *reminder = [EKReminder reminderWithEventStore:_eventStore];
-//    reminder.calendar = [_eventStore defaultCalendarForNewReminders];
-//    reminder.title = event.eventName;
-//    reminder.dueDateComponents = [A3DateHelper dateComponentsFromDate:event.startDate unitFlags:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit];
-//    [reminder addAlarm:alarm];
-//    
-//    EKRecurrenceRule *rule = [self createRecurrenceRuleWithEvent:event];
-//    
-//    if ( rule )
-//        [reminder addRecurrenceRule:rule];
-//    
-//    NSError *error = nil;
-//    if ([_eventStore saveReminder:reminder commit:YES error:&error]) {
-//        NSLog(@"%s %@",__FUNCTION__,reminder);
-//        return reminder;
-//    }
-    
-    return nil;
-}
-
-- (BOOL)addEvent:(id)eventModel
-{
-    NSDictionary *item = (NSDictionary*)eventModel;
-    
-    NSString *eventID = [eventModel objectForKey:EventItem_ID];
-    if ( [self eventItemByID:eventID] )
-        return NO;
     
     // 이미지 저장
-    UIImage *image = [eventModel objectForKey:EventItem_Image];
-    NSString *imageFilename = @"";
+    NSString *imageFilename;
     if ( image ) {
         NSData *imageData = UIImagePNGRepresentation(image);
-        imageFilename = [NSString stringWithFormat:@"%@.png",eventID];
+        imageFilename = [NSString stringWithFormat:@"%@.png", eventModel.eventId];
         [imageData writeToFile:[[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename] atomically:YES];
         
         UIImage *thumbnail = [image scaleToFillSize:CGSizeMake(64.0, 64.0)];
@@ -694,53 +525,37 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [imageData writeToFile:[[A3DaysCounterModelManager thumbnailPath] stringByAppendingPathComponent:[A3DaysCounterModelManager thumbnailFilenameFromFilename:imageFilename]] atomically:YES];
     }
 
-    DaysCounterEvent *addItem = [DaysCounterEvent MR_createInContext:[self managedObjectContext]];
-    addItem.eventId = [item objectForKey:EventItem_ID];
-    addItem.calendarId = [item objectForKey:EventItem_CalendarId];
-    addItem.eventName = [item objectForKey:EventItem_Name];
-    addItem.isLunar = [item objectForKey:EventItem_IsLunar];
-    addItem.isLeapMonth = [item objectForKey:EventItem_IsLeapMonth];
-    addItem.imageFilename = imageFilename;
-    addItem.isAllDay = [item objectForKey:EventItem_IsAllDay];
-    addItem.isPeriod = [item objectForKey:EventItem_IsPeriod];
-    addItem.startDate = [item objectForKey:EventItem_StartDate];
-    addItem.endDate = ( [[item objectForKey:EventItem_EndDate] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_EndDate] );
-    addItem.repeatType = [item objectForKey:EventItem_RepeatType];
-    addItem.repeatEndDate = ( [[item objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ? nil : [item objectForKey:EventItem_RepeatEndDate] );
-    if (![item objectForKey:EventItem_AlertDatetime] || [[item objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]]) {
-        addItem.alertDatetime = nil;
-        addItem.isReminder = @(NO);
+    eventModel.imageFilename = imageFilename;
+//    if ( [eventModel.useLeapMonth boolValue] ) {
+//        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventModel.startDate];
+//        eventModel.startDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
+//        
+//        if ( !eventModel.endDate ) {
+//            eventModel.startDate.isLeapMonth = @(NO);
+//        }
+//        else {
+//            dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventModel.endDate];
+//            eventModel.endDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
+//        }
+//    }
+//    else {
+//        eventModel.startDate.isLeapMonth = @(NO);
+//        eventModel.endDate.isLeapMonth = @(NO);
+//    }
+    
+    if ( !eventModel.alertDatetime ) {
+        eventModel.alertDatetime = nil;
+        eventModel.hasReminder = @(NO);
     }
     else {
-        addItem.alertDatetime = [item objectForKey:EventItem_AlertDatetime];
-        addItem.isReminder = ([addItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![addItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
+        eventModel.hasReminder = ([eventModel.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventModel.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
-    addItem.alertInterval = [item objectForKey:EventItem_AlertDatetimeInterval];
-    addItem.alertType = [item objectForKey:EventItem_AlertDateType];
-    addItem.effectiveStartDate = [item objectForKey:EventItem_EffectiveStartDate] == nil ? [item objectForKey:EventItem_StartDate] : [item objectForKey:EventItem_EffectiveStartDate];
-    addItem.durationOption = [item objectForKey:EventItem_DurationOption];
-    addItem.notes = [item objectForKey:EventItem_Notes];
-    addItem.isFavorite = [item objectForKey:EventItem_IsFavorite];
-    addItem.regDate = [NSDate date];
-    addItem.calendar = [item objectForKey:EventItem_Calendar];
-    
-    
-    NSDictionary *locItem = [item objectForKey:EventItem_Location];
-    if ( locItem ) {
-        DaysCounterEventLocation *location = [DaysCounterEventLocation MR_createInContext:addItem.managedObjectContext];
-        location.eventId = eventID;
-        location.latitude = [locItem objectForKey:EventItem_Latitude];
-        location.longitude = [locItem objectForKey:EventItem_Longitude];
-        location.address = [locItem objectForKey:EventItem_Address];
-        location.city = [locItem objectForKey:EventItem_City];
-        location.state = [locItem objectForKey:EventItem_State];
-        location.country = [locItem objectForKey:EventItem_Country];
-        location.locationName = [locItem objectForKey:EventItem_LocationName];
-        location.contact = [locItem objectForKey:EventItem_Contact];
-        location.event = addItem;
-        addItem.location = location;
+    if (!eventModel.effectiveStartDate) {
+        eventModel.effectiveStartDate = [eventModel.startDate solarDate];
     }
+    
+    eventModel.regDate = [NSDate date];
 
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -757,12 +572,13 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
 }
 
-- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info
+//- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info
+- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image
 {
-    UIImage *image = [info objectForKey:EventItem_Image];
     NSString *imageFilename = @"";
 
     if ( image ) {
+        // TODO 이상함
         NSData *imageData = UIImagePNGRepresentation(image);
         imageFilename = [NSString stringWithFormat:@"%@.png",eventItem.eventId];
         [imageData writeToFile:[[A3DaysCounterModelManager imagePath] stringByAppendingPathComponent:imageFilename] atomically:YES];
@@ -777,62 +593,36 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         eventItem.imageFilename = nil;
     }
     
-    eventItem.eventName = [info objectForKey:EventItem_Name];
-    eventItem.calendarId = [info objectForKey:EventItem_CalendarId];
-    eventItem.calendar = [info objectForKey:EventItem_Calendar];
-    eventItem.isLunar = [info objectForKey:EventItem_IsLunar];
-    eventItem.isLeapMonth = [info objectForKey:EventItem_IsLeapMonth];
-    eventItem.isAllDay = [info objectForKey:EventItem_IsAllDay];
-    eventItem.isPeriod = [info objectForKey:EventItem_IsPeriod];
-    eventItem.startDate = [info objectForKey:EventItem_StartDate];
-    eventItem.endDate = ( [[info objectForKey:EventItem_EndDate] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_EndDate] );
-    eventItem.repeatType = [info objectForKey:EventItem_RepeatType];
-    eventItem.repeatEndDate = ( [[info objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ? nil : [info objectForKey:EventItem_RepeatEndDate] );
+//    if ( [eventItem.useLeapMonth boolValue] ) {
+//        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.startDate];
+//        eventItem.startDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
+//        
+//        if (!eventItem.endDate || [eventItem.endDate isKindOfClass:[NSNull class]]) {
+//            eventItem.endDate.isLeapMonth = @(NO);
+//        }
+//        else {
+//            dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.endDate];
+//            eventItem.endDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
+//        }
+//    }
+//    else {
+//        eventItem.startDate.isLeapMonth = @(NO);
+//        eventItem.endDate.isLeapMonth = @(NO);
+//    }
     
-    if (![info objectForKey:EventItem_AlertDatetime] || [[info objectForKey:EventItem_AlertDatetime] isKindOfClass:[NSNull class]]) {
+    if ( !eventItem.alertDatetime ) {
         eventItem.alertDatetime = nil;
-        eventItem.isReminder = @(NO);
+        eventItem.hasReminder = @(NO);
     }
     else {
-        eventItem.alertDatetime = [info objectForKey:EventItem_AlertDatetime];
-        eventItem.isReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
+        eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
 
-    eventItem.alertInterval = [info objectForKey:EventItem_AlertDatetimeInterval];
-    eventItem.alertType = [info objectForKey:EventItem_AlertDateType];
-    eventItem.effectiveStartDate = [info objectForKey:EventItem_EffectiveStartDate] == nil ? [info objectForKey:EventItem_StartDate] : [info objectForKey:EventItem_EffectiveStartDate];
-    
-    eventItem.durationOption = [info objectForKey:EventItem_DurationOption];
-    eventItem.notes = [info objectForKey:EventItem_Notes];
-    eventItem.isFavorite = [info objectForKey:EventItem_IsFavorite];
+    if ( !eventItem.effectiveStartDate ) {
+        eventItem.effectiveStartDate = [eventItem.startDate solarDate];
+    }
     eventItem.effectiveStartDate = [self effectiveDateForEvent:eventItem basisTime:[NSDate date]];
     
-    // 기존 alert 수정 또는 추가
-    NSDictionary *locItem = [info objectForKey:EventItem_Location];
-    if ( locItem ) {
-        DaysCounterEventLocation *location = nil;
-        if ( eventItem.location ) {
-            location = eventItem.location;
-        }
-        else {
-            location = [DaysCounterEventLocation MR_createInContext:eventItem.managedObjectContext];
-            location.eventId = eventItem.eventId;
-            eventItem.location = location;
-        }
-        location.latitude = [locItem objectForKey:EventItem_Latitude];
-        location.longitude = [locItem objectForKey:EventItem_Longitude];
-        location.address = [locItem objectForKey:EventItem_Address];
-        location.city = [locItem objectForKey:EventItem_City];
-        location.state = [locItem objectForKey:EventItem_State];
-        location.country = [locItem objectForKey:EventItem_Country];
-        location.locationName = [locItem objectForKey:EventItem_LocationName];
-        location.contact = [locItem objectForKey:EventItem_Contact];
-        location.event = eventItem;
-    }
-    else if ( eventItem.location ) {
-       [eventItem.location MR_deleteEntity];
-    }
-
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
@@ -841,110 +631,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (BOOL)removeEvent:(DaysCounterEvent *)eventItem
 {
     // event store에 설정된 값도 삭제한다.
-//    if ( [eventItem.eventKitId length] > 0 ) {
-//        EKEvent *calEvent = [_eventStore eventWithIdentifier:eventItem.eventKitId];
-//        if ( calEvent ) {
-//            [_eventStore removeEvent:calEvent span:EKSpanFutureEvents commit:YES error:nil];
-//        }
-////        EKReminder *reminder = (EKReminder*)[_eventStore calendarItemWithIdentifier:eventItem.eventKitId];
-////        if ( reminder )
-////            [_eventStore removeReminder:reminder commit:YES error:nil];
-//    }
     [eventItem MR_deleteEntity];
-//    [eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
-}
-
-- (NSMutableDictionary *)dictionaryFromEventEntity:(DaysCounterEvent*)item
-{
-    NSMutableDictionary *dict = [self emptyEventModel];
-    [dict setObject:item.eventId forKey:EventItem_ID];
-    [dict setObject:item.eventName forKey:EventItem_Name];
-    
-    if ( [item.imageFilename length] > 0 ) {
-        [dict setObject:item.imageFilename forKey:EventItem_ImageFilename];
-        UIImage *image = [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename];
-        if ( image ) {
-            [dict setObject:[A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, image.size.width, image.size.height)] forKey:EventItem_Thumbnail];
-        }
-        image = [A3DaysCounterModelManager photoImageFromFilename:item.imageFilename];
-        
-        if ( image ) {
-            [dict setObject:image forKey:EventItem_Image];
-        }
-    }
-    [dict setObject:item.isLunar forKey:EventItem_IsLunar];
-    if ([item.isLunar boolValue]) {
-        [dict setObject:item.isLeapMonth forKey:EventItem_IsLeapMonth];
-    }
-    [dict setObject:item.isAllDay forKey:EventItem_IsAllDay];
-    [dict setObject:item.isPeriod forKey:EventItem_IsPeriod];
-    [dict setObject:item.startDate forKey:EventItem_StartDate];
-    
-    if ( item.endDate ) {
-        [dict setObject:item.endDate forKey:EventItem_EndDate];
-    }
-    if (item.repeatType) {
-        [dict setObject:item.repeatType forKey:EventItem_RepeatType];
-    }
-    
-    if ( item.repeatEndDate ) {
-        [dict setObject:item.repeatEndDate forKey:EventItem_RepeatEndDate];
-    }
-    if ( item.alertDatetime ) {
-        [dict setObject:item.alertDatetime forKey:EventItem_AlertDatetime];
-        [dict setObject:item.alertInterval forKey:EventItem_AlertDatetimeInterval];
-        [dict setObject:item.alertType forKey:EventItem_AlertDateType];
-    }
-    if ( [item.calendarId length] > 0 ) {
-        [dict setObject:item.calendarId forKey:EventItem_CalendarId];
-    }
-    if ( item.calendar ) {
-        [dict setObject:item.calendar forKey:EventItem_Calendar];
-    }
-    [dict setObject:item.durationOption forKey:EventItem_DurationOption];
-    
-    if ( [item.notes length] > 0 ) {
-        [dict setObject:item.notes forKey:EventItem_Notes];
-    }
-    [dict setObject:item.isFavorite forKey:EventItem_IsFavorite];
-    [dict setObject:item.regDate forKey:EventItem_RegDate];
-    
-    if ( item.location ) {
-        [dict setObject:[self dictionaryFromEventLocationEntity:item.location] forKey:EventItem_Location];
-    }
-    
-    if ( item.effectiveStartDate ) {
-        [dict setObject:item.effectiveStartDate forKey:EventItem_EffectiveStartDate];
-    }
-    else {
-        [dict setObject:item.startDate forKey:EventItem_EffectiveStartDate];
-    }
-    
-    return dict;
-}
-
-- (NSMutableDictionary *)dictionaryFromEventLocationEntity:(DaysCounterEventLocation*)location
-{
-    NSMutableDictionary *item = [self emptyEventLocationModel];
-    [item setObject:location.eventId forKey:EventItem_ID];
-    [item setObject:location.latitude forKey:EventItem_Latitude];
-    [item setObject:location.longitude forKey:EventItem_Longitude];
-    if ( [location.country length] > 0 )
-        [item setObject:location.country forKey:EventItem_Country];
-    if ( [location.state length] > 0 )
-        [item setObject:location.state forKey:EventItem_State];
-    if ( [location.city length] > 0 )
-        [item setObject:location.city forKey:EventItem_City];
-    if ( [location.address length] > 0 )
-        [item setObject:location.address forKey:EventItem_Address];
-    if ( [location.locationName length] > 0 )
-        [item setObject:location.locationName forKey:EventItem_LocationName];
-    if ( [location.contact length] > 0 )
-        [item setObject:location.contact forKey:EventItem_Contact];
-    return item;
 }
 
 - (NSMutableArray*)visibleCalendarList
@@ -1078,12 +768,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
+//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfUserCalendarVisible
@@ -1107,7 +799,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (DaysCounterCalendar*)defaultCalendar
 {
-    
     DaysCounterCalendar *defaultCalendar = [DaysCounterCalendar MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"isDefault == %@", [NSNumber numberWithBool:YES]] inContext:[self managedObjectContext]];
     if ( defaultCalendar == nil ) {
         NSArray *calendarList = [self visibleCalendarList];
@@ -1233,6 +924,83 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     return retDate;
 }
+
+//- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
+//{
+//    BOOL isResultLeapMonth = NO;
+//    NSDate *nextDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
+//    if (isLeapMonth) {
+//        isLeapMonth = [NSDate isLunarLeapMonthDate:nextDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+//    }
+//
+//    nextDate = [NSDate dateOfSolarFromLunarDate:nextDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+//    if ( [nextDate timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970] ) {
+//        return nextDate;
+//    }
+//    
+//    NSDate *retDate = nil;
+//    if (isAllDay) {
+//        fromDate = [A3DateHelper midnightForDate:fromDate];
+//        firstDate = [A3DateHelper midnightForDate:firstDate];
+//    }
+//    if ([self isTodayEventForDate:firstDate fromDate:fromDate repeatType:repeatType]) {
+//        retDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
+//        return retDate;
+//    }
+//    
+//    NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+//    
+//    if ( days < 0 ) {
+//        return firstDate;
+//    }
+//    // 시작일로부터 오늘까지 각 설정에 맞는 주수를 계산
+//    switch (repeatType) {
+//        case RepeatType_Never:
+//            retDate = firstDate;
+//            break;
+//            
+//        case RepeatType_EveryDay:{
+//            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+//            retDate = [A3DateHelper dateByAddingDays:days+1 fromDate:firstDate];
+//        }
+//            break;
+//            
+//        case RepeatType_EveryWeek:{
+//            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
+//            retDate = [A3DateHelper dateByAddingWeeks:weeks+1 fromDate:firstDate];
+//        }
+//            break;
+//        case RepeatType_Every2Week:{
+//            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
+//            NSInteger remainNum = weeks % 2;
+//            retDate = [A3DateHelper dateByAddingWeeks:weeks+ (2-remainNum) fromDate:firstDate];
+//        }
+//            break;
+//        case RepeatType_EveryMonth:{
+//            NSInteger month = [A3DateHelper diffMonthsFromDate:firstDate toDate:fromDate];
+//            retDate = [A3DateHelper dateByAddingMonth:month+1 fromDate:firstDate];
+//        }
+//            break;
+//        case RepeatType_EveryYear:{
+//            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate toDate:fromDate];
+//            retDate = [A3DateHelper dateByAddingYears:year+1 fromDate:firstDate];
+//        }
+//            break;
+//            
+//        default:{
+//            NSInteger dayUnit = repeatType;
+//            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
+//            NSInteger remainNum = days % dayUnit;
+//            retDate = [A3DateHelper dateByAddingDays:days+(dayUnit-remainNum) fromDate:firstDate];
+//        }
+//            break;
+//    }
+//    
+//
+//    retDate = [NSDate dateOfSolarFromLunarDate:retDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
+//    
+//    return retDate;
+//}
 
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
 {
@@ -1488,7 +1256,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     dateLabel.shadowOffset = CGSizeMake(0,1);
     dateLabel.shadowBlur = 2;
     dateLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 18.0 : 21.0)];
-
     
     NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                    toDate:item.effectiveStartDate
@@ -1497,7 +1264,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
         NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
-                                                                                                  firstDate:item.startDate
+                                                                                                  firstDate:[item.startDate solarDate]
                                                                                                    fromDate:[NSDate date]];
         
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
@@ -1556,9 +1323,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     NSString *retStr = event.eventName;
     
-    retStr = [retStr stringByAppendingFormat:@"\nStart : %@%@",[A3DateHelper dateStringFromDate:event.startDate withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
+    retStr = [retStr stringByAppendingFormat:@"\nStart : %@%@",[A3DateHelper dateStringFromDate:[event.startDate solarDate] withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
     if ( event.endDate )
-        retStr = [retStr stringByAppendingFormat:@"\nEnd : %@%@",[A3DateHelper dateStringFromDate:event.endDate withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
+        retStr = [retStr stringByAppendingFormat:@"\nEnd : %@%@",[A3DateHelper dateStringFromDate:[event.endDate solarDate] withFormat:@"EEEE, MMMM dd, yyyy"], ([event.isLunar boolValue] ? @"(lunar)" : @"")];
     if ( [event.repeatType integerValue] != RepeatType_Never )
         retStr = [retStr stringByAppendingFormat:@"\nRepeat : %@",[self repeatTypeStringFromValue:[event.repeatType integerValue]]];
     if ( event.location )
@@ -1570,7 +1337,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (BOOL)isSupportLunar
 {
     NSString *locale = [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
-    if ( [locale	isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] )
+    if ( [locale isEqualToString:@"KR"] || [locale isEqualToString:@"CN"] || [locale isEqualToString:@"TW"] || [locale isEqualToString:@"HK"] || [locale isEqualToString:@"MO"] )
         return YES;
     
     return NO;
@@ -1583,7 +1350,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( IS_IPHONE ) {
         if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 (EEE)" : @"yyyy. MM. d (EEE) a h:mm");
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. MM. d EEEE a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEE, MMM d, yyyy" : @"EEE, MMM d, yyyy h:mm a");
@@ -1608,7 +1375,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     if ( IS_IPHONE ) {
         if ( isLocaleKorea ) {
-            retFormat = ( isAllDays ? @"yyyy년 MMMM d일(EEE)" : @"yyyy년 MMMM d일(EEE) a h:mm");
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEEE, MMM d, yyyy" : @"EEEE, MMM d, yyyy h:mm a");
@@ -1706,35 +1473,38 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (NSDate *)effectiveDateForEvent:(DaysCounterEvent *)event basisTime:(NSDate *)now
 {
     if ([event.repeatType isEqual:@(RepeatType_Never)]) {
-        return [event startDate];
+        return [event.startDate solarDate];
     }
     
-    NSDate *startDate = [event startDate];
-    
-    if ( [event.isLunar boolValue] ) {
-        // Lunar -> Solar
-        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
-        BOOL isResultLeapMonth = NO;
-        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
-                                                            gregorianToLunar:NO
-                                                                   leapMonth:NO
-                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
-                                                             resultLeapMonth:&isResultLeapMonth];
-        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
-        startDate = convertDate;
+    NSDate *startDate;
+    NSDate *nextDate;
+    // Lunar
+    if ([event.isLunar boolValue]) {
+        NSDateComponents *solarComp;
+        solarComp = [self nextSolarDateComponentsFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:event.startDate toLunar:YES]
+                                                              leapMonth:[event.useLeapMonth boolValue]
+                                                               fromDate:now];
+        nextDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
+        FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
+        return nextDate;
     }
-    
-    if ([event repeatEndDate] &&
-        ![event.repeatEndDate isKindOfClass:[NSNull class]] &&
-        [event.repeatEndDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
+    else {
+        // Solar
+        startDate = [event.startDate solarDate];
+        
         // 종료된 Event의 경우.
-        now = [event repeatEndDate];
+        if ([event repeatEndDate] && [event.repeatEndDate timeIntervalSince1970] < [now timeIntervalSince1970]) {
+            now = [event repeatEndDate];
+        }
+        
+        nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue]
+                                        firstDate:startDate
+                                         fromDate:now
+                                         isAllDay:[event.isLunar boolValue] ? YES : [event.isAllDay boolValue]];
+        
+        FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
+        return nextDate;
     }
-    
-    NSDate *nextDate = [self nextDateWithRepeatOption:[event.repeatType integerValue] firstDate:startDate fromDate:now isAllDay:[event.isAllDay boolValue]];
-    
-    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
-    return nextDate;
 }
 
 //- (BOOL)isTodayEvent:(DaysCounterEvent *)event fromDate:(NSDate *)now
@@ -1773,58 +1543,24 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 }
 
 #pragma mark EventModel Dictionary
-- (NSDate *)effectiveDateForEventModel:(NSMutableDictionary *)event basisTime:(NSDate *)now
-{
-    if ([[event objectForKey:EventItem_RepeatType] isEqual:@(RepeatType_Never)]) {
-        return [event objectForKey:EventItem_StartDate];
-    }
-    
-    NSDate *startDate = [event objectForKey:EventItem_StartDate];
-    
-    if ( [[event objectForKey:EventItem_IsLunar] boolValue] ) {
-        // Lunar -> Solar
-        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
-        BOOL isResultLeapMonth = NO;
-        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
-                                                            gregorianToLunar:NO
-                                                                   leapMonth:NO
-                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
-                                                             resultLeapMonth:&isResultLeapMonth];
-        NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
-        startDate = convertDate;
-    }
-    
-    if ([event objectForKey:EventItem_RepeatEndDate] &&
-        ![[event objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] &&
-        [[event objectForKey:EventItem_RepeatEndDate] timeIntervalSince1970] < [now timeIntervalSince1970]) {
-        // 종료된 Event의 경우.
-        now = [event objectForKey:EventItem_RepeatEndDate];
-    }
-    
-    NSDate *nextDate = [self nextDateWithRepeatOption:[[event objectForKey:EventItem_RepeatType] integerValue] firstDate:startDate fromDate:now isAllDay:[[event objectForKey:EventItem_IsAllDay] boolValue]];
-    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", now, [event objectForKey:EventItem_StartDate], nextDate, [event objectForKey:EventItem_AlertDatetime]);
-    return nextDate;
-}
-
-- (void)reloadDatesOfEventModel:(NSMutableDictionary *)eventModel
+- (void)recalculateEventDatesForEvent:(DaysCounterEvent *)eventModel
 {
     // EffectiveStartDate 갱신.
-    NSDate *effectiveDate = [self effectiveDateForEventModel:eventModel basisTime:[NSDate date]];
-    [eventModel setObject:effectiveDate forKey:EventItem_EffectiveStartDate];
+    eventModel.effectiveStartDate = [self effectiveDateForEvent:eventModel basisTime:[NSDate date]];
     
     // EffectiveAlertDate 갱신.
-    NSDate *alertDate = [eventModel objectForKey:EventItem_AlertDatetime];
+    NSDate *alertDate = eventModel.alertDatetime;
     if (alertDate && ![alertDate isKindOfClass:[NSNull class]]) {
         NSDateComponents *alertIntervalComp = [NSDateComponents new];
-        alertIntervalComp.minute = -labs([[eventModel objectForKey:EventItem_AlertDatetimeInterval] integerValue]);
-        NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertIntervalComp toDate:effectiveDate options:0];
+        alertIntervalComp.minute = -labs([eventModel.alertInterval integerValue]);
+        NSDate *alertDate = [[NSCalendar currentCalendar] dateByAddingComponents:alertIntervalComp toDate:eventModel.effectiveStartDate options:0];
         NSDateComponents *alertDateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:alertDate];
         alertDateComp.second = 0;
         
-        [eventModel setObject:[[NSCalendar currentCalendar] dateFromComponents:alertDateComp] forKey:EventItem_AlertDatetime];
+        eventModel.alertDatetime = [[NSCalendar currentCalendar] dateFromComponents:alertDateComp];
     }
     
-    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel objectForKey:EventItem_StartDate], [eventModel objectForKey:EventItem_EffectiveStartDate], [eventModel objectForKey:EventItem_AlertDatetime]);
+    FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
 }
 
 #pragma mark - Alert
@@ -1849,7 +1585,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
         event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
         event.alertDatetime = [self effectiveAlertDateForEvent:event];
-        if ([event.isReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
+        if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
 //        if (([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] >= 0)) {
             NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event.eventId == %@", [event eventId]]];
             if (!reminders || [reminders count] == 0) {
@@ -1896,5 +1632,158 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return effectiveAlertDate;
 }
 
+#pragma mark - Lunar
+- (NSDateComponents *)nextSolarDateComponentsFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
+{
+    BOOL isResultLeapMonth;
+    if (isLeapMonth) {
+        isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:YES];
+    }
+    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    NSDateComponents *resultComp;
+    if (fromComp.year == startComp.year && fromComp.month > startComp.month) {
+        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:NO leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
+    }
+    else {
+        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:YES leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
+    }
+    
+    NSAssert(resultComp, @"Not Exist Lunar Date");
+    if (!resultComp) {
+        return nil;
+    }
+
+    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:resultComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    return resultDateComponents;
+}
+
+- (NSDate *)nextSolarDateFromLunarDateComponents:(NSDateComponents *)lunarComponents leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate
+{
+    NSDateComponents *solarComp = [self nextSolarDateComponentsFromLunarDateComponents:lunarComponents leapMonth:isLeapMonth fromDate:fromDate];
+    NSDate *result = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
+    return result;
+}
+
+- (NSDateComponents *)dateComponentsOfRepeatForLunarDateComponent:(NSDateComponents *)lunarComponents aboutNextTime:(BOOL)isAboutNextTime leapMonth:(BOOL)isLeapMonth fromDate:(NSDate *)fromDate repeatType:(NSInteger)repeatType
+{
+    BOOL isResultLeapMonth;
+    NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    NSDateComponents *calcComp = [NSDateComponents new];
+    
+    switch (repeatType) {
+        case RepeatType_EveryYear:
+        {
+            calcComp.year = isAboutNextTime ? fromComp.year + 1 : fromComp.year;
+            calcComp.month = lunarComponents.month;
+            calcComp.day = lunarComponents.day;
+            calcComp = [self validLunarDateComponents:calcComp];
+        }
+            break;
+        case RepeatType_EveryMonth:
+        case RepeatType_Every2Week:
+        case RepeatType_EveryWeek:
+        case RepeatType_EveryDay:
+        {
+            
+        }
+            break;
+        default:
+            break;
+    }
+    
+    // 존재하지 않는 반복 음력날짜에 대한 검증
+    if (isLeapMonth) {
+        isLeapMonth = [NSDate isLunarDateComponents:calcComp isKorean:YES];
+    }
+    NSDateComponents *resultDateComponents = [NSDate lunarCalcWithComponents:calcComp gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+    NSDate *resultDate = [[NSCalendar currentCalendar] dateFromComponents:resultDateComponents];
+    if (!resultDateComponents || !resultDate || [resultDate timeIntervalSince1970] < [fromDate timeIntervalSince1970]) {
+        return nil;
+    }
+
+    return calcComp;
+}
+
+- (NSDateComponents *)validLunarDateComponents:(NSDateComponents *)comp
+{
+    BOOL result = [NSDate isLunarDateComponents:comp isKorean:YES];
+    if (result) {
+        return comp;
+    }
+    else {
+        comp.year += 1;
+        comp = [self validLunarDateComponents:comp];
+    }
+    
+    return comp;
+}
+
+#pragma mark - Manipulate DaysCounterDateModel Object
++ (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
+{
+    DaysCounterDateModel *dateModel = isEndDate ? eventModel.endDate : eventModel.startDate;
+    if (!dateModel) {
+        dateModel = [DaysCounterDateModel MR_createEntity];
+        if (isEndDate) {
+            eventModel.endDate = dateModel;
+        }
+        else {
+            eventModel.startDate = dateModel;
+        }
+    }
+    
+    BOOL isResultLeapMonth;
+    if ([eventModel.isLunar boolValue]) {
+        dateModel.year = @(dateComponents.year);
+        dateModel.month = @(dateComponents.month);
+        dateModel.day = @(dateComponents.day);
+        if ([eventModel.useLeapMonth boolValue]) {
+            dateModel.isLeapMonth = @([NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]);
+        }
+        else {
+            dateModel.isLeapMonth = @(NO);
+        }
+        
+        NSDateComponents *solarComp = [NSDate lunarCalcWithComponents:dateComponents gregorianToLunar:NO leapMonth:[dateModel.isLeapMonth boolValue] korean:YES resultLeapMonth:&isResultLeapMonth];
+        solarComp.hour = 0;     // lunar 는 all day.
+        solarComp.minute = 0;
+        solarComp.second = 0;
+        dateModel.solarDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
+    }
+    else {
+        dateModel.solarDate = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+        dateModel.year = @(dateComponents.year);
+        dateModel.month = @(dateComponents.month);
+        dateModel.day = @(dateComponents.day);
+        dateModel.hour = @(dateComponents.hour);
+        dateModel.minute = @(dateComponents.minute);
+    }
+}
+
++ (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar
+{
+    NSDateComponents * dateComp;
+    if (isLunar) {
+        dateComp = [NSDateComponents new];
+        dateComp.year = [dateObject.year integerValue];
+        dateComp.month = [dateObject.month integerValue];
+        dateComp.day = [dateObject.day integerValue];
+        dateComp.hour = 0;
+        dateComp.minute = 0;
+        dateComp.second = 0;
+    }
+    else {
+        dateComp = [NSDateComponents new];
+        dateComp.year = [dateObject.year integerValue];
+        dateComp.month = [dateObject.month integerValue];
+        dateComp.day = [dateObject.day integerValue];
+        dateComp.hour = [dateObject.hour integerValue];
+        dateComp.minute = [dateObject.minute integerValue];
+        dateComp.second = 0;
+    }
+
+    return dateComp;
+}
 
 @end

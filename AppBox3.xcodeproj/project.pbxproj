@@ -58,7 +58,6 @@
 		17D42FD84048A09B5EE00DE4 /* A3TranslatorCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17D42DEFB63D5877A0449693 /* A3TranslatorCircleView.m */; };
 		3E21D15518FB1BF100B88D62 /* FrameRateCalculator.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */; };
 		5754640A190DE2D500B56C60 /* DaysCounterReminder.m in Sources */ = {isa = PBXBuildFile; fileRef = 57546409190DE2D500B56C60 /* DaysCounterReminder.m */; };
-		5754640D190DE2D500B56C60 /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5754640C190DE2D500B56C60 /* DaysCounterEvent.m */; };
 		577318F618E150F900565159 /* A3DaysCounterEventListSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */; };
 		57874C35190684AF00491485 /* A3DaysCounterLocationDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 57874C34190684AF00491485 /* A3DaysCounterLocationDetailCell.m */; };
 		579B81AC18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */; };
@@ -934,6 +933,8 @@
 		8076BCB918FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8076BCB818FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib */; };
 		8079DFBC190F93B90084BD89 /* A3DateLunarTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */; };
 		80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */; };
+		80A5F23A1916123000EDC872 /* DaysCounterEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A5F2391916123000EDC872 /* DaysCounterEvent.m */; };
+		80A5F23D1916123100EDC872 /* DaysCounterDateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 80A5F23C1916123100EDC872 /* DaysCounterDateModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1050,8 +1051,6 @@
 		3E21D15418FB1BF100B88D62 /* FrameRateCalculator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrameRateCalculator.m; sourceTree = "<group>"; };
 		57546408190DE2D500B56C60 /* DaysCounterReminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterReminder.h; sourceTree = "<group>"; };
 		57546409190DE2D500B56C60 /* DaysCounterReminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterReminder.m; sourceTree = "<group>"; };
-		5754640B190DE2D500B56C60 /* DaysCounterEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEvent.h; sourceTree = "<group>"; };
-		5754640C190DE2D500B56C60 /* DaysCounterEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEvent.m; sourceTree = "<group>"; };
 		577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterEventListSectionHeader.h; sourceTree = "<group>"; };
 		577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterEventListSectionHeader.m; sourceTree = "<group>"; };
 		57874C33190684AF00491485 /* A3DaysCounterLocationDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterLocationDetailCell.h; sourceTree = "<group>"; };
@@ -2531,6 +2530,10 @@
 		8079DFBB190F93B90084BD89 /* A3DateLunarTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DateLunarTest.m; sourceTree = "<group>"; };
 		80A1622F18DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3DaysCounterSlideshowEventSummaryView.h; sourceTree = "<group>"; };
 		80A1623018DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3DaysCounterSlideshowEventSummaryView.m; sourceTree = "<group>"; };
+		80A5F2381916123000EDC872 /* DaysCounterEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEvent.h; sourceTree = "<group>"; };
+		80A5F2391916123000EDC872 /* DaysCounterEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEvent.m; sourceTree = "<group>"; };
+		80A5F23B1916123100EDC872 /* DaysCounterDateModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterDateModel.h; sourceTree = "<group>"; };
+		80A5F23C1916123100EDC872 /* DaysCounterDateModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterDateModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4888,10 +4891,12 @@
 				68F1C83518D7F37D009FAE8A /* DaysCounterCalendar.m */,
 				68F1C83818D7F37D009FAE8A /* DaysCounterEventLocation.h */,
 				68F1C83918D7F37D009FAE8A /* DaysCounterEventLocation.m */,
-				5754640B190DE2D500B56C60 /* DaysCounterEvent.h */,
-				5754640C190DE2D500B56C60 /* DaysCounterEvent.m */,
 				57546408190DE2D500B56C60 /* DaysCounterReminder.h */,
 				57546409190DE2D500B56C60 /* DaysCounterReminder.m */,
+				80A5F23B1916123100EDC872 /* DaysCounterDateModel.h */,
+				80A5F23C1916123100EDC872 /* DaysCounterDateModel.m */,
+				80A5F2381916123000EDC872 /* DaysCounterEvent.h */,
+				80A5F2391916123000EDC872 /* DaysCounterEvent.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5215,6 +5220,8 @@
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
 				57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */,
 				57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */,
+				8076BCA018FA87E800613E70 /* A3DaysCounterAddEventEventInfoCell.xib */,
+				8076BCA418FA882100613E70 /* A3DaysCounterAddEventEventInfoCell_iPad.xib */,
 				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
 				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
 				8076BC8B18FA842100613E70 /* A3DaysCounterSetupCalendarCell.h */,
@@ -5227,8 +5234,6 @@
 				8076BC9A18FA874500613E70 /* A3DaysCounterAddEventCalendarCell.xib */,
 				8076BC9C18FA876600613E70 /* A3DaysCounterAddEventNotesCell.xib */,
 				8076BC9E18FA878700613E70 /* A3DaysCounterAddEventAdvancedCell.xib */,
-				8076BCA018FA87E800613E70 /* A3DaysCounterAddEventEventInfoCell.xib */,
-				8076BCA418FA882100613E70 /* A3DaysCounterAddEventEventInfoCell_iPad.xib */,
 				8076BCA618FA885B00613E70 /* A3DaysCounterAddEventDateInputCell.xib */,
 				8076BCA818FA8AD600613E70 /* A3DaysCounterAddEventCalendarInfoCell.xib */,
 				8076BCAA18FA8B4E00613E70 /* A3DaysCounterAddEventDefaultCell.xib */,
@@ -5714,6 +5719,7 @@
 				68B6A2EC18CEC76D004084EF /* A3UnitPriceHistoryCell.m in Sources */,
 				684D92F518BC1FBC005016F7 /* A3DateCalcFooterView.m in Sources */,
 				68E6F37517B2A09C00F10ED9 /* A3CurrencyHistory3RowCell.m in Sources */,
+				80A5F23D1916123100EDC872 /* DaysCounterDateModel.m in Sources */,
 				68E2A66218D0B1FC00E834D9 /* A3PercentCalcMainViewController.m in Sources */,
 				68B6A2CD18CEC76D004084EF /* A3UnitConverterAddViewController.m in Sources */,
 				68E2A65918D0B1FC00E834D9 /* A3OverlappedCircleView.m in Sources */,
@@ -5804,7 +5810,7 @@
 				68E2A64A18D0B1FC00E834D9 /* A3ExpenseListHistoryCell.m in Sources */,
 				68B6A2F418CEC76D004084EF /* A3UnitPriceMainTableController.m in Sources */,
 				68F1C8AB18D7F37D009FAE8A /* A3DaysCounterSlideshowTimeSelectViewController.m in Sources */,
-				5754640D190DE2D500B56C60 /* DaysCounterEvent.m in Sources */,
+				80A5F23A1916123000EDC872 /* DaysCounterEvent.m in Sources */,
 				6825365618A7AA4C00EAFB84 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				680886E61891751B0093FD97 /* UIView+SBExtras.m in Sources */,
 				68143D0818E3EC1F00569691 /* A3NumberKeyboardViewController_iPhone.m in Sources */,

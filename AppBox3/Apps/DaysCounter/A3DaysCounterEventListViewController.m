@@ -14,6 +14,7 @@
 #import "SFKImage.h"
 #import "DaysCounterCalendar.h"
 #import "DaysCounterEvent.h"
+#import "DaysCounterDateModel.h"
 #import "A3DateHelper.h"
 #import "A3DaysCounterEventListEditViewController.h"
 #import "A3DateHelper.h"
@@ -466,22 +467,23 @@
     A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
     
     if ( item ) {
-        NSDate *startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                      firstDate:[item startDate]
-                                                                                       fromDate:[NSDate date]
-                                                                                       isAllDay:[item.isAllDay boolValue]];
+        NSDate *startDate;
         if ( [item.isLunar boolValue] ) {
-            NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:startDate];
-            BOOL isResultLeapMonth = NO;
-            NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
-                                                                gregorianToLunar:NO
-                                                                       leapMonth:NO
-                                                                          korean:[A3DateHelper isCurrentLocaleIsKorea]
-                                                                 resultLeapMonth:&isResultLeapMonth];
-            NSDate *convertDate = [[NSCalendar currentCalendar] dateFromComponents:resultComponents];
-            startDate = convertDate;
+            [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
+                                                                                  leapMonth:[item.useLeapMonth boolValue]
+                                                                                   fromDate:[NSDate date]];
+//            startDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[item.repeatType integerValue]
+//                                                                                          firstDate:[item startDate]
+//                                                                                           fromDate:[NSDate date]
+//                                                                                           isAllDay:[item.isAllDay boolValue]
+//                                                                                        isLeapMonth:[item.useLeapMonth boolValue]];
         }
-        
+        else {
+            startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+                                                                                  firstDate:[item.startDate solarDate]
+                                                                                   fromDate:[NSDate date]
+                                                                                   isAllDay:[item.isAllDay boolValue]];
+        }
 
         // textLabel
         textLabel.text = item.eventName;
@@ -540,8 +542,11 @@
                 
                 if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
                     NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
-                                                                                                                     firstDate:item.startDate
+                                                                                                                     firstDate:[item.startDate solarDate]
                                                                                                                       fromDate:[NSDate date]];
+                    if ( [item.isLunar boolValue] ) {
+                        repeatDate = startDate;
+                    }
                     dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                            withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
                 }
@@ -634,12 +639,12 @@
     
     if ( [item.repeatType integerValue] == RepeatType_Never ) {
         resultDaysGap = [A3DateHelper diffDaysFromDate:today
-                                                toDate:[item startDate]
+                                                toDate:[item.startDate solarDate]
                                               isAllDay:[item.isAllDay boolValue]];
     }
     else {
         NSDate *nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                                firstDate:item.startDate
+                                                                                                firstDate:[item.startDate solarDate]
                                                                                                  fromDate:today
                                                                                                  isAllDay:[item.isAllDay boolValue]];
         resultDaysGap = [A3DateHelper diffDaysFromDate:today
@@ -658,12 +663,12 @@
     
     if ( [item.repeatType integerValue] == RepeatType_Never ) {
         daysGap = [A3DateHelper diffDaysFromDate:today
-                                          toDate:[item startDate]
+                                          toDate:[item.startDate solarDate]
                                         isAllDay:[item.isAllDay boolValue]];
     }
     else {
         nextRepeatStartDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                        firstDate:item.startDate
+                                                                                        firstDate:[item.startDate solarDate]
                                                                                          fromDate:today
                                                                                          isAllDay:[item.isAllDay boolValue]];
         daysGap = [A3DateHelper diffDaysFromDate:today

@@ -200,7 +200,7 @@
     // 미반복의 경우 더이상 Reminder에 올라오지 않도록 함.
     if (item.repeatType && [item.repeatType isEqualToNumber:@(RepeatType_Never)] &&
         [reminder.startDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
-            item.isReminder = @(NO);
+            item.hasReminder = @(NO);
     }
     [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     

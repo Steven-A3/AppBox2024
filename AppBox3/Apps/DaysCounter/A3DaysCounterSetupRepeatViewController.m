@@ -16,6 +16,7 @@
 #import "SFKImage.h"
 #import "A3DaysCounterRepeatCustomCell.h"
 #import "A3AppDelegate+appearance.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupRepeatViewController ()
 @property (strong, nonatomic) NSArray *itemArray;
@@ -64,9 +65,15 @@
     [super viewDidLoad];
 
     self.title = @"Repeat";
-    self.itemArray = @[@"Never",@"Every Day",@"Every Week", @"Every 2 Weeks",@"Every Month",@"Every Year",@"Custom"];
+    
+    if ([_eventModel.isLunar boolValue]) {
+        self.itemArray = @[@"Never", @"Every Year"];
+    }
+    else {
+        self.itemArray = @[@"Never", @"Every Day", @"Every Week", @"Every 2 Weeks", @"Every Month", @"Every Year", @"Custom"];
+    }
     self.numberKeyboardVC = [self simpleNumberKeyboard];
-    self.originalValue = [_eventModel objectForKey:EventItem_RepeatType];
+    self.originalValue = _eventModel.repeatType;
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,6 +126,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([_eventModel.isLunar boolValue]) {
+        NSString *CellIdentifier = @"Cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+
+        cell.textLabel.text = self.itemArray[indexPath.row];
+        if (indexPath.row == 0) {
+            cell.accessoryType = (_eventModel.repeatType.integerValue == RepeatType_Never) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
+        else {
+            cell.accessoryType = (_eventModel.repeatType.integerValue == RepeatType_EveryYear) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+        }
+        
+        return cell;
+    }
+    
     NSString *CellIdentifier = (indexPath.row == ([_itemArray count]-1) ? @"customInputCell" : @"Cell");
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -137,7 +163,7 @@
     }
     
     // Configure the cell...
-    NSInteger value = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
+    NSInteger value = [_eventModel.repeatType integerValue];
     NSInteger index = 0;
     if ( value < 0 ) {
         index = ABS(value);
@@ -170,23 +196,30 @@
             [self setCheckmarkOnCustomInputCell:cell CheckShow:NO];
         }
     }
-
+    
     return cell;
 }
 
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger prevValue = [[_eventModel objectForKey:EventItem_RepeatType] integerValue];
-    NSInteger prevIndex = ( prevValue < 0 ? prevValue * -1 : (prevValue > 0 ? [_itemArray count]-1 : 0));
-    NSInteger value = (prevValue <= 0 && (indexPath.row == ([_itemArray count]-1))) ? 1 : indexPath.row * -1;
-    [_eventModel setObject:[NSNumber numberWithInteger:value] forKey:EventItem_RepeatType];
-    [tableView beginUpdates];
-    if ( prevIndex != indexPath.row ) {
-        [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+    if ([_eventModel.isLunar boolValue]) {
+        _eventModel.repeatType = indexPath.row == 0 ? @(RepeatType_Never) : @(RepeatType_EveryYear);
+        [self doneButtonAction:nil];
     }
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [tableView endUpdates];
+    else {
+        NSInteger prevValue = [_eventModel.repeatType integerValue];
+        NSInteger prevIndex = ( prevValue < 0 ? prevValue * -1 : (prevValue > 0 ? [_itemArray count]-1 : 0));
+        NSInteger value = (prevValue <= 0 && (indexPath.row == ([_itemArray count]-1))) ? 1 : indexPath.row * -1;
+        _eventModel.repeatType = @(value);
+        
+        [tableView beginUpdates];
+        if ( prevIndex != indexPath.row ) {
+            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [tableView endUpdates];
+    }
 
     if ( indexPath.row == ([_itemArray count]-1) ) {
         // 키보드 보여주기
@@ -202,7 +235,7 @@
 - (void)textFieldDidChange:(NSNotification*)noti
 {
     UITextField *textField = noti.object;
-    [_eventModel setObject:[NSNumber numberWithInteger:[textField.text integerValue]] forKey:EventItem_RepeatType];
+    _eventModel.repeatType = @([textField.text integerValue]);
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -242,7 +275,7 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    [_eventModel setObject:self.originalValue forKey:EventItem_RepeatType];
+    _eventModel.repeatType = self.originalValue;
     
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];

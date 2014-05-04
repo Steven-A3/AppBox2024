@@ -15,6 +15,7 @@
 #import "A3DateKeyboardViewController_iPad.h"
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "SFKImage.h"
+#import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupEndRepeatViewController ()
 @property (strong,nonatomic) NSArray *itemArray;
@@ -64,9 +65,9 @@
     self.keyboardVC.delegate = self;
     self.keyboardVC.view.frame = CGRectMake(0, self.view.frame.size.height - self.keyboardVC.view.frame.size.height, self.keyboardVC.view.frame.size.width, self.keyboardVC.view.frame.size.height);
     [self.view addSubview:self.keyboardVC.view];
-    if ([_eventModel objectForKey:EventItem_RepeatEndDate]) {
-        self.keyboardVC.date = [_eventModel objectForKey:EventItem_RepeatEndDate];
-        
+    
+    if ( self.eventModel.repeatEndDate ) {
+        self.keyboardVC.date = self.eventModel.repeatEndDate;
     }
 }
 
@@ -98,7 +99,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if ( IS_IPAD ) {
-        self.originalValue = [_eventModel objectForKey:EventItem_RepeatEndDate];
+        self.originalValue = self.eventModel.repeatEndDate;
     }
     self.title = @"End Repeat";
     
@@ -143,11 +144,12 @@
     
     cell.textLabel.text = [_itemArray objectAtIndex:indexPath.row];
     cell.detailTextLabel.text = @"";
-    if ( indexPath.row == ([_itemArray count] - 1) && [[_eventModel objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSDate class]]) {
-        cell.detailTextLabel.text = [A3Formatter stringFromDate:[_eventModel objectForKey:EventItem_RepeatEndDate] format:DaysCounterDefaultDateFormat];
+    
+    if ( indexPath.row == ([_itemArray count] - 1) && [self.eventModel.repeatEndDate isKindOfClass:[NSDate class]]) {
+        cell.detailTextLabel.text = [A3Formatter stringFromDate:self.eventModel.repeatEndDate format:DaysCounterDefaultDateFormat];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
-    else if ( indexPath.row == 0 && [[_eventModel objectForKey:EventItem_RepeatEndDate] isKindOfClass:[NSNull class]] ) {
+    else if ( indexPath.row == 0 && [self.eventModel.repeatEndDate isKindOfClass:[NSNull class]] ) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     }
     else {
@@ -165,7 +167,7 @@
     switch ([indexPath row]) {
         case 0:
         {
-            [_eventModel setObject:[NSNull null] forKey:EventItem_RepeatEndDate];
+            self.eventModel.repeatEndDate = nil;
             [tableView reloadData];
             [self hideKeyboard];
             [self doneButtonAction:nil];
@@ -173,15 +175,15 @@
             break;
         case 1:
         {
-            NSDate *repeatEndDate = [_eventModel objectForKey:EventItem_RepeatEndDate];
+            NSDate *repeatEndDate = self.eventModel.repeatEndDate;
             if (!repeatEndDate || [repeatEndDate isKindOfClass:[NSNull class]]) {
-                [_eventModel setObject:[NSDate date] forKey:EventItem_RepeatEndDate];
+                self.eventModel.repeatEndDate = [NSDate date];
             }
             
             UITableViewCell *cell_0row = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]];
             cell_0row.accessoryType = UITableViewCellAccessoryNone;
             UITableViewCell *cell_1row = [tableView cellForRowAtIndexPath:indexPath];
-            cell_1row.detailTextLabel.text = [A3Formatter stringFromDate:[_eventModel objectForKey:EventItem_RepeatEndDate] format:DaysCounterDefaultDateFormat];
+            cell_1row.detailTextLabel.text = [A3Formatter stringFromDate:[self.eventModel repeatEndDate] format:DaysCounterDefaultDateFormat];
             cell_1row.accessoryType = UITableViewCellAccessoryCheckmark;
             
             [self showKeyboard];
@@ -200,7 +202,7 @@
         return;
     }
     
-    [_eventModel setObject:date forKey:EventItem_RepeatEndDate];
+    self.eventModel.repeatEndDate = date;
     [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -211,7 +213,8 @@
 #pragma mark - action method
 - (void)cancelAction:(id)sender
 {
-    [_eventModel setObject:self.originalValue forKey:EventItem_RepeatEndDate];
+    self.eventModel.repeatEndDate = self.originalValue;
+
     if ( IS_IPAD ) {
         [self.A3RootViewController dismissRightSideViewController];
         [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
