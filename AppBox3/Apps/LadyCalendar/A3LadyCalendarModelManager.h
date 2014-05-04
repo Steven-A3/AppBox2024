@@ -22,10 +22,9 @@
 
 - (NSInteger)numberOfAccount;
 - (LadyCalendarAccount*)accountForID:(NSString*)accountID;
-- (NSMutableDictionary*)emptyAccount;
+
 - (BOOL)addAccount:(NSDictionary*)item;
 - (BOOL)removeAccount:(NSString*)accountID;
-- (BOOL)modifyAccount:(NSDictionary*)item;
 
 - (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending;
 - (NSMutableDictionary*)dictionaryFromAccount:(LadyCalendarAccount*)account;

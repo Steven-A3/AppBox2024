@@ -90,6 +90,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+
 	[self.navigationController setToolbarHidden:NO];
 	[self showCalendarHeaderView];
 	currentAccount = [self.dataManager currentAccount];
@@ -106,8 +107,10 @@
 		NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
 		_currentMonth = (lastDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : lastDate);
 		[self moveToCurrentMonth];
+	} else {
+		[self setupCalendarRange];
+		[_collectionView reloadData];
 	}
-	[_collectionView reloadData];
 	[self updateCurrentMonthLabel];
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:currentAccount.uniqueID] > 0);
 

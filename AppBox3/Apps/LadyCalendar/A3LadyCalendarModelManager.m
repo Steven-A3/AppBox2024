@@ -12,6 +12,7 @@
 #import "LadyCalendarPeriod.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate.h"
 
 @implementation A3LadyCalendarModelManager
 
@@ -90,16 +91,6 @@
     return [LadyCalendarAccount MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"uniqueID == %@",accountID]];
 }
 
-- (NSMutableDictionary*)emptyAccount
-{
-    NSMutableDictionary *item = [NSMutableDictionary dictionary];
-    [item setObject:[[NSUUID UUID] UUIDString] forKey:AccountItem_ID];
-    [item setObject:@"" forKey:AccountItem_Name];
-    [item setObject:@"" forKey:AccountItem_Notes];
-    
-    return item;
-}
-
 - (BOOL)addAccount:(NSDictionary*)item
 {
     LadyCalendarAccount *account = [self accountForID:[item objectForKey:AccountItem_ID]];
@@ -125,20 +116,6 @@
     if( account == nil )
         return NO;
     [account MR_deleteEntity];
-    [account.managedObjectContext MR_saveToPersistentStoreAndWait];
-    
-    return YES;
-}
-
-- (BOOL)modifyAccount:(NSDictionary*)item
-{
-    LadyCalendarAccount *account = [self accountForID:[item objectForKey:AccountItem_ID]];
-    if( account == nil)
-        return NO;
-    
-    account.name = [item objectForKey:AccountItem_Name];
-    account.notes = [item objectForKey:AccountItem_Notes];
-    account.birthDay = [item objectForKey:AccountItem_Birthday];
     [account.managedObjectContext MR_saveToPersistentStoreAndWait];
     
     return YES;
@@ -379,6 +356,9 @@
 		newPeriod.cycleLength = @(cycleLength);
 		newPeriod.modificationDate = [NSDate date];
 		newPeriod.account = self.currentAccount;
+		NSDateComponents *cycleLengthComponents = [NSDateComponents new];
+		cycleLengthComponents.day = [newPeriod.cycleLength integerValue];
+		newPeriod.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:newPeriod.startDate options:0];
 
         prevStartDate = newPeriod.startDate;
     }
