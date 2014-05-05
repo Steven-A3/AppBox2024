@@ -1488,8 +1488,6 @@
                 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
             }
         }
-        _eventItem.startDate.isLunar = @(NO);
-        _eventItem.endDate.isLunar = @(NO);
     }
     
     NSDate *startDate = [_eventItem.startDate solarDate];

@@ -18,6 +18,7 @@
 #import "UIImage+JHExtension.h"
 #import "A3DateHelper.h"
 #import "DaysCounterEvent.h"
+#import "DaysCounterDateModel.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -354,8 +355,8 @@
             [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
-            [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:event.startDate
-                                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
+            [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event.startDate solarDate]
+                                                                     withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
         }
         
 
@@ -381,7 +382,7 @@
             [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
-            [txt appendFormat:@"%@\n\n", [A3DateHelper dateStringFromDate:event.startDate
+            [txt appendFormat:@"%@\n\n", [A3DateHelper dateStringFromDate:[event.startDate solarDate]
                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
         }
 

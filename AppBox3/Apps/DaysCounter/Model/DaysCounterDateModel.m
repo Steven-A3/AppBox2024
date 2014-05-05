@@ -2,7 +2,7 @@
 //  DaysCounterDateModel.m
 //  AppBox3
 //
-//  Created by dotnetguy83 on 5/4/14.
+//  Created by dotnetguy83 on 5/5/14.
 //  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
 //
 
@@ -15,7 +15,6 @@
 @dynamic day;
 @dynamic hour;
 @dynamic isLeapMonth;
-@dynamic isLunar;
 @dynamic minute;
 @dynamic month;
 @dynamic solarDate;

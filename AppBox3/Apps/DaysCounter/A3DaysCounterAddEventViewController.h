@@ -11,10 +11,13 @@
 #import "A3PhotoSelectViewController.h"
 
 @class DaysCounterEvent;
-@interface A3DaysCounterAddEventViewController : UITableViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,A3PhotoSelectViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,UIPopoverControllerDelegate>{
+@interface A3DaysCounterAddEventViewController : UITableViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,A3PhotoSelectViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,UIPopoverControllerDelegate>
+{
     BOOL isFirstAppear;
 }
 
 @property (strong, nonatomic) DaysCounterEvent *eventItem;
 @property (assign, nonatomic) BOOL landscapeFullScreen;
-@property (strong, nonatomic) NSString *calendarId;@end
+
+@property (strong, nonatomic) NSString *calendarId;
+@end

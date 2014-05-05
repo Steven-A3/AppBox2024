@@ -48,7 +48,6 @@
         <attribute name="day" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="isLeapMonth" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="isLunar" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="minute" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="month" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="solarDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -399,7 +398,7 @@
         <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
         <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
         <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterDateModel" positionX="-567" positionY="-387" width="128" height="195"/>
+        <element name="DaysCounterDateModel" positionX="-567" positionY="-387" width="128" height="178"/>
         <element name="DaysCounterEvent" positionX="-243" positionY="-549" width="128" height="418"/>
         <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
         <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
