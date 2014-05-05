@@ -106,21 +106,31 @@ static const int MAX_ZOOM_FACTOR = 6;
 
 - (void) setPreviewRotation:(CGRect)screenBounds {
     if (IS_IPAD) {
+                CGAffineTransform   transform;
         UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (curInterfaceOrientation == UIDeviceOrientationPortrait) {
-            previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
+           transform = CGAffineTransformMakeRotation(M_PI_2);
         } else if (curInterfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-            previewLayer.transform = CGAffineTransformMakeRotation(-M_PI_2);
+            transform = CGAffineTransformMakeRotation(-M_PI_2);
         } else if (curInterfaceOrientation == UIDeviceOrientationLandscapeRight) {
-            previewLayer.transform = CGAffineTransformMakeRotation(M_PI);
+            transform = CGAffineTransformMakeRotation(M_PI);
         } else {
-            previewLayer.transform = CGAffineTransformMakeRotation(0);
+            transform = CGAffineTransformMakeRotation(0);
+        }
+        if (bLosslessZoom == NO &&
+            effectiveScale > 1) {
+        [previewLayer setTransform:CGAffineTransformScale(transform, effectiveScale, effectiveScale)];
+        } else {
+        [previewLayer setTransform:transform];
         }
     } else {
         previewLayer.transform = CGAffineTransformMakeRotation(M_PI_2);
     }
     
-    previewLayer.frame = screenBounds;
+    if (bLosslessZoom == NO &&
+        effectiveScale <= 1) {
+        previewLayer.frame = screenBounds;
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -212,8 +222,6 @@ static const int MAX_ZOOM_FACTOR = 6;
         }
     } else {
         self.magnifierslider.maximumValue = [self getMaxZoom];
-        NSError *err;
-        [_device lockForConfiguration:&err];
     }
 
 }
@@ -242,7 +250,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 
 - (void) handlePinchFrom:(UIPinchGestureRecognizer *)recognizer {
     effectiveScale = beginGestureScale*recognizer.scale;
-    //FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", effectiveScale, beginGestureScale, recognizer.scale);
+    FNLOG(@"effectiveScale = %f, beginGeustureScale = %f, recognizer.scale = %f", effectiveScale, beginGestureScale, recognizer.scale);
     if (effectiveScale < self.magnifierslider.minimumValue ) effectiveScale = self.magnifierslider.minimumValue;
     if(effectiveScale > self.magnifierslider.maximumValue) effectiveScale = self.magnifierslider.maximumValue;
     if(effectiveScale == self.magnifierslider.value) return;
@@ -261,8 +269,7 @@ static const int MAX_ZOOM_FACTOR = 6;
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
             } else if (curDeviceOrientation == UIDeviceOrientationPortraitUpsideDown) {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(-M_PI_2), effectiveScale, effectiveScale)];
-            } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight ||
-                       curDeviceOrientation == UIDeviceOrientationFaceUp) {
+            } else if (curDeviceOrientation == UIDeviceOrientationLandscapeRight) {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI), effectiveScale, effectiveScale)];
             } else {
                 [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(0), effectiveScale, effectiveScale)];
