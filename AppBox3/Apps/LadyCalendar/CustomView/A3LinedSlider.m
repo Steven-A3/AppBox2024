@@ -10,6 +10,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @implementation A3LinedSlider
 
@@ -19,9 +20,9 @@
     UIColor *circleColor = [[A3AppDelegate instance] themeColor];
     UIColor *alphaColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.05];
     
-    CGRect alphaCircleRect = CGRectMake(0, 0, 31.0, 31.0);
-    CGRect outlineRect = CGRectMake(8, 8, 15, 15);
-    CGRect inCircleRect = CGRectMake(12, 12, 7, 7);
+    CGRect alphaCircleRect = CGRectMake(0, 0, 30.0, 30.0);
+    CGRect outlineRect = CGRectMake(7, 7, 16, 16);
+    CGRect inCircleRect = CGRectMake(12, 12, 6, 6);
     UIGraphicsBeginImageContextWithOptions(alphaCircleRect.size, NO, 0.0);
     CGContextRef context = UIGraphicsGetCurrentContext();
     
@@ -46,10 +47,9 @@
 
 - (void)awakeFromNib
 {
-    [self setThumbImage:[self createCircleThumbImage] forState:UIControlStateNormal];
-    [self setMaximumTrackTintColor:[UIColor colorWithRGBRed:191 green:191 blue:191 alpha:255]];
+	[self setThumbImage:[self createCircleThumbImage] forState:UIControlStateNormal];
+    [self setMaximumTrackTintColor:[UIColor colorWithRGBRed:203 green:203 blue:203 alpha:255]];
     [self setMinimumTrackTintColor:[[A3AppDelegate instance] themeColor]];
-    
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -87,10 +87,10 @@
     
     CGContextSetStrokeColorWithColor(ctx, [self.maximumTrackTintColor CGColor]);
     CGContextSetLineWidth(ctx, 1.0 / scale);
-    
+	CGContextSetAllowsAntialiasing(ctx, NO);
     for(NSInteger i=0; i < lineCount; i++){
         CGContextMoveToPoint(ctx, xPos, yPos);
-        CGContextAddLineToPoint(ctx, xPos, yPos+ 8.0);
+        CGContextAddLineToPoint(ctx, xPos, yPos + 9.0);
         CGContextClosePath(ctx);
         CGContextStrokePath(ctx);
         xPos += distance;

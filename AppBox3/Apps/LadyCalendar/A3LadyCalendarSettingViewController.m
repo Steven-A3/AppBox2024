@@ -177,10 +177,11 @@
             [swButton addTarget:self action:@selector(toggleSwitchAction:) forControlEvents:UIControlEventValueChanged];
             cell.accessoryView = swButton;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
+            cell.textLabel.font = [UIFont systemFontOfSize:17.0];
         }
         else if( cellType == SettingCell_Alert ){
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+			cell.textLabel.font = [UIFont systemFontOfSize:17.0];
             cell.detailTextLabel.font = [UIFont systemFontOfSize:17.0];
             cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
