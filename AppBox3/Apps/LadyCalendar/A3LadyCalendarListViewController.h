@@ -18,4 +18,5 @@
 @property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
 
 - (IBAction)addPeriodAction:(id)sender;
+
 @end

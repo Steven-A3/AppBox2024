@@ -408,17 +408,12 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
-        if( _items )
-            [_items removeObject:_periodItem];
-        
-        if([_dataManager removePeriod:_periodItem.uniqueID] ){
-            [_dataManager recalculateDates];
-            
-            if( self.parentNavigationCtrl && [_items count] < 1){
-                [self.parentNavigationCtrl popViewControllerAnimated:YES];
-            }
-            [self cancelAction:nil];
-        }
+		[_periodItem MR_deleteEntity];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		[_dataManager recalculateDates];
+
+		[self dismissViewControllerAnimated:YES completion:NULL];
     }
 }
 

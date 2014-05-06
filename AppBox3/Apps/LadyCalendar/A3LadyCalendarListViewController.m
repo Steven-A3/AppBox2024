@@ -27,13 +27,65 @@
 @property (strong, nonatomic) NSArray *fullArray;
 @property (strong, nonatomic) LadyCalendarAccount *currentAccount;
 
-- (void)groupingPeriodByYearInArray:(NSArray*)array;
-- (LadyCalendarPeriod *)previousPeriodFromIndexPath:(NSIndexPath*)indexPath;
-- (LadyCalendarPeriod *)nextPeriodFromIndexPath:(NSIndexPath*)indexPath;
-- (NSMutableArray*)sameMonthItemFromIndexPath:(NSIndexPath*)indexPath;
 @end;
 
 @implementation A3LadyCalendarListViewController
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self) {
+		// Custom initialization
+	}
+	return self;
+}
+
+- (void)viewDidLoad
+{
+	[super viewDidLoad];
+
+	self.title = @"Periods";
+	[self rightBarButtonDoneButton];
+	[self makeBackButtonEmptyArrow];
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	[self.navigationController setToolbarHidden:YES];
+	self.currentAccount = [_dataManager currentAccount];
+	self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+	self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+	self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
+	[self groupingPeriodByYearInArray:_fullArray];
+	[self.tableView reloadData];
+
+	[self updateAddButton];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[super didReceiveMemoryWarning];
+	// Dispose of any resources that can be recreated.
+}
+
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+	_addButton.hidden = YES;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	[self updateAddButton];
+	_addButton.hidden = NO;
+}
 
 - (void)groupingPeriodByYearInArray:(NSArray*)array
 {
@@ -108,71 +160,15 @@
 
 - (void)updateAddButton
 {
-    _addButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addButton.frame.size.width*0.5, self.view.frame.size.height - 20.0 - _addButton.frame.size.height, _addButton.frame.size.width, _addButton.frame.size.height);
-    if( ![_addButton isDescendantOfView:self.view] ){
-        [self.view addSubview:_addButton];
-    }
-}
-
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    self.title = @"Periods";
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"add03"] style:UIBarButtonItemStyleBordered target:self action:@selector(addPeriodAction:)];
-    [self rightBarButtonDoneButton];
-    [self makeBackButtonEmptyArrow];
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES];
-    self.currentAccount = [_dataManager currentAccount];
-    self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
-    self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
-    self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
-    [self groupingPeriodByYearInArray:_fullArray];
-    [self.tableView reloadData];
-    
-    [self updateAddButton];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    [self updateAddButton];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    _addButton.hidden = YES;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [self updateAddButton];
-    _addButton.hidden = NO;
+	if( ![_addButton isDescendantOfView:self.view] ){
+		[self.view addSubview:_addButton];
+		[_addButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.centerX);
+			make.bottom.equalTo(self.view.bottom).with.offset(-55);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
+		}];
+	}
 }
 
 #pragma mark - Table view data source
@@ -306,23 +302,31 @@
 {
     if( editingStyle == UITableViewCellEditingStyleDelete ){
         NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
-        LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
+        LadyCalendarPeriod *period = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
         
-        if( item ){
-            if([_dataManager removePeriod:item.uniqueID] ){
-                [_dataManager recalculateDates];
-                self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
-                self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
-                self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
-                [self groupingPeriodByYearInArray:_fullArray];
-                [self.tableView reloadData];
-            }
+        if(period){
+			[period MR_deleteEntity];
+			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+			double delayInSeconds = 0.1;
+			dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+				[_dataManager recalculateDates];
+
+				self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+				self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+				self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
+				[self groupingPeriodByYearInArray:_fullArray];
+
+				[self.tableView reloadData];
+			});
         }
     }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if (![_itemArray count]) return NO;
     NSArray *items = [[_itemArray objectAtIndex:indexPath.section] objectForKey:ItemKey_Items];
     LadyCalendarPeriod *item = (indexPath.row >= [items count] ? nil : [items objectAtIndex:indexPath.row]);
     

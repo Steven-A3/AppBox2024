@@ -33,7 +33,7 @@
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID;
 - (LadyCalendarPeriod*)periodForID:(NSString*)periodID;
 - (void)autoSavePredictPeriodToReal:(LadyCalendarPeriod*)item;
-- (BOOL)removePeriod:(NSString*)periodID;
+
 - (NSArray*)periodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID;
 - (NSArray*)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID;
 

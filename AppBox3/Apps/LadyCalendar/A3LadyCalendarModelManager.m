@@ -168,18 +168,6 @@
     item.isAutoSave = @(YES);
 }
 
-- (BOOL)removePeriod:(NSString*)periodID
-{
-    LadyCalendarPeriod *period = [self periodForID:periodID];
-    if( period == nil )
-        return NO;
-
-    [period MR_deleteEntity];
-    [period.managedObjectContext MR_saveToPersistentStoreAndWait];
-    
-    return YES;
-}
-
 - (NSArray*)periodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID
 {
     if( [accountID length] < 1 )
@@ -304,8 +292,9 @@
 {
     NSArray *predictArray = [self predictPeriodListSortedByStartDateIsAscending:YES accountID:accountID];
     for(LadyCalendarPeriod *item in predictArray){
-		[self removePeriod:item.uniqueID];
+		[item MR_deleteEntity];
     }
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 // 현재 설정값에 따라서 예정일 및 기간등을 업데이트 하는 함수
@@ -350,12 +339,13 @@
 
     for (NSInteger idx = 0; idx < periodLength; idx++){
 		LadyCalendarPeriod *newPeriod = [LadyCalendarPeriod MR_createEntity];
+		newPeriod.uniqueID = [[NSUUID UUID] UUIDString];
 		newPeriod.isPredict = @(YES);
 		newPeriod.startDate = [A3DateHelper dateMake12PM:[A3DateHelper dateByAddingDays:cycleLength fromDate:prevStartDate]];
 		newPeriod.endDate = [A3DateHelper dateByAddingDays:4 fromDate:newPeriod.startDate];
 		newPeriod.cycleLength = @(cycleLength);
 		newPeriod.modificationDate = [NSDate date];
-		newPeriod.account = self.currentAccount;
+		newPeriod.account = account;
 		NSDateComponents *cycleLengthComponents = [NSDateComponents new];
 		cycleLengthComponents.day = [newPeriod.cycleLength integerValue];
 		newPeriod.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:newPeriod.startDate options:0];
