@@ -14,6 +14,7 @@
 #import "A3DateHelper.h"
 #import "UIColor+A3Addition.h"
 #import "A3NumberKeyboardViewController.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LadyCalendarSetupCustomAlertViewController ()
 
@@ -122,7 +123,7 @@
         else if( cellType == CustomAlertCell_Time ){
             cell.detailTextLabel.text = ( [_settingDict objectForKey:SettingItem_CustomAlertTime] ? [A3DateHelper dateStringFromDate:[_settingDict objectForKey:SettingItem_CustomAlertTime] withFormat:@"h:mm a"] : nil);
             if( [_templateArray count] > 2 )
-                cell.detailTextLabel.textColor = [UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255];
+                cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
             else
                 cell.detailTextLabel.textColor = [UIColor colorWithRGBRed:128.0 green:128.0 blue:128.0 alpha:255];
         }

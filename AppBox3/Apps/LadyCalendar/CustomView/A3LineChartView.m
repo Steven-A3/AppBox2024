@@ -34,14 +34,14 @@
     NSDictionary *attr = @{NSForegroundColorAttributeName : _xLabelColor,NSFontAttributeName : _xAxisFont};
     for(NSInteger i=0; i < [_xLabelItems count]; i++){
         if( i > 0 && (i+1) < [_xLabelItems count] ){
-            CGPoint ptLine[] = {CGPointMake(xAxisLineRect.origin.x + (i*xAxisSeperatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height),CGPointMake(xAxisLineRect.origin.x + (i*xAxisSeperatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height+xAxisSeperatorHeight)};
+            CGPoint ptLine[] = {CGPointMake(xAxisLineRect.origin.x + (i* xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height),CGPointMake(xAxisLineRect.origin.x + (i* xAxisSeparatorInterval), xAxisLineRect.origin.y + xAxisLineRect.size.height+ xAxisSeparatorHeight)};
             CGContextStrokeLineSegments(context, ptLine, 2);
         }
         
         if( _showXLabel && !(i % _xLabelDisplayInterval)){
             NSString *str = [_xLabelItems objectAtIndex:i];
             CGSize strSize = [str sizeWithAttributes:attr];
-            [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (i*xAxisSeperatorInterval) - strSize.width*0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height+xAxisSeperatorHeight) withAttributes:attr];
+            [str drawAtPoint:CGPointMake(xAxisLineRect.origin.x + (i* xAxisSeparatorInterval) - strSize.width*0.5, xAxisLineRect.origin.y + xAxisLineRect.size.height+ xAxisSeparatorHeight) withAttributes:attr];
         }
     }
 }
@@ -139,7 +139,7 @@
 - (void)calculateComponentsSizeWithContext:(CGContextRef)context
 {
     pointSize = CGSizeMake(15.0, 15.0);
-    xAxisSeperatorHeight = 7.0;
+    xAxisSeparatorHeight = 7.0;
     xAxisLineHeight = 5.0;
     
     // yValue중 가장 크기가 큰 값을 찾는다.
@@ -164,11 +164,11 @@
     }
     
     yAxisWidth = maxYLabelWidth + 5.0;
-    xAxisLineRect = CGRectMake(yAxisWidth + pointSize.width*0.5, self.bounds.size.height - xAxisSeperatorHeight - xLabelMaxSize.height - xAxisLineHeight, self.bounds.size.width - (yAxisWidth+pointSize.width*0.5) - pointSize.width*0.5, xAxisLineHeight);
+    xAxisLineRect = CGRectMake(yAxisWidth + pointSize.width*0.5, self.bounds.size.height - xAxisSeparatorHeight - xLabelMaxSize.height - xAxisLineHeight, self.bounds.size.width - (yAxisWidth+pointSize.width*0.5) - pointSize.width*0.5, xAxisLineHeight);
 
-    xAxisSeperatorInterval = xAxisLineRect.size.width / ([_xLabelItems count] -1 < 1 ? 1 : [_xLabelItems count]-1);
+    xAxisSeparatorInterval = xAxisLineRect.size.width / ([_xLabelItems count] -1 < 1 ? 1 : [_xLabelItems count]-1);
     
-    yAxisInterval = (self.bounds.size.height - xAxisLineRect.size.height - xAxisSeperatorHeight - xLabelMaxSize.height - pointSize.height *0.5) / ([_yLabelItems count] < 1 ? 1 : [_yLabelItems count] );
+    yAxisInterval = (self.bounds.size.height - xAxisLineRect.size.height - xAxisSeparatorHeight - xLabelMaxSize.height - pointSize.height *0.5) / ([_yLabelItems count] < 1 ? 1 : [_yLabelItems count] );
     
     pointArray = [NSMutableArray array];
     // 정점좌표 계산
@@ -176,7 +176,7 @@
     valueTotal = CGPointZero;
     for(NSInteger i=0; i < [_valueArray count]; i++){
         CGPoint value = [[_valueArray objectAtIndex:i] CGPointValue];
-        CGPoint pos = CGPointMake(xAxisLineRect.origin.x + (value.x - _minXValue) * xAxisSeperatorInterval - (i+1 == [_valueArray count] ? 1.0 : 0.0), yStartCenterPosition - (value.y - _minYValue) * yAxisInterval);
+        CGPoint pos = CGPointMake(xAxisLineRect.origin.x + (value.x - _minXValue) * xAxisSeparatorInterval - (i+1 == [_valueArray count] ? 1.0 : 0.0), yStartCenterPosition - (value.y - _minYValue) * yAxisInterval);
         [pointArray addObject:[NSValue valueWithCGPoint:pos]];
         valueTotal.x += value.x;
         valueTotal.y += value.y;

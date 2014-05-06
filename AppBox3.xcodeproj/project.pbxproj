@@ -881,7 +881,7 @@
 		68F1C8D618D7F37D009FAE8A /* A3LadyCalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C86318D7F37D009FAE8A /* A3LadyCalendarViewController.xib */; };
 		68F1C8D718D7F37D009FAE8A /* CalendarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C86418D7F37D009FAE8A /* CalendarCell.xib */; };
 		68F1C8D818D7F37D009FAE8A /* CalendarViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C86518D7F37D009FAE8A /* CalendarViewCell.xib */; };
-		68F1C8D918D7F37D009FAE8A /* A3CalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86818D7F37D009FAE8A /* A3CalendarView.m */; };
+		68F1C8D918D7F37D009FAE8A /* A3LadyCalendarCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86818D7F37D009FAE8A /* A3LadyCalendarCalendarView.m */; };
 		68F1C8DA18D7F37D009FAE8A /* A3ColoredCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86B18D7F37D009FAE8A /* A3ColoredCircleView.m */; };
 		68F1C8DB18D7F37D009FAE8A /* A3LineChartView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86D18D7F37D009FAE8A /* A3LineChartView.m */; };
 		68F1C8DC18D7F37D009FAE8A /* A3LinedSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86F18D7F37D009FAE8A /* A3LinedSlider.m */; };
@@ -2445,8 +2445,8 @@
 		68F1C86318D7F37D009FAE8A /* A3LadyCalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarViewController.xib; sourceTree = "<group>"; };
 		68F1C86418D7F37D009FAE8A /* CalendarCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarCell.xib; sourceTree = "<group>"; };
 		68F1C86518D7F37D009FAE8A /* CalendarViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CalendarViewCell.xib; sourceTree = "<group>"; };
-		68F1C86718D7F37D009FAE8A /* A3CalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarView.h; sourceTree = "<group>"; };
-		68F1C86818D7F37D009FAE8A /* A3CalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3CalendarView.m; sourceTree = "<group>"; };
+		68F1C86718D7F37D009FAE8A /* A3LadyCalendarCalendarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarCalendarView.h; sourceTree = "<group>"; };
+		68F1C86818D7F37D009FAE8A /* A3LadyCalendarCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarCalendarView.m; sourceTree = "<group>"; };
 		68F1C86918D7F37D009FAE8A /* A3CalendarViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3CalendarViewDelegate.h; sourceTree = "<group>"; };
 		68F1C86A18D7F37D009FAE8A /* A3ColoredCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3ColoredCircleView.h; sourceTree = "<group>"; };
 		68F1C86B18D7F37D009FAE8A /* A3ColoredCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3ColoredCircleView.m; sourceTree = "<group>"; };
@@ -4956,8 +4956,8 @@
 		68F1C86618D7F37D009FAE8A /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C86718D7F37D009FAE8A /* A3CalendarView.h */,
-				68F1C86818D7F37D009FAE8A /* A3CalendarView.m */,
+				68F1C86718D7F37D009FAE8A /* A3LadyCalendarCalendarView.h */,
+				68F1C86818D7F37D009FAE8A /* A3LadyCalendarCalendarView.m */,
 				68F1C86918D7F37D009FAE8A /* A3CalendarViewDelegate.h */,
 				68F1C86A18D7F37D009FAE8A /* A3ColoredCircleView.h */,
 				68F1C86B18D7F37D009FAE8A /* A3ColoredCircleView.m */,
@@ -5664,7 +5664,7 @@
 				68F1C89B18D7F37D009FAE8A /* A3DaysCounterSetupAlertViewController.m in Sources */,
 				689C9A4B1839CD7F007C97EE /* AFHTTPRequestOperationManager.m in Sources */,
 				80A1623118DD2CF800EDF610 /* A3DaysCounterSlideshowEventSummaryView.m in Sources */,
-				68F1C8D918D7F37D009FAE8A /* A3CalendarView.m in Sources */,
+				68F1C8D918D7F37D009FAE8A /* A3LadyCalendarCalendarView.m in Sources */,
 				68B6A44718CEE781004084EF /* DACircularProgressView.m in Sources */,
 				6823F6EB1863287B00E6E90D /* CurrencyRateItem.m in Sources */,
 				68B6A45218CEE781004084EF /* PSTCollectionViewUpdateItem.m in Sources */,

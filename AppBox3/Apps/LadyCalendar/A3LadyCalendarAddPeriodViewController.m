@@ -17,6 +17,7 @@
 #import "A3NumberKeyboardViewController.h"
 #import "UIColor+A3Addition.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LadyCalendarAddPeriodViewController ()
 @property (strong, nonatomic) NSMutableArray *sectionsArray;
@@ -253,12 +254,12 @@
         case PeriodCellType_StartDate:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.startDate];
-            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
             break;
         case PeriodCellType_EndDate:{
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.endDate];
-            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 
             if( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
                 NSDictionary *attr = @{NSFontAttributeName: cell.detailTextLabel.font, NSStrikethroughStyleAttributeName : @(NSUnderlineStyleSingle)};
@@ -280,7 +281,7 @@
         case PeriodCellType_Ovulation:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.ovulation];
-            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] ? [UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
+            cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
             break;
             
         case PeriodCellType_Notes:{

@@ -8,13 +8,15 @@
 
 #import "A3LinedSlider.h"
 #import "UIColor+A3Addition.h"
+#import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation A3LinedSlider
 
 - (UIImage*)createCircleThumbImage
 {
     UIColor *outlineColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
-    UIColor *circleColor = [UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255];
+    UIColor *circleColor = [[A3AppDelegate instance] themeColor];
     UIColor *alphaColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.05];
     
     CGRect alphaCircleRect = CGRectMake(0, 0, 31.0, 31.0);
@@ -46,7 +48,7 @@
 {
     [self setThumbImage:[self createCircleThumbImage] forState:UIControlStateNormal];
     [self setMaximumTrackTintColor:[UIColor colorWithRGBRed:191 green:191 blue:191 alpha:255]];
-    [self setMinimumTrackTintColor:[UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255]];
+    [self setMinimumTrackTintColor:[[A3AppDelegate instance] themeColor]];
     
 }
 

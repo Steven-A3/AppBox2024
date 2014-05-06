@@ -11,8 +11,8 @@
 @interface A3LineChartView : UIView {
     CGFloat yAxisWidth;
     CGRect xAxisLineRect;
-    CGFloat xAxisSeperatorHeight;
-    CGFloat xAxisSeperatorInterval;
+    CGFloat xAxisSeparatorHeight;
+    CGFloat xAxisSeparatorInterval;
     CGSize pointSize;
     CGFloat yAxisInterval;
     CGSize yLabelMaxSize;

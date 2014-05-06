@@ -1,12 +1,12 @@
 //
-//  A3CalendarView.m
+//  A3LadyCalendarCalendarView.m
 //  A3TeamWork
 //
 //  Created by coanyaa on 2014. 2. 25..
 //  Copyright (c) 2014년 ALLABOUTAPPS. All rights reserved.
 //
 
-#import "A3CalendarView.h"
+#import "A3LadyCalendarCalendarView.h"
 #import "A3DateHelper.h"
 #import "A3LadyCalendarModelManager.h"
 #import "LadyCalendarAccount.h"
@@ -43,7 +43,7 @@
 
 @end
 
-@interface A3CalendarView ()
+@interface A3LadyCalendarCalendarView ()
 @property (assign, nonatomic) UIFont *dateFont;
 @property (strong, nonatomic) UIColor *dateTextColor;
 @property (strong, nonatomic) UIColor *weekendTextColor;
@@ -51,7 +51,7 @@
 @property (readonly, nonatomic) NSInteger month;
 @end
 
-@implementation A3CalendarView {
+@implementation A3LadyCalendarCalendarView {
 	NSInteger numberOfWeeks;
 	NSInteger firstDayStartIndex;
 	NSInteger lastDayIndex;

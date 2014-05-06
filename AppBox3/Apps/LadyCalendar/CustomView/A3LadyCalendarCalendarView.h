@@ -1,5 +1,5 @@
 //
-//  A3CalendarView.h
+//  A3LadyCalendarCalendarView.h
 //  A3TeamWork
 //
 //  Created by coanyaa on 2014. 2. 25..
@@ -26,7 +26,7 @@
 @class LadyCalendarAccount;
 @class A3LadyCalendarModelManager;
 
-@interface A3CalendarView : UIView
+@interface A3LadyCalendarCalendarView : UIView
 
 @property (assign, nonatomic) id<A3CalendarViewDelegate> delegate;
 @property (strong, nonatomic) NSDate *dateMonth;

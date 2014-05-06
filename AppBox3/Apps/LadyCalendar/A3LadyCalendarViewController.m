@@ -20,9 +20,10 @@
 #import "LadyCalendarAccount.h"
 #import "LadyCalendarPeriod.h"
 #import "UIColor+A3Addition.h"
-#import "A3CalendarView.h"
+#import "A3LadyCalendarCalendarView.h"
 #import "A3UserDefaults.h"
 #import "A3LadyCalendarAccountEditViewController.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LadyCalendarViewController ()
 
@@ -107,6 +108,7 @@
 		NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
 		_currentMonth = (lastDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : lastDate);
 		[self moveToCurrentMonth];
+		[self updateAddButton];
 	} else {
 		[self setupCalendarRange];
 		[_collectionView reloadData];
@@ -114,26 +116,20 @@
 	[self updateCurrentMonthLabel];
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:currentAccount.uniqueID] > 0);
 
-	[self updateAddButton];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	[self updateAddButton];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-	[super viewWillDisappear:animated];
-
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
+
 	[self hideCalendarHeaderView];
 	[self dismissMoreMenuView:self.moreMenuView scrollView:self.collectionView];
+
 	if( self.currentMonth ){
 		[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
 		[[NSUserDefaults standardUserDefaults] synchronize];
@@ -160,7 +156,6 @@
 		_topNaviView.frame = CGRectMake(_topNaviView.frame.origin.x, _topNaviView.frame.origin.y, self.view.frame.size.width, _topNaviView.frame.size.height);
 	}
 	[_collectionView reloadData];
-	[self updateAddButton];
 	_addButton.hidden = NO;
 }
 
@@ -231,7 +226,7 @@
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
 
     if( [self.currentMonth isEqualToDate:todayMonth] )
-        _currentMonthLabel.textColor = [UIColor colorWithRGBRed:0 green:122 blue:255 alpha:255];
+        _currentMonthLabel.textColor = [[A3AppDelegate instance] themeColor];
     else
         _currentMonthLabel.textColor = [UIColor blackColor];
 }
@@ -265,9 +260,14 @@
 
 - (void)updateAddButton
 {
-    _addButton.frame = CGRectMake(self.view.frame.size.width*0.5 - _addButton.frame.size.width*0.5, self.view.frame.size.height - self.bottomToolbar.frame.size.height - 20.0 - _addButton.frame.size.height, _addButton.frame.size.width, _addButton.frame.size.height);
     if( ![_addButton isDescendantOfView:self.view] ){
         [self.view addSubview:_addButton];
+		[_addButton makeConstraints:^(MASConstraintMaker *make) {
+			make.centerX.equalTo(self.view.centerX);
+			make.bottom.equalTo(self.view.bottom).with.offset(-55);
+			make.width.equalTo(@44);
+			make.height.equalTo(@44);
+		}];
     }
 }
 
@@ -296,7 +296,7 @@
     NSString *cellID = @"fullCalendarCell";
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
 
-    A3CalendarView *calendarView = (A3CalendarView*)[cell viewWithTag:10];
+    A3LadyCalendarCalendarView *calendarView = (A3LadyCalendarCalendarView *)[cell viewWithTag:10];
 	calendarView.dataManager = self.dataManager;
     calendarView.delegate = self;
     calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 73.0 : 109.0)/numberOfMonthInPage);
@@ -373,7 +373,7 @@
 }
 
 #pragma mark - A3CalendarViewDelegate
-- (void)calendarView:(A3CalendarView *)calendarView didSelectDay:(NSInteger)day
+- (void)calendarView:(A3LadyCalendarCalendarView *)calendarView didSelectDay:(NSInteger)day
 {
     NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:currentAccount.uniqueID containPredict:YES];
     if( [periods count] < 1 )
