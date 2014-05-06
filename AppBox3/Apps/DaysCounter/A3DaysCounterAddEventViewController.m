@@ -31,13 +31,14 @@
 #import "Reachability.h"
 #import "A3AppDelegate+appearance.h"
 #import "A3DateHelper.h"
+#import "A3DateKeyboardViewController.h"
 
 
 #define ActionTag_Location      100
 #define ActionTag_Photo         101
 #define ActionTag_DeleteEvent   102
 
-@interface A3DaysCounterAddEventViewController ()
+@interface A3DaysCounterAddEventViewController () <UITextFieldDelegate, UITextViewDelegate, UIActionSheetDelegate, A3PhotoSelectViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, CLLocationManagerDelegate, UIPopoverControllerDelegate, UIPopoverControllerDelegate, A3DateKeyboardDelegate>
 @property (strong, nonatomic) NSArray *cellIDArray;
 @property (strong, nonatomic) NSMutableArray *sectionTitleArray;
 @property (strong, nonatomic) NSString *inputDateKey;
@@ -82,8 +83,9 @@
         self.title = @"Add Event";
         _isAdvancedCellOpen = NO;
         _eventItem = [DaysCounterEvent MR_createEntity];
-        _eventItem.startDate.solarDate = [NSDate date];
-        _eventItem.effectiveStartDate = [NSDate date];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:NO];
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:[NSDate date]] withEventModel:_eventItem endDate:YES];
+
         _eventItem.isAllDay = @(YES);
         _eventItem.isLunar = @(NO);
         _eventItem.isPeriod = @(NO);
@@ -661,6 +663,8 @@
     UILabel *titleLabel = (UILabel*)[cell viewWithTag:10];
     UIImageView *lunarImageView = (UIImageView*)[cell viewWithTag:11];
     UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
+    UITextField *dateTextField = (UITextField *)[cell viewWithTag:14];
+    dateTextField.delegate = self;
     
     if ( [_eventItem.isPeriod boolValue] ) {
         titleLabel.text = itemType == EventCellType_StartDate ? @"Starts" : @"Ends";
@@ -934,8 +938,17 @@
         case EventCellType_EndDate:
         {
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            UIButton *button = (UIButton*)[cell viewWithTag:13];
-            [self toggleDateInputAction:button];
+            if ([_eventItem.isLunar boolValue]) {
+                self.inputDateKey = rowItemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
+                
+                UITextField *textField = (UITextField *)[cell viewWithTag:14];
+                [textField becomeFirstResponder];
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+            else {
+                UIButton *button = (UIButton*)[cell viewWithTag:13];
+                [self toggleDateInputAction:button];
+            }
         }
             break;
         case EventCellType_RepeatType:
@@ -1437,6 +1450,8 @@
     NSMutableArray *sectionRow_items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     
     if ([switchButton isOn]) {
+        [self closeDatePickerCell];
+        
         if ([_eventItem.repeatType integerValue] != RepeatType_EveryYear) {
             _eventItem.repeatType = @(RepeatType_Never);
             NSInteger repeatTypeIndex = [self indexOfRowItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];
@@ -1805,6 +1820,169 @@
     [CATransaction commit];
 }
 
+#pragma mark - UITextField Related
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self setFirstResponder:textField];
+    if (![_eventItem.isLunar boolValue]) {
+        [self closeDatePickerCell];
+    }
+    
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
+    if ((indexPath.section == 1 && indexPath.row == 3) || (indexPath.section == 1 && indexPath.row == 4)) {    // start Date
+        if (!self.dateKeyboardViewController) {
+            self.dateKeyboardViewController = [self newDateKeyboardViewController];
+            self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == 3 ? _eventItem.startDate : _eventItem.endDate
+                                                                                                                  toLunar:YES];
+        }
+		self.dateKeyboardViewController.delegate = self;
+        self.dateKeyboardViewController.isLunarDate = [_eventItem.isLunar boolValue];
+        textField.inputView = self.dateKeyboardViewController.view;
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
+    
+    if (indexPath.section == 0 && indexPath.row == 0) {         // event Name
+        NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+        _eventItem.eventName = text;
+    }
+    else {
+        
+    }
+
+    return YES;
+}
+
+- (void)textFieldDidChange:(NSNotification *)notification {
+}
+
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    _eventItem.eventName = textField.text;
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    _eventItem.eventName = textField.text;
+    self.firstResponder = nil;
+}
+
+#pragma mark  A3KeyboardViewControllerDelegate
+- (void)dateKeyboardValueChangedDate:(NSDate *)date
+{
+    FNLOG(@"%@", date);
+}
+
+- (void)dateKeyboardValueChangedDateComponents:(NSDateComponents *)dateComponents
+{
+    FNLOG(@"%@", dateComponents);
+//    [self resignAllAction];
+    
+//    NSDate *prevDate = [_eventItem.startDate solarDate];
+//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    dateComponents.hour = 0;
+    dateComponents.minute = 0;
+    dateComponents.second = 0;
+
+//    // 음력 날짜 유효성 체크.
+//    if ([_eventItem.isLunar boolValue]) {
+//        BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+//        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]];
+//        
+//        if (!isLunarDate) {
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
+//            [alert show];
+//            return;
+//        }
+//    }
+    
+    if ([self.inputDateKey isEqualToString:EventItem_StartDate]) {
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:dateComponents withEventModel:_eventItem endDate:NO];
+        FNLOG(@"\nStartSolarDate: %@\nStartLunarDate: %@.%@.%@", [_eventItem.startDate solarDate], _eventItem.startDate.year, _eventItem.startDate.month, _eventItem.startDate.day);
+    }
+    else {
+        [A3DaysCounterModelManager setDateModelObjectForDateComponents:dateComponents withEventModel:_eventItem endDate:YES];
+        FNLOG(@"\nEndSolarDate: %@\nEndLunarDate: %@.%@.%@", [_eventItem.startDate solarDate], _eventItem.startDate.year, _eventItem.startDate.month, _eventItem.startDate.day);
+    }
+    
+    // EffectiveStartDate & EffectiveAlertDate 갱신.
+    [[A3DaysCounterModelManager sharedManager] recalculateEventDatesForEvent:_eventItem];
+    
+    // AlertCell 갱신.
+    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+    NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+                                                     inSection:AddSection_Section_1];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:alertIndexPath];
+    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
+    detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
+                                                                                    alertDate:_eventItem.alertDatetime];
+    if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
+//        // Start DateInputCell 갱신, (LeapMonth 고려)
+//        [self updateEndDateDiffFromStartDate:prevDate]; // End Date 간격 갱신.
+        
+//        if ( [_eventItem.isLunar boolValue] ) {
+//            NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
+//                                                                 inSection:AddSection_Section_1];
+//            [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+//        }
+        NSIndexPath *startDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_StartDate atSectionArray:section1_items]
+                                                             inSection:AddSection_Section_1];
+        if (startDateIndexPath) {
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:startDateIndexPath];
+            UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
+            dateLabel.text = [A3DateHelper dateStringFromDateComponents:dateComponents withFormat:nil];
+        }
+    }
+    else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
+        // End DateInputCell 갱신.
+        NSIndexPath *endDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_EndDate atSectionArray:section1_items]
+                                                             inSection:AddSection_Section_1];
+        if (endDateIndexPath) {
+            //[self.tableView reloadRowsAtIndexPaths:@[endDateIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:endDateIndexPath];
+            UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
+            dateLabel.text = [A3DateHelper dateStringFromDateComponents:dateComponents withFormat:nil];
+        }
+    }
+}
+
+- (BOOL)isPreviousEntryExists {
+    return YES;
+}
+
+- (BOOL)isNextEntryExists {
+    return YES;
+}
+
+- (void)nextButtonPressed{
+}
+
+- (void)prevButtonPressed{
+}
+
+- (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
+    [self.firstResponder resignFirstResponder];
+}
+
+- (void)updateOffsetDateCompWithTextField:(UITextField *)textField {
+}
+
+- (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
+}
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+}
+
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -1985,35 +2163,6 @@
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self resignAllAction];
-}
-
-#pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    [self setFirstResponder:textField];
-    [self closeDatePickerCell];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    _eventItem.eventName = text;
-    
-    return YES;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    _eventItem.eventName = textField.text;
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    _eventItem.eventName = textField.text;
-    self.firstResponder = nil;
 }
 
 #pragma mark - UITextViewDelegate

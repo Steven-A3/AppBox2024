@@ -109,4 +109,8 @@
 #pragma mark - Manipulate DaysCounterDateModel Object
 + (void)setDateModelObjectForDateComponents:(NSDateComponents *)dateComponents withEventModel:(DaysCounterEvent *)eventModel endDate:(BOOL)isEndDate;
 + (NSDateComponents *)dateComponentsFromDateModelObject:(DaysCounterDateModel *)dateObject toLunar:(BOOL)isLunar;
+
+#pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
++ (NSString *)dateStringFromDateModel:(DaysCounterDateModel *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringFromEffectiveDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
 @end

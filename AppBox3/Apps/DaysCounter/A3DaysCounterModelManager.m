@@ -632,6 +632,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     // event store에 설정된 값도 삭제한다.
     [eventItem MR_deleteEntity];
+
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
     return YES;
@@ -828,13 +829,18 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
+//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
+//                                           inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
                                            inContext:[self managedObjectContext]];
+
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
+//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
+//                                           inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
                                            inContext:[self managedObjectContext]];
 }
 
@@ -1485,7 +1491,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                               leapMonth:[event.useLeapMonth boolValue]
                                                                fromDate:now];
         nextDate = [[NSCalendar currentCalendar] dateFromComponents:solarComp];
-        FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [event startDate], nextDate);
+        FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@", now, [[event startDate] solarDate], nextDate);
         return nextDate;
     }
     else {
@@ -1639,17 +1645,19 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     if (isLeapMonth) {
         isLeapMonth = [NSDate isLunarDateComponents:lunarComponents isKorean:YES];
     }
-    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+
     NSDateComponents *fromComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fromDate];
+    lunarComponents.year = fromComp.year;
+    NSDateComponents *startComp = [NSDate lunarCalcWithComponents:lunarComponents gregorianToLunar:NO leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
     NSDateComponents *resultComp;
-    if (fromComp.year == startComp.year && fromComp.month > startComp.month) {
+    if (fromComp.year == startComp.year && startComp.month >= fromComp.month && startComp.day > fromComp.day) {
         resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:NO leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
     }
     else {
         resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:YES leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
     }
     
-    NSAssert(resultComp, @"Not Exist Lunar Date");
+//    NSAssert(resultComp, @"Not Exist Lunar Date");
     if (!resultComp) {
         return nil;
     }
@@ -1785,5 +1793,48 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
     return dateComp;
 }
+#pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
++ (NSString *)dateStringFromDateModel:(DaysCounterDateModel *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
+{
+    NSString *dateString;
+    if (!isLunar) {
+        dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]]];
+    }
+    else {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateStyle:NSDateFormatterFullStyle];
+        NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
+        [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
+        [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+        
+        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
+                      [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]],
+                      [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
+    }
+    
+    return dateString;
+}
 
++ (NSString *)dateStringFromEffectiveDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
+{
+    NSString *dateString;
+    if (!isLunar) {
+        dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]]];
+    }
+    else {
+        BOOL isResultLeapMonth;
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateStyle:NSDateFormatterFullStyle];
+        NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
+        [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
+        [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+        NSDateComponents *lunarComp = [NSDate lunarCalcWithComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date] gregorianToLunar:YES leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+        
+        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
+                      [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]],
+                      [A3DateHelper dateStringFromDateComponents:lunarComp withFormat:dateFormat]];
+    }
+    
+    return dateString;
+}
 @end
