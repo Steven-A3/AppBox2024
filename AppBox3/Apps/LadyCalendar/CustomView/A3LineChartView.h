@@ -8,21 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface A3LineChartView : UIView {
-    CGFloat yAxisWidth;
-    CGRect xAxisLineRect;
-    CGFloat xAxisSeparatorHeight;
-    CGFloat xAxisSeparatorInterval;
-    CGSize pointSize;
-    CGFloat yAxisInterval;
-    CGSize yLabelMaxSize;
-    NSMutableArray *pointArray;
-    CGFloat yStartCenterPosition;
-    CGPoint valueTotal;
-    CGFloat averageLineYPos;
-    CGSize xLabelMaxSize;
-    CGFloat xAxisLineHeight;
-}
+@interface A3LineChartView : UIView
 
 @property (strong, nonatomic) UIColor *xLabelColor;
 @property (strong, nonatomic) UIColor *yLabelColor;
@@ -47,4 +33,5 @@
 @property (strong, nonatomic) NSArray *yLabelItems;
 @property (strong, nonatomic) NSArray *valueArray;
 @property (assign, nonatomic) NSInteger xLabelDisplayInterval;
+
 @end

@@ -9,7 +9,6 @@
 #import "A3LadyCalendarChartViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
-#import "A3LadyCalendarDefine.h"
 #import "A3LadyCalendarModelManager.h"
 #import "A3DateHelper.h"
 #import "LadyCalendarAccount.h"
@@ -39,75 +38,6 @@
 	NSInteger xLabelDisplayInterval;
 }
 
-- (NSInteger)monthsFromCurrentSegment
-{
-    NSInteger retMonth = 0;
-    
-    switch ( _periodSegmentCtrl.selectedSegmentIndex ) {
-        case 0:
-            retMonth = 6;
-            break;
-        case 1:
-            retMonth = 9;
-            break;
-        case 2:
-            retMonth = 12;
-            break;
-        case 3:
-            retMonth = 24;
-            break;
-    }
-    
-    return retMonth;
-}
-
-- (void)makeChartDataWithArray:(NSArray*)array
-{
-    NSMutableArray *cycleArray = [NSMutableArray array];
-    NSMutableArray *periodArray = [NSMutableArray array];
-    self.cycleXLabelArray = [NSMutableArray array];
-    self.cycleYLabelArray = [NSMutableArray array];
-    self.menstrualXLabelArray = [NSMutableArray array];
-    self.menstrualYLabelArray = [NSMutableArray array];
-    
-    
-    minCycleLength = 0;
-    maxCycleLength = 0;
-    minMenstrualPeriod = -1;
-    maxMenstrualPeriod = -1;
-
-    for(NSInteger i=0; i < [array count]; i++){
-        LadyCalendarPeriod *period = [array objectAtIndex:i];
-        LadyCalendarPeriod *nextPeriod = ( i+1 < [array count] ? [array objectAtIndex:i+1] : nil);
-        NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
-        [periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, mensPeriod)]];
-        minMenstrualPeriod = ( minMenstrualPeriod < 0 ? mensPeriod : MIN(minMenstrualPeriod, mensPeriod) );
-        maxMenstrualPeriod = (maxMenstrualPeriod < 0 ? mensPeriod : MAX(maxMenstrualPeriod,mensPeriod));
-        [_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
-        
-        NSInteger diffDays = 0;
-        if( nextPeriod == nil ){
-            diffDays = [period.cycleLength integerValue];
-        }
-        else{
-            diffDays = [A3DateHelper diffDaysFromDate:period.startDate toDate:nextPeriod.startDate];
-        }
-        [cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
-        minCycleLength = ( minCycleLength == 0 ? diffDays : MIN(minCycleLength,diffDays));
-        maxCycleLength = ( maxCycleLength == 0 ? diffDays : MAX(maxCycleLength, diffDays));
-        [_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
-    }
-    
-    for(NSInteger i = minCycleLength; i <= maxCycleLength; i++)
-        [_cycleYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
-    for(NSInteger i = minMenstrualPeriod; i <= maxMenstrualPeriod; i++){
-        [_menstrualYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long) i]];
-    }
-    
-    self.cycleLengthArray = [NSArray arrayWithArray:cycleArray];
-    self.menstrualPeriodArray = [NSArray arrayWithArray:periodArray];
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -123,15 +53,16 @@
     // Do any additional setup after loading the view from its nib.
     self.title = @"Chart";
     [self makeBackButtonEmptyArrow];
-    _periodSegmentCtrl.selectedSegmentIndex = 3;
+    _periodSegmentCtrl.selectedSegmentIndex = 0;
     _segmentLeftConst.constant = (IS_IPHONE ? 15.0 : 28.0);
     _segmentRightConst.constant = (IS_IPHONE ? 15.0 : 28.0);
-    _seperatorHeightConst.constant = 1.0 / [[UIScreen mainScreen] scale];
+    _separatorHeightConst.constant = 1.0 / [[UIScreen mainScreen] scale];
     NSArray *titleArray = @[(IS_IPHONE ? @"6 Mos" : @"6 Months"),(IS_IPHONE ? @"9 Mos" : @"9 Months"),@"1 Year",@"2 Years"];
     xLabelDisplayInterval = 1;
     for(NSInteger i=0; i < [_periodSegmentCtrl numberOfSegments];i++){
         [_periodSegmentCtrl setTitle:[titleArray objectAtIndex:i] forSegmentAtIndex:i];
     }
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -147,7 +78,81 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
+}
+
+- (NSInteger)monthsFromCurrentSegment
+{
+	NSInteger retMonth = 0;
+
+	switch ( _periodSegmentCtrl.selectedSegmentIndex ) {
+		case 0:
+			retMonth = 6;
+			break;
+		case 1:
+			retMonth = 9;
+			break;
+		case 2:
+			retMonth = 12;
+			break;
+		case 3:
+			retMonth = 24;
+			break;
+	}
+
+	return retMonth;
+}
+
+- (void)makeChartDataWithArray:(NSArray*)array
+{
+	NSMutableArray *cycleArray = [NSMutableArray array];
+	NSMutableArray *periodArray = [NSMutableArray array];
+	self.cycleXLabelArray = [NSMutableArray array];
+	self.cycleYLabelArray = [NSMutableArray array];
+	self.menstrualXLabelArray = [NSMutableArray array];
+	self.menstrualYLabelArray = [NSMutableArray array];
+
+
+	minCycleLength = 0;
+	maxCycleLength = 0;
+	minMenstrualPeriod = -1;
+	maxMenstrualPeriod = -1;
+
+	for(NSInteger i=0; i < [array count]; i++){
+		LadyCalendarPeriod *period = [array objectAtIndex:i];
+		LadyCalendarPeriod *nextPeriod = ( i+1 < [array count] ? [array objectAtIndex:i+1] : nil);
+		NSInteger mensPeriod = [A3DateHelper diffDaysFromDate:period.startDate toDate:period.endDate];
+		[periodArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, mensPeriod)]];
+		minMenstrualPeriod = ( minMenstrualPeriod < 0 ? mensPeriod : MIN(minMenstrualPeriod, mensPeriod) );
+		maxMenstrualPeriod = (maxMenstrualPeriod < 0 ? mensPeriod : MAX(maxMenstrualPeriod,mensPeriod));
+		[_cycleXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
+
+		NSInteger diffDays = 0;
+		if( nextPeriod == nil ){
+			diffDays = [period.cycleLength integerValue];
+		}
+		else{
+			diffDays = [A3DateHelper diffDaysFromDate:period.startDate toDate:nextPeriod.startDate];
+		}
+		[cycleArray addObject:[NSValue valueWithCGPoint:CGPointMake(i, diffDays)]];
+		minCycleLength = ( minCycleLength == 0 ? diffDays : MIN(minCycleLength,diffDays));
+		maxCycleLength = ( maxCycleLength == 0 ? diffDays : MAX(maxCycleLength, diffDays));
+		[_menstrualXLabelArray addObject:[A3DateHelper dateStringFromDate:period.startDate withFormat:@"MMM dd"]];
+	}
+
+	for(NSInteger i = minCycleLength; i <= maxCycleLength; i++)
+		[_cycleYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long)i]];
+	for(NSInteger i = minMenstrualPeriod; i <= maxMenstrualPeriod; i++){
+		[_menstrualYLabelArray addObject:[NSString stringWithFormat:@"%ld", (long) i]];
+	}
+
+	self.cycleLengthArray = [NSArray arrayWithArray:cycleArray];
+	self.menstrualPeriodArray = [NSArray arrayWithArray:periodArray];
+}
+
 #pragma mark - UITableViewDataSource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -276,4 +281,5 @@
     }
     [self.tableView reloadData];
 }
+
 @end

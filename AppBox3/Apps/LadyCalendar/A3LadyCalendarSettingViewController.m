@@ -15,13 +15,13 @@
 #import "A3UserDefaults.h"
 #import "A3LadyCalendarSetupAlertViewController.h"
 #import "A3DateHelper.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LadyCalendarSettingViewController ()
+
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSMutableDictionary *settingDict;
 
-- (void)toggleSwitchAction:(id)sender;
-- (void)periodChangedAction:(id)sender;
 @end
 
 @implementation A3LadyCalendarSettingViewController
@@ -51,6 +51,7 @@
     self.settingDict = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting]];
     if( self.settingDict == nil )
         self.settingDict = [_dataManager createDefaultSetting];
+	self.tableView.showsVerticalScrollIndicator = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,7 +128,7 @@
         NSString *periodStr = [NSString stringWithFormat:@"%ld", (long)period];
         NSString *text = [NSString stringWithFormat:@"FORECASTING %@ PERIODS",periodStr];
         NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc] initWithString:text];
-        [attrStr setAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:1.0]} range:NSMakeRange(12, [periodStr length])];
+        [attrStr setAttributes:@{NSForegroundColorAttributeName: [[A3AppDelegate instance] themeColor]} range:NSMakeRange(12, [periodStr length])];
         label.attributedText = attrStr;
     }
     else{

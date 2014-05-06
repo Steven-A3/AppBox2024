@@ -16,6 +16,7 @@
 #import "SFKImage.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LadyCalendarAccountEditViewController ()
 @property (strong, nonatomic) NSMutableArray *itemArray;
@@ -52,12 +53,10 @@
     self.title = @"Edit Accounts";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addAction:)];
     [self rightBarButtonDoneButton];
-    
-    [SFKImage setDefaultFont:[UIFont fontWithName:@"LigatureSymbols" size:18.0]];
-    [SFKImage setDefaultColor:[UIColor colorWithRed:0.0 green:108.0/255.0 blue:1.0 alpha:1.0]];
-    self.checkImage = [SFKImage imageNamed:@"check"];
-    
-    [self.tableView setEditing:YES];
+
+	self.checkImage = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+	[self.tableView setEditing:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -94,7 +93,8 @@
         cell = [cellArray objectAtIndex:2];
         UIImageView *imageView = (UIImageView*)[cell viewWithTag:12];
         imageView.image = self.checkImage;
-    }
+		imageView.tintColor = [[A3AppDelegate instance] themeColor];
+	}
     
     LadyCalendarAccount *item = [_itemArray objectAtIndex:indexPath.row];
     UILabel *textLabel = (UILabel*)[cell viewWithTag:10];

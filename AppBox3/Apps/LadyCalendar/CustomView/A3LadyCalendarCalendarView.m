@@ -11,6 +11,7 @@
 #import "A3LadyCalendarModelManager.h"
 #import "LadyCalendarAccount.h"
 #import "LadyCalendarPeriod.h"
+#import "A3AppDelegate+appearance.h"
 
 @implementation LineDisplayModel
 
@@ -69,28 +70,31 @@
 	NSInteger today;
 }
 
-- (void)awakeFromNib
-{
-	self.dateFont = [UIFont systemFontOfSize:(IS_IPHONE ? 14.0 : 18.0)];
-    self.dateTextColor = [UIColor blackColor];
-    self.weekendTextColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
-    CGSizeMake(0, 0.5);
-	redLines = [NSMutableArray array];
-    greenLines = [NSMutableArray array];
-    yellowLines = [NSMutableArray array];
-    circleArray = [NSMutableArray array];
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-        [self awakeFromNib];
-    }
-    return self;
+	self = [super initWithFrame:frame];
+	if (self) {
+		// Initialization code
+		[self initialize];
+	}
+	return self;
 }
 
+- (void)initialize {
+	self.dateFont = [UIFont systemFontOfSize:(IS_IPHONE ? 14.0 : 18.0)];
+	self.dateTextColor = [UIColor blackColor];
+	self.weekendTextColor = [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0];
+	CGSizeMake(0, 0.5);
+	redLines = [NSMutableArray array];
+	greenLines = [NSMutableArray array];
+	yellowLines = [NSMutableArray array];
+	circleArray = [NSMutableArray array];
+}
+
+- (void)awakeFromNib
+{
+	[self initialize];
+}
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
@@ -126,9 +130,14 @@
             NSInteger day = index - firstDayStartIndex + 1;
             NSString *str = (index == firstDayStartIndex ? [A3DateHelper dateStringFromDate:_dateMonth withFormat:@"MMM d"] : [NSString stringWithFormat:@"%ld",(long)(index - firstDayStartIndex + 1)]);
             if( isCurrentMonth && today == day){
-                CGContextSetFillColorWithColor(context, [[UIColor colorWithRed:0 green:122.0/255.0 blue:1.0 alpha:1.0] CGColor]);
+				CGContextSaveGState(context);
+				CGContextSetAllowsAntialiasing(context, NO);
+				CGContextSetStrokeColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
+                CGContextSetFillColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
                 CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, dateBGHeight));
-                [str drawInRect:CGRectMake(xPos, yPos+5.0, _cellSize.width, dateBGHeight-5.0) withAttributes:todayTextAttr];
+				CGContextSetAllowsAntialiasing(context, YES);
+				[str drawInRect:CGRectMake(xPos, yPos + 5.0, _cellSize.width, dateBGHeight - 5.0) withAttributes:todayTextAttr];
+				CGContextRestoreGState(context);
             }
             else{
                 [str drawInRect:CGRectMake(xPos, yPos+5.0, _cellSize.width, dateBGHeight-5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
@@ -311,10 +320,10 @@
 		NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
 		NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
 
-		NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
-		NSDate *pregEdDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
-		NSDate *prevOvuDate = [A3DateHelper dateByAddingDays:-1 fromDate:ovulationDate];
-		NSDate *nextOvDate = [A3DateHelper dateByAddingDays:1 fromDate:ovulationDate];
+		NSDate *pregnantStartDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
+		NSDate *pregnantEndDate = [A3DateHelper dateByAddingDays:5 fromDate:ovulationDate];
+		NSDate *prevOvulationDate = [A3DateHelper dateByAddingDays:-1 fromDate:ovulationDate];
+		NSDate *nextOvulationDate = [A3DateHelper dateByAddingDays:1 fromDate:ovulationDate];
 
 		UIColor *redColor = [UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0];
 		UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0];
@@ -330,15 +339,15 @@
 		}
 
 		NSLog(@"%s preg date %@",__FUNCTION__,_dateMonth);
-		if( [A3DateHelper monthFromDate:pregStDate] == _month || [A3DateHelper monthFromDate:prevOvuDate] == _month ){
-			[self addLineFromDate:pregStDate endDate:prevOvuDate toArray:greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
-			if( [A3DateHelper monthFromDate:pregStDate] == _month )
-				[self addCircleAtDay:pregStDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
+		if([A3DateHelper monthFromDate:pregnantStartDate] == _month || [A3DateHelper monthFromDate:prevOvulationDate] == _month ){
+			[self addLineFromDate:pregnantStartDate endDate:prevOvulationDate toArray:greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
+			if([A3DateHelper monthFromDate:pregnantStartDate] == _month )
+				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
 		}
-		if( [A3DateHelper monthFromDate:nextOvDate] == _month || [A3DateHelper monthFromDate:pregEdDate] == _month ){
-			[self addLineFromDate:nextOvDate endDate:pregEdDate toArray:greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
-			if( [A3DateHelper monthFromDate:pregEdDate] == _month )
-				[self addCircleAtDay:pregEdDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+		if([A3DateHelper monthFromDate:nextOvulationDate] == _month || [A3DateHelper monthFromDate:pregnantEndDate] == _month ){
+			[self addLineFromDate:nextOvulationDate endDate:pregnantEndDate toArray:greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
+			if([A3DateHelper monthFromDate:pregnantEndDate] == _month )
+				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
 		}
 		NSLog(@"%s ovulation date %@/%@",__FUNCTION__,_dateMonth,ovulationDate);
 		if( [A3DateHelper monthFromDate:ovulationDate] == _month ){

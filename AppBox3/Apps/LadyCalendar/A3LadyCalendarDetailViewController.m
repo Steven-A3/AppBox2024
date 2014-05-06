@@ -34,6 +34,35 @@
 	BOOL isEditNavigationBar;
 }
 
+- (void)viewDidLoad
+{
+	[super viewDidLoad];
+
+	self.title = @"";
+	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+
+	[self registerContentSizeCategoryDidChangeNotification];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+	[super viewWillAppear:animated];
+	[self.navigationController setToolbarHidden:YES];
+
+	[self setupSectionsWithItems:_periodItems];
+	[self.tableView reloadData];
+}
+
+- (void)didReceiveMemoryWarning
+{
+	[super didReceiveMemoryWarning];
+	// Dispose of any resources that can be recreated.
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
+}
+
 - (NSArray*)templateForItemIsPredict:(BOOL)isPredict startDate:(NSDate*)startDate endDate:(NSDate*)endDate notes:(NSString*)notes
 {
     NSDate *currentDate = [A3DateHelper dateMake12PM:[NSDate date]];
@@ -97,38 +126,6 @@
         self.navigationItem.rightBarButtonItem = nil;
     
     self.sectionsArray = [NSArray arrayWithArray:sectionsArray];
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    self.title = @"";
-    self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES];
-
-	[self setupSectionsWithItems:_periodItems];
-    [self.tableView reloadData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -195,7 +192,11 @@
         UIView *bottomView = [cell viewWithTag:11];
         
         UILabel *sectionTitleLabel = (UILabel*)[topView viewWithTag:20];
+		sectionTitleLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+
         UILabel *sectionDetailLabel = (UILabel*)[topView viewWithTag:21];
+		sectionDetailLabel.font = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+
         UIButton *editButton = (UIButton*)[topView viewWithTag:22];
         
         UILabel *textLabel = (UILabel*)[bottomView viewWithTag:20];

@@ -9,7 +9,7 @@
                 <outlet property="periodSegmentCtrl" destination="tPP-uE-mf4" id="Q05-fe-f9A"/>
                 <outlet property="segmentLeftConst" destination="kbG-pn-HD9" id="U7L-1Z-dnp"/>
                 <outlet property="segmentRightConst" destination="dIo-Tk-ul5" id="93U-WF-70g"/>
-                <outlet property="seperatorHeightConst" destination="HC7-DW-bBF" id="Nck-9c-wek"/>
+                <outlet property="separatorHeightConst" destination="HC7-DW-bBF" id="Nck-9c-wek"/>
                 <outlet property="tableView" destination="GUE-1C-hCa" id="VrF-d8-QdB"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>

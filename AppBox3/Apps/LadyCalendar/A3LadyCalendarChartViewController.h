@@ -16,9 +16,9 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentLeftConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *segmentRightConst;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *seperatorHeightConst;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *separatorHeightConst;
 @property(nonatomic, weak) A3LadyCalendarModelManager *dataManager;
 
 - (IBAction)periodChangedAction:(id)sender;
+
 @end

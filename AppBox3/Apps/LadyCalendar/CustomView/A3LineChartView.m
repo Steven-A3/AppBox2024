@@ -11,17 +11,48 @@
 
 @interface A3LineChartView ()
 
-- (void)calculateComponentsSizeWithContext:(CGContextRef)context;
-- (void)drawXAxisWithContext:(CGContextRef)context;
-- (void)drawYAxisWithContext:(CGContextRef)context;
-- (void)drawLineWithContext:(CGContextRef)context;
-- (void)drawPointWithContext:(CGContextRef)context;
-- (void)drawAverageLineWithContext:(CGContextRef)context;
-- (void)drawAverageValueWithContext:(CGContextRef)context;
-
 @end
 
-@implementation A3LineChartView
+@implementation A3LineChartView {
+	CGFloat yAxisWidth;
+	CGRect xAxisLineRect;
+	CGFloat xAxisSeparatorHeight;
+	CGFloat xAxisSeparatorInterval;
+	CGSize pointSize;
+	CGFloat yAxisInterval;
+	CGSize yLabelMaxSize;
+	NSMutableArray *pointArray;
+	CGFloat yStartCenterPosition;
+	CGPoint valueTotal;
+	CGFloat averageLineYPos;
+	CGSize xLabelMaxSize;
+	CGFloat xAxisLineHeight;
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+	self = [super initWithFrame:frame];
+	if (self) {
+		[self awakeFromNib];
+	}
+	return self;
+}
+
+- (void)awakeFromNib
+{
+	self.xAxisColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
+	self.xLabelColor = [UIColor colorWithRGBRed:142 green:142 blue:147 alpha:255];
+	self.yLabelColor = [UIColor colorWithRGBRed:142 green:142 blue:147 alpha:255];
+	self.lineColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
+	self.pointColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
+	self.averageColor = [UIColor colorWithRGBRed:167 green:232 blue:183 alpha:255];
+	self.showXLabel = YES;
+	self.showYLabel = NO;
+	self.xAxisFont = [UIFont systemFontOfSize:(IS_IPHONE ? 11.0 : 13.0)];
+	self.yAxisFont = [UIFont systemFontOfSize:(IS_IPHONE ? 11.0 : 13.0)];
+	self.xLabelDisplayInterval = 1;
+}
+
 - (void)drawXAxisWithContext:(CGContextRef)context
 {
     CGContextSetFillColorWithColor(context, [self.xAxisColor CGColor]);
@@ -181,30 +212,6 @@
         valueTotal.x += value.x;
         valueTotal.y += value.y;
     }
-}
-
-- (void)awakeFromNib
-{
-    self.xAxisColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
-    self.xLabelColor = [UIColor colorWithRGBRed:142 green:142 blue:147 alpha:255];
-    self.yLabelColor = [UIColor colorWithRGBRed:142 green:142 blue:147 alpha:255];
-    self.lineColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
-    self.pointColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
-    self.averageColor = [UIColor colorWithRGBRed:167 green:232 blue:183 alpha:255];
-    self.showXLabel = YES;
-    self.showYLabel = NO;
-    self.xAxisFont = [UIFont systemFontOfSize:(IS_IPHONE ? 11.0 : 13.0)];
-    self.yAxisFont = [UIFont systemFontOfSize:(IS_IPHONE ? 11.0 : 13.0)];
-    self.xLabelDisplayInterval = 1;
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self awakeFromNib];
-    }
-    return self;
 }
 
 - (void)drawRect:(CGRect)rect

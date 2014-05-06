@@ -165,17 +165,13 @@
                 layout.constant = ( IS_IPHONE ? 15.0 : 28.0);
             }
         }
-        UILabel *nameLabel = (UILabel*)[cell viewWithTag:10];
-        UILabel *notesLabel = (UILabel*)[cell viewWithTag:12];
-        nameLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
-        notesLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]);
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-//        cell.textLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
     }
-    
-    UILabel *nameLabel = (UILabel*)[cell viewWithTag:10];
+	UILabel *nameLabel = (UILabel*)[cell viewWithTag:10];
+	UILabel *notesLabel = (UILabel*)[cell viewWithTag:12];
+	nameLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:15.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline]);
+	notesLabel.font = (IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote]);
+
     UILabel *dateLabel = (UILabel*)[cell viewWithTag:11];
-    UILabel *notesLabel = (UILabel*)[cell viewWithTag:12];
     UIImageView *imageView = (UIImageView*)[cell viewWithTag:13];
     
     if( indexPath.row < [_itemArray count] ){

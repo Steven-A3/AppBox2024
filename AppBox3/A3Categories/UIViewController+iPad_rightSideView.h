@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 extern NSString *const A3NotificationRightSideViewWillDismiss;
-extern NSString *const A3NotificationRightSideViewDidDismissed;
+extern NSString *const A3NotificationRightSideViewDidDismiss;
 
 @interface UIViewController (iPad_rightSideView)
 

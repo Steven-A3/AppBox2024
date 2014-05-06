@@ -14,6 +14,7 @@
 #import "A3DateHelper.h"
 #import "LadyCalendarAccount.h"
 #import "A3UserDefaults.h"
+#import "A3AppDelegate+appearance.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -39,6 +40,8 @@
 
 	self.navigationItem.rightBarButtonItem.enabled = _isEditMode;
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
+
+	[self registerContentSizeCategoryDidChangeNotification];
 }
 
 - (void)didReceiveMemoryWarning
@@ -55,6 +58,10 @@
 		UITextField *textField = (UITextField *)[cell viewWithTag:10];
 		[textField becomeFirstResponder];
 	}
+}
+
+- (void)contentSizeDidChange:(NSNotification *)notification {
+	[self.tableView reloadData];
 }
 
 - (void)reloadItemAtCellType:(NSInteger)cellType
@@ -179,7 +186,7 @@
         else
             cell.detailTextLabel.text = @"Optional";
         if( [self.itemArray count] > 3 )
-            cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+            cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
         else
             cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
         

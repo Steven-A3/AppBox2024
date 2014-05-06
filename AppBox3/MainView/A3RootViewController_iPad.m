@@ -13,6 +13,7 @@
 #import "common.h"
 #import "UIViewController+A3Addition.h"
 #import "A3MainViewController.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3RootViewController_iPad ()
 
@@ -335,7 +336,8 @@ static const CGFloat kSideViewWidth = 319.0;
     if ( [topViewController respondsToSelector:@selector(willDismissFromRightSide)] ) {
         [topViewController performSelector:@selector(willDismissFromRightSide) withObject:nil];
     }
-    
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewWillDismiss object:nil];
+
 	[UIView animateWithDuration:0.3 animations:^{
         _showRightView = NO;
         
@@ -388,6 +390,8 @@ static const CGFloat kSideViewWidth = 319.0;
         [_rightNavigationController.view removeFromSuperview];
 		[_rightNavigationController removeFromParentViewController];
 		_rightNavigationController = nil;
+
+		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewDidDismiss object:nil];
 	}];
 }
 

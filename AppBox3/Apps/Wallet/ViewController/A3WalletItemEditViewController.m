@@ -128,7 +128,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 	[self registerContentSizeCategoryDidChangeNotification];
 	if (IS_IPAD) {
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewDidDismissed object:nil];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewDidDismiss object:nil];
 	}
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
 }

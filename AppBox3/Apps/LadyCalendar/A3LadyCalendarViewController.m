@@ -24,6 +24,7 @@
 #import "A3UserDefaults.h"
 #import "A3LadyCalendarAccountEditViewController.h"
 #import "A3AppDelegate+appearance.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3LadyCalendarViewController ()
 
@@ -86,6 +87,14 @@
 	numberOfMonthInPage = 1;
 	self.topSeperatorViewConst.constant = 1.0 / [[UIScreen mainScreen] scale];
 	isFirst = YES;
+
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+}
+
+- (void)rightSideViewDidDismiss {
+	[self setupCalendarRange];
+	[self.collectionView reloadData];
+	[self updateCurrentMonthLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -111,16 +120,10 @@
 		[self updateAddButton];
 	} else {
 		[self setupCalendarRange];
-		[_collectionView reloadData];
 	}
+	[_collectionView reloadData];
 	[self updateCurrentMonthLabel];
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:currentAccount.uniqueID] > 0);
-
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -308,19 +311,10 @@
 		month = indexPath.row;
 	}
     calendarView.dateMonth = [A3DateHelper dateFromYear:indexPath.section + _startYear month:month day:1 hour:12 minute:0 second:0];
+	FNLOG(@"%f, %f", calendarView.cellSize.width, calendarView.cellSize.height);
     NSLog(@"%s %@ / %@, %ld/%ld",__FUNCTION__,calendarView.dateMonth,_currentMonth, (long)indexPath.section, (long)indexPath.row);
-    
+
     return cell;
-}
-
-#pragma mark - UICollectionViewDelegate
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
 }
 
 #pragma mark - UICollectionViewDelegateFlowLayout
@@ -329,7 +323,8 @@
 {
     NSDate *yearMonth = [self dateFromIndexPath:indexPath];
 	NSInteger numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:yearMonth];
-    CGSize size = CGSizeMake(collectionView.frame.size.width,(numberOfWeeks * (IS_IPHONE ? 73.0 : 109.0) / numberOfMonthInPage)+(numberOfWeeks*(1.0/[[UIScreen mainScreen] scale])));
+    CGSize size = CGSizeMake(collectionView.frame.size.width, (numberOfWeeks * (IS_IPHONE ? 73.0 : 109.0) / numberOfMonthInPage)+(numberOfWeeks*(1.0/[[UIScreen mainScreen] scale])));
+	FNLOG(@"%f, %f", size.width, size.height);
     
     return size;
 }
