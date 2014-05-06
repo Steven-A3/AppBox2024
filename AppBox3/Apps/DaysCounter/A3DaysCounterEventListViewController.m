@@ -472,11 +472,6 @@
             [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
                                                                                   leapMonth:[item.useLeapMonth boolValue]
                                                                                    fromDate:[NSDate date]];
-//            startDate = [[A3DaysCounterModelManager sharedManager] nextDateForLunarWithRepeatOption:[item.repeatType integerValue]
-//                                                                                          firstDate:[item startDate]
-//                                                                                           fromDate:[NSDate date]
-//                                                                                           isAllDay:[item.isAllDay boolValue]
-//                                                                                        isLeapMonth:[item.useLeapMonth boolValue]];
         }
         else {
             startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
@@ -530,7 +525,7 @@
             UIImageView *favoriteView = (UIImageView*)[cell viewWithTag:15];
             roundDateView.fillColor = [item.calendar color];
             roundDateView.strokColor = roundDateView.fillColor;
-            roundDateView.date = startDate;
+            roundDateView.date = item.effectiveStartDate;
             roundDateView.hidden = NO;
             favoriteView.hidden = ![item.isFavorite boolValue];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:17];
@@ -539,22 +534,8 @@
         else {
             if ( IS_IPAD ) {
                 UILabel *dateLabel = (UILabel*)[cell viewWithTag:16];
-                
-                if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
-                    NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
-                                                                                                                     firstDate:[item.startDate solarDate]
-                                                                                                                      fromDate:[NSDate date]];
-                    if ( [item.isLunar boolValue] ) {
-                        repeatDate = startDate;
-                    }
-                    dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
-                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
-                }
-                else {
-                    dateLabel.text = [A3DateHelper dateStringFromDate:startDate
-                                                           withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
-                }
-                
+                dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
+                                                       withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
                 dateLabel.hidden = NO;
                 ((A3DaysCounterEventListNameCell *)cell).titleRightSpaceConst.constant = [dateLabel sizeThatFits:CGSizeMake(500, 30)].width + 5;
             }

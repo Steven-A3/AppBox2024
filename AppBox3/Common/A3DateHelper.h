@@ -52,4 +52,5 @@
 + (NSDate *)midnightForDate:(NSDate *)date;
 #pragma mark Lunar
 + (NSString *)dateStringOfSolarFromLunarDateComponents:(NSDateComponents *)dateComp isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringFromDateComponents:(NSDateComponents *)dateComp withFormat:(NSString *)format;
 @end

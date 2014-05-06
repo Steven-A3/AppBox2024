@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -52,8 +52,18 @@
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
+                    <textField hidden="YES" opaque="NO" clipsSubviews="YES" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aMr-s2-LTe">
+                        <rect key="frame" x="205" y="13" width="100" height="17"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="100" id="wQY-88-etK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="centerY" secondItem="aMr-s2-LTe" secondAttribute="centerY" id="4Kc-KV-EOU"/>
                     <constraint firstAttribute="centerY" secondItem="Cbe-Ml-6ce" secondAttribute="centerY" id="9an-xY-Op1"/>
                     <constraint firstAttribute="centerY" secondItem="Wf9-HD-kOa" secondAttribute="centerY" id="Lg2-8Q-Msf"/>
                     <constraint firstAttribute="centerY" secondItem="EHk-3v-8NA" secondAttribute="centerY" id="Qdb-k0-3X2"/>
@@ -61,6 +71,7 @@
                     <constraint firstItem="jV8-tL-rpd" firstAttribute="baseline" secondItem="Cbe-Ml-6ce" secondAttribute="baseline" id="gWv-hh-Yxa"/>
                     <constraint firstItem="Cbe-Ml-6ce" firstAttribute="leading" secondItem="Xid-96-dSR" secondAttribute="leading" constant="20" id="hbe-8i-5D4"/>
                     <constraint firstItem="Wf9-HD-kOa" firstAttribute="leading" secondItem="jV8-tL-rpd" secondAttribute="trailing" constant="4" id="o0a-Fg-PAZ"/>
+                    <constraint firstItem="Wf9-HD-kOa" firstAttribute="leading" secondItem="aMr-s2-LTe" secondAttribute="trailing" constant="4" id="rEN-kq-sNI"/>
                     <constraint firstItem="jV8-tL-rpd" firstAttribute="leading" secondItem="EHk-3v-8NA" secondAttribute="trailing" constant="5" id="xLu-zA-GLh"/>
                 </constraints>
             </tableViewCellContentView>

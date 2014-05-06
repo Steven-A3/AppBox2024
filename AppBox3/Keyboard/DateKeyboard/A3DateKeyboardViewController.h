@@ -13,7 +13,6 @@
 
 - (void)dateKeyboardValueChangedDate:(NSDate *)date;
 - (void)dateKeyboardValueChangedDateComponents:(NSDateComponents *)dateComponents;
-
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController;
 
 @end

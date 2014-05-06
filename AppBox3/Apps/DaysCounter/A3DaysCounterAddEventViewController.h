@@ -11,7 +11,7 @@
 #import "A3PhotoSelectViewController.h"
 
 @class DaysCounterEvent;
-@interface A3DaysCounterAddEventViewController : UITableViewController<UITextFieldDelegate,UITextViewDelegate,UIActionSheetDelegate,A3PhotoSelectViewControllerDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,CLLocationManagerDelegate,UIPopoverControllerDelegate>
+@interface A3DaysCounterAddEventViewController : UITableViewController 
 {
     BOOL isFirstAppear;
 }

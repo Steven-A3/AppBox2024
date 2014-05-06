@@ -395,13 +395,13 @@
         <element name="Calculation" positionX="-783" positionY="-441" width="128" height="90"/>
         <element name="CurrencyFavorite" positionX="358" positionY="-549" width="128" height="120"/>
         <element name="CurrencyHistory" positionX="207" positionY="-549" width="128" height="135"/>
-        <element name="CurrencyHistoryItem" positionX="54" positionY="-549" width="128" height="105"/>
-        <element name="CurrencyRateItem" positionX="-92" positionY="-549" width="128" height="135"/>
-        <element name="DaysCounterCalendar" positionX="-389" positionY="-549" width="128" height="163"/>
-        <element name="DaysCounterDateModel" positionX="-567" positionY="-387" width="128" height="178"/>
-        <element name="DaysCounterEvent" positionX="-243" positionY="-549" width="128" height="418"/>
-        <element name="DaysCounterEventLocation" positionX="-90" positionY="-396" width="128" height="193"/>
-        <element name="DaysCounterReminder" positionX="-45" positionY="-162" width="128" height="118"/>
+        <element name="CurrencyHistoryItem" positionX="54" positionY="-621" width="128" height="105"/>
+        <element name="CurrencyRateItem" positionX="54" positionY="-504" width="128" height="135"/>
+        <element name="DaysCounterCalendar" positionX="-414" positionY="-837" width="128" height="163"/>
+        <element name="DaysCounterDateModel" positionX="-407" positionY="-610" width="128" height="178"/>
+        <element name="DaysCounterEvent" positionX="-236" positionY="-837" width="128" height="418"/>
+        <element name="DaysCounterEventLocation" positionX="-81" positionY="-801" width="162" height="193"/>
+        <element name="DaysCounterReminder" positionX="-83" positionY="-523" width="128" height="118"/>
         <element name="ExpenseListBudget" positionX="376" positionY="-382" width="128" height="238"/>
         <element name="ExpenseListBudgetLocation" positionX="540" positionY="-322" width="153" height="178"/>
         <element name="ExpenseListCategories" positionX="540" positionY="-432" width="135" height="75"/>
@@ -426,7 +426,7 @@
         <element name="UnitItem" positionX="205" positionY="198" width="128" height="210"/>
         <element name="UnitPriceFavorite" positionX="412" positionY="360" width="128" height="73"/>
         <element name="UnitPriceHistory" positionX="-605" positionY="332" width="128" height="73"/>
-        <element name="UnitPriceHistoryItem" positionX="-398" positionY="227" width="128" height="178"/>
+        <element name="UnitPriceHistoryItem" positionX="-371" positionY="209" width="128" height="178"/>
         <element name="UnitPriceInfo" positionX="-47" positionY="396" width="128" height="163"/>
         <element name="UnitType" positionX="412" positionY="162" width="128" height="88"/>
         <element name="WalletCategory" positionX="-740" positionY="440" width="128" height="165"/>

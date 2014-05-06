@@ -118,19 +118,19 @@ typedef NS_ENUM(NSInteger, A3DaysCounterAddEventCellType) {
     EventCellType_IsAllDay,
     EventCellType_IsPeriod,
     
-    EventCellType_StartDate,
+    EventCellType_StartDate,    // 5
     EventCellType_EndDate,
     EventCellType_RepeatType,
     EventCellType_EndRepeatDate,
     EventCellType_Alert,
     
-    EventCellType_Calendar,
+    EventCellType_Calendar,     // 10
     EventCellType_DurationOption,
     EventCellType_Location,
     EventCellType_Notes,
     EventCellType_DateInput,
     
-    EventCellType_Share,
+    EventCellType_Share,        // 15
     EventCellType_Favorites,
     EventCellType_Advanced,
     EventCellType_IsLeapMonth
