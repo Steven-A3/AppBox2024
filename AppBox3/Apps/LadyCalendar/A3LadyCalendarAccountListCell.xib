@@ -92,11 +92,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="check" translatesAutoresizingMaskIntoConstraints="NO" id="70R-Ef-bQU">
+                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check" translatesAutoresizingMaskIntoConstraints="NO" id="70R-Ef-bQU">
                         <rect key="frame" x="15" y="11" width="22" height="22"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-h8-TDm">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-h8-TDm">
                         <rect key="frame" x="49" y="11" width="42" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -111,9 +111,9 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="YRO-h8-TDm" firstAttribute="centerY" secondItem="70R-Ef-bQU" secondAttribute="centerY" id="6jC-mu-XUi"/>
                     <constraint firstItem="YRO-h8-TDm" firstAttribute="leading" secondItem="70R-Ef-bQU" secondAttribute="trailing" constant="12" id="6ok-TK-Wc6"/>
                     <constraint firstAttribute="trailing" secondItem="8RP-oW-M3B" secondAttribute="trailing" constant="15" id="HGh-Qm-yl5"/>
+                    <constraint firstAttribute="centerY" secondItem="8RP-oW-M3B" secondAttribute="centerY" id="hA6-su-5Ip"/>
                     <constraint firstAttribute="centerY" secondItem="70R-Ef-bQU" secondAttribute="centerY" id="hjc-MG-Ux6"/>
                     <constraint firstItem="YRO-h8-TDm" firstAttribute="centerY" secondItem="8RP-oW-M3B" secondAttribute="centerY" id="k8h-ek-nfE"/>
                     <constraint firstItem="70R-Ef-bQU" firstAttribute="leading" secondItem="gG6-UJ-ct1" secondAttribute="leading" constant="15" id="xrZ-oe-1Mc"/>
