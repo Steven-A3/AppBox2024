@@ -321,7 +321,11 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                  */
                 UIColor *themeColor = [A3AppDelegate instance].themeColor;
                 [button setBackgroundColor:themeColor];
-
+                if (IS_PORTRAIT) {
+                    button.contentEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, 0);
+                } else {
+                    button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
+                }
 			//} else if (row > 1 && column >= 4) {
 			//	[button setBackgroundColor:[UIColor colorWithRed:250.0/255.0 green:250.0/255.0 blue:250.0/255.0 alpha:1.0]];
 			//	[button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -364,7 +368,13 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
             A3KeyboardButton_iOS7_iPhone *button = (A3KeyboardButton_iOS7_iPhone *) [self viewWithTag:idx+KBD_BUTTON_TAG_BASE];
             [button setFrame:frame];
             id title = buttonTitle[idx];
-            
+            if (column == 7) {
+                if (IS_PORTRAIT) {
+                    button.contentEdgeInsets = UIEdgeInsetsMake(-8, 0, 0, 0);
+                } else {
+                    button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
+                }
+            }
 			[self setTitle:title forButton:button];
         }
     }
