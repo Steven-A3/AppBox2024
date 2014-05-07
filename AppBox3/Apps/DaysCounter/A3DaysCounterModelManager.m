@@ -580,24 +580,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [self removeExistsEventImageFile:eventItem.imageFilename];
         eventItem.imageFilename = nil;
     }
-    
-//    if ( [eventItem.useLeapMonth boolValue] ) {
-//        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.startDate];
-//        eventItem.startDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
-//        
-//        if (!eventItem.endDate || [eventItem.endDate isKindOfClass:[NSNull class]]) {
-//            eventItem.endDate.isLeapMonth = @(NO);
-//        }
-//        else {
-//            dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.endDate];
-//            eventItem.endDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
-//        }
-//    }
-//    else {
-//        eventItem.startDate.isLeapMonth = @(NO);
-//        eventItem.endDate.isLeapMonth = @(NO);
-//    }
-    
+
     if ( !eventItem.alertDatetime ) {
         eventItem.alertDatetime = nil;
         eventItem.hasReminder = @(NO);
@@ -1753,6 +1736,20 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                       [A3DateHelper dateStringFromDateComponents:lunarComp withFormat:dateFormat]];
     }
     
+    return dateString;
+}
+
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDateModel *)dateModel isLeapMonth:(BOOL)isLeapMonth
+{
+    NSString *dateString;
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
+    NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
+    [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
+    [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+    
+    dateString = [NSString stringWithFormat:@"음력 %@",
+                  [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:YES] withFormat:dateFormat]];
     return dateString;
 }
 @end

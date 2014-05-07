@@ -112,4 +112,5 @@
 #pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
 + (NSString *)dateStringFromDateModel:(DaysCounterDateModel *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
 + (NSString *)dateStringFromEffectiveDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDateModel *)dateModel isLeapMonth:(BOOL)isLeapMonth;
 @end
