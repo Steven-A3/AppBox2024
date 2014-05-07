@@ -359,6 +359,7 @@
                                                                            toDate:event.effectiveStartDate
                                                                      allDayOption:[event.isAllDay boolValue]
                                                                            repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO];
+            [txt appendFormat:@"%@\n", event.eventName];
             [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
