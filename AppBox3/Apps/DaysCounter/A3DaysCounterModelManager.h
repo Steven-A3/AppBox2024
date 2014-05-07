@@ -97,7 +97,7 @@
 #pragma mark EventModel Dictionary
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
-#pragma mark - Alert
+#pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
 - (void)reloadAlertDateListForLocalNotification;
 

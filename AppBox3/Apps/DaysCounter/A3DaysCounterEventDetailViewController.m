@@ -1498,6 +1498,7 @@ EXIT_FUCTION:
     return nil;
 }
 
+#pragma mark Row Select Actions
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ( indexPath.section == 1 ) {
@@ -1507,31 +1508,46 @@ EXIT_FUCTION:
     }
     NSDictionary *itemDict = [_itemArray objectAtIndex:indexPath.row];
     NSInteger cellType = [[itemDict objectForKey:EventRowType] integerValue];
-
+    
     if ( cellType == EventCellType_Location && _eventItem.location ) {
-        A3DaysCounterEventDetailLocationViewController *viewCtrl = [[A3DaysCounterEventDetailLocationViewController alloc] initWithNibName:@"A3DaysCounterEventDetailLocationViewController" bundle:nil];
-        viewCtrl.location = _eventItem.location;
-        [self.navigationController pushViewController:viewCtrl animated:YES];
+        [self didSelectLocationRow];
     }
     else if ( cellType == EventCellType_Share ) {
-		UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
-        if (IS_IPHONE) {
-            [self presentViewController:activityController animated:YES completion:NULL];
-        } else {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:activityController];
-            self.popoverVC.delegate = self;
-            [_popoverVC presentPopoverFromRect:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height) inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        }
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+		[self didSelectShareEventRowAtIndexPath:indexPath tableView:tableView];
     }
     else if ( cellType == EventCellType_Favorites ) {
-        _eventItem.isFavorite = [NSNumber numberWithBool:![_eventItem.isFavorite boolValue]];
-        [_eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
-        [self.tableView reloadData];
-        if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)]) {
-            [self.delegate willChangeEventDetailViewController:self];
-        }
+        [self didSelectFavoriteRow];
+    }
+}
+
+- (void)didSelectLocationRow
+{
+    A3DaysCounterEventDetailLocationViewController *viewCtrl = [[A3DaysCounterEventDetailLocationViewController alloc] initWithNibName:@"A3DaysCounterEventDetailLocationViewController" bundle:nil];
+    viewCtrl.location = _eventItem.location;
+    [self.navigationController pushViewController:viewCtrl animated:YES];
+}
+
+- (void)didSelectShareEventRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
+{
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
+    if (IS_IPHONE) {
+        [self presentViewController:activityController animated:YES completion:NULL];
+    } else {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:activityController];
+        self.popoverVC.delegate = self;
+        [_popoverVC presentPopoverFromRect:CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height) inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)didSelectFavoriteRow
+{
+    _eventItem.isFavorite = [NSNumber numberWithBool:![_eventItem.isFavorite boolValue]];
+    [_eventItem.managedObjectContext MR_saveToPersistentStoreAndWait];
+    [self.tableView reloadData];
+    if ( self.delegate && [self.delegate respondsToSelector:@selector(willChangeEventDetailViewController:)]) {
+        [self.delegate willChangeEventDetailViewController:self];
     }
 }
 

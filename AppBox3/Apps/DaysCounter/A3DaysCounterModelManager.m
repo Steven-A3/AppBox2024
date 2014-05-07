@@ -1569,7 +1569,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
 }
 
-#pragma mark - Alert
+#pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (void)reloadAlertDateListForLocalNotification
 {
     // 기존 등록 얼럿 제거.
@@ -1589,27 +1589,33 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             return;
         }
 
-        event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
-        event.alertDatetime = [self effectiveAlertDateForEvent:event];
+        event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];    // 현재 기준 앞으로 발생할 실제 이벤트 시간을 얻는다.
+        event.alertDatetime = [self effectiveAlertDateForEvent:event];                  // 이벤트 시간 기준, 실제 발생할 이벤트 얼럿 시간을 얻는다.
+        FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.eventId, event.eventName, event.effectiveStartDate, event.alertDatetime);
+        
         if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
-//        if (([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] >= 0)) {
-            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event.eventId == %@", [event eventId]]];
-            if (!reminders || [reminders count] == 0) {
-                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
-                reminder.isOn = @(YES);
-                reminder.isUnread = @(YES);
-                reminder.startDate = event.effectiveStartDate;
-                reminder.alertDate = event.alertDatetime;
-                reminder.event = event;
-            }
-            else {
-                DaysCounterReminder *reminder = [reminders lastObject];
+            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.eventId" withValue:[event eventId]];
+            if (reminder) {
+                // Remind 이벤트가 이미 존재하는 경우,
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
-                    reminder.startDate = event.effectiveStartDate;
-                    reminder.alertDate = event.alertDatetime;
+                    // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+//                    reminder.startDate = event.effectiveStartDate;
+//                    reminder.alertDate = event.alertDatetime;
                     reminder.isOn = @(YES);
                     reminder.isUnread = @(YES);
                 }
+                // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+                reminder.startDate = event.effectiveStartDate;
+                reminder.alertDate = event.alertDatetime;
+            }
+            else {
+                // Remind 이벤트가 없는 경우, 추가.
+                reminder = [DaysCounterReminder MR_createEntity];
+                reminder.isOn = @(YES);
+                reminder.isUnread = @(YES);
+                reminder.startDate = event.effectiveStartDate;      // 실제 이벤트 발생일.
+                reminder.alertDate = event.alertDatetime;           // 실제 이벤트 얼럿 발생시간. 이 시간이 지나면, Reminder 리스트에 보여지게 된다.
+                reminder.event = event;                             // 릴레이션.
             }
         }
         
@@ -1626,7 +1632,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             [localNotifications addObject:notification];
         }
     }];
-    
+
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 

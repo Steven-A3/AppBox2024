@@ -1354,9 +1354,7 @@
         [[A3DaysCounterModelManager sharedManager] modifyEvent:_eventItem image:_photoImage];
     }
     
-//    FNLOG(@"reloadAlertDateListForLocalNotification Start");
     [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-//    FNLOG(@"reloadAlertDateListForLocalNotification End");
     
     // 창닫기
     [self cancelAction:nil];
