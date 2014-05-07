@@ -19,6 +19,7 @@
 #import "A3DateHelper.h"
 #import "DaysCounterEvent.h"
 #import "DaysCounterDateModel.h"
+#import "UIImage+imageWithColor.h"
 
 #define ActionSheet_DeleteAll           100
 #define ActionSheet_DeleteSelected      101
@@ -30,6 +31,7 @@
 @property (strong, nonatomic) NSMutableArray *selectedArray;
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) UINavigationController *modalVC;
+@property (assign, nonatomic) NSInteger shareItemTitleIndex;
 
 - (void)cancelAction:(id)sender;
 - (void)deleteAllAction:(id)sender;
@@ -120,10 +122,11 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterEventListEditCell" owner:nil options:nil] lastObject];
         UIButton *button = (UIButton*)[cell viewWithTag:11];
-        [button setImage:self.checkNormalImage forState:UIControlStateNormal];
         [button addTarget:self action:@selector(toggleSelectAction:) forControlEvents:UIControlEventTouchUpInside];
         button.tintColor = [A3AppDelegate instance].themeColor;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [button setImage:[self.checkNormalImage tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateNormal];
+        [button setImage:[[UIImage imageNamed:@"check"] tintedImageWithColor:[A3AppDelegate instance].themeColor] forState:UIControlStateSelected];
     }   
     
     // Configure the cell...
@@ -219,19 +222,12 @@
 
 - (void)toggleSelectAction:(id)sender
 {
-    UIButton* button = (UIButton*)sender;
+    UIButton *button = (UIButton*)sender;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[[button superview] superview] superview]];
     if (indexPath == nil )
         return;
     
     button.selected = !button.selected;
-    
-    if (button.selected) {
-        [button setImage:[UIImage imageNamed:@"check"] forState:UIControlStateNormal];
-    }
-    else {
-        [button setBackgroundImage:self.checkNormalImage forState:UIControlStateNormal];
-    }
     
     DaysCounterEvent *item = [_itemArray objectAtIndex:indexPath.row];
     [_checkStatusDict setObject:[NSNumber numberWithBool:button.selected] forKey:item.eventId];
@@ -281,30 +277,8 @@
         return;
     }
     
-//    NSMutableArray *activityItems = [NSMutableArray array];
-//    for(DaysCounterEvent *event in _selectedArray){
-//        [activityItems addObject:[NSString stringWithFormat:@"%@",[[A3DaysCounterModelManager sharedManager] stringForShareEvent:event]]];
-//    }
-//
-//    self.popoverVC = [self presentActivityViewControllerWithActivityItems:activityItems fromBarButtonItem:sender];
-//    if ( self.popoverVC ) {
-//        self.popoverVC.delegate = self;
-//        _trashBarButton.enabled = NO;
-//        _calendarBarButton.enabled = NO;
-//        _shareBarButton.enabled = NO;
-//    }
-    
-    
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[self] applicationActivities:nil];
     [self presentViewController:activityController animated:YES completion:NULL];
-//    if (IS_IPHONE) {
-//        [self presentViewController:activityController animated:YES completion:NULL];
-//    } else {
-//
-//        self.popoverVC = [[UIPopoverController alloc] initWithContentViewController:activityController];
-//        self.popoverVC.delegate = self;
-//        [_popoverVC presentPopoverFromRect:CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height) inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-//    }
 }
 
 #pragma mark - UIPopoverControllerDelegate
@@ -319,7 +293,13 @@
 #pragma mark - UIActivityItemSource
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
-    DaysCounterEvent *eventItem = [_selectedArray lastObject];
+    NSArray *sortedArray = [_selectedArray sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        DaysCounterEvent *item1 = (DaysCounterEvent *)obj1;
+        DaysCounterEvent *item2 = (DaysCounterEvent *)obj2;
+        return [item1.effectiveStartDate compare:item2.effectiveStartDate];
+    }];
+    
+    DaysCounterEvent *eventItem = [sortedArray firstObject];
     
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         return [NSString stringWithFormat:@"%@ using AppBox Pro", eventItem.eventName];
@@ -379,6 +359,7 @@
                                                                            toDate:event.effectiveStartDate
                                                                      allDayOption:[event.isAllDay boolValue]
                                                                            repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO];
+            [txt appendFormat:@"%@\n", event.eventName];
             [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)

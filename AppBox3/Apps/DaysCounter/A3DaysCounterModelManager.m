@@ -560,7 +560,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [[NSFileManager defaultManager] removeItemAtPath:imagePath error:nil];
 }
 
-//- (BOOL)modifyEvent:(DaysCounterEvent*)eventItem withInfo:(NSDictionary*)info
 - (BOOL)modifyEvent:(DaysCounterEvent*)eventItem image:(UIImage *)image
 {
     NSString *imageFilename = @"";
@@ -800,8 +799,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
-//                                           inContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
                                            inContext:[self managedObjectContext]];
 
@@ -809,8 +806,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
-//                                           inContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
                                            inContext:[self managedObjectContext]];
 }

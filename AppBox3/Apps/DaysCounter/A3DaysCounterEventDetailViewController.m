@@ -246,11 +246,6 @@
         case EventCellType_Alert:
         {
             cell.textLabel.text = [itemDict objectForKey:EventRowTitle];
-            
-//            NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
-//                                                                           toDate:[itemDict objectForKey:EventItem_EffectiveStartDate]
-//                                                                     allDayOption:[[itemDict objectForKey:EventItem_IsAllDay] boolValue]
-//                                                                           repeat:[[itemDict objectForKey:EventItem_RepeatType] integerValue] != RepeatType_Never ? YES : NO];
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                            toDate:_eventItem.effectiveStartDate
                                                                      allDayOption:[_eventItem.isAllDay boolValue]
@@ -357,12 +352,19 @@
     }
 
     cell.eventTitleLabel.text = info.eventName;
-    CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font}];
+    CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }];
     CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+
     if (calculatedTitleSize.width > titleMaxWidth) {
-        calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
-        cell.titleWidthConst.constant = calculatedTitleSize.width;
-        cell.titleHeightConst.constant = calculatedTitleSize.height;
+        //calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
+        //cell.titleWidthConst.constant = calculatedTitleSize.width;
+        //cell.titleHeightConst.constant = calculatedTitleSize.height;
+        CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
+                                                                        options:NSStringDrawingUsesLineFragmentOrigin
+                                                                     attributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }
+                                                                        context:nil];
+        cell.titleWidthConst.constant = calculatedTitleRect.size.width;
+        cell.titleHeightConst.constant = calculatedTitleRect.size.height;
     }
     else {
         cell.titleWidthConst.constant = calculatedTitleSize.width;
@@ -1409,7 +1411,7 @@ EXIT_FUCTION:
             @autoreleasepool {
                 UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
                 CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
-                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0);
+                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
                 
                 if (calculatedTitleSize.width > titleMaxWidth) {
 //                    UILabel *label = [[UILabel alloc] init];
