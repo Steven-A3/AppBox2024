@@ -220,18 +220,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 }
 
-//- (void)initEventStore
-//{
-//    if (_eventStore)
-//        return;
-//    
-//    self.eventStore = [[EKEventStore alloc] init];
-//    [_eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-//        if ( !granted) {
-//            self.eventStore = nil;
-//        }
-//    }];
-//}
 
 - (void)prepare
 {
@@ -931,82 +919,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retDate;
 }
 
-//- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
-//{
-//    BOOL isResultLeapMonth = NO;
-//    NSDate *nextDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
-//    if (isLeapMonth) {
-//        isLeapMonth = [NSDate isLunarLeapMonthDate:nextDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-//    }
-//
-//    nextDate = [NSDate dateOfSolarFromLunarDate:nextDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-//    if ( [nextDate timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970] ) {
-//        return nextDate;
-//    }
-//    
-//    NSDate *retDate = nil;
-//    if (isAllDay) {
-//        fromDate = [A3DateHelper midnightForDate:fromDate];
-//        firstDate = [A3DateHelper midnightForDate:firstDate];
-//    }
-//    if ([self isTodayEventForDate:firstDate fromDate:fromDate repeatType:repeatType]) {
-//        retDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
-//        return retDate;
-//    }
-//    
-//    NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
-//    
-//    if ( days < 0 ) {
-//        return firstDate;
-//    }
-//    // 시작일로부터 오늘까지 각 설정에 맞는 주수를 계산
-//    switch (repeatType) {
-//        case RepeatType_Never:
-//            retDate = firstDate;
-//            break;
-//            
-//        case RepeatType_EveryDay:{
-//            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingDays:days+1 fromDate:firstDate];
-//        }
-//            break;
-//            
-//        case RepeatType_EveryWeek:{
-//            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingWeeks:weeks+1 fromDate:firstDate];
-//        }
-//            break;
-//        case RepeatType_Every2Week:{
-//            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
-//            NSInteger remainNum = weeks % 2;
-//            retDate = [A3DateHelper dateByAddingWeeks:weeks+ (2-remainNum) fromDate:firstDate];
-//        }
-//            break;
-//        case RepeatType_EveryMonth:{
-//            NSInteger month = [A3DateHelper diffMonthsFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingMonth:month+1 fromDate:firstDate];
-//        }
-//            break;
-//        case RepeatType_EveryYear:{
-//            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingYears:year+1 fromDate:firstDate];
-//        }
-//            break;
-//            
-//        default:{
-//            NSInteger dayUnit = repeatType;
-//            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
-//            NSInteger remainNum = days % dayUnit;
-//            retDate = [A3DateHelper dateByAddingDays:days+(dayUnit-remainNum) fromDate:firstDate];
-//        }
-//            break;
-//    }
-//    
-//
-//    retDate = [NSDate dateOfSolarFromLunarDate:retDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-//    
-//    return retDate;
-//}
 
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
 {
