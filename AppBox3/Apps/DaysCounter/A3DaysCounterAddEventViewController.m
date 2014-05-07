@@ -673,11 +673,22 @@
         titleLabel.text = @"Date";
     }
     
-    lunarImageView.hidden = ![_eventItem.isLunar boolValue];
+    //lunarImageView.hidden = ![_eventItem.isLunar boolValue];
+    lunarImageView.hidden = YES;
     NSDate *keyDate = itemType == EventCellType_StartDate ? [_eventItem.startDate solarDate] : [_eventItem.endDate solarDate];
     if ( keyDate ) {
-        dateLabel.text = [A3Formatter stringFromDate:keyDate
-                                              format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[_eventItem.isLunar boolValue] ? YES : [_eventItem.isAllDay boolValue]]];
+        if ([_eventItem.isLunar boolValue]) {
+            dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate
+                                                                           isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+        }
+        else {
+            dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:itemType == EventCellType_StartDate ? _eventItem.startDate : _eventItem.endDate
+                                                                        isLunar:NO
+                                                                       isAllDay:[_eventItem.isAllDay boolValue]
+                                                                    isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+        }
+//        dateLabel.text = [A3Formatter stringFromDate:keyDate
+//                                              format:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[_eventItem.isLunar boolValue] ? YES : [_eventItem.isAllDay boolValue]]];
     }
     else {
         dateLabel.text = [A3Formatter stringFromDate:[NSDate date]
@@ -1354,9 +1365,7 @@
         [[A3DaysCounterModelManager sharedManager] modifyEvent:_eventItem image:_photoImage];
     }
     
-//    FNLOG(@"reloadAlertDateListForLocalNotification Start");
     [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-//    FNLOG(@"reloadAlertDateListForLocalNotification End");
     
     // 창닫기
     [self cancelAction:nil];
@@ -1894,17 +1903,18 @@
     dateComponents.minute = 0;
     dateComponents.second = 0;
 
-//    // 음력 날짜 유효성 체크.
-//    if ([_eventItem.isLunar boolValue]) {
-//        BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-//        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]];
-//        
+    // 음력 날짜 유효성 체크.
+    if ([_eventItem.isLunar boolValue]) {
+        //BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
+        [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]];
+        
 //        if (!isLunarDate) {
 //            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
 //            [alert show];
 //            return;
 //        }
-//    }
+    }
+    
     
     if ([self.inputDateKey isEqualToString:EventItem_StartDate]) {
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:dateComponents withEventModel:_eventItem endDate:NO];
@@ -1927,20 +1937,21 @@
     detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
                                                                                     alertDate:_eventItem.alertDatetime];
     if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
-//        // Start DateInputCell 갱신, (LeapMonth 고려)
-//        [self updateEndDateDiffFromStartDate:prevDate]; // End Date 간격 갱신.
-        
-//        if ( [_eventItem.isLunar boolValue] ) {
-//            NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
-//                                                                 inSection:AddSection_Section_1];
-//            [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-//        }
         NSIndexPath *startDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_StartDate atSectionArray:section1_items]
                                                              inSection:AddSection_Section_1];
         if (startDateIndexPath) {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:startDateIndexPath];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
-            dateLabel.text = [A3DateHelper dateStringFromDateComponents:dateComponents withFormat:nil];
+            if ([_eventItem.isLunar boolValue]) {
+                dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:_eventItem.startDate
+                                                                               isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+            }
+            else {
+                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.startDate
+                                                                            isLunar:NO
+                                                                           isAllDay:[_eventItem.isAllDay boolValue]
+                                                                        isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+            }
         }
     }
     else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
@@ -1951,7 +1962,11 @@
             //[self.tableView reloadRowsAtIndexPaths:@[endDateIndexPath] withRowAnimation:UITableViewRowAnimationNone];
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:endDateIndexPath];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
-            dateLabel.text = [A3DateHelper dateStringFromDateComponents:dateComponents withFormat:nil];
+            //dateLabel.text = [A3DateHelper dateStringFromDateComponents:dateComponents withFormat:nil];
+            dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.endDate
+                                                                        isLunar:[_eventItem.isLunar boolValue]
+                                                                       isAllDay:[_eventItem.isAllDay boolValue]
+                                                                    isLeapMonth:[_eventItem.useLeapMonth boolValue]];
         }
     }
 }

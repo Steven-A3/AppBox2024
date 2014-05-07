@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
@@ -22,15 +22,19 @@
                             <constraint firstAttribute="width" constant="65" id="wBK-QI-yN2"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWP-U2-IyW" userLabel="Label Title">
-                        <rect key="frame" x="73" y="17" width="44" height="21"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sdlfkjslkdjfsldkfjlskdjflskdjf" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="210" translatesAutoresizingMaskIntoConstraints="NO" id="WWP-U2-IyW" userLabel="Label Title">
+                        <rect key="frame" x="73" y="17" width="210" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="210" id="eD4-FD-9qL"/>
+                            <constraint firstAttribute="height" constant="21" id="n1c-MN-fvr"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star02_on" translatesAutoresizingMaskIntoConstraints="NO" id="WBt-0Q-uzl">
-                        <rect key="frame" x="125" y="18" width="20" height="20"/>
+                        <rect key="frame" x="291" y="18" width="20" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="Dmz-37-hp8"/>
@@ -146,10 +150,10 @@
                     <constraint firstItem="WWP-U2-IyW" firstAttribute="leading" secondItem="Hh5-DJ-yjI" secondAttribute="leading" id="DXJ-pn-7je"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="GLU-LD-IKX" secondAttribute="trailing" constant="15" id="F7S-AK-vdq"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="5zi-mf-aYw" secondAttribute="trailing" constant="15" id="GB6-Ij-qJq"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="WBt-0Q-uzl" secondAttribute="trailing" constant="15" id="GbO-Ep-wdO"/>
                     <constraint firstItem="yZX-t7-1Gx" firstAttribute="trailing" secondItem="9SM-uZ-dC6" secondAttribute="leading" constant="-5" id="I9m-Ji-Rw5"/>
                     <constraint firstAttribute="bottom" secondItem="WWP-U2-IyW" secondAttribute="bottom" constant="197" id="Iox-v2-w0Z"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dVK-pm-NH6" secondAttribute="trailing" constant="15" id="Lbm-G0-vSM"/>
+                    <constraint firstItem="WBt-0Q-uzl" firstAttribute="top" secondItem="Aq4-Yz-km8" secondAttribute="top" constant="18" id="OY3-hX-iKd"/>
                     <constraint firstItem="Hh5-DJ-yjI" firstAttribute="centerY" secondItem="hON-ts-6j0" secondAttribute="centerY" constant="1" id="Rgk-cU-uxQ"/>
                     <constraint firstAttribute="bottom" secondItem="l9P-ic-VoE" secondAttribute="bottom" constant="70" id="Wx9-2u-tYM"/>
                     <constraint firstItem="GMK-Mh-6vG" firstAttribute="trailing" secondItem="GLU-LD-IKX" secondAttribute="leading" constant="-5" id="XUC-Au-lmh"/>
@@ -157,7 +161,7 @@
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="yZX-t7-1Gx" secondAttribute="trailing" constant="15" id="b0J-GX-ncb"/>
                     <constraint firstItem="WWP-U2-IyW" firstAttribute="leading" secondItem="Wbh-EJ-s2l" secondAttribute="leading" id="cv1-zt-6Po"/>
                     <constraint firstItem="Hh5-DJ-yjI" firstAttribute="baseline" secondItem="YQ4-rv-EwY" secondAttribute="baseline" constant="-20" id="eTI-D7-TG7"/>
-                    <constraint firstItem="WBt-0Q-uzl" firstAttribute="leading" secondItem="WWP-U2-IyW" secondAttribute="trailing" constant="8" id="gVn-34-6GW"/>
+                    <constraint firstItem="WBt-0Q-uzl" firstAttribute="leading" secondItem="WWP-U2-IyW" secondAttribute="trailing" priority="250" constant="8" id="gVn-34-6GW"/>
                     <constraint firstItem="WWP-U2-IyW" firstAttribute="leading" secondItem="iKu-I8-KZR" secondAttribute="trailing" constant="8" id="gXx-e7-Sld"/>
                     <constraint firstItem="YQ4-rv-EwY" firstAttribute="baseline" secondItem="5zi-mf-aYw" secondAttribute="baseline" constant="-18" id="iuh-dE-clW"/>
                     <constraint firstItem="dVK-pm-NH6" firstAttribute="centerY" secondItem="l9P-ic-VoE" secondAttribute="centerY" id="l5f-EX-hN5"/>
@@ -171,7 +175,6 @@
                     <constraint firstItem="WWP-U2-IyW" firstAttribute="leading" secondItem="YQ4-rv-EwY" secondAttribute="leading" id="sWE-mb-3Pl"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Hh5-DJ-yjI" secondAttribute="trailing" constant="15" id="uWQ-J3-arU"/>
                     <constraint firstItem="WWP-U2-IyW" firstAttribute="leading" secondItem="l9P-ic-VoE" secondAttribute="leading" id="wSQ-UZ-K9h"/>
-                    <constraint firstItem="WWP-U2-IyW" firstAttribute="centerY" secondItem="WBt-0Q-uzl" secondAttribute="centerY" id="zaH-5K-Jv6"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
@@ -192,7 +195,9 @@
                 <outlet property="startEnd2ALabel" destination="YQ4-rv-EwY" id="Ovz-l3-jXp"/>
                 <outlet property="startEnd2BLabel" destination="4HG-nw-0dM" id="cKi-cl-LUN"/>
                 <outlet property="titleBottomSpaceConst" destination="Iox-v2-w0Z" id="zWJ-zZ-je7"/>
+                <outlet property="titleHeightConst" destination="n1c-MN-fvr" id="d9Q-E2-xZZ"/>
                 <outlet property="titleLeftSpaceConst" destination="gXx-e7-Sld" id="6NC-jC-tIh"/>
+                <outlet property="titleWidthConst" destination="eD4-FD-9qL" id="Wze-qX-w1T"/>
                 <outlet property="untilRoundBottomConst" destination="0cT-gY-HWY" id="Ao5-lO-RZz"/>
                 <outlet property="untilRoundWidthConst" destination="4xT-lt-ONy" id="6Xa-Am-ofC"/>
                 <outlet property="untilSinceRoundLabel" destination="GMK-Mh-6vG" id="oT2-g0-Qtg"/>

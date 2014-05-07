@@ -75,7 +75,6 @@
 - (NSArray*)reminderList;
 
 - (NSDate*)nextDateWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay;
-//- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate; // 반복 시작이 당해 혹은 현재 시점 날짜 출력을 위하여 추가.
 - (NSString*)stringOfDurationOption:(NSInteger)option fromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay isShortStyle:(BOOL)isShortStyle;
 
@@ -97,7 +96,7 @@
 #pragma mark EventModel Dictionary
 - (void)recalculateEventDatesForEvent:(DaysCounterEvent *)event;
 
-#pragma mark - Alert
+#pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (NSDate *)effectiveAlertDateForEvent:(DaysCounterEvent *)event;
 - (void)reloadAlertDateListForLocalNotification;
 
@@ -113,4 +112,5 @@
 #pragma mark - Print Date String From DaysCounterDateModel Or SolarDate(Effective Date)
 + (NSString *)dateStringFromDateModel:(DaysCounterDateModel *)dateModel isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
 + (NSString *)dateStringFromEffectiveDate:(NSDate *)date isLunar:(BOOL)isLunar isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth;
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDateModel *)dateModel isLeapMonth:(BOOL)isLeapMonth;
 @end

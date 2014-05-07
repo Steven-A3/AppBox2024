@@ -220,18 +220,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 }
 
-//- (void)initEventStore
-//{
-//    if (_eventStore)
-//        return;
-//    
-//    self.eventStore = [[EKEventStore alloc] init];
-//    [_eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-//        if ( !granted) {
-//            self.eventStore = nil;
-//        }
-//    }];
-//}
 
 - (void)prepare
 {
@@ -592,24 +580,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [self removeExistsEventImageFile:eventItem.imageFilename];
         eventItem.imageFilename = nil;
     }
-    
-//    if ( [eventItem.useLeapMonth boolValue] ) {
-//        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.startDate];
-//        eventItem.startDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
-//        
-//        if (!eventItem.endDate || [eventItem.endDate isKindOfClass:[NSNull class]]) {
-//            eventItem.endDate.isLeapMonth = @(NO);
-//        }
-//        else {
-//            dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventItem.endDate];
-//            eventItem.endDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
-//        }
-//    }
-//    else {
-//        eventItem.startDate.isLeapMonth = @(NO);
-//        eventItem.endDate.isLeapMonth = @(NO);
-//    }
-    
+
     if ( !eventItem.alertDatetime ) {
         eventItem.alertDatetime = nil;
         eventItem.hasReminder = @(NO);
@@ -931,82 +902,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retDate;
 }
 
-//- (NSDate*)nextDateForLunarWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate isAllDay:(BOOL)isAllDay isLeapMonth:(BOOL)isLeapMonth
-//{
-//    BOOL isResultLeapMonth = NO;
-//    NSDate *nextDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
-//    if (isLeapMonth) {
-//        isLeapMonth = [NSDate isLunarLeapMonthDate:nextDate isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
-//    }
-//
-//    nextDate = [NSDate dateOfSolarFromLunarDate:nextDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-//    if ( [nextDate timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970] ) {
-//        return nextDate;
-//    }
-//    
-//    NSDate *retDate = nil;
-//    if (isAllDay) {
-//        fromDate = [A3DateHelper midnightForDate:fromDate];
-//        firstDate = [A3DateHelper midnightForDate:firstDate];
-//    }
-//    if ([self isTodayEventForDate:firstDate fromDate:fromDate repeatType:repeatType]) {
-//        retDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
-//        return retDate;
-//    }
-//    
-//    NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
-//    
-//    if ( days < 0 ) {
-//        return firstDate;
-//    }
-//    // 시작일로부터 오늘까지 각 설정에 맞는 주수를 계산
-//    switch (repeatType) {
-//        case RepeatType_Never:
-//            retDate = firstDate;
-//            break;
-//            
-//        case RepeatType_EveryDay:{
-//            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingDays:days+1 fromDate:firstDate];
-//        }
-//            break;
-//            
-//        case RepeatType_EveryWeek:{
-//            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingWeeks:weeks+1 fromDate:firstDate];
-//        }
-//            break;
-//        case RepeatType_Every2Week:{
-//            NSInteger weeks = [A3DateHelper diffWeeksFromDate:firstDate toDate:fromDate];
-//            NSInteger remainNum = weeks % 2;
-//            retDate = [A3DateHelper dateByAddingWeeks:weeks+ (2-remainNum) fromDate:firstDate];
-//        }
-//            break;
-//        case RepeatType_EveryMonth:{
-//            NSInteger month = [A3DateHelper diffMonthsFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingMonth:month+1 fromDate:firstDate];
-//        }
-//            break;
-//        case RepeatType_EveryYear:{
-//            NSInteger year = [A3DateHelper diffYearsFromDate:firstDate toDate:fromDate];
-//            retDate = [A3DateHelper dateByAddingYears:year+1 fromDate:firstDate];
-//        }
-//            break;
-//            
-//        default:{
-//            NSInteger dayUnit = repeatType;
-//            NSInteger days = [A3DateHelper diffDaysFromDate:firstDate toDate:fromDate];
-//            NSInteger remainNum = days % dayUnit;
-//            retDate = [A3DateHelper dateByAddingDays:days+(dayUnit-remainNum) fromDate:firstDate];
-//        }
-//            break;
-//    }
-//    
-//
-//    retDate = [NSDate dateOfSolarFromLunarDate:retDate leapMonth:isLeapMonth korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-//    
-//    return retDate;
-//}
 
 - (NSDate*)repeatDateOfCurrentNotNextWithRepeatOption:(NSInteger)repeatType firstDate:(NSDate*)firstDate fromDate:(NSDate*)fromDate
 {
@@ -1569,7 +1464,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     FNLOG(@"\ntoday: %@, \nFirstStartDate: %@, \nEffectiveDate: %@, \nAlertDate: %@", [NSDate date], [eventModel.startDate solarDate], eventModel.effectiveStartDate, eventModel.alertDatetime);
 }
 
-#pragma mark - Alert
+#pragma mark - EventTime Management (AlertTime, EffectiveStartDate)
 - (void)reloadAlertDateListForLocalNotification
 {
     // 기존 등록 얼럿 제거.
@@ -1589,27 +1484,33 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             return;
         }
 
-        event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];
-        event.alertDatetime = [self effectiveAlertDateForEvent:event];
+        event.effectiveStartDate = [self effectiveDateForEvent:event basisTime:now];    // 현재 기준 앞으로 발생할 실제 이벤트 시간을 얻는다.
+        event.alertDatetime = [self effectiveAlertDateForEvent:event];                  // 이벤트 시간 기준, 실제 발생할 이벤트 얼럿 시간을 얻는다.
+        FNLOG(@"\n[%ld] EventID: %@, EventName: %@\nEffectiveStartDate: %@, \nAlertDatetime: %@", (long)idx, event.eventId, event.eventName, event.effectiveStartDate, event.alertDatetime);
+        
         if ([event.hasReminder isEqualToNumber:@(YES)] && [event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970]) {
-//        if (([event.alertDatetime timeIntervalSince1970] < [now timeIntervalSince1970] && event.alertInterval && [event.alertInterval integerValue] >= 0)) {
-            NSArray *reminders = [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"event.eventId == %@", [event eventId]]];
-            if (!reminders || [reminders count] == 0) {
-                DaysCounterReminder *reminder = [DaysCounterReminder MR_createEntity];
-                reminder.isOn = @(YES);
-                reminder.isUnread = @(YES);
-                reminder.startDate = event.effectiveStartDate;
-                reminder.alertDate = event.alertDatetime;
-                reminder.event = event;
-            }
-            else {
-                DaysCounterReminder *reminder = [reminders lastObject];
+            DaysCounterReminder *reminder = [DaysCounterReminder MR_findFirstByAttribute:@"event.eventId" withValue:[event eventId]];
+            if (reminder) {
+                // Remind 이벤트가 이미 존재하는 경우,
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
-                    reminder.startDate = event.effectiveStartDate;
-                    reminder.alertDate = event.alertDatetime;
+                    // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+//                    reminder.startDate = event.effectiveStartDate;
+//                    reminder.alertDate = event.alertDatetime;
                     reminder.isOn = @(YES);
                     reminder.isUnread = @(YES);
                 }
+                // event 의 갱신된 시간기준으로 reminder 시간 갱신.
+                reminder.startDate = event.effectiveStartDate;
+                reminder.alertDate = event.alertDatetime;
+            }
+            else {
+                // Remind 이벤트가 없는 경우, 추가.
+                reminder = [DaysCounterReminder MR_createEntity];
+                reminder.isOn = @(YES);
+                reminder.isUnread = @(YES);
+                reminder.startDate = event.effectiveStartDate;      // 실제 이벤트 발생일.
+                reminder.alertDate = event.alertDatetime;           // 실제 이벤트 얼럿 발생시간. 이 시간이 지나면, Reminder 리스트에 보여지게 된다.
+                reminder.event = event;                             // 릴레이션.
             }
         }
         
@@ -1626,7 +1527,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             [localNotifications addObject:notification];
         }
     }];
-    
+
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
@@ -1835,6 +1736,20 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                       [A3DateHelper dateStringFromDateComponents:lunarComp withFormat:dateFormat]];
     }
     
+    return dateString;
+}
+
++ (NSString *)dateStringOfLunarFromDateModel:(DaysCounterDateModel *)dateModel isLeapMonth:(BOOL)isLeapMonth
+{
+    NSString *dateString;
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    [formatter setDateStyle:NSDateFormatterFullStyle];
+    NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
+    [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
+    [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+    
+    dateString = [NSString stringWithFormat:@"음력 %@",
+                  [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:YES] withFormat:dateFormat]];
     return dateString;
 }
 @end

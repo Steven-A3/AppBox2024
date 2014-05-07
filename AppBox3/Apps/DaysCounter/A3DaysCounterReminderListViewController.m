@@ -158,6 +158,8 @@
                 cell.detailTextLabel.text = [reminder.startDate timeAgo];
             }
             else {
+                // Reminder 의 startDate == EffectiveStartDate 이다.
+                // 양력/음력 모두 얄력기준 실제 이벤트 날짜가 startDate 로 정해진다.
                 cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
                                                                   withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
             }
