@@ -27,6 +27,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="210" id="eD4-FD-9qL"/>
+                            <constraint firstAttribute="height" constant="21" id="n1c-MN-fvr"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -194,6 +195,7 @@
                 <outlet property="startEnd2ALabel" destination="YQ4-rv-EwY" id="Ovz-l3-jXp"/>
                 <outlet property="startEnd2BLabel" destination="4HG-nw-0dM" id="cKi-cl-LUN"/>
                 <outlet property="titleBottomSpaceConst" destination="Iox-v2-w0Z" id="zWJ-zZ-je7"/>
+                <outlet property="titleHeightConst" destination="n1c-MN-fvr" id="d9Q-E2-xZZ"/>
                 <outlet property="titleLeftSpaceConst" destination="gXx-e7-Sld" id="6NC-jC-tIh"/>
                 <outlet property="titleWidthConst" destination="eD4-FD-9qL" id="Wze-qX-w1T"/>
                 <outlet property="untilRoundBottomConst" destination="0cT-gY-HWY" id="Ao5-lO-RZz"/>

@@ -140,6 +140,11 @@
     [self.tableView reloadData];
 }
 
+-(void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.tableView reloadData];
+}
+
 #pragma mark only modal
 - (void)removeBackAndEditButton
 {
@@ -351,33 +356,20 @@
         cell.titleLeftSpaceConst.constant = 0;
     }
 
-    //cell.titleWidthConst.constant = CGRectGetWidth(self.view.frame) - 48 - cell.eventTitleLabel.frame.origin.x;
     cell.eventTitleLabel.text = info.eventName;
-    cell.eventTitleLabel.text = @"asldkjfalsdkjflaskdjfasldkjfalsdkjflaskdjfasldkjfalsdkjflaskdjfasldkjfalsasldkjfalsdkjflaskdjfasldkjfalsdkjflaskdjfasldkjfalsdkjflaskdjfasldkjfals";
-    //CGSize reasonableTitleSize = [cell.eventTitleLabel systemLayoutSizeFittingSize:CGSizeMake(cell.titleWidthConst.constant, CGFLOAT_MAX)];
-    CGSize reasonableTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font}];
-    reasonableTitleSize.width += 5;
-    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - cell.eventTitleLabel.frame.origin.x;
-    cell.titleWidthConst.constant = reasonableTitleSize.width > titleMaxWidth ? titleMaxWidth : reasonableTitleSize.width;
-//    NSLog(@"%@", NSStringFromCGSize(titleSize));
-//    [cell.eventTitleLabel sizeToFit];
-//    [cell.eventTitleLabel setNeedsLayout];
-//    [cell setNeedsLayout];
+    CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font}];
+    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+    if (calculatedTitleSize.width > titleMaxWidth) {
+        calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
+        cell.titleWidthConst.constant = calculatedTitleSize.width;
+        cell.titleHeightConst.constant = calculatedTitleSize.height;
+    }
+    else {
+        cell.titleWidthConst.constant = calculatedTitleSize.width;
+        cell.titleHeightConst.constant = calculatedTitleSize.height;
+    }
 
     cell.favoriteStarImageView.hidden = ![info.isFavorite boolValue];
-    
-//    CGSize titleSize = [cell.eventTitleLabel systemLayoutSizeFittingSize:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(cell.frame))];
-//    NSLog(@"%@", NSStringFromCGSize(titleSize));
-//    CGSize currentTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGRectGetHeight(cell.frame))];
-//    NSLog(@"%@", NSStringFromCGSize(currentTitleSize));
-//    CGFloat reasonableTitleWidth = CGRectGetWidth(self.view.frame) - cell.eventTitleLabel.frame.origin.x - 48;
-//    if (currentTitleSize.width > reasonableTitleWidth) {
-//        cell.titleTrailingSpaceConst.constant = 48;
-//    }
-//    else {
-//        cell.titleTrailingSpaceConst.constant = 48 + (currentTitleSize.width);
-//    }
-    
     
     if ( [info.repeatType integerValue] == RepeatType_Never ) {
         [self updateEventInfoCellToNoRepeatEventInfo:info cell:cell];
@@ -1411,6 +1403,29 @@ EXIT_FUCTION:
                         //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
                         retHeight = IS_RETINA ? 142.5 : 143;
                     }
+                }
+            }
+
+            @autoreleasepool {
+                UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+                CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
+                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0);
+                
+                if (calculatedTitleSize.width > titleMaxWidth) {
+//                    UILabel *label = [[UILabel alloc] init];
+//                    label.font = titleFont;
+//                    label.text = _eventItem.eventName;
+//                    [label setNeedsLayout];
+                    CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
+                                                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                                                 attributes:@{ NSFontAttributeName : titleFont }
+                                                                                    context:nil];
+//                    label.text = @"A";
+                    CGRect aLineRect = [@"A" boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
+                                                          options:NSStringDrawingUsesLineFragmentOrigin
+                                                       attributes:@{ NSFontAttributeName : titleFont }
+                                                          context:nil];
+                    retHeight += calculatedTitleRect.size.height - aLineRect.size.height;
                 }
             }
         }
