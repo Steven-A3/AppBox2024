@@ -654,7 +654,7 @@
 	if ([activityType isEqualToString:UIActivityTypeMail]) {
         
 		NSMutableString *txt = [NSMutableString new];
-		[txt appendString:@"<html><body>I'd like to share a days count with you.<br/><br/>"];
+		[txt appendString:@"<html><body>I'd like to share a event with you.<br/><br/>"];
         
         // 7 days until (계산된 날짜)
         NSString *daysString = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[eventItem.durationOption integerValue]
@@ -666,6 +666,7 @@
                                                                        toDate:eventItem.effectiveStartDate
                                                                  allDayOption:[eventItem.isAllDay boolValue]
                                                                        repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+        [txt appendFormat:@"%@<br/>", [eventItem eventName]];
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
