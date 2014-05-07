@@ -132,7 +132,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [self.view addSubview:self.statusBarBackground];
     [self.statusBarBackground setHidden:YES];
-
+    bFlip = YES;
     
     _eaglContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
     
@@ -148,7 +148,10 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     [_videoPreviewViewNoFilter setEnableSetNeedsDisplay:NO];
     
     // because the native video image from the back camera is in UIDeviceOrientationLandscapeLeft (i.e. the home button is on the right), we need to apply a clockwise 90 degree transform so that we can draw the video preview as if we were in a landscape-oriented view; if you're using the front camera and you want to have a mirrored preview (so that the user is seeing themselves in the mirror), you need to apply an additional horizontal flip (by concatenating CGAffineTransformMakeScale(-1.0, 1.0) to the rotation transform)
-    [self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
+    //[self setFilterViewRotation:_videoPreviewViewNoFilter withScreenBounds:screenBounds];
+    _videoPreviewViewNoFilter.transform = [self getTransform];
+    _videoPreviewViewNoFilter.frame = screenBounds;
+    
     
     
     [self.view addSubview:_videoPreviewViewNoFilter];
@@ -174,7 +177,6 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
     //_videoPreviewViewBounds.size.height);
     originalsize = _videoPreviewViewBounds.size;
     bMultipleView = NO;
-    bFlip = YES;
     bFiltersEnabled = NO;
     effectiveScale  = 1.0;
     nFilterIndex = A3MirrorNoFilter;
@@ -303,16 +305,12 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 
 - (void) setViewRotation:(UIView *)view {
     
-    if (bLosslessZoom == NO &&
-        effectiveScale > 1) {
-        [view setTransform:CGAffineTransformScale([self getTransform], effectiveScale, effectiveScale)];
-    } else {
+    
        if (bFlip) {
-            [view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-1.0, 1.0))];
+            [view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(-1.0*effectiveScale, effectiveScale))];
         } else {
-            [view setTransform:[self getTransform]];
+            [view setTransform:CGAffineTransformConcat([self getTransform], CGAffineTransformMakeScale(effectiveScale, effectiveScale))];
         }
-    }
     
 }
 
