@@ -101,6 +101,9 @@
 	[self setupCalendarRange];
 	[_collectionView reloadData];
 	self.currentMonth = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
+	[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+
 	[self moveToCurrentMonth];
 }
 
@@ -125,23 +128,35 @@
 		self.navigationItem.title = [[self.dataManager currentAccount] name];
 	}
 
+	[self.navigationController setToolbarHidden:NO];
+
 	if( isFirst ) {
 		isFirst = NO;
 
-		[self.navigationController setToolbarHidden:NO];
 		[self showCalendarHeaderView];
-
-		NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
-		_currentMonth = (lastDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : lastDate);
-		[self moveToCurrentMonth];
 		[self updateAddButton];
+
+		[_collectionView reloadData];
 	} else {
+		[_calendarHeaderView setHidden:NO];
+
 		[self setupCalendarRange];
+
+		[self.collectionView reloadData];
 	}
-	[self updateCurrentMonthLabel];
+
 	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[[self.dataManager currentAccount] uniqueID]] > 0);
 
-	[_collectionView reloadData];
+	double delayInSeconds = 0.1;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
+		self.currentMonth = (lastDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : lastDate);
+		FNLOG(@"%@", self.currentMonth);
+		[self moveToCurrentMonth];
+		[self updateCurrentMonthLabel];
+	});
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -149,13 +164,14 @@
 
 	[self doneButtonAction:nil];
 
-	if( self.currentMonth ){
-		[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
-		[[NSUserDefaults standardUserDefaults] synchronize];
-	}
-
 	if ([self isMovingFromParentViewController]) {
 		[_calendarHeaderView removeFromSuperview];
+
+		[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
+		[[NSUserDefaults standardUserDefaults] synchronize];
+
+	} else {
+		[_calendarHeaderView setHidden:YES];
 	}
 }
 
@@ -315,7 +331,7 @@
 
 	calendarView.dataManager = self.dataManager;
     calendarView.delegate = self;
-    calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 73.0 : 109.0)/numberOfMonthInPage);
+    calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 74.0 : 110.0 ) / numberOfMonthInPage);
     calendarView.isSmallCell = (numberOfMonthInPage > 1);
 	NSInteger month;
 	if (indexPath.section == 0) {
@@ -335,14 +351,14 @@
 {
     NSDate *yearMonth = [self dateFromIndexPath:indexPath];
 	NSInteger numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:yearMonth];
-    CGSize size = CGSizeMake(collectionView.frame.size.width, (numberOfWeeks * (IS_IPHONE ? 73.0 : 109.0) / numberOfMonthInPage)+(numberOfWeeks*(1.0/[[UIScreen mainScreen] scale])));
+    CGSize size = CGSizeMake(collectionView.frame.size.width, (numberOfWeeks * (IS_IPHONE ? 74.0 : 110.0 ) / numberOfMonthInPage) );
 
     return size;
 }
 
 - (void)calculateCurrentMonthWithScrollView:(UIScrollView*)scrollView
 {
-    CGPoint pos = CGPointMake(scrollView.contentOffset.x + scrollView.contentInset.left, scrollView.contentOffset.y+scrollView.contentInset.top);
+    CGPoint pos = CGPointMake(scrollView.contentOffset.x + scrollView.contentInset.left, scrollView.contentOffset.y+scrollView.contentInset.top + (IS_IPHONE ? 185 : 275) );
     self.currentIndexPath = [_collectionView indexPathForItemAtPoint:pos];
     if( self.currentIndexPath == nil ){
         self.currentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
@@ -363,8 +379,9 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if( !decelerate){
+    if( !decelerate) {
         [self calculateCurrentMonthWithScrollView:scrollView];
+		[self.collectionView scrollToItemAtIndexPath:_currentIndexPath atScrollPosition:UICollectionViewScrollPositionTop animated:YES];
     }
 }
 

@@ -136,11 +136,11 @@
                 CGContextSetFillColorWithColor(context, [[[A3AppDelegate instance] themeColor] CGColor]);
                 CGContextFillRect(context, CGRectMake(xPos, yPos, _cellSize.width, dateBGHeight));
 				CGContextSetAllowsAntialiasing(context, YES);
-				[str drawInRect:CGRectMake(xPos, yPos + 5.0, _cellSize.width, dateBGHeight - 5.0) withAttributes:todayTextAttr];
+				[str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, dateBGHeight + 5.0) withAttributes:todayTextAttr];
 				CGContextRestoreGState(context);
             }
             else{
-                [str drawInRect:CGRectMake(xPos, yPos+5.0, _cellSize.width, dateBGHeight-5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
+                [str drawInRect:CGRectMake(xPos, yPos + (IS_IPHONE ? 9.0 : 15.0), _cellSize.width, dateBGHeight + 5.0) withAttributes:(x==0 || x==6 ? weekendTextAttr :textAttr)];
             }
             xPos += _cellSize.width;
         }
@@ -154,7 +154,7 @@
         CGContextAddLineToPoint(context,( (y+1) == numberOfWeeks ? xPos + lastWeekday*_cellSize.width : rect.size.width), yPos);
         CGContextSetLineWidth(context, 1.0 / [[UIScreen mainScreen] scale]);
         CGContextStrokePath(context);
-        yPos += 0.5;
+//        yPos += 0.5;
     }
     
     // 빨간선을 그린다.
@@ -235,33 +235,35 @@
     NSInteger edWeekday = ((edDay-1) + firstDayStartIndex) % 7;
     
     CGFloat lineHeight = 5.0;
-    
+
+	CGFloat diffFromSeparator = IS_IPHONE ? 22.0 : 25.0;
     if( stWeek == edWeek ){
         LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
+		CGFloat diffFromSeparator2 = diffFromSeparator + ((stWeek > 1) ? 0.5 : 0.0);
         ldpModel.lineColor = color;
-        ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width+(isStartMargin ? 2.0 : 0.0), (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight , (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0), lineHeight);
+        ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width+(isStartMargin ? 2.0 : 0.0), (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0), lineHeight);
         [array addObject:ldpModel];
     }
     else{
-
         NSInteger totalWeek = (edWeek - stWeek)+1;
         for(NSInteger i=0; i < totalWeek; i++){
             LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
             ldpModel.lineColor = color;
+			CGFloat diffFromSeparator2 = diffFromSeparator + ((i > 1) ? 0.5 : 0.0);
             if( i == 0 ){
-                ldpModel.lineRect = CGRectMake((stWeekday+i) * _cellSize.width + (isStartMargin ? 2.0 : 0.0), (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight , (8-stWeekday)*_cellSize.width, lineHeight);
+                ldpModel.lineRect = CGRectMake((stWeekday+i) * _cellSize.width + (isStartMargin ? 2.0 : 0.0), (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 : diffFromSeparator2) - lineHeight , (8-stWeekday)*_cellSize.width, lineHeight);
             }
             else if( i == (totalWeek-1) ){
-                ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight , (edWeekday+1)*_cellSize.width - (isEndMargin ? 2.0 : 0.0), lineHeight);
+                ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday+1)*_cellSize.width - (isEndMargin ? 2.0 : 0.0), lineHeight);
             }
             else{
-                ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :(IS_IPHONE ? 22.0 : 25.0)) - lineHeight, 7 * _cellSize.width, lineHeight);
+                ldpModel.lineRect = CGRectMake(0, (stWeek+i +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight, 7 * _cellSize.width, lineHeight);
             }
             [array addObject:ldpModel];
-//            NSLog(@"%s %d %@",__FUNCTION__,i,NSStringFromCGRect(ldpModel.lineRect));
+			FNLOG(@"%ld %@", (long)i, NSStringFromCGRect(ldpModel.lineRect));
         }
     }
-    NSLog(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)firstDayStartIndex,array);
+//    NSLog(@"%s  %@/%@(%@/%ld,%ld-%ld) %ld/%ld, %ld/%ld (%ld) %@",__FUNCTION__,stDate,edDate,_dateMonth,(long)_month,(long)stDay,(long)edDay,(long)stWeek,(long)stWeekday,(long)edWeek,(long)edWeekday,(long)firstDayStartIndex,array);
 }
 
 - (void)addCircleAtDay:(NSDate *)date color:(UIColor *)circleColor isAlphaCircleShow:(BOOL)isAlphaCircleShow alignment:(NSTextAlignment)alignment toArray:(NSMutableArray*)array

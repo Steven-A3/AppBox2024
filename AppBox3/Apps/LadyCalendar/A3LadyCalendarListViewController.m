@@ -164,7 +164,7 @@
 		[self.view addSubview:_addButton];
 		[_addButton makeConstraints:^(MASConstraintMaker *make) {
 			make.centerX.equalTo(self.view.centerX);
-			make.bottom.equalTo(self.view.bottom).with.offset(-55);
+			make.bottom.equalTo(self.view.bottom).with.offset(-10);
 			make.width.equalTo(@44);
 			make.height.equalTo(@44);
 		}];
@@ -201,12 +201,6 @@
     return 23.0;
 }
 
-//- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    NSDictionary *dict = [_itemArray objectAtIndex:section];
-//    return [NSString stringWithFormat:@"%d",[[dict objectForKey:ItemKey_Type] integerValue]];
-//}
-
 - (UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarListCell" owner:nil options:nil] objectAtIndex:2];
@@ -223,11 +217,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-//    if( (section+1) >= [_itemArray count] )
-//        return 23.0;
     return 0.01;
 }
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
