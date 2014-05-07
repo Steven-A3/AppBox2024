@@ -11,21 +11,16 @@
 
 @class LadyCalendarAccount;
 
-@interface A3LadyCalendarViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,A3CalendarViewDelegate>{
-    BOOL isShowMoreMenu;
-    NSInteger numberOfMonthInPage;
-    LadyCalendarAccount *currentAccount;
-    BOOL isFirst;
-}
+@interface A3LadyCalendarViewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,A3CalendarViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet UIToolbar *bottomToolbar;
 @property (strong, nonatomic) IBOutlet UIView *rightButtons;
-@property (strong, nonatomic) IBOutlet UIView *topNaviView;
+@property (strong, nonatomic) IBOutlet UIView *calendarHeaderView;	// Attached to navigation bar
 @property (strong, nonatomic) IBOutlet UILabel *currentMonthLabel;
 @property (strong, nonatomic) IBOutlet UIButton *addButton;
-@property (strong, nonatomic) IBOutlet UIImageView *topSeperatorView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSeperatorViewConst;
+@property (strong, nonatomic) IBOutlet UIImageView *topSeparatorView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topSeparatorViewConst;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *chartBarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *accountBarButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *settingBarButton;

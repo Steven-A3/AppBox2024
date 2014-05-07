@@ -22,7 +22,7 @@
 #import "UIColor+A3Addition.h"
 #import "A3LadyCalendarCalendarView.h"
 #import "A3UserDefaults.h"
-#import "A3LadyCalendarAccountEditViewController.h"
+#import "A3LadyCalendarAccountListViewController.h"
 #import "A3AppDelegate+appearance.h"
 #import "UIViewController+iPad_rightSideView.h"
 
@@ -39,11 +39,15 @@
 @property (strong, nonatomic) UIButton *settingButton;
 @property (strong, nonatomic) UIView *moreMenuView;
 @property (strong, nonatomic) NSIndexPath *currentIndexPath;
+@property (strong, nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
 
 @end
 
 @implementation A3LadyCalendarViewController {
 	NSInteger _startYear, _startMonth, _endYear, _endMonth;
+	BOOL isShowMoreMenu;
+	NSInteger numberOfMonthInPage;
+	BOOL isFirst;
 }
 
 - (void)viewDidLoad
@@ -80,15 +84,28 @@
 	[self makeBackButtonEmptyArrow];
 
 	[self.dataManager prepare];
+
+	[self.dataManager currentAccount];
 	[self setupCalendarRange];
+	numberOfMonthInPage = 1;
+	self.topSeparatorViewConst.constant = 1.0 / [[UIScreen mainScreen] scale];
+	isFirst = YES;
 
 	[_collectionView registerNib:[UINib nibWithNibName:@"CalendarViewCell" bundle:[NSBundle mainBundle]] forCellWithReuseIdentifier:@"fullCalendarCell"];
 
-	numberOfMonthInPage = 1;
-	self.topSeperatorViewConst.constant = 1.0 / [[UIScreen mainScreen] scale];
-	isFirst = YES;
-
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(rightSideViewDidDismiss) name:A3NotificationRightSideViewWillDismiss object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(periodDataChanged:) name:A3NotificationLadyCalendarPeriodDataChanged object:nil];
+}
+
+- (void)periodDataChanged:(NSNotification *)notification {
+	[self setupCalendarRange];
+	[_collectionView reloadData];
+	self.currentMonth = [notification.userInfo objectForKey:A3LadyCalendarChangedDateKey];
+	[self moveToCurrentMonth];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 - (void)rightSideViewDidDismiss {
@@ -101,18 +118,18 @@
 {
 	[super viewWillAppear:animated];
 
-	[self.navigationController setToolbarHidden:NO];
-	[self showCalendarHeaderView];
-	currentAccount = [self.dataManager currentAccount];
-	if( [self.dataManager numberOfAccount] == 1 && [currentAccount.name isEqualToString:DefaultAccountName] ){
+	if( [self.dataManager numberOfAccount] == 1 && [[[self.dataManager currentAccount] name] isEqualToString:DefaultAccountName] ){
 		self.navigationItem.title = @"Lady Calendar";
 	}
 	else{
-		self.navigationItem.title = currentAccount.name;
+		self.navigationItem.title = [[self.dataManager currentAccount] name];
 	}
 
 	if( isFirst ) {
 		isFirst = NO;
+
+		[self.navigationController setToolbarHidden:NO];
+		[self showCalendarHeaderView];
 
 		NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarLastViewMonth];
 		_currentMonth = (lastDate == nil ? [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]] : lastDate);
@@ -121,21 +138,24 @@
 	} else {
 		[self setupCalendarRange];
 	}
-	[_collectionView reloadData];
 	[self updateCurrentMonthLabel];
-	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:currentAccount.uniqueID] > 0);
+	_chartBarButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[[self.dataManager currentAccount] uniqueID]] > 0);
+
+	[_collectionView reloadData];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-	[super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
 
-	[self hideCalendarHeaderView];
-	[self dismissMoreMenuView:self.moreMenuView scrollView:self.collectionView];
+	[self doneButtonAction:nil];
 
 	if( self.currentMonth ){
 		[[NSUserDefaults standardUserDefaults] setObject:self.currentMonth forKey:A3LadyCalendarLastViewMonth];
 		[[NSUserDefaults standardUserDefaults] synchronize];
+	}
+
+	if ([self isMovingFromParentViewController]) {
+		[_calendarHeaderView removeFromSuperview];
 	}
 }
 
@@ -153,10 +173,10 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ){
-		_topNaviView.frame = CGRectMake(_topNaviView.frame.origin.x, _topNaviView.frame.origin.y, self.view.frame.size.width, _topNaviView.frame.size.height);
+		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
 	}
 	else{
-		_topNaviView.frame = CGRectMake(_topNaviView.frame.origin.x, _topNaviView.frame.origin.y, self.view.frame.size.width, _topNaviView.frame.size.height);
+		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
 	}
 	[_collectionView reloadData];
 	_addButton.hidden = NO;
@@ -205,25 +225,16 @@
 
 - (void)showCalendarHeaderView
 {
-    if( isShowMoreMenu )
-		[self dismissMoreMenuView:self.moreMenuView scrollView:_collectionView];
-    if( ![_topNaviView isDescendantOfView:self.navigationController.view]){
-        _topNaviView.frame = CGRectMake(0, 20.0+44.0, self.navigationController.navigationBar.frame.size.width, _topNaviView.frame.size.height);
-        [self.navigationController.view insertSubview:_topNaviView belowSubview:self.view];
+	_calendarHeaderView.frame = CGRectMake(0, 20.0+44.0, self.navigationController.navigationBar.frame.size.width, _calendarHeaderView.frame.size.height);
+	[self.navigationController.view insertSubview:_calendarHeaderView belowSubview:self.view];
 
-        UIEdgeInsets insets = _collectionView.contentInset;
-        _collectionView.contentInset = UIEdgeInsetsMake(_topNaviView.frame.size.height+20+44.0,insets.left,insets.bottom,insets.right);
-    }
-}
-
-- (void)hideCalendarHeaderView
-{
-    [_topNaviView removeFromSuperview];
-    [self.view setNeedsDisplay];
+	UIEdgeInsets insets = _collectionView.contentInset;
+	_collectionView.contentInset = UIEdgeInsetsMake(_calendarHeaderView.frame.size.height+20+44.0,insets.left,insets.bottom,insets.right);
 }
 
 - (void)updateCurrentMonthLabel
 {
+	[self calculateCurrentMonthWithScrollView:_collectionView];
 	FNLOG(@"%@", _currentMonth);
     self.currentMonthLabel.text = [A3DateHelper dateStringFromDate:_currentMonth withFormat:([A3DateHelper isCurrentLocaleIsKorea] ? @"yyyy년 MMMM" : @"MMMM yyyy")];
     NSDate *todayMonth = [A3DateHelper dateMakeMonthFirstDayAtDate:[NSDate date]];
@@ -300,6 +311,8 @@
     UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellID forIndexPath:indexPath];
 
     A3LadyCalendarCalendarView *calendarView = (A3LadyCalendarCalendarView *)[cell viewWithTag:10];
+	FNLOG(@"%@", calendarView);
+
 	calendarView.dataManager = self.dataManager;
     calendarView.delegate = self;
     calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 73.0 : 109.0)/numberOfMonthInPage);
@@ -311,8 +324,7 @@
 		month = indexPath.row;
 	}
     calendarView.dateMonth = [A3DateHelper dateFromYear:indexPath.section + _startYear month:month day:1 hour:12 minute:0 second:0];
-	FNLOG(@"%f, %f", calendarView.cellSize.width, calendarView.cellSize.height);
-    NSLog(@"%s %@ / %@, %ld/%ld",__FUNCTION__,calendarView.dateMonth,_currentMonth, (long)indexPath.section, (long)indexPath.row);
+	FNLOG(@"%@ / %@, %ld/%ld",calendarView.dateMonth,_currentMonth, (long)indexPath.section, (long)indexPath.row);
 
     return cell;
 }
@@ -324,8 +336,7 @@
     NSDate *yearMonth = [self dateFromIndexPath:indexPath];
 	NSInteger numberOfWeeks = [A3DateHelper numberOfWeeksOfMonth:yearMonth];
     CGSize size = CGSizeMake(collectionView.frame.size.width, (numberOfWeeks * (IS_IPHONE ? 73.0 : 109.0) / numberOfMonthInPage)+(numberOfWeeks*(1.0/[[UIScreen mainScreen] scale])));
-	FNLOG(@"%f, %f", size.width, size.height);
-    
+
     return size;
 }
 
@@ -370,7 +381,7 @@
 #pragma mark - A3CalendarViewDelegate
 - (void)calendarView:(A3LadyCalendarCalendarView *)calendarView didSelectDay:(NSInteger)day
 {
-    NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:currentAccount.uniqueID containPredict:YES];
+    NSArray *periods = [self.dataManager periodListWithMonth:calendarView.dateMonth accountID:[[self.dataManager currentAccount] uniqueID] containPredict:YES];
     if( [periods count] < 1 )
         return;
     LadyCalendarPeriod *period = [periods objectAtIndex:0];
@@ -383,6 +394,16 @@
 }
 
 #pragma mark - action method
+
+- (UIView *)moreMenuView {
+	if (!_moreMenuView) {
+		_moreMenuView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+		_moreMenuView.backgroundColor = [UIColor colorWithRed:247.0 / 255.0 green:247.0 / 255.0 blue:247.0 / 255.0 alpha:1.0];
+		[self addThreeButtons:@[_chartButton, _accountButton, _settingButton] toView:_moreMenuView];
+	}
+	return _moreMenuView;
+}
+
 - (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer
 {
     [self doneButtonAction:nil];
@@ -390,22 +411,34 @@
 
 - (void)moreButtonAction:(UIBarButtonItem *)button
 {
-    [self hideCalendarHeaderView];
-    self.moreMenuView = [self presentMoreMenuWithButtons:@[_chartButton,_accountButton,_settingButton] tableView:nil];
-    [self rightBarButtonDoneButton];
-    _chartButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:currentAccount.uniqueID] > 0);
-    isShowMoreMenu = YES;
+	self.moreMenuView.alpha = 0.0;
+	[_calendarHeaderView addSubview:_moreMenuView];
+
+	[UIView animateWithDuration:0.3 animations:^{
+		_moreMenuView.alpha = 1.0;
+	}];
+	[self rightBarButtonDoneButton];
+    _chartButton.enabled = ([self.dataManager numberOfPeriodsWithAccountID:[[self.dataManager currentAccount] uniqueID] ] > 0);
+
+	_tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(moreMenuDismissAction:)];
+	[self.view addGestureRecognizer:_tapGestureRecognizer];
+
+	isShowMoreMenu = YES;
 }
 
-- (void)doneButtonAction:(UIBarButtonItem *)button
-{
-	[self dismissMoreMenuView:self.moreMenuView scrollView:self.collectionView];
-    [self.view removeGestureRecognizer:[self.view.gestureRecognizers lastObject]];
-    [UIView animateWithDuration:0.3 animations:^{
-        [self showCalendarHeaderView];
-    }];
-    [self rightButtonMoreButton];
-    isShowMoreMenu = NO;
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	if (isShowMoreMenu) {
+		[UIView animateWithDuration:0.3 animations:^{
+			_moreMenuView.alpha = 0.0;
+		}                completion:^(BOOL finished) {
+			[_moreMenuView removeFromSuperview];
+			_moreMenuView = nil;
+
+			[self.view removeGestureRecognizer:_tapGestureRecognizer];
+			[self rightButtonMoreButton];
+		}];
+		isShowMoreMenu = NO;
+	}
 }
 
 - (IBAction)moveToTodayAction:(id)sender {
@@ -449,7 +482,7 @@
 - (IBAction)moveToAccountAction:(id)sender {
     if( IS_IPHONE )
         [self doneButtonAction:nil];
-    A3LadyCalendarAccountEditViewController *viewCtrl = [[A3LadyCalendarAccountEditViewController alloc] initWithNibName:@"A3LadyCalendarAccountEditViewController" bundle:nil];
+    A3LadyCalendarAccountListViewController *viewCtrl = [[A3LadyCalendarAccountListViewController alloc] initWithNibName:@"A3LadyCalendarAccountListViewController" bundle:nil];
 	viewCtrl.dataManager = self.dataManager;
     if( IS_IPHONE ){
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

@@ -581,6 +581,9 @@
 	[_dataManager recalculateDates];
 
 	[self dismissViewControllerAnimated:YES completion:nil];
+
+	NSNotification *notification = [[NSNotification alloc] initWithName:A3NotificationLadyCalendarPeriodDataChanged object:nil userInfo:@{A3LadyCalendarChangedDateKey: _periodItem.startDate}];
+	[[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 - (void)cancelAction:(id)sender

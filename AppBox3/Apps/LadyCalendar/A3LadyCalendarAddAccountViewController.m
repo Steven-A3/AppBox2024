@@ -15,14 +15,21 @@
 #import "LadyCalendarAccount.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+appearance.h"
+#import "GCPlaceholderTextView.h"
+#import "NSString+conversion.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
 @property (strong, nonatomic) NSMutableArray *itemArray;
+@property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (nonatomic, strong) MBProgressHUD *alertHUD;
+@property (copy, nonatomic) NSString *originalName;
 
 @end
 
-@implementation A3LadyCalendarAddAccountViewController
+@implementation A3LadyCalendarAddAccountViewController {
+	BOOL _sameNameExists;
+}
 
 - (void)viewDidLoad
 {
@@ -36,6 +43,15 @@
 	if( !_isEditMode ) {
 		_accountItem = [LadyCalendarAccount MR_createEntity];
 		_accountItem.uniqueID = [[NSUUID UUID] UUIDString];
+
+		LadyCalendarAccount *lastAccount = [LadyCalendarAccount MR_findFirstOrderedByAttribute:@"order" ascending:NO];
+		if (lastAccount) {
+			_accountItem.order = @([lastAccount.order integerValue] + 1);
+		} else {
+			_accountItem.order = @1;
+		}
+	} else {
+		self.originalName = _accountItem.name;
 	}
 
 	self.navigationItem.rightBarButtonItem.enabled = _isEditMode;
@@ -53,10 +69,13 @@
 - (void)viewDidAppear:(BOOL)animated
 {
 	[super viewDidAppear:animated];
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:AccountCell_Name inSection:0]];
-	if( cell ){
-		UITextField *textField = (UITextField *)[cell viewWithTag:10];
-		[textField becomeFirstResponder];
+
+	if (!_isEditMode) {
+		UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:AccountCell_Name inSection:0]];
+		if( cell ){
+			UITextField *textField = (UITextField *)[cell viewWithTag:10];
+			[textField becomeFirstResponder];
+		}
 	}
 }
 
@@ -145,13 +164,16 @@
         if( cellType == AccountCell_Name ){
             cell = [cellArray objectAtIndex:0];
             UITextField *textField = (UITextField *)[cell viewWithTag:10];
+			textField.textColor = [UIColor blackColor];
             textField.delegate = self;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if( cellType == AccountCell_Notes ){
             cell = [cellArray objectAtIndex:1];
-            UITextView *textView = (UITextView*)[cell viewWithTag:10];
-            textView.delegate = self;
+            GCPlaceholderTextView *textView = (GCPlaceholderTextView *)[cell viewWithTag:10];
+			textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+			textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			textView.delegate = self;
         }
         else if( cellType == AccountCell_Birthday){
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
@@ -181,15 +203,20 @@
     else if( cellType == AccountCell_Birthday ){
         cell.textLabel.text = [item objectForKey:ItemKey_Title];
         NSDate *birthDay = _accountItem.birthDay;
-        if( birthDay )
-            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:(IS_IPHONE ? @"EEE, MMM d, yyyy" : @"EEEE, MMMM d, yyyy")];
-        else
-            cell.detailTextLabel.text = @"Optional";
+        if( birthDay ) {
+			cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:birthDay withFormat:(IS_IPHONE ? @"EEE, MMM d, yyyy" : @"EEEE, MMMM d, yyyy")];
+		} else {
+			cell.detailTextLabel.text = @"Optional";
+		}
         if( [self.itemArray count] > 3 )
-            cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
-        else
-            cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-        
+			cell.detailTextLabel.textColor = [[A3AppDelegate instance] themeColor];
+        else {
+			if (birthDay) {
+				cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0 / 255.0 green:128.0 / 255.0 blue:128.0 / 255.0 alpha:1.0];
+			} else {
+				cell.detailTextLabel.textColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+			}
+		}
     }
     else if( cellType == AccountCell_Notes){
         UITextView *textView = (UITextView*)[cell viewWithTag:10];
@@ -289,8 +316,10 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     if( buttonIndex == actionSheet.destructiveButtonIndex ){
-		[_dataManager removeAccount:_accountItem.uniqueID];
-        [self cancelAction:nil];
+		[_accountItem MR_deleteEntity];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+		[self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
@@ -306,9 +335,33 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
-	_accountItem.name = [text length] > 0 ? text : @"";
+	NSString *inputName = [text stringByTrimmingSpaceCharacters];
+
+	if ([_originalName length]) {
+		if (![_originalName isEqualToString:inputName]) {
+			_sameNameExists = [[LadyCalendarAccount MR_findByAttribute:@"name" withValue:inputName] count] > 0;
+		} else {
+			_sameNameExists = NO;
+		}
+	} else {
+		_sameNameExists = [[LadyCalendarAccount MR_findByAttribute:@"name" withValue:inputName] count] > 0;
+	}
+
+	if (_sameNameExists) {
+		[self.alertHUD show:YES];
+	} else {
+		[self.alertHUD hide:YES];
+	}
+
+	_accountItem.name = [inputName length] > 0 ? text : @"";
     [self checkInputValues];
     return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField {
+	[self.navigationItem.rightBarButtonItem setEnabled:NO];
+	_textBeforeEditingTextField = @"";
+	return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -317,7 +370,39 @@
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_textBeforeEditingTextField = textField.text;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (![textField.text length]) {
+		textField.text = _textBeforeEditingTextField;
+	}
+}
+
+- (MBProgressHUD *)alertHUD {
+	if (!_alertHUD) {
+		_alertHUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+
+		// Configure for text only and offset down
+		_alertHUD.mode = MBProgressHUDModeText;
+		_alertHUD.margin = 2.0;
+		_alertHUD.cornerRadius = 10.0;
+		_alertHUD.labelText = @" Same name already exists. ";
+		_alertHUD.labelFont = [UIFont fontWithName:@"Avenir-Light" size:14.0];
+		_alertHUD.labelColor = [UIColor whiteColor];
+		_alertHUD.color = [UIColor colorWithRed:0.8f green:0.1f blue:0.2f alpha:1.000f];
+		_alertHUD.userInteractionEnabled = NO;
+
+		[self.navigationController.view addSubview:_alertHUD];
+	}
+	CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
+	_alertHUD.yOffset = -(screenBounds.size.height/2.0 - 64 - 18.0);
+	return _alertHUD;
+}
+
 #pragma mark - UITextViewDelegate
+
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
@@ -357,8 +442,8 @@
     return YES;
 }
 
-
 #pragma mark - action method
+
 - (void)resignAllAction
 {
     for(NSInteger i=0; i < [_itemArray count]; i++){
@@ -409,10 +494,7 @@
 
 - (void)checkInputValues
 {
-    BOOL inputEnable = NO;
-    if( [[_accountItem.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 || _accountItem.birthDay || [[_accountItem.notes stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0 )
-        inputEnable = YES;
-    self.navigationItem.rightBarButtonItem.enabled = inputEnable;
+    self.navigationItem.rightBarButtonItem.enabled = ([[_accountItem.name stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length] > 0) && !_sameNameExists;
 }
 
 @end

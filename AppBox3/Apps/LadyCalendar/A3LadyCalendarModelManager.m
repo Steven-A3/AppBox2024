@@ -14,6 +14,10 @@
 #import "A3UserDefaults.h"
 #import "A3AppDelegate.h"
 
+// UserInfo have "changedMonth".
+NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
+NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
+
 @implementation A3LadyCalendarModelManager
 
 + (void)alertMessage:(NSString*)message title:(NSString*)title

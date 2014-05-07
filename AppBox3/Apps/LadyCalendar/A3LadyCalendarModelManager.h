@@ -8,6 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const A3NotificationLadyCalendarPeriodDataChanged;
+extern NSString *const A3LadyCalendarChangedDateKey;
+
 @class LadyCalendarAccount;
 @class LadyCalendarPeriod;
 

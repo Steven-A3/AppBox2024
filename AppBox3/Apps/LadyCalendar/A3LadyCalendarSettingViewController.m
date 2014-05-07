@@ -211,7 +211,7 @@
         if( alertType != AlertType_Custom )
             cell.detailTextLabel.text = [_dataManager stringForAlertType:alertType];
         else
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld days before %@",(long)[[_settingDict objectForKey:SettingItem_CustomAlertDays] integerValue],[A3DateHelper dateStringFromDate:[_settingDict objectForKey:SettingItem_CustomAlertTime] withFormat:@"h:mm a"]];
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedStringFromTable(@"%ld days before",@"StringsDict", @"Lady Calendar Custome Alert"), (long) [[_settingDict objectForKey:SettingItem_CustomAlertDays] integerValue]];
     }
     
     return cell;

@@ -23,6 +23,8 @@
 - (void)leftBarButtonCancelButton;
 - (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem;
 
+- (void)addThreeButtons:(NSArray *)buttons toView:(UIView *)view;
+
 - (UIView *)moreMenuViewWithButtons:(NSArray *)buttonsArray;
 - (UIView *)presentMoreMenuWithButtons:(NSArray *)buttons tableView:(UITableView *)tableView;
 - (void)dismissMoreMenuView:(UIView *)moreMenuView scrollView:(UIScrollView *)scrollView;

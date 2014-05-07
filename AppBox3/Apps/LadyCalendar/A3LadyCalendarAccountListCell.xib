@@ -103,7 +103,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8RP-oW-M3B">
-                        <rect key="frame" x="272" y="14" width="33" height="16"/>
+                        <rect key="frame" x="287" y="14" width="33" height="16"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.4823529411764706" green="0.4823529411764706" blue="0.4823529411764706" alpha="1" colorSpace="calibratedRGB"/>
@@ -112,7 +112,7 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="YRO-h8-TDm" firstAttribute="leading" secondItem="70R-Ef-bQU" secondAttribute="trailing" constant="12" id="6ok-TK-Wc6"/>
-                    <constraint firstAttribute="trailing" secondItem="8RP-oW-M3B" secondAttribute="trailing" constant="15" id="HGh-Qm-yl5"/>
+                    <constraint firstAttribute="trailing" secondItem="8RP-oW-M3B" secondAttribute="trailing" id="HGh-Qm-yl5"/>
                     <constraint firstAttribute="centerY" secondItem="8RP-oW-M3B" secondAttribute="centerY" id="hA6-su-5Ip"/>
                     <constraint firstAttribute="centerY" secondItem="70R-Ef-bQU" secondAttribute="centerY" id="hjc-MG-Ux6"/>
                     <constraint firstItem="YRO-h8-TDm" firstAttribute="centerY" secondItem="8RP-oW-M3B" secondAttribute="centerY" id="k8h-ek-nfE"/>

@@ -90,5 +90,27 @@
 			<string>%ld years</string>
 		</dict>
 	</dict>
+	<key>%ld days before</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@num_days@</string>
+		<key>num_days</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>ld</string>
+			<key>zero</key>
+			<string>On a day</string>
+			<key>one</key>
+			<string>1 day before</string>
+			<key>few</key>
+			<string>%ld days before</string>
+			<key>many</key>
+			<string>%ld days before</string>
+			<key>other</key>
+			<string>%ld days before</string>
+		</dict>
+	</dict>
 </dict>
 </plist>

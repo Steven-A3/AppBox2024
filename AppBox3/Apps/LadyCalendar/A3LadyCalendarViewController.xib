@@ -14,9 +14,9 @@
                 <outlet property="currentMonthLabel" destination="soe-cG-dLw" id="Azt-MI-In9"/>
                 <outlet property="rightButtons" destination="tZa-kY-Qw9" id="3fE-uw-iWe"/>
                 <outlet property="settingBarButton" destination="YMX-aS-xdl" id="skN-3N-FKN"/>
-                <outlet property="topNaviView" destination="uLg-rv-mWo" id="fbQ-ga-cs5"/>
-                <outlet property="topSeperatorView" destination="Dy2-hV-ASY" id="gdo-TU-Jpa"/>
-                <outlet property="topSeperatorViewConst" destination="Gw8-gX-icg" id="85B-Td-TG9"/>
+                <outlet property="calendarHeaderView" destination="uLg-rv-mWo" id="fbQ-ga-cs5"/>
+                <outlet property="topSeparatorView" destination="Dy2-hV-ASY" id="gdo-TU-Jpa"/>
+                <outlet property="topSeparatorViewConst" destination="Gw8-gX-icg" id="85B-Td-TG9"/>
                 <outlet property="view" destination="1" id="3"/>
             </connections>
         </placeholder>

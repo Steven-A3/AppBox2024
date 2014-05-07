@@ -1,5 +1,5 @@
 //
-//  A3LadyCalendarAccountEditViewController.h
+//  A3LadyCalendarAccountListViewController.h
 //  A3TeamWork
 //
 //  Created by coanyaa on 2013. 11. 18..
@@ -10,7 +10,7 @@
 
 @class A3LadyCalendarModelManager;
 
-@interface A3LadyCalendarAccountEditViewController : UITableViewController
+@interface A3LadyCalendarAccountListViewController : UITableViewController
 
 @property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
 

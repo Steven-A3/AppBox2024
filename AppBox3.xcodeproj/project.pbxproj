@@ -851,11 +851,9 @@
 		68F1C8B718D7F37D009FAE8A /* A3RoundDateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C83218D7F37D009FAE8A /* A3RoundDateView.m */; };
 		68F1C8B818D7F37D009FAE8A /* DaysCounterCalendar.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C83518D7F37D009FAE8A /* DaysCounterCalendar.m */; };
 		68F1C8BA18D7F37D009FAE8A /* DaysCounterEventLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C83918D7F37D009FAE8A /* DaysCounterEventLocation.m */; };
-		68F1C8BB18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C83C18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.m */; };
-		68F1C8BC18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C83D18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib */; };
+		68F1C8BB18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C83C18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m */; };
+		68F1C8BC18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C83D18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.xib */; };
 		68F1C8BD18D7F37D009FAE8A /* A3LadyCalendarAccountListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C83E18D7F37D009FAE8A /* A3LadyCalendarAccountListCell.xib */; };
-		68F1C8BE18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C84018D7F37D009FAE8A /* A3LadyCalendarAccountViewController.m */; };
-		68F1C8BF18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C84118D7F37D009FAE8A /* A3LadyCalendarAccountViewController.xib */; };
 		68F1C8C018D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C84218D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib */; };
 		68F1C8C118D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C84418D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m */; };
 		68F1C8C218D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C84518D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.xib */; };
@@ -875,8 +873,6 @@
 		68F1C8D018D7F37D009FAE8A /* A3LadyCalendarSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C85A18D7F37D009FAE8A /* A3LadyCalendarSettingViewController.xib */; };
 		68F1C8D118D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C85C18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m */; };
 		68F1C8D218D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C85D18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.xib */; };
-		68F1C8D318D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C85F18D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m */; };
-		68F1C8D418D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C86018D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.xib */; };
 		68F1C8D518D7F37D009FAE8A /* A3LadyCalendarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F1C86218D7F37D009FAE8A /* A3LadyCalendarViewController.m */; };
 		68F1C8D618D7F37D009FAE8A /* A3LadyCalendarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C86318D7F37D009FAE8A /* A3LadyCalendarViewController.xib */; };
 		68F1C8D718D7F37D009FAE8A /* CalendarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68F1C86418D7F37D009FAE8A /* CalendarCell.xib */; };
@@ -2402,13 +2398,10 @@
 		68F1C83518D7F37D009FAE8A /* DaysCounterCalendar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterCalendar.m; sourceTree = "<group>"; };
 		68F1C83818D7F37D009FAE8A /* DaysCounterEventLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaysCounterEventLocation.h; sourceTree = "<group>"; };
 		68F1C83918D7F37D009FAE8A /* DaysCounterEventLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaysCounterEventLocation.m; sourceTree = "<group>"; };
-		68F1C83B18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarAccountEditViewController.h; sourceTree = "<group>"; };
-		68F1C83C18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarAccountEditViewController.m; sourceTree = "<group>"; };
-		68F1C83D18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarAccountEditViewController.xib; sourceTree = "<group>"; };
+		68F1C83B18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarAccountListViewController.h; sourceTree = "<group>"; };
+		68F1C83C18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarAccountListViewController.m; sourceTree = "<group>"; };
+		68F1C83D18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarAccountListViewController.xib; sourceTree = "<group>"; };
 		68F1C83E18D7F37D009FAE8A /* A3LadyCalendarAccountListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarAccountListCell.xib; sourceTree = "<group>"; };
-		68F1C83F18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarAccountViewController.h; sourceTree = "<group>"; };
-		68F1C84018D7F37D009FAE8A /* A3LadyCalendarAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarAccountViewController.m; sourceTree = "<group>"; };
-		68F1C84118D7F37D009FAE8A /* A3LadyCalendarAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarAccountViewController.xib; sourceTree = "<group>"; };
 		68F1C84218D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarAddAccountCell.xib; sourceTree = "<group>"; };
 		68F1C84318D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarAddAccountViewController.h; sourceTree = "<group>"; };
 		68F1C84418D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarAddAccountViewController.m; sourceTree = "<group>"; };
@@ -2437,9 +2430,6 @@
 		68F1C85B18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarSetupAlertViewController.h; sourceTree = "<group>"; };
 		68F1C85C18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarSetupAlertViewController.m; sourceTree = "<group>"; };
 		68F1C85D18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarSetupAlertViewController.xib; sourceTree = "<group>"; };
-		68F1C85E18D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarSetupCustomAlertViewController.h; sourceTree = "<group>"; };
-		68F1C85F18D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarSetupCustomAlertViewController.m; sourceTree = "<group>"; };
-		68F1C86018D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarSetupCustomAlertViewController.xib; sourceTree = "<group>"; };
 		68F1C86118D7F37D009FAE8A /* A3LadyCalendarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = A3LadyCalendarViewController.h; sourceTree = "<group>"; };
 		68F1C86218D7F37D009FAE8A /* A3LadyCalendarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = A3LadyCalendarViewController.m; sourceTree = "<group>"; };
 		68F1C86318D7F37D009FAE8A /* A3LadyCalendarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = A3LadyCalendarViewController.xib; sourceTree = "<group>"; };
@@ -4904,13 +4894,10 @@
 		68F1C83A18D7F37D009FAE8A /* LadyCalendar */ = {
 			isa = PBXGroup;
 			children = (
-				68F1C83B18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.h */,
-				68F1C83C18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.m */,
-				68F1C83D18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib */,
+				68F1C83B18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.h */,
+				68F1C83C18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m */,
+				68F1C83D18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.xib */,
 				68F1C83E18D7F37D009FAE8A /* A3LadyCalendarAccountListCell.xib */,
-				68F1C83F18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.h */,
-				68F1C84018D7F37D009FAE8A /* A3LadyCalendarAccountViewController.m */,
-				68F1C84118D7F37D009FAE8A /* A3LadyCalendarAccountViewController.xib */,
 				68F1C84218D7F37D009FAE8A /* A3LadyCalendarAddAccountCell.xib */,
 				68F1C84318D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.h */,
 				68F1C84418D7F37D009FAE8A /* A3LadyCalendarAddAccountViewController.m */,
@@ -4939,9 +4926,6 @@
 				68F1C85B18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.h */,
 				68F1C85C18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.m */,
 				68F1C85D18D7F37D009FAE8A /* A3LadyCalendarSetupAlertViewController.xib */,
-				68F1C85E18D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.h */,
-				68F1C85F18D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m */,
-				68F1C86018D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.xib */,
 				68F1C86118D7F37D009FAE8A /* A3LadyCalendarViewController.h */,
 				68F1C86218D7F37D009FAE8A /* A3LadyCalendarViewController.m */,
 				68F1C86318D7F37D009FAE8A /* A3LadyCalendarViewController.xib */,
@@ -5444,7 +5428,6 @@
 				68236CE1186C22E5006F442B /* StringsDict.stringsdict in Resources */,
 				68B6A2C018CEC76D004084EF /* A3LoanCalcGraphView.xib in Resources */,
 				8076BC9118FA862500613E70 /* A3DaysCounterAddEventTitleCell.xib in Resources */,
-				68F1C8D418D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.xib in Resources */,
 				682B37C718AB36B600C6BD66 /* Wallet.xcassets in Resources */,
 				68E2A65C18D0B1FC00E834D9 /* A3PercentCalcFactorCell.xib in Resources */,
 				68F1C8D018D7F37D009FAE8A /* A3LadyCalendarSettingViewController.xib in Resources */,
@@ -5463,7 +5446,6 @@
 				68143D0418E3EC1F00569691 /* A3NumberKeyboardSimpleVC_iPhone.xib in Resources */,
 				68143D7E18E51ABB00569691 /* A3NumberKeyboardSimplePrevNextClearVC_iPhone.xib in Resources */,
 				68F1C87F18D7F37D009FAE8A /* A3DaysCounterChangeLocationViewController.xib in Resources */,
-				68F1C8BF18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.xib in Resources */,
 				682B37C318AB365D00C6BD66 /* Calculator.xcassets in Resources */,
 				682B37C518AB369500C6BD66 /* Unit.xcassets in Resources */,
 				68B6A46818CEE781004084EF /* MWPhotoBrowser.bundle in Resources */,
@@ -5562,7 +5544,7 @@
 				68F1C89518D7F37D009FAE8A /* A3DaysCounterLocationDetailViewController.xib in Resources */,
 				68D1AC9C17977FCE0047D4BF /* A3CurrencyTVEqualCell.xib in Resources */,
 				68F1C89718D7F37D009FAE8A /* A3DaysCounterLocationPopupViewController.xib in Resources */,
-				68F1C8BC18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.xib in Resources */,
+				68F1C8BC18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.xib in Resources */,
 				68F1C8B518D7F37D009FAE8A /* A3PhotoSelectViewController.xib in Resources */,
 				8076BCAB18FA8B4E00613E70 /* A3DaysCounterAddEventDefaultCell.xib in Resources */,
 				17D42CC05C00D47B63A1491C /* FSWebLogin.xib in Resources */,
@@ -5744,7 +5726,6 @@
 				68B6A44618CEE781004084EF /* MWZoomingScrollView.m in Sources */,
 				68B6A2E818CEC76D004084EF /* A3UnitPriceActionCell.m in Sources */,
 				680DFA131906702400754D81 /* WalletFieldItemImage.m in Sources */,
-				68F1C8BE18D7F37D009FAE8A /* A3LadyCalendarAccountViewController.m in Sources */,
 				689791911865C68200F74826 /* CurrencyHistory.m in Sources */,
 				6830C78A1851BD480075010F /* A3SettingsBackupRestoreViewController.m in Sources */,
 				68F1C88B18D7F37D009FAE8A /* A3DaysCounterEventListEditViewController.m in Sources */,
@@ -5786,7 +5767,6 @@
 				68F1C8B718D7F37D009FAE8A /* A3RoundDateView.m in Sources */,
 				6829681E18503B2100B70E13 /* NSManagedObject+MagicalRequests.m in Sources */,
 				68F1C8F918D7FA41009FAE8A /* MPTransition.m in Sources */,
-				68F1C8D318D7F37D009FAE8A /* A3LadyCalendarSetupCustomAlertViewController.m in Sources */,
 				68E2A6C518D0B41E00E834D9 /* ExpenseListHistory.m in Sources */,
 				68E2A6A318D0B22800E834D9 /* A3SalesCalcHeaderView.m in Sources */,
 				68B6A32018CEC76D004084EF /* A3WalletCateEditIconCell.m in Sources */,
@@ -6245,7 +6225,7 @@
 				68B6A45B18CEE781004084EF /* NSData+ImageContentType.m in Sources */,
 				68B6A32218CEC76D004084EF /* A3WalletCateInfoFieldCell.m in Sources */,
 				68E2A6BF18D0B41D00E834D9 /* ExpenseListBudgetLocation.m in Sources */,
-				68F1C8BB18D7F37D009FAE8A /* A3LadyCalendarAccountEditViewController.m in Sources */,
+				68F1C8BB18D7F37D009FAE8A /* A3LadyCalendarAccountListViewController.m in Sources */,
 				680886E31891751B0093FD97 /* SBDoubleSidedLayer.m in Sources */,
 				68B6A2D418CEC76D004084EF /* A3UnitConverterTVActionCell.m in Sources */,
 				68E2A6A518D0B22800E834D9 /* A3SalesCalcHistoryViewController.m in Sources */,
