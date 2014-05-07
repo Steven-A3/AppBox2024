@@ -358,7 +358,7 @@
 
 - (void)calculateCurrentMonthWithScrollView:(UIScrollView*)scrollView
 {
-    CGPoint pos = CGPointMake(scrollView.contentOffset.x + scrollView.contentInset.left, scrollView.contentOffset.y+scrollView.contentInset.top + (IS_IPHONE ? 185 : 275) );
+    CGPoint pos = CGPointMake(scrollView.contentOffset.x + scrollView.contentInset.left, scrollView.contentOffset.y+scrollView.contentInset.top + (IS_IPHONE ? 185 : 275)/numberOfMonthInPage );
     self.currentIndexPath = [_collectionView indexPathForItemAtPoint:pos];
     if( self.currentIndexPath == nil ){
         self.currentIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];

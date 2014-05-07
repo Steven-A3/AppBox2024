@@ -179,19 +179,29 @@
     UIColor *outCircleColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.05];
     CGContextSetShouldAntialias(context , YES);
     for(CircleDisplayModel *cdmObj in circleArray){
+		FNLOGRECT(cdmObj.circleRect);
         if( cdmObj.isAlphaCircleShow ){
+			// 31x31
             [outCircleColor setFill];
-            CGContextFillEllipseInRect(context,CGRectMake(cdmObj.circleRect.origin.x - cdmObj.circleRect.size.width*0.25, cdmObj.circleRect.origin.y - cdmObj.circleRect.size.height*0.25, cdmObj.circleRect.size.width*1.5, cdmObj.circleRect.size.height*1.5));
+			CGFloat offset = IS_RETINA ? 8.0 : 7.5;
+			CGFloat diameter = IS_RETINA ? 31.0 : 30.0;
+            CGContextFillEllipseInRect(context,CGRectMake(cdmObj.circleRect.origin.x - offset, cdmObj.circleRect.origin.y - offset, diameter, diameter));
         }
-        
+
+		// 15
         [[UIColor whiteColor] setFill];
         CGContextFillEllipseInRect(context, cdmObj.circleRect);
-        CGContextSetStrokeColorWithColor(context, [outlineColor CGColor]);
-        CGContextSetLineWidth(context, 1.0/[[UIScreen mainScreen] scale]);
-        CGContextStrokeEllipseInRect(context,cdmObj.circleRect);
-        
+		if (!cdmObj.isAlphaCircleShow) {
+			CGContextSetStrokeColorWithColor(context, [outlineColor CGColor]);
+			CGContextSetLineWidth(context, 1.0/[[UIScreen mainScreen] scale]);
+			CGContextStrokeEllipseInRect(context,cdmObj.circleRect);
+		}
+
+		// 7
         CGContextSetFillColorWithColor(context, [cdmObj.circleColor CGColor]);
-        CGContextFillEllipseInRect(context, CGRectMake(cdmObj.circleRect.origin.x + cdmObj.circleRect.size.width*0.25, cdmObj.circleRect.origin.y + cdmObj.circleRect.size.height*0.25, cdmObj.circleRect.size.width*0.5, cdmObj.circleRect.size.height*0.5));
+		CGFloat offset = IS_RETINA ? 4.0 : 3.75;
+		CGFloat diameter = IS_RETINA ? 7.0 : 7.0;
+        CGContextFillEllipseInRect(context, CGRectMake(cdmObj.circleRect.origin.x + offset, cdmObj.circleRect.origin.y + offset, diameter, diameter));
     }
 }
 
@@ -239,7 +249,7 @@
 	CGFloat diffFromSeparator = IS_IPHONE ? 22.0 : 25.0;
     if( stWeek == edWeek ){
         LineDisplayModel *ldpModel = [[LineDisplayModel alloc] init];
-		CGFloat diffFromSeparator2 = diffFromSeparator + ((stWeek > 1) ? 0.5 : 0.0);
+		CGFloat diffFromSeparator2 = diffFromSeparator /*+ ((stWeek > 1) ? 0.5 : 0.0) */;
         ldpModel.lineColor = color;
         ldpModel.lineRect = CGRectMake(stWeekday * _cellSize.width+(isStartMargin ? 2.0 : 0.0), (stWeek +1) * _cellSize.height - (_isSmallCell ? 6.0 :diffFromSeparator2) - lineHeight , (edWeekday-stWeekday+1)*_cellSize.width-(isEndMargin ? 2.0 : 0.0), lineHeight);
         [array addObject:ldpModel];

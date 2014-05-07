@@ -496,6 +496,9 @@
 	if (![textField.text length]) {
 		textField.text = _textBeforeEditingTextField;
 	}
+	if (![textField.text length]) {
+		textField.text = @"0";
+	}
 }
 
 #pragma mark - A3KeyboardDelegate
@@ -503,6 +506,7 @@
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
 	UITextField *textField = (UITextField *) keyInputDelegate;
 	textField.text = @"";
+	_textBeforeEditingTextField = @"";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate

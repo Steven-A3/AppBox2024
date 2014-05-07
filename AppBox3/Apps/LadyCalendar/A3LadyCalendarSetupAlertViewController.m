@@ -134,7 +134,8 @@
 	self.textBeforeEditingTextField = textField.text;
 	textField.text = @"";
 
-	A3NumberKeyboardViewController *keyboardViewController = [self simpleNumberKeyboard];
+	A3NumberKeyboardViewController *keyboardViewController = [self simplePrevNextNumberKeyboard];
+	[keyboardViewController setUseDotAsClearButton:YES];
 	[keyboardViewController setTextInputTarget:textField];
 	[keyboardViewController setDelegate:self];
 	[keyboardViewController setKeyboardType:A3NumberKeyboardTypeInteger];
