@@ -496,10 +496,10 @@
 
 - (UITableViewCell *)cellOfSearchResultTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [self.nearbyVenuesOfSearchResults count] < 1 ) {
-        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"");
+    if ( [self.nearbyVenuesOfSearchResults count] == 0 ) {
+        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"Add this place");
         cell.detailTextLabel.text = @"";
-        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textColor = isLoading ? [UIColor blackColor] : [A3AppDelegate instance].themeColor;
     }
     else if (indexPath.row >= [self.nearbyVenuesOfSearchResults count]) {
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
@@ -580,13 +580,21 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
-    else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
+    //else if ( tableView == _searchResultsTableView && ((indexPath.row == 0 && [_nearbyVenuesOfSearchResults count] == 0) || (indexPath.row == [_nearbyVenuesOfSearchResults count])) ) {
+    else if ( tableView == _searchResultsTableView && indexPath.row == [_nearbyVenuesOfSearchResults count] ) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
+
         // 이 위치를 추가하는 화면으로 이동
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
         [actionSheet showInView:self.view];
     }
+//    else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
+//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//        
+//        // 이 위치를 추가하는 화면으로 이동
+//        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
+//        [actionSheet showInView:self.view];
+//    }
     else {
         FSVenue *item;
         if (tableView == _searchResultsTableView) {
