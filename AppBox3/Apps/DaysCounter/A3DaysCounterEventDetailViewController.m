@@ -65,6 +65,8 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
     self.initialCalendarID = _eventItem.calendarId;
     
+//    _eventItem.eventName = @"longlonglonglonglonglonglonglonglonglonglong11111longlonglonglonglonglonglonglonglonglonglong222222longlonglonglonglonglonglonglonglonglonglong11111longlonglonglonglonglonglonglonglonglonglong333333";
+    
     [self setupTopWhitePaddingView];
 }
 
@@ -353,7 +355,8 @@
 
     cell.eventTitleLabel.text = info.eventName;
     CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }];
-    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+    //CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([info.isFavorite boolValue] ? 51 : 23) - ([info.imageFilename length] > 0 ? 65 : 0) - (IS_IPHONE ? 15 : 28);
+    CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([info.isFavorite boolValue] ? 43 : 15) - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
     if (calculatedTitleSize.width > titleMaxWidth) {
         //calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
@@ -363,7 +366,7 @@
                                                                         options:NSStringDrawingUsesLineFragmentOrigin
                                                                      attributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }
                                                                         context:nil];
-        cell.titleWidthConst.constant = calculatedTitleRect.size.width;
+        cell.titleWidthConst.constant = titleMaxWidth;
         cell.titleHeightConst.constant = calculatedTitleRect.size.height;
     }
     else {
@@ -858,9 +861,7 @@ EXIT_FUCTION:
                                                                                                           isLunar:[info.isLunar boolValue]
                                                                                                          isAllDay:[info.isAllDay boolValue]
                                                                                                       isLeapMonth:[info.useLeapMonth boolValue]]];
-        if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
-            dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
-        }
+        dateLabel2.text = @"first date";
     }
     else {  // ! hasEnd
         //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
@@ -874,10 +875,7 @@ EXIT_FUCTION:
                                                                      isLunar:[info.isLunar boolValue]
                                                                     isAllDay:[info.isLunar boolValue] ? YES : [info.isAllDay boolValue]
                                                                  isLeapMonth:[info.useLeapMonth boolValue]];
-        if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
-            dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
-        }
-        
+        dateLabel2.text = @"first date";
         dateLabel3.text = @"";
     }
     
