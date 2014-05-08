@@ -320,12 +320,7 @@ static const CGFloat kSideViewWidth = 319.0;
 	if (_showLeftView) {
 		[self setShowLeftView:NO];
 	} else {
-		UIViewController *controller = _rightNavigationController.viewControllers[0];
-		if ([controller respondsToSelector:@selector(doneButtonAction:)]) {
-			[controller doneButtonAction:nil];
-		} else {
-			[self dismissRightSideViewController];
-		}
+		[self dismissRightSideViewController];
 	}
 }
 

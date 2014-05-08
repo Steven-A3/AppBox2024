@@ -14,10 +14,17 @@
 #import "A3UserDefaults.h"
 #import "A3AppDelegate.h"
 #import "NSDate+calculation.h"
+#import "NSDateFormatter+A3Addition.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
 NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
+
+@interface A3LadyCalendarModelManager ()
+
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
+@end
 
 @implementation A3LadyCalendarModelManager
 
@@ -30,6 +37,13 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 - (void)addDefaultAccount
 {
     [self addAccount:@{AccountItem_ID : DefaultAccountID, AccountItem_Name : DefaultAccountName}];
+}
+
+- (NSDateFormatter *)dateFormatter {
+	if (!_dateFormatter) {
+		_dateFormatter = [NSDateFormatter new];
+	}
+	return _dateFormatter;
 }
 
 - (void)prepare
@@ -345,36 +359,21 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     }
 }
 
-- (NSString*)dateStringForDate:(NSDate*)date
+- (NSString*)stringFromDate:(NSDate*)date
 {
-    BOOL isKorean = [A3DateHelper isCurrentLocaleIsKorea];
-    NSString *retStr = @"";
-    if( date == nil )
-        return retStr;
-    if( isKorean ){
-        retStr = [A3DateHelper dateStringFromDate:date withFormat:(IS_IPHONE ? @"yyyy년 MMM d일 (EEE)" : @"yyyy년 MMM d일 EEEE")];
-    }
-    else{
-        retStr = [A3DateHelper dateStringFromDate:date withFormat:(IS_IPHONE ? @"EEE, MMM d, yyyy" : @"EEEE, MMMM d, yyyy")];
-    }
-    
-    return retStr;
+	[self.dateFormatter setDateStyle:NSDateFormatterLongStyle];
+	[self.dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+	return [self.dateFormatter stringFromDate:date];
 }
 
-- (NSString*)dateStringExceptYearForDate:(NSDate*)date
-{
-    BOOL isKorean = [A3DateHelper isCurrentLocaleIsKorea];
-    NSString *retStr = @"";
-    if( date == nil )
-        return retStr;
-    if( isKorean ){
-        retStr = [A3DateHelper dateStringFromDate:date withFormat:(IS_IPHONE ? @"MMM d일 (EEE)" : @"MMM d일 EEEE")];
-    }
-    else{
-        retStr = [A3DateHelper dateStringFromDate:date withFormat:(IS_IPHONE ? @"EEE, MMM d" : @"EEEE, MMMM d")];
-    }
-    
-    return retStr;
+- (NSString*)stringFromDateOmittingYear:(NSDate*)date {
+	[self.dateFormatter setDateStyle:NSDateFormatterLongStyle];
+	[_dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+
+	NSString *format = [_dateFormatter formatStringByRemovingYearComponent:_dateFormatter.dateFormat];
+	[_dateFormatter setDateFormat:format];
+
+	return [_dateFormatter stringFromDate:date];
 }
 
 - (NSDate *)startDateForCurrentAccount {

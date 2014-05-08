@@ -18,6 +18,9 @@
 #import "UIColor+A3Addition.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate+appearance.h"
+#import "A3WalletNoteCell.h"
+
+extern NSString *const A3WalletItemFieldNoteCellID;
 
 @interface A3LadyCalendarAddPeriodViewController ()
 @property (strong, nonatomic) NSMutableArray *sectionsArray;
@@ -65,6 +68,8 @@
 		self.prevPeriod = nil;
 	}
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+
+	[self.tableView registerClass:[A3WalletNoteCell class] forCellReuseIdentifier:A3WalletItemFieldNoteCellID];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -225,11 +230,22 @@
             }
                 break;
             case PeriodCellType_Notes:{
-                NSArray *cellArray = [[NSBundle mainBundle] loadNibNamed:@"A3LadyCalendarAddAccountCell" owner:nil options:nil];
-                cell = [cellArray objectAtIndex:1];
-                UITextView *textView = (UITextView *)[cell viewWithTag:10];
-                textView.delegate = self;
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+				A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
+				[noteCell setupTextView];
+				noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+				GCPlaceholderTextView *textView = noteCell.textView;
+				textView.backgroundColor = [UIColor clearColor];
+				textView.delegate = self;
+				textView.bounces = NO;
+				textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+				textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+				noteCell.textView.font = [UIFont systemFontOfSize:17];
+
+				textView.placeholder = @"Notes";
+				textView.text = _periodItem.notes;
+
+                cell = noteCell;
             }
                 break;
             case PeriodCellType_DateInput:{
@@ -253,12 +269,12 @@
     switch (cellType) {
         case PeriodCellType_StartDate:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.startDate];
+            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.startDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
             break;
         case PeriodCellType_EndDate:{
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.endDate];
+            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.endDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 
             if( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
@@ -269,33 +285,30 @@
                 NSDictionary *attr = @{NSFontAttributeName: cell.detailTextLabel.font, NSStrikethroughStyleAttributeName : @(NSUnderlineStyleNone)};
                 cell.detailTextLabel.attributedText = [[NSAttributedString alloc] initWithString:cell.detailTextLabel.text attributes:attr];
             }
-        }
-            break;
+			break;
+		}
         case PeriodCellType_CycleLength:{
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             UITextField *textField = (UITextField*)cell.accessoryView;
             textField.text = [NSString stringWithFormat:@"%ld",[_periodItem.cycleLength longValue]];
 
-        }
-            break;
+			break;
+		}
         case PeriodCellType_Ovulation:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.ovulation];
+            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.ovulation];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
             break;
             
         case PeriodCellType_Notes:{
-            UITextView *textView = (UITextView*)[cell viewWithTag:10];
-            textView.text = ([_periodItem.notes length] > 0 ? _periodItem.notes : [item objectForKey:ItemKey_Title]);
-            textView.textColor = ([_periodItem.notes length] < 1 ? [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0] : [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]);
-        }
-            break;
+			break;
+		}
         case PeriodCellType_DateInput:{
             UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
             datePicker.datePickerMode = UIDatePickerModeDate;
             datePicker.date = ([_periodItem valueForKey:self.inputItemKey] ? [_periodItem valueForKey:self.inputItemKey] : [A3DateHelper dateMake12PM:[NSDate date]]);
-        }
-            break;
+			break;
+		}
         case PeriodCellType_Delete:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
             break;
@@ -315,11 +328,20 @@
     
     switch (cellType)  {
         case PeriodCellType_Notes:{
-            NSString *str = _periodItem.notes;
-            CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
-            retHeight = (strBounds.size.height + 30.0 < 180.0 ? 180.0 : strBounds.size.height + 30.0);
-        }
-            break;
+			CGFloat cellHeight = CGFLOAT_MAX;
+			if (IS_IPHONE) {
+				cellHeight = MIN(cellHeight, 568 - 216 - 64);
+			} else if (IS_IPHONE35) {
+				cellHeight = MIN(cellHeight, 480 - 216 - 64);
+			} else {
+				if (IS_PORTRAIT) {
+					cellHeight = MIN(cellHeight, 1024 - 264 - 64);
+				} else {
+					cellHeight = MIN(cellHeight, 768 - 352 - 64);
+				}
+			}
+			return cellHeight - 30.0;
+		}
         case PeriodCellType_DateInput:
             retHeight = 236.0;
             break;
@@ -435,33 +457,6 @@
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     _periodItem.notes = textView.text;
-    if( [_periodItem.notes length] < 1 ) {
-        textView.text = @"Notes";
-	}
-
-	UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    NSString *str = [textView.text stringByReplacingCharactersInRange:range withString:text];
-    
-	_periodItem.notes = [str length] > 0 ? str : @"";
-    textView.textColor = ( [str length] > 0 ? [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0] : [UIColor colorWithRed:178.0/255.0 green:178.0/255.0 blue:178.0/255.0 alpha:1.0] );
-    
-    CGRect strBounds = [textView.text boundingRectWithSize:CGSizeMake(textView.frame.size.width, 99999.0) options:NSLineBreakByCharWrapping|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : textView.font} context:nil];
-    
-    UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-    CGFloat diffHeight = (strBounds.size.height + 30.0 < 180.0 ? 0.0 : (strBounds.size.height + 30.0) - cell.frame.size.height);
-    
-    //    NSLog(@"%s %f, %@",__FUNCTION__,diffHeight,NSStringFromCGRect(strBounds));
-    cell.frame = CGRectMake(cell.frame.origin.x, cell.frame.origin.y, cell.frame.size.width, cell.frame.size.height + diffHeight);
-    self.tableView.contentSize = CGSizeMake(self.tableView.contentSize.width, self.tableView.contentSize.height + diffHeight);
-    [self.tableView scrollRectToVisible:cell.frame animated:YES];
-    
-    return YES;
 }
 
 #pragma mark - UITextFieldDelegate
