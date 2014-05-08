@@ -336,31 +336,33 @@
 		NSDate *prevOvulationDate = [A3DateHelper dateByAddingDays:-1 fromDate:ovulationDate];
 		NSDate *nextOvulationDate = [A3DateHelper dateByAddingDays:1 fromDate:ovulationDate];
 
-		UIColor *redColor = [UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0];
-		UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0];
-		UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:230.0/255.0 blue:87.0/255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0];
+		CGFloat alphaForRed = [period.isPredict boolValue] ? 0.4 : 1.0;
+		CGFloat alpha = !nextPeriod || [nextPeriod.isPredict boolValue] ? 0.4 : 1.0;
+		UIColor *redColor = [UIColor colorWithRed:252.0/255.0 green:96.0/255.0 blue:66.0/255.0 alpha:alphaForRed];
+		UIColor *greenColor = [UIColor colorWithRed:44.0/255.0 green:201.0/255.0 blue:144.0/255.0 alpha:alpha];
+		UIColor *yellowColor = [UIColor colorWithRed:238.0/255.0 green:230.0/255.0 blue:87.0/255.0 alpha:alpha];
 
 		if( [A3DateHelper monthFromDate:period.startDate] == _month || [A3DateHelper monthFromDate:period.endDate] == _month ){
 			[self addLineFromDate:period.startDate endDate:period.endDate toArray:redLines withColor:redColor isStartMargin:YES isEndMargin:YES];
 			if( [A3DateHelper monthFromDate:period.startDate] == _month )
-				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
+				[self addCircleAtDay:period.startDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
 			if( [A3DateHelper monthFromDate:period.endDate] == _month )
-				[self addCircleAtDay:period.endDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+				[self addCircleAtDay:period.endDate color:[UIColor colorWithRed:252.0 / 255.0 green:96.0 / 255.0 blue:66.0 / 255.0 alpha:alphaForRed] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
 		}
 
 		if([A3DateHelper monthFromDate:pregnantStartDate] == _month || [A3DateHelper monthFromDate:prevOvulationDate] == _month ){
 			[self addLineFromDate:pregnantStartDate endDate:prevOvulationDate toArray:greenLines withColor:greenColor isStartMargin:YES isEndMargin:NO];
 			if([A3DateHelper monthFromDate:pregnantStartDate] == _month )
-				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
+				[self addCircleAtDay:pregnantStartDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentLeft toArray:circleArray];
 		}
 		if([A3DateHelper monthFromDate:nextOvulationDate] == _month || [A3DateHelper monthFromDate:pregnantEndDate] == _month ){
 			[self addLineFromDate:nextOvulationDate endDate:pregnantEndDate toArray:greenLines withColor:greenColor isStartMargin:NO isEndMargin:YES];
 			if([A3DateHelper monthFromDate:pregnantEndDate] == _month )
-				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
+				[self addCircleAtDay:pregnantEndDate color:[UIColor colorWithRed:44.0 / 255.0 green:201.0 / 255.0 blue:144.0 / 255.0 alpha:alpha] isAlphaCircleShow:NO alignment:NSTextAlignmentRight toArray:circleArray];
 		}
 		if( [A3DateHelper monthFromDate:ovulationDate] == _month ){
 			[self addLineFromDate:ovulationDate endDate:ovulationDate toArray:yellowLines withColor:yellowColor isStartMargin:NO isEndMargin:NO];
-			[self addCircleAtDay:ovulationDate color:[UIColor colorWithRed:238.0 / 255.0 green:230.0 / 255.0 blue:87.0 / 255.0 alpha:[period.isPredict boolValue] ? 0.4 : 1.0] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:circleArray];
+			[self addCircleAtDay:ovulationDate color:[UIColor colorWithRed:238.0 / 255.0 green:230.0 / 255.0 blue:87.0 / 255.0 alpha:alpha] isAlphaCircleShow:YES alignment:NSTextAlignmentCenter toArray:circleArray];
 		}
 	}
 	[self setNeedsDisplay];
