@@ -162,28 +162,17 @@
 	[self.tableView reloadData];
 }
 
+#pragma mark - action method
+
 - (void)editButtonAction:(UIButton *)button {
 	LadyCalendarAccount *item = [_itemArray objectAtIndex:button.tag];
 	A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
 	viewCtrl.isEditMode = YES;
 	viewCtrl.accountItem = item;
-	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+	A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
 	navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
 	[self presentViewController:navCtrl animated:YES completion:nil];
-}
-
-#pragma mark - action method
-
-- (void)cancelAction:(id)sender
-{
-    if( IS_IPHONE ){
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else{
-        [[self.A3RootViewController.centerNavigationController.viewControllers lastObject] viewWillAppear:YES];
-        [self.A3RootViewController dismissRightSideViewController];
-    }
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
@@ -191,11 +180,22 @@
     [self cancelAction:nil];
 }
 
+- (void)cancelAction:(id)sender
+{
+	if( IS_IPHONE ){
+		[self dismissViewControllerAnimated:YES completion:nil];
+	}
+	else{
+		[[self.A3RootViewController.centerNavigationController.viewControllers lastObject] viewWillAppear:YES];
+		[self.A3RootViewController dismissRightSideViewController];
+	}
+}
+
 - (void)addAction:(id)sender
 {
     A3LadyCalendarAddAccountViewController *viewCtrl = [[A3LadyCalendarAddAccountViewController alloc] initWithNibName:@"A3LadyCalendarAddAccountViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+    A3NavigationController *navCtrl = [[A3NavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }

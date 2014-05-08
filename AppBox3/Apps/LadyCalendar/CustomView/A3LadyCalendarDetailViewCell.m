@@ -21,7 +21,6 @@
 	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
 	if (self) {
 		_titleLabel = [UILabel new];
-		_titleLabel.textColor = [UIColor blackColor];
 		_titleLabel.adjustsFontSizeToFitWidth = YES;
 		_titleLabel.minimumScaleFactor = 0.5;
 		[self addSubview:_titleLabel];
@@ -32,7 +31,6 @@
 		}];
 
 		_subTitleLabel = [UILabel new];
-		_subTitleLabel.textColor = [UIColor colorWithRGBRed:159 green:159 blue:159 alpha:255];
 		_subTitleLabel.adjustsFontSizeToFitWidth = YES;
 		_subTitleLabel.minimumScaleFactor = 0.5;
 		[self addSubview:_subTitleLabel];
@@ -60,9 +58,15 @@
 	return self;
 }
 
+- (void)prepareForReuse {
+	[self setupFont];
+}
+
 - (void)setupFont {
 	_titleLabel.font = [UIFont systemFontOfSize:14];
 	_subTitleLabel.font = [UIFont systemFontOfSize:17];
+	_titleLabel.textColor = [UIColor blackColor];
+	_subTitleLabel.textColor = [UIColor colorWithRGBRed:159 green:159 blue:159 alpha:255];
 }
 
 @end

@@ -181,8 +181,7 @@
 	// Dispose of any resources that can be recreated.
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 	if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ){
 		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
 	}
@@ -474,6 +473,7 @@
     else if( numberOfMonthInPage == 2 )
         numberOfMonthInPage = 1;
     [_collectionView reloadData];
+	[self updateCurrentMonthLabel];
     
     if( numberOfMonthInPage == 1 )
         button.image = [UIImage imageNamed:@"calendar02"];

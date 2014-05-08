@@ -20,10 +20,6 @@
 #import "A3LadyCalendarDetailViewExpectedTitleCell.h"
 #import "NSDate+formatting.h"
 #import "A3WalletNoteCell.h"
-#import "NSNumberExtensions.h"
-
-#define CELLID_TITLE    @"titleAndFirstCell"
-#define CELLID_SUBITEM  @"detailSubCell"
 
 extern NSString *A3TableViewCellDefaultCellID;
 NSString *const A3LadyCalendarDetailViewTitleCellID = @"A3LadyCalendarDetailViewTitleCellID";
@@ -89,8 +85,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 {
     NSMutableArray *rowDataArray = [NSMutableArray array];
     NSDate *today = [NSDate date];
-    NSDate *monthFirstDay = [_month firstDateOfMonth];
-    NSDate *nextMonth = [monthFirstDay dateByAddingCalendarMonth:1];
 	NSInteger editableCount = 0;
 
 	NSUInteger indexOfData = 0;
@@ -100,24 +94,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         if( ![period.isPredict boolValue] || [period.startDate timeIntervalSince1970] < [today timeIntervalSince1970] )
             editableCount++;
 
-//        if( period == [array lastObject] ){
-//			indexOfData++;
-//            LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
-//
-//			if (nextPeriod && [nextPeriod.isPredict boolValue]) {
-//				NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
-//				NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
-//
-//				NSDate *pregnantStartDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
-//				if( [pregnantStartDate timeIntervalSince1970] < [nextMonth timeIntervalSince1970] ){
-//					[rowDataArray addObjectsFromArray:[self rowDataForItemIsPredict:YES startDate:nextStartDate notes:nil index:indexOfData]];
-//					[_periodItems addObject:nextPeriod];
-//
-//					if( nextPeriod && (![nextPeriod.isPredict boolValue] || [nextStartDate timeIntervalSince1970] < [today timeIntervalSince1970]))
-//						editableCount++;
-//				}
-//			}
-//        }
 		indexOfData++;
     }
 
@@ -179,14 +155,16 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
 				titleCell.subTitleLabel.text = [NSString stringWithFormat:@"Updated %@", [period.modificationDate a3FullStyleString]];
 				[titleCell.editButton setHidden:isEditNavigationBar];
-				[titleCell.editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
+				titleCell.editButton.tag = indexPath.row;
 
 				returnCell = titleCell;
 			} else {
 				A3LadyCalendarDetailViewExpectedTitleCell *titleCell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewExpectedTitleCellID forIndexPath:indexPath];
 				titleCell.titleLabel.text = rowInfo[ItemKey_Title];
 				[titleCell.editButton setHidden:isEditNavigationBar];
-				[titleCell.editButton addTarget:self action:@selector(editAction:) forControlEvents:UIControlEventTouchUpInside];
+				[titleCell.editButton addTarget:self action:@selector(editDetailItem:) forControlEvents:UIControlEventTouchUpInside];
+				titleCell.editButton.tag = indexPath.row;
 
 				returnCell = titleCell;
 			}
@@ -211,7 +189,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_CycleLength:{
 			A3LadyCalendarDetailViewCell *cell = [tableView dequeueReusableCellWithIdentifier:A3LadyCalendarDetailViewCellID forIndexPath:indexPath];
 			cell.titleLabel.text = rowInfo[ItemKey_Title];
-			cell.subTitleLabel.text = [period.endDate a3FullStyleString];
+			cell.subTitleLabel.text = [NSString stringWithFormat:@"%ld", (long)[period.cycleLength integerValue]];
 
 			returnCell = cell;
 			break;
@@ -315,14 +293,13 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
-- (void)editDetailItem:(id)sender
+- (void)editDetailItem:(UIButton *)button
 {
-    UIButton *button = (UIButton*)sender;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell*)[[button.superview superview] superview]];
+	NSDictionary *rowInfo = _rowDataArray[button.tag];
     
-    LadyCalendarPeriod *item = [_periodItems objectAtIndex:indexPath.row / 4];
+    LadyCalendarPeriod *item = _periodItems[(NSUInteger) [rowInfo[ItemKey_Index] integerValue]];
 
-    A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
+	A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = item;
