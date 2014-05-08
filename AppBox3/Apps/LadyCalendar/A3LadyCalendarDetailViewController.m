@@ -47,6 +47,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 	self.title = @"";
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
+	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
 	[self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:A3TableViewCellDefaultCellID];
 	[self.tableView registerClass:[A3LadyCalendarDetailViewCell class] forCellReuseIdentifier:A3LadyCalendarDetailViewCellID];
@@ -99,24 +100,24 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         if( ![period.isPredict boolValue] || [period.startDate timeIntervalSince1970] < [today timeIntervalSince1970] )
             editableCount++;
 
-        if( period == [array lastObject] ){
-			indexOfData++;
-            LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
-
-			if (nextPeriod) {
-				NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
-				NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
-
-				NSDate *pregnantStartDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
-				if( [pregnantStartDate timeIntervalSince1970] < [nextMonth timeIntervalSince1970] ){
-					[rowDataArray addObjectsFromArray:[self rowDataForItemIsPredict:YES startDate:nextStartDate notes:nil index:indexOfData]];
-					[_periodItems addObject:nextPeriod];
-
-					if( nextPeriod && (![nextPeriod.isPredict boolValue] || [nextStartDate timeIntervalSince1970] < [today timeIntervalSince1970]))
-						editableCount++;
-				}
-			}
-        }
+//        if( period == [array lastObject] ){
+//			indexOfData++;
+//            LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
+//
+//			if (nextPeriod && [nextPeriod.isPredict boolValue]) {
+//				NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
+//				NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
+//
+//				NSDate *pregnantStartDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
+//				if( [pregnantStartDate timeIntervalSince1970] < [nextMonth timeIntervalSince1970] ){
+//					[rowDataArray addObjectsFromArray:[self rowDataForItemIsPredict:YES startDate:nextStartDate notes:nil index:indexOfData]];
+//					[_periodItems addObject:nextPeriod];
+//
+//					if( nextPeriod && (![nextPeriod.isPredict boolValue] || [nextStartDate timeIntervalSince1970] < [today timeIntervalSince1970]))
+//						editableCount++;
+//				}
+//			}
+//        }
 		indexOfData++;
     }
 

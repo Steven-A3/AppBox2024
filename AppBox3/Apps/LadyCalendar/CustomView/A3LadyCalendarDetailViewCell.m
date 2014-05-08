@@ -9,6 +9,12 @@
 #import "A3LadyCalendarDetailViewCell.h"
 #import "UIColor+A3Addition.h"
 
+@interface A3LadyCalendarDetailViewCell ()
+
+@property (nonatomic, strong) UIView *bottomSeparator;
+
+@end
+
 @implementation A3LadyCalendarDetailViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
@@ -35,6 +41,17 @@
 			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
 			make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
 			make.baseline.equalTo(self.top).with.offset(51);
+		}];
+
+		_bottomSeparator = [UIView new];
+		_bottomSeparator.backgroundColor = [UIColor colorWithRGBRed:200 green:200 blue:200 alpha:255];
+		[self addSubview:_bottomSeparator];
+
+		[_bottomSeparator makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.right.equalTo(self.right);
+			make.bottom.equalTo(self.bottom);
+			make.height.equalTo(IS_RETINA ? @0.5 : @1.0);
 		}];
 
 		[self setupFont];
