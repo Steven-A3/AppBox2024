@@ -514,22 +514,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 
     eventModel.imageFilename = imageFilename;
-//    if ( [eventModel.useLeapMonth boolValue] ) {
-//        NSDateComponents *dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventModel.startDate];
-//        eventModel.startDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
-//        
-//        if ( !eventModel.endDate ) {
-//            eventModel.startDate.isLeapMonth = @(NO);
-//        }
-//        else {
-//            dateComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:eventModel.endDate];
-//            eventModel.endDate.isLeapMonth = @([NSDate isLunarLeapMonthAtDate:dateComp isKorean:[A3DateHelper isCurrentLocaleIsKorea]]);
-//        }
-//    }
-//    else {
-//        eventModel.startDate.isLeapMonth = @(NO);
-//        eventModel.endDate.isLeapMonth = @(NO);
-//    }
     
     if ( !eventModel.alertDatetime ) {
         eventModel.alertDatetime = nil;
@@ -580,18 +564,20 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         eventItem.imageFilename = nil;
     }
 
+    if ( !eventItem.effectiveStartDate ) {
+        eventItem.effectiveStartDate = [eventItem.startDate solarDate];
+    }
+    
+    eventItem.effectiveStartDate = [self effectiveDateForEvent:eventItem basisTime:[NSDate date]];
+    
     if ( !eventItem.alertDatetime ) {
         eventItem.alertDatetime = nil;
         eventItem.hasReminder = @(NO);
     }
     else {
+        eventItem.alertDatetime = [self effectiveAlertDateForEvent:eventItem];
         eventItem.hasReminder = ([eventItem.alertDatetime timeIntervalSince1970] > [[NSDate date] timeIntervalSince1970]) || (![eventItem.repeatType isEqualToNumber:@(RepeatType_Never)]) ? @(YES) : @(NO);
     }
-
-    if ( !eventItem.effectiveStartDate ) {
-        eventItem.effectiveStartDate = [eventItem.startDate solarDate];
-    }
-    eventItem.effectiveStartDate = [self effectiveDateForEvent:eventItem basisTime:[NSDate date]];
     
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
     
@@ -1475,6 +1461,11 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSMutableArray *localNotifications = [NSMutableArray new];
     NSArray *alertItems = [DaysCounterEvent MR_findAllSortedBy:@"alertDatetime" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"alertDatetime != nil"]];
     [alertItems enumerateObjectsUsingBlock:^(DaysCounterEvent *event, NSUInteger idx, BOOL *stop) {
+        if ([event.hasReminder isEqualToNumber:@(NO)] && event.reminder) {
+            [event.reminder MR_deleteEntity];
+            event.reminder = nil;
+        }
+        
         if (event.repeatEndDate && [event.repeatEndDate timeIntervalSince1970] < [[NSDate date] timeIntervalSince1970]) {
             return;
         }
@@ -1489,8 +1480,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                 // Remind 이벤트가 이미 존재하는 경우,
                 if ([reminder.alertDate timeIntervalSince1970] < [event.alertDatetime timeIntervalSince1970]) {
                     // event 의 갱신된 시간기준으로 reminder 시간 갱신.
-//                    reminder.startDate = event.effectiveStartDate;
-//                    reminder.alertDate = event.alertDatetime;
                     reminder.isOn = @(YES);
                     reminder.isUnread = @(YES);
                 }
