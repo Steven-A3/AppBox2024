@@ -30,6 +30,7 @@
 @property (strong, nonatomic) UIPopoverController *popoverVC;
 @property (strong, nonatomic) NSString *initialCalendarID;
 @property (strong, nonatomic) UIView *topWhitePaddingView;
+@property (strong, nonatomic) UILabel *heightCalculateLabel;
 
 - (void)editAction:(id)sender;
 - (void)constructItemsFromEvent:(DaysCounterEvent*)event;
@@ -68,6 +69,10 @@
 //    _eventItem.eventName = @"longlonglonglonglonglonglonglonglonglonglong11111longlonglonglonglonglonglonglonglonglonglong222222longlonglonglonglonglonglonglonglonglonglong11111longlonglonglonglonglonglonglonglonglonglong333333";
     
     [self setupTopWhitePaddingView];
+    self.heightCalculateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    self.heightCalculateLabel.numberOfLines = 0;
+    [self.view addSubview:_heightCalculateLabel];
+    self.heightCalculateLabel.hidden = YES;
 }
 
 - (void)setupTopWhitePaddingView
@@ -359,15 +364,15 @@
     CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([info.isFavorite boolValue] ? 43 : 15) - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
     if (calculatedTitleSize.width > titleMaxWidth) {
-        //calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
-        //cell.titleWidthConst.constant = calculatedTitleSize.width;
-        //cell.titleHeightConst.constant = calculatedTitleSize.height;
-        CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
-                                                                        options:NSStringDrawingUsesLineFragmentOrigin
-                                                                     attributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }
-                                                                        context:nil];
+        calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
         cell.titleWidthConst.constant = titleMaxWidth;
-        cell.titleHeightConst.constant = calculatedTitleRect.size.height;
+        cell.titleHeightConst.constant = calculatedTitleSize.height;
+//        CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
+//                                                                        options:NSStringDrawingUsesLineFragmentOrigin
+//                                                                     attributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }
+//                                                                        context:nil];
+//        cell.titleWidthConst.constant = titleMaxWidth;
+//        cell.titleHeightConst.constant = calculatedTitleRect.size.height;
     }
     else {
         cell.titleWidthConst.constant = calculatedTitleSize.width;
@@ -1409,23 +1414,35 @@ EXIT_FUCTION:
             @autoreleasepool {
                 UIFont *titleFont = IS_IPHONE ? [UIFont boldSystemFontOfSize:17.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
                 CGSize calculatedTitleSize = [_eventItem.eventName sizeWithAttributes:@{ NSFontAttributeName : titleFont }];
-                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+                //CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - 48 - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
+                CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([_eventItem.isFavorite boolValue] ? 43 : 15) - ([_eventItem.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
                 
                 if (calculatedTitleSize.width > titleMaxWidth) {
-//                    UILabel *label = [[UILabel alloc] init];
-//                    label.font = titleFont;
-//                    label.text = _eventItem.eventName;
-//                    [label setNeedsLayout];
-                    CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
-                                                                                    options:NSStringDrawingUsesLineFragmentOrigin
-                                                                                 attributes:@{ NSFontAttributeName : titleFont }
-                                                                                    context:nil];
-//                    label.text = @"A";
-                    CGRect aLineRect = [@"A" boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
-                                                          options:NSStringDrawingUsesLineFragmentOrigin
-                                                       attributes:@{ NSFontAttributeName : titleFont }
-                                                          context:nil];
-                    retHeight += calculatedTitleRect.size.height - aLineRect.size.height;
+////                    UILabel *label = [[UILabel alloc] init];
+////                    label.font = titleFont;
+////                    label.text = _eventItem.eventName;
+////                    [label setNeedsLayout];
+//                    CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
+//                                                                                    options:NSStringDrawingUsesLineFragmentOrigin
+//                                                                                 attributes:@{ NSFontAttributeName : titleFont }
+//                                                                                    context:nil];
+////                    label.text = @"A";
+//                    CGRect aLineRect = [@"A" boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
+//                                                          options:NSStringDrawingUsesLineFragmentOrigin
+//                                                       attributes:@{ NSFontAttributeName : titleFont }
+//                                                          context:nil];
+//                    retHeight += calculatedTitleRect.size.height - aLineRect.size.height;
+                    
+                    
+                    self.heightCalculateLabel.font = titleFont;
+                    
+                    CGSize calculatedTitleSize;
+                    CGSize aLineSize;
+                    self.heightCalculateLabel.text = _eventItem.eventName;
+                    calculatedTitleSize = [self.heightCalculateLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
+                    self.heightCalculateLabel.text = @"A";
+                    aLineSize = [self.heightCalculateLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
+                    retHeight += calculatedTitleSize.height - aLineSize.height;
                 }
             }
         }
