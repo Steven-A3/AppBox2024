@@ -204,7 +204,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 - (void)addDefaultUserCalendarItems
 {
     NSMutableArray *array = [NSMutableArray arrayWithArray:@[
-                                                             [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"1",CalendarItem_Name : @"Anniversary",CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:YES]}],
+                                                             [NSMutableDictionary dictionaryWithDictionary:@{ CalendarItem_ID:@"1", CalendarItem_Name : @"Anniversary", CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_IsShow : [NSNumber numberWithBool:YES], CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User], CalendarItem_IsDefault : [NSNumber numberWithBool:YES]}],
                                                              [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"2",CalendarItem_Name : @"Appointment",CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
                                                              [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"3",CalendarItem_Name : @"Birthday",CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
                                                              [NSMutableDictionary dictionaryWithDictionary:@{CalendarItem_ID: @"4",CalendarItem_Name : @"Journey",CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0],CalendarItem_IsShow : [NSNumber numberWithBool:YES],CalendarItem_Type : [NSNumber numberWithInteger:CalendarCellType_User],CalendarItem_IsDefault : [NSNumber numberWithBool:NO]}],
@@ -232,15 +232,15 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
 //    self.calendarDict = [NSMutableDictionary dictionary];
     self.calendarColorArray = [NSMutableArray array];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0],CalendarItem_Name : @"Red"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0],CalendarItem_Name : @"Orange"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0 alpha:1.0],CalendarItem_Name : @"Yellow"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0],CalendarItem_Name : @"Green"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:27.0/255.0 green:173.0/255.0 blue:248.0/255.0 alpha:1.0],CalendarItem_Name : @"Blue"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:88.0/255.0 green:86.0/255.0 blue:214.0/255.0 alpha:1.0],CalendarItem_Name : @"Violet"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0],CalendarItem_Name : @"Purple"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0],CalendarItem_Name : @"Brown"}];
-    [_calendarColorArray addObject:@{CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0],CalendarItem_Name : @"Gray"}];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0], CalendarItem_Name : @"Red" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:149.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Orange" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:1.0 green:204.0/255.0 blue:0 alpha:1.0], CalendarItem_Name : @"Yellow" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:99.0/255.0 green:218.0/255.0 blue:56.0/255.0 alpha:1.0], CalendarItem_Name : @"Green" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:27.0/255.0 green:173.0/255.0 blue:248.0/255.0 alpha:1.0], CalendarItem_Name : @"Blue" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:88.0/255.0 green:86.0/255.0 blue:214.0/255.0 alpha:1.0], CalendarItem_Name : @"Violet" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:204.0/255.0 green:115.0/255.0 blue:225.0/255.0 alpha:1.0], CalendarItem_Name : @"Purple" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:162.0/255.0 green:132.0/255.0 blue:94.0/255.0 alpha:1.0], CalendarItem_Name : @"Brown" }];
+    [_calendarColorArray addObject:@{ CalendarItem_Color : [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0], CalendarItem_Name : @"Gray" }];
     
     NSManagedObjectContext *context = [self managedObjectContext];
     NSUInteger count = [DaysCounterCalendar MR_countOfEntitiesWithContext:context];

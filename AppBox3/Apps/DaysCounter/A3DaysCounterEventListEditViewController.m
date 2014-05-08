@@ -335,7 +335,7 @@
             [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
-            [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event.startDate solarDate]
+            [txt appendFormat:@"%@<br/><br/>", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
                                                                      withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
         }
         
@@ -363,7 +363,7 @@
             [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
             
             //         Friday, April 11, 2014 (사용자가 입력한 날)
-            [txt appendFormat:@"%@\n\n", [A3DateHelper dateStringFromDate:[event.startDate solarDate]
+            [txt appendFormat:@"%@\n\n", [A3DateHelper dateStringFromDate:[event effectiveStartDate]
                                                              withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[event.isAllDay boolValue]]] ];
         }
 
