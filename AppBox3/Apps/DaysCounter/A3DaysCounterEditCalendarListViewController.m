@@ -41,8 +41,9 @@
     self.title = @"Edit Calendars";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addCalendarAction:)];
     self.tableView.separatorInset = UIEdgeInsetsMake(0, 15, 0, 0);
-    [self rightBarButtonDoneButton];
-    
+    if (IS_IPHONE) {
+        [self rightBarButtonDoneButton];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -130,7 +130,7 @@
     if ([_eventModel.isAllDay boolValue] &&
         (itemRowType == DurationOption_Hour || itemRowType == DurationOption_Minutes || itemRowType == DurationOption_Seconds)) {
         cell.userInteractionEnabled = NO;
-        cell.textLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
+        cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }

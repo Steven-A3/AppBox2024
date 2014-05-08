@@ -84,7 +84,7 @@
     _addEventButton.tintColor = [A3AppDelegate instance].themeColor;
     [_addEventButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view.centerX);
-        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 21));
+        make.bottom.equalTo(self.view.bottom).with.offset(-(CGRectGetHeight(self.bottomToolbar.frame) + 11));
         make.width.equalTo(@44);
         make.height.equalTo(@44);
     }];

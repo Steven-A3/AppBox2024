@@ -93,7 +93,7 @@
         _eventItem.isFavorite = @(NO);
         _eventItem.repeatType = @(RepeatType_Never);
         _eventItem.repeatEndDate = nil;
-        
+
         if (self.calendarId) {
             DaysCounterCalendar *selectedCalendar = [[[[A3DaysCounterModelManager sharedManager] allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"calendarId == %@", self.calendarId]] lastObject];
             if (selectedCalendar) {
@@ -101,8 +101,18 @@
                 _eventItem.calendar = selectedCalendar;
             }
         }
+        else {
+            DaysCounterCalendar *anniversaryCalendar = [[A3DaysCounterModelManager sharedManager] calendarItemByID:@"1"];
+            if (!anniversaryCalendar) {
+                anniversaryCalendar = [[[A3DaysCounterModelManager sharedManager] allUserCalendarList] firstObject];
+            }
+            if (anniversaryCalendar) {
+                _eventItem.calendarId = anniversaryCalendar.calendarId;
+                _eventItem.calendar = anniversaryCalendar;
+            }
+        }
     }
-    
+
     [self makeBackButtonEmptyArrow];
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(cancelAction:)];
@@ -192,6 +202,16 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    if (self.imagePopover) {
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
+        UIButton *button = (UIButton*)[cell viewWithTag:11];
+        CGRect rect = [self.tableView convertRect:button.frame fromView:cell.contentView];
+        [self.imagePopover presentPopoverFromRect:rect inView:self.tableView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
 }
 
 #pragma mark -
@@ -757,7 +777,7 @@
     cell.textLabel.text = title;
     NSNumber *repeatType = _eventItem.repeatType;
     if (!repeatType || [repeatType isEqualToNumber:@(RepeatType_Never)]) {
-        cell.detailTextLabel.text = @"";
+        cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:RepeatType_Never];
     }
     else {
         cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
@@ -1548,10 +1568,10 @@
 {
     _eventItem.isAllDay = @(swButton.on);
     
-    if (!_eventItem && [swButton isOn] == NO && !_isDurationIntialized) {
+    if ([swButton isOn] == NO && !_isDurationIntialized) {
         _eventItem.durationOption = @(DurationOption_Day|DurationOption_Hour|DurationOption_Minutes);
     }
-    else if (!_eventItem && [swButton isOn]) {
+    else if ([swButton isOn]) {
         NSInteger durationFlag = [_eventItem.durationOption integerValue];
         durationFlag = durationFlag & ~(DurationOption_Hour|DurationOption_Minutes|DurationOption_Seconds);
         if (durationFlag == 0) {
@@ -1560,6 +1580,7 @@
         
         _eventItem.durationOption = @(durationFlag);
     }
+
     
     [self reloadItems:sectionRow_items withType:EventCellType_DateInput section:indexPath.section animation:UITableViewRowAnimationNone];
     [self reloadItems:sectionRow_items withType:EventCellType_StartDate section:indexPath.section animation:UITableViewRowAnimationNone];
@@ -1653,6 +1674,14 @@
     else {
         dateComp = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:[datePicker date]];
         dateComp.second = 0;
+        DaysCounterDateModel *dateData = [self.inputDateKey isEqualToString:EventItem_StartDate] ? _eventItem.startDate : _eventItem.endDate;
+        if ([dateData.hour integerValue] != dateComp.hour || [dateData.minute integerValue] != dateComp.minute) {
+            NSInteger durationFlag = [_eventItem.durationOption integerValue];
+            durationFlag |= DurationOption_Hour|DurationOption_Minutes;
+            _eventItem.durationOption = @(durationFlag);
+            NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+            [self reloadItems:section1_items withType:EventCellType_DurationOption section:indexPath.section animation:UITableViewRowAnimationNone];
+        }
     }
     
     // 음력 날짜 유효성 체크.
@@ -1785,7 +1814,10 @@
 
     [CATransaction begin];
     [CATransaction setCompletionBlock:^{
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        if (_isAdvancedCellOpen) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+        }
     }];
 
     [self.tableView beginUpdates];
@@ -2023,14 +2055,19 @@
         else if ( buttonIndex != actionSheet.cancelButtonIndex ) {
             UIImagePickerController *pickerCtrl = [[UIImagePickerController alloc] init];
             pickerCtrl.delegate = self;
-            if ( buttonIndex == actionSheet.firstOtherButtonIndex )
+            
+            if ( buttonIndex == actionSheet.firstOtherButtonIndex ) {
                 pickerCtrl.sourceType = UIImagePickerControllerSourceTypeCamera;
-            else if ( buttonIndex == actionSheet.firstOtherButtonIndex+1 )
+            }
+            else if ( buttonIndex == actionSheet.firstOtherButtonIndex+1 ) {
                 pickerCtrl.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            }
             pickerCtrl.allowsEditing = YES;
             pickerCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
-            if ( IS_IPHONE || pickerCtrl.sourceType == UIImagePickerControllerSourceTypeCamera )
+            
+            if ( IS_IPHONE || pickerCtrl.sourceType == UIImagePickerControllerSourceTypeCamera ) {
                 [self presentViewController:pickerCtrl animated:YES completion:nil];
+            }
             else {
                 UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                 UIButton *button = (UIButton*)[cell viewWithTag:11];

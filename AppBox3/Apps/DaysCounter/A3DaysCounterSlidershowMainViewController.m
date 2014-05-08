@@ -240,9 +240,12 @@
     _isRotating = YES;
     
     [_collectionView reloadData];
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
-                            atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
-                                    animated:NO];
+    UICollectionViewCell *cell = [_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]];
+    if (cell) {
+        [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:currentIndex inSection:0]
+                                atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally
+                                        animated:NO];
+    }
     
     if ( [[A3DaysCounterModelManager sharedManager] numberOfEventContainedImage] < 1 ) {
         self.navigationItem.title = @"Days Counter";
@@ -670,7 +673,7 @@
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
-        [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[eventItem.startDate solarDate]
+        [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
                                                             withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
         
 		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
@@ -693,7 +696,7 @@
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
-        [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[eventItem.startDate solarDate]
+        [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[eventItem effectiveStartDate]
                                                          withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[eventItem.isAllDay boolValue]]] ];
         
 		return txt;

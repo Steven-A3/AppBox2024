@@ -1682,7 +1682,7 @@ EXIT_FUCTION:
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
 
         //         Friday, April 11, 2014 (사용자가 입력한 날)
-        [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[_eventItem.startDate solarDate]
+        [txt appendFormat:@"%@<br/>", [A3DateHelper dateStringFromDate:[_eventItem effectiveStartDate]
                                                             withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[_eventItem.isAllDay boolValue]]] ];
         
 		[txt appendString:@"<br/>You can calculator more in the AppBox Pro.<br/><img style='border:0;' src='http://apns.allaboutapps.net/allaboutapps/appboxIcon60.png' alt='AppBox Pro'><br/><a href='https://itunes.apple.com/us/app/appbox-pro-swiss-army-knife/id318404385?mt=8'>Download from AppStore</a></body></html>"];
@@ -1705,7 +1705,7 @@ EXIT_FUCTION:
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
         //         Friday, April 11, 2014 (사용자가 입력한 날)
-        [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[_eventItem.startDate solarDate]
+        [txt appendFormat:@"%@\n", [A3DateHelper dateStringFromDate:[_eventItem effectiveStartDate]
                                                             withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[_eventItem.isAllDay boolValue]]] ];
         
 		return txt;

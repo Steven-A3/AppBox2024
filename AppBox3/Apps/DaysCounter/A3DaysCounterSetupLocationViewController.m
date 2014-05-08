@@ -94,10 +94,8 @@
                                  callbackURL:FOURSQUARE_REDIRECTURI];
 
     self.mapView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleRightMargin;
-//    [self initializeSelectedLocation];
-    
     self.mapViewHeightConst.constant = CGRectGetHeight(self.infoTableView.frame) - 88;
-    self.infoTableView.contentInset = UIEdgeInsetsMake(CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88, 0, 0, 0);
+    self.infoTableView.contentInset = UIEdgeInsetsMake(IS_LANDSCAPE ? (CGRectGetWidth([[UIScreen mainScreen] bounds]) - 88) : (CGRectGetHeight([[UIScreen mainScreen] bounds]) - 88), 0, 0, 0);
     self.infoTableView.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
     self.infoTableView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:0.95];
     self.infoTableView.separatorColor = [UIColor colorWithRed:200/255.0 green:200/255.0 blue:200/255.0 alpha:1.0];
@@ -498,10 +496,10 @@
 
 - (UITableViewCell *)cellOfSearchResultTableView:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    if ( [self.nearbyVenuesOfSearchResults count] < 1 ) {
-        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"");
+    if ( [self.nearbyVenuesOfSearchResults count] == 0 ) {
+        cell.textLabel.text = (isLoading ? @"Loading locations...." : @"Add this place");
         cell.detailTextLabel.text = @"";
-        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textColor = isLoading ? [UIColor blackColor] : [A3AppDelegate instance].themeColor;
     }
     else if (indexPath.row >= [self.nearbyVenuesOfSearchResults count]) {
         cell.textLabel.font = [UIFont boldSystemFontOfSize:17.0];
@@ -582,15 +580,30 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
-    else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
+    //else if ( tableView == _searchResultsTableView && ((indexPath.row == 0 && [_nearbyVenuesOfSearchResults count] == 0) || (indexPath.row == [_nearbyVenuesOfSearchResults count])) ) {
+    else if ( tableView == _searchResultsTableView && indexPath.row == [_nearbyVenuesOfSearchResults count] ) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
+
         // 이 위치를 추가하는 화면으로 이동
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
         [actionSheet showInView:self.view];
     }
+//    else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
+//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//        
+//        // 이 위치를 추가하는 화면으로 이동
+//        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
+//        [actionSheet showInView:self.view];
+//    }
     else {
-        FSVenue *item = [self.nearbyVenues objectAtIndex:indexPath.row];
+        FSVenue *item;
+        if (tableView == _searchResultsTableView) {
+            item = [self.nearbyVenuesOfSearchResults objectAtIndex:indexPath.row];
+        }
+        else {
+            item = [self.nearbyVenues objectAtIndex:indexPath.row];
+        }
+
         DaysCounterEventLocation *locItem = [DaysCounterEventLocation MR_createEntity];
         locItem.eventId = _eventModel.eventId;
         locItem.latitude = @(item.location.coordinate.latitude);
