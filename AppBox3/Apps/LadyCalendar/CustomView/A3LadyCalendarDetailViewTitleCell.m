@@ -1,0 +1,61 @@
+//
+//  A3LadyCalendarDetailViewTitleCell.m
+//  AppBox3
+//
+//  Created by A3 on 5/8/14.
+//  Copyright (c) 2014 ALLABOUTAPPS. All rights reserved.
+//
+
+#import "A3LadyCalendarDetailViewTitleCell.h"
+
+@implementation A3LadyCalendarDetailViewTitleCell
+
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
+	self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+	if (self) {
+		_titleLabel = [UILabel new];
+		_titleLabel.adjustsFontSizeToFitWidth = YES;
+		_titleLabel.minimumScaleFactor = 0.5;
+		[self addSubview:_titleLabel];
+
+		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.baseline.equalTo(self.top).with.offset(31);
+		}];
+
+		_subTitleLabel = [UILabel new];
+		_subTitleLabel.adjustsFontSizeToFitWidth = YES;
+		_subTitleLabel.minimumScaleFactor = 0.5;
+		[self addSubview:_subTitleLabel];
+
+		[_subTitleLabel makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
+			make.right.equalTo(self.right).with.offset(IS_IPHONE ? -15 : -28);
+			make.baseline.equalTo(self.top).with.offset(51);
+		}];
+
+		_editButton = [UIButton buttonWithType:UIButtonTypeSystem];
+		[_editButton setTitle:@"Edit" forState:UIControlStateNormal];
+		[self addSubview:_editButton];
+
+		[_editButton makeConstraints:^(MASConstraintMaker *make) {
+			make.left.equalTo(_titleLabel.right).with.offset(20);
+			make.baseline.equalTo(_titleLabel.baseline);
+		}];
+
+		[self setupFont];
+	}
+
+	return self;
+}
+
+- (void)prepareForReuse {
+	[self setupFont];
+}
+
+- (void)setupFont {
+	_titleLabel.font = IS_IPHONE ? [UIFont boldSystemFontOfSize:17] : [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+	_subTitleLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+}
+
+@end

@@ -14,6 +14,8 @@
 @property (strong, nonatomic) IBOutlet GCPlaceholderTextView *textView;
 @property (strong, nonatomic) UIView *topSeparator;
 
+- (void)setupTextView;
+
 - (void)setNoteText:(NSString *)text;
 - (CGFloat)calculatedHeight;
 - (void)showTopSeparator:(BOOL)show;

@@ -259,6 +259,7 @@
 {
     NSInteger year = [A3DateHelper yearFromDate:self.currentMonth];
 	NSInteger month = [A3DateHelper monthFromDate:self.currentMonth];
+	NSInteger section = year - _startYear;
 	NSInteger row;
 	if (year == _startYear) {
 		month = MAX(month, _startMonth);
@@ -266,8 +267,12 @@
 	if (year - _endYear == 0) {
 		month = MIN(_endMonth, month);
 	}
-	row = month - (year - _startYear == 0 ? _startMonth : 1);
-    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:year - _startYear] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
+	row = month - (section == 0 ? _startMonth : 1);
+	NSInteger numberOfRows = [self collectionView:_collectionView numberOfItemsInSection:section];
+	if (row >= numberOfRows) {
+		row = numberOfRows - 1;
+	}
+    [_collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section] atScrollPosition:UICollectionViewScrollPositionTop animated:NO];
 }
 
 - (LadyCalendarPeriod*)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
@@ -335,7 +340,7 @@
 	if (indexPath.section == 0) {
 		month = indexPath.row + _startMonth;
 	} else {
-		month = indexPath.row;
+		month = indexPath.row + 1;
 	}
     calendarView.dateMonth = [A3DateHelper dateFromYear:indexPath.section + _startYear month:month day:1 hour:12 minute:0 second:0];
 	FNLOG(@"%@ / %@, %ld/%ld",calendarView.dateMonth,_currentMonth, (long)indexPath.section, (long)indexPath.row);

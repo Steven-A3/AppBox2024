@@ -214,7 +214,7 @@
     if( item ){
         NSLog(@"%s %ld/%ld %@",__FUNCTION__, (long)indexPath.section, (long)indexPath.row,item);
         circleView.hidden = NO;
-        textLabel.text = (IS_IPHONE ? [_dataManager dateStringExceptYearForDate:item.startDate] : [NSString stringWithFormat:@"%@ - %@",[_dataManager dateStringExceptYearForDate:item.startDate],[_dataManager dateStringExceptYearForDate:item.endDate]]);
+        textLabel.text = (IS_IPHONE ? [_dataManager stringFromDateOmittingYear:item.startDate] : [NSString stringWithFormat:@"%@ - %@", [_dataManager stringFromDateOmittingYear:item.startDate], [_dataManager stringFromDateOmittingYear:item.endDate]]);
 //        LadyCalendarPeriod *prevPeriod = [self previousPeriodFromIndexPath:indexPath];
         LadyCalendarPeriod *nextPeriod = [self nextPeriodFromIndexPath:indexPath];
 //        BOOL isRealLast = ( (![item.isPredict boolValue] && nextPeriod == nil) || (nextPeriod && [nextPeriod.isPredict boolValue]) );

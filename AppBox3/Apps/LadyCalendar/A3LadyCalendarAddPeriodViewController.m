@@ -253,12 +253,12 @@
     switch (cellType) {
         case PeriodCellType_StartDate:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.startDate];
+            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.startDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_StartDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
             break;
         case PeriodCellType_EndDate:{
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.endDate];
+            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.endDate];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_EndDate] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
 
             if( [_periodItem.endDate timeIntervalSince1970] < [_periodItem.startDate timeIntervalSince1970] ){
@@ -280,7 +280,7 @@
             break;
         case PeriodCellType_Ovulation:
             cell.textLabel.text = [item objectForKey:ItemKey_Title];
-            cell.detailTextLabel.text = [_dataManager dateStringForDate:_periodItem.ovulation];
+            cell.detailTextLabel.text = [_dataManager stringFromDate:_periodItem.ovulation];
             cell.detailTextLabel.textColor = ( [self.inputItemKey isEqualToString:PeriodItem_Ovulation] ? [[A3AppDelegate instance] themeColor] : [UIColor colorWithRGBRed:128 green:128 blue:128 alpha:255] );
             break;
             

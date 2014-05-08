@@ -12,6 +12,8 @@
 #define ItemKey_Items                       @"items"
 #define ItemKey_Title                       @"title"
 #define ItemKey_Type                        @"type"
+#define ItemKey_Index						@"index"
+#define ItemKey_RowHeight					@"rowHeight"
 #define ItemKey_Description                 @"description"
 
 #define PeriodItem_ID                       @"periodID"
@@ -51,8 +53,7 @@
 #define CalendarItem_IsPeriodStart          @"isPeriodStart"
 #define CalendarItem_IsPeriodEnd            @"isPeriodEnd"
 
-enum A3LadyCalendarSettingAlertType
-{
+typedef NS_ENUM(NSInteger, A3LadyCalendarSettingAlertType) {
     AlertType_Custom = -5,
     AlertType_OneWeekBefore = -4,
     AlertType_TwoDaysBefore = -3,
@@ -61,29 +62,27 @@ enum A3LadyCalendarSettingAlertType
     AlertType_None = 0,
 };
 
-enum A3LadyCalendarAccountCellType
-{
+typedef NS_ENUM(NSInteger, A3LadyCalendarAccountCellType) {
     AccountCell_Name = 0,
     AccountCell_Birthday,
     AccountCell_Notes,
     AccountCell_DateInput,
 };
 
-enum A3LadyCalendarSettingCellType
-{
+typedef NS_ENUM(NSInteger, A3LadyCalendarSettingCellType) {
     SettingCell_Periods = 0,
     SettingCell_CycleLength,
     SettingCell_AutoRecord,
     SettingCell_Alert,
 };
 
-enum A3LadyCalendarSettingCycleLengthType {
+typedef NS_ENUM(NSInteger, A3LadyCalendarSettingCycleLengthType) {
     CycleLength_SameBeforeCycle = 0,
     CycleLength_AverageBeforeTwoCycle,
     CycleLength_AverageAllCycle,
 };
 
-enum A3LadyCalendarPeriodCellType {
+typedef NS_ENUM(NSInteger, A3LadyCalendarPeriodCellType) {
     PeriodCellType_StartDate = 0,
     PeriodCellType_EndDate,
     PeriodCellType_CycleLength,
@@ -93,7 +92,7 @@ enum A3LadyCalendarPeriodCellType {
     PeriodCellType_Delete,
 };
 
-enum A3LadyCalendarDetailCellType {
+typedef NS_ENUM(NSInteger, A3LadyCalendarDetailCellType) {
     DetailCellType_Title = 0,
     DetailCellType_StartDate,
     DetailCellType_EndDate,
@@ -103,9 +102,10 @@ enum A3LadyCalendarDetailCellType {
     DetailCellType_Ovulation,
     DetailCellType_MenstrualPeriod,
     DetailCellType_DescTitle,
+	DetailCellType_Blank,
 };
 
-enum A3ladyCalendarCustomAlertCellType{
+typedef NS_ENUM(NSInteger, A3ladyCalendarCustomAlertCellType) {
     CustomAlertCell_DaysBefore,
     CustomAlertCell_Time,
     CustomAlertCell_TimeInput,

@@ -23,6 +23,14 @@
 - (void)awakeFromNib {
 	[super awakeFromNib];
 
+	[self setupTextView];
+}
+
+- (void)setupTextView {
+	if (!_textView) {
+		_textView = [GCPlaceholderTextView new];
+		[self addSubview:_textView];
+	}
 	_textView.font = [UIFont systemFontOfSize:17];
 	[_textView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(3);
