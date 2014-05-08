@@ -16,21 +16,18 @@
 #import "A3DateHelper.h"
 #import "A3LadyCalendarAddPeriodViewController.h"
 #import "UIColor+A3Addition.h"
+#import "NSDate+calculation.h"
 
 #define CELLID_TITLE    @"titleAndFirstCell"
 #define CELLID_SUBITEM  @"detailSubCell"
 
 @interface A3LadyCalendarDetailViewController ()
-@property (strong, nonatomic) NSArray *sectionsArray;
 
-- (void)editAction:(id)sender;
-- (void)setupSectionsWithItems:(NSArray*)array;
-- (void)editDetailItem:(id)sender;
+@property (strong, nonatomic) NSArray *sectionsArray;
 
 @end
 
 @implementation A3LadyCalendarDetailViewController {
-	LadyCalendarAccount *currentAccount;
 	BOOL isEditNavigationBar;
 }
 
@@ -49,6 +46,10 @@
 	[super viewWillAppear:animated];
 	[self.navigationController setToolbarHidden:YES];
 
+	if (![self isMovingToParentViewController]) {
+		[_dataManager recalculateDates];
+		_periodItems = [NSMutableArray arrayWithArray:[_dataManager periodListStartsInMonth:[_month firstDateOfMonth]]];
+	}
 	[self setupSectionsWithItems:_periodItems];
 	[self.tableView reloadData];
 }
@@ -99,20 +100,22 @@
             editableCount++;
         
         if( item == [array lastObject] ){
-            LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:item.startDate accountID:_dataManager.currentAccount.uniqueID];
+            LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:item.startDate];
 
-            NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[item.cycleLength integerValue] fromDate:item.startDate] );
-            NSDate *nextEndDate = ( nextPeriod ? nextPeriod.endDate : [A3DateHelper dateByAddingDays:4 fromDate:nextStartDate] );
-            NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
-            
-            NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
-            if( [pregStDate timeIntervalSince1970] < [nextMonth timeIntervalSince1970] ){
-                tmpArray = [self templateForItemIsPredict:YES startDate:nextStartDate endDate:nextEndDate notes:nil];
-                [sectionsArray addObject:tmpArray];
-				[_periodItems addObject:nextPeriod];
+			if (nextPeriod) {
+				NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[item.cycleLength integerValue] fromDate:item.startDate] );
+				NSDate *nextEndDate = ( nextPeriod ? nextPeriod.endDate : [A3DateHelper dateByAddingDays:4 fromDate:nextStartDate] );
+				NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
 
-                if( nextPeriod && (![nextPeriod.isPredict boolValue] || [nextStartDate timeIntervalSince1970] < [today timeIntervalSince1970]))
-                    editableCount++;
+				NSDate *pregStDate = [A3DateHelper dateByAddingDays:-4 fromDate:ovulationDate];
+				if( [pregStDate timeIntervalSince1970] < [nextMonth timeIntervalSince1970] ){
+					tmpArray = [self templateForItemIsPredict:YES startDate:nextStartDate endDate:nextEndDate notes:nil];
+					[sectionsArray addObject:tmpArray];
+					[_periodItems addObject:nextPeriod];
+
+					if( nextPeriod && (![nextPeriod.isPredict boolValue] || [nextStartDate timeIntervalSince1970] < [today timeIntervalSince1970]))
+						editableCount++;
+				}
 			}
         }
     }
@@ -389,15 +392,14 @@
 }
 
 #pragma mark - action method
+
 - (void)editAction:(id)sender
 {
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
 	viewCtrl.dataManager = _dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = [_periodItems objectAtIndex:0];
-    viewCtrl.items = _periodItems;
-    viewCtrl.parentNavigationCtrl = self.navigationController;
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
@@ -413,9 +415,7 @@
 	viewCtrl.dataManager = _dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = item;
-    viewCtrl.items = _periodItems;
-    viewCtrl.parentNavigationCtrl = self.navigationController;
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
+	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];
 }

@@ -179,7 +179,6 @@
     UIColor *outCircleColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.05];
     CGContextSetShouldAntialias(context , YES);
     for(CircleDisplayModel *cdmObj in circleArray){
-		FNLOGRECT(cdmObj.circleRect);
         if( cdmObj.isAlphaCircleShow ){
 			// 31x31
             [outCircleColor setFill];
@@ -327,7 +326,7 @@
 	[circleArray removeAllObjects];
 
 	for(LadyCalendarPeriod *period in periods){
-		LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate accountID:_dataManager.currentAccount.uniqueID];
+		LadyCalendarPeriod *nextPeriod = [_dataManager nextPeriodFromDate:period.startDate];
 		NSDate *nextStartDate = ( nextPeriod ? nextPeriod.startDate : [A3DateHelper dateByAddingDays:[period.cycleLength integerValue] fromDate:period.startDate] );
 		NSDate *ovulationDate = [A3DateHelper dateByAddingDays:-14 fromDate:nextStartDate];
 

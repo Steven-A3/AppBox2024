@@ -57,7 +57,7 @@
 	}
 
 	if( _isEditMode ){
-		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate accountID:_dataManager.currentAccount.uniqueID];
+		self.prevPeriod = [_dataManager previousPeriodFromDate:_periodItem.startDate];
 	}
 	else{
 		NSInteger ovulationDays = [[NSUserDefaults standardUserDefaults] integerForKey:A3LadyCalendarOvulationDays];
@@ -580,6 +580,8 @@
 	_periodItem.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:_periodItem.startDate options:0];
 
 	_periodItem.modificationDate = [NSDate date];
+	_periodItem.isPredict = @NO;
+
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 
 	[_dataManager recalculateDates];
@@ -592,7 +594,10 @@
 
 - (void)cancelAction:(id)sender
 {
-	[[[MagicalRecordStack defaultStack] context] rollback];
+	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	if ([context hasChanges]) {
+		[context rollback];
+	}
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }

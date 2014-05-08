@@ -181,11 +181,6 @@
 	// Dispose of any resources that can be recreated.
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	_addButton.hidden = YES;
-}
-
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
 	if( UIInterfaceOrientationIsLandscape(self.interfaceOrientation) ){
@@ -195,7 +190,6 @@
 		_calendarHeaderView.frame = CGRectMake(_calendarHeaderView.frame.origin.x, _calendarHeaderView.frame.origin.y, self.view.frame.size.width, _calendarHeaderView.frame.size.height);
 	}
 	[_collectionView reloadData];
-	_addButton.hidden = NO;
 }
 
 - (A3LadyCalendarModelManager *)dataManager {
@@ -331,7 +325,11 @@
 
 	calendarView.dataManager = self.dataManager;
     calendarView.delegate = self;
-    calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 74.0 : 110.0 ) / numberOfMonthInPage);
+	if (numberOfMonthInPage == 1) {
+		calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 74.0 : 110.0 ));
+	} else {
+		calendarView.cellSize = CGSizeMake(floor(self.view.frame.size.width / 7), (IS_IPHONE ? 37.0 : 55.0 ));
+	}
     calendarView.isSmallCell = (numberOfMonthInPage > 1);
 	NSInteger month;
 	if (indexPath.section == 0) {

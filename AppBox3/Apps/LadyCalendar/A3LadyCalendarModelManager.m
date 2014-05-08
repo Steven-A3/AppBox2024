@@ -13,6 +13,7 @@
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
 #import "A3AppDelegate.h"
+#import "NSDate+calculation.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
@@ -67,7 +68,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     if( [[setting objectForKey:SettingItem_AutoRecord] boolValue] ){
         LadyCalendarAccount *account = [self currentAccount];
         if( account ){
-            NSArray *predictList = [self predictPeriodListSortedByStartDateIsAscending:YES accountID:account.uniqueID];
+            NSArray *predictList = [self predictPeriodListSortedByStartDateIsAscending:YES ];
             
             NSDate *today = [NSDate date];
             
@@ -161,30 +162,18 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     return [LadyCalendarPeriod MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@",accountID]];
 }
 
-- (LadyCalendarPeriod*)periodForID:(NSString*)periodID
-{
-    return [LadyCalendarPeriod MR_findFirstWithPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@",periodID]];
-}
-
 - (void)autoSavePredictPeriodToReal:(LadyCalendarPeriod*)item
 {
     item.isPredict = @(NO);
     item.isAutoSave = @(YES);
 }
 
-- (NSArray*)periodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID
-{
-    if( [accountID length] < 1 )
-        return nil;
-    return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:ascending withPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@ AND isPredict == %@",accountID,@(NO)]];
+- (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending {
+    return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:ascending withPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@ AND isPredict == %@", _currentAccount.uniqueID, @(NO)]];
 }
 
-
-- (NSArray*)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending accountID:(NSString*)accountID
-{
-    if( [accountID length] < 1 )
-        return nil;
-    return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:ascending withPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@ AND isPredict == %@",accountID,@(YES)]];
+- (NSArray *)predictPeriodListSortedByStartDateIsAscending:(BOOL)ascending {
+    return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:ascending withPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@ AND isPredict == %@", _currentAccount.uniqueID, @(YES)]];
 }
 
 - (NSInteger)calculateAverageCycleFromArray:(NSArray*)array fromIndex:(NSInteger)index
@@ -210,17 +199,23 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     return (daysTotal / count);
 }
 
+- (NSArray *)periodListStartsInMonth:(NSDate *)month {
+	NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
+
+	return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND ((startDate >= %@) AND (startDate < %@))", _currentAccount.uniqueID, month, nextMonth]];
+}
+
 - (NSArray *)periodListInRangeWithMonth:(NSDate*)month accountID:(NSString*)accountID
 {
-    NSDate *prevMonth = [A3DateHelper dateByAddingMonth:-1 fromDate:month];
-    NSDate *nextMonth = [A3DateHelper dateByAddingMonth:1 fromDate:month];
-    
-    return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND ((startDate >= %@) AND (startDate <= %@))",accountID,prevMonth,nextMonth]];
+    NSDate *prevMonth = [month dateByAddingCalendarMonth:-1];
+	NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
+
+    return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND ((startDate >= %@) AND (startDate < %@))", accountID, prevMonth, nextMonth]];
 }
 
 - (NSArray*)periodListWithMonth:(NSDate*)month accountID:(NSString*)accountID containPredict:(BOOL)containPredict
 {
-    NSDate *nextMonth = [A3DateHelper dateByAddingMonth:1 fromDate:month];
+    NSDate *nextMonth = [month dateByAddingCalendarMonth:1];
     
     if( containPredict )
         return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND ((startDate >= %@) AND (startDate < %@))",accountID,month,nextMonth]];
@@ -230,34 +225,26 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 - (NSArray*)periodListWithMonth:(NSDate*)month period:(NSInteger)period accountID:(NSString*)accountID
 {
-    NSDate *startMonth = [A3DateHelper dateByAddingMonth:-period fromDate:month];
-    
+    NSDate *startMonth = [month dateByAddingCalendarMonth:-period];
+
     return [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"isPredict == %@ AND (account.uniqueID == %@) AND ((startDate >= %@) AND (startDate < %@))",@(NO),accountID,startMonth,month]];
 }
 
-- (LadyCalendarPeriod*)previousPeriodFromDate:(NSDate*)date accountID:(NSString*)accountID
-{
-    NSArray *ret = [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:NO withPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@) AND (account.uniqueID == %@) AND (isPredict == %@)",date,accountID,@(NO)]];
-    if( [ret count] < 1 )
-        return nil;
-    
-    return [ret objectAtIndex:0];
+- (LadyCalendarPeriod *)previousPeriodFromDate:(NSDate *)date {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate < %@) AND (account.uniqueID == %@) AND (isPredict == %@)", date, _currentAccount.uniqueID, @(NO)];
+	return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
 }
 
-- (LadyCalendarPeriod*)nextPeriodFromDate:(NSDate*)date accountID:(NSString*)accountID
-{
-    NSArray *ret = [LadyCalendarPeriod MR_findAllSortedBy:@"startDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"(startDate > %@) AND (account.uniqueID == %@)",date,accountID]];
-    if( [ret count] < 1 )
-        return nil;
-    
-    return [ret objectAtIndex:0];
+- (LadyCalendarPeriod *)nextPeriodFromDate:(NSDate *)date {
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(startDate > %@) AND (account.uniqueID == %@)", date, _currentAccount.uniqueID];
+    return [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:YES];
 }
 
 - (BOOL)isOverlapStartDate:(NSDate*)startDate endDate:(NSDate*)endDate accountID:(NSString*)accountID periodID:(NSString*)periodID
 {
     NSArray *array = nil;
     if( [periodID length] < 1 )
-        array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))",accountID,@(NO),startDate,startDate,endDate,endDate]];
+        return [[LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))",accountID,@(NO),startDate,startDate,endDate,endDate]] count] > 0;
     else
         array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@)) AND uniqueID != %@",accountID,@(NO),startDate,startDate,endDate,endDate,periodID]];
     
@@ -294,7 +281,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 - (void)removeAllPredictItemsAccountID:(NSString*)accountID
 {
-    NSArray *predictArray = [self predictPeriodListSortedByStartDateIsAscending:YES accountID:accountID];
+    NSArray *predictArray = [self predictPeriodListSortedByStartDateIsAscending:YES ];
     for(LadyCalendarPeriod *item in predictArray){
 		[item MR_deleteEntity];
     }
@@ -315,7 +302,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     NSInteger cycleOption = [[setting objectForKey:SettingItem_CalculateCycle] integerValue];
     
     // 예상치 제외한 값을 가져온다.
-    NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES accountID:account.uniqueID];
+    NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES ];
     
     if( [periodArray count] < 1 ){
         // 예상치 저장된 것들이 있다면 다 삭제한다.

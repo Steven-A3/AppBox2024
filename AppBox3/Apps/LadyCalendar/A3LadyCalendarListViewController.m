@@ -21,24 +21,13 @@
 @interface A3LadyCalendarListViewController ()
 
 @property (strong, nonatomic) NSMutableArray *itemArray;
-@property (strong, nonatomic) NSMutableDictionary *groupDict;
 @property (strong, nonatomic) NSArray *sourceArray;
 @property (strong, nonatomic) NSArray *predictArray;
 @property (strong, nonatomic) NSArray *fullArray;
-@property (strong, nonatomic) LadyCalendarAccount *currentAccount;
 
-@end;
+@end
 
 @implementation A3LadyCalendarListViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-	if (self) {
-		// Custom initialization
-	}
-	return self;
-}
 
 - (void)viewDidLoad
 {
@@ -54,37 +43,19 @@
 {
 	[super viewWillAppear:animated];
 	[self.navigationController setToolbarHidden:YES];
-	self.currentAccount = [_dataManager currentAccount];
-	self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
-	self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+	self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES ];
+	self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES ];
 	self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
 	[self groupingPeriodByYearInArray:_fullArray];
 	[self.tableView reloadData];
 
-	[self updateAddButton];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
+	[self setupAddButton];
 }
 
 - (void)didReceiveMemoryWarning
 {
 	[super didReceiveMemoryWarning];
 	// Dispose of any resources that can be recreated.
-}
-
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	_addButton.hidden = YES;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-	[self updateAddButton];
-	_addButton.hidden = NO;
 }
 
 - (void)groupingPeriodByYearInArray:(NSArray*)array
@@ -104,7 +75,6 @@
     }
     
     self.itemArray = groupedArray;
-    self.groupDict = groupInfo;
 }
 
 - (LadyCalendarPeriod *)previousPeriodFromIndexPath:(NSIndexPath*)indexPath
@@ -158,7 +128,7 @@
     return array;
 }
 
-- (void)updateAddButton
+- (void)setupAddButton
 {
 	if( ![_addButton isDescendantOfView:self.view] ){
 		[self.view addSubview:_addButton];
@@ -304,8 +274,8 @@
 			dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
 				[_dataManager recalculateDates];
 
-				self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
-				self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES accountID:self.currentAccount.uniqueID];
+				self.sourceArray = [_dataManager periodListSortedByStartDateIsAscending:YES ];
+				self.predictArray = [_dataManager predictPeriodListSortedByStartDateIsAscending:YES ];
 				self.fullArray = [_sourceArray arrayByAddingObjectsFromArray:_predictArray];
 				[self groupingPeriodByYearInArray:_fullArray];
 
