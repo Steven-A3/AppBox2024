@@ -87,6 +87,13 @@
     self.numberKeyboardVC = nil;
 }
 
+- (void)willDismissFromRightSide
+{
+    if (IS_IPAD && _dismissCompletionBlock) {
+        _dismissCompletionBlock();
+    }
+}
+
 #pragma mark 
 - (void)setCheckmarkOnCustomInputCell:(UITableViewCell *)cell CheckShow:(BOOL)show
 {
@@ -294,10 +301,10 @@
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
-    }
-    
-    if (_dismissCompletionBlock) {
-        _dismissCompletionBlock();
+
+        if (_dismissCompletionBlock) {
+            _dismissCompletionBlock();
+        }
     }
 }
 

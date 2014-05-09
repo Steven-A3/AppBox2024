@@ -1252,7 +1252,7 @@
 #pragma mark etc
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_sectionTitleArray count] + (_eventItem ? 1 : 0);
+    return [_sectionTitleArray count] + (_eventItem.eventId ? 1 : 0);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

@@ -103,6 +103,13 @@
     [self.tableView reloadData];
 }
 
+- (void)willDismissFromRightSide
+{
+    if (IS_IPAD && _dismissCompletionBlock) {
+        _dismissCompletionBlock();
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -346,10 +353,10 @@
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
-    }
-    
-    if (_dismissCompletionBlock) {
-        _dismissCompletionBlock();
+        
+        if (_dismissCompletionBlock) {
+            _dismissCompletionBlock();
+        }
     }
 }
 #pragma mark - UITextFieldDelegate

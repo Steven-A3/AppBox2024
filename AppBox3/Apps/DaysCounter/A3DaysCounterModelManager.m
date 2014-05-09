@@ -721,19 +721,17 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)numberOfAllEvents
 {
-    return [DaysCounterEvent MR_countOfEntities];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@", @(YES)]];
 }
 
 - (NSInteger)numberOfUpcomingEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
-//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"startDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfPastEventsWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
-//    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"(startDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), [NSNull null], date] inContext:[self managedObjectContext]];
 }
 
 - (NSInteger)numberOfUserCalendarVisible
@@ -776,7 +774,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)allEventsList
 {
-    return [DaysCounterEvent MR_findAllInContext:[self managedObjectContext]];
+    //return [DaysCounterEvent MR_findAllInContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@", @(YES)]];
 }
 
 - (NSArray*)allEventsListContainedImage
@@ -786,14 +785,17 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
+//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
+//                                           inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]]
                                            inContext:[self managedObjectContext]];
-
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
+//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
+//                                           inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), [NSNull null], date]
                                            inContext:[self managedObjectContext]];
 }
 
@@ -959,10 +961,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     NSUInteger flag = 0;
     NSUInteger flagCount = 0;
-    if ( option & DurationOption_Seconds) {
-        flag |= NSSecondCalendarUnit;
-        flagCount++;
-    }
+//    if ( option & DurationOption_Seconds) {
+//        flag |= NSSecondCalendarUnit;
+//        flagCount++;
+//    }
     if ( option & DurationOption_Minutes) {
         flag |= NSMinuteCalendarUnit;
         flagCount++;
@@ -1051,9 +1053,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
                 [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
             }
-            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
-            }
+//            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
+//                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
+//            }
         }
     }
     else {
@@ -1077,9 +1079,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
                 [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent minute])]];
             }
-            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld s", (long)labs([diffComponent second])]];
-            }
+//            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
+//                [resultArray addObject:[NSString stringWithFormat:@"%ld s", (long)labs([diffComponent second])]];
+//            }
         }
     }
 

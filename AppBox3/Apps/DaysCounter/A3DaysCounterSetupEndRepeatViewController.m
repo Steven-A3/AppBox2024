@@ -53,6 +53,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)willDismissFromRightSide
+{
+    if (IS_IPAD && _dismissCompletionBlock) {
+        _dismissCompletionBlock();
+    }
+}
+
 #pragma mark -
 - (void)updateConstraints
 {
@@ -259,10 +266,10 @@
     }
     else {
         [self.navigationController popViewControllerAnimated:YES];
-    }
-    
-    if (_dismissCompletionBlock) {
-        _dismissCompletionBlock();
+        
+        if (_dismissCompletionBlock) {
+            _dismissCompletionBlock();
+        }
     }
 }
 

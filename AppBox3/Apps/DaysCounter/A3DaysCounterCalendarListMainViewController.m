@@ -125,6 +125,8 @@
     
     [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -252,8 +254,9 @@
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
-    else
+    else {
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
+    }
 }
 
 - (IBAction)addCalendarAction:(id)sender {
@@ -272,10 +275,7 @@
 }
 
 - (IBAction)searchAction:(id)sender {
-    //self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
     [self.searchBar becomeFirstResponder];
-//    [self.searchDisplayController setActive:YES animated:YES];
-//    [self.searchDisplayController.searchBar becomeFirstResponder];
 }
 
 #pragma mark - UINavigationController Delegate
