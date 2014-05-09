@@ -27,15 +27,21 @@
 
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
+#import "A3LadyCalendarDetailViewController.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
 NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
+NSString *const A3LocalNotificationOwner = @"A3LocalNotificationOwner";
+NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
+NSString *const A3LocalNotificationFromLadyCalendar = @"Lady Calendar";
+NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
+NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidAppear";
 
 @interface A3AppDelegate () <UIAlertViewDelegate>
 
 @property (nonatomic, strong) NSString *previousVersion;
-@property (nonatomic, strong) NSString *daysCounterEventID;
+@property (nonatomic, strong) NSDictionary *localNotificationUserInfo;
 
 @end
 
@@ -48,25 +54,10 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//    NSDateComponents *dateComp = [NSDateComponents new];
-//    dateComp.year = 2014;
-//    dateComp.month = 4;
-//    dateComp.day = 31;
-//    BOOL isResultLeapMonth;
-//    NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp gregorianToLunar:YES leapMonth:NO korean:YES resultLeapMonth:&isResultLeapMonth];
-//    NSLog(@"%@", resultComponents);
-//    //        NSDateComponents *resultComponents = [NSDate lunarCalcWithComponents:dateComp
-//    //                                                            gregorianToLunar:NO
-//    //                                                                   leapMonth:NO
-//    //                                                                      korean:[A3DateHelper isCurrentLocaleIsKorea]
-//    //                                                             resultLeapMonth:&isResultLeapMonth];
-	FNLOG();
+
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
-        // DaysCounter
-        if ([[localNotification.userInfo objectForKey:@"type"] isEqualToString:@"dc"]) {
-            _daysCounterEventID = [localNotification.userInfo objectForKey:@"eventID"];
-        }
+		_localNotificationUserInfo = localNotification.userInfo;
     }
     
 	A3ImageToDataTransformer *transformer = [[A3ImageToDataTransformer alloc] init];
@@ -113,7 +104,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 	}
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyValueStoreDidChangeExternally:) name:NSUbiquitousKeyValueStoreDidChangeExternallyNotification object:[NSUbiquitousKeyValueStore defaultStore]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showDaysCounterDetail:) name:@"daysCounterNotification" object:nil];
 
 	self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	self.window.rootViewController = rootViewController;
@@ -131,7 +121,6 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 	return YES;
 }
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -207,60 +196,86 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 
 #pragma mark Notification
 
--(void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
 	FNLOG();
-    NSString *notificationType = [notification.userInfo objectForKey:@"type"];
+	_localNotificationUserInfo = notification.userInfo;
+
+    NSString *notificationOwner = [notification.userInfo objectForKey:A3LocalNotificationOwner];
     
-    // DaysCounter
-    if ([notificationType isEqualToString:@"dc"]) {
-        _daysCounterEventID = [notification.userInfo objectForKey:@"eventID"];
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:[notification.userInfo objectForKey:@"alert"]
-                                                       delegate:self
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:@"Details", nil];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:notificationOwner
+													message:notification.alertBody
+												   delegate:self
+										  cancelButtonTitle:@"OK"
+										  otherButtonTitles:@"Details", nil];
+    if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
         alert.tag = 11;
-        
-        [alert show];
-    }
+    } else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
+		alert.tag = 21;
+	}
+	[alert show];
 }
 
--(void)showDaysCounterDetail:(NSNotification *)notification
-{
-    //TODO
-    //중복처리
-    if (!_daysCounterEventID) {
-        return;
-    }
-    
-    [[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-    FNLOG(@"%@", _daysCounterEventID);
-	// Days Counter Item인지 확인하고
-	// Item을 생성하셔서 아래의 커멘트 부분에 뷰 컨트롤러를 만들어서 넘겨 주시면 됩니다.
-    DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"eventId" withValue:_daysCounterEventID];
-    A3DaysCounterEventDetailViewController *vc = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:[NSBundle mainBundle]];
-    vc.isModal = YES;
-    vc.eventItem = eventItem;
+- (void)showReceivedLocalNotification {
+	if (!_localNotificationUserInfo) return;
+
+	NSString *notificationOwner = [_localNotificationUserInfo objectForKey:A3LocalNotificationOwner];
+
 	if (IS_IPHONE) {
 		[self.drawerController closeDrawerAnimated:NO completion:NULL];
-
-		UINavigationController *navigationController = (UINavigationController *) self.drawerController.centerViewController;
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        [navigationController presentViewController:nav animated:YES completion:nil];
-	} else {
-        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
-        [self.rootViewController.centerNavigationController presentViewController:nav animated:YES completion:nil];
 	}
+
+	if ([notificationOwner isEqualToString:A3LocalNotificationFromDaysCounter]) {
+		[self showDaysCounterDetail];
+	} else if ([notificationOwner isEqualToString:A3LocalNotificationFromLadyCalendar]) {
+		[self showLadyCalendarDetailView];
+	}
+	_localNotificationUserInfo = nil;
 }
 
 #pragma mark - UIAlertViewDelegate
+
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ((alertView.tag == 10 && buttonIndex == 0) || (alertView.tag == 11 && buttonIndex == 1)) {
-        [self showDaysCounterDetail:nil];
-    }
+	if (buttonIndex == alertView.cancelButtonIndex) {
+		_localNotificationUserInfo = nil;
+		return;
+	}
+	switch (alertView.tag) {
+		case 11:
+			[self showDaysCounterDetail];
+			break;
+		case 21:
+			[self showLadyCalendarDetailView];
+			break;
+	}
+	_localNotificationUserInfo = nil;
+}
+
+- (void)showDaysCounterDetail {
+	if (!_localNotificationUserInfo[A3LocalNotificationDataID]) {
+		return;
+	}
+
+	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+	FNLOG(@"%@", _localNotificationUserInfo[A3LocalNotificationDataID]);
+
+	DaysCounterEvent *eventItem = [DaysCounterEvent MR_findFirstByAttribute:@"eventId" withValue:_localNotificationUserInfo[A3LocalNotificationDataID]];
+	A3DaysCounterEventDetailViewController *viewController = [[A3DaysCounterEventDetailViewController alloc] initWithNibName:@"A3DaysCounterEventDetailViewController" bundle:[NSBundle mainBundle]];
+	viewController.isModal = YES;
+	viewController.eventItem = eventItem;
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self.navigationController presentViewController:navigationController animated:YES completion:NULL];
+}
+
+- (void)showLadyCalendarDetailView {
+	A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] initWithNibName:@"A3LadyCalendarDetailViewController" bundle:nil];
+	viewController.isFromNotification = YES;
+	viewController.periodID = _localNotificationUserInfo[A3LocalNotificationDataID];
+
+	UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+	[self.navigationController presentViewController:navigationController animated:YES completion:NULL];
 }
 
 #pragma mark
@@ -317,6 +332,5 @@ NSString *const A3DropboxLoginFailed = @"A3DropboxLoginFailed";
 	}
 	return _cacheStoreManager;
 }
-
 
 @end

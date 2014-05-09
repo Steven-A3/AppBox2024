@@ -12,6 +12,8 @@
 #import "A3UIDevice.h"
 #import "MMDrawerController.h"
 #import "SFKImage.h"
+#import "A3LadyCalendarModelManager.h"
+#import "A3DaysCounterModelManager.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -147,6 +149,11 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 			});
 		});
 	}
+
+	[self showReceivedLocalNotification];
+
+	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+	[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
 
 //	double delayInSeconds = 30;
 //	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));

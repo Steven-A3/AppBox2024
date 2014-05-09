@@ -16,7 +16,7 @@
 #define ItemKey_RowHeight					@"rowHeight"
 #define ItemKey_Description                 @"description"
 
-#define PeriodItem_ID                       @"periodID"
+#define PeriodItem_ID                       @"uniqueID"
 #define PeriodItem_StartDate                @"startDate"
 #define PeriodItem_EndDate                  @"endDate"
 #define PeriodItem_CycleLength              @"cycleLength"
@@ -25,11 +25,11 @@
 #define PeriodItem_RegDate                  @"regDate"
 #define PeriodItem_AccountID                @"accountID"
 #define PeriodItem_Account                  @"account"
-#define PeriodItem_IsPerdict                @"isPredict"
+#define PeriodItem_IsPredict                @"isPredict"
 #define PeriodItem_CalendarID               @"calendarID"
 #define PeriodItem_IsAutoSave               @"isAutoSave"
 
-#define AccountItem_ID                      @"accountID"
+#define AccountItem_ID                      @"uniqueID"
 #define AccountItem_Name                    @"accountName"
 #define AccountItem_Birthday                @"birthDay"
 #define AccountItem_Notes                   @"accountNotes"

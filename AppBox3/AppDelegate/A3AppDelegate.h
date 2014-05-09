@@ -50,6 +50,12 @@ extern NSString *const A3DropboxLoginFailed;
 /* Global Settings */
 extern NSString *const kA3ThemeColorIndex;
 
+extern NSString *const A3LocalNotificationOwner;
+extern NSString *const A3LocalNotificationDataID;
+extern NSString *const A3LocalNotificationFromLadyCalendar;
+extern NSString *const A3LocalNotificationFromDaysCounter;
+extern NSString *const A3NotificationClockAppDidAppear;
+
 @protocol A3ViewControllerProtocol <NSObject>
 - (NSUInteger)a3SupportedInterfaceOrientations;
 @end
@@ -76,6 +82,8 @@ extern NSString *const kA3ThemeColorIndex;
 @property (strong, nonatomic) A3CacheStoreManager *cacheStoreManager;
 
 + (A3AppDelegate *)instance;
+
+- (void)showReceivedLocalNotification;
 
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;

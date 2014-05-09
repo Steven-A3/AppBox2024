@@ -111,6 +111,8 @@
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 
+	[_dataManager setupLocalNotification];
+
     [tableView reloadData];
     if( prevIndexPath.row != indexPath.row )
         [tableView reloadRowsAtIndexPaths:@[prevIndexPath,indexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -156,6 +158,7 @@
 
 	[[NSUserDefaults standardUserDefaults] setObject:self.settingDict forKey:A3LadyCalendarSetting];
 	[[NSUserDefaults standardUserDefaults] synchronize];
+	[_dataManager setupLocalNotification];
 
 	[self.tableView reloadData];
 }

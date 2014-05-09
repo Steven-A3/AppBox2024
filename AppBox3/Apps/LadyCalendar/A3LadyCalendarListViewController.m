@@ -305,7 +305,6 @@
     NSString *monthStr = [A3DateHelper dateStringFromDate:item.startDate withFormat:@"MMMM"];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStylePlain target:nil action:nil];
     A3LadyCalendarDetailViewController *viewCtrl = [[A3LadyCalendarDetailViewController alloc] initWithNibName:@"A3LadyCalendarDetailViewController" bundle:nil];
-	viewCtrl.dataManager = _dataManager;
     viewCtrl.month = item.startDate;
     viewCtrl.periodItems = [self sameMonthItemFromIndexPath:indexPath];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:monthStr style:UIBarButtonItemStyleBordered target:nil action:nil];
