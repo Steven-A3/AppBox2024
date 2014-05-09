@@ -24,26 +24,6 @@
 @end
 
 @implementation A3DaysCounterSetupDurationViewController
-- (NSString*)exampleString
-{
-    NSString *retStr = @"";
-    NSArray *valueArray = @[@"2 years", @"3 months", @"4 weeks",@"15 days" ,@"4 hours", @"30 minutes",@"13 seconds"];
-    NSArray *optionArray = @[@(DurationOption_Year), @(DurationOption_Month), @(DurationOption_Week), @(DurationOption_Day), @(DurationOption_Hour), @(DurationOption_Minutes), @(DurationOption_Seconds)];
-    
-    NSInteger optionValue = [_eventModel.durationOption integerValue];
-    
-    for (NSInteger i=0; i < [optionArray count]; i++) {
-        NSInteger flag = [[optionArray objectAtIndex:i] integerValue];
-        if ( optionValue & flag ) {
-            if ( [retStr length] > 0 ) {
-                retStr = [retStr stringByAppendingString:@" "];
-            }
-            retStr = [retStr stringByAppendingString:[valueArray objectAtIndex:i]];
-        }
-    }
-    
-    return retStr;
-}
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -88,6 +68,29 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+
+- (NSString*)exampleString
+{
+    NSString *retStr = @"";
+    NSArray *valueArray = @[@"2 years", @"3 months", @"4 weeks",@"15 days" ,@"4 hours", @"30 minutes",@"13 seconds"];
+    NSArray *optionArray = @[@(DurationOption_Year), @(DurationOption_Month), @(DurationOption_Week), @(DurationOption_Day), @(DurationOption_Hour), @(DurationOption_Minutes), @(DurationOption_Seconds)];
+    
+    NSInteger optionValue = [_eventModel.durationOption integerValue];
+    
+    for (NSInteger i=0; i < [optionArray count]; i++) {
+        NSInteger flag = [[optionArray objectAtIndex:i] integerValue];
+        if ( optionValue & flag ) {
+            if ( [retStr length] > 0 ) {
+                retStr = [retStr stringByAppendingString:@" "];
+            }
+            retStr = [retStr stringByAppendingString:[valueArray objectAtIndex:i]];
+        }
+    }
+    
+    return retStr;
 }
 
 #pragma mark - Table view data source
@@ -169,10 +172,7 @@
     
     self.selectedOptionFlag = optionValue;
     self.examLabel.text = [self exampleString];
-    
-    if (IS_IPHONE) {
-        _eventModel.durationOption = @(self.selectedOptionFlag);
-    }
+    self.eventModel.durationOption = @(self.selectedOptionFlag);
 }
 
 #pragma mark - action method

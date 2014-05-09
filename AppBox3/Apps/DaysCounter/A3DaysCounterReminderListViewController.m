@@ -148,7 +148,8 @@
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:item.effectiveStartDate
                                                                  allDayOption:[item.isAllDay boolValue]
-                                                                       repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                       repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
         if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
             cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:reminder.startDate
                                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];

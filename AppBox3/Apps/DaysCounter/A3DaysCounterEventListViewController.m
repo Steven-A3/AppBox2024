@@ -488,7 +488,8 @@
         markLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                            toDate:startDate
                                                      allDayOption:[item.isAllDay boolValue]
-                                                           repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                           repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
         ((A3DaysCounterEventListNameCell *)cell).untilRoundWidthConst.constant = 42;
         if ([markLabel.text isEqualToString:@"since"]) {
             markLabel.textColor = [UIColor colorWithRed:1.0 green:45.0/255.0 blue:85.0/255.0 alpha:1.0];

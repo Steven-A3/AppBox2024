@@ -152,7 +152,7 @@
 
 
 // KJH
-+ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat
++ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat strict:(BOOL)isStrict
 {
     if (isAllDay) {
         NSCalendar *calendar = [NSCalendar currentCalendar];
@@ -200,18 +200,36 @@
             return @"now";
         }
         
-        if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-            return @"today";
-        }
-        else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
-            return @"today";
-        }
-
-        if ([toDate timeIntervalSince1970] > [fromDate timeIntervalSince1970]) {
-            return @"until";
+        if (isStrict) {
+            if ([toDate timeIntervalSince1970] > ([fromDate timeIntervalSince1970] + 60)) {
+                return @"until";
+            }
+            else {
+                if ([fromDate timeIntervalSince1970] > [toDate timeIntervalSince1970]) {
+                    if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
+                        return @"today";
+                    }
+                    else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
+                        return @"today";
+                    }
+                }
+                return @"since";
+            }
         }
         else {
-            return @"since";
+            if (isRepeat && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
+                return @"today";
+            }
+            else if (!isRepeat && [fromComp year] == [toComp year] && [fromComp month] == [toComp month] && [fromComp day] == [toComp day]) {
+                return @"today";
+            }
+            
+            if ([toDate timeIntervalSince1970] > [fromDate timeIntervalSince1970]) {
+                return @"until";
+            }
+            else {
+                return @"since";
+            }
         }
     }
 }

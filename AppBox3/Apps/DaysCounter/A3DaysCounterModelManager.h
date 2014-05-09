@@ -88,6 +88,9 @@
 - (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
 
+#pragma mark - Specific Condition Validation
++ (BOOL)hasHourMinDurationOption:(NSInteger)durationOption;
+
 #pragma mark - Period
 - (DaysCounterEvent *)closestEventObjectOfCalendar:(DaysCounterCalendar *)calendar;
 - (void)renewEffectiveStartDates:(DaysCounterCalendar *)calendar;

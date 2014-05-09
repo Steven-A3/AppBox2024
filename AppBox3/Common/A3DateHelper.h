@@ -25,7 +25,7 @@
 + (NSInteger)getDaysFromTodayToDate:(NSDate*)goalDate;
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
 + (NSDateComponents *)diffCompFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate calendarUnit:(NSCalendarUnit)calendarUnit;
-+ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat;      // KJH
++ (NSString *)untilSinceStringByFromDate:(NSDate *)fromDate toDate:(NSDate *)toDate allDayOption:(BOOL)isAllDay repeat:(BOOL)isRepeat strict:(BOOL)isStrict;      // KJH
 + (NSInteger)diffDaysFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate isAllDay:(BOOL)isAllDay;     // KJH
 + (NSInteger)diffWeeksFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;
 + (NSInteger)diffMonthsFromDate:(NSDate*)fromDate toDate:(NSDate*)toDate;

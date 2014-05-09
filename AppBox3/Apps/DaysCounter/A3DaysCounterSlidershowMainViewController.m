@@ -668,7 +668,8 @@
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:eventItem.effectiveStartDate
                                                                  allDayOption:[eventItem.isAllDay boolValue]
-                                                                       repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                       repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                       strict:NO];
         [txt appendFormat:@"%@<br/>", [eventItem eventName]];
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
         
@@ -691,7 +692,8 @@
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:eventItem.effectiveStartDate
                                                                  allDayOption:[eventItem.isAllDay boolValue]
-                                                                       repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                       repeat:[eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                       strict:NO];
         [txt appendFormat:@"%@\n", [eventItem eventName]];
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         
