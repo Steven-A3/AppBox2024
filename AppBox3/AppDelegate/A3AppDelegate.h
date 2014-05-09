@@ -83,7 +83,7 @@ extern NSString *const A3NotificationClockAppDidAppear;
 
 + (A3AppDelegate *)instance;
 
-- (void)showReceivedLocalNotification;
+- (void)showReceivedLocalNotifications;
 
 - (UINavigationController *)navigationController;
 - (UIViewController *)visibleViewController;

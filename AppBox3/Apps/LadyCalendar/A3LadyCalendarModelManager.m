@@ -452,8 +452,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 		NSDate *fireDate = [calendar dateByAddingComponents:fireDateComponents toDate:period.startDate options:0];
 		NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fireDate];
 		components.hour = 9;
-//		components.hour = 18;
-//		components.minute = 19;
+//		components.hour = 21;
+//		components.minute = 43;
 		fireDate = [calendar dateFromComponents:components];
 
 		if ([fireDate isEarlierThanDate:today]) continue;

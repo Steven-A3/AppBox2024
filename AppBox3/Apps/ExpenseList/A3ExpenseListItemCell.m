@@ -14,9 +14,10 @@
 #import "A3CalculatorDelegate.h"
 #import "A3NumberKeyboardSimpleVC_iPad.h"
 #import "A3ExpenseListMainViewcontroller.h"
+#import "NSString+conversion.h"
 
 
-@interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate, A3CalculatorDelegate>
+	@interface A3ExpenseListItemCell() <UITextFieldDelegate, A3KeyboardDelegate, A3ExpenseListAccessoryDelegate, A3CalculatorDelegate>
 @property (nonatomic, strong) UIButton *checkButton;
 @property (nonatomic, strong) UIView *sep1View;
 @property (nonatomic, strong) UIView *sep2View;
@@ -311,7 +312,7 @@
 	NSMutableString *resultString = [textField.text mutableCopy];
 	[resultString replaceCharactersInRange:range withString:string];
 	FNLOG(@"%@", resultString);
-	[self.keyboardAccessoryView showEraseButton:[resultString length] > 0];
+	[self.keyboardAccessoryView showEraseButton:[resultString length] || [_textBeforeEditingTextField length]];
 
     return YES;
 }
@@ -350,11 +351,7 @@
 
 - (void)showEraseButtonIfNeeded
 {
-	if (_firstResponder.text.length == 0) {
-        [self.keyboardAccessoryView showEraseButton:NO];
-    } else {
-        [self.keyboardAccessoryView showEraseButton:YES];
-    }
+	[self.keyboardAccessoryView showEraseButton:[_firstResponder.text length] || [_textBeforeEditingTextField length]];
 }
 
 - (void)changeDirectionButtonStateFor:(UITextField *)textField
@@ -469,8 +466,11 @@
 }
 
 - (void)keyboardAccessoryEraseButtonTouchUp:(id)sender {
-	[self setFirstResponderText:@""];
-	[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_firstResponder];
+	_textBeforeEditingTextField = @"";
+	if ([_firstResponder.text length]) {
+		[self setFirstResponderText:@""];
+		[self.keyboardAccessoryView undoRedoButtonStateChangeFor:_firstResponder];
+	}
 	[self showEraseButtonIfNeeded];
 }
 

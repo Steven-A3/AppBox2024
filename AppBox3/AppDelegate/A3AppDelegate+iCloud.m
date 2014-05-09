@@ -150,11 +150,6 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 		});
 	}
 
-	[self showReceivedLocalNotification];
-
-	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-	[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
-
 //	double delayInSeconds = 30;
 //	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
 //	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -471,7 +466,10 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 	// save the array back to user defaults
 	[userDefaults setObject:fetchDates forKey:@"BackgroundFetchUpDates"];
 	[userDefaults synchronize];
-	
+
+	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+	[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
+
 	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);
 }
 

@@ -28,6 +28,7 @@
 #import "A3DateHelper.h"
 #import "NSDate+LunarConverter.h"
 #import "A3LadyCalendarDetailViewController.h"
+#import "A3LadyCalendarModelManager.h"
 
 NSString *const A3DrawerStateChanged = @"A3DrawerStateChanged";
 NSString *const A3DropboxLoginWithSuccess = @"A3DropboxLoginWithSuccess";
@@ -54,6 +55,7 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataStoreReadyToUse) name:USMStoreDidChangeNotification object:nil];
 
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
@@ -149,6 +151,7 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
 	[self applicationDidBecomeActive_passcode];
+
 	FNLOG();
 }
 
@@ -156,7 +159,6 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 {
     // Saves changes in the application's managed object context before the application terminates.
 	[MagicalRecord cleanUp];
-	FNLOG();
 }
 
 - (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
@@ -194,6 +196,15 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 	return NO;
 }
 
+- (void)coreDataStoreReadyToUse {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[self showReceivedLocalNotifications];
+
+		[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+		[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
+	});
+}
+
 #pragma mark Notification
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -216,7 +227,7 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 	[alert show];
 }
 
-- (void)showReceivedLocalNotification {
+- (void)showReceivedLocalNotifications {
 	if (!_localNotificationUserInfo) return;
 
 	NSString *notificationOwner = [_localNotificationUserInfo objectForKey:A3LocalNotificationOwner];
