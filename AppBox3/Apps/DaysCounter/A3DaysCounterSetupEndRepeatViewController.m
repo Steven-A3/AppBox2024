@@ -171,10 +171,11 @@
             [self doneButtonAction:nil];
         }
             break;
+
         case 1:
         {
             NSDate *repeatEndDate = self.eventModel.repeatEndDate;
-            if (!repeatEndDate || [repeatEndDate isKindOfClass:[NSNull class]]) {
+            if ( !repeatEndDate ) {
                 self.eventModel.repeatEndDate = [NSDate date];
             }
             

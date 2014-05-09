@@ -25,7 +25,7 @@
 #import "NSDate+LunarConverter.h"
 #import "A3AppDelegate+appearance.h"
 
-@interface A3DaysCounterCalendarListMainViewController () <UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface A3DaysCounterCalendarListMainViewController () <UINavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UIScrollViewDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) NSArray *searchResultArray;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -222,6 +222,7 @@
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navCtrl.delegate = self;
         [self presentViewController:navCtrl animated:YES completion:nil];
     }
     else {
@@ -229,7 +230,7 @@
         [rootViewController presentCenterViewController:[[A3NavigationController alloc] initWithRootViewController:viewCtrl]
                                      fromViewController:self
                                          withCompletion:^{
-                                             
+                                             [viewCtrl showKeyboard];
                                          }];
     }
 }
@@ -275,6 +276,23 @@
     [self.searchBar becomeFirstResponder];
 //    [self.searchDisplayController setActive:YES animated:YES];
 //    [self.searchDisplayController.searchBar becomeFirstResponder];
+}
+
+#pragma mark - UINavigationController Delegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+}
+
+-(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (!animated) {
+        return;
+    }
+    
+    if ([viewController isKindOfClass:[A3DaysCounterAddEventViewController class]]) {
+        navigationController.delegate = nil;
+        [((A3DaysCounterAddEventViewController *)viewController) showKeyboard];
+    }
 }
 
 #pragma mark - Table view data source
