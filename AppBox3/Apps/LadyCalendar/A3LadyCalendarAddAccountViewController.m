@@ -17,6 +17,7 @@
 #import "A3AppDelegate+appearance.h"
 #import "GCPlaceholderTextView.h"
 #import "NSString+conversion.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -36,7 +37,8 @@
 	[super viewDidLoad];
 
 	self.title = (_isEditMode ? @"Edit Account" : @"Add Account");
-	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelAction:)];
+
+	[self leftBarButtonCancelButton];
 	[self rightBarButtonDoneButton];
 
 	self.itemArray = [NSMutableArray arrayWithArray:@[@{ ItemKey_Title : @"Name", ItemKey_Type : @( AccountCell_Name )},@{ ItemKey_Title : @"Birthday", ItemKey_Type : @( AccountCell_Birthday )},@{ ItemKey_Title : @"Notes", ItemKey_Type : @( AccountCell_Notes )}]];
@@ -58,6 +60,23 @@
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, 15.0, 0, 0);
 
 	[self registerContentSizeCategoryDidChangeNotification];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
+}
+
+- (void)dealloc {
+	[self removeObserver];
+}
+
+- (void)willDismissRightSideView {
+	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	if ([context hasChanges]) {
+		[context rollback];
+	}
+
+	[self dismissViewControllerAnimated:NO completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -119,7 +138,13 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return (_isEditMode ? 2 : 1);
+	BOOL canDeleteThisAccount = [LadyCalendarAccount MR_countOfEntities] > 1;
+	if (canDeleteThisAccount) {
+		NSString *currentUserID = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarCurrentAccountID];
+		canDeleteThisAccount = ![_accountItem.uniqueID isEqualToString:currentUserID];
+	}
+
+	return (_isEditMode && canDeleteThisAccount ? 2 : 1);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -332,20 +357,17 @@
     return YES;
 }
 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+	_textBeforeEditingTextField = textField.text;
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
+	NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
 	NSString *inputName = [text stringByTrimmingSpaceCharacters];
 
-	if ([_originalName length]) {
-		if (![_originalName isEqualToString:inputName]) {
-			_sameNameExists = [[LadyCalendarAccount MR_findByAttribute:@"name" withValue:inputName] count] > 0;
-		} else {
-			_sameNameExists = NO;
-		}
-	} else {
-		_sameNameExists = [[LadyCalendarAccount MR_findByAttribute:@"name" withValue:inputName] count] > 0;
-	}
+	_accountItem.name = inputName;
+	_sameNameExists = [[LadyCalendarAccount MR_findByAttribute:@"name" withValue:inputName] count] > 1;
 
 	if (_sameNameExists) {
 		[self.alertHUD show:YES];
@@ -353,9 +375,15 @@
 		[self.alertHUD hide:YES];
 	}
 
-	_accountItem.name = [inputName length] > 0 ? text : @"";
-    [self checkInputValues];
-    return YES;
+	[self checkInputValues];
+	return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	if (![textField.text length]) {
+		textField.text = _textBeforeEditingTextField;
+	}
+	_accountItem.name = [textField.text stringByTrimmingSpaceCharacters];
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField {
@@ -366,18 +394,8 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    [textField resignFirstResponder];
-    return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
-	_textBeforeEditingTextField = textField.text;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-	if (![textField.text length]) {
-		textField.text = _textBeforeEditingTextField;
-	}
+	[textField resignFirstResponder];
+	return YES;
 }
 
 - (MBProgressHUD *)alertHUD {
@@ -463,9 +481,11 @@
     [self checkInputValues];
 }
 
-- (void)cancelAction:(id)sender
-{
-	[[[MagicalRecordStack defaultStack] context] rollback];
+- (void)cancelButtonAction:(UIBarButtonItem *)barButtonItem {
+	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	if ([context hasChanges]) {
+		[context rollback];
+	}
 
 	[self dismissViewControllerAnimated:YES completion:nil];
 }
