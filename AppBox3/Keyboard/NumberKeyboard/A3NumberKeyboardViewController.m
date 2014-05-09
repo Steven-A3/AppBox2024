@@ -250,6 +250,8 @@
 	}
 	[_prevButton setTitle:available ? @"Prev" : nil forState:UIControlStateNormal];
 	[_prevButton setEnabled:available];
+
+	[self setupLocale];
 }
 
 - (void)setKeyboardType:(A3NumberKeyboardType)keyboardType {
