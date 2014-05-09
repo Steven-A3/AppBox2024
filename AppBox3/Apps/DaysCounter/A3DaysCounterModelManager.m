@@ -829,6 +829,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         fromDate = [A3DateHelper midnightForDate:fromDate];
         firstDate = [A3DateHelper midnightForDate:firstDate];
     }
+
     if ([self isTodayEventForDate:firstDate fromDate:fromDate repeatType:repeatType]) {
         retDate = [self repeatDateOfCurrentNotNextWithRepeatOption:repeatType firstDate:firstDate fromDate:fromDate];
         return retDate;
@@ -1143,7 +1144,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                    toDate:item.effectiveStartDate
                                                              allDayOption:[item.isAllDay boolValue]
-                                                                   repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                   repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                   strict:NO];
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"now"]) {
         NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
@@ -1274,6 +1276,16 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     
     return retFormat;
+}
+
+#pragma mark - Specific Condition Validation
++ (BOOL)hasHourMinDurationOption:(NSInteger)durationOption
+{
+    if ( (durationOption & DurationOption_Hour) || (durationOption & DurationOption_Minutes) ) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 #pragma mark - Period

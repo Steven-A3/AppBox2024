@@ -256,7 +256,8 @@
             NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                            toDate:_eventItem.effectiveStartDate
                                                                      allDayOption:[_eventItem.isAllDay boolValue]
-                                                                           repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                           repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
             if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
                 NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[_eventItem.repeatType integerValue]
                                                                                                           firstDate:[_eventItem.startDate solarDate]
@@ -597,7 +598,7 @@
     lunarImageView.hidden = ![info.isLunar boolValue];
     
     if (!hasRepeat) {
-        cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now toDate:[info.startDate solarDate] allDayOption:[info.isAllDay boolValue] repeat:hasRepeat];
+        cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now toDate:[info.startDate solarDate] allDayOption:[info.isAllDay boolValue] repeat:hasRepeat strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
         cell.untilRoundWidthConst.constant = 42;
         
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
@@ -672,7 +673,8 @@
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                            toDate:nextDate
                                                                      allDayOption:[info.isAllDay boolValue]
-                                                                           repeat:hasRepeat];
+                                                                           repeat:hasRepeat
+                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
         cell.untilRoundWidthConst.constant = 42;
 
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
@@ -841,7 +843,8 @@ EXIT_FUCTION:
     cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                        toDate:nextDate
                                                                  allDayOption:[info.isAllDay boolValue]
-                                                                       repeat:hasRepeat];
+                                                                       repeat:hasRepeat
+                                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
     cell.untilRoundWidthConst.constant = 42;
     daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[info.durationOption integerValue]
                                                                               fromDate:startDate
@@ -962,7 +965,8 @@ EXIT_FUCTION:
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                            toDate:[info.startDate solarDate]
                                                                      allDayOption:[info.isAllDay boolValue]
-                                                                           repeat:hasRepeat];
+                                                                           repeat:hasRepeat
+                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
         cell.untilRoundWidthConst.constant = 42;
         
         if ( isLunar ) {
@@ -1064,7 +1068,8 @@ EXIT_FUCTION:
         cell.untilSinceRoundLabel.text = [A3DateHelper untilSinceStringByFromDate:now
                                                                            toDate:nextDate
                                                                      allDayOption:[info.isAllDay boolValue]
-                                                                           repeat:hasRepeat];
+                                                                           repeat:hasRepeat
+                                                                           strict:[A3DaysCounterModelManager hasHourMinDurationOption:[info.durationOption integerValue]]];
         cell.untilRoundWidthConst.constant = 42;
         
         if (isTypeA) {
@@ -1692,7 +1697,8 @@ EXIT_FUCTION:
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
-                                                                       repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                       repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
         [txt appendFormat:@"%@<br/>", _eventItem.eventName];
         [txt appendFormat:@"%@ %@<br/>", daysString, untilSinceString];
 
@@ -1715,7 +1721,8 @@ EXIT_FUCTION:
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
-                                                                       repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                       repeat:[_eventItem.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                       strict:[A3DaysCounterModelManager hasHourMinDurationOption:[_eventItem.durationOption integerValue]]];
         [txt appendFormat:@"%@\n", _eventItem.eventName];
         [txt appendFormat:@"%@ %@\n", daysString, untilSinceString];
         

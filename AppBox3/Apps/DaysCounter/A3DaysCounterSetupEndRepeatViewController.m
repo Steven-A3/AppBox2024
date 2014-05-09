@@ -22,68 +22,9 @@
 @property (strong, nonatomic) A3DateKeyboardViewController *keyboardVC;
 @property (strong, nonatomic) NSDate *originalValue;
 
-- (void)updateConstraints;
-- (void)showKeyboard;
-- (void)hideKeyboard;
-- (void)cancelAction:(id)sender;
 @end
 
 @implementation A3DaysCounterSetupEndRepeatViewController
-- (void)updateConstraints
-{
-    [self.view removeConstraints:self.view.constraints];
-    if ( self.keyboardVC ) {
-        [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.keyboardVC.view setTranslatesAutoresizingMaskIntoConstraints:NO];
-        _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, _tableView.frame.size.width, self.view.frame.size.height - self.keyboardVC.view.frame.size.height);
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.keyboardVC.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:self.keyboardVC.view.frame.size.height]];
-    }
-    else {
-        _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, _tableView.frame.size.width, self.view.frame.size.height);
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
-    }
-}
-
-- (void)showKeyboard
-{
-    if ( self.keyboardVC || [self.keyboardVC.view isDescendantOfView:self.view]) {
-        return;
-    }
-    
-    self.keyboardVC = [[A3DateKeyboardViewController_iPhone alloc] initWithNibName:@"A3DateKeyboardViewController_iPhone" bundle:nil];
-    self.keyboardVC.delegate = self;
-    self.keyboardVC.view.frame = CGRectMake(0, self.view.frame.size.height - self.keyboardVC.view.frame.size.height, self.keyboardVC.view.frame.size.width, self.keyboardVC.view.frame.size.height);
-    [self.view addSubview:self.keyboardVC.view];
-    
-    if ( self.eventModel.repeatEndDate ) {
-        self.keyboardVC.date = self.eventModel.repeatEndDate;
-    }
-}
-
-- (void)hideKeyboard
-{
-    if ( IS_IPHONE ) {
-        [self.keyboardVC.view removeFromSuperview];
-        self.keyboardVC.delegate = nil;
-        self.keyboardVC = nil;
-        [self updateConstraints];
-    }
-    else {
-        self.keyboardVC.delegate = nil;
-        self.keyboardVC = nil;
-    }
-}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -112,6 +53,33 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark -
+- (void)updateConstraints
+{
+    [self.view removeConstraints:self.view.constraints];
+    if ( self.keyboardVC ) {
+        [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+        [self.keyboardVC.view setTranslatesAutoresizingMaskIntoConstraints:NO];
+        _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, _tableView.frame.size.width, self.view.frame.size.height - self.keyboardVC.view.frame.size.height);
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.keyboardVC.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+        
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.keyboardVC.view attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:self.keyboardVC.view.frame.size.height]];
+    }
+    else {
+        _tableView.frame = CGRectMake(_tableView.frame.origin.x, _tableView.frame.origin.y, _tableView.frame.size.width, self.view.frame.size.height);
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeLeading multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0]];
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_tableView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0]];
+    }
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -133,29 +101,60 @@
     return 0.0;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([indexPath row] == 2) {
+        return 236.0;
+    }
+    
+    return 44.0;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * const cellID = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID];
-    if ( cell == nil ) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
-        cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
-    }
+    static NSString * const cellID2 = @"dateInputCell";
     
-    cell.textLabel.text = [_itemArray objectAtIndex:indexPath.row];
-    cell.detailTextLabel.text = @"";
+    UITableViewCell *cell;
     
-    if ( indexPath.row == ([_itemArray count] - 1) && [self.eventModel.repeatEndDate isKindOfClass:[NSDate class]]) {
-        cell.detailTextLabel.text = [A3Formatter stringFromDate:self.eventModel.repeatEndDate format:DaysCounterDefaultDateFormat];
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    }
-    else if ( indexPath.row == 0 && [self.eventModel.repeatEndDate isKindOfClass:[NSNull class]] ) {
-        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    if ([indexPath row] == 2) {
+        cell = [tableView dequeueReusableCellWithIdentifier:cellID2];
+        
+        if (!cell) {
+            cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventDateInputCell" owner:nil options:nil] lastObject];
+            UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+            datePicker.datePickerMode = UIDatePickerModeDate;
+            [datePicker addTarget:self action:@selector(datePickerChangeAction:) forControlEvents:UIControlEventValueChanged];
+        }
+
+        UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
+        if (_originalValue) {
+            datePicker.date = _originalValue;
+        }
     }
     else {
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell = [tableView dequeueReusableCellWithIdentifier:cellID];
+        
+        if ( cell == nil ) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellID];
+            cell.detailTextLabel.textColor = [UIColor colorWithRed:128/255.0 green:128/255.0 blue:128/255.0 alpha:1.0];
+        }
+        
+        cell.textLabel.text = [_itemArray objectAtIndex:indexPath.row];
+        cell.detailTextLabel.text = @"";
+        
+        if ( indexPath.row == 1 && self.eventModel.repeatEndDate) {
+            cell.detailTextLabel.text = [A3Formatter stringFromDate:self.eventModel.repeatEndDate format:DaysCounterDefaultDateFormat];
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else if ( indexPath.row == 0 && !self.eventModel.repeatEndDate ) {
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+        else {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+        }
     }
-    
+
     return cell;
 }
 
@@ -169,7 +168,6 @@
         {
             self.eventModel.repeatEndDate = nil;
             [tableView reloadData];
-            [self hideKeyboard];
             [self doneButtonAction:nil];
         }
             break;
@@ -186,10 +184,15 @@
             cell_1row.detailTextLabel.text = [A3Formatter stringFromDate:[self.eventModel repeatEndDate] format:DaysCounterDefaultDateFormat];
             cell_1row.accessoryType = UITableViewCellAccessoryCheckmark;
             
-            [self showKeyboard];
+            if ([self.itemArray count] == 3) {
+                [self hideDatePicker];
+            }
+            else {
+                [self showDatePicker:[self.eventModel repeatEndDate]];
+            }
         }
             break;
-            
+
         default:
             break;
     }
@@ -208,6 +211,29 @@
 
 - (void)dateKeyboardDoneButtonPressed:(A3DateKeyboardViewController *)keyboardViewController {
     [self doneButtonAction:nil];
+}
+
+- (void)showDatePicker:(NSDate *)date
+{
+    self.itemArray = @[@"Never", @"Custom", @"DatePicker"];
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^{
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+    }];
+    [self.tableView beginUpdates];
+    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationMiddle];
+    [self.tableView endUpdates];
+    [CATransaction commit];
+}
+
+- (void)hideDatePicker
+{
+    self.itemArray = @[@"Never", @"Custom"];
+    
+    [self.tableView beginUpdates];
+    [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:2 inSection:0]] withRowAnimation:UITableViewRowAnimationMiddle];
+    [self.tableView endUpdates];
 }
 
 #pragma mark - action method
@@ -237,6 +263,12 @@
     if (_dismissCompletionBlock) {
         _dismissCompletionBlock();
     }
+}
+
+- (void)datePickerChangeAction:(id)sender
+{
+    self.eventModel.repeatEndDate = ((UIDatePicker *)sender).date;
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

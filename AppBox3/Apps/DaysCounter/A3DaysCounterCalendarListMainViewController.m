@@ -326,7 +326,8 @@
     NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
                                                                    toDate:startDate
                                                              allDayOption:[event.isAllDay boolValue]
-                                                                   repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO];
+                                                                   repeat:[event.repeatType integerValue] != RepeatType_Never ? YES : NO
+                                                                   strict:NO];
     
     if ([untilSinceString isEqualToString:@"today"] || [untilSinceString isEqualToString:@"Now"]) {
         result = untilSinceString;
@@ -350,7 +351,8 @@
             untilSinceString = [A3DateHelper untilSinceStringByFromDate:today
                                                                  toDate:nextDate
                                                            allDayOption:[event.isAllDay boolValue]
-                                                                 repeat:YES];
+                                                                 repeat:YES
+                                                                 strict:NO];
             
             result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day // [event.durationOption integerValue]
                                                                                                                    fromDate:today
