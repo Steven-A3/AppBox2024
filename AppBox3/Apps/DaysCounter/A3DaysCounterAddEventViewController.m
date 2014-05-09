@@ -257,6 +257,21 @@
     [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
+- (void)showKeyboard {
+    UITableViewCell *aCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+    if (!aCell) {
+        return;
+    }
+    if (![self.title isEqualToString:@"Add Event"]) {
+        return;
+        
+    }
+    
+    UITextField *textField = (UITextField*)[aCell viewWithTag:10];
+    [textField becomeFirstResponder];
+}
+
 #pragma mark -
 
 - (void)alertMessage:(NSString*)message
@@ -1393,9 +1408,13 @@
 
 - (void)cancelAction:(UIBarButtonItem *)button
 {
-    [[_eventItem managedObjectContext] refreshObject:_eventItem mergeChanges:NO];
     [self resignAllAction];
 
+	NSManagedObjectContext *context = [[MagicalRecordStack defaultStack] context];
+	if ([context hasChanges]) {
+		[context rollback];
+	}
+    
     if (IS_IPAD) {
         [self.A3RootViewController dismissCenterViewController];
     }
@@ -1480,7 +1499,7 @@
     
     if ([switchButton isOn]) {
         [self closeDatePickerCell];
-        
+
         if ([_eventItem.repeatType integerValue] != RepeatType_EveryYear) {
             _eventItem.repeatType = @(RepeatType_Never);
             NSInteger repeatTypeIndex = [self indexOfRowItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];

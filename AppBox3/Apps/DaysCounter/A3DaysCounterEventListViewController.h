@@ -11,7 +11,7 @@
 
 @class DaysCounterCalendar;
 @class A3WalletSegmentedControl;
-@interface A3DaysCounterEventListViewController : UIViewController<UISearchDisplayDelegate, UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, A3DaysCounterEventDetailViewControllerDelegate>
+@interface A3DaysCounterEventListViewController : UIViewController
 {
     NSInteger _sortType;
     BOOL _isDateAscending;

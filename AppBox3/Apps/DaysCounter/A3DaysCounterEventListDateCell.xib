@@ -70,7 +70,7 @@
                             <constraint firstAttribute="height" constant="32" id="Nbc-Rf-UXF"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" tag="15" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star02_on" translatesAutoresizingMaskIntoConstraints="NO" id="DAN-qi-dv0">
+                    <imageView hidden="YES" userInteractionEnabled="NO" tag="15" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star02_on" translatesAutoresizingMaskIntoConstraints="NO" id="DAN-qi-dv0">
                         <rect key="frame" x="141" y="8" width="20" height="20"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <constraints>

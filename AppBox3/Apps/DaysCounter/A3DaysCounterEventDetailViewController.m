@@ -32,8 +32,6 @@
 @property (strong, nonatomic) UIView *topWhitePaddingView;
 @property (strong, nonatomic) UILabel *heightCalculateLabel;
 
-- (void)editAction:(id)sender;
-- (void)constructItemsFromEvent:(DaysCounterEvent*)event;
 @end
 
 @implementation A3DaysCounterEventDetailViewController
@@ -86,7 +84,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     if ( [_eventItem.eventId length] > 0 ) {
         [self constructItemsFromEvent:_eventItem];
     }
@@ -361,21 +359,15 @@
 
     cell.eventTitleLabel.text = info.eventName;
     CGSize calculatedTitleSize = [cell.eventTitleLabel.text sizeWithAttributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }];
-    //CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([info.isFavorite boolValue] ? 51 : 23) - ([info.imageFilename length] > 0 ? 65 : 0) - (IS_IPHONE ? 15 : 28);
     CGFloat titleMaxWidth = CGRectGetWidth(self.view.frame) - ([info.isFavorite boolValue] ? 43 : 15) - ([info.imageFilename length] > 0 ? 73 : 0) - (IS_IPHONE ? 15 : 28);
 
     if (calculatedTitleSize.width > titleMaxWidth) {
         calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
         cell.titleWidthConst.constant = titleMaxWidth;
         cell.titleHeightConst.constant = calculatedTitleSize.height;
-//        CGRect calculatedTitleRect = [_eventItem.eventName boundingRectWithSize:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)
-//                                                                        options:NSStringDrawingUsesLineFragmentOrigin
-//                                                                     attributes:@{ NSFontAttributeName : cell.eventTitleLabel.font }
-//                                                                        context:nil];
-//        cell.titleWidthConst.constant = titleMaxWidth;
-//        cell.titleHeightConst.constant = calculatedTitleRect.size.height;
     }
     else {
+        calculatedTitleSize = [cell.eventTitleLabel sizeThatFits:CGSizeMake(titleMaxWidth, CGFLOAT_MAX)];
         cell.titleWidthConst.constant = calculatedTitleSize.width;
         cell.titleHeightConst.constant = calculatedTitleSize.height;
     }
