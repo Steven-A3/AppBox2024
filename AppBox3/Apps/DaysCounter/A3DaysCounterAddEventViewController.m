@@ -1486,6 +1486,7 @@
             NSInteger repeatTypeIndex = [self indexOfRowItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
             NSInteger endRepeatIndex = [self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:sectionRow_items];
+            
             if (endRepeatIndex != -1) {
                 [sectionRow_items removeObjectAtIndex:endRepeatIndex];
                 [self.tableView beginUpdates];
