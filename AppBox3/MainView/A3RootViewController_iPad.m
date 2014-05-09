@@ -333,61 +333,65 @@ static const CGFloat kSideViewWidth = 319.0;
     }
 	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewWillDismiss object:nil];
 
-	[UIView animateWithDuration:0.3 animations:^{
-        _showRightView = NO;
-        
-		CGRect bounds = [self screenBoundsAdjustedWithOrientation];
-		if (IS_LANDSCAPE) {
-			BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
-			if (useFullScreenInLandscape) {
-				// C-R >> C
+	double delayInSeconds = 0.01;
+	dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+	dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+		[UIView animateWithDuration:0.3 animations:^{
+			_showRightView = NO;
 
-				// Move right view to after right
-				CGRect frame = _rightNavigationController.view.frame;
-				frame.origin.x = bounds.size.width;
-				_rightNavigationController.view.frame = frame;
+			CGRect bounds = [self screenBoundsAdjustedWithOrientation];
+			if (IS_LANDSCAPE) {
+				BOOL useFullScreenInLandscape = [self useFullScreenInLandscapeForCurrentTopViewController];
+				if (useFullScreenInLandscape) {
+					// C-R >> C
 
-				frame = _centerNavigationController.view.frame;
-				frame.size.width = bounds.size.width;
-				_centerNavigationController.view.frame = frame;
-                // KJH
-                A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
-                if (presentedViewController) {
-                    presentedViewController.view.frame = frame;
-                }
+					// Move right view to after right
+					CGRect frame = _rightNavigationController.view.frame;
+					frame.origin.x = bounds.size.width;
+					_rightNavigationController.view.frame = frame;
+
+					frame = _centerNavigationController.view.frame;
+					frame.size.width = bounds.size.width;
+					_centerNavigationController.view.frame = frame;
+					// KJH
+					A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+					if (presentedViewController) {
+						presentedViewController.view.frame = frame;
+					}
+				} else {
+					// C-R >> L-C
+					// In landscape, leftSideView will always appear unless centerView does not show full screen
+					CGRect frame = _rightNavigationController.view.frame;
+					frame.origin.x = bounds.size.width;
+					_rightNavigationController.view.frame = frame;
+
+					frame = _centerNavigationController.view.frame;
+					frame.origin.x += kSideViewWidth + 1;
+					_centerNavigationController.view.frame = frame;
+					// KJH
+					A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
+					if (presentedViewController) {
+						presentedViewController.view.frame = frame;
+					}
+
+					frame = _leftNavigationController.view.frame;
+					frame.origin.x = 0;
+					_leftNavigationController.view.frame = frame;
+				}
 			} else {
-				// C-R >> L-C
-				// In landscape, leftSideView will always appear unless centerView does not show full screen
+				// C/R(Overlap on C) >> C
 				CGRect frame = _rightNavigationController.view.frame;
 				frame.origin.x = bounds.size.width;
 				_rightNavigationController.view.frame = frame;
-
-                frame = _centerNavigationController.view.frame;
-                frame.origin.x += kSideViewWidth + 1;
-                _centerNavigationController.view.frame = frame;
-                // KJH
-                A3NavigationController *presentedViewController = [_presentViewControllers lastObject];
-                if (presentedViewController) {
-                    presentedViewController.view.frame = frame;
-                }
-                
-				frame = _leftNavigationController.view.frame;
-				frame.origin.x = 0;
-				_leftNavigationController.view.frame = frame;
 			}
-		} else {
-			// C/R(Overlap on C) >> C
-			CGRect frame = _rightNavigationController.view.frame;
-			frame.origin.x = bounds.size.width;
-			_rightNavigationController.view.frame = frame;
-		}
-	} completion:^(BOOL finished) {
-        [_rightNavigationController.view removeFromSuperview];
-		[_rightNavigationController removeFromParentViewController];
-		_rightNavigationController = nil;
+		} completion:^(BOOL finished) {
+			[_rightNavigationController.view removeFromSuperview];
+			[_rightNavigationController removeFromParentViewController];
+			_rightNavigationController = nil;
 
-		[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewDidDismiss object:nil];
-	}];
+			[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationRightSideViewDidDismiss object:nil];
+		}];
+	});
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

@@ -177,17 +177,8 @@
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-    [self cancelAction:nil];
-}
-
-- (void)cancelAction:(id)sender
-{
 	if( IS_IPHONE ){
 		[self dismissViewControllerAnimated:YES completion:nil];
-	}
-	else{
-		[[self.A3RootViewController.centerNavigationController.viewControllers lastObject] viewWillAppear:YES];
-		[self.A3RootViewController dismissRightSideViewController];
 	}
 }
 
