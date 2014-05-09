@@ -23,6 +23,7 @@
 #import "NSDate+LunarConverter.h"
 #import "NSDateFormatter+LunarDate.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "A3AppDelegate.h"
 
 #define DEFAULT_CALENDAR_COLOR      [UIColor colorWithRed:1.0 green:41.0/255.0 blue:104.0/255.0 alpha:1.0]
 
@@ -1462,8 +1463,8 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 {
     // 기존 등록 얼럿 제거.
     [[[UIApplication sharedApplication] scheduledLocalNotifications] enumerateObjectsUsingBlock:^(UILocalNotification *notification, NSUInteger idx, BOOL *stop) {
-        NSString *notificationType = [notification.userInfo objectForKey:@"type"];
-        if ([notificationType isEqualToString:@"dc"]) {
+        NSString *notificationType = [notification.userInfo objectForKey:A3LocalNotificationOwner];
+        if ([notificationType isEqualToString:A3LocalNotificationFromDaysCounter]) {
             [[UIApplication sharedApplication] cancelLocalNotification:notification];
         }
     }];
@@ -1515,9 +1516,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             UILocalNotification *notification = [UILocalNotification new];
             notification.fireDate = [event alertDatetime];
             notification.alertBody = [event eventName];
-            notification.userInfo = @{ @"alert" : [event eventName],
-                                       @"type" : @"dc",
-                                       @"eventID" : [event eventId]};
+            notification.userInfo = @{
+                                       A3LocalNotificationOwner : A3LocalNotificationFromDaysCounter,
+                                       A3LocalNotificationDataID : [event eventId]};
 
             [[UIApplication sharedApplication] scheduleLocalNotification:notification];
             [localNotifications addObject:notification];

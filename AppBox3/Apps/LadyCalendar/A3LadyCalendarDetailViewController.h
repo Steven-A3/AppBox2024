@@ -14,8 +14,9 @@
 
 @interface A3LadyCalendarDetailViewController : UITableViewController
 
-@property (weak, nonatomic) A3LadyCalendarModelManager *dataManager;
+@property (strong, nonatomic) NSString *periodID;
 @property (strong, nonatomic) NSMutableArray *periodItems;
 @property (strong, nonatomic) NSDate *month;
+@property (assign, nonatomic) BOOL isFromNotification;
 
 @end

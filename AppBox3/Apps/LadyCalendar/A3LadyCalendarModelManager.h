@@ -24,18 +24,14 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (void)savePredictItemBeforeNow;
 
 - (NSInteger)numberOfAccount;
-- (LadyCalendarAccount*)accountForID:(NSString*)accountID;
 
 - (BOOL)addAccount:(NSDictionary*)item;
-- (BOOL)removeAccount:(NSString*)accountID;
 
 - (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending;
-- (NSMutableDictionary*)dictionaryFromAccount:(LadyCalendarAccount*)account;
+
 - (LadyCalendarAccount*)currentAccount;
 
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID;
-
-- (void)autoSavePredictPeriodToReal:(LadyCalendarPeriod*)item;
 
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending;
 
@@ -64,4 +60,5 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (NSDate *)startDateForCurrentAccount;
 - (NSDate *)endDateForCurrentAccount;
 
+- (void)setupLocalNotification;
 @end

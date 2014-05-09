@@ -550,10 +550,13 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
 {
-	FNLOG();
     [self resignAllAction];
-    
-    if( _periodItem.endDate == nil){
+
+	NSDateComponents *cycleLengthComponents = [NSDateComponents new];
+	cycleLengthComponents.day = [_periodItem.cycleLength integerValue] - 1;
+	_periodItem.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:_periodItem.startDate options:0];
+
+	if( _periodItem.endDate == nil){
         [A3LadyCalendarModelManager alertMessage:@"Please input end date." title:nil];
         return;
     }
@@ -561,7 +564,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         [A3LadyCalendarModelManager alertMessage:@"Cannot Save Period.\nThe start date must be before the end date." title:nil];
         return;
     }
-    else if([_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:(_periodItem ? _periodItem.uniqueID : nil)] ){
+    else if([_dataManager isOverlapStartDate:_periodItem.startDate endDate:_periodItem.endDate accountID:_dataManager.currentAccount.uniqueID periodID:_periodItem.uniqueID] ){
         [A3LadyCalendarModelManager alertMessage:@"The new date you entered overlaps with previous dates." title:nil];
         return;
     }
@@ -569,10 +572,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:_prevPeriod.startDate toDate:_periodItem.startDate];
         _prevPeriod.cycleLength = @(diffDays);
     }
-
-	NSDateComponents *cycleLengthComponents = [NSDateComponents new];
-	cycleLengthComponents.day = [_periodItem.cycleLength integerValue];
-	_periodItem.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:_periodItem.startDate options:0];
 
 	_periodItem.modificationDate = [NSDate date];
 	_periodItem.isPredict = @NO;

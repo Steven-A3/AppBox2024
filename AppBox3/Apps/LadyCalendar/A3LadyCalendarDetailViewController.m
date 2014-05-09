@@ -20,6 +20,7 @@
 #import "A3LadyCalendarDetailViewExpectedTitleCell.h"
 #import "NSDate+formatting.h"
 #import "A3WalletNoteCell.h"
+#import "UIViewController+A3Addition.h"
 
 extern NSString *A3TableViewCellDefaultCellID;
 NSString *const A3LadyCalendarDetailViewTitleCellID = @"A3LadyCalendarDetailViewTitleCellID";
@@ -29,6 +30,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 
 @interface A3LadyCalendarDetailViewController ()
 
+@property (strong, nonatomic) A3LadyCalendarModelManager *dataManager;
 @property (strong, nonatomic) NSArray *rowDataArray;
 
 @end
@@ -42,6 +44,17 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[super viewDidLoad];
 
 	self.title = @"";
+
+	if (_isFromNotification) {
+		self.title = @"Lady Calendar";
+		[self rightBarButtonDoneButton];
+	}
+	if (_periodID) {
+		LadyCalendarPeriod *period = [LadyCalendarPeriod MR_findFirstByAttribute:@"uniqueID" withValue:_periodID];
+		_periodItems = [NSMutableArray arrayWithArray:@[ period ] ];
+		_month = period.startDate;
+	}
+
 	self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPHONE ? 15.0 : 28.0), 0, 0);
 	self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -57,6 +70,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)viewWillAppear:(BOOL)animated
 {
 	[super viewWillAppear:animated];
+
 	[self.navigationController setToolbarHidden:YES];
 
 	if (![self isMovingToParentViewController]) {
@@ -81,29 +95,36 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[self.tableView reloadData];
 }
 
+- (A3LadyCalendarModelManager *)dataManager {
+	if (!_dataManager) {
+		_dataManager = [A3LadyCalendarModelManager new];
+	}
+	return _dataManager;
+}
+
 - (void)setupSectionsWithItems:(NSArray*)array
 {
     NSMutableArray *rowDataArray = [NSMutableArray array];
-    NSDate *today = [NSDate date];
-	NSInteger editableCount = 0;
 
 	NSUInteger indexOfData = 0;
     for( LadyCalendarPeriod *period in array ){
 		[rowDataArray addObjectsFromArray:[self rowDataForItemIsPredict:[period.isPredict boolValue] startDate:period.startDate notes:period.notes index:indexOfData]];
 
-        if( ![period.isPredict boolValue] || [period.startDate timeIntervalSince1970] < [today timeIntervalSince1970] )
-            editableCount++;
-
 		indexOfData++;
     }
 
-    isEditNavigationBar = ( editableCount == 1 );
-    if( isEditNavigationBar ){
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
-        self.navigationItem.rightBarButtonItem.width = 44.0;
-    }
-    else
-        self.navigationItem.rightBarButtonItem = nil;
+	if (!_isFromNotification) {
+		isEditNavigationBar = ( [array count] == 1 );
+		if( isEditNavigationBar ){
+			self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editAction:)];
+			self.navigationItem.rightBarButtonItem.width = 44.0;
+		} else {
+			self.navigationItem.rightBarButtonItem = nil;
+		}
+	}
+    else {
+		isEditNavigationBar = YES;
+	}
 
 	[rowDataArray addObject:@{ItemKey_Type:@(DetailCellType_Blank)}];
 
@@ -306,6 +327,10 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     [self presentViewController:navCtrl animated:YES completion:nil];
+}
+
+- (void)doneButtonAction:(UIBarButtonItem *)button {
+	[self dismissViewControllerAnimated:YES completion:NULL];
 }
 
 @end

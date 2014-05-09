@@ -27,7 +27,7 @@
 @property (strong, nonatomic) NSArray *sectionTitles;
 @property (strong, nonatomic) NSArray *sections;
 @property (assign, nonatomic) PercentCalcType calcType;
-//@property (strong, nonatomic) UIView *topWhitePaddingView;
+@property (copy, nonatomic) NSString *textBeforeEditingTextField;
 
 @end
 
@@ -1048,12 +1048,12 @@
 //    textField.text = [formatter stringFromNumber:_currentFactor];
 //    textField.text = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
 
-    textField.text = @"";
-    
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.textBeforeEditingTextField = textField.text;
+	textField.text = @"";
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
 }
 
@@ -1210,6 +1210,14 @@
     _isKeyboardShown = NO;
 	[self setFirstResponder:nil];
 
+	if (![textField.text length]) {
+		if ([_textBeforeEditingTextField length]) {
+			textField.text = _textBeforeEditingTextField;
+		} else {
+			textField.text = @"0";
+		}
+	}
+
     if ([textField.text length] > 0) {
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
@@ -1364,6 +1372,7 @@
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	_textBeforeEditingTextField = @"";
 	if ([keyInputDelegate isKindOfClass:[UITextField class]]) {
 		UITextField *textField = (UITextField *) keyInputDelegate;
 		textField.text = @"";

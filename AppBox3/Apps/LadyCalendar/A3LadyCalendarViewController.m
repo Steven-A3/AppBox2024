@@ -404,12 +404,11 @@
     if( [periods count] < 1 )
         return;
     LadyCalendarPeriod *period = [periods objectAtIndex:0];
-    A3LadyCalendarDetailViewController *viewCtrl = [[A3LadyCalendarDetailViewController alloc] initWithNibName:@"A3LadyCalendarDetailViewController" bundle:nil];
-	viewCtrl.dataManager = self.dataManager;
-    viewCtrl.month = period.startDate;
-    viewCtrl.periodItems = [NSMutableArray arrayWithArray:periods];
+    A3LadyCalendarDetailViewController *viewController = [[A3LadyCalendarDetailViewController alloc] initWithNibName:@"A3LadyCalendarDetailViewController" bundle:nil];
+    viewController.month = period.startDate;
+    viewController.periodItems = [NSMutableArray arrayWithArray:periods];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:[A3DateHelper dateStringFromDate:calendarView.dateMonth withFormat:@"MMMM"] style:UIBarButtonItemStyleBordered target:nil action:nil];
-    [self.navigationController pushViewController:viewCtrl animated:YES];
+	[self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - action method

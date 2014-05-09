@@ -12,6 +12,8 @@
 #import "A3UIDevice.h"
 #import "MMDrawerController.h"
 #import "SFKImage.h"
+#import "A3LadyCalendarModelManager.h"
+#import "A3DaysCounterModelManager.h"
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
@@ -464,7 +466,10 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 	// save the array back to user defaults
 	[userDefaults setObject:fetchDates forKey:@"BackgroundFetchUpDates"];
 	[userDefaults synchronize];
-	
+
+	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
+	[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
+
 	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);
 }
 

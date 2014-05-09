@@ -19,6 +19,7 @@
 #import "A3DefaultColorDefines.h"
 #import "A3AppDelegate.h"
 #import "ExpenseListHistory.h"
+#import "NSString+conversion.h"
 
 #define kDefaultItemCount_iPhone    9
 #define kDefaultItemCount_iPad      18
@@ -1117,11 +1118,14 @@ NSString *const ExpenseListMainCellIdentifier = @"Cell";
 		item.itemName = textField.text;
 	}
 	else if (textField == aCell.priceTextField) {
-		item.price = [self.decimalFormatter numberFromString:textField.text];
+		item.price = @([textField.text floatValueEx]);
 		textField.text = [self.priceNumberFormatter stringFromNumber:item.price];
 	}
 	else if (textField == aCell.qtyTextField) {
 		[self.decimalFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+		if (![textField.text length]) {
+			textField.text = [self.decimalFormatter stringFromNumber:@0];
+		}
 		item.qty = [self.decimalFormatter numberFromString:textField.text];
 	}
 

@@ -15,6 +15,7 @@
 #import "A3AppDelegate.h"
 #import "NSDate+calculation.h"
 #import "NSDateFormatter+A3Addition.h"
+#import "NSDate-Utilities.h"
 
 // UserInfo have "changedMonth".
 NSString *const A3NotificationLadyCalendarPeriodDataChanged = @"A3NotificationLadyCalendarPeriodDataChanged";
@@ -79,24 +80,36 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 - (void)savePredictItemBeforeNow
 {
     NSDictionary *setting = [self currentSetting];
-    if( [[setting objectForKey:SettingItem_AutoRecord] boolValue] ){
-        LadyCalendarAccount *account = [self currentAccount];
-        if( account ){
-            NSArray *predictList = [self predictPeriodListSortedByStartDateIsAscending:YES ];
-            
-            NSDate *today = [NSDate date];
-            
-            BOOL isProcess = NO;
-            for(LadyCalendarPeriod *period in predictList ){
-                if( [today timeIntervalSince1970] > [period.endDate timeIntervalSince1970] ){
-                    isProcess = YES;
-					[self autoSavePredictPeriodToReal:period];
-                }
-            }
-            if( isProcess )
-                [[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        }
-    }
+	if( ![[setting objectForKey:SettingItem_AutoRecord] boolValue] ) return;
+
+	LadyCalendarAccount *account = [self currentAccount];
+	if( !account ) return;
+
+	// Make predict item until today
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.uniqueID == %@ && isPredict == %@", account.uniqueID, @NO];
+	if (![LadyCalendarPeriod MR_countOfEntitiesWithPredicate:predicate]) return;
+
+	LadyCalendarPeriod *period = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"startDate" ascending:NO];
+	NSDate *today = [NSDate date];
+	if ([today isEarlierThanDate:period.periodEnds]) return;
+
+	NSInteger averageCycleLength = [self cycleLengthConsideringUserOption];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+	NSDateComponents *difference = [calendar components:NSDayCalendarUnit fromDate:period.periodEnds toDate:today options:0];
+	NSInteger numberOfPredictToMake = difference.day / averageCycleLength + 1;
+
+	if (numberOfPredictToMake) {
+		[self updatePredictPeriodsWithCount:numberOfPredictToMake];
+	}
+
+	NSArray *predictList = [self predictPeriodListSortedByStartDateIsAscending:YES ];
+	for(LadyCalendarPeriod *period in predictList ) {
+		if( [period.endDate isEarlierThanDate:today] ){
+			period.isPredict = @(NO);
+			period.isAutoSave = @(YES);
+		}
+	}
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 #pragma mark - account
@@ -129,34 +142,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
     return YES;
 }
 
-- (BOOL)removeAccount:(NSString*)accountID
-{
-    LadyCalendarAccount *account = [self accountForID:accountID];
-    if( account == nil )
-        return NO;
-    [account MR_deleteEntity];
-    [account.managedObjectContext MR_saveToPersistentStoreAndWait];
-    
-    return YES;
-}
-
 - (NSArray*)accountListSortedByOrderIsAscending:(BOOL)ascending
 {
     return [LadyCalendarAccount MR_findAllSortedBy:@"order" ascending:ascending];
-}
-
-- (NSMutableDictionary*)dictionaryFromAccount:(LadyCalendarAccount*)account
-{
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-	[dict setObject:account.uniqueID forKey:AccountItem_ID];
-	[dict setObject:account.name forKey:AccountItem_Name];
-    if( account.birthDay )
-        [dict setObject:account.birthDay forKey:AccountItem_Birthday];
-    [dict setObject:(account.notes ? account.notes : @"") forKey:AccountItem_Notes];
-    [dict setObject:account.order forKey:AccountItem_Order];
-	[dict setObject:account.modificationDate forKey:AccountItem_RegDate];
-    
-    return dict;
 }
 
 - (LadyCalendarAccount*)currentAccount {
@@ -174,12 +162,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 - (NSInteger)numberOfPeriodsWithAccountID:(NSString*)accountID
 {
     return [LadyCalendarPeriod MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"account.uniqueID == %@",accountID]];
-}
-
-- (void)autoSavePredictPeriodToReal:(LadyCalendarPeriod*)item
-{
-    item.isPredict = @(NO);
-    item.isAutoSave = @(YES);
 }
 
 - (NSArray *)periodListSortedByStartDateIsAscending:(BOOL)ascending {
@@ -258,9 +240,9 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 {
     NSArray *array = nil;
     if( [periodID length] < 1 )
-        return [[LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))",accountID,@(NO),startDate,startDate,endDate,endDate]] count] > 0;
+        return [[LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@))", accountID, @(NO), startDate, startDate, endDate, endDate]] count] > 0;
     else
-        array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@)) AND uniqueID != %@",accountID,@(NO),startDate,startDate,endDate,endDate,periodID]];
+        array = [LadyCalendarPeriod MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(account.uniqueID == %@) AND (isPredict == %@) AND ((startDate <= %@ AND endDate >= %@) OR (startDate <= %@ AND endDate >= %@)) AND uniqueID != %@", accountID, @(NO), startDate, startDate, endDate, endDate, periodID]];
     
     return ([array count] > 0 );
 }
@@ -302,47 +284,65 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
-// 현재 설정값에 따라서 예정일 및 기간등을 업데이트 하는 함수
-// 백그라운드로 동작 후에 notify로 알림한다.
-- (void)recalculateDates
-{
-    LadyCalendarAccount *account = [self currentAccount];
-    if( account == nil )
-        return;
-    
-    NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
-    
-    NSInteger periodLength = [[setting objectForKey:SettingItem_ForeCastingPeriods] integerValue];
-    NSInteger cycleOption = [[setting objectForKey:SettingItem_CalculateCycle] integerValue];
-    
-    // 예상치 제외한 값을 가져온다.
-    NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES ];
-    
-    if( [periodArray count] < 1 ){
-        // 예상치 저장된 것들이 있다면 다 삭제한다.
-		[self removeAllPredictItemsAccountID:account.uniqueID];
-        return;
-    }
-    
-    NSInteger cycleLength = 0;
-    // 주기값을 구한다.
-    if( cycleOption == CycleLength_SameBeforeCycle ){
-        cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-1];
-    }
-    else if( cycleOption == CycleLength_AverageBeforeTwoCycle ){
-        cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-2];
-    }
-    else if( cycleOption == CycleLength_AverageAllCycle ){
-        cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:0];
-    }
-    
-    // 현재 예상목록을 모두 지우고 다시 생성한다.
-	[self removeAllPredictItemsAccountID:account.uniqueID];
-    
-    LadyCalendarPeriod *lastItem = [periodArray lastObject];
-    NSDate *prevStartDate = lastItem.startDate;
+- (NSInteger)cycleLengthConsideringUserOption {
+	NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES ];
 
-    for (NSInteger idx = 0; idx < periodLength; idx++){
+	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+
+	NSInteger cycleOption = [[setting objectForKey:SettingItem_CalculateCycle] integerValue];
+
+	NSInteger cycleLength = 0;
+	// 주기값을 구한다.
+	if( cycleOption == CycleLength_SameBeforeCycle ){
+		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-1];
+	}
+	else if( cycleOption == CycleLength_AverageBeforeTwoCycle ){
+		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-2];
+	}
+	else if( cycleOption == CycleLength_AverageAllCycle ){
+		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:0];
+	}
+
+	return cycleLength;
+}
+
+- (void)updatePredictPeriodsWithCount:(NSInteger)numberOfPredicts {
+	LadyCalendarAccount *account = [self currentAccount];
+	if( account == nil )
+		return;
+
+	// 예상치 제외한 값을 가져온다.
+	NSArray *periodArray = [self periodListSortedByStartDateIsAscending:YES ];
+
+	if( [periodArray count] < 1 ){
+		// 예상치 저장된 것들이 있다면 다 삭제한다.
+		[self removeAllPredictItemsAccountID:account.uniqueID];
+		return;
+	}
+
+	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+
+	NSInteger cycleOption = [[setting objectForKey:SettingItem_CalculateCycle] integerValue];
+
+	NSInteger cycleLength = 0;
+	// 주기값을 구한다.
+	if( cycleOption == CycleLength_SameBeforeCycle ){
+		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-1];
+	}
+	else if( cycleOption == CycleLength_AverageBeforeTwoCycle ){
+		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:[periodArray count]-2];
+	}
+	else if( cycleOption == CycleLength_AverageAllCycle ){
+		cycleLength = [self calculateAverageCycleFromArray:periodArray fromIndex:0];
+	}
+
+	// 현재 예상목록을 모두 지우고 다시 생성한다.
+	[self removeAllPredictItemsAccountID:account.uniqueID];
+
+	LadyCalendarPeriod *lastItem = [periodArray lastObject];
+	NSDate *prevStartDate = lastItem.startDate;
+
+	for (NSInteger idx = 0; idx < numberOfPredicts; idx++){
 		LadyCalendarPeriod *newPeriod = [LadyCalendarPeriod MR_createEntity];
 		newPeriod.uniqueID = [[NSUUID UUID] UUIDString];
 		newPeriod.isPredict = @(YES);
@@ -352,11 +352,21 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 		newPeriod.modificationDate = [NSDate date];
 		newPeriod.account = account;
 		NSDateComponents *cycleLengthComponents = [NSDateComponents new];
-		cycleLengthComponents.day = [newPeriod.cycleLength integerValue];
+		cycleLengthComponents.day = [newPeriod.cycleLength integerValue] - 1;
 		newPeriod.periodEnds = [[A3AppDelegate instance].calendar dateByAddingComponents:cycleLengthComponents toDate:newPeriod.startDate options:0];
 
-        prevStartDate = newPeriod.startDate;
-    }
+		prevStartDate = newPeriod.startDate;
+	}
+}
+
+- (void)recalculateDates
+{
+	NSDictionary *setting = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+
+	NSInteger periodLength = [[setting objectForKey:SettingItem_ForeCastingPeriods] integerValue];
+	[self updatePredictPeriodsWithCount:periodLength];
+
+	[self setupLocalNotification];
 }
 
 - (NSString*)stringFromDate:(NSDate*)date
@@ -386,6 +396,76 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.uniqueID == %@", self.currentAccount.uniqueID];
 	LadyCalendarPeriod *furthestPeriodEnds = [LadyCalendarPeriod MR_findFirstWithPredicate:predicate sortedBy:@"periodEnds" ascending:NO];
 	return furthestPeriodEnds ? furthestPeriodEnds.periodEnds : [NSDate date];
+}
+
+- (void)resetLocalNotifications {
+	UIApplication *application = [UIApplication sharedApplication];
+	NSArray *notifications = [application scheduledLocalNotifications];
+	for (UILocalNotification *notification in notifications) {
+		if ([notification.userInfo[A3LocalNotificationOwner] isEqualToString:@"Lady Calendar"]) {
+			[application cancelLocalNotification:notification];
+		}
+	}
+}
+
+- (void)setupLocalNotification {
+	[self resetLocalNotifications];
+
+	NSDictionary *settings = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
+	A3LadyCalendarSettingAlertType alertType = (A3LadyCalendarSettingAlertType) [settings[SettingItem_AlertType] integerValue];
+
+	if (alertType == AlertType_None) return;
+
+	NSInteger beforeDay = 0;
+	switch (alertType) {
+		case AlertType_Custom:
+			beforeDay = [settings[SettingItem_CustomAlertDays] integerValue];
+			break;
+		case AlertType_OneWeekBefore:
+			beforeDay = 7;
+			break;
+		case AlertType_TwoDaysBefore:
+			beforeDay = 2;
+			break;
+		case AlertType_OneDayBefore:
+			beforeDay = 1;
+			break;
+		case AlertType_OnDay:
+			beforeDay = 0;
+			break;
+		case AlertType_None:
+			break;
+	}
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"isPredict == %@", @YES];
+	NSArray *predictPeriods = [LadyCalendarPeriod MR_findAllWithPredicate:predicate];
+
+	NSDateComponents *fireDateComponents = [NSDateComponents new];
+	fireDateComponents.day = -beforeDay;
+
+	NSDate *today = [NSDate date];
+
+	UIApplication *application = [UIApplication sharedApplication];
+	NSCalendar *calendar = [[A3AppDelegate instance] calendar];
+
+	for (LadyCalendarPeriod *period in predictPeriods) {
+
+		NSDate *fireDate = [calendar dateByAddingComponents:fireDateComponents toDate:period.startDate options:0];
+		NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fireDate];
+		components.hour = 9;
+//		components.hour = 21;
+//		components.minute = 43;
+		fireDate = [calendar dateFromComponents:components];
+
+		if ([fireDate isEarlierThanDate:today]) continue;
+
+		NSString *alertBody =  @"Your period is coming.";
+		UILocalNotification *notification = [UILocalNotification new];
+		notification.fireDate = fireDate;
+		notification.alertBody = alertBody;
+		notification.userInfo = @{A3LocalNotificationOwner:A3LocalNotificationFromLadyCalendar, A3LocalNotificationDataID:period.uniqueID};
+		[application scheduleLocalNotification:notification];
+	}
+	FNLOG(@"%@", [application scheduledLocalNotifications]);
 }
 
 @end
