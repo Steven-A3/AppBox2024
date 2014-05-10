@@ -310,6 +310,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
 			[self addSubview:button];
 
 			id title = buttonTitle[idx];
+            [button setImage:nil forState:UIControlStateNormal];
 			[self setTitle:title forButton:button];
 
 			if (column == 7) {
@@ -375,6 +376,7 @@ NSString *kA3CalcButtonFontSize = @"kA3CalcButtonFontSize";
                     button.contentEdgeInsets = UIEdgeInsetsMake(-5, 0, 0, 0);
                 }
             }
+            [button setImage:nil forState:UIControlStateNormal];
 			[self setTitle:title forButton:button];
         }
     }
