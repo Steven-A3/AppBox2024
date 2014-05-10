@@ -858,7 +858,9 @@
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
         navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
         navCtrl.delegate = self;
-        [self presentViewController:navCtrl animated:YES completion:nil];
+        [self presentViewController:navCtrl animated:YES completion:^{
+            [viewCtrl showKeyboard];
+        }];
     }
     else {
 		A3RootViewController_iPad *rootViewController = [[A3AppDelegate instance] rootViewController];
