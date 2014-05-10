@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *startEnd1ALabel;
 @property (weak, nonatomic) IBOutlet UILabel *startEnd2ALabel;
 @property (weak, nonatomic) IBOutlet UILabel *repeatALabel;
+@property (strong, nonatomic) UILabel *lunarALabel;
 @property (weak, nonatomic) IBOutlet UIImageView *lunar1AImageView;
 
 @property (weak, nonatomic) IBOutlet UILabel *sinceRoundLabel;
@@ -35,6 +36,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *startEnd1BLabel;
 @property (weak, nonatomic) IBOutlet UILabel *startEnd2BLabel;
 @property (weak, nonatomic) IBOutlet UILabel *repeatBLabel;
+@property (strong, nonatomic) UILabel *lunarBLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *lunar1BImageView;
 
 

@@ -1776,9 +1776,15 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             dateFormat = [[dateFormats componentsJoinedByString:@" "] mutableCopy];
         }
 
-        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
-                      [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]],
-                      [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
+        if (IS_IPAD) {
+            dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
+                          [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]],
+                          [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
+        }
+        else {
+            dateString = [NSString stringWithFormat:@"(음력 %@)",
+                          [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
+        }
     }
     
     return dateString;
