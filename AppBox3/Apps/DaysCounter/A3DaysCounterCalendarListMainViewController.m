@@ -376,7 +376,7 @@
                                                                                                                    fromDate:today
                                                                                                                      toDate:nextDate
                                                                                                                    isAllDay:[event.isAllDay boolValue]
-                                                                                                               isShortStyle:IS_IPHONE ? YES : NO]
+                                                                                                               isShortStyle:YES]
                                                         , untilSinceString];
         }
         else {
@@ -384,7 +384,7 @@
                                                                                                                    fromDate:today
                                                                                                                      toDate:[event.startDate solarDate]
                                                                                                                    isAllDay:[event.isAllDay boolValue]
-                                                                                                               isShortStyle:IS_IPHONE ? YES : NO]
+                                                                                                               isShortStyle:YES]
                                                         , untilSinceString];
         }
     }
