@@ -127,7 +127,7 @@
         make.left.equalTo(self.view.left).with.offset(15);
         make.right.equalTo(self.view.right).with.offset(-15);
         make.top.equalTo(@91);
-        make.height.equalTo(@25.5);
+        make.height.equalTo(@29.5);
 	}];
     
     [self.view addSubview:self.degreeandradianLabel];
@@ -252,7 +252,7 @@
 		_expressionLabel = [HTCopyableLabel new];
         _expressionLabel.copyingEnabled = NO;
 		_expressionLabel.backgroundColor =[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0];
-		_expressionLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:22];
+		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:22];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
