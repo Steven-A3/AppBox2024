@@ -551,6 +551,7 @@
     UILabel *dateLabel1;
     UILabel *dateLabel2;
     UILabel *dateLabel3;
+    UILabel *dateLabel4;
     UIImageView *lunarImageView;
     
     markLabel = cell.untilSinceRoundLabel;
@@ -558,6 +559,7 @@
     dateLabel1 = cell.startEnd1ALabel;
     dateLabel2 = cell.startEnd2ALabel;
     dateLabel3 = cell.repeatALabel;
+    dateLabel4 = cell.lunarALabel;
     lunarImageView = cell.lunar1AImageView;
     
     if ( IS_IPHONE ) {
@@ -595,12 +597,27 @@
         
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
             daysLabel.text = @"";
-            dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
-                                                                         isLunar:[info.isLunar boolValue]
-                                                                        isAllDay:[info.isAllDay boolValue]
-                                                                     isLeapMonth:[info.useLeapMonth boolValue]];
-            dateLabel2.text = @"";
-            dateLabel3.text = @"";
+            if (IS_IPAD || ![info.isLunar boolValue]) {
+                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                             isLunar:NO
+                                                                            isAllDay:[info.isAllDay boolValue]
+                                                                         isLeapMonth:NO];
+                dateLabel2.text = @"";
+                dateLabel3.text = @"";
+                dateLabel4.text = @"";
+            }
+            else {
+                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                             isLunar:NO
+                                                                            isAllDay:[info.isAllDay boolValue]
+                                                                         isLeapMonth:NO];
+                dateLabel2.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                             isLunar:YES
+                                                                            isAllDay:[info.isAllDay boolValue]
+                                                                         isLeapMonth:[info.useLeapMonth boolValue]];
+                dateLabel3.text = @"";
+                dateLabel4.text = @"";
+            }
             
             goto EXIT_FUCTION;
         }
@@ -642,17 +659,37 @@
             //            until(since) 계산값
             //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
             //            (until일 경우 - repeats 옵션) (since 일 경우 to)
-            dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
-                                                                         isLunar:[info.isLunar boolValue]
-                                                                        isAllDay:[info.isAllDay boolValue]
-                                                                     isLeapMonth:[info.useLeapMonth boolValue]];
-            if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
-                dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+            if (IS_IPAD || ![info.isLunar boolValue]) {
+                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                             isLunar:[info.isLunar boolValue]
+                                                                            isAllDay:[info.isAllDay boolValue]
+                                                                         isLeapMonth:[info.useLeapMonth boolValue]];
+                if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
+                    dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+                }
+                else {
+                    dateLabel2.text = @"";
+                }
+                dateLabel3.text = @"";
+                dateLabel4.text = @"";
             }
             else {
-                dateLabel2.text = @"";
+                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                             isLunar:NO
+                                                                            isAllDay:[info.isAllDay boolValue]
+                                                                         isLeapMonth:[info.useLeapMonth boolValue]];
+                dateLabel2.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                             isLunar:YES
+                                                                            isAllDay:[info.isAllDay boolValue]
+                                                                         isLeapMonth:[info.useLeapMonth boolValue]];
+                if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
+                    dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+                }
+                else {
+                    dateLabel3.text = @"";
+                }
+                dateLabel4.text = @"";
             }
-            dateLabel3.text = @"";
         }
     }
     else {
@@ -672,12 +709,14 @@
         if ([markLabel.text isEqualToString:@"today"] || [markLabel.text isEqualToString:@"Now"]) {
             daysLabel.text = @"";
             dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
-                                                                         isLunar:[info.isLunar boolValue]
+                                                                         isLunar:NO
                                                                         isAllDay:[info.isAllDay boolValue]
                                                                      isLeapMonth:[info.useLeapMonth boolValue]];
             if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                 dateLabel2.text = [NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
             }
+            dateLabel3.text = @"";
+            dateLabel4.text = @"";
             goto EXIT_FUCTION;
         }
         else {
@@ -713,6 +752,7 @@
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                     dateLabel3.text = [NSString stringWithFormat:@"repeats %@",[[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                 }
+                dateLabel4.text = @"";
             }
             else {
                 //* case 2. 162pt  (start 안 지남, end있음)
@@ -729,6 +769,7 @@
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
                     dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
                 }
+                dateLabel4.text = @"";
             }
         }
         else {  // ! hasEnd
@@ -744,7 +785,7 @@
                 //            date 선택날짜/시간
                 //            first date
                 dateLabel1.text = [A3DaysCounterModelManager dateStringFromEffectiveDate:nextDate
-                                                                                 isLunar:[_eventItem.isLunar boolValue]
+                                                                                 isLunar:NO//[_eventItem.isLunar boolValue]
                                                                                 isAllDay:[_eventItem.isAllDay boolValue]
                                                                              isLeapMonth:[_eventItem.startDate.isLeapMonth boolValue]];
                 if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
@@ -752,6 +793,7 @@
                 }
                 
                 dateLabel3.text = @"";
+                dateLabel4.text = @"";
             }
             else {
                 //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
@@ -761,15 +803,33 @@
                 //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
                 //            (until일 경우 - repeats 옵션) (since 일 경우 to)
                 //* case 1, repeat only until
-                dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
-                                                                             isLunar:[info.isLunar boolValue]
-                                                                            isAllDay:[info.isAllDay boolValue]
-                                                                         isLeapMonth:[info.useLeapMonth boolValue]];
-                if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
-                    dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+                if (IS_IPAD || ![info.isLunar boolValue]) {
+                    dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                                 isLunar:[info.isLunar boolValue]
+                                                                                isAllDay:[info.isAllDay boolValue]
+                                                                             isLeapMonth:[info.useLeapMonth boolValue]];
+                    if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
+                        dateLabel2.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+                    }
+                    
+                    dateLabel3.text = @"";
+                    dateLabel4.text = @"";
                 }
-                
-                dateLabel3.text = @"";
+                else {
+                    dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                                 isLunar:NO
+                                                                                isAllDay:[info.isAllDay boolValue]
+                                                                             isLeapMonth:[info.useLeapMonth boolValue]];
+                    dateLabel2.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                                 isLunar:YES
+                                                                                isAllDay:[info.isAllDay boolValue]
+                                                                             isLeapMonth:[info.useLeapMonth boolValue]];
+                    if (info.repeatType && ![info.repeatType isEqualToNumber:@(RepeatType_Never)]) {
+                        dateLabel3.text = [NSString stringWithFormat:@"repeats %@", [[A3DaysCounterModelManager sharedManager] repeatTypeStringForDetailValue:[info.repeatType integerValue]]];
+                    }
+                    
+                    dateLabel4.text = @"";
+                }
             }
         }
     }
@@ -796,6 +856,7 @@ EXIT_FUCTION:
     UILabel *dateLabel1;
     UILabel *dateLabel2;
     UILabel *dateLabel3;
+    UILabel *dateLabel4;
     UIImageView *lunarImageView;
     
     markLabel = cell.sinceRoundLabel;
@@ -803,6 +864,7 @@ EXIT_FUCTION:
     dateLabel1 = cell.startEnd1BLabel;
     dateLabel2 = cell.startEnd2BLabel;
     dateLabel3 = cell.repeatBLabel;
+    dateLabel4 = cell.lunarBLabel;
     lunarImageView = cell.lunar1BImageView;
     
     if ( IS_IPHONE ) {
@@ -862,6 +924,8 @@ EXIT_FUCTION:
                                                                                                          isAllDay:[info.isAllDay boolValue]
                                                                                                       isLeapMonth:[info.useLeapMonth boolValue]]];
         dateLabel2.text = @"first date";
+        dateLabel3.text = @"";
+        dateLabel4.text = @"";
     }
     else {  // ! hasEnd
         //* case 1. 현재의 142pt (start 안 지나거나 지났고, end없음, 다음 start없음)
@@ -871,12 +935,27 @@ EXIT_FUCTION:
         //            date 선택날짜/시간 (since 일 경우 starts-ends on. from)
         //            (until일 경우 - repeats 옵션) (since 일 경우 to)
         //* case 1, repeat only until
-        dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
-                                                                     isLunar:[info.isLunar boolValue]
-                                                                    isAllDay:[info.isLunar boolValue] ? YES : [info.isAllDay boolValue]
-                                                                 isLeapMonth:[info.useLeapMonth boolValue]];
-        dateLabel2.text = @"first date";
-        dateLabel3.text = @"";
+        if (IS_IPAD || ![info.isLunar boolValue]) {
+            dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                         isLunar:[info.isLunar boolValue]
+                                                                        isAllDay:[info.isAllDay boolValue]
+                                                                     isLeapMonth:[info.useLeapMonth boolValue]];
+            dateLabel2.text = @"first date";
+            dateLabel3.text = @"";
+            dateLabel4.text = @"";
+        }
+        else {
+            dateLabel1.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                         isLunar:NO
+                                                                        isAllDay:YES
+                                                                     isLeapMonth:[info.useLeapMonth boolValue]];
+            dateLabel2.text = [A3DaysCounterModelManager dateStringFromDateModel:info.startDate
+                                                                         isLunar:YES
+                                                                        isAllDay:YES
+                                                                     isLeapMonth:[info.useLeapMonth boolValue]];
+            dateLabel3.text = @"first date";
+            dateLabel4.text = @"";
+        }
     }
     
 EXIT_FUCTION:
@@ -1234,6 +1313,29 @@ EXIT_FUCTION:
     eventInfoCell.startEnd1BLabel.text = @"";
     eventInfoCell.startEnd2BLabel.text = @"";
     eventInfoCell.repeatBLabel.text = @"";
+
+
+    eventInfoCell.lunarALabel = [UILabel new];
+    [eventInfoCell.contentView addSubview:eventInfoCell.lunarALabel];
+    [eventInfoCell.lunarALabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(eventInfoCell.eventTitleLabel.left);
+        make.baseline.equalTo(eventInfoCell.repeatALabel.baseline).with.offset(20);
+    }];
+    
+    eventInfoCell.lunarALabel.textColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
+    eventInfoCell.lunarALabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
+    
+    
+    eventInfoCell.lunarBLabel = [UILabel new];
+    [eventInfoCell.contentView addSubview:eventInfoCell.lunarBLabel];
+    [eventInfoCell.lunarBLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(eventInfoCell.eventTitleLabel.left);
+        make.baseline.equalTo(eventInfoCell.repeatBLabel.baseline).with.offset(20);
+    }];
+    
+    eventInfoCell.lunarBLabel.text = @"eventInfoCell.lunarBLabel";
+    eventInfoCell.lunarBLabel.textColor = [UIColor colorWithRed:159/255.0 green:159/255.0 blue:159/255.0 alpha:1.0];
+    eventInfoCell.lunarBLabel.font = IS_IPHONE ? [UIFont systemFontOfSize:13.0] : [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
 }
 
 #pragma mark - Table view data source

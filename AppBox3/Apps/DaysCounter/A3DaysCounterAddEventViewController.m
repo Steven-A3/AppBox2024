@@ -119,7 +119,7 @@
     [self rightBarButtonDoneButton];
     
     if ( _eventItem ) {
-        [self setupSectionTemplateWithInfo:_eventItem];
+        [self configureTableViewDataSourceForEventInfo:_eventItem];
         if (_eventItem.imageFilename) {
             _thumnailImage = [A3DaysCounterModelManager photoThumbnailFromFilename:_eventItem.imageFilename];
             _photoImage = [A3DaysCounterModelManager photoImageFromFilename:_eventItem.imageFilename];
@@ -350,7 +350,7 @@
     [self.tableView endUpdates];
 }
 
-- (void)setupSectionTemplateWithInfo:(DaysCounterEvent*)info
+- (void)configureTableViewDataSourceForEventInfo:(DaysCounterEvent*)info
 {
     NSMutableArray *section1_Items = [NSMutableArray array];
     
@@ -369,8 +369,12 @@
         _eventItem.useLeapMonth = @(NO);
     }
     
-    [section1_Items addObject:@{ EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)}];
+    if (![info.isLunar boolValue]) {
+        [section1_Items addObject:@{ EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)}];
+    }
+    
     [section1_Items addObject:@{ EventRowTitle : @"Starts", EventRowType : @(EventCellType_StartDate)}];
+    
     if ( [info.isPeriod boolValue] ) {
         [section1_Items addObject:@{ EventRowTitle : @"Ends", EventRowType : @(EventCellType_EndDate) }];
     }
@@ -1510,6 +1514,10 @@
     if ([switchButton isOn]) {
         [self closeDatePickerCell];
 
+        
+        [self.tableView beginUpdates];
+        // 반복 종료 날짜 셀 제거.
+        NSMutableArray *removalRows = [NSMutableArray new];
         if ([_eventItem.repeatType integerValue] != RepeatType_EveryYear) {
             _eventItem.repeatType = @(RepeatType_Never);
             NSInteger repeatTypeIndex = [self indexOfRowItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];
@@ -1517,13 +1525,35 @@
             NSInteger endRepeatIndex = [self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:sectionRow_items];
             
             if (endRepeatIndex != -1) {
-                [sectionRow_items removeObjectAtIndex:endRepeatIndex];
-                [self.tableView beginUpdates];
-                [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:endRepeatIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationMiddle];
-                [self.tableView endUpdates];
+                [removalRows addObject:@(endRepeatIndex)];
             }
         }
+        // start/end on 버튼 셀 제거.
+        NSInteger startEndToggleCellIndex = [self indexOfRowItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
+        if (startEndToggleCellIndex != -1) {
+            [removalRows addObject:@(startEndToggleCellIndex)];
+        }
+        NSInteger endDateCellIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+        if (endDateCellIndex != -1) {
+            [removalRows addObject:@(endDateCellIndex)];
+        }
         
+        // cell & dataSource 제거.
+        removalRows = [[removalRows sortedArrayUsingComparator:^NSComparisonResult(NSNumber *obj1, NSNumber *obj2) {
+            return [obj2 compare:obj1];
+        }] mutableCopy];
+
+        [removalRows enumerateObjectsUsingBlock:^(NSNumber *index, NSUInteger idx, BOOL *stop) {
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:[index integerValue] inSection:[indexPath section]]] withRowAnimation:UITableViewRowAnimationMiddle];
+        }];
+
+        [removalRows enumerateObjectsUsingBlock:^(NSNumber *index, NSUInteger idx, BOOL *stop) {
+            [sectionRow_items removeObjectAtIndex:[index integerValue]];
+        }];
+        [self.tableView endUpdates];
+        
+        
+
         NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
         [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
@@ -1540,8 +1570,10 @@
     else {
         // Reload All-Day
         NSInteger reloadRowIndex = [self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
-        [sectionRow_items replaceObjectAtIndex:reloadRowIndex withObject:@{EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay)}];
+        [sectionRow_items replaceObjectAtIndex:reloadRowIndex withObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay) }];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        [sectionRow_items insertObject:@{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)} atIndex:(reloadRowIndex + 1)];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(reloadRowIndex + 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         
         // Reload StartDate
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:NO]
@@ -1904,10 +1936,15 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
-    if ((indexPath.section == 1 && indexPath.row == 3) || (indexPath.section == 1 && indexPath.row == 4)) {    // start Date
+    
+    NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+    NSInteger startDateIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:section1_items];
+    NSInteger endDateIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:section1_items];
+    
+    if ((indexPath.section == 1 && indexPath.row == startDateIndex) || (indexPath.section == 1 && indexPath.row == endDateIndex)) {    // start Date
         if (!self.dateKeyboardViewController) {
             self.dateKeyboardViewController = [self newDateKeyboardViewController];
-            self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == 3 ? _eventItem.startDate : _eventItem.endDate
+            self.dateKeyboardViewController.dateComponents = [A3DaysCounterModelManager dateComponentsFromDateModelObject:indexPath.row == startDateIndex ? _eventItem.startDate : _eventItem.endDate
                                                                                                                   toLunar:YES];
         }
 		self.dateKeyboardViewController.delegate = self;
@@ -2013,11 +2050,18 @@
             //[self.tableView reloadRowsAtIndexPaths:@[endDateIndexPath] withRowAnimation:UITableViewRowAnimationNone];
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:endDateIndexPath];
             UILabel *dateLabel = (UILabel*)[cell viewWithTag:12];
-            //dateLabel.text = [A3DateHelper dateStringFromDateComponents:dateComponents withFormat:nil];
-            dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.endDate
-                                                                        isLunar:[_eventItem.isLunar boolValue]
-                                                                       isAllDay:[_eventItem.isAllDay boolValue]
-                                                                    isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+
+            
+            if ([_eventItem.isLunar boolValue]) {
+                dateLabel.text = [A3DaysCounterModelManager dateStringOfLunarFromDateModel:_eventItem.endDate
+                                                                               isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+            }
+            else {
+                dateLabel.text = [A3DaysCounterModelManager dateStringFromDateModel:_eventItem.endDate
+                                                                            isLunar:NO
+                                                                           isAllDay:[_eventItem.isAllDay boolValue]
+                                                                        isLeapMonth:[_eventItem.useLeapMonth boolValue]];
+            }
         }
     }
 }
