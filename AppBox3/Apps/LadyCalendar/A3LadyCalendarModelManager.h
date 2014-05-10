@@ -60,5 +60,6 @@ extern NSString *const A3LadyCalendarChangedDateKey;
 - (NSDate *)startDateForCurrentAccount;
 - (NSDate *)endDateForCurrentAccount;
 
-- (void)setupLocalNotification;
++ (void)setupLocalNotification;
+
 @end

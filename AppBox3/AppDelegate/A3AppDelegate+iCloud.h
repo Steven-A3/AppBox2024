@@ -9,7 +9,7 @@
 #import "A3AppDelegate.h"
 
 
-extern NSString *const A3CoreDataReadyNotification;
+extern NSString *const A3NotificationCoreDataReady;
 
 @interface A3AppDelegate (iCloud) <UbiquityStoreManagerDelegate>
 
