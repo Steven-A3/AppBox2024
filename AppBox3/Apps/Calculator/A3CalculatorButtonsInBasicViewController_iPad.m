@@ -101,5 +101,11 @@
     [self.commabutton setFrame:CGRectMake(current_x, current_y, smallbuttonwidth, buttonheight)];
     current_x += (smallbuttonwidth + h_smallspace);
     [self.decimalpointbutton setFrame:CGRectMake(current_x, current_y, smallbuttonwidth, buttonheight)];
+    
+    self.dividebutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.multiplybutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.minusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.plusbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
+    self.operationendbutton.titleLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-Thin" size:50 ];
 }
 @end
