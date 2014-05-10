@@ -316,6 +316,10 @@
         if ( [[itemDict objectForKey:EventRowType] integerValue] == cellType )
             [indexPaths addObject:[NSIndexPath indexPathForRow:i inSection:section]];
     }
+    
+    if ([indexPaths count] == 0)
+        return;
+    
     [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
 }
 
@@ -751,7 +755,19 @@
             cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
         }
         else {
-            cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+            if (![_eventItem.isPeriod boolValue]) {
+                NSMutableArray *sectionRow_items = [[_sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
+                NSInteger dateInputRowIndex = [self indexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
+                if (dateInputRowIndex == -1) {
+                    cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
+                }
+                else {
+                    cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+                }
+            }
+            else {
+                cell.separatorInset = UIEdgeInsetsMake(0, IS_IPHONE ? 15 : 28, 0, 0);
+            }
         }
     }
     else {
@@ -882,11 +898,8 @@
     UIDatePicker *datePicker = (UIDatePicker*)[cell viewWithTag:10];
     if ( [self.inputDateKey isEqualToString: EventItem_StartDate] ) {
         NSDate *date = [_eventItem.startDate solarDate];
-        if (!date || [date isKindOfClass:[NSNull class]]) {
-            date = [_eventItem.endDate solarDate];
-        }
-        if (!date || [date isKindOfClass:[NSNull class]]) {
-            date = [NSDate date];
+        if (!date) {
+            date = [_eventItem.endDate solarDate] ? [_eventItem.endDate solarDate] : [NSDate date];
         }
         
         datePicker.date = date;
@@ -900,11 +913,8 @@
     }
     else if ( [self.inputDateKey isEqualToString: EventItem_EndDate] ) {
         NSDate *date = [_eventItem.endDate solarDate];
-        if (!date || [date isKindOfClass:[NSNull class]]) {
-            date = [_eventItem.startDate solarDate];
-        }
-        if (!date || [date isKindOfClass:[NSNull class]]) {
-            date = [NSDate date];
+        if (!date) {
+            date = [_eventItem.startDate solarDate] ? [_eventItem.startDate solarDate] : [NSDate date];
         }
         
         datePicker.date = date;
@@ -1601,7 +1611,7 @@
         _eventItem.durationOption = @(durationFlag);
     }
 
-    
+    [self reloadItems:sectionRow_items withType:EventCellType_IsLunar section:indexPath.section animation:UITableViewRowAnimationNone];
     [self reloadItems:sectionRow_items withType:EventCellType_DateInput section:indexPath.section animation:UITableViewRowAnimationNone];
     [self reloadItems:sectionRow_items withType:EventCellType_StartDate section:indexPath.section animation:UITableViewRowAnimationNone];
     [self reloadItems:sectionRow_items withType:EventCellType_EndDate section:indexPath.section animation:UITableViewRowAnimationNone];
@@ -1620,12 +1630,12 @@
         if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
             NSInteger startDateRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
             NSInteger datePickerRow = 0;
-            if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
+            NSInteger datePickerRowIndex = [self indexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
+            if ( datePickerRowIndex != -1 ) {
                 datePickerRow = 1;
             }
             
             [sectionRow_items insertObject:@{EventRowTitle : @"Ends", EventRowType : @(EventCellType_EndDate)} atIndex:startDateRowIndex + 1 + datePickerRow];
-            
             [self.tableView beginUpdates];
             [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startDateRowIndex + 1 + datePickerRow inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationTop];
             if (datePickerRow) {
@@ -1947,10 +1957,6 @@
 - (void)dateKeyboardValueChangedDateComponents:(NSDateComponents *)dateComponents
 {
     FNLOG(@"%@", dateComponents);
-//    [self resignAllAction];
-    
-//    NSDate *prevDate = [_eventItem.startDate solarDate];
-//    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     dateComponents.hour = 0;
     dateComponents.minute = 0;
     dateComponents.second = 0;
@@ -1959,14 +1965,7 @@
     if ([_eventItem.isLunar boolValue]) {
         //BOOL isLunarDate = [NSDate isLunarDate:[calendar dateFromComponents:dateComponents] isKorean:[A3DateHelper isCurrentLocaleIsKorea]];
         [self leapMonthCellEnable:[NSDate isLunarLeapMonthAtDateComponents:dateComponents isKorean:YES]];
-        
-//        if (!isLunarDate) {
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:NSLocalizedString(@"It's not a Lunar Date", @"It's not a Lunar Date") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] ;
-//            [alert show];
-//            return;
-//        }
     }
-    
     
     if ([self.inputDateKey isEqualToString:EventItem_StartDate]) {
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:dateComponents withEventModel:_eventItem endDate:NO];

@@ -398,24 +398,55 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     return retType;
 }
 
-- (NSString*)durationOptionStringFromValue:(NSInteger)value
+- (NSString*)durationOptionStringFromValue:(NSInteger)option
 {
-    NSString *retStr = @"";
+    NSUInteger flagCount = 0;
+
+    if ( option & DurationOption_Minutes) {
+        flagCount++;
+    }
+    if ( option & DurationOption_Hour ) {
+        flagCount++;
+    }
+    if ( option & DurationOption_Day ) {
+        flagCount++;
+    }
+    if ( option & DurationOption_Week ) {
+        flagCount++;
+    }
+    if ( option & DurationOption_Month ) {
+        flagCount++;
+    }
+    if ( option & DurationOption_Year ) {
+        flagCount++;
+    }
     
-    if ( value & DurationOption_Year )
-        retStr = [retStr stringByAppendingFormat:@"%@ Years", ([retStr length] > 0 ? @" " : @"")];
-    if ( value & DurationOption_Month )
-        retStr = [retStr stringByAppendingFormat:@"%@ Months", ([retStr length] > 0 ? @" " : @"")];
-    if ( value & DurationOption_Week)
-        retStr = [retStr stringByAppendingFormat:@"%@ Weeks", ([retStr length] > 0 ? @" " : @"")];
-    if ( value & DurationOption_Day )
-        retStr = [retStr stringByAppendingFormat:@"%@ Days", ([retStr length] > 0 ? @" " : @"")];
-    if ( value & DurationOption_Hour)
-        retStr = [retStr stringByAppendingFormat:@"%@ Hours", ([retStr length] > 0 ? @" " : @"")];
-    if ( value & DurationOption_Minutes)
-        retStr = [retStr stringByAppendingFormat:@"%@ Minutes", ([retStr length] > 0 ? @" " : @"")];
-    if ( value & DurationOption_Seconds)
-        retStr = [retStr stringByAppendingFormat:@"%@ Seconds", ([retStr length] > 0 ? @" " : @"")];
+    BOOL isShortType = NO;
+    if (IS_IPHONE && flagCount >= 3) {
+        isShortType = YES;
+    }
+    
+    NSString *retStr = @"";
+    NSMutableArray *resultOptionStrings = [NSMutableArray new];
+    if ( option & DurationOption_Year ) {
+        [resultOptionStrings addObject: isShortType ? @"Y" : @"Years"];
+    }
+    if ( option & DurationOption_Month ) {
+        [resultOptionStrings addObject: isShortType ? @"M" : @"Months"];
+    }
+    if ( option & DurationOption_Week ) {
+        [resultOptionStrings addObject: isShortType ? @"W" : @"Months"];
+    }
+    if ( option & DurationOption_Day ) {
+        [resultOptionStrings addObject: isShortType ? @"D" : @"Days"];
+    }
+    if ( option & DurationOption_Hour ) {
+        [resultOptionStrings addObject: isShortType ? @"h" : @"Hours"];
+    }
+    if ( option & DurationOption_Minutes ) {
+        [resultOptionStrings addObject: isShortType ? @"m" : @"Minutes"];
+    }
+    retStr = [resultOptionStrings componentsJoinedByString:@" "];
     
     return retStr;
 }
@@ -989,11 +1020,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         flag |= NSYearCalendarUnit;
         flagCount++;
     }
-    if (IS_IPHONE && flagCount < 3) {
-        isShortStyle = NO;
-    }
-    else if (IS_IPAD && IS_PORTRAIT && flagCount == 6) {
-        isShortStyle = YES;
+
+    if (!isShortStyle) {
+        if (IS_IPHONE && flagCount >= 3) {
+            isShortStyle = YES;
+        }
+        else if (IS_IPAD && IS_PORTRAIT && flagCount == 6) {
+            isShortStyle = YES;
+        }
     }
     
     
@@ -1154,8 +1188,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                                                                   firstDate:[item.startDate solarDate]
                                                                                                    fromDate:[NSDate date]];
         
+//        dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
+//                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
-                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         
         
         daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
@@ -1164,7 +1200,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         
     }
     else {
-        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        //dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
+                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
         if ( diffDays > 0 ) {
@@ -1246,6 +1284,31 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     else {
         if ( isLocaleKorea ) {
             retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
+        }
+        else {
+            retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
+        }
+    }
+    
+    return retFormat;
+}
+
+- (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays
+{
+    NSString *retFormat = DaysCounterDefaultDateFormat;
+    BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
+    
+    if ( IS_IPHONE ) {
+        if ( isLocaleKorea ) {
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. M. d EEEE a h:mm");
+        }
+        else {
+            retFormat = ( isAllDays ? @"EEE, MMM d, yyyy" : @"EEE, MMM d, yyyy h:mm a");
+        }
+    }
+    else {
+        if ( isLocaleKorea ) {
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. M. d EEEE a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");

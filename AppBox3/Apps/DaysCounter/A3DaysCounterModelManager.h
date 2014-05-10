@@ -87,6 +87,7 @@
 
 - (NSString*)dateFormatForAddEditIsAllDays:(BOOL)isAllDays;
 - (NSString*)dateFormatForDetailIsAllDays:(BOOL)isAllDays;
+- (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays;
 
 #pragma mark - Specific Condition Validation
 + (BOOL)hasHourMinDurationOption:(NSInteger)durationOption;
