@@ -209,16 +209,29 @@
 		[self.dotButton setTitle:IS_IPHONE ? @"C" : @"Clear" forState:UIControlStateNormal];
 		self.dotButton.titleLabel.font = [UIFont systemFontOfSize:IS_LANDSCAPE ? 25 : 18];
 	} else {
-		if ((A3NumberKeyboardTypeMonthYear == self.keyboardType)
-				|| (A3NumberKeyboardTypeInteger == self.keyboardType)
-				|| (A3NumberKeyboardTypeFraction == self.keyboardType)
-				|| (self.keyboardType == A3NumberKeyboardTypeCurrency && [numberFormatter maximumFractionDigits] == 0)
-				|| (self.keyboardType == A3NumberKeyboardTypePercent && [self.bigButton2 isSelected])) {
-			[self.dotButton setTitle:nil forState:UIControlStateNormal];
-			[self.dotButton setEnabled:NO];
-		} else {
-			[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
-			[self.dotButton setEnabled:YES];
+		switch (_keyboardType) {
+			case A3NumberKeyboardTypeCurrency:
+			case A3NumberKeyboardTypeInterestRate:
+			case A3NumberKeyboardTypeReal:
+				[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
+				[self.dotButton setEnabled:YES];
+				break;
+			case A3NumberKeyboardTypePercent:
+				// BigButton1 = %, BigButton2 = $
+				if ([self.bigButton2 isSelected] && numberFormatter.maximumFractionDigits == 0) {
+					[self.dotButton setTitle:nil forState:UIControlStateNormal];
+					[self.dotButton setEnabled:NO];
+				} else {
+					[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
+					[self.dotButton setEnabled:YES];
+				}
+				break;
+			case A3NumberKeyboardTypeMonthYear:
+			case A3NumberKeyboardTypeInteger:
+			case A3NumberKeyboardTypeFraction:
+				[self.dotButton setTitle:nil forState:UIControlStateNormal];
+				[self.dotButton setEnabled:NO];
+				break;
 		}
 	}
 	switch (_keyboardType) {

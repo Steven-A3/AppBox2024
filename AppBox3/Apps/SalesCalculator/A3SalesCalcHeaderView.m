@@ -248,7 +248,7 @@
         }
         
 //        float costGauge;
-//        if (shownPriceType == ShowPriceType_Sale) {
+//        if (shownPriceType == ShowPriceType_SalePriceWithTax) {
 //            originalPrice = @([originalPrice doubleValue] - [[A3SalesCalcCalculator originalPriceBeforeTaxAndDiscountForCalcData:_calcData] doubleValue]);
 //            costGauge = (self.frame.size.width / 100.0) * (salePrice.doubleValue / originalPrice.doubleValue * 100.0);
 //        }
@@ -256,6 +256,9 @@
 //            costGauge = (self.frame.size.width / 100.0) * (salePrice.doubleValue / originalPrice.doubleValue * 100.0);
 //        }
         float costGauge = (self.frame.size.width / 100.0) * (salePrice.doubleValue / originalPrice.doubleValue * 100.0);
+		if (isnan(costGauge) || isfinite(costGauge)) {
+			costGauge = 0.0;
+		}
         
         //if ((costGauge + _sliderThumbView.frame.size.width) > self.frame.size.width) {
         if (costGauge > self.frame.size.width) {
@@ -393,7 +396,7 @@
 //        }
 //    } else {
 //        // 세금 없는 경우
-//        if (shownPriceType == ShowPriceType_Sale) {
+//        if (shownPriceType == ShowPriceType_SalePriceWithTax) {
 //            strings = @[[formatter stringFromNumber:salePrice], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
 //        }
 //        else {
@@ -527,7 +530,7 @@
             salePriceTax = [A3SalesCalcCalculator salePriceTaxForCalcData:resultData];
             strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue] + [salePriceTax doubleValue])], IS_IPAD ? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
         }
-        else if (resultData.shownPriceType == ShowPriceType_Sale) {
+        else if (resultData.shownPriceType == ShowPriceType_SalePriceWithTax) {
             salePrice = resultData.price;
             strings = @[[_currencyFormatter stringFromNumber:@([salePrice doubleValue])], IS_IPAD? @"  Sale Price with Tax" : @"  Sale Price w/Tax"];
         }
@@ -546,7 +549,7 @@
             salePrice = [A3SalesCalcCalculator salePriceWithoutTaxForCalcData:resultData];
             strings = @[[_currencyFormatter stringFromNumber:salePrice], @"  Sale Price"];
         }
-        else if (resultData.shownPriceType == ShowPriceType_Sale) {
+        else if (resultData.shownPriceType == ShowPriceType_SalePriceWithTax) {
             salePrice = resultData.price;
             if (!resultData.tax || [resultData.tax isEqualToNumber:@0]) {
                 strings = @[[_currencyFormatter stringFromNumber:salePrice], @"  Sale Price"];

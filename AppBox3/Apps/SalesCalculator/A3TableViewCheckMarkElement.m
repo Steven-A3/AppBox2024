@@ -26,7 +26,7 @@
 //    if (indexPath.row==0) {
 //        cell.accessoryType = [A3SalesCalcPreferences priceType] == ShowPriceType_Origin ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 //    } else {
-//        cell.accessoryType = [A3SalesCalcPreferences priceType] == ShowPriceType_Sale ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+//        cell.accessoryType = [A3SalesCalcPreferences priceType] == ShowPriceType_SalePriceWithTax ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 //    }
 
 	return cell;

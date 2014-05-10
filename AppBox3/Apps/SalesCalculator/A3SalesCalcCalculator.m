@@ -19,7 +19,7 @@
     if (aData.shownPriceType == ShowPriceType_Origin) {
         result = [A3SalesCalcCalculator salesCalcDataForOriginalPrice:aData];
 
-    } else {    // ShowPriceType_Sale
+    } else {    // ShowPriceType_SalePriceWithTax
         result = [A3SalesCalcCalculator salesCalcDataForSalePrice:aData];
     }
 
@@ -259,7 +259,7 @@
             result = @([aData.price doubleValue] / 100.0 * [aData.tax doubleValue]);
         }
     }
-    else if (aData.shownPriceType == ShowPriceType_Sale) {
+    else if (aData.shownPriceType == ShowPriceType_SalePriceWithTax) {
         if (aData.taxType == A3TableViewValueTypeCurrency) {
             NSNumber *originalPrice = [self originalPriceBeforeTaxAndDiscountForCalcData:aData];
             NSNumber *taxPercent = [self taxPercentForCalcData:aData];
@@ -319,7 +319,7 @@
             result = @(discountedPrice);
         }
     }
-    else if (aData.shownPriceType == ShowPriceType_Sale) {
+    else if (aData.shownPriceType == ShowPriceType_SalePriceWithTax) {
         // 세금제거.
         if (aData.tax && ![aData.tax isEqualToNumber:@0]) {
             double preTaxPrice;
@@ -408,7 +408,7 @@
             result = aData.tax;
         }
     }
-    else if (aData.shownPriceType == ShowPriceType_Sale) {
+    else if (aData.shownPriceType == ShowPriceType_SalePriceWithTax) {
         if (aData.taxType == A3TableViewValueTypeCurrency) {
             NSNumber *salePriceBeforeTax = [self salePriceWithoutTaxForCalcData:aData];
             if ([salePriceBeforeTax isEqualToNumber:@0]) {

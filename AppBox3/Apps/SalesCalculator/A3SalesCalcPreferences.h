@@ -10,7 +10,7 @@
 
 //typedef NS_ENUM(NSUInteger, A3SalesCalcShowPriceType) {
 //	ShowPriceType_Origin = 0,
-//	ShowPriceType_Sale
+//	ShowPriceType_SalePriceWithTax
 //};
 
 @class A3SalesCalcData;
