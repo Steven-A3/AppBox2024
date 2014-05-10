@@ -37,7 +37,6 @@ NSString *const A3LocalNotificationOwner = @"A3LocalNotificationOwner";
 NSString *const A3LocalNotificationDataID = @"A3LocalNotificationDataID";
 NSString *const A3LocalNotificationFromLadyCalendar = @"Lady Calendar";
 NSString *const A3LocalNotificationFromDaysCounter = @"Days Counter";
-NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidAppear";
 
 @interface A3AppDelegate () <UIAlertViewDelegate>
 
@@ -55,7 +54,7 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataStoreReadyToUse) name:USMStoreDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(coreDataReady) name:A3NotificationCoreDataReady object:nil];
 
     UILocalNotification *localNotification = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
     if (localNotification) {
@@ -196,12 +195,11 @@ NSString *const A3NotificationClockAppDidAppear = @"A3NotificationClockAppDidApp
 	return NO;
 }
 
-- (void)coreDataStoreReadyToUse {
+- (void)coreDataReady {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationCoreDataReady object:nil];
+
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self showReceivedLocalNotifications];
-
-		[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-		[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
 	});
 }
 

@@ -357,6 +357,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 
 		prevStartDate = newPeriod.startDate;
 	}
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)recalculateDates
@@ -366,7 +367,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 	NSInteger periodLength = [[setting objectForKey:SettingItem_ForeCastingPeriods] integerValue];
 	[self updatePredictPeriodsWithCount:periodLength];
 
-	[self setupLocalNotification];
+	[A3LadyCalendarModelManager setupLocalNotification];
 }
 
 - (NSString*)stringFromDate:(NSDate*)date
@@ -398,7 +399,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 	return furthestPeriodEnds ? furthestPeriodEnds.periodEnds : [NSDate date];
 }
 
-- (void)resetLocalNotifications {
++ (void)resetLocalNotifications {
 	UIApplication *application = [UIApplication sharedApplication];
 	NSArray *notifications = [application scheduledLocalNotifications];
 	for (UILocalNotification *notification in notifications) {
@@ -408,8 +409,8 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 	}
 }
 
-- (void)setupLocalNotification {
-	[self resetLocalNotifications];
++ (void)setupLocalNotification {
+	[A3LadyCalendarModelManager resetLocalNotifications];
 
 	NSDictionary *settings = [[NSUserDefaults standardUserDefaults] objectForKey:A3LadyCalendarSetting];
 	A3LadyCalendarSettingAlertType alertType = (A3LadyCalendarSettingAlertType) [settings[SettingItem_AlertType] integerValue];
@@ -452,8 +453,6 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 		NSDate *fireDate = [calendar dateByAddingComponents:fireDateComponents toDate:period.startDate options:0];
 		NSDateComponents *components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:fireDate];
 		components.hour = 9;
-//		components.hour = 21;
-//		components.minute = 43;
 		fireDate = [calendar dateFromComponents:components];
 
 		if ([fireDate isEarlierThanDate:today]) continue;
@@ -462,6 +461,7 @@ NSString *const A3LadyCalendarChangedDateKey = @"changedDate";
 		UILocalNotification *notification = [UILocalNotification new];
 		notification.fireDate = fireDate;
 		notification.alertBody = alertBody;
+		notification.soundName = UILocalNotificationDefaultSoundName;
 		notification.userInfo = @{A3LocalNotificationOwner:A3LocalNotificationFromLadyCalendar, A3LocalNotificationDataID:period.uniqueID};
 		[application scheduleLocalNotification:notification];
 	}

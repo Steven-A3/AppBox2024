@@ -17,7 +17,7 @@
 
 NSString *const A3UniqueIdentifier = @"uniqueIdentifier";
 NSString *const A3iCloudLastDBImportKey = @"kA3iCloudLastDBImportKey";
-NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
+NSString *const A3NotificationCoreDataReady = @"A3NotificationCoreDataReady";
 
 @protocol UbiquityStoreManagerInternal <NSObject>
 
@@ -121,9 +121,11 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 		}
 	} else {
 		[A3CurrencyDataManager setupFavorites];
+		[[A3DaysCounterModelManager new] reloadAlertDateListForLocalNotification];
+		[A3LadyCalendarModelManager setupLocalNotification];
 	}
 
-	[[NSNotificationCenter defaultCenter] postNotificationName:A3CoreDataReadyNotification object:nil];
+	[[NSNotificationCenter defaultCenter] postNotificationName:A3NotificationCoreDataReady object:nil];
 
 	if (self.hud) {
 		__typeof(self) __weak weakSelf = self;
@@ -468,7 +470,7 @@ NSString *const A3CoreDataReadyNotification = @"A3CoreDataReadyNotification";
 	[userDefaults synchronize];
 
 	[[A3DaysCounterModelManager sharedManager] reloadAlertDateListForLocalNotification];
-	[[[A3LadyCalendarModelManager alloc] init] setupLocalNotification];
+	[A3LadyCalendarModelManager setupLocalNotification];
 
 	NSLog(@"%s - EXIT", __PRETTY_FUNCTION__);
 }
