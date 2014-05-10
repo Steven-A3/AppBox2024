@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3LoanCalcContentsTableViewController.h"
 
 @class LoanCalcData;
 
@@ -17,9 +18,8 @@
 
 @end
 
-@interface A3LoanCalcLoanDetailViewController : UITableViewController
+@interface A3LoanCalcLoanDetailViewController : A3LoanCalcContentsTableViewController
 
 @property (nonatomic, assign) id<LoanCalcLoanDataDelegate> delegate;
-@property (nonatomic, strong) LoanCalcData *loanData;
 
 @end

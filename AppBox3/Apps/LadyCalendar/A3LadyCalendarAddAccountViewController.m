@@ -18,6 +18,7 @@
 #import "GCPlaceholderTextView.h"
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UITableView+utility.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -426,20 +427,12 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
-    if( [_accountItem.notes length] < 1 )
-        textView.text = @"";
     return YES;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
 	_accountItem.notes = textView.text;
-    if( [_accountItem.notes length] < 1 ){
-        textView.text = @"Notes";
-    }
-	UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

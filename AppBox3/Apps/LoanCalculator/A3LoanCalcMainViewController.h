@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "A3LoanCalcContentsTableViewController.h"
 
-@interface A3LoanCalcMainViewController : UITableViewController
+@interface A3LoanCalcMainViewController : A3LoanCalcContentsTableViewController
 
 @end
