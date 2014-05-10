@@ -484,18 +484,18 @@
     A3RoundDateView *roundDateView = (A3RoundDateView*)[cell viewWithTag:14];
     
     if ( item ) {
-        NSDate *startDate;
-        if ( [item.isLunar boolValue] ) {
-            [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
-                                                                                  leapMonth:[item.useLeapMonth boolValue]
-                                                                                   fromDate:[NSDate date]];
-        }
-        else {
-            startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
-                                                                                  firstDate:[item.startDate solarDate]
-                                                                                   fromDate:[NSDate date]
-                                                                                   isAllDay:[item.isAllDay boolValue]];
-        }
+        NSDate *startDate = item.effectiveStartDate;
+//        if ( [item.isLunar boolValue] ) {
+//            startDate = [[A3DaysCounterModelManager sharedManager] nextSolarDateFromLunarDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:[item startDate] toLunar:[item.isLunar boolValue]]
+//                                                                                              leapMonth:[item.useLeapMonth boolValue]
+//                                                                                               fromDate:[NSDate date]];
+//        }
+//        else {
+//            startDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue]
+//                                                                                  firstDate:[item.startDate solarDate]
+//                                                                                   fromDate:[NSDate date]
+//                                                                                   isAllDay:[item.isAllDay boolValue]];
+//        }
 
         // textLabel
         textLabel.text = item.eventName;
