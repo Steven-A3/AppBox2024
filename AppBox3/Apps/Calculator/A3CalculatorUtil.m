@@ -103,7 +103,7 @@
 }
 
 - (id)stringLog10 {
-	return [self stringWithSuperscript:@"log10" location:3 length:2 value:@-1];
+	return [self stringWithSuperscriptMiddleFont:@"log10" location:3 length:2 value:@-1];
 }
 
 - (id)string10X {
