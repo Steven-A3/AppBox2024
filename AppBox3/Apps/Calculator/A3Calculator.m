@@ -1453,19 +1453,22 @@ typedef CMathParser<char, double> MathParser;
             mathexpression = num;
         }
         
-        NSUInteger i = 1;
+        NSUInteger i = 1, numLen = 0;
         NSRange range;
         range.length = 1;
         do {
             range.location = [mathexpression length] - i++;
             range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] options:0 range:range];
+            if(range.location != NSNotFound) {
+                numLen++;
+            }
         } while (range.location != NSNotFound &&
-                 i < [mathexpression length]);
+                 i <= [mathexpression length]);
         
         if (IS_IPHONE && IS_PORTRAIT) {
-            if (i >= 9) return;
+            if (numLen >= 9) return;
         } else {
-            if (i >= 15) return;
+            if (numLen >= 15) return;
         }
         mathexpression = [mathexpression stringByAppendingString:num];
         [self convertMathExpressionToAttributedString];
