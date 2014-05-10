@@ -255,7 +255,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 - (CGAffineTransform) getTransform {
     CGAffineTransform   transform;
     
-    if (IS_IPAD) {
+    if (!IS_IPHONE) {
         UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (curDeviceOrientation == UIDeviceOrientationPortrait) {
             transform = CGAffineTransformMakeRotation(M_PI_2);
@@ -274,7 +274,7 @@ static CGColorSpaceRef sDeviceRgbColorSpace = NULL;
 }
 
 - (void)setLabelRotation:(UILabel *)label {
-    if (IS_IPAD) {
+    if (!IS_IPHONE) {
         CGAffineTransform   transform;
         UIInterfaceOrientation curDeviceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (curDeviceOrientation == UIDeviceOrientationPortrait) {

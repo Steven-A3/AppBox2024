@@ -105,7 +105,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 
 
 - (void) setPreviewRotation:(CGRect)screenBounds {
-    if (IS_IPAD) {
+    if (!IS_IPHONE) {
                 CGAffineTransform   transform;
         UIInterfaceOrientation curInterfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
         if (curInterfaceOrientation == UIDeviceOrientationPortrait) {
@@ -135,7 +135,7 @@ static const int MAX_ZOOM_FACTOR = 6;
 
 - (void)viewWillLayoutSubviews {
     CGRect screenBounds = [self screenBoundsAdjustedWithOrientation];
-    if(IS_IPAD) {
+    if(!IS_IPHONE) {
         [self setPreviewRotation:screenBounds];
         [self.flashbrightslider setFrame:CGRectMake(self.flashbrightslider.frame.origin.x, self.flashbrightslider.frame.origin.y, screenBounds.size.width - 106, self.flashbrightslider.frame.size.height)];
         [self.brightnessslider setFrame:CGRectMake(self.brightnessslider.frame.origin.x, self.brightnessslider.frame.origin.y , screenBounds.size.width - 106, self.brightnessslider.frame.size.height)];
@@ -260,7 +260,7 @@ static const int MAX_ZOOM_FACTOR = 6;
         }
         
     } else {
-        if (!IS_IPAD) {
+        if (IS_IPHONE) {
             [previewLayer setTransform:CGAffineTransformScale(CGAffineTransformMakeRotation(M_PI_2), effectiveScale, effectiveScale)];
         }
         else {
