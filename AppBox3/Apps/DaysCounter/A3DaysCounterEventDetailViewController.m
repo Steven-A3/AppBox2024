@@ -685,7 +685,7 @@
                                                                                       fromDate:now
                                                                                         toDate:hasSince ? nextDate : startDate
                                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                                  isShortStyle:IS_IPHONE ? YES : NO];
+                                                                                  isShortStyle:NO];
         }
         
         // from / to string / repeat
@@ -842,7 +842,7 @@ EXIT_FUCTION:
                                                                               fromDate:startDate
                                                                                 toDate:now
                                                                               isAllDay:[info.isAllDay boolValue]
-                                                                          isShortStyle:IS_IPHONE ? YES : NO];
+                                                                          isShortStyle:NO];
     
     // from / to string / repeat
     if (hasEndDate) {
@@ -1081,7 +1081,7 @@ EXIT_FUCTION:
                                                                                           fromDate:now
                                                                                             toDate:hasSince ? nextDate : startDate
                                                                                           isAllDay:[info.isAllDay boolValue]
-                                                                                      isShortStyle:IS_IPHONE ? YES : NO];
+                                                                                      isShortStyle:NO];
             }
         }
         else {
@@ -1089,7 +1089,7 @@ EXIT_FUCTION:
                                                                                       fromDate:startDate
                                                                                         toDate:now
                                                                                       isAllDay:[info.isAllDay boolValue]
-                                                                                  isShortStyle:IS_IPHONE ? YES : NO];
+                                                                                  isShortStyle:NO];
         }
         
         // from / to string / repeat
@@ -1685,7 +1685,7 @@ EXIT_FUCTION:
                                                                                         fromDate:[NSDate date]
                                                                                           toDate:_eventItem.effectiveStartDate
                                                                                         isAllDay:[_eventItem.isAllDay boolValue]
-                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+                                                                                    isShortStyle:NO];
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]
@@ -1709,7 +1709,7 @@ EXIT_FUCTION:
                                                                                         fromDate:[NSDate date]
                                                                                           toDate:_eventItem.effectiveStartDate
                                                                                         isAllDay:[_eventItem.isAllDay boolValue]
-                                                                                    isShortStyle:IS_IPHONE ? YES : NO];
+                                                                                    isShortStyle:NO];
         NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
                                                                        toDate:_eventItem.effectiveStartDate
                                                                  allDayOption:[_eventItem.isAllDay boolValue]

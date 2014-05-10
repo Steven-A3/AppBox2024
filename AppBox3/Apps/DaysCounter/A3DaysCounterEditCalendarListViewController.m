@@ -76,6 +76,7 @@
         DaysCounterCalendar *item = [_itemArray objectAtIndex:i];
         item.order = [NSNumber numberWithInteger:i+1];
     }
+    
     [[[A3DaysCounterModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
 }
 

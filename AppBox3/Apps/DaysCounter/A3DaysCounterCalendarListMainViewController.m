@@ -9,6 +9,7 @@
 #import "A3DaysCounterCalendarListMainViewController.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+iPad_rightSideView.h"
 #import "A3DaysCounterDefine.h"
 #import "A3DaysCounterModelManager.h"
 #import "A3DaysCounterSlidershowMainViewController.h"
@@ -116,17 +117,10 @@
     self.navigationController.delegate = nil;
     [self.navigationController setToolbarHidden:NO];
     
-//    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
-//    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
-    self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
-    [self setupHeaderInfo];
-    [self.tableView reloadData];
-    self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
+    [self reloadTableView];
     
     [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:@"DaysCounterLastOpenedMainIndex"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [self.tableView reloadData];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -166,6 +160,18 @@
     else {
         _headerEventLabel.text = (eventNumber > 0 ? @"EVENTS" : @"EVENT");
     }
+}
+
+- (void)reloadTableView
+{
+    //    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
+    //    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
+    self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
+    [self setupHeaderInfo];
+    [self.tableView reloadData];
+    self.addEventButton.tintColor = [A3AppDelegate instance].themeColor;
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:A3NotificationRightSideViewWillDismiss object:nil];
 }
 
 #pragma mark Initialize FontSize
@@ -256,6 +262,7 @@
     }
     else {
         [self.A3RootViewController presentRightSideViewController:viewCtrl];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:A3NotificationRightSideViewWillDismiss object:nil];
     }
 }
 

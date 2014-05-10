@@ -429,22 +429,22 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     NSString *retStr = @"";
     NSMutableArray *resultOptionStrings = [NSMutableArray new];
     if ( option & DurationOption_Year ) {
-        [resultOptionStrings addObject: isShortType ? @"Y" : @"Years"];
+        [resultOptionStrings addObject: isShortType ? @"y" : @"Years"];
     }
     if ( option & DurationOption_Month ) {
-        [resultOptionStrings addObject: isShortType ? @"M" : @"Months"];
+        [resultOptionStrings addObject: isShortType ? @"m" : @"Months"];
     }
     if ( option & DurationOption_Week ) {
-        [resultOptionStrings addObject: isShortType ? @"W" : @"Months"];
+        [resultOptionStrings addObject: isShortType ? @"w" : @"Months"];
     }
     if ( option & DurationOption_Day ) {
-        [resultOptionStrings addObject: isShortType ? @"D" : @"Days"];
+        [resultOptionStrings addObject: isShortType ? @"d" : @"Days"];
     }
     if ( option & DurationOption_Hour ) {
-        [resultOptionStrings addObject: isShortType ? @"h" : @"Hours"];
+        [resultOptionStrings addObject: isShortType ? @"hr" : @"Hours"];
     }
     if ( option & DurationOption_Minutes ) {
-        [resultOptionStrings addObject: isShortType ? @"m" : @"Minutes"];
+        [resultOptionStrings addObject: isShortType ? @"min" : @"Minutes"];
     }
     retStr = [resultOptionStrings componentsJoinedByString:@" "];
     
@@ -1108,10 +1108,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         
         if (!isAllDay) {
             if (option & DurationOption_Hour && [diffComponent hour] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld h", (long)labs([diffComponent hour])]];
+                [resultArray addObject:[NSString stringWithFormat:@"%ld hr", (long)labs([diffComponent hour])]];
             }
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
-                [resultArray addObject:[NSString stringWithFormat:@"%ld m", (long)labs([diffComponent minute])]];
+                [resultArray addObject:[NSString stringWithFormat:@"%ld min", (long)labs([diffComponent minute])]];
             }
 //            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
 //                [resultArray addObject:[NSString stringWithFormat:@"%ld s", (long)labs([diffComponent second])]];
@@ -1770,6 +1770,12 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
         [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
         
+        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:[dateModel solarDate]];
+        if (solarComp.year == [dateModel.year integerValue]) {
+            NSArray *dateFormats = [[dateFormat componentsSeparatedByString:@" "] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", @"y"]];
+            dateFormat = [[dateFormats componentsJoinedByString:@" "] mutableCopy];
+        }
+
         dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
                       [A3DateHelper dateStringFromDate:[dateModel solarDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]],
                       [A3DateHelper dateStringFromDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:dateModel toLunar:isLunar] withFormat:dateFormat]];
@@ -1785,17 +1791,26 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         dateString = [NSString stringWithFormat:@"%@", [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:isAllDay]]];
     }
     else {
-        BOOL isResultLeapMonth;
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        [formatter setDateStyle:NSDateFormatterFullStyle];
-        NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
-        [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
-        [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
-        NSDateComponents *lunarComp = [NSDate lunarCalcWithComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date] gregorianToLunar:YES leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
-        
-        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
-                      [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]],
-                      [A3DateHelper dateStringFromDateComponents:lunarComp withFormat:dateFormat]];
+//        BOOL isResultLeapMonth;
+//        NSDateFormatter *formatter = [NSDateFormatter new];
+//        [formatter setDateStyle:NSDateFormatterFullStyle];
+//        NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
+//        [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
+//        [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+//        
+//        NSDateComponents *lunarComp = [NSDate lunarCalcWithComponents:[[NSCalendar currentCalendar] components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date] gregorianToLunar:YES leapMonth:isLeapMonth korean:YES resultLeapMonth:&isResultLeapMonth];
+//        
+//        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:date];
+//        if (solarComp.year == lunarComp.year) {
+//            NSArray *dateFormats = [[dateFormat componentsSeparatedByString:@" "] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", @"y"]];
+//            dateFormat = [[dateFormats componentsJoinedByString:@" "] mutableCopy];
+//        }
+//        
+//        dateString = [NSString stringWithFormat:@"%@ (음력 %@)",
+//                      [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]],
+//                      [A3DateHelper dateStringFromDateComponents:lunarComp withFormat:dateFormat]];
+        dateString = [NSString stringWithFormat:@"%@",
+                      [A3DateHelper dateStringFromDate:date withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]]];
     }
     
     return dateString;
