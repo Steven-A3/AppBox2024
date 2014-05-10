@@ -29,8 +29,8 @@
 #import "NSString+conversion.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
-    Price_Amount = 0,
-    Price_Percent,
+	Price_Percent = 0,
+    Price_Amount,
 };
 
 @interface A3UnitPriceDetailTableController () <UITextFieldDelegate, UITextViewDelegate, A3KeyboardDelegate, UINavigationControllerDelegate, A3UnitSelectViewControllerDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
@@ -433,7 +433,7 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         else {
             self.price.size = nil;
         }
-		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]:[self.decimalFormatter stringFromNumber:@0];
+		textField.text = self.price.size ? [self.decimalFormatter stringFromNumber:self.price.size]: @"";
     }
 }
 

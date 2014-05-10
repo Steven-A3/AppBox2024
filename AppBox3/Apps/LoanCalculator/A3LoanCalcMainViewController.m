@@ -35,6 +35,7 @@
 #import "A3CalculatorDelegate.h"
 #import "A3SearchViewController.h"
 #import "UITableView+utility.h"
+#import "NSDateFormatter+A3Addition.h"
 
 #define LoanCalcModeSave @"LoanCalcModeSave"
 
@@ -2372,18 +2373,18 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 	NSIndexPath *endIP = _currentIndexPath;
 	NSLog(@"End IP : %ld - %ld", (long) endIP.section, (long) endIP.row);
 
+	NSNumberFormatter *formatter = [NSNumberFormatter new];
+	[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+
+	NSNumber *inputNum = [formatter numberFromString:[textField text]];
+	float inputFloat = [inputNum floatValue];
+
 	// update
 	if (endIP.section == 2) {
 		// calculation item
-		NSNumberFormatter *formatter = [NSNumberFormatter new];
-		[formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-
 		NSNumber *calcItemNum = _calcItems[endIP.row];
 		A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
 		//double inputFloat = [textField.text doubleValue];
-		NSNumber *inputNum = [formatter numberFromString:[textField text]];
-		float inputFloat = [inputNum floatValue];
-
 		switch (calcItem) {
 			case A3LC_CalculationItemDownPayment: {
 				if ([textField.text length] > 0) {
@@ -2441,8 +2442,6 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 		// extra payment
 		NSNumber *exPayItemNum = _extraPaymentItems[endIP.row];
 		A3LoanCalcExtraPaymentType exPayType = exPayItemNum.integerValue;
-		float inputFloat = [textField.text floatValue];
-		NSNumber *inputNum = @(inputFloat);
 
 		if (exPayType == A3LC_ExtraPaymentMonthly) {
 			if ([textField.text length] > 0) {
@@ -3227,14 +3226,14 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 - (void)configureExtraPaymentYearlyCell:(UITableViewCell *)cell
 {
     cell.textLabel.text = [LoanCalcString titleOfExtraPayment:A3LC_ExtraPaymentYearly];
-    NSString *currencyText = @"";
+    NSString *currencyText;
     if (_loanData.extraPaymentYearly) {
         currencyText = [self.loanFormatter stringFromNumber:_loanData.extraPaymentYearly];
     }
     else {
         currencyText = [self.loanFormatter stringFromNumber:@(0)];
     }
-    NSString *dateText = @"";
+    NSString *dateText;
     
     if (_loanData.extraPaymentYearlyDate) {
         NSDate *pickDate = _loanData.extraPaymentYearlyDate;
@@ -3260,14 +3259,19 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
     else {
         currencyText = [self.loanFormatter stringFromNumber:@(0)];
     }
-    NSString *dateText = @"";
-    if (_loanData.extraPaymentOneTimeDate) {
-        NSDate *pickDate = _loanData.extraPaymentOneTimeDate;
-        
+
+    NSString *dateText;
+	NSDate *oneTimeDate = _loanData.extraPaymentOneTimeDate;
+	if (!oneTimeDate && [_loanData.extraPaymentOneTime doubleValue] > 0) {
+		oneTimeDate = [NSDate date];
+	}
+    if (oneTimeDate) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateStyle:NSDateFormatterMediumStyle];
-        [formatter setDateFormat:@"MMM, yyyy"];
-        dateText = [formatter stringFromDate:pickDate];
+        [formatter setDateStyle:NSDateFormatterLongStyle];
+		FNLOG(@"%@", formatter.dateFormat);
+		NSString *format = [formatter formatStringByRemovingYearComponent:formatter.dateFormat];
+		[formatter setDateFormat:format];
+        dateText = [formatter stringFromDate:oneTimeDate];
     }
     else {
         dateText = @"None";
