@@ -74,7 +74,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	[self.navigationController setToolbarHidden:YES];
 
 	if (![self isMovingToParentViewController]) {
-		[_dataManager recalculateDates];
+		[self.dataManager recalculateDates];
 		_periodItems = [NSMutableArray arrayWithArray:[_dataManager periodListStartsInMonth:[_month firstDateOfMonth]]];
 		if ([_periodItems count] == 0) {
 			[self.navigationController popViewControllerAnimated:YES];
@@ -306,7 +306,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (void)editAction:(id)sender
 {
     A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
-	viewCtrl.dataManager = _dataManager;
+	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = [_periodItems objectAtIndex:0];
 	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -321,7 +321,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
     LadyCalendarPeriod *item = _periodItems[(NSUInteger) [rowInfo[ItemKey_Index] integerValue]];
 
 	A3LadyCalendarAddPeriodViewController *viewCtrl = [[A3LadyCalendarAddPeriodViewController alloc] initWithNibName:@"A3LadyCalendarAddPeriodViewController" bundle:nil];
-	viewCtrl.dataManager = _dataManager;
+	viewCtrl.dataManager = self.dataManager;
     viewCtrl.isEditMode = YES;
     viewCtrl.periodItem = item;
 	UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];

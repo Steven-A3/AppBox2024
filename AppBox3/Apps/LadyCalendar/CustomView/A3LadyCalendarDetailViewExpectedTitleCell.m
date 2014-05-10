@@ -20,7 +20,7 @@
 
 		[_titleLabel makeConstraints:^(MASConstraintMaker *make) {
 			make.left.equalTo(self.left).with.offset(IS_IPHONE ? 15 : 28);
-			make.centerY.equalTo(self.centerY);
+			make.baseline.equalTo(self.top).with.offset(31);
 		}];
 
 		_editButton = [UIButton buttonWithType:UIButtonTypeSystem];
