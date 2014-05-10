@@ -271,7 +271,7 @@
 - (HTCopyableLabel *)expressionLabel {
 	if (!_expressionLabel) {
 		_expressionLabel = [HTCopyableLabel new];
-		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:14];
+		_expressionLabel.font = [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:15];
 		_expressionLabel.textColor = [UIColor colorWithRed:159.0/255.0 green:159.0/255.0 blue:159.0/255.0 alpha:1.0];
 		_expressionLabel.textAlignment = NSTextAlignmentRight;
 		_expressionLabel.text = @"";
