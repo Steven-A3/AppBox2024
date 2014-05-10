@@ -73,7 +73,7 @@ NSString *kA3CalcButtonIDiPad = @"kA3CalcButtonID_iPad";
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_01_2"], kA3CalcButtonIDiPad:@1},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_02_2"], kA3CalcButtonIDiPad:@2},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_03_2"], kA3CalcButtonIDiPad:@3},
-             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_04_p"], kA3CalcButtonIDiPad:@4},
+             @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_04"], kA3CalcButtonIDiPad:@4},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_06_2"], kA3CalcButtonIDiPad:@9},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_07_2"], kA3CalcButtonIDiPad:@10},
              @{kA3CalcButtonTitleiPad:[UIImage imageNamed:@"c_08_2"], kA3CalcButtonIDiPad:@11},

@@ -11,6 +11,7 @@
 #import "A3DaysCounterModelManager.h"
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
+#import "UIViewController+iPad_rightSideView.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -20,6 +21,7 @@
 @end
 
 @implementation A3DaysCounterAddAndEditCalendarViewController
+
 - (NSInteger)indexOfCurrentColor:(UIColor*)color
 {
     NSInteger retIndex = NSNotFound;
@@ -55,6 +57,10 @@
     }
     
     self.colorArray = [[A3DaysCounterModelManager sharedManager] calendarColorList];
+
+	if (IS_IPAD) {
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willDismissRightSideView) name:A3NotificationRightSideViewWillDismiss object:nil];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -79,6 +85,14 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)willDismissRightSideView {
+	[self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (void)dealloc {
+	[self removeObserver];
 }
 
 #pragma mark - Table view data source

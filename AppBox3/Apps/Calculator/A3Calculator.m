@@ -584,18 +584,18 @@ typedef CMathParser<char, double> MathParser;
                         if(length > range.location) {
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             NSString *num = [mExpression substringWithRange:range];
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
                                                      [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
                             temp = [temp appendWithString:num];
                             i = range.location + range.length;
                         } else {
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] :
                                                      [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:subscriptNum] location:3 length:[subscriptNum length] value:@-1] appendWithString:@"("]];
                             i = range.location;
                         }
                         break;
                     } else if([currentString isEqualToString:@"LOG2("]) {
-                        temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] :
+                        temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] :
                                                  [calutil stringWithSuperscriptSystemFont:[@"log" stringByAppendingString:@"2"] location:3 length:1 value:@-1] appendWithString:@"("]];
                         i+= 5;
                         if(length > i) {
@@ -664,12 +664,12 @@ typedef CMathParser<char, double> MathParser;
                         if(length > range.location) {
                             range.length = [self getNumberLengthFromMathExpression:mExpression with:range.location];
                             NSString *num = [mExpression substringWithRange:range];
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
                                                      [calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1]  appendWithString:@"("]];
                             temp = [temp appendWithString:num];
                             i = range.location + range.length;
                         } else {
-                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscript:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
+                            temp = [temp appendWith:[bDefault == YES ? [calutil stringWithSuperscriptMiddleFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] :
                                                      [calutil stringWithSuperscriptSystemFont:[superscriptNum stringByAppendingString:@"√"] location:0 length:[superscriptNum length] value:@1] appendWithString:@"("]];
                             i = range.location;
                         }
@@ -1453,19 +1453,22 @@ typedef CMathParser<char, double> MathParser;
             mathexpression = num;
         }
         
-        NSUInteger i = 1;
+        NSUInteger i = 1, numLen = 0;
         NSRange range;
         range.length = 1;
         do {
             range.location = [mathexpression length] - i++;
             range = [mathexpression rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] options:0 range:range];
+            if(range.location != NSNotFound) {
+                numLen++;
+            }
         } while (range.location != NSNotFound &&
-                 i < [mathexpression length]);
+                 i <= [mathexpression length]);
         
         if (IS_IPHONE && IS_PORTRAIT) {
-            if (i >= 9) return;
+            if (numLen >= 9) return;
         } else {
-            if (i >= 15) return;
+            if (numLen >= 15) return;
         }
         mathexpression = [mathexpression stringByAppendingString:num];
         [self convertMathExpressionToAttributedString];

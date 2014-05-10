@@ -18,6 +18,7 @@
 #import "GCPlaceholderTextView.h"
 #import "NSString+conversion.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "UITableView+utility.h"
 
 @interface A3LadyCalendarAddAccountViewController ()
 
@@ -199,6 +200,7 @@
 			textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
 			textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
 			textView.delegate = self;
+			textView.placeholder = @"Notes";
         }
         else if( cellType == AccountCell_Birthday){
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
@@ -245,7 +247,7 @@
     }
     else if( cellType == AccountCell_Notes){
         UITextView *textView = (UITextView*)[cell viewWithTag:10];
-        textView.text = ([_accountItem.notes length] > 0 ? _accountItem.notes : [item objectForKey:ItemKey_Title]);
+        textView.text = _accountItem.notes;
         textView.textColor = ([_accountItem.notes length] < 1 ? [UIColor colorWithWhite:0.8 alpha:1.0] : [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0]);
 
     }
@@ -259,6 +261,7 @@
 }
 
 #pragma mark - UITableViewDelegate
+
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     [self resignAllAction];
@@ -424,20 +427,12 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
-    if( [_accountItem.notes length] < 1 )
-        textView.text = @"";
     return YES;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
 	_accountItem.notes = textView.text;
-    if( [_accountItem.notes length] < 1 ){
-        textView.text = @"Notes";
-    }
-	UITableViewCell *cell = (UITableViewCell*)[[[textView superview] superview] superview];
-	NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-	[self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text

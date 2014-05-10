@@ -449,8 +449,6 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [self closeDateInputCell];
-    if( [_periodItem.notes length] < 1 )
-        textView.text = @"";
     return YES;
 }
 

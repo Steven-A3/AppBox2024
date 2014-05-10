@@ -19,7 +19,7 @@
 }
 
 - (UIFont *)superscriptMiddleFont {
-	return [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:IS_IPAD?15:12];
+	return [UIFont fontWithName:@".HelveticaNeueInterface-M3" size:IS_IPAD?17:12];
 }
 
 - (UIFont *)superscriptSystemFont {
@@ -103,7 +103,7 @@
 }
 
 - (id)stringLog10 {
-	return [self stringWithSuperscript:@"log10" location:3 length:2 value:@-1];
+	return [self stringWithSuperscriptMiddleFont:@"log10" location:3 length:2 value:@-1];
 }
 
 - (id)string10X {
@@ -135,19 +135,19 @@
 }
 
 - (id)stringSquare {
-    return [self stringWithSuperscript:@"2" location:0 length:1 value:@1];
+    return [self stringWithSuperscriptMiddleFont:@"2" location:0 length:1 value:@1];
 }
 
 - (id)stringCube {
-    return [self stringWithSuperscript:@"3" location:0 length:1 value:@1];
+    return [self stringWithSuperscriptMiddleFont:@"3" location:0 length:1 value:@1];
 }
 
 - (id) stringCuberoot {
-    return [self stringWithSuperscript:@"3√(" location:0 length:1 value:@1];
+    return [self stringWithSuperscriptMiddleFont:@"3√(" location:0 length:1 value:@1];
 }
 
 - (id) stringSquareroot{
-    return [self stringWithSuperscript:@"2√(" location:0 length:1 value:@1];
+    return [self stringWithSuperscriptMiddleFont:@"2√(" location:0 length:1 value:@1];
 }
 
 - (id)stringArcTanh_h {
