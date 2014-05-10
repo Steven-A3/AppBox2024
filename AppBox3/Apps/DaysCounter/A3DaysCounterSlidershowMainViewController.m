@@ -44,13 +44,6 @@
 @property (assign, nonatomic) BOOL isFirstViewLoad;
 @property (strong, nonatomic) NSString *prevShownEventID;
 
-- (void)showTopToolbarAnimated:(BOOL)animated;
-- (void)hideTopToolbarAnimated:(BOOL)animated;
-
-- (void)updateNavigationTitle;
-- (void)addViewToMain:(UIView*)addView;
-- (CGRect)orientataionFrame;
-- (CGRect)orientataionBounds;
 @end
 
 @implementation A3DaysCounterSlidershowMainViewController

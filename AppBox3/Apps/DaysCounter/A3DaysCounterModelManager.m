@@ -1188,8 +1188,10 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
                                                                                                   firstDate:[item.startDate solarDate]
                                                                                                    fromDate:[NSDate date]];
         
+//        dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
+//                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
-                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isAllDay boolValue]]];
+                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         
         
         daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
@@ -1198,7 +1200,9 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         
     }
     else {
-        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        //dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
+        dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
+                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
         if ( diffDays > 0 ) {
@@ -1280,6 +1284,31 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     else {
         if ( isLocaleKorea ) {
             retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy년 MMMM d일 EEEE a h:mm");
+        }
+        else {
+            retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
+        }
+    }
+    
+    return retFormat;
+}
+
+- (NSString*)dateFormatForPhotoWithIsAllDays:(BOOL)isAllDays
+{
+    NSString *retFormat = DaysCounterDefaultDateFormat;
+    BOOL isLocaleKorea = [A3DateHelper isCurrentLocaleIsKorea];
+    
+    if ( IS_IPHONE ) {
+        if ( isLocaleKorea ) {
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. M. d EEEE a h:mm");
+        }
+        else {
+            retFormat = ( isAllDays ? @"EEE, MMM d, yyyy" : @"EEE, MMM d, yyyy h:mm a");
+        }
+    }
+    else {
+        if ( isLocaleKorea ) {
+            retFormat = ( isAllDays ? @"yyyy년 MMMM d일 EEEE" : @"yyyy. M. d EEEE a h:mm");
         }
         else {
             retFormat = ( isAllDays ? @"EEEE, MMMM d, yyyy" : @"EEEE, MMMM d, yyyy h:mm a");
