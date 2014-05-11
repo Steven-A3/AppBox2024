@@ -1962,35 +1962,23 @@
     }
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
-    
-    if (indexPath.section == 0 && indexPath.row == 0) {         // event Name
-        NSString *text = [textField.text stringByReplacingCharactersInRange:range withString:string];
-        _eventItem.eventName = text;
-    }
-    else {
-        
-    }
-
-    return YES;
-}
-
-- (void)textFieldDidChange:(NSNotification *)notification {
-}
-
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    _eventItem.eventName = textField.text;
     [textField resignFirstResponder];
     return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    _eventItem.eventName = textField.text;
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
+    
+    if (indexPath.section == 0 && indexPath.row == 0) {         // event Name
+        _eventItem.eventName = textField.text;
+    }
+    else {
+        
+    }
+    
     self.firstResponder = nil;
 }
 
