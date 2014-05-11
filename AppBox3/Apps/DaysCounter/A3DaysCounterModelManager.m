@@ -18,7 +18,7 @@
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
-#import "FXLabel.h"
+//#import "FXLabel.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "NSDate+LunarConverter.h"
 #import "NSDateFormatter+LunarDate.h"
@@ -1156,25 +1156,25 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     }
     
     UIImageView *bgImageView = (UIImageView*)[toView viewWithTag:10];
-    FXLabel *daysLabel = (FXLabel*)[toView viewWithTag:11];
-    FXLabel *markLabel = (FXLabel*)[toView viewWithTag:12];
-    FXLabel *dateLabel = (FXLabel*)[toView viewWithTag:13];
-    FXLabel *titleLabel = (FXLabel*)[toView viewWithTag:14];
+    UILabel *daysLabel = (UILabel *)[toView viewWithTag:11];
+    UILabel *markLabel = (UILabel *)[toView viewWithTag:12];
+    UILabel *dateLabel = (UILabel *)[toView viewWithTag:13];
+    UILabel *titleLabel = (UILabel *)[toView viewWithTag:14];
     
     titleLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 23.0 : 24.0)];
     titleLabel.text = item.eventName;
     titleLabel.shadowOffset = CGSizeMake(0, 1);
-    titleLabel.shadowBlur = 2;
+//    titleLabel.shadowBlur = 2;
     
     daysLabel.shadowOffset = CGSizeMake(0,1);
-    daysLabel.shadowBlur = 2;
+//    daysLabel.shadowBlur = 2;
     
     markLabel.shadowOffset = CGSizeMake(0,1);
-    markLabel.shadowBlur = 2;
+//    markLabel.shadowBlur = 2;
     markLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13.0 : 14.0)];
     
     dateLabel.shadowOffset = CGSizeMake(0,1);
-    dateLabel.shadowBlur = 2;
+//    dateLabel.shadowBlur = 2;
     dateLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 18.0 : 21.0)];
     
     NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]

@@ -8,11 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@class FXLabel;
-
 @interface A3DaysCounterSlideshowEventSummaryView : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet FXLabel *dayCountLabel;
-@property (weak, nonatomic) IBOutlet FXLabel *daysSinceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dayCountLabel;
+@property (weak, nonatomic) IBOutlet UILabel *daysSinceLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dayCountTopSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *daysSinceTopSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLeadingSpaceConst;
