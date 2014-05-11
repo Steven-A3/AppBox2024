@@ -147,7 +147,7 @@
         UIImage *image = [item.imageFilename length] > 0 ? [A3DaysCounterModelManager photoThumbnailFromFilename:item.imageFilename] : nil;
         imageView.image =  image ? [A3DaysCounterModelManager circularScaleNCrop:image rect:CGRectMake(0, 0, 32, 32)]  : nil;
         NSDate *today = [NSDate date];
-        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:[item.startDate solarDate] fromDate:today isAllDay:[item.isAllDay boolValue]];
+        //NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[item.repeatType integerValue] firstDate:[item.startDate solarDate] fromDate:today isAllDay:[item.isAllDay boolValue]];
         
         if (image) {
             ((A3DaysCounterEventListNameCell *)cell).photoLeadingConst.constant = IS_IPHONE ? 15 : 28;
@@ -164,7 +164,7 @@
         
         // markLabel until/since
         markLabel.text = [A3DateHelper untilSinceStringByFromDate:today
-                                                           toDate:nextDate
+                                                           toDate:[item effectiveStartDate] //nextDate
                                                      allDayOption:[item.isAllDay boolValue]
                                                            repeat:[item.repeatType integerValue] != RepeatType_Never ? YES : NO
                                                            strict:[A3DaysCounterModelManager hasHourMinDurationOption:[item.durationOption integerValue]]];
@@ -201,7 +201,7 @@
         else {
             daysLabel.text = [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:[item.durationOption integerValue]
                                                                                       fromDate:today
-                                                                                        toDate:nextDate
+                                                                                        toDate:[item effectiveStartDate] //nextDate
                                                                                       isAllDay:[item.isAllDay boolValue]
                                                                                   isShortStyle:IS_IPHONE ? YES : NO];
             

@@ -1617,7 +1617,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:NO leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
     }
     else {
-        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:YES leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
+        resultComp = [self dateComponentsOfRepeatForLunarDateComponent:lunarComponents aboutNextTime:(startComp.year > fromComp.year ? NO : YES) leapMonth:isLeapMonth fromDate:fromDate repeatType:RepeatType_EveryYear];
     }
     
 //    NSAssert(resultComp, @"Not Exist Lunar Date");

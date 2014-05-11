@@ -584,9 +584,11 @@
 
     if ([_eventItem.isAllDay boolValue]) {
         hasSince = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.startDate.solarDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
+        //hasSince = [A3DateHelper diffDaysFromDate:now toDate:_eventItem.effectiveStartDate isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
     }
     else {
         hasSince = [now timeIntervalSince1970] > [_eventItem.startDate.solarDate timeIntervalSince1970] ? YES : NO;
+        //hasSince = [now timeIntervalSince1970] > [_eventItem.effectiveStartDate timeIntervalSince1970] ? YES : NO;
     }
     
     lunarImageView.hidden = ![info.isLunar boolValue];
@@ -1474,7 +1476,7 @@ EXIT_FUCTION:
                 hasSince = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:[_eventItem.startDate solarDate] isAllDay:[_eventItem.isAllDay boolValue]] < 0 ? YES : NO;
             }
             else {
-                hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.startDate.solarDate timeIntervalSince1970] ? YES : NO;
+                hasSince = [[NSDate date] timeIntervalSince1970] > [_eventItem.effectiveStartDate timeIntervalSince1970] ? YES : NO;
             }
             
             if (!hasRepeat) {
