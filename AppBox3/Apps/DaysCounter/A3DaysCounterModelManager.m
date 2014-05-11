@@ -772,7 +772,7 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSInteger)numberOfEventContainedImage
 {
-    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"imageFilename.length > 0"] inContext:[self managedObjectContext]];
+    return [DaysCounterEvent MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && imageFilename.length > 0", @(YES)] inContext:[self managedObjectContext]];
 }
 
 - (NSDate*)dateOfLatestEvent

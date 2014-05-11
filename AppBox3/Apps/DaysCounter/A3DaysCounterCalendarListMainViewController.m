@@ -166,6 +166,8 @@
 {
     //    UIBarButtonItem *search = [self.navigationItem.rightBarButtonItems objectAtIndex:1];
     //    search.enabled = ([[A3DaysCounterModelManager sharedManager] numberOfAllEvents] > 0);
+
+    [[[A3DaysCounterModelManager sharedManager] managedObjectContext] MR_saveToPersistentStoreAndWait];
     self.itemArray = [[A3DaysCounterModelManager sharedManager] visibleCalendarList];
     [self setupHeaderInfo];
     [self.tableView reloadData];
