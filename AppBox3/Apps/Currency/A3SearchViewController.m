@@ -105,7 +105,9 @@
 			[self dismissViewControllerAnimated:YES completion:nil];
 		}
 	} else {
-		if (self.A3RootViewController.showRightView) {
+		if (self.showCancelButton) {
+			[self dismissViewControllerAnimated:YES completion:nil];
+		} else if (self.A3RootViewController.showRightView) {
 			[self.A3RootViewController dismissRightSideViewController];
 		} else {
 			[self dismissViewControllerAnimated:YES completion:nil];

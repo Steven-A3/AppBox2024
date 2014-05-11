@@ -325,8 +325,8 @@ static const CGFloat kSideViewWidth = 319.0;
 }
 
 - (void)dismissRightSideViewController {
-    FNLOG();
-    
+	if (!_showRightView) return;
+
     id topViewController = [_rightNavigationController topViewController];
     if ( [topViewController respondsToSelector:@selector(willDismissFromRightSide)] ) {
         [topViewController performSelector:@selector(willDismissFromRightSide) withObject:nil];

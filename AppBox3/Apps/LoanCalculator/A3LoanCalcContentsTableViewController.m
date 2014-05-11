@@ -386,6 +386,10 @@
 	return self;
 }
 
+- (UIViewController *)modalPresentingParentViewControllerForCurrencySelector {
+	return self;
+}
+
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3LoanCalcCustomCurrencyCode];
 	if (!currencyCode) {
@@ -406,7 +410,6 @@
 		[self.tableView reloadData];
 	}
 }
-
 
 #pragma mark --- Calculator View Delegate
 

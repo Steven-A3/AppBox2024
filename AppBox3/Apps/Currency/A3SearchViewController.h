@@ -32,6 +32,8 @@
 // Sub class should implement this member
 @property (nonatomic, strong) NSMutableArray *allData;
 
+@property (assign, nonatomic) BOOL showCancelButton;
+
 - (void)callDelegate:(NSString *)selectedItem;
 - (void)filterContentForSearchText:(NSString *)searchText;
 

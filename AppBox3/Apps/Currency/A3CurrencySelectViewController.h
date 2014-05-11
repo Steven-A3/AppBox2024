@@ -12,7 +12,6 @@
 
 @interface A3CurrencySelectViewController : A3SearchViewController
 
-@property (assign, nonatomic) BOOL showCancelButton;
-
 - (instancetype)initWithPresentingViewController:(UIViewController *)modalPresentingParentViewController;
+
 @end
