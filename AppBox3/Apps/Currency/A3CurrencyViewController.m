@@ -814,29 +814,27 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-	@autoreleasepool {
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-		[self setFirstResponder:nil];
-		[self setNumberKeyboardViewController:nil];
+	[self setFirstResponder:nil];
+	[self setNumberKeyboardViewController:nil];
 
-		BOOL valueChanged = NO;
-		if (![textField.text length]) {
-			textField.text = self.previousValue;
-		} else {
-			CurrencyFavorite *currencyFavorite = self.favorites[0];
-			double value = [textField.text doubleValue];
-			textField.text = [self currencyFormattedStringForCurrency:currencyFavorite.currencyCode value:@(value)];
-			if (![textField.text isEqualToString:self.previousValue]) {
-				valueChanged = YES;
-			}
+	BOOL valueChanged = NO;
+	if (![textField.text length]) {
+		textField.text = self.previousValue;
+	} else {
+		CurrencyFavorite *currencyFavorite = self.favorites[0];
+		double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
+		textField.text = [self currencyFormattedStringForCurrency:currencyFavorite.currencyCode value:@(value)];
+		if (![textField.text isEqualToString:self.previousValue]) {
+			valueChanged = YES;
 		}
-		[self updateTextFieldsWithSourceTextField:textField];
+	}
+	[self updateTextFieldsWithSourceTextField:textField];
 
-		if (valueChanged) {
-			[self putHistoryWithValue:@([self.previousValue floatValueEx])];
-			[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-		}
+	if (valueChanged) {
+		[self putHistoryWithValue:@([self.previousValue floatValueEx])];
+		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 	}
 }
 
@@ -846,6 +844,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
+		self.previousValue = [self.currencyFormatter stringFromNumber:@1];
 	}
 }
 
@@ -889,26 +888,24 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 }
 
 - (void)updateTextFieldsWithSourceTextField:(UITextField *)textField {
-	@autoreleasepool {
-		float fromValue = [[self.decimalFormatter numberFromString:textField.text] floatValue];
+	float fromValue = [textField.text floatValueEx];
 
-		[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
-		[[NSUserDefaults standardUserDefaults] synchronize];
+	[[NSUserDefaults standardUserDefaults] setObject:@(fromValue) forKey:A3CurrencyLastInputValue];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 
-		NSInteger fromIndex = 0;
-		FNLOG(@"%@", _textFields);
-		for (NSString *key in [self.textFields allKeys]) {
-			UITextField *targetTextField = _textFields[key];
-			if (targetTextField == textField) {
-				continue;
-			}
-			CurrencyFavorite *sourceCurrency = self.favorites[fromIndex];
-			NSUInteger targetIndex = [self indexForCurrencyCode:key];
-			if (targetIndex != NSNotFound) {
-				CurrencyFavorite *targetCurrency = self.favorites[targetIndex];
-				float rate = [self rateForSource:sourceCurrency target:targetCurrency];
-				targetTextField.text = [self currencyFormattedStringForCurrency:targetCurrency.currencyCode value:@(fromValue * rate)];
-			}
+	NSInteger fromIndex = 0;
+	FNLOG(@"%@", _textFields);
+	for (NSString *key in [self.textFields allKeys]) {
+		UITextField *targetTextField = _textFields[key];
+		if (targetTextField == textField) {
+			continue;
+		}
+		CurrencyFavorite *sourceCurrency = self.favorites[fromIndex];
+		NSUInteger targetIndex = [self indexForCurrencyCode:key];
+		if (targetIndex != NSNotFound) {
+			CurrencyFavorite *targetCurrency = self.favorites[targetIndex];
+			float rate = [self rateForSource:sourceCurrency target:targetCurrency];
+			targetTextField.text = [self currencyFormattedStringForCurrency:targetCurrency.currencyCode value:@(fromValue * rate)];
 		}
 	}
 }
