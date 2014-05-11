@@ -87,6 +87,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
 {
     [super viewDidLoad];
 
+	self.dataSectionStartIndex = 0;
+
     [self makeBackButtonEmptyArrow];
     [self leftBarButtonAppsButton];
     
@@ -1338,19 +1340,8 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         NSIndexPath *calIP = [NSIndexPath indexPathForRow:0 inSection:1];
         [self.tableView reloadRowsAtIndexPaths:@[calIP] withRowAnimation:UITableViewRowAnimationAutomatic];
         
-        if ([self.loanData calculated]) {
-            
-            /*
-            // loanCalc 가 계산이 되었으면, History에 기록한다.
-            [self putLoanHistory];
-             */
-            
-            [self saveLoanData];
-            
-            // 계산이 되었으면, 상단 그래프가 보이도록 이동시킨다.
-//            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            [self refreshRightBarItems];
-        }
+		[self saveLoanData];
+		[self refreshRightBarItems];
     }
 }
 
@@ -1467,11 +1458,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
         [self updateLoanInfoA];
         [self displayCompareGraph];
-        
-        if ([_loanDataA calculated]) {
-            [self saveLoanDataA];
-        }
-        
+		[self saveLoanDataA];
     }
 }
 
@@ -1482,12 +1469,7 @@ NSString *const A3LoanCalcDateInputCellID = @"A3WalletDateInputCell";
         
         [self updateLoanInfoB];
         [self displayCompareGraph];
-        
         [self saveLoanDataB];
-        
-        if ([_loanDataB calculated]) {
-            [self saveLoanDataB];
-        }
     }
 }
 

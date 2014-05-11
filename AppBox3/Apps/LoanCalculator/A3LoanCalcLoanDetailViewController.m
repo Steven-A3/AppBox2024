@@ -9,7 +9,6 @@
 #import "A3LoanCalcLoanDetailViewController.h"
 #import "A3LoanCalcSelectFrequencyViewController.h"
 #import "A3LoanCalcExtraPaymentViewController.h"
-#import "A3LoanCalcMonthlyDataViewController.h"
 #import "A3LoanCalcTextInputCell.h"
 #import "LoanCalcData+Calculation.h"
 #import "LoanCalcString.h"
@@ -21,11 +20,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "A3LoanCalcLoanGraphCell.h"
 #import "A3NumberKeyboardViewController.h"
-#import "A3CalculatorDelegate.h"
-#import "A3SearchViewController.h"
 #import "UITableView+utility.h"
-#import "NSDateFormatter+A3Addition.h"
-#import "A3LoanCalcContentsTableViewController.h"
 
 @interface A3LoanCalcLoanDetailViewController () <LoanCalcSelectFrequencyDelegate, LoanCalcExtraPaymentDelegate, A3KeyboardDelegate, UITextFieldDelegate, A3CalculatorDelegate, A3SearchViewControllerDelegate>
 {
@@ -52,6 +47,8 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	self.dataSectionStartIndex = 1;
 
     [self makeBackButtonEmptyArrow];
 
@@ -295,7 +292,6 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
-
 
 #pragma mark - LoanCalcSelectFrequencyDelegate
 
@@ -619,88 +615,85 @@ NSString *const A3LoanCalcLoanGraphCellID2 = @"A3LoanCalcLoanGraphCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (indexPath.section == 0) {
-            // graph
-            A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID2 forIndexPath:indexPath];
-            
-            [graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-            [graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-            [graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-            
-            if ([self.loanData calculated]) {
-                [self displayGraphCell:graphCell];
-            }
-            else {
-                [self makeGraphCellClear:graphCell];
-            }
-            
-            [graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:self.loanData.frequencyIndex] forState:UIControlStateNormal];
-            
-            cell = graphCell;
-        }
-        else if (indexPath.section == 1) {
-            // calculation items
-            NSNumber *calcItemNum = self.calcItems[indexPath.row];
-            A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
-            
-            if (calcItem == A3LC_CalculationItemFrequency) {
-                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID2 forIndexPath:indexPath];
-                cell.textLabel.text = [LoanCalcString titleOfItem:calcItem];
-                cell.detailTextLabel.text = [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex];
-                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-            }
-            else {
-                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID2 forIndexPath:indexPath];
-                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                inputCell.textField.delegate = self;
-                inputCell.textField.font = [UIFont systemFontOfSize:17];
-                inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                
-                [self configureInputCell:inputCell withCalculationItem:calcItem];
-                
-                cell = inputCell;
-            }
-        }
-        else if (indexPath.section == 2) {
-            // extra payment
-            NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
-            A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
-            
-            if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
-                A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID2 forIndexPath:indexPath];
-                inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                inputCell.textField.font = [UIFont systemFontOfSize:17];
-                inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                inputCell.textField.delegate = self;
-                inputCell.titleLabel.text = [LoanCalcString titleOfExtraPayment:exPaymentItem];
-                inputCell.textField.text = [self.loanFormatter stringFromNumber:self.loanData.extraPaymentMonthly];
-                inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@""
-                                                                                            attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
+    UITableViewCell *cell = nil;
+
+	if (indexPath.section == 0) {
+		// graph
+		A3LoanCalcLoanGraphCell *graphCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcLoanGraphCellID2 forIndexPath:indexPath];
+
+		[graphCell.monthlyButton addTarget:self action:@selector(monthlyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		[graphCell.totalButton addTarget:self action:@selector(totalButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+		[graphCell.infoButton addTarget:self action:@selector(infoButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+
+		if ([self.loanData calculated]) {
+			[self displayGraphCell:graphCell];
+		}
+		else {
+			[self makeGraphCellClear:graphCell];
+		}
+
+		[graphCell.monthlyButton setTitle:[LoanCalcString titleOfFrequency:self.loanData.frequencyIndex] forState:UIControlStateNormal];
+
+		cell = graphCell;
+	}
+	else if (indexPath.section == 1) {
+		// calculation items
+		NSNumber *calcItemNum = self.calcItems[indexPath.row];
+		A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
+
+		if (calcItem == A3LC_CalculationItemFrequency) {
+			cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID2 forIndexPath:indexPath];
+			cell.textLabel.text = [LoanCalcString titleOfItem:calcItem];
+			cell.detailTextLabel.text = [LoanCalcString titleOfFrequency:self.loanData.frequencyIndex];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+		}
+		else {
+			A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID2 forIndexPath:indexPath];
+			inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			inputCell.textField.delegate = self;
+			inputCell.textField.font = [UIFont systemFontOfSize:17];
+			inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+
+			[self configureInputCell:inputCell withCalculationItem:calcItem];
+
+			cell = inputCell;
+		}
+	}
+	else if (indexPath.section == 2) {
+		// extra payment
+		NSNumber *exPaymentItemNum = self.extraPaymentItems[indexPath.row];
+		A3LoanCalcExtraPaymentType exPaymentItem = exPaymentItemNum.integerValue;
+
+		if (exPaymentItem == A3LC_ExtraPaymentMonthly) {
+			A3LoanCalcTextInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcTextInputCellID2 forIndexPath:indexPath];
+			inputCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			inputCell.textField.font = [UIFont systemFontOfSize:17];
+			inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			inputCell.textField.delegate = self;
+			inputCell.titleLabel.text = [LoanCalcString titleOfExtraPayment:exPaymentItem];
+			inputCell.textField.text = [self.loanFormatter stringFromNumber:self.loanData.extraPaymentMonthly];
+			inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@""
+																						attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
 //                inputCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[self.loanFormatter stringFromNumber:@(0)]
 //                                                                                            attributes:@{NSForegroundColorAttributeName:inputCell.textField.textColor}];
-                
-                cell = inputCell;
-            }
-            else {
-                cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID2 forIndexPath:indexPath];
-                cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                
-                if (exPaymentItem == A3LC_ExtraPaymentYearly) {
-                    [self configureExtraPaymentYearlyCell:cell];
-                }
-                else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
-                    [self configureExtraPaymentOneTimeCell:cell];
-                }
-            }
-        }
+
+			cell = inputCell;
+		}
+		else {
+			cell = [tableView dequeueReusableCellWithIdentifier:A3LoanCalcSelectCellID2 forIndexPath:indexPath];
+			cell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+			cell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+
+			if (exPaymentItem == A3LC_ExtraPaymentYearly) {
+				[self configureExtraPaymentYearlyCell:cell];
+			}
+			else if (exPaymentItem == A3LC_ExtraPaymentOnetime) {
+				[self configureExtraPaymentOneTimeCell:cell];
+			}
+		}
 	}
-    
+
     return cell;
 }
 
