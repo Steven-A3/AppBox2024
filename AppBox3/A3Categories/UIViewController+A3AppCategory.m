@@ -219,17 +219,6 @@ static char const *const key_firstResponder 					= "key_firstResponder";
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setCurrencyCode:code];
-	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-
-	if (IS_IPHONE) {
-		[nf setCurrencySymbol:@""];
-	}
-	return [nf stringFromNumber:value];
-}
-
 - (UIColor *)tableViewSeparatorColor
 {
     return [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:200.0/255.0 alpha:1.0];

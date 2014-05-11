@@ -478,76 +478,20 @@
         share.enabled = NO;
     }
 }
-/*
-- (void)moreButtonAction:(UIButton *)button {
-    @autoreleasepool {
-       // [_firstResponder resignFirstResponder];
-        
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(doneButtonAction:)];
-        
-        _moreMenuButtons = @[self.shareButton, self.historyButton];
-        _moreMenuView = [self presentMoreMenuWithButtons:_moreMenuButtons tableView:nil];
-        _isShowMoreMenu = YES;
-    };
-}
 
-
-
-- (void)doneButtonAction:(id)button {
-	@autoreleasepool {
-		[self dismissMoreMenu];
-	}
-}
-
-
-- (void)dismissMoreMenu {
-	@autoreleasepool {
-		if ( !_isShowMoreMenu) return;
-        
-		[self moreMenuDismissAction:[[self.view gestureRecognizers] lastObject] ];
-	}
-}
-
-- (void)moreMenuDismissAction:(UITapGestureRecognizer *)gestureRecognizer {
-	@autoreleasepool {
-		if (!_isShowMoreMenu) return;
-        
-		_isShowMoreMenu = NO;
-        
-		[self rightButtonMoreButton];
-		[self dismissMoreMenuView:_moreMenuView tableView:nil];
-		[self.view removeGestureRecognizer:gestureRecognizer];
-	}
-}
-
-- (NSNumberFormatter *)currencyFormatterWithCode:(NSString *)currencyCode {
-	NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-	[nf setNumberStyle:NSNumberFormatterCurrencyStyle];
-	[nf setCurrencyCode:currencyCode];
-	return nf;
-}
-
-- (void)clearEverything {
-	@autoreleasepool {
-		[self dismissMoreMenu];
-	}
-}
-*/
 - (void)shareAll:(id)sender {
 	_sharePopoverController = [self presentActivityViewControllerWithActivityItems:@[self] fromBarButtonItem:sender];
 }
-
 
 - (NSString *)activityViewController:(UIActivityViewController *)activityViewController subjectForActivityType:(NSString *)activityType
 {
     return @"";
 }
 
-
 - (id)activityViewController:(UIActivityViewController *)activityViewController itemForActivityType:(NSString *)activityType
 {
     if ([activityType isEqualToString:UIActivityTypeMail]) {
-        NSAttributedString *shareString = [[NSAttributedString alloc] init];
+        NSAttributedString *shareString;
         if (![self.expressionLabel.text hasSuffix:@"="]) {
             shareString = [_expressionLabel.attributedText appendWithString:[NSString stringWithFormat:@"=%@\n", [self.calculator getResultString]]];
         } else {

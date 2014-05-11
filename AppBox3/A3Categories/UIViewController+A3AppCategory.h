@@ -39,7 +39,7 @@
 - (void)registerContentSizeCategoryDidChangeNotification;
 - (void)contentSizeDidChange:(NSNotification *)notification;
 - (void)removeObserver;
-- (NSString *)currencyFormattedStringForCurrency:(NSString *)code value:(NSNumber *)value;
+
 - (UIColor *)tableViewSeparatorColor;
 - (UIColor *)selectedTextColor;
 
