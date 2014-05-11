@@ -251,7 +251,7 @@
 - (void)leapMonthCellEnable:(BOOL)useLeapMonth
 {
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-    NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
+    NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
 //    _eventItem.useLeapMonth = @(useLeapMonth);
     [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -761,7 +761,7 @@
         else {
             if (![_eventItem.isPeriod boolValue]) {
                 NSMutableArray *sectionRow_items = [[_sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-                NSInteger dateInputRowIndex = [self indexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
+                NSInteger dateInputRowIndex = [self indexOfRowForItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
                 if (dateInputRowIndex == -1) {
                     cell.separatorInset = UIEdgeInsetsMake(0, 0, 0, 0);
                 }
@@ -952,7 +952,7 @@
 }
 
 #pragma mark TableView Data Source Related
-- (NSInteger)indexOfRowItemType:(A3DaysCounterAddEventCellType)itemType atSectionArray:(NSArray *)array {
+- (NSInteger)indexOfRowForItemType:(A3DaysCounterAddEventCellType)itemType atSectionArray:(NSArray *)array {
     __block NSInteger rowIndex = -1;
     
     [array enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
@@ -997,18 +997,7 @@
         case EventCellType_StartDate:
         case EventCellType_EndDate:
         {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            if ([_eventItem.isLunar boolValue]) {
-                self.inputDateKey = rowItemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
-                
-                UITextField *textField = (UITextField *)[cell viewWithTag:14];
-                [textField becomeFirstResponder];
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }
-            else {
-                UIButton *button = (UIButton*)[cell viewWithTag:13];
-                [self toggleDateInputAction:button];
-            }
+            [self didSelectStartEndDateCellAtIndexPath:indexPath tableView:tableView rowItemType:rowItemType];
         }
             break;
         case EventCellType_RepeatType:
@@ -1049,6 +1038,22 @@
     }
 }
 #pragma mark didSelect spectific row
+- (void)didSelectStartEndDateCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView rowItemType:(NSInteger)rowItemType
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([_eventItem.isLunar boolValue]) {
+        self.inputDateKey = rowItemType == EventCellType_StartDate ? EventItem_StartDate : EventItem_EndDate;
+        
+        UITextField *textField = (UITextField *)[cell viewWithTag:14];
+        [textField becomeFirstResponder];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    }
+    else {
+        UIButton *button = (UIButton*)[cell viewWithTag:13];
+        [self toggleDateInputAction:button];
+    }
+}
+
 - (void)didSelectRepeatTypeRowAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -1063,7 +1068,7 @@
         }
         
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-        NSIndexPath *repeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_RepeatType atSectionArray:section1_items]
+        NSIndexPath *repeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_RepeatType atSectionArray:section1_items]
                                                           inSection:AddSection_Section_1];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:repeatIndexPath];
         cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatTypeStringFromValue:[repeatType integerValue]];
@@ -1094,7 +1099,7 @@
         // EffectiveStartDate & EffectiveAlertDate 갱신.
         [[A3DaysCounterModelManager sharedManager] recalculateEventDatesForEvent:_eventItem];
         // AlertCell 갱신.
-        NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+        NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
         [tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
         cell = [tableView cellForRowAtIndexPath:alertIndexPath];
@@ -1149,7 +1154,7 @@
     nextVC.eventModel = self.eventItem;
     nextVC.dismissCompletionBlock = ^{
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-        NSIndexPath *endRepeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:section1_items]
+        NSIndexPath *endRepeatIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_EndRepeatDate atSectionArray:section1_items]
                                                              inSection:AddSection_Section_1];
         [tableView deselectRowAtIndexPath:endRepeatIndexPath animated:YES];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:endRepeatIndexPath];
@@ -1173,7 +1178,7 @@
     
     nextVC.dismissCompletionBlock = ^{
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-        NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+        NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]
                                                          inSection:AddSection_Section_1];
         
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:alertIndexPath];
@@ -1199,7 +1204,7 @@
     nextVC.eventModel = self.eventItem;
     nextVC.dismissCompletionBlock = ^{
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-        NSIndexPath *calendarIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Calendar atSectionArray:section1_items]
+        NSIndexPath *calendarIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Calendar atSectionArray:section1_items]
                                                             inSection:AddSection_Section_1];
         //                [tableView deselectRowAtIndexPath:calendarIndexPath animated:YES];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:calendarIndexPath];
@@ -1234,7 +1239,7 @@
     nextVC.eventModel = self.eventItem;
     nextVC.dismissCompletionBlock = ^{
         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-        NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_DurationOption atSectionArray:section1_items]
+        NSIndexPath *durationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_DurationOption atSectionArray:section1_items]
                                                             inSection:AddSection_Section_1];
         self.isDurationIntialized = YES;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:durationIndexPath];
@@ -1520,20 +1525,20 @@
         NSMutableArray *removalRows = [NSMutableArray new];
         if ([_eventItem.repeatType integerValue] != RepeatType_EveryYear) {
             _eventItem.repeatType = @(RepeatType_Never);
-            NSInteger repeatTypeIndex = [self indexOfRowItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];
+            NSInteger repeatTypeIndex = [self indexOfRowForItemType:EventCellType_RepeatType atSectionArray:sectionRow_items];
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:repeatTypeIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-            NSInteger endRepeatIndex = [self indexOfRowItemType:EventCellType_EndRepeatDate atSectionArray:sectionRow_items];
+            NSInteger endRepeatIndex = [self indexOfRowForItemType:EventCellType_EndRepeatDate atSectionArray:sectionRow_items];
             
             if (endRepeatIndex != -1) {
                 [removalRows addObject:@(endRepeatIndex)];
             }
         }
         // start/end on 버튼 셀 제거.
-        NSInteger startEndToggleCellIndex = [self indexOfRowItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
+        NSInteger startEndToggleCellIndex = [self indexOfRowForItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
         if (startEndToggleCellIndex != -1) {
             [removalRows addObject:@(startEndToggleCellIndex)];
         }
-        NSInteger endDateCellIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+        NSInteger endDateCellIndex = [self indexOfRowForItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
         if (endDateCellIndex != -1) {
             [removalRows addObject:@(endDateCellIndex)];
         }
@@ -1554,7 +1559,7 @@
         
         
 
-        NSInteger leapMonthRowIndex = [self indexOfRowItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
+        NSInteger leapMonthRowIndex = [self indexOfRowForItemType:EventCellType_IsAllDay atSectionArray:sectionRow_items];
         [sectionRow_items replaceObjectAtIndex:leapMonthRowIndex withObject:@{EventRowTitle : @"Leap Month", EventRowType : @(EventCellType_IsLeapMonth)}];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:leapMonthRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         
@@ -1569,7 +1574,7 @@
     }
     else {
         // Reload All-Day
-        NSInteger reloadRowIndex = [self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
+        NSInteger reloadRowIndex = [self indexOfRowForItemType:EventCellType_IsLeapMonth atSectionArray:sectionRow_items];
         [sectionRow_items replaceObjectAtIndex:reloadRowIndex withObject:@{ EventRowTitle : @"All-day", EventRowType : @(EventCellType_IsAllDay) }];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         [sectionRow_items insertObject:@{EventRowTitle : @"Starts-Ends", EventRowType : @(EventCellType_IsPeriod)} atIndex:(reloadRowIndex + 1)];
@@ -1579,7 +1584,7 @@
         [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:NO]
                                                         withEventModel:_eventItem
                                                                endDate:NO];
-        reloadRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
+        reloadRowIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
         if (reloadRowIndex != -1) {
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -1590,7 +1595,7 @@
                                                             withEventModel:_eventItem
                                                                    endDate:YES];
             if (reloadRowIndex != -1) {
-                reloadRowIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+                reloadRowIndex = [self indexOfRowForItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
                 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
             }
         }
@@ -1609,7 +1614,7 @@
     [A3DaysCounterModelManager setDateModelObjectForDateComponents:[A3DaysCounterModelManager dateComponentsFromDateModelObject:_eventItem.startDate toLunar:NO]
                                                     withEventModel:_eventItem
                                                            endDate:NO];
-    NSInteger reloadRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
+    NSInteger reloadRowIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
     if (reloadRowIndex != -1) {
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     }
@@ -1620,7 +1625,7 @@
                                                         withEventModel:_eventItem
                                                                endDate:YES];
         if (reloadRowIndex != -1) {
-            reloadRowIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+            reloadRowIndex = [self indexOfRowForItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
             [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:reloadRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
         }
     }
@@ -1654,15 +1659,15 @@
 {
     _eventItem.isPeriod = @(swButton.on);
     
-    NSInteger startEndSwitchRowIndex = [self indexOfRowItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
+    NSInteger startEndSwitchRowIndex = [self indexOfRowForItemType:EventCellType_IsPeriod atSectionArray:sectionRow_items];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex + 1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     
     if ( swButton.on ) {
         if ( ![self isExistsEndDateCellInItems:sectionRow_items] ) {
-            NSInteger startDateRowIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
+            NSInteger startDateRowIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:sectionRow_items];
             NSInteger datePickerRow = 0;
-            NSInteger datePickerRowIndex = [self indexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
+            NSInteger datePickerRowIndex = [self indexOfRowForItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
             if ( datePickerRowIndex != -1 ) {
                 datePickerRow = 1;
             }
@@ -1678,14 +1683,14 @@
     }
     else {
         if ( [self isExistsEndDateCellInItems:sectionRow_items] ) {
-            NSInteger endDateRowIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
+            NSInteger endDateRowIndex = [self indexOfRowForItemType:EventCellType_EndDate atSectionArray:sectionRow_items];
             if (endDateRowIndex == -1) {
                 return;
             }
             
             NSInteger dateInputRowIndex = -1;
             if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
-                dateInputRowIndex = [self indexOfRowItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
+                dateInputRowIndex = [self indexOfRowForItemType:EventCellType_DateInput atSectionArray:sectionRow_items];
             }
             else if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
                 [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:startEndSwitchRowIndex + 2 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
@@ -1779,7 +1784,7 @@
     
     // AlertCell 갱신.
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-    NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+    NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]
                                                      inSection:AddSection_Section_1];
     [self.tableView deselectRowAtIndexPath:alertIndexPath animated:YES];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:alertIndexPath];
@@ -1791,7 +1796,7 @@
         [self updateEndDateDiffFromStartDate:prevDate]; // End Date 간격 갱신.
         
         if ( [_eventItem.isLunar boolValue] ) {
-            NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
+            NSIndexPath *leapMonthIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_IsLeapMonth atSectionArray:section1_items]
                                                                  inSection:AddSection_Section_1];
             [self.tableView reloadRowsAtIndexPaths:@[leapMonthIndexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
@@ -1827,6 +1832,10 @@
     NSMutableArray *items = [[_sectionTitleArray objectAtIndex:indexPath.section] objectForKey:AddEventItems];
     NSDictionary *itemDict = [items objectAtIndex:indexPath.row];
     NSInteger itemType = [[itemDict objectForKey:EventRowType] integerValue];
+    
+    if ([self indexOfRowForItemType:EventCellType_DateInput atSectionArray:items] == -1) {
+        self.inputDateKey = nil;
+    }
 
     // 입력대상이 셋팅 되어있으면 삭제한다.
     NSInteger removeType = 0;
@@ -1886,7 +1895,7 @@
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:(indexPath.row - 1) inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
     
     if (!_isAdvancedCellOpen) {
-        NSUInteger advancedCellRowIndex = [self indexOfRowItemType:EventCellType_Advanced atSectionArray:section1_items];
+        NSUInteger advancedCellRowIndex = [self indexOfRowForItemType:EventCellType_Advanced atSectionArray:section1_items];
         textLabel.textColor = [UIColor colorWithRed:109.0/255.0 green:109.0/255.0 blue:114.0/255.0 alpha:1.0];
         // remove Advanced Rows
         NSMutableArray *indexPathsToRemove = [NSMutableArray array];
@@ -1938,8 +1947,8 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:CGPointMake(100, [textField convertPoint:textField.center toView:self.tableView].y)];
     
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-    NSInteger startDateIndex = [self indexOfRowItemType:EventCellType_StartDate atSectionArray:section1_items];
-    NSInteger endDateIndex = [self indexOfRowItemType:EventCellType_EndDate atSectionArray:section1_items];
+    NSInteger startDateIndex = [self indexOfRowForItemType:EventCellType_StartDate atSectionArray:section1_items];
+    NSInteger endDateIndex = [self indexOfRowForItemType:EventCellType_EndDate atSectionArray:section1_items];
     
     if ((indexPath.section == 1 && indexPath.row == startDateIndex) || (indexPath.section == 1 && indexPath.row == endDateIndex)) {    // start Date
         if (!self.dateKeyboardViewController) {
@@ -2018,14 +2027,14 @@
     
     // AlertCell 갱신.
     NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-    NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Alert atSectionArray:section1_items]
+    NSIndexPath *alertIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Alert atSectionArray:section1_items]
                                                      inSection:AddSection_Section_1];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:alertIndexPath];
     UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] alertDateStringFromDate:_eventItem.effectiveStartDate
                                                                                     alertDate:_eventItem.alertDatetime];
     if ( [self.inputDateKey isEqualToString:EventItem_StartDate] ) {
-        NSIndexPath *startDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_StartDate atSectionArray:section1_items]
+        NSIndexPath *startDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_StartDate atSectionArray:section1_items]
                                                              inSection:AddSection_Section_1];
         if (startDateIndexPath) {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:startDateIndexPath];
@@ -2044,7 +2053,7 @@
     }
     else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] ) {
         // End DateInputCell 갱신.
-        NSIndexPath *endDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_EndDate atSectionArray:section1_items]
+        NSIndexPath *endDateIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_EndDate atSectionArray:section1_items]
                                                              inSection:AddSection_Section_1];
         if (endDateIndexPath) {
             //[self.tableView reloadRowsAtIndexPaths:@[endDateIndexPath] withRowAnimation:UITableViewRowAnimationNone];
@@ -2100,7 +2109,7 @@
 //        [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:5 inSection:2] animated:YES];
 
 //         NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-//         NSIndexPath *locationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowItemType:EventCellType_Location atSectionArray:section1_items]
+//         NSIndexPath *locationIndexPath = [NSIndexPath indexPathForRow:[self indexOfRowForItemType:EventCellType_Location atSectionArray:section1_items]
 //                                                             inSection:AddSection_Section_1];
 //         [self.tableView deselectRowAtIndexPath:locationIndexPath animated:YES];
      }
