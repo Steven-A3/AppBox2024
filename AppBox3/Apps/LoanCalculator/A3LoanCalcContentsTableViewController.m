@@ -327,7 +327,8 @@
 	if ([textField isKindOfClass:[UITextField class]]) {
 		textField.text = @"";
 	}
-	if (_currentIndexPath.section == 1) {
+	FNLOG(@"%ld, %ld", (long)_currentIndexPath.section, (long)_dataSectionStartIndex);
+	if (_currentIndexPath.section + _dataSectionStartIndex == 2) {
 		// calculation item
 		NSNumber *calcItemNum = _calcItems[_currentIndexPath.row];
 		A3LoanCalcCalculationItem calcItem = calcItemNum.integerValue;
@@ -354,7 +355,7 @@
 				break;
 		}
 	}
-	else if (_currentIndexPath.section == 2) {
+	else if (_currentIndexPath.section + _dataSectionStartIndex == 3) {
 		// extra payment
 		NSNumber *exPayItemNum = _extraPaymentItems[_currentIndexPath.row];
 		A3LoanCalcExtraPaymentType exPayType = exPayItemNum.integerValue;

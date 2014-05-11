@@ -21,20 +21,17 @@
 @property (nonatomic, strong) NSMutableArray *extraPaymentItems;
 @property (nonatomic, weak) UITextField *calculatorTargetTextField;
 @property (nonatomic, strong) NSMutableArray *calcItems;
+@property (nonatomic, assign) NSInteger dataSectionStartIndex;
 
 - (void)infoButtonAction:(UIButton *)button;
-
 - (void)totalButtonAction:(UIButton *)button;
-
 - (void)monthlyButtonAction:(UIButton *)button;
-
 - (NSUInteger)indexOfCalcItem:(A3LoanCalcCalculationItem)calcItem;
-
 - (void)configureExtraPaymentYearlyCell:(UITableViewCell *)cell;
 - (void)configureExtraPaymentOneTimeCell:(UITableViewCell *)cell;
 - (void)displayLoanGraph;
 - (void)displayGraphCell:(A3LoanCalcLoanGraphCell *)graphCell;
 - (void)makeGraphCellClear:(A3LoanCalcLoanGraphCell *)graphCell;
-
 - (NSString *)defaultCurrencyCode;
+
 @end

@@ -150,7 +150,7 @@
 
 - (void)calculateRepayment {
     
-    if (![self pricipalValid] || ![self termsValid] || ![self interestValid]) {
+    if (![self principalValid] || ![self termsValid] || ![self interestValid]) {
         return;
     }
     
@@ -195,7 +195,7 @@
 
 - (void)calculateDownPayment {
     
-    if (![self pricipalValid] || ![self repaymentValid] || ![self termsValid] || ![self interestValid]) {
+    if (![self principalValid] || ![self repaymentValid] || ![self termsValid] || ![self interestValid]) {
         return;
     }
     
@@ -215,7 +215,7 @@
 
 - (void)calculateTermInMonth
 {
-    if (![self pricipalValid] || ![self repaymentValid] || ![self interestValid]) {
+    if (![self principalValid] || ![self repaymentValid] || ![self interestValid]) {
         return;
     }
     
@@ -405,7 +405,7 @@
 #pragma mark - Manage
 - (BOOL)calculated
 {
-    if ([self repaymentValid] && [self pricipalValid] && [self interestValid] && [self termsValid]) {
+    if ([self repaymentValid] && [self principalValid] && [self interestValid] && [self termsValid]) {
         return YES;
     }
     else {
@@ -423,7 +423,7 @@
     }
 }
 
-- (BOOL)pricipalValid
+- (BOOL)principalValid
 {
     if (self.principal && (self.principal.floatValue>0)) {
         return YES;
