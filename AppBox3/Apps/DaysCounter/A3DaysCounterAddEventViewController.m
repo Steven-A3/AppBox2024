@@ -104,6 +104,9 @@
         else {
             DaysCounterCalendar *anniversaryCalendar = [[A3DaysCounterModelManager sharedManager] calendarItemByID:@"1"];
             if (!anniversaryCalendar) {
+                anniversaryCalendar = [[[[A3DaysCounterModelManager sharedManager] allUserCalendarList] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isShow == %@", @(YES)]] firstObject];
+            }
+            if (!anniversaryCalendar) {
                 anniversaryCalendar = [[[A3DaysCounterModelManager sharedManager] allUserCalendarList] firstObject];
             }
             if (anniversaryCalendar) {

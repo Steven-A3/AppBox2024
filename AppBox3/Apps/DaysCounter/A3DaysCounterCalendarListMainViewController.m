@@ -618,6 +618,10 @@
     FNLOG(@"indexPath: %@, _itemArray count: %ld", indexPath, (long)[_itemArray count]);
     if ( tableView == self.tableView && (indexPath.row >= [_itemArray count]) )
         return NO;
+
+    if ([DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1) {
+        return NO;
+    }
     
     DaysCounterCalendar *item = [_itemArray objectAtIndex:indexPath.row];
     if (!item) {
@@ -629,6 +633,7 @@
         NSLog(@"asdf2");
         return NO;
     }
+    
     
     return ([item.calendarType integerValue] == CalendarCellType_User);
 }
