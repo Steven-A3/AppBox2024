@@ -1172,8 +1172,9 @@
 - (void)didSelectAlertCellAtIndexPath:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+
     A3DaysCounterSetupAlertViewController *nextVC = [[A3DaysCounterSetupAlertViewController alloc] initWithNibName:@"A3DaysCounterSetupAlertViewController" bundle:nil];
+    [[A3DaysCounterModelManager sharedManager] recalculateEventDatesForEvent:_eventItem];
     nextVC.eventModel = self.eventItem;
     
     nextVC.dismissCompletionBlock = ^{
