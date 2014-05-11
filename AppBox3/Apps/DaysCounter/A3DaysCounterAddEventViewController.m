@@ -1282,7 +1282,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ( section == 2 ) {
-        return IS_RETINA ? 38.5 : 39;
+        if (_eventItem.eventId) {
+            return IS_RETINA ? 35.5 : 35;
+        }
+        else {
+            return IS_RETINA ? 37.5 : 37;
+        }
     }
     else if ( section == 1 ) {
         return IS_RETINA ? 36.5 : 36;
@@ -1296,7 +1301,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return (_eventItem && section == [_sectionTitleArray count]) ? 38.0 : 0.01;
+    if (_eventItem.eventId && section == [_sectionTitleArray count]) {
+        return 38.0;
+    }
+    else if (!_eventItem.eventId && section == [_sectionTitleArray count] - 1) {
+        return 38.0;
+    }
+    
+    return 0.01;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
