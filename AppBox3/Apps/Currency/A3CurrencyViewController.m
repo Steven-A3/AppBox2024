@@ -30,6 +30,7 @@
 #import "CurrencyRateItem.h"
 #import "NSDate+TimeAgo.h"
 #import "A3CalculatorDelegate.h"
+#import "A3AppDelegate+appearance.h"
 
 NSString *const A3CurrencyLastInputValue = @"A3CurrencyLastInputValue";
 NSString *const A3CurrencySettingsChangedNotification = @"A3CurrencySettingsChangedNotification";
@@ -543,7 +544,7 @@ NSString *const A3CurrencyEqualCellID = @"A3CurrencyEqualCell";
 	value = [self lastInputValue];
 
 	if (dataIndex == 0) {
-		dataCell.valueField.textColor = APP_THEME_COLOR;
+		dataCell.valueField.textColor = [[A3AppDelegate instance] themeColor];
 		[dataCell.valueField setEnabled:YES];
 		dataCell.rateLabel.text = IS_IPHONE ? favorite.currencySymbol : @"";
 	} else {

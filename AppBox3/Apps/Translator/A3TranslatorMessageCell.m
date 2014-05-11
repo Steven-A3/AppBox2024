@@ -21,6 +21,7 @@
 #import "A3AppDelegate.h"
 #import "Reachability.h"
 #import "A3TranslatorLanguage.h"
+#import "A3AppDelegate+appearance.h"
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface A3TranslatorMessageCell () <AVSpeechSynthesizerDelegate>
@@ -191,7 +192,7 @@ CGRect boundingRectWithText(NSString *text, CGRect bounds) {
 		_rightMessageView = [UIImageView new];
 		UIImage *originalTextImage = [[UIImage imageNamed:@"ballon_right"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 		_rightMessageView.image = originalTextImage;
-		_rightMessageView.tintColor = APP_THEME_COLOR;
+		_rightMessageView.tintColor = [[A3AppDelegate instance] themeColor];
 		[self.contentView addSubview:_rightMessageView];
 
 		[_rightMessageView makeConstraints:^(MASConstraintMaker *make) {

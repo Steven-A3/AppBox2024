@@ -46,8 +46,6 @@
 
 #define	LANGUAGE_KOREAN	[[NSLocale preferredLanguages][0] isEqualToString:@"ko"]
 
-#define APP_THEME_COLOR		[[A3AppDelegate instance].window tintColor]
-
 @interface A3UIDevice : NSObject
 
 + (CGRect)screenBoundsAdjustedWithOrientation;

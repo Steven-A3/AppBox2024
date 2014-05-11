@@ -25,6 +25,7 @@
 #import "NSString+conversion.h"
 #import "TranslatorHistory+manager.h"
 #import "UITableViewController+standardDimension.h"
+#import "A3AppDelegate+appearance.h"
 
 static NSString *const kTranslatorDetectLanguageCode = @"Detect";
 
@@ -698,7 +699,7 @@ static NSString *const kTranslatorMessageCellID = @"TranslatorMessageCellID";
 	_translateButton = [UIButton buttonWithType:UIButtonTypeSystem];
 	[_translateButton setTitle:@"Translate" forState:UIControlStateNormal];
 	_translateButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0];
-	[_translateButton setTitleColor:APP_THEME_COLOR forState:UIControlStateNormal];
+	[_translateButton setTitleColor:[[A3AppDelegate instance] themeColor] forState:UIControlStateNormal];
 	[_translateButton setTitleColor:[UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] forState:UIControlStateDisabled];
 	[_translateButton addTarget:self action:@selector(translateAction) forControlEvents:UIControlEventTouchUpInside];
 	[_translateButton setEnabled:NO];
