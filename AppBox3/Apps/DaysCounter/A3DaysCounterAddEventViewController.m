@@ -1080,13 +1080,8 @@
             
             // EndRepeatRow 제거.
             NSMutableArray *section1_items = [[self.sectionTitleArray objectAtIndex:AddSection_Section_1] objectForKey:AddEventItems];
-            __block NSInteger endRepeatRowIndex = -1;
-            [section1_items enumerateObjectsUsingBlock:^(NSDictionary *rowData, NSUInteger idx, BOOL *stop) {
-                if ([[rowData objectForKey:EventRowType] isEqualToNumber:@(EventCellType_EndRepeatDate)]) {
-                    endRepeatRowIndex = (NSInteger)idx;
-                    *stop = YES;
-                }
-            }];
+            
+            NSInteger endRepeatRowIndex = [self indexOfRowForItemType:EventCellType_EndRepeatDate atSectionArray:section1_items];
             if (endRepeatRowIndex == -1) {
                 return;
             }
@@ -1811,11 +1806,9 @@
 - (void)closeDatePickerCell
 {
     NSMutableArray *items = [[_sectionTitleArray objectAtIndex:1] objectForKey:AddEventItems];
-    NSInteger removeType = 0;
-    if ( [self.inputDateKey isEqualToString:EventItem_StartDate] )
-        removeType = EventCellType_StartDate;
-    else if ( [self.inputDateKey isEqualToString:EventItem_EndDate] )
-        removeType = EventCellType_EndDate;
+    if ([self indexOfRowForItemType:EventCellType_DateInput atSectionArray:items] == -1) {
+        self.inputDateKey = nil;
+    }
     
     if ( self.inputDateKey ) {
         [self removeDateInputCellWithItems:items indexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
