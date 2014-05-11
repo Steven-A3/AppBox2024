@@ -1025,9 +1025,12 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         if (IS_IPHONE && flagCount >= 3) {
             isShortStyle = YES;
         }
-        else if (IS_IPAD && IS_PORTRAIT && flagCount == 6) {
-            isShortStyle = YES;
-        }
+//        else if (IS_IPAD && IS_PORTRAIT && flagCount == 6) {
+//            isShortStyle = YES;
+//        }
+    }
+    if (IS_IPAD && !isShortStyle && flagCount == 6) {
+        isShortStyle = YES;
     }
     
     

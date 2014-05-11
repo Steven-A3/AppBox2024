@@ -387,7 +387,7 @@
                                                                                                                    fromDate:today
                                                                                                                      toDate:nextDate
                                                                                                                    isAllDay:[event.isAllDay boolValue]
-                                                                                                               isShortStyle:YES]
+                                                                                                               isShortStyle:![event.isAllDay boolValue]]
                                                         , untilSinceString];
         }
         else {
@@ -395,7 +395,7 @@
                                                                                                                    fromDate:today
                                                                                                                      toDate:[event.startDate solarDate]
                                                                                                                    isAllDay:[event.isAllDay boolValue]
-                                                                                                               isShortStyle:YES]
+                                                                                                               isShortStyle:![event.isAllDay boolValue]]
                                                         , untilSinceString];
         }
     }
