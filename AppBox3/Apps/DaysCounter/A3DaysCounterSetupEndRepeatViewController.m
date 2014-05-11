@@ -16,6 +16,7 @@
 #import "A3DateKeyboardViewController_iPhone.h"
 #import "SFKImage.h"
 #import "DaysCounterEvent.h"
+#import "A3DateHelper.h"
 
 @interface A3DaysCounterSetupEndRepeatViewController ()
 @property (strong,nonatomic) NSArray *itemArray;
@@ -151,7 +152,8 @@
         cell.detailTextLabel.text = @"";
         
         if ( indexPath.row == 1 && self.eventModel.repeatEndDate) {
-            cell.detailTextLabel.text = [A3Formatter stringFromDate:self.eventModel.repeatEndDate format:DaysCounterDefaultDateFormat];
+            //cell.detailTextLabel.text = [A3Formatter stringFromDate:self.eventModel.repeatEndDate format:DaysCounterDefaultDateFormat];
+            cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[self.eventModel repeatEndDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
         else if ( indexPath.row == 0 && !self.eventModel.repeatEndDate ) {
@@ -189,7 +191,8 @@
             UITableViewCell *cell_0row = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row - 1 inSection:indexPath.section]];
             cell_0row.accessoryType = UITableViewCellAccessoryNone;
             UITableViewCell *cell_1row = [tableView cellForRowAtIndexPath:indexPath];
-            cell_1row.detailTextLabel.text = [A3Formatter stringFromDate:[self.eventModel repeatEndDate] format:DaysCounterDefaultDateFormat];
+            //cell_1row.detailTextLabel.text = [A3Formatter stringFromDate:[self.eventModel repeatEndDate] format:DaysCounterDefaultDateFormat];
+            cell_1row.detailTextLabel.text = [A3DateHelper dateStringFromDate:[self.eventModel repeatEndDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]];
             cell_1row.accessoryType = UITableViewCellAccessoryCheckmark;
             
             if ([self.itemArray count] == 3) {

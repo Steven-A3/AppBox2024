@@ -97,6 +97,7 @@ Since</string>
                 <outlet property="dayCountLabel" destination="8PY-bc-aDl" id="FJF-u8-Uio"/>
                 <outlet property="daysSinceLabel" destination="yoV-Pe-VFu" id="tqg-sd-N2x"/>
                 <outlet property="daysSinceTopSpaceConst" destination="bTe-U7-8ck" id="e21-vH-Kju"/>
+                <outlet property="photoImageView" destination="yFA-J0-wtx" id="Ij7-H7-2qU"/>
                 <outlet property="titleLeadingSpaceConst" destination="d0z-Xd-CZk" id="ZJG-fS-zMG"/>
                 <outlet property="titleTrailingSpaceConst" destination="ugW-Tj-aZr" id="b2C-6w-VZz"/>
             </connections>

@@ -8,14 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class A3GradientView;
 @interface A3DaysCounterSlideshowEventSummaryView : UICollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *dayCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *daysSinceLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *photoImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dayCountTopSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *daysSinceTopSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLeadingSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTrailingSpaceConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *dateBaselineConst;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *countBaselineConst;
+@property (strong, nonatomic) A3GradientView *shadowGradientView;
 
 @end

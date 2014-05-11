@@ -826,10 +826,9 @@
 
 - (void)endRepeatDateTableViewCell:(UITableViewCell *)cell itemType:(NSInteger)itemType title:(NSString *)title
 {
-//    UILabel *textLabel = (UILabel*)[cell viewWithTag:10];
-//    UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
     cell.textLabel.text = title;
-    cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
+    //cell.detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
+    cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:[_eventItem.isAllDay boolValue]]];
     cell.textLabel.textColor = [UIColor blackColor];
 }
 
@@ -1156,8 +1155,7 @@
                                                              inSection:AddSection_Section_1];
         [tableView deselectRowAtIndexPath:endRepeatIndexPath animated:YES];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:endRepeatIndexPath];
-        UILabel *detailTextLabel = (UILabel*)[cell viewWithTag:11];
-        detailTextLabel.text = [[A3DaysCounterModelManager sharedManager] repeatEndDateStringFromDate:_eventItem.repeatEndDate];
+        cell.detailTextLabel.text = [A3DateHelper dateStringFromDate:[_eventItem repeatEndDate] withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForDetailIsAllDays:YES]];
     };
     
     if ( IS_IPHONE )

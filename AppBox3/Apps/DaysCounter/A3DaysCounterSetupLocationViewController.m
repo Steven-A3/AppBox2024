@@ -182,13 +182,6 @@
 {
 	[self removeAllAnnotationExceptOfCurrentUser];
 	[self.mapView addAnnotations:annotations];
-//    [annotations enumerateObjectsUsingBlock:^(id <MKAnnotation> annotation, NSUInteger idx, BOOL *stop) {
-//        if ([annotation coordinate].longitude == _searchCenterCoord.longitude && [annotation coordinate].latitude == _searchCenterCoord.latitude) {
-//            [self.mapView selectAnnotation:annotation animated:YES];
-//            *stop = YES;
-//            return;
-//        }
-//    }];
 }
 
 - (void)updatePlacemarkViewWithVenue:(FSVenue *)venue
@@ -414,16 +407,6 @@
     }
 }
 
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return 0.01;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-//{
-//    return 0.01;
-//}
-
 #pragma mark Cell Related
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -580,7 +563,6 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
-    //else if ( tableView == _searchResultsTableView && ((indexPath.row == 0 && [_nearbyVenuesOfSearchResults count] == 0) || (indexPath.row == [_nearbyVenuesOfSearchResults count])) ) {
     else if ( tableView == _searchResultsTableView && indexPath.row == [_nearbyVenuesOfSearchResults count] ) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -588,13 +570,6 @@
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
         [actionSheet showInView:self.view];
     }
-//    else if ( tableView != _infoTableView && (indexPath.row >= [_nearbyVenues count]) ) {
-//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//        
-//        // 이 위치를 추가하는 화면으로 이동
-//        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:[NSString stringWithFormat:@"Create %@",self.searchText], nil];
-//        [actionSheet showInView:self.view];
-//    }
     else {
         FSVenue *item;
         if (tableView == _searchResultsTableView) {
