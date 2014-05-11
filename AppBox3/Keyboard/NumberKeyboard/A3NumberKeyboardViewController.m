@@ -212,8 +212,6 @@
 	} else {
 		switch (_keyboardType) {
 			case A3NumberKeyboardTypeCurrency:
-			case A3NumberKeyboardTypeInterestRate:
-			case A3NumberKeyboardTypeReal:
 				if (numberFormatter.maximumFractionDigits > 0) {
 					[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
 					[self.dotButton setEnabled:YES];
@@ -221,6 +219,11 @@
 					[self.dotButton setTitle:nil forState:UIControlStateNormal];
 					[self.dotButton setEnabled:NO];
 				}
+				break;
+			case A3NumberKeyboardTypeInterestRate:
+			case A3NumberKeyboardTypeReal:
+				[self.dotButton setTitle:numberFormatter.decimalSeparator forState:UIControlStateNormal];
+				[self.dotButton setEnabled:YES];
 				break;
 			case A3NumberKeyboardTypePercent:
 				// BigButton1 = %, BigButton2 = $
