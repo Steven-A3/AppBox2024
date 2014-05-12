@@ -430,23 +430,21 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 }
 
 - (void)addUnitAction {
-	@autoreleasepool {
-		if ([self.firstResponder isFirstResponder]) {
-			[self.firstResponder resignFirstResponder];
-			[self setFirstResponder:nil];
-			return;
-		}
-        
-		if ([self.swipedCells.allObjects count]) {
-			[self unSwipeAll];
-			return;
-		}
-        
-        _isAddingUnit = YES;
-        UIViewController *viewController = [self unitAddViewController];
-        
-        [self presentSubViewController:viewController];
+	if ([self.firstResponder isFirstResponder]) {
+		[self.firstResponder resignFirstResponder];
+		[self setFirstResponder:nil];
+		return;
 	}
+
+	if ([self.swipedCells.allObjects count]) {
+		[self unSwipeAll];
+		return;
+	}
+
+	_isAddingUnit = YES;
+	UIViewController *viewController = [self unitAddViewController];
+
+	[self presentSubViewController:viewController];
 }
 
 - (A3UnitConverterSelectViewController *)unitAddViewController {
@@ -642,35 +640,33 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	@autoreleasepool {
-		UITableViewCell *cell=nil;
+	UITableViewCell *cell=nil;
 
-		if ([_fmMoveTableView movingIndexPath]) {
-			FNLOG(@"%@", indexPath);
-			indexPath = [_fmMoveTableView adaptedIndexPathForRowAtIndexPath:indexPath];
-			FNLOG(@"FMMoveTableView adaptedIndexPath : %@", indexPath);
-		}
-
-		if ([self.convertItems objectAtIndex:indexPath.row] == self.equalItem) {
-			A3UnitConverterTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
-			cell = equalCell;
-		}
-        else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class] ]) {
-			A3UnitConverterTVDataCell *dataCell;
-			dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
-
-			if (nil == dataCell) {
-				dataCell = [[A3UnitConverterTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterDataCellID];
-				dataCell.menuDelegate = self;
-			}
-            
-			[self configureDataCell:dataCell atIndexPath:indexPath];
-            
-			cell = dataCell;
-		}
-
-		return cell;
+	if ([_fmMoveTableView movingIndexPath]) {
+		FNLOG(@"%@", indexPath);
+		indexPath = [_fmMoveTableView adaptedIndexPathForRowAtIndexPath:indexPath];
+		FNLOG(@"FMMoveTableView adaptedIndexPath : %@", indexPath);
 	}
+
+	if ([self.convertItems objectAtIndex:indexPath.row] == self.equalItem) {
+		A3UnitConverterTVEqualCell *equalCell = [self reusableEqualCellForTableView:tableView];
+		cell = equalCell;
+	}
+	else if ([ [self.convertItems objectAtIndex:indexPath.row] isKindOfClass:[UnitConvertItem class] ]) {
+		A3UnitConverterTVDataCell *dataCell;
+		dataCell = [tableView dequeueReusableCellWithIdentifier:A3UnitConverterDataCellID forIndexPath:indexPath];
+
+		if (nil == dataCell) {
+			dataCell = [[A3UnitConverterTVDataCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:A3UnitConverterDataCellID];
+			dataCell.menuDelegate = self;
+		}
+
+		[self configureDataCell:dataCell atIndexPath:indexPath];
+
+		cell = dataCell;
+	}
+
+	return cell;
 }
 
 - (void)configureDataCell:(A3UnitConverterTVDataCell *)dataCell atIndexPath:(NSIndexPath *)indexPath {
@@ -1059,38 +1055,32 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 #pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-	@autoreleasepool {
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+	if (!cell) return NO;
+	NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
 
-		A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
-		if (!cell) return NO;
-		NSIndexPath *indexPath = [_fmMoveTableView indexPathForCell:cell];
+	if(indexPath.row == 0) {
+		[self unSwipeAll];
 
-		if(indexPath.row == 0) {
-			[self unSwipeAll];
+		return YES;
+	} else {
+		// shifted 0 : shift self
+		// shifted 1 and it is me. unshift self
+		// shifted 1 and it is not me. unshift him and shift me.
+		NSArray *swipped = self.swipedCells.allObjects;
+		if (![swipped count]) {
 
-			return YES;
+			// khkim_131217 : requirement 수정사항
+			// 셀을 탭할때 more mene 보이지 않는다
+			/*
+			id cell = [_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+
+			[self shiftLeft:cell];
+			 */
 		} else {
-			[self.firstResponder resignFirstResponder];
-			[self setFirstResponder:nil];
-
-			// shifted 0 : shift self
-			// shifted 1 and it is me. unshift self
-			// shifted 1 and it is not me. unshift him and shift me.
-			NSArray *swipped = self.swipedCells.allObjects;
-			if (![swipped count]) {
-
-				// khkim_131217 : requirement 수정사항
-				// 셀을 탭할때 more mene 보이지 않는다
-				/*
-				id cell = [_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-
-				[self shiftLeft:cell];
-				 */
-			} else {
-				[self unSwipeAll];
-			}
-			return NO;
+			[self unSwipeAll];
 		}
+		return NO;
 	}
 }
 
@@ -1112,38 +1102,82 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			_unitValue = nil;
 			[self unitValue];
 		}
-		textField.text = @"";
 	}
+	textField.text = @"";
 
 	A3NumberKeyboardViewController *keyboardVC = [self simpleUnitConverterNumberKeyboard];
 	self.numberKeyboardViewController = keyboardVC;
 	keyboardVC.textInputTarget = textField;
 	keyboardVC.delegate = self;
-	self.numberKeyboardViewController = keyboardVC;
 	textField.inputView = [keyboardVC view];
 
-	if (cell.inputType == UnitInput_FeetInch) {
-		[keyboardVC.fractionButton setTitle:@"" forState:UIControlStateNormal];
-		[keyboardVC.fractionButton setEnabled:NO];
-	}
-
 	self.numberKeyboardViewController.keyboardType = A3NumberKeyboardTypeReal;
-	if (cell.inputType == UnitInput_Fraction || cell.inputType == UnitInput_FeetInch) {
-		[self addKeyboardAccessoryToTextField:textField];
-	} else {
-		textField.inputAccessoryView = nil;
+
+	switch (cell.inputType) {
+		case UnitInput_Normal:
+			textField.inputAccessoryView = nil;
+			break;
+		case UnitInput_Fraction:
+			[keyboardVC.fractionButton setSelected:YES];
+			[self addKeyboardAccessoryToTextField:textField];
+			break;
+		case UnitInput_FeetInch:
+			[self addKeyboardAccessoryToTextField:textField];
+			[keyboardVC.fractionButton setTitle:@"" forState:UIControlStateNormal];
+			[keyboardVC.fractionButton setEnabled:NO];
+			break;
 	}
 
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-	FNLOG();
-	return YES;
-}
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-	return YES;
+	[self setFirstResponder:nil];
+
+	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
+
+	if (_isSwitchingFractionMode) {
+		[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
+		return;
+	}
+
+	if (cell.inputType == UnitInput_Fraction) {
+		float num = cell.valueField.text.floatValue > 1 ? cell.valueField.text.floatValue:1;
+		float divider = cell.value2Field.text.floatValue > 1 ? cell.value2Field.text.floatValue:1;
+		float value = num / divider;
+		cell.inputType = UnitInput_Normal;
+		cell.valueField.text = [self.decimalFormatter stringFromNumber:@(value)];
+	}
+
+	if (![textField.text length]) {
+		textField.text = _textBeforeEditingTextField;
+	}
+
+	// 숫자 입력 보정여부
+	double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
+
+	if ((cell.inputType == UnitInput_FeetInch) && (textField.tag == 2)) {
+		// UnitInput_FeetInch 에서 두번째 textField를 입력 보정을 하지 않는다.
+	}
+	else {
+		// 온도는 0도 입력가능하다
+		if (_isTemperatureMode) {
+
+		}
+		else {
+			if (value == 0.0) {
+				value = 1.0;
+			}
+		}
+	}
+
+	textField.text = [self.decimalFormatter stringFromNumber:@(value)];
+	[self updateTextFieldsWithSourceTextField:textField];
+	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
 }
 
 - (void)textFieldDidChange:(NSNotification *)notification {
@@ -1152,50 +1186,6 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 
 	A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
 	[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-	@autoreleasepool {
-        
-		[[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-
-		[self setFirstResponder:nil];
-
-		if (!_isSwitchingFractionMode && ![textField.text length]) {
-			textField.text = _textBeforeEditingTextField;
-		}
-
-		A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *) [_fmMoveTableView cellForCellSubview:textField];
-
-		if (_isSwitchingFractionMode) {
-			[cell updateMultiTextFieldModeConstraintsWithEditingTextField:textField];
-			return;
-		}
-
-		// 숫자 입력 보정여부
-        double value = [[self.decimalFormatter numberFromString:textField.text] doubleValue];
-
-        if ((cell.inputType == UnitInput_FeetInch) && (textField.tag == 2)) {
-            // UnitInput_FeetInch 에서 두번째 textField를 입력 보정을 하지 않는다.
-        }
-        else {
-            // 온도는 0도 입력가능하다
-            if (_isTemperatureMode) {
-                
-            }
-            else {
-                if (value == 0.0) {
-                    value = 1.0;
-                }
-            }
-        }
-
-        textField.text = [self.decimalFormatter stringFromNumber:@(value)];
-        [self updateTextFieldsWithSourceTextField:textField];
-		[cell updateMultiTextFieldModeConstraintsWithEditingTextField:nil];
-
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-	}
 }
 
 - (NSUInteger)indexForUnitName:(NSString *)name {
@@ -1417,23 +1407,27 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 - (void)prevButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 	UIView *viewInRespond = (UIView *) self.firstResponder;
+	_isSwitchingFractionMode = YES;
     if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 2)) {
         [cell.valueField becomeFirstResponder];
     }
     else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 2)) {
         [cell.valueField becomeFirstResponder];
     }
+	_isSwitchingFractionMode = NO;
 }
 
 - (void)nextButtonPressed{
     A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 	UIView *viewInRespond = (UIView *) self.firstResponder;
+	_isSwitchingFractionMode = YES;
     if ((cell.inputType==UnitInput_Fraction) && (viewInRespond.tag == 1)) {
         [cell.value2Field becomeFirstResponder];
     }
     else if ((cell.inputType==UnitInput_FeetInch) && (viewInRespond.tag == 1)) {
         [cell.value2Field becomeFirstResponder];
     }
+	_isSwitchingFractionMode = NO;
 }
 
 - (void)keyboardViewController:(A3NumberKeyboardViewController *)vc fractionButtonPressed:(UIButton *)button {
@@ -1452,6 +1446,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 				[textField becomeFirstResponder];
 				FNLOG();
 				_isSwitchingFractionMode = NO;
+				[self.numberKeyboardViewController.fractionButton setSelected:YES];
 				break;
 			case UnitInput_Fraction:
 				cell.inputType = UnitInput_Normal;
@@ -1460,6 +1455,7 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 				[textField resignFirstResponder];
 				[textField becomeFirstResponder];
 				_isSwitchingFractionMode = NO;
+				[self.numberKeyboardViewController.fractionButton setSelected:NO];
 				break;
 			case UnitInput_FeetInch:
 				break;
@@ -1489,82 +1485,68 @@ NSString *const A3UnitConverterEqualCellID = @"A3UnitConverterEqualCell";
 			} else {
 				textField.text = [cell.valueField.text stringByReplacingCharactersInRange:NSMakeRange(0,0) withString:@"-"];
 			}
-			[self updateTextFieldsWithSourceTextField:textField];
-			[cell updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *) self.firstResponder];
+		} else {
+			textField.text = @"-";
 		}
+		[self updateTextFieldsWithSourceTextField:textField];
+		[cell updateMultiTextFieldModeConstraintsWithEditingTextField:(UITextField *) self.firstResponder];
 	}
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
-	UITextField *textField = (UITextField *) self.numberKeyboardViewController.textInputTarget;
-	if ([textField isKindOfClass:[UITextField class]]) {
-		textField.text = @"";
-	}
+	UITextField *textField = (UITextField *) keyInputDelegate;
+	textField.text = @"";
+	_textBeforeEditingTextField = @"";
 }
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate {
-	
-    A3UnitConverterTVDataCell *cell = (A3UnitConverterTVDataCell *)[_fmMoveTableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    if (cell.inputType == UnitInput_Fraction) {
-        float num = cell.valueField.text.floatValue > 1 ? cell.valueField.text.floatValue:1;
-        float denum = cell.value2Field.text.floatValue > 1 ? cell.value2Field.text.floatValue:1;
-        float value = num / denum;
-        cell.inputType = UnitInput_Normal;
-        cell.valueField.text = [self.decimalFormatter stringFromNumber:@(value)];
-    }
-    
     [self.numberKeyboardViewController.textInputTarget resignFirstResponder];
 }
-
-
 
 #pragma mark - History
 
 - (void)putHistoryWithValue:(NSNumber *)value {
-	@autoreleasepool {
-		UnitConvertItem *baseUnit = self.convertItems[0];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
-        NSArray *histories = [UnitHistory MR_findAllSortedBy:@"date" ascending:NO withPredicate:predicate];
-        
-		// Compare code and value.
-        if (histories.count > 0) {
-            UnitHistory *latestHistory = histories[0];
-            if (latestHistory) {
-                if ([latestHistory.source.type.unitTypeName isEqualToString:baseUnit.item.type.unitTypeName] &&
-                    [latestHistory.source.unitName isEqualToString:baseUnit.item.unitName] && [value isEqualToNumber:latestHistory.value])
-                {
-                    
-                    FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
-                    return;
-                }
-            }
-        }
-		
-        
-		UnitHistory *history = [UnitHistory MR_createEntity];
-		NSDate *keyDate = [NSDate date];
-		history.date = keyDate;
-		history.source = baseUnit.item;
-		history.value = value;
-        
-		NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);
-		NSInteger idx = 0;
-		NSMutableSet *targets = [[NSMutableSet alloc] init];
-		for (; idx < historyItemCount; idx++) {
-			UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
-			UnitConvertItem *convetItem = self.convertItems[idx + 2];
-            item.unit = convetItem.item;
-			item.order = convetItem.order;
-			[targets addObject:item];
-		}
-		history.targets = targets;
+	UnitConvertItem *baseUnit = self.convertItems[0];
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"source.type == %@", _unitType];
+	NSArray *histories = [UnitHistory MR_findAllSortedBy:@"date" ascending:NO withPredicate:predicate];
 
-		[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
-        
-		_unitValue = nil;
-        
-        [self refreshRightBarItems];
+	// Compare code and value.
+	if (histories.count > 0) {
+		UnitHistory *latestHistory = histories[0];
+		if (latestHistory) {
+			if ([latestHistory.source.type.unitTypeName isEqualToString:baseUnit.item.type.unitTypeName] &&
+					[latestHistory.source.unitName isEqualToString:baseUnit.item.unitName] && [value isEqualToNumber:latestHistory.value])
+			{
+
+				FNLOG(@"Does not make new history for same code and value, in history %@, %@", latestHistory.value, value);
+				return;
+			}
+		}
 	}
+
+	UnitHistory *history = [UnitHistory MR_createEntity];
+	NSDate *keyDate = [NSDate date];
+	history.date = keyDate;
+	history.source = baseUnit.item;
+	history.value = value;
+
+	NSInteger historyItemCount = MIN([self.convertItems count] - 2, 4);
+	NSInteger idx = 0;
+	NSMutableSet *targets = [[NSMutableSet alloc] init];
+	for (; idx < historyItemCount; idx++) {
+		UnitHistoryItem *item = [UnitHistoryItem MR_createEntity];
+		UnitConvertItem *convetItem = self.convertItems[idx + 2];
+		item.unit = convetItem.item;
+		item.order = convetItem.order;
+		[targets addObject:item];
+	}
+	history.targets = targets;
+
+	[[[MagicalRecordStack defaultStack] context] MR_saveToPersistentStoreAndWait];
+
+	_unitValue = nil;
+
+	[self refreshRightBarItems];
 }
 
 #pragma mark -- Swipe Gesture

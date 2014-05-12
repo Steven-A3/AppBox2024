@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSDate *originalValue;
 @property (strong, nonatomic) A3NumberKeyboardViewController *numberKeyboardVC;
 @property (copy, nonatomic) NSString *textBeforeEditingTextField;
+@property (weak, nonatomic) UITextField *editingTextField;
 
 @end
 
@@ -207,15 +208,18 @@
 }
 
 #pragma mark - Table view delegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (_editingTextField) {
+		[_editingTextField resignFirstResponder];
+	}
+
 	id prevValue = _eventModel.alertDatetime;
 	id value = nil;
-    
+
 	NSDate *startDate = [_eventModel.startDate solarDate];
 	NSInteger prevIndex = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:startDate alertDate:prevValue];
 	double alertTimeInterval;
-    
+
 	switch (indexPath.row) {
 		case 0:
 			// None
@@ -264,11 +268,11 @@
 			alertTimeInterval = 999;
 			break;
 	}
-    
 
-	if ( indexPath.row == ([_itemArray count] -1) ) {
+
+	if (indexPath.row == ([_itemArray count] - 1)) {
 		UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-		UITextField *textField = (UITextField*)[cell viewWithTag:12];
+		UITextField *textField = (UITextField *) [cell viewWithTag:12];
 		[textField becomeFirstResponder];
 	}
 	else {
@@ -280,7 +284,7 @@
 			[self doneButtonAction:nil];
 			return;
 		}
-        
+
 		UITableViewCell *prevCell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:prevIndex inSection:0]];
 		UITableViewCell *curCell = [self.tableView cellForRowAtIndexPath:indexPath];
 		prevCell.accessoryType = UITableViewCellAccessoryNone;
@@ -293,7 +297,7 @@
 		NSDate *effectiveAlertDate = [calendar dateByAddingComponents:addComponent toDate:effectiveStartDate options:0];
 		_eventModel.alertDatetime = effectiveAlertDate;
 		_eventModel.alertInterval = @(alertTimeInterval);
-        
+
 		// alertType 저장.
 		NSInteger alertType = [[A3DaysCounterModelManager sharedManager] alertTypeIndexFromDate:_eventModel.effectiveStartDate
 																					  alertDate:_eventModel.alertDatetime];
@@ -303,7 +307,7 @@
 		else {
 			_eventModel.alertType = @(0);
 		}
-        
+
 		[self doneButtonAction:nil];
 	}
 }
@@ -357,20 +361,24 @@
 #pragma mark - UITextFieldDelegate
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+	self.editingTextField = textField;
+
+	self.numberKeyboardVC.textInputTarget = textField;
+	self.numberKeyboardVC.delegate = self;
+	textField.inputView = self.numberKeyboardVC.view;
 	self.textBeforeEditingTextField = textField.text;
+	textField.text = @"";
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	self.numberKeyboardVC.textInputTarget = textField;
-	self.numberKeyboardVC.delegate = self;
-	textField.inputView = self.numberKeyboardVC.view;
-	textField.text = @"";
 	return YES;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+	self.editingTextField = nil;
+
 	if (![textField.text length]) {
 		textField.text = _textBeforeEditingTextField;
 	}
@@ -405,9 +413,7 @@
 
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
 {
-	UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
-	UITextField *textField = (UITextField*)[cell viewWithTag:12];
-	[textField resignFirstResponder];
+	[keyInputDelegate resignFirstResponder];
 }
 
 - (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {

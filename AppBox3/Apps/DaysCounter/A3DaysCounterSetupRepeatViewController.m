@@ -19,13 +19,12 @@
 #import "DaysCounterEvent.h"
 
 @interface A3DaysCounterSetupRepeatViewController ()
+
 @property (strong, nonatomic) NSArray *itemArray;
 @property (strong, nonatomic) A3NumberKeyboardViewController *numberKeyboardVC;
 @property (strong, nonatomic) NSNumber *originalValue;
+@property (copy, nonatomic) NSString *textBeforeEditingTextField;
 
-- (void)showNumberKeyboard;
-- (void)hideNumberkeyboard;
-- (void)cancelAction:(id)sender;
 @end
 
 @implementation A3DaysCounterSetupRepeatViewController
@@ -41,7 +40,7 @@
     [textField becomeFirstResponder];
 }
 
-- (void)hideNumberkeyboard
+- (void)hideNumberKeyboard
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
     if ( cell == nil )
@@ -159,13 +158,11 @@
             cell = [[[NSBundle mainBundle] loadNibNamed:@"A3DaysCounterAddEventRepeatCell" owner:nil options:nil] lastObject];
             UITextField *textField = (UITextField*)[cell viewWithTag:12];
             textField.delegate = self;
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             ((A3DaysCounterRepeatCustomCell *)cell).checkImageView.image = [[UIImage imageNamed:@"check_02"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             [((A3DaysCounterRepeatCustomCell *)cell).checkImageView setTintColor:[A3AppDelegate instance].themeColor];
         }
         else {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
     }
     
@@ -210,58 +207,46 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	if ( indexPath.row == ([_itemArray count]-1) ) {
+		// 키보드 보여주기
+		[self showNumberKeyboard];
+		return;
+	}
+	[self hideNumberKeyboard];
+
     if ([_eventModel.isLunar boolValue]) {
         _eventModel.repeatType = indexPath.row == 0 ? @(RepeatType_Never) : @(RepeatType_EveryYear);
         [self doneButtonAction:nil];
     }
     else {
-        NSInteger prevValue = [_eventModel.repeatType integerValue];
-        NSInteger prevIndex = ( prevValue < 0 ? prevValue * -1 : (prevValue > 0 ? [_itemArray count]-1 : 0));
-        NSInteger value = (prevValue <= 0 && (indexPath.row == ([_itemArray count]-1))) ? 1 : indexPath.row * -1;
+        NSInteger value = (indexPath.row == ([_itemArray count]-1)) ? 1 : indexPath.row * -1;
         _eventModel.repeatType = @(value);
-        
-        [tableView beginUpdates];
-        if ( prevIndex != indexPath.row ) {
-            [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:prevIndex inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
-        }
-        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [tableView endUpdates];
     }
-
-    if ( indexPath.row == ([_itemArray count]-1) ) {
-        // 키보드 보여주기
-        [self showNumberKeyboard];
-    }
-    else {
-        [self hideNumberkeyboard];
-        [self doneButtonAction:nil];
-    }
+	[self doneButtonAction:nil];
 }
 
 #pragma mark - UITextFieldDelegate
-- (void)textFieldDidChange:(NSNotification*)noti
-{
-    UITextField *textField = noti.object;
-    _eventModel.repeatType = @([textField.text integerValue]);
-}
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-	self.numberKeyboardVC.textInputTarget = textField;
-	self.numberKeyboardVC.delegate = self;
-	textField.inputView = self.numberKeyboardVC.view;
-	textField.text = @"";
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+	self.textBeforeEditingTextField = textField.text;
+	self.numberKeyboardVC.textInputTarget = textField;
+	self.numberKeyboardVC.delegate = self;
+	textField.inputView = self.numberKeyboardVC.view;
+	textField.text = @"";
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-    
+	if (![textField.text length]) {
+		textField.text = _textBeforeEditingTextField;
+	}
+	_eventModel.repeatType = @([textField.text integerValue]);
+
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];
     [self setCheckmarkOnCustomInputCell:cell CheckShow:YES];
     [self.tableView reloadData];
@@ -272,6 +257,13 @@
 }
 
 #pragma mark - A3KeyboardDelegate
+
+- (void)A3KeyboardController:(id)controller clearButtonPressedTo:(UIResponder *)keyInputDelegate {
+	UITextField *textField = (UITextField *)keyInputDelegate;
+	textField.text = @"";
+	self.textBeforeEditingTextField = @"";
+}
+
 - (void)A3KeyboardController:(id)controller doneButtonPressedTo:(UIResponder *)keyInputDelegate;
 {
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:[_itemArray count]-1 inSection:0]];

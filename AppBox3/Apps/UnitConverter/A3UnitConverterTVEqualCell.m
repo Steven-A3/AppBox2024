@@ -32,7 +32,9 @@
 
 - (void)awakeFromNib {
 	[super awakeFromNib];
-    
+
+	self.selectionStyle = UITableViewCellSelectionStyleNone;
+
 	[_centerLabel makeConstraints:^(MASConstraintMaker *make) {
 		make.centerX.equalTo(self.contentView.centerX);
 		make.centerY.equalTo(self.contentView.centerY);

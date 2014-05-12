@@ -5214,44 +5214,44 @@
 		8054E88518E3E66C00598FB3 /* Cells (AddEvents & Calendars & EventList) */ = {
 			isa = PBXGroup;
 			children = (
-				577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */,
-				577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */,
-				8076BCB218FA8D8900613E70 /* A3DaysCounterEventListSectionHeader.xib */,
-				804A405C18E070A200556029 /* A3DaysCounterEventListNameCell.h */,
-				804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */,
-				8076BCAE18FA8C8E00613E70 /* A3DaysCounterEventListNameCell.xib */,
+				68F1C7D318D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib */,
+				8076BC9E18FA878700613E70 /* A3DaysCounterAddEventAdvancedCell.xib */,
+				8076BC9A18FA874500613E70 /* A3DaysCounterAddEventCalendarCell.xib */,
+				8076BCA818FA8AD600613E70 /* A3DaysCounterAddEventCalendarInfoCell.xib */,
+				80187FF418FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib */,
+				8076BC9618FA86F300613E70 /* A3DaysCounterAddEventDateCell.xib */,
+				8076BCA618FA885B00613E70 /* A3DaysCounterAddEventDateInputCell.xib */,
+				8076BCAA18FA8B4E00613E70 /* A3DaysCounterAddEventDefaultCell.xib */,
+				8076BCA018FA87E800613E70 /* A3DaysCounterAddEventEventInfoCell.xib */,
+				8076BCA418FA882100613E70 /* A3DaysCounterAddEventEventInfoCell_iPad.xib */,
+				8076BC9C18FA876600613E70 /* A3DaysCounterAddEventNotesCell.xib */,
+				8076BCAC18FA8BA700613E70 /* A3DaysCounterAddEventNotesDisplayCell.xib */,
+				8076BC9218FA86C500613E70 /* A3DaysCounterAddEventPhotoCell.xib */,
+				80187FF218FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib */,
+				8076BC9418FA86E100613E70 /* A3DaysCounterAddEventSwitchCell.xib */,
+				8076BC9018FA862500613E70 /* A3DaysCounterAddEventTitleCell.xib */,
+				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
+				8076BCB818FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib */,
+				8076BCB618FA96AB00613E70 /* A3DaysCounterCalendarListMainSystemCell.xib */,
+				8076BCB418FA969300613E70 /* A3DaysCounterCalendarListMainUserCell.xib */,
+				57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */,
+				57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */,
+				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
 				804A405F18E070C500556029 /* A3DaysCounterEventListDateCell.h */,
 				804A406018E070C500556029 /* A3DaysCounterEventListDateCell.m */,
 				8076BCB018FA8CA400613E70 /* A3DaysCounterEventListDateCell.xib */,
 				579B81AB18FFB37D002459BB /* A3DaysCounterEventListEditCell.xib */,
-				68F1C7D318D7F37D009FAE8A /* _old_A3DaysCounterAddEventCell.xib */,
+				804A405C18E070A200556029 /* A3DaysCounterEventListNameCell.h */,
+				804A405D18E070A200556029 /* A3DaysCounterEventListNameCell.m */,
+				8076BCAE18FA8C8E00613E70 /* A3DaysCounterEventListNameCell.xib */,
+				577318F418E150F900565159 /* A3DaysCounterEventListSectionHeader.h */,
+				577318F518E150F900565159 /* A3DaysCounterEventListSectionHeader.m */,
+				8076BCB218FA8D8900613E70 /* A3DaysCounterEventListSectionHeader.xib */,
 				8054E88618E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.h */,
 				8054E88718E3E6E500598FB3 /* A3DaysCounterRepeatCustomCell.m */,
-				57D31ACC18E95C120081A810 /* A3DaysCounterEventInfoCell.h */,
-				57D31ACD18E95C120081A810 /* A3DaysCounterEventInfoCell.m */,
-				8076BCA018FA87E800613E70 /* A3DaysCounterAddEventEventInfoCell.xib */,
-				8076BCA418FA882100613E70 /* A3DaysCounterAddEventEventInfoCell_iPad.xib */,
-				68F1C7D718D7F37D009FAE8A /* A3DaysCounterCalendarCell.xib */,
-				68F1C7EE18D7F37D009FAE8A /* A3DaysCounterEventListCell.xib */,
 				8076BC8B18FA842100613E70 /* A3DaysCounterSetupCalendarCell.h */,
 				8076BC8C18FA842100613E70 /* A3DaysCounterSetupCalendarCell.m */,
 				8076BC8D18FA842100613E70 /* A3DaysCounterSetupCalendarCell.xib */,
-				8076BC9018FA862500613E70 /* A3DaysCounterAddEventTitleCell.xib */,
-				8076BC9218FA86C500613E70 /* A3DaysCounterAddEventPhotoCell.xib */,
-				8076BC9418FA86E100613E70 /* A3DaysCounterAddEventSwitchCell.xib */,
-				8076BC9618FA86F300613E70 /* A3DaysCounterAddEventDateCell.xib */,
-				8076BC9A18FA874500613E70 /* A3DaysCounterAddEventCalendarCell.xib */,
-				8076BC9C18FA876600613E70 /* A3DaysCounterAddEventNotesCell.xib */,
-				8076BC9E18FA878700613E70 /* A3DaysCounterAddEventAdvancedCell.xib */,
-				8076BCA618FA885B00613E70 /* A3DaysCounterAddEventDateInputCell.xib */,
-				8076BCA818FA8AD600613E70 /* A3DaysCounterAddEventCalendarInfoCell.xib */,
-				8076BCAA18FA8B4E00613E70 /* A3DaysCounterAddEventDefaultCell.xib */,
-				8076BCAC18FA8BA700613E70 /* A3DaysCounterAddEventNotesDisplayCell.xib */,
-				8076BCB418FA969300613E70 /* A3DaysCounterCalendarListMainUserCell.xib */,
-				8076BCB618FA96AB00613E70 /* A3DaysCounterCalendarListMainSystemCell.xib */,
-				8076BCB818FA96B600613E70 /* A3DaysCounterCalendarListMainEditCell.xib */,
-				80187FF218FBCF3E0018B840 /* A3DaysCounterAddEventRepeatCell.xib */,
-				80187FF418FBD0650018B840 /* A3DaysCounterAddEventCalendarListCell.xib */,
 			);
 			name = "Cells (AddEvents & Calendars & EventList)";
 			sourceTree = "<group>";
@@ -6515,7 +6515,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0BA11441-1B91-4E06-8C75-8C330C0E187B";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/External/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/**";
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
@@ -6552,7 +6552,7 @@
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0BA11441-1B91-4E06-8C75-8C330C0E187B";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/External/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/**";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv7 armv7s arm64";
 			};
