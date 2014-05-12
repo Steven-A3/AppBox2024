@@ -123,12 +123,6 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIContentSizeCategoryDidChangeNotification object:nil];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -323,15 +317,15 @@
         return [_searchResultArray count];
     }
     
-    return [_itemArray count];
-//    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
-//    
-//    if ([_itemArray count] > numberOfPage) {
-//        return [_itemArray count] + 1;
-//    }
-//    else {
-//        return numberOfPage + 1;;
-//    }
+//    return [_itemArray count];
+    NSInteger numberOfPage = (tableView.frame.size.height - _headerView.frame.size.height - _bottomToolbar.frame.size.height) / 84.0;
+    
+    if (_itemArray && [_itemArray count] > numberOfPage) {
+        return [_itemArray count] + 1;
+    }
+    else {
+        return numberOfPage + 1;;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -591,6 +585,8 @@
     viewCtrl.calendarItem = item;
     viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];
+    _itemArray = nil;
+    [self.tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
