@@ -14,6 +14,8 @@
 #import "A3BasicWebViewController.h"
 #import "Reachability.h"
 #import "A3AppDelegate.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 @interface A3BatteryStatusSettingViewController ()
 @end
@@ -162,10 +164,9 @@
         cell.textLabel.text = @"Theme Color";
         UIView *themeColorView = [cell.contentView viewWithTag:121];
         themeColorView.backgroundColor = [[A3BatteryStatusManager themeColorArray] objectAtIndex:[A3BatteryStatusManager chosenThemeIndex]];
-        
         return cell;
-        
-    } else if (indexPath.section==1) {
+    }
+    else if (indexPath.section == 1) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier2];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier2];
@@ -178,17 +179,17 @@
         
         NSDictionary *rowData = [_tableDataSourceArray objectAtIndex:index.integerValue];
         cell.textLabel.text = [rowData objectForKey:@"title"];
-        cell.imageView.image = [UIImage imageNamed:@"check_02"];
-        cell.imageView.image = checked.integerValue==1 ? [UIImage imageNamed:@"check_02"] : _blankImage;
-        
+        cell.imageView.image = checked.integerValue == 1 ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
         return cell;
-    } else if (indexPath.section==2) {
+    }
+    else if (indexPath.section == 2) {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3];
             cell.textLabel.font = [UIFont systemFontOfSize:17];
             
             UIImageView * info = [[UIImageView alloc] initWithImage:[[UIImage imageNamed:@"information"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]];
+            info.tintColor = [A3AppDelegate instance].themeColor;
             [cell.contentView addSubview:info];
             [info makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.centerY);
@@ -198,7 +199,8 @@
         
         cell.textLabel.text = @"How to Maximize Power Use";
         return cell;
-    } else {
+    }
+    else {
         UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3];
@@ -239,7 +241,7 @@
         //[tableView reloadData];
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if (cell) {
-            cell.imageView.image = ([checked integerValue] == 0) ? [UIImage imageNamed:@"check_02"] : _blankImage;
+            cell.imageView.image = ([checked integerValue] == 0) ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
         }
         [A3BatteryStatusManager setAdjustedIndex:_adjustedIndex];
     }
