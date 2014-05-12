@@ -141,15 +141,15 @@ NSString *kCalculationString;
     self.tableView.tableHeaderView = self.headerView;
     
     // NavigationItem
-    UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addToDaysCounter"]
-                                                            style:UIBarButtonItemStylePlain
-                                                           target:self
-                                                           action:@selector(addEventButtonAction:)];
+//    UIBarButtonItem *add = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"addToDaysCounter"]
+//                                                            style:UIBarButtonItemStylePlain
+//                                                           target:self
+//                                                           action:@selector(addEventButtonAction:)];
     UIBarButtonItem *share = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"share"]
                                                               style:UIBarButtonItemStylePlain
                                                              target:self
                                                              action:@selector(shareButtonAction:)];
-    self.navigationItem.rightBarButtonItems = @[share, add];
+    self.navigationItem.rightBarButtonItems = @[share];
     
     // Etc
     self.tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;

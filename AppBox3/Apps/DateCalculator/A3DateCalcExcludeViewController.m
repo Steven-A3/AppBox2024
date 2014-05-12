@@ -12,6 +12,8 @@
 #import "A3DateCalcStateManager.h"
 #import "A3DateCalcTableviewCell.h"
 #import "A3DefaultColorDefines.h"
+#import "A3AppDelegate+appearance.h"
+#import "UIImage+imageWithColor.h"
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -54,7 +56,8 @@ static NSString *CellIdentifier = @"Cell";
     self.sectionTitles = @[@"", @""];
     self.sections = @[
                   @[@"None"],
-                  @[@"Saturday", @"Sunday", @"Public Holidays"]
+                  @[@"Saturday", @"Sunday"]
+//                  @[@"Saturday", @"Sunday", @"Public Holidays"]
                   ];
     
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0);
@@ -108,12 +111,11 @@ static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     cell.textLabel.text = self.sections[indexPath.section][indexPath.row];;
-    //cell.textLabel.font = FONT_TABLE_TEXTLABEL_DEFAULT_SIZE(17);
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     
     switch (indexPath.section) {
         case 0: {
-            cell.imageView.image = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? [UIImage imageNamed:@"check_02"] : _blankImage;
+            cell.imageView.image = [A3DateCalcStateManager excludeOptions] == ExcludeOptions_None ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
         }
             break;
             
@@ -123,17 +125,17 @@ static NSString *CellIdentifier = @"Cell";
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell.imageView.image = options & ExcludeOptions_Saturday ? [UIImage imageNamed:@"check_02"] : _blankImage;
+                    cell.imageView.image = options & ExcludeOptions_Saturday ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
                 }
                     break;
                 case 1:
                 {
-                    cell.imageView.image = options & ExcludeOptions_Sunday ? [UIImage imageNamed:@"check_02"] : _blankImage;
+                    cell.imageView.image = options & ExcludeOptions_Sunday ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
                 }
                     break;
                 case 2:
                 {
-                    cell.imageView.image = options & ExcludeOptions_PublicHoliday ? [UIImage imageNamed:@"check_02"] : _blankImage;
+                    cell.imageView.image = options & ExcludeOptions_PublicHoliday ? [[UIImage imageNamed:@"check_02"] tintedImageWithColor:[A3AppDelegate instance].themeColor] : _blankImage;
                 }
                     break;
             }
