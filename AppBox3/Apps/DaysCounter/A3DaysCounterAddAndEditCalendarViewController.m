@@ -138,7 +138,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if ( section == (_isEditMode ? 2 : 1) ) {
-        return 38;//return IS_RETINA ? 35.5 : 35;
+        return 38;
     }
     return 0.01;
 }
@@ -152,7 +152,7 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
             if ( indexPath.section == 0 ) {
-                UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(20, 6, 280, 32)];
+                UITextField *textField = [UITextField new];
                 textField.placeholder = @"Calendar Name";
                 textField.clearButtonMode = UITextFieldViewModeWhileEditing;
                 textField.delegate = self;
@@ -160,11 +160,12 @@
                 textField.borderStyle = UITextBorderStyleNone;
                 textField.returnKeyType = UIReturnKeyDefault;
                 [cell.contentView addSubview:textField];
-                [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeHeight multiplier:1.0 constant:textField.frame.size.height]];
-                [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0.0]];
-                [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0]];
-                [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeading multiplier:1.0 constant:20.0]];
-                [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeTrailing multiplier:1.0 constant:-20.0]];
+                [textField makeConstraints:^(MASConstraintMaker *make) {
+                    make.leading.equalTo(@(42));
+                    make.centerY.equalTo(cell.centerY);
+                    make.trailing.equalTo(@(-15));
+                }];
+                cell.imageView.image = [[UIImage imageNamed:@"calendar_circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             }
             else if ( indexPath.section == 1) {
                 cell.imageView.image = [[UIImage imageNamed:@"calendar_circle"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -177,6 +178,7 @@
             if ( [[self.calendarItem objectForKey:CalendarItem_Name] length] > 0 ) {
                 textField.text = [self.calendarItem objectForKey:CalendarItem_Name];
             }
+            cell.imageView.tintColor = [_calendarItem objectForKey:CalendarItem_Color];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         else if ( indexPath.section == 1 ) {
@@ -229,7 +231,6 @@
     else if ( indexPath.section == 2) {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Calendar" otherButtonTitles:nil];
         [actionSheet showInView:self.view];
-//        [self deleteCalendarAction:nil];
     }
 }
 
@@ -280,12 +281,7 @@
 
 - (void)cancelAction:(id)sender
 {
-//    if ( IS_IPHONE || _isEditMode )
-        [self dismissViewControllerAnimated:YES completion:nil];
-//    else {
-//        [self.A3RootViewController dismissRightSideViewController];
-//        [self.A3RootViewController.centerNavigationController viewWillAppear:YES];
-//    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)doneButtonAction:(UIBarButtonItem *)button
