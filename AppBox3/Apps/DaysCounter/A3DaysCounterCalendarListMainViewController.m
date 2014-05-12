@@ -383,7 +383,7 @@
                                                                  repeat:YES
                                                                  strict:NO];
             
-            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day // [event.durationOption integerValue]
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
                                                                                                                    fromDate:today
                                                                                                                      toDate:nextDate
                                                                                                                    isAllDay:[event.isAllDay boolValue]
@@ -391,7 +391,7 @@
                                                         , untilSinceString];
         }
         else {
-            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day // [event.durationOption integerValue]
+            result = [NSString stringWithFormat:@"%@ %@", [[A3DaysCounterModelManager sharedManager] stringOfDurationOption:DurationOption_Day
                                                                                                                    fromDate:today
                                                                                                                      toDate:[event.startDate solarDate]
                                                                                                                    isAllDay:[event.isAllDay boolValue]
@@ -406,30 +406,8 @@
 - (NSString *)dateStringForEvent:(DaysCounterEvent *)event
 {
     NSString *result;
-//    NSDate *today = [NSDate date];
-//    NSDate *calcDate = [event.startDate solarDate];
-//    NSInteger diffDay = 0;
-//    
-//    if ( [event.repeatType integerValue] != RepeatType_Never ) {
-//        NSDate *nextDate = [[A3DaysCounterModelManager sharedManager] nextDateWithRepeatOption:[event.repeatType integerValue]
-//                                                                                     firstDate:[event.startDate solarDate]
-//                                                                                      fromDate:today
-//                                                                                      isAllDay:[event.isAllDay boolValue]];
-//        diffDay = [A3DateHelper diffDaysFromDate:today toDate:nextDate];
-//        calcDate = nextDate;
-//    }
-//    
-//    if ( [event.isLunar boolValue] ) {
-//        BOOL isResultLeapMonth = NO;
-//        calcDate = [NSDate dateOfSolarFromLunarDate:calcDate leapMonth:[event.startDate.isLeapMonth boolValue] korean:[A3DateHelper isCurrentLocaleIsKorea] resultLeapMonth:&isResultLeapMonth];
-//    }
-//
-//    result = [A3DateHelper dateStringFromDate:calcDate
-//                                   withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
-    
     result = [A3DateHelper dateStringFromDate:[event effectiveStartDate]
                                    withFormat:[event.isAllDay boolValue] ? @"M/d/yy" : @"M/d/yy EEE hh:mm a"];
-    
     return result;
 }
 

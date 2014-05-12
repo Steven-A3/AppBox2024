@@ -1772,9 +1772,14 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         NSMutableString *dateFormat = [formatter.dateFormat mutableCopy];
         [dateFormat replaceOccurrencesOfString:@"EEEE" withString:@"" options:0 range:NSMakeRange(0, [dateFormat length])];
         [dateFormat replaceOccurrencesOfString:@"MMMM" withString:@"MMM" options:0 range:NSMakeRange(0, [dateFormat length])];
+        dateFormat = [[dateFormat stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] mutableCopy];
         
-        NSRange range = [dateFormat rangeOfString:@"M" options:NSCaseInsensitiveSearch];
-        dateFormat = [[dateFormat substringFromIndex:range.location] mutableCopy];
+        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:[dateModel solarDate]];
+        if (solarComp.year == [dateModel.year integerValue]) {
+            NSRange range = [dateFormat rangeOfString:@"M" options:NSCaseInsensitiveSearch];
+            dateFormat = [[dateFormat substringFromIndex:range.location] mutableCopy];
+        }
+        
 //        NSDateComponents *solarComp = [[NSCalendar currentCalendar] components:NSYearCalendarUnit fromDate:[dateModel solarDate]];
 //        if (solarComp.year == [dateModel.year integerValue]) {
 //            NSArray *dateFormats = [[dateFormat componentsSeparatedByString:@"M"] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT (SELF CONTAINS[c] %@)", @"y"]];
