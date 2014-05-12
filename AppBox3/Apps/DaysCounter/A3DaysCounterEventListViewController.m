@@ -852,6 +852,9 @@
 - (IBAction)addEventAction:(id)sender {
     A3DaysCounterAddEventViewController *viewCtrl = [[A3DaysCounterAddEventViewController alloc] initWithNibName:@"A3DaysCounterAddEventViewController" bundle:nil];
     viewCtrl.calendarId = _calendarItem.calendarId;
+    if ([_calendarItem.calendarType integerValue] == CalendarCellType_System) {
+        viewCtrl.calendarId = nil;
+    }
 
     viewCtrl.landscapeFullScreen = NO;
     if ( IS_IPHONE ) {
