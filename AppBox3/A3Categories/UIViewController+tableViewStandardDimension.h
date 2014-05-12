@@ -19,5 +19,5 @@
 - (CGFloat)standardHeightForHeaderInSection:(NSInteger)section;
 - (CGFloat)standardHeightForFooterIsLastSection:(BOOL)isLastSection;
 
-- (CGFloat)noteCellHeight;
++ (CGFloat)noteCellHeight;
 @end

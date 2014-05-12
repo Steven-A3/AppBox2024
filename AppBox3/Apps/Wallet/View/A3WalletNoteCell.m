@@ -31,7 +31,14 @@
 		_textView = [GCPlaceholderTextView new];
 		[self addSubview:_textView];
 	}
+	self.selectionStyle = UITableViewCellSelectionStyleNone;
+	_textView.bounces = NO;
+	_textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+	_textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
+
+	_textView.placeholder = @"Notes";
 	_textView.font = [UIFont systemFontOfSize:17];
+
 	[_textView makeConstraints:^(MASConstraintMaker *make) {
 		make.top.equalTo(self.top).with.offset(3);
 		make.bottom.equalTo(self.bottom).with.offset(-3);

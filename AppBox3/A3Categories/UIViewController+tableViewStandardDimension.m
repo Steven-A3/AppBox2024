@@ -21,7 +21,7 @@
 	return 17.0;
 }
 
-- (CGFloat)noteCellHeight {
++ (CGFloat)noteCellHeight {
 	CGFloat keyboardHeight;
 	CGRect screenBounds = [A3UIDevice screenBoundsAdjustedWithOrientation];
 

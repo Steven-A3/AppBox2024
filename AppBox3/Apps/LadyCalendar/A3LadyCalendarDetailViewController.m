@@ -218,8 +218,9 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		case DetailCellType_Notes:{
 			A3WalletNoteCell *cell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemFieldNoteCellID forIndexPath:indexPath];
 			[cell setupTextView];
-			cell.textView.textColor = [UIColor colorWithRGBRed:159 green:159 blue:159 alpha:255];
-			cell.textView.text = period.notes;
+			[cell.textView setEditable:NO];
+			[cell.textView setScrollEnabled:NO];
+			[cell setNoteText:period.notes];
 
 			returnCell = cell;
 			break;
@@ -280,8 +281,8 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 	LadyCalendarPeriod *period = _periodItems[[rowInfo[ItemKey_Index] integerValue]];
     if( cellType == DetailCellType_Notes ){
         NSString *str = ( [period.notes length] > 0 ? period.notes : @"" );
-        CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
-        retHeight = (strBounds.size.height + 31.0);
+        CGRect strBounds = [str boundingRectWithSize:CGSizeMake(tableView.frame.size.width - (IS_IPHONE ? 20.0 : 43.0), CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:17.0]} context:nil];
+        retHeight = MAX((strBounds.size.height + 31.0), 74.0);
     } else if (cellType == DetailCellType_Title && [period.isPredict boolValue]) {
 		retHeight = 44.0;
 	} else if (cellType == DetailCellType_Blank) {
@@ -290,6 +291,7 @@ extern NSString *const A3WalletItemFieldNoteCellID;
 		retHeight = (CGFloat)[rowInfo[ItemKey_RowHeight] doubleValue];
 	}
 
+	FNLOG(@"%ld, %ld, %f", (long)indexPath.section, (long)indexPath.row, retHeight);
     return retHeight;
 }
 

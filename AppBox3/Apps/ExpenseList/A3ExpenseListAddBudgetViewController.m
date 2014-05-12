@@ -390,9 +390,6 @@ enum A3ExpenseListAddBudgetCellType {
         // Notes
         A3TextViewElement *notes = [A3TextViewElement new];
         notes.identifier = A3TableElementCellType_Note;
-        notes.value = @"";
-        notes.placeHolder = @"Notes";
-        notes.minHeight = 180.0;
         notes.value = _currentBudget.notes;
         notes.onEditingBegin = ^(A3TextViewElement * element, UITextView *textView){
             _textViewResponder = textView;

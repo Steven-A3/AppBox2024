@@ -1334,7 +1334,7 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 {
     if (indexPath.section == 0) {
         if ([self.sectionItems objectAtIndex:indexPath.row] == self.noteItem) {
-			return [self noteCellHeight];
+			return [UIViewController noteCellHeight];
         }
         else if ([self.sectionItems objectAtIndex:indexPath.row] == self.dateInputItem) {
 
@@ -1568,18 +1568,8 @@ NSString *const A3WalletItemFieldDeleteCellID4 = @"A3WalletItemFieldDeleteCell";
 
 - (A3WalletNoteCell *)getNoteCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
 	A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3WalletItemNoteCellID4 forIndexPath:indexPath];
-
-	GCPlaceholderTextView *textView = noteCell.textView;
-	noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
-	textView.backgroundColor = [UIColor clearColor];
-	textView.delegate = self;
-	textView.bounces = NO;
-	textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-	textView.placeholderColor = [UIColor colorWithRed:199.0/255.0 green:199.0/255.0 blue:205.0/255.0 alpha:1.0];
-	noteCell.textView.font = [UIFont systemFontOfSize:17];
-
-	textView.placeholder = @"Notes";
-	textView.text = _item.note;
+	[noteCell setupTextView];
+	noteCell.textView.text = _item.note;
 
 	return noteCell;
 }
