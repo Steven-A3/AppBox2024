@@ -254,6 +254,7 @@
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
+    viewCtrl.sharedManager = _sharedManager;
     
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
@@ -281,6 +282,7 @@
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
     viewCtrl.isEditMode = YES;
     viewCtrl.calendarItem = [_sharedManager dictionaryFromCalendarEntity:item];
+    viewCtrl.sharedManager = _sharedManager;
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
     navCtrl.modalPresentationStyle = UIModalPresentationCurrentContext;
     self.modalVC = navCtrl;

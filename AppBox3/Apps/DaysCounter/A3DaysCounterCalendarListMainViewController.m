@@ -257,6 +257,7 @@
 
 - (IBAction)editAction:(id)sender {
     A3DaysCounterEditCalendarListViewController *viewCtrl = [[A3DaysCounterEditCalendarListViewController alloc] initWithNibName:@"A3DaysCounterEditCalendarListViewController" bundle:nil];
+    viewCtrl.sharedManager = _sharedManager;
     
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -272,6 +273,7 @@
     A3DaysCounterAddAndEditCalendarViewController *viewCtrl = [[A3DaysCounterAddAndEditCalendarViewController alloc] initWithNibName:@"A3DaysCounterAddAndEditCalendarViewController" bundle:nil];
     viewCtrl.isEditMode = NO;
     viewCtrl.calendarItem = nil;
+    viewCtrl.sharedManager = _sharedManager;
     
     if ( IS_IPHONE ) {
         UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:viewCtrl];
@@ -585,8 +587,6 @@
     viewCtrl.calendarItem = item;
     viewCtrl.sharedManager = _sharedManager;
     [self.navigationController pushViewController:viewCtrl animated:YES];
-    _itemArray = nil;
-    [self.tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -603,11 +603,6 @@
         [self setupHeaderInfo];
         [self.tableView reloadData];
     }
-}
-
--(UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return UITableViewCellEditingStyleNone;
 }
 
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

@@ -12,6 +12,7 @@
 #import "UIViewController+A3Addition.h"
 #import "UIViewController+A3AppCategory.h"
 #import "UIViewController+iPad_rightSideView.h"
+#import "DaysCounterCalendar.h"
 
 @interface A3DaysCounterAddAndEditCalendarViewController ()
 @property (strong, nonatomic) NSArray *colorArray;
@@ -99,7 +100,15 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return (_isEditMode ? 3 : 2);
+    if (_isEditMode) {
+        if ([DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1) {
+            return 2;
+        }
+        
+        return 3;
+    }
+    
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -124,7 +133,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-
     if ( section == 0 ) {
         return 35;
     }
@@ -137,7 +145,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if ( section == (_isEditMode ? 2 : 1) ) {
+    BOOL hasOneCalendar = [DaysCounterCalendar MR_countOfEntitiesWithPredicate:[NSPredicate predicateWithFormat:@"calendarType == %@", @(CalendarCellType_User)]] == 1 ? YES : NO;
+
+    if ( section == ((_isEditMode && !hasOneCalendar) ? 2 : 1) ) {
         return 38;
     }
     return 0.01;
