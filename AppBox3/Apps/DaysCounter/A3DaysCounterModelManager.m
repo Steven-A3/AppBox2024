@@ -1012,6 +1012,9 @@
             isShortStyle = YES;
         }
     }
+    if (IS_IPHONE && isShortStyle && flagCount <= 2) {
+        isShortStyle = NO;
+    }
     if (IS_IPAD && !isShortStyle && flagCount == 6) {
         isShortStyle = YES;
     }
