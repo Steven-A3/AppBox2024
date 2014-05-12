@@ -7,7 +7,7 @@
 //
 
 #import "A3WalletMoreTableViewCell.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
 
 @interface A3WalletMoreTableViewCell ()

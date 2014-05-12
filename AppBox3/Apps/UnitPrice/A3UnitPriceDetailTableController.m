@@ -27,6 +27,7 @@
 #import "UITableView+utility.h"
 #import "A3WalletNoteCell.h"
 #import "NSString+conversion.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 typedef NS_ENUM(NSInteger, PriceDiscountType) {
 	Price_Percent = 0,
@@ -76,12 +77,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     self.tableView.separatorInset = UIEdgeInsetsMake(0, (IS_IPAD)?28:15, 0, 0);
     self.tableView.contentInset = UIEdgeInsetsMake(-1, 0, 36, 0);
@@ -732,57 +727,54 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell=nil;
-	@autoreleasepool {
-		cell = nil;
-        
-        if (indexPath.section == 0) {
-            A3UnitPriceSliderCell *sliderCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceSliderCellID forIndexPath:indexPath];
-            [self configureSliderCell:sliderCell];
-            
-            cell = sliderCell;
-        }
-        else {
-            if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
-                A3UnitPriceActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceActionCellID forIndexPath:indexPath];
-                actionCell.textLabel.textColor = [UIColor blackColor];
-                actionCell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                actionCell.textLabel.font = [UIFont systemFontOfSize:17];
-                actionCell.detailTextLabel.font = [UIFont systemFontOfSize:17];
-                actionCell.textLabel.text = @"Unit";
-                NSString *unitName = self.price.unit ? self.price.unit.unitName : @"None";
-                actionCell.detailTextLabel.text = unitName;
-                
-                cell = actionCell;
-            }
-            else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-                A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNoteCellID forIndexPath:indexPath];
-                
-                noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
-                noteCell.textView.delegate = self;
-                noteCell.textView.bounces = NO;
-                noteCell.textView.placeholder = @"Notes";
-                noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                noteCell.textView.text = self.price.note ? self.price.note : @"";
-                
-                cell = noteCell;
-            }
-            else {
-                A3UnitPriceInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceInputCellID forIndexPath:indexPath];
-                inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
-                inputCell.titleLB.textColor = [UIColor blackColor];
-                inputCell.textField.delegate = self;
+	UITableViewCell *cell;
 
-                [self configureInputCell:inputCell withIndexPath:indexPath];
-                
-                cell = inputCell;
-            }
-        }
-    }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    return cell;
+	if (indexPath.section == 0) {
+		A3UnitPriceSliderCell *sliderCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceSliderCellID forIndexPath:indexPath];
+		[self configureSliderCell:sliderCell];
+
+		cell = sliderCell;
+	}
+	else {
+		if ([self.items objectAtIndex:indexPath.row] == self.unitItem) {
+			A3UnitPriceActionCell *actionCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceActionCellID forIndexPath:indexPath];
+			actionCell.textLabel.textColor = [UIColor blackColor];
+			actionCell.detailTextLabel.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			actionCell.textLabel.font = [UIFont systemFontOfSize:17];
+			actionCell.detailTextLabel.font = [UIFont systemFontOfSize:17];
+			actionCell.textLabel.text = @"Unit";
+			NSString *unitName = self.price.unit ? self.price.unit.unitName : @"None";
+			actionCell.detailTextLabel.text = unitName;
+
+			cell = actionCell;
+		}
+		else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
+			A3WalletNoteCell *noteCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceNoteCellID forIndexPath:indexPath];
+
+			noteCell.selectionStyle = UITableViewCellSelectionStyleNone;
+			noteCell.textView.delegate = self;
+			noteCell.textView.bounces = NO;
+			noteCell.textView.placeholder = @"Notes";
+			noteCell.textView.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			noteCell.textView.text = self.price.note ? self.price.note : @"";
+
+			cell = noteCell;
+		}
+		else {
+			A3UnitPriceInputCell *inputCell = [tableView dequeueReusableCellWithIdentifier:A3UnitPriceInputCellID forIndexPath:indexPath];
+			inputCell.textField.textColor = [UIColor colorWithRed:128.0/255.0 green:128.0/255.0 blue:128.0/255.0 alpha:1.0];
+			inputCell.titleLB.textColor = [UIColor blackColor];
+			inputCell.textField.delegate = self;
+
+			[self configureInputCell:inputCell withIndexPath:indexPath];
+
+			cell = inputCell;
+		}
+	}
+
+	cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+	return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -791,25 +783,8 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
         return IS_IPAD ? 158 : 104;
     }
     else if ([self.items objectAtIndex:indexPath.row] == self.noteItem) {
-        NSDictionary *textAttributes = @{
-                                         NSFontAttributeName : [UIFont systemFontOfSize:17]
-                                         };
-        
-        NSString *textString = self.price.note  ? self.price.note:@"";
-        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:textString attributes:textAttributes];
-        UITextView *txtView = [[UITextView alloc] init];
-        [txtView setAttributedText:attributedString];
-        float margin = IS_IPAD ? 49:31;
-        CGSize txtViewSize = [txtView sizeThatFits:CGSizeMake(self.view.frame.size.width-margin, 1000)];
-        float cellHeight = txtViewSize.height + 20;
-        
-        if (cellHeight < 180) {
-            return 180;
-        }
-        else {
-            return cellHeight;
-        }
-    }
+		return [self noteCellHeight];
+	}
     return 44.0;
 }
 
@@ -827,63 +802,6 @@ NSString *const A3UnitPriceNoteCellID = @"A3UnitPriceNoteCell";
 {
     return 1;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Table view delegate
-
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
-}
- 
- */
 
 - (NSString *)defaultCurrencyCode {
 	NSString *currencyCode = [[NSUserDefaults standardUserDefaults] objectForKey:A3UnitPriceCurrencyCode];

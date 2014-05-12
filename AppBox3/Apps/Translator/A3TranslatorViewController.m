@@ -25,7 +25,7 @@
 #import "TranslatorFavorite.h"
 #import "FMMoveTableView.h"
 #import "NSMutableArray+A3Sort.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3TranslatorViewController () <FMMoveTableViewDataSource, FMMoveTableViewDelegate, A3TranslatorMessageViewControllerDelegate, A3TranslatorFavoriteDelegate>
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;

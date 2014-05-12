@@ -9,7 +9,7 @@
 #import "A3SettingsRecentToKeepViewController.h"
 #import "A3AppDelegate.h"
 #import "A3AppDelegate+mainMenu.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3AppDelegate+appearance.h"
 
 @interface A3SettingsRecentToKeepViewController ()
@@ -46,7 +46,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

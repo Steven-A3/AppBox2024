@@ -7,7 +7,7 @@
 //
 
 #import "A3MoreTableViewCell.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @implementation A3MoreTableViewCell
 

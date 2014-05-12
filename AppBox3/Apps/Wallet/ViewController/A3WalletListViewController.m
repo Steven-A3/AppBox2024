@@ -20,7 +20,7 @@
 #import "WalletField+initialize.h"
 #import "A3WalletListBigVideoCell.h"
 #import "NSString+WalletStyle.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3WalletListPhotoCell.h"
 #import "A3WalletItemViewController.h"
 #import "A3WalletVideoItemViewController.h"

@@ -8,7 +8,6 @@
 
 #import <objc/runtime.h>
 #import "UITableViewController+swipeMenu.h"
-#import "common.h"
 
 static char const *const KEY_A3TVC_SWIPED_CELLS	= "key_a3tvc_swiped_cells";
 const CGFloat kVisibleWidth = 100.0;

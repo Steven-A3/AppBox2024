@@ -10,7 +10,7 @@
 #import "A3TableViewRootElement.h"
 #import "A3TableViewSection.h"
 #import "A3TableViewElement.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3TableViewController ()
 
@@ -53,7 +53,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

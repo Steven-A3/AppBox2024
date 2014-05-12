@@ -26,7 +26,7 @@
 #import "NSDate+TimeAgo.h"
 #import "WalletFieldItem+initialize.h"
 #import "FMMoveTableView.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 
 @interface A3WalletFavoritesViewController ()

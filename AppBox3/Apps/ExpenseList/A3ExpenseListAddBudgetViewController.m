@@ -27,7 +27,7 @@
 #import "A3TextViewElement.h"
 #import "A3Formatter.h"
 #import "A3SearchViewController.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 enum A3ExpenseListAddBudgetCellType {
     AddBudgetCellID_Budget = 100,

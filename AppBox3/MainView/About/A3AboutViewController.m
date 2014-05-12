@@ -9,7 +9,7 @@
 #import "A3AboutViewController.h"
 #import "A3BasicWebViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "Reachability.h"
 #import <Social/Social.h>
 #import <MessageUI/MessageUI.h>
@@ -39,7 +39,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	if (section == 2) return UITableViewAutomaticDimension;
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 #pragma mark -- UITableViewDelegate

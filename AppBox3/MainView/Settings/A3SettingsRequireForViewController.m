@@ -8,7 +8,7 @@
 
 #import "A3SettingsRequireForViewController.h"
 #import "A3AppDelegate+passcode.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3SettingsRequireForViewController ()
 
@@ -48,7 +48,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return [self standardHeightForFooterInSection:section];
+	BOOL isLastSection = ([self.tableView numberOfSections] - 1) == section;
+	return [self standardHeightForFooterIsLastSection:isLastSection];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

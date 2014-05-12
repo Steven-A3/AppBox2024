@@ -8,7 +8,7 @@
 
 #import "A3HelpViewController.h"
 #import "UIViewController+A3Addition.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 
 @interface A3HelpViewController ()
 

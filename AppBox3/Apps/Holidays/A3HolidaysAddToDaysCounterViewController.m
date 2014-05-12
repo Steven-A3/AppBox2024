@@ -11,7 +11,7 @@
 #import "UIViewController+A3AppCategory.h"
 #import "HolidayData.h"
 #import "HolidayData+Country.h"
-#import "UITableViewController+standardDimension.h"
+#import "UIViewController+tableViewStandardDimension.h"
 #import "A3StandardTableViewCell.h"
 
 @interface A3HolidaysAddToDaysCounterViewController ()
