@@ -153,6 +153,7 @@
     
     if (itemRowType == DurationOption_Day) {
         cell.userInteractionEnabled = NO;
+        cell.textLabel.textColor = [UIColor colorWithRed:201/255.0 green:201/255.0 blue:201/255.0 alpha:1.0];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
