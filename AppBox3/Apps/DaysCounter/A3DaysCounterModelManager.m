@@ -18,7 +18,6 @@
 #import "NYXImagesKit.h"
 #import "A3DateHelper.h"
 #import "A3UserDefaults.h"
-//#import "FXLabel.h"
 #import "A3DaysCounterSlideshowEventSummaryView.h"
 #import "NSDate+LunarConverter.h"
 #import "NSDateFormatter+LunarDate.h"
@@ -805,27 +804,22 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)allEventsList
 {
-    //return [DaysCounterEvent MR_findAllInContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@", @(YES)]];
 }
 
 - (NSArray*)allEventsListContainedImage
 {
-    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"imageFilename.length > 0"]];
+    return [DaysCounterEvent MR_findAllSortedBy:@"effectiveStartDate" ascending:YES withPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && imageFilename.length > 0", @(YES)]];
 }
 
 - (NSArray*)upcomingEventsListWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@)", date, date, @(RepeatType_Never), [NSNull null]]
-//                                           inContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && (effectiveStartDate > %@ || repeatEndDate > %@ || (repeatType != %@ && repeatEndDate == %@))", @(YES), date, date, @(RepeatType_Never), [NSNull null]]
                                            inContext:[self managedObjectContext]];
 }
 
 - (NSArray*)pastEventsListWithDate:(NSDate*)date
 {
-//    return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"(effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@)", date, @(RepeatType_Never), [NSNull null], date]
-//                                           inContext:[self managedObjectContext]];
     return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"calendar.isShow == %@ && ((effectiveStartDate < %@ && repeatType == %@) || (repeatEndDate != %@ && repeatEndDate < %@))", @(YES), date, @(RepeatType_Never), [NSNull null], date]
                                            inContext:[self managedObjectContext]];
 }
@@ -850,7 +844,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
 
 - (NSArray*)reminderList
 {
-    //return [DaysCounterEvent MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isReminder == %@", @(YES)] inContext:[self managedObjectContext]];
     [self arrangeReminderList];
     return [DaysCounterReminder MR_findAllWithPredicate:[NSPredicate predicateWithFormat:@"isOn == %@", @(YES)]];
 }
@@ -1084,9 +1077,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
                 [resultArray addObject:[NSString stringWithFormat:@"%ld minute%@", (long)labs([diffComponent minute]), (labs([diffComponent minute]) > 1 ? @"s" : @"")]];
             }
-//            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
-//                [resultArray addObject:[NSString stringWithFormat:@"%ld second%@", (long)labs([diffComponent second]), (labs([diffComponent second]) > 1 ? @"s" : @"")]];
-//            }
         }
     }
     else {
@@ -1110,9 +1100,6 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
             if (option & DurationOption_Minutes && [diffComponent minute] != 0) {
                 [resultArray addObject:[NSString stringWithFormat:@"%ld min", (long)labs([diffComponent minute])]];
             }
-//            if (option & DurationOption_Seconds && [diffComponent second] != 0) {
-//                [resultArray addObject:[NSString stringWithFormat:@"%ld s", (long)labs([diffComponent second])]];
-//            }
         }
     }
 
@@ -1160,18 +1147,11 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
     
     titleLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 23.0 : 24.0)];
     titleLabel.text = item.eventName;
-    titleLabel.shadowOffset = CGSizeMake(0, 1);
-//    titleLabel.shadowBlur = 2;
-    
-    daysLabel.shadowOffset = CGSizeMake(0,1);
-//    daysLabel.shadowBlur = 2;
-    
-    markLabel.shadowOffset = CGSizeMake(0,1);
-//    markLabel.shadowBlur = 2;
+//    titleLabel.shadowOffset = CGSizeMake(0, 1);
+//    daysLabel.shadowOffset = CGSizeMake(0,1);
+//    markLabel.shadowOffset = CGSizeMake(0,1);
     markLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 13.0 : 14.0)];
-    
-    dateLabel.shadowOffset = CGSizeMake(0,1);
-//    dateLabel.shadowBlur = 2;
+//    dateLabel.shadowOffset = CGSizeMake(0,1);
     dateLabel.font = [UIFont systemFontOfSize:(IS_IPHONE ? 18.0 : 21.0)];
     
     NSString *untilSinceString = [A3DateHelper untilSinceStringByFromDate:[NSDate date]
@@ -1184,23 +1164,15 @@ static A3DaysCounterModelManager *daysCounterModelManager = nil;
         NSDate *repeatDate = [[A3DaysCounterModelManager sharedManager] repeatDateOfCurrentNotNextWithRepeatOption:[item.repeatType integerValue]
                                                                                                   firstDate:[item.startDate solarDate]
                                                                                                    fromDate:[NSDate date]];
-        
-//        dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
-//                                               withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForAddEditIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
         dateLabel.text = [A3DateHelper dateStringFromDate:repeatDate
                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
-        
-        
         daysLabel.text = [untilSinceString isEqualToString:@"today"] ? @" Today " : @" Now ";
         markLabel.text = @"";
         daysLabel.font = IS_IPHONE ? [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:88.0] : [UIFont fontWithName:@".HelveticaNeueInterface-UltraLightP2" size:116.0];
-        
     }
     else {
-        //dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate withFormat:[item.isAllDay boolValue] ? @"EEEE, MMMM dd, yyyy" : @"EEEE, MMMM dd, yyyy h:mm a"];
         dateLabel.text = [A3DateHelper dateStringFromDate:item.effectiveStartDate
                                                withFormat:[[A3DaysCounterModelManager sharedManager] dateFormatForPhotoWithIsAllDays:[item.isLunar boolValue] ? YES : [item.isAllDay boolValue]]];
-        
         NSInteger diffDays = [A3DateHelper diffDaysFromDate:[NSDate date] toDate:item.effectiveStartDate isAllDay:YES];
         if ( diffDays > 0 ) {
             markLabel.text = @"Days\nUntil";
